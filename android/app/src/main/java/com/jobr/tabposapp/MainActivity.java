@@ -1,4 +1,4 @@
-package com.jobrcustomer;
+package com.jobr.tabposapp;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

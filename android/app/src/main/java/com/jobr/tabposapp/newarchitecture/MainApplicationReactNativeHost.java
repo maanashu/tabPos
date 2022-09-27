@@ -1,4 +1,4 @@
-package com.jobrcustomer.newarchitecture;
+package com.jobr.tabposapp.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.jobrcustomer.BuildConfig;
-import com.jobrcustomer.newarchitecture.components.MainComponentsRegistry;
-import com.jobrcustomer.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.jobr.tabposapp.BuildConfig;
+import com.jobr.tabposapp.newarchitecture.components.MainComponentsRegistry;
+import com.jobr.tabposapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

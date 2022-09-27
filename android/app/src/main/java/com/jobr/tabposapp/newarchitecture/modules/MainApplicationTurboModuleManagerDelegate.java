@@ -1,4 +1,4 @@
-package com.jobrcustomer.newarchitecture.modules;
+package com.jobr.tabposapp.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

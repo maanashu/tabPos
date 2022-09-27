@@ -1,4 +1,4 @@
-package com.jobrcustomer.newarchitecture.components;
+package com.jobr.tabposapp.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;
