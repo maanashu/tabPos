@@ -8,13 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* tabposappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* tabposappTests.m */; };
+		053CB105E9484CD2B945459E /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5AB59C7EACE7497F94BEE465 /* Montserrat-Medium.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-tabposapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-tabposapp.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1D63AE4328AFB485004AAF4C /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D63AE4228AFB484004AAF4C /* BootSplash.storyboard */; };
+		1D91A5C2B3A340C48EE41714 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5086FA5317FD47309E01633E /* Montserrat-Bold.ttf */; };
+		485D432670A6489085BE23D4 /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D098B3E9DD854BF29E4FEE5C /* Montserrat-MediumItalic.ttf */; };
+		4E5861FDE0F44DCBAF4B1EEC /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C51AEED5BEE640A086BDA7C4 /* Montserrat-Regular.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-tabposapp-tabposappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-tabposapp-tabposappTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8B362915CBF4462BBC3ACDC4 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D832F2C52A7449E8B8557F36 /* Montserrat-SemiBold.ttf */; };
+		9AA45A1F723747E491CF5140 /* Montserrat-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F34163D3E7614C4B9C5518A6 /* Montserrat-Italic.ttf */; };
+		A2D38CD128E5ABEF004141A8 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = A2D38CD028E5ABEF004141A8 /* fonts */; };
+		A592F8871F9144A883C1A278 /* Maison Mono Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 328414CFAB54414FB17BA4A2 /* Maison Mono Regular.ttf */; };
+		BA8E5A9AFD124195A865628C /* MaisonMonoTRIAL-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C584E8A42E44464BFE17C3E /* MaisonMonoTRIAL-Bold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,13 +48,22 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = tabposapp/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-tabposapp-tabposappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tabposapp-tabposappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D63AE4228AFB484004AAF4C /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = tabposapp/BootSplash.storyboard; sourceTree = "<group>"; };
+		328414CFAB54414FB17BA4A2 /* Maison Mono Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Maison Mono Regular.ttf"; path = "../src/assets/fonts/Maison Mono Regular.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-tabposapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp.debug.xcconfig"; path = "Target Support Files/Pods-tabposapp/Pods-tabposapp.debug.xcconfig"; sourceTree = "<group>"; };
+		3C584E8A42E44464BFE17C3E /* MaisonMonoTRIAL-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "MaisonMonoTRIAL-Bold.otf"; path = "../src/assets/fonts/MaisonMonoTRIAL-Bold.otf"; sourceTree = "<group>"; };
+		5086FA5317FD47309E01633E /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../src/assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-tabposapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp.release.xcconfig"; path = "Target Support Files/Pods-tabposapp/Pods-tabposapp.release.xcconfig"; sourceTree = "<group>"; };
+		5AB59C7EACE7497F94BEE465 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../src/assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-tabposapp-tabposappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp-tabposappTests.debug.xcconfig"; path = "Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-tabposapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tabposapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = tabposapp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-tabposapp-tabposappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp-tabposappTests.release.xcconfig"; path = "Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests.release.xcconfig"; sourceTree = "<group>"; };
+		A2D38CD028E5ABEF004141A8 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		C51AEED5BEE640A086BDA7C4 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../src/assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		D098B3E9DD854BF29E4FEE5C /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-MediumItalic.ttf"; path = "../src/assets/fonts/Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
+		D832F2C52A7449E8B8557F36 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../src/assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F34163D3E7614C4B9C5518A6 /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Italic.ttf"; path = "../src/assets/fonts/Montserrat-Italic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,12 +137,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				A2D38CD028E5ABEF004141A8 /* fonts */,
 				13B07FAE1A68108700A75B9A /* tabposapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* tabposappTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				E8A930936FFB4FDC845B5A67 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -149,6 +169,21 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-tabposapp-tabposappTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		E8A930936FFB4FDC845B5A67 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3C584E8A42E44464BFE17C3E /* MaisonMonoTRIAL-Bold.otf */,
+				328414CFAB54414FB17BA4A2 /* Maison Mono Regular.ttf */,
+				5086FA5317FD47309E01633E /* Montserrat-Bold.ttf */,
+				F34163D3E7614C4B9C5518A6 /* Montserrat-Italic.ttf */,
+				5AB59C7EACE7497F94BEE465 /* Montserrat-Medium.ttf */,
+				D098B3E9DD854BF29E4FEE5C /* Montserrat-MediumItalic.ttf */,
+				C51AEED5BEE640A086BDA7C4 /* Montserrat-Regular.ttf */,
+				D832F2C52A7449E8B8557F36 /* Montserrat-SemiBold.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,6 +283,15 @@
 				1D63AE4328AFB485004AAF4C /* BootSplash.storyboard in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				A2D38CD128E5ABEF004141A8 /* fonts in Resources */,
+				BA8E5A9AFD124195A865628C /* MaisonMonoTRIAL-Bold.otf in Resources */,
+				A592F8871F9144A883C1A278 /* Maison Mono Regular.ttf in Resources */,
+				1D91A5C2B3A340C48EE41714 /* Montserrat-Bold.ttf in Resources */,
+				9AA45A1F723747E491CF5140 /* Montserrat-Italic.ttf in Resources */,
+				053CB105E9484CD2B945459E /* Montserrat-Medium.ttf in Resources */,
+				485D432670A6489085BE23D4 /* Montserrat-MediumItalic.ttf in Resources */,
+				4E5861FDE0F44DCBAF4B1EEC /* Montserrat-Regular.ttf in Resources */,
+				8B362915CBF4462BBC3ACDC4 /* Montserrat-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

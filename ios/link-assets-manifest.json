@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Maison Mono Regular.ttf",
+      "sha1": "d0cba573af2d2017d755b9f39fd2afb916acf601"
+    },
+    {
+      "path": "src/assets/fonts/MaisonMonoTRIAL-Bold.otf",
+      "sha1": "6367cf9830bc5d4975482a06797fb639c0fc9693"
+    },
+    {
+      "path": "src/assets/fonts/Montserrat-Bold.ttf",
+      "sha1": "97e2be433a5c4f622112b723d9ea9a23df6338f4"
+    },
+    {
+      "path": "src/assets/fonts/Montserrat-Italic.ttf",
+      "sha1": "a60d6f00e83110d2bc0d828af0d5f57d137d979f"
+    },
+    {
+      "path": "src/assets/fonts/Montserrat-Medium.ttf",
+      "sha1": "6fd70300b7e19aa191a5eb06dc0374c46ca97dcb"
+    },
+    {
+      "path": "src/assets/fonts/Montserrat-MediumItalic.ttf",
+      "sha1": "87044a5e426a6ebdc6880ea012ebf6f0c1281b09"
+    },
+    {
+      "path": "src/assets/fonts/Montserrat-Regular.ttf",
+      "sha1": "6b81c92b065c20c37190d983a79fa38cf6e60552"
+    },
+    {
+      "path": "src/assets/fonts/Montserrat-SemiBold.ttf",
+      "sha1": "201ccee5dcb1e9d38716168f3a56598a6808ed51"
+    }
+  ]
+}
