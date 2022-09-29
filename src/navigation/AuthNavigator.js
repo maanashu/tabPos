@@ -1,23 +1,55 @@
 import React from 'react';
+import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NAVIGATION } from '@/constants';
-import { Login, VerifyPhone } from '@/screens';
+import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
+import {
+  crossButton,
+} from '@/assets';
+import {
+  Login,
+  VerifyPhone,
+  VerifyOtp,
+  Passcode,
+  LoginIntial,
+  Retails,
+  DeliveryOrder
+} from '@/screens';
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
-export function AuthNavigator() {
+export function AuthNavigator(props) {
+
   return (
-    <Stack.Navigator initialRouteName= "VerifyPhone">
+    <Stack.Navigator initialRouteName="VerifyPhone">
       <Stack.Screen
         component={Login}
         name={NAVIGATION.login}
         options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         component={VerifyPhone}
         name={NAVIGATION.verifyPhone}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        component={VerifyOtp}
+        name={NAVIGATION.verifyOtp}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={Passcode}
+        name={NAVIGATION.passcode}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={LoginIntial}
+        name={NAVIGATION.loginIntial}
+        options={{ headerShown: false }}
+      />
+       
     </Stack.Navigator>
   );
 }

@@ -3,4 +3,9 @@ export const NAVIGATION = {
   login: 'Login',
   profile: 'Profile',
   verifyPhone: 'VerifyPhone',
+  verifyOtp: 'VerifyOtp',
+  passcode: 'Passcode',
+  loginIntial: 'LoginIntial',
+  retails: 'Retails',
+  deliveryOrder: 'DeliveryOrder',
 };

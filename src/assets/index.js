@@ -1,2 +1,30 @@
 export { default as homeIcon } from '@/assets/ic_home/ic_home.png';
 export { default as settingsIcon } from '@/assets/ic_settings/ic_settings.png';
+export { default as dropdown } from '@/assets/icons/ic_auth/dropdown.png';
+export { default as crossButton } from '@/assets/icons/ic_auth/crossButton.png';
+export { default as verifyIcon } from '@/assets/icons/ic_auth/verifyIcon.png';
+export { default as profilePic } from '@/assets/icons/ic_auth/profilePic.png';
+export { default as deliveryTruck } from '@/assets/icons/ic_navigator/deliveryTruck.png';
+export { default as logo_icon } from '@/assets/icons/ic_navigator/logo_icon.png';
+export { default as retail } from '@/assets/icons/ic_navigator/retail.png';
+export { default as parachuteBox } from '@/assets/icons/ic_navigator/parachuteBox.png';
+export { default as calendar } from '@/assets/icons/ic_navigator/calendar.png';
+export { default as analytics } from '@/assets/icons/ic_navigator/analytics.png';
+export { default as wallet } from '@/assets/icons/ic_navigator/wallet.png';
+export { default as tray } from '@/assets/icons/ic_navigator/tray.png';
+export { default as users } from '@/assets/icons/ic_navigator/users.png';
+export { default as reward } from '@/assets/icons/ic_navigator/reward.png';
+export { default as settings } from '@/assets/icons/ic_navigator/settings.png';
+export { default as power } from '@/assets/icons/ic_navigator/power.png';
+
+/* Fonts */
+export const Fonts = {
+    Bold: 'Montserrat-Bold',
+    Italic: 'Montserrat-Italic',
+    Medium: 'Montserrat-Medium',
+    MediumItalic: 'Montserrat-MediumItalic',
+    Regular: 'Montserrat-Regular',
+    SemiBold: 'Montserrat-SemiBold',
+    MaisonRegular: 'Maison Mono Regular',
+    MaisonBold: 'MaisonMonoTRIAL-Bold',
+  };
