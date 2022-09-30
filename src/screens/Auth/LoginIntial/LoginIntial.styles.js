@@ -37,6 +37,7 @@ export const styles = StyleSheet.create({
      backgroundColor:COLORS.primary,
      width: windowWidth * 0.30,
      height: windowHeight * 0.10,
+     borderRadius:10
   },
   profilePic:{
     width:SW(100),
