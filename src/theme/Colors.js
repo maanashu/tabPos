@@ -7,5 +7,6 @@ export const COLORS = {
     darkGray: '#626262',
     primary:'#275AFF',
     solidGrey: '#D8D8D8',
-    faded_grey:'#F5F5F5'
+    faded_grey:'#F5F5F5',
+    gerySkies:'#A7A7A7'
 }

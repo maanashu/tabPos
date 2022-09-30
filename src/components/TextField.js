@@ -1,33 +1,75 @@
-import { useTheme } from '@react-navigation/native';
+import { Fonts } from '@/assets';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  Image,
+  Platform,
+} from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
+import { SH, SW, COLORS, SF } from '@/theme';
 import PropTypes from 'prop-types';
-import React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
-import { TextStyles } from '@/theme';
 
 const styles = StyleSheet.create({
-  input: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginVertical: 15,
-    paddingVertical: 5,
+  inputStyle: {
+    marginRight: SW(40),
+    color: COLORS.black,
+    fontSize: SF(14),
+    fontFamily: Fonts.Italic,
+    paddingHorizontal: SW(10),
+    marginHorizontal: SW(12),
+    height: SH(50),
+    flex: 1,
+  },
+  wrapper: {
+    marginHorizontal: SW(12),
+    backgroundColor: COLORS.inputBorder,
+    borderRadius: moderateScale(5),
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: SH(50),
+  },
+  imageStyle: {
+    left: moderateScale(12),
+    height: 16,
+    width: 20,
   },
 });
 
-export function TextField({ style, ...rest }) {
-  const { colors } = useTheme();
+export function TextField({
+  label,
+  imageStyle,
+  style,
+  image,
+  secureTextEntry,
+  ...rest
+}) {
+  const [showText, setVisibility] = useState(secureTextEntry);
 
   return (
-    <TextInput
-      style={[{ color: colors.text }, TextStyles.text, styles.input, style]}
-      underlineColorAndroid="transparent"
-      {...rest}
-    />
+    <View style={styles.wrapper}>
+      <Image source={image} style={[styles.imageStyle, imageStyle]} />
+      <TextInput
+        autoCapitalize="none"
+        autoCorrect={false}
+        secureTextEntry={showText}
+        style={[styles.inputStyle, style]}
+        {...rest}
+        placeholder={label}
+        placeholderTextColor={'#A7A7A7'}
+      />
+    </View>
   );
 }
-
+// defines the types for prop
 TextField.propTypes = {
-  style: PropTypes.object,
+  styles: PropTypes.style,
+  imageStyle: PropTypes.style,
 };
-
+// defines the default value for the prop
 TextField.defaultProps = {
-  style: null,
+  imageStyle: {},
+  styles: {},
 };

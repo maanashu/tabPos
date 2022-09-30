@@ -16,6 +16,15 @@ export { default as users } from '@/assets/icons/ic_navigator/users.png';
 export { default as reward } from '@/assets/icons/ic_navigator/reward.png';
 export { default as settings } from '@/assets/icons/ic_navigator/settings.png';
 export { default as power } from '@/assets/icons/ic_navigator/power.png';
+export { default as menu } from '@/assets/icons/ic_retail/menu.png';
+export { default as search_light } from '@/assets/icons/ic_retail/Search_light.png';
+export { default as scn } from '@/assets/icons/ic_retail/scn.png';
+export { default as purchese } from '@/assets/icons/ic_retail/purchese.png';
+export { default as arrow_right } from '@/assets/icons/ic_retail/arrow_right.png';
+export { default as categoryProduct } from '@/assets/icons/ic_retail/categoryProduct.png';
+export { default as marboloRed } from '@/assets/icons/ic_retail/marboloRed.png';
+export { default as plus } from '@/assets/icons/ic_retail/plus.png';
+export { default as minus } from '@/assets/icons/ic_retail/minus.png';
 
 /* Fonts */
 export const Fonts = {

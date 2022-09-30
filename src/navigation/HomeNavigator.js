@@ -5,27 +5,30 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import {  Retails,
   DeliveryOrder } from '@/screens';
+import { DrawerNavigator } from '@/navigation/DrawerNavigator'
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export function HomeNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Retails">
+    <Drawer.Navigator initialRouteName="Retails"
+    screenOptions={{
+      drawerStyle: {
+        backgroundColor: COLORS.white,
+        width: SW(20),
+        paddingLeft: 2,
+      },
+      drawerType: 'permanent',
+    }}
+    drawerContent={props => <DrawerNavigator {...props} />}
+    >
       {/* <Stack.Screen 
       name={NAVIGATION.home} 
       component={Home} /> */}
-      <Drawer.Navigator
-        screenOptions={{
-          drawerStyle: {
-            backgroundColor: COLORS.white,
-            width: SW(20),
-            paddingLeft: 2,
-          },
-          drawerType: 'permanent',
-        }}
-        drawerContent={props => <DrawerNavigator {...props} />}
-      >
+      {/* <Drawer.Navigator initialRouteName="Retails" */}
+       
+      {/* > */}
         <Drawer.Screen
           component={Retails}
           name={NAVIGATION.retails}
@@ -37,7 +40,7 @@ export function HomeNavigator() {
           options={{ headerShown: false }}
         />
        
-      </Drawer.Navigator>
-    </Stack.Navigator>
+      {/* </Drawer.Navigator> */}
+    </Drawer.Navigator>
   );
 }

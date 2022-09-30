@@ -61,7 +61,8 @@ export function DrawerNavigator(props) {
         />
         <DrawerItem
           // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          label=""
+          onPress={() => alert('coming soon')}
+          label="" 
           
           icon={({ focused, color, size }) => (
             <Image
@@ -72,6 +73,7 @@ export function DrawerNavigator(props) {
         />
         <DrawerItem
           // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
+          onPress={() => alert('coming soon')}
           label=""
           
           icon={({ focused, color, size }) => (
@@ -83,6 +85,7 @@ export function DrawerNavigator(props) {
         />
         <DrawerItem
           // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
+          onPress={() => alert('coming soon')}
           label=""
           
           icon={({ focused, color, size }) => (
@@ -94,6 +97,7 @@ export function DrawerNavigator(props) {
         />
         <DrawerItem
           // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
+          onPress={() => alert('coming soon')}
           label=""
           
           icon={({ focused, color, size }) => (
@@ -105,6 +109,7 @@ export function DrawerNavigator(props) {
         />
          <DrawerItem
           // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
+          onPress={() => alert('coming soon')}
           label=""
           
           icon={({ focused, color, size }) => (
@@ -116,6 +121,7 @@ export function DrawerNavigator(props) {
         />
            <DrawerItem
           // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
+          onPress={() => alert('coming soon')}
           label=""
           
           icon={({ focused, color, size }) => (
@@ -127,6 +133,7 @@ export function DrawerNavigator(props) {
         />
            <DrawerItem
           // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
+          onPress={() => alert('coming soon')}
           label=""
           
           icon={({ focused, color, size }) => (
@@ -138,6 +145,7 @@ export function DrawerNavigator(props) {
         />
            <DrawerItem
           // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
+          onPress={() => alert('coming soon')}
           label=""
           
           icon={({ focused, color, size }) => (
@@ -147,17 +155,21 @@ export function DrawerNavigator(props) {
             />
           )}
         />
+        <View style={{ backgroundColor:COLORS.textInputBackground, position:'absolute', bottom:0, left:0}}>
             <DrawerItem
-          // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          label=""
-          
-          icon={({ focused, color, size }) => (
-            <Image
-              source={power}
-              style={styles.powerStyle}
+              // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
+              onPress={() => alert('coming soon')}
+              label=""
+              
+              icon={({ focused, color, size }) => (
+                <Image
+                  source={power}
+                  style={styles.powerStyle}
+                />
+              )}
             />
-          )}
-        />
+        </View>
+          
       </SafeAreaView>
     </DrawerContentScrollView>
   );
@@ -169,8 +181,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.text,
   },
   iconStyle: {
-    width: SW(10),
-    height: SW(10),
+    width: SW(9),
+    height: SW(9),
     resizeMode: 'contain',
   },
   powerStyle:{

@@ -11,7 +11,7 @@ export const ShadowStyles = StyleSheet.create({
     shadowRadius: 3.84,
     shadowOpacity: 0.25,
     shadowOffset: {
-      width: 4,
+      width: 2,
       height: 2,
     },
   },

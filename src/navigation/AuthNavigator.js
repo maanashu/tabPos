@@ -16,6 +16,7 @@ import {
   Retails,
   DeliveryOrder
 } from '@/screens';
+import { HomeNavigator } from '@/navigation/HomeNavigator'
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -47,6 +48,11 @@ export function AuthNavigator(props) {
       <Stack.Screen
         component={LoginIntial}
         name={NAVIGATION.loginIntial}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={HomeNavigator}
+        name={NAVIGATION.retails}
         options={{ headerShown: false }}
       />
        

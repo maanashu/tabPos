@@ -12,7 +12,7 @@ export function LoginIntial() {
 
 const  loginIntialHandler = () => {
   //  navigate('Retails', {screen : 'Retails'})
-  alert('coming soon')
+  navigate(NAVIGATION.retails)
 }
  
   return (
