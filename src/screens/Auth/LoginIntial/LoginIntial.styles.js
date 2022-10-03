@@ -32,11 +32,17 @@ export const styles = StyleSheet.create({
   },
   selectedText:{
     color:COLORS.white,
+    textAlign:'center',
+    fontSize:SF(16)
   },
   submitButton:{
      backgroundColor:COLORS.primary,
-     width: windowWidth * 0.30,
-     height: windowHeight * 0.10,
+     width:SW(110),
+     height:SH(60),
+     alignItems:'center',
+     justifyContent:'center',
+    //  width: windowWidth * 0.30,
+    //  height: windowHeight * 0.10,
      borderRadius:10
   },
   profilePic:{

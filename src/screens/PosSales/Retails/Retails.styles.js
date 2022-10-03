@@ -140,10 +140,11 @@ export const styles = StyleSheet.create({
   // Productcontainer css start
 
   productContainer: {
-    width: SW(112),
+    width: SW(105),
     height: SH(300),
-    // borderWidth: 1,
-    ...ShadowStyles.shadow2,
+    borderWidth: 1,
+    borderColor:COLORS.textInputBackground,
+    // ...ShadowStyles.shadow2,
     borderRadius: 10,
     backgroundColor: COLORS.white,
     margin: 11,
@@ -353,6 +354,7 @@ export const styles = StyleSheet.create({
   },
   selectedText: {
     color: COLORS.white,
+    fontSize:SF(16)
   },
   submitButton: {
     backgroundColor: COLORS.primary,

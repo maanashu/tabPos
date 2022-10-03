@@ -6,6 +6,7 @@ import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import {  Retails,
   DeliveryOrder } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator'
+import { Platform } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -16,8 +17,9 @@ export function HomeNavigator() {
     screenOptions={{
       drawerStyle: {
         backgroundColor: COLORS.white,
-        width: SW(20),
-        paddingLeft: 2,
+        width: Platform.OS ==='android'? SW(20) : SW(25),
+        alignItems:'center',
+        // paddingLeft: 2,
       },
       drawerType: 'permanent',
     }}

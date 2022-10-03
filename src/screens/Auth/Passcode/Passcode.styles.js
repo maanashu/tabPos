@@ -28,12 +28,12 @@ export const styles = StyleSheet.create({
   header:{
     fontSize:SF(24),
     color:COLORS.dark_grey,
-    fontFamily:Fonts.MaisonRegular
+    fontFamily:Fonts.Regular
   },
   subHeading:{
     fontSize:SF(24),
     color:COLORS.solid_grey,
-    fontFamily:Fonts.MaisonRegular
+    fontFamily:Fonts.Regular
   },
   alignSelfCenter: {
     alignSelf: 'center',

@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
-    padding: moderateScale(16),
+    // padding: moderateScale(16),
     width: moderateScale(330),
     backgroundColor: COLORS.textInputBackground,
   },
