@@ -4,7 +4,7 @@ import { useColorScheme } from 'react-native';
 import { useSelector } from 'react-redux';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import { AuthNavigator } from '@/navigation/AuthNavigator';
-import { HomeNavigator } from '@/navigation/HomeNavigator'
+import { HomeNavigator } from '@/navigation/HomeNavigator';
 import { getUser } from '@/selectors/UserSelectors';
 import { navigationRef } from './NavigationRef';
 import { createDrawerNavigator } from '@react-navigation/drawer';

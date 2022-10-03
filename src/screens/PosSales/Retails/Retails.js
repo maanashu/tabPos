@@ -7,10 +7,9 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  Modal
 } from 'react-native';
 import { Spacer, Button, TextField } from '@/components';
-import { SH } from '@/theme';
+import { SH, SF } from '@/theme';
 import {
   Fonts,
   deliveryTruck,
@@ -24,12 +23,16 @@ import {
   marboloRed,
   plus,
   minus,
+  doubleRight,
+  jfr,
+  upMenu,
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
 import { moderateScale, verticalScale, scale } from 'react-native-size-matters';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import Modal from "react-native-modal";
 
 export const CategoryData = [
   {
@@ -68,39 +71,61 @@ export const ProductData = [
   },
 ];
 export function Retails() {
+  const [categoryModal, setCategoryModal] = useState(false);
+  const [sideContainer, setSideContainer] = useState(false);
+  const [amountPopup, setAmountPopup] = useState(false)
+
+  const menuHandler = () => {
+    setCategoryModal(!categoryModal);
+  };
+  const sideContainerHandler = () => {
+    setSideContainer(!sideContainer);
+  };
+  const rightConCloseHandler = () => {
+    setSideContainer(false);
+  };
+  const amountPopHandler = () => {
+    setAmountPopup(!amountPopup)
+  };
+  const amountRemoveHandler = () => {
+    setAmountPopup(false)
+  };
+  
+  
+  
+
   const renderCategoryItem = ({ item }) => (
     <View style={styles.categoryCon}>
-      <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={styles.categoryHeader}>{item.name}</Text>
-        <View style={styles.catProcCon1}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image source={categoryProduct} style={styles.categoryProduct} />
-            <Text style={styles.productName1}>Tobacco</Text>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={styles.categoryHeader}>{item.name}</Text>
+          <View style={styles.catProcCon1}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image source={categoryProduct} style={styles.categoryProduct} />
+              <Text style={styles.productName1}>Tobacco</Text>
+            </View>
+          </View>
+          <View style={styles.catProcCon2}>
+            <View style={{ flexDirection: 'row' }}>
+              <Image source={categoryProduct} style={styles.categoryProduct} />
+              <Text style={styles.productName2}>Vape</Text>
+            </View>
+          </View>
+
+          <View style={styles.catProcCon2}>
+            <View style={{ flexDirection: 'row' }}>
+              <Image source={categoryProduct} style={styles.categoryProduct} />
+              <Text style={styles.productName2}>Vape</Text>
+            </View>
+          </View>
+          <View style={styles.catProcCon2}>
+            <View style={{ flexDirection: 'row' }}>
+              <Image source={categoryProduct} style={styles.categoryProduct} />
+              <Text style={styles.productName2}>Vape</Text>
+            </View>
           </View>
         </View>
-        <View style={styles.catProcCon2}>
-          <View style={{ flexDirection: 'row' }}>
-            <Image source={categoryProduct} style={styles.categoryProduct} />
-            <Text style={styles.productName2}>Vape</Text>
-          </View>
-        </View>
-        
-        <View style={styles.catProcCon2}>
-          <View style={{ flexDirection: 'row' }}>
-            <Image source={categoryProduct} style={styles.categoryProduct} />
-            <Text style={styles.productName2}>Vape</Text>
-          </View>
-        </View>
-        <View style={styles.catProcCon2}>
-          <View style={{ flexDirection: 'row' }}>
-            <Image source={categoryProduct} style={styles.categoryProduct} />
-            <Text style={styles.productName2}>Vape</Text>
-          </View>
-        </View>
-      </View>
       </ScrollView>
-      
     </View>
   );
   const renderProductItem = ({ item }) => (
@@ -123,11 +148,12 @@ export function Retails() {
       <Spacer space={SH(7)} />
       <Text style={styles.size}>Price</Text>
       <Spacer space={SH(7)} />
-      <Text style={styles.previousRate}>
-        $5.65 <Text style={styles.currentRate}>$5.65</Text>
-      </Text>
+      <View style={{flexDirection:'row', alignItems:'center'}}>
+      <Text style={styles.previousRate}>$5.65</Text> 
+      <Text style={styles.currentRate}>$5.65</Text> 
+      </View>
       <Spacer space={SH(12)} />
-      <View style={styles.hr}></View>
+      <View style={styles.hrLine}></View>
       <Spacer space={SH(15)} />
       <View
         style={{
@@ -147,15 +173,18 @@ export function Retails() {
     </View>
   );
 
- 
   return (
     // start  header section
     <View style={styles.container}>
       <View style={styles.headerCon}>
         <View style={styles.flexRow}>
           <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity>
-              <Image source={menu} style={styles.menuStyle} />
+            <TouchableOpacity onPress={menuHandler}>
+              {categoryModal ? (
+                <Image source={upMenu} style={styles.menuStyle} />
+              ) : (
+                <Image source={menu} style={styles.menuStyle} />
+              )}
             </TouchableOpacity>
             <View style={styles.inputWraper}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -171,9 +200,9 @@ export function Retails() {
             </View>
           </View>
           <View style={styles.purchaseCon}>
-            {/* <View style={{ borderWidth: 1 }}> */}
-            <Image source={purchese} style={styles.purcheseStyle} />
-            {/* </View> */}
+            <TouchableOpacity onPress={sideContainerHandler}>
+              <Image source={purchese} style={styles.purcheseStyle} />
+            </TouchableOpacity>
             <Text style={styles.purchaseText}>
               Items: <Text style={styles.purchasecount}>4</Text>
             </Text>
@@ -184,13 +213,17 @@ export function Retails() {
       {/* End  header section */}
 
       {/* start  category  section */}
-     <View> 
-        <FlatList
-          data={CategoryData}
-          renderItem={renderCategoryItem}
-          keyExtractor={item => item.id}
-        />
-    </View>
+      {categoryModal ? null : (
+        <View>
+          <FlatList
+            data={CategoryData}
+            renderItem={renderCategoryItem}
+            keyExtractor={item => item.id}
+          />
+        </View>
+      )}
+
+      {/* end  category  section */}
       <View style={styles.productbody}>
         <ScrollView>
           <FlatList
@@ -204,7 +237,96 @@ export function Retails() {
         </ScrollView>
       </View>
 
-      {/* end  category  section */}
+      {/* start right side view */}
+      {sideContainer ? (
+        <View style={styles.rightSideContainer}>
+          <Spacer space={SH(15)} />
+          <View style={styles.flexRow}>
+            <TouchableOpacity onPress={rightConCloseHandler}>
+              <Image source={doubleRight} style={styles.doubleRightstyle} />
+            </TouchableOpacity>
+            <View style={styles.flexRow2}>
+              <Text style={styles.countCart}>123</Text>
+              <Text style={styles.clearCart}>Clear cart</Text>
+              <Text style={styles.actionButton}>More action</Text>
+            </View>
+          </View>
+          <Spacer space={SH(30)} />
+          <TouchableOpacity style={styles.jfrContainer} onPress={amountPopHandler}>
+            <View style={styles.jfrContainer2}>
+              <Image source={jfr} style={styles.jfrStyle} />
+              <View style={{ paddingVertical: verticalScale(5) }}>
+                <Text style={styles.jfrText}>JFR Maduro</Text>
+                <Text style={styles.boxText}>Box</Text>
+                <Spacer space={SH(5)} />
+                <Text style={styles.oneX}>x 1</Text>
+              </View>
+            </View>
+            <Text style={styles.rate}>$382.75</Text>
+          </TouchableOpacity>
+          <View style={{ flex: 1 }}></View>
+          <View style={styles.bottomContainer}>
+            <Spacer space={SH(10)} />
+            <View style={styles.bottomSubCon}>
+              <Text style={styles.smalldarkText}>Sub Total</Text>
+              <Text style={styles.smallLightText}>$4.00</Text>
+            </View>
+            <Spacer space={SH(12)} />
+            <View style={styles.bottomSubCon}>
+              <Text style={styles.smallLightText}>Discount</Text>
+              <Text style={styles.smallLightText}>-$2.00</Text>
+            </View>
+            <Spacer space={SH(12)} />
+            <View style={styles.bottomSubCon}>
+              <Text style={styles.smallLightText}>Tax</Text>
+              <Text style={styles.smallLightText}>$4.00</Text>
+            </View>
+            <Spacer space={SH(12)} />
+            <View style={styles.hr}></View>
+            <Spacer space={SH(12)} />
+            <View style={styles.bottomSubCon}>
+              <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>
+                Total
+              </Text>
+              <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
+                $254.60
+              </Text>
+            </View>
+            <Spacer space={SH(12)} />
+            <View style={styles.bottomSubCon}>
+              <Text style={styles.smallLightText}>4 Items</Text>
+            </View>
+            <Spacer space={SH(12)} />
+            <Button
+              // onPress={loginIntialHandler}
+              title="Checkout"
+              textStyle={styles.selectedText}
+              style={styles.submitButton}
+            />
+          </View>
+        </View>
+      ) : null}
+      {/* end right side view */}
+
+      {/* Amount container start */}
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={amountPopup}
+      >
+        <View style={styles.amountPopupCon}>
+          <View style={styles.primaryHeader}>
+              <Text style={styles.headerText}>Amount: <Text>$382.75</Text></Text>
+              <TouchableOpacity onPress={amountRemoveHandler} style={styles.crossButtonPosition}>
+               <Image source={crossButton} style={styles.crossButton}/>
+              </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+
+      {/* Amount container End */}
     </View>
   );
 }

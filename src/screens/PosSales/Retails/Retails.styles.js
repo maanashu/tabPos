@@ -45,13 +45,16 @@ export const styles = StyleSheet.create({
   },
   searchInput: {
     borderRadius: 7,
+    width:200,
+    fontFamily:Fonts.Italic
+    
   },
   inputWraper: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 7,
     flexDirection: 'row',
     alignItems: 'center',
-    width: SW(200),
+    width: SW(208),
     height: SH(55),
     justifyContent: 'space-between',
     marginHorizontal: moderateScale(15),
@@ -87,7 +90,7 @@ export const styles = StyleSheet.create({
   categoryCon: {
     borderBottomWidth: 1,
     borderBottomColor: COLORS.solidGrey,
-    height: SH(60),
+    height: SH(64),
     justifyContent: 'center',
   },
   categoryHeader: {
@@ -137,84 +140,261 @@ export const styles = StyleSheet.create({
   // Productcontainer css start
 
   productContainer: {
-    width: SW(110),
+    width: SW(112),
     height: SH(300),
     // borderWidth: 1,
     ...ShadowStyles.shadow2,
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    margin:15,
-    padding:15
+    margin: 11,
+    padding: 15,
+    elevation: 4,
+    shadowColor: '#000000',
+    shadowRadius: 4.84,
+    shadowOpacity: 0.01,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
   },
   productbody: {
     flex: 1,
     backgroundColor: COLORS.white,
   },
-  marboloStyle:{
-    width:SW(20),
-    height:SW(20),
-    resizeMode:'contain'
+  marboloStyle: {
+    width: SW(20),
+    height: SW(20),
+    resizeMode: 'contain',
   },
-  productName:{
-    fontSize:SF(24),
-    color:COLORS.solid_grey,
-    fontFamily:Fonts.MaisonRegular
+  productName: {
+    fontSize: SF(24),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonRegular,
   },
-  proSubName:{
-    fontSize:SF(11),
-    color:COLORS.darkGray,
-    fontFamily:Fonts.Regular
+  proSubName: {
+    fontSize: SF(11),
+    color: COLORS.darkGray,
+    fontFamily: Fonts.Regular,
+  },
+  size: {
+    fontSize: SF(13),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
+  },
+  cartonButton: {
+    backgroundColor: COLORS.primary,
+    color: COLORS.white,
+    fontSize: SF(12),
+    paddingHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(2),
+    borderRadius: 3,
+  },
+  singlePackBtn: {
+    color: COLORS.gerySkies,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    borderWidth: 1,
+    paddingHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(2),
+    borderRadius: 3,
+    borderColor: COLORS.gerySkies,
+    marginHorizontal: moderateScale(6),
+  },
+  previousRate: {
+    color: COLORS.gerySkies,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    textDecorationLine:'line-through'
+  },
+  currentRate: {
+    color: COLORS.solid_grey,
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+    paddingHorizontal:moderateScale(4)
+  },
+  hrLine: {
+    borderWidth: 0.5,
+    borderColor: COLORS.solidGrey,
+  },
+  plusBtn: {
+    width: SW(24),
+    height: SH(24),
+    resizeMode: 'contain',
+    color: COLORS.darkGray,
+  },
+  count: {
+    fontSize: SF(18),
+    color: COLORS.gerySkies,
+    paddingHorizontal: moderateScale(10),
+  },
 
+  // Productcontainer css end
+
+  rightSideContainer: {
+    backgroundColor: COLORS.white,
+    height: windowHeight,
+    width: SW(116),
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    //  borderWidth:1,
+    borderColor: COLORS.black,
+    //  ...ShadowStyles.shadow2
+    elevation: 30,
+    shadowColor: '#000000',
+    shadowRadius: 4.84,
+    shadowOpacity: 0.9,
+    shadowOffset: {
+      width: 6,
+      height: 6,
+    },
   },
-  size:{
-    fontSize:SF(13),
-    color:COLORS.solid_grey,
-    fontFamily:Fonts.SemiBold
+  doubleRightstyle: {
+    width: SW(14),
+    height: SW(14),
+    resizeMode: 'contain',
   },
-  cartonButton:{
-    backgroundColor:COLORS.primary,
-    color:COLORS.white,
-    fontSize:SF(12),
-    paddingHorizontal:moderateScale(10),
-    paddingVertical:verticalScale(2),
-    borderRadius:3
+  countCart: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    color: COLORS.dark_grey,
+    paddingHorizontal: moderateScale(8),
+    paddingVertical: verticalScale(7),
+    borderRadius: 7,
+    fontFamily: Fonts.SemiBold,
   },
-  singlePackBtn:{
-    color:COLORS.gerySkies,
-    fontSize:SF(12),
-    fontFamily:Fonts.Regular,
-    borderWidth:1,
-    paddingHorizontal:moderateScale(10),
-    paddingVertical:verticalScale(2),
-    borderRadius:3,
-    borderColor:COLORS.gerySkies,
-    marginHorizontal:moderateScale(6)
+  clearCart: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    color: COLORS.dark_grey,
+    paddingHorizontal: moderateScale(6),
+    paddingVertical: verticalScale(5),
+    borderRadius: 7,
+    fontSize: SF(13),
+    fontFamily: Fonts.Regular,
+    marginHorizontal: moderateScale(5),
   },
-  previousRate:{
-    color:COLORS.gerySkies,
-    fontSize:SF(12),
-    fontFamily:Fonts.Regular,
+  actionButton: {
+    borderWidth: 1,
+    borderColor: COLORS.bluish_green,
+    color: COLORS.bluish_green,
+    paddingHorizontal: moderateScale(6),
+    paddingVertical: verticalScale(5),
+    borderRadius: 7,
+    fontSize: SF(13),
+    fontFamily: Fonts.SemiBold,
   },
-  currentRate:{
-    color:COLORS.solid_grey,
-    fontSize:SF(16),
+  flexRow2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  jfrStyle: {
+    width: SW(28),
+    height: SW(28),
+    resizeMode: 'contain',
+  },
+  jfrContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  jfrContainer2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // paddingVertical:verticalScale(20)
+    // alignItems:'center'
+  },
+  jfrText: {
+    fontSize: SF(18),
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+  },
+  boxText: {
+    fontSize: SF(11),
+    color: COLORS.darkGray,
+    fontFamily: Fonts.Italic,
+  },
+  rate: {
+    fontSize: SF(18),
+    color: COLORS.darkGray,
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(10),
+  },
+  oneX: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.SemiBold,
+  },
+  bottomContainer: {
+    borderTopWidth: 1,
+    height: SH(330),
+    borderColor: COLORS.row_grey,
+  },
+  bottomSubCon: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(10),
+    alignItems: 'center',
+  },
+  smalldarkText: {
+    fontSize: SF(14),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+  },
+  smallLightText: {
+    fontSize: SF(14),
+    fontFamily: Fonts.MaisonRegular,
+    color: COLORS.darkGray,
+  },
+  hr: {
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: COLORS.row_grey,
+  },
+  selectedText: {
+    color: COLORS.white,
+  },
+  submitButton: {
+    backgroundColor: COLORS.primary,
+    width: windowWidth * 0.27,
+    height: windowHeight * 0.1,
+    borderRadius: 10,
+    alignSelf: 'center',
+  },
+
+  // amount popup css start
+  amountPopupCon: {
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.7,
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    alignSelf:'center',
+    position:'absolute',
+  },
+  primaryHeader: {
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.08,
+    backgroundColor: COLORS.primary,
+    borderTopEndRadius: 10,
+    borderTopLeftRadius: 10,
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  headerText:{
+    fontSize:SF(18),
     fontFamily:Fonts.SemiBold,
+    color:COLORS.white
   },
-  hr:{
-    borderWidth:0.5,
-    borderColor:COLORS.solidGrey
-  },
-  plusBtn:{
+  crossButton:{
     width:SW(24),
     height:SH(24),
     resizeMode:'contain',
-    color:COLORS.darkGray
+    tintColor:COLORS.white,
   },
-  count:{
-    fontSize:SF(20),
-    color:COLORS.gerySkies,
-    paddingHorizontal:moderateScale(10)
+  crossButtonPosition:{
+     position:'absolute',
+    right:0,
+    top:20
   }
-
-  // Productcontainer css end
+  // amount popup css end
 });

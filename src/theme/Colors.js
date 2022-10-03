@@ -8,5 +8,7 @@ export const COLORS = {
     primary:'#275AFF',
     solidGrey: '#D8D8D8',
     faded_grey:'#F5F5F5',
-    gerySkies:'#A7A7A7'
+    gerySkies:'#A7A7A7',
+    bluish_green:'#1FB3FF',
+    row_grey:'#CACACA'
 }

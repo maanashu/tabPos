@@ -25,6 +25,9 @@ export { default as categoryProduct } from '@/assets/icons/ic_retail/categoryPro
 export { default as marboloRed } from '@/assets/icons/ic_retail/marboloRed.png';
 export { default as plus } from '@/assets/icons/ic_retail/plus.png';
 export { default as minus } from '@/assets/icons/ic_retail/minus.png';
+export { default as doubleRight } from '@/assets/icons/ic_retail/doubleRight.png';
+export { default as jfr } from '@/assets/icons/ic_retail/jfr.png';
+export { default as upMenu} from '@/assets/icons/ic_retail/upMenu.png';
 
 /* Fonts */
 export const Fonts = {
