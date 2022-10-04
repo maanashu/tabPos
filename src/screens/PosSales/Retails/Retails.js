@@ -7,9 +7,10 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import { Spacer, Button, TextField } from '@/components';
-import { SH, SF } from '@/theme';
+import { SH, SF, COLORS } from '@/theme';
 import {
   Fonts,
   deliveryTruck,
@@ -26,13 +27,17 @@ import {
   doubleRight,
   jfr,
   upMenu,
+  dropdown2,
+  dollar,
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
 import { moderateScale, verticalScale, scale } from 'react-native-size-matters';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
-import Modal from "react-native-modal";
+import Modal from 'react-native-modal';
+import DropDownPicker from 'react-native-dropdown-picker';
+const windowHeight = Dimensions.get('window').height;
 
 export const CategoryData = [
   {
@@ -70,30 +75,61 @@ export const ProductData = [
     id: '5',
   },
 ];
+export const data = [
+  {
+    name: 'Marlboro Red',
+    id: '1',
+  },
+  {
+    name: 'Marlboro Red1',
+    id: '2',
+  },
+  {
+    name: 'Marlboro Red2',
+    id: '3',
+  },
+  {
+    name: 'Marlboro Red2',
+    id: '4',
+  },
+  {
+    name: 'Marlboro Red2',
+    id: '5',
+  },
+];
 export function Retails() {
+  const [amount, setAmount] = useState('');
+  const [title, setTitle] = useState('');
   const [categoryModal, setCategoryModal] = useState(false);
   const [sideContainer, setSideContainer] = useState(false);
-  const [amountPopup, setAmountPopup] = useState(false)
+  const [numPadContainer, setNumpadContainer] = useState(false);
+  const [amountPopup, setAmountPopup] = useState(false);
+  const [cityModalOpen, setCityModelOpen] = useState(false);
+  const [cityModalValue, setCityModalValue] = useState(null);
+  const [cityItems, setCityItems] = useState([
+    { label: 'Miami', value: 'miami' },
+    { label: 'abc', value: 'abc' },
+  ]);
 
   const menuHandler = () => {
     setCategoryModal(!categoryModal);
   };
   const sideContainerHandler = () => {
     setSideContainer(!sideContainer);
+    setCategoryModal(true);
   };
   const rightConCloseHandler = () => {
     setSideContainer(false);
   };
   const amountPopHandler = () => {
-    setAmountPopup(!amountPopup)
+    setAmountPopup(!amountPopup);
   };
   const amountRemoveHandler = () => {
-    setAmountPopup(false)
+    setAmountPopup(false);
   };
-  
-  
-  
-
+  const numpadConHandler = () => {
+    setNumpadContainer(!numPadContainer);
+  };
   const renderCategoryItem = ({ item }) => (
     <View style={styles.categoryCon}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -148,9 +184,9 @@ export function Retails() {
       <Spacer space={SH(7)} />
       <Text style={styles.size}>Price</Text>
       <Spacer space={SH(7)} />
-      <View style={{flexDirection:'row', alignItems:'center'}}>
-      <Text style={styles.previousRate}>$5.65</Text> 
-      <Text style={styles.currentRate}>$5.65</Text> 
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={styles.previousRate}>$5.65</Text>
+        <Text style={styles.currentRate}>$5.65</Text>
       </View>
       <Spacer space={SH(12)} />
       <View style={styles.hrLine}></View>
@@ -252,7 +288,10 @@ export function Retails() {
             </View>
           </View>
           <Spacer space={SH(30)} />
-          <TouchableOpacity style={styles.jfrContainer} onPress={amountPopHandler}>
+          <TouchableOpacity
+            style={styles.jfrContainer}
+            onPress={amountPopHandler}
+          >
             <View style={styles.jfrContainer2}>
               <Image source={jfr} style={styles.jfrStyle} />
               <View style={{ paddingVertical: verticalScale(5) }}>
@@ -298,7 +337,7 @@ export function Retails() {
             </View>
             <Spacer space={SH(12)} />
             <Button
-              // onPress={loginIntialHandler}
+              onPress={numpadConHandler}
               title="Checkout"
               textStyle={styles.selectedText}
               style={styles.submitButton}
@@ -310,23 +349,136 @@ export function Retails() {
 
       {/* Amount container start */}
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        isVisible={amountPopup}
-      >
+      <Modal animationType="fade" transparent={true} isVisible={amountPopup}>
         <View style={styles.amountPopupCon}>
           <View style={styles.primaryHeader}>
-              <Text style={styles.headerText}>Amount: <Text>$382.75</Text></Text>
-              <TouchableOpacity onPress={amountRemoveHandler} style={styles.crossButtonPosition}>
-               <Image source={crossButton} style={styles.crossButton}/>
-              </TouchableOpacity>
+            <Text style={styles.headerText}>
+              Amount: <Text>$382.75</Text>
+            </Text>
+            <TouchableOpacity
+              onPress={amountRemoveHandler}
+              style={styles.crossButtonPosition}
+            >
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
+          </View>
+          <Spacer space={SH(40)} />
+          <View style={{ paddingHorizontal: moderateScale(20) }}>
+            <View style={styles.amountjfrContainer}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image source={jfr} style={styles.amountjfrStyle} />
+                <Text style={styles.jfrmaduro}>JFR Maduro</Text>
+              </View>
+              <View>
+                <DropDownPicker
+                  ArrowUpIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIcon} />
+                  )}
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIcon} />
+                  )}
+                  style={styles.dropdown}
+                  containerStyle={[
+                    styles.containerStyle,
+                    { zIndex: Platform.OS === 'ios' ? 100 : 4 },
+                  ]}
+                  open={cityModalOpen}
+                  value={cityModalValue}
+                  items={cityItems}
+                  setOpen={setCityModelOpen}
+                  setValue={setCityModalValue}
+                  setItems={setCityItems}
+                  placeholder="Box"
+                  placeholderStyle={{ color: '#14171A' }}
+                />
+              </View>
+            </View>
+            <Spacer space={SH(30)} />
+            <View style={styles.priceContainer}>
+              <Text style={styles.price}>Price</Text>
+              <Text style={[styles.price, { fontSize: SF(18) }]}>$382.75</Text>
+            </View>
+            <Spacer space={SH(30)} />
+            <View
+              style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
+            >
+              <Image source={minus} style={styles.plusBtn2} />
+              <Text style={[styles.price, { fontSize: SF(24) }]}>1</Text>
+              <Image source={plus} style={styles.plusBtn2} />
+            </View>
+            {/* <View style={{flex:1}}></View> */}
+          </View>
+          <View style={styles.buttonContainer}>
+            <Text style={styles.removeButton}>Remove from cart</Text>
+            <Text style={[styles.removeButton, styles.updateButton]}>
+              Update to cart
+            </Text>
           </View>
         </View>
       </Modal>
-
-
       {/* Amount container End */}
+
+      {/* Numpad container start */}
+      {numPadContainer ? (
+        <View style={styles.numpadContainer}>
+          <View style={{ height: windowHeight, paddingBottom: 60 }}>
+            <Spacer space={SH(20)} />
+            <View style={styles.inputWraper2}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image source={dollar} style={styles.searchStyle} />
+                <TextInput
+                  placeholder="0.00"
+                  placeholderTextColor="black"
+                  value={amount}
+                  onChangeText={setAmount}
+                  style={styles.amountInput}
+                />
+              </View>
+            </View>
+            <Spacer space={SH(20)} />
+            <TextInput
+              placeholder="Tittle"
+              value={title}
+              onChangeText={setTitle}
+              style={styles.titleInput}
+            />
+            <Spacer space={SH(20)} />
+            <TouchableOpacity style={styles.addButtonCon}>
+              <Text style={styles.addButtonText}>Add notes</Text>
+            </TouchableOpacity>
+            <View style={{ flex: 1 }} />
+            <View style={styles.directionInRow}>
+              <View style={[styles.addCartButton, styles.addcountButton]}>
+                <Image source={minus} style={styles.minusBtn2} />
+                <Text style={styles.addCartText}>0</Text>
+                <Image
+                  source={plus}
+                  style={[styles.minusBtn2, styles.plusCartBtn]}
+                />
+              </View>
+              <View
+                style={
+                  amount && title
+                    ? styles.addCartButtonFill
+                    : styles.addCartButton
+                }
+              >
+                <Text
+                  style={
+                    amount && title
+                      ? styles.addCartBtnTextsubmit
+                      : styles.addCartBtnText
+                  }
+                >
+                  Add to cart
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      ) : null}
+
+      {/* Numpad container end */}
     </View>
   );
 }

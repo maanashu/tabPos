@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   },
   // hedaer  css start
   headerCon: {
-    borderBottomWidth: 1,
+    // borderBottomWidth: 1,
     borderBottomColor: COLORS.solidGrey,
     height: SH(88),
     justifyContent: 'center',
@@ -47,7 +47,6 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     width:200,
     fontFamily:Fonts.Italic
-    
   },
   inputWraper: {
     backgroundColor: COLORS.textInputBackground,
@@ -57,7 +56,7 @@ export const styles = StyleSheet.create({
     width: SW(208),
     height: SH(55),
     justifyContent: 'space-between',
-    marginHorizontal: moderateScale(15),
+    marginHorizontal:moderateScale(10)
   },
   purchaseCon: {
     backgroundColor: COLORS.textInputBackground,
@@ -88,8 +87,9 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   categoryCon: {
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.solidGrey,
+    borderTopWidth:1,
+    borderBottomWidth: 0.8,
+    borderColor: COLORS.solidGrey,
     height: SH(64),
     justifyContent: 'center',
   },
@@ -140,7 +140,7 @@ export const styles = StyleSheet.create({
   // Productcontainer css start
 
   productContainer: {
-    width: SW(105),
+    width: SW(112),
     height: SH(300),
     borderWidth: 1,
     borderColor:COLORS.textInputBackground,
@@ -397,6 +397,205 @@ export const styles = StyleSheet.create({
      position:'absolute',
     right:0,
     top:20
-  }
+  },
+  amountjfrContainer:{
+     borderWidth:1,
+     borderColor:COLORS.textInputBackground,
+     borderRadius:5,
+      display:'flex',
+     flexDirection:'row',
+     justifyContent:'space-between',
+     alignItems:'center'
+  },
+  amountjfrStyle:{
+    width: SW(20),
+    height: SW(20),
+    resizeMode: 'contain',
+  },
+  jfrmaduro:{
+    fontSize:SF(18),
+    color:COLORS.solid_grey,
+    fontFamily:Fonts.Regular
+  },
+  dropDownIcon: {
+    width: SW(3),
+    height: SW(3),
+    resizeMode: 'contain',
+    tintColor:COLORS.darkGray
+    // paddingRight: 30,
+  },
+  dropdown: {
+    width: SW(40),
+    alignSelf: 'center',
+    borderColor: COLORS.solidGrey,
+    borderWidth:1,
+    marginVertical: verticalScale(2),
+    zIndex: Platform.OS === 'ios' ? 100 : 4,
+    zIndex:1,
+    // fontStyle: 'italic',
+  },
+  containerStyle: {
+    width: SW(40),
+    borderWidth: 0,
+    borderColor: COLORS.solidGrey,
+    alignSelf: 'center',
+    marginHorizontal:moderateScale(7),
+    // marginVertical: verticalScale(7),
+    zIndex: Platform.OS === 'ios' ? 100 : 4,
+  },
+  priceContainer:{
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    backgroundColor:COLORS.textInputBackground,
+    borderRadius:5,
+    height:SH(46),
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+    paddingHorizontal:moderateScale(10)
+  },
+  price:{
+    fontSize:SF(14),
+    fontFamily:Fonts.Regular,
+    color:COLORS.solid_grey
+  },
+  plusBtn2: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    tintColor:COLORS.darkGray,
+  },
+  removeButton:{
+    fontSize:SF(14),
+    fontFamily:Fonts.Regular,
+    color:COLORS.solid_grey,
+    backgroundColor:COLORS.silver_solid,
+    paddingHorizontal:moderateScale(15),
+    paddingVertical:verticalScale(7),
+    borderRadius:5,
+    marginHorizontal:moderateScale(10)
+  },
+  updateButton:{
+    color:COLORS.white,
+    color:COLORS.white,
+    backgroundColor:COLORS.bluish_green,
+    paddingHorizontal:moderateScale(20),
+  },
+  buttonContainer:{
+    flexDirection:'row',
+    justifyContent:'space-evenly',
+    position:'absolute',
+    bottom:20,
+    left:60
+
+  },
   // amount popup css end
+
+  // numpad pop css start
+
+  numpadContainer:{
+   width:SW(235),
+   height: windowHeight,
+   backgroundColor:COLORS.white,
+   position:'absolute',
+   top:0,
+   left:0,
+   paddingLeft:moderateScale(15)
+  },
+  amountInput: {
+    borderRadius: 7,
+    width:200,
+    fontSize:SF(20),
+    color:COLORS.solid_grey,
+    fontFamily:Fonts.SemiBold,
+  },
+  titleInput:{
+    borderWidth:1,
+    height: SH(65),
+    borderRadius:5,
+    borderColor:COLORS.solidGrey,
+    paddingHorizontal:moderateScale(10),
+    fontFamily:Fonts.Regular,
+    fontSize:SF(18),
+    justifyContent:'center'
+  },
+  addButtonCon:{
+    borderWidth:1,
+    height: SH(55),
+    borderRadius:5,
+    borderColor:COLORS.solidGrey,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  addButtonText:{
+  fontSize:SF(14),
+  fontFamily:Fonts.Regular,
+  color:COLORS.darkGray
+  },
+  directionInRow:{
+    display:'flex',
+    flexDirection:'row',
+    justifyContent:'space-between',
+  },
+  addCartButton:{
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    width:SW(114),
+     height: SH(55),
+    borderRadius:5,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  addCartButtonFill:{
+    // borderWidth:1,
+    // borderColor:COLORS.solidGrey,
+    backgroundColor:COLORS.black,
+    width:SW(114),
+     height: SH(55),
+    borderRadius:5,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  addcountButton:{
+    flexDirection:'row',
+    justifyContent:'space-evenly',
+    backgroundColor:COLORS.textInputBackground,
+    borderColor:'transparent'
+  },
+  inputWraper2: {
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 7,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // width: SW(208),
+    height: SH(65),
+    justifyContent: 'space-between',
+  },
+  minusBtn2:{
+    tintColor:COLORS.mid_grey,
+    width: SW(24),
+    height: SH(24),
+    resizeMode: 'contain',
+  },
+  plusCartBtn:{
+    tintColor:COLORS.darkGray
+  },
+  addCartText:{
+    fontSize:SF(20),
+    color:COLORS.mid_grey
+  },
+  addCartBtnTextsubmit:{
+    fontSize:SF(16),
+    fontFamily:Fonts.SemiBold,
+    color:COLORS.white
+  },
+  addCartBtnText:{
+    fontSize:SF(16),
+    fontFamily:Fonts.Regular,
+  }
+
+
+  // numpad pop css end
+
+
 });

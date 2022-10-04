@@ -28,6 +28,8 @@ export { default as minus } from '@/assets/icons/ic_retail/minus.png';
 export { default as doubleRight } from '@/assets/icons/ic_retail/doubleRight.png';
 export { default as jfr } from '@/assets/icons/ic_retail/jfr.png';
 export { default as upMenu} from '@/assets/icons/ic_retail/upMenu.png';
+export { default as dropdown2} from '@/assets/icons/ic_retail/dropdown.png';
+export { default as dollar} from '@/assets/icons/ic_retail/dollar.png';
 
 /* Fonts */
 export const Fonts = {

@@ -10,5 +10,7 @@ export const COLORS = {
     faded_grey:'#F5F5F5',
     gerySkies:'#A7A7A7',
     bluish_green:'#1FB3FF',
-    row_grey:'#CACACA'
+    row_grey:'#CACACA',
+    silver_solid:'#E1E3E4',
+    mid_grey:'#DFDFDF'
 }
