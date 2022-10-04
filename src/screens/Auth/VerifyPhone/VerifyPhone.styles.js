@@ -1,6 +1,7 @@
 import { StyleSheet,Dimensions } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
+import { verticalScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -62,10 +63,12 @@ export const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   selectedText:{
-    color:COLORS.white
+    color:COLORS.white,
+   paddingVertical:verticalScale(10)
   },
   buttonText:{
-   color:COLORS.darkGray
+   color:COLORS.darkGray,
+   paddingVertical:verticalScale(10)
   },
   submitButton:{
      backgroundColor:COLORS.primary,

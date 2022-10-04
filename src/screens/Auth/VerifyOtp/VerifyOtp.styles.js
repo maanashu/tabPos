@@ -57,10 +57,12 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
   },
   selectedText:{
-    color:COLORS.white
+    color:COLORS.white,
+    paddingVertical:verticalScale(10)
   },
   buttonText:{
-   color:COLORS.darkGray
+   color:COLORS.darkGray,
+   paddingVertical:verticalScale(10)
   },
   submitButton:{
      backgroundColor:COLORS.primary,
