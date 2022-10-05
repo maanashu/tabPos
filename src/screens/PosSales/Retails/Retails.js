@@ -29,6 +29,10 @@ import {
   upMenu,
   dropdown2,
   dollar,
+  addDiscountPic,
+  notes,
+  checkbox,
+  checkedCheckbox,
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
@@ -74,34 +78,24 @@ export const ProductData = [
     name: 'Marlboro Red2',
     id: '5',
   },
-];
-export const data = [
-  {
-    name: 'Marlboro Red',
-    id: '1',
-  },
-  {
-    name: 'Marlboro Red1',
-    id: '2',
-  },
   {
     name: 'Marlboro Red2',
-    id: '3',
-  },
-  {
-    name: 'Marlboro Red2',
-    id: '4',
-  },
-  {
-    name: 'Marlboro Red2',
-    id: '5',
+    id: '6',
   },
 ];
+
 export function Retails() {
   const [amount, setAmount] = useState('');
   const [title, setTitle] = useState('');
   const [categoryModal, setCategoryModal] = useState(false);
   const [sideContainer, setSideContainer] = useState(false);
+  const [rightMoreAction, setRightMoreAction] = useState(false);
+  const [addDiscount, setAddDiscount] = useState(false);
+  const [addNotes, setAddNotes] = useState(false);
+  const [checkboxs, setCheckBoxs] = useState(true);
+  const [amountDis, setAmountDis] = useState('');
+  const [percentDis, setPercentDis] = useState('');
+  const [discountCode, setDiscountCode] = useState('');
   const [numPadContainer, setNumpadContainer] = useState(false);
   const [amountPopup, setAmountPopup] = useState(false);
   const [cityModalOpen, setCityModelOpen] = useState(false);
@@ -130,6 +124,29 @@ export function Retails() {
   const numpadConHandler = () => {
     setNumpadContainer(!numPadContainer);
   };
+  const moreActionHandler = () => {
+    setRightMoreAction(!rightMoreAction);
+    setSideContainer(!sideContainer);
+  };
+  const moreActionCloseHandler = () => {
+    setRightMoreAction(false);
+    setSideContainer(true);
+  };
+  const addDiscountHandler = () => {
+    setAddDiscount(!addDiscount);
+  };
+  const addDiscountCloseHandler = () => {
+    setAddDiscount(false);
+    setRightMoreAction(true);
+  };
+  const addNotesHandler = () => {
+    setAddNotes(!addNotes);
+  };
+  const addNotesCloseHandler = () => {
+    setAddNotes(false);
+    setRightMoreAction(true);
+  };
+
   const renderCategoryItem = ({ item }) => (
     <View style={styles.categoryCon}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -262,14 +279,23 @@ export function Retails() {
       {/* end  category  section */}
       <View style={styles.productbody}>
         <ScrollView>
-          <FlatList
-            data={ProductData}
-            renderItem={renderProductItem}
-            keyExtractor={item => item.id}
-            // showsVerticalScrollIndicator={false}
-            // bounces={false}
-            numColumns={3}
-          />
+          {sideContainer ? (
+            <FlatList
+              key={'_'}
+              data={ProductData}
+              renderItem={renderProductItem}
+              keyExtractor={item => '_' + item.id}
+              numColumns={2}
+            />
+          ) : (
+            <FlatList
+              key={'#'}
+              data={ProductData}
+              renderItem={renderProductItem}
+              keyExtractor={item => '#' + item.id}
+              numColumns={3}
+            />
+          )}
         </ScrollView>
       </View>
 
@@ -284,7 +310,9 @@ export function Retails() {
             <View style={styles.flexRow2}>
               <Text style={styles.countCart}>123</Text>
               <Text style={styles.clearCart}>Clear cart</Text>
-              <Text style={styles.actionButton}>More action</Text>
+              <TouchableOpacity onPress={moreActionHandler}>
+                <Text style={styles.actionButton}>More action</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <Spacer space={SH(30)} />
@@ -479,6 +507,234 @@ export function Retails() {
       ) : null}
 
       {/* Numpad container end */}
+      {/* right side more action View start */}
+      {rightMoreAction ? (
+        <View
+          style={[
+            styles.rightSideContainer,
+            { paddingHorizontal: moderateScale(10) },
+          ]}
+        >
+          <Spacer space={SH(20)} />
+          <View style={styles.displayFlex}>
+            <Text style={styles.moreActText}>More Action</Text>
+            <TouchableOpacity onPress={moreActionCloseHandler}>
+              <Image source={crossButton} style={styles.crossButtonStyle} />
+            </TouchableOpacity>
+          </View>
+          <Spacer space={SH(30)} />
+          <TouchableOpacity
+            style={styles.discountCon}
+            onPress={addDiscountHandler}
+          >
+            <Image source={addDiscountPic} style={styles.addDiscountStyle} />
+            <Text style={styles.addDiscountText}>Add Discount</Text>
+          </TouchableOpacity>
+          <Spacer space={SH(10)} />
+          <TouchableOpacity
+            style={styles.discountCon}
+            onPress={addNotesHandler}
+          >
+            <Image source={notes} style={styles.addDiscountStyle} />
+            <Text style={styles.addDiscountText}>Add Notes</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
+
+      {/* right side more action View end */}
+
+      {/* right side Add discount View start */}
+      {addDiscount ? (
+        <View
+          style={[
+            styles.rightSideContainer,
+            { paddingHorizontal: moderateScale(10) },
+          ]}
+        >
+          <Spacer space={SH(20)} />
+          <View style={styles.displayFlex}>
+            <Text style={styles.moreActText}>Add discount to cart</Text>
+            <TouchableOpacity onPress={addDiscountCloseHandler}>
+              <Image source={crossButton} style={styles.crossButtonStyle} />
+            </TouchableOpacity>
+          </View>
+          <Spacer space={SH(30)} />
+          <View style={styles.adddiscountCon}>
+            <Spacer space={SH(12)} />
+            <Text style={styles.discountHeader}>Discount</Text>
+            <Spacer space={SH(12)} />
+            <View
+              style={
+                amountDis
+                  ? styles.dicountInputWraper2
+                  : styles.dicountInputWraper
+              }
+            >
+              <View style={styles.displayFlex}>
+                <View style={styles.displayFlex}>
+                  {checkboxs ? (
+                    <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
+                      <Image source={checkbox} style={styles.checkboxStyle} />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
+                      <Image
+                        source={checkedCheckbox}
+                        style={styles.checkboxStyle}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  <Text
+                    style={amountDis ? styles.amountLabel2 : styles.amountLabel}
+                  >
+                    Amount Discount
+                  </Text>
+                </View>
+                <TextInput
+                  placeholder="$ 00.00"
+                  style={
+                    amountDis
+                      ? styles.amountDiscountInput2
+                      : styles.amountDiscountInput
+                  }
+                  value={amountDis}
+                  onChangeText={setAmountDis}
+                />
+              </View>
+            </View>
+            <Spacer space={SH(12)} />
+            <View
+              style={
+                percentDis
+                  ? styles.dicountInputWraper2
+                  : styles.dicountInputWraper
+              }
+            >
+              <View style={styles.displayFlex}>
+                <View style={styles.displayFlex}>
+                  {checkboxs ? (
+                    <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
+                      <Image source={checkbox} style={styles.checkboxStyle} />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
+                      <Image
+                        source={checkedCheckbox}
+                        style={styles.checkboxStyle}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  <Text
+                    style={
+                      percentDis ? styles.amountLabel2 : styles.amountLabel
+                    }
+                  >
+                    Percentage Discount
+                  </Text>
+                </View>
+                <TextInput
+                  placeholder="$ 00.00"
+                  style={
+                    percentDis
+                      ? styles.amountDiscountInput2
+                      : styles.amountDiscountInput
+                  }
+                  value={percentDis}
+                  onChangeText={setPercentDis}
+                />
+              </View>
+            </View>
+            <Spacer space={SH(12)} />
+            <View
+              style={
+                discountCode
+                  ? styles.dicountInputWraper2
+                  : styles.dicountInputWraper
+              }
+            >
+              <View style={styles.displayFlex}>
+                <View style={styles.displayFlex}>
+                  {checkboxs ? (
+                    <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
+                      <Image source={checkbox} style={styles.checkboxStyle} />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
+                      <Image
+                        source={checkedCheckbox}
+                        style={styles.checkboxStyle}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  <Text
+                    style={
+                      discountCode ? styles.amountLabel2 : styles.amountLabel
+                    }
+                  >
+                    Discount Code
+                  </Text>
+                </View>
+                <TextInput
+                  placeholder="CODE"
+                  style={
+                    discountCode
+                      ? styles.amountDiscountInput2
+                      : styles.amountDiscountInput
+                  }
+                  value={discountCode}
+                  onChangeText={setDiscountCode}
+                />
+              </View>
+            </View>
+            <Spacer space={SH(12)} />
+            <Text style={styles.discountTitle}>Discount Tittle</Text>
+            <Spacer space={SH(12)} />
+            <TextInput placeholder="Tittle" style={styles.discountTitleInput} />
+            <Spacer space={SH(12)} />
+          </View>
+        </View>
+      ) : null}
+
+      {/* right side Add discount View end */}
+
+      {/* right side Add notes View start */}
+      {addNotes ? (
+        <View
+          style={[
+            styles.rightSideContainer,
+            { paddingHorizontal: moderateScale(10) },
+          ]}
+        >
+          <Spacer space={SH(20)} />
+          <View style={styles.displayFlex}>
+            <Text style={styles.moreActText}>Add notes</Text>
+            <TouchableOpacity onPress={addNotesCloseHandler}>
+              <Image source={crossButton} style={styles.crossButtonStyle} />
+            </TouchableOpacity>
+          </View>
+          <Spacer space={SH(30)} />
+          <View style={styles.adddiscountCon}>
+            <Spacer space={SH(12)} />
+            <Text style={styles.discountHeader}>Notes</Text>
+            <Spacer space={SH(12)} />
+            <TextInput
+              placeholder="Write notes here"
+              multiline={true}
+              numberOfLines={4}
+              style={styles.addNoteInput}
+            />
+            <Spacer space={SH(12)} />
+          </View>
+          <Spacer space={SH(15)} />
+          <View style={styles.saveButtonCon}>
+          <View style={styles.saveNotesButton}>
+            <Text style={styles.saveNotesText}>Save notes</Text>
+          </View>
+          </View>
+        </View>
+      ) : null}
+
+      {/* right side Add notes View end */}
     </View>
   );
 }
