@@ -410,6 +410,7 @@ export function Retails() {
                     styles.containerStyle,
                     { zIndex: Platform.OS === 'ios' ? 100 : 4 },
                   ]}
+                  dropDownContainerStyle={styles.dropDownContainerStyle}
                   open={cityModalOpen}
                   value={cityModalValue}
                   items={cityItems}

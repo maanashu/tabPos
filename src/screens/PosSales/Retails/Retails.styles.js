@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
 import { moderateScale, verticalScale, scale } from 'react-native-size-matters';
@@ -175,7 +175,7 @@ export const styles = StyleSheet.create({
   productName: {
     fontSize: SF(24),
     color: COLORS.solid_grey,
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.Regular,
   },
   proSubName: {
     fontSize: SF(11),
@@ -349,7 +349,7 @@ export const styles = StyleSheet.create({
   },
   smallLightText: {
     fontSize: SF(14),
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.Regular,
     color: COLORS.darkGray,
   },
   hr: {
@@ -401,7 +401,7 @@ export const styles = StyleSheet.create({
   crossButtonPosition: {
     position: 'absolute',
     right: 0,
-    top: 20,
+    top: 10,
   },
   amountjfrContainer: {
     borderWidth: 1,
@@ -430,23 +430,35 @@ export const styles = StyleSheet.create({
     // paddingRight: 30,
   },
   dropdown: {
-    width: SW(40),
-    alignSelf: 'center',
-    borderColor: COLORS.solidGrey,
-    borderWidth: 1,
-    marginVertical: verticalScale(2),
+    // width: SW(40),
+    // height:SH(55),
+    // alignSelf: 'center',
+    borderColor: 'transparent',
+    backgroundColor:'transparent',
+    // borderWidth: 1,
+    // marginVertical: verticalScale(1),
     zIndex: Platform.OS === 'ios' ? 100 : 4,
-    zIndex: 1,
+    // zIndex: 1,
     // fontStyle: 'italic',
   },
   containerStyle: {
     width: SW(40),
-    borderWidth: 0,
+    borderWidth: 1,
+    // height:SH(10),
     borderColor: COLORS.solidGrey,
-    alignSelf: 'center',
-    marginHorizontal: moderateScale(7),
+    borderRadius:7,
+    backgroundColor:COLORS.white,
+    // alignSelf: 'center',
+    // marginHorizontal: moderateScale(7),
     // marginVertical: verticalScale(7),
-    zIndex: Platform.OS === 'ios' ? 100 : 4,
+    // zIndex: Platform.OS === 'ios' ? 100 : 4,
+  },
+  dropDownContainerStyle:
+  {
+     borderWidth:1,
+     backgroundColor:COLORS.white,
+     borderRadius:7,
+     zIndex:Platform.ios === 'ios' ? 100 :1
   },
   priceContainer: {
     borderWidth: 1,
@@ -491,7 +503,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     position: 'absolute',
     bottom: 20,
-    left: 60,
+    left: 22,
   },
   // amount popup css end
 
@@ -626,7 +638,7 @@ export const styles = StyleSheet.create({
   },
   addDiscountText: {
     fontSize: SF(14),
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
     paddingHorizontal: moderateScale(2),
   },
@@ -639,7 +651,7 @@ export const styles = StyleSheet.create({
   },
   discountHeader:{
     fontSize: SF(24),
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.Regular,
     color: COLORS.black,
   },
   dicountInputWraper:{
