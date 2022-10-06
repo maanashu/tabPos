@@ -497,6 +497,7 @@ export function Retails() {
               textStyle={styles.selectedText}
               style={styles.submitButton}
             /> */}
+            <View style={{flex:1}}/>
             <TouchableOpacity style={styles.checkoutButton} onPress={checkOutHandler}>
               <Text style={styles.checkoutText}>Checkout</Text>
               <Image source={checkArrow} style={styles.checkArrow} />

@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     flexDirection: 'row',
     alignItems: 'center',
-    width: SW(208),
+    width: SW(202),
     height: SH(55),
     justifyContent: 'space-between',
     marginHorizontal: moderateScale(10),
@@ -152,7 +152,7 @@ export const styles = StyleSheet.create({
     // ...ShadowStyles.shadow2,
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    margin: 11,
+    margin: Platform.OS === 'ios' ? 4 : 11,
     padding: 15,
     elevation: 4,
     shadowColor: '#000000',
@@ -324,7 +324,7 @@ export const styles = StyleSheet.create({
   },
   updatePriceButton: {
     backgroundColor: COLORS.primary,
-    borderRadius: 3,
+    borderRadius: 7,
     width: SW(28),
     justifyContent: 'center',
     paddingLeft: moderateScale(8),
@@ -342,6 +342,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 5,
     paddingVertical: verticalScale(9),
+    marginVertical:verticalScale(10)
   },
   checkoutText: {
     color: COLORS.white,
@@ -444,7 +445,7 @@ export const styles = StyleSheet.create({
   crossButtonPosition: {
     position: 'absolute',
     right: 0,
-    top: 20,
+    top: 10,
   },
   amountjfrContainer: {
     borderWidth: 1,
@@ -894,6 +895,7 @@ export const styles = StyleSheet.create({
   productInput: {
     borderRadius: 5,
     // width: 220,
+    height:SH(54),
     fontSize: SF(12),
     color: COLORS.gerySkies,
     fontFamily: Fonts.Italic,
@@ -902,14 +904,14 @@ export const styles = StyleSheet.create({
   },
   newProductdropdown: {
     // width: SW(330),
-    height:SH(60),
+    // height:SH(60),
     alignSelf: 'center',
     backgroundColor: COLORS.textInputBackground,
     borderColor:'transparent',
     marginVertical: verticalScale(2),
     zIndex: Platform.OS === 'ios' ? 100 : 0,
     fontStyle: 'italic',
-    fontSize:SF(14)
+    fontSize:SF(14),
   },
   newProductdropDownIcon: {
     width: SW(7),
@@ -921,6 +923,7 @@ export const styles = StyleSheet.create({
     // width: SW(330),
     // height:SH(100),
     alignSelf: 'center',
+    backgroundColor:COLORS.white
     // marginVertical: verticalScale(7),
   },
 
