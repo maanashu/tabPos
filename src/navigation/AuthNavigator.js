@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NAVIGATION } from '@/constants';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
@@ -24,7 +24,7 @@ const Drawer = createDrawerNavigator();
 export function AuthNavigator(props) {
 
   return (
-    <Stack.Navigator initialRouteName="VerifyPhone">
+    <Stack.Navigator initialRouteName="Retails">
       <Stack.Screen
         component={Login}
         name={NAVIGATION.login}

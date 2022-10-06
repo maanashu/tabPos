@@ -306,10 +306,53 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   jfrContainer2: {
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     // paddingVertical:verticalScale(20)
     // alignItems:'center'
+  },
+  bundleButton: {
+    backgroundColor: COLORS.bluish_green,
+    borderRadius: 3,
+    width: SW(18),
+    justifyContent: 'center',
+    paddingLeft: moderateScale(8),
+    paddingVertical: verticalScale(2),
+    fontSize: SF(12),
+    color: COLORS.white,
+  },
+  updatePriceButton: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 3,
+    width: SW(28),
+    justifyContent: 'center',
+    paddingLeft: moderateScale(8),
+    paddingVertical: verticalScale(2),
+    fontSize: SF(12),
+    color: COLORS.white,
+    marginHorizontal: moderateScale(11),
+  },
+  checkoutButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.primary,
+    width: SW(107),
+    alignSelf: 'center',
+    borderRadius: 5,
+    paddingVertical: verticalScale(9),
+  },
+  checkoutText: {
+    color: COLORS.white,
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+  },
+  checkArrow: {
+    width: SW(10),
+    height: SW(4),
+    resizeMode: 'contain',
+    paddingHorizontal: moderateScale(6),
   },
   jfrText: {
     fontSize: SF(18),
@@ -372,7 +415,7 @@ export const styles = StyleSheet.create({
   // amount popup css start
   amountPopupCon: {
     width: windowWidth * 0.4,
-    height: windowHeight * 0.7,
+    height: windowHeight * 0.8,
     backgroundColor: COLORS.white,
     borderRadius: 12,
     alignSelf: 'center',
@@ -401,7 +444,7 @@ export const styles = StyleSheet.create({
   crossButtonPosition: {
     position: 'absolute',
     right: 0,
-    top: 10,
+    top: 20,
   },
   amountjfrContainer: {
     borderWidth: 1,
@@ -416,6 +459,7 @@ export const styles = StyleSheet.create({
     width: SW(20),
     height: SW(20),
     resizeMode: 'contain',
+    elevation:10
   },
   jfrmaduro: {
     fontSize: SF(18),
@@ -434,7 +478,7 @@ export const styles = StyleSheet.create({
     // height:SH(55),
     // alignSelf: 'center',
     borderColor: 'transparent',
-    backgroundColor:'transparent',
+    backgroundColor: 'transparent',
     // borderWidth: 1,
     // marginVertical: verticalScale(1),
     zIndex: Platform.OS === 'ios' ? 100 : 4,
@@ -446,19 +490,18 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     // height:SH(10),
     borderColor: COLORS.solidGrey,
-    borderRadius:7,
-    backgroundColor:COLORS.white,
+    borderRadius: 7,
+    backgroundColor: COLORS.white,
     // alignSelf: 'center',
     // marginHorizontal: moderateScale(7),
     // marginVertical: verticalScale(7),
     // zIndex: Platform.OS === 'ios' ? 100 : 4,
   },
-  dropDownContainerStyle:
-  {
-     borderWidth:1,
-     backgroundColor:COLORS.white,
-     borderRadius:7,
-     zIndex:Platform.ios === 'ios' ? 100 :1
+  dropDownContainerStyle: {
+    borderWidth: 1,
+    backgroundColor: COLORS.white,
+    borderRadius: 7,
+    zIndex: Platform.ios === 'ios' ? 100 : 1,
   },
   priceContainer: {
     borderWidth: 1,
@@ -476,6 +519,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
   },
+
   plusBtn2: {
     width: SW(7),
     height: SW(7),
@@ -501,9 +545,10 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    position: 'absolute',
-    bottom: 20,
-    left: 22,
+    paddingVertical: verticalScale(10),
+    // position: 'absolute',
+    // bottom: 20,
+    // left: 22,
   },
   // amount popup css end
 
@@ -647,115 +692,258 @@ export const styles = StyleSheet.create({
   adddiscountCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 7,
-    paddingHorizontal:moderateScale(8)
+    paddingHorizontal: moderateScale(8),
   },
-  discountHeader:{
+  discountHeader: {
     fontSize: SF(24),
     fontFamily: Fonts.Regular,
     color: COLORS.black,
   },
-  dicountInputWraper:{
-    backgroundColor:COLORS.white,
-    height:SH(52),
-    borderRadius:5,
-    justifyContent:'center',
-    paddingHorizontal:moderateScale(7)
+  dicountInputWraper: {
+    backgroundColor: COLORS.white,
+    height: SH(52),
+    borderRadius: 5,
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(7),
   },
-  dicountInputWraper2:{
-    backgroundColor:COLORS.light_blue,
-    height:SH(52),
-    borderRadius:5,
-    borderWidth:1,
-    borderColor:COLORS.primary,
-    justifyContent:'center',
-    paddingHorizontal:moderateScale(7)
+  dicountInputWraper2: {
+    backgroundColor: COLORS.light_blue,
+    height: SH(52),
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(7),
   },
   checkboxStyle: {
     width: SW(5),
     height: SW(5),
     resizeMode: 'contain',
   },
-  amountLabel:{
+  amountLabel: {
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
     color: COLORS.darkGray,
-    paddingHorizontal:moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
-  amountLabel2:{
+  amountLabel2: {
     fontSize: SF(14),
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
-    paddingHorizontal:moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
-  discountTitle:{
+  discountTitle: {
     fontSize: SF(16),
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
   },
-  discountTitleInput:{
-    backgroundColor:COLORS.white,
-    height:SH(52),
-    borderRadius:5,
-    justifyContent:'center',
-    paddingHorizontal:moderateScale(7),
+  discountTitleInput: {
+    backgroundColor: COLORS.white,
+    height: SH(52),
+    borderRadius: 5,
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(7),
     fontFamily: Fonts.Italic,
-    fontSize:SF(14)
+    fontSize: SF(14),
   },
-  amountDiscountInput:{
-    borderWidth:1,
-    height:SH(38),
-    width:SW(40),
-    borderRadius:3,
-    borderColor:COLORS.solidGrey,
-    justifyContent:'center',
-    fontSize:SF(14),
-    fontFamily:Fonts.Italic,
-    paddingHorizontal:moderateScale(5)
+  amountDiscountInput: {
+    borderWidth: 1,
+    height: SH(38),
+    width: SW(40),
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    fontSize: SF(14),
+    fontFamily: Fonts.Italic,
+    paddingHorizontal: moderateScale(5),
   },
-  amountDiscountInput2:{
-    backgroundColor:COLORS.white,
-    height:SH(38),
-    width:SW(40),
-    borderRadius:3,
-    borderColor:COLORS.solidGrey,
-    color:COLORS.primary,
-    justifyContent:'center',
-    fontSize:SF(14),
-    fontFamily:Fonts.Italic,
-    paddingHorizontal:moderateScale(5)
+  amountDiscountInput2: {
+    backgroundColor: COLORS.white,
+    height: SH(38),
+    width: SW(40),
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    color: COLORS.primary,
+    justifyContent: 'center',
+    fontSize: SF(14),
+    fontFamily: Fonts.Italic,
+    paddingHorizontal: moderateScale(5),
   },
 
   // right side add discount View  css end
 
-    // right side add notes View  css start
-  addNoteInput:{
-    height:SH(93),
+  // right side add notes View  css start
+  addNoteInput: {
+    height: SH(93),
     // width:SW(40),
-    borderRadius:7,
-    backgroundColor:COLORS.white,
-    justifyContent:'center',
-    fontSize:SF(14),
-    fontFamily:Fonts.Italic,
-    paddingHorizontal:moderateScale(15)
+    borderRadius: 7,
+    backgroundColor: COLORS.white,
+    justifyContent: 'center',
+    fontSize: SF(14),
+    fontFamily: Fonts.Italic,
+    paddingHorizontal: moderateScale(15),
   },
-  saveNotesButton:{
-    backgroundColor:COLORS.primary,
-    borderRadius:3,
-    width:SW(40),
-    height:SH(45),
-    alignItems:'center',
-    justifyContent:'center'
+  saveNotesButton: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 3,
+    width: SW(40),
+    height: SH(45),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  saveNotesText:{
-    color:COLORS.white,
-    fontSize:SF(12),
-    fontFamily:Fonts.Regular
+  saveNotesText: {
+    color: COLORS.white,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
   },
-  saveButtonCon:{
-    flexDirection:'row',
-    justifyContent:'flex-end',
-    paddingHorizontal:moderateScale(3)
-  }
+  saveButtonCon: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: moderateScale(3),
+  },
 
-   // right side add notes View  css end
+  // right side add notes View  css end
+
+  //  modal update price  css start
+  updateAmount: {
+    // borderWidth:1,
+    backgroundColor: COLORS.white,
+    // borderRadius: 5,
+    height: SH(44),
+    width: SW(65),
+    borderBottomRightRadius: 5,
+    borderTopEndRadius: 5,
+    borderLeftWidth: 1,
+    borderColor: COLORS.solidGrey,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  updateprice: {
+    paddingHorizontal: moderateScale(8),
+    color: COLORS.Regular,
+    fontSize: SF(18),
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+  },
+  trackLabel: {
+    color: COLORS.Regular,
+    fontSize: SF(18),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+  },
+  invetryCon: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    // borderWidth:1
+  },
+  invertyInput: {
+    borderRadius: 7,
+    width: 220,
+    fontSize: SF(12),
+    color: COLORS.gerySkies,
+    fontFamily: Fonts.Italic,
+    backgroundColor: COLORS.textInputBackground,
+    paddingHorizontal: moderateScale(10),
+  },
+  invertyLabel: {
+    fontSize: SF(14),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+  },
+  marboloPlusStyle:{
+    width:SW(20),
+    height:SW(20),
+     resizeMode:'contain'
+  },
+  //  modal update price  css end
+
+  //  modal add new product   css start
+   addNewProdouctCon: {
+    height: windowHeight * 0.9,
+  },
+  scanerStyle:{
+    resizeMode:'contain',
+    width:SW(219),
+    height:SH(59),
+    alignSelf:'center'
+  },
+  barCodeText:{
+     fontSize:SF(18),
+     fontFamily:Fonts.MaisonBold,
+     color:COLORS.solid_grey,
+     paddingTop:verticalScale(10)
+  },
+  scannedbarCodeCon:{
+    borderWidth:1,
+    borderRadius:15,
+    borderColor:COLORS.solidGrey,
+    height:SH(54),
+    justifyContent:'center',
+    paddingHorizontal:moderateScale(12)
+  },
+  barCodeNumText:{
+    fontSize:SF(16),
+    fontFamily:Fonts.SemiBold,
+    color:COLORS.solid_grey
+  },
+  newProductLabel:{
+    fontSize:SF(16),
+    fontFamily:Fonts.Regular,
+    color:COLORS.dark_grey
+  },
+  productInput: {
+    borderRadius: 5,
+    // width: 220,
+    fontSize: SF(12),
+    color: COLORS.gerySkies,
+    fontFamily: Fonts.Italic,
+    backgroundColor: COLORS.textInputBackground,
+    paddingHorizontal: moderateScale(10),
+  },
+  newProductdropdown: {
+    // width: SW(330),
+    height:SH(60),
+    alignSelf: 'center',
+    backgroundColor: COLORS.textInputBackground,
+    borderColor:'transparent',
+    marginVertical: verticalScale(2),
+    zIndex: Platform.OS === 'ios' ? 100 : 0,
+    fontStyle: 'italic',
+    fontSize:SF(14)
+  },
+  newProductdropDownIcon: {
+    width: SW(7),
+    height: SH(7),
+    resizeMode: 'contain',
+    paddingRight: 30
+  },
+  newProductcontainerStyle: {
+    // width: SW(330),
+    // height:SH(100),
+    alignSelf: 'center',
+    // marginVertical: verticalScale(7),
+  },
+
+  //  modal add new product  css end
+
+  paymentOptionCon:{
+    borderWidth:1,
+    height:SH(60),
+    borderColor:COLORS.solidGrey,
+    borderRadius:5,
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection:'row'
+  },
+  jbrIcon:{
+    width:SW(7),
+    height:SW(7),
+    resizeMode:'contain'
+  },
+  jbrcoinText:{
+    fontSize:SF(16),
+    fontFamily:Fonts.SemiBold,
+    color:COLORS.solid_grey,
+    paddingHorizontal:moderateScale(5)
+  }
 });
