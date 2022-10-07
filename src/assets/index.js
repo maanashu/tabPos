@@ -40,6 +40,9 @@ export { default as jbr_icon} from '@/assets/icons/ic_retail/logo_icon.png';
 export { default as card} from '@/assets/icons/ic_retail/card.png';
 export { default as money} from '@/assets/icons/ic_retail/money.png';
 export { default as marboloPlus} from '@/assets/icons/ic_retail/marboloPlus.png';
+export { default as loader} from '@/assets/icons/ic_retail/loader.png';
+export { default as ashton} from '@/assets/icons/ic_retail/ashton.png';
+export { default as jbrCustomer} from '@/assets/icons/ic_retail/jbrCustomer.png';
 
 /* Fonts */
 export const Fonts = {

@@ -45,5 +45,25 @@ export const en = {
     id:'ID:256913',
     date:'Today Wednesday 11 Aug 2022',
     time:'Time 3:25 pm'
-  }
+  },
+    posSale:{
+      paymentHeader:'Customer & Payment',
+      walletId: 'Wallet Id',
+      scanText:'or Scan',
+      rederecting:'Redirecting',
+      listOfItem:'List of items',
+      rewardpoint:'Reward Points : 500',
+      onex:'1',
+      price:'$382.75',
+      onlyx:'x',
+      notes:'Notes:',
+      itMynday:'Its for my birthday!',
+      paymentdetail:'Payment Details',
+      paymenttdone:'Payment Done!'
+
+
+      
+
+    }
+  
 };

@@ -413,10 +413,94 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 
+  paymentDone:{
+     backgroundColor:COLORS.blue_shade,
+     height:SH(107),
+    borderRadius:5,
+    justifyContent:'center'
+  },
+  darkPricestyle:{
+    fontSize: SF(32),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+  },
+  payDoneText:{
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
+  },
+  jbrWalllettext:{
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.primary,
+    alignSelf:'center'
+  },
+  viaText:{
+    fontSize: SF(10),
+    fontFamily: Fonts.Italic,
+    color: COLORS.black,
+  },
+  customerCon:{
+     borderWidth:1,
+     borderColor:COLORS.solidGrey,
+     height:SH(342),
+     borderRadius:5,
+     paddingHorizontal:moderateScale(10)
+  },
+  jbrCustomer:{
+   width:SW(15),
+   height:SW(15),
+   resizeMode:'contain'
+  },
+  walletIdButtonCon:{
+    borderTopWidth:1,
+    borderColor:COLORS.solidGrey,
+    height:SH(75),
+    borderBottomEndRadius:5,
+    borderBottomLeftRadius:5,
+    position:'absolute',
+    bottom:0,
+    right:0,
+    width:SW(107),
+    backgroundColor:COLORS.solidGrey,
+    justifyContent:'center',
+    alignItems:'center'
+ },
+
   // amount popup css start
+
+  bundleOfferText:{
+     fontSize:SF(18),
+     fontFamily:Fonts.MaisonBold,
+     color:COLORS.primary
+  },
+  bundleOfferCon:{
+    backgroundColor:COLORS.blue_shade,
+    height:SH(48),
+    borderRadius:5,
+    justifyContent:'center',
+    marginVertical:verticalScale(2)
+  },
+  buypackText:{
+   color:COLORS.primary,
+   fontSize:SF(16),
+   fontFamily:Fonts.Regular,
+  
+  },
+  bundleAddCon:{
+   backgroundColor:COLORS.primary,
+   borderRadius:3,
+  },
+  bundleAddText:{
+    color:COLORS.white,
+   fontSize:SF(12),
+   fontFamily:Fonts.Regular,
+   paddingHorizontal:moderateScale(12),
+   paddingVertical:verticalScale(3)
+  },
   amountPopupCon: {
     width: windowWidth * 0.4,
-    height: windowHeight * 0.8,
+    height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     borderRadius: 12,
     alignSelf: 'center',
@@ -445,7 +529,7 @@ export const styles = StyleSheet.create({
   crossButtonPosition: {
     position: 'absolute',
     right: 0,
-    top: 10,
+    top: 20,
   },
   amountjfrContainer: {
     borderWidth: 1,
@@ -482,7 +566,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     // borderWidth: 1,
     // marginVertical: verticalScale(1),
-    zIndex: Platform.OS === 'ios' ? 100 : 4,
+    zIndex: Platform.OS === 'ios' ? 100 : 1,
+    zIndex:2000
     // zIndex: 1,
     // fontStyle: 'italic',
   },
@@ -493,16 +578,13 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 7,
     backgroundColor: COLORS.white,
-    // alignSelf: 'center',
-    // marginHorizontal: moderateScale(7),
-    // marginVertical: verticalScale(7),
-    // zIndex: Platform.OS === 'ios' ? 100 : 4,
+    zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   dropDownContainerStyle: {
-    borderWidth: 1,
+    // borderWidth: 1,
     backgroundColor: COLORS.white,
-    borderRadius: 7,
-    zIndex: Platform.ios === 'ios' ? 100 : 1,
+    // borderRadius: 7,
+    zIndex: 1,
   },
   priceContainer: {
     borderWidth: 1,
@@ -545,8 +627,8 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    paddingVertical: verticalScale(10),
+    paddingVertical: verticalScale(15),
+    alignSelf:'center'
     // position: 'absolute',
     // bottom: 20,
     // left: 22,
@@ -562,7 +644,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    paddingLeft: moderateScale(15),
+    paddingLeft: moderateScale(10),
   },
   amountInput: {
     borderRadius: 7,
@@ -928,6 +1010,11 @@ export const styles = StyleSheet.create({
   },
 
   //  modal add new product  css end
+  iconInLine:{
+    flexDirection:'row',
+     alignSelf:'center',
+     width:SW(30)
+  },
 
   paymentOptionCon: {
     borderWidth: 1,
@@ -964,4 +1051,92 @@ export const styles = StyleSheet.create({
     color: COLORS.primary,
     paddingHorizontal: moderateScale(5),
   },
+
+
+
+  //  customer and payment css start
+  custPaymentBodyCon:{
+  //  borderWidth:1,
+   width: windowWidth * 0.25,
+   alignSelf:'center',
+   alignItems:'center'
+  },
+  walletIdText:{
+    color:COLORS.solid_grey,
+    fontFamily:Fonts.MaisonBold,
+    fontSize:SF(24)
+  },
+  walletIdInput: {
+    borderRadius: 7,
+    fontFamily: Fonts.Regular,
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    width: windowWidth * 0.25,
+    fontSize:SF(16),
+    paddingHorizontal:moderateScale(70)
+  },
+  scanerCon:{
+    backgroundColor:COLORS.textInputBackground,
+    width: windowWidth * 0.25,
+    height:windowHeight * 0.22,
+    borderRadius:7
+  },
+  redrectingText:{
+    color:COLORS.darkGray,
+    fontFamily:Fonts.Regular,
+    fontSize:SF(14)
+  },
+  loaderPic:{
+    width:SW(6),
+    height:SW(6),
+    resizeMode:'contain',
+    marginHorizontal:moderateScale(4)
+  },
+   //  customer and payment css end
+
+      // payment with jbr wallet css start 
+      listOfItem:{
+        color:COLORS.black,
+        fontFamily:Fonts.SemiBold,
+        fontSize:SF(24)
+      },
+      walletItem:{
+        color:COLORS.darkGray,
+        fontFamily:Fonts.Regular,
+        fontSize:SF(14),
+        paddingHorizontal:moderateScale(5)
+      },
+      rewardPointStyle:{
+        color:COLORS.primary,
+        fontFamily:Fonts.Regular,
+        fontSize:SF(18)
+      },
+      jbrListCon:{
+        borderBottomWidth:1,
+        borderColor:COLORS.solidGrey
+      },
+      ashtonStyle:{
+        width:SW(12),
+       height:SW(12),
+        resizeMode:'contain',
+      },
+      onexstyle:{
+        color:COLORS.dark_grey,
+        fontFamily:Fonts.SemiBold,
+        fontSize:SF(18)
+      },
+      onlyxstyle:{
+        color:COLORS.dark_grey,
+        fontFamily:Fonts.Regular,
+        fontSize:SF(14)
+      },
+      itmybdaystyle:{
+        color:COLORS.black,
+        fontFamily:Fonts.SemiBold,
+        fontSize:SF(16),
+        paddingHorizontal:moderateScale(5)
+      }
+
+
+      // payment with jbr wallet css end 
 });
