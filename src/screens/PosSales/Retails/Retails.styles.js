@@ -342,7 +342,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 5,
     paddingVertical: verticalScale(9),
-    marginVertical:verticalScale(10)
+    // marginVertical:verticalScale(10)
   },
   checkoutText: {
     color: COLORS.white,
@@ -460,7 +460,7 @@ export const styles = StyleSheet.create({
     width: SW(20),
     height: SW(20),
     resizeMode: 'contain',
-    elevation:10
+    elevation: 10,
   },
   jfrmaduro: {
     fontSize: SF(18),
@@ -851,51 +851,51 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
   },
-  marboloPlusStyle:{
-    width:SW(20),
-    height:SW(20),
-     resizeMode:'contain'
+  marboloPlusStyle: {
+    width: SW(20),
+    height: SW(20),
+    resizeMode: 'contain',
   },
   //  modal update price  css end
 
   //  modal add new product   css start
-   addNewProdouctCon: {
+  addNewProdouctCon: {
     height: windowHeight * 0.9,
   },
-  scanerStyle:{
-    resizeMode:'contain',
-    width:SW(219),
-    height:SH(59),
-    alignSelf:'center'
+  scanerStyle: {
+    resizeMode: 'contain',
+    width: SW(219),
+    height: SH(59),
+    alignSelf: 'center',
   },
-  barCodeText:{
-     fontSize:SF(18),
-     fontFamily:Fonts.MaisonBold,
-     color:COLORS.solid_grey,
-     paddingTop:verticalScale(10)
+  barCodeText: {
+    fontSize: SF(18),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+    paddingTop: verticalScale(10),
   },
-  scannedbarCodeCon:{
-    borderWidth:1,
-    borderRadius:15,
-    borderColor:COLORS.solidGrey,
-    height:SH(54),
-    justifyContent:'center',
-    paddingHorizontal:moderateScale(12)
+  scannedbarCodeCon: {
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: COLORS.solidGrey,
+    height: SH(54),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(12),
   },
-  barCodeNumText:{
-    fontSize:SF(16),
-    fontFamily:Fonts.SemiBold,
-    color:COLORS.solid_grey
+  barCodeNumText: {
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
   },
-  newProductLabel:{
-    fontSize:SF(16),
-    fontFamily:Fonts.Regular,
-    color:COLORS.dark_grey
+  newProductLabel: {
+    fontSize: SF(16),
+    fontFamily: Fonts.Regular,
+    color: COLORS.dark_grey,
   },
   productInput: {
     borderRadius: 5,
     // width: 220,
-    height:SH(54),
+    height: SH(54),
     fontSize: SF(12),
     color: COLORS.gerySkies,
     fontFamily: Fonts.Italic,
@@ -907,46 +907,61 @@ export const styles = StyleSheet.create({
     // height:SH(60),
     alignSelf: 'center',
     backgroundColor: COLORS.textInputBackground,
-    borderColor:'transparent',
+    borderColor: 'transparent',
     marginVertical: verticalScale(2),
     zIndex: Platform.OS === 'ios' ? 100 : 0,
     fontStyle: 'italic',
-    fontSize:SF(14),
+    fontSize: SF(14),
   },
   newProductdropDownIcon: {
     width: SW(7),
     height: SH(7),
     resizeMode: 'contain',
-    paddingRight: 30
+    paddingRight: 30,
   },
   newProductcontainerStyle: {
     // width: SW(330),
     // height:SH(100),
     alignSelf: 'center',
-    backgroundColor:COLORS.white
+    backgroundColor: COLORS.white,
     // marginVertical: verticalScale(7),
   },
 
   //  modal add new product  css end
 
-  paymentOptionCon:{
-    borderWidth:1,
-    height:SH(60),
-    borderColor:COLORS.solidGrey,
-    borderRadius:5,
-    justifyContent:'center',
-    alignItems:'center',
-    flexDirection:'row'
+  paymentOptionCon: {
+    borderWidth: 1,
+    height: SH(60),
+    borderColor: COLORS.solidGrey,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
-  jbrIcon:{
-    width:SW(7),
-    height:SW(7),
-    resizeMode:'contain'
+  paymentOptionCon2: {
+    borderColor: COLORS.primary,
   },
-  jbrcoinText:{
-    fontSize:SF(16),
-    fontFamily:Fonts.SemiBold,
-    color:COLORS.solid_grey,
-    paddingHorizontal:moderateScale(5)
-  }
+  jbrIcon: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+  },
+  jbrIconColored: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    tintColor: COLORS.primary,
+  },
+  jbrcoinText: {
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    paddingHorizontal: moderateScale(5),
+  },
+  jbrCoinTextColored: {
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+    paddingHorizontal: moderateScale(5),
+  },
 });

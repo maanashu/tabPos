@@ -40,7 +40,7 @@ import {
   jbr_icon,
   money,
   card,
-  marboloPlus
+  marboloPlus,
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
@@ -93,7 +93,7 @@ export const ProductData = [
 ];
 
 export function Retails() {
-  const [checkoutCon, setCheckoutCon] = useState(false)
+  const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
   const [title, setTitle] = useState('');
   const [categoryModal, setCategoryModal] = useState(false);
@@ -133,6 +133,10 @@ export function Retails() {
     { label: 'Innova', value: 'Innova' },
     { label: 'Maruti', value: 'Maruti' },
   ]);
+
+  const [jbrCoin, setJbrCoin] = useState(false);
+  const [cashChoose, setCashChoose] = useState(false);
+  const [cardChoose, setCardChoose] = useState(false)
 
   const menuHandler = () => {
     setCategoryModal(!categoryModal);
@@ -190,8 +194,23 @@ export function Retails() {
   const newProductRemoveHandler = () => {
     setAddNewProupdate(false);
   };
-  const checkOutHandler = () => { 
-    setCheckoutCon(!checkoutCon)
+  const checkOutHandler = () => {
+    setCheckoutCon(!checkoutCon);
+  };
+  const jbrCoinChoseHandler = () => {
+    setJbrCoin(!jbrCoin);
+    setCashChoose(false);
+    setCardChoose(false)
+  };
+  const cashChooseHandler = () => {
+    setCashChoose(!cashChoose);
+    setJbrCoin(false);
+    setCardChoose(false)
+  };
+  const cardChooseHandler = () => {
+    setCardChoose(!cardChoose);
+    setCashChoose(false);
+    setJbrCoin(false);
   };
 
   const renderCategoryItem = ({ item }) => (
@@ -350,113 +369,105 @@ export function Retails() {
         <View style={[styles.rightSideContainer]}>
           <Spacer space={SH(20)} />
 
-          {
-            checkoutCon ?
-            (<View style={{paddingHorizontal:moderateScale(10)}}>
-            <View style={styles.displayFlex}>
-            <Text style={styles.moreActText}>Choose payment option</Text>
-            <TouchableOpacity onPress={moreActionCloseHandler}>
-              <Image source={crossButton} style={styles.crossButtonStyle} />
-            </TouchableOpacity>
-          </View>
-          <Spacer space={SH(30)} />
-          <View style={styles.paymentOptionCon}>
-             <Image source={jbr_icon} style={styles.jbrIcon}/>
-               <Text style={styles.jbrcoinText}>JBR Coin</Text>
-             </View>
-             <Spacer space={SH(10)} />
-          <View style={styles.paymentOptionCon}>
-             <Image source={money} style={styles.jbrIcon}/>
-               <Text style={styles.jbrcoinText}>Cash</Text>
-             </View>
-             <Spacer space={SH(10)} />
-          <View style={styles.paymentOptionCon}>
-             <Image source={card} style={styles.jbrIcon}/>
-               <Text style={styles.jbrcoinText}>Card</Text>
-             </View>
-           </View>)
-           :
-           (
-<View>
-           <View style={styles.flexRow}>
-            <TouchableOpacity onPress={rightConCloseHandler}>
-              <Image source={doubleRight} style={styles.doubleRightstyle} />
-            </TouchableOpacity>
-            <View style={styles.flexRow2}>
-              <TouchableOpacity onPress={numpadConHandler}>
-              <Text style={styles.countCart}>123</Text>
+          {checkoutCon ? (
+            <View style={{ paddingHorizontal: moderateScale(10) }}>
+              <View style={styles.displayFlex}>
+                <Text style={styles.moreActText}>Choose payment option</Text>
+                <TouchableOpacity onPress={moreActionCloseHandler}>
+                  <Image source={crossButton} style={styles.crossButtonStyle} />
+                </TouchableOpacity>
+              </View>
+              <Spacer space={SH(30)} />
+              <TouchableOpacity style={jbrCoin ? [styles.paymentOptionCon, styles.paymentOptionCon2]  : styles.paymentOptionCon} onPress={jbrCoinChoseHandler}>
+                <Image source={jbr_icon} style={jbrCoin ? [styles.jbrIconColored, styles.jbrIcon] :  styles.jbrIcon} />
+                {/* <Text style={ jbrCoin ? [styles.jbrCoinTextColored, styles.jbrcoinText] : styles.jbrcoinText}>JBR Coin</Text> */}
+                <Text style={jbrCoin ? styles.jbrCoinTextColored : styles.jbrcoinText}>JBR Coin</Text>
               </TouchableOpacity>
-              <Text style={styles.clearCart}>Clear cart</Text>
-              <TouchableOpacity onPress={moreActionHandler}>
-                <Text style={styles.actionButton}>More action</Text>
+              <Spacer space={SH(10)} />
+              <TouchableOpacity style={cashChoose ? [styles.paymentOptionCon, styles.paymentOptionCon2]  : styles.paymentOptionCon} onPress={cashChooseHandler}>
+                <Image source={money} style={cashChoose ? [styles.jbrIconColored, styles.jbrIcon] :  styles.jbrIcon}/>
+                <Text style={cashChoose ? styles.jbrCoinTextColored : styles.jbrcoinText}>Cash</Text>
               </TouchableOpacity>
-            </View> 
-          </View>
-          <Spacer space={SH(30)} />
-          <TouchableOpacity
-            style={styles.jfrContainer}
-            onPress={amountPopHandler}
-          >
-            <View style={styles.jfrContainer2}>
-              <Image source={jfr} style={styles.jfrStyle} />
-              <View style={{ paddingVertical: verticalScale(4) }}>
-                <Text style={styles.jfrText}>JFR Maduro</Text>
-                <Text style={styles.boxText}>Box</Text>
-                <Spacer space={SH(5)} />
-                <Text style={styles.oneX}>x 1</Text>
+              <Spacer space={SH(10)} />
+              <TouchableOpacity style={cardChoose ? [styles.paymentOptionCon, styles.paymentOptionCon2]  : styles.paymentOptionCon} onPress={cardChooseHandler}>
+                <Image source={card} style={cardChoose ? [styles.jbrIconColored, styles.jbrIcon] :  styles.jbrIcon}/>
+                <Text style={cardChoose ? styles.jbrCoinTextColored : styles.jbrcoinText}>Card</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View>
+              <View style={styles.flexRow}>
+                <TouchableOpacity onPress={rightConCloseHandler}>
+                  <Image source={doubleRight} style={styles.doubleRightstyle} />
+                </TouchableOpacity>
+                <View style={styles.flexRow2}>
+                  <TouchableOpacity onPress={numpadConHandler}>
+                    <Text style={styles.countCart}>123</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.clearCart}>Clear cart</Text>
+                  <TouchableOpacity onPress={moreActionHandler}>
+                    <Text style={styles.actionButton}>More action</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <Spacer space={SH(30)} />
+              <TouchableOpacity
+                style={styles.jfrContainer}
+                onPress={amountPopHandler}
+              >
+                <View style={styles.jfrContainer2}>
+                  <Image source={jfr} style={styles.jfrStyle} />
+                  <View style={{ paddingVertical: verticalScale(4) }}>
+                    <Text style={styles.jfrText}>JFR Maduro</Text>
+                    <Text style={styles.boxText}>Box</Text>
+                    <Spacer space={SH(5)} />
+                    <Text style={styles.oneX}>x 1</Text>
+                  </View>
+                </View>
+                <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                  <Text style={styles.rate}>{null}</Text>
+                  <Text style={styles.rate}>$382.75</Text>
+                </View>
+              </TouchableOpacity>
+              <View style={styles.jfrContainer} onPress={amountPopHandler}>
+                <View style={styles.jfrContainer2}>
+                  <Image source={jfr} style={styles.jfrStyle} />
+                  <View style={{ paddingVertical: verticalScale(4) }}>
+                    <Text style={styles.jfrText}>JFR Maduro</Text>
+                    <Text style={styles.boxText}>Box</Text>
+                    <Spacer space={SH(5)} />
+                    <Text style={styles.oneX}>x 1</Text>
+                  </View>
+                </View>
+                <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                  <TouchableOpacity onPress={bundleHandler}>
+                    <Text style={styles.bundleButton}>Bundle</Text>
+                  </TouchableOpacity>
+
+                  <Text style={styles.rate}>{null}</Text>
+                  <Text style={styles.rate}>$382.75</Text>
+                </View>
+              </View>
+              <View style={styles.jfrContainer} onPress={amountPopHandler}>
+                <View style={styles.jfrContainer2}>
+                  <Image source={jfr} style={styles.jfrStyle} />
+                  <View style={{ paddingVertical: verticalScale(4) }}>
+                    <Text style={styles.jfrText}>JFR Maduro</Text>
+                    <Text style={styles.boxText}>Box</Text>
+                    <Spacer space={SH(5)} />
+                    <Text style={styles.oneX}>x 1</Text>
+                  </View>
+                </View>
+                <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                  <Text style={styles.rate}>{null}</Text>
+                  <Text style={styles.rate}>{null}</Text>
+                  <TouchableOpacity onPress={updatePriceHandler}>
+                    <Text style={styles.updatePriceButton}>Update price</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <Text style={styles.rate}>{null}</Text>
-              <Text style={styles.rate}>$382.75</Text>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.jfrContainer} onPress={amountPopHandler}>
-            <View style={styles.jfrContainer2}>
-              <Image source={jfr} style={styles.jfrStyle} />
-              <View style={{ paddingVertical: verticalScale(4) }}>
-                <Text style={styles.jfrText}>JFR Maduro</Text>
-                <Text style={styles.boxText}>Box</Text>
-                <Spacer space={SH(5)} />
-                <Text style={styles.oneX}>x 1</Text>
-              </View>
-            </View>
-            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <TouchableOpacity onPress={bundleHandler}>
-                <Text style={styles.bundleButton}>Bundle</Text>
-              </TouchableOpacity>
-
-              <Text style={styles.rate}>{null}</Text>
-              <Text style={styles.rate}>$382.75</Text>
-            </View>
-          </View>
-          <View style={styles.jfrContainer} onPress={amountPopHandler}>
-            <View style={styles.jfrContainer2}>
-              <Image source={jfr} style={styles.jfrStyle} />
-              <View style={{ paddingVertical: verticalScale(4) }}>
-                <Text style={styles.jfrText}>JFR Maduro</Text>
-                <Text style={styles.boxText}>Box</Text>
-                <Spacer space={SH(5)} />
-                <Text style={styles.oneX}>x 1</Text>
-              </View>
-            </View>
-            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <Text style={styles.rate}>{null}</Text>
-              <Text style={styles.rate}>{null}</Text>
-              <TouchableOpacity onPress={updatePriceHandler}>
-                <Text style={styles.updatePriceButton}>Update price</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-            </View>
-
-           )
-          }
-          
-
-          
-
+          )}
 
           <View style={{ flex: 1 }}></View>
           <View style={styles.bottomContainer}>
@@ -490,15 +501,11 @@ export function Retails() {
             <View style={styles.bottomSubCon}>
               <Text style={styles.smallLightText}>4 Items</Text>
             </View>
-            <Spacer space={SH(12)} />
-            {/* <Button
-              onPress={numpadConHandler}
-              title="Checkout"
-              textStyle={styles.selectedText}
-              style={styles.submitButton}
-            /> */}
-            <View style={{flex:1}}/>
-            <TouchableOpacity style={styles.checkoutButton} onPress={checkOutHandler}>
+            <Spacer space={SH(30)} />
+            <TouchableOpacity
+              style={styles.checkoutButton}
+              onPress={checkOutHandler}
+            >
               <Text style={styles.checkoutText}>Checkout</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>
@@ -887,7 +894,6 @@ export function Retails() {
           <View style={{ paddingHorizontal: moderateScale(20) }}>
             <View style={styles.amountjfrContainer}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-
                 <Image source={marboloPlus} style={styles.marboloPlusStyle} />
                 <Text style={styles.jfrmaduro}>Marlboro Flavor Plus</Text>
               </View>
@@ -902,7 +908,7 @@ export function Retails() {
                   style={styles.dropdown}
                   containerStyle={[
                     styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 100 : 2},
+                    { zIndex: Platform.OS === 'ios' ? 100 : 2 },
                   ]}
                   dropDownContainerStyle={styles.dropDownContainerStyle}
                   open={cityModalOpen}
@@ -993,141 +999,171 @@ export function Retails() {
           </View>
           {/* <Spacer space={SH(30)} /> */}
           <ScrollView>
-          <View style={{ paddingHorizontal: moderateScale(20) }}>
-            <Text style={styles.barCodeText}>Barcode</Text>
-            <Spacer space={SH(10)} />
-            <Image source={scanner} style={styles.scanerStyle} />
-            <Spacer space={SH(10)} />
-            <View>
-              <Text style={styles.newProductLabel}>Scanned Barcode</Text>
+            <View style={{ paddingHorizontal: moderateScale(20) }}>
+              <Text style={styles.barCodeText}>Barcode</Text>
               <Spacer space={SH(10)} />
-              <View style={styles.scannedbarCodeCon}>
-                <Text style={styles.barCodeNumText}>0123-4567</Text>
+              <Image source={scanner} style={styles.scanerStyle} />
+              <Spacer space={SH(10)} />
+              <View>
+                <Text style={styles.newProductLabel}>Scanned Barcode</Text>
+                <Spacer space={SH(10)} />
+                <View style={styles.scannedbarCodeCon}>
+                  <Text style={styles.barCodeNumText}>0123-4567</Text>
+                </View>
+              </View>
+              <Spacer space={SH(20)} />
+              <View>
+                <Text style={styles.newProductLabel}>Product Name</Text>
+                <Spacer space={SH(10)} />
+                <TextInput
+                  placeholder="Product name"
+                  style={styles.productInput}
+                />
+              </View>
+              <Spacer space={SH(20)} />
+              <View>
+                <Text style={styles.newProductLabel}>Select Category</Text>
+                <Spacer space={SH(10)} />
+                <DropDownPicker
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image
+                      source={dropdown}
+                      style={styles.newProductdropDownIcon}
+                    />
+                  )}
+                  ArrowUpIconComponent={({ style }) => (
+                    <Image
+                      source={dropdown}
+                      style={styles.newProductdropDownIcon}
+                    />
+                  )}
+                  style={styles.newProductdropdown}
+                  containerStyle={[
+                    styles.newProductcontainerStyle,
+                    { zIndex: Platform.OS === 'ios' ? 100 : 3 },
+                  ]}
+                  open={productCategory}
+                  value={productCategoryValue}
+                  items={productCategoryItem}
+                  setOpen={setProductCategory}
+                  setValue={setProductCategoryValue}
+                  setItems={setProductCategoryItem}
+                  placeholder="Select Category"
+                  placeholderStyle={{
+                    color: '#A7A7A7',
+                    fontFamily: Fonts.Italic,
+                    fontSize: SF(14),
+                  }}
+                />
+              </View>
+              <Spacer space={SH(20)} />
+              <View>
+                <Text style={styles.newProductLabel}>Select Sub-category</Text>
+                <Spacer space={SH(10)} />
+                <DropDownPicker
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image
+                      source={dropdown}
+                      style={styles.newProductdropDownIcon}
+                    />
+                  )}
+                  ArrowUpIconComponent={({ style }) => (
+                    <Image
+                      source={dropdown}
+                      style={styles.newProductdropDownIcon}
+                    />
+                  )}
+                  style={styles.newProductdropdown}
+                  containerStyle={[
+                    styles.newProductcontainerStyle,
+                    { zIndex: Platform.OS === 'ios' ? 100 : 2 },
+                  ]}
+                  open={productSubCategory}
+                  value={productSubCategoryValue}
+                  items={productSubCategoryItem}
+                  setOpen={setProductSubCategory}
+                  setValue={setProductSubCategoryValue}
+                  setItems={setProductSubCategoryItem}
+                  placeholder="Select Sub-category"
+                  placeholderStyle={{
+                    color: '#A7A7A7',
+                    fontFamily: Fonts.Italic,
+                    fontSize: SF(14),
+                  }}
+                />
+              </View>
+              <Spacer space={SH(20)} />
+              <View>
+                <Text style={styles.newProductLabel}>Select Brand</Text>
+                <Spacer space={SH(10)} />
+                <DropDownPicker
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image
+                      source={dropdown}
+                      style={styles.newProductdropDownIcon}
+                    />
+                  )}
+                  ArrowUpIconComponent={({ style }) => (
+                    <Image
+                      source={dropdown}
+                      style={styles.newProductdropDownIcon}
+                    />
+                  )}
+                  style={styles.newProductdropdown}
+                  containerStyle={[
+                    styles.newProductcontainerStyle,
+                    { zIndex: Platform.OS === 'ios' ? 100 : 1 },
+                  ]}
+                  open={productBrand}
+                  value={productBrandValue}
+                  items={productBrandItem}
+                  setOpen={setProductBrand}
+                  setValue={setProductBrandValue}
+                  setItems={setProductBrandItem}
+                  placeholder="Select brand"
+                  placeholderStyle={{
+                    color: '#A7A7A7',
+                    fontFamily: Fonts.Italic,
+                    fontSize: SF(14),
+                  }}
+                />
+              </View>
+              <Spacer space={SH(20)} />
+              <View
+                style={[
+                  styles.priceContainer,
+                  { paddingHorizontal: moderateScale(0) },
+                ]}
+              >
+                <Text style={[styles.updateprice, { fontSize: SF(14) }]}>
+                  Selling Price
+                </Text>
+                <View style={styles.updateAmount}>
+                  <Text style={styles.updateprice}>$0.00</Text>
+                </View>
+              </View>
+              <Spacer space={SH(30)} />
+              <View
+                style={[
+                  styles.priceContainer,
+                  { backgroundColor: COLORS.white },
+                ]}
+              >
+                <Image source={minus} style={styles.plusBtn2} />
+                <Text style={[styles.price, { fontSize: SF(24) }]}>1</Text>
+                <Image source={plus} style={styles.plusBtn2} />
+              </View>
+
+              <Spacer space={SH(30)} />
+              <View style={styles.buttonContainer}>
+                <Text style={styles.removeButton}>Remove from cart</Text>
+                <Text style={[styles.removeButton, styles.updateButton]}>
+                  Update to cart
+                </Text>
               </View>
             </View>
-            <Spacer space={SH(20)} />
-            <View>
-              <Text style={styles.newProductLabel}>Product Name</Text>
-              <Spacer space={SH(10)} />
-              <TextInput
-                placeholder="Product name"
-                style={styles.productInput}
-              />
-            </View>
-            <Spacer space={SH(20)} />
-            <View>
-              <Text style={styles.newProductLabel}>Select Category</Text>
-              <Spacer space={SH(10)} />
-              <DropDownPicker
-                ArrowDownIconComponent={({ style }) => (
-                  <Image source={dropdown} style={styles.newProductdropDownIcon} />
-                )}
-                ArrowUpIconComponent={({ style }) => (
-                  <Image source={dropdown} style={styles.newProductdropDownIcon} />
-                )}
-                style={styles.newProductdropdown}
-                containerStyle={[
-                  styles.newProductcontainerStyle,
-                  { zIndex: Platform.OS === 'ios' ? 100 : 3 },
-                ]}
-                open={productCategory}
-                value={productCategoryValue}
-                items={productCategoryItem}
-                setOpen={setProductCategory}
-                setValue={setProductCategoryValue}
-                setItems={setProductCategoryItem}
-                placeholder="Select Category"
-                placeholderStyle={{ color: '#A7A7A7',fontFamily:Fonts.Italic, fontSize:SF(14) }}
-              />
-            </View>
-            <Spacer space={SH(20)} />
-            <View>
-              <Text style={styles.newProductLabel}>Select Sub-category</Text>
-              <Spacer space={SH(10)} />
-              <DropDownPicker
-                ArrowDownIconComponent={({ style }) => (
-                  <Image source={dropdown} style={styles.newProductdropDownIcon} />
-                )}
-                ArrowUpIconComponent={({ style }) => (
-                  <Image source={dropdown} style={styles.newProductdropDownIcon} />
-                )}
-                style={styles.newProductdropdown}
-                containerStyle={[
-                  styles.newProductcontainerStyle,
-                  { zIndex: Platform.OS === 'ios' ? 100 : 2 },
-                ]}
-                open={productSubCategory}
-                value={productSubCategoryValue}
-                items={productSubCategoryItem}
-                setOpen={setProductSubCategory}
-                setValue={setProductSubCategoryValue}
-                setItems={setProductSubCategoryItem}
-                placeholder="Select Sub-category"
-                placeholderStyle={{ color: '#A7A7A7',fontFamily:Fonts.Italic, fontSize:SF(14) }}
-              />
-            </View>
-            <Spacer space={SH(20)} />
-            <View>
-              <Text style={styles.newProductLabel}>Select Brand</Text>
-              <Spacer space={SH(10)} />
-              <DropDownPicker
-                ArrowDownIconComponent={({ style }) => (
-                  <Image source={dropdown} style={styles.newProductdropDownIcon} />
-                )}
-                ArrowUpIconComponent={({ style }) => (
-                  <Image source={dropdown} style={styles.newProductdropDownIcon} />
-                )}
-                style={styles.newProductdropdown}
-                containerStyle={[
-                  styles.newProductcontainerStyle,
-                  { zIndex: Platform.OS === 'ios' ? 100 : 1 },
-                ]}
-                open={productBrand}
-                value={productBrandValue}
-                items={productBrandItem}
-                setOpen={setProductBrand}
-                setValue={setProductBrandValue}
-                setItems={setProductBrandItem}
-                placeholder="Select brand"
-                placeholderStyle={{ color: '#A7A7A7',fontFamily:Fonts.Italic, fontSize:SF(14) }}
-              />
-            </View>
-            <Spacer space={SH(20)} />
-            <View
-              style={[
-                styles.priceContainer,
-                { paddingHorizontal: moderateScale(0) },
-              ]}
-            >
-              <Text style={[styles.updateprice, { fontSize: SF(14) }]}>
-                Selling Price
-              </Text>
-              <View style={styles.updateAmount}>
-                <Text style={styles.updateprice}>$0.00</Text>
-              </View>
-            </View>
-            <Spacer space={SH(30)} />
-            <View
-              style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
-            >
-              <Image source={minus} style={styles.plusBtn2} />
-              <Text style={[styles.price, { fontSize: SF(24) }]}>1</Text>
-              <Image source={plus} style={styles.plusBtn2} />
-            </View>
-
-            <Spacer space={SH(30)} />
-            <View style={styles.buttonContainer}>
-            <Text style={styles.removeButton}>Remove from cart</Text>
-            <Text style={[styles.removeButton, styles.updateButton]}>
-              Update to cart
-            </Text>
-          </View>
-
-          </View>
-
           </ScrollView>
           {/* <View style={{ flex: 1 }} /> */}
-         
         </View>
       </Modal>
       {/*  add new product update  modal end */}
