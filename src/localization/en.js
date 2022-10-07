@@ -32,7 +32,6 @@ export const en = {
     subHeading:'Enter OTP code here',
     placeHolderText:'815-288-0329',
     button:'Continue',
-   
   },
   passcode:{
     heading:'Enter Passcode',
@@ -45,5 +44,15 @@ export const en = {
     id:'ID:256913',
     date:'Today Wednesday 11 Aug 2022',
     time:'Time 3:25 pm'
+  },
+  deliveryOrders:{
+    heading:'Delivery orders',
+    search:'Search',
+    orderNumber:'Number of Orders',
+    orderReview:'Orders to review',
+    viewAll:'View all',
+    orderConversion:'Order conversion',
+    deliveryOrders:'Delivering Orders',
+    
   }
 };

@@ -13,5 +13,6 @@ export const COLORS = {
     row_grey:'#CACACA',
     silver_solid:'#E1E3E4',
     mid_grey:'#DFDFDF',
-    light_blue:'#E9EEFF'
+    light_blue:'#E9EEFF',
+    orderStatusBackground:'#E5F0FF'
 }
