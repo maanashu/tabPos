@@ -21,38 +21,45 @@ export const en = {
     logout: 'Logout',
     message: 'This screen has the iOS native large header.',
   },
-  verifyPhone:{
-    heading:'Verify your phone number',
-    subHeading:'Please enter your number to phone number',
-    placeHolderText:'815-288-0329',
-    button:'Continue'
+  verifyPhone: {
+    heading: 'Verify your phone number',
+    subHeading: 'Please enter your number to phone number',
+    placeHolderText: '815-288-0329',
+    button: 'Continue',
   },
-  verifyOtp:{
-    heading:'Verify your phone number',
-    subHeading:'Enter OTP code here',
-    placeHolderText:'815-288-0329',
-    button:'Continue',
+  verifyOtp: {
+    heading: 'Verify your phone number',
+    subHeading: 'Enter OTP code here',
+    placeHolderText: '815-288-0329',
+    button: 'Continue',
   },
-  passcode:{
-    heading:'Enter Passcode',
-    success:'Successfully verified',
-    loginBack:'Please login back to your email inbox and set your new password'
+  passcode: {
+    heading: 'Enter Passcode',
+    success: 'Successfully verified',
+    loginBack:
+      'Please login back to your email inbox and set your new password',
   },
-  loginIntial:{
-    heading:'CONFIRM YOUR LOG IN',
-    name:'Millicent C. Edward',
-    id:'ID:256913',
-    date:'Today Wednesday 11 Aug 2022',
-    time:'Time 3:25 pm'
+  loginIntial: {
+    heading: 'CONFIRM YOUR LOG IN',
+    name: 'Millicent C. Edward',
+    id: 'ID:256913',
+    date: 'Today Wednesday 11 Aug 2022',
+    time: 'Time 3:25 pm',
   },
-  deliveryOrders:{
-    heading:'Delivery orders',
-    search:'Search',
-    orderNumber:'Number of Orders',
-    orderReview:'Orders to review',
-    viewAll:'View all',
-    orderConversion:'Order conversion',
-    deliveryOrders:'Delivering Orders',
-    
-  }
+  deliveryOrders: {
+    heading: 'Delivery orders',
+    search: 'Search',
+    orderNumber: 'Number of Orders',
+    orderReview: 'Orders to review',
+    viewAll: 'View all',
+    orderConversion: 'Order conversion',
+    deliveryOrders: 'Delivering Orders',
+    back: 'Back',
+    orderId: 'Order#WXCOO1256',
+    orderDate: 'August 30, 2022',
+    name: 'Rebecca R. Russell',
+    address: '1480 Bassel Street, New Orleans, LA 70113',
+    deliveryType: 'Express Delivery',
+    time: 'Immediately',
+  },
 };

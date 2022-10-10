@@ -47,6 +47,9 @@ export { default as pay } from '@/assets/icons/ic_deliveryOrder/pay.png';
 export { default as clock } from '@/assets/icons/ic_deliveryOrder/clock.png';
 export { default as rightIcon } from '@/assets/icons/ic_deliveryOrder/rightIcon.png';
 export { default as conversionBox } from '@/assets/icons/ic_deliveryOrder/conversionBox.png';
+export { default as backArrow } from '@/assets/icons/ic_deliveryOrder/backArrow.png';
+export { default as profileImage } from '@/assets/icons/ic_deliveryOrder/profileImage.png';
+export { default as deliveryScooter } from '@/assets/icons/ic_deliveryOrder/deliveryScooter.png';
 
 /* Fonts */
 export const Fonts = {
