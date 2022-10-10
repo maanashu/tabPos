@@ -5,14 +5,13 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/store';
 import { RootNavigator } from '@/navigation';
-import Orientation from 'react-native-orientation';
 
 enableScreens();
 
 export function App() {
-  useEffect(() => {
-    Orientation.lockToLandscape();
-  }, []);
+  // useEffect(() => {
+  //   Orientation.lockToLandscape();
+  // }, []);
 
   return (
     <Provider store={store}>
