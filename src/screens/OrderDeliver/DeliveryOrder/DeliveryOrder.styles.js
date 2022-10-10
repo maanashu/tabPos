@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   searchView: {
     borderWidth: 1,
     width: SW(65),
-    height: SH(40),
+    height: SH(43),
     borderRadius: 20,
     borderColor: COLORS.row_grey,
     flexDirection: 'row',

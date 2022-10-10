@@ -58,7 +58,23 @@ export const en = {
       notes:'Notes:',
       itMynday:'Its for my birthday!',
       paymentdetail:'Payment Details',
-      paymenttdone:'Payment Done!'
+      paymenttdone:'Payment Done!',
+      Customer:'Customer',
+      customerNo:'Customer phone number',
+      customerName:'Terry Moore',
+      customerMobileNo:'803-238-2630',
+      customerEmail:'harryrady@jourrapide.com',
+      customerAddr:'4849 Owagner Lane',
+      customerAddr2:'Seattle, WA 98101',
+      customerTotalAmountHeader:'Total amount: $254.60',
+      tips:'Tips',
+      noTips:'No Tips',
+      cashRecive:'Cash amount received',
+      otherAmount:'Other amount',
+      changeDue:'Change Due: $3.40',
+      firstName:'First name'
+
+
 
 
       

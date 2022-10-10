@@ -43,7 +43,7 @@ import {
   marboloPlus,
   loader,
   ashton,
-  jbrCustomer
+  jbrCustomer,
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
@@ -111,6 +111,19 @@ export function Retails() {
   const [custPayment, setCustPayment] = useState(false);
   const [walletId, setWalletId] = useState('');
   const [listOfItem, setListofItem] = useState(false);
+  const [custCash, setCustCash] = useState(false);
+  const [customerPhoneNo, setCustomerPhoneNo] = useState(false);
+  const [cutsomerTotalAmount, setCutsomerTotalAmount] = useState(false);
+
+  const [cashAmount1, setCashAmount1] = useState(false);
+  const [cashAmount2, setCashAmount2] = useState(false);
+  const [cashAmount3, setCashAmount3] = useState(false);
+
+  const [tip1, setTip1] = useState(false);
+  const [tip2, setTip2] = useState(false);
+  const [tip3, setTip3] = useState(false);
+
+  const [customerCashPaid, setCustomerCashPaid] = useState(false);
 
   const menuHandler = () => {
     setCategoryModal(!categoryModal);
@@ -187,6 +200,7 @@ export function Retails() {
     setCashChoose(!cashChoose);
     setJbrCoin(false);
     setCardChoose(false);
+    setCustCash(!custCash);
   };
   const cardChooseHandler = () => {
     setCardChoose(!cardChoose);
@@ -199,6 +213,54 @@ export function Retails() {
   };
   const choosePaymentCloseHandler = () => {
     setCheckoutCon(false);
+  };
+  const custCashRemoveHandler = () => {
+    setCustCash(false);
+  };
+  const cusTotalAmountHandler = () => {
+    setCutsomerTotalAmount(!cutsomerTotalAmount);
+    setCustCash(false);
+  };
+
+  const cusTotalAmountRemoveHandler = () => {
+    setCutsomerTotalAmount(false);
+  };
+  const cashAmount1Handler = () => {
+    setCashAmount1(!cashAmount1);
+    setCashAmount2(false);
+    setCashAmount3(false);
+  };
+  const cashAmount2Handler = () => {
+    setCashAmount2(!cashAmount2);
+    setCashAmount1(false);
+    setCashAmount3(false);
+  };
+  const cashAmount3Handler = () => {
+    setCashAmount3(!cashAmount3);
+    setCashAmount1(false);
+    setCashAmount2(false);
+  };
+  const tip1Handler = () => {
+    setTip1(!cashAmount1);
+    setTip2(false);
+    setTip3(false);
+  };
+  const tip2Handler = () => {
+    setTip2(!cashAmount2);
+    setTip1(false);
+    setTip3(false);
+  };
+  const tip3Handler = () => {
+    setTip3(!cashAmount3);
+    setTip1(false);
+    setTip2(false);
+  };
+  const cusCashPaidHandler = () => {
+    setCutsomerTotalAmount(false);
+    setCustomerCashPaid(!customerCashPaid);
+  };
+  const cusCashPaidRemoveHandler = () => {
+    setCustomerCashPaid(false);
   };
 
   const renderCategoryItem = ({ item }) => (
@@ -327,12 +389,6 @@ export function Retails() {
     </View>
   );
 
-  // const sideBarHandler = () => {
-  //   if(){
-
-  //   }esle
-  // }
-
   return (
     // start  header section
     <View style={styles.container}>
@@ -419,7 +475,7 @@ export function Retails() {
               </TouchableOpacity>
             </View>
             <Spacer space={SH(40)} />
-            <Text style={[styles.payDoneText, {fontSize:SF(24), alignSelf:'center'}]}>{strings.posSale.paymenttdone}</Text>
+            <Text style={[styles.payDoneText, {fontSize:SF(20), alignSelf:'center'}]}>{strings.posSale.paymenttdone}</Text>
             <Spacer space={SH(10)} />
             <View style={styles.paymentDone}>
               <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
@@ -439,24 +495,27 @@ export function Retails() {
             <Spacer space={SH(20)} />
             <View style={styles.customerCon}>
             <Spacer space={SH(20)} />
-                <Text>Customer</Text>
+                <Text style={styles.customerHeading}>Customer</Text>
                 <Spacer space={SH(20)} />
                 <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
                   <Image source={jbrCustomer} style={styles.jbrCustomer}/>
-                   <View>
-                   <Text>Terry Moore</Text>
-                   <Text>803-238-2630</Text>
-                   <Text>harryrady@jourrapide.com</Text>
-                   <Text>4849 Owagner Lane
-                     Seattle, WA 98101</Text>
+                   <View style={{paddingHorizontal:moderateScale(15)}}>
+                   <Text style={[styles.cusAddText, {fontSize:SF(20)}]}>Terry Moore</Text>
+                   <Spacer space={SH(8)} />
+                   <Text style={styles.cusAddText}>803-238-2630</Text>
+                   <Spacer space={SH(5)} />
+                   <Text style={styles.cusAddText}>harryrady@jourrapide.com</Text>
+                   <Spacer space={SH(8)} />
+                   <Text style={styles.cusAddText}>4849 Owagner Lane</Text>
+                     <Text style={styles.cusAddText}>Seattle, WA 98101</Text>
                    </View>
                   </View>
                   <View style={styles.walletIdButtonCon}>
-                    <Text>Wallet Id</Text>
-                    <Text>509 236 2365</Text>
+                    <Text style={styles.walletIdcontent}>Wallet Id</Text>
+                    <Spacer space={SH(5)} />
+                    <Text style={[styles.cusAddText, {color:COLORS.primary}]}>509 236 2365</Text>
                   </View>
             </View>
-               
             <Spacer space={SH(30)} />
           </View> */}
           {checkoutCon ? (
@@ -627,6 +686,7 @@ export function Retails() {
     </View>
   </View>
 )}
+
           <View style={{ flex: 1 }}></View>
           <View style={styles.bottomContainer}>
             <Spacer space={SH(10)} />
@@ -688,7 +748,8 @@ export function Retails() {
             </TouchableOpacity>
           </View>
           <Spacer space={SH(25)} />
-          <View style={{ paddingHorizontal: moderateScale(20) }}>
+          <ScrollView>
+          <View style={{ paddingHorizontal: moderateScale(20)}}>
             <View style={styles.amountjfrContainer}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={jfr} style={styles.amountjfrStyle} />
@@ -748,16 +809,14 @@ export function Retails() {
                 </View>
               </View>
             ) : null}
-
-            {/* <View style={{flex:1}}></View> */}
-          </View>
-          <View style={{ flex: 1 }} />
-          <View style={styles.buttonContainer}>
+           <View style={styles.buttonContainer}>
             <Text style={styles.removeButton}>Remove from cart</Text>
             <Text style={[styles.removeButton, styles.updateButton]}>
               Update to cart
             </Text>
           </View>
+          </View>
+          </ScrollView>
         </View>
       </Modal>
       {/* Amount container End */}
@@ -1372,10 +1431,10 @@ export function Retails() {
             <Text style={styles.walletIdText}>{strings.posSale.scanText}</Text>
             <Spacer space={SH(10)} />
             <View style={styles.scanerCon}></View>
-            <Spacer space={SH(100)} />
+            {/* <Spacer space={SH(100)} /> */}
             {walletId ? (
               <TouchableOpacity
-                style={{ flexDirection: 'row' }}
+                style={{ flexDirection: 'row', alignItems:'center' }}
                 onPress={listOfItemHandler}
               >
                 <Text
@@ -1432,6 +1491,374 @@ export function Retails() {
       ) : null}
 
       {/* payment with jbr wallet end */}
+
+      {/*  customer cash  modal start */}
+      <Modal animationType="fade" transparent={true} isVisible={custCash}>
+        <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
+          <View style={styles.primaryHeader}>
+            <Text style={styles.headerText}>{strings.posSale.Customer}</Text>
+            <TouchableOpacity
+              onPress={custCashRemoveHandler}
+              style={styles.crossButtonPosition}
+            >
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={[styles.custPaymentBodyCon, { alignItems: 'flex-start' }]}
+          >
+            <Spacer space={SH(60)} />
+            <Text style={styles.customerNOStyle}>
+              {strings.posSale.customerNo}
+            </Text>
+            <Spacer space={SH(10)} />
+            <View style={styles.customerInputWraper}>
+              {customerPhoneNo ? null : (
+                <Image
+                  source={search_light}
+                  style={[styles.searchStyle, { tintColor: COLORS.darkGray }]}
+                />
+              )}
+              <TextInput
+                style={styles.customerPhoneInput}
+                value={customerPhoneNo}
+                onChangeText={setCustomerPhoneNo}
+                keyboardType="numeric"
+              />
+            </View>
+            <Spacer space={SH(60)} />
+            {customerPhoneNo ? (
+              <View style={styles.customerAddreCon}>
+                <Spacer space={SH(30)} />
+                <View
+                  style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
+                >
+                  <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                  <View style={{ paddingHorizontal: moderateScale(8) }}>
+                    <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
+                      {strings.posSale.customerName}
+                    </Text>
+                    <Spacer space={SH(8)} />
+                    <Text style={styles.cusAddText}>
+                      {strings.posSale.customerMobileNo}
+                    </Text>
+                    <Spacer space={SH(5)} />
+                    <Text style={styles.cusAddText}>
+                      {strings.posSale.customerEmail}
+                    </Text>
+                    <Spacer space={SH(8)} />
+                    <Text style={styles.cusAddText}>
+                      {strings.posSale.customerAddr}
+                    </Text>
+                    <Text style={styles.cusAddText}>
+                      {strings.posSale.customerAddr2}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            ) : null}
+            <View style={{ flex: 1 }} />
+            {customerPhoneNo ? (
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                }}
+                onPress={cusTotalAmountHandler}
+              >
+                <Text
+                  style={[styles.redrectingText, { color: COLORS.primary }]}
+                >
+                  {strings.posSale.rederecting}
+                </Text>
+                <Image source={loader} style={styles.loaderPic} />
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.redrectingText}>
+                {strings.posSale.rederecting}
+              </Text>
+            )}
+            {/* <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
+            <Spacer space={SH(7)}/>
+            <TextInput
+              placeholder={strings.posSale.firstName}
+              value={amount}
+              onChangeText={setAmount}
+              style={styles.customerNameInput}
+              keyboardType='numeric'
+            />
+             <Spacer space={SH(20)} />
+             <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
+            <Spacer space={SH(7)}/>
+            <TextInput
+              placeholder={strings.posSale.firstName}
+              value={amount}
+              onChangeText={setAmount}
+              style={styles.customerNameInput}
+              keyboardType='numeric'
+            />
+              <Spacer space={SH(20)} />
+             <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
+            <Spacer space={SH(7)}/>
+            <TextInput
+              placeholder={strings.posSale.firstName}
+              value={amount}
+              onChangeText={setAmount}
+              style={styles.customerNameInput}
+              keyboardType='numeric'
+            /> */}
+
+
+
+
+
+          </View>
+        </View>
+      </Modal>
+      {/*  customer cash modal end */}
+
+      {/*  customer cash  total amount start */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={cutsomerTotalAmount}
+      >
+        <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
+          <View style={styles.primaryHeader}>
+            <Text style={styles.headerText}>
+              {strings.posSale.customerTotalAmountHeader}
+            </Text>
+            <TouchableOpacity
+              onPress={cusTotalAmountRemoveHandler}
+              style={styles.crossButtonPosition}
+            >
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.custTotalAmountBodyCon]}>
+            <Spacer space={SH(20)} />
+            <Text
+              style={[
+                styles.tipChildText,
+                { paddingHorizontal: moderateScale(0) },
+              ]}
+            >
+              {strings.posSale.tips}
+            </Text>
+            <Spacer space={SH(15)} />
+            <View style={styles.displayFlex}>
+              {tip1 ? (
+                <TouchableOpacity
+                  style={[styles.tipChildCon, styles.tipChildConChecked]}
+                  onPress={tip1Handler}
+                >
+                  <Text
+                    style={[styles.tipChildText, { color: COLORS.primary }]}
+                  >
+                    18%
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.tipChildCon}
+                  onPress={tip1Handler}
+                >
+                  <Text style={styles.tipChildText}>18%</Text>
+                </TouchableOpacity>
+              )}
+              {tip2 ? (
+                <TouchableOpacity
+                  style={[styles.tipChildCon, styles.tipChildConChecked]}
+                  onPress={tip2Handler}
+                >
+                  <Text
+                    style={[styles.tipChildText, { color: COLORS.primary }]}
+                  >
+                    22%
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.tipChildCon}
+                  onPress={tip2Handler}
+                >
+                  <Text style={styles.tipChildText}>22%</Text>
+                </TouchableOpacity>
+              )}
+              {tip3 ? (
+                <TouchableOpacity
+                  style={[styles.tipChildCon, styles.tipChildConChecked]}
+                  onPress={tip3Handler}
+                >
+                  <Text
+                    style={[styles.tipChildText, { color: COLORS.primary }]}
+                  >
+                    24%
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.tipChildCon}
+                  onPress={tip3Handler}
+                >
+                  <Text style={styles.tipChildText}>24%</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <Spacer space={SH(30)} />
+            <View style={styles.noTipsButtonCon}>
+              <Text style={styles.noTipsTextStyle}>
+                {strings.posSale.noTips}
+              </Text>
+            </View>
+            <Spacer space={SH(40)} />
+            <Text
+              style={[
+                styles.tipChildText,
+                { paddingHorizontal: moderateScale(0) },
+              ]}
+            >
+              {strings.posSale.cashRecive}
+            </Text>
+            <Spacer space={SH(20)} />
+            <View style={styles.displayFlex}>
+              {cashAmount1 ? (
+                <TouchableOpacity
+                  style={[styles.tipChildCon, styles.tipChildConChecked]}
+                  onPress={cashAmount1Handler}
+                >
+                  <Text
+                    style={[styles.tipChildText, { color: COLORS.primary }]}
+                  >
+                    $280.00
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.tipChildCon}
+                  onPress={cashAmount1Handler}
+                >
+                  <Text style={styles.tipChildText}>$280.00</Text>
+                </TouchableOpacity>
+              )}
+
+              {cashAmount2 ? (
+                <TouchableOpacity
+                  style={[styles.tipChildCon, styles.tipChildConChecked]}
+                  onPress={cashAmount2Handler}
+                >
+                  <Text
+                    style={[styles.tipChildText, { color: COLORS.primary }]}
+                  >
+                    $290.00
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.tipChildCon}
+                  onPress={cashAmount2Handler}
+                >
+                  <Text style={styles.tipChildText}>$290.00</Text>
+                </TouchableOpacity>
+              )}
+              {cashAmount3 ? (
+                <TouchableOpacity
+                  style={[styles.tipChildCon, styles.tipChildConChecked]}
+                  onPress={cashAmount3Handler}
+                >
+                  <Text
+                    style={[styles.tipChildText, { color: COLORS.primary }]}
+                  >
+                    $300.00
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.tipChildCon}
+                  onPress={cashAmount3Handler}
+                >
+                  <Text style={styles.tipChildText}>$300.00</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <Spacer space={SH(30)} />
+            <TextInput
+              placeholder={strings.posSale.otherAmount}
+              value={amount}
+              onChangeText={setAmount}
+              style={styles.otherAmountInput}
+              keyboardType='numeric'
+            />
+            <View style={{ flex: 1 }} />
+            {customerPhoneNo ? (
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                }}
+                onPress={cusCashPaidHandler}
+              >
+                <Text
+                  style={[styles.redrectingText, { color: COLORS.primary }]}
+                >
+                  {strings.posSale.rederecting}
+                </Text>
+                <Image source={loader} style={styles.loaderPic} />
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.redrectingText}>
+                {strings.posSale.rederecting}
+              </Text>
+            )}
+          </View>
+        </View>
+      </Modal>
+      {/*  customer cash total amount end */}
+
+      {/*  customer cash paid start */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={customerCashPaid}
+      >
+        <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
+          <View style={styles.primaryHeader}>
+            <Text style={styles.headerText}>
+              {strings.posSale.customerTotalAmountHeader}
+            </Text>
+            <TouchableOpacity
+              onPress={cusCashPaidRemoveHandler}
+              style={styles.crossButtonPosition}
+            >
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.custTotalAmountBodyCon]}>
+            <Spacer space={SH(40)} />
+            <Text style={styles.changeDueText}>
+              {strings.posSale.changeDue}
+            </Text>
+            <View style={{ flex: 1 }} />
+            <TouchableOpacity
+              style={[
+                styles.checkoutButton,
+                { marginVertical: moderateScale(20) },
+              ]}
+              // onPress={checkOutHandler}
+            >
+              <Text
+                style={[styles.checkoutText, { fontFamily: Fonts.Regular }]}
+              >
+                Continue
+              </Text>
+              <Image source={checkArrow} style={styles.checkArrow} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      {/*  customer cash paid end */}
     </View>
   );
 }

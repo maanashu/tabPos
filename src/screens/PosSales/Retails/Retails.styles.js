@@ -453,7 +453,7 @@ export const styles = StyleSheet.create({
    resizeMode:'contain'
   },
   walletIdButtonCon:{
-    borderTopWidth:1,
+    borderTopWidth:2,
     borderColor:COLORS.solidGrey,
     height:SH(75),
     borderBottomEndRadius:5,
@@ -465,6 +465,21 @@ export const styles = StyleSheet.create({
     backgroundColor:COLORS.solidGrey,
     justifyContent:'center',
     alignItems:'center'
+ },
+ customerHeading:{
+  fontSize: SF(18),
+  fontFamily: Fonts.MaisonBold,
+  color: COLORS.primary,
+ },
+ cusAddText:{
+  fontSize: SF(16),
+  fontFamily: Fonts.Regular,
+  color: COLORS.solid_grey,
+ },
+ walletIdcontent:{
+  fontSize: SF(14),
+  fontFamily: Fonts.MaisonBold,
+  color: COLORS.solid_grey,
  },
 
   // amount popup css start
@@ -500,7 +515,7 @@ export const styles = StyleSheet.create({
   },
   amountPopupCon: {
     width: windowWidth * 0.4,
-    height: windowHeight * 0.9,
+    height: windowHeight * 0.8,
     backgroundColor: COLORS.white,
     borderRadius: 12,
     alignSelf: 'center',
@@ -942,7 +957,7 @@ export const styles = StyleSheet.create({
 
   //  modal add new product   css start
   addNewProdouctCon: {
-    height: windowHeight * 0.9,
+    height: windowHeight * 0.8,
   },
   scanerStyle: {
     resizeMode: 'contain',
@@ -1056,10 +1071,10 @@ export const styles = StyleSheet.create({
 
   //  customer and payment css start
   custPaymentBodyCon:{
-  //  borderWidth:1,
    width: windowWidth * 0.25,
    alignSelf:'center',
-   alignItems:'center'
+   alignItems:'center',
+   flex:1
   },
   walletIdText:{
     color:COLORS.solid_grey,
@@ -1084,7 +1099,9 @@ export const styles = StyleSheet.create({
   redrectingText:{
     color:COLORS.darkGray,
     fontFamily:Fonts.Regular,
-    fontSize:SF(14)
+    fontSize:SF(14),
+    alignSelf:'center',
+    paddingVertical:verticalScale(35)
   },
   loaderPic:{
     width:SW(6),
@@ -1135,8 +1152,111 @@ export const styles = StyleSheet.create({
         fontFamily:Fonts.SemiBold,
         fontSize:SF(16),
         paddingHorizontal:moderateScale(5)
-      }
+      },
 
 
       // payment with jbr wallet css end 
+      // customer cash  modal css start
+      customerNOStyle:{
+        color:COLORS.solid_grey,
+        fontFamily:Fonts.Regular,
+        fontSize:SF(20)
+      },
+      customerInputWraper:{
+        borderWidth:1,
+        borderColor:COLORS.solidGrey,
+        borderRadius:7,
+        height:SH(60),
+        width: windowWidth * 0.25,
+        flexDirection:'row',
+        alignItems:'center'
+      },
+      customerNameInput:{
+        // borderWidth:1,
+        borderColor:COLORS.solidGrey,
+        backgroundColor:COLORS.textInputBackground,
+        borderRadius:7,
+        height:SH(60),
+        fontSize:SF(13),
+        width: windowWidth * 0.25,
+        flexDirection:'row',
+        alignItems:'center',
+        paddingHorizontal:moderateScale(10),
+        fontFamily:Fonts.Italic
+      },
+      firstNameAdd:{
+        color:COLORS.dark_grey,
+        fontSize:SF(14),
+        fontFamily:Fonts.SemiBold,
+      },
+      customerPhoneInput:{
+        color:COLORS.black,
+        fontSize:SF(20),
+        fontFamily:Fonts.Regular,
+        paddingHorizontal:moderateScale(10)
+      },
+      customerAddreCon:{
+        backgroundColor:COLORS.textInputBackground,
+        height:SH(221),
+        width:SW(94),
+        borderRadius:7,
+        paddingHorizontal:moderateScale(10)
+      },
+       // customer cash  modal css end
+
+      //  customer cash total amount start
+
+       custTotalAmountBodyCon:{
+        width: windowWidth * 0.36,
+        alignSelf:'center',
+        flex:1
+       },
+       tipChildCon:{
+         height:SH(60),
+         borderWidth:1,
+         borderColor:COLORS.solidGrey,
+         borderRadius:5,
+         alignItems:'center',
+         justifyContent:'center',
+         width: windowWidth * 0.11,
+       },
+       tipChildConChecked:{
+         borderColor:COLORS.primary,
+       },
+       tipChildText:{
+        color:COLORS.solid_grey,
+        fontFamily:Fonts.SemiBold,
+        fontSize:SF(20),
+       },
+       noTipsTextStyle:{
+        color:COLORS.dark_grey,
+        fontSize:SF(16),
+        fontFamily:Fonts.SemiBold,
+       },
+       noTipsButtonCon:{
+         height:SH(60),
+         borderWidth:1,
+         borderColor:COLORS.solidGrey,
+         borderRadius:5,
+         alignItems:'center',
+         justifyContent:'center',
+       },
+       otherAmountInput:{
+         height:SH(60),
+         borderWidth:1,
+         borderColor:COLORS.solidGrey,
+         borderRadius:5,
+         alignItems:'center',
+         fontFamily:Fonts.Italic,
+         fontSize:SF(14),
+         paddingHorizontal:moderateScale(15)
+       },
+       //  customer cash total amount end
+
+       changeDueText:{
+        color:COLORS.solid_grey,
+        fontFamily:Fonts.SemiBold,
+        fontSize:SF(30),
+        alignSelf:'center'
+       }
 });
