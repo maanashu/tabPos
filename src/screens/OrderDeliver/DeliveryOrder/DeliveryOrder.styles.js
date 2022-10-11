@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
 import { scale } from 'react-native-size-matters';
+import { height, width } from '@/theme/ScalerDimensions';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -274,6 +275,12 @@ export const styles = StyleSheet.create({
     fontSize: SF(11),
     color: COLORS.darkGray,
   },
+  productViewStyle: {
+    marginHorizontal: SW(5),
+    flexDirection: 'row',
+    top: 7,
+    justifyContent: 'space-between',
+  },
   priceText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(18),
@@ -363,4 +370,20 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
+  horizontalLine: {
+    borderWidth: 0.5,
+    borderColor: COLORS.solidGrey,
+    marginTop: 7,
+  },
+  itemSeparatorView: {
+    backgroundColor: COLORS.solidGrey,
+    height: 1,
+    width: '92%',
+    alignSelf: 'center',
+  },
+  map:{
+    width:windowWidth/2.2,
+    height:SW(137),
+    alignSelf:'center',
+  }
 });

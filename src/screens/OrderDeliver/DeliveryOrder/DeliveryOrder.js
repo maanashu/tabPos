@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import {
   deliveryTruck,
   notifications,
@@ -22,6 +23,8 @@ import {
   profileImage,
   Fonts,
   deliveryScooter,
+  dropdown,
+  dropdown2,
 } from '@/assets';
 import { styles } from './DeliveryOrder.styles';
 import { strings } from '@/localization';
@@ -38,6 +41,7 @@ import { Button, Spacer } from '@/components';
 export function DeliveryOrder() {
   const [viewAllReviews, setViewAllReviews] = useState(false);
   const [orderAccepted, setOrderAccepted] = useState(false);
+  const [readyPickup, setReadyForPickup] = useState(false);
 
   const customHeader = () => {
     return (
@@ -162,14 +166,7 @@ export function DeliveryOrder() {
   const onPressReview = index => {};
 
   const renderProductList = ({ item, index }) => (
-    <View
-      style={{
-        marginHorizontal: SW(5),
-        flexDirection: 'row',
-        top: 7,
-        justifyContent: 'space-between',
-      }}
-    >
+    <View style={styles.productViewStyle}>
       <View style={{ flexDirection: 'row', width: SW(50) }}>
         <Image source={item.image} style={styles.profileImage} />
 
@@ -188,17 +185,38 @@ export function DeliveryOrder() {
     </View>
   );
 
+  const orderStatusText = () => {
+    if (orderAccepted && readyPickup === false) {
+      return (
+        <Text style={styles.orderReviewText}>
+          {strings.deliveryOrders.ordersPreparing}
+        </Text>
+      );
+    } else if (orderAccepted && readyPickup) {
+      return (
+        <Text style={styles.orderReviewText}>
+          {strings.deliveryOrders.ready}
+        </Text>
+      );
+    } else {
+      return (
+        <Text style={styles.orderReviewText}>
+          {strings.deliveryOrders.orderReview}
+        </Text>
+      );
+    }
+  };
+
   const changeView = () => {
-    if (viewAllReviews) {
+    console.log('viewAllReviews===', viewAllReviews);
+    console.log('readyPickup===', readyPickup);
+    if (viewAllReviews && readyPickup === false) {
+      console.log('if===');
       return (
         <View style={[styles.headerMainView, { paddingVertical: SH(0) }]}>
           <View style={styles.orderNumberLeftView}>
             <Spacer space={SH(20)} />
-            <View style={styles.reviewHeadingView}>
-              <Text style={styles.orderReviewText}>
-                {strings.deliveryOrders.orderReview}
-              </Text>
-            </View>
+            <View style={styles.reviewHeadingView}>{orderStatusText()}</View>
 
             <View style={{ flex: 1 }}>
               <FlatList
@@ -250,27 +268,14 @@ export function DeliveryOrder() {
               </View>
             </View>
 
-            <View
-              style={{
-                borderWidth: 0.5,
-                borderColor: COLORS.solidGrey,
-                marginTop: 7,
-              }}
-            />
+            <View style={styles.horizontalLine} />
 
             <View>
               <FlatList
                 data={productList}
                 renderItem={renderProductList}
                 ItemSeparatorComponent={() => (
-                  <View
-                    style={{
-                      backgroundColor: COLORS.solidGrey,
-                      height: 1,
-                      width: '92%',
-                      alignSelf: 'center',
-                    }}
-                  />
+                  <View style={styles.itemSeparatorView} />
                 )}
               />
             </View>
@@ -306,14 +311,15 @@ export function DeliveryOrder() {
 
               {orderAccepted ? (
                 <Button
+                  onPress={() => {
+                    setReadyForPickup(true);
+                  }}
                   style={styles.button}
                   title={'Ready for Pickup'}
                   textStyle={styles.buttonText}
                 />
               ) : (
-                <View
-                  style={styles.orderReviewButton}
-                >
+                <View style={styles.orderReviewButton}>
                   <Button
                     style={styles.declineButton}
                     title={'Decline'}
@@ -334,7 +340,95 @@ export function DeliveryOrder() {
           </View>
         </View>
       );
+    } else if (viewAllReviews && readyPickup) {
+      console.log('else if===');
+      return (
+        <View style={[styles.headerMainView, { paddingVertical: SH(0) }]}>
+          <View style={styles.orderNumberLeftView}>
+            <Spacer space={SH(20)} />
+            <View style={styles.reviewHeadingView}>{orderStatusText()}</View>
+
+            {/* <View style={{ flex: 1,borderWidth:3 }}> */}
+            <FlatList
+              data={orderReview}
+              renderItem={renderReviewItem}
+              showsVerticalScrollIndicator={false}
+            />
+            {/* </View> */}
+          </View>
+
+          <View style={styles.orderDetailView}>
+            <Spacer space={SH(20)} />
+            <View style={styles.reviewHeadingView}>
+              <Text style={styles.orderReviewText}>
+                {strings.deliveryOrders.orderId}
+              </Text>
+
+              <Text style={styles.orderReviewText}>
+                {strings.deliveryOrders.orderDate}
+              </Text>
+            </View>
+            <View
+              style={[
+                styles.profileDetailView,
+                { justifyContent: 'space-between' },
+              ]}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <Image source={profileImage} style={styles.profileImage} />
+
+                <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
+                  <Text
+                    style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}
+                  >
+                    {'John Mike'}
+                  </Text>
+                  <Text style={[styles.timeText, { paddingLeft: 0 }]}>
+                    {'5.69 miles away'}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+                <Image source={deliveryScooter} style={styles.profileImage} />
+                <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
+                  <Text
+                    style={[
+                      styles.nameText,
+                      { color: COLORS.primary, fontFamily: Fonts.SemiBold },
+                    ]}
+                  >
+                    {strings.deliveryOrders.deliveryType}
+                  </Text>
+                  <Text style={styles.timeText}>
+                    {strings.deliveryOrders.time}
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.horizontalLine} />
+
+            <View style={{ flex: 1, marginTop: SH(15) }}>
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                showCompass
+                region={{
+                  latitude: 27.2046,
+                  longitude: 77.4977,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+                style={styles.map}
+              >
+                {/* {showOrderStatusModal()} */}
+              </MapView>
+            </View>
+          </View>
+        </View>
+      );
     } else {
+      console.log('else===');
       return (
         <View style={{ flex: 1 }}>
           <FlatList
@@ -434,6 +528,30 @@ export function DeliveryOrder() {
         </View>
       );
     }
+  };
+
+  const showOrderStatusModal = () => {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          borderWidth: 2,
+          alignSelf: 'flex-end',
+          bottom: 10,
+          backgroundColor: COLORS.white,
+          right: SW(5),
+          width: SW(100),
+        }}
+      >
+        <View style={{ flexDirection: 'row', borderWidth: 2,justifyContent:'space-between' }}>
+          <View>
+            <Text style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}>{'Order status'}</Text>
+            <Text style={styles.timeText}>{'Assigned driver'}</Text>
+          </View>
+          <Image source={dropdown2} />
+        </View>
+      </View>
+    );
   };
 
   return (
