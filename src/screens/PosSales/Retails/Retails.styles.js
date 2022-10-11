@@ -1258,5 +1258,185 @@ export const styles = StyleSheet.create({
         fontFamily:Fonts.SemiBold,
         fontSize:SF(30),
         alignSelf:'center'
-       }
+       },
+      //  pos search css start
+       searchproductCon2:{
+         height:windowHeight * 0.9
+       },
+       searchproductCon1: {
+        width: windowWidth * 0.6,
+        height: windowHeight * 0.8,
+        backgroundColor: COLORS.white,
+        borderRadius: 12,
+        // alignSelf: 'center',
+        position: 'absolute',
+        paddingHorizontal:moderateScale(12),
+        marginLeft:moderateScale(10)
+      },
+      searchInputWraper: {
+        backgroundColor: COLORS.textInputBackground,
+        borderRadius: 7,
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: SH(55),
+        justifyContent: 'space-between',
+      },
+      backArrow2Style:{
+        width: SW(15),
+        height: SW(10),
+        resizeMode: 'contain',
+        tintColor:COLORS.darkGray
+      },
+      searchCrossButton: {
+        width: SW(8),
+        height: SW(8),
+        resizeMode: 'contain',
+        marginHorizontal:moderateScale(8)
+      },
+      marboloRedPackStyle:{
+        width: SW(20),
+        height: SW(20),
+        resizeMode: 'contain',
+      },
+      marbolorRedStyle:{
+        color:COLORS.solid_grey,
+        fontFamily:Fonts.SemiBold,
+        fontSize:SF(20),
+      },
+      stockStyle:{
+        color:COLORS.solid_grey,
+        fontFamily:Fonts.Regular,
+        fontSize:SF(14),
+      },
+      searchItalicText:{
+        color:COLORS.darkGray,
+        fontFamily:Fonts.Italic,
+        fontSize:SF(14),
+      },
+      hr:{
+        borderWidth:1,
+        borderColor:COLORS.row_grey,
+        marginVertical:verticalScale(5)
+      },
+      flatlistHeight:{
+        height:windowHeight * 0.8
+      },
+      productDetailCon:{
+        // borderWidth:1,
+        width: windowWidth * 0.4,
+        // height: windowHeight * 0.6,
+        alignSelf:'center'
+
+      },
+      availablestockHeading:{
+        color:COLORS.bluish_green,
+        fontFamily:Fonts.MaisonBold,
+        fontSize:SF(18),
+        alignSelf:'center'
+      },
+      addcartButtonStyle:{
+        backgroundColor:COLORS.primary,
+        borderRadius:5,
+        width:windowWidth * 0.15,
+        justifyContent:'center',
+        alignItems:'center',
+        alignSelf:'center'
+      },
+      addToCartText:{
+        color:COLORS.white,
+        fontFamily:Fonts.Regular,
+        fontSize:SF(14),
+        paddingVertical:verticalScale(7)
+      },
+      searchDetailsCon2:{
+        height:windowHeight * 0.7,
+        width:windowWidth * 0.7,
+        position:'absolute',
+        top:100,
+        left:100,
+        ...ShadowStyles.shadow2
+      },
+      backButtonCon:{
+        backgroundColor:COLORS.textInputBackground,
+        borderRadius:3,
+        width:windowWidth * 0.07,
+        // justifyContent:'center',
+        alignItems:'center',
+        flexDirection:'row'
+      },
+      backTextStyle:{
+        color:COLORS.dark_grey,
+        fontFamily:Fonts.SemiBold,
+        fontSize:SF(16),
+        paddingVertical:verticalScale(5)
+      },
+      backButtonArrow:{
+        width: SW(12),
+        height: SW(8),
+        resizeMode: 'contain',
+        tintColor:COLORS.dark_grey,
+      },
+      productDetailHeader:{
+        color:COLORS.solid_grey,
+        fontFamily:Fonts.MaisonRegular,
+        fontSize:SF(32),
+      },
+      detailImageCon:{
+        // borderWidth:1,
+        width:windowWidth * 0.25,
+      },
+      detailPriceCon:{
+        // borderWidth:1,
+        width:windowWidth * 0.40,
+      },
+      marboloPackStyle:{
+        width: SW(92),
+        height: SW(60),
+        resizeMode: 'contain',
+        marginTop:-15
+      },
+      productDescrptionCon:{
+        borderWidth:1,
+        borderStyle:'dashed',
+        borderColor:COLORS.solidGrey,
+        borderRadius:5,
+        paddingHorizontal:moderateScale(5)
+      },
+      productDes:{
+        color:COLORS.dark_grey,
+        fontFamily:Fonts.Regular,
+        fontSize:SF(13),
+      },
+      detailHeader:{
+        color:COLORS.solid_grey,
+        fontFamily:Fonts.MaisonBold,
+        fontSize:SF(18),
+      },
+      descriptionAddCon:{
+        backgroundColor:COLORS.primary,
+        borderRadius:5,
+        justifyContent:'center',
+        alignItems:'center',
+      },
+      desAddCartText:{
+        color:COLORS.white,
+        fontFamily:Fonts.SemiBold,
+        fontSize:SF(16),
+        paddingVertical:verticalScale(6)
+      },
+      unitTypeCon:{
+        width:windowWidth * 0.12,
+        borderWidth:1,
+        borderStyle:'dashed',
+        borderColor:COLORS.solidGrey,
+        borderRadius:5,
+        paddingHorizontal:moderateScale(5),
+        marginHorizontal:moderateScale(5),
+        marginVertical:verticalScale(2)
+      },
+      unitFlatlist:{
+        justifyContent:'space-between'
+      }
+
+       //  pos search css end
 });

@@ -113,23 +113,12 @@ export const en = {
       cashRecive:'Cash amount received',
       otherAmount:'Other amount',
       changeDue:'Change Due: $3.40',
-      firstName:'First name'
-
-
-
-
-      
-
+      firstName:'First name',
+      availableStock:'Available in stock: 206',
+      addToCart:'Add to cart',
+      back:'Back',
+      marboloRed:'Marlboro Red-Pack',
+      details:'Details',
+      productDes:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam elementum, ligula quis ultricies iaculis, odio augue venenatis eros, interdum suscipit ipsum turpis nec velit. Vivamus cursus, dui vitae auctor finibus, felis ex malesuada nunc, eget fringilla ante dui in diam. Integer non dapibus nulla.'
     },
-  
-  deliveryOrders:{
-    heading:'Delivery orders',
-    search:'Search',
-    orderNumber:'Number of Orders',
-    orderReview:'Orders to review',
-    viewAll:'View all',
-    orderConversion:'Order conversion',
-    deliveryOrders:'Delivering Orders',
-    
-  }
 };

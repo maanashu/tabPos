@@ -86,3 +86,62 @@ export const jbritemList = [
       id: '4',
     },
   ];
+  export const searchProductData = [
+    {
+      productName: 'Marlboro Red-Pack',
+      stock: '206 in stock',
+      price: '$84.99',
+      location:'Available in another location',
+      id: '1',
+    },
+    {
+      productName: 'Marlboro Red-Pack',
+      stock: '206 in stock',
+      price: '$84.99',
+      location:'Available in another location',
+      id: '2',
+    },
+    // {
+    //   productName: 'Marlboro Red-Pack',
+    //   stock: '206 in stock',
+    //   price: '$84.99',
+    //   location:'Available in another location',
+    //   id: '3',
+    // }
+    
+  
+  ];
+
+  export const productUnitData = [
+    {
+      unitType: 'unit Type',
+      price: '430',
+      id: '1',
+    },
+    {
+      unitType: 'Unit Weight',
+      price: '430',
+      id: '2',
+    },
+    {
+      unitType: 'SKU ',
+      price: '430',
+      id: '3',
+    },
+    {
+      unitType: 'Barcode',
+      price: '430',
+      id: '4',
+    },
+    {
+      unitType: 'Stock ',
+      price: '430',
+      id: '5',
+    },
+    {
+      unitType: 'Stock',
+      price: '430',
+      id: '6',
+    },
+
+  ]

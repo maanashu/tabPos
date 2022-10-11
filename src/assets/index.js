@@ -53,6 +53,9 @@ export { default as conversionBox } from '@/assets/icons/ic_deliveryOrder/conver
 export { default as backArrow } from '@/assets/icons/ic_deliveryOrder/backArrow.png';
 export { default as profileImage } from '@/assets/icons/ic_deliveryOrder/profileImage.png';
 export { default as deliveryScooter } from '@/assets/icons/ic_deliveryOrder/deliveryScooter.png';
+export { default as backArrow2 } from '@/assets/icons/ic_retail/backArrow.png';
+export { default as marboloRedPack } from '@/assets/icons/ic_retail/marboloRedPack.png';
+export { default as marboloPack } from '@/assets/icons/ic_retail/marboloPack.png';
 
 /* Fonts */
 export const Fonts = {
