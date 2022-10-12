@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
 import { scale } from 'react-native-size-matters';
+import { height, width } from '@/theme/ScalerDimensions';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -59,7 +60,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.orderStatusBackground,
     borderRadius: 8,
     width: SW(80),
-    height: SH(100),
+    paddingVertical: SH(35),
     flexDirection: 'row',
   },
   contentContainer: {
@@ -167,6 +168,10 @@ export const styles = StyleSheet.create({
     height: SW(5),
     resizeMode: 'contain',
   },
+  rightIconStyle: {
+    width: SW(10),
+    justifyContent: 'center'
+  },
   nameText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(18),
@@ -254,6 +259,10 @@ export const styles = StyleSheet.create({
     marginTop: 4,
     flexDirection: 'row',
   },
+  productImageView: {
+    flexDirection: 'row',
+    width: SW(50)
+  },
   profileImage: {
     width: SW(17),
     height: SW(17),
@@ -273,6 +282,12 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
     fontSize: SF(11),
     color: COLORS.darkGray,
+  },
+  productViewStyle: {
+    marginHorizontal: SW(5),
+    flexDirection: 'row',
+    top: 7,
+    justifyContent: 'space-between',
   },
   priceText: {
     fontFamily: Fonts.Regular,
@@ -363,4 +378,62 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
+  horizontalLine: {
+    borderWidth: 0.5,
+    borderColor: COLORS.solidGrey,
+    marginTop: 7,
+  },
+  itemSeparatorView: {
+    backgroundColor: COLORS.solidGrey,
+    height: 1,
+    width: '92%',
+    alignSelf: 'center',
+  },
+  map: {
+    width: windowWidth / 2.2,
+    height: SW(137),
+    alignSelf: 'center',
+    borderRadius: 6
+  },
+  headerTab: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    alignItems: 'center',
+  },
+  orderModalView: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    bottom: 10,
+    backgroundColor: COLORS.white,
+    right: SW(5),
+    width: SW(100),
+    paddingVertical: 8,
+    borderRadius: 7,
+  },
+  deliveryImage: {
+    width: SW(15),
+    height: SH(46),
+    resizeMode: 'contain',
+    alignSelf:'flex-end'
+  },
+  deliveryStatus: {
+    flexDirection: 'row',
+    height: SH(53)
+  },
+  verifyText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(12),
+    color: COLORS.gerySkies,
+  },
+  justifyContentStyle: {
+    justifyContent: 'flex-end'
+  },
+  radioImage: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    left: 6
+  }
 });

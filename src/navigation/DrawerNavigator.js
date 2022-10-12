@@ -23,7 +23,18 @@ import {
 import { NavigationContainerRefContext } from '@react-navigation/native';
 import {navigationRef} from './NavigationRef'
 
-const getCurrentRouteName = navigationRef.current.getCurrentRoute().name
+// const getCurrentRouteName = navigationRef.current.getCurrentRoute().name
+
+// const isFocusedCurrentRoute = (navigationRouteName)=>{
+
+//   if (getCurrentRouteName === navigationRouteName){
+//     return true
+//   }else{
+//     return false
+//   }
+
+// }
+
 
 export function DrawerNavigator(props) {
 
@@ -48,7 +59,7 @@ export function DrawerNavigator(props) {
           onPress={() => { navigate(NAVIGATION.retails) }}
           label=""
           icon={({ focused, color, size }) => (
-            console.log('ishgjk',focused,navigationRef.current.getCurrentRoute().name),
+            // console.log('ishgjk',focused,isFocusedCurrentRoute(NAVIGATION.retails)),
              
             // if (getCurrentRouteName == NAVIGATION.retails){
               
