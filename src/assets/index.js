@@ -56,6 +56,12 @@ export { default as deliveryScooter } from '@/assets/icons/ic_deliveryOrder/deli
 export { default as backArrow2 } from '@/assets/icons/ic_retail/backArrow.png';
 export { default as marboloRedPack } from '@/assets/icons/ic_retail/marboloRedPack.png';
 export { default as marboloPack } from '@/assets/icons/ic_retail/marboloPack.png';
+export { default as jbrCoin } from '@/assets/icons/ic_wallet/jbrCoin.png';
+export { default as cash } from '@/assets/icons/ic_wallet/cash.png';
+export { default as card2 } from '@/assets/icons/ic_wallet/card.png';
+export { default as rightBack } from '@/assets/icons/ic_wallet/rightBack.png';
+export { default as transactionChart } from '@/assets/icons/ic_wallet/transactionChart.png';
+export { default as wallet2 } from '@/assets/icons/ic_wallet/wallet.png';
 
 /* Fonts */
 export const Fonts = {

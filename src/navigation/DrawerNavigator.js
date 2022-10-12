@@ -20,8 +20,13 @@ import {
   settings,
   power
 } from '@/assets';
+import { NavigationContainerRefContext } from '@react-navigation/native';
+import {navigationRef} from './NavigationRef'
+
+const getCurrentRouteName = navigationRef.current.getCurrentRoute().name
 
 export function DrawerNavigator(props) {
+
   return (
     <DrawerContentScrollView
       {...props}
@@ -43,6 +48,11 @@ export function DrawerNavigator(props) {
           onPress={() => { navigate(NAVIGATION.retails) }}
           label=""
           icon={({ focused, color, size }) => (
+            console.log('ishgjk',focused,navigationRef.current.getCurrentRoute().name),
+             
+            // if (getCurrentRouteName == NAVIGATION.retails){
+              
+            // }
             <Image
               source={retail}
               style={styles.iconStyle}
@@ -60,8 +70,7 @@ export function DrawerNavigator(props) {
           )}
         />
         <DrawerItem
-          // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          onPress={() => alert('coming soon')}
+          onPress={() => { navigate(NAVIGATION.shippingOrders) }}
           label="" 
           
           icon={({ focused, color, size }) => (
@@ -96,12 +105,11 @@ export function DrawerNavigator(props) {
           )}
         />
         <DrawerItem
-          // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          onPress={() => alert('coming soon')}
+          onPress={() => { navigate(NAVIGATION.wallet) }}
           label=""
           
           icon={({ focused, color, size }) => (
-            <Image
+              <Image
               source={wallet}
               style={styles.iconStyle}
             />

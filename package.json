@@ -11,6 +11,7 @@
     "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
+    "@react-native-community/blur": "^4.2.0",
     "@react-native-masked-view/masked-view": "^0.2.7",
     "@react-navigation/bottom-tabs": "^6.3.2",
     "@react-navigation/drawer": "^6.5.0",

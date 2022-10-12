@@ -121,4 +121,15 @@ export const en = {
       details:'Details',
       productDes:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam elementum, ligula quis ultricies iaculis, odio augue venenatis eros, interdum suscipit ipsum turpis nec velit. Vivamus cursus, dui vitae auctor finibus, felis ex malesuada nunc, eget fringilla ante dui in diam. Integer non dapibus nulla.'
     },
+    wallet:{
+      wallet:'Wallet',
+      totalTransections:'Total Transactions',
+      today:'Today',
+      weekly:'Weekly',
+      monthly:'Monthly',
+      quaterly:'Quaterly',
+      yearly:'Yearly',
+      transationPrice:'$8,426,590',
+      transectionsPrice:'$8,458,041'
+    }
 };

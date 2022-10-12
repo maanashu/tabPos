@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { NAVIGATION } from '@/constants';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
-import { Retails, DeliveryOrder } from '@/screens';
+import { Retails, DeliveryOrder,ShippingOrders, Wallet} from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
 
@@ -34,6 +34,16 @@ export function HomeNavigator() {
       <Drawer.Screen
         component={DeliveryOrder}
         name={NAVIGATION.deliveryOrder}
+        options={{ headerShown: false }}
+      />
+       <Drawer.Screen
+        component={ShippingOrders}
+        name={NAVIGATION.shippingOrders}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        component={Wallet}
+        name={NAVIGATION.wallet}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

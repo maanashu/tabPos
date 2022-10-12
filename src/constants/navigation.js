@@ -8,4 +8,6 @@ export const NAVIGATION = {
   loginIntial: 'LoginIntial',
   retails: 'Retails',
   deliveryOrder: 'DeliveryOrder',
+  shippingOrders: 'ShippingOrders',
+  wallet: 'Wallet',
 };

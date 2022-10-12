@@ -1,3 +1,8 @@
+import {
+  jbrCoin,
+  cash,
+  card2
+} from '@/assets';
 export const jbritemList = [
     {
       name: 'JFR Maduro',
@@ -144,4 +149,41 @@ export const jbritemList = [
       id: '6',
     },
 
+  ];
+  export const aboutTransactionData = [
+    {
+      aboutTransaction: 'JBR COIN',
+      price: '$8,426,590',
+      img:jbrCoin,
+      id: '1',
+    },
+    {
+      aboutTransaction: 'CASH',
+      price: '$8,426,590',
+      img:cash,
+      id: '2',
+    },
+    {
+      aboutTransaction: 'CARD',
+      price: '$8,426,590',
+      img:card2,
+      id: '3',
+    },
+  ];
+  export const tipsData = [
+    {
+      heading: 'Tips',
+      price: '$390',
+      id: '1',
+    },
+    {
+      heading: 'Delivery Charge',
+      price: '$390',
+      id: '2',
+    },
+    {
+      heading: 'Shipping Charge',
+      price: '$1,496',
+      id: '3',
+    },
   ]
