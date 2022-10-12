@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.orderStatusBackground,
     borderRadius: 8,
     width: SW(80),
-    height: SH(100),
+    paddingVertical: SH(35),
     flexDirection: 'row',
   },
   contentContainer: {
@@ -168,6 +168,10 @@ export const styles = StyleSheet.create({
     height: SW(5),
     resizeMode: 'contain',
   },
+  rightIconStyle: {
+    width: SW(10),
+    justifyContent: 'center'
+  },
   nameText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(18),
@@ -254,6 +258,10 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     marginTop: 4,
     flexDirection: 'row',
+  },
+  productImageView: {
+    flexDirection: 'row',
+    width: SW(50)
   },
   profileImage: {
     width: SW(17),
@@ -381,9 +389,51 @@ export const styles = StyleSheet.create({
     width: '92%',
     alignSelf: 'center',
   },
-  map:{
-    width:windowWidth/2.2,
-    height:SW(137),
-    alignSelf:'center',
+  map: {
+    width: windowWidth / 2.2,
+    height: SW(137),
+    alignSelf: 'center',
+    borderRadius: 6
+  },
+  headerTab: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    alignItems: 'center',
+  },
+  orderModalView: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    bottom: 10,
+    backgroundColor: COLORS.white,
+    right: SW(5),
+    width: SW(100),
+    paddingVertical: 8,
+    borderRadius: 7,
+  },
+  deliveryImage: {
+    width: SW(15),
+    height: SH(46),
+    resizeMode: 'contain',
+    alignSelf:'flex-end'
+  },
+  deliveryStatus: {
+    flexDirection: 'row',
+    height: SH(53)
+  },
+  verifyText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(12),
+    color: COLORS.gerySkies,
+  },
+  justifyContentStyle: {
+    justifyContent: 'flex-end'
+  },
+  radioImage: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    left: 6
   }
 });

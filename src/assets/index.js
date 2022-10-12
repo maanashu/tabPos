@@ -27,22 +27,22 @@ export { default as plus } from '@/assets/icons/ic_retail/plus.png';
 export { default as minus } from '@/assets/icons/ic_retail/minus.png';
 export { default as doubleRight } from '@/assets/icons/ic_retail/doubleRight.png';
 export { default as jfr } from '@/assets/icons/ic_retail/jfr.png';
-export { default as upMenu} from '@/assets/icons/ic_retail/upMenu.png';
-export { default as dropdown2} from '@/assets/icons/ic_retail/dropdown.png';
-export { default as dollar} from '@/assets/icons/ic_retail/dollar.png';
-export { default as addDiscountPic} from '@/assets/icons/ic_retail/addDiscount.png';
-export { default as notes} from '@/assets/icons/ic_retail/notes.png';
-export { default as checkbox} from '@/assets/icons/ic_retail/checkbox.png';
-export { default as checkedCheckbox} from '@/assets/icons/ic_retail/checkedCheckbox.png';
-export { default as checkArrow} from '@/assets/icons/ic_retail/checkArrow.png';
-export { default as scanner} from '@/assets/icons/ic_retail/scanner.png';
-export { default as jbr_icon} from '@/assets/icons/ic_retail/logo_icon.png';
-export { default as card} from '@/assets/icons/ic_retail/card.png';
-export { default as money} from '@/assets/icons/ic_retail/money.png';
-export { default as marboloPlus} from '@/assets/icons/ic_retail/marboloPlus.png';
-export { default as loader} from '@/assets/icons/ic_retail/loader.png';
-export { default as ashton} from '@/assets/icons/ic_retail/ashton.png';
-export { default as jbrCustomer} from '@/assets/icons/ic_retail/jbrCustomer.png';
+export { default as upMenu } from '@/assets/icons/ic_retail/upMenu.png';
+export { default as dropdown2 } from '@/assets/icons/ic_retail/dropdown.png';
+export { default as dollar } from '@/assets/icons/ic_retail/dollar.png';
+export { default as addDiscountPic } from '@/assets/icons/ic_retail/addDiscount.png';
+export { default as notes } from '@/assets/icons/ic_retail/notes.png';
+export { default as checkbox } from '@/assets/icons/ic_retail/checkbox.png';
+export { default as checkedCheckbox } from '@/assets/icons/ic_retail/checkedCheckbox.png';
+export { default as checkArrow } from '@/assets/icons/ic_retail/checkArrow.png';
+export { default as scanner } from '@/assets/icons/ic_retail/scanner.png';
+export { default as jbr_icon } from '@/assets/icons/ic_retail/logo_icon.png';
+export { default as card } from '@/assets/icons/ic_retail/card.png';
+export { default as money } from '@/assets/icons/ic_retail/money.png';
+export { default as marboloPlus } from '@/assets/icons/ic_retail/marboloPlus.png';
+export { default as loader } from '@/assets/icons/ic_retail/loader.png';
+export { default as ashton } from '@/assets/icons/ic_retail/ashton.png';
+export { default as jbrCustomer } from '@/assets/icons/ic_retail/jbrCustomer.png';
 export { default as notifications } from '@/assets/icons/ic_deliveryOrder/notifications.png';
 export { default as chart } from '@/assets/icons/ic_deliveryOrder/chart.png';
 export { default as pin } from '@/assets/icons/ic_deliveryOrder/pin.png';
@@ -53,6 +53,9 @@ export { default as conversionBox } from '@/assets/icons/ic_deliveryOrder/conver
 export { default as backArrow } from '@/assets/icons/ic_deliveryOrder/backArrow.png';
 export { default as profileImage } from '@/assets/icons/ic_deliveryOrder/profileImage.png';
 export { default as deliveryScooter } from '@/assets/icons/ic_deliveryOrder/deliveryScooter.png';
+export { default as delivery } from '@/assets/icons/ic_deliveryOrder/delivery.png';
+export { default as deliveryLine } from '@/assets/icons/ic_deliveryOrder/deliveryBlue.png';
+export { default as radio } from '@/assets/icons/ic_deliveryOrder/radio.png';
 
 /* Fonts */
 export const Fonts = {
