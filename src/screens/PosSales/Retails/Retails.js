@@ -868,7 +868,7 @@ export function Retails() {
             <View style={styles.bottomSubCon}>
               <Text style={styles.smallLightText}>4 Items</Text>
             </View>
-            <Spacer space={SH(30)} />
+            <Spacer space={SH(12)} />
             <TouchableOpacity
               style={styles.checkoutButton}
               onPress={checkOutHandler}

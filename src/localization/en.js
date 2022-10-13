@@ -187,6 +187,8 @@ export const en = {
       yearly:'Yearly',
       transationPrice:'$8,426,590',
       transectionsPrice:'$8,458,041',
-      paginationCount:'1-20 of 10,000 '
+      paginationCount:'1-20 of 10,000',
+      orderNo:'Order# 25659165659165',
+      completed:'Completed'
     }
 };

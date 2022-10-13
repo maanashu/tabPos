@@ -13,7 +13,7 @@ import { BlurView } from "@react-native-community/blur";
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { styles } from "./Wallet.styles";
 import { strings } from "@/localization";
-import {aboutTransactionData, tipsData, allTransactionData, TransactionTableHeading, TransactionTableData} from '@/constants/flatListData'
+import {aboutTransactionData, tipsData, allTransactionData, TransactionTableHeading, TransactionTableData, orderCompleteData} from '@/constants/flatListData'
 import {
   deliveryTruck,
   notifications,
@@ -27,7 +27,9 @@ import {
   Union,
   mask,
   maskRight,
-  unionRight
+  unionRight,
+  menu,
+  leftBack
 } from '@/assets';
 import { Button, Spacer } from '@/components';
 import {
@@ -38,9 +40,10 @@ import {
   ContributionGraph,
   StackedBarChart
 } from "react-native-chart-kit";
-import { moderateScale } from "react-native-size-matters";
+import { moderateScale,verticalScale } from "react-native-size-matters";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table, Row, Rows } from 'react-native-table-component';
+const windowHeight = Dimensions.get('window').height;
 const data = {
   labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
   datasets: [
@@ -72,6 +75,7 @@ const data = {
       { label: 'xyz', value: 'xyz' },
       { label: 'abc', value: 'abc' },
     ]);
+    const [orderModal, setOrderModal] = useState(false)
 
     const naviagtionHandler = item => {
       if(item.transaction === 'All'){
@@ -124,7 +128,15 @@ const data = {
     };
     const weeklyTraRemoveHandler = () => {
       setWeeklyTrasaction(false)
-    }
+    };
+    const orderNoHandler = () => {
+      setOrderModal(!orderModal)
+    };
+    const orderNoRemoveHandler = () => {
+      setOrderModal(false);
+      setWeeklyTrasaction(true)
+    };
+    
 
     const customHeader = () => {
       return (
@@ -218,10 +230,74 @@ const data = {
       <TouchableOpacity style={[styles.allJbrCon, styles.allJbrConBluish]} onPress={()=> naviagtionHandler(item)}>
       <Text style={[styles.allJbrText, styles.allJbrTextbluish]}>{item.transaction} {item.count}</Text>
        </TouchableOpacity>
-    )
+    );
+    const renderCompleteTranItem = ({ item }) => (
+      <View style={styles.jbrListCon}>
+        <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
+          <View style={{ flexDirection: 'row', width: SW(60) }}>
+            <Image source={menu} style={styles.ashtonStyle} />
+            <View style={{ paddingHorizontal: moderateScale(10) }}>
+              <Text style={[styles.jfrText, { color: COLORS.black }]}>
+                {item.name}
+              </Text>
+              <Text style={styles.boxText}>Box</Text>
+            </View>
+          </View>
+          <Text style={styles.onexstyle}>
+            {' '}
+            <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>{' '}
+            {strings.posSale.onex}
+          </Text>
+          <Text style={[styles.jfrText, { color: COLORS.black, paddingHorizontal:moderateScale(10)}]}>
+            {item.price}
+          </Text>
+        </View>
+      </View>
+    );
 
     const changeView = () => {
-      if(weeklyTransaction){
+      if(orderModal){
+      return(
+        <View style={styles.numpadContainer}>
+        <Spacer space={SH(40)} />
+            <View style={styles.orderCon}>
+              <TouchableOpacity  onPress={orderNoRemoveHandler}>
+                <Image source={leftBack} style={styles.leftBackStyle}/>
+              </TouchableOpacity>
+                <Text style={styles.orderNoText}>{strings.wallet.orderNo}</Text>
+                <View style={styles.completeBtnCon}>
+                    <Text style={styles.completeBtnText}>{strings.wallet.completed}</Text>
+                </View>
+             </View>
+             <View style={styles.hr}></View>
+          <View style={{ height: windowHeight, paddingBottom: 60}}>
+            
+             <Spacer space={SH(30)} />
+            <View style={[styles.displayFlex,{paddingHorizontal:moderateScale(10)}]}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.listOfItem}>
+                  {strings.posSale.listOfItem}
+                </Text>
+                <Text style={styles.walletItem}>4 Items</Text>
+              </View>
+              <Text style={styles.rewardPointStyle}>
+                {strings.posSale.rewardpoint}
+              </Text>
+            </View>
+            <Spacer space={SH(20)} />
+
+            <View style={{paddingHorizontal:moderateScale(10)}}>
+              <FlatList
+                data={orderCompleteData}
+                renderItem={renderCompleteTranItem}
+                keyExtractor={item => item.id}
+              />
+            </View>
+            
+          </View>
+        </View>
+      )
+      }else if(weeklyTransaction){
           return(
             <View >
              {customHeader()}
@@ -260,10 +336,10 @@ const data = {
              </View>
              <View style={styles.orderTypeCon}>
                    <View style={{flexDirection:'row', alignItems:'center'}}>
-                   <View style={styles.datePickerCon}>
+                   <TouchableOpacity style={styles.datePickerCon} onPress={orderNoHandler}>
                       <Image source={calendar1} style={styles.calendarStyle}/>
                        <Text style={styles.datePlaceholder}>Date</Text>
-                  </View>
+                  </TouchableOpacity>
                   <View style={{marginHorizontal:moderateScale(10)}}>
                   {/* <DropDownPicker
                       ArrowUpIconComponent={({ style }) => (
@@ -428,6 +504,7 @@ const data = {
        <View style={styles.container}>
        
         {changeView()}
+       
        </View>
       );
   }

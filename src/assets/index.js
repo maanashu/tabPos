@@ -70,6 +70,7 @@ export { default as Union } from '@/assets/icons/ic_wallet/Union.png';
 export { default as mask } from '@/assets/icons/ic_wallet/mask.png';
 export { default as unionRight } from '@/assets/icons/ic_wallet/unionRight.png';
 export { default as maskRight } from '@/assets/icons/ic_wallet/maskRight.png';
+export { default as leftBack } from '@/assets/icons/ic_wallet/leftBack.png';
 
 /* Fonts */
 export const Fonts = {

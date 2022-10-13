@@ -377,4 +377,109 @@ export const styles = StyleSheet.create({
         // width: SW(330),
         zIndex: 1
     },
+
+
+
+    numpadContainer: {
+      width: SW(235),
+      height: windowHeight,
+      backgroundColor: COLORS.white,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      // paddingLeft: moderateScale(10),
+    },
+    listOfItem:{
+      color:COLORS.black,
+      fontFamily:Fonts.SemiBold,
+      fontSize:SF(24)
+    },
+    walletItem:{
+      color:COLORS.darkGray,
+      fontFamily:Fonts.Regular,
+      fontSize:SF(14),
+      paddingHorizontal:moderateScale(5)
+    },
+    rewardPointStyle:{
+      color:COLORS.primary,
+      fontFamily:Fonts.SemiBold,
+      fontSize:SF(18)
+    },
+    jbrListCon:{
+      borderBottomWidth:1,
+      borderColor:COLORS.solidGrey
+    },
+    ashtonStyle:{
+      width:SW(12),
+     height:SW(12),
+      resizeMode:'contain',
+    },
+    onexstyle:{
+      color:COLORS.dark_grey,
+      fontFamily:Fonts.SemiBold,
+      fontSize:SF(18)
+    },
+    onlyxstyle:{
+      color:COLORS.dark_grey,
+      fontFamily:Fonts.Regular,
+      fontSize:SF(14)
+    },
+    itmybdaystyle:{
+      color:COLORS.black,
+      fontFamily:Fonts.SemiBold,
+      fontSize:SF(16),
+      paddingHorizontal:moderateScale(5)
+    },
+    jfrText: {
+      fontSize: SF(18),
+      color: COLORS.primary,
+      fontFamily: Fonts.Regular,
+    },
+    boxText: {
+      fontSize: SF(11),
+      color: COLORS.darkGray,
+      fontFamily: Fonts.Italic,
+    },
+    onexstyle:{
+      color:COLORS.dark_grey,
+      fontFamily:Fonts.SemiBold,
+      fontSize:SF(18)
+    },
+    onlyxstyle:{
+      color:COLORS.dark_grey,
+      fontFamily:Fonts.Regular,
+      fontSize:SF(14)
+    },
+    leftBackStyle:{
+      width:SW(8),
+     height:SW(8),
+      resizeMode:'contain',
+    },
+    orderCon:{
+      flexDirection:'row',
+      alignItems:'center',
+      paddingHorizontal:moderateScale(10)
+    },
+    completeBtnCon:{
+      backgroundColor:COLORS.bluish_green,
+      borderRadius:3,
+      marginHorizontal:moderateScale(10)
+    },
+    completeBtnText:{
+      color:COLORS.white,
+      fontSize:SF(12),
+      paddingHorizontal:moderateScale(7),
+      paddingVertical:verticalScale(1)
+    },
+    orderNoText:{
+      color:COLORS.dark_grey,
+      fontFamily:Fonts.Regular,
+      fontSize:SF(20),
+      paddingHorizontal:moderateScale(5)
+    },
+    hr: {
+      borderWidth: 1,
+      borderColor: COLORS.solidGrey,
+      marginVertical:verticalScale(5)
+    },
     })

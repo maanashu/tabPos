@@ -216,3 +216,25 @@ export const TransactionTableData = [
   ['1', 'Jun 21 , 2022', '6677787777', 'Sales', 'JBR','$2562', 'ffff', 'Completed'],
   ['1', 'Jun 21 , 2022', '6677787777', 'Sales', 'JBR','$2562', 'ffff', 'Completed'],
 ];
+export const orderCompleteData = [
+  {
+    name: 'JFR Maduro',
+    price: '$382.75',
+    id: '1',
+  },
+  {
+    name: 'Ashton Magnum',
+    price: '$236.50',
+    id: '2',
+  },
+  {
+    name: 'Marlboro Touch',
+    price: '$43.99',
+    id: '3',
+  },
+  {
+    name: 'Hokkah',
+    price: '$5.75',
+    id: '4',
+  },
+];

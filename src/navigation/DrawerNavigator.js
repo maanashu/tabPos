@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Image, ScrollView } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { verticalScale } from 'react-native-size-matters';
@@ -28,7 +28,9 @@ import {navigationRef} from './NavigationRef'
 // const isFocusedCurrentRoute = (navigationRouteName)=>{
 
 //   if (getCurrentRouteName === navigationRouteName){
-//     return true
+//     return(
+//       console.log('ghjkl')
+//     )
 //   }else{
 //     return false
 //   }
@@ -52,6 +54,8 @@ export function DrawerNavigator(props) {
       contentContainerStyle={styles.drawerMainView}
     >
       <SafeAreaView style={styles.drawerMainView}>
+        <ScrollView 
+         showsVerticalScrollIndicator={false}>
         <DrawerItem
           // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
           label=""
@@ -70,7 +74,8 @@ export function DrawerNavigator(props) {
          
           icon={({ focused, color, size }) => (
             // console.log('ishgjk',focused,isFocusedCurrentRoute(NAVIGATION.retails)),
-
+            // console.log(getCurrentRouteName),
+            console.log(focused),
                 <Image
                 source={retail}
                 style={styles.iconStyle}
@@ -181,7 +186,8 @@ export function DrawerNavigator(props) {
             />
           )}
         />
-        <View style={{ backgroundColor:COLORS.textInputBackground, position:'absolute', bottom:0, left:0}}>
+          </ScrollView>
+           <View style={{ backgroundColor:COLORS.textInputBackground, position:'absolute', bottom:0, left:5}}>
             <DrawerItem
               // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
               onPress={() => alert('coming soon')}
@@ -195,7 +201,6 @@ export function DrawerNavigator(props) {
               )}
             />
         </View>
-          
       </SafeAreaView>
     </DrawerContentScrollView>
   );
@@ -204,7 +209,7 @@ export function DrawerNavigator(props) {
 const styles = StyleSheet.create({
   drawerMainView: {
     flex: 1,
-    backgroundColor: COLORS.text,
+    backgroundColor: COLORS.white,
   },
   iconStyle: {
     width: SW(9),
