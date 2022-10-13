@@ -191,20 +191,190 @@ export const styles = StyleSheet.create({
          backgroundColor:COLORS.textInputBackground,
          height:SH(63),
          justifyContent:'center',
-         paddingHorizontal:moderateScale(10)
+         paddingHorizontal:moderateScale(8),
       },
       allJbrCon:{
         borderWidth:1,
-        height:SH(38),
-        width:SW(32),
+        height:SH(42),
+        width:SW(30),
         borderRadius:7,
         borderColor:COLORS.solidGrey,
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        marginHorizontal:moderateScale(4)
+      },
+      allJbrConBluish:{
+        borderColor:COLORS.primary,
       },
       allJbrText:{
         fontFamily: Fonts.Regular,
           color: COLORS.dark_grey,
-          fontSize: SF(16),
-        }
+          fontSize: SF(14),
+        },
+        allJbrTextbluish:{
+          fontFamily: Fonts.SemiBold,
+          color: COLORS.primary,
+          },
+          orderTypeCon:{
+            height:SH(63),
+            justifyContent:'center',
+            paddingHorizontal:moderateScale(12),
+            borderBottomWidth:1,
+            borderTopWidth:1,
+            borderColor:COLORS.solidGrey
+         },
+         datePickerCon:{
+          borderWidth:1,
+          height:SH(35),
+          width:SW(45),
+          borderRadius:7,
+          borderColor:COLORS.solidGrey,
+          // justifyContent:'center',
+          alignItems:'center',
+          // marginHorizontal:moderateScale(4),
+          paddingHorizontal:moderateScale(7),
+          flexDirection:'row'
+        },
+        calendarStyle:{
+          width: SW(5),
+          height: SW(5),
+          resizeMode: 'contain',
+        },
+        datePlaceholder:{
+          fontFamily: Fonts.Regular,
+          color: COLORS.gerySkies,
+          fontSize: SF(12),
+          paddingHorizontal:moderateScale(5)
+        },
+        dropDownIcon: {
+          width: SW(4),
+          height: SW(4),
+          resizeMode: 'contain',
+          // paddingRight: 30,
+          tintColor:COLORS.solidGrey
+        },
+        // dropdown: {
+        //   width:SW(45),
+        //   height:SH(8),
+        //   // alignSelf: 'center',
+        //   borderColor:COLORS.solidGrey,
+        //   // borderColor: 'transparent',
+        //   // marginVertical: verticalScale(2),
+        //   zIndex: Platform.OS === 'ios' ? 100 : 0,
+        //   // fontStyle: 'italic',
+        //   backgroundColor: COLORS.white,
+        // },
+        // containerStyle: {
+        //   alignSelf: 'center',
+        //   width:SW(45),
+        //   // marginVertical: verticalScale(7),
+        //   backgroundColor: COLORS.white,
+        //   borderRadius: 5,
+        // },
+        // dropDownContainerStyle: {
+        //   // borderWidth: 1,
+        //   backgroundColor: COLORS.white,
+        //   // borderRadius: 7,
+        //   zIndex: 1,
+        // },
+        dropdown:{
+          alignSelf:'center',
+          backgroundColor:COLORS.white,
+          borderColor:COLORS.solidGrey,
+          height:SH(20),
+          marginHorizontal:moderateScale(4)
+        },
+        containerStyle:{
+          width:SW(45),
+           height:SH(20),
+           justifyContent:'center',
+          //  borderWidth:1,
+          //  borderRadius:7,
+          //  borderColor:COLORS.black,
+        },
+        listItemLabelStyle:{
+          fontSize:SF(12),
+          fontFamily:Fonts.Regular
+        },
+        labelStyle:{
+          fontSize:SF(12),
+          fontFamily:Fonts.Regular
+        },
+        selectedItemLabelStyle:{
+          fontSize:SF(12),
+          fontFamily:Fonts.Regular
+        },
+        dropDownContainerStyle:{
+          borderWidth:1,
+          borderColor:COLORS.solidGrey,
+          borderRadius:7,
+          backgroundColor:COLORS.white,
+          top:30,
+          zIndex:Platform.OS === 'ios' ? 100 : 1
+        },
+        placeholderStyle:{
+          fontSize:SF(12),
+          fontFamily:Fonts.Regular,
+          color:COLORS.gerySkies
+        },
+        unionCon:{
+          // borderWidth:1,
+          backgroundColor:COLORS.washGrey,
+          height:SH(40),
+          justifyContent:'center',
+          borderRadius:4
+        },
+        unionConWhite:{
+          // borderWidth:1,
+          backgroundColor:COLORS.white,
+          height:SH(40),
+          justifyContent:'center',
+          borderRadius:4
+        },
+        unionStyle:{
+          width:SW(5),
+          height:SW(5),
+          resizeMode:'contain',
+          paddingHorizontal:moderateScale(12)
+        },
+        paginationCount:{
+          fontSize:SF(14),
+          fontFamily:Fonts.Regular,
+          color:COLORS.black,
+          paddingHorizontal:moderateScale(12)
+        },
+        head: {
+          height: SH(50),
+          backgroundColor: '#E1E3E4',
+          textAlign: 'center',
+          // borderWidth: 0,
+          borderTopWidth:1,
+          borderColor:COLORS.solidGrey
+          // borderColor: 'transparent',
+      },
+      text: {
+          fontFamily: Fonts.MaisonBold,
+          color: COLORS.dark_grey,
+          fontSize: SF(14),
+          // textAlign: 'center',
+          // borderWidth:1,
+          alignSelf:'center'
+      },
+      tableRowStyle: {
+          borderBottomWidth: 1,
+          height:SH(63),
+          borderBottomColor: COLORS.solidGrey,
+          paddingVertical: SH(10)
+      },
+      tableRowText: {
+          fontFamily: Fonts.Regular,
+          color: COLORS.solid_grey,
+          fontSize: SF(14),
+          alignSelf:'center'
+          // textAlign: 'center',
+      },
+      tableMainView: {
+        // width: SW(330),
+        zIndex: 1
+    },
     })

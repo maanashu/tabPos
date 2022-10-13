@@ -65,6 +65,11 @@ export { default as wallet2 } from '@/assets/icons/ic_wallet/wallet.png';
 export { default as delivery } from '@/assets/icons/ic_deliveryOrder/delivery.png';
 export { default as deliveryLine } from '@/assets/icons/ic_deliveryOrder/deliveryBlue.png';
 export { default as radio } from '@/assets/icons/ic_deliveryOrder/radio.png';
+export { default as calendar1 } from '@/assets/icons/ic_retail/calendar.png';
+export { default as Union } from '@/assets/icons/ic_wallet/Union.png';
+export { default as mask } from '@/assets/icons/ic_wallet/mask.png';
+export { default as unionRight } from '@/assets/icons/ic_wallet/unionRight.png';
+export { default as maskRight } from '@/assets/icons/ic_wallet/maskRight.png';
 
 /* Fonts */
 export const Fonts = {

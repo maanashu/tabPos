@@ -16,5 +16,6 @@ export const COLORS = {
     light_blue:'#E9EEFF',
     blue_shade:'#E5F0FF',
     orderStatusBackground:'#E5F0FF',
-    solid_green:'#1AF9FF'
+    solid_green:'#1AF9FF',
+    washGrey:'#EFEFEF'
 }

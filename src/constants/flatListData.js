@@ -186,4 +186,33 @@ export const jbritemList = [
       price: '$1,496',
       id: '3',
     },
-  ]
+  ];
+  export const allTransactionData = [
+    {
+      transaction: 'All',
+      count: '(190)',
+      id: '1',
+    },
+    {
+      transaction: 'JBR',
+      count: '(23)',
+      id: '2',
+    },
+    {
+      transaction: 'Cash',
+      count: '(19)',
+      id: '3',
+    },
+    {
+      transaction: 'Card',
+      count: '(65)',
+      id: '4',
+    },
+  ];
+  export const TransactionTableHeading = ['#', 'Date', 'Transection Id', 'Transection type', 'Mode of payment', 'Cash In', 'Cash Out', 'Status'];
+
+export const TransactionTableData = [
+  ['1', 'Jun 21 , 2022', '6677787777', 'Sales', 'JBR','$2562', 'ffff', 'Completed'],
+  ['1', 'Jun 21 , 2022', '6677787777', 'Sales', 'JBR','$2562', 'ffff', 'Completed'],
+  ['1', 'Jun 21 , 2022', '6677787777', 'Sales', 'JBR','$2562', 'ffff', 'Completed'],
+];

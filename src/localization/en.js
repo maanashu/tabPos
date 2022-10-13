@@ -186,6 +186,7 @@ export const en = {
       quaterly:'Quaterly',
       yearly:'Yearly',
       transationPrice:'$8,426,590',
-      transectionsPrice:'$8,458,041'
+      transectionsPrice:'$8,458,041',
+      paginationCount:'1-20 of 10,000 '
     }
 };

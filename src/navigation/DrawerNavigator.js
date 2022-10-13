@@ -36,7 +36,15 @@ import {navigationRef} from './NavigationRef'
 // }
 
 
+
+
 export function DrawerNavigator(props) {
+  // const [retailState, setRetailState] = useState(false);
+
+  // const retailHandler = () => {
+  //   setRetailState(!retailState);
+  //   navigate(NAVIGATION.retails)
+  // }
 
   return (
     <DrawerContentScrollView
@@ -56,20 +64,19 @@ export function DrawerNavigator(props) {
           )}
         />
         <DrawerItem
-          onPress={() => { navigate(NAVIGATION.retails) }}
+          onPress={() => { navigate(NAVIGATION.retails)}}
+          // onPress={retailHandler}
           label=""
+         
           icon={({ focused, color, size }) => (
             // console.log('ishgjk',focused,isFocusedCurrentRoute(NAVIGATION.retails)),
-             
-            // if (getCurrentRouteName == NAVIGATION.retails){
-              
-            // }
-            <Image
-              source={retail}
-              style={styles.iconStyle}
-            />
+
+                <Image
+                source={retail}
+                style={styles.iconStyle}
+              />
           )}
-        />
+          />
         <DrawerItem
           onPress={() => { navigate(NAVIGATION.deliveryOrder) }}
           label=""

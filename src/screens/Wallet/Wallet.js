@@ -13,7 +13,7 @@ import { BlurView } from "@react-native-community/blur";
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { styles } from "./Wallet.styles";
 import { strings } from "@/localization";
-import {aboutTransactionData, tipsData} from '@/constants/flatListData'
+import {aboutTransactionData, tipsData, allTransactionData, TransactionTableHeading, TransactionTableData} from '@/constants/flatListData'
 import {
   deliveryTruck,
   notifications,
@@ -21,7 +21,13 @@ import {
   wallet2,
   transactionChart,
   rightBack,
-  backArrow
+  backArrow,
+  calendar1,
+  dropdown2,
+  Union,
+  mask,
+  maskRight,
+  unionRight
 } from '@/assets';
 import { Button, Spacer } from '@/components';
 import {
@@ -33,6 +39,8 @@ import {
   StackedBarChart
 } from "react-native-chart-kit";
 import { moderateScale } from "react-native-size-matters";
+import DropDownPicker from 'react-native-dropdown-picker';
+import { Table, Row, Rows } from 'react-native-table-component';
 const data = {
   labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
   datasets: [
@@ -51,7 +59,31 @@ const data = {
     const [monthly, setMonthly] = useState(false);
     const [quertly, setQuertly] = useState(false);
     const [yearly, setYearly] = useState(false);
-    const [weeklyTransaction, setWeeklyTrasaction] = useState(false)
+    const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
+    const [statusModalOpen, setStatusModelOpen] = useState(false);
+    const [statusModalValue, setStatusModalValue] = useState(null);
+    const [statusItems, setStatusItems] = useState([
+      { label: 'xyz', value: 'xyz' },
+      { label: 'abc', value: 'abc' },
+    ]);
+    const [orderModalOpen, setOrderModelOpen] = useState(false);
+    const [orderModalValue, setOrderModalValue] = useState(null);
+    const [orderItems, setOrderItems] = useState([
+      { label: 'xyz', value: 'xyz' },
+      { label: 'abc', value: 'abc' },
+    ]);
+
+    const naviagtionHandler = item => {
+      if(item.transaction === 'All'){
+        return (alert('All'))
+      } else if(item.transaction === 'JBR'){
+        return (alert('JBR'))
+      } else if(item.transaction === 'Cash'){
+        return (alert('Cash'))
+      } else if(item.transaction === 'Card'){
+        return (alert('Card'))
+      }  
+  }
 
 
     const todayHandler = () => {
@@ -182,6 +214,11 @@ const data = {
        <Text style={styles.jbrCoinPrice}>{item.price}</Text>
        </View>
     )
+    const allTransactionItem = ({ item }) => (
+      <TouchableOpacity style={[styles.allJbrCon, styles.allJbrConBluish]} onPress={()=> naviagtionHandler(item)}>
+      <Text style={[styles.allJbrText, styles.allJbrTextbluish]}>{item.transaction} {item.count}</Text>
+       </TouchableOpacity>
+    )
 
     const changeView = () => {
       if(weeklyTransaction){
@@ -210,10 +247,110 @@ const data = {
              </View>
              <Spacer space={SH(15)} />
              <View style={styles.jbrTypeCon}>
-                 <View style={styles.allJbrCon}>
-                    <Text style={styles.allJbrText}>All (190)</Text>
+                 <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
+                 <FlatList
+                data={allTransactionData}
+                renderItem={allTransactionItem}
+                keyExtractor={item => item.id}
+                horizontal
+                // contentContainerStyle={styles.contentContainer}
+              />
+                 </View>
+                
+             </View>
+             <View style={styles.orderTypeCon}>
+                   <View style={{flexDirection:'row', alignItems:'center'}}>
+                   <View style={styles.datePickerCon}>
+                      <Image source={calendar1} style={styles.calendarStyle}/>
+                       <Text style={styles.datePlaceholder}>Date</Text>
+                  </View>
+                  <View style={{marginHorizontal:moderateScale(10)}}>
+                  <DropDownPicker
+                      ArrowUpIconComponent={({ style }) => (
+                        <Image source={dropdown2} style={styles.dropDownIcon} />
+                      )}
+                      ArrowDownIconComponent={({ style }) => (
+                        <Image source={dropdown2} style={styles.dropDownIcon} />
+                      )}
+                      // style={styles.dropdown}
+                      // containerStyle={[
+                      //   styles.containerStyle,
+                      //   { zIndex: Platform.OS === 'ios' ? 100 : 1 },
+                      // ]}
+                      style={styles.dropdown}
+                      containerStyle={styles.containerStyle}
+                      dropDownContainerStyle={styles.dropDownContainerStyle}
+                      listItemLabelStyle={styles.listItemLabelStyle}
+                      labelStyle={styles.labelStyle}
+                      selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                      open={statusModalOpen}
+                      value={statusModalValue}
+                      items={statusItems}
+                      setOpen={setStatusModelOpen}
+                      setValue={setStatusModalValue}
+                      setItems={setStatusItems}
+                      placeholder="Status"
+                      placeholderStyle={styles.placeholderStyle}
+                    />
+                    </View>
+                    <>
+                  <DropDownPicker
+                      ArrowUpIconComponent={({ style }) => (
+                        <Image source={dropdown2} style={styles.dropDownIcon} />
+                      )}
+                      ArrowDownIconComponent={({ style }) => (
+                        <Image source={dropdown2} style={styles.dropDownIcon} />
+                      )}
+                      // style={styles.dropdown}
+                      // containerStyle={[
+                      //   styles.containerStyle,
+                      //   { zIndex: Platform.OS === 'ios' ? 100 : 1 },
+                      // ]}
+                      style={styles.dropdown}
+                      containerStyle={styles.containerStyle}
+                      dropDownContainerStyle={styles.dropDownContainerStyle}
+                      listItemLabelStyle={styles.listItemLabelStyle}
+                      labelStyle={styles.labelStyle}
+                      selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                      open={orderModalOpen}
+                      value={orderModalValue}
+                      items={orderItems}
+                      setOpen={setOrderModelOpen}
+                      setValue={setOrderModalValue}
+                      setItems={setOrderItems}
+                      placeholder="Order type"
+                      placeholderStyle={styles.placeholderStyle}
+                    />
+                    </>
+                   </View>
+             </View>
+             <View style={styles.jbrTypeCon}>
+                 <View style={{flexDirection:'row', justifyContent:'flex-end', alignItems:'center'}}>
+                      <Text style={[styles.paginationCount, {fontSize:12}]}>Showing Results</Text>
+                      <View style={styles.unionCon}>
+                      <Image source={Union} style={styles.unionStyle}/>
+                      </View>
+                      <View style={[styles.unionCon, {marginLeft:7}]}>
+                      <Image source={mask} style={styles.unionStyle}/>
+                      </View>
+                      <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
+                      <View style={[styles.unionCon, styles.unionConWhite, {marginRight:7}]}>
+                      <Image source={maskRight} style={styles.unionStyle}/>
+                      </View>
+                      <View style={[styles.unionCon, styles.unionConWhite]}>
+                      <Image source={unionRight} style={styles.unionStyle}/>
+                      </View>
                  </View>
              </View>
+             <ScrollView>
+             <View style={styles.tableMainView}>
+             <Table>
+                  <Row data={TransactionTableHeading} style={styles.head} textStyle={styles.text} />
+                  <Rows data={TransactionTableData} style={styles.tableRowStyle} textStyle={[styles.tableRowText]} />
+                </Table>
+             </View>
+             </ScrollView>
+             
            </View>
           )
       }else{
