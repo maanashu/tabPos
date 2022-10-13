@@ -265,7 +265,7 @@ const data = {
                        <Text style={styles.datePlaceholder}>Date</Text>
                   </View>
                   <View style={{marginHorizontal:moderateScale(10)}}>
-                  <DropDownPicker
+                  {/* <DropDownPicker
                       ArrowUpIconComponent={({ style }) => (
                         <Image source={dropdown2} style={styles.dropDownIcon} />
                       )}
@@ -291,10 +291,10 @@ const data = {
                       setItems={setStatusItems}
                       placeholder="Status"
                       placeholderStyle={styles.placeholderStyle}
-                    />
+                    /> */}
                     </View>
                     <>
-                  <DropDownPicker
+                  {/* <DropDownPicker
                       ArrowUpIconComponent={({ style }) => (
                         <Image source={dropdown2} style={styles.dropDownIcon} />
                       )}
@@ -320,13 +320,13 @@ const data = {
                       setItems={setOrderItems}
                       placeholder="Order type"
                       placeholderStyle={styles.placeholderStyle}
-                    />
+                    /> */}
                     </>
                    </View>
              </View>
              <View style={styles.jbrTypeCon}>
                  <View style={{flexDirection:'row', justifyContent:'flex-end', alignItems:'center'}}>
-                      <Text style={[styles.paginationCount, {fontSize:12}]}>Showing Results</Text>
+                      <Text style={[styles.paginationCount, {fontSize:7}]}>Showing Results</Text>
                       <View style={styles.unionCon}>
                       <Image source={Union} style={styles.unionStyle}/>
                       </View>

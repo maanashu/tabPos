@@ -280,8 +280,8 @@ export const styles = StyleSheet.create({
         dropdown:{
           alignSelf:'center',
           backgroundColor:COLORS.white,
-          borderColor:COLORS.solidGrey,
-          height:SH(20),
+          borderColor:COLORS.black,
+          height:SH(10),
           marginHorizontal:moderateScale(4)
         },
         containerStyle:{
