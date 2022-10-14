@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Image, Dimensions } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { verticalScale } from 'react-native-size-matters';
@@ -8,195 +8,119 @@ import { NAVIGATION } from '@/constants';
 import {
   Fonts,
   deliveryTruck,
+  blueTruck,
   logo_icon,
   retail,
+  greyRetail,
   parachuteBox,
+  bluepara,
   calendar,
   analytics,
+  blueanalytics,
   wallet,
+  bluewallet,
   tray,
   users,
+  blueusers,
   reward,
   settings,
   power
 } from '@/assets';
 import { NavigationContainerRefContext } from '@react-navigation/native';
-import {navigationRef} from './NavigationRef'
-
-// const getCurrentRouteName = navigationRef.current.getCurrentRoute().name
-
-// const isFocusedCurrentRoute = (navigationRouteName)=>{
-
-//   if (getCurrentRouteName === navigationRouteName){
-//     return true
-//   }else{
-//     return false
-//   }
-
-// }
-
-
-
+import { navigationRef } from './NavigationRef'
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export function DrawerNavigator(props) {
-  // const [retailState, setRetailState] = useState(false);
 
-  // const retailHandler = () => {
-  //   setRetailState(!retailState);
-  //   navigate(NAVIGATION.retails)
-  // }
+  const [active, setActive] = useState('')
 
   return (
     <DrawerContentScrollView
-      {...props}
-      contentContainerStyle={styles.drawerMainView}
-    >
-      <SafeAreaView style={styles.drawerMainView}>
-        <DrawerItem
-          // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          label=""
-          
-          icon={({ focused, color, size }) => (
-            <Image
-              source={logo_icon}
-              style={styles.iconStyle}
-            />
-          )}
-        />
-        <DrawerItem
-          onPress={() => { navigate(NAVIGATION.retails)}}
-          // onPress={retailHandler}
-          label=""
-         
-          icon={({ focused, color, size }) => (
-            // console.log('ishgjk',focused,isFocusedCurrentRoute(NAVIGATION.retails)),
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
+      horizontal={false}
+      vertical
+      style={{ right: 10 }}
+      contentContainerStyle={{ width: 40, alignItems: 'flex-start', justifyContent: 'space-evenly', left: 0, right: 10 }}
+      {...props}>
+      <DrawerItem
+        label=""
+        icon={({ focused, color, size }) => (
+          <Image source={logo_icon} style={styles.iconStyle} />)} />
 
-                <Image
-                source={retail}
-                style={styles.iconStyle}
-              />
-          )}
-          />
-        <DrawerItem
-          onPress={() => { navigate(NAVIGATION.deliveryOrder) }}
-          label=""
-          icon={({ focused, color, size }) => (
-            <Image
-              source={deliveryTruck}
-              style={styles.iconStyle}
-            />
-          )}
-        />
-        <DrawerItem
-          onPress={() => { navigate(NAVIGATION.shippingOrders) }}
-          label="" 
-          
-          icon={({ focused, color, size }) => (
-            <Image
-              source={parachuteBox}
-              style={styles.iconStyle}
-            />
-          )}
-        />
-        <DrawerItem
-          // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          onPress={() => alert('coming soon')}
-          label=""
-          
-          icon={({ focused, color, size }) => (
-            <Image
-              source={calendar}
-              style={styles.iconStyle}
-            />
-          )}
-        />
-        <DrawerItem
-          // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          onPress={() => alert('coming soon')}
-          label=""
-          
-          icon={({ focused, color, size }) => (
-            <Image
-              source={analytics}
-              style={styles.iconStyle}
-            />
-          )}
-        />
-        <DrawerItem
-          onPress={() => { navigate(NAVIGATION.wallet) }}
-          label=""
-          
-          icon={({ focused, color, size }) => (
-              <Image
-              source={wallet}
-              style={styles.iconStyle}
-            />
-          )}
-        />
-         <DrawerItem
-          // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          onPress={() => alert('coming soon')}
-          label=""
-          
-          icon={({ focused, color, size }) => (
-            <Image
-              source={tray}
-              style={styles.iconStyle}
-            />
-          )}
-        />
-           <DrawerItem
-          // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          onPress={() => alert('coming soon')}
-          label=""
-          
-          icon={({ focused, color, size }) => (
-            <Image
-              source={users}
-              style={styles.iconStyle}
-            />
-          )}
-        />
-           <DrawerItem
-          // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          onPress={() => alert('coming soon')}
-          label=""
-          
-          icon={({ focused, color, size }) => (
-            <Image
-              source={reward}
-              style={styles.iconStyle}
-            />
-          )}
-        />
-           <DrawerItem
-          // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-          onPress={() => alert('coming soon')}
-          label=""
-          
-          icon={({ focused, color, size }) => (
-            <Image
-              source={settings}
-              style={styles.iconStyle}
-            />
-          )}
-        />
-        <View style={{ backgroundColor:COLORS.textInputBackground, position:'absolute', bottom:0, left:0}}>
-            <DrawerItem
-              // onPress={() => { navigate(NAVIGATION.mydeliveries) }}
-              onPress={() => alert('coming soon')}
-              label=""
-              
-              icon={({ focused, color, size }) => (
-                <Image
-                  source={power}
-                  style={styles.powerStyle}
-                />
-              )}
-            />
-        </View>
-          
-      </SafeAreaView>
+      <DrawerItem
+        activeBackgroundColor='transparent'
+        focused={active === 'retail' ? true : false}
+        onPress={() => { setActive('retail'), navigate(NAVIGATION.retails) }}
+        label=""
+        icon={({ focused, color, size }) => (<Image source={focused ? retail : greyRetail} style={styles.iconStyle} />)} />
+
+      <DrawerItem
+        activeBackgroundColor='transparent'
+        focused={active === 'delivery' ? true : false}
+        onPress={() => { setActive('delivery'), navigate(NAVIGATION.deliveryOrder) }}
+        label=""
+        icon={({ focused, color, size }) => (<Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />)} />
+
+      <DrawerItem
+        activeBackgroundColor='transparent'
+        focused={active === 'para' ? true : false}
+        onPress={() => { setActive('para'), navigate(NAVIGATION.shippingOrders) }}
+        label=""
+        icon={({ focused, color, size }) => (<Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />)} />
+
+      <DrawerItem
+        onPress={() => { alert('coming soon') }}
+        label=""
+        icon={({ focused, color, size }) => (
+          <Image source={calendar} style={styles.iconStyle} />)} />
+
+      <DrawerItem
+        activeBackgroundColor='transparent'
+        focused={active === 'analytics' ? true : false}
+        onPress={() => { setActive('analytics'), alert('coming soon') }}
+        label=""
+        icon={({ focused, color, size }) => (<Image source={focused ? blueanalytics : analytics} style={styles.iconStyle} />)} />
+
+      <DrawerItem
+        activeBackgroundColor='transparent'
+        focused={active === 'wallet' ? true : false}
+        onPress={() => { setActive('wallet'), navigate(NAVIGATION.wallet) }}
+        label=""
+        icon={({ focused, color, size }) => (<Image source={focused ? bluewallet : wallet} style={styles.iconStyle} />)} />
+
+      <DrawerItem
+        onPress={() => { alert('coming soon') }}
+        label=""
+        icon={({ focused, color, size }) => (
+          <Image source={tray} style={styles.iconStyle} />)} />
+
+      <DrawerItem
+        activeBackgroundColor='transparent'
+        focused={active === 'users' ? true : false}
+        onPress={() => { setActive('users'), alert('coming soon') }}
+        label=""
+        icon={({ focused, color, size }) => (<Image source={focused ? blueusers : users} style={styles.iconStyle} />)} />
+
+      <DrawerItem
+        onPress={() => { alert('coming soon') }}
+        label=""
+        icon={({ focused, color, size }) => (
+          <Image source={reward} style={styles.iconStyle} />)} />
+
+      <DrawerItem
+        onPress={() => { alert('coming soon') }}
+        label=""
+        icon={({ focused, color, size }) => (
+          <Image source={settings} style={styles.iconStyle} />)} />
+
+      {/* <View style={{ backgroundColor: COLORS.textInputBackground }}> */}
+      <DrawerItem
+        onPress={() => { alert('coming soon') }}
+        label=""
+        icon={({ focused, color, size }) => (
+          <Image source={power} style={styles.iconStyle} />)} />
+      {/* </View> */}
     </DrawerContentScrollView>
   );
 }
@@ -205,13 +129,14 @@ const styles = StyleSheet.create({
   drawerMainView: {
     flex: 1,
     backgroundColor: COLORS.text,
+    alignSelf: 'center',
   },
   iconStyle: {
-    width: SW(9),
-    height: SW(9),
+    width: SW(12),
+    height: SW(12),
     resizeMode: 'contain',
   },
-  powerStyle:{
+  powerStyle: {
     width: SW(6),
     height: SW(6),
     resizeMode: 'contain',
