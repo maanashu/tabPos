@@ -254,15 +254,15 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: 'transparent',
     borderColor: 'transparent',
-    zIndex: Platform.OS === 'ios' ? 100 : 0 
+    zIndex: Platform.OS === 'ios' ? 100 : 0
   },
   containerStyle: {
     width: SW(45),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,
-     borderRadius:7,
-     borderColor:COLORS.solidGrey,
+    borderRadius: 7,
+    borderColor: COLORS.solidGrey,
   },
   listItemLabelStyle: {
     fontSize: SF(12),
@@ -282,7 +282,7 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
-    top: 15,
+    top: 30,
     zIndex: Platform.OS === 'ios' ? 100 : 1
   },
   placeholderStyle: {
@@ -291,14 +291,12 @@ export const styles = StyleSheet.create({
     color: COLORS.gerySkies
   },
   unionCon: {
-    // borderWidth:1,
     backgroundColor: COLORS.washGrey,
     height: SH(40),
     justifyContent: 'center',
     borderRadius: 4
   },
   unionConWhite: {
-    // borderWidth:1,
     backgroundColor: COLORS.white,
     height: SH(40),
     justifyContent: 'center',
@@ -318,33 +316,46 @@ export const styles = StyleSheet.create({
   },
   head: {
     height: SH(50),
-    backgroundColor: '#E1E3E4',
-    textAlign: 'center',
-    // borderWidth: 0,
-    borderTopWidth: 1,
-    borderColor: COLORS.solidGrey
-    // borderColor: 'transparent',
+    width: SW(43),
+    backgroundColor: COLORS.silver_solid,
+    justifyContent: 'center',
   },
   text: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.dark_grey,
-    fontSize: SF(14),
-    alignSelf: 'center'
+    fontSize: SF(12),
+    textAlign: 'center'
   },
   tableRowStyle: {
+    width: SW(43),
     borderBottomWidth: 1,
     height: SH(63),
     borderBottomColor: COLORS.solidGrey,
-    paddingVertical: SH(10)
+    paddingVertical: SH(10),
+    justifyContent: 'center',
   },
   tableRowText: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
-    fontSize: SF(14),
-    alignSelf: 'center'
+    fontSize: SF(12),
+    textAlign: 'center'
   },
   tableMainView: {
     // width: SW(330),
     zIndex: 1
   },
+  completedButton: {
+    width: SW(30),
+    height: SH(30),
+    borderRadius: 3,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.bluish_green
+  },
+  completedText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+    textAlign: "center",
+    color: COLORS.white
+  }
 })

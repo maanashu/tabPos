@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image, Dimensions } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { COLORS, SF, SH, SW } from '@/theme';
-import { verticalScale } from 'react-native-size-matters';
+import { COLORS, SF, SW } from '@/theme';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import {
@@ -26,13 +25,10 @@ import {
   settings,
   power
 } from '@/assets';
-import { NavigationContainerRefContext } from '@react-navigation/native';
-import { navigationRef } from './NavigationRef'
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export function DrawerNavigator(props) {
 
-  const [active, setActive] = useState('')
+  const [active, setActive] = useState('retail')
 
   return (
     <DrawerContentScrollView
@@ -40,8 +36,7 @@ export function DrawerNavigator(props) {
       showsVerticalScrollIndicator={false}
       horizontal={false}
       vertical
-      style={{ right: 10 }}
-      contentContainerStyle={{ width: 40, alignItems: 'flex-start', justifyContent: 'space-evenly', left: 0, right: 10 }}
+      contentContainerStyle={{ alignItems: 'flex-start', justifyContent: 'space-evenly', left: 0, right: 10 }}
       {...props}>
       <DrawerItem
         label=""
@@ -90,7 +85,9 @@ export function DrawerNavigator(props) {
         icon={({ focused, color, size }) => (<Image source={focused ? bluewallet : wallet} style={styles.iconStyle} />)} />
 
       <DrawerItem
-        onPress={() => { alert('coming soon') }}
+        activeBackgroundColor='transparent'
+        focused={active === 'management' ? true : false}
+        onPress={() => { setActive('management'), navigate(NAVIGATION.management) }}
         label=""
         icon={({ focused, color, size }) => (
           <Image source={tray} style={styles.iconStyle} />)} />

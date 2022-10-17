@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,17 +6,14 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  Dimensions,
   ScrollView,
   Platform,
 } from 'react-native';
-import { BlurView } from "@react-native-community/blur";
-import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import { styles } from "./Wallet.styles";
 import { strings } from "@/localization";
 import { aboutTransactionData, tipsData, allTransactionData, TransactionTableHeading, TransactionTableData } from '@/constants/flatListData'
 import {
-  deliveryTruck,
   notifications,
   search_light,
   wallet2,
@@ -30,15 +27,7 @@ import {
   maskRight,
   unionRight
 } from '@/assets';
-import { Button, Spacer } from '@/components';
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
-} from "react-native-chart-kit";
+import { Spacer } from '@/components';
 import { moderateScale } from "react-native-size-matters";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table, Row, Rows } from 'react-native-table-component';
@@ -73,6 +62,7 @@ export function Wallet() {
     { label: 'xyz', value: 'xyz' },
     { label: 'abc', value: 'abc' },
   ]);
+  const [transactionClick, setTransactionClick] = useState(false)
 
   const naviagtionHandler = item => {
     if (item.transaction === 'All') {
@@ -219,6 +209,12 @@ export function Wallet() {
     <TouchableOpacity style={[styles.allJbrCon, styles.allJbrConBluish]} onPress={() => naviagtionHandler(item)}>
       <Text style={[styles.allJbrText, styles.allJbrTextbluish]}>{item.transaction} {item.count}</Text>
     </TouchableOpacity>
+  );
+
+  const renderHeadingItem = ({ item, index }) => (
+    <View style={styles.head}>
+      <Text style={styles.text}>{item}</Text>
+    </View>
   )
 
   const changeView = () => {
@@ -250,6 +246,7 @@ export function Wallet() {
           <View style={styles.jbrTypeCon}>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
               <FlatList
+                showsVerticalScrollIndicator={false}
                 data={allTransactionData}
                 renderItem={allTransactionItem}
                 keyExtractor={item => item.id}
@@ -340,12 +337,33 @@ export function Wallet() {
               </View>
             </View>
           </View>
+
           <ScrollView style={{ zIndex: -20 }}>
             <View style={styles.tableMainView}>
-              <Table>
-                <Row data={TransactionTableHeading} style={styles.head} textStyle={styles.text} />
-                <Rows data={TransactionTableData} style={styles.tableRowStyle} textStyle={[styles.tableRowText]} />
-              </Table>
+
+              <FlatList data={TransactionTableHeading} renderItem={renderHeadingItem} horizontal contentContainerStyle={{ justifyContent: 'space-between', flex: 1, paddingHorizontal: 20, backgroundColor: '#E1E3E4', alignItems: 'center' }} />
+
+              <FlatList data={TransactionTableData} horizontal renderItem={({ item, index, separators }) => (
+                <View>
+                  <TouchableOpacity style={styles.tableRowStyle}>
+                    {item === 'Completed' ? (<View style={styles.completedButton}><Text style={styles.completedText}>Completed</Text></View>) : (<Text style={styles.tableRowText}>{item}</Text>)}
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.tableRowStyle}>
+                    {item === 'Completed' ? (<View style={styles.completedButton}><Text style={styles.completedText}>Completed</Text></View>) : (<Text style={styles.tableRowText}>{item}</Text>)}
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.tableRowStyle}>
+                    {item === 'Completed' ? (<View style={styles.completedButton}><Text style={styles.completedText}>Completed</Text></View>) : (<Text style={styles.tableRowText}>{item}</Text>)}
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.tableRowStyle}>
+                    {item === 'Completed' ? (<View style={styles.completedButton}><Text style={styles.completedText}>Completed</Text></View>) : (<Text style={styles.tableRowText}>{item}</Text>)}
+                  </TouchableOpacity>
+                </View>
+              )}
+                contentContainerStyle={{ borderWidth: 1, justifyContent: 'space-between', width: '100%', paddingHorizontal: 20, alignItems: 'flex-start' }}
+              />
             </View>
           </ScrollView>
 
@@ -355,7 +373,7 @@ export function Wallet() {
       return (
         <View style={{ marginHorizontal: moderateScale(10) }}>
           {customHeader()}
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.walletMainCon}>
               <Spacer space={SH(15)} />
               <View style={styles.displayFlex}>
@@ -383,6 +401,7 @@ export function Wallet() {
               <Spacer space={SH(15)} />
               <View >
                 <FlatList
+                  showsHorizontalScrollIndicator={false}
                   data={aboutTransactionData}
                   renderItem={aboutTransactionItem}
                   keyExtractor={item => item.id}
@@ -393,6 +412,7 @@ export function Wallet() {
               <Spacer space={SH(17)} />
               <View >
                 <FlatList
+                  showsHorizontalScrollIndicator={false}
                   data={tipsData}
                   renderItem={tipsItem}
                   keyExtractor={item => item.id}
