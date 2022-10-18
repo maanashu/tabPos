@@ -14,4 +14,6 @@ export { Retails } from '@/screens/PosSales/Retails/Retails';
 export { DeliveryOrder } from '@/screens/OrderDeliver/DeliveryOrder/DeliveryOrder';
 export { ShippingOrders } from '@/screens/ShippingOrder/ShippingOrder';
 export { Wallet } from '@/screens/Wallet/Wallet';
+export { Management } from '@/screens/Management/Management';
+
   

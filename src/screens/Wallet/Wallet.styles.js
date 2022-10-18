@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+ 
   headerMainView: {
     width: windowWidth,
     paddingHorizontal: SW(16),
@@ -84,6 +85,21 @@ export const styles = StyleSheet.create({
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
+    // height: SH(63),
+    justifyContent:'center',
+    paddingHorizontal: moderateScale(12),
+  },
+  walletTranCon: {
+    // borderRadius: 10,
+    height: SH(63),
+    justifyContent:'center',
+    paddingHorizontal: moderateScale(12),
+  },
+  allTypeCon: {
+    backgroundColor: COLORS.textInputBackground,
+    // borderRadius: 10,
+    // height: SH(63),
+    justifyContent:'center',
     paddingHorizontal: moderateScale(12),
   },
   byDayCon: {
@@ -116,9 +132,14 @@ export const styles = StyleSheet.create({
     fontSize: SF(54),
   },
   trancationHeading: {
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
-    fontSize: SF(24),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.black,
+    fontSize: SF(18),
+  },
+  totalTranStyle:{
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.primary,
+    fontSize: SF(18),
   },
   jbrCoinCon: {
     backgroundColor: COLORS.white,
@@ -229,9 +250,7 @@ export const styles = StyleSheet.create({
     width: SW(45),
     borderRadius: 7,
     borderColor: COLORS.solidGrey,
-    // justifyContent:'center',
     alignItems: 'center',
-    // marginHorizontal:moderateScale(4),
     paddingHorizontal: moderateScale(7),
     flexDirection: 'row',
   },
@@ -250,47 +269,21 @@ export const styles = StyleSheet.create({
     width: SW(4),
     height: SW(4),
     resizeMode: 'contain',
-    // paddingRight: 30,
     tintColor: COLORS.solidGrey,
   },
-  // dropdown: {
-  //   width:SW(45),
-  //   height:SH(8),
-  //   // alignSelf: 'center',
-  //   borderColor:COLORS.solidGrey,
-  //   // borderColor: 'transparent',
-  //   // marginVertical: verticalScale(2),
-  //   zIndex: Platform.OS === 'ios' ? 100 : 0,
-  //   // fontStyle: 'italic',
-  //   backgroundColor: COLORS.white,
-  // },
-  // containerStyle: {
-  //   alignSelf: 'center',
-  //   width:SW(45),
-  //   // marginVertical: verticalScale(7),
-  //   backgroundColor: COLORS.white,
-  //   borderRadius: 5,
-  // },
-  // dropDownContainerStyle: {
-  //   // borderWidth: 1,
-  //   backgroundColor: COLORS.white,
-  //   // borderRadius: 7,
-  //   zIndex: 1,
-  // },
   dropdown: {
     alignSelf: 'center',
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.black,
-    height: SH(10),
-    marginHorizontal: moderateScale(4),
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    zIndex: Platform.OS === 'ios' ? 100 : 0,
   },
   containerStyle: {
     width: SW(45),
-    height: SH(20),
+    height: SH(35),
     justifyContent: 'center',
-    //  borderWidth:1,
-    //  borderRadius:7,
-    //  borderColor:COLORS.black,
+    borderWidth: 1,
+    borderRadius: 7,
+    borderColor: COLORS.solidGrey,
   },
   listItemLabelStyle: {
     fontSize: SF(12),
@@ -308,6 +301,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 7,
+    ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
     top: 30,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
@@ -318,14 +312,12 @@ export const styles = StyleSheet.create({
     color: COLORS.gerySkies,
   },
   unionCon: {
-    // borderWidth:1,
     backgroundColor: COLORS.washGrey,
     height: SH(40),
     justifyContent: 'center',
     borderRadius: 4,
   },
   unionConWhite: {
-    // borderWidth:1,
     backgroundColor: COLORS.white,
     height: SH(40),
     justifyContent: 'center',
@@ -345,37 +337,47 @@ export const styles = StyleSheet.create({
   },
   head: {
     height: SH(50),
-    backgroundColor: '#E1E3E4',
-    textAlign: 'center',
-    // borderWidth: 0,
-    borderTopWidth: 1,
-    borderColor: COLORS.solidGrey,
-    // borderColor: 'transparent',
+    width: SW(43),
+    backgroundColor: COLORS.silver_solid,
+    justifyContent: 'center',
   },
   text: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.dark_grey,
-    fontSize: SF(14),
-    // textAlign: 'center',
-    // borderWidth:1,
-    alignSelf: 'center',
+    fontSize: SF(12),
+    textAlign: 'center',
   },
   tableRowStyle: {
+    width: SW(43),
     borderBottomWidth: 1,
     height: SH(63),
     borderBottomColor: COLORS.solidGrey,
     paddingVertical: SH(10),
+    justifyContent: 'center',
   },
   tableRowText: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
-    fontSize: SF(14),
-    alignSelf: 'center',
-    // textAlign: 'center',
+    fontSize: SF(12),
+    textAlign: 'center',
   },
   tableMainView: {
     // width: SW(330),
     zIndex: 1,
+  },
+  completedButton: {
+    width: SW(30),
+    height: SH(30),
+    borderRadius: 3,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.bluish_green,
+  },
+  completedText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+    textAlign: 'center',
+    color: COLORS.white,
   },
 
   numpadContainer: {
@@ -398,29 +400,11 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     paddingHorizontal: moderateScale(5),
   },
-  rewardPointStyle: {
-    color: COLORS.primary,
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(18),
-  },
-  jbrListCon: {
-    borderBottomWidth: 1,
-    borderColor: COLORS.solidGrey,
-  },
-  ashtonStyle: {
-    width: SW(12),
-    height: SW(12),
-    resizeMode: 'contain',
-  },
-  onexstyle: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(18),
-  },
-  onlyxstyle: {
-    color: COLORS.dark_grey,
+  walletItem: {
+    color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
+    paddingHorizontal: moderateScale(5),
   },
   itmybdaystyle: {
     color: COLORS.black,
@@ -438,46 +422,290 @@ export const styles = StyleSheet.create({
     color: COLORS.darkGray,
     fontFamily: Fonts.Italic,
   },
-  onexstyle: {
+  rate: {
+    fontSize: SF(18),
+    color: COLORS.darkGray,
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(10),
+  },
+  oneX: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(18),
   },
-  onlyxstyle: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: SF(14),
+  ashtonStyle: {
+    width: SW(12),
+    height: SW(12),
+    resizeMode: 'contain',
   },
   leftBackStyle: {
     width: SW(8),
     height: SW(8),
     resizeMode: 'contain',
   },
-  orderCon: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: moderateScale(10),
-  },
-  completeBtnCon: {
-    backgroundColor: COLORS.bluish_green,
-    borderRadius: 3,
-    marginHorizontal: moderateScale(10),
-  },
-  completeBtnText: {
-    color: COLORS.white,
-    fontSize: SF(12),
-    paddingHorizontal: moderateScale(7),
-    paddingVertical: verticalScale(1),
-  },
-  orderNoText: {
+  orderNoStyle: {
+    fontSize: SF(20),
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(20),
+    paddingHorizontal: moderateScale(7),
+  },
+  headerCon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(7),
+    paddingVertical: verticalScale(5),
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
+  listItemStyle: {
+    fontSize: SF(24),
+    color: COLORS.black,
+    fontFamily: Fonts.SemiBold,
+  },
+  itemStyle: {
+    fontSize: SF(14),
+    color: COLORS.darkGray,
+    fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(5),
+  },
+  rewardPointStyle: {
+    fontSize: SF(18),
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+  },
+  onexstyle: {
+    color: COLORS.dark_grey,
+  },
+  onlyxstyle: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+  }, 
+  paymentHeader: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+  },
+  crossButtonStyle: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+  },
+  paymentDone: {
+    backgroundColor: COLORS.blue_shade,
+    height: SH(107),
+    borderRadius: 5,
+    justifyContent: 'center'
+  },
+  darkPricestyle: {
+    fontSize: SF(32),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+  },
+  payDoneText: {
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
+  },
+  jbrWalllettext: {
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.primary,
+    alignSelf: 'center'
+  },
+  viaText: {
+    fontSize: SF(10),
+    fontFamily: Fonts.Italic,
+    color: COLORS.black,
+  },
+  customerCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    height: SH(342),
+    borderRadius: 5,
+    paddingHorizontal: moderateScale(10)
+  },
+  jbrCustomer: {
+    width: SW(15),
+    height: SW(15),
+    resizeMode: 'contain'
+  },
+  walletIdButtonCon: {
+    borderTopWidth: 2,
+    borderColor: COLORS.solidGrey,
+    height: SH(75),
+    borderBottomEndRadius: 5,
+    borderBottomLeftRadius: 5,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: SW(107),
+    backgroundColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  customerHeading: {
+    fontSize: SF(18),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.primary,
+  },
+  cusAddText: {
+    fontSize: SF(16),
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+  },
+  walletIdcontent: {
+    fontSize: SF(14),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+  },
+  bottomContainer: {
+    borderTopWidth: 1,
+    height: SH(350),
+    borderColor: COLORS.row_grey,
+  },
+  bottomSubCon: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(10),
+    alignItems: 'center',
+  },
+  smalldarkText: {
+    fontSize: SF(14),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+  },
+  smallLightText: {
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.darkGray,
   },
   hr: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    marginVertical: verticalScale(5),
+    borderStyle: 'dashed',
+    borderColor: COLORS.row_grey,
   },
+  selectedText: {
+    color: COLORS.white,
+    fontSize: SF(16),
+  },
+  checkoutButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.primary,
+    width: SW(107),
+    alignSelf: 'center',
+    borderRadius: 5,
+    paddingVertical: verticalScale(9),
+    // marginVertical:verticalScale(10)
+  },
+  checkoutText: {
+    color: COLORS.white,
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+  },
+  checkArrow: {
+    width: SW(10),
+    height: SW(4),
+    resizeMode: 'contain',
+    paddingHorizontal: moderateScale(6),
+  },
+  onlinedeliveryCon:{
+    borderBottomWidth:1,
+    borderColor:COLORS.solidGrey,
+    paddingVertical:verticalScale(5)
+  },
+  onlinedeliveryBody:{
+      borderWidth:1,
+      width:windowWidth * 0.80,
+      alignSelf:'center'
+  },
+
+  rightSidecon: {
+    backgroundColor: COLORS.white,
+    height: windowHeight,
+    width: SW(116),
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    borderColor: COLORS.black,
+    elevation: 30,
+    shadowColor: '#000000',
+    shadowRadius: 4.84,
+    shadowOpacity: 0.9,
+    shadowOffset: {
+      width: 6,
+      height: 6,
+    },
+  },
+
+  // online delivery start css
+  buyerCon:{
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    borderRadius:10,
+    width:windowWidth * 0.48,
+    height:SH(170),
+    paddingHorizontal:moderateScale(8)
+  },
+  invoiceCon:{
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    borderRadius:10,
+    width:windowWidth * 0.30,
+    height:SH(170),
+    paddingHorizontal:moderateScale(8)
+  },
+  angelaAddress:{
+    color: COLORS.darkGray,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  angela:{
+    color: COLORS.solid_grey,
+    fontSize: SF(20),
+    fontFamily: Fonts.Regular,
+  },
+  angelaPic:{
+    Width:SW(10),
+    height:SW(10),
+    resizeMode:'contain',
+    marginRight:-20,
+    marginLeft:-35
+  },
+  buyer:{
+    color: COLORS.dark_grey,
+    fontSize: SF(18),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  invoiceId:{
+    color: COLORS.brown,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  deliveryDate:{
+    color: COLORS.sucx,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  invoiceDetail:{
+    color: COLORS.solid_grey,
+    fontSize: SF(16),
+    fontFamily: Fonts.Italic,
+  },
+  pointCon:{
+    backgroundColor:COLORS.primary,
+    borderBottomLeftRadius:20,
+    position:'absolute',
+    top:0,
+    right:0
+  },
+  pointText:{
+    color: COLORS.solid_green,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal:moderateScale(18),
+    paddingVertical:verticalScale(3)
+    // paddingHorizontal
+  }
 });

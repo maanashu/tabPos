@@ -88,6 +88,7 @@ export const en = {
     within: 'with in 10 minutes',
     dateTime: '21 Jun, 2022  |   10:30 am',
     verifyCode: 'Verify code',
+    verifyCode: 'Verify code'
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -178,10 +179,10 @@ export const en = {
     details: 'Details',
     productDes:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam elementum, ligula quis ultricies iaculis, odio augue venenatis eros, interdum suscipit ipsum turpis nec velit. Vivamus cursus, dui vitae auctor finibus, felis ex malesuada nunc, eget fringilla ante dui in diam. Integer non dapibus nulla.',
-  },
+    },
   wallet: {
     wallet: 'Wallet',
-    totalTransections: 'Total Transactions',
+    totalTransections: 'Total Transactions:',
     today: 'Today',
     weekly: 'Weekly',
     monthly: 'Monthly',
@@ -192,5 +193,50 @@ export const en = {
     paginationCount: '1-20 of 10,000',
     orderNo: 'Order# 25659165659165',
     completed: 'Completed',
+    PaymentDetails:'Payment Details',
+    buyer:'Buyer',
+    angela:'Angela K. Loving',
+    angelaAddress1:'4156 College View Belleville, IL 62220',
+    angelaAddress2:'Phone: 890-941-8897 44780',
+    invoiceDetails:'Invoice details',
+    invoiceIdLabel:'Invoice Id:',
+    createDateLabel:'Created Date:',
+    dueDateLabel:'Due Date:',
+    deliveryDate:'Delivery date:',
+    invoiceId:'025659165659165',
+    createDate:'05-04-2022',
+    dueDate:'05-04-2022',
+    point:'Points: 20'
+
+
   },
+  management: {
+    cashTracking: 'Cash Tracking',
+    cashDrawer: 'Cash Drawer',
+    drawerID: 'Drawer ID: 1',
+    session: 'Start tracking session',
+    sessionHistory: 'Session history',
+    countCash: 'Count cash in drawer',
+    amountCounted: 'Amount counted (USD)',
+    amount: '$ 0.00',
+    note: 'Note',
+    save:'Save',
+    viewSession:'View session',
+    date:'Today Friday Auguest 26, 2022   | 11.04 AM',
+    usd:'USD $0.00',
+    expected:'Expected cash balance',
+    addCash:'Add Cash',
+    removeCash:"Remove Cash",
+
+    cashPayments:'All Cash Payments',
+
+    totalCashIn:'Total Cash In',
+
+    totalCashOut:'Total Cash Out',
+
+    netPayment:'Net Payment',
+
+    endSession:'End Session'
+
+  }
 };

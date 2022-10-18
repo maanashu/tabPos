@@ -18,4 +18,6 @@ export const COLORS = {
   orderStatusBackground: '#E5F0FF',
   solid_green: '#1AF9FF',
   washGrey: '#EFEFEF',
+  brown:'#575757',
+  sucx:'#50BB87'
 };

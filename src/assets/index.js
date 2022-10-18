@@ -5,14 +5,20 @@ export { default as crossButton } from '@/assets/icons/ic_auth/crossButton.png';
 export { default as verifyIcon } from '@/assets/icons/ic_auth/verifyIcon.png';
 export { default as profilePic } from '@/assets/icons/ic_auth/profilePic.png';
 export { default as deliveryTruck } from '@/assets/icons/ic_navigator/deliveryTruck.png';
+export { default as blueTruck } from '@/assets/icons/ic_navigator/blueTruck.png';
 export { default as logo_icon } from '@/assets/icons/ic_navigator/logo_icon.png';
 export { default as retail } from '@/assets/icons/ic_navigator/retail.png';
+export { default as greyRetail } from '@/assets/icons/ic_navigator/greyRetail.png';
 export { default as parachuteBox } from '@/assets/icons/ic_navigator/parachuteBox.png';
+export { default as bluepara } from '@/assets/icons/ic_navigator/bluePara.png';
 export { default as calendar } from '@/assets/icons/ic_navigator/calendar.png';
 export { default as analytics } from '@/assets/icons/ic_navigator/analytics.png';
+export { default as blueanalytics } from '@/assets/icons/ic_navigator/blueanalytics.png';
 export { default as wallet } from '@/assets/icons/ic_navigator/wallet.png';
+export { default as bluewallet } from '@/assets/icons/ic_navigator/bluewallet.png';
 export { default as tray } from '@/assets/icons/ic_navigator/tray.png';
 export { default as users } from '@/assets/icons/ic_navigator/users.png';
+export { default as blueusers } from '@/assets/icons/ic_navigator/blueusers.png';
 export { default as reward } from '@/assets/icons/ic_navigator/reward.png';
 export { default as settings } from '@/assets/icons/ic_navigator/settings.png';
 export { default as power } from '@/assets/icons/ic_navigator/power.png';
@@ -71,6 +77,7 @@ export { default as mask } from '@/assets/icons/ic_wallet/mask.png';
 export { default as unionRight } from '@/assets/icons/ic_wallet/unionRight.png';
 export { default as maskRight } from '@/assets/icons/ic_wallet/maskRight.png';
 export { default as leftBack } from '@/assets/icons/ic_wallet/leftBack.png';
+export { default as angela } from '@/assets/icons/ic_wallet/angela.png';
 
 /* Fonts */
 export const Fonts = {

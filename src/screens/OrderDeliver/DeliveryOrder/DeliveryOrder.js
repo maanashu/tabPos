@@ -106,9 +106,9 @@ export function DeliveryOrder() {
   const renderReviewItem = ({ item, index }) => (
     <TouchableOpacity
       activeOpacity={viewAllReviews ? 0.5 : 1}
-      onPress={() => { viewAllReviews ? onPressReview(index) : null }}
+      // onPress={() => { viewAllReviews ? onPressReview(index) : null }}
       style={styles.reviewRenderView}>
-      <View style={{ width: SW(50) }}>
+      <View style={{ width: SW(45) }}>
         <Text style={styles.nameText}>{item.name}</Text>
         <View style={styles.timeView}>
           <Image source={pin} style={styles.pinIcon} />
@@ -194,13 +194,12 @@ export function DeliveryOrder() {
             <Spacer space={SH(20)} />
             <View style={styles.reviewHeadingView}>{orderStatusText()}</View>
 
-            <View style={{ flex: 1 }}>
-              <FlatList
-                data={orderReview}
-                renderItem={renderReviewItem}
-                showsVerticalScrollIndicator={false}
-              />
-            </View>
+            <FlatList
+              contentContainerStyle={{ paddingBottom: 180 }}
+              data={orderReview}
+              renderItem={renderReviewItem}
+              showsVerticalScrollIndicator={false}
+            />
           </View>
 
           <View style={styles.orderDetailView}>
@@ -229,15 +228,14 @@ export function DeliveryOrder() {
 
             <View style={styles.horizontalLine} />
 
-            <View>
-              <FlatList
-                data={productList}
-                renderItem={renderProductList}
-                ItemSeparatorComponent={() => (
-                  <View style={styles.itemSeparatorView} />
-                )}
-              />
-            </View>
+            <FlatList
+              contentContainerStyle={{ paddingBottom: 180 }}
+              data={productList}
+              renderItem={renderProductList}
+              ItemSeparatorComponent={() => (
+                <View style={styles.itemSeparatorView} />
+              )}
+            />
 
             <View style={styles.bottomSheet}>
               <View style={styles.rowView}>
@@ -299,6 +297,7 @@ export function DeliveryOrder() {
             <View style={styles.reviewHeadingView}>{orderStatusText()}</View>
 
             <FlatList
+              contentContainerStyle={{ paddingBottom: 180 }}
               data={orderReview}
               renderItem={renderReviewItem}
               showsVerticalScrollIndicator={false}
@@ -345,9 +344,9 @@ export function DeliveryOrder() {
                 }}
                 style={styles.map}>
               </MapView>
-              {/* <View>
-                    {showOrderStatusModal()}
-                  </View> */}
+              <View>
+                {showOrderStatusModal()}
+              </View>
             </View>
           </View>
         </View>
@@ -421,7 +420,7 @@ export function DeliveryOrder() {
                   <Spacer space={SH(30)} />
                 </View>
 
-                <Spacer space={SH(40)} />
+                <Spacer space={SH(50)} />
                 <View style={styles.orderNumberLeftView}>
                   <Spacer space={SH(20)} />
                   <Text style={styles.deliveryText}>{strings.deliveryOrders.orderConversion}</Text>

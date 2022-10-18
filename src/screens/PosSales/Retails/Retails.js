@@ -392,6 +392,7 @@ export function Retails() {
       </View>
     </View>
   );
+
   const renderJbrItem = ({ item }) => (
     <View style={styles.jbrListCon}>
       <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
@@ -415,6 +416,7 @@ export function Retails() {
       </View>
     </View>
   );
+
   const renderSearchItem = ({ item }) => (
     <View>
       <Spacer space={SH(15)} />
@@ -479,6 +481,7 @@ export function Retails() {
               />
             </View>
           </View>
+
           <Spacer space={SH(25)} />
           <View style={styles.priceContainer}>
             <Text style={styles.price}>Price</Text>
@@ -501,7 +504,7 @@ export function Retails() {
                 data={bundleOfferData}
                 renderItem={renderBundleItem}
                 keyExtractor={item => item.id}
-                // numColumns={2}
+              // numColumns={2}
               />
             </View>
             <Spacer space={SH(20)} />
@@ -993,7 +996,7 @@ export function Retails() {
                       data={bundleOfferData}
                       renderItem={renderBundleItem}
                       keyExtractor={item => item.id}
-                      // numColumns={2}
+                    // numColumns={2}
                     />
                   </View>
                 </View>
@@ -1345,11 +1348,12 @@ export function Retails() {
                 />
               </View>
             </View>
+
             <Spacer space={SH(30)} />
             <View
               style={[
                 styles.priceContainer,
-                { paddingHorizontal: moderateScale(0) },
+                { paddingHorizontal: moderateScale(0), zIndex: -2 },
               ]}
             >
               <Text style={[styles.updateprice, { fontSize: SF(14) }]}>
@@ -2030,7 +2034,7 @@ export function Retails() {
                 styles.checkoutButton,
                 { marginVertical: moderateScale(20) },
               ]}
-              // onPress={checkOutHandler}
+            // onPress={checkOutHandler}
             >
               <Text
                 style={[styles.checkoutText, { fontFamily: Fonts.Regular }]}

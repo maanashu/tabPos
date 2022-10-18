@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(30),
+    paddingVertical: SH(35),
     flexDirection: 'row',
   },
   truckStyle: {
@@ -100,7 +100,6 @@ export const styles = StyleSheet.create({
   },
   orderNumberLeftView: {
     borderRadius: 5,
-    width: windowWidth / 2.25,
     ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
   },
@@ -130,7 +129,7 @@ export const styles = StyleSheet.create({
   reviewHeadingView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: SW(5),
+    paddingHorizontal: SW(10),
     alignItems: 'center',
   },
   viewAllView: {
@@ -246,9 +245,8 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
   },
   orderDetailView: {
-    width: windowWidth / 2,
     backgroundColor: COLORS.white,
-    paddingRight: 10,
+    paddingRight: SW(50)
   },
   profileDetailView: {
     marginHorizontal: SW(5),
@@ -284,7 +282,8 @@ export const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   productViewStyle: {
-    marginHorizontal: SW(5),
+    marginLeft: SW(5),
+    marginRight: SW(15),
     flexDirection: 'row',
     top: 7,
     justifyContent: 'space-between',
@@ -297,11 +296,11 @@ export const styles = StyleSheet.create({
   bottomSheet: {
     position: 'absolute',
     bottom: 0,
-    height: SW(70),
+    height: SW(105),
     backgroundColor: COLORS.white,
-    width: windowWidth / 2,
+    width: windowWidth / 1.9,
     ...ShadowStyles.shadow,
-    paddingHorizontal: 10,
+    paddingHorizontal: 30,
     paddingTop: 10,
   },
   rowView: {
@@ -404,7 +403,7 @@ export const styles = StyleSheet.create({
   orderModalView: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    bottom: 10,
+    bottom: 40,
     backgroundColor: COLORS.white,
     right: SW(5),
     width: SW(100),
@@ -415,7 +414,7 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SH(46),
     resizeMode: 'contain',
-    alignSelf:'flex-end'
+    alignSelf: 'flex-end'
   },
   deliveryStatus: {
     flexDirection: 'row',
