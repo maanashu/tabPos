@@ -421,7 +421,7 @@ export function Retails() {
       <View style={styles.displayFlex}>
         <View style={styles.displayFlex}>
           <Image source={marboloRedPack} style={styles.marboloRedPackStyle} />
-          <View >
+          <View>
             <Text style={styles.marbolorRedStyle}>{item.productName}</Text>
             <Spacer space={SH(5)} />
             <Text style={styles.stockStyle}>{item.stock}</Text>
@@ -431,7 +431,7 @@ export function Retails() {
         <View style={{ alignItems: 'flex-end' }}>
           <Text style={styles.marbolorRedStyle}>{item.price}</Text>
           <Spacer space={SH(5)} />
-          <TouchableOpacity  onPress={searchProdutDetailHandler}>
+          <TouchableOpacity onPress={searchProdutDetailHandler}>
             <Text style={[styles.stockStyle, { color: COLORS.primary }]}>
               View details
             </Text>
@@ -505,7 +505,10 @@ export function Retails() {
               />
             </View>
             <Spacer space={SH(20)} />
-            <TouchableOpacity style={styles.addcartButtonStyle} onPress={viewDetailHandler}>
+            <TouchableOpacity
+              style={styles.addcartButtonStyle}
+              onPress={viewDetailHandler}
+            >
               <Text style={styles.addToCartText}>
                 {strings.posSale.addToCart}
               </Text>
@@ -519,10 +522,16 @@ export function Retails() {
     </View>
   );
   const productUnitItem = ({ item }) => (
-  
-     <View style={styles.unitTypeCon}>
+    <View style={styles.unitTypeCon}>
       <Spacer space={SH(8)} />
-      <Text style={[styles.detailHeader, {color:COLORS.dark_grey, fontFamily:Fonts.MaisonRegular}]}>{item.unitType}</Text>
+      <Text
+        style={[
+          styles.detailHeader,
+          { color: COLORS.dark_grey, fontFamily: Fonts.MaisonRegular },
+        ]}
+      >
+        {item.unitType}
+      </Text>
       <Spacer space={SH(5)} />
       <Text
         style={[
@@ -666,7 +675,33 @@ export function Retails() {
                   </View>
             </View>
             <Spacer space={SH(30)} />
-          </View> */}
+          </View> */} {/* <DropDownPicker
+                      ArrowUpIconComponent={({ style }) => (
+                        <Image source={dropdown2} style={styles.dropDownIcon} />
+                      )}
+                      ArrowDownIconComponent={({ style }) => (
+                        <Image source={dropdown2} style={styles.dropDownIcon} />
+                      )}
+                      // style={styles.dropdown}
+                      // containerStyle={[
+                      //   styles.containerStyle,
+                      //   { zIndex: Platform.OS === 'ios' ? 100 : 1 },
+                      // ]}
+                      style={styles.dropdown}
+                      containerStyle={styles.containerStyle}
+                      dropDownContainerStyle={styles.dropDownContainerStyle}
+                      listItemLabelStyle={styles.listItemLabelStyle}
+                      labelStyle={styles.labelStyle}
+                      selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                      open={statusModalOpen}
+                      value={statusModalValue}
+                      items={statusItems}
+                      setOpen={setStatusModelOpen}
+                      setValue={setStatusModalValue}
+                      setItems={setStatusItems}
+                      placeholder="Status"
+                      placeholderStyle={styles.placeholderStyle}
+                    /> */}
           {checkoutCon ? (
             <View style={{ paddingHorizontal: moderateScale(10) }}>
               <View style={styles.displayFlex}>
@@ -2045,12 +2080,7 @@ export function Retails() {
 
       {/*  pos search details  start */}
       {searchProViewDetail ? (
-        <View
-          style={[
-            styles.searchproductCon1,
-            styles.searchDetailsCon2,
-          ]}
-        >
+        <View style={[styles.searchproductCon1, styles.searchDetailsCon2]}>
           <Spacer space={SH(20)} />
           <TouchableOpacity
             style={styles.backButtonCon}
