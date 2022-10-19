@@ -74,14 +74,11 @@ export const styles = StyleSheet.create({
   popupContainer:{
     width: windowWidth * 0.40,
     height: windowHeight * 0.50,
-    borderWidth:1,
     borderRadius:30,
-    // padding:30,
     backgroundColor:COLORS.white,
     ...ShadowStyles.shadow,
     alignSelf:'center',
     position:'absolute',
-
   },
   verifyIcon:{ 
     alignSelf:'center',

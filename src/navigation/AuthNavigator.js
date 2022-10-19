@@ -1,20 +1,13 @@
 import React from 'react';
-import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NAVIGATION } from '@/constants';
-import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
-import {
-  crossButton,
-} from '@/assets';
 import {
   Login,
   VerifyPhone,
   VerifyOtp,
   Passcode,
-  LoginIntial,
-  Retails,
-  DeliveryOrder
+  LoginIntial
 } from '@/screens';
 import { HomeNavigator } from '@/navigation/HomeNavigator'
 
@@ -55,7 +48,7 @@ export function AuthNavigator(props) {
         name={NAVIGATION.retails}
         options={{ headerShown: false }}
       />
-       
+
     </Stack.Navigator>
   );
 }

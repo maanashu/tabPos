@@ -884,24 +884,16 @@ export function Wallet() {
                       )}
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.tableRowStyle}>
-                      {item === 'Completed' ? (
-                        <View style={styles.completedButton}>
-                          <Text style={styles.completedText}>Completed</Text>
-                        </View>
-                      ) : (
-                        <Text style={styles.tableRowText}>{item}</Text>
-                      )}
-                    </TouchableOpacity>
-                  </View>
-                )}
-                contentContainerStyle={{
-                  borderWidth: 1,
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  paddingHorizontal: 20,
-                  alignItems: 'flex-start',
-                }}
+                  <TouchableOpacity style={styles.tableRowStyle}>
+                    {item === 'Completed' ? (<View style={styles.completedButton}><Text style={styles.completedText}>Completed</Text></View>) : (<Text style={styles.tableRowText}>{item}</Text>)}
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.tableRowStyle}>
+                    {item === 'Completed' ? (<View style={styles.completedButton}><Text style={styles.completedText}>Completed</Text></View>) : (<Text style={styles.tableRowText}>{item}</Text>)}
+                  </TouchableOpacity>
+                </View>
+              )}
+                contentContainerStyle={{ justifyContent: 'space-between', width: '100%', paddingHorizontal: 20, alignItems: 'flex-start' }}
               />
             </View>
              {/* <DataTable>

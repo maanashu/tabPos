@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
         backgroundColor: COLORS.white
     },
     headerMainView: {
-        width: windowWidth,
+        width: windowWidth - 10,
         paddingHorizontal: SW(16),
         alignSelf: 'center',
         justifyContent: 'space-between',
@@ -196,30 +196,63 @@ export const styles = StyleSheet.create({
         width: SW(130),
         height: SH(60),
     },
-    sessionMainView:{
-        width: windowWidth - 100,
+    sessionMainView: {
+        width: windowWidth - 90,
         alignSelf: 'center',
-        borderRadius: 15,
-        paddingHorizontal: SH(25),
+        borderRadius: 10,
+        paddingTop: SH(30),
         backgroundColor: COLORS.textInputBackground
     },
     sessionView: {
-        width: windowWidth - 150,
+        width: windowWidth - 140,
         alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: COLORS.textInputBackground
     },
-    usdText:{
+    usdText: {
         fontSize: SF(54),
         color: COLORS.primary,
         textAlign: 'center',
         fontFamily: Fonts.SemiBold
     },
-    addCashView:{
-        backgroundColor:COLORS.blue_shade
+    buttonView: {
+        justifyContent: 'space-between',
+        width: windowWidth - 140,
+        alignSelf: 'center',
     },
-    removeCashView:{
-        backgroundColor:COLORS.silver_solid
+    addCashView: {
+        width: SW(144),
+        height: SH(110),
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.blue_shade
+    },
+    removeCashView: {
+        width: SW(144),
+        height: SH(110),
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.silver_solid
+    },
+    cashPaymentsText: {
+        fontFamily: Fonts.SemiBold,
+        fontSize: SF(24),
+        color: COLORS.black
+    },
+    paymentOptionsView: {
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS.solidGrey,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingTop: SH(40),
+        paddingBottom: SH(15)
+    },
+    buttonStyle:{
+        width:windowWidth - 90,
+        height:SH(90),
+        alignSelf:'center'
     }
 })

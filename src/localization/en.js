@@ -230,23 +230,23 @@ export const en = {
     amountCounted: 'Amount counted (USD)',
     amount: '$ 0.00',
     note: 'Note',
-    save:'Save',
-    viewSession:'View session',
-    date:'Today Friday Auguest 26, 2022   | 11.04 AM',
-    usd:'USD $0.00',
-    expected:'Expected cash balance',
-    addCash:'Add Cash',
-    removeCash:"Remove Cash",
-
-    cashPayments:'All Cash Payments',
-
-    totalCashIn:'Total Cash In',
-
-    totalCashOut:'Total Cash Out',
-
-    netPayment:'Net Payment',
-
-    endSession:'End Session'
-
+    save: 'Save',
+    viewSession: 'View session',
+    date: 'Today Friday Auguest 26, 2022   | 11.04 AM',
+    usd: 'USD $0.00',
+    expected: 'Expected cash balance',
+    addCash: 'Add Cash',
+    removeCash: "Remove Cash",
+    cashPayments: 'All Cash Payments',
+    totalCashIn: 'Total Cash In',
+    totalCashOut: 'Total Cash Out',
+    netPayment: 'Net Payment',
+    endSession: 'End Session',
+    amountAdded: 'Enter amount added',
+    amountRemoved: 'Enter amount removed',
+    cashAmount: 'Cash amount (USD)',
+    confirm: 'Confirm',
+    endTrackingSession: 'End tracking session',
+    next: 'Next'
   }
 };

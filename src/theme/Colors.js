@@ -22,5 +22,8 @@ export const COLORS = {
   sucx:'#50BB87',
   roseRed:'#D33300',
   orange:'#F2994A',
-  darkGreen:'#384048'
+  darkGreen:'#384048',
+  red: '#FB466C',
+    orange: '#FC7900'
 };
+   

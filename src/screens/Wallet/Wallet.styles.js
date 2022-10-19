@@ -311,8 +311,8 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
-    top: 30,
-    zIndex: Platform.OS === 'ios' ? 100 : 1,
+    top:Platform.OS === 'android' ? 30 : 15,
+    zIndex: Platform.OS === 'ios' ? 100 : 1
   },
   placeholderStyle: {
     fontSize: SF(12),
@@ -363,7 +363,7 @@ export const styles = StyleSheet.create({
   },
   head: {
     height: SH(50),
-    width: SW(43),
+    width: SW(40),
     backgroundColor: COLORS.silver_solid,
     justifyContent: 'center',
   },
@@ -374,7 +374,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   tableRowStyle: {
-    width: SW(43),
+    width: SW(40),
     borderBottomWidth: 1,
     height: SH(63),
     borderBottomColor: COLORS.solidGrey,
