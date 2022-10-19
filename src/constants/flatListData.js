@@ -233,4 +233,4 @@ export const allTransactionData = [
 ];
 export const TransactionTableHeading = ['#', 'Date', 'Transection Id', 'Transection type', 'Mode of payment', 'Cash In', 'Cash Out', 'Status'];
 
-export const TransactionTableData = ['1', 'Jun 21 , 2022', '6677787777', 'Sales', 'JBR', '$2562', 'ffff', 'Completed'];
+export const TransactionTableData = ['1', 'Jun 21 , 2022', '6677787777', 'Sales', 'JBR', '$2562', '$2562', 'Completed'];

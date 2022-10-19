@@ -19,5 +19,8 @@ export const COLORS = {
   solid_green: '#1AF9FF',
   washGrey: '#EFEFEF',
   brown:'#575757',
-  sucx:'#50BB87'
+  sucx:'#50BB87',
+  roseRed:'#D33300',
+  orange:'#F2994A',
+  darkGreen:'#384048'
 };

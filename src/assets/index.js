@@ -78,6 +78,10 @@ export { default as unionRight } from '@/assets/icons/ic_wallet/unionRight.png';
 export { default as maskRight } from '@/assets/icons/ic_wallet/maskRight.png';
 export { default as leftBack } from '@/assets/icons/ic_wallet/leftBack.png';
 export { default as angela } from '@/assets/icons/ic_wallet/angela.png';
+export { default as ashtonClass } from '@/assets/icons/ic_wallet/ashtonClass.png';
+export { default as willis } from '@/assets/icons/ic_wallet/willis.png';
+export { default as deliverCheck } from '@/assets/icons/ic_wallet/deliverCheck.png';
+export { default as track } from '@/assets/icons/ic_wallet/track.png';
 
 /* Fonts */
 export const Fonts = {

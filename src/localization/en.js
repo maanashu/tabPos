@@ -206,9 +206,19 @@ export const en = {
     invoiceId:'025659165659165',
     createDate:'05-04-2022',
     dueDate:'05-04-2022',
-    point:'Points: 20'
-
-
+    point:'Points: 20',
+    subtotal:'Sub-Total',
+    serviceCharge:'Service Charge (5%)',
+    discount:'Discount ( MIDApril100)',
+    shippingCharge:'Shipping Charge',
+    total:'Total',
+    subtotalPrice:'$7,363.20',
+    paid:'Paid',
+    shippingDetail:'Shipping Details',
+    trackingNo:'Tracking number#  6533284651BC12',
+    willis:'Willis V Burleson',
+    delivered:'Delivered',
+    tracking:'Tracking'
   },
   management: {
     cashTracking: 'Cash Tracking',

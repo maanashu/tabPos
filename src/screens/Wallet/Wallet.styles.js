@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
  
+ 
   headerMainView: {
     width: windowWidth,
     paddingHorizontal: SW(16),
@@ -76,7 +77,7 @@ export const styles = StyleSheet.create({
     height: SH(28),
     resizeMode: 'contain',
   },
-  textInputStyle: {
+  textInputStyles: {
     width: SW(45),
     marginLeft: 10,
     fontFamily: Fonts.Italic,
@@ -187,7 +188,7 @@ export const styles = StyleSheet.create({
   backButtonCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 3,
-    width: windowWidth * 0.07,
+    width: windowWidth * 0.08,
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -202,6 +203,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
     paddingVertical: verticalScale(5),
+    // paddingHorizontal:moderateScale(5)
   },
   trancationHeadingMono: {
     fontFamily: Fonts.MaisonBold,
@@ -271,6 +273,12 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.solidGrey,
   },
+  dropDownIconPagination: {
+    width: SW(4),
+    height: SW(4),
+    resizeMode: 'contain',
+    tintColor: COLORS.darkGreen,
+  },
   dropdown: {
     alignSelf: 'center',
     backgroundColor: 'transparent',
@@ -311,11 +319,29 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.gerySkies,
   },
+  placeholderStylePagination: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
+  },
+  containerStylePagination: {
+    width: SW(20),
+    height: SH(35),
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    backgroundColor:COLORS.white
+  },
   unionCon: {
     backgroundColor: COLORS.washGrey,
     height: SH(40),
     justifyContent: 'center',
     borderRadius: 4,
+  },
+  jbrListCon:{
+     borderBottomWidth:1,
+     borderColor:COLORS.solidGrey
   },
   unionConWhite: {
     backgroundColor: COLORS.white,
@@ -616,9 +642,9 @@ export const styles = StyleSheet.create({
     paddingVertical:verticalScale(5)
   },
   onlinedeliveryBody:{
-      borderWidth:1,
+      // borderWidth:1,
       width:windowWidth * 0.80,
-      alignSelf:'center'
+      alignSelf:'center',
   },
 
   rightSidecon: {
@@ -697,8 +723,8 @@ export const styles = StyleSheet.create({
     backgroundColor:COLORS.primary,
     borderBottomLeftRadius:20,
     position:'absolute',
-    top:0,
-    right:0
+    top:-1,
+    right:-1
   },
   pointText:{
     color: COLORS.solid_green,
@@ -707,5 +733,164 @@ export const styles = StyleSheet.create({
     paddingHorizontal:moderateScale(18),
     paddingVertical:verticalScale(3)
     // paddingHorizontal
+  },
+  tableContainer:{
+    // borderWidth:1,
+    backgroundColor:COLORS.white,
+    ...ShadowStyles.shadow2,
+    // borderTopLeftRadius:12,
+    // borderTopRightRadius:12
+    borderRadius:12
+  },
+  tableheader:{
+    backgroundColor:COLORS.textInputBackground,
+    borderTopEndRadius:10,
+    borderTopLeftRadius:10,
+    borderColor:'transparent'
+
+  },
+ 
+  tableLabel:{
+    color: COLORS.dark_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.MaisonBold,
+    // paddingHorizontal:moderateScale(40)
+  },
+  rowText:{
+    color: COLORS.dark_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  ashtonClass:{
+    Width:SW(10),
+    height:SW(10),
+    resizeMode:'contain',
+  },
+  tableSetting:{
+     width:SW(200),
+      marginLeft:-150,
+       marginRight:170
+  },
+  noteContainer:{
+    borderWidth:1,
+    // backgroundColor:COLORS.,
+    borderColor:COLORS.solidGrey,
+    height:SH(274),
+    width:windowWidth * 0.38,
+    borderRadius:10,
+    backgroundColor:COLORS.textInputBackground
+  },
+  tablesubTotal:{
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'space-between',
+    paddingHorizontal:moderateScale(20),
+    // borderBottomWidth:1,
+    // borderColor:COLORS.solidGrey,
+    // paddingVertical:verticalScale(7)
+  },
+  tablesubTotalLabel:{
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  tablesubTotalText:{
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  paidContainer:{
+    backgroundColor:COLORS.primary,
+    borderRadius:3,
+    marginHorizontal:moderateScale(5)
+  },
+  paidText:{
+    color: COLORS.white,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal:moderateScale(6),
+    paddingVertical:verticalScale(1)
+  },
+  subtotalHr:{
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    marginVertical:moderateScale(9)
+  },
+  textInputStyle:{
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    height:SH(274),
+    width:windowWidth * 0.38,
+    borderRadius:10,
+    backgroundColor:COLORS.textInputBackground,
+    color:COLORS.black,
+    fontFamily:Fonts.Regular,
+    fontSize:SF(14),
+    textAlignVertical:'top',
+    paddingHorizontal:moderateScale(10)
+  },
+  noteplaceholderStyle:{
+    color:COLORS.black,
+    fontFamily:Fonts.Regular,
+    fontSize:SF(14),
+  },
+  shippingDetail:{
+    color:COLORS.solid_grey,
+    fontFamily:Fonts.MaisonRegular,
+    fontSize:SF(18),
+  },
+  trackingCon:{
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    borderRadius:10,
+    height:SH(102),
+    justifyContent:'center',
+    paddingHorizontal:moderateScale(8)
+  },
+  willis:{
+    resizeMode:'contain',
+    width:SW(25),
+    height:SW(25)
+  },
+  willisName:{
+    color:COLORS.black,
+    fontFamily:Fonts.SemiBold,
+    fontSize:SF(16),
+  },
+  trackingNumber:{
+    color:COLORS.black,
+    fontFamily:Fonts.Regular,
+    fontSize:SF(12),
+  },
+  deliverBtnCon:{
+    backgroundColor:COLORS.bluish_green,
+    flexDirection:'row',
+    height:SH(36),
+    // width:SW(40),
+    alignItems:'center',
+    borderRadius:6,
+    textAlign:'center'
+  },
+  trackingBtnCon:{
+    backgroundColor:COLORS.orange,
+  },
+  deliveryCheck:{
+    resizeMode:'contain',
+    width:SW(6),
+    height:SW(6),
+  },
+  deliveredText:{
+    color:COLORS.white,
+    fontFamily:Fonts.Regular,
+    fontSize:SF(14),
+    paddingHorizontal:moderateScale(1)
+  },
+  deliverTextCon:{
+    paddingHorizontal:moderateScale(10),
+    flexDirection:'row'
+  },
+  dateTableSetting:{
+    // justifyContent:'center',
   }
+ 
 });
