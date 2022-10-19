@@ -362,7 +362,7 @@ export function Wallet() {
                   </TouchableOpacity>
                 </View>
               )}
-                contentContainerStyle={{ borderWidth: 1, justifyContent: 'space-between', width: '100%', paddingHorizontal: 20, alignItems: 'flex-start' }}
+                contentContainerStyle={{ justifyContent: 'space-between', width: '100%', paddingHorizontal: 20, alignItems: 'flex-start' }}
               />
             </View>
           </ScrollView>

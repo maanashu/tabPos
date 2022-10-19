@@ -19,7 +19,7 @@ export function HomeNavigator() {
       screenOptions={{
         drawerStyle: {
           backgroundColor: COLORS.white,
-          width: Platform.OS === 'android' ? SW(22) : SW(20),
+          width: Platform.OS === 'android' ? SW(22) : SW(30),
           alignItems: 'center',
         },
         drawerPosition: 'left',

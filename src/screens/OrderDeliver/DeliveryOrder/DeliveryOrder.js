@@ -229,7 +229,6 @@ export function DeliveryOrder() {
             <View style={styles.horizontalLine} />
 
             <FlatList
-              contentContainerStyle={{ paddingBottom: 180 }}
               data={productList}
               renderItem={renderProductList}
               ItemSeparatorComponent={() => (

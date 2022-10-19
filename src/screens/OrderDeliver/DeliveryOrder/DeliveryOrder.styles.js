@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
 import { scale } from 'react-native-size-matters';
@@ -403,7 +403,7 @@ export const styles = StyleSheet.create({
   orderModalView: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    bottom: 40,
+    bottom: Platform.OS === 'android' ? 40 : 10,
     backgroundColor: COLORS.white,
     right: SW(5),
     width: SW(100),
