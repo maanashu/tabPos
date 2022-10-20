@@ -1,7 +1,10 @@
 import {
   jbrCoin,
   cash,
-  card2
+  card2,
+  newCustomer,
+  returnCustomer,
+  onlineCutomer
 } from '@/assets';
 export const jbritemList = [
   {
@@ -234,3 +237,55 @@ export const allTransactionData = [
 export const TransactionTableHeading = ['#', 'Date', 'Transection Id', 'Transection type', 'Mode of payment', 'Cash In', 'Cash Out', 'Status'];
 
 export const TransactionTableData = ['1', 'Jun 21 , 2022', '6677787777', 'Sales', 'JBR', '$2562', '$2562', 'Completed'];
+
+export const newCustomerData= [
+    {
+      customertype: 'New Customers',
+      count: '2906',
+      img:newCustomer,
+      id: '1',
+    },
+    {
+      customertype: 'Returning Customers',
+      count: '2906',
+      img:returnCustomer,
+      id: '2',
+    },
+    {
+      customertype: 'Online Customers',
+      count: '2906',
+      img:onlineCutomer,
+      id: '3',
+    },
+    {
+      customertype: 'Shipping Customers',
+      count: '2906',
+      img:onlineCutomer,
+      id: '4',
+    },
+    {
+      customertype: 'Online Customers',
+      count: '2906',
+      img:newCustomer,
+      id: '5',
+    },
+    {
+      customertype: 'Returning Customers',
+      count: '2906',
+      img:returnCustomer,
+      id: '6',
+    },
+    {
+      customertype: 'Shipping Customers',
+      count: '2906',
+      img:onlineCutomer,
+      id: '7',
+    },
+    {
+      customertype: 'Shipping Customers',
+      count: '2906',
+      img:onlineCutomer,
+      id: '8',
+    },
+   
+]

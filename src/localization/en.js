@@ -250,6 +250,9 @@ export const en = {
     next: 'Next'
   },
   customers:{
-    sales:'Sales'
+    sales:'Sales',
+    customerCount:'2,590',
+    totalCustomer:'Total Customers',
+    users:'Users'
   }
 };

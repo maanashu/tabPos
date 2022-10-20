@@ -19,6 +19,7 @@ export { default as bluewallet } from '@/assets/icons/ic_navigator/bluewallet.pn
 export { default as tray } from '@/assets/icons/ic_navigator/tray.png';
 export { default as users } from '@/assets/icons/ic_navigator/users.png';
 export { default as blueusers } from '@/assets/icons/ic_navigator/blueusers.png';
+export { default as bluetray } from '@/assets/icons/ic_navigator/bluetray.png';
 export { default as reward } from '@/assets/icons/ic_navigator/reward.png';
 export { default as settings } from '@/assets/icons/ic_navigator/settings.png';
 export { default as power } from '@/assets/icons/ic_navigator/power.png';
@@ -83,6 +84,10 @@ export { default as willis } from '@/assets/icons/ic_wallet/willis.png';
 export { default as deliverCheck } from '@/assets/icons/ic_wallet/deliverCheck.png';
 export { default as track } from '@/assets/icons/ic_wallet/track.png';
 export { default as invoice } from '@/assets/icons/ic_customers/invoice.png';
+export { default as newCustomer } from '@/assets/icons/ic_customers/newCustomer.png';
+export { default as returnCustomer } from '@/assets/icons/ic_customers/returnCustomer.png';
+export { default as onlineCutomer } from '@/assets/icons/ic_customers/onlineCutomer.png';
+export { default as customersGraph } from '@/assets/icons/ic_customers/customersGraph.png';
 
 /* Fonts */
 export const Fonts = {

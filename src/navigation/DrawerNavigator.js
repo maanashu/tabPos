@@ -23,7 +23,8 @@ import {
   blueusers,
   reward,
   settings,
-  power
+  power,
+  bluetray
 } from '@/assets';
 
 export function DrawerNavigator(props) {
@@ -90,7 +91,7 @@ export function DrawerNavigator(props) {
         onPress={() => { setActive('management'), navigate(NAVIGATION.management) }}
         label=""
         icon={({ focused, color, size }) => (
-          <Image source={tray} style={styles.iconStyle} />)} />
+          <Image source={focused ? bluetray :tray} style={styles.iconStyle} />)} />
 
       <DrawerItem
         activeBackgroundColor='transparent'
