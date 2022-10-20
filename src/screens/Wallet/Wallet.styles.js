@@ -331,7 +331,8 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 3,
     borderColor: COLORS.solidGrey,
-    backgroundColor:COLORS.white
+    backgroundColor:COLORS.white,
+    color:COLORS.solidGrey
   },
   unionCon: {
     backgroundColor: COLORS.washGrey,
@@ -407,7 +408,7 @@ export const styles = StyleSheet.create({
   },
 
   numpadContainer: {
-    width: SW(235),
+    width: SW(230),
     height: windowHeight,
     backgroundColor: COLORS.white,
     position: 'absolute',
@@ -564,7 +565,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    width: SW(107),
+    width: SW(104),
     backgroundColor: COLORS.solidGrey,
     justifyContent: 'center',
     alignItems: 'center',
@@ -768,7 +769,7 @@ export const styles = StyleSheet.create({
   },
   tableSetting:{
      width:SW(200),
-      marginLeft:-150,
+      // marginLeft:-150,
        marginRight:170
   },
   noteContainer:{
@@ -814,7 +815,7 @@ export const styles = StyleSheet.create({
   subtotalHr:{
     borderWidth:1,
     borderColor:COLORS.solidGrey,
-    marginVertical:moderateScale(9)
+    marginVertical:moderateScale(7)
   },
   textInputStyle:{
     borderWidth:1,
