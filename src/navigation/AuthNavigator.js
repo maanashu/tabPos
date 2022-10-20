@@ -7,7 +7,8 @@ import {
   VerifyPhone,
   VerifyOtp,
   Passcode,
-  LoginIntial
+  LoginIntial,
+  Retails
 } from '@/screens';
 import { HomeNavigator } from '@/navigation/HomeNavigator'
 

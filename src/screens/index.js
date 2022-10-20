@@ -15,5 +15,6 @@ export { DeliveryOrder } from '@/screens/OrderDeliver/DeliveryOrder/DeliveryOrde
 export { ShippingOrders } from '@/screens/ShippingOrder/ShippingOrder';
 export { Wallet } from '@/screens/Wallet/Wallet';
 export { Management } from '@/screens/Management/Management';
+export { Customers } from '@/screens/Customers/Customers';
 
   

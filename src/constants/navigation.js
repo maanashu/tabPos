@@ -10,5 +10,6 @@ export const NAVIGATION = {
   deliveryOrder: 'DeliveryOrder',
   shippingOrders: 'ShippingOrders',
   wallet: 'Wallet',
-  management: 'Management'
+  management: 'Management',
+  customers: 'Customers'
 };

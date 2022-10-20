@@ -95,7 +95,7 @@ export function DrawerNavigator(props) {
       <DrawerItem
         activeBackgroundColor='transparent'
         focused={active === 'users' ? true : false}
-        onPress={() => { setActive('users'), alert('coming soon') }}
+        onPress={() => { setActive('users'), navigate(NAVIGATION.customers) }}
         label=""
         icon={({ focused, color, size }) => (<Image source={focused ? blueusers : users} style={styles.iconStyle} />)} />
 

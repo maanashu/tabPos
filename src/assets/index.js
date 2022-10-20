@@ -82,6 +82,7 @@ export { default as ashtonClass } from '@/assets/icons/ic_wallet/ashtonClass.png
 export { default as willis } from '@/assets/icons/ic_wallet/willis.png';
 export { default as deliverCheck } from '@/assets/icons/ic_wallet/deliverCheck.png';
 export { default as track } from '@/assets/icons/ic_wallet/track.png';
+export { default as invoice } from '@/assets/icons/ic_customers/invoice.png';
 
 /* Fonts */
 export const Fonts = {

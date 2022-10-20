@@ -248,5 +248,8 @@ export const en = {
     confirm: 'Confirm',
     endTrackingSession: 'End tracking session',
     next: 'Next'
+  },
+  customers:{
+    sales:'Sales'
   }
 };
