@@ -29,7 +29,11 @@ import {
   invoice,
   newCustomer,
   dropdown2,
-  customersGraph
+  customersGraph,
+  Union,
+  mask,
+  unionRight,
+  maskRight
 } from '@/assets';
 import { Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
@@ -61,6 +65,14 @@ export function Customers() {
   const [statusItems, setStatusItems] = useState([
     { label: 'xyz', value: 'xyz' },
     { label: 'abc', value: 'abc' },
+  ]);
+  const [paginationModalOpen, setPaginationModalOpen] = useState(false);
+  const [paginationModalValue, setPaginationModalValue] = useState(null);
+  const [paginationModalItems, setPaginationModalItems] = useState([
+    { label: '10', value: '10' },
+    { label: '30', value: '30' },
+    { label: '50', value: '50' },
+    { label: '70', value: '70' },
   ]);
   const todayHandler = () => {
     setToday(true);
@@ -115,11 +127,6 @@ export function Customers() {
         </View>
          )
         }
-    
-         
-          
-          
-
         <View style={styles.deliveryView}>
           <Image
             source={notifications}
@@ -177,6 +184,77 @@ export function Customers() {
                 />
               </View>
             </View>
+          </View>
+          <View style={[styles.jbrTypeCon, { zIndex: -2 }]}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={[styles.paginationCount, { fontSize: 12 }]}>
+                Showing Results
+              </Text>
+              <View style={{marginHorizontal:moderateScale(10)}}>
+                <DropDownPicker
+                  ArrowUpIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                  )}
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                  )}
+                  style={styles.dropdown}
+                  containerStyle={[
+                    styles.containerStylePagination,
+                    { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+                  ]}
+                  dropDownContainerStyle={styles.dropDownContainerStyle}
+                  listItemLabelStyle={styles.listItemLabelStyle}
+                  labelStyle={styles.labelStyle}
+                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                  open={paginationModalOpen}
+                  value={paginationModalValue}
+                  items={paginationModalItems}
+                  setOpen={setPaginationModalOpen}
+                  setValue={setPaginationModalValue}
+                  setItems={setPaginationModalItems}
+                  placeholder="50"
+                  placeholderStyle={styles.placeholderStylePagination}
+                />
+              </View>
+              <View style={styles.unionCon}>
+                <Image source={Union} style={styles.unionStyle} />
+              </View>
+              <View style={[styles.unionCon, { marginLeft: 7 }]}>
+                <Image source={mask} style={styles.unionStyle} />
+              </View>
+              <Text style={styles.paginationCount}>
+                {strings.wallet.paginationCount}
+              </Text>
+              <View
+                style={[
+                  styles.unionCon,
+                  styles.unionConWhite,
+                  { marginRight: 7 },
+                ]}
+              >
+                <Image source={maskRight} style={styles.unionStyle} />
+              </View>
+              <View style={[styles.unionCon, styles.unionConWhite]}>
+                <Image source={unionRight} style={styles.unionStyle} />
+              </View>
+            </View>
+          </View>
+          <View style={[styles.tableHeaderCon, { zIndex: -2 }]}>
+               <View style={styles.displayFlex}>
+                  <Text style={styles.tableHeader}>#</Text>
+                   <Text style={[styles.tableHeader,{paddingRight:100}]}>Name</Text>
+                
+                   <Text style={styles.tableHeader}>Total orders</Text>
+                   <Text style={styles.tableHeader}>Total Products </Text>
+                   <Text style={styles.tableHeader}>Lifetime spent</Text>
+               </View>
           </View>
          </View>
       )
