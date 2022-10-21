@@ -250,6 +250,19 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: moderateScale(8),
   },
+  tableRowCon: {
+    borderBottomWidth:1,
+    borderColor:COLORS.solidGrey,
+    height: SH(63),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(8),
+  },
+  tableRowText:{
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+  },
+  
   paginationCount: {
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
@@ -307,6 +320,156 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     fontFamily: Fonts.MaisonBold,
     color: COLORS.dark_grey,
+  },
+  tableMainView: {
+    // width: SW(330),
+// width:windowWidth * 0.96,
+// alignSelf:'center',
+  },
+  userTableHead: {
+    height: SH(50),
+    backgroundColor: '#E1E3E4',
+    textAlign: 'center',
+    borderWidth: 0,
+    borderColor: 'transparent'
+},
+text: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.text,
+    fontSize: SF(12),
+    textAlign: 'center',
+},
+usertableRowStyle: {
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.solidGrey,
+    paddingVertical: SH(18)
+},
+usertableRowText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+    textAlign: 'center',
+},
+  head: {
+    height: SH(50),
+    width: SW(40),
+    backgroundColor: COLORS.silver_solid,
+    justifyContent: 'center',
+  },
+  text: {
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.dark_grey,
+    fontSize: SF(12),
+    textAlign: 'center',
+  },
+  tableRowStyle: {
+    width: SW(40),
+    borderBottomWidth: 1,
+    height: SH(63),
+    borderBottomColor: COLORS.solidGrey,
+    paddingVertical: SH(10),
+    justifyContent: 'center',
+  },
+  completedButton: {
+    width: SW(30),
+    height: SH(30),
+    borderRadius: 3,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.bluish_green,
+  },
+  completedText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+    textAlign: 'center',
+    color: COLORS.white,
+  },
+
+  // user profile css start
+  useHeaderCon:{
+    borderBottomWidth:1,
+    borderColor:COLORS.solidGrey,
+    height:SH(62),
+    justifyContent:'center',
+    paddingHorizontal:moderateScale(10)
+  },
+  leftBackStyle: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+  },
+  profileHeaderText:{
+    fontFamily: Fonts.Regular,
+    fontSize: SF(20),
+    color: COLORS.dark_grey,
+  },
+  editButtonCon:{
+     borderWidth:1,
+     borderColor:COLORS.primary,
+     borderRadius:7
+  },
+  editButtonText:{
+    color:COLORS.primary,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+    paddingHorizontal:moderateScale(7),
+    paddingVertical:verticalScale(2)
+  },
+  profileCon:{
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    borderRadius:15,
+    height:SH(153),
+    justifyContent:'center'
+  },
+  lovingStyle:{
+    width: SW(25),
+    height: SH(110),
+    resizeMode: 'contain',
+  },
+  Phonelight:{
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+  },
+  angelaText:{
+    fontFamily: Fonts.MaisonRegular,
+    fontSize: SF(24),
+    color: COLORS.dark_grey,
+  },
+  adressText:{
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+    paddingHorizontal:moderateScale(5)
+  },
+  pointCon:{
+    borderWidth:1,
+    borderColor:COLORS.primary,
+    borderRadius:7,
+    height:SH(48),
+    width:SW(60),
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  acceptCon:{
+    borderColor:COLORS.sucx,
+  } ,
+  rewardStyle:{
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+  },
+  pointText:{
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(13),
+    color: COLORS.primary,
+    paddingHorizontal:moderateScale(3)
+  },
+  acceptMarketText:{
+    fontFamily: Fonts.Regular,
+    fontSize: SF(13),
+    color: COLORS.dark_grey,
+    paddingHorizontal:moderateScale(3)
   }
- 
 });

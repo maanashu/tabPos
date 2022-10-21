@@ -253,6 +253,14 @@ export const en = {
     sales:'Sales',
     customerCount:'2,590',
     totalCustomer:'Total Customers',
-    users:'Users'
+    users:'Users',
+    userprofile:'User Profile',
+    Edit:'Edit',
+    angela:'Angela K. Loving',
+    phoneNumber:'4703-515-1193',
+    email:'vidal.webe2@gmail.com',
+    address:'4318 Daffodil Lane, Savage, Virginia(VA), 20763',
+    point:'Points: 2',
+    acceptMarket:'Accept Marketing'
   }
 };

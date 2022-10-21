@@ -18,7 +18,7 @@ const Drawer = createDrawerNavigator();
 export function AuthNavigator(props) {
 
   return (
-    <Stack.Navigator initialRouteName="Retails">
+    <Stack.Navigator initialRouteName="VerifyPhone">
       <Stack.Screen
         component={Login}
         name={NAVIGATION.login}

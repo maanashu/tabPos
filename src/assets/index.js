@@ -88,6 +88,12 @@ export { default as newCustomer } from '@/assets/icons/ic_customers/newCustomer.
 export { default as returnCustomer } from '@/assets/icons/ic_customers/returnCustomer.png';
 export { default as onlineCutomer } from '@/assets/icons/ic_customers/onlineCutomer.png';
 export { default as customersGraph } from '@/assets/icons/ic_customers/customersGraph.png';
+export { default as loving } from '@/assets/icons/ic_customers/loving.png';
+export { default as Phone_light } from '@/assets/icons/ic_customers/Phone_light.png';
+export { default as email } from '@/assets/icons/ic_customers/email.png';
+export { default as location } from '@/assets/icons/ic_customers/location.png';
+export { default as reward2 } from '@/assets/icons/ic_customers/reward.png';
+export { default as toggle } from '@/assets/icons/ic_customers/toggle.png';
 
 /* Fonts */
 export const Fonts = {

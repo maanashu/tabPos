@@ -21,19 +21,26 @@ import {
   TransactionTableHeading,
   TransactionTableData,
   jbritemList,
+  UserTableHeading,
+  UserTableData
 } from '@/constants/flatListData';
 import {
   notifications,
   search_light,
   wallet2,calendar1,
   invoice,
-  newCustomer,
+  leftBack,loving,
   dropdown2,
   customersGraph,
   Union,
   mask,
   unionRight,
-  maskRight
+  maskRight,
+  email,
+  location,
+  Phone_light,
+  reward2,
+  toggle
 } from '@/assets';
 import { Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
@@ -41,6 +48,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Table, Row, Rows } from 'react-native-table-component';
 const windowHeight = Dimensions.get('window').height;
 import { DataTable } from 'react-native-paper';
+import { string } from 'prop-types';
 
 const newCustomerItem = ({item}) => (
     <View style={styles.custometrCon}>
@@ -52,7 +60,12 @@ const newCustomerItem = ({item}) => (
        </View>
     </View>
 </View>
-)
+);
+const renderHeadingItem = ({ item, index }) => (
+  <View style={styles.head}>
+    <Text style={styles.text}>{item}</Text>
+  </View>
+);
 export function Customers() {
   const [today, setToday] = useState(false);
   const [weekly, setWeekly] = useState(true);
@@ -60,6 +73,7 @@ export function Customers() {
   const [quertly, setQuertly] = useState(false);
   const [yearly, setYearly] = useState(false);
   const [weeklyUser, setWeeklyUser] = useState(false);
+  const [userProfile, setUserProfile] = useState(false);
   const [statusModalOpen, setStatusModelOpen] = useState(false);
   const [statusModalValue, setStatusModalValue] = useState(null);
   const [statusItems, setStatusItems] = useState([
@@ -110,6 +124,14 @@ export function Customers() {
     setWeekly(false);
     setToday(false);
   };
+  const userProfileHandler = () => {
+    setWeeklyUser(false);
+    setUserProfile(!userProfile)
+  };
+  const userProfileRemoveHandler = () => {
+    setUserProfile(false)
+    setWeeklyUser(true);
+  }
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -144,8 +166,75 @@ export function Customers() {
       </View>
     );
   };
-  const bodyView = () => {
-    if(weeklyUser){
+  const customUserHeader = () => {
+    return(
+         <View style={styles.useHeaderCon}>
+              <Spacer space={SH(10)}/>
+                <View style={styles.displayFlex}>
+                   <View style={styles.flexAlign}>
+                    <TouchableOpacity onPress={userProfileRemoveHandler}>
+                      <Image source={leftBack} style={styles.leftBackStyle}/>
+                    </TouchableOpacity>
+                    <Text style={styles.profileHeaderText}>{strings.customers.userprofile}</Text>
+                   </View>
+                   <View style={styles.editButtonCon}>
+                      <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
+                   </View>
+                </View>
+         </View>
+    )
+  }
+    const bodyView = () => {
+    if(userProfile){
+      return(
+          <View>
+            {customUserHeader()}
+            <View style={{paddingHorizontal:moderateScale(10)}}>
+            <Spacer space={SH(20)}/>
+                 <View style={styles.profileCon}>
+                      <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
+                           <View style={{flexDirection:'row',}}>
+                            <Image source={loving} style={styles.lovingStyle}/>
+                            <View style={{paddingHorizontal:moderateScale(10)}}>
+                              <Text style={styles.angelaText}>{strings.customers.angela}</Text>
+                              <Spacer space={SH(15)}/>
+                               <View style={styles.flexAlign}>
+                                <Image source={Phone_light} style={styles.Phonelight}/>
+                               <Text style={styles.adressText}>{strings.customers.phoneNumber}</Text>
+                               </View>
+                               <Spacer space={SH(5)}/>
+                               <View style={styles.flexAlign}>
+                                <Image source={email} style={styles.Phonelight}/>
+                              <Text style={styles.adressText}>{strings.customers.email}</Text>
+                               </View>
+                               <Spacer space={SH(5)}/>
+                               <View style={styles.flexAlign}>
+                                <Image source={location} style={styles.Phonelight}/>
+                              <Text style={styles.adressText}>{strings.customers.address}</Text>
+                               </View>
+                            </View>
+                           </View>
+                           <View>
+                               <View style={styles.pointCon}>
+                                     <View style={styles.flexAlign}>
+                                       <Image source={reward2} style={styles.rewardStyle}/>
+                                         <Text style={styles.pointText}>{strings.customers.point}</Text>
+                                     </View>
+                               </View>
+                               <Spacer space={SH(10)}/>
+                               <View style={[styles.pointCon,styles.acceptCon]}>
+                               <View style={styles.flexAlign}>
+                                       <Image source={toggle} style={styles.rewardStyle}/>
+                                         <Text style={styles.acceptMarketText}>{strings.customers.acceptMarket}</Text>
+                                     </View>
+                                </View>
+                           </View>
+                      </View>
+                 </View>
+            </View>
+          </View>
+      )
+    } else if(weeklyUser){
       return(
         <View>
              {customHeader()}
@@ -246,16 +335,17 @@ export function Customers() {
               </View>
             </View>
           </View>
-          <View style={[styles.tableHeaderCon, { zIndex: -2 }]}>
-               <View style={styles.displayFlex}>
-                  <Text style={styles.tableHeader}>#</Text>
-                   <Text style={[styles.tableHeader,{paddingRight:100}]}>Name</Text>
-                
-                   <Text style={styles.tableHeader}>Total orders</Text>
-                   <Text style={styles.tableHeader}>Total Products </Text>
-                   <Text style={styles.tableHeader}>Lifetime spent</Text>
-               </View>
-          </View>
+          
+          <ScrollView>
+            <View style={[styles.tableMainView]}>
+                    <Table>
+                        <Row data={UserTableHeading} style={styles.userTableHead} textStyle={styles.text} />
+                        <TouchableOpacity onPress={userProfileHandler}>
+                        <Rows data={UserTableData} style={styles.usertableRowStyle} textStyle={styles.usertableRowText} />
+                        </TouchableOpacity>
+                    </Table>
+                </View>
+          </ScrollView>
          </View>
       )
     } else{
@@ -337,7 +427,7 @@ export function Customers() {
              <Spacer space={SH(10)} />
              <Image source={customersGraph} style={styles.customersGraph}/>
              {/* </View> */}
-            <Spacer space={SH(130)} />
+            <Spacer space={SH(200)} />
             </ScrollView>
           </View>
         </View>

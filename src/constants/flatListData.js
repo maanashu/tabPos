@@ -237,7 +237,11 @@ export const allTransactionData = [
 export const TransactionTableHeading = ['#', 'Date', 'Transection Id', 'Transection type', 'Mode of payment', 'Cash In', 'Cash Out', 'Status'];
 
 export const TransactionTableData = ['1', 'Jun 21 , 2022', '6677787777', 'Sales', 'JBR', '$2562', '$2562', 'Completed'];
-
+export const UserTableHeading = ['#', 'Name', 'Total orders', 'Total Products', 'Lifetime spent'];
+export const UserTableData = [
+  ['1', 'Curtis M. Wheeler  , 2022', '60 ', '481', '$6,850.00'],
+  ['1', 'Curtis M. Wheeler, 2022', '60 ', '481', '$6,850.00']
+];
 export const newCustomerData= [
     {
       customertype: 'New Customers',
