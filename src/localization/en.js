@@ -262,5 +262,8 @@ export const en = {
     address:'4318 Daffodil Lane, Savage, Virginia(VA), 20763',
     point:'Points: 2',
     acceptMarket:'Accept Marketing'
+  },
+  trackingNumber:{
+    trackingNo:'Tracking Number 6#7409309398BCEE'
   }
 };

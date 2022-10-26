@@ -40,7 +40,10 @@ import {
   location,
   Phone_light,
   reward2,
-  toggle
+  toggle,
+  crossButton,
+  angela,
+  Fonts,willis,deliverCheck, track
 } from '@/assets';
 import { Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
@@ -74,6 +77,8 @@ export function Customers() {
   const [yearly, setYearly] = useState(false);
   const [weeklyUser, setWeeklyUser] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
+  const [orderModal, setOrderModal] = useState(false);
+  const [tracking, setTracking] = useState(false);
   const [statusModalOpen, setStatusModelOpen] = useState(false);
   const [statusModalValue, setStatusModalValue] = useState(null);
   const [statusItems, setStatusItems] = useState([
@@ -87,6 +92,18 @@ export function Customers() {
     { label: '30', value: '30' },
     { label: '50', value: '50' },
     { label: '70', value: '70' },
+  ]);
+   const [monthModalOpen, setMonthModelOpen] = useState(false);
+  const [monthModalValue, setMonthModalValue] = useState(null);
+  const [monthItems, setMonthItems] = useState([
+    { label: 'xyz', value: 'xyz' },
+    { label: 'abc', value: 'abc' },
+  ]);
+  const [storeModalOpen, setStoreModelOpen] = useState(false);
+  const [storeModalValue, setStoreModalValue] = useState(null);
+  const [storeItems, setStoreItems] = useState([
+    { label: 'xyz', value: 'xyz' },
+    { label: 'abc', value: 'abc' },
   ]);
   const todayHandler = () => {
     setToday(true);
@@ -131,7 +148,23 @@ export function Customers() {
   const userProfileRemoveHandler = () => {
     setUserProfile(false)
     setWeeklyUser(true);
-  }
+  };
+  const orderOnlineHandler = () => {
+    setOrderModal(true);
+    setUserProfile(false)
+  };
+  const orderOnlineRemoveHandler = () => {
+    setOrderModal(false);
+    setUserProfile(true)
+  };
+  const trackingHandler =() => {
+    setTracking(true);
+    setOrderModal(false);
+  };
+  const trackingRemoveHandler = () => {
+    setTracking(false);
+    setOrderModal(true);
+  };
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -185,7 +218,238 @@ export function Customers() {
     )
   }
     const bodyView = () => {
-    if(userProfile){
+      if(tracking){
+        return(
+          <View style={{flex:1,
+            backgroundColor:COLORS.white
+            }}>
+             <Spacer space={SH(20)} />
+                 <View style={styles.onlinedeliveryCon}>
+                 <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
+                     <View style={{flexDirection:'row', alignItems:'center'}}>
+                     <TouchableOpacity onPress={trackingRemoveHandler}>
+                      <Image source={leftBack} style={styles.leftBackStyle} />
+                    </TouchableOpacity>
+                    <Text style={styles.orderNoStyle}>
+                      {strings.trackingNumber.trackingNo}
+                    </Text>
+                    <View style={styles.completedButton}>
+                      <Text style={styles.completedText}>Completed</Text>
+                    </View>
+                     </View>
+                     <TouchableOpacity onPress={trackingRemoveHandler}>
+                     <Image source={crossButton} style={styles.leftBackStyle} />
+                     </TouchableOpacity>
+                  </View>
+                
+                 </View>
+                 <Spacer space={SH(12)} />
+                  <View style={styles.trackingNoBody}>
+                  <Spacer space={SH(10)} />
+                       <View style={styles.displayFlex}>
+                          <View style={styles.mapContainer}>
+                              <View style={[styles.costoContainer]}>
+                                <View style={{flexDirection:'row', }}>
+                                    <Image source={angela} style={styles.trackingAngela}/>
+                                    <View>
+                                       <Text></Text>
+                                       <Text>sdfghjk</Text>
+                                    </View>
+                                  </View>
+
+                              </View>
+                          </View>
+                          <View style={styles.mapContainer}></View>
+                       </View>
+                       <Spacer space={SH(12)} />
+                  </View>
+           </View>
+       
+        )
+      }
+      else if(orderModal){
+        return(
+          <View style={{flex:1,
+            backgroundColor:COLORS.white
+            }}>
+             <Spacer space={SH(20)} />
+                 <View style={styles.onlinedeliveryCon}>
+                 <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
+                     <View style={{flexDirection:'row', alignItems:'center'}}>
+                     <TouchableOpacity onPress={orderOnlineRemoveHandler}>
+                      <Image source={leftBack} style={styles.leftBackStyle} />
+                    </TouchableOpacity>
+                    <Text style={styles.orderNoStyle}>
+                      {strings.wallet.orderNo}
+                    </Text>
+                    <View style={styles.completedButton}>
+                      <Text style={styles.completedText}>Completed</Text>
+                    </View>
+                     </View>
+                     <TouchableOpacity onPress={orderOnlineRemoveHandler}>
+                     <Image source={crossButton} style={styles.leftBackStyle} />
+                     </TouchableOpacity>
+                  </View>
+                 </View>
+                 <ScrollView>
+                 <Spacer space={SH(20)} />
+                 <View style={styles.onlinedeliveryBody}>
+                       <View style={styles.displayFlex}>
+                       <View style={styles.buyerCon}>
+                         <Spacer space={SH(10)} />
+                          <Text style={styles.buyer}>{strings.wallet.buyer}</Text>
+                          <Spacer space={SH(15)} />
+                          <View style={{flexDirection:'row'}}>
+                             <Image source={angela} style={styles.angelaPic}/>
+                              <View style={{flexDirection:'column'}}>
+                              <Text style={styles.angela}>{strings.wallet.angela}</Text>
+                              <Spacer space={SH(10)} />
+                             <Text style={styles.angelaAddress}>{strings.wallet.angelaAddress1}</Text>
+                             <Text style={styles.angelaAddress}>{strings.wallet.angelaAddress2}</Text>
+                              </View>
+                          </View>
+    
+                          <Spacer space={SH(20)} />
+                      </View>
+                      <View style={styles.invoiceCon}>
+                           <Spacer space={SH(10)} />
+                           <Text style={styles.invoiceDetail}>{strings.wallet.invoiceDetails}</Text>
+                           <Spacer space={SH(10)} />
+                           <Text style={styles.invoiceId}>{strings.wallet.invoiceIdLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.invoiceId}</Text></Text>
+                           <Spacer space={SH(5)} />
+                           <Text style={styles.invoiceId}>{strings.wallet.createDateLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
+                           <Spacer space={SH(5)} />
+                           <Text style={styles.invoiceId}>{strings.wallet.dueDateLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
+                           <Spacer space={SH(5)} />
+                           <Text style={styles.deliveryDate}>{strings.wallet.deliveryDate} <Text>{strings.wallet.createDate}</Text></Text>
+                          <View style={styles.pointConOrder}>
+                                <Text style={styles.pointTextOrder}>{strings.wallet.point}</Text>
+                          </View>
+                      </View>
+                       </View>
+                       <Spacer space={SH(30)} />
+                       <View style={styles.tableContainer}>
+                       <DataTable>
+                        <DataTable.Header style={styles.tableheader}>
+                          <DataTable.Title><Text style={styles.tableLabel}>#</Text></DataTable.Title>
+                          <DataTable.Title style={styles.tableSetting}><Text style={styles.tableLabel}>Descriptions</Text></DataTable.Title>
+                          <DataTable.Title><Text style={styles.tableLabel}>No. of Items</Text></DataTable.Title>
+                          <DataTable.Title><Text style={styles.tableLabel}>Rate</Text></DataTable.Title>
+                          <DataTable.Title><Text style={styles.tableLabel}>Amount</Text></DataTable.Title>
+                        </DataTable.Header>
+    
+                        <DataTable.Row>
+                          <DataTable.Cell><Text style={styles.rowText}>1</Text></DataTable.Cell>
+                         {/* <DataTable.Cell>
+                            <View style={{display:'flex',flexDirection:'row'}}>
+                                   <Image source={ashtonClass} style={styles.ashtonClass}/>
+                                  <View>
+                                   <Text style={styles.rowText}>Ashton Classic</Text>
+                                   <Text style={[styles.rowText, {fontSize:SF(12)}]}>Box of 25</Text>
+                                  </View>
+                             </View> 
+                             </DataTable.Cell> */}
+                          <DataTable.Cell style={styles.tableSetting}><Text style={styles.rowText}>Ashton Classic</Text></DataTable.Cell>
+                          <DataTable.Cell><Text style={styles.rowText}>16 Box</Text></DataTable.Cell>
+                          <DataTable.Cell><Text style={styles.rowText}>16 Box</Text></DataTable.Cell>
+                          <DataTable.Cell><Text style={styles.rowText}>$4,063.20</Text></DataTable.Cell>
+                        </DataTable.Row>
+    
+                        <DataTable.Row>
+                          <DataTable.Cell><Text style={styles.rowText}>1</Text></DataTable.Cell>
+                          <DataTable.Cell style={styles.tableSetting}><Text style={styles.rowText}>Ashton Classic</Text></DataTable.Cell>
+                          <DataTable.Cell><Text style={styles.rowText}>16 Box</Text></DataTable.Cell>
+                          <DataTable.Cell><Text style={styles.rowText}>16 Box</Text></DataTable.Cell>
+                          <DataTable.Cell><Text style={styles.rowText}>$4,063.20</Text></DataTable.Cell>
+                        </DataTable.Row>
+                          </DataTable>
+    
+                       <Spacer space={SH(25)} />
+                       <View style={[styles.displayFlex, {marginHorizontal:moderateScale(10)}]}>
+                            {/* <View style={styles.noteContainer}>
+                               
+                            </View> */}
+                            <TextInput
+                             multiline
+                             numberOfLines={4}
+                            style={styles.textInputStyle}
+                            placeholder='Note:'
+                            placeholderTextColor="#000"
+                            />
+                            <View style={styles.noteContainer}>
+                               <Spacer space={SH(12)} />
+                                   <View style={styles.tablesubTotal}>
+                                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.subtotal}</Text>
+                                      <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
+                                   </View>
+                                   <View style={styles.subtotalHr}></View>
+                                   <View style={styles.tablesubTotal}>
+                                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.serviceCharge}</Text>
+                                      <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
+                                   </View>
+                                   <View style={styles.subtotalHr}></View>
+                                   <View style={styles.tablesubTotal}>
+                                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.discount}</Text>
+                                      <Text style={[styles.tablesubTotalText, {color:COLORS.roseRed}]}>{strings.wallet.subtotalPrice}</Text>
+                                   </View>
+                                   <View style={styles.subtotalHr}></View>
+                                   <View style={styles.tablesubTotal}>
+                                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.shippingCharge}</Text>
+                                      <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
+                                   </View>
+                                   <View style={styles.subtotalHr}></View>
+                                   <View style={styles.tablesubTotal}>
+                                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                                    <Text style={[styles.tablesubTotalLabel, {fontFamily:Fonts.SemiBold}]}>{strings.wallet.total}</Text>
+                                     <View style={styles.paidContainer}>
+                                        <Text style={styles.paidText}>{strings.wallet.paid}</Text>
+                                     </View>
+                                    </View>
+                                    <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
+                                   </View>
+                                   <Spacer space={SH(10)} />
+                            </View>
+                       </View>
+                       <Spacer space={SH(20)} />
+                       </View>
+                       <Spacer space={SH(25)} />
+                       <View>
+                          <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
+                       </View>
+                       <Spacer space={SH(20)} />
+                       <View style={styles.trackingCon}>
+                           <View style={styles.displayFlex}>
+                                <View style={{flexDirection:'row',alignItems:'center'}}>
+                                  <Image source={willis} style={styles.willis}/>
+                                <View>
+                                  <Text style={styles.willisName}>{strings.wallet.willis}</Text>
+                                  <Text style={styles.trackingNumber}>{strings.wallet.trackingNo}</Text>
+                               </View>
+                                </View>
+                               <View style={{flexDirection:'row'}}>
+                                   <View style={[styles.deliverBtnCon, {marginHorizontal:moderateScale(8)}]}>
+                                        <View style={styles.deliverTextCon}>
+                                          <Image source={deliverCheck} style={styles.deliveryCheck}/>
+                                          <Text style={styles.deliveredText}>{strings.wallet.delivered}</Text>
+                                        </View>
+                                   </View>
+                                   <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
+                                        <TouchableOpacity style={styles.deliverTextCon} onPress={trackingHandler}>
+                                          <Image source={track} style={styles.deliveryCheck}/>
+                                          <Text style={styles.deliveredText}>{strings.wallet.tracking}</Text>
+                                        </TouchableOpacity>
+                                   </View>
+                               </View>
+                           </View>
+                       </View>
+                       <Spacer space={SH(20)} />
+                       
+                 </View>
+                 </ScrollView>
+           </View>
+        )
+      }
+   else  if(userProfile){
       return(
           <View>
             {customUserHeader()}
@@ -215,12 +479,12 @@ export function Customers() {
                             </View>
                            </View>
                            <View>
-                               <View style={styles.pointCon}>
+                               <TouchableOpacity style={styles.pointCon} onPress={orderOnlineHandler}>
                                      <View style={styles.flexAlign}>
                                        <Image source={reward2} style={styles.rewardStyle}/>
                                          <Text style={styles.pointText}>{strings.customers.point}</Text>
                                      </View>
-                               </View>
+                               </TouchableOpacity>
                                <Spacer space={SH(10)}/>
                                <View style={[styles.pointCon,styles.acceptCon]}>
                                <View style={styles.flexAlign}>
@@ -231,7 +495,130 @@ export function Customers() {
                            </View>
                       </View>
                  </View>
+
             </View>
+            <Spacer space={SH(20)}/>
+            <View style={styles.orderTypeCon}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              
+
+              <View style={{ marginHorizontal: moderateScale(8) }}>
+                <DropDownPicker
+                  ArrowUpIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIcon} />
+                  )}
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIcon} />
+                  )}
+                  style={styles.dropdown}
+                  containerStyle={[
+                    styles.containerStyle,
+                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
+                  ]}
+                  dropDownContainerStyle={styles.dropDownContainerStyle}
+                  listItemLabelStyle={styles.listItemLabelStyle}
+                  labelStyle={styles.labelStyle}
+                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                  open={monthModalOpen}
+                  value={monthModalValue}
+                  items={monthItems}
+                  setOpen={setMonthModelOpen}
+                  setValue={setMonthModalValue}
+                  setItems={setMonthItems}
+                  placeholder="Month"
+                  placeholderStyle={styles.placeholderStyle}
+                />
+              </View>
+              <>
+                <DropDownPicker
+                  ArrowUpIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIcon} />
+                  )}
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIcon} />
+                  )}
+                  style={styles.dropdown}
+                  containerStyle={[
+                    styles.containerStyle,
+                    { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+                  ]}
+                  dropDownContainerStyle={styles.dropDownContainerStyle}
+                  listItemLabelStyle={styles.listItemLabelStyle}
+                  labelStyle={styles.labelStyle}
+                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                  open={storeModalOpen}
+                  value={storeModalValue}
+                  items={storeItems}
+                  setOpen={setStoreModelOpen}
+                  setValue={setStoreModalValue}
+                  setItems={setStoreItems}
+                  placeholder="Store location"
+                  placeholderStyle={styles.placeholderStyle}
+                />
+              </>
+            </View>
+          </View>
+          <View style={[styles.jbrTypeCon, { zIndex: -2 }]}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={[styles.paginationCount, { fontSize: 12 }]}>
+                Showing Results
+              </Text>
+              <View style={{marginHorizontal:moderateScale(10)}}>
+                <DropDownPicker
+                  ArrowUpIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                  )}
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                  )}
+                  style={styles.dropdown}
+                  containerStyle={[
+                    styles.containerStylePagination,
+                    { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+                  ]}
+                  dropDownContainerStyle={styles.dropDownContainerStyle}
+                  listItemLabelStyle={styles.listItemLabelStyle}
+                  labelStyle={styles.labelStyle}
+                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                  open={paginationModalOpen}
+                  value={paginationModalValue}
+                  items={paginationModalItems}
+                  setOpen={setPaginationModalOpen}
+                  setValue={setPaginationModalValue}
+                  setItems={setPaginationModalItems}
+                  placeholder="50"
+                  placeholderStyle={styles.placeholderStylePagination}
+                />
+              </View>
+              <View style={styles.unionCon}>
+                <Image source={Union} style={styles.unionStyle} />
+              </View>
+              <View style={[styles.unionCon, { marginLeft: 7 }]}>
+                <Image source={mask} style={styles.unionStyle} />
+              </View>
+              <Text style={styles.paginationCount}>
+                {strings.wallet.paginationCount}
+              </Text>
+              <View
+                style={[
+                  styles.unionCon,
+                  styles.unionConWhite,
+                  { marginRight: 7 },
+                ]}
+              >
+                <Image source={maskRight} style={styles.unionStyle} />
+              </View>
+              <View style={[styles.unionCon, styles.unionConWhite]}>
+                <Image source={unionRight} style={styles.unionStyle} />
+              </View>
+            </View>
+          </View>
           </View>
       )
     } else if(weeklyUser){
@@ -440,6 +827,7 @@ export function Customers() {
   return(
       <View style={styles.container}>
          {bodyView()}
+
          
       </View>
       
