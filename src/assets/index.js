@@ -94,6 +94,16 @@ export { default as email } from '@/assets/icons/ic_customers/email.png';
 export { default as location } from '@/assets/icons/ic_customers/location.png';
 export { default as reward2 } from '@/assets/icons/ic_customers/reward.png';
 export { default as toggle } from '@/assets/icons/ic_customers/toggle.png';
+export { default as ticket } from '@/assets/icons/ic_customers/ticket.png';
+export { default as box } from '@/assets/icons/ic_customers/box.png';
+export { default as dropRight } from '@/assets/icons/ic_customers/dropRight.png';
+export { default as map } from '@/assets/icons/ic_customers/map.png';
+export { default as blankRadio } from '@/assets/icons/ic_customers/blankRadio.png';
+export { default as movingArrow } from '@/assets/icons/ic_customers/movingArrow.png';
+export { default as movingArrowBlue } from '@/assets/icons/ic_customers/movingArrowBlue.png';
+export { default as fillRadio } from '@/assets/icons/ic_customers/fillRadio.png';
+export { default as angela2 } from '@/assets/icons/ic_customers/angela2.png';
+export { default as contact } from '@/assets/icons/ic_customers/contact.png';
 
 /* Fonts */
 export const Fonts = {

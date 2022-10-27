@@ -261,6 +261,27 @@ export const en = {
     email:'vidal.webe2@gmail.com',
     address:'4318 Daffodil Lane, Savage, Virginia(VA), 20763',
     point:'Points: 2',
-    acceptMarket:'Accept Marketing'
+    acceptMarket:'Accept Marketing',
+    costo:'Costco Wholesale',
+    costoAdd:'1189 Main Street, Seattle, WA 98161',
+    detail:'Details',
+    orderStatus:'Order status',
+    assignDriver:'Assinging driver',
+    verifyCode:'Verify code',
+    waitMinute:'with in 10 minutes',
+    delivery:'Delivery',
+    yourBlock:'Next to your block',
+    productPick:'Product Pickup',
+    assignDriver:'Assinging driver',
+    readyPickup:'Ready to pickup',
+    orderAccepted:'Order accepted',
+    dateTime:'21 Jun, 2022  |   10:30 am',
+    carriar:'Carriar:',
+    geredo:'Gerardo K. Jennings',
+    contact:'Contact'
+
+  },
+  trackingNumber:{
+    trackingNo:'Tracking Number 6#7409309398BCEE'
   }
 };

@@ -242,6 +242,12 @@ export const UserTableData = [
   ['1', 'Curtis M. Wheeler  , 2022', '60 ', '481', '$6,850.00'],
   ['1', 'Curtis M. Wheeler, 2022', '60 ', '481', '$6,850.00']
 ];
+
+export const ProfileTableHeading = ['#', 'Order id#', 'Date', 'Store location', 'Responsible', 'No. of items', 'Amount','Sales type'];
+export const ProfileTableData = [
+  ['1', '362501', 'Jun 11, 2022', 'Maimi', 'DHL', '3 times', '$6,850.00', 'Shipping'],
+  ['1', '362501', 'Jun 11, 2022', 'Maimi', 'DHL', '3 times', '$6,850.00', 'Store'],
+];
 export const newCustomerData= [
     {
       customertype: 'New Customers',

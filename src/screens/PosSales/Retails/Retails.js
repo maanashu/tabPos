@@ -406,8 +406,7 @@ export function Retails() {
           </View>
         </View>
         <Text style={styles.onexstyle}>
-          {' '}
-          <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>{' '}
+          <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>
           {strings.posSale.onex}
         </Text>
         <Text style={[styles.jfrText, { color: COLORS.black }]}>
@@ -626,85 +625,6 @@ export function Retails() {
       {sideContainer ? (
         <View style={[styles.rightSideContainer]}>
           <Spacer space={SH(20)} />
-          {/* <View style={{ paddingHorizontal: moderateScale(10) }}>
-            <View style={styles.displayFlex}>
-              <Text style={styles.moreActText}>
-                {strings.posSale.paymentdetail}
-              </Text>
-              <TouchableOpacity onPress={choosePaymentCloseHandler}>
-                <Image source={crossButton} style={styles.crossButtonStyle} />
-              </TouchableOpacity>
-            </View>
-            <Spacer space={SH(40)} />
-            <Text style={[styles.payDoneText, {fontSize:SF(20), alignSelf:'center'}]}>{strings.posSale.paymenttdone}</Text>
-            <Spacer space={SH(10)} />
-            <View style={styles.paymentDone}>
-              <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
-                <View>
-                <Text style={styles.payDoneText}>Payable $254.60</Text>
-                <Spacer space={SH(10)} />
-                <Text style={styles.payDoneText}>Tips $254.60</Text>
-                  </View>
-                <Text style={styles.darkPricestyle}>$306.60</Text>
-
-              </View>
-            </View>
-            <Spacer space={SH(10)} />
-            <Text style={styles.jbrWalllettext}>
-              <Text style={styles.viaText}>Via </Text>JBR Wallet
-            </Text>
-            <Spacer space={SH(20)} />
-            <View style={styles.customerCon}>
-            <Spacer space={SH(20)} />
-                <Text style={styles.customerHeading}>Customer</Text>
-                <Spacer space={SH(20)} />
-                <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
-                  <Image source={jbrCustomer} style={styles.jbrCustomer}/>
-                   <View style={{paddingHorizontal:moderateScale(15)}}>
-                   <Text style={[styles.cusAddText, {fontSize:SF(20)}]}>Terry Moore</Text>
-                   <Spacer space={SH(8)} />
-                   <Text style={styles.cusAddText}>803-238-2630</Text>
-                   <Spacer space={SH(5)} />
-                   <Text style={styles.cusAddText}>harryrady@jourrapide.com</Text>
-                   <Spacer space={SH(8)} />
-                   <Text style={styles.cusAddText}>4849 Owagner Lane</Text>
-                     <Text style={styles.cusAddText}>Seattle, WA 98101</Text>
-                   </View>
-                  </View>
-                  <View style={styles.walletIdButtonCon}>
-                    <Text style={styles.walletIdcontent}>Wallet Id</Text>
-                    <Spacer space={SH(5)} />
-                    <Text style={[styles.cusAddText, {color:COLORS.primary}]}>509 236 2365</Text>
-                  </View>
-            </View>
-            <Spacer space={SH(30)} />
-          </View> */} {/* <DropDownPicker
-                      ArrowUpIconComponent={({ style }) => (
-                        <Image source={dropdown2} style={styles.dropDownIcon} />
-                      )}
-                      ArrowDownIconComponent={({ style }) => (
-                        <Image source={dropdown2} style={styles.dropDownIcon} />
-                      )}
-                      // style={styles.dropdown}
-                      // containerStyle={[
-                      //   styles.containerStyle,
-                      //   { zIndex: Platform.OS === 'ios' ? 100 : 1 },
-                      // ]}
-                      style={styles.dropdown}
-                      containerStyle={styles.containerStyle}
-                      dropDownContainerStyle={styles.dropDownContainerStyle}
-                      listItemLabelStyle={styles.listItemLabelStyle}
-                      labelStyle={styles.labelStyle}
-                      selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                      open={statusModalOpen}
-                      value={statusModalValue}
-                      items={statusItems}
-                      setOpen={setStatusModelOpen}
-                      setValue={setStatusModalValue}
-                      setItems={setStatusItems}
-                      placeholder="Status"
-                      placeholderStyle={styles.placeholderStyle}
-                    /> */}
           {checkoutCon ? (
             <View style={{ paddingHorizontal: moderateScale(10) }}>
               <View style={styles.displayFlex}>
@@ -895,9 +815,7 @@ export function Retails() {
             <View style={styles.hr}></View>
             <Spacer space={SH(12)} />
             <View style={styles.bottomSubCon}>
-              <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>
-                Total
-              </Text>
+              <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>Total</Text>
               <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
                 $254.60
               </Text>
@@ -925,7 +843,7 @@ export function Retails() {
         <View style={styles.amountPopupCon}>
           <View style={styles.primaryHeader}>
             <Text style={styles.headerText}>
-              Amount: <Text>$382.75</Text>
+              Amount: $382
             </Text>
             <TouchableOpacity
               onPress={amountRemoveHandler}
