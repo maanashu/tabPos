@@ -2,14 +2,25 @@ import { StyleSheet, Dimensions } from "react-native";
 import { SW, SH, SF } from "@/theme";
 import { COLORS } from "@/theme";
 import { Fonts } from "@/assets";
+import { verticalScale,moderateScale } from "react-native-size-matters";
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.white
     },
+    displayFlex: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      },
+      flexAlign:{
+        flexDirection:'row',
+        alignItems:'center'
+      },
     headerMainView: {
         width: windowWidth - 10,
         paddingHorizontal: SW(16),
@@ -62,7 +73,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: SH(25),
         paddingVertical: SH(30),
-        backgroundColor: COLORS.textInputBackground
+        backgroundColor: COLORS.textInputBackground,
+        borderRadius:10
     },
     cashDrawerText: {
         fontFamily: Fonts.SemiBold,
@@ -254,5 +266,152 @@ export const styles = StyleSheet.create({
         width:windowWidth - 90,
         height:SH(90),
         alignSelf:'center'
-    }
+    },
+
+    // summary history css start
+    summaryHeaderCon:{
+        // borderWidth:1,
+        height:SH(100),
+        justifyContent:'center',
+        paddingHorizontal:moderateScale(10)
+    },
+    backButtonCon: {
+        backgroundColor: COLORS.textInputBackground,
+        borderRadius: 3,
+        width: windowWidth * 0.08,
+        alignItems: 'center',
+        flexDirection: 'row',
+      },
+      backButtonArrow: {
+        width: SW(12),
+        height: SW(8),
+        resizeMode: 'contain',
+        tintColor: COLORS.dark_grey,
+      },
+      backTextStyle: {
+        color: COLORS.dark_grey,
+        fontFamily: Fonts.SemiBold,
+        fontSize: SF(16),
+        paddingVertical: verticalScale(5),
+        // paddingHorizontal:moderateScale(5)
+      },
+      summaryText:{
+        color: COLORS.black,
+        fontFamily: Fonts.MaisonBold,
+        fontSize: SF(18),
+      },
+      bodyContainer:{
+        // borderWidth:1,
+        width:windowWidth * 0.88,
+        height:windowHeight* 0.83,
+        alignSelf:'center'
+      },
+      allCashText:{
+        color: COLORS.black,
+        fontFamily: Fonts.SemiBold,
+        fontSize: SF(24),
+      },
+      totalCashHeader:{
+        borderBottomWidth:1,
+        borderColor:COLORS.solidGrey,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        paddingVertical:verticalScale(6),
+        marginTop:15
+      },
+      totalCashData:{
+        borderBottomWidth:1,
+        borderColor:COLORS.solidGrey,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        paddingVertical:verticalScale(6),
+        paddingHorizontal:moderateScale(10)
+      },
+      sectionListHeader:{
+        color: COLORS.black,
+        fontFamily: Fonts.SemiBold,
+        fontSize: SF(20),
+      },
+      sectionListData:{
+        color: COLORS.dark_grey,
+        fontFamily: Fonts.Regular,
+        fontSize: SF(16),
+      },
+      netPaymentHeader:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        paddingVertical:verticalScale(6),
+        marginTop:15
+      },
+      cashActivity:{
+        color: COLORS.darkGray,
+        fontFamily: Fonts.SemiBold,
+        fontSize: SF(24),
+      },
+      cashActivityCon:{
+        borderBottomWidth:1,
+        borderColor:COLORS.solidGrey,
+        paddingVertical:verticalScale(3),
+        marginTop:5
+      },
+      cashActivityDarkText:{
+        color: COLORS.solid_grey,
+        fontFamily: Fonts.SemiBold,
+        fontSize: SF(20),
+      },
+      cashActivityLightText:{
+        color: COLORS.solid_grey,
+        fontFamily: Fonts.Regular,
+        fontSize: SF(16),
+      },
+      cashActivityRedText:{
+        color: COLORS.orange,
+        fontFamily: Fonts.Regular,
+        fontSize: SF(16),
+      },
+      senEmailButton: {
+        alignSelf: 'center',
+        // width: SW(130),
+        width:windowWidth * 0.88,
+        height: SH(70),
+    },
+     // summary history css end
+    // summary history css start
+      sessionHistory:{
+        color: COLORS.black,
+        fontFamily: Fonts.MaisonBold,
+        fontSize: SF(18),
+        paddingHorizontal:moderateScale(12)
+      },
+      datePickerCon:{
+        height: SH(63),
+        justifyContent: 'center',
+        paddingHorizontal: moderateScale(12),
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        borderColor: COLORS.solidGrey,
+      },
+      datepickerConatiner: {
+        borderWidth: 1,
+        height: SH(35),
+        width: SW(45),
+        borderRadius: 7,
+        borderColor: COLORS.solidGrey,
+        alignItems: 'center',
+        paddingHorizontal: moderateScale(7),
+        flexDirection: 'row',
+      },
+      calendarStyle: {
+        width: SW(5),
+        height: SW(5),
+        resizeMode: 'contain',
+      },
+      datePlaceholder: {
+        fontFamily: Fonts.Regular,
+        color: COLORS.gerySkies,
+        fontSize: SF(12),
+        paddingHorizontal: moderateScale(5),
+      },
+
+    // summary history css end
 })

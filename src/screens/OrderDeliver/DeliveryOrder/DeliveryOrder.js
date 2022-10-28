@@ -43,6 +43,7 @@ import { Button, Spacer } from '@/components';
 import {
   LineChart,
 } from "react-native-chart-kit";
+import { verticalScale } from 'react-native-size-matters';
 
 export function DeliveryOrder() {
   const [viewAllReviews, setViewAllReviews] = useState(false);
@@ -353,13 +354,15 @@ export function DeliveryOrder() {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <FlatList
+           <View style={{paddingBottom:verticalScale(10)}}>
+           <FlatList
             scrollEnabled={false}
             data={orderStatus}
             renderItem={renderItem}
             horizontal
             contentContainerStyle={styles.contentContainer}
           />
+           </View>
 
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.headerMainView}>

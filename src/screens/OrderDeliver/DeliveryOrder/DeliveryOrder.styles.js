@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(35),
+    paddingVertical: SH(25),
     flexDirection: 'row',
   },
   truckStyle: {
