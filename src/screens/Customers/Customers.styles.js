@@ -742,7 +742,7 @@ paidText:{
 subtotalHr:{
   borderWidth:1,
   borderColor:COLORS.solidGrey,
-  marginVertical:moderateScale(9)
+  marginVertical:Platform.OS === 'android' ? moderateScale(9) : moderateScale(7)
 },
 textInputStyle:{
   borderWidth:1,
