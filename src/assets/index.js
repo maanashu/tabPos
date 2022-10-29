@@ -13,6 +13,7 @@ export { default as parachuteBox } from '@/assets/icons/ic_navigator/parachuteBo
 export { default as bluepara } from '@/assets/icons/ic_navigator/bluePara.png';
 export { default as calendar } from '@/assets/icons/ic_navigator/calendar.png';
 export { default as analytics } from '@/assets/icons/ic_navigator/analytics.png';
+export { default as blueCalender } from '@/assets/icons/ic_navigator/blurCalender.png';
 export { default as blueanalytics } from '@/assets/icons/ic_navigator/blueanalytics.png';
 export { default as wallet } from '@/assets/icons/ic_navigator/wallet.png';
 export { default as bluewallet } from '@/assets/icons/ic_navigator/bluewallet.png';

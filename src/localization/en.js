@@ -275,8 +275,6 @@ export const en = {
     manual:'Manual',
     removeusd:'-USD $25.10',
     sessionHistory:'Session history',
-    
-
   },
   customers:{
     sales:'Sales',
@@ -312,5 +310,17 @@ export const en = {
   },
   trackingNumber:{
     trackingNo:'Tracking Number 6#7409309398BCEE'
+  },
+  calender:{
+    calender:'Calender',
+    requestFor:'Request for',
+    hairCut:'Haircut',
+    timeLabel:'Time:',
+    time:'10.00 AM- 11.00 PM ',
+    dateLabel:'Date:',
+    date:'Sunday, Oct 29, 2022',
+    approve:'Approve',
+    no:'No'
+    
   }
 };

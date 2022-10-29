@@ -24,7 +24,8 @@ import {
   reward,
   settings,
   power,
-  bluetray
+  bluetray,
+  blueCalender
 } from '@/assets';
 
 export function DrawerNavigator(props) {
@@ -66,10 +67,12 @@ export function DrawerNavigator(props) {
         icon={({ focused, color, size }) => (<Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />)} />
 
       <DrawerItem
-        onPress={() => { alert('coming soon') }}
+         activeBackgroundColor='transparent'
+         focused={active === 'calender' ? true : false}
+         onPress={() => { setActive('calender'), navigate(NAVIGATION.calender)}}
         label=""
         icon={({ focused, color, size }) => (
-          <Image source={calendar} style={styles.iconStyle} />)} />
+          <Image source={focused ? blueCalender :calendar} style={styles.iconStyle} />)} />
 
       <DrawerItem
         activeBackgroundColor='transparent'

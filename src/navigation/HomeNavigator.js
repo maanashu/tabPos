@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { NAVIGATION } from '@/constants';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { COLORS, SW } from '@/theme';
-import { Retails, DeliveryOrder, ShippingOrders, Wallet, Management, Customers } from '@/screens';
+import { Retails, DeliveryOrder, ShippingOrders, Wallet, Management, Customers, Calender } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
 
@@ -54,6 +54,11 @@ export function HomeNavigator() {
       <Drawer.Screen
         component={Customers}
         name={NAVIGATION.customers}
+        options={{ headerShown: false }}
+      />
+       <Drawer.Screen
+        component={Calender}
+        name={NAVIGATION.calender}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

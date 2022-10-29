@@ -11,5 +11,6 @@ export const NAVIGATION = {
   shippingOrders: 'ShippingOrders',
   wallet: 'Wallet',
   management: 'Management',
-  customers: 'Customers'
+  customers: 'Customers',
+  calender: 'Calender'
 };
