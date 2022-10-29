@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { SW, SH, SF } from "@/theme";
+import { SW, SH, SF,ShadowStyles } from "@/theme";
 import { COLORS } from "@/theme";
 import { Fonts } from "@/assets";
 import { verticalScale,moderateScale } from "react-native-size-matters";
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.white
     },
-    displayFlex: {
+     displayFlex:{
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center'
       },
-    headerMainView: {
+       headerMainView: {
         width: windowWidth - 10,
         paddingHorizontal: SW(16),
         alignSelf: 'center',
@@ -395,23 +395,120 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         height: SH(35),
         width: SW(45),
-        borderRadius: 7,
+        borderRadius: 3,
         borderColor: COLORS.solidGrey,
-        alignItems: 'center',
+        // alignItems: 'center',
         paddingHorizontal: moderateScale(7),
-        flexDirection: 'row',
+        // flexDirection: 'row',
+        justifyContent:'center',
       },
       calendarStyle: {
         width: SW(5),
         height: SW(5),
         resizeMode: 'contain',
+        tintColor:COLORS.darkGray
       },
       datePlaceholder: {
         fontFamily: Fonts.Regular,
-        color: COLORS.gerySkies,
+        color: COLORS.solid_grey,
         fontSize: SF(12),
         paddingHorizontal: moderateScale(5),
       },
+      dropDownIcon:{
+        width: SW(4),
+        height: SW(4),
+        resizeMode: 'contain',
+        // tintColor: COLORS.solidGrey,
+      },
+      dropdown: {
+        alignSelf: 'center',
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        zIndex: Platform.OS === 'ios' ? 100 : 0,
+      },
+      containerStyle: {
+        width: SW(45),
+        height: SH(35),
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderRadius: 7,
+        borderColor: COLORS.solidGrey,
+      },
+      dropDownContainerStyle: {
+        borderWidth: 1,
+        borderColor: COLORS.solidGrey,
+        borderRadius: 7,
+        ...ShadowStyles.shadow,
+        backgroundColor: COLORS.white,
+        top:Platform.OS === 'android' ? 30 : 15,
+        zIndex: Platform.OS === 'ios' ? 100 : 1
+      },
+      listItemLabelStyle: {
+        fontSize: SF(12),
+        fontFamily: Fonts.Regular,
+      },
+      labelStyle: {
+        fontSize: SF(12),
+        fontFamily: Fonts.Regular,
+      },
+      selectedItemLabelStyle: {
+        fontSize: SF(12),
+        fontFamily: Fonts.Regular,
+      },
+      placeholderStyle: {
+        fontSize: SF(12),
+        fontFamily: Fonts.Regular,
+        color: COLORS.solid_grey,
+      },
+      userTableHead: {
+        height: SH(50),
+        backgroundColor: '#E1E3E4',
+        textAlign: 'center',
+        borderWidth: 0,
+        borderColor: 'transparent',
+    },
+    text: {
+        fontFamily: Fonts.MaisonBold,
+        color: COLORS.solid_grey,
+        fontSize: SF(14),
+        textAlign: 'center',
+    },
+    usertableRowStyle: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLORS.solidGrey,
+      paddingVertical: SH(18)
+  },
+  usertableRowText: {
+      fontFamily: Fonts.Regular,
+      color: COLORS.solid_grey,
+      fontSize: SF(12),
+      textAlign: 'center',
+  },
+  tableMainView:{
+    zIndex:-10
+  },
+  tableDataHeaderCon:{
+    height: SH(50),
+        backgroundColor: '#E1E3E4',
+        textAlign: 'center',
+        borderWidth: 0,
+        borderColor: 'transparent',
+    paddingHorizontal:moderateScale(20),
+    justifyContent:'center'
+  },
+  tableDataCon:{
+    height:SH(55),
+    borderBottomWidth:1,
+    borderColor:COLORS.solidGrey,
+    justifyContent:'center',
+    paddingHorizontal:moderateScale(20)
+  },
+  allienpic:{
+    width:SH(24),
+    height:SH(24),
+    resizeMode:'contain'
+  }
+  
 
     // summary history css end
 })

@@ -248,6 +248,12 @@ export const ProfileTableData = [
   ['1', '362501', 'Jun 11, 2022', 'Maimi', 'DHL', '3 times', '$6,850.00', 'Shipping'],
   ['1', '362501', 'Jun 11, 2022', 'Maimi', 'DHL', '3 times', '$6,850.00', 'Store'],
 ];
+
+export const sessionHistoryTableHeading = ['#', 'Date', 'Ended By', 'Session Started', 'Added cash', 'Removed cash', 'Counted cash', 'Session Ended'];
+export const sessionHistoryTableData = [
+  ['1', 'Jun 21, 2022', 'Allein ', '$0.00', '$6,850.00','$1,350.00', '$1,350.00','-$40.00'],
+  ['1', 'Jun 21, 2022', 'Allein ', '$0.00', '$6,850.00','$1,350.00', '$1,350.00','-$40.00'],
+];
 export const newCustomerData= [
     {
       customertype: 'New Customers',

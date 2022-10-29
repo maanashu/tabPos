@@ -274,7 +274,8 @@ export const en = {
     refund:'Refund',
     manual:'Manual',
     removeusd:'-USD $25.10',
-    sessionHistory:'Session history'
+    sessionHistory:'Session history',
+    
 
   },
   customers:{

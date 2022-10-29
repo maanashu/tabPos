@@ -470,6 +470,8 @@ export function Wallet() {
                </View>
                </ScrollView>
          </View>
+   
+
       )
     }
     else if (orderModel) {

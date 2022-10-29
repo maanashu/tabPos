@@ -104,6 +104,8 @@ export { default as movingArrowBlue } from '@/assets/icons/ic_customers/movingAr
 export { default as fillRadio } from '@/assets/icons/ic_customers/fillRadio.png';
 export { default as angela2 } from '@/assets/icons/ic_customers/angela2.png';
 export { default as contact } from '@/assets/icons/ic_customers/contact.png';
+export { default as roundCalender } from '@/assets/icons/ic_customers/roundCalender.png';
+export { default as allien } from '@/assets/icons/ic_customers/allien.png';
 
 /* Fonts */
 export const Fonts = {
