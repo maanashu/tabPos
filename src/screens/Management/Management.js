@@ -350,7 +350,7 @@ export function Management(props) {
                            <Text style={styles.text}>Added cash</Text>
                            <Text style={styles.text}>Removed cash</Text>
                            <Text style={styles.text}>Counted cash</Text>
-                           <Text style={styles.text}>Session Ended</Text>
+                           <Text style={[styles.text, {paddingRight:25}]}>Session Ended</Text>
                            </View>
                       </View>
                         
