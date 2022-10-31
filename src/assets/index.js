@@ -107,6 +107,12 @@ export { default as angela2 } from '@/assets/icons/ic_customers/angela2.png';
 export { default as contact } from '@/assets/icons/ic_customers/contact.png';
 export { default as roundCalender } from '@/assets/icons/ic_customers/roundCalender.png';
 export { default as allien } from '@/assets/icons/ic_customers/allien.png';
+export { default as charlene } from '@/assets/icons/ic_customers/charlene.png';
+export { default as watchLogo } from '@/assets/icons/ic_customers/watchLogo.png';
+export { default as schdule } from '@/assets/icons/ic_customers/schdule.png';
+export { default as rightlight } from '@/assets/icons/ic_deliveryOrder/rightlight.png';
+export { default as leftlight } from '@/assets/icons/ic_deliveryOrder/leftlight.png';
+export { default as greenCalender } from '@/assets/icons/ic_customers/greenCalender.svg';
 
 /* Fonts */
 export const Fonts = {

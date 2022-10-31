@@ -4,6 +4,7 @@ import { COLORS } from "@/theme";
 import { Fonts } from "@/assets";
 import { verticalScale,moderateScale } from "react-native-size-matters";
 
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -39,7 +40,6 @@ export const styles = StyleSheet.create({
         width: SH(32),
         height: SH(32),
         resizeMode: 'contain',
-        tintColor:COLORS.primary
     },
     deliveryView: {
         flexDirection: 'row',
@@ -68,15 +68,14 @@ export const styles = StyleSheet.create({
         left: 3,
     },
     calenderCon:{
-      width:windowWidth * 0.74,
-      borderWidth:1,
+      width:windowWidth * 0.71,
+      // borderWidth:1,
       height:windowHeight
     },
     notificationCon:{
-      width:windowWidth * 0.21,
-      borderWidth:1,
+      width:windowWidth * 0.24,
+      // borderWidth:1,
       height:windowHeight,
-      paddingHorizontal:moderateScale(8)
     },
     approveButtonCon:{
       backgroundColor:COLORS.primary,
@@ -104,6 +103,173 @@ export const styles = StyleSheet.create({
       fontFamily: Fonts.Regular,
       color: COLORS.dark_grey,
       fontSize: SF(15),
-    }
+    },
+    timeLabel:{
+      fontFamily: Fonts.Regular,
+      color: COLORS.dark_grey,
+      fontSize: SF(15),
+      paddingHorizontal:moderateScale(5)
+    },
+    notificationchildCon:{
+      borderBottomWidth:1,
+      borderColor:'#F3F3F3',
+      paddingHorizontal:moderateScale(8),
+      paddingVertical:verticalScale(8)
+    },
+    roundCalender:{
+      width:SH(22),
+      height:SH(22),
+      resizeMode:'contain',
+      tintColor:COLORS.bluish_green
+    },
+    watch:{
+      width:SH(18),
+      height:SH(18),
+      resizeMode:'contain',
+      tintColor:COLORS.bluish_green
+    },
+    modalMainView: {
+      backgroundColor: COLORS.white,
+      width: SW(180),
+      borderRadius: 12,
+      alignSelf: 'center',
+      justifyContent: 'center'
+  },
+  headerView: {
+    backgroundColor: COLORS.primary,
+    width: SW(180),
+    height: SH(60),
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row'
+},
+crossIconStyle: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+    tintColor: COLORS.white
+},
+trackingButtonText: {
+  fontFamily: Fonts.Medium,
+  color: COLORS.white,
+  fontSize: SF(12),
+},
+charlene:{
+  width:SH(100),
+  height:SH(100),
+  resizeMode:'contain'
+},
+address:{
+  fontFamily: Fonts.Regular,
+  color: COLORS.darkGray,
+  fontSize: SF(14),
+  paddingHorizontal:moderateScale(5)
+},
+charleneName:{
+  fontFamily: Fonts.Regular,
+  color: COLORS.solid_grey,
+  fontSize: SF(20),
+},
+location:{
+  width:SH(16),
+  height:SH(16),
+  resizeMode:'contain'
+},
+appointment:{
+  fontFamily: Fonts.MaisonRegular,
+  color: COLORS.primary,
+  fontSize: SF(18),
+},
+service:{
+  fontFamily: Fonts.SemiBold,
+  color: COLORS.dark_grey,
+  fontSize: SF(16),
+},
+serviceType:{
+  fontFamily: Fonts.Regular,
+  color: COLORS.dark_grey,
+  fontSize: SF(14),
+},
+upcomingCon:{
+  borderRadius:3,
+  backgroundColor:COLORS.bluish_green,
+  height:SH(35),
+  width:SH(116),
+  justifyContent:'center',
+  alignItems:'center'
+},
+upcomingText:{
+  fontFamily: Fonts.SemiBold,
+  color: COLORS.white,
+  fontSize: SF(16),
+},
+calenderHeader:{
+  height:SH(60),
+  backgroundColor:COLORS.textInputBackground,
+  justifyContent:'center',
+  paddingHorizontal:moderateScale(8)
+},
+unChecked:{
+  fontFamily: Fonts.Regular,
+  color: COLORS.dark_grey,
+  fontSize: SF(12),
+  // paddingHorizontal:moderateScale(18)
+},
+clickedButtonCon:{
+  backgroundColor:COLORS.primary,
+  height:SH(32),
+  width:SH(68),
+  borderRadius:3,
+  justifyContent:'center',
+  alignItems:'center',
+  marginHorizontal:moderateScale(5)
+},
+unClickedButtonCon:{
+  backgroundColor:COLORS.textInputBackground,
+  height:SH(32),
+  width:SH(68),
+  borderRadius:3,
+  justifyContent:'center',
+  alignItems:'center',
+  marginHorizontal:moderateScale(5)
+},
+checkedText:{
+  fontFamily: Fonts.Regular,
+  color: COLORS.white,
+  fontSize: SF(12),
+},
+unCheckedText:{
+  fontFamily: Fonts.Regular,
+  color: COLORS.dark_grey,
+  fontSize: SF(12),
+},
+schdule:{
+  height:SH(820),
+  width:SH(1056),
+  resizeMode:'contain'
+},
+monthlySchduel:{
+  height:SH(36),
+  width:SH(240),
+  backgroundColor:COLORS.white,
+  borderRadius:3,
+  paddingHorizontal:moderateScale(5),
+  justifyContent:'center',
+  alignItems:'center'
+},
+leftLight:{
+  width:SH(20),
+  height:SH(20),
+  resizeMode:'contain'
+},
+monthlySchduleDate:{
+  fontFamily: Fonts.SemiBold,
+  color: COLORS.dark_grey,
+  fontSize: SF(14),
+  paddingHorizontal:moderateScale(5)
+}
 
 })

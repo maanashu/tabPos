@@ -17,5 +17,6 @@ export { Wallet } from '@/screens/Wallet/Wallet';
 export { Management } from '@/screens/Management/Management';
 export { Customers } from '@/screens/Customers/Customers';
 export { Calender } from '@/screens/Calender/Calender';
+export { Analytics } from '@/screens/Analytics/Analytics';
 
   

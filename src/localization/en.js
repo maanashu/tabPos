@@ -316,11 +316,30 @@ export const en = {
     requestFor:'Request for',
     hairCut:'Haircut',
     timeLabel:'Time:',
-    time:'10.00 AM- 11.00 PM ',
+    time:'10.00 AM- 11.00 PM',
     dateLabel:'Date:',
     date:'Sunday, Oct 29, 2022',
     approve:'Approve',
-    no:'No'
-    
+    no:'No',
+    name:'Charlene Reed',
+    addr:'1189 Main Street, Seattle, WA 98161',
+    mobileNo:'+1 923 782 4575',
+    email:'richard@example.com',
+    scheduledetails:'Schedule details',
+    appointment:'Appointment Details',
+    service:'Service',
+    apt:'#APT0001',
+    upcoming:'Upcoming',
+    aptDate:'21 Oct 2019 10:00 AM',
+    conform:'Confirm Date:',
+    conformDate:'20 Oct 2019 10:00 AM',
+    paidAmount:'Paid Amount',
+    jbr:'JBR 300.00',
+    day:'Day',
+    week:'Week',
+    month:'Month'
+  },
+  analytics:{
+     header:'Analytics'
   }
 };

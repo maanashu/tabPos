@@ -77,7 +77,7 @@ export function DrawerNavigator(props) {
       <DrawerItem
         activeBackgroundColor='transparent'
         focused={active === 'analytics' ? true : false}
-        onPress={() => { setActive('analytics'), alert('coming soon') }}
+        onPress={() => { setActive('analytics'), navigate(NAVIGATION.analytics)}}
         label=""
         icon={({ focused, color, size }) => (<Image source={focused ? blueanalytics : analytics} style={styles.iconStyle} />)} />
 

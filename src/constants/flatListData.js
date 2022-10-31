@@ -4,7 +4,7 @@ import {
   card2,
   newCustomer,
   returnCustomer,
-  onlineCutomer
+  onlineCutomer,
 } from '@/assets';
 export const jbritemList = [
   {
@@ -138,8 +138,6 @@ export const searchProductData = [
   //   location:'Available in another location',
   //   id: '3',
   // }
-
-
 ];
 
 export const productUnitData = [
@@ -173,7 +171,6 @@ export const productUnitData = [
     price: '430',
     id: '6',
   },
-
 ];
 export const aboutTransactionData = [
   {
@@ -234,74 +231,173 @@ export const allTransactionData = [
     id: '4',
   },
 ];
-export const TransactionTableHeading = ['#', 'Date', 'Transection Id', 'Transection type', 'Mode of payment', 'Cash In', 'Cash Out', 'Status'];
+export const TransactionTableHeading = [
+  '#',
+  'Date',
+  'Transection Id',
+  'Transection type',
+  'Mode of payment',
+  'Cash In',
+  'Cash Out',
+  'Status',
+];
 
-export const TransactionTableData = ['1', 'Jun 21 , 2022', '6677787777', 'Sales', 'JBR', '$2562', '$2562', 'Completed'];
-export const UserTableHeading = ['#', 'Name', 'Total orders', 'Total Products', 'Lifetime spent'];
+export const TransactionTableData = [
+  '1',
+  'Jun 21 , 2022',
+  '6677787777',
+  'Sales',
+  'JBR',
+  '$2562',
+  '$2562',
+  'Completed',
+];
+export const UserTableHeading = [
+  '#',
+  'Name',
+  'Total orders',
+  'Total Products',
+  'Lifetime spent',
+];
 export const UserTableData = [
   ['1', 'Curtis M. Wheeler  , 2022', '60 ', '481', '$6,850.00'],
-  ['1', 'Curtis M. Wheeler, 2022', '60 ', '481', '$6,850.00']
+  ['1', 'Curtis M. Wheeler, 2022', '60 ', '481', '$6,850.00'],
 ];
 
-export const ProfileTableHeading = ['#', 'Order id#', 'Date', 'Store location', 'Responsible', 'No. of items', 'Amount','Sales type'];
+export const ProfileTableHeading = [
+  '#',
+  'Order id#',
+  'Date',
+  'Store location',
+  'Responsible',
+  'No. of items',
+  'Amount',
+  'Sales type',
+];
 export const ProfileTableData = [
-  ['1', '362501', 'Jun 11, 2022', 'Maimi', 'DHL', '3 times', '$6,850.00', 'Shipping'],
-  ['1', '362501', 'Jun 11, 2022', 'Maimi', 'DHL', '3 times', '$6,850.00', 'Store'],
+  [
+    '1',
+    '362501',
+    'Jun 11, 2022',
+    'Maimi',
+    'DHL',
+    '3 times',
+    '$6,850.00',
+    'Shipping',
+  ],
+  [
+    '1',
+    '362501',
+    'Jun 11, 2022',
+    'Maimi',
+    'DHL',
+    '3 times',
+    '$6,850.00',
+    'Store',
+  ],
 ];
 
-export const sessionHistoryTableHeading = ['#', 'Date', 'Ended By', 'Session Started', 'Added cash', 'Removed cash', 'Counted cash', 'Session Ended'];
-export const sessionHistoryTableData = [
-  ['1', 'Jun 21, 2022', 'Allein ', '$0.00', '$6,850.00','$1,350.00', '$1,350.00','-$40.00'],
-  ['1', 'Jun 21, 2022', 'Allein ', '$0.00', '$6,850.00','$1,350.00', '$1,350.00','-$40.00'],
+export const sessionHistoryTableHeading = [
+  '#',
+  'Date',
+  'Ended By',
+  'Session Started',
+  'Added cash',
+  'Removed cash',
+  'Counted cash',
+  'Session Ended',
 ];
-export const newCustomerData= [
-    {
-      customertype: 'New Customers',
-      count: '2906',
-      img:newCustomer,
-      id: '1',
-    },
-    {
-      customertype: 'Returning Customers',
-      count: '2906',
-      img:returnCustomer,
-      id: '2',
-    },
-    {
-      customertype: 'Online Customers',
-      count: '2906',
-      img:onlineCutomer,
-      id: '3',
-    },
-    {
-      customertype: 'Shipping Customers',
-      count: '2906',
-      img:onlineCutomer,
-      id: '4',
-    },
-    {
-      customertype: 'Online Customers',
-      count: '2906',
-      img:newCustomer,
-      id: '5',
-    },
-    {
-      customertype: 'Returning Customers',
-      count: '2906',
-      img:returnCustomer,
-      id: '6',
-    },
-    {
-      customertype: 'Shipping Customers',
-      count: '2906',
-      img:onlineCutomer,
-      id: '7',
-    },
-    {
-      customertype: 'Shipping Customers',
-      count: '2906',
-      img:onlineCutomer,
-      id: '8',
-    },
-   
-]
+export const sessionHistoryTableData = [
+  [
+    '1',
+    'Jun 21, 2022',
+    'Allein ',
+    '$0.00',
+    '$6,850.00',
+    '$1,350.00',
+    '$1,350.00',
+    '-$40.00',
+  ],
+  [
+    '1',
+    'Jun 21, 2022',
+    'Allein ',
+    '$0.00',
+    '$6,850.00',
+    '$1,350.00',
+    '$1,350.00',
+    '-$40.00',
+  ],
+];
+export const newCustomerData = [
+  {
+    customertype: 'New Customers',
+    count: '2906',
+    img: newCustomer,
+    id: '1',
+  },
+  {
+    customertype: 'Returning Customers',
+    count: '2906',
+    img: returnCustomer,
+    id: '2',
+  },
+  {
+    customertype: 'Online Customers',
+    count: '2906',
+    img: onlineCutomer,
+    id: '3',
+  },
+  {
+    customertype: 'Shipping Customers',
+    count: '2906',
+    img: onlineCutomer,
+    id: '4',
+  },
+  {
+    customertype: 'Online Customers',
+    count: '2906',
+    img: newCustomer,
+    id: '5',
+  },
+  {
+    customertype: 'Returning Customers',
+    count: '2906',
+    img: returnCustomer,
+    id: '6',
+  },
+  {
+    customertype: 'Shipping Customers',
+    count: '2906',
+    img: onlineCutomer,
+    id: '7',
+  },
+  {
+    customertype: 'Shipping Customers',
+    count: '2906',
+    img: onlineCutomer,
+    id: '8',
+  },
+];
+
+export const notificationData = [
+  {
+    notificationType: 'Haircut',
+    notificationTime: '10.00 AM- 11.00 PM',
+    notificationDate: 'Sunday, Oct 29, 2022',
+    id: '1',
+  },
+  {
+    notificationType: 'Haircut',
+    notificationTime: '10.00 AM- 11.00 PM',
+    notificationDate: 'Sunday, Oct 29, 2022',
+    id: '2',
+  },
+  {
+    notificationType: 'Haircut',
+    notificationTime: '10.00 AM- 11.00 PM',
+    notificationDate: 'Sunday, Oct 29, 2022',
+    id: '3',
+  },
+
+];
