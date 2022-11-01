@@ -932,7 +932,7 @@ export function Wallet() {
         <View style={{ marginHorizontal: moderateScale(10) }}>
           {customHeader()}
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.walletMainCon}>
+            <View style={[styles.walletMainCon, {borderWidth:1}]}>
               <Spacer space={SH(15)} />
               <View style={styles.displayFlex}>
                 <Text style={styles.trancationHeading}>

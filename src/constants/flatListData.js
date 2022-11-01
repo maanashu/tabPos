@@ -399,5 +399,53 @@ export const notificationData = [
     notificationDate: 'Sunday, Oct 29, 2022',
     id: '3',
   },
-
 ];
+export const totalProductData = [
+  {
+    headerType: 'Total Products',
+    range: '20,590',
+    id: '1',
+  },
+  {
+    headerType: 'Total Inventory  Cost',
+    range: '$8,426,590',
+    id: '2',
+  }, 
+  {
+    headerType: 'Total Revenue',
+    range: '$6,920,590',
+    id: '4',
+  },
+  {
+    headerType: 'Total Orders',
+    range: '$7,426,590',
+    id: '3',
+  },
+ 
+];
+export const categoryData =[
+  {
+    categoryCount: '8',
+    category:'Category',
+    percentage:'1.2%',
+    id: '1',
+  },
+  {
+    categoryCount: '70',
+    category:'Subcategory',
+    percentage:'1.2%',
+    id: '2',
+  },
+  {
+    categoryCount: '290',
+    category:'Brand',
+    percentage:'1.2%',
+    id: '3',
+  },
+  {
+    categoryCount: '2,906',
+    category:'Product',
+    percentage:'1.2%',
+    id: '4',
+  }
+]

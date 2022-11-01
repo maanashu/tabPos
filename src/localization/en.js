@@ -340,6 +340,10 @@ export const en = {
     month:'Month'
   },
   analytics:{
-     header:'Analytics'
+     header:'Analytics',
+     totalProducts:'Total Products',
+     totalProductsCount:'20,590',
+     productDetails:'Product details',
+     totalActiveProduct:'Total active Products '
   }
 };

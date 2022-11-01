@@ -113,6 +113,9 @@ export { default as schdule } from '@/assets/icons/ic_customers/schdule.png';
 export { default as rightlight } from '@/assets/icons/ic_deliveryOrder/rightlight.png';
 export { default as leftlight } from '@/assets/icons/ic_deliveryOrder/leftlight.png';
 export { default as greenCalender } from '@/assets/icons/ic_customers/greenCalender.svg';
+export { default as productMap } from '@/assets/icons/ic_analytics/productMap.png';
+export { default as activeProduct } from '@/assets/icons/ic_analytics/activeProduct.png';
+export { default as catPercent } from '@/assets/icons/ic_analytics/catPercent.png';
 
 /* Fonts */
 export const Fonts = {
