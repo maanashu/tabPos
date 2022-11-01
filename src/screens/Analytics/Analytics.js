@@ -10,6 +10,7 @@ import {
   ViewComponent,
   FlatList,
   Dimensions,
+  Platform,
 } from 'react-native';
 import {
   crossButton,
@@ -298,7 +299,7 @@ export function Analytics(props) {
     } else {
       return (
         <View
-          style={{ paddingHorizontal: moderateScale(8), paddingBottom: 110 }}
+          style={{ paddingHorizontal: moderateScale(8), paddingBottom:Platform.OS === 'ios' ? 30 : 110 }}
         >
           <View>
             <FlatList
