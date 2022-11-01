@@ -120,6 +120,7 @@ export const styles = StyleSheet.create({
       },
       totalProductBodyCon:{
         // borderWidth:1,
+        flex:1,
         alignSelf:'center',
         width:windowWidth * 0.90
       },
@@ -127,10 +128,12 @@ export const styles = StyleSheet.create({
         backgroundColor:COLORS.textInputBackground,
         borderRadius:10,
         height:SH(426),
-        paddingHorizontal:moderateScale(10)
+        paddingHorizontal:moderateScale(10),
       },
        
     //   totalProductDetail css start
+
+
     trancationHeading: {
         fontFamily: Fonts.SemiBold,
         color: COLORS.solid_grey,
@@ -215,7 +218,7 @@ export const styles = StyleSheet.create({
       activeProductText:{
         fontFamily: Fonts.SemiBold,
         color: COLORS.black,
-        fontSize: SF(14),
+        fontSize: SF(15),
       },
       categoryCon:{
         width: SH(270),
@@ -275,6 +278,170 @@ export const styles = StyleSheet.create({
         borderRadius:15,
         paddingHorizontal:moderateScale(10)
       },
+
+         //   totalProductDetail css end
+
+
+  //   productCategory css start
+  categoryHeader:{
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.black,
+    fontSize: SF(18),
+    paddingHorizontal:moderateScale(12)
+  },
+  orderTypeCon: {
+    height: SH(63),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(8),
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
+  dropDownIcon: {
+    width: SW(4),
+    height: SW(4),
+    resizeMode: 'contain',
+    tintColor: COLORS.solidGrey,
+  },
+ 
+  dropdown: {
+    alignSelf: 'center',
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    zIndex: Platform.OS === 'ios' ? 100 : 0,
+  },
+  containerStyle: {
+    width: SW(45),
+    height: SH(35),
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderRadius: 7,
+    borderColor: COLORS.solidGrey,
+  },
+  listItemLabelStyle: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+  },
+  labelStyle: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+  },
+  selectedItemLabelStyle: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+  },
+  dropDownContainerStyle: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 7,
+    ...ShadowStyles.shadow,
+    backgroundColor: COLORS.white,
+    top:Platform.OS === 'android' ? 30 : 15,
+    zIndex: Platform.OS === 'ios' ? 100 : 1
+  },
+  placeholderStyle: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    color: COLORS.gerySkies,
+  },
+  jbrTypeCon: {
+    backgroundColor: COLORS.textInputBackground,
+    height: SH(63),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(8),
+  },
+  dropDownIconPagination: {
+    width: SW(4),
+    height: SW(4),
+    resizeMode: 'contain',
+    tintColor: COLORS.darkGreen,
+  },
+  containerStylePagination: {
+    width: SW(20),
+    height: SH(35),
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    backgroundColor:COLORS.white,
+    color:COLORS.solidGrey
+  },
+  placeholderStylePagination: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
+  },
+  unionCon: {
+    backgroundColor: COLORS.washGrey,
+    height: SH(40),
+    justifyContent: 'center',
+    borderRadius: 4,
+  },
+  jbrListCon:{
+     borderBottomWidth:1,
+     borderColor:COLORS.solidGrey
+  },
+  unionConWhite: {
+    backgroundColor: COLORS.white,
+    height: SH(40),
+    justifyContent: 'center',
+    borderRadius: 4,
+  },
+  unionStyle: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+    paddingHorizontal: moderateScale(12),
+  },
+  paginationCount: {
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
+    paddingHorizontal: moderateScale(12),
+  },
+  tableDataHeaderCon:{
+    height: SH(50),
+        backgroundColor: '#E1E3E4',
+        textAlign: 'center',
+        borderWidth: 0,
+        borderColor: 'transparent',
+    paddingHorizontal:moderateScale(20),
+    justifyContent:'center'
+  },
+  text: {
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    textAlign: 'center',
+    letterSpacing:-1
+},
+tableDataCon:{
+  height:SH(55),
+  borderBottomWidth:1,
+  borderColor:COLORS.solidGrey,
+  justifyContent:'center',
+  paddingHorizontal:moderateScale(20)
+},
+usertableRowText: {
+  fontFamily: Fonts.Regular,
+  color: COLORS.solid_grey,
+  fontSize: SF(12),
+  textAlign: 'center',
+},
+allienpic:{
+  width:SH(42),
+  height:SH(42),
+  resizeMode:'contain'
+}
+
+
+
+
+
+  //   productCategory css start
+
+
+
       
 
 })

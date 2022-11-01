@@ -771,6 +771,13 @@ export function Wallet() {
               </>
             </View>
           </View>
+
+
+
+
+
+
+          
           <View style={[styles.jbrTypeCon, { zIndex: -2 }]}>
             <View
               style={{

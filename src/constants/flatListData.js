@@ -448,4 +448,30 @@ export const categoryData =[
     percentage:'1.2%',
     id: '4',
   }
+];
+export const inverntrycategoryData =[
+  {
+    categoryCount: '906',
+    category:'Unit In',
+    percentage:'1.2%',
+    id: '1',
+  },
+  {
+    categoryCount: '284',
+    category:'Unit Out',
+    percentage:'1.2%',
+    id: '2',
+  },
+  {
+    categoryCount: '14',
+    category:'Unit Return',
+    percentage:'1.2%',
+    id: '3',
+  },
+  {
+    categoryCount: '608',
+    category:'Stock on hand',
+    percentage:'1.2%',
+    id: '4',
+  }
 ]

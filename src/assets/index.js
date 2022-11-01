@@ -116,6 +116,9 @@ export { default as greenCalender } from '@/assets/icons/ic_customers/greenCalen
 export { default as productMap } from '@/assets/icons/ic_analytics/productMap.png';
 export { default as activeProduct } from '@/assets/icons/ic_analytics/activeProduct.png';
 export { default as catPercent } from '@/assets/icons/ic_analytics/catPercent.png';
+export { default as tobaco } from '@/assets/icons/ic_analytics/tobaco.png';
+export { default as hokka } from '@/assets/icons/ic_analytics/hokka.png';
+// export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */
 export const Fonts = {

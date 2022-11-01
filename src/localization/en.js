@@ -344,6 +344,11 @@ export const en = {
      totalProducts:'Total Products',
      totalProductsCount:'20,590',
      productDetails:'Product details',
-     totalActiveProduct:'Total active Products '
-  }
+     totalActiveProduct:'Total active Products ',
+     totalInvetry:'Total Inventory  Cost',
+     activeItem:'Active Items',
+     invetryDetail :'Inventory Details',
+     category:'Category:'
+  },
+  
 };
