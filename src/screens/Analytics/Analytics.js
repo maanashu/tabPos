@@ -179,7 +179,7 @@ export function Analytics(props) {
   );
 
   const categoryItem = ({ item }) => (
-    <TouchableOpacity style={styles.categoryCon} onPress={() =>  (setProductCat(true),setProductDetail(false))}>
+    <TouchableOpacity style={styles.categoryCon} onPress={() => (setProductCat(true), setProductDetail(false))}>
       <View style={styles.categoryChildCon}>
         <Text style={styles.categoryCount}>{item.categoryCount}</Text>
         <Text style={styles.categoryText}>{item.category}</Text>
@@ -217,7 +217,7 @@ export function Analytics(props) {
                 : setProductCat(false),
                 setProductDetail(true);
             }}
-            // onPress={() => goBack()}
+          // onPress={() => goBack()}
           >
             <Image source={backArrow} style={styles.backButtonArrow} />
             <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
@@ -479,8 +479,10 @@ export function Analytics(props) {
                 alignItems: 'center',
               }}
             >
-              <Text style={[styles.paginationCount, { fontSize: 12,
-                   paddingHorizontal: moderateScale(1), }]}>
+              <Text style={[styles.paginationCount, {
+                fontSize: 12,
+                paddingHorizontal: moderateScale(1),
+              }]}>
                 Showing Results
               </Text>
               <View style={{ marginHorizontal: moderateScale(10) }}>
@@ -569,6 +571,7 @@ export function Analytics(props) {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         width: windowWidth * 0.65,
+                        paddingRight: Platform.OS === 'ios' ? 40 : 0
                       }}
                     >
                       <Text style={styles.text}>Barcode</Text>
@@ -586,7 +589,7 @@ export function Analytics(props) {
                     <View
                       style={{
                         flexDirection: 'row',
-                        alignItems:'center',
+                        alignItems: 'center',
                         width: windowWidth * 0.25,
                       }}
                     >
@@ -619,12 +622,12 @@ export function Analytics(props) {
                       }}
                     >
                       <Text style={[styles.usertableRowText]}>125698740</Text>
-                      <Text style={[styles.usertableRowText, {marginLeft:-75}]}>Big Cigar</Text>
-                      <Text style={[styles.usertableRowText, {marginLeft:-40}]}>Black Cigar</Text>
-                      <Text style={[styles.usertableRowText, {marginLeft:-50}]}>Cigar</Text>
-                      <Text style={[styles.usertableRowText, {marginLeft:-70}]}>396</Text>
+                      <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>Big Cigar</Text>
+                      <Text style={[styles.usertableRowText]}>Black Cigar</Text>
+                      <Text style={[styles.usertableRowText]}>Cigar</Text>
+                      <Text style={[styles.usertableRowText]}>396</Text>
                       <Text style={styles.usertableRowText}>1,365</Text>
-                      <Text style={styles.usertableRowText}>$10,365</Text>
+                      <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>$10,365</Text>
                     </View>
                   </View>
                 </View>
@@ -633,7 +636,7 @@ export function Analytics(props) {
                     <View
                       style={{
                         flexDirection: 'row',
-                        alignItems:'center',
+                        alignItems: 'center',
                         width: windowWidth * 0.25,
                       }}
                     >
@@ -666,12 +669,12 @@ export function Analytics(props) {
                       }}
                     >
                       <Text style={[styles.usertableRowText]}>125698740</Text>
-                      <Text style={[styles.usertableRowText, {marginLeft:-75}]}>Big Cigar</Text>
-                      <Text style={[styles.usertableRowText, {marginLeft:-40}]}>Black Cigar</Text>
-                      <Text style={[styles.usertableRowText, {marginLeft:-50}]}>Cigar</Text>
-                      <Text style={[styles.usertableRowText, {marginLeft:-70}]}>396</Text>
+                      <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>Big Cigar</Text>
+                      <Text style={[styles.usertableRowText]}>Black Cigar</Text>
+                      <Text style={[styles.usertableRowText]}>Cigar</Text>
+                      <Text style={[styles.usertableRowText]}>396</Text>
                       <Text style={styles.usertableRowText}>1,365</Text>
-                      <Text style={styles.usertableRowText}>$10,365</Text>
+                      <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>$10,365</Text>
                     </View>
                   </View>
                 </View>
@@ -707,6 +710,7 @@ export function Analytics(props) {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         width: windowWidth * 0.65,
+                        paddingRight: Platform.OS === 'ios' ? 40 : 0
                       }}
                     >
                       <Text style={styles.text}>Sub-Category Listed</Text>
@@ -750,10 +754,11 @@ export function Analytics(props) {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         width: windowWidth * 0.65,
+                        paddingRight: Platform.OS === 'ios' ? 40 : 0
                       }}
                     >
                       <Text
-                        style={[styles.usertableRowText, { paddingLeft: 60 }]}
+                        style={[styles.usertableRowText, { paddingLeft: 10 }]}
                       >
                         4
                       </Text>
@@ -772,13 +777,14 @@ export function Analytics(props) {
                         width: windowWidth * 0.25,
                       }}
                     >
-                      <Text style={styles.usertableRowText}>2</Text>
+                      <Text style={styles.usertableRowText}>1</Text>
                       <TouchableOpacity
                         style={{
                           flexDirection: 'row',
                           alignItems: 'center',
                           paddingHorizontal: moderateScale(10),
                         }}
+                        onPress={tobacoTableHandler}
                       >
                         <Image source={hokka} style={styles.allienpic} />
                         <Text
@@ -787,7 +793,7 @@ export function Analytics(props) {
                             { paddingHorizontal: moderateScale(3) },
                           ]}
                         >
-                          Hookah
+                          Tobacco
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -796,10 +802,11 @@ export function Analytics(props) {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         width: windowWidth * 0.65,
+                        paddingRight: Platform.OS === 'ios' ? 40 : 0
                       }}
                     >
                       <Text
-                        style={[styles.usertableRowText, { paddingLeft: 60 }]}
+                        style={[styles.usertableRowText, { paddingLeft: 10 }]}
                       >
                         4
                       </Text>
@@ -818,22 +825,23 @@ export function Analytics(props) {
                         width: windowWidth * 0.25,
                       }}
                     >
-                      <Text style={styles.usertableRowText}>3</Text>
+                      <Text style={styles.usertableRowText}>1</Text>
                       <TouchableOpacity
                         style={{
                           flexDirection: 'row',
                           alignItems: 'center',
                           paddingHorizontal: moderateScale(10),
                         }}
+                        onPress={tobacoTableHandler}
                       >
-                        <Image source={hokka} style={styles.allienpic} />
+                        <Image source={tobaco} style={styles.allienpic} />
                         <Text
                           style={[
                             styles.usertableRowText,
                             { paddingHorizontal: moderateScale(3) },
                           ]}
                         >
-                          Glass
+                          Tobacco
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -842,10 +850,11 @@ export function Analytics(props) {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         width: windowWidth * 0.65,
+                        paddingRight: Platform.OS === 'ios' ? 40 : 0
                       }}
                     >
                       <Text
-                        style={[styles.usertableRowText, { paddingLeft: 60 }]}
+                        style={[styles.usertableRowText, { paddingLeft: 10 }]}
                       >
                         4
                       </Text>
