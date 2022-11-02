@@ -118,6 +118,9 @@ export { default as activeProduct } from '@/assets/icons/ic_analytics/activeProd
 export { default as catPercent } from '@/assets/icons/ic_analytics/catPercent.png';
 export { default as tobaco } from '@/assets/icons/ic_analytics/tobaco.png';
 export { default as hokka } from '@/assets/icons/ic_analytics/hokka.png';
+export { default as aroma } from '@/assets/icons/ic_analytics/aroma.png';
+export { default as pencil } from '@/assets/icons/ic_analytics/pencil.png';
+export { default as marboloRed2 } from '@/assets/icons/ic_analytics/marboloRed.png';
 // export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */

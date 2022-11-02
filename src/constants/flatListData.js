@@ -474,4 +474,31 @@ export const inverntrycategoryData =[
     percentage:'1.2%',
     id: '4',
   }
+];
+export const  productDetailData = [
+  {
+    heading: 'Selling Price',
+    price:'$90',
+    id: '1',
+    enabled: false
+  },
+  {
+    heading: 'Cost Price',
+    price:'$86.50',
+    id: '2',
+    enabled: false
+  },
+  {
+    heading: 'Unit Type',
+    price:'$Catron',
+    id: '3',
+    enabled: false
+  },
+  {
+    heading: 'Barcode',
+    price:'$125694226955',
+    id: '4',
+    enabled: false
+  },
 ]
+

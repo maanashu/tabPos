@@ -276,7 +276,7 @@ export const styles = StyleSheet.create({
         width:windowWidth * 0.45,
         backgroundColor:COLORS.white,
         borderRadius:15,
-        paddingHorizontal:moderateScale(10)
+        // paddingHorizontal:moderateScale(10)
       },
 
          //   totalProductDetail css end
@@ -432,14 +432,89 @@ allienpic:{
   width:SH(42),
   height:SH(42),
   resizeMode:'contain'
-}
+},
 
 
 
 
 
   //   productCategory css start
-
+  modalMainView: {
+    backgroundColor: COLORS.white,
+    width: SH(926),
+    height:SH(650),
+    borderRadius: 15,
+    alignSelf: 'center',
+    // justifyContent: 'center',
+    paddingHorizontal:moderateScale(15)
+},
+editButtonCon:{
+  width: SH(97),
+  height:SH(36),
+  borderWidth:1,
+  borderColor:COLORS.primary,
+  borderRadius:7,
+  backgroundColor:COLORS.textInputBackground,
+  justifyContent:'center',
+  alignItems:'center'
+},
+pencil:{
+  width: SH(24),
+  height:SH(24),
+  resizeMode:'contain'
+},
+edit:{
+  fontSize: SF(14),
+  fontFamily: Fonts.SemiBold,
+  color: COLORS.primary,
+  paddingHorizontal:moderateScale(4)
+},
+marboloText:{
+  fontSize: SF(32),
+  fontFamily: Fonts.MaisonBold,
+  color: COLORS.solid_grey,
+},
+marboloRed:{
+  width: SH(354),
+  height:SH(200),
+  resizeMode:'contain'
+},
+descriptionCon:{
+  width:SH(492),
+  height:SH(200),
+  borderRadius:10,
+  borderWidth:1,
+  borderColor:COLORS.solidGrey,
+  borderStyle:'dashed',
+  paddingHorizontal:moderateScale(10)
+},
+description:{
+  fontSize: SF(14),
+  fontFamily: Fonts.Regular,
+  color: COLORS.dark_grey,
+},
+sellingPriceConblue:{
+  width:SH(194),
+  height:SH(98),
+  borderRadius:10,
+  borderWidth:1,
+  borderColor:COLORS.primary,
+  borderStyle:'dashed',
+  justifyContent:'center',
+  paddingLeft:moderateScale(8)
+},
+sellingPriceCongrey:{
+  borderColor:COLORS.solidGrey,
+},
+sellingCount:{
+  fontSize: SF(18),
+  fontFamily: Fonts.SemiBold,
+  color: COLORS.dark_grey,
+},
+contentContainer:{
+  justifyContent:'space-between',
+  flex:1
+}
 
 
       

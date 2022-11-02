@@ -348,7 +348,12 @@ export const en = {
      totalInvetry:'Total Inventory  Cost',
      activeItem:'Active Items',
      invetryDetail :'Inventory Details',
-     category:'Category:'
+     category:'Category:',
+     tobacco:'Tobacco',
+     edit:'Edit',
+     marboloRed:'Marlboro Red-Pack',
+     detail:'Details',
+     description:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam elementum, ligula quis ultricies iaculis, odio augue venenatis eros, interdum suscipit ipsum turpis nec velit. Vivamus cursus, dui vitae auctor finibus, felis ex malesuada nunc, eget fringilla ante dui in diam. Integer non dapibus nulla.'
   },
   
 };
