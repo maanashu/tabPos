@@ -45,6 +45,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { goBack } from '@/navigation/NavigationRef';
 import Modal from 'react-native-modal';
 import { Table, Row, Rows } from 'react-native-table-component';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const windowWidth = Dimensions.get('window').width;
 import {
@@ -56,9 +57,16 @@ import {
   productDetailData,
 } from '@/constants/flatListData';
 export function Analytics(props) {
-  const [sellPriceArray, setSellPriceArray] = useState(productDetailData);
+   useEffect(() => {
+    // console.log(props.route.params.name, 'nameCategory')
+   })
+  // const [sellPriceArray, setSellPriceArray] = useState(productDetailData);
+  const [accCatTable, setAccCatTable] = useState('');
   const [productDetail, setProductDetail] = useState(false);
   const [productDetailModel, setProductDetailModel] = useState(false);
+  const [editButton, setEditButton] = useState(false);
+  const [reOrder, setReOrder] = useState(false);
+  const [sellingPrice, setSellingPrice] = useState(false);
   const [today, setToday] = useState(false);
   const [weekly, setWeekly] = useState(true);
   const [monthly, setMonthly] = useState(false);
@@ -138,12 +146,11 @@ export function Analytics(props) {
     setDetailtable(true);
   };
   const marboloDetailHandler = () => {
-    // setProductDetailModel(true);
-    alert('coming soon')
+    setProductDetailModel(true);
   };
   const sellingPriceHandler = index => {
     const newArray = [...sellPriceArray];
-    newArray[index].enabled = !newArray[index].enabled;
+    newArray[1].enabled = !newArray[1].enabled;
     setSellPriceArray(sellPriceArray);
   };
 
@@ -158,6 +165,17 @@ export function Analytics(props) {
       alert('coming Soons');
     }
   };
+  const tableAccCatHandler = item => {
+    if(item.category === 'Category'){
+      {setProductCat(true), setProductDetail(false), setAccCatTable('Category')}
+    }else if(item.category === 'Subcategory'){
+      {setProductCat(true), setProductDetail(false), setAccCatTable('Subcategory')}
+    }else if(item.category === 'Brand'){
+      {setProductCat(true), setProductDetail(false), setAccCatTable('Brand')}
+   }else if(item.category === 'Product'){
+    {setProductCat(true), setProductDetail(false), setAccCatTable('Product')}
+ }
+  }  
 
   const totalProductItem = ({ item }) => (
     <View style={styles.totalProductCon}>
@@ -179,7 +197,7 @@ export function Analytics(props) {
   );
 
   const categoryItem = ({ item }) => (
-    <TouchableOpacity style={styles.categoryCon} onPress={() => (setProductCat(true), setProductDetail(false))}>
+    <TouchableOpacity style={styles.categoryCon} onPress={() => tableAccCatHandler(item)}>
       <View style={styles.categoryChildCon}>
         <Text style={styles.categoryCount}>{item.categoryCount}</Text>
         <Text style={styles.categoryText}>{item.category}</Text>
@@ -191,7 +209,7 @@ export function Analytics(props) {
     </TouchableOpacity>
   );
   const productDetailItem = ({ item }) => (
-    <View style={styles.sellingPriceConblue}>
+    <View style={[styles.sellingPriceConblue,styles.sellingPriceCongrey]}>
       <Text
         style={[
           styles.sellingCount,
@@ -204,6 +222,20 @@ export function Analytics(props) {
       <Text style={styles.sellingCount}>{item.price}</Text>
     </View>
   );
+
+  const tableHeaderAccCat = (accCatTable) => {
+          //  console.log(accCatTable)
+           if(accCatTable === 'Category'){
+              return(<Text style={styles.categoryHeader}>Category:<Text> 4</Text></Text>)
+           } else if (accCatTable === 'Subcategory'){
+               return(<Text style={styles.categoryHeader}>Sub-Category:<Text> 7</Text></Text>)
+           }else if (accCatTable === 'Brand'){
+            return(<Text style={styles.categoryHeader}>Brand:<Text> 7</Text></Text>)
+            }else if (accCatTable === 'Product'){
+              return(<Text style={styles.categoryHeader}>Total Products:<Text> 20,560</Text></Text>)
+          }
+  }
+
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -211,11 +243,13 @@ export function Analytics(props) {
           <TouchableOpacity
             style={styles.backButtonCon}
             onPress={() => {
-              console.log(productDetail, 'sdfghjkl')
+              // console.log(productDetail, 'sdfghjkl')
               productDetail
                 ? setProductDetail(false)
                 : setProductCat(false),
                 setProductDetail(true);
+                setDetailtable(false)
+
             }}
           // onPress={() => goBack()}
           >
@@ -247,23 +281,40 @@ export function Analytics(props) {
   };
   const productDetailModal = () => {
     return (
-      <Modal transparent isVisible={productDetailModel}>
-        <View style={styles.modalMainView}>
+          <Modal transparent isVisible={productDetailModel}>
+             {/* <KeyboardAwareScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          > */}
+       <View style={styles.modalMainView}>
           <Spacer space={SH(35)} />
           <View style={styles.displayFlex}>
             <TouchableOpacity
               style={styles.backButtonCon}
-              onPress={() => setProductDetailModel(false)}
+              onPress={() => (setProductDetailModel(false), setEditButton(false))}
             >
               <Image source={backArrow} style={styles.backButtonArrow} />
               <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
             </TouchableOpacity>
-            <View style={styles.editButtonCon}>
-              <View style={styles.flexAlign}>
-                <Image source={pencil} style={styles.pencil} />
-                <Text style={styles.edit}>{strings.analytics.edit}</Text>
-              </View>
-            </View>
+            {
+              editButton
+              ?
+              (
+                <TouchableOpacity style={styles.saveButtonCon} onPress={() => setEditButton(false)}>
+                <Text style={styles.saveText}>{strings.analytics.save}</Text>
+                </TouchableOpacity>
+              )
+              :
+              (
+                <TouchableOpacity style={styles.editButtonCon} onPress={() => setEditButton(true)}>
+                 <View style={styles.flexAlign}>
+                    <Image source={pencil} style={styles.pencil} />
+                    <Text style={styles.edit}>{strings.analytics.edit}</Text>
+                  </View>
+                 </TouchableOpacity> 
+              )
+            }
           </View>
           <Spacer space={SH(30)} />
           <Text style={styles.marboloText}>{strings.analytics.marboloRed}</Text>
@@ -281,16 +332,12 @@ export function Analytics(props) {
               </Text>
             </View>
           </View>
-          <Spacer space={SH(20)} />
+          <Spacer space={SH(30)} />
           <View>
-            <FlatList
-              data={sellPriceArray}
-              // renderItem={productDetailItem}
-              renderItem={({ item, index }) => {
-                return item.enabled ? (
-                  <TouchableOpacity
+             <View style={styles.displayFlex}>
+                <View style={{width:SH(194)}}>
+                <View
                     style={styles.sellingPriceConblue}
-                    onPress={sellingPriceHandler}
                   >
                     <Text
                       style={[
@@ -298,15 +345,28 @@ export function Analytics(props) {
                         { fontSize: SF(17), fontFamily: Fonts.MaisonRegular },
                       ]}
                     >
-                      {item.heading}
+                      Selling Price
                     </Text>
                     <Spacer space={SH(8)} />
-                    <Text style={styles.sellingCount}>{item.price}</Text>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    style={styles.sellingPriceCongrey}
-                    onPress={sellingPriceHandler}
+                    {
+                      editButton ?
+                      (<TextInput
+                        style={styles.sellingPriceInput}
+                        value={sellingPrice}
+                        onChangeText={setSellingPrice}
+                        placeholder='$90'
+                        placeholderStyle={{fontSize:SF(50)}}
+                        placeholderTextColor={COLORS.dark_grey}
+                        keyboardType='numeric' />)
+                        :
+                        (
+                          <Text style={styles.sellingCount}>$90</Text>
+                        )
+                    }
+                  </View>
+                    <Spacer space={SH(20)} />
+                  <View
+                    style={styles.sellingPriceConblue}
                   >
                     <Text
                       style={[
@@ -314,32 +374,43 @@ export function Analytics(props) {
                         { fontSize: SF(17), fontFamily: Fonts.MaisonRegular },
                       ]}
                     >
-                      {item.heading}
+                      Re-order
                     </Text>
                     <Spacer space={SH(8)} />
-                    <Text style={styles.sellingCount}>00000000s</Text>
-                  </TouchableOpacity>
-                );
-              }}
-              keyExtractor={item => item.id}
-              // numColumns={4}
-              horizontal
-              contentContainerStyle={styles.contentContainer}
-            />
+                    {
+                      editButton
+                      ?
+                      (<TextInput
+                        style={styles.sellingPriceInput}
+                        value={reOrder}
+                        onChangeText={setReOrder}
+                        on
+                        placeholder='50'
+                        placeholderStyle={{fontSize:SF(50)}}
+                        placeholderTextColor={COLORS.dark_grey}
+                        keyboardType='numeric' />)
+                      :
+                      (<Text style={styles.sellingCount}>50</Text>)
+                    }
+                 </View>
+                </View>
+                <View style={{width:SH(655)}}>
+                   <FlatList
+                     data={productDetailData}
+                     renderItem={productDetailItem}
+                     keyExtractor={item => item.id}
+                     numColumns={3}
+                     //  horizontal
+                     contentContainerStyle={styles.contentContainer}
+                   />
+                </View>
+             </View>
           </View>
-          {/* <Spacer space={SH(20)}/>
-             <View>
-                         <FlatList
-                          data={productDetailData}
-                          renderItem={productDetailItem}
-                          keyExtractor={item => item.id}
-                          // numColumns={4}
-                          horizontal
-                          contentContainerStyle={styles.contentContainer}
-                        />
-           </View> */}
         </View>
+    {/* </KeyboardAwareScrollView> */}
+      
       </Modal>
+     
     );
   };
   const contentFunction = () => {
@@ -350,13 +421,13 @@ export function Analytics(props) {
             <Text style={styles.categoryHeader}>
               {strings.analytics.tobacco}
               <Text> 19</Text>
+              
             </Text>
-          ) : (
-            <Text style={styles.categoryHeader}>
-              {strings.analytics.category}
-              <Text> 4</Text>
-            </Text>
-          )}
+          ) : 
+             
+              tableHeaderAccCat(accCatTable)
+             
+          }
 
           <Spacer space={SH(40)} />
           <View style={styles.orderTypeCon}>
@@ -584,7 +655,7 @@ export function Analytics(props) {
                     </View>
                   </View>
                 </View>
-                <View style={styles.tableDataCon}>
+                <TouchableOpacity style={[styles.tableDataCon, {backgroundColor:COLORS.blue_shade}]} onPress={marboloDetailHandler}>
                   <View style={styles.displayFlex}>
                     <View
                       style={{
@@ -594,13 +665,13 @@ export function Analytics(props) {
                       }}
                     >
                       <Text style={styles.usertableRowText}>1</Text>
-                      <TouchableOpacity
+                      <View 
                         style={{
                           flexDirection: 'row',
                           alignItems: 'center',
                           paddingHorizontal: moderateScale(10),
                         }}
-                        onPress={marboloDetailHandler}
+                        
                       >
                         <Image source={aroma} style={styles.allienpic} />
                         <Text
@@ -611,7 +682,7 @@ export function Analytics(props) {
                         >
                           Aromas de San Andrés
                         </Text>
-                      </TouchableOpacity>
+                      </View>
                     </View>
                     <View
                       style={{
@@ -630,7 +701,7 @@ export function Analytics(props) {
                       <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>$10,365</Text>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
                 <View style={styles.tableDataCon}>
                   <View style={styles.displayFlex}>
                     <View
@@ -1216,7 +1287,7 @@ export function Analytics(props) {
     <View style={styles.container}>
       {customHeader()}
       {contentFunction()}
-      {productDetailModal()}
+       {productDetailModal()}
     </View>
   );
 }

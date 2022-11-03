@@ -442,7 +442,7 @@ allienpic:{
   modalMainView: {
     backgroundColor: COLORS.white,
     width: SH(926),
-    height:SH(650),
+    height:SH(665),
     borderRadius: 15,
     alignSelf: 'center',
     // justifyContent: 'center',
@@ -494,14 +494,15 @@ description:{
   color: COLORS.dark_grey,
 },
 sellingPriceConblue:{
-  width:SH(194),
+  width:SH(200),
   height:SH(98),
   borderRadius:10,
   borderWidth:1,
   borderColor:COLORS.primary,
   borderStyle:'dashed',
   justifyContent:'center',
-  paddingLeft:moderateScale(8)
+  paddingLeft:moderateScale(8),
+  marginHorizontal:moderateScale(5),
 },
 sellingPriceCongrey:{
   borderColor:COLORS.solidGrey,
@@ -514,6 +515,35 @@ sellingCount:{
 contentContainer:{
   justifyContent:'space-between',
   flex:1
+},
+saveButtonCon:{
+  width:SH(65),
+  height:SH(36),
+  backgroundColor:COLORS.primary,
+  borderRadius:7,
+  justifyContent:'center',
+  alignItems:'center'
+},
+saveText:{
+  fontSize: SF(14),
+  fontFamily: Fonts.SemiBold,
+  color: COLORS.white,
+},
+sellingPriceInput:{
+  width:SH(168),
+  height:SH(32),
+  backgroundColor:COLORS.solidGrey,
+  // borderRadius:7,
+  justifyContent:'center',
+  alignItems:'center',
+  paddingVertical:verticalScale(3),
+  fontFamily:Fonts.SemiBold,
+  paddingLeft:moderateScale(38)
+},
+sellingPlaceholder:{
+  fontSize: SF(14),
+  fontFamily: Fonts.SemiBold,
+  color: COLORS.white,
 }
 
 

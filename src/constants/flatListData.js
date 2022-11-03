@@ -476,29 +476,36 @@ export const inverntrycategoryData =[
   }
 ];
 export const  productDetailData = [
-  {
-    heading: 'Selling Price',
-    price:'$90',
-    id: '1',
-    enabled: false
-  },
+ 
   {
     heading: 'Cost Price',
     price:'$86.50',
-    id: '2',
-    enabled: false
+    id: '1',
   },
   {
     heading: 'Unit Type',
-    price:'$Catron',
-    id: '3',
-    enabled: false
+    price:'Catron',
+    id: '2',
   },
   {
     heading: 'Barcode',
     price:'$125694226955',
+    id: '3',
+  },
+  {
+    heading: 'Unit Weight',
+    price:'430 g',
     id: '4',
-    enabled: false
+  },
+  {
+    heading: 'Stock on hand ',
+    price:'430',
+    id: '5',
+  },
+  {
+    heading: 'Rating',
+    price:'4.30',
+    id: '5',
   },
 ]
 
