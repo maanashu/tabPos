@@ -354,7 +354,27 @@ export const en = {
      marboloRed:'Marlboro Red-Pack',
      detail:'Details',
      description:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam elementum, ligula quis ultricies iaculis, odio augue venenatis eros, interdum suscipit ipsum turpis nec velit. Vivamus cursus, dui vitae auctor finibus, felis ex malesuada nunc, eget fringilla ante dui in diam. Integer non dapibus nulla.',
-     save:'Save'
+     save:'Save',
+     invoiveId:'Invoice id: 12154NBG',
+     print:'Print',
+     supplierDetails:'Supplier details:',
+     supplierAdd:'623 Dorian Row Suite 435',
+     supplierNewAdd:'New Olliehaven',
+     streetNo:'Delaware 747-463',
+     city:'Singapore',
+     supplierPhoneNumber:'Phone: 890-941-8897 x44780',
+     trackId:'Track Id', 
+     dueDate:'Due Date',
+     date:'Date',
+     taxNumberLabel:'Tax Number:',
+     taxNumber:'215698494946545131',
+     FedEx:'FedEx',
+     subtotal:'Sub Total',
+     discount:'Discount',
+     shippingCharge:'Shipping Charge',
+     commision:'Commission (10%)',
+     discountPrice:'$25.00',
+     comisionCharge:'$100.00'
     },
   
 };

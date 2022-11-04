@@ -121,6 +121,13 @@ export { default as hokka } from '@/assets/icons/ic_analytics/hokka.png';
 export { default as aroma } from '@/assets/icons/ic_analytics/aroma.png';
 export { default as pencil } from '@/assets/icons/ic_analytics/pencil.png';
 export { default as marboloRed2 } from '@/assets/icons/ic_analytics/marboloRed.png';
+export { default as ciger } from '@/assets/icons/ic_analytics/ciger.png';
+export { default as cigrate } from '@/assets/icons/ic_analytics/cigrate.png';
+export { default as gameLeaf } from '@/assets/icons/ic_analytics/gameLeaf.png';
+export { default as swisher } from '@/assets/icons/ic_analytics/swisher.png';
+export { default as recordTape } from '@/assets/icons/ic_analytics/recordTape.png';
+export { default as printIcon } from '@/assets/icons/ic_analytics/printIcon.png';
+export { default as fedx } from '@/assets/icons/ic_analytics/fedx.png';
 // export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */

@@ -22,6 +22,28 @@ export const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center'
       },
+      tablerightSectionBody:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: windowWidth * 0.65,
+        paddingRight: Platform.OS === 'ios' ? 40 : 0,
+      },
+      tableDataLeft:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: moderateScale(10),
+      },
+      tableHeaderRight:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: windowWidth * 0.65,
+        paddingRight: Platform.OS === 'ios' ? 40 : 0,
+      },
+      tableHeaderLeft:{
+        flexDirection: 'row',
+        alignItems:'center',
+        width: windowWidth * 0.25,
+      },
        headerMainView: {
         width: windowWidth - 10,
         paddingHorizontal: SW(16),
@@ -326,6 +348,11 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
   },
+  labelStyleWeekly: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    fontFamily:Fonts.SemiBold
+  },
   selectedItemLabelStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
@@ -344,11 +371,19 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.gerySkies,
   },
+  placeholderStyleWeekly: {
+    fontSize: SF(12),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+  },
   jbrTypeCon: {
     backgroundColor: COLORS.textInputBackground,
     height: SH(63),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(8),
+    borderBottomWidth:1,
+    borderColor:COLORS.solidGrey
+
   },
   dropDownIconPagination: {
     width: SW(4),
@@ -401,7 +436,7 @@ export const styles = StyleSheet.create({
   },
   tableDataHeaderCon:{
     height: SH(50),
-        backgroundColor: '#E1E3E4',
+        backgroundColor:COLORS.textInputBackground,
         textAlign: 'center',
         borderWidth: 0,
         borderColor: 'transparent',
@@ -426,7 +461,7 @@ usertableRowText: {
   fontFamily: Fonts.Regular,
   color: COLORS.solid_grey,
   fontSize: SF(12),
-  textAlign: 'center',
+  // textAlign: 'center',
 },
 allienpic:{
   width:SH(42),
@@ -544,7 +579,207 @@ sellingPlaceholder:{
   fontSize: SF(14),
   fontFamily: Fonts.SemiBold,
   color: COLORS.white,
-}
+},
+//   productCategory css send
+
+//   invoive css start
+invoiveIdHeaderCon:{
+  height:SH(55),
+  borderBottomWidth:1,
+  borderColor:COLORS.solidGrey,
+  justifyContent:'center',
+  paddingHorizontal:moderateScale(8)
+},
+crossButtonStyle:{
+  width:SH(24),
+  height:SH(24),
+  resizeMode:'contain'
+},
+printButtonCon:{
+  width:SH(110),
+  height:SH(36),
+  borderRadius:24,
+  backgroundColor:COLORS.primary,
+  justifyContent:'center',
+  alignItems:'center',
+  marginHorizontal:moderateScale(15)
+},
+invoiceIdText:{
+  fontSize: SF(20),
+  fontFamily: Fonts.Regular,
+  color: COLORS.dark_grey,
+  paddingHorizontal:moderateScale(5)
+},
+leftBackStyle:{
+  width:SH(34),
+  height:SH(34),
+  resizeMode:'contain'
+},
+addressText:{
+  fontSize: SF(16),
+  fontFamily: Fonts.Regular,
+  color: COLORS.dark_grey,
+},
+trackIdCon:{
+  borderWidth:1,
+  borderStyle:'dashed',
+  borderRadius:10,
+  width:SH(240),
+  height:SH(82),
+  borderColor:COLORS.solidGrey,
+  paddingHorizontal:moderateScale(8),
+  justifyContent:'center'
+},
+trackIdText:{
+  fontSize: SF(18),
+  fontFamily: Fonts.MaisonBold,
+  color: COLORS.darkGray,
+},
+tableContainer:{
+  borderRadius:12,
+  borderWidth:1,
+  borderColor:COLORS.solidGrey,
+  paddingHorizontal:moderateScale(10)
+},
+textInputStyleInvoice:{
+  borderWidth:1,
+  borderColor:COLORS.solidGrey,
+  height:SH(274),
+  width:windowWidth * 0.38,
+  borderRadius:10,
+  backgroundColor:COLORS.textInputBackground,
+  color:COLORS.black,
+  fontFamily:Fonts.Regular,
+  fontSize:SF(14),
+  textAlignVertical:'top',
+  paddingHorizontal:moderateScale(10)
+},
+noteContainer:{
+  borderWidth:1,
+  // backgroundColor:COLORS.,
+  borderColor:COLORS.solidGrey,
+  height:SH(274),
+  width:windowWidth * 0.35,
+  borderRadius:10,
+  backgroundColor:COLORS.textInputBackground
+},
+tablesubTotal:{
+  flexDirection:'row',
+  alignItems:'center',
+  justifyContent:'space-between',
+  paddingHorizontal:moderateScale(20),
+  // borderBottomWidth:1,
+  // borderColor:COLORS.solidGrey,
+  // paddingVertical:verticalScale(7)
+},
+tablesubTotalLabel:{
+  color: COLORS.solid_grey,
+  fontSize: SF(14),
+  fontFamily: Fonts.Regular,
+},
+tablesubDarkLabel:{
+  color: COLORS.solid_grey,
+  fontSize: SF(18),
+  fontFamily: Fonts.MaisonBold,
+},
+subtotalHr:{
+  borderWidth:1,
+  borderColor:COLORS.solidGrey,
+  marginVertical:Platform.OS === 'android' ? moderateScale(9) : moderateScale(7)
+},
+tablesubTotalText:{
+  color: COLORS.solid_grey,
+  fontSize: SF(14),
+  fontFamily: Fonts.MaisonRegular,
+},
+paidContainer:{
+  backgroundColor:COLORS.primary,
+  borderRadius:3,
+  marginHorizontal:moderateScale(5)
+},
+paidText:{
+  color: COLORS.white,
+  fontSize: SF(12),
+  fontFamily: Fonts.Regular,
+  paddingHorizontal:moderateScale(6),
+  paddingVertical:verticalScale(1)
+},
+shippingDetail:{
+  color:COLORS.solid_grey,
+  fontFamily:Fonts.MaisonBold,
+  fontSize:SF(18),
+},
+trackingCon:{
+  borderWidth:1,
+  borderColor:COLORS.solidGrey,
+  borderRadius:10,
+  height:SH(102),
+  justifyContent:'center',
+  paddingHorizontal:moderateScale(8)
+},
+willis:{
+  resizeMode:'contain',
+  width:SH(72),
+  height:SH(72)
+},
+willisName:{
+  color:COLORS.black,
+  fontFamily:Fonts.SemiBold,
+  fontSize:SF(16),
+},
+trackingNumber:{
+  color:COLORS.black,
+  fontFamily:Fonts.Regular,
+  fontSize:SF(12),
+},
+deliverBtnCon:{
+  backgroundColor:COLORS.bluish_green,
+  flexDirection:'row',
+  height:SH(36),
+  // width:SW(40),
+  alignItems:'center',
+  borderRadius:6,
+  textAlign:'center'
+},
+deliverBtnCon:{
+  backgroundColor:COLORS.bluish_green,
+  flexDirection:'row',
+  height:SH(36),
+  // width:SW(40),
+  alignItems:'center',
+  borderRadius:6,
+  textAlign:'center'
+},
+trackingBtnCon:{
+  backgroundColor:COLORS.primary,
+},
+deliverTextCon:{
+  paddingHorizontal:moderateScale(10),
+  flexDirection:'row'
+},
+dateTableSetting:{
+  // justifyContent:'center',
+},
+orderNoStyle: {
+  fontSize: SF(20),
+  color: COLORS.dark_grey,
+  fontFamily: Fonts.Regular,
+  paddingHorizontal: moderateScale(7),
+},
+deliveredText:{
+  color:COLORS.white,
+  fontFamily:Fonts.Regular,
+  fontSize:SF(14),
+  paddingHorizontal:moderateScale(1)
+},
+deliveryCheck:{
+  resizeMode:'contain',
+  width:SW(6),
+  height:SW(6),
+},
+
+
+//   invoive css end
 
 
       
