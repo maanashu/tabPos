@@ -706,8 +706,7 @@ export function Analytics(props) {
                   style={{
                     flexDirection: 'row',
                     width: windowWidth * 0.25,
-                  }}
-                >
+                  }}>
                   <Text style={styles.usertableRowText}>1</Text>
                   <TouchableOpacity
                     style={{
@@ -1362,7 +1361,6 @@ export function Analytics(props) {
           <TouchableOpacity
             style={styles.backButtonCon}
             onPress={() => {
-              // console.log(productDetail, 'sdfghjkl')
               productDetail ? setProductDetail(false) : setProductCat(false),
                 setProductDetail(true);
               setDetailtable(false);
