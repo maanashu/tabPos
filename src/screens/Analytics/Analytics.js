@@ -45,13 +45,16 @@ import {
   willis,
   track,
   deliverCheck,
-  fedx
+  fedx,
+  menu,
+  jbrCustomer,
+  checkArrow,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
 import { Button, Spacer } from '@/components';
 import { styles } from '@/screens/Analytics/Analytics.styles';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { goBack } from '@/navigation/NavigationRef';
 import Modal from 'react-native-modal';
@@ -66,6 +69,7 @@ import {
   categoryData,
   inverntrycategoryData,
   productDetailData,
+  jbritemList,
 } from '@/constants/flatListData';
 export function Analytics(props) {
   useEffect(() => {
@@ -74,8 +78,11 @@ export function Analytics(props) {
   // const [sellPriceArray, setSellPriceArray] = useState(productDetailData);
   const [value, setValue] = useState('Weekly');
   const [accCatTable, setAccCatTable] = useState('');
+  const [inventoryTable, setInventoryTable] = useState('');
   const [productDetail, setProductDetail] = useState(false);
+  const [paymentSideBar, setPaymentSideBar] = useState(false);
   const [productDetailModel, setProductDetailModel] = useState(false);
+  const [productOrderModel, setProductOrderModel] = useState(false);
   const [editButton, setEditButton] = useState(false);
   const [reOrder, setReOrder] = useState(false);
   const [sellingPrice, setSellingPrice] = useState(false);
@@ -180,7 +187,7 @@ export function Analytics(props) {
     if (item.headerType === 'Total Products') {
       setProductDetail(true);
     } else if (item.headerType === 'Total Inventory  Cost') {
-      alert('coming Soon');
+      setProductDetail(true);
     } else if (item.headerType === 'Total Revenue') {
       alert('coming Soon');
     } else if (item.headerType === 'Total Orders') {
@@ -214,19 +221,30 @@ export function Analytics(props) {
     }
   };
 
-  const inverntoryUnitViseHandler = (item) => {
-    if(item.category === 'Unit In'){
-      setProductDetail(false),
+  const inverntoryUnitViseHandler = item => {
+    if (item.category === 'Unit In') {
+      setProductDetail(false);
       setInverntoryProductTable(true);
-      setInventoryChangeTable(false)
-    }else if (item.category === 'Unit Out'){
-      alert('Unit Out')
-    }else if(item.category === 'Unit Return'){
-      alert('Unit Out')
-    }else if(item.category === 'Stock on hand'){
-      alert('Stock on hand')
+      setInventoryChangeTable(false);
+      setInventoryTable('Unit In');
+    } else if (item.category === 'Unit Out') {
+      setProductDetail(false);
+      setInverntoryProductTable(true);
+      setInventoryChangeTable(false);
+      setInventoryTable('Unit Out');
+    } else if (item.category === 'Unit Return') {
+      setProductDetail(false);
+      setInverntoryProductTable(true);
+      setInventoryChangeTable(false);
+      setInventoryTable('Unit Return');
+    } else if (item.category === 'Stock on hand') {
+      setProductDetail(false);
+      setInverntoryProductTable(true);
+      setInventoryChangeTable(false);
+      setInventoryTable('Stock on hand');
+      // setInventoryChangeTable(true);
     }
-  }
+  };
 
   const totalProductItem = ({ item }) => (
     <View style={styles.totalProductCon}>
@@ -290,6 +308,28 @@ export function Analytics(props) {
       </Text>
       <Spacer space={SH(8)} />
       <Text style={styles.sellingCount}>{item.price}</Text>
+    </View>
+  );
+  const renderJbrItem = ({ item }) => (
+    <View style={styles.jbrListCon}>
+      <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
+        <View style={{ flexDirection: 'row', width: SW(60) }}>
+          <Image source={menu} style={styles.ashtonStyle} />
+          <View style={{ paddingHorizontal: moderateScale(10) }}>
+            <Text style={[styles.jfrText, { color: COLORS.black }]}>
+              {item.name}
+            </Text>
+            <Text style={styles.boxText}>Box</Text>
+          </View>
+        </View>
+        <Text style={styles.onexstyle}>
+          <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>
+          {strings.posSale.onex}
+        </Text>
+        <Text style={[styles.jfrText, { color: COLORS.black }]}>
+          {item.price}
+        </Text>
+      </View>
     </View>
   );
 
@@ -706,7 +746,8 @@ export function Analytics(props) {
                   style={{
                     flexDirection: 'row',
                     width: windowWidth * 0.25,
-                  }}>
+                  }}
+                >
                   <Text style={styles.usertableRowText}>1</Text>
                   <TouchableOpacity
                     style={{
@@ -1353,7 +1394,555 @@ export function Analytics(props) {
       );
     }
   };
-
+  const inventryTableHeaderChange = inventoryTable => {
+    if (inventoryTable === 'Unit In') {
+      return (
+        <Text style={styles.categoryHeader}>
+          Aromas de San Andrés:<Text> 19</Text>
+        </Text>
+      );
+    } else if (inventoryTable === 'Unit Out') {
+      return (
+        <Text style={styles.categoryHeader}>
+          Aromas de San Andrés:<Text> 50</Text>
+        </Text>
+      );
+    } else if (inventoryTable === 'Unit Return') {
+      return (
+        <Text style={styles.categoryHeader}>
+          Aromas de San Andrés:<Text> 50</Text>
+        </Text>
+      );
+    }
+  };
+  const inventryTableHeader = inventoryTable => {
+    if (inventoryTable === 'Unit In') {
+      return (
+        <Text style={styles.categoryHeader}>
+          Unit In:<Text> 19</Text>
+        </Text>
+      );
+    } else if (inventoryTable === 'Unit Out') {
+      return (
+        <Text style={styles.categoryHeader}>
+          Unit Out:<Text> 19</Text>
+        </Text>
+      );
+    } else if (inventoryTable === 'Unit Return') {
+      return (
+        <Text style={styles.categoryHeader}>
+          Unit Return:<Text> 19</Text>
+        </Text>
+      );
+    } else if (inventoryTable === 'Stock on hand') {
+      return (
+        <Text style={styles.categoryHeader}>
+          Stock in hand:<Text> 20,560</Text>
+        </Text>
+      );
+    }
+  };
+  const inventryTableChangeHandler = inventoryTable => {
+    if (inventoryTable === 'Unit In') {
+      return (
+        <View style={{ zIndex: -9 }}>
+          <Table>
+            <View style={styles.tableDataHeaderCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                  <Text style={styles.text}>#</Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      { paddingHorizontal: moderateScale(10) },
+                    ]}
+                  >
+                    Supplier
+                  </Text>
+                </View>
+                <View style={styles.tableHeaderRight}>
+                  <Text style={styles.text}>Invoice</Text>
+                  <Text style={styles.text}>Unit In</Text>
+                  <Text style={styles.text}>Date</Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>
+                    Total Cost
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.tableDataCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                  <Text
+                    style={[styles.usertableRowText, { textAlign: 'center' }]}
+                  >
+                    1
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.tableDataLeft}
+                    onPress={() => setInvoiceModal(true)}
+                  >
+                    <Image source={recordTape} style={styles.allienpic} />
+                    <View
+                      style={{
+                        justifyContent: 'flex-start',
+                        paddingHorizontal: moderateScale(4),
+                      }}
+                    >
+                      <Text style={[styles.usertableRowText]}>
+                        Record & Tape
+                      </Text>
+                      <Text
+                        style={[
+                          styles.usertableRowText,
+                          { color: COLORS.gerySkies },
+                        ]}
+                      >
+                        Florida
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.tablerightSectionBody}>
+                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
+                    125698740
+                  </Text>
+                  <Text style={styles.usertableRowText}>20</Text>
+                  <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
+                    $200
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Table>
+        </View>
+      );
+    } else if (inventoryTable === 'Unit Out') {
+      return (
+        <View style={{ zIndex: -9 }}>
+          <Table>
+            <View style={styles.tableDataHeaderCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                  <Text style={styles.text}>#</Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      { paddingHorizontal: moderateScale(10) },
+                    ]}
+                  >
+                    Customer
+                  </Text>
+                </View>
+                <View style={styles.tableHeaderRight}>
+                  <Text style={styles.text}>Invoice</Text>
+                  <Text style={styles.text}>Unit Out</Text>
+                  <Text style={styles.text}>Date</Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>
+                    Total Cost
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.tableDataCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                  <Text
+                    style={[styles.usertableRowText, { textAlign: 'center' }]}
+                  >
+                    1
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.tableDataLeft}
+                    onPress={() => {setProductOrderModel(true), setPaymentSideBar(true)}}
+                  >
+                    <Image source={recordTape} style={styles.allienpic} />
+                    <View
+                      style={{
+                        justifyContent: 'flex-start',
+                        paddingHorizontal: moderateScale(4),
+                      }}
+                    >
+                      <Text style={[styles.usertableRowText]}>
+                        Record & Tape
+                      </Text>
+                      <Text
+                        style={[
+                          styles.usertableRowText,
+                          { color: COLORS.gerySkies },
+                        ]}
+                      >
+                        Florida
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.tablerightSectionBody}>
+                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
+                    125698740
+                  </Text>
+                  <Text style={styles.usertableRowText}>20</Text>
+                  <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
+                    $200
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Table>
+        </View>
+      );
+    } else if (inventoryTable === 'Unit Return') {
+      return (
+        <View style={{ zIndex: -9 }}>
+          <Table>
+            <View style={styles.tableDataHeaderCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                  <Text style={styles.text}>#</Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      { paddingHorizontal: moderateScale(10) },
+                    ]}
+                  >
+                    Supplier
+                  </Text>
+                </View>
+                <View style={styles.tableHeaderRight}>
+                  <Text style={styles.text}>Invoice</Text>
+                  <Text style={styles.text}>Date</Text>
+                  <Text style={styles.text}>Unit In</Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>
+                    Total Cost
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.tableDataCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                  <Text
+                    style={[styles.usertableRowText, { textAlign: 'center' }]}
+                  >
+                    1
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.tableDataLeft}
+                    onPress={() => alert('inventiry Return ')}
+                  >
+                    <Image source={recordTape} style={styles.allienpic} />
+                    <View
+                      style={{
+                        justifyContent: 'flex-start',
+                        paddingHorizontal: moderateScale(4),
+                      }}
+                    >
+                      <Text style={[styles.usertableRowText]}>
+                        Record & Tape
+                      </Text>
+                      <Text
+                        style={[
+                          styles.usertableRowText,
+                          { color: COLORS.gerySkies },
+                        ]}
+                      >
+                        Florida
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.tablerightSectionBody}>
+                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
+                    125698740
+                  </Text>
+                  <Text style={styles.usertableRowText}>20</Text>
+                  <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
+                    $200
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Table>
+        </View>
+      );
+    }
+  };
+  const inventoryTableHandler = inventoryTable => {
+    if (inventoryTable === 'Unit In') {
+      return (
+        <View style={{ zIndex: -9 }}>
+          <Table>
+            <View style={styles.tableDataHeaderCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                  <Text style={styles.text}>#</Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      { paddingHorizontal: moderateScale(10) },
+                    ]}
+                  >
+                    Prouct Name
+                  </Text>
+                </View>
+                <View style={styles.tableHeaderRight}>
+                  <Text style={styles.text}>Barcode</Text>
+                  <Text style={styles.text}>Unit In</Text>
+                  <Text style={styles.text}>Date</Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>
+                    Total Cost
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.tableDataCon}>
+              <View style={styles.displayFlex}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: windowWidth * 0.25,
+                  }}
+                >
+                  <Text style={styles.usertableRowText}>1</Text>
+                  <TouchableOpacity
+                    style={styles.tableDataLeft}
+                    onPress={() => setInventoryChangeTable(true)}
+                  >
+                    <Image source={tobaco} style={styles.allienpic} />
+                    <Text
+                      style={[
+                        styles.usertableRowText,
+                        { paddingHorizontal: moderateScale(3) },
+                      ]}
+                    >
+                      Aromas de San Andrés
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.tablerightSectionBody}>
+                  <Text style={[styles.usertableRowText]}>125698740</Text>
+                  <Text style={styles.usertableRowText}>20</Text>
+                  <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
+                    $200
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Table>
+        </View>
+      );
+    } else if (inventoryTable === 'Unit Out') {
+      return (
+        <View style={{ zIndex: -9 }}>
+          <Table>
+            <View style={styles.tableDataHeaderCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                  <Text style={styles.text}>#</Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      { paddingHorizontal: moderateScale(10) },
+                    ]}
+                  >
+                    Prouct Name
+                  </Text>
+                </View>
+                <View style={styles.tableHeaderRight}>
+                  <Text style={styles.text}>Barcode</Text>
+                  <Text style={styles.text}>Unit Out</Text>
+                  <Text style={styles.text}>Date</Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>
+                    Total Cost
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.tableDataCon}>
+              <View style={styles.displayFlex}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: windowWidth * 0.25,
+                  }}
+                >
+                  <Text style={styles.usertableRowText}>1</Text>
+                  <TouchableOpacity
+                    style={styles.tableDataLeft}
+                    onPress={() => setInventoryChangeTable(true)}
+                  >
+                    <Image source={tobaco} style={styles.allienpic} />
+                    <Text
+                      style={[
+                        styles.usertableRowText,
+                        { paddingHorizontal: moderateScale(3) },
+                      ]}
+                    >
+                      Aromas de San Andrés
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.tablerightSectionBody}>
+                  <Text style={[styles.usertableRowText]}>125698740</Text>
+                  <Text style={styles.usertableRowText}>20</Text>
+                  <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
+                    $200
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Table>
+        </View>
+      );
+    } else if (inventoryTable === 'Unit Return') {
+      return (
+        <View style={{ zIndex: -9 }}>
+          <Table>
+            <View style={styles.tableDataHeaderCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                  <Text style={styles.text}>#</Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      { paddingHorizontal: moderateScale(10) },
+                    ]}
+                  >
+                    Prouct Name
+                  </Text>
+                </View>
+                <View style={styles.tableHeaderRight}>
+                  <Text style={styles.text}>Barcode</Text>
+                  <Text style={styles.text}>Unit Return</Text>
+                  <Text style={styles.text}>Date</Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>
+                    Total Cost
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.tableDataCon}>
+              <View style={styles.displayFlex}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: windowWidth * 0.25,
+                  }}
+                >
+                  <Text style={styles.usertableRowText}>1</Text>
+                  <TouchableOpacity
+                    style={styles.tableDataLeft}
+                    onPress={() => setInventoryChangeTable(true)}
+                  >
+                    <Image source={tobaco} style={styles.allienpic} />
+                    <Text
+                      style={[
+                        styles.usertableRowText,
+                        { paddingHorizontal: moderateScale(3) },
+                      ]}
+                    >
+                      Aromas de San Andrés
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.tablerightSectionBody}>
+                  <Text style={[styles.usertableRowText]}>125698740</Text>
+                  <Text style={styles.usertableRowText}>20</Text>
+                  <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
+                    $200
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Table>
+        </View>
+      );
+    } else if (inventoryTable === 'Stock on hand') {
+      return (
+        <View style={{ zIndex: -9 }}>
+          <Table>
+            <View style={styles.tableDataHeaderCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                  <Text style={styles.text}>#</Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      { paddingHorizontal: moderateScale(10) },
+                    ]}
+                  >
+                    Prouct Name
+                  </Text>
+                </View>
+                <View style={styles.tableHeaderRight}>
+                  <Text style={styles.text}>Barcode</Text>
+                  <Text style={styles.text}>Unit In</Text>
+                  <Text style={styles.text}>Unit Out</Text>
+                  <Text style={styles.text}>Unit Return</Text>
+                  <Text style={styles.text}>Stock on hand</Text>
+                  <Text style={styles.text}>Re-order level</Text>
+                  <Text style={[styles.text, { marginRight: 20 }]}>
+                    Total Cost
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.tableDataCon}>
+              <View style={styles.displayFlex}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: windowWidth * 0.25,
+                  }}
+                >
+                  <Text style={styles.usertableRowText}>1</Text>
+                  <TouchableOpacity
+                    style={styles.tableDataLeft}
+                    onPress={() => alert('coming soon')}
+                  >
+                    <Image source={tobaco} style={styles.allienpic} />
+                    <Text
+                      style={[
+                        styles.usertableRowText,
+                        { paddingHorizontal: moderateScale(3) },
+                      ]}
+                    >
+                      Aromas de San Andrés
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.tablerightSectionBody}>
+                  <Text style={[styles.usertableRowText]}>125698740</Text>
+                  <Text style={[styles.usertableRowText, { marginLeft: -80 }]}>
+                    200
+                  </Text>
+                  <Text style={[styles.usertableRowText, { marginLeft: -50 }]}>
+                    145
+                  </Text>
+                  <Text style={styles.usertableRowText}>5</Text>
+                  <Text style={styles.usertableRowText}>50</Text>
+                  <Text style={styles.usertableRowText}>20</Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 40 }]}>
+                    $200
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Table>
+        </View>
+      );
+    }
+  };
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -1364,7 +1953,7 @@ export function Analytics(props) {
               productDetail ? setProductDetail(false) : setProductCat(false),
                 setProductDetail(true);
               setDetailtable(false);
-              setInverntoryProductTable(false)
+              setInverntoryProductTable(false);
             }}
           >
             <Image source={backArrow} style={styles.backButtonArrow} />
@@ -1396,18 +1985,18 @@ export function Analytics(props) {
   const customHeaderforInventory = () => {
     return (
       <View style={styles.headerMainView}>
-            <TouchableOpacity
-            style={styles.backButtonCon}
-            onPress={() => {
-              // console.log(productDetail, 'sdfghjkl')
-              productDetail ? setProductDetail(false) : setProductCat(false),
-                setProductDetail(true);
-              setDetailtable(false);
-            }}
-            >
-            <Image source={backArrow} style={styles.backButtonArrow} />
-            <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.backButtonCon}
+          onPress={() => {
+            // console.log(productDetail, 'sdfghjkl')
+            productDetail ? setProductDetail(false) : setProductCat(false),
+              setProductDetail(true);
+            setDetailtable(false);
+          }}
+        >
+          <Image source={backArrow} style={styles.backButtonArrow} />
+          <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
+        </TouchableOpacity>
         <View style={styles.deliveryView}>
           <Image
             source={notifications}
@@ -1560,248 +2149,562 @@ export function Analytics(props) {
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           > */}
-        <View style={[styles.modalMainView, {width:SH(1170)}]}>
-          <Spacer space={SH(10)}/>
-           <View style={styles.invoiveIdHeaderCon}>
-               <View style={styles.displayFlex}>
-                   <View style={styles.flexAlign}>
-                       <TouchableOpacity onPress={() => setInvoiceModal(false)}>
-                       <Image source={leftBack} style={styles.leftBackStyle}/>
-                       </TouchableOpacity>
-                      <Text style={styles.invoiceIdText}>{strings.analytics.invoiveId}</Text>
-                   </View>
-                   <View style={styles.flexAlign}>
-                      <View style={styles.printButtonCon}>
-                          <View style={{flexDirection:'row',alignItems:'center'}}>
-                          <Image source={printIcon} style={[styles.crossButtonStyle,{marginHorizontal:moderateScale(3)}]}/>
-                         <Text style={styles.saveText}>{strings.analytics.print}</Text>
-                          </View>
-                      </View>
-                      <TouchableOpacity onPress={() => setInvoiceModal(false)}>
-                      <Image source={crossButton} style={styles.crossButtonStyle}/>
-                       </TouchableOpacity>
-                   </View>
-               </View>
-           </View>
+        <View style={[styles.modalMainView, { width: SH(1170) }]}>
+          <Spacer space={SH(10)} />
+          <View style={styles.invoiveIdHeaderCon}>
+            <View style={styles.displayFlex}>
+              <View style={styles.flexAlign}>
+                <TouchableOpacity onPress={() => setInvoiceModal(false)}>
+                  <Image source={leftBack} style={styles.leftBackStyle} />
+                </TouchableOpacity>
+                <Text style={styles.invoiceIdText}>
+                  {strings.analytics.invoiveId}
+                </Text>
+              </View>
+              <View style={styles.flexAlign}>
+                <View style={styles.printButtonCon}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image
+                      source={printIcon}
+                      style={[
+                        styles.crossButtonStyle,
+                        { marginHorizontal: moderateScale(3) },
+                      ]}
+                    />
+                    <Text style={styles.saveText}>
+                      {strings.analytics.print}
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity onPress={() => setInvoiceModal(false)}>
+                  <Image source={crossButton} style={styles.crossButtonStyle} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
           <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
-          <Spacer space={SH(20)}/>
-               <View style={styles.displayFlex}>
-                  <View>
-                     <Text style={[styles.trackIdText, {color:COLORS.black}]}>{strings.analytics.supplierDetails}</Text>
-                      <Spacer space={SH(15)}/>
-                     <View style={[styles.flexAlign, {alignItems:'flex-start'}]}>
-                       <Image source={recordTape} style={styles.allienpic} />
-                       <View style={{marginHorizontal:moderateScale(5)}}>
-                           <Text style={styles.addressText}>{strings.analytics.supplierAdd}</Text>
-                           <Text style={styles.addressText}>{strings.analytics.supplierNewAdd}</Text>
-                           <Text style={styles.addressText}>{strings.analytics.streetNo}</Text>
-                           <Text style={styles.addressText}>{strings.analytics.city}</Text>
-                           <Text style={styles.addressText}>{strings.analytics.supplierPhoneNumber}</Text>
-                         <Spacer space={SH(60)}/>
-                           <View>
-                         <Text style={[styles.trackIdText, {color:COLORS.black}]}>{strings.analytics.taxNumberLabel}</Text>
-                         <Text style={styles.addressText}>{strings.analytics.taxNumber}</Text>
-                     </View>
-                       </View>
-                     </View>
-                   
-                  </View>
-                  <View>
-                    <View style={styles.trackIdCon}>
-                        <Text style={styles.trackIdText}>{strings.analytics.trackId}</Text>
-                         <Spacer space={SH(10)}/>
-                        <View style={styles.displayFlex}>
-                            <Text style={[styles.trackIdText, {color:COLORS.solid_grey}]}>#1255266</Text>
-                            <Image source={location} style={styles.crossButtonStyle}/>
-                        </View>
-                    </View>
-                    <Spacer space={SH(10)}/>
-                    <View style={styles.trackIdCon}>
-                        <Text style={styles.trackIdText}>{strings.analytics.dueDate}</Text>
-                         <Spacer space={SH(10)}/>
-                        <View style={styles.displayFlex}>
-                            <Text style={[styles.trackIdText, {color:COLORS.solid_grey}]}>Sep 27, 2022</Text>
-                        </View>
-                    </View>
-                    <Spacer space={SH(10)}/>
-                    <View style={styles.trackIdCon}>
-                        <Text style={styles.trackIdText}>{strings.analytics.date}</Text>
-                         <Spacer space={SH(10)}/>
-                        <View style={styles.displayFlex}>
-                            <Text style={[styles.trackIdText, {color:COLORS.solid_grey}]}>Sep 27, 2022</Text>
-                        </View>
-                    </View>
-                  </View>
-               </View>
-          <Spacer space={SH(30)}/>
-               <View style={styles.tableContainer}>
-          <Spacer space={SH(20)}/>
-               <Table>
-               <View style={styles.tableDataHeaderCon}>
+            <View>
+              <Spacer space={SH(20)} />
               <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth * 0.20,
-                  }}
-                >
-                  <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
+                <View>
+                  <Text style={[styles.trackIdText, { color: COLORS.black }]}>
+                    {strings.analytics.supplierDetails}
+                  </Text>
+                  <Spacer space={SH(15)} />
+                  <View
+                    style={[styles.flexAlign, { alignItems: 'flex-start' }]}
                   >
-                    Items
-                  </Text>
+                    <Image source={recordTape} style={styles.allienpic} />
+                    <View style={{ marginHorizontal: moderateScale(5) }}>
+                      <Text style={styles.addressText}>
+                        {strings.analytics.supplierAdd}
+                      </Text>
+                      <Text style={styles.addressText}>
+                        {strings.analytics.supplierNewAdd}
+                      </Text>
+                      <Text style={styles.addressText}>
+                        {strings.analytics.streetNo}
+                      </Text>
+                      <Text style={styles.addressText}>
+                        {strings.analytics.city}
+                      </Text>
+                      <Text style={styles.addressText}>
+                        {strings.analytics.supplierPhoneNumber}
+                      </Text>
+                      <Spacer space={SH(60)} />
+                      <View>
+                        <Text
+                          style={[styles.trackIdText, { color: COLORS.black }]}
+                        >
+                          {strings.analytics.taxNumberLabel}
+                        </Text>
+                        <Text style={styles.addressText}>
+                          {strings.analytics.taxNumber}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
                 </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.40,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
-                  }}
-                >
-                  <Text style={[styles.text, {marginLeft:-65}]}>SKU</Text>
-                  <Text style={styles.text}>Price</Text>
-                  <Text style={styles.text}>Quantity</Text>
-                  <Text style={styles.text}>Amount</Text>
+                <View>
+                  <View style={styles.trackIdCon}>
+                    <Text style={styles.trackIdText}>
+                      {strings.analytics.trackId}
+                    </Text>
+                    <Spacer space={SH(10)} />
+                    <View style={styles.displayFlex}>
+                      <Text
+                        style={[
+                          styles.trackIdText,
+                          { color: COLORS.solid_grey },
+                        ]}
+                      >
+                        #1255266
+                      </Text>
+                      <Image
+                        source={location}
+                        style={styles.crossButtonStyle}
+                      />
+                    </View>
+                  </View>
+                  <Spacer space={SH(10)} />
+                  <View style={styles.trackIdCon}>
+                    <Text style={styles.trackIdText}>
+                      {strings.analytics.dueDate}
+                    </Text>
+                    <Spacer space={SH(10)} />
+                    <View style={styles.displayFlex}>
+                      <Text
+                        style={[
+                          styles.trackIdText,
+                          { color: COLORS.solid_grey },
+                        ]}
+                      >
+                        Sep 27, 2022
+                      </Text>
+                    </View>
+                  </View>
+                  <Spacer space={SH(10)} />
+                  <View style={styles.trackIdCon}>
+                    <Text style={styles.trackIdText}>
+                      {strings.analytics.date}
+                    </Text>
+                    <Spacer space={SH(10)} />
+                    <View style={styles.displayFlex}>
+                      <Text
+                        style={[
+                          styles.trackIdText,
+                          { color: COLORS.solid_grey },
+                        ]}
+                      >
+                        Sep 27, 2022
+                      </Text>
+                    </View>
+                  </View>
                 </View>
               </View>
-            </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <Text style={[styles.usertableRowText, {paddingHorizontal:moderateScale(12)}]}>Aromas de San Andrés</Text>
+              <Spacer space={SH(30)} />
+              <View style={styles.tableContainer}>
+                <Spacer space={SH(20)} />
+                <Table>
+                  <View style={styles.tableDataHeaderCon}>
+                    <View style={styles.displayFlex}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          width: windowWidth * 0.2,
+                        }}
+                      >
+                        <Text style={styles.text}>#</Text>
+                        <Text
+                          style={[
+                            styles.text,
+                            { paddingHorizontal: moderateScale(10) },
+                          ]}
+                        >
+                          Items
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          width: windowWidth * 0.4,
+                          paddingRight: Platform.OS === 'ios' ? 40 : 0,
+                        }}
+                      >
+                        <Text style={[styles.text, { marginLeft: -65 }]}>
+                          SKU
+                        </Text>
+                        <Text style={styles.text}>Price</Text>
+                        <Text style={styles.text}>Quantity</Text>
+                        <Text style={styles.text}>Amount</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.tableDataCon}>
+                    <View style={styles.displayFlex}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          width: windowWidth * 0.25,
+                        }}
+                      >
+                        <Text style={styles.usertableRowText}>1</Text>
+                        <Text
+                          style={[
+                            styles.usertableRowText,
+                            { paddingHorizontal: moderateScale(12) },
+                          ]}
+                        >
+                          Aromas de San Andrés
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          width: windowWidth * 0.45,
+                          paddingRight: Platform.OS === 'ios' ? 40 : 0,
+                        }}
+                      >
+                        <Text style={[styles.usertableRowText]}>1105</Text>
+                        <Text
+                          style={[styles.usertableRowText, { marginLeft: -20 }]}
+                        >
+                          $250.00
+                        </Text>
+                        <Text style={styles.usertableRowText}>1</Text>
+                        <Text style={styles.usertableRowText}>$250.00</Text>
+                      </View>
+                    </View>
+                  </View>
+                </Table>
+                <Spacer space={SH(25)} />
+                <View style={styles.displayFlex}>
+                  <TextInput
+                    multiline
+                    numberOfLines={4}
+                    style={styles.textInputStyleInvoice}
+                    placeholder="Note:"
+                    placeholderTextColor="#000"
+                  />
+                  <View style={styles.noteContainer}>
+                    <Spacer space={SH(12)} />
+                    <View style={styles.tablesubTotal}>
+                      <Text style={styles.tablesubTotalLabel}>
+                        {strings.analytics.subtotal}
+                      </Text>
+                      <Text style={styles.tablesubTotalText}>
+                        {strings.analytics.comisionCharge}
+                      </Text>
+                    </View>
+                    <View style={styles.subtotalHr}></View>
+                    <View style={styles.tablesubTotal}>
+                      <Text style={styles.tablesubTotalLabel}>
+                        {strings.analytics.discount}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.tablesubTotalText,
+                          { color: COLORS.roseRed },
+                        ]}
+                      >
+                        {strings.analytics.discountPrice}
+                      </Text>
+                    </View>
+                    <View style={styles.subtotalHr}></View>
+                    <View style={styles.tablesubTotal}>
+                      <Text style={styles.tablesubTotalLabel}>
+                        {strings.analytics.shippingCharge}
+                      </Text>
+                      <Text style={styles.tablesubTotalText}>
+                        {strings.analytics.discountPrice}
+                      </Text>
+                    </View>
+                    <View style={styles.subtotalHr}></View>
+                    <View style={styles.tablesubTotal}>
+                      <Text style={styles.tablesubTotalLabel}>
+                        {strings.analytics.commision}
+                      </Text>
+                      <Text style={styles.tablesubTotalText}>
+                        {strings.analytics.comisionCharge}
+                      </Text>
+                    </View>
+                    <View style={styles.subtotalHr}></View>
+                    <View style={styles.tablesubTotal}>
+                      <View
+                        style={{ flexDirection: 'row', alignItems: 'center' }}
+                      >
+                        <Text style={styles.tablesubDarkLabel}>
+                          {strings.wallet.total}
+                        </Text>
+                        <View style={styles.paidContainer}>
+                          <Text style={styles.paidText}>
+                            {strings.wallet.paid}
+                          </Text>
+                        </View>
+                      </View>
+                      <Text style={styles.tablesubDarkLabel}>
+                        {strings.wallet.subtotalPrice}
+                      </Text>
+                    </View>
+                    <Spacer space={SH(10)} />
+                  </View>
                 </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.45,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText]}>
-                  1105
-                  </Text>
-                  <Text style={[styles.usertableRowText, {marginLeft:-20}]}>$250.00</Text>
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <Text style={styles.usertableRowText}>$250.00</Text>
+                <Spacer space={SH(20)} />
+              </View>
+              <Spacer space={SH(30)} />
+              <View>
+                <Text style={styles.shippingDetail}>
+                  {strings.wallet.shippingDetail}
+                </Text>
+              </View>
+              <Spacer space={SH(20)} />
+              <View style={styles.trackingCon}>
+                <View style={styles.displayFlex}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={fedx} style={styles.willis} />
+                    <View>
+                      <Text style={styles.willisName}>
+                        {strings.analytics.FedEx}
+                      </Text>
+                      <Text style={styles.trackingNumber}>
+                        {strings.wallet.trackingNo}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View
+                      style={[
+                        styles.deliverBtnCon,
+                        { marginHorizontal: moderateScale(8) },
+                      ]}
+                    >
+                      <View style={styles.deliverTextCon}>
+                        <Image
+                          source={deliverCheck}
+                          style={styles.deliveryCheck}
+                        />
+                        <Text style={styles.deliveredText}>
+                          {strings.wallet.delivered}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
+                      <TouchableOpacity style={styles.deliverTextCon}>
+                        <Image source={track} style={styles.deliveryCheck} />
+                        <Text style={styles.deliveredText}>
+                          {strings.wallet.tracking}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
               </View>
+              <Spacer space={SH(20)} />
             </View>
-          </Table>
-                       <Spacer space={SH(25)} />
-                       <View style={styles.displayFlex}>
-                            <TextInput
-                             multiline
-                             numberOfLines={4}
-                            style={styles.textInputStyleInvoice}
-                            placeholder='Note:'
-                            placeholderTextColor="#000"
-                            />
-                            <View style={styles.noteContainer}>
-                               <Spacer space={SH(12)} />
-                                   <View style={styles.tablesubTotal}>
-                                      <Text style={styles.tablesubTotalLabel}>{strings.analytics.subtotal}</Text>
-                                      <Text style={styles.tablesubTotalText}>{strings.analytics.comisionCharge}</Text>
-                                   </View>
-                                   <View style={styles.subtotalHr}></View>
-                                   <View style={styles.tablesubTotal}>
-                                      <Text style={styles.tablesubTotalLabel}>{strings.analytics.discount}</Text>
-                                      <Text style={[styles.tablesubTotalText, {color:COLORS.roseRed}]}>{strings.analytics.discountPrice}</Text>
-                                   </View>
-                                   <View style={styles.subtotalHr}></View>
-                                   <View style={styles.tablesubTotal}>
-                                      <Text style={styles.tablesubTotalLabel}>{strings.analytics.shippingCharge}</Text>
-                                      <Text style={styles.tablesubTotalText}>{strings.analytics.discountPrice}</Text>
-                                   </View>
-                                   <View style={styles.subtotalHr}></View>
-                                   <View style={styles.tablesubTotal}>
-                                      <Text style={styles.tablesubTotalLabel}>{strings.analytics.commision}</Text>
-                                      <Text style={styles.tablesubTotalText}>{strings.analytics.comisionCharge}</Text>
-                                   </View>
-                                   <View style={styles.subtotalHr}></View>
-                                   <View style={styles.tablesubTotal}>
-                                    <View style={{flexDirection:'row', alignItems:'center'}}>
-                                    <Text style={styles.tablesubDarkLabel}>{strings.wallet.total}</Text>
-                                     <View style={styles.paidContainer}>
-                                        <Text style={styles.paidText}>{strings.wallet.paid}</Text>
-                                     </View>
-                                    </View>
-                                    <Text style={styles.tablesubDarkLabel}>{strings.wallet.subtotalPrice}</Text>
-                                   </View>
-                                   <Spacer space={SH(10)} />
-                            </View>
-                       </View>
-                       <Spacer space={SH(20)} />
-               </View>
-               <Spacer space={SH(30)} />
-                       <View>
-                          <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
-                       </View>
-                       <Spacer space={SH(20)} />
-                       <View style={styles.trackingCon}>
-                           <View style={styles.displayFlex}>
-                                <View style={{flexDirection:'row',alignItems:'center'}}>
-                                  <Image source={fedx} style={styles.willis}/>
-                                <View>
-                                  <Text style={styles.willisName}>{strings.analytics.FedEx}</Text>
-                                  <Text style={styles.trackingNumber}>{strings.wallet.trackingNo}</Text>
-                               </View>
-                                </View>
-                               <View style={{flexDirection:'row'}}>
-                                   <View style={[styles.deliverBtnCon, {marginHorizontal:moderateScale(8)}]}>
-                                        <View style={styles.deliverTextCon}>
-                                          <Image source={deliverCheck} style={styles.deliveryCheck}/>
-                                          <Text style={styles.deliveredText}>{strings.wallet.delivered}</Text>
-                                        </View>
-                                   </View>
-                                   <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
-                                        <TouchableOpacity style={styles.deliverTextCon} >
-                                          <Image source={track} style={styles.deliveryCheck}/>
-                                          <Text style={styles.deliveredText}>{strings.wallet.tracking}</Text>
-                                        </TouchableOpacity>
-                                   </View>
-                               </View>
-                           </View>
-                       </View>
-                       <Spacer space={SH(20)} />
-           </View>
           </ScrollView>
-        
-        
+        </View>
+        {/* </KeyboardAwareScrollView> */}
+      </Modal>
+    );
+  };
+  const productOrderModal = () => {
+    return (
+      <Modal transparent isVisible={productOrderModel}>
+        {/* <KeyboardAwareScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          > */}
+        <View style={[styles.modalMainView, { width: SH(1370) }]}>
+          <Spacer space={SH(10)} />
+          <View style={styles.invoiveIdHeaderCon}>
+            <View style={styles.displayFlex}>
+              <View style={styles.flexAlign}>
+                <TouchableOpacity onPress={() => setProductOrderModel(false)}>
+                  <Image source={leftBack} style={styles.leftBackStyle} />
+                </TouchableOpacity>
+                <Text style={styles.invoiceIdText}>
+                  {strings.analytics.orderHeaader}
+                </Text>
+                <View style={styles.completeBtnCon}>
+                  <Text style={styles.completeText}>
+                    {strings.analytics.complete}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View style={paymentSideBar ? styles.flatListHeightTrue : styles.flatListHeightFalse}>
+            <Spacer space={SH(30)} />
+            <View style={styles.displayFlex}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.listOfItem}>
+                  {strings.posSale.listOfItem}
+                </Text>
+                <Text style={styles.walletItem}>4 Items</Text>
+              </View>
+              <Text style={styles.rewardPointStyle}>
+                {strings.posSale.rewardpoint}
+              </Text>
+            </View>
+            <Spacer space={SH(15)} />
+            <View>
+              <FlatList
+                data={jbritemList}
+                renderItem={renderJbrItem}
+                keyExtractor={item => item.id}
+              />
+            </View>
+            <View style={{ flex: 1 }} />
+            <View>
+              <Text style={styles.walletItem}>{strings.posSale.notes}</Text>
+              <Text style={styles.itmybdaystyle}>
+                {strings.posSale.itMynday}
+              </Text>
+            </View>
+          </View>
+
+          {
+            paymentSideBar
+            ?
+            (
+              <View style={styles.orderSideCon}>
+              <View style={{ width: SH(420), alignSelf: 'center' }}>
+                <Spacer space={SH(20)} />
+                <View style={styles.displayFlex}>
+                  <Text style={styles.moreActText}>Payment Details</Text>
+                  <TouchableOpacity onPress={() => setPaymentSideBar(false)}>
+                    <Image source={crossButton} style={styles.crossButtonStyle} />
+                  </TouchableOpacity>
+                </View>
+  
+                <View style={{ height:SH(605)}}>
+                  <ScrollView showsVerticalScrollIndicator={false}>
+                <Spacer space={SH(20)} />
+                  <Text style={styles.paymenttdone}>
+                    {strings.posSale.paymenttdone}
+                  </Text>
+                  <Spacer space={SH(10)} />
+                  <View style={styles.paymentTipsCon}>
+                    <View style={styles.displayFlex}>
+                      <View>
+                        <Text style={styles.paymentTipsText}>
+                          Payable $254.60
+                        </Text>
+                        <Spacer space={SH(10)} />
+                        <Text style={styles.paymentTipsText}>Tips $0.60</Text>
+                      </View>
+                      <Text style={styles.paymentPay}>$254.60</Text>
+                    </View>
+                  </View>
+                  <Spacer space={SH(10)} />
+                  <Text style={styles.via}>
+                    Via{' '}
+                    <Text
+                      style={{
+                        color: COLORS.primary,
+                        fontSize: SF(18),
+                        fontFamily: Fonts.Regular,
+                      }}
+                    >
+                      Cash
+                    </Text>
+                  </Text>
+  
+                  <Spacer space={SH(25)} />
+  
+                  <View style={styles.customerAddreCon}>
+                    <Spacer space={SH(15)} />
+                    <Text style={styles.customer}>Customer</Text>
+                    <Spacer space={SH(15)} />
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        paddingHorizontal: moderateScale(10),
+                      }}
+                    >
+                      <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                      <View style={{ paddingHorizontal: moderateScale(8) }}>
+                        <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
+                          {strings.posSale.customerName}
+                        </Text>
+                        <Spacer space={SH(8)} />
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerMobileNo}
+                        </Text>
+                        <Spacer space={SH(5)} />
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerEmail}
+                        </Text>
+                        <Spacer space={SH(8)} />
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerAddr}
+                        </Text>
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerAddr2}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={{ flex: 1 }}></View>
+                    <View style={styles.walletIdCon}>
+                      <Text style={styles.walletIdLabel}>
+                        {strings.analytics.walletIdLabel}
+                      </Text>
+                      <Spacer space={SH(5)} />
+                      <Text style={styles.walletId}>
+                        {strings.analytics.walletId}
+                      </Text>
+                    </View>
+                  </View>
+                
+               
+              <Spacer space={SH(35)}/>
+                <View style={styles.bottomContainer}>
+                  <Spacer space={SH(10)} />
+                  <View style={styles.bottomSubCon}>
+                    <Text style={styles.smalldarkText}>Sub Total</Text>
+                    <Text style={styles.smallLightText}>$4.00</Text>
+                  </View>
+                  <Spacer space={SH(12)} />
+                  <View style={styles.bottomSubCon}>
+                    <Text style={styles.smallLightText}>Discount</Text>
+                    <Text style={styles.smallLightText}>-$2.00</Text>
+                  </View>
+                  <Spacer space={SH(12)} />
+                  <View style={styles.bottomSubCon}>
+                    <Text style={styles.smallLightText}>Tax</Text>
+                    <Text style={styles.smallLightText}>$4.00</Text>
+                  </View>
+                  <Spacer space={SH(12)} />
+                  <View style={styles.hr}></View>
+                  <Spacer space={SH(12)} />
+                  <View style={styles.bottomSubCon}>
+                    <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>
+                      Total
+                    </Text>
+                    <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
+                      $254.60
+                    </Text>
+                  </View>
+                  <Spacer space={SH(12)} />
+                  <View style={styles.bottomSubCon}>
+                    <Text style={styles.smallLightText}>4 Items</Text>
+                  </View>
+                  <Spacer space={SH(12)} />
+                  <TouchableOpacity
+                    style={styles.checkoutButton}
+                    // onPress={checkOutHandler}
+                  >
+                    <Text style={styles.checkoutText}>Checkout</Text>
+                    <Image source={checkArrow} style={styles.checkArrow} />
+                  </TouchableOpacity>
+                </View>
+                </ScrollView>
+                </View>
+                </View>
+            </View> 
+            )
+            :
+            null
+          }
+
+         
         </View>
         {/* </KeyboardAwareScrollView> */}
       </Modal>
     );
   };
   const totalProductFunction = () => {
-    if(inventoryProductTable){
-      return(
+    if (inventoryProductTable) {
+      return (
         <View>
-        {/* {customHeaderforInventory()} */}
-        {
-          inventoryChangeTable ?
-          (
-            <Text style={styles.categoryHeader}>Aromas de San Andrés::<Text> 19</Text></Text> 
-          )
-          :
-          (
-           <Text style={styles.categoryHeader}>Unit In:<Text> 19</Text></Text>
-          )
-        }
-          
-        
+          {/* {customHeaderforInventory()} */}
+          {inventoryChangeTable
+            ? inventryTableHeaderChange(inventoryTable)
+            : inventryTableHeader(inventoryTable)}
           <Spacer space={SH(20)} />
           <View style={styles.orderTypeCon}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -2017,125 +2920,11 @@ export function Analytics(props) {
               </View>
             </View>
           </View>
-          {
-            inventoryChangeTable
-            ?
-            (
-              <View style={{ zIndex: -9 }}>
-              <Table>
-                <View style={styles.tableDataHeaderCon}>
-                  <View style={styles.displayFlex}>
-                    <View
-                      style={styles.tableHeaderLeft}>
-                      <Text style={styles.text}>#</Text>
-                      <Text
-                        style={[
-                          styles.text,
-                          { paddingHorizontal: moderateScale(10) }]}>
-                        Supplier
-                      </Text>
-                    </View>
-                    <View
-                      style={styles.tableHeaderRight}>
-                      <Text style={styles.text}>Invoice</Text>
-                      <Text style={styles.text}>Unit In</Text>
-                      <Text style={styles.text}>Date</Text>
-                      <Text style={[styles.text, {marginRight:80}]}>Total Cost</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.tableDataCon}>
-                  <View style={styles.displayFlex}>
-                    <View
-                      style={styles.tableHeaderLeft}
-                    >
-                      <Text style={[styles.usertableRowText, {textAlign:'center'}]}>1</Text>
-                      <TouchableOpacity style={styles.tableDataLeft} onPress={() => setInvoiceModal(true)}>
-                        <Image source={recordTape} style={styles.allienpic} />
-                         <View style={{justifyContent:'flex-start', paddingHorizontal:moderateScale(4)}}>
-                         <Text style={[styles.usertableRowText]}>Record & Tape</Text>
-                        <Text style={[styles.usertableRowText,{color:COLORS.gerySkies}]}>Florida</Text>
-                         </View>
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={styles.tablerightSectionBody}>
-                      <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                        125698740
-                      </Text>
-                      <Text style={styles.usertableRowText}>20</Text>
-                      <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
-                      <Text style={[styles.usertableRowText, {marginRight:90}]}>$200</Text>
-                    </View>
-                  </View>
-                </View>
-              </Table>
-            </View>
-           
-            )
-            :
-            (
-              <View style={{ zIndex: -9 }}>
-              <Table>
-                <View style={styles.tableDataHeaderCon}>
-                  <View style={styles.displayFlex}>
-                    <View
-                      style={styles.tableHeaderLeft}>
-                      <Text style={styles.text}>#</Text>
-                      <Text
-                        style={[
-                          styles.text,
-                          { paddingHorizontal: moderateScale(10) }]}>
-                        Prouct Name
-                      </Text>
-                    </View>
-                    <View
-                      style={styles.tableHeaderRight}>
-                      <Text style={styles.text}>Barcode</Text>
-                      <Text style={styles.text}>Unit In</Text>
-                      <Text style={styles.text}>Date</Text>
-                      <Text style={[styles.text, {marginRight:80}]}>Total Cost</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.tableDataCon}>
-                  <View style={styles.displayFlex}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems:'center',
-                        width: windowWidth * 0.25,
-                      }}
-                    >
-                      <Text style={styles.usertableRowText}>1</Text>
-                      <TouchableOpacity style={styles.tableDataLeft} onPress={() => setInventoryChangeTable(true)}>
-                        <Image source={tobaco} style={styles.allienpic} />
-                        <Text
-                          style={[
-                            styles.usertableRowText,
-                            { paddingHorizontal: moderateScale(3) },
-                          ]}>
-                          Aromas de San Andrés
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={styles.tablerightSectionBody}>
-                      <Text style={[styles.usertableRowText]}>
-                        125698740
-                      </Text>
-                      <Text style={styles.usertableRowText}>20</Text>
-                      <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
-                      <Text style={[styles.usertableRowText, {marginRight:90}]}>$200</Text>
-                    </View>
-                  </View>
-                </View>
-              </Table>
-            </View>
-            )
-          }
+          {inventoryChangeTable
+            ? inventryTableChangeHandler(inventoryTable)
+            : inventoryTableHandler(inventoryTable)}
         </View>
-      )
+      );
     }
     if (productCat) {
       return (
@@ -2681,10 +3470,11 @@ export function Analytics(props) {
 
   return (
     <View style={styles.container}>
-      {customHeader()} 
-       {totalProductFunction()}
-       {productDetailModal()}
-       {invoiceModal()}
+      {customHeader()}
+      {totalProductFunction()}
+      {productDetailModal()}
+      {invoiceModal()}
+      {productOrderModal()}
     </View>
   );
 }

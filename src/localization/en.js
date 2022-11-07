@@ -374,7 +374,11 @@ export const en = {
      shippingCharge:'Shipping Charge',
      commision:'Commission (10%)',
      discountPrice:'$25.00',
-     comisionCharge:'$100.00'
+     comisionCharge:'$100.00',
+     orderHeaader:'Order# 25659165659165',
+     complete:'Completed',
+     walletId:'509 236 2365',
+     walletIdLabel:'Wallet Id'
     },
   
 };
