@@ -128,6 +128,8 @@ export { default as swisher } from '@/assets/icons/ic_analytics/swisher.png';
 export { default as recordTape } from '@/assets/icons/ic_analytics/recordTape.png';
 export { default as printIcon } from '@/assets/icons/ic_analytics/printIcon.png';
 export { default as fedx } from '@/assets/icons/ic_analytics/fedx.png';
+export { default as ups } from '@/assets/icons/ic_analytics/ups.png';
+export { default as share } from '@/assets/icons/ic_analytics/share.png';
 // export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */

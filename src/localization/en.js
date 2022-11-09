@@ -378,7 +378,11 @@ export const en = {
      orderHeaader:'Order# 25659165659165',
      complete:'Completed',
      walletId:'509 236 2365',
-     walletIdLabel:'Wallet Id'
+     walletIdLabel:'Wallet Id',
+     returnShipingDetail:'Return Shipping Details',
+     ups:'UPS',
+     share:'Share',
+     refund:'$255.00'
     },
   
 };

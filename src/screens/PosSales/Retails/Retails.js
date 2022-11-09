@@ -198,7 +198,7 @@ export function Retails() {
   };
   const jbrCoinChoseHandler = () => {
     setCustPayment(!custPayment);
-    setJbrCoin(!jbrCoin);
+    setJbrCoin(true);
     setCashChoose(false);
     setCardChoose(false);
   };
@@ -206,7 +206,7 @@ export function Retails() {
     setCustPayment(false);
   };
   const cashChooseHandler = () => {
-    setCashChoose(!cashChoose);
+    setCashChoose(true);
     setJbrCoin(false);
     setCardChoose(false);
     setCustCash(!custCash);
@@ -217,8 +217,8 @@ export function Retails() {
     setJbrCoin(false);
   };
   const listOfItemHandler = () => {
-    setListofItem(!listOfItem);
     setCustPayment(false);
+    setListofItem(true);
   };
   const choosePaymentCloseHandler = () => {
     setCheckoutCon(false);
@@ -548,6 +548,7 @@ export function Retails() {
   );
 
   return (
+  
     // start  header section
     <View style={styles.container}>
       {/* <StatusBar barStyle = "dark-content"  backgroundColor = "#fff" /> */}
@@ -576,15 +577,14 @@ export function Retails() {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.purchaseCon}>
-            <TouchableOpacity onPress={sideContainerHandler}>
+          <TouchableOpacity style={styles.purchaseCon} onPress={sideContainerHandler}>
               <Image source={purchese} style={styles.purcheseStyle} />
-            </TouchableOpacity>
             <Text style={styles.purchaseText}>
               Items: <Text style={styles.purchasecount}>4</Text>
             </Text>
             <Image source={arrow_right} style={styles.arrowStyle} />
-          </View>
+          </TouchableOpacity>
+
         </View>
       </View>
       {/* End  header section */}
@@ -1566,40 +1566,178 @@ export function Retails() {
       {/*  customer and payment  modal end */}
 
       {/* payment with jbr wallet start */}
-      {listOfItem ? (
-        <View style={styles.numpadContainer}>
-          <View style={{ height: windowHeight, paddingBottom: 60 }}>
-            <Spacer space={SH(20)} />
-            <View style={styles.displayFlex}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.listOfItem}>
-                  {strings.posSale.listOfItem}
-                </Text>
-                <Text style={styles.walletItem}>4 Items</Text>
-              </View>
-              <Text style={styles.rewardPointStyle}>
-                {strings.posSale.rewardpoint}
-              </Text>
-            </View>
-            <Spacer space={SH(20)} />
+      {/* {console.log(listOfItem, 'asdfghjkl')} */}
+      {listOfItem ? 
 
-            <View>
-              <FlatList
-                data={jbritemList}
-                renderItem={renderJbrItem}
-                keyExtractor={item => item.id}
-              />
-            </View>
-            <View style={{ flex: 1 }} />
-            <View>
-              <Text style={styles.walletItem}>{strings.posSale.notes}</Text>
-              <Text style={styles.itmybdaystyle}>
-                {strings.posSale.itMynday}
-              </Text>
-            </View>
+         ( <View style={[styles.displayFlex, {borderWidth:1}]}>
+          <View style={[styles.numpadContainer, {borderWidth:1}]}>
+              <View style={{ height: windowHeight, paddingBottom: 60 }}>
+                 <Spacer space={SH(20)} />
+               <View style={styles.displayFlex}>
+                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                   <Text style={styles.listOfItems}>
+                    {strings.posSale.listOfItem}
+                   </Text>
+                    <Text style={styles.walletItem}>4 Items</Text>
+                </View>
+                  <Text style={styles.rewardPointStyle}>
+                    {strings.posSale.rewardpoint}
+                  </Text>
+                </View>
+               <Spacer space={SH(20)} />
+   
+              <View>
+                 <FlatList
+                    data={jbritemList}
+                    renderItem={renderJbrItem}
+                    keyExtractor={item => item.id}
+               />
+                </View>
+               <View style={{ flex: 1 }} />
+              <View>
+                  <Text style={styles.walletItem}>{strings.posSale.notes}</Text>
+                 <Text style={styles.itmybdaystyle}>
+                   {strings.posSale.itMynday}
+                  </Text>
+               </View>
+             </View>
           </View>
-        </View>
-      ) : null}
+          <View style={styles.orderSideCon}>
+          <View style={{ width: SH(420), alignSelf: 'center' }}>
+                <Spacer space={SH(20)} />
+                   <View style={styles.displayFlex}>
+                     <Text style={styles.moreActText}>Payment Details</Text>
+                     <TouchableOpacity>
+                       <Image source={crossButton} style={styles.crossButtonStyle} />
+                     </TouchableOpacity>
+                   </View>
+                   <View style={{height:SH(730)}}>
+                     <ScrollView showsVerticalScrollIndicator={false}>
+                     <Spacer space={SH(20)} />
+                     <Text style={styles.paymenttdone}>
+                       {strings.posSale.paymenttdone}
+                     </Text>
+                     <Spacer space={SH(10)} />
+                     <View style={styles.paymentTipsCon}>
+                       <View style={styles.displayFlex}>
+                         <View>
+                           <Text style={styles.paymentTipsText}>
+                             Payable $254.60
+                           </Text>
+                           <Spacer space={SH(10)} />
+                           <Text style={styles.paymentTipsText}>Tips $0.60</Text>
+                         </View>
+                         <Text style={styles.paymentPay}>$254.60</Text>
+                       </View>
+                     </View>
+                     <Spacer space={SH(10)} />
+                     <Text style={styles.via}>
+                       Via{' '}
+                       <Text
+                         style={{
+                           color: COLORS.primary,
+                           fontSize: SF(18),
+                           fontFamily: Fonts.Regular,
+                         }}
+                       >
+                         Cash
+                       </Text>
+                     </Text>
+     
+                     <Spacer space={SH(25)} />
+                     <View style={styles.customerAddreCons}>
+                       <Spacer space={SH(15)} />
+                       <Text style={styles.customer}>Customer</Text>
+                       <Spacer space={SH(15)} />
+                       <View
+                         style={{
+                           flexDirection: 'row',
+                           justifyContent: 'flex-start',
+                           paddingHorizontal: moderateScale(10),
+                         }}
+                       >
+                         <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                         <View style={{ paddingHorizontal: moderateScale(8) }}>
+                           <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
+                             {strings.posSale.customerName}
+                           </Text>
+                           <Spacer space={SH(8)} />
+                           <Text style={styles.cusAddText}>
+                             {strings.posSale.customerMobileNo}
+                           </Text>
+                           <Spacer space={SH(5)} />
+                           <Text style={styles.cusAddText}>
+                             {strings.posSale.customerEmail}
+                           </Text>
+                           <Spacer space={SH(8)} />
+                           <Text style={styles.cusAddText}>
+                             {strings.posSale.customerAddr}
+                           </Text>
+                           <Text style={styles.cusAddText}>
+                             {strings.posSale.customerAddr2}
+                           </Text>
+                         </View>
+                       </View>
+                       <View style={{ flex: 1 }}></View>
+                       <View style={styles.walletIdCon}>
+                         <Text style={styles.walletIdLabel}>
+                           {strings.analytics.walletIdLabel}
+                         </Text>
+                         <Spacer space={SH(5)} />
+                         <Text style={styles.walletId}>
+                           {strings.analytics.walletId}
+                         </Text>
+                       </View>
+                     </View>
+                     <Spacer space={SH(35)}/>
+                   <View style={styles.bottomContainer}>
+                     <Spacer space={SH(10)} />
+                     <View style={styles.bottomSubCon}>
+                       <Text style={styles.smalldarkText}>Sub Total</Text>
+                       <Text style={styles.smallLightText}>$4.00</Text>
+                     </View>
+                     <Spacer space={SH(12)} />
+                     <View style={styles.bottomSubCon}>
+                       <Text style={styles.smallLightText}>Discount</Text>
+                       <Text style={styles.smallLightText}>-$2.00</Text>
+                     </View>
+                     <Spacer space={SH(12)} />
+                     <View style={styles.bottomSubCon}>
+                       <Text style={styles.smallLightText}>Tax</Text>
+                       <Text style={styles.smallLightText}>$4.00</Text>
+                     </View>
+                     <Spacer space={SH(12)} />
+                     <View style={styles.hr}></View>
+                     <Spacer space={SH(12)} />
+                     <View style={styles.bottomSubCon}>
+                       <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>
+                         Total
+                       </Text>
+                       <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
+                         $254.60
+                       </Text>
+                     </View>
+                     <Spacer space={SH(12)} />
+                     <View style={styles.bottomSubCon}>
+                       <Text style={styles.smallLightText}>4 Items</Text>
+                     </View>
+                     <Spacer space={SH(12)} />
+                     <TouchableOpacity
+                       style={styles.checkoutButton}
+                       // onPress={checkOutHandler}
+                     >
+                       <Text style={styles.checkoutText}>Checkout</Text>
+                       <Image source={checkArrow} style={styles.checkArrow} />
+                     </TouchableOpacity>
+                   </View>
+                     </ScrollView>
+                     </View>
+           </View>
+           </View>
+          </View>)
+       : 
+        null
+      }
 
       {/* payment with jbr wallet end */}
 
@@ -1952,7 +2090,7 @@ export function Retails() {
                 styles.checkoutButton,
                 { marginVertical: moderateScale(20) },
               ]}
-            // onPress={checkOutHandler}
+              onPress={() => {setCustomerCashPaid(false), setListofItem(true)}}
             >
               <Text
                 style={[styles.checkoutText, { fontFamily: Fonts.Regular }]}

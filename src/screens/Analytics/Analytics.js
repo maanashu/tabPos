@@ -49,6 +49,8 @@ import {
   menu,
   jbrCustomer,
   checkArrow,
+  ups,
+  share
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
@@ -70,6 +72,7 @@ import {
   inverntrycategoryData,
   productDetailData,
   jbritemList,
+  stockHandData
 } from '@/constants/flatListData';
 export function Analytics(props) {
   useEffect(() => {
@@ -83,6 +86,8 @@ export function Analytics(props) {
   const [paymentSideBar, setPaymentSideBar] = useState(false);
   const [productDetailModel, setProductDetailModel] = useState(false);
   const [productOrderModel, setProductOrderModel] = useState(false);
+  const [stockHandProductModel, setStockHandProductModel] = useState(false);
+  const [invoiceTrackId, setInvoiceTrackId] = useState(false);
   const [editButton, setEditButton] = useState(false);
   const [reOrder, setReOrder] = useState(false);
   const [sellingPrice, setSellingPrice] = useState(false);
@@ -237,11 +242,11 @@ export function Analytics(props) {
       setInverntoryProductTable(true);
       setInventoryChangeTable(false);
       setInventoryTable('Unit Return');
-    } else if (item.category === 'Stock on hand') {
+    } else if (item.category === 'Stock on Hand') {
       setProductDetail(false);
       setInverntoryProductTable(true);
       setInventoryChangeTable(false);
-      setInventoryTable('Stock on hand');
+      setInventoryTable('Stock on Hand');
       // setInventoryChangeTable(true);
     }
   };
@@ -308,6 +313,13 @@ export function Analytics(props) {
       </Text>
       <Spacer space={SH(8)} />
       <Text style={styles.sellingCount}>{item.price}</Text>
+    </View>
+  );
+  const stockHandItem = ({item}) => (
+    <View style={[styles.sellingPriceConblue, styles.sellingPriceCongrey, {marginVertical:verticalScale(5)}]}>
+    <Text style={[styles.sellingCount, { fontSize: SF(15), fontFamily: Fonts.MaisonRegular, letterSpacing: -1 },]}>{item.heading}</Text>
+    <Spacer space={SH(8)} />
+    <Text style={styles.sellingCount}>{item.price}</Text>
     </View>
   );
   const renderJbrItem = ({ item }) => (
@@ -1434,7 +1446,7 @@ export function Analytics(props) {
           Unit Return:<Text> 19</Text>
         </Text>
       );
-    } else if (inventoryTable === 'Stock on hand') {
+    } else if (inventoryTable === 'Stock on Hand') {
       return (
         <Text style={styles.categoryHeader}>
           Stock in hand:<Text> 20,560</Text>
@@ -1480,7 +1492,7 @@ export function Analytics(props) {
                   </Text>
                   <TouchableOpacity
                     style={styles.tableDataLeft}
-                    onPress={() => setInvoiceModal(true)}
+                    onPress={() => {setInvoiceModal(true),setInvoiceTrackId(false)}}
                   >
                     <Image source={recordTape} style={styles.allienpic} />
                     <View
@@ -1630,7 +1642,7 @@ export function Analytics(props) {
                   </Text>
                   <TouchableOpacity
                     style={styles.tableDataLeft}
-                    onPress={() => alert('inventiry Return ')}
+                    onPress={() => {setInvoiceModal(true), setInvoiceTrackId(true)}}
                   >
                     <Image source={recordTape} style={styles.allienpic} />
                     <View
@@ -1866,7 +1878,7 @@ export function Analytics(props) {
           </Table>
         </View>
       );
-    } else if (inventoryTable === 'Stock on hand') {
+    } else if (inventoryTable === 'Stock on Hand') {
       return (
         <View style={{ zIndex: -9 }}>
           <Table>
@@ -1908,8 +1920,7 @@ export function Analytics(props) {
                   <Text style={styles.usertableRowText}>1</Text>
                   <TouchableOpacity
                     style={styles.tableDataLeft}
-                    onPress={() => alert('coming soon')}
-                  >
+                    onPress={() => setStockHandProductModel(true)}>
                     <Image source={tobaco} style={styles.allienpic} />
                     <Text
                       style={[
@@ -1951,7 +1962,7 @@ export function Analytics(props) {
             style={styles.backButtonCon}
             onPress={() => {
               productDetail ? setProductDetail(false) : setProductCat(false),
-                setProductDetail(true);
+                setProductDetail(productDetail ? false : true);
               setDetailtable(false);
               setInverntoryProductTable(false);
             }}
@@ -2150,7 +2161,7 @@ export function Analytics(props) {
             showsVerticalScrollIndicator={false}
           > */}
         <View style={[styles.modalMainView, { width: SH(1170) }]}>
-          <Spacer space={SH(10)} />
+          <Spacer space={SH(20)} />
           <View style={styles.invoiveIdHeaderCon}>
             <View style={styles.displayFlex}>
               <View style={styles.flexAlign}>
@@ -2225,62 +2236,185 @@ export function Analytics(props) {
                     </View>
                   </View>
                 </View>
-                <View>
-                  <View style={styles.trackIdCon}>
-                    <Text style={styles.trackIdText}>
-                      {strings.analytics.trackId}
-                    </Text>
-                    <Spacer space={SH(10)} />
-                    <View style={styles.displayFlex}>
-                      <Text
-                        style={[
-                          styles.trackIdText,
-                          { color: COLORS.solid_grey },
-                        ]}
-                      >
-                        #1255266
+                {
+                  invoiceTrackId
+                  ?
+                  (
+                    <View style={{flexDirection:'row'}}>
+                    <View style={{marginHorizontal:moderateScale(10)}}>
+                      <View style={styles.trackIdCon}>
+                        <Text style={styles.trackIdText}>
+                          {strings.analytics.trackId}
+                        </Text>
+                        <Spacer space={SH(10)} />
+                        <View style={styles.displayFlex}>
+                          <Text
+                            style={[
+                              styles.trackIdText,
+                              { color: COLORS.solid_grey },
+                            ]}
+                          >
+                            #1255266
+                          </Text>
+                          <Image
+                            source={location}
+                            style={styles.crossButtonStyle}
+                          />
+                        </View>
+                      </View>
+                      <Spacer space={SH(10)} />
+                      <View style={styles.trackIdCon}>
+                        <Text style={styles.trackIdText}>
+                          {strings.analytics.dueDate}
+                        </Text>
+                        <Spacer space={SH(10)} />
+                        <View style={styles.displayFlex}>
+                          <Text
+                            style={[
+                              styles.trackIdText,
+                              { color: COLORS.solid_grey },
+                            ]}
+                          >
+                            Sep 27, 2022
+                          </Text>
+                        </View>
+                      </View>
+                      <Spacer space={SH(10)} />
+                      <View style={styles.trackIdCon}>
+                        <Text style={styles.trackIdText}>
+                          {strings.analytics.date}
+                        </Text>
+                        <Spacer space={SH(10)} />
+                        <View style={styles.displayFlex}>
+                          <Text
+                            style={[
+                              styles.trackIdText,
+                              { color: COLORS.solid_grey },
+                            ]}
+                          >
+                            Sep 27, 2022
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View style={{}}>
+                      <View style={[styles.trackIdCon, {borderColor:COLORS.primary}]}>
+                        <Text style={[styles.trackIdText, {color:COLORS.primary}]}>
+                          {strings.analytics.trackId}
+                        </Text>
+                        <Spacer space={SH(10)} />
+                        <View style={styles.displayFlex}>
+                          <Text
+                            style={[
+                              styles.trackIdText,
+                              { color: COLORS.solid_grey },
+                            ]}
+                          >
+                            #1255266
+                          </Text>
+                          <Image
+                            source={location}
+                            style={styles.crossButtonStyle}
+                          />
+                        </View>
+                      </View>
+                      <Spacer space={SH(10)} />
+                      <View style={[styles.trackIdCon, {borderColor:COLORS.primary}]}>
+                        <Text style={[styles.trackIdText, {color:COLORS.primary}]}>
+                          {strings.analytics.dueDate}
+                        </Text>
+                        <Spacer space={SH(10)} />
+                        <View style={styles.displayFlex}>
+                          <Text
+                            style={[
+                              styles.trackIdText,
+                              { color: COLORS.solid_grey },
+                            ]}
+                          >
+                            Sep 27, 2022
+                          </Text>
+                        </View>
+                      </View>
+                      <Spacer space={SH(10)} />
+                      <View style={[styles.trackIdCon, {borderColor:COLORS.primary}]}>
+                        <Text style={[styles.trackIdText, {color:COLORS.primary}]}>
+                          {strings.analytics.date}
+                        </Text>
+                        <Spacer space={SH(10)} />
+                        <View style={styles.displayFlex}>
+                          <Text
+                            style={[
+                              styles.trackIdText,
+                              { color: COLORS.solid_grey },
+                            ]}
+                          >
+                            Sep 27, 2022
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    </View>
+                  )
+                  :
+                  (
+                    <View style={{marginHorizontal:moderateScale(10)}}>
+                    <View style={styles.trackIdCon}>
+                      <Text style={styles.trackIdText}>
+                        {strings.analytics.trackId}
                       </Text>
-                      <Image
-                        source={location}
-                        style={styles.crossButtonStyle}
-                      />
+                      <Spacer space={SH(10)} />
+                      <View style={styles.displayFlex}>
+                        <Text
+                          style={[
+                            styles.trackIdText,
+                            { color: COLORS.solid_grey },
+                          ]}
+                        >
+                          #1255266
+                        </Text>
+                        <Image
+                          source={location}
+                          style={styles.crossButtonStyle}
+                        />
+                      </View>
+                    </View>
+                    <Spacer space={SH(10)} />
+                    <View style={styles.trackIdCon}>
+                      <Text style={styles.trackIdText}>
+                        {strings.analytics.dueDate}
+                      </Text>
+                      <Spacer space={SH(10)} />
+                      <View style={styles.displayFlex}>
+                        <Text
+                          style={[
+                            styles.trackIdText,
+                            { color: COLORS.solid_grey },
+                          ]}
+                        >
+                          Sep 27, 2022
+                        </Text>
+                      </View>
+                    </View>
+                    <Spacer space={SH(10)} />
+                    <View style={styles.trackIdCon}>
+                      <Text style={styles.trackIdText}>
+                        {strings.analytics.date}
+                      </Text>
+                      <Spacer space={SH(10)} />
+                      <View style={styles.displayFlex}>
+                        <Text
+                          style={[
+                            styles.trackIdText,
+                            { color: COLORS.solid_grey },
+                          ]}
+                        >
+                          Sep 27, 2022
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                  <Spacer space={SH(10)} />
-                  <View style={styles.trackIdCon}>
-                    <Text style={styles.trackIdText}>
-                      {strings.analytics.dueDate}
-                    </Text>
-                    <Spacer space={SH(10)} />
-                    <View style={styles.displayFlex}>
-                      <Text
-                        style={[
-                          styles.trackIdText,
-                          { color: COLORS.solid_grey },
-                        ]}
-                      >
-                        Sep 27, 2022
-                      </Text>
-                    </View>
-                  </View>
-                  <Spacer space={SH(10)} />
-                  <View style={styles.trackIdCon}>
-                    <Text style={styles.trackIdText}>
-                      {strings.analytics.date}
-                    </Text>
-                    <Spacer space={SH(10)} />
-                    <View style={styles.displayFlex}>
-                      <Text
-                        style={[
-                          styles.trackIdText,
-                          { color: COLORS.solid_grey },
-                        ]}
-                      >
-                        Sep 27, 2022
-                      </Text>
-                    </View>
-                  </View>
-                </View>
+                  )
+                }
               </View>
               <Spacer space={SH(30)} />
               <View style={styles.tableContainer}>
@@ -2360,7 +2494,7 @@ export function Analytics(props) {
                   </View>
                 </Table>
                 <Spacer space={SH(25)} />
-                <View style={styles.displayFlex}>
+                <View style={[styles.displayFlex, {alignItems:'flex-start'}]}>
                   <TextInput
                     multiline
                     numberOfLines={4}
@@ -2368,7 +2502,7 @@ export function Analytics(props) {
                     placeholder="Note:"
                     placeholderTextColor="#000"
                   />
-                  <View style={styles.noteContainer}>
+                  <View style={ invoiceTrackId ? styles.noteContainer2 : styles.noteContainer}>
                     <Spacer space={SH(12)} />
                     <View style={styles.tablesubTotal}>
                       <Text style={styles.tablesubTotalLabel}>
@@ -2428,12 +2562,41 @@ export function Analytics(props) {
                         {strings.wallet.subtotalPrice}
                       </Text>
                     </View>
+                    {
+                      invoiceTrackId ?
+                      (
+                        <View>
+                            <View style={styles.subtotalHr}></View>
+                    <View style={styles.tablesubTotal}>
+                      <View
+                        style={{ flexDirection: 'row', alignItems: 'center' }}
+                      >
+                        <Text style={[styles.tablesubDarkLabel, {color:COLORS.primary}]}>
+                          Refund
+                        </Text>
+                        
+                      </View>
+                      <Text style={[styles.tablesubDarkLabel, {color:COLORS.primary}]}>
+                      {strings.analytics.refund}
+                      </Text>
+                    </View> 
+                          </View>
+                      )
+                      :
+                      null
+                    }
+                   
                     <Spacer space={SH(10)} />
                   </View>
                 </View>
                 <Spacer space={SH(20)} />
               </View>
-              <Spacer space={SH(30)} />
+              {
+                invoiceTrackId
+                ?
+                (
+                  <View>
+            <Spacer space={SH(30)} />
               <View>
                 <Text style={styles.shippingDetail}>
                   {strings.wallet.shippingDetail}
@@ -2481,7 +2644,121 @@ export function Analytics(props) {
                   </View>
                 </View>
               </View>
+
+
               <Spacer space={SH(20)} />
+              <View>
+                <Text style={styles.shippingDetail}>
+                  {strings.analytics.returnShipingDetail}
+                </Text>
+              </View>
+              <Spacer space={SH(20)} />
+              <View style={styles.trackingCon}>
+                <View style={styles.displayFlex}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={ups} style={styles.willis} />
+                    <View>
+                      <Text style={styles.willisName}>
+                        {strings.analytics.ups}
+                      </Text>
+                      <Text style={styles.trackingNumber}>
+                        {strings.wallet.trackingNo}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View
+                      style={[
+                        styles.deliverBtnCon,
+                        { marginHorizontal: moderateScale(8) },
+                      ]}
+                    >
+                      <View style={styles.deliverTextCon}>
+                        <Image
+                          source={deliverCheck}
+                          style={styles.deliveryCheck}
+                        />
+                        <Text style={styles.deliveredText}>
+                          {strings.wallet.delivered}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
+                      <TouchableOpacity style={styles.deliverTextCon}>
+                        <Image source={track} style={styles.deliveryCheck} />
+                        <Text style={styles.deliveredText}>
+                          {strings.wallet.tracking}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <Spacer space={SH(20)} />
+              </View>
+                )
+                :
+                (
+                 <View>
+                   <Spacer space={SH(30)} />
+                  <View>
+                    <Text style={styles.shippingDetail}>
+                      {strings.wallet.shippingDetail}
+                    </Text>
+                  </View>
+                  <Spacer space={SH(20)} />
+                  <View style={styles.trackingCon}>
+                    <View style={styles.displayFlex}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Image source={fedx} style={styles.willis} />
+                        <View>
+                          <Text style={styles.willisName}>
+                            {strings.analytics.FedEx}
+                          </Text>
+                          <Text style={styles.trackingNumber}>
+                            {strings.wallet.trackingNo}
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <View
+                          style={[
+                            styles.deliverBtnCon,
+                            { marginHorizontal: moderateScale(8) },
+                          ]}
+                        >
+                          <View style={styles.deliverTextCon}>
+                            <Image
+                              source={deliverCheck}
+                              style={styles.deliveryCheck}
+                            />
+                            <Text style={styles.deliveredText}>
+                              {strings.wallet.delivered}
+                            </Text>
+                          </View>
+                        </View>
+                        <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
+                          <TouchableOpacity style={styles.deliverTextCon}>
+                            <Image source={track} style={styles.deliveryCheck} />
+                            <Text style={styles.deliveredText}>
+                              {strings.wallet.tracking}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <Spacer space={SH(20)} />
+                  </View>
+                )
+              }
+
+
+              
+
+
+
+
             </View>
           </ScrollView>
         </View>
@@ -2498,7 +2775,7 @@ export function Analytics(props) {
             showsVerticalScrollIndicator={false}
           > */}
         <View style={[styles.modalMainView, { width: SH(1370) }]}>
-          <Spacer space={SH(10)} />
+          <Spacer space={SH(20)} />
           <View style={styles.invoiveIdHeaderCon}>
             <View style={styles.displayFlex}>
               <View style={styles.flexAlign}>
@@ -2552,15 +2829,17 @@ export function Analytics(props) {
             (
               <View style={styles.orderSideCon}>
               <View style={{ width: SH(420), alignSelf: 'center' }}>
-                <Spacer space={SH(20)} />
+                <Spacer space={SH(30)} />
                 <View style={styles.displayFlex}>
                   <Text style={styles.moreActText}>Payment Details</Text>
                   <TouchableOpacity onPress={() => setPaymentSideBar(false)}>
                     <Image source={crossButton} style={styles.crossButtonStyle} />
                   </TouchableOpacity>
                 </View>
+
+                <Spacer space={SH(15)} />
   
-                <View style={{ height:SH(605)}}>
+                <View style={{ height:SH(590)}}>
                   <ScrollView showsVerticalScrollIndicator={false}>
                 <Spacer space={SH(20)} />
                   <Text style={styles.paymenttdone}>
@@ -2692,6 +2971,64 @@ export function Analytics(props) {
           }
 
          
+        </View>
+        {/* </KeyboardAwareScrollView> */}
+      </Modal>
+    );
+  };
+  const stockHandProductModal = () => {
+    return (
+      <Modal transparent isVisible={stockHandProductModel}>
+        <View style={styles.modalMainView}>
+          <Spacer space={SH(35)} />
+          <View style={styles.displayFlex}>
+            <TouchableOpacity
+              style={styles.backButtonCon}
+              onPress={() => setStockHandProductModel(false)}>
+              <Image source={backArrow} style={styles.backButtonArrow} />
+              <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
+            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.editButtonCon}
+                onPress={() => alert('coming soon')}
+              >
+                <View style={styles.flexAlign}>
+                  <Image source={share} style={styles.pencil} />
+                  <Text style={styles.edit}>{strings.analytics.share}</Text>
+                </View>
+              </TouchableOpacity>
+          </View>
+          <Spacer space={SH(30)} />
+          <Text style={styles.marboloText}>{strings.analytics.marboloRed}</Text>
+          <Spacer space={SH(30)} />
+          <View style={styles.displayFlex}>
+            <Image source={marboloRed2} style={styles.marboloRed} />
+            <View style={styles.descriptionCon}>
+              <Spacer space={SH(20)} />
+              <Text style={[styles.marboloText, { fontSize: SF(18) }]}>
+                {strings.analytics.detail}
+              </Text>
+              <Spacer space={SH(10)} />
+              <Text style={styles.description}>
+                {strings.analytics.description}
+              </Text>
+            </View>
+          </View>
+          <Spacer space={SH(30)} />
+          <View>
+
+
+                <FlatList
+                  data={stockHandData}
+                  renderItem={stockHandItem}
+                  keyExtractor={item => item.id}
+                  numColumns={4}
+                  //  horizontal
+                  // contentContainerStyle={styles.contentContainer}
+                />
+   
+            
+          </View>
         </View>
         {/* </KeyboardAwareScrollView> */}
       </Modal>
@@ -3475,6 +3812,7 @@ export function Analytics(props) {
       {productDetailModal()}
       {invoiceModal()}
       {productOrderModal()}
+      {stockHandProductModal()}
     </View>
   );
 }

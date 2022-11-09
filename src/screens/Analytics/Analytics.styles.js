@@ -535,7 +535,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   sellingCount: {
-    fontSize: SF(18),
+    fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
     color: COLORS.dark_grey,
   },
@@ -655,6 +655,14 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: COLORS.textInputBackground,
   },
+  noteContainer2: {
+    height:SH(325),
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    width: windowWidth * 0.35,
+    borderRadius: 10,
+    backgroundColor: COLORS.textInputBackground,
+  },
   tablesubTotal: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -672,7 +680,8 @@ export const styles = StyleSheet.create({
   tablesubDarkLabel: {
     color: COLORS.solid_grey,
     fontSize: SF(18),
-    fontFamily: Fonts.MaisonBold,
+    // fontFamily: Fonts.MaisonBold,
+    fontFamily:Fonts.Regular
   },
   subtotalHr: {
     borderWidth: 1,
@@ -791,11 +800,10 @@ export const styles = StyleSheet.create({
   orderSideCon: {
     // borderWidth: 1,
     width: SH(459),
-    height: SH(650),
+    height: SH(665),
     position: 'absolute',
     top: 0,
     right: 0,
-    marginTop: 5,
     backgroundColor:COLORS.white,
     borderTopEndRadius:15,
     borderBottomEndRadius:15,

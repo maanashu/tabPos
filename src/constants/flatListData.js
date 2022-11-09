@@ -470,7 +470,7 @@ export const inverntrycategoryData =[
   },
   {
     categoryCount: '608',
-    category:'Stock on hand',
+    category:'Stock on Hand',
     percentage:'1.2%',
     id: '4',
   }
@@ -498,7 +498,7 @@ export const  productDetailData = [
     id: '4',
   },
   {
-    heading: 'Stock on hand ',
+    heading: 'Stock on Hand ',
     price:'430',
     id: '5',
   },
@@ -506,6 +506,49 @@ export const  productDetailData = [
     heading: 'Rating',
     price:'4.30',
     id: '5',
+  },
+];
+export const stockHandData = [
+  {
+    heading: 'Number of Orders',
+    price:'$90',
+    id: '1',
+  },
+  {
+    heading: 'Store Orders',
+    price:'$86.50',
+    id: '2',
+  },
+  {
+    heading: 'Delivery Orders',
+    price:'Catron',
+    id: '3',
+  },
+  {
+    heading: 'Shipping Orders',
+    price:'125694226955',
+    id: '4',
+  },
+  {
+    heading: 'Total Sales',
+    price:'50',
+    id: '5',
+  },
+ 
+  {
+    heading: 'Total Cost',
+    price:'430 g',
+    id: '6',
+  },
+  {
+    heading: 'Total Profit ',
+    price:'430',
+    id: '7',
+  },
+  {
+    heading: 'Total Return',
+    price:'4.30',
+    id: '8',
   },
 ]
 
