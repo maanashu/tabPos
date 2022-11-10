@@ -130,6 +130,10 @@ export { default as printIcon } from '@/assets/icons/ic_analytics/printIcon.png'
 export { default as fedx } from '@/assets/icons/ic_analytics/fedx.png';
 export { default as ups } from '@/assets/icons/ic_analytics/ups.png';
 export { default as share } from '@/assets/icons/ic_analytics/share.png';
+export { default as saleLogo } from '@/assets/icons/ic_analytics/invoice.png';
+export { default as revenueGraph } from '@/assets/icons/ic_analytics/revenueGraph.png';
+export { default as colorFrame } from '@/assets/icons/ic_analytics/colorFrame.png';
+export { default as clay } from '@/assets/icons/ic_analytics/clay.png';
 // export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */

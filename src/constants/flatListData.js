@@ -475,6 +475,32 @@ export const inverntrycategoryData =[
     id: '4',
   }
 ];
+export const totalOrderData =[
+  {
+    categoryCount: '906',
+    category:'Total Order',
+    percentage:'1.2%',
+    id: '1',
+  },
+  {
+    categoryCount: '284',
+    category:'Store Order',
+    percentage:'1.2%',
+    id: '2',
+  },
+  {
+    categoryCount: '14',
+    category:'Online Order',
+    percentage:'1.2%',
+    id: '3',
+  },
+  {
+    categoryCount: '608',
+    category:'Shipping Order',
+    percentage:'1.2%',
+    id: '4',
+  }
+];
 export const  productDetailData = [
  
   {
@@ -550,5 +576,27 @@ export const stockHandData = [
     price:'4.30',
     id: '8',
   },
-]
+];
+export const allRevenueTypeData = [
+  {
+    transaction: 'All',
+    count: '(190)',
+    id: '1',
+  },
+  {
+    transaction: 'Store',
+    count: '(23)',
+    id: '2',
+  },
+  {
+    transaction: 'Delivery',
+    count: '(19)',
+    id: '3',
+  },
+  {
+    transaction: 'Shipping',
+    count: '(65)',
+    id: '4',
+  },
+];
 

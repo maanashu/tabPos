@@ -3,6 +3,7 @@ import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
 import { verticalScale, moderateScale } from 'react-native-size-matters';
+import { Col } from 'react-native-table-component';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -48,7 +49,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(35),
+    paddingVertical: SH(25),
     flexDirection: 'row',
   },
   textInputStyle: {
@@ -251,7 +252,7 @@ export const styles = StyleSheet.create({
     marginVertical: moderateScale(8),
   },
   categoryChildCon: {
-    width: SH(150),
+    width: SH(160),
     height: SH(94),
     borderBottomLeftRadius: 15,
     borderTopLeftRadius: 15,
@@ -261,7 +262,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   categoryChildPercent: {
-    width: SH(120),
+    width: SH(110),
     height: SH(94),
     borderBottomEndRadius: 15,
     borderTopEndRadius: 15,
@@ -344,6 +345,7 @@ export const styles = StyleSheet.create({
   labelStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
+    color: COLORS.black,
   },
   labelStyleWeekly: {
     fontSize: SF(12),
@@ -434,8 +436,8 @@ export const styles = StyleSheet.create({
     height: SH(50),
     backgroundColor: COLORS.textInputBackground,
     textAlign: 'center',
-    borderWidth: 0,
-    borderColor: 'transparent',
+    // borderWidth: 0,
+    // borderColor: 'transparent',
     paddingHorizontal: moderateScale(20),
     justifyContent: 'center',
   },
@@ -656,7 +658,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   noteContainer2: {
-    height:SH(325),
+    height: SH(325),
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.35,
@@ -681,7 +683,7 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontSize: SF(18),
     // fontFamily: Fonts.MaisonBold,
-    fontFamily:Fonts.Regular
+    fontFamily: Fonts.Regular,
   },
   subtotalHr: {
     borderWidth: 1,
@@ -788,9 +790,9 @@ export const styles = StyleSheet.create({
     height: SH(25),
     backgroundColor: COLORS.primary,
     borderRadius: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: moderateScale(5),
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // marginHorizontal: moderateScale(5),
   },
   completeText: {
     color: COLORS.white,
@@ -804,42 +806,42 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
-    backgroundColor:COLORS.white,
-    borderTopEndRadius:15,
-    borderBottomEndRadius:15,
-    ...ShadowStyles.shadow
+    backgroundColor: COLORS.white,
+    borderTopEndRadius: 15,
+    borderBottomEndRadius: 15,
+    ...ShadowStyles.shadow,
   },
   walletItem: {
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    paddingHorizontal: moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
   itmybdaystyle: {
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
-    paddingHorizontal: moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
   listOfItem: {
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(24)
+    fontSize: SF(24),
   },
   walletItem: {
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    paddingHorizontal: moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
   rewardPointStyle: {
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
-    fontSize: SF(18)
+    fontSize: SF(18),
   },
   jbrListCon: {
     borderBottomWidth: 1,
-    borderColor: COLORS.solidGrey
+    borderColor: COLORS.solidGrey,
   },
   ashtonStyle: {
     width: SW(12),
@@ -859,94 +861,94 @@ export const styles = StyleSheet.create({
   onexstyle: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(18)
+    fontSize: SF(18),
   },
   onlyxstyle: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(14)
+    fontSize: SF(14),
   },
-  moreActText:{
+  moreActText: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(16)
+    fontSize: SF(16),
   },
-  paymenttdone:{
+  paymenttdone: {
     color: COLORS.black,
     fontFamily: Fonts.Regular,
     fontSize: SF(24),
-    alignSelf:'center'
+    alignSelf: 'center',
   },
-  paymentTipsCon:{
-    borderRadius:5,
-    backgroundColor:COLORS.orderStatusBackground,
+  paymentTipsCon: {
+    borderRadius: 5,
+    backgroundColor: COLORS.orderStatusBackground,
     // width:SH(403),
-    height:SH(107),
-    justifyContent:'center',
-    paddingHorizontal:moderateScale(10)
+    height: SH(107),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(10),
     // alignItems:'center'
   },
-  paymentTipsText:{
+  paymentTipsText: {
     color: COLORS.black,
     fontFamily: Fonts.Regular,
-    fontSize: SF(14)
+    fontSize: SF(14),
   },
-  paymentPay:{
+  paymentPay: {
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(32)
+    fontSize: SF(32),
   },
-  via:{
+  via: {
     color: COLORS.black,
     fontFamily: Fonts.Italic,
     fontSize: SF(14),
-    alignSelf:'center'
+    alignSelf: 'center',
   },
-  customerCon:{
-    borderWidth:1,
-    height:SH(342),
-    borderRadius:5,
-    borderColor:COLORS.washGrey
+  customerCon: {
+    borderWidth: 1,
+    height: SH(342),
+    borderRadius: 5,
+    borderColor: COLORS.washGrey,
   },
   customerAddreCon: {
-    borderWidth:1,
+    borderWidth: 1,
     height: SH(300),
-    borderRadius:5,
-    borderColor:COLORS.washGrey,
+    borderRadius: 5,
+    borderColor: COLORS.washGrey,
   },
   jbrCustomer: {
     width: SW(15),
     height: SW(15),
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   cusAddText: {
     fontSize: SF(16),
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
   },
-  walletIdCon:{
-    height:SH(75),
-    borderTopWidth:1,
-    borderColor:COLORS.washGrey,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:COLORS.solidGrey
+  walletIdCon: {
+    height: SH(75),
+    borderTopWidth: 1,
+    borderColor: COLORS.washGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.solidGrey,
   },
-  walletIdLabel:{
+  walletIdLabel: {
     fontSize: SF(16),
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
   },
-  walletId:{
+  walletId: {
     fontSize: SF(16),
     fontFamily: Fonts.Regular,
     color: COLORS.primary,
   },
-  customer:{
+  customer: {
     fontSize: SF(18),
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.primary,
-    paddingHorizontal:moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
   bottomContainer: {
     borderTopWidth: 1,
@@ -991,18 +993,164 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(6),
   },
-  hr:{
-    borderWidth:1,
-    borderStyle:'dashed',
-    borderColor:COLORS.row_grey
+  hr: {
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: COLORS.row_grey,
   },
-  flatListHeightTrue:
-  { height: SH(580),
-    width: SH(860)
-   },
-   flatListHeightFalse:
-   { height: SH(580),
-    }
-
+  flatListHeightTrue: { height: SH(580), width: SH(860) },
+  flatListHeightFalse: { height: SH(580) },
   // productOrder modal css end
+
+  // TOTAL RENEVUE CSS START
+  revenueGraph: {
+    width: SH(1254),
+    height: SH(234),
+    resizeMode: 'contain',
+  },
+  colorFrame: {
+    width: SH(228),
+    height: SH(16),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  totalOrderMap: {
+    width: SH(570),
+    height: SH(225),
+    resizeMode: 'contain',
+  },
+
+  trancationHeading: {
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.black,
+    fontSize: SF(18),
+  },
+  totalTranStyle: {
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.primary,
+    fontSize: SF(18),
+  },
+  allTypeCon: {
+    backgroundColor: COLORS.textInputBackground,
+    // borderRadius: 10,
+    // height: SH(63),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(12),
+  },
+  allJbrCon: {
+    borderWidth: 1,
+    height: SH(42),
+    // width: SW(30),
+    borderRadius: 7,
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: moderateScale(4),
+  },
+  allJbrConBluish: {
+    borderColor: COLORS.primary,
+  },
+  allJbrText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.dark_grey,
+    fontSize: SF(14),
+    paddingHorizontal: moderateScale(7),
+  },
+  allJbrTextbluish: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+  },
+  orderTypeCon: {
+    height: SH(63),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(12),
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
+  datePickerCon: {
+    borderWidth: 1,
+    height: SH(35),
+    width: SW(45),
+    borderRadius: 7,
+    borderColor: COLORS.solidGrey,
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(7),
+    flexDirection: 'row',
+  },
+  calendarStyle: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+  },
+  datePlaceholder: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.gerySkies,
+    fontSize: SF(12),
+    paddingHorizontal: moderateScale(5),
+  },
+  revenueText: {
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    textAlign: 'center',
+    letterSpacing: -1,
+    // paddingHorizontal:moderateScale(40)
+  },
+  revenueDataText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+    paddingHorizontal: moderateScale(3),
+  },
+  revenueDataTextLight: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.gerySkies,
+    fontSize: SF(10),
+  },
+  clay: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+  },
+  dateTableSetting: {
+    width: SH(185),
+    justifyContent: 'center',
+  },
+  dateTableSettingFirst: {
+    width: SH(40),
+    justifyContent: 'center',
+  },
+  dateTablealignStart: {
+    width: SH(185),
+    justifyContent: 'flex-start',
+  },
+  completeBtnCon2: {
+    width: SH(92),
+    height: SH(24),
+    backgroundColor: COLORS.bluish_green,
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dropdownIconSale: {
+    width: SH(9),
+    height: SH(13),
+    resizeMode: 'contain',
+    marginHorizontal: moderateScale(7),
+  },
+  tableDropDownCon: {
+    width: SH(120),
+    height: SH(104),
+    // borderWidth: 1,
+    position: 'absolute',
+    top: 20,
+    right: 0,
+    borderRadius: 10,
+    ...ShadowStyles.shadow,
+    backgroundColor:COLORS.white,
+    zIndex:1
+  },
+
+  // TOTAL RENEVUE CSS END
 });

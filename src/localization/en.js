@@ -382,7 +382,13 @@ export const en = {
      returnShipingDetail:'Return Shipping Details',
      ups:'UPS',
      share:'Share',
-     refund:'$255.00'
+     refund:'$255.00',
+     sales:'Sales',
+     totalRevenue:'Total Revenue',
+     totalRevenueCount:'$6,920,590',
+     totalOrder:'Total Order',
+     totalRevenue:'Total Revenue',
+     totalPrice:'$458,041'
     },
   
 };
