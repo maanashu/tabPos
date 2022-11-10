@@ -3361,15 +3361,16 @@ export function Analytics(props) {
                   <Text style={styles.revenueText}>Items</Text>
                 </DataTable.Title>
                 <DataTable.Title style={styles.dateTableSetting}>
-                  <View style={{position:'relative'}}>
+                  {/* <View style={{position:'relative'}}>
                    <View style={styles.flexAlign}>
                      <Text style={styles.revenueText}>Sales type</Text>
                      <Image source={dropdown} style={styles.dropdownIconSale}/>
                   </View>
-                  {/* <View style={styles.tableDropDownCon}>
+                  <View style={styles.tableDropDownCon}>
                      
-                  </View> */}
                   </View>
+                  </View> */}
+                   <Text style={styles.revenueText}>Sales type</Text>
                 </DataTable.Title>
                 <DataTable.Title style={styles.dateTableSetting}>
                   <Text style={styles.revenueText}>Delivery Charge</Text>
@@ -3384,10 +3385,11 @@ export function Analytics(props) {
                   <Text style={styles.revenueText}>Received Amount</Text>
                 </DataTable.Title>
                 <DataTable.Title style={styles.dateTableSetting}>
-                <View style={[styles.flexAlign, {alignItems:'flex-start'}]}>
+                {/* <View style={[styles.flexAlign, {alignItems:'flex-start'}]}>
                   <Text style={styles.revenueText}>Mode Of Payment</Text>
                      <Image source={dropdown} style={styles.dropdownIconSale}/>
-                  </View>
+                  </View> */}
+                  <Text style={styles.revenueText}>Mode Of Payment</Text>
                 </DataTable.Title>
                 <DataTable.Title style={styles.dateTableSetting}>
                   <Text style={styles.revenueText}>Status</Text>
