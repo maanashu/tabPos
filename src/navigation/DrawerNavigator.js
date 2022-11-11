@@ -62,7 +62,7 @@ export function DrawerNavigator(props) {
       <DrawerItem
         activeBackgroundColor='transparent'
         focused={active === 'para' ? true : false}
-        onPress={() => { setActive('para'), navigate(NAVIGATION.shippingOrders) }}
+        onPress={() => { setActive('para'), navigate(NAVIGATION.shippingOrder) }}
         label=""
         icon={({ focused, color, size }) => (<Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />)} />
 

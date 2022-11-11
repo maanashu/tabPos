@@ -309,7 +309,7 @@ export const en = {
 
   },
   trackingNumber:{
-    trackingNo:'Tracking Number 6#7409309398BCEE'
+    trackingNo:'Tracking Number# 7409309398BCEE'
   },
   calender:{
     calender:'Calender',
@@ -388,7 +388,13 @@ export const en = {
      totalRevenueCount:'$6,920,590',
      totalOrder:'Total Order',
      totalRevenue:'Total Revenue',
-     totalPrice:'$458,041'
+     totalPrice:'$458,041',
+     all:'All',
+     onlineSale:'Online sales',
+     storeSale:'Store sales',
+     jbr:'JBR',
+     cash:'Cash',
+     card:'Card'
     },
   
 };

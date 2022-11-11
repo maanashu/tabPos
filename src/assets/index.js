@@ -134,6 +134,9 @@ export { default as saleLogo } from '@/assets/icons/ic_analytics/invoice.png';
 export { default as revenueGraph } from '@/assets/icons/ic_analytics/revenueGraph.png';
 export { default as colorFrame } from '@/assets/icons/ic_analytics/colorFrame.png';
 export { default as clay } from '@/assets/icons/ic_analytics/clay.png';
+export { default as checkedCheckboxSquare } from '@/assets/icons/ic_analytics/checkedCheckbox.png';
+export { default as blankCheckBox } from '@/assets/icons/ic_analytics/blankCheckBox.png';
+export { default as asthonLogo } from '@/assets/icons/ic_analytics/asthonLogo.png';
 // export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */

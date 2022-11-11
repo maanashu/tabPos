@@ -8,7 +8,7 @@ export const NAVIGATION = {
   loginIntial: 'LoginIntial',
   retails: 'Retails',
   deliveryOrder: 'DeliveryOrder',
-  shippingOrders: 'ShippingOrders',
+  shippingOrder: 'ShippingOrder',
   wallet: 'Wallet',
   management: 'Management',
   customers: 'Customers',

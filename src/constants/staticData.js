@@ -24,6 +24,32 @@ export const orderStatus = [
     image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
   },
 ];
+export const deliveryOrderStatus = [
+  {
+    key: '1',
+    status: 'New shipping Orders',
+    count: '49',
+    image: require('@/assets/icons/ic_deliveryOrder/order.png'),
+  },
+  {
+    key: '2',
+    status: 'Ready to ship',
+    count: '23',
+    image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
+  },
+  {
+    key: '3',
+    status: 'Order Shipped',
+    count: '15',
+    image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
+  },
+  {
+    key: '4',
+    status: 'Cancelled',
+    count: '9',
+    image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
+  },
+];
 
 export const orderReview = [
   {

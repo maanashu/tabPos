@@ -8,6 +8,7 @@ import { RootNavigator } from '@/navigation';
 
 enableScreens();
 
+
 export function App() {
   // useEffect(() => {
   //   Orientation.lockToLandscape();

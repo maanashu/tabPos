@@ -21,6 +21,7 @@ import {
   location,
   backArrow,
   productMap,
+  map,
   dropdown2,
   analytics,
   tobaco,
@@ -44,6 +45,7 @@ import {
   printIcon,
   willis,
   track,
+  angela,
   deliverCheck,
   fedx,
   menu,
@@ -56,7 +58,19 @@ import {
   colorFrame,
   calendar1,
   clay,
-  dropdown
+  dropdown,
+  checkedCheckboxSquare,
+  blankCheckBox,
+  asthonLogo,
+  movingArrow,
+  blankRadio,
+  contact,
+  angela2,
+  ticket,
+  box,
+  dropRight,
+  movingArrowBlue,
+  fillRadio
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
@@ -71,6 +85,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { DataTable } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 import {
   sessionHistoryTableHeading,
   sessionHistoryTableData,
@@ -94,10 +109,16 @@ export function Analytics(props) {
   const [inventoryTable, setInventoryTable] = useState('');
   const [productDetail, setProductDetail] = useState(false);
   const [paymentSideBar, setPaymentSideBar] = useState(false);
+  const [revenueCompleteSideBar, setRevenueCompleteSideBar] = useState(false);
+  const [revenueOrderBuyer, setRevenueOrderBuyer] = useState(false);
+  const [orderTracking, setOrderTracking] = useState(false);
   const [productDetailModel, setProductDetailModel] = useState(false);
   const [productOrderModel, setProductOrderModel] = useState(false);
   const [revenueFun, setRevenueFun] = useState(false);
   const [totalReveueDetail, setTotalRevenueDetail] = useState(false);
+  const [orderList, setOrderList] = useState(false);
+  const [saleDropDown, setSaleDropDown] = useState(false);
+  const [paymentModeDropDown, setPayMentDropDown] = useState(false);
   const [ReveueTable, setRevenueTable] = useState(false);
   const [stockHandProductModel, setStockHandProductModel] = useState(false);
   const [invoiceTrackId, setInvoiceTrackId] = useState(false);
@@ -277,7 +298,7 @@ export function Analytics(props) {
   };
   const totalOrderViseHandler = item => {
     if (item.category === 'Total Order') {
-       alert('coming soon')
+      // setRevenueTable(true)
     } else if (item.category === 'Store Order') {
       alert('coming soon')
     } else if (item.category === 'Online Order') {
@@ -417,7 +438,7 @@ export function Analytics(props) {
     </View>
   );
   const renderJbrItem = ({ item }) => (
-    <View style={styles.jbrListCon}>
+    <View style={[styles.jbrListCon]}>
       <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
         <View style={{ flexDirection: 'row', width: SW(60) }}>
           <Image source={menu} style={styles.ashtonStyle} />
@@ -3184,7 +3205,568 @@ export function Analytics(props) {
     );
   };
   const totalProductFunction = () => {
-    if(ReveueTable){
+    if(orderTracking){
+       return(
+        <View style={{flex:1,
+          backgroundColor:COLORS.white
+          }}>
+           <Spacer space={SH(20)} />
+               <View style={styles.onlinedeliveryCon}>
+               <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
+                   <View style={{flexDirection:'row', alignItems:'center'}}>
+                   <TouchableOpacity onPress={() => {setOrderTracking(false), setRevenueOrderBuyer(true)}}>
+                    <Image source={leftBack} style={styles.leftBackStyle} />
+                  </TouchableOpacity>
+                  <Text style={styles.orderNoStyle}>
+                    {strings.trackingNumber.trackingNo}
+                  </Text>
+                  <View style={styles.completedButton}>
+                    <Text style={styles.completedText}>Completed</Text>
+                  </View>
+                   </View>
+                   <TouchableOpacity onPress={() => {setOrderTracking(false), setRevenueOrderBuyer(true)}}>
+                   <Image source={crossButton} style={styles.leftBackStyle} />
+                   </TouchableOpacity>
+                </View>
+              
+               </View>
+               <Spacer space={SH(28)} />
+               <View style={styles.trackingNoBody}>
+                    <ScrollView 
+                     showsVerticalScrollIndicator={false}>
+                    <Spacer space={SH(10)} />
+                     <View style={styles.displayFlex}>
+                        <View style={styles.mapContainer}>
+                            <View style={[styles.costoContainer]}>
+                              <Spacer space={SH(10)} />
+                              <View style={{flexDirection:'row', }}>
+                                  <Image source={angela} style={styles.trackingAngela}/>
+                                  <View>
+                                     <Text style={styles.costoName}>{strings.customers.costo}</Text>
+                                     <Spacer space={SH(10)} />
+                                     <View style={styles.flexAlign}> 
+                                       <Image source={location} style={styles.Phonelight}/>
+                                       <Text style={styles.costoAdd}>{strings.customers.costoAdd}</Text>
+                                     </View>
+                                     <View style={styles.costoHr}></View>
+                                     <View style={styles.flexAlign}>
+                                          <View style={styles.costoPayCon}>
+                                             <View style={styles.flexAlign}>
+                                                <Image source={ticket} style={styles.ticketImage}/>
+                                               <Text style={styles.ciagrtext}>$516.30</Text>
+                                             </View>
+                                          </View>
+                                          <View style={[styles.costoPayCon,{alignItems:'center'}]}>
+                                             <View style={styles.flexAlign}>
+                                                <Image source={box} style={styles.ticketImage}/>
+                                               <Text style={styles.ciagrtext}>4 boxes Cigar</Text>
+                                             </View>
+                                          </View>
+                                          <View style={styles.flexAlign}>
+                                            <Text style={styles.detailText}>{strings.customers.detail}</Text>
+                                            <Image source={dropRight} style={styles.dropRight}/>
+                                          </View>
+                                     </View>
+                                  </View> 
+                                </View>
+                            </View>
+                            <Spacer space={SH(30)} />
+                            <View style={{paddingHorizontal:moderateScale(18)}}>
+                              <Text style={styles.orderStatus}>{strings.customers.orderStatus}</Text>
+                              <Text style={[styles.orderStatus, {fontFamily:Fonts.Regular}]}>{strings.customers.assignDriver}</Text>
+                              <View style={[styles.costoHr, {marginVertical:verticalScale(8)}]}/>
+                                   <Spacer space={SH(20)} />
+                              <View style={{flexDirection:'row'}}>
+                                 <View style={{flexDirection:'column'}}>
+                                    <Image source={blankRadio} style={styles.ticketImage}/>
+                                    <Image source={movingArrow} style={styles.movingArrow}/>
+                                    <Image source={blankRadio} style={styles.ticketImage}/>
+                                    <Image source={movingArrow} style={styles.movingArrow}/>
+                                    <Image source={blankRadio} style={styles.ticketImage}/>
+                                    <Image source={movingArrow} style={styles.movingArrow}/>
+                                    <Image source={blankRadio} style={styles.ticketImage}/>
+                                    <Image source={movingArrow} style={styles.movingArrow}/>
+                                    <Image source={blankRadio} style={styles.ticketImage}/>
+                                    <Image source={movingArrowBlue} style={styles.movingArrow}/>
+                                    <Image source={fillRadio} style={styles.ticketImage}/>
+                                    <Image source={movingArrowBlue} style={styles.movingArrow}/>
+                                    <Image source={fillRadio} style={styles.ticketImage}/>
+                                   </View>
+                                   <View style={{flexDirection:'column', justifyContent:'space-between', paddingHorizontal:moderateScale(5)}}>
+                                       <View style={{marginTop:-14}}>
+                                        <Text style={styles.verifyTextLight}>{strings.customers.verifyCode}</Text>
+                                        <Text style={styles.waitMinuteLight}>_ _ _ _ _</Text>
+                                       </View>
+                                       <View >
+                                        <Text style={styles.verifyTextLight}>{strings.customers.delivery}</Text>
+                                        <Spacer space={SH(5)} />
+                                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                                       </View>
+                                       <View>
+                                        <Text style={styles.verifyTextLight}>{strings.customers.yourBlock}</Text>
+                                        <Spacer space={SH(5)} />
+                                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                                       </View>
+                                       <View>
+                                        <Text style={styles.verifyTextLight}>{strings.customers.productPick}</Text>
+                                        <Spacer space={SH(5)} />
+                                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                                       </View>
+                                       <View>
+                                        <Text style={styles.verifyTextLight}>{strings.customers.assignDriver}</Text>
+                                        <Spacer space={SH(5)} />
+                                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                                       </View>
+                                       <View>
+                                        <Text style={[styles.verifyTextLight,{color:COLORS.solid_grey}]}>{strings.customers.readyPickup}</Text>
+                                        <Spacer space={SH(5)} />
+                                        <Text style={[styles.waitMinuteLight, {color:COLORS.dark_grey}]}>{strings.customers.waitMinute}</Text>
+                                       </View>
+                                       <View>
+                                        <Text style={[styles.verifyTextLight,{color:COLORS.solid_grey}]}>{strings.customers.orderAccepted}</Text>
+                                        <Spacer space={SH(5)} />
+                                        <Text style={[styles.waitMinuteLight, {color:COLORS.dark_grey}]}>{strings.customers.dateTime}</Text>
+                                       </View>
+                                   </View>
+                              </View>
+                              <Spacer space={SH(25)} />
+                                   <View style={styles.carriarCon}>
+                                      <Spacer space={SH(12)} />
+                                      <Text style={[styles.verifyTextLight,{color:COLORS.black}]}>{strings.customers.carriar}</Text>
+                                      <Spacer space={SH(12)} />
+                                      <View style={styles.displayFlex}>
+                                           <View style={styles.flexAlign}>
+                                            <Image source={angela2} style={styles.tracking2Angela}/>
+                                           <Text style={styles.gredoName}>{strings.customers.geredo}</Text>
+                                           </View>
+                                           <View style={styles.contactButton}>
+                                              <View style={[styles.flexAlign, {paddingHorizontal:moderateScale(12)}]}>
+                                                    <Image source={contact} style={styles.contactStyle}/>
+                                                   <Text style={styles.contactText}>{strings.customers.contact}</Text>
+                                              </View>
+                                           </View>
+                                      </View>
+                                      <Spacer space={SH(12)} />
+                                   </View>
+                            </View>
+                        </View>
+                        <View style={styles.mapContainer}>
+                           <View style={styles.mapBorder}>
+                           <Image source={map} style={styles.mapStyle}/>
+                           </View>
+                        </View>
+                     </View>
+                     <Spacer space={SH(12)} />
+                    </ScrollView>
+                </View>
+         </View>
+       )
+    }
+    else if(revenueOrderBuyer){
+        return(
+          <View style={{flex:1,
+            backgroundColor:COLORS.white
+            }}>
+             <Spacer space={SH(20)} />
+                 <View style={styles.onlinedeliveryCon}>
+                 <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
+                     <View style={{flexDirection:'row', alignItems:'center'}}>
+                     <TouchableOpacity onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)} }>
+                      <Image source={leftBack} style={styles.leftBackStyle} />
+                    </TouchableOpacity>
+                    <Text style={styles.orderNoStyle}>
+                      {strings.wallet.orderNo}
+                    </Text>
+                    <View style={styles.completedButton}>
+                      <Text style={styles.completedText}>Completed</Text>
+                    </View>
+                     </View>
+                     <TouchableOpacity onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)}}>
+                     <Image source={crossButton} style={styles.leftBackStyle} />
+                     </TouchableOpacity>
+                  </View>
+                 </View>
+                 <ScrollView>
+                 <Spacer space={SH(20)} />
+                 <View style={styles.onlinedeliveryBody}>
+                       <View style={styles.displayFlex}>
+                       <View style={styles.buyerCon}>
+                         <Spacer space={SH(10)} />
+                          <Text style={styles.buyer}>{strings.wallet.buyer}</Text>
+                          <Spacer space={SH(15)} />
+                          <View style={{flexDirection:'row'}}>
+                             <Image source={angela} style={styles.angelaPic}/>
+                              <View style={{flexDirection:'column'}}>
+                              <Text style={styles.angela}>{strings.wallet.angela}</Text>
+                              <Spacer space={SH(10)} />
+                             <Text style={styles.angelaAddress}>{strings.wallet.angelaAddress1}</Text>
+                             <Text style={styles.angelaAddress}>{strings.wallet.angelaAddress2}</Text>
+                              </View>
+                          </View>
+    
+                          <Spacer space={SH(20)} />
+                      </View>
+                      <View style={styles.invoiceCon}>
+                           <Spacer space={SH(10)} />
+                           <Text style={styles.invoiceDetail}>{strings.wallet.invoiceDetails}</Text>
+                           <Spacer space={SH(10)} />
+                           <Text style={styles.invoiceId}>{strings.wallet.invoiceIdLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.invoiceId}</Text></Text>
+                           <Spacer space={SH(5)} />
+                           <Text style={styles.invoiceId}>{strings.wallet.createDateLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
+                           <Spacer space={SH(5)} />
+                           <Text style={styles.invoiceId}>{strings.wallet.dueDateLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
+                           <Spacer space={SH(5)} />
+                           <Text style={styles.deliveryDate}>{strings.wallet.deliveryDate} <Text>{strings.wallet.createDate}</Text></Text>
+                          <View style={styles.pointConOrder}>
+                                <Text style={styles.pointTextOrder}>{strings.wallet.point}</Text>
+                          </View>
+                      </View>
+                       </View>
+                       <Spacer space={SH(30)} />
+                       <View style={styles.tableContainer}>
+                       <DataTable>
+                        <DataTable.Header style={styles.tableheader}>
+                          <DataTable.Title><Text style={styles.tableLabel}>#</Text></DataTable.Title>
+                          <DataTable.Title style={styles.buyerTableSettingSecond}><Text style={styles.tableLabel}>Descriptions</Text></DataTable.Title>
+                          <DataTable.Title style={[styles.buyerTableSettingFirst,{marginLeft:SH(240)}]}><Text style={styles.tableLabel}>No. of Items</Text></DataTable.Title>
+                          <DataTable.Title style={styles.buyerTableSettingFirst}><Text style={styles.tableLabel}>Rate</Text></DataTable.Title>
+                          <DataTable.Title style={styles.buyerTableSettingFirst}><Text style={styles.tableLabel}>Amount</Text></DataTable.Title>
+                        </DataTable.Header>
+    
+                        <DataTable.Row>
+                          <DataTable.Cell><Text style={styles.rowText}>1</Text></DataTable.Cell>
+                            <DataTable.Cell style={styles.buyerTableSettingSecond}>
+                            {/* <View style={{width:SH(200), height:SH(40)}}>
+                                <View style={styles.flexAlign}>
+                                    <Image source={asthonLogo} style={styles.asthonLogo}/>
+                                    <View style={{paddingHorizontal:moderateScale(5)}}>
+                                       <Text style={styles.rowText}>Ashton Classic</Text>
+                                       <Text style={[styles.rowText, {color:COLORS.darkGray}]}>Box of 25</Text>
+                                    </View>
+                                </View>
+                            </View> */}
+
+                             <Text style={styles.rowText}>Ashton Classic</Text>    
+                            </DataTable.Cell>  
+                            <DataTable.Cell style={[styles.buyerTableSettingFirst,{marginLeft:SH(240)}]}>
+                             <Text style={styles.revenueDataText}>16 Box</Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell style={styles.buyerTableSettingFirst}>
+                             <Text style={styles.revenueDataText}>16 Box</Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell style={styles.buyerTableSettingFirst}>
+                             <Text style={styles.revenueDataText}>$4,063.20</Text>
+                            </DataTable.Cell>
+                        </DataTable.Row>
+    
+                        {/* <DataTable.Row>
+                          <DataTable.Cell><Text style={styles.rowText}>1</Text></DataTable.Cell>
+                          <DataTable.Cell style={styles.tableSetting}>
+                            <View style={{width:SH(150), height:SH(40)}}>
+                                <View style={styles.flexAlign}>
+                                    <Image source={asthonLogo} style={styles.asthonLogo}/>
+                                    <View style={{paddingHorizontal:moderateScale(5)}}>
+                                       <Text style={styles.rowText}>Ashton Classic</Text>
+                                       <Text style={[styles.rowText, {color:COLORS.darkGray}]}>Box of 25</Text>
+                                    </View>
+                                </View>
+                            </View>
+                            </DataTable.Cell>
+                          <DataTable.Cell><Text style={styles.rowText}>16 Box</Text></DataTable.Cell>
+                          <DataTable.Cell><Text style={styles.rowText}>16 Box</Text></DataTable.Cell>
+                          <DataTable.Cell><Text style={styles.rowText}>$4,063.20</Text></DataTable.Cell>
+                        </DataTable.Row> */}
+                          </DataTable>
+    
+                       <Spacer space={SH(25)} />
+                       <View style={[styles.displayFlex]}>
+                            {/* <View style={styles.noteContainer}>
+                               
+                            </View> */}
+                            <TextInput
+                             multiline
+                             numberOfLines={4}
+                            style={styles.textInputcompleteNote}
+                            placeholder='Note:'
+                            placeholderTextColor="#000"
+                            />
+                            <View style={styles.noteContainer}>
+                               <Spacer space={SH(12)} />
+                                   <View style={styles.tablesubTotal}>
+                                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.subtotal}</Text>
+                                      <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
+                                   </View>
+                                   <View style={styles.subtotalHr}></View>
+                                   <View style={styles.tablesubTotal}>
+                                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.serviceCharge}</Text>
+                                      <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
+                                   </View>
+                                   <View style={styles.subtotalHr}></View>
+                                   <View style={styles.tablesubTotal}>
+                                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.discount}</Text>
+                                      <Text style={[styles.tablesubTotalText, {color:COLORS.roseRed}]}>{strings.wallet.subtotalPrice}</Text>
+                                   </View>
+                                   <View style={styles.subtotalHr}></View>
+                                   <View style={styles.tablesubTotal}>
+                                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.shippingCharge}</Text>
+                                      <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
+                                   </View>
+                                   <View style={styles.subtotalHr}></View>
+                                   <View style={styles.tablesubTotal}>
+                                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                                    <Text style={[styles.tablesubTotalLabel, {fontFamily:Fonts.SemiBold}]}>{strings.wallet.total}</Text>
+                                     <View style={styles.paidContainer}>
+                                        <Text style={styles.paidText}>{strings.wallet.paid}</Text>
+                                     </View>
+                                    </View>
+                                    <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
+                                   </View>
+                                   <Spacer space={SH(10)} />
+                            </View>
+                       </View>
+                       <Spacer space={SH(20)} />
+                       </View>
+                       <Spacer space={SH(25)} />
+                       <View>
+                          <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
+                       </View>
+                       <Spacer space={SH(20)} />
+                       <View style={styles.trackingCon}>
+                           <View style={styles.displayFlex}>
+                                <View style={{flexDirection:'row',alignItems:'center'}}>
+                                  <Image source={willis} style={styles.willis}/>
+                                <View>
+                                  <Text style={styles.willisName}>{strings.wallet.willis}</Text>
+                                  <Text style={styles.trackingNumber}>{strings.wallet.trackingNo}</Text>
+                               </View>
+                                </View>
+                               <View style={{flexDirection:'row'}}>
+                                   <View style={[styles.deliverBtnCon, {marginHorizontal:moderateScale(8)}]}>
+                                        <View style={styles.deliverTextCon}>
+                                          <Image source={deliverCheck} style={styles.deliveryCheck}/>
+                                          <Text style={styles.deliveredText}>{strings.wallet.delivered}</Text>
+                                        </View>
+                                   </View>
+                                   <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
+                                        <TouchableOpacity style={styles.deliverTextCon} onPress={() => {setOrderTracking(true), setRevenueOrderBuyer(false)}}>
+                                          <Image source={track} style={styles.deliveryCheck}/>
+                                          <Text style={styles.deliveredText}>{strings.wallet.tracking}</Text>
+                                        </TouchableOpacity>
+                                   </View>
+                               </View>
+                           </View>
+                       </View>
+                       <Spacer space={SH(20)} />
+                       
+                 </View>
+                 </ScrollView>
+           </View>
+        )
+    }
+    else if(orderList){
+      return(
+        <View style={[styles.displayFlex]}>
+        <View style={revenueCompleteSideBar ? styles.numpadContainer2false : styles.numpadContainer2true}>
+            <View style={{ height: windowHeight, paddingBottom: 60 }}>
+               <Spacer space={SH(20)} />
+          <View style={styles.invoiveIdHeaderCon}>
+            <View style={styles.displayFlex}>
+              <View style={styles.flexAlign}>
+                <TouchableOpacity onPress={() => {setRevenueTable(true), setOrderList(false)}}>
+                  <Image source={leftBack} style={styles.leftBackStyle} />
+                </TouchableOpacity>
+                <Text style={styles.invoiceIdText}>
+                  {strings.analytics.orderHeaader}
+                </Text>
+                <View style={styles.completeBtnCon2}>
+                  <Text style={styles.completeText}>
+                    {strings.analytics.complete}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <Spacer space={SH(40)} />
+             <View style={styles.displayFlex}>
+               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                 <Text style={styles.listOfItems}>
+                  {strings.posSale.listOfItem}
+                 </Text>
+                  <Text style={styles.walletItem}>4 Items</Text>
+              </View>
+                <Text style={styles.rewardPointStyle}>
+                  {strings.posSale.rewardpoint}
+                </Text>
+              </View>
+             <Spacer space={SH(20)} />
+ 
+            <View>
+               <FlatList
+                  data={jbritemList}
+                  renderItem={renderJbrItem}
+                  keyExtractor={item => item.id}
+             />
+              </View>
+             {/* <View style={{ flex: 1 }} />
+            <View>
+                <Text style={styles.walletItem}>{strings.posSale.notes}</Text>
+               <Text style={styles.itmybdaystyle}>
+                 {strings.posSale.itMynday}
+                </Text>
+             </View> */}
+           </View>
+        </View>
+        {
+          revenueCompleteSideBar
+          ?
+          (
+            <View style={[styles.orderSideCon, {height:windowHeight}]}>
+            <View style={{ width: SH(420), alignSelf: 'center' }}>
+                  <Spacer space={SH(20)} />
+                     <View style={styles.displayFlex}>
+                       <Text style={styles.moreActText}>Payment Details</Text>
+                       <TouchableOpacity onPress={() => setRevenueCompleteSideBar(false)}>
+                         <Image source={crossButton} style={styles.crossButtonStyle} />
+                       </TouchableOpacity>
+                     </View>
+                  <Spacer space={SH(25)} />
+                     <View>
+                       <ScrollView showsVerticalScrollIndicator={false}
+                       contentContainerStyle={{flexGrow:1}}>
+                       <View>
+                       <Spacer space={SH(20)} />
+                       <Text style={styles.paymenttdone}>
+                         {strings.posSale.paymenttdone}
+                       </Text>
+                       <Spacer space={SH(10)} />
+                       <View style={styles.paymentTipsCon}>
+                         <View style={styles.displayFlex}>
+                           <View>
+                             <Text style={styles.paymentTipsText}>
+                               Payable $254.60
+                             </Text>
+                             <Spacer space={SH(10)} />
+                             <Text style={styles.paymentTipsText}>Tips $0.60</Text>
+                           </View>
+                           <Text style={styles.paymentPay}>$254.60</Text>
+                         </View>
+                       </View>
+                       <Spacer space={SH(10)} />
+                       <Text style={styles.via}>
+                         Via{' '}
+                         <Text
+                           style={{
+                             color: COLORS.primary,
+                             fontSize: SF(18),
+                             fontFamily: Fonts.Regular,
+                           }}
+                         >
+                           Cash
+                         </Text>
+                       </Text>
+       
+                       <Spacer space={SH(25)} />
+                       <View style={styles.customerAddreCons}>
+                         <Spacer space={SH(15)} />
+                         <Text style={styles.customer}>Customer</Text>
+                         <Spacer space={SH(15)} />
+                         <View
+                           style={{
+                             flexDirection: 'row',
+                             justifyContent: 'flex-start',
+                             paddingHorizontal: moderateScale(10),
+                           }}
+                         >
+                           <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                           <View style={{ paddingHorizontal: moderateScale(8) }}>
+                             <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
+                               {strings.posSale.customerName}
+                             </Text>
+                             <Spacer space={SH(8)} />
+                             <Text style={styles.cusAddText}>
+                               {strings.posSale.customerMobileNo}
+                             </Text>
+                             <Spacer space={SH(5)} />
+                             <Text style={styles.cusAddText}>
+                               {strings.posSale.customerEmail}
+                             </Text>
+                             <Spacer space={SH(8)} />
+                             <Text style={styles.cusAddText}>
+                               {strings.posSale.customerAddr}
+                             </Text>
+                             <Text style={styles.cusAddText}>
+                               {strings.posSale.customerAddr2}
+                             </Text>
+                           </View>
+                         </View>
+                          <Spacer space={SH(20)} />
+                         <View style={{ flex: 1 }}></View>
+                         <View style={styles.walletIdCon}>
+                           <Text style={styles.walletIdLabel}>
+                             {strings.analytics.walletIdLabel}
+                           </Text>
+                           <Spacer space={SH(5)} />
+                           <Text style={styles.walletId}>
+                             {strings.analytics.walletId}
+                           </Text>
+                         </View>
+                       </View>
+                       <Spacer space={SH(35)}/>
+                     <View style={styles.bottomContainer}>
+                       <Spacer space={SH(10)} />
+                       <View style={styles.bottomSubCon}>
+                         <Text style={styles.smalldarkText}>Sub Total</Text>
+                         <Text style={styles.smallLightText}>$4.00</Text>
+                       </View>
+                       <Spacer space={SH(12)} />
+                       <View style={styles.bottomSubCon}>
+                         <Text style={styles.smallLightText}>Discount</Text>
+                         <Text style={styles.smallLightText}>-$2.00</Text>
+                       </View>
+                       <Spacer space={SH(12)} />
+                       <View style={styles.bottomSubCon}>
+                         <Text style={styles.smallLightText}>Tax</Text>
+                         <Text style={styles.smallLightText}>$4.00</Text>
+                       </View>
+                       <Spacer space={SH(12)} />
+                       <View style={styles.hr}></View>
+                       <Spacer space={SH(12)} />
+                       <View style={styles.bottomSubCon}>
+                         <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>
+                           Total
+                         </Text>
+                         <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
+                           $254.60
+                         </Text>
+                       </View>
+                       <Spacer space={SH(12)} />
+                       <View style={styles.bottomSubCon}>
+                         <Text style={styles.smallLightText}>4 Items</Text>
+                       </View>
+                       <Spacer space={SH(12)} />
+                       <TouchableOpacity
+                         style={styles.checkoutButton}
+                         onPress={() => {setRevenueOrderBuyer(true), setOrderList(false)}}
+                       >
+                         <Text style={styles.checkoutText}>Checkout</Text>
+                         <Image source={checkArrow} style={styles.checkArrow} />
+                       </TouchableOpacity>
+                     </View>
+                       <Spacer space={SH(100)}/>
+                       </View>
+                       </ScrollView>
+                       </View>
+             </View>
+             </View>
+          )
+          :
+          null
+        }
+       
+        </View>
+      )
+    }
+    else if(ReveueTable){
       return(
         <View style={{flex: 1 }}>
         <Text
@@ -3341,10 +3923,9 @@ export function Analytics(props) {
         </View>
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
           <ScrollView horizontal>
-            <DataTable>
+            <DataTable style={{zIndex:-99}}>
               <DataTable.Header
-                style={{ backgroundColor: COLORS.textInputBackground }}
-              >
+                style={{ backgroundColor: COLORS.textInputBackground }}>
                 <DataTable.Title style={styles.dateTableSettingFirst}>
                   <Text style={styles.revenueText}>#</Text>
                 </DataTable.Title>
@@ -3361,16 +3942,37 @@ export function Analytics(props) {
                   <Text style={styles.revenueText}>Items</Text>
                 </DataTable.Title>
                 <DataTable.Title style={styles.dateTableSetting}>
-                  {/* <View style={{position:'relative'}}>
-                   <View style={styles.flexAlign}>
+                  <View style={{position:'relative'}}>
+                   <TouchableOpacity style={styles.flexAlign} onPress={() => setSaleDropDown(!saleDropDown)}>
                      <Text style={styles.revenueText}>Sales type</Text>
                      <Image source={dropdown} style={styles.dropdownIconSale}/>
+                   </TouchableOpacity>
+                  {
+                    saleDropDown
+                    ?
+                    (
+                      <View style={[styles.tableDropDownCon,]}>
+                          <View style={[styles.flexAlign, styles.allCon]}>
+                            <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                                <Text style={styles.allText}>{strings.analytics.all}</Text>
+                          </View>
+                          <View style={[styles.flexAlign, styles.allCon]}>
+                            <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                                <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
+                          </View>
+                          <View style={[styles.flexAlign, styles.allCon]}>
+                            <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                                <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
+                          </View>
+                          <Spacer space={SH(4)}/>
+                       </View>
+                    )
+                    :
+                    null
+                  }
+                 
                   </View>
-                  <View style={styles.tableDropDownCon}>
-                     
-                  </View>
-                  </View> */}
-                   <Text style={styles.revenueText}>Sales type</Text>
+                   {/* <Text style={styles.revenueText}>Sales type</Text> */}
                 </DataTable.Title>
                 <DataTable.Title style={styles.dateTableSetting}>
                   <Text style={styles.revenueText}>Delivery Charge</Text>
@@ -3385,19 +3987,49 @@ export function Analytics(props) {
                   <Text style={styles.revenueText}>Received Amount</Text>
                 </DataTable.Title>
                 <DataTable.Title style={styles.dateTableSetting}>
-                {/* <View style={[styles.flexAlign, {alignItems:'flex-start'}]}>
-                  <Text style={styles.revenueText}>Mode Of Payment</Text>
+                  <View style={{position:'relative'}}>
+                   <TouchableOpacity style={styles.flexAlign} onPress={() => setPayMentDropDown(!paymentModeDropDown)}>
+                     <Text style={styles.revenueText}>Mode of payment</Text>
                      <Image source={dropdown} style={styles.dropdownIconSale}/>
-                  </View> */}
-                  <Text style={styles.revenueText}>Mode Of Payment</Text>
+                   </TouchableOpacity>
+                  {
+                    paymentModeDropDown
+                    ?
+                    (
+                      <View style={[styles.tableDropDownCon,]}>
+                          <View style={[styles.flexAlign, styles.allCon]}>
+                            <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                                <Text style={styles.allText}>{strings.analytics.all}</Text>
+                          </View>
+                          <View style={[styles.flexAlign, styles.allCon]}>
+                            <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                                <Text style={styles.allText}>{strings.analytics.jbr}</Text>
+                          </View>
+                          <View style={[styles.flexAlign, styles.allCon]}>
+                            <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                                <Text style={styles.allText}>{strings.analytics.cash}</Text>
+                          </View>
+                          <View style={[styles.flexAlign, styles.allCon]}>
+                            <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                                <Text style={styles.allText}>{strings.analytics.card}</Text>
+                          </View>
+                          <Spacer space={SH(4)}/>
+                       </View>
+                    )
+                    :
+                    null
+                  }
+                 
+                  </View>
+                   {/* <Text style={styles.revenueText}>Sales type</Text> */}
                 </DataTable.Title>
                 <DataTable.Title style={styles.dateTableSetting}>
                   <Text style={styles.revenueText}>Status</Text>
                 </DataTable.Title>
               </DataTable.Header>
 
-              <View style={{ height: SH(380) }}>
-                <ScrollView>
+              <View style={{ height: SH(380), zIndex:-99 }}>
+                {/* <ScrollView> */}
                   <DataTable.Row>
                     <DataTable.Cell style={styles.dateTableSettingFirst}>
                       <Text style={styles.revenueDataText}>1</Text>
@@ -3447,12 +4079,12 @@ export function Analytics(props) {
                       <Text style={styles.revenueDataText}>JBR</Text>
                     </DataTable.Cell>
                     <DataTable.Cell style={styles.dateTableSetting}>
-                      <View style={styles.completeBtnCon2}>
+                      <TouchableOpacity style={styles.completeBtnCon2} onPress={() => {setRevenueCompleteSideBar(true),setRevenueTable(false), setOrderList(true)}}>
                         <Text style={styles.completeText}>Completed</Text>
-                      </View>
+                      </TouchableOpacity>
                     </DataTable.Cell>
                   </DataTable.Row>
-                </ScrollView>
+                {/* </ScrollView> */}
               </View>
             </DataTable>
           </ScrollView>
@@ -4561,15 +5193,25 @@ export function Analytics(props) {
 
   return (
     <View style={styles.container}>
-      {totalReveueDetail ? totalRevnueCustomHeader() : customHeader()}
+      {
+        orderList || revenueOrderBuyer || orderTracking
+        ?
+        null
+        :
+        totalReveueDetail ? totalRevnueCustomHeader() : customHeader()
+      }
+      
       {totalProductFunction()}
       {productDetailModal()}
       {invoiceModal()}
       {productOrderModal()}
       {stockHandProductModal()}
+
       {/* {totalRevnueCustomHeader()} */}
       {/* {totalRevenueFuntion()} */}
-    
+
+         
+           
     </View>
   );
 }
