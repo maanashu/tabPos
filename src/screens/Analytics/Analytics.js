@@ -3996,7 +3996,7 @@ export function Analytics(props) {
                     paymentModeDropDown
                     ?
                     (
-                      <View style={[styles.tableDropDownCon,]}>
+                      <View style={styles.tableDropDownCon}>
                           <View style={[styles.flexAlign, styles.allCon]}>
                             <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
                                 <Text style={styles.allText}>{strings.analytics.all}</Text>
