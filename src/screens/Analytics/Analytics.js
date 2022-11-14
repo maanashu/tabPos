@@ -106,8 +106,10 @@ export function Analytics(props) {
   // const [sellPriceArray, setSellPriceArray] = useState(productDetailData);
   const [value, setValue] = useState('Weekly');
   const [accCatTable, setAccCatTable] = useState('');
+  const [revenueTableHeading, setRevenueTableHeading] = useState('');
   const [inventoryTable, setInventoryTable] = useState('');
   const [productDetail, setProductDetail] = useState(false);
+  const [tablebackSetting, setTablebackSetting] = useState(false);
   const [paymentSideBar, setPaymentSideBar] = useState(false);
   const [revenueCompleteSideBar, setRevenueCompleteSideBar] = useState(false);
   const [revenueOrderBuyer, setRevenueOrderBuyer] = useState(false);
@@ -298,13 +300,1038 @@ export function Analytics(props) {
   };
   const totalOrderViseHandler = item => {
     if (item.category === 'Total Order') {
-      // setRevenueTable(true)
+      setRevenueTable(true);
+      setRevenueTableHeading('Total Order')
     } else if (item.category === 'Store Order') {
-      alert('coming soon')
+      setRevenueTable(true);
+      setRevenueTableHeading('Store Order')
     } else if (item.category === 'Online Order') {
-      alert('coming soon')
+      setRevenueTable(true);
+      setRevenueTableHeading('Online Order')
     } else if (item.category === 'Shipping Order') {
-      alert('coming soon')
+      setRevenueTable(true);
+      setRevenueTableHeading('Shipping Order')
+    }else{
+      setRevenueTableHeading('')
+      setRevenueTable(true);
+    }
+  };
+  const orderTableHeadingFun = revenueTableHeading => {
+    if(revenueTableHeading === 'Total Order' ){
+      return(
+        <Text
+        style={[styles.trancationHeading, styles.tableHeaderSetting]}>
+        {strings.analytics.totalOrder}
+        <Text style={styles.totalTranStyle}> {strings.analytics.totalOrderCount}</Text>
+        </Text>
+      )
+    }
+   else if(revenueTableHeading === 'Store Order' ){
+      return(
+        <Text
+        style={[styles.trancationHeading, styles.tableHeaderSetting]}>
+        {strings.analytics.storeOrder}
+        <Text style={styles.totalTranStyle}> {strings.analytics.totalOrderCount}</Text>
+        </Text>
+      )
+    } 
+    else if(revenueTableHeading === 'Online Order' ){
+      return(
+        <Text
+        style={[styles.trancationHeading, styles.tableHeaderSetting]}>
+        {strings.analytics.deliveryOrder}
+        <Text style={styles.totalTranStyle}> {strings.analytics.totalOrderCount}</Text>
+        </Text>
+      )
+    } else if(revenueTableHeading === 'Shipping Order' ){
+      return(
+        <Text
+        style={[styles.trancationHeading, styles.tableHeaderSetting]}>
+        {strings.analytics.shipingOrder}
+        <Text style={styles.totalTranStyle}> {strings.analytics.totalOrderCount}</Text>
+        </Text>
+      )
+    }
+    else {
+      return(
+        <Text
+         style={[styles.trancationHeading, styles.tableHeaderSetting]}>
+         {strings.analytics.totalRevenue}
+         <Text style={styles.totalTranStyle}> {strings.analytics.totalPrice}</Text>
+      </Text>
+      )
+    }
+  };
+  const orderTableDataFun = revenueTableHeading => {
+    if(revenueTableHeading === 'Total Order' ){
+      return(
+        <View style={[styles.tableMainView, { zIndex: -9 }]}>
+        <ScrollView horizontal>
+          <DataTable style={{zIndex:-99}}>
+            <DataTable.Header
+              style={{ backgroundColor: COLORS.textInputBackground }}>
+              <DataTable.Title style={styles.dateTableSettingFirst}>
+                <Text style={styles.revenueText}>#</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Date</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Invoice Id</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Order From</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Items</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <View style={{position:'relative'}}>
+                 <TouchableOpacity style={styles.flexAlign} onPress={() => setSaleDropDown(!saleDropDown)}>
+                   <Text style={styles.revenueText}>Order type</Text>
+                   <Image source={dropdown} style={styles.dropdownIconSale}/>
+                 </TouchableOpacity>
+                {
+                  saleDropDown
+                  ?
+                  (
+                    <View style={[styles.tableDropDownCon,]}>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.all}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
+                        </View>
+                        <Spacer space={SH(4)}/>
+                     </View>
+                  )
+                  :
+                  null
+                }
+               
+                </View>
+                 {/* <Text style={styles.revenueText}>Sales type</Text> */}
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Delivery Charge</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Tips</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Order Amount</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Received Amount</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <View style={{position:'relative'}}>
+                 <TouchableOpacity style={styles.flexAlign} onPress={() => setPayMentDropDown(!paymentModeDropDown)}>
+                   <Text style={styles.revenueText}>Mode of payment</Text>
+                   <Image source={dropdown} style={styles.dropdownIconSale}/>
+                 </TouchableOpacity>
+                {
+                  paymentModeDropDown
+                  ?
+                  (
+                    <View style={styles.tableDropDownCon}>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.all}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.jbr}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.cash}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.card}</Text>
+                        </View>
+                        <Spacer space={SH(4)}/>
+                     </View>
+                  )
+                  :
+                  null
+                }
+               
+                </View>
+                 {/* <Text style={styles.revenueText}>Sales type</Text> */}
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Status</Text>
+              </DataTable.Title>
+            </DataTable.Header>
+
+            <View style={{ height: SH(380), zIndex:-99 }}>
+              {/* <ScrollView> */}
+                <DataTable.Row>
+                  <DataTable.Cell style={styles.dateTableSettingFirst}>
+                    <Text style={styles.revenueDataText}>1</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View>
+                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <Text style={styles.revenueDataText}>2565916565..</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>
+                        Michael E. Clay
+                      </Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>12</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>Delivery</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>JBR</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <TouchableOpacity style={styles.completeBtnCon2} onPress={() => {setRevenueCompleteSideBar(true),setRevenueTable(false),setTablebackSetting(false), setOrderList(true)}}>
+                      <Text style={styles.completeText}>Completed</Text>
+                    </TouchableOpacity>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              {/* </ScrollView> */}
+            </View>
+          </DataTable>
+        </ScrollView>
+      </View>
+      )
+    }
+    else if(revenueTableHeading === 'Store Order' ){
+      return(
+        <View style={[styles.tableMainView, { zIndex: -9 }]}>
+        <ScrollView horizontal>
+          <DataTable style={{zIndex:-99}}>
+            <DataTable.Header
+              style={{ backgroundColor: COLORS.textInputBackground }}>
+              <DataTable.Title style={styles.dateTableSettingFirst}>
+                <Text style={styles.revenueText}>#</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Date</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Invoice Id</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Order From</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Items</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <View style={{position:'relative'}}>
+                 <TouchableOpacity style={styles.flexAlign} onPress={() => setSaleDropDown(!saleDropDown)}>
+                   <Text style={styles.revenueText}>Order type</Text>
+                   <Image source={dropdown} style={styles.dropdownIconSale}/>
+                 </TouchableOpacity>
+                {
+                  saleDropDown
+                  ?
+                  (
+                    <View style={[styles.tableDropDownCon,]}>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.all}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
+                        </View>
+                        <Spacer space={SH(4)}/>
+                     </View>
+                  )
+                  :
+                  null
+                }
+               
+                </View>
+                 {/* <Text style={styles.revenueText}>Sales type</Text> */}
+              </DataTable.Title>
+              {/* <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Delivery Charge</Text>
+              </DataTable.Title> */}
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Tips</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Order Amount</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Received Amount</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <View style={{position:'relative'}}>
+                 <TouchableOpacity style={styles.flexAlign} onPress={() => setPayMentDropDown(!paymentModeDropDown)}>
+                   <Text style={styles.revenueText}>Mode of payment</Text>
+                   <Image source={dropdown} style={styles.dropdownIconSale}/>
+                 </TouchableOpacity>
+                {
+                  paymentModeDropDown
+                  ?
+                  (
+                    <View style={styles.tableDropDownCon}>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.all}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.jbr}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.cash}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.card}</Text>
+                        </View>
+                        <Spacer space={SH(4)}/>
+                     </View>
+                  )
+                  :
+                  null
+                }
+               
+                </View>
+                 {/* <Text style={styles.revenueText}>Sales type</Text> */}
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Status</Text>
+              </DataTable.Title>
+            </DataTable.Header>
+
+            <View style={{ height: SH(380), zIndex:-99 }}>
+              {/* <ScrollView> */}
+                <DataTable.Row>
+                  <DataTable.Cell style={styles.dateTableSettingFirst}>
+                    <Text style={styles.revenueDataText}>1</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View>
+                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <Text style={styles.revenueDataText}>2565916565..</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>
+                        Michael E. Clay
+                      </Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>12</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>Delivery</Text>
+                  </DataTable.Cell>
+                  {/* <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell> */}
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>JBR</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <TouchableOpacity style={styles.completeBtnCon2} onPress={() => {setRevenueCompleteSideBar(true),setRevenueTable(false),setRevenueTable(false), setOrderList(true)}}>
+                      <Text style={styles.completeText}>Completed</Text>
+                    </TouchableOpacity>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              {/* </ScrollView> */}
+            </View>
+          </DataTable>
+        </ScrollView>
+      </View>
+      )
+    }
+    else if(revenueTableHeading === 'Online Order' ){
+      return(
+        <View style={[styles.tableMainView, { zIndex: -9 }]}>
+        <ScrollView horizontal>
+          <DataTable style={{zIndex:-99}}>
+            <DataTable.Header
+              style={{ backgroundColor: COLORS.textInputBackground }}>
+              <DataTable.Title style={styles.dateTableSettingFirst}>
+                <Text style={styles.revenueText}>#</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Date</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Invoice Id</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Order From</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Items</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <View style={{position:'relative'}}>
+                 <TouchableOpacity style={styles.flexAlign} onPress={() => setSaleDropDown(!saleDropDown)}>
+                   <Text style={styles.revenueText}>Order type</Text>
+                   <Image source={dropdown} style={styles.dropdownIconSale}/>
+                 </TouchableOpacity>
+                {
+                  saleDropDown
+                  ?
+                  (
+                    <View style={[styles.tableDropDownCon,]}>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.all}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
+                        </View>
+                        <Spacer space={SH(4)}/>
+                     </View>
+                  )
+                  :
+                  null
+                }
+               
+                </View>
+                 {/* <Text style={styles.revenueText}>Sales type</Text> */}
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Code</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Delivery charge</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Order Amount</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Received Amount</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <View style={{position:'relative'}}>
+                 <TouchableOpacity style={styles.flexAlign} onPress={() => setPayMentDropDown(!paymentModeDropDown)}>
+                   <Text style={styles.revenueText}>Mode of payment</Text>
+                   <Image source={dropdown} style={styles.dropdownIconSale}/>
+                 </TouchableOpacity>
+                {
+                  paymentModeDropDown
+                  ?
+                  (
+                    <View style={styles.tableDropDownCon}>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.all}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.jbr}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.cash}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.card}</Text>
+                        </View>
+                        <Spacer space={SH(4)}/>
+                     </View>
+                  )
+                  :
+                  null
+                }
+               
+                </View>
+                 {/* <Text style={styles.revenueText}>Sales type</Text> */}
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Status</Text>
+              </DataTable.Title>
+            </DataTable.Header>
+
+            <View style={{ height: SH(380), zIndex:-99 }}>
+              {/* <ScrollView> */}
+                <DataTable.Row>
+                  <DataTable.Cell style={styles.dateTableSettingFirst}>
+                    <Text style={styles.revenueDataText}>1</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View>
+                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <Text style={styles.revenueDataText}>2565916565..</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>
+                        Michael E. Clay
+                      </Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>12</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>Delivery</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={deliverCheck} style={styles.codeLogo} />
+                      <Text style={[styles.revenueDataText, {color:COLORS.primary}]}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>JBR</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <TouchableOpacity style={styles.completeBtnCon2} onPress={() => {setRevenueTable(false), setRevenueOrderBuyer(true), setTablebackSetting(true)}}>
+                      <Text style={styles.completeText}>Completed</Text>
+                    </TouchableOpacity>
+                  </DataTable.Cell>
+                </DataTable.Row>
+                <DataTable.Row>
+                  <DataTable.Cell style={styles.dateTableSettingFirst}>
+                    <Text style={styles.revenueDataText}>1</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View>
+                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <Text style={styles.revenueDataText}>2565916565..</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>
+                        Michael E. Clay
+                      </Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>12</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>Delivery</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={null} style={styles.codeLogo} />
+                      <Text style={[styles.revenueDataText, {color:COLORS.primary}]}>{null}</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>{null}</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>{null}</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <TouchableOpacity style={styles.cancelBtnCon2}>
+                      <Text style={styles.completeText}>Canceled</Text>
+                    </TouchableOpacity>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              {/* </ScrollView> */}
+            </View>
+           
+          </DataTable>
+        </ScrollView>
+      </View>
+      )
+    }
+    else if(revenueTableHeading === 'Shipping Order' ){
+      return(
+        <View style={[styles.tableMainView, { zIndex: -9 }]}>
+        <ScrollView horizontal>
+          <DataTable style={{zIndex:-99}}>
+            <DataTable.Header
+              style={{ backgroundColor: COLORS.textInputBackground }}>
+              <DataTable.Title style={styles.dateTableSettingFirst}>
+                <Text style={styles.revenueText}>#</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Date</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Invoice Id</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Order From</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Items</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <View style={{position:'relative'}}>
+                 <TouchableOpacity style={styles.flexAlign} onPress={() => setSaleDropDown(!saleDropDown)}>
+                   <Text style={styles.revenueText}>Order type</Text>
+                   <Image source={dropdown} style={styles.dropdownIconSale}/>
+                 </TouchableOpacity>
+                {
+                  saleDropDown
+                  ?
+                  (
+                    <View style={[styles.tableDropDownCon,]}>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.all}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
+                        </View>
+                        <Spacer space={SH(4)}/>
+                     </View>
+                  )
+                  :
+                  null
+                }
+               
+                </View>
+                 {/* <Text style={styles.revenueText}>Sales type</Text> */}
+              </DataTable.Title>
+              {/* <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Code</Text>
+              </DataTable.Title> */}
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Delivery charge</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Order Amount</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Received Amount</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <View style={{position:'relative'}}>
+                 <TouchableOpacity style={styles.flexAlign} onPress={() => setPayMentDropDown(!paymentModeDropDown)}>
+                   <Text style={styles.revenueText}>Mode of payment</Text>
+                   <Image source={dropdown} style={styles.dropdownIconSale}/>
+                 </TouchableOpacity>
+                {
+                  paymentModeDropDown
+                  ?
+                  (
+                    <View style={styles.tableDropDownCon}>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.all}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.jbr}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.cash}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.card}</Text>
+                        </View>
+                        <Spacer space={SH(4)}/>
+                     </View>
+                  )
+                  :
+                  null
+                }
+               
+                </View>
+                 {/* <Text style={styles.revenueText}>Sales type</Text> */}
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Status</Text>
+              </DataTable.Title>
+            </DataTable.Header>
+
+            <View style={{ height: SH(380), zIndex:-99 }}>
+              {/* <ScrollView> */}
+                <DataTable.Row>
+                  <DataTable.Cell style={styles.dateTableSettingFirst}>
+                    <Text style={styles.revenueDataText}>1</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View>
+                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <Text style={styles.revenueDataText}>2565916565..</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>
+                        Michael E. Clay
+                      </Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>12</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>Delivery</Text>
+                  </DataTable.Cell>
+                  {/* <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={deliverCheck} style={styles.codeLogo} />
+                      <Text style={[styles.revenueDataText, {color:COLORS.primary}]}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell> */}
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>JBR</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <TouchableOpacity style={styles.completeBtnCon2} onPress={() => {setRevenueTable(false), setRevenueOrderBuyer(true),setTablebackSetting(true)}}>
+                      <Text style={styles.completeText}>Completed</Text>
+                    </TouchableOpacity>
+                  </DataTable.Cell>
+                </DataTable.Row>
+                <DataTable.Row>
+                  <DataTable.Cell style={styles.dateTableSettingFirst}>
+                    <Text style={styles.revenueDataText}>1</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View>
+                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <Text style={styles.revenueDataText}>2565916565..</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>
+                        Michael E. Clay
+                      </Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>12</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>Delivery</Text>
+                  </DataTable.Cell>
+                  {/* <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={null} style={styles.codeLogo} />
+                      <Text style={[styles.revenueDataText, {color:COLORS.primary}]}>{null}</Text>
+                    </View>
+                  </DataTable.Cell> */}
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>{null}</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>{null}</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <TouchableOpacity style={styles.cancelBtnCon2}>
+                      <Text style={styles.completeText}>Canceled</Text>
+                    </TouchableOpacity>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              {/* </ScrollView> */}
+            </View>
+           
+          </DataTable>
+        </ScrollView>
+      </View>
+      )
+    }
+    else{
+      return(
+        <View style={[styles.tableMainView, { zIndex: -9 }]}>
+        <ScrollView horizontal>
+          <DataTable style={{zIndex:-99}}>
+            <DataTable.Header
+              style={{ backgroundColor: COLORS.textInputBackground }}>
+              <DataTable.Title style={styles.dateTableSettingFirst}>
+                <Text style={styles.revenueText}>#</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Date</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Invoice Id</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTablealignStart}>
+                <Text style={styles.revenueText}>Order From</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Items</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <View style={{position:'relative'}}>
+                 <TouchableOpacity style={styles.flexAlign} onPress={() => setSaleDropDown(!saleDropDown)}>
+                   <Text style={styles.revenueText}>Sales type</Text>
+                   <Image source={dropdown} style={styles.dropdownIconSale}/>
+                 </TouchableOpacity>
+                {
+                  saleDropDown
+                  ?
+                  (
+                    <View style={[styles.tableDropDownCon,]}>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.all}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
+                        </View>
+                        <Spacer space={SH(4)}/>
+                     </View>
+                  )
+                  :
+                  null
+                }
+               
+                </View>
+                 {/* <Text style={styles.revenueText}>Sales type</Text> */}
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Delivery Charge</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Tips</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Order Amount</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Received Amount</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <View style={{position:'relative'}}>
+                 <TouchableOpacity style={styles.flexAlign} onPress={() => setPayMentDropDown(!paymentModeDropDown)}>
+                   <Text style={styles.revenueText}>Mode of payment</Text>
+                   <Image source={dropdown} style={styles.dropdownIconSale}/>
+                 </TouchableOpacity>
+                {
+                  paymentModeDropDown
+                  ?
+                  (
+                    <View style={styles.tableDropDownCon}>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.all}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.jbr}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.cash}</Text>
+                        </View>
+                        <View style={[styles.flexAlign, styles.allCon]}>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
+                              <Text style={styles.allText}>{strings.analytics.card}</Text>
+                        </View>
+                        <Spacer space={SH(4)}/>
+                     </View>
+                  )
+                  :
+                  null
+                }
+               
+                </View>
+                 {/* <Text style={styles.revenueText}>Sales type</Text> */}
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Status</Text>
+              </DataTable.Title>
+            </DataTable.Header>
+
+            <View style={{ height: SH(380), zIndex:-99 }}>
+              {/* <ScrollView> */}
+                <DataTable.Row>
+                  <DataTable.Cell style={styles.dateTableSettingFirst}>
+                    <Text style={styles.revenueDataText}>1</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View>
+                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <Text style={styles.revenueDataText}>2565916565..</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStart}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>
+                        Michael E. Clay
+                      </Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>12</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>Delivery</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <View style={styles.flexAlign}>
+                      <Image source={clay} style={styles.clay} />
+                      <Text style={styles.revenueDataText}>$23.50</Text>
+                    </View>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$2,561.00</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>JBR</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <TouchableOpacity style={styles.completeBtnCon2} onPress={() => {setRevenueCompleteSideBar(true),setRevenueTable(false), setTablebackSetting(false), setOrderList(true)}}>
+                      <Text style={styles.completeText}>Completed</Text>
+                    </TouchableOpacity>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              {/* </ScrollView> */}
+            </View>
+          </DataTable>
+        </ScrollView>
+      </View>
+      )
     }
   };
 
@@ -3371,9 +4398,35 @@ export function Analytics(props) {
                  <View style={styles.onlinedeliveryCon}>
                  <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
                      <View style={{flexDirection:'row', alignItems:'center'}}>
-                     <TouchableOpacity onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)} }>
+                     {/* <TouchableOpacity
+                      // onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)} }
+                      onPress = {() => {tablebackSetting ? (setRevenueOrderBuyer(false), setRevenueTable(true)) : (setRevenueOrderBuyer(false), setOrderList(true)) }}
+                      >
                       <Image source={leftBack} style={styles.leftBackStyle} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    {
+                      tablebackSetting
+                      ?
+                      (
+                        <TouchableOpacity
+                        // onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)} }
+                        onPress = {() => { (setRevenueOrderBuyer(false), setRevenueTable(true))  }}
+                        >
+                        <Image source={leftBack} style={styles.leftBackStyle} />
+                      </TouchableOpacity>
+                      )
+                      :
+                      (
+                        <TouchableOpacity
+                        // onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)} }
+                        onPress = {() => {(setRevenueOrderBuyer(false), setOrderList(true)) }}
+                        >
+                        <Image source={leftBack} style={styles.leftBackStyle} />
+                      </TouchableOpacity>
+                      )
+
+                      
+                    }
                     <Text style={styles.orderNoStyle}>
                       {strings.wallet.orderNo}
                     </Text>
@@ -3769,21 +4822,7 @@ export function Analytics(props) {
     else if(ReveueTable){
       return(
         <View style={{flex: 1 }}>
-        <Text
-          style={[
-            styles.trancationHeading,
-            {
-              paddingHorizontal: moderateScale(15),
-              paddingVertical: verticalScale(10),
-            },
-          ]}
-        >
-          {strings.analytics.totalRevenue}
-          <Text style={styles.totalTranStyle}>
-            {' '}
-            {strings.analytics.totalPrice}
-          </Text>
-        </Text>
+          {orderTableHeadingFun(revenueTableHeading)}
         <View style={[styles.allTypeCon]}>
           <FlatList
             data={allRevenueTypeData}
@@ -3921,174 +4960,8 @@ export function Analytics(props) {
             </View>
           </View>
         </View>
-        <View style={[styles.tableMainView, { zIndex: -9 }]}>
-          <ScrollView horizontal>
-            <DataTable style={{zIndex:-99}}>
-              <DataTable.Header
-                style={{ backgroundColor: COLORS.textInputBackground }}>
-                <DataTable.Title style={styles.dateTableSettingFirst}>
-                  <Text style={styles.revenueText}>#</Text>
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTablealignStart}>
-                  <Text style={styles.revenueText}>Date</Text>
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTablealignStart}>
-                  <Text style={styles.revenueText}>Invoice Id</Text>
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTablealignStart}>
-                  <Text style={styles.revenueText}>Order From</Text>
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTableSetting}>
-                  <Text style={styles.revenueText}>Items</Text>
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTableSetting}>
-                  <View style={{position:'relative'}}>
-                   <TouchableOpacity style={styles.flexAlign} onPress={() => setSaleDropDown(!saleDropDown)}>
-                     <Text style={styles.revenueText}>Sales type</Text>
-                     <Image source={dropdown} style={styles.dropdownIconSale}/>
-                   </TouchableOpacity>
-                  {
-                    saleDropDown
-                    ?
-                    (
-                      <View style={[styles.tableDropDownCon,]}>
-                          <View style={[styles.flexAlign, styles.allCon]}>
-                            <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
-                                <Text style={styles.allText}>{strings.analytics.all}</Text>
-                          </View>
-                          <View style={[styles.flexAlign, styles.allCon]}>
-                            <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
-                                <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
-                          </View>
-                          <View style={[styles.flexAlign, styles.allCon]}>
-                            <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
-                                <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
-                          </View>
-                          <Spacer space={SH(4)}/>
-                       </View>
-                    )
-                    :
-                    null
-                  }
-                 
-                  </View>
-                   {/* <Text style={styles.revenueText}>Sales type</Text> */}
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTableSetting}>
-                  <Text style={styles.revenueText}>Delivery Charge</Text>
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTableSetting}>
-                  <Text style={styles.revenueText}>Tips</Text>
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTableSetting}>
-                  <Text style={styles.revenueText}>Order Amount</Text>
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTableSetting}>
-                  <Text style={styles.revenueText}>Received Amount</Text>
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTableSetting}>
-                  <View style={{position:'relative'}}>
-                   <TouchableOpacity style={styles.flexAlign} onPress={() => setPayMentDropDown(!paymentModeDropDown)}>
-                     <Text style={styles.revenueText}>Mode of payment</Text>
-                     <Image source={dropdown} style={styles.dropdownIconSale}/>
-                   </TouchableOpacity>
-                  {
-                    paymentModeDropDown
-                    ?
-                    (
-                      <View style={styles.tableDropDownCon}>
-                          <View style={[styles.flexAlign, styles.allCon]}>
-                            <Image source={checkedCheckboxSquare} style={styles.checkedCheckboxSquare}/>
-                                <Text style={styles.allText}>{strings.analytics.all}</Text>
-                          </View>
-                          <View style={[styles.flexAlign, styles.allCon]}>
-                            <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
-                                <Text style={styles.allText}>{strings.analytics.jbr}</Text>
-                          </View>
-                          <View style={[styles.flexAlign, styles.allCon]}>
-                            <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
-                                <Text style={styles.allText}>{strings.analytics.cash}</Text>
-                          </View>
-                          <View style={[styles.flexAlign, styles.allCon]}>
-                            <Image source={blankCheckBox} style={styles.checkedCheckboxSquare}/>
-                                <Text style={styles.allText}>{strings.analytics.card}</Text>
-                          </View>
-                          <Spacer space={SH(4)}/>
-                       </View>
-                    )
-                    :
-                    null
-                  }
-                 
-                  </View>
-                   {/* <Text style={styles.revenueText}>Sales type</Text> */}
-                </DataTable.Title>
-                <DataTable.Title style={styles.dateTableSetting}>
-                  <Text style={styles.revenueText}>Status</Text>
-                </DataTable.Title>
-              </DataTable.Header>
-
-              <View style={{ height: SH(380), zIndex:-99 }}>
-                {/* <ScrollView> */}
-                  <DataTable.Row>
-                    <DataTable.Cell style={styles.dateTableSettingFirst}>
-                      <Text style={styles.revenueDataText}>1</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTablealignStart}>
-                      <View>
-                        <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-                        <Text style={styles.revenueDataTextLight}>13: 21</Text>
-                      </View>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTablealignStart}>
-                      <Text style={styles.revenueDataText}>2565916565..</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTablealignStart}>
-                      <View style={styles.flexAlign}>
-                        <Image source={clay} style={styles.clay} />
-                        <Text style={styles.revenueDataText}>
-                          Michael E. Clay
-                        </Text>
-                      </View>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTableSetting}>
-                      <Text style={styles.revenueDataText}>12</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTableSetting}>
-                      <Text style={styles.revenueDataText}>Delivery</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTableSetting}>
-                      <View style={styles.flexAlign}>
-                        <Image source={clay} style={styles.clay} />
-                        <Text style={styles.revenueDataText}>$23.50</Text>
-                      </View>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTableSetting}>
-                      <View style={styles.flexAlign}>
-                        <Image source={clay} style={styles.clay} />
-                        <Text style={styles.revenueDataText}>$23.50</Text>
-                      </View>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTableSetting}>
-                      <Text style={styles.revenueDataText}>$2,561.00</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTableSetting}>
-                      <Text style={styles.revenueDataText}>$2,561.00</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTableSetting}>
-                      <Text style={styles.revenueDataText}>JBR</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.dateTableSetting}>
-                      <TouchableOpacity style={styles.completeBtnCon2} onPress={() => {setRevenueCompleteSideBar(true),setRevenueTable(false), setOrderList(true)}}>
-                        <Text style={styles.completeText}>Completed</Text>
-                      </TouchableOpacity>
-                    </DataTable.Cell>
-                  </DataTable.Row>
-                {/* </ScrollView> */}
-              </View>
-            </DataTable>
-          </ScrollView>
-        </View>
+          {orderTableDataFun(revenueTableHeading)}
+      
       </View>
       )
     }
@@ -4156,7 +5029,7 @@ export function Analytics(props) {
                 </View>
               </View>
               <Spacer space={SH(5)} />
-             <TouchableOpacity onPress={() => setRevenueTable(true)}>
+             <TouchableOpacity onPress={() => { setRevenueTable(true),setRevenueTableHeading('')}}>
              <Text
                 style={[
                   styles.darkBlackText,

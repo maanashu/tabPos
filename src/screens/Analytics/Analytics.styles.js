@@ -28,6 +28,9 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.65,
     paddingRight: Platform.OS === 'ios' ? 40 : 0,
   },
+  tableHeaderSetting:
+  {paddingHorizontal: moderateScale(15),
+   paddingVertical: verticalScale(10)},
   tableDataLeft: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -1103,6 +1106,12 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     paddingHorizontal: moderateScale(3),
   },
+  codeLogo:{
+    width: SH(18),
+    height: SH(22),
+    resizeMode: 'contain',
+    tintColor:COLORS.primary
+  },
   revenueDataTextLight: {
     fontFamily: Fonts.Regular,
     color: COLORS.gerySkies,
@@ -1129,6 +1138,14 @@ export const styles = StyleSheet.create({
     width: SH(92),
     height: SH(24),
     backgroundColor: COLORS.bluish_green,
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cancelBtnCon2: {
+    width: SH(81),
+    height: SH(24),
+    backgroundColor: COLORS.red,
     borderRadius: 3,
     justifyContent: 'center',
     alignItems: 'center',
@@ -1502,8 +1519,8 @@ asthonLogo:{
     borderColor:COLORS.solidGrey,
   },
   trackingAngela:{
-    Width:SW(18),
-    height:SW(18),
+    Width:SH(60),
+    height:SH(60),
     resizeMode:'contain',
   },
   costoHr:{

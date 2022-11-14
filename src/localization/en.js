@@ -394,7 +394,12 @@ export const en = {
      storeSale:'Store sales',
      jbr:'JBR',
      cash:'Cash',
-     card:'Card'
+     card:'Card',
+     totalOrder:'Total Order',
+     totalOrderCount:'906',
+     storeOrder:'Store Order',
+     deliveryOrder:'Delivery Order',
+     shipingOrder:"Shipping Order"
     },
   
 };
