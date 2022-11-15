@@ -88,7 +88,8 @@ export const en = {
     within: 'with in 10 minutes',
     dateTime: '21 Jun, 2022  |   10:30 am',
     verifyCode: 'Verify code',
-    verifyCode: 'Verify code'
+    verifyCode: 'Verify code',
+    selectShip:'Select shipping'
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -401,5 +402,13 @@ export const en = {
      deliveryOrder:'Delivery Order',
      shipingOrder:"Shipping Order"
     },
+    shipingOrder:{
+      shipingRate:'$11.50',
+      priorityMalling:'Priority Mailing services',
+      dayShiping:'1-3 days shipping',
+      printText:'Select & Continue to print',
+      printAgain:'Print Again',
+      orderOfReview:'Orders to review'
+    }
   
 };

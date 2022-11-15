@@ -137,6 +137,8 @@ export { default as clay } from '@/assets/icons/ic_analytics/clay.png';
 export { default as checkedCheckboxSquare } from '@/assets/icons/ic_analytics/checkedCheckbox.png';
 export { default as blankCheckBox } from '@/assets/icons/ic_analytics/blankCheckBox.png';
 export { default as asthonLogo } from '@/assets/icons/ic_analytics/asthonLogo.png';
+export { default as radioRound } from '@/assets/icons/ic_shipingOrder/radioRound.png';
+export { default as ups2 } from '@/assets/icons/ic_shipingOrder/ups.png';
 // export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */

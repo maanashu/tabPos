@@ -27,13 +27,13 @@ export const orderStatus = [
 export const deliveryOrderStatus = [
   {
     key: '1',
-    status: 'New shipping Orders',
+    status: 'New Shipping Orders',
     count: '49',
     image: require('@/assets/icons/ic_deliveryOrder/order.png'),
   },
   {
     key: '2',
-    status: 'Ready to ship',
+    status: 'Ready To Ship',
     count: '23',
     image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
   },
@@ -54,7 +54,7 @@ export const deliveryOrderStatus = [
 export const orderReview = [
   {
     key: '1',
-    name: 'Rebecca R. Russell',
+    name: 'Rebecca R. Russell Russell',
     time: '2.5 miles',
     items: '3 items',
     price: '$489.50',
@@ -124,6 +124,15 @@ export const orderReview = [
     deliveryType: '2 hour delivery window',
     timeSlot: '2.00 PM - 3.00 PM',
   },
+  {
+    key: '9',
+    name: 'Rebecca R. Russell',
+    time: '2.5 miles',
+    items: '3 items',
+    price: '$489.50',
+    deliveryType: '2 hour delivery window',
+    timeSlot: '2.00 PM - 3.00 PM',
+  },
 ];
 
 export const orderConversion = [
@@ -139,7 +148,7 @@ export const orderConversion = [
   },
   {
     key: '3',
-    title: 'Orders delivered',
+    title: 'Orders Delivered',
     total: '46',
   },
 ];
@@ -161,6 +170,26 @@ export const deliveryOrders = [
     key: '3',
     image: require('@/assets/icons/ic_navigator/deliveryTruck.png'),
     delivery: 'Expess delivery',
+    total: '49',
+  },
+];
+export const shipdeliveryOrders = [
+  {
+    key: '1',
+    image: require('@/assets/icons/ic_deliveryOrder/parcel.png'),
+    delivery: 'USPS',
+    total: '3',
+  },
+  {
+    key: '2',
+    image: require('@/assets/icons/ic_navigator/deliveryTruck.png'),
+    delivery: 'UPS',
+    total: '17',
+  },
+  {
+    key: '3',
+    image: require('@/assets/icons/ic_navigator/deliveryTruck.png'),
+    delivery: 'Fed',
     total: '49',
   },
 ];

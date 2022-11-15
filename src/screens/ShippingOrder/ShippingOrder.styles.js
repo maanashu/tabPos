@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
-import { scale } from 'react-native-size-matters';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { height, width } from '@/theme/ScalerDimensions';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -10,6 +10,11 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
+  },
+  displayFlex:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center'
   },
   headerMainView: {
     width: windowWidth,
@@ -70,7 +75,7 @@ export const styles = StyleSheet.create({
   },
   orderStatusView: {
     justifyContent: 'center',
-    paddingLeft: SW(10),
+    paddingLeft: SW(5),
   },
   orderStatusImage: {
     width: SW(13),
@@ -79,17 +84,17 @@ export const styles = StyleSheet.create({
   },
   countView: {
     justifyContent: 'center',
-    paddingLeft: SW(5),
+    paddingLeft: SW(3),
   },
   countText: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonRegular,
-    fontSize: SF(30),
+    fontSize: SF(27),
   },
   statusText: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(18),
+    fontSize: SF(15),
     textAlign: 'center',
   },
   orderNumberMainView: {
@@ -100,8 +105,9 @@ export const styles = StyleSheet.create({
   },
   orderNumberLeftView: {
     borderRadius: 5,
-    ...ShadowStyles.shadow,
+    ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
+    width:SH(640),
   },
   chartView: {
     width: SW(168),
@@ -117,12 +123,12 @@ export const styles = StyleSheet.create({
   orderReviewRightView: {
     width: windowWidth / 2.25,
     borderRadius: 5,
-    ...ShadowStyles.shadow,
+    ...ShadowStyles.shadow2,
     height: SW(205),
     backgroundColor: COLORS.white,
   },
   orderReviewText: {
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.MaisonBold,
     color: COLORS.primary,
     fontSize: SF(18),
   },
@@ -138,7 +144,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.bluish_green,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 2,
+    borderRadius: 4,
   },
   viewText: {
     fontFamily: Fonts.SemiBold,
@@ -173,12 +179,12 @@ export const styles = StyleSheet.create({
   },
   nameText: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(18),
+    fontSize: SF(14),
     color: COLORS.solid_grey,
   },
   timeText: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(14),
+    fontSize: SF(11),
     color: COLORS.dark_grey,
     textAlignVertical: 'center',
     paddingLeft: 2,
@@ -223,9 +229,11 @@ export const styles = StyleSheet.create({
     paddingLeft: SW(2),
     paddingRight: SW(5),
     paddingVertical: SW(2),
+    width:SH(180),
+    borderRadius:5
   },
   totalText: {
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.solid_grey,
     paddingLeft: 2,
@@ -246,7 +254,18 @@ export const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
-    paddingRight: SW(50)
+    width:windowWidth * 0.44
+    // paddingRight: SW(50)
+  },
+  orderDetailView2:{
+    backgroundColor: COLORS.white,
+    paddingRight: SW(0),
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    borderRadius:10,
+    height:SH(660),
+    width:windowWidth * 0.52,
+    paddingBottom:20
   },
   profileDetailView: {
     marginHorizontal: SW(5),
@@ -256,14 +275,15 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     marginTop: 4,
     flexDirection: 'row',
+    justifyContent:'space-between'
   },
   productImageView: {
     flexDirection: 'row',
     width: SW(50)
   },
   profileImage: {
-    width: SW(17),
-    height: SW(17),
+    width: SW(13),
+    height: SW(13),
     resizeMode: 'contain',
   },
   scooter: {
@@ -280,10 +300,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
     fontSize: SF(11),
     color: COLORS.darkGray,
+    marginBottom:5
   },
   productViewStyle: {
     marginLeft: SW(5),
-    marginRight: SW(15),
+    marginRight: SW(5),
     flexDirection: 'row',
     top: 7,
     justifyContent: 'space-between',
@@ -298,10 +319,18 @@ export const styles = StyleSheet.create({
     bottom: 0,
     height: SW(105),
     backgroundColor: COLORS.white,
-    width: windowWidth / 1.9,
-    ...ShadowStyles.shadow,
-    paddingHorizontal: 30,
+    width: windowWidth * 0.44,
+    ...ShadowStyles.shadow2,
+    // paddingHorizontal: 30,
     paddingTop: 10,
+  },
+  bottomSheet2: {
+    position: 'absolute',
+    bottom: 10,
+    ...ShadowStyles.shadow1,
+    width: windowWidth * 0.50,
+    height: SH(200),
+    
   },
   rowView: {
     flexDirection: 'row',
@@ -310,6 +339,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 2,
     alignSelf: 'flex-end',
     paddingRight: 10,
+    paddingVertical:verticalScale(2)
   },
   subTotal: {
     fontFamily: Fonts.MaisonRegular,
@@ -372,6 +402,14 @@ export const styles = StyleSheet.create({
     marginRight: 6,
     top: 8,
   },
+  printAgainCon: {
+    height: SW(15),
+    width: SH(700),
+    backgroundColor: COLORS.primary,
+    alignSelf: 'flex-end',
+    // marginRight: 6,
+    top: 8,
+  },
   orderReviewButton: {
     flexDirection: 'row',
     alignItems: 'flex-end',
@@ -380,13 +418,14 @@ export const styles = StyleSheet.create({
   horizontalLine: {
     borderWidth: 0.5,
     borderColor: COLORS.solidGrey,
-    marginTop: 7,
+    marginTop: 10,
   },
   itemSeparatorView: {
     backgroundColor: COLORS.solidGrey,
     height: 1,
     width: '92%',
     alignSelf: 'center',
+    marginVertical:verticalScale(2)
   },
   map: {
     width: windowWidth / 2.2,
@@ -434,5 +473,55 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignSelf: 'center',
     left: 6
+  },
+  selectShipingRightView:{
+    borderWidth:1,
+     width:SH(545),
+    borderRadius:10,
+    borderColor:COLORS.solidGrey,
+    paddingHorizontal:moderateScale(10)
+  },
+  selectShipingCon:{
+    width:SH(510),
+    height:SH(56),
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    borderRadius:10,
+    paddingHorizontal:moderateScale(10),justifyContent:'center'
+  },
+  radioRound:{
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+  },
+  shipingRate:{
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+  },
+  ups2:{
+    width: SH(36),
+    height: SH(36),
+    resizeMode: 'contain',
+  },
+  printButtonCon:{
+    width:SH(510),
+    height:SH(64),
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    borderRadius:10,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  printText:{
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+    color: COLORS.darkGray,
+  },
+  orderOfReview:{
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(18),
+    color: COLORS.primary,
+    paddingHorizontal:moderateScale(13)
   }
 });

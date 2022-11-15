@@ -694,8 +694,8 @@ export function Analytics(props) {
                   <DataTable.Cell style={styles.dateTableSetting}>
                     <Text style={styles.revenueDataText}>JBR</Text>
                   </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <TouchableOpacity style={styles.completeBtnCon2} onPress={() => {setRevenueCompleteSideBar(true),setRevenueTable(false),setRevenueTable(false), setOrderList(true)}}>
+                  <DataTable.Cell style={styles.dateTableSetting}>                      
+                    <TouchableOpacity style={styles.completeBtnCon2} onPress={() => {setRevenueCompleteSideBar(true),setRevenueTable(false),setTablebackSetting(false), setOrderList(true)}}>
                       <Text style={styles.completeText}>Completed</Text>
                     </TouchableOpacity>
                   </DataTable.Cell>
@@ -4434,9 +4434,33 @@ export function Analytics(props) {
                       <Text style={styles.completedText}>Completed</Text>
                     </View>
                      </View>
-                     <TouchableOpacity onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)}}>
+                     {/* <TouchableOpacity onPress={() => {tablebackSetting ? (setRevenueOrderBuyer(false), setOrderList(true)) : (setRevenueOrderBuyer(false), setOrderList(true)) }}>
                      <Image source={crossButton} style={styles.leftBackStyle} />
-                     </TouchableOpacity>
+                     </TouchableOpacity> */}
+                      {
+                      tablebackSetting
+                      ?
+                      (
+                        <TouchableOpacity
+                        // onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)} }
+                        onPress = {() => { (setRevenueOrderBuyer(false), setRevenueTable(true))  }}
+                        >
+                         <Image source={crossButton} style={styles.leftBackStyle} />
+                      </TouchableOpacity>
+                      )
+                      :
+                      (
+                        <TouchableOpacity
+                        // onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)} }
+                        onPress = {() => {(setRevenueOrderBuyer(false), setOrderList(true)) }}
+                        // onPress={() => alert('dfghjkl')}
+                        >
+                        <Image source={crossButton} style={styles.leftBackStyle} />
+                      </TouchableOpacity>
+                      )
+
+                      
+                    }
                   </View>
                  </View>
                  <ScrollView>
