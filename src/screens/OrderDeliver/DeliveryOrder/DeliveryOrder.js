@@ -110,7 +110,7 @@ export function DeliveryOrder() {
       // onPress={() => { viewAllReviews ? onPressReview(index) : null }}
       style={styles.reviewRenderView}>
       <View style={{ width: SW(45) }}>
-        <Text style={styles.nameText}>{item.name}</Text>
+        <Text numberOfLines={1} style={styles.nameText}>{item.name}</Text>
         <View style={styles.timeView}>
           <Image source={pin} style={styles.pinIcon} />
           <Text style={styles.timeText}>{item.time}</Text>
@@ -158,7 +158,7 @@ export function DeliveryOrder() {
   );
 
   const renderProductList = ({ item, index }) => (
-    <View style={styles.productViewStyle}>
+    <TouchableOpacity style={styles.productViewStyle} onPress={() => alert('coming soon')}>
       <View style={styles.productImageView}>
         <Image source={item.image} style={styles.profileImage} />
 
@@ -172,9 +172,11 @@ export function DeliveryOrder() {
         <Text style={styles.priceText}>{'x'}</Text>
         <Text style={styles.priceText}>{item.quantity}</Text>
       </View>
-
+      <View style={{flexDirection:'row'}}>
       <Text style={styles.priceText}>{item.price}</Text>
-    </View>
+      <Image source={rightIcon} style={[styles.pinIcon, {marginLeft:20}]} />
+      </View>
+    </TouchableOpacity>
   );
 
   const orderStatusText = () => {
@@ -226,9 +228,10 @@ export function DeliveryOrder() {
                 </View>
               </View>
             </View>
-
+             <Spacer space={SH(15)}/>
             <View style={styles.horizontalLine} />
 
+            <View style={{height:SH(250)}}>
             <FlatList
               data={productList}
               renderItem={renderProductList}
@@ -236,6 +239,7 @@ export function DeliveryOrder() {
                 <View style={styles.itemSeparatorView} />
               )}
             />
+            </View>
 
             <View style={styles.bottomSheet}>
               <View style={styles.rowView}>
@@ -252,7 +256,7 @@ export function DeliveryOrder() {
                 <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>{strings.deliveryOrders.tax}</Text>
                 <Text style={styles.discountValue}>{strings.deliveryOrders.subTotalValue}</Text>
               </View>
-
+              <View style={{borderWidth:1, width:SH(385), alignSelf:'flex-end',borderStyle:'dashed', borderColor:COLORS.row_grey, marginVertical:verticalScale(3)}}/>
               <View style={styles.rowView}>
                 <Text style={styles.totalLabel}>{strings.deliveryOrders.total}</Text>
                 <Text style={styles.totalValue}>{strings.deliveryOrders.totalValue}</Text>
@@ -441,7 +445,7 @@ export function DeliveryOrder() {
               </View>
 
               <View style={{ flexDirection: 'column' }}>
-                <View style={styles.orderReviewRightView}>
+                <View style={[styles.orderReviewRightView]}>
                   <Spacer space={SH(20)} />
                   <View style={styles.reviewHeadingView}>
                     <Text style={styles.orderReviewText}>{strings.deliveryOrders.orderReview}</Text>
@@ -454,11 +458,13 @@ export function DeliveryOrder() {
                   </View>
 
                   <Spacer space={SH(15)} />
-                  <FlatList
+                   <View style={{ height:SH(670)}}>
+                   <FlatList
                     data={orderReview}
                     renderItem={renderReviewItem}
                     showsVerticalScrollIndicator={false}
                   />
+                   </View>
                 </View>
 
                 <Spacer space={SH(20)} />

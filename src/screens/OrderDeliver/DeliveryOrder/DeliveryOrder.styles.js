@@ -100,8 +100,9 @@ export const styles = StyleSheet.create({
   },
   orderNumberLeftView: {
     borderRadius: 5,
-    ...ShadowStyles.shadow,
+    ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
+    width:SH(640),
   },
   chartView: {
     width: SW(168),
@@ -117,7 +118,7 @@ export const styles = StyleSheet.create({
   orderReviewRightView: {
     width: windowWidth / 2.25,
     borderRadius: 5,
-    ...ShadowStyles.shadow,
+    ...ShadowStyles.shadow2,
     height: SW(205),
     backgroundColor: COLORS.white,
   },
@@ -129,7 +130,7 @@ export const styles = StyleSheet.create({
   reviewHeadingView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: SW(10),
+    paddingHorizontal: SW(5),
     alignItems: 'center',
   },
   viewAllView: {
@@ -164,7 +165,7 @@ export const styles = StyleSheet.create({
   },
   pinIcon: {
     width: SW(5),
-    height: SW(5),
+    height: SW(8),
     resizeMode: 'contain',
   },
   rightIconStyle: {
@@ -173,12 +174,12 @@ export const styles = StyleSheet.create({
   },
   nameText: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(18),
+    fontSize: SF(14),
     color: COLORS.solid_grey,
   },
   timeText: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.dark_grey,
     textAlignVertical: 'center',
     paddingLeft: 2,
@@ -246,24 +247,26 @@ export const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
-    paddingRight: SW(50)
+    // paddingRight: SW(50),
+    width:windowWidth * 0.44
   },
   profileDetailView: {
-    marginHorizontal: SW(5),
+    // marginHorizontal: SW(5),
     paddingHorizontal: SW(5),
     paddingVertical: SW(3),
     borderRadius: 6,
     backgroundColor: COLORS.textInputBackground,
     marginTop: 4,
     flexDirection: 'row',
+    justifyContent:'space-between'
   },
   productImageView: {
     flexDirection: 'row',
     width: SW(50)
   },
   profileImage: {
-    width: SW(17),
-    height: SW(17),
+    width: SW(14),
+    height: SW(14),
     resizeMode: 'contain',
   },
   scooter: {
@@ -282,8 +285,8 @@ export const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   productViewStyle: {
-    marginLeft: SW(5),
-    marginRight: SW(15),
+    // marginLeft: SW(5),
+    // marginRight: SW(6),
     flexDirection: 'row',
     top: 7,
     justifyContent: 'space-between',
@@ -298,9 +301,9 @@ export const styles = StyleSheet.create({
     bottom: 0,
     height: SW(105),
     backgroundColor: COLORS.white,
-    width: windowWidth / 1.9,
-    ...ShadowStyles.shadow,
-    paddingHorizontal: 30,
+    width: windowWidth * 0.44,
+    ...ShadowStyles.shadow1,
+    // paddingHorizontal: 15,
     paddingTop: 10,
   },
   rowView: {

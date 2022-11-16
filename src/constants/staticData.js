@@ -54,7 +54,7 @@ export const deliveryOrderStatus = [
 export const orderReview = [
   {
     key: '1',
-    name: 'Rebecca R. Russell Russell',
+    name: 'Rebecca R. Russell',
     time: '2.5 miles',
     items: '3 items',
     price: '$489.50',

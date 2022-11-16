@@ -188,7 +188,7 @@ export function ShippingOrder() {
   );
 
   const renderProductList = ({ item, index }) => (
-    <View style={styles.productViewStyle}>
+    <TouchableOpacity style={styles.productViewStyle} onPress={() => alert('coming soon')}>
       <View style={styles.productImageView}>
         <Image source={item.image} style={styles.profileImage} />
 
@@ -203,8 +203,11 @@ export function ShippingOrder() {
         <Text style={styles.priceText}>{item.quantity}</Text>
       </View>
 
+      <View style={{flexDirection:'row'}}>
       <Text style={styles.priceText}>{item.price}</Text>
-    </View>
+      <Image source={rightIcon} style={[styles.pinIcon, {marginLeft:20}]} />
+      </View>
+    </TouchableOpacity>
   );
 
   const orderStatusText = () => {

@@ -135,7 +135,7 @@ export const styles = StyleSheet.create({
   reviewHeadingView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: SW(10),
+    paddingHorizontal: SW(7),
     alignItems: 'center',
   },
   viewAllView: {
@@ -268,7 +268,7 @@ export const styles = StyleSheet.create({
     paddingBottom:20
   },
   profileDetailView: {
-    marginHorizontal: SW(5),
+    marginHorizontal: SW(3),
     paddingHorizontal: SW(5),
     paddingVertical: SW(3),
     borderRadius: 6,
@@ -303,8 +303,8 @@ export const styles = StyleSheet.create({
     marginBottom:5
   },
   productViewStyle: {
-    marginLeft: SW(5),
-    marginRight: SW(5),
+    // marginLeft: SW(5),
+    marginRight: SW(4),
     flexDirection: 'row',
     top: 7,
     justifyContent: 'space-between',
