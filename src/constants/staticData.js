@@ -53,7 +53,7 @@ export const deliveryOrderStatus = [
 
 export const orderReview = [
   {
-    key: '1',
+    id: '1',
     name: 'Rebecca R. Russell',
     time: '2.5 miles',
     items: '3 items',
@@ -62,7 +62,7 @@ export const orderReview = [
     timeSlot: 'immediately',
   },
   {
-    key: '2',
+    id: '2',
     name: 'Rebecca R. Russell',
     time: '2.5 miles',
     items: '3 items',
@@ -71,7 +71,7 @@ export const orderReview = [
     timeSlot: '2.00 PM - 3.00 PM',
   },
   {
-    key: '3',
+    id: '3',
     name: 'Rebecca R. Russell',
     time: '2.5 miles',
     items: '3 items',
@@ -80,7 +80,7 @@ export const orderReview = [
     timeSlot: '2.00 PM - 3.00 PM',
   },
   {
-    key: '4',
+    id: '4',
     name: 'Rebecca R. Russell',
     time: '2.5 miles',
     items: '3 items',
@@ -89,7 +89,7 @@ export const orderReview = [
     timeSlot: '2.00 PM - 3.00 PM',
   },
   {
-    key: '5',
+    id: '5',
     name: 'Rebecca R. Russell',
     time: '2.5 miles',
     items: '3 items',
@@ -98,7 +98,7 @@ export const orderReview = [
     timeSlot: '2.00 PM - 3.00 PM',
   },
   {
-    key: '6',
+    id: '6',
     name: 'Rebecca R. Russell',
     time: '2.5 miles',
     items: '3 items',
@@ -107,7 +107,7 @@ export const orderReview = [
     timeSlot: '2.00 PM - 3.00 PM',
   },
   {
-    key: '7',
+    id: '7',
     name: 'Rebecca R. Russell',
     time: '2.5 miles',
     items: '3 items',
@@ -116,7 +116,7 @@ export const orderReview = [
     timeSlot: '2.00 PM - 3.00 PM',
   },
   {
-    key: '8',
+    id: '8',
     name: 'Rebecca R. Russell',
     time: '2.5 miles',
     items: '3 items',
@@ -125,7 +125,7 @@ export const orderReview = [
     timeSlot: '2.00 PM - 3.00 PM',
   },
   {
-    key: '9',
+    id: '9',
     name: 'Rebecca R. Russell',
     time: '2.5 miles',
     items: '3 items',

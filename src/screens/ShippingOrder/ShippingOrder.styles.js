@@ -135,7 +135,7 @@ export const styles = StyleSheet.create({
   reviewHeadingView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: SW(7),
+    paddingHorizontal: SW(3),
     alignItems: 'center',
   },
   viewAllView: {
@@ -158,10 +158,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: SW(2),
     borderColor: COLORS.orderStatusBackground,
-    borderRadius: 2,
+    borderRadius: 5,
     paddingVertical: 6,
     paddingLeft: SW(5),
     justifyContent: 'space-between',
+    // backgroundColor: '#E5F0FF'
   },
   timeView: {
     flexDirection: 'row',
@@ -282,8 +283,8 @@ export const styles = StyleSheet.create({
     width: SW(50)
   },
   profileImage: {
-    width: SW(13),
-    height: SW(13),
+    width: SW(12),
+    height: SW(12),
     resizeMode: 'contain',
   },
   scooter: {
@@ -315,14 +316,16 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
   },
   bottomSheet: {
-    position: 'absolute',
-    bottom: 0,
-    height: SW(105),
+    // position: 'absolute',
+    // bottom: 0,
+    // height: SW(105),
     backgroundColor: COLORS.white,
     width: windowWidth * 0.44,
-    ...ShadowStyles.shadow2,
+    // ...ShadowStyles.shadow2,
     // paddingHorizontal: 30,
     paddingTop: 10,
+    borderTopWidth:1,
+    borderColor:COLORS.row_grey,
   },
   bottomSheet2: {
     position: 'absolute',
@@ -428,8 +431,8 @@ export const styles = StyleSheet.create({
     marginVertical:verticalScale(2)
   },
   map: {
-    width: windowWidth / 2.2,
-    height: SW(137),
+    width: windowWidth / 2.3,
+    height: SW(130),
     alignSelf: 'center',
     borderRadius: 6
   },
@@ -442,14 +445,14 @@ export const styles = StyleSheet.create({
   orderModalView: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    bottom: Platform.OS === 'android' ? 40 : 10,
+    bottom: Platform.OS === 'android' ? 20 : 10,
     backgroundColor: COLORS.white,
     right: SW(5),
     width: SW(100),
     paddingVertical: 8,
     borderRadius: 7,
   },
-  deliveryImage: {
+  deliveryImage: {  
     width: SW(15),
     height: SH(46),
     resizeMode: 'contain',
@@ -457,11 +460,11 @@ export const styles = StyleSheet.create({
   },
   deliveryStatus: {
     flexDirection: 'row',
-    height: SH(53)
+    height: SH(50)
   },
   verifyText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(12),
+    fontSize: SF(11),
     color: COLORS.gerySkies,
   },
   justifyContentStyle: {
@@ -523,5 +526,22 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
     color: COLORS.primary,
     paddingHorizontal:moderateScale(13)
+  },
+  printAgainButton:{
+    width: SW(160),
+    height: SW(15),
+    backgroundColor: COLORS.primary,
+    top: 8,
+    alignSelf:'center'
+  },
+  fedContextCon:{
+    borderWidth:1,
+    // width:SW(350),
+    height:SH(70),
+    borderRadius:10,
+    borderColor:COLORS.solidGrey,
+    marginHorizontal:moderateScale(10),
+    marginTop:SH(15)
+
   }
 });

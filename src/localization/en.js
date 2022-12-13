@@ -408,7 +408,9 @@ export const en = {
       dayShiping:'1-3 days shipping',
       printText:'Select & Continue to print',
       printAgain:'Print Again',
-      orderOfReview:'Orders to review'
+      orderOfReview:'Orders to review',
+      readyToShip:'Ready to ship',
+      printAgain:'Print Again'
     }
   
 };
