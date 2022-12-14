@@ -1152,7 +1152,7 @@ export function ShippingOrder() {
             <View style={styles.deliveryView}>
               <Image source={deliveryTruck} style={styles.truckStyle} />
               <Text style={styles.deliveryText}>
-                {strings.deliveryOrders.heading}
+                {strings.deliveryOrders.shippingOrder}
               </Text>
             </View>
 

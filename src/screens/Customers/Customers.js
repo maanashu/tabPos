@@ -48,6 +48,7 @@ import {
   ticket,
   box,
   dropRight,
+  users,
   Fonts,willis,deliverCheck, track,map,blankRadio,movingArrow,fillRadio,movingArrowBlue,angela2,contact
 } from '@/assets';
 import { Spacer } from '@/components';
@@ -176,15 +177,18 @@ export function Customers() {
         {
           weeklyUser ?
           (<View style={styles.deliveryView}>
-          <Image source={wallet2} style={styles.truckStyle} />
-          <Text style={styles.deliveryText}>{strings.customers.users}</Text>
+            <TouchableOpacity onPress={() =>  setWeeklyUser(false)}>
+            <Image source={leftBack} style={styles.leftBackStyle}/>
+            </TouchableOpacity>
+            <Image source={users} style={[styles.truckStyle, {marginLeft:10}]} />
+            <Text style={[styles.deliveryText, {marginTop:5}]}>{strings.customers.users}</Text>
         </View>)
         :
          (
           <View style={styles.deliveryView}>
-          <Image source={invoice} style={styles.truckStyle} />
-          <Text style={styles.deliveryText}>{strings.customers.sales}</Text>
-        </View>
+          <Image source={users} style={styles.truckStyle} />
+          <Text style={[styles.deliveryText, {marginTop:5}]}>{strings.customers.customer}</Text>
+           </View>
          )
         }
         <View style={styles.deliveryView}>
@@ -783,7 +787,7 @@ export function Customers() {
               </View>
             </View>
           </View>
-          <View style={[styles.jbrTypeCon, { zIndex: -2 }]}>
+          <View style={[styles.jbrTypeCon, { zIndex: -99 }]}>
             <View
               style={{
                 flexDirection: 'row',
@@ -845,7 +849,8 @@ export function Customers() {
             </View>
           </View>
           
-          <ScrollView>
+         <View style={{zIndex:-999}}>
+         <ScrollView>
             <View style={[styles.tableMainView]}>
                     <Table>
                         <Row data={UserTableHeading} style={styles.userTableHead} textStyle={styles.text} />
@@ -855,6 +860,7 @@ export function Customers() {
                     </Table>
                 </View>
           </ScrollView>
+         </View>
          </View>
       )
     } else{

@@ -98,10 +98,10 @@ const notificationItem = ({ item }) => (
     <Spacer space={SH(15)} />
     <View style={{ flexDirection: 'row' }}>
       <TouchableOpacity style={styles.approveButtonCon} onPress={() => setSchduleDetail(!schduleDetail) }>
-        <Text style={styles.approveText}>{strings.calender.approve}</Text>
+        <Text style={styles.approveText}>{strings.calender.accept}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.noButtonCon}>
-        <Text style={styles.approveText}>{strings.calender.no}</Text>
+        <Text style={styles.approveText}>{strings.calender.decline}</Text>
       </TouchableOpacity>
     </View>
   </View>

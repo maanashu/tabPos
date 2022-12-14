@@ -216,15 +216,6 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
   },
-  dropDownContainerStyle: {
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 7,
-    ...ShadowStyles.shadow,
-    backgroundColor: COLORS.white,
-    top:Platform.OS === 'android' ? 30 : 15,
-    zIndex: Platform.OS === 'ios' ? 100 : 1
-  },
   placeholderStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
@@ -331,7 +322,8 @@ export const styles = StyleSheet.create({
     backgroundColor: '#E1E3E4',
     textAlign: 'center',
     borderWidth: 0,
-    borderColor: 'transparent'
+    borderColor: 'transparent',
+    borderWidth:1
 },
 text: {
     fontFamily: Fonts.SemiBold,
@@ -394,8 +386,8 @@ usertableRowText: {
     paddingHorizontal:moderateScale(10)
   },
   leftBackStyle: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(9),
+    height: SW(9),
     resizeMode: 'contain',
   },
   profileHeaderText:{
@@ -535,7 +527,8 @@ usertableRowText: {
     ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
     top:Platform.OS === 'android' ? 30 : 15,
-    zIndex: Platform.OS === 'ios' ? 100 : 1
+    zIndex: Platform.OS === 'ios' ? 100 : 1,
+    borderWidth:1
   },
   placeholderStyle: {
     fontSize: SF(12),

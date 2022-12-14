@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
   },
   orderStatusView: {
     justifyContent: 'center',
-    paddingLeft: SW(10),
+    paddingLeft: SW(5),
   },
   orderStatusImage: {
     width: SW(13),
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
   },
   countView: {
     justifyContent: 'center',
-    paddingLeft: SW(5),
+    paddingLeft: SW(3),
   },
   countText: {
     color: COLORS.solid_grey,

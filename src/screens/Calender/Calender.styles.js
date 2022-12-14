@@ -89,9 +89,9 @@ export const styles = StyleSheet.create({
       backgroundColor:COLORS.dark_grey,
       borderRadius:3,
       height:SH(32),
-      width:SH(45),
       justifyContent:'center',
       alignItems:'center',
+      width:SH(110),
       marginHorizontal:moderateScale(10)
     },
     approveText:{

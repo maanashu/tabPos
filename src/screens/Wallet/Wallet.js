@@ -230,7 +230,7 @@ export function Wallet() {
   };
 
   const aboutTransactionItem = ({ item }) => (
-    <View style={styles.jbrCoinCon}>
+    <TouchableOpacity style={styles.jbrCoinCon}>
       <Image source={item.img} style={styles.jbrCoinStyle} />
       <Spacer space={SH(12)} />
       <View style={styles.displayFlex}>
@@ -238,7 +238,7 @@ export function Wallet() {
         <Image source={rightBack} style={styles.arrowStyle} />
       </View>
       <Text style={styles.jbrCoinPrice}>{item.price}</Text>
-    </View>
+    </TouchableOpacity>
   );
   const tipsItem = ({ item }) => (
     <View style={styles.jbrCoinCon}>
@@ -639,7 +639,7 @@ export function Wallet() {
         <View>
           {customHeader()}
           {/* <ScrollView> */}
-          <View style={[styles.walletTranCon, {borderWidth:1}]}>
+          <View style={styles.walletTranCon}>
             {/* <Spacer space={SH(15)} /> */}
             <View style={styles.displayFlex}>
               <Text style={styles.trancationHeading}>

@@ -1056,7 +1056,7 @@ export function Management(props) {
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: SW(35),
+                  width: SW(45),
                   height: SH(60),
                   borderWidth: 1,
                   borderColor:
@@ -1089,7 +1089,7 @@ export function Management(props) {
                   left: 10,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: SW(35),
+                  width: SW(45),
                   height: SH(60),
                   borderWidth: 1,
                   borderColor:

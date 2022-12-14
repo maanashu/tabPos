@@ -89,7 +89,8 @@ export const en = {
     dateTime: '21 Jun, 2022  |   10:30 am',
     verifyCode: 'Verify code',
     verifyCode: 'Verify code',
-    selectShip:'Select shipping'
+    selectShip:'Select shipping',
+    shippingOrder:'Shipping orders'
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -306,7 +307,8 @@ export const en = {
     dateTime:'21 Jun, 2022  |   10:30 am',
     carriar:'Carriar:',
     geredo:'Gerardo K. Jennings',
-    contact:'Contact'
+    contact:'Contact',
+    customer:'Customers'
 
   },
   trackingNumber:{
@@ -338,7 +340,9 @@ export const en = {
     jbr:'JBR 300.00',
     day:'Day',
     week:'Week',
-    month:'Month'
+    month:'Month',
+    accept:'Accept',
+    decline:'Decline',
   },
   analytics:{
      header:'Analytics',
