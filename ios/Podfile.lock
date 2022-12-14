@@ -400,7 +400,7 @@ PODS:
     - React-perflogger (= 0.69.4)
   - ReactNativeLocalization (2.3.1):
     - React-Core
-  - RNBootSplash (4.3.3):
+  - RNBootSplash (4.4.0):
     - React-Core
   - RNCAsyncStorage (1.17.11):
     - React-Core
@@ -408,7 +408,7 @@ PODS:
     - React-Core
   - RNGestureHandler (2.8.0):
     - React-Core
-  - RNReanimated (2.12.0):
+  - RNReanimated (2.13.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -684,11 +684,11 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 61ee22a8cdf8b6bb2a7fb7b4ba2cc763e5285196
   ReactCommon: 8f67bd7e0a6afade0f20718f859dc8c2275f2e83
   ReactNativeLocalization: 076497d7ca70341c751cd3b3e7c86187332a182d
-  RNBootSplash: 7e91ea56c7010aae487489789dbe212e8c905a0c
+  RNBootSplash: 8ecffd190fae05291b671ea2280c5238f15499a9
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
   RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
-  RNReanimated: c3e58924b9418883b0bde9e78c4c957302f02435
+  RNReanimated: f0d66bda3d074c43c72a18f4fd4f4c26687bc1fd
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: ff994563b2fd98c982ca58e8cd9db2cdaf4dda74

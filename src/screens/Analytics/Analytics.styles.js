@@ -28,9 +28,10 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.65,
     paddingRight: Platform.OS === 'ios' ? 40 : 0,
   },
-  tableHeaderSetting:
-  {paddingHorizontal: moderateScale(15),
-   paddingVertical: verticalScale(10)},
+  tableHeaderSetting: {
+    paddingHorizontal: moderateScale(15),
+    paddingVertical: verticalScale(10),
+  },
   tableDataLeft: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -94,7 +95,7 @@ export const styles = StyleSheet.create({
   },
   totalProductCon: {
     backgroundColor: COLORS.white,
-    width: Platform.OS === 'android'? SH(632) : SH(600),
+    width: Platform.OS === 'android' ? SH(632) : SH(600),
     height: SH(432),
     resizeMode: 'contain',
     ...ShadowStyles.shadow2,
@@ -115,7 +116,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(24),
   },
   productMap: {
-    width: SH(602),
+    width: SH(550),
     height: SH(234),
     resizeMode: 'contain',
   },
@@ -1106,11 +1107,11 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     paddingHorizontal: moderateScale(3),
   },
-  codeLogo:{
+  codeLogo: {
     width: SH(18),
     height: SH(22),
     resizeMode: 'contain',
-    tintColor:COLORS.primary
+    tintColor: COLORS.primary,
   },
   revenueDataTextLight: {
     fontFamily: Fonts.Regular,
@@ -1165,23 +1166,23 @@ export const styles = StyleSheet.create({
     right: 0,
     borderRadius: 10,
     ...ShadowStyles.shadow,
-    backgroundColor:COLORS.white,
+    backgroundColor: COLORS.white,
   },
-  checkedCheckboxSquare:{
+  checkedCheckboxSquare: {
     width: SH(18),
     height: SH(18),
     resizeMode: 'contain',
   },
-  allCon:{
+  allCon: {
     // borderWidth:1,
-    paddingHorizontal:moderateScale(10),
-    paddingVertical:verticalScale(4)
+    paddingHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(4),
   },
-  allText:{
+  allText: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: SF(12),
-    paddingHorizontal:moderateScale(5),
+    paddingHorizontal: moderateScale(5),
   },
 
   // payment done css start
@@ -1197,46 +1198,44 @@ export const styles = StyleSheet.create({
   listOfItems: {
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(24)
+    fontSize: SF(24),
   },
   walletItem: {
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    paddingHorizontal: moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
-   customerAddreCons: {
-    borderWidth:1,
+  customerAddreCons: {
+    borderWidth: 1,
     height: SH(300),
-    borderRadius:5,
-    borderColor:COLORS.washGrey,
+    borderRadius: 5,
+    borderColor: COLORS.washGrey,
   },
   numpadContainer2false: {
     width: SH(880),
     height: windowHeight,
     backgroundColor: COLORS.white,
-    paddingHorizontal:moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
   numpadContainer2true: {
     width: SH(1350),
     height: windowHeight,
     backgroundColor: COLORS.white,
-    paddingHorizontal:moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
 
-
-
-    // payment done css end
-     // order shipping css start
-  onlinedeliveryCon:{
-    borderBottomWidth:1,
-    borderColor:COLORS.solidGrey,
-    paddingVertical:verticalScale(5)
+  // payment done css end
+  // order shipping css start
+  onlinedeliveryCon: {
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+    paddingVertical: verticalScale(5),
   },
-  onlinedeliveryBody:{
-      // borderWidth:1,
-      width:windowWidth * 0.80,
-      alignSelf:'center',
+  onlinedeliveryBody: {
+    // borderWidth:1,
+    width: windowWidth * 0.8,
+    alignSelf: 'center',
   },
   completedButton: {
     width: SW(30),
@@ -1252,411 +1251,413 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: COLORS.white,
   },
-  onlinedeliveryBody:{
+  onlinedeliveryBody: {
     // borderWidth:1,
-    width:windowWidth * 0.80,
-    alignSelf:'center',
-},buyerCon:{
-  borderWidth:1,
-  borderColor:COLORS.solidGrey,
-  borderRadius:10,
-  width:windowWidth * 0.48,
-  height:SH(170),
-  paddingHorizontal:moderateScale(8)
-},
-invoiceCon:{
-  borderWidth:1,
-  borderColor:COLORS.solidGrey,
-  borderRadius:10,
-  width:windowWidth * 0.30,
-  height:SH(170),
-  paddingHorizontal:moderateScale(8)
-},
-angelaAddress:{
-  color: COLORS.darkGray,
-  fontSize: SF(14),
-  fontFamily: Fonts.Regular,
-},
-angela:{
-  color: COLORS.solid_grey,
-  fontSize: SF(20),
-  fontFamily: Fonts.Regular,
-},
-angelaPic:{
-  Width:SW(10),
-  height:SW(10),
-  resizeMode:'contain',
-  marginRight:-20,
-  marginLeft:-35
-},
-buyer:{
-  color: COLORS.dark_grey,
-  fontSize: SF(18),
-  fontFamily: Fonts.MaisonRegular,
-},
-invoiceId:{
-  color: COLORS.brown,
-  fontSize: SF(14),
-  fontFamily: Fonts.Regular,
-},
-deliveryDate:{
-  color: COLORS.sucx,
-  fontSize: SF(14),
-  fontFamily: Fonts.Regular,
-},
-invoiceDetail:{
-  color: COLORS.solid_grey,
-  fontSize: SF(16),
-  fontFamily: Fonts.Italic,
-},
-pointConOrder:{
-  backgroundColor:COLORS.primary,
-  borderBottomLeftRadius:20,
-  position:'absolute',
-  top:-1,
-  right:-1
-},
-pointTextOrder:{
-  color: COLORS.solid_green,
-  fontSize: SF(12),
-  fontFamily: Fonts.Regular,
-  paddingHorizontal:moderateScale(18),
-  paddingVertical:verticalScale(3)
-  // paddingHorizontal
-},
-// tableContainer:{
-//   // borderWidth:1,
-//   backgroundColor:COLORS.white,
-//   ...ShadowStyles.shadow2,
-//   // borderTopLeftRadius:12,
-//   // borderTopRightRadius:12
-//   borderRadius:12
-// },
-// tableheader:{
-//   backgroundColor:COLORS.textInputBackground,
-//   borderTopEndRadius:10,
-//   borderTopLeftRadius:10,
-//   borderColor:'transparent'
+    width: windowWidth * 0.8,
+    alignSelf: 'center',
+  },
+  buyerCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    width: windowWidth * 0.48,
+    height: SH(170),
+    paddingHorizontal: moderateScale(8),
+  },
+  invoiceCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    width: windowWidth * 0.3,
+    height: SH(170),
+    paddingHorizontal: moderateScale(8),
+  },
+  angelaAddress: {
+    color: COLORS.darkGray,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  angela: {
+    color: COLORS.solid_grey,
+    fontSize: SF(20),
+    fontFamily: Fonts.Regular,
+  },
+  angelaPic: {
+    Width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+    marginRight: -20,
+    marginLeft: -35,
+  },
+  buyer: {
+    color: COLORS.dark_grey,
+    fontSize: SF(18),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  invoiceId: {
+    color: COLORS.brown,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  deliveryDate: {
+    color: COLORS.sucx,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  invoiceDetail: {
+    color: COLORS.solid_grey,
+    fontSize: SF(16),
+    fontFamily: Fonts.Italic,
+  },
+  pointConOrder: {
+    backgroundColor: COLORS.primary,
+    borderBottomLeftRadius: 20,
+    position: 'absolute',
+    top: -1,
+    right: -1,
+  },
+  pointTextOrder: {
+    color: COLORS.solid_green,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(18),
+    paddingVertical: verticalScale(3),
+    // paddingHorizontal
+  },
+  // tableContainer:{
+  //   // borderWidth:1,
+  //   backgroundColor:COLORS.white,
+  //   ...ShadowStyles.shadow2,
+  //   // borderTopLeftRadius:12,
+  //   // borderTopRightRadius:12
+  //   borderRadius:12
+  // },
+  // tableheader:{
+  //   backgroundColor:COLORS.textInputBackground,
+  //   borderTopEndRadius:10,
+  //   borderTopLeftRadius:10,
+  //   borderColor:'transparent'
 
-// },
+  // },
 
-tableLabel:{
-  color: COLORS.dark_grey,
-  fontSize: SF(14),
-  fontFamily: Fonts.MaisonBold,
-  // paddingHorizontal:moderateScale(40)
-},
-rowText:{
-  color: COLORS.dark_grey,
-  fontSize: SF(14),
-  fontFamily: Fonts.Regular,
-},
-ashtonClass:{
-  Width:SW(10),
-  height:SW(10),
-  resizeMode:'contain',
-},
-tableSetting:{
-   width:SW(200),
+  tableLabel: {
+    color: COLORS.dark_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.MaisonBold,
+    // paddingHorizontal:moderateScale(40)
+  },
+  rowText: {
+    color: COLORS.dark_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  ashtonClass: {
+    Width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+  },
+  tableSetting: {
+    width: SW(200),
     // marginLeft:-150,
-     marginRight:170
-},
-noteContainer:{
-  borderWidth:1,
-  // backgroundColor:COLORS.,
-  borderColor:COLORS.solidGrey,
-  height:SH(274),
-  width:windowWidth * 0.38,
-  borderRadius:10,
-  backgroundColor:COLORS.textInputBackground
-},
-tablesubTotal:{
-  flexDirection:'row',
-  alignItems:'center',
-  justifyContent:'space-between',
-  paddingHorizontal:moderateScale(20),
-  // borderBottomWidth:1,
-  // borderColor:COLORS.solidGrey,
-  // paddingVertical:verticalScale(7)
-},
-tablesubTotalLabel:{
-  color: COLORS.solid_grey,
-  fontSize: SF(14),
-  fontFamily: Fonts.Regular,
-},
-tablesubTotalText:{
-  color: COLORS.solid_grey,
-  fontSize: SF(14),
-  fontFamily: Fonts.MaisonRegular,
-},
-paidContainer:{
-  backgroundColor:COLORS.primary,
-  borderRadius:3,
-  marginHorizontal:moderateScale(5)
-},
-paidText:{
-  color: COLORS.white,
-  fontSize: SF(12),
-  fontFamily: Fonts.Regular,
-  paddingHorizontal:moderateScale(6),
-  paddingVertical:verticalScale(1)
-},
-subtotalHr:{
-  borderWidth:1,
-  borderColor:COLORS.solidGrey,
-  marginVertical:Platform.OS === 'android' ? moderateScale(9) : moderateScale(7)
-},
-textInputcompleteNote:{
-  borderWidth:1,
-  borderColor:COLORS.solidGrey,
-  height:SH(274),
-  width:windowWidth * 0.38,
-  borderRadius:10,
-  backgroundColor:COLORS.textInputBackground,
-  color:COLORS.black,
-  fontFamily:Fonts.Regular,
-  fontSize:SF(14),
-  textAlignVertical:'top',
-  paddingHorizontal:moderateScale(10)
-},
-noteplaceholderStyle:{
-  color:COLORS.black,
-  fontFamily:Fonts.Regular,
-  fontSize:SF(14),
-},
-shippingDetail:{
-  color:COLORS.solid_grey,
-  fontFamily:Fonts.MaisonRegular,
-  fontSize:SF(18),
-},
-trackingCon:{
-  borderWidth:1,
-  borderColor:COLORS.solidGrey,
-  borderRadius:10,
-  height:SH(102),
-  justifyContent:'center',
-  paddingHorizontal:moderateScale(8)
-},
-willis:{
-  resizeMode:'contain',
-  width:SW(25),
-  height:SW(25)
-},
-willisName:{
-  color:COLORS.black,
-  fontFamily:Fonts.SemiBold,
-  fontSize:SF(16),
-},
-trackingNumber:{
-  color:COLORS.black,
-  fontFamily:Fonts.Regular,
-  fontSize:SF(12),
-},
-deliverBtnCon:{
-  backgroundColor:COLORS.bluish_green,
-  flexDirection:'row',
-  height:SH(36),
-  // width:SW(40),
-  alignItems:'center',
-  borderRadius:6,
-  textAlign:'center'
-},
-trackingBtnCon:{
-  backgroundColor:COLORS.orange,
-},
-deliveryCheck:{
-  resizeMode:'contain',
-  width:SW(6),
-  height:SW(6),
-},
-deliveredText:{
-  color:COLORS.white,
-  fontFamily:Fonts.Regular,
-  fontSize:SF(14),
-  paddingHorizontal:moderateScale(1)
-},
-deliverTextCon:{
-  paddingHorizontal:moderateScale(10),
-  flexDirection:'row'
-},
-// dateTableSetting:{
-//   // justifyContent:'center',
-// },
-orderNoStyle: {
-  fontSize: SF(20),
-  color: COLORS.dark_grey,
-  fontFamily: Fonts.Regular,
-  paddingHorizontal: moderateScale(7),
-},
-asthonLogo:{
-  resizeMode:'contain',
-  width:SH(36),
-  height:SH(36),
-},
+    marginRight: 170,
+  },
+  noteContainer: {
+    borderWidth: 1,
+    // backgroundColor:COLORS.,
+    borderColor: COLORS.solidGrey,
+    height: SH(274),
+    width: windowWidth * 0.38,
+    borderRadius: 10,
+    backgroundColor: COLORS.textInputBackground,
+  },
+  tablesubTotal: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(20),
+    // borderBottomWidth:1,
+    // borderColor:COLORS.solidGrey,
+    // paddingVertical:verticalScale(7)
+  },
+  tablesubTotalLabel: {
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  tablesubTotalText: {
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  paidContainer: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 3,
+    marginHorizontal: moderateScale(5),
+  },
+  paidText: {
+    color: COLORS.white,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(6),
+    paddingVertical: verticalScale(1),
+  },
+  subtotalHr: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    marginVertical:
+      Platform.OS === 'android' ? moderateScale(9) : moderateScale(7),
+  },
+  textInputcompleteNote: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    height: SH(274),
+    width: windowWidth * 0.38,
+    borderRadius: 10,
+    backgroundColor: COLORS.textInputBackground,
+    color: COLORS.black,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    textAlignVertical: 'top',
+    paddingHorizontal: moderateScale(10),
+  },
+  noteplaceholderStyle: {
+    color: COLORS.black,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+  },
+  shippingDetail: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonRegular,
+    fontSize: SF(18),
+  },
+  trackingCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    height: SH(102),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(8),
+  },
+  willis: {
+    resizeMode: 'contain',
+    width: SW(25),
+    height: SW(25),
+  },
+  willisName: {
+    color: COLORS.black,
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+  },
+  trackingNumber: {
+    color: COLORS.black,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+  },
+  deliverBtnCon: {
+    backgroundColor: COLORS.bluish_green,
+    flexDirection: 'row',
+    height: SH(36),
+    // width:SW(40),
+    alignItems: 'center',
+    borderRadius: 6,
+    textAlign: 'center',
+  },
+  trackingBtnCon: {
+    backgroundColor: COLORS.orange,
+  },
+  deliveryCheck: {
+    resizeMode: 'contain',
+    width: SW(6),
+    height: SW(6),
+  },
+  deliveredText: {
+    color: COLORS.white,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    paddingHorizontal: moderateScale(1),
+  },
+  deliverTextCon: {
+    paddingHorizontal: moderateScale(10),
+    flexDirection: 'row',
+  },
+  // dateTableSetting:{
+  //   // justifyContent:'center',
+  // },
+  orderNoStyle: {
+    fontSize: SF(20),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(7),
+  },
+  asthonLogo: {
+    resizeMode: 'contain',
+    width: SH(36),
+    height: SH(36),
+  },
   // order shipping css end
 
   // tracking number css start
-  trackingNoBody:{
-    borderWidth:1,
-    borderColor:COLORS.solidGrey,
-    borderRadius:10,
-    width:windowWidth * 0.92,
-    alignSelf:'center',
-    height:windowHeight * 0.79,
-    paddingHorizontal:moderateScale(10)
-  },
-  mapContainer:{
-    // borderWidth:2,
-    width:windowWidth * 0.44,
-    // height:windowHeight * 0.80,
-    borderRadius:10
-  },
-  costoContainer:{
-    borderWidth:1,
-    width:windowWidth * 0.44,
-    height:SH(140),
-    borderRadius:10,
-    borderColor:COLORS.solidGrey,
-  },
-  trackingAngela:{
-    Width:SH(60),
-    height:SH(60),
-    resizeMode:'contain',
-  },
-  costoHr:{
+  trackingNoBody: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    width:windowWidth * 0.34,
-    marginVertical:verticalScale(5)
+    borderRadius: 10,
+    width: windowWidth * 0.92,
+    alignSelf: 'center',
+    height: windowHeight * 0.79,
+    paddingHorizontal: moderateScale(10),
   },
-  costoName:{
+  mapContainer: {
+    // borderWidth:2,
+    width: windowWidth * 0.44,
+    // height:windowHeight * 0.80,
+    borderRadius: 10,
+  },
+  costoContainer: {
+    borderWidth: 1,
+    width: windowWidth * 0.44,
+    height: SH(140),
+    borderRadius: 10,
+    borderColor: COLORS.solidGrey,
+  },
+  trackingAngela: {
+    Width: SH(60),
+    height: SH(60),
+    resizeMode: 'contain',
+  },
+  costoHr: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    width: windowWidth * 0.34,
+    marginVertical: verticalScale(5),
+  },
+  costoName: {
     fontSize: SF(24),
     color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonBold,
   },
-  costoAdd:{
+  costoAdd: {
     fontSize: SF(14),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
-    paddingHorizontal:moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
-  costoPayCon:{
-    borderEndWidth:1,
-    borderColor:COLORS.solidGrey,
-    width:SW(50),
-    justifyContent:'center',
+  costoPayCon: {
+    borderEndWidth: 1,
+    borderColor: COLORS.solidGrey,
+    width: SW(50),
+    justifyContent: 'center',
   },
-  ciagrtext:{
+  ciagrtext: {
     fontSize: SF(16),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
-    paddingHorizontal:moderateScale(4)
+    paddingHorizontal: moderateScale(4),
   },
-  ticketImage:{
+  ticketImage: {
     width: SW(8),
     height: SW(8),
     resizeMode: 'contain',
   },
-  detailText:{
-    color:COLORS.primary,
+  detailText: {
+    color: COLORS.primary,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    paddingHorizontal:moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
-  dropRight:{
+  dropRight: {
     width: SW(6),
     height: SW(6),
     resizeMode: 'contain',
   },
-  mapStyle:{
+  mapStyle: {
     width: SW(163),
     height: SH(1070),
     resizeMode: 'cover',
-    borderRadius:15,
+    borderRadius: 15,
   },
-  orderStatus:{
-    color:COLORS.solid_grey,
+  orderStatus: {
+    color: COLORS.solid_grey,
     fontSize: SF(15),
     fontFamily: Fonts.SemiBold,
   },
-  movingArrow:{
+  movingArrow: {
     width: SW(8),
     height: SW(16),
     resizeMode: 'cover',
-    marginTop:10,
-    marginBottom:4
+    marginTop: 10,
+    marginBottom: 4,
   },
-  verifyTextLight:{
-    color:COLORS.gerySkies,
+  verifyTextLight: {
+    color: COLORS.gerySkies,
     fontSize: SF(12),
     fontFamily: Fonts.SemiBold,
   },
-  waitMinuteLight:{
-    color:COLORS.gerySkies,
+  waitMinuteLight: {
+    color: COLORS.gerySkies,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
   },
-  carriarCon:{
-    borderWidth:1,
-    borderColor:COLORS.solidGrey,
-    borderRadius:10,
-    paddingHorizontal:moderateScale(10),
-    height:SH(102)
+  carriarCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    paddingHorizontal: moderateScale(10),
+    height: SH(102),
   },
-  tracking2Angela:{
+  tracking2Angela: {
     width: SH(36),
     height: SH(36),
     resizeMode: 'contain',
   },
-  gredoName:{
-    color:COLORS.black,
+  gredoName: {
+    color: COLORS.black,
     fontSize: SF(18),
     fontFamily: Fonts.SemiBold,
-    paddingHorizontal:moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
-  contactButton:{
-    height:SH(36),
-    backgroundColor:COLORS.textInputBackground,
-    borderRadius:24,
-    justifyContent:'center'
+  contactButton: {
+    height: SH(36),
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 24,
+    justifyContent: 'center',
   },
-  contactStyle:{
+  contactStyle: {
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
   },
-  contactText:{
-    color:COLORS.solid_grey,
+  contactText: {
+    color: COLORS.solid_grey,
     fontSize: SF(14),
     fontFamily: Fonts.SemiBold,
-    paddingLeft:moderateScale(5)
+    paddingLeft: moderateScale(5),
   },
-  Phonelight:{
+  Phonelight: {
     width: SH(16),
     height: SH(16),
     resizeMode: 'contain',
   },
-  mapBorder:{
-    borderWidth:2,
+  mapBorder: {
+    borderWidth: 2,
     width: SW(164),
     height: SH(1074),
-    borderRadius:18,
-    borderColor:COLORS.solidGrey
+    borderRadius: 18,
+    borderColor: COLORS.solidGrey,
   },
-  buyerTableSettingFirst:{
-    width:SH(10),
-    justifyContent:'center',
+  buyerTableSettingFirst: {
+    width: SH(10),
+    justifyContent: 'center',
   },
-  buyerTableSettingSecond:{
-    width:SH(150),
+  buyerTableSettingSecond: {
+    width: SH(150),
     // justifyContent:'center',
-    marginLeft:-120
+    marginLeft: -120,
   },
-  buyerSerial:{
-    width:SH(20),
+  buyerSerial: {
+    width: SH(20),
     // justifyContent:'center',
-  }
-   // tracking number css 
+  },
+  // tracking number css
 
   // TOTAL RENEVUE CSS END
 });

@@ -12,14 +12,13 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1D63AE4328AFB485004AAF4C /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D63AE4228AFB484004AAF4C /* BootSplash.storyboard */; };
 		1D91A5C2B3A340C48EE41714 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5086FA5317FD47309E01633E /* Montserrat-Bold.ttf */; };
 		485D432670A6489085BE23D4 /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D098B3E9DD854BF29E4FEE5C /* Montserrat-MediumItalic.ttf */; };
 		4E5861FDE0F44DCBAF4B1EEC /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C51AEED5BEE640A086BDA7C4 /* Montserrat-Regular.ttf */; };
 		704172F605AB50D7517B59B4 /* libPods-tabposapp-tabposappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 53A1097876C1BB1FF5E92238 /* libPods-tabposapp-tabposappTests.a */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8B362915CBF4462BBC3ACDC4 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D832F2C52A7449E8B8557F36 /* Montserrat-SemiBold.ttf */; };
 		9AA45A1F723747E491CF5140 /* Montserrat-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F34163D3E7614C4B9C5518A6 /* Montserrat-Italic.ttf */; };
+		A2263E08294A044F003CEA47 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2263E07294A044F003CEA47 /* BootSplash.storyboard */; };
 		A2D38CD128E5ABEF004141A8 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = A2D38CD028E5ABEF004141A8 /* fonts */; };
 		A592F8871F9144A883C1A278 /* Maison Mono Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 328414CFAB54414FB17BA4A2 /* Maison Mono Regular.ttf */; };
 		BA8E5A9AFD124195A865628C /* MaisonMonoTRIAL-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C584E8A42E44464BFE17C3E /* MaisonMonoTRIAL-Bold.otf */; };
@@ -47,14 +46,13 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = tabposapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = tabposapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = tabposapp/main.m; sourceTree = "<group>"; };
-		1D63AE4228AFB484004AAF4C /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = tabposapp/BootSplash.storyboard; sourceTree = "<group>"; };
 		328414CFAB54414FB17BA4A2 /* Maison Mono Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Maison Mono Regular.ttf"; path = "../src/assets/fonts/Maison Mono Regular.ttf"; sourceTree = "<group>"; };
 		3C584E8A42E44464BFE17C3E /* MaisonMonoTRIAL-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "MaisonMonoTRIAL-Bold.otf"; path = "../src/assets/fonts/MaisonMonoTRIAL-Bold.otf"; sourceTree = "<group>"; };
 		455C7FC6813CE550320CCF9B /* Pods-tabposapp-tabposappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp-tabposappTests.release.xcconfig"; path = "Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests.release.xcconfig"; sourceTree = "<group>"; };
 		5086FA5317FD47309E01633E /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../src/assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		53A1097876C1BB1FF5E92238 /* libPods-tabposapp-tabposappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tabposapp-tabposappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AB59C7EACE7497F94BEE465 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../src/assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = tabposapp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A2263E07294A044F003CEA47 /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BootSplash.storyboard; sourceTree = "<group>"; };
 		A2D38CD028E5ABEF004141A8 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		B729D2F5B1CFDC0D2308A522 /* Pods-tabposapp-tabposappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp-tabposappTests.debug.xcconfig"; path = "Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BFAA9F1C7BDA3A4C2DAC6FF0 /* Pods-tabposapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp.release.xcconfig"; path = "Target Support Files/Pods-tabposapp/Pods-tabposapp.release.xcconfig"; sourceTree = "<group>"; };
@@ -106,13 +104,12 @@
 		13B07FAE1A68108700A75B9A /* tabposapp */ = {
 			isa = PBXGroup;
 			children = (
-				1D63AE4228AFB484004AAF4C /* BootSplash.storyboard */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				A2263E07294A044F003CEA47 /* BootSplash.storyboard */,
 			);
 			name = tabposapp;
 			sourceTree = "<group>";
@@ -280,9 +277,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D63AE4328AFB485004AAF4C /* BootSplash.storyboard in Resources */,
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				A2263E08294A044F003CEA47 /* BootSplash.storyboard in Resources */,
 				A2D38CD128E5ABEF004141A8 /* fonts in Resources */,
 				BA8E5A9AFD124195A865628C /* MaisonMonoTRIAL-Bold.otf in Resources */,
 				A592F8871F9144A883C1A278 /* Maison Mono Regular.ttf in Resources */,
@@ -548,8 +544,12 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = tabposapp;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -574,7 +574,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = tabposapp;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
