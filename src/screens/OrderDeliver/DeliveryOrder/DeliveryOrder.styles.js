@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
     paddingVertical: SH(35),
     flexDirection: 'row',
   },
-  
+
   contentContainer: {
     justifyContent: 'space-between',
     flex: 1,
@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonRegular,
     fontSize: SF(27),
   },
-  
+
   statusText: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    width:SH(640),
+    // width:SH(640),
   },
   chartView: {
     width: SW(168),
@@ -172,7 +172,7 @@ export const styles = StyleSheet.create({
   },
   rightIconStyle: {
     width: SW(10),
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   nameText: {
     fontFamily: Fonts.Regular,
@@ -250,7 +250,7 @@ export const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     // paddingRight: SW(50),
-    width:windowWidth * 0.44
+    width: windowWidth * 0.44,
   },
   profileDetailView: {
     // marginHorizontal: SW(5),
@@ -260,11 +260,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     marginTop: 4,
     flexDirection: 'row',
-    justifyContent:'space-between'
+    justifyContent: 'space-between',
   },
   productImageView: {
     flexDirection: 'row',
-    width: SW(50)
+    width: SW(50),
   },
   profileImage: {
     width: SW(14),
@@ -397,7 +397,7 @@ export const styles = StyleSheet.create({
     width: windowWidth / 2.2,
     height: SW(137),
     alignSelf: 'center',
-    borderRadius: 6
+    borderRadius: 6,
   },
   headerTab: {
     flexDirection: 'row',
@@ -419,11 +419,11 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SH(46),
     resizeMode: 'contain',
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
   },
   deliveryStatus: {
     flexDirection: 'row',
-    height: SH(53)
+    height: SH(53),
   },
   verifyText: {
     fontFamily: Fonts.SemiBold,
@@ -431,13 +431,13 @@ export const styles = StyleSheet.create({
     color: COLORS.gerySkies,
   },
   justifyContentStyle: {
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   radioImage: {
     width: SW(8),
     height: SW(8),
     resizeMode: 'contain',
     alignSelf: 'center',
-    left: 6
-  }
+    left: 6,
+  },
 });

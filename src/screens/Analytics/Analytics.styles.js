@@ -95,7 +95,7 @@ export const styles = StyleSheet.create({
   },
   totalProductCon: {
     backgroundColor: COLORS.white,
-    width: Platform.OS === 'android' ? SH(632) : SH(600),
+    // width: Platform.OS === 'android' ? SH(632) : SH(600),
     height: SH(432),
     resizeMode: 'contain',
     ...ShadowStyles.shadow2,
@@ -116,7 +116,8 @@ export const styles = StyleSheet.create({
     fontSize: SF(24),
   },
   productMap: {
-    width: SH(550),
+    // width: SH(350),
+    width: windowWidth * 0.38,
     height: SH(234),
     resizeMode: 'contain',
   },

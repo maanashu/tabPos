@@ -11,10 +11,10 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
   },
-  displayFlex:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center'
+  displayFlex: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   headerMainView: {
     width: windowWidth,
@@ -55,12 +55,12 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     left: 3,
   },
-  searchImage2:{
+  searchImage2: {
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
     left: 3,
-    transform:[{rotate:'180deg'}]
+    transform: [{ rotate: '180deg' }],
   },
   textInputStyle: {
     width: SW(45),
@@ -114,7 +114,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    width:SH(640),
+    // width: SH(640),
   },
   chartView: {
     width: SW(168),
@@ -128,7 +128,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderReviewRightView: {
-    width: windowWidth / 2.25,
+    // width: windowWidth / 2.25,
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     height: SW(205),
@@ -182,7 +182,7 @@ export const styles = StyleSheet.create({
   },
   rightIconStyle: {
     width: SW(10),
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   nameText: {
     fontFamily: Fonts.Regular,
@@ -236,8 +236,8 @@ export const styles = StyleSheet.create({
     paddingLeft: SW(2),
     paddingRight: SW(5),
     paddingVertical: SW(2),
-    width:SH(180),
-    borderRadius:5
+    width: SH(180),
+    borderRadius: 5,
   },
   totalText: {
     fontFamily: Fonts.SemiBold,
@@ -261,18 +261,19 @@ export const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
-    width:windowWidth * 0.44
+    width: windowWidth * 0.44,
+    // borderWidth: 1,
     // paddingRight: SW(50)
   },
-  orderDetailView2:{
+  orderDetailView2: {
     backgroundColor: COLORS.white,
     paddingRight: SW(0),
-    borderWidth:1,
-    borderColor:COLORS.solidGrey,
-    borderRadius:10,
-    height:SH(660),
-    width:windowWidth * 0.52,
-    paddingBottom:20
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    height: SH(660),
+    // width: windowWidth * 0.52,
+    paddingBottom: 20,
   },
   profileDetailView: {
     marginHorizontal: SW(3),
@@ -282,11 +283,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     marginTop: 4,
     flexDirection: 'row',
-    justifyContent:'space-between'
+    justifyContent: 'space-between',
   },
   productImageView: {
     flexDirection: 'row',
-    width: SW(50)
+    width: SW(50),
   },
   profileImage: {
     width: SW(12),
@@ -307,7 +308,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
     fontSize: SF(11),
     color: COLORS.darkGray,
-    marginBottom:5
+    marginBottom: 5,
   },
   productViewStyle: {
     // marginLeft: SW(5),
@@ -326,20 +327,19 @@ export const styles = StyleSheet.create({
     // bottom: 0,
     // height: SW(105),
     backgroundColor: COLORS.white,
-    width: windowWidth * 0.44,
+    // width: windowWidth * 0.44,
     // ...ShadowStyles.shadow2,
     // paddingHorizontal: 30,
     paddingTop: 10,
-    borderTopWidth:1,
-    borderColor:COLORS.row_grey,
+    borderTopWidth: 1,
+    borderColor: COLORS.row_grey,
   },
   bottomSheet2: {
     position: 'absolute',
     bottom: 10,
     ...ShadowStyles.shadow1,
-    width: windowWidth * 0.50,
+    // width: windowWidth * 0.5,
     height: SH(200),
-    
   },
   rowView: {
     flexDirection: 'row',
@@ -348,7 +348,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 2,
     alignSelf: 'flex-end',
     paddingRight: 10,
-    paddingVertical:verticalScale(2)
+    paddingVertical: verticalScale(2),
   },
   subTotal: {
     fontFamily: Fonts.MaisonRegular,
@@ -439,13 +439,13 @@ export const styles = StyleSheet.create({
     height: 1,
     width: '92%',
     alignSelf: 'center',
-    marginVertical:verticalScale(2)
+    marginVertical: verticalScale(2),
   },
   map: {
     width: windowWidth / 2.3,
     height: SW(130),
     alignSelf: 'center',
-    borderRadius: 6
+    borderRadius: 6,
   },
   headerTab: {
     flexDirection: 'row',
@@ -463,166 +463,171 @@ export const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 7,
   },
-  deliveryImage: {  
+  deliveryImage: {
     width: SW(15),
     height: SH(46),
     resizeMode: 'contain',
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
   },
-  verified:{
+  verified: {
     width: SW(6),
     height: SW(6),
     resizeMode: 'contain',
     alignSelf: 'flex-end',
-    marginLeft:15
+    marginLeft: 15,
   },
   deliveryStatus: {
     flexDirection: 'row',
-    height: SH(50)
+    height: SH(50),
   },
   verifyText: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(11),
     color: COLORS.solid_grey,
   },
-  verifyTextLight:{
+  verifyTextLight: {
     fontFamily: Fonts.Regular,
     fontSize: SF(11),
     color: COLORS.gerySkies,
   },
   justifyContentStyle: {
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   radioImage: {
     width: SW(8),
     height: SW(8),
     resizeMode: 'contain',
     alignSelf: 'center',
-    left: 6
+    left: 6,
   },
-  selectShipingRightView:{
-    borderWidth:1,
-     width:SH(545),
-    borderRadius:10,
-    borderColor:COLORS.solidGrey,
-    paddingHorizontal:moderateScale(10)
+  selectShipingRightView: {
+    borderWidth: 1,
+    // width: SH(545),
+    borderRadius: 10,
+    borderColor: COLORS.solidGrey,
+    paddingHorizontal: moderateScale(10),
   },
-  selectShipingCon:{
-    width:SH(510),
-    height:SH(56),
-    borderWidth:1,
-    borderColor:COLORS.solidGrey,
-    borderRadius:10,
-    paddingHorizontal:moderateScale(10),justifyContent:'center'
+  selectShipingCon: {
+    // width: SH(510),
+    height: SH(56),
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    paddingHorizontal: moderateScale(10),
+    justifyContent: 'center',
   },
-  radioRound:{
+  radioRound: {
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
   },
-  shipingRate:{
+  shipingRate: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.solid_grey,
   },
-  ups2:{
+  ups2: {
     width: SH(36),
     height: SH(36),
     resizeMode: 'contain',
   },
-  printButtonCon:{
-    width:SH(510),
-    height:SH(64),
-    borderWidth:1,
-    borderColor:COLORS.solidGrey,
-    borderRadius:10,
-    justifyContent:'center',
-    alignItems:'center'
+  printButtonCon: {
+    width: SH(510),
+    height: SH(64),
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  printText:{
+  printText: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
     color: COLORS.darkGray,
   },
-  orderOfReview:{
+  orderOfReview: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
     color: COLORS.primary,
-    paddingHorizontal:moderateScale(13)
+    paddingHorizontal: moderateScale(13),
   },
-  printAgainButton:{
+  printAgainButton: {
     width: SW(160),
     height: SW(15),
     backgroundColor: COLORS.primary,
     top: 8,
-    alignSelf:'center'
+    alignSelf: 'center',
   },
-  printAgainTack:{
+  printAgainTack: {
     backgroundColor: COLORS.blue_shade,
   },
-  fedContextCon:{
-    borderWidth:1,
+  fedContextCon: {
+    borderWidth: 1,
     // width:SW(350),
-    height:SH(60),
-    borderRadius:10,
-    borderColor:COLORS.solidGrey,
-    marginHorizontal:moderateScale(10),
-    marginTop:SH(10),
-    justifyContent:'center',
-    paddingHorizontal:moderateScale(5)
+    height: SH(60),
+    borderRadius: 10,
+    borderColor: COLORS.solidGrey,
+    marginHorizontal: moderateScale(10),
+    marginTop: SH(10),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(5),
   },
-  noteContainer:{
-    borderWidth:2,
-    borderColor:COLORS.solidGrey,
-    height:SH(126),
-    borderRadius:5,
-    paddingHorizontal:moderateScale(15)
+  noteContainer: {
+    borderWidth: 2,
+    borderColor: COLORS.solidGrey,
+    height: SH(126),
+    borderRadius: 5,
+    paddingHorizontal: moderateScale(15),
   },
-  note:{
+  note: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.black,
   },
-  contactCon:{
-    backgroundColor:COLORS.textInputBackground,
-    width:SW(35),
-    height:SW(11),
-    borderRadius:24,
-    justifyContent:'center',
-    alignItems:'center',
-    flexDirection:'row'
+  contactCon: {
+    backgroundColor: COLORS.textInputBackground,
+    width: SW(35),
+    height: SW(11),
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
-  contact:{
+  contact: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(14), 
+    fontSize: SF(14),
     color: COLORS.solid_grey,
   },
-  Phonelight:{
-    width:SW(5),
-    height:SW(5),
-    resizeMode:'contain',
-    marginHorizontal:moderateScale(5),
-    tintColor:COLORS.solid_grey
+  Phonelight: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+    marginHorizontal: moderateScale(5),
+    tintColor: COLORS.solid_grey,
   },
-  fedx:{
-    width:SW(16),
-    height:SW(16),
-    resizeMode:'contain',
-    marginTop:10
+  fedx: {
+    width: SW(16),
+    height: SW(16),
+    resizeMode: 'contain',
+    marginTop: 10,
   },
-  fedEx:{
+  fedEx: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
     color: COLORS.black,
   },
-  fedNumber:{
+  fedNumber: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(12),
     color: COLORS.primary,
   },
-  verifySuccess:{
+  verifySuccess: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(12),
     color: COLORS.bluish_green,
-  }
+  },
+  scrollMainCon: {
+    // borderWidth: 5,
+    paddingHorizontal: moderateScale(5),
+  },
 });
