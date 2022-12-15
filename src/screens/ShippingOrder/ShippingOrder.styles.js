@@ -55,6 +55,13 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     left: 3,
   },
+  searchImage2:{
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+    left: 3,
+    transform:[{rotate:'180deg'}]
+  },
   textInputStyle: {
     width: SW(45),
     marginLeft: 10,
@@ -135,7 +142,7 @@ export const styles = StyleSheet.create({
   reviewHeadingView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: SW(3),
+    paddingHorizontal: SW(5),
     alignItems: 'center',
   },
   viewAllView: {
@@ -158,11 +165,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: SW(2),
     borderColor: COLORS.orderStatusBackground,
-    borderRadius: 5,
+    borderRadius: 2,
     paddingVertical: 6,
     paddingLeft: SW(5),
     justifyContent: 'space-between',
-    // backgroundColor: '#E5F0FF'
   },
   timeView: {
     flexDirection: 'row',
@@ -387,6 +393,11 @@ export const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.white,
   },
+  buttonTextTrack: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+    color: COLORS.primary,
+  },
   declineButton: {
     width: SW(50),
     height: SW(15),
@@ -458,12 +469,24 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignSelf: 'flex-end'
   },
+  verified:{
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+    alignSelf: 'flex-end',
+    marginLeft:15
+  },
   deliveryStatus: {
     flexDirection: 'row',
     height: SH(50)
   },
   verifyText: {
     fontFamily: Fonts.SemiBold,
+    fontSize: SF(11),
+    color: COLORS.solid_grey,
+  },
+  verifyTextLight:{
+    fontFamily: Fonts.Regular,
     fontSize: SF(11),
     color: COLORS.gerySkies,
   },
@@ -534,14 +557,72 @@ export const styles = StyleSheet.create({
     top: 8,
     alignSelf:'center'
   },
+  printAgainTack:{
+    backgroundColor: COLORS.blue_shade,
+  },
   fedContextCon:{
     borderWidth:1,
     // width:SW(350),
-    height:SH(70),
+    height:SH(60),
     borderRadius:10,
     borderColor:COLORS.solidGrey,
     marginHorizontal:moderateScale(10),
-    marginTop:SH(15)
-
+    marginTop:SH(10),
+    justifyContent:'center',
+    paddingHorizontal:moderateScale(5)
+  },
+  noteContainer:{
+    borderWidth:2,
+    borderColor:COLORS.solidGrey,
+    height:SH(126),
+    borderRadius:5,
+    paddingHorizontal:moderateScale(15)
+  },
+  note:{
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    color: COLORS.black,
+  },
+  contactCon:{
+    backgroundColor:COLORS.textInputBackground,
+    width:SW(35),
+    height:SW(11),
+    borderRadius:24,
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection:'row'
+  },
+  contact:{
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14), 
+    color: COLORS.solid_grey,
+  },
+  Phonelight:{
+    width:SW(5),
+    height:SW(5),
+    resizeMode:'contain',
+    marginHorizontal:moderateScale(5),
+    tintColor:COLORS.solid_grey
+  },
+  fedx:{
+    width:SW(16),
+    height:SW(16),
+    resizeMode:'contain',
+    marginTop:10
+  },
+  fedEx:{
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+    color: COLORS.black,
+  },
+  fedNumber:{
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(12),
+    color: COLORS.primary,
+  },
+  verifySuccess:{
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(12),
+    color: COLORS.bluish_green,
   }
 });

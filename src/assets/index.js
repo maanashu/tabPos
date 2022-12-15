@@ -139,6 +139,7 @@ export { default as blankCheckBox } from '@/assets/icons/ic_analytics/blankCheck
 export { default as asthonLogo } from '@/assets/icons/ic_analytics/asthonLogo.png';
 export { default as radioRound } from '@/assets/icons/ic_shipingOrder/radioRound.png';
 export { default as ups2 } from '@/assets/icons/ic_shipingOrder/ups.png';
+export { default as verified } from '@/assets/icons/ic_shipingOrder/verified.png';
 // export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */

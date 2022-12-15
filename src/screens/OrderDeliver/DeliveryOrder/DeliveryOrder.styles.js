@@ -63,6 +63,7 @@ export const styles = StyleSheet.create({
     paddingVertical: SH(35),
     flexDirection: 'row',
   },
+  
   contentContainer: {
     justifyContent: 'space-between',
     flex: 1,
@@ -84,12 +85,13 @@ export const styles = StyleSheet.create({
   countText: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonRegular,
-    fontSize: SF(30),
+    fontSize: SF(27),
   },
+  
   statusText: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(18),
+    fontSize: SF(15),
     textAlign: 'center',
   },
   orderNumberMainView: {
@@ -123,7 +125,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   orderReviewText: {
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.MaisonBold,
     color: COLORS.primary,
     fontSize: SF(18),
   },
@@ -179,7 +181,7 @@ export const styles = StyleSheet.create({
   },
   timeText: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(12),
+    fontSize: SF(11),
     color: COLORS.dark_grey,
     textAlignVertical: 'center',
     paddingLeft: 2,

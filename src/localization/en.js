@@ -90,7 +90,11 @@ export const en = {
     verifyCode: 'Verify code',
     verifyCode: 'Verify code',
     selectShip:'Select shipping',
-    shippingOrder:'Shipping orders'
+    shippingOrder:'Shipping orders',
+    shipPtr:'Pickup by SHIP PTNR SITE USPS AWAITS ITEM',
+    imperialAdd:'IMPERIAL, PA, 15126, US • Aug 5, 2:39am',
+    delivered:'Delivered',
+    verifySuccess:'Verifiered successfull'
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -411,10 +415,15 @@ export const en = {
       priorityMalling:'Priority Mailing services',
       dayShiping:'1-3 days shipping',
       printText:'Select & Continue to print',
-      printAgain:'Print Again',
       orderOfReview:'Orders to review',
       readyToShip:'Ready to ship',
-      printAgain:'Print Again'
+      printAgain:'Print Again',
+      outStock:'Out of stock',
+      note:'Note',
+      track:'Track',
+      contact:'Contact',
+      fedEx:'FedEx',
+      fedNumber:'936128'
     }
   
 };

@@ -24,6 +24,6 @@ export const COLORS = {
   orange:'#F2994A',
   darkGreen:'#384048',
   red: '#FB466C',
-    orange: '#FC7900'
+  orange: '#FC7900'
 };
    

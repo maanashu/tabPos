@@ -26,9 +26,13 @@ import {
   dropdown2,
   delivery,
   deliveryLine,
+  Phone_light,
   radio,
   radioRound,
   ups2,
+  fedx,
+  verifyIcon,
+  verified
 } from '@/assets';
 import { styles } from './ShippingOrder.styles';
 import { strings } from '@/localization';
@@ -58,6 +62,8 @@ export function ShippingOrder() {
   const [keyValue, setKeyValue] = useState('');
   const [readyShipPrintAgain, setReadyShipPrintAgain] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [dataShiping, setDataShiping] = useState('');
+  const [mapShow, setMapShow] = useState(false)
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity
@@ -133,7 +139,7 @@ export function ShippingOrder() {
 
   const getKeyValue = async () => {
     const get = await AsyncStorage.getItem('acceptOrder');
-    console.log('get---------', get);
+    // console.log('get---------', get);
     setKeyValue(get);
   };
 
@@ -179,15 +185,276 @@ export function ShippingOrder() {
 
   const headerNavigatorHandler = item => {
     if (item.status === 'New Shipping Orders') {
-      setViewAllReviews(true)
+      setViewAllReviews(true);
     } else if (item.status === 'Ready To Ship') {
       setReadyShipPrintAgain(true);
+      setDataShiping('Ready To Ship')
     } else if (item.status === 'Order Shipped') {
       setReadyShipPrintAgain(true);
+      setDataShiping('Order Shipped')
     } else if (item.status === 'Cancelled') {
       setReadyShipPrintAgain(true);
+      setDataShiping('Cancelled')
     }
   };
+
+const dataAccrodingShipType = (dataShiping) => {
+    if(dataShiping === 'Ready To Ship'){
+      return(
+        <View>
+               <View style={{ height: SH(265)}}>
+                <FlatList
+                  data={productList}
+                  renderItem={readyShipRightList}
+                  ItemSeparatorComponent={() => (
+                    <View style={styles.itemSeparatorView} />
+                  )}
+                />
+              </View>
+              <View style={[styles.bottomSheet]}>
+                <View style={styles.rowView}>
+                  <Text style={styles.subTotal}>
+                    {strings.deliveryOrders.subTotal}
+                  </Text>
+                  <Text style={styles.subTotalValue}>
+                    {strings.deliveryOrders.subTotalValue}
+                  </Text>
+                </View>
+
+                <View style={styles.rowView}>
+                  <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+                    {strings.deliveryOrders.discount}
+                  </Text>
+                  <Text style={styles.discountValue}>
+                    {strings.deliveryOrders.discountValue}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderStyle: 'dashed',
+                    width: SH(380),
+                    alignSelf: 'flex-end',
+                    borderColor: COLORS.row_grey,
+                    marginVertical: verticalScale(2),
+                  }}
+                />
+                <View style={styles.rowView}>
+                  <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+                    {strings.deliveryOrders.tax}
+                  </Text>
+                  <Text style={styles.discountValue}>
+                    {strings.deliveryOrders.subTotalValue}
+                  </Text>
+                </View>
+
+                <View style={styles.rowView}>
+                  <Text style={styles.totalLabel}>
+                    {strings.deliveryOrders.total}
+                  </Text>
+                  <Text style={styles.totalValue}>
+                    {strings.deliveryOrders.totalValue}
+                  </Text>
+                </View>
+
+                <View style={styles.rowView}>
+                  <Text style={styles.discountValue}>
+                    {strings.deliveryOrders.items}
+                  </Text>
+                </View>
+
+                <Button
+                  // onPress={() => { setOrderAccepted(true) }}
+                  // onPress={()=>  (setPrintScreen(true), setViewAllReviews(false), saveKey())}
+                  style={styles.printAgainButton}
+                  title={strings.shipingOrder.printAgain}
+                  textStyle={styles.buttonText}
+                />
+              </View> 
+               </View>
+      )
+    }else if(dataShiping === 'Order Shipped' ){
+      return(
+        // {
+          mapShow
+          ?
+             ( <View style={{ flex: 1, marginTop: SH(15)}}>
+               <MapView
+                 provider={PROVIDER_GOOGLE}
+                 showCompass
+               region={{
+                   latitude: 27.2046,
+                longitude: 77.4977,
+                   latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+              }}
+                style={styles.map}
+               ></MapView>
+               <View>{showOrderStatusModal()}</View>
+              </View>)
+              :
+              (
+                <View>
+              <View style={{ height: SH(265)}}>
+               <FlatList
+                 data={productList}
+                 renderItem={readyShipRightList}
+                 ItemSeparatorComponent={() => (
+                   <View style={styles.itemSeparatorView} />
+                 )}
+               />
+             </View>
+             <View style={[styles.bottomSheet]}>
+               <View style={styles.rowView}>
+                 <Text style={styles.subTotal}>
+                   {strings.deliveryOrders.subTotal}
+                 </Text>
+                 <Text style={styles.subTotalValue}>
+                   {strings.deliveryOrders.subTotalValue}
+                 </Text>
+               </View>
+
+               <View style={styles.rowView}>
+                 <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+                   {strings.deliveryOrders.discount}
+                 </Text>
+                 <Text style={styles.discountValue}>
+                   {strings.deliveryOrders.discountValue}
+                 </Text>
+               </View>
+               <View
+                 style={{
+                   borderWidth: 1,
+                   borderStyle: 'dashed',
+                   width: SH(380),
+                   alignSelf: 'flex-end',
+                   borderColor: COLORS.row_grey,
+                   marginVertical: verticalScale(2),
+                 }}
+               />
+               <View style={styles.rowView}>
+                 <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+                   {strings.deliveryOrders.tax}
+                 </Text>
+                 <Text style={styles.discountValue}>
+                   {strings.deliveryOrders.subTotalValue}
+                 </Text>
+               </View>
+
+               <View style={styles.rowView}>
+                 <Text style={styles.totalLabel}>
+                   {strings.deliveryOrders.total}
+                 </Text>
+                 <Text style={styles.totalValue}>
+                   {strings.deliveryOrders.totalValue}
+                 </Text>
+               </View>
+
+               <View style={styles.rowView}>
+                 <Text style={styles.discountValue}>
+                   {strings.deliveryOrders.items}
+                 </Text>
+               </View>
+
+               <Button
+                 onPress={()=>  setMapShow(true)}
+                 style={[styles.printAgainButton, styles.printAgainTack]}
+                 title={strings.shipingOrder.track}
+                 textStyle={styles.buttonTextTrack}
+               />
+             </View> 
+              </View>
+              )
+
+        // }
+             
+              
+
+      )
+    }else if(dataShiping === 'Cancelled' ){
+      return(
+        <View>
+        <View style={{ height: SH(365)}}>
+         <FlatList
+           data={productList}
+           renderItem={readyShipRightList}
+           ItemSeparatorComponent={() => (
+             <View style={styles.itemSeparatorView} />
+           )}
+         />
+       </View>
+       <Spacer space={SH(20)}/>
+       <View style={styles.noteContainer}>
+       <Spacer space={SH(10)}/>
+        <Text style={styles.note}>{strings.shipingOrder.note}</Text>
+       <Spacer space={SH(8)}/>
+        <Text style={styles.note}>{strings.shipingOrder.outStock}</Text>
+
+       </View>
+       {/* <View style={[styles.bottomSheet]}>
+         <View style={styles.rowView}>
+           <Text style={styles.subTotal}>
+             {strings.deliveryOrders.subTotal}
+           </Text>
+           <Text style={styles.subTotalValue}>
+             {strings.deliveryOrders.subTotalValue}
+           </Text>
+         </View>
+
+         <View style={styles.rowView}>
+           <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+             {strings.deliveryOrders.discount}
+           </Text>
+           <Text style={styles.discountValue}>
+             {strings.deliveryOrders.discountValue}
+           </Text>
+         </View>
+         <View
+           style={{
+             borderWidth: 1,
+             borderStyle: 'dashed',
+             width: SH(380),
+             alignSelf: 'flex-end',
+             borderColor: COLORS.row_grey,
+             marginVertical: verticalScale(2),
+           }}
+         />
+         <View style={styles.rowView}>
+           <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+             {strings.deliveryOrders.tax}
+           </Text>
+           <Text style={styles.discountValue}>
+             {strings.deliveryOrders.subTotalValue}
+           </Text>
+         </View>
+
+         <View style={styles.rowView}>
+           <Text style={styles.totalLabel}>
+             {strings.deliveryOrders.total}
+           </Text>
+           <Text style={styles.totalValue}>
+             {strings.deliveryOrders.totalValue}
+           </Text>
+         </View>
+
+         <View style={styles.rowView}>
+           <Text style={styles.discountValue}>
+             {strings.deliveryOrders.items}
+           </Text>
+         </View>
+
+         <Button
+           // onPress={() => { setOrderAccepted(true) }}
+           // onPress={()=>  (setPrintScreen(true), setViewAllReviews(false), saveKey())}
+           style={styles.printAgainButton}
+           title={strings.shipingOrder.printAgain}
+           textStyle={styles.buttonText}
+         />
+       </View>  */}
+        </View>
+      )
+    }
+}
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
@@ -214,6 +481,7 @@ export function ShippingOrder() {
         <Text numberOfLines={1} style={styles.nameText}>
           {item.name}
         </Text>
+        <Spacer space={SH(6)}/>
         <View style={styles.timeView}>
           <Image source={pin} style={styles.pinIcon} />
           <Text style={styles.timeText}>{item.time}</Text>
@@ -222,6 +490,7 @@ export function ShippingOrder() {
 
       <View style={{ width: SW(25) }}>
         <Text style={styles.nameText}>{item.items}</Text>
+        <Spacer space={SH(6)}/>
         <View style={styles.timeView}>
           <Image source={pay} style={styles.pinIcon} />
           <Text style={styles.timeText}>{item.price}</Text>
@@ -232,6 +501,7 @@ export function ShippingOrder() {
         <Text style={[styles.nameText, { color: COLORS.primary }]}>
           {item.deliveryType}
         </Text>
+        <Spacer space={SH(6)}/>
         <View style={styles.timeView}>
           <Image source={clock} style={styles.pinIcon} />
           <Text style={styles.timeText}>{item.timeSlot}</Text>
@@ -454,92 +724,11 @@ export function ShippingOrder() {
               </View>
 
               <View style={styles.horizontalLine} />
-               <View>
-               <View style={{ height: SH(265)}}>
-                <FlatList
-                  data={productList}
-                  renderItem={readyShipRightList}
-                  ItemSeparatorComponent={() => (
-                    <View style={styles.itemSeparatorView} />
-                  )}
-                />
-              </View>
-              <View style={[styles.bottomSheet]}>
-                <View style={styles.rowView}>
-                  <Text style={styles.subTotal}>
-                    {strings.deliveryOrders.subTotal}
-                  </Text>
-                  <Text style={styles.subTotalValue}>
-                    {strings.deliveryOrders.subTotalValue}
-                  </Text>
-                </View>
-
-                <View style={styles.rowView}>
-                  <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                    {strings.deliveryOrders.discount}
-                  </Text>
-                  <Text style={styles.discountValue}>
-                    {strings.deliveryOrders.discountValue}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    borderStyle: 'dashed',
-                    width: SH(380),
-                    alignSelf: 'flex-end',
-                    borderColor: COLORS.row_grey,
-                    marginVertical: verticalScale(2),
-                  }}
-                />
-                <View style={styles.rowView}>
-                  <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                    {strings.deliveryOrders.tax}
-                  </Text>
-                  <Text style={styles.discountValue}>
-                    {strings.deliveryOrders.subTotalValue}
-                  </Text>
-                </View>
-
-                <View style={styles.rowView}>
-                  <Text style={styles.totalLabel}>
-                    {strings.deliveryOrders.total}
-                  </Text>
-                  <Text style={styles.totalValue}>
-                    {strings.deliveryOrders.totalValue}
-                  </Text>
-                </View>
-
-                <View style={styles.rowView}>
-                  <Text style={styles.discountValue}>
-                    {strings.deliveryOrders.items}
-                  </Text>
-                </View>
-
-                <Button
-                  // onPress={() => { setOrderAccepted(true) }}
-                  // onPress={()=>  (setPrintScreen(true), setViewAllReviews(false), saveKey())}
-                  style={styles.printAgainButton}
-                  title={strings.shipingOrder.printAgain}
-                  textStyle={styles.buttonText}
-                />
-              </View> 
-               </View>
-                 {/* <View style={{ flex: 1, marginTop: SH(15)}}>
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                showCompass
-                region={{
-                  latitude: 27.2046,
-                  longitude: 77.4977,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                style={styles.map}
-              ></MapView>
-              <View>{showOrderStatusModal()}</View>
-                 </View> */}
-
+              {
+                dataAccrodingShipType(dataShiping)
+              }
+               
+                
 
             
             </View>
@@ -1334,54 +1523,51 @@ export function ShippingOrder() {
               setShowArea(!showArea);
             }}
           >
-            <Image
-              source={dropdown2}
-              style={[styles.searchImage, { right: 30 }]}
-            />
+            {
+              showArea
+              ?
+               (
+                <Image
+                source={dropdown2}
+                style={[styles.searchImage, { right: 30 }]}
+              />
+               )
+               :
+               (
+                <Image
+                source={dropdown2}
+                style={[styles.searchImage2, { right: 30 }]}
+              />
+               )
+            }
+           
           </TouchableOpacity>
         </View>
 
         <View style={styles.horizontalLine} />
 
-         <View style={styles.fedContextCon}>
-
-         </View>
-
-        <Spacer space={SH(20)} />
+        <Spacer space={SH(5)} />
         {showArea ? (
           <View>
             <View style={styles.deliveryStatus}>
-              <Image source={radio} style={styles.radioImage} />
-              <View style={[styles.justifyContentStyle, { left: 12 }]}>
+              <Image source={verified} style={styles.verified} />
+              <View style={[styles.justifyContentStyle, {marginLeft:15}]}>
                 <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.verifyCode}
+                  {strings.deliveryOrders.delivered}
                 </Text>
-                <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.within}
+                <Text style={styles.verifySuccess}>
+                  {strings.deliveryOrders.verifySuccess}
                 </Text>
               </View>
             </View>
-
             <View style={styles.deliveryStatus}>
               <Image source={delivery} style={styles.deliveryImage} />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.delivery}
+                  {strings.deliveryOrders.shipPtr}
                 </Text>
-                <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.within}
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.deliveryStatus}>
-              <Image source={delivery} style={styles.deliveryImage} />
-              <View style={styles.justifyContentStyle}>
-                <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.nextTo}
-                </Text>
-                <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.within}
+                <Text style={styles.verifyTextLight}>
+                  {strings.deliveryOrders.imperialAdd}
                 </Text>
               </View>
             </View>
@@ -1390,10 +1576,10 @@ export function ShippingOrder() {
               <Image source={deliveryLine} style={styles.deliveryImage} />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.pickup}
+                  {strings.deliveryOrders.shipPtr}
                 </Text>
-                <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.within}
+                <Text style={styles.verifyTextLight}>
+                  {strings.deliveryOrders.imperialAdd}
                 </Text>
               </View>
             </View>
@@ -1402,10 +1588,10 @@ export function ShippingOrder() {
               <Image source={deliveryLine} style={styles.deliveryImage} />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.assign}
+                  {strings.deliveryOrders.shipPtr}
                 </Text>
-                <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.within}
+                <Text style={styles.verifyTextLight}>
+                  {strings.deliveryOrders.imperialAdd}
                 </Text>
               </View>
             </View>
@@ -1416,7 +1602,7 @@ export function ShippingOrder() {
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.readyToPickup}
                 </Text>
-                <Text style={styles.verifyText}>
+                <Text style={styles.verifyTextLight}>
                   {strings.deliveryOrders.within}
                 </Text>
               </View>
@@ -1428,13 +1614,35 @@ export function ShippingOrder() {
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.orderAccepted}
                 </Text>
-                <Text style={styles.verifyText}>
+                <Text style={styles.verifyTextLight}>
                   {strings.deliveryOrders.dateTime}
                 </Text>
               </View>
             </View>
           </View>
         ) : null}
+      
+      
+      
+      
+      
+      <View style={styles.fedContextCon}>
+        <View style={styles.displayFlex}>
+          <View style={[styles.displayFlex, {justifyContent:'flex-start'}]}>
+             <Image source={fedx} style={styles.fedx}/>
+             <View>
+              <Text style={styles.fedEx}>{strings.shipingOrder.fedEx}</Text>
+              <Text style={styles.fedNumber}>{strings.shipingOrder.fedNumber}</Text>
+             </View>
+          </View>
+          <View style={styles.contactCon}>
+             <Image source={Phone_light} style={styles.Phonelight}/>
+            <Text style={styles.contact}>{strings.shipingOrder.contact}</Text>
+          </View>
+           
+        </View>
+               
+      </View>
       </View>
     );
   };

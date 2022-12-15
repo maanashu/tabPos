@@ -105,12 +105,47 @@ export function DeliveryOrder() {
   );
 
   const renderReviewItem = ({ item, index }) => (
+    // <TouchableOpacity
+    //   activeOpacity={viewAllReviews ? 0.5 : 1}
+    //   // onPress={() => { viewAllReviews ? onPressReview(index) : null }}
+    //   style={styles.reviewRenderView}>
+    //   <View style={{ width: SW(45) }}>
+    //     <Text numberOfLines={1} style={styles.nameText}>{item.name}</Text>
+    //     <View style={styles.timeView}>
+    //       <Image source={pin} style={styles.pinIcon} />
+    //       <Text style={styles.timeText}>{item.time}</Text>
+    //     </View>
+    //   </View>
+
+    //   <View style={{ width: SW(25) }}>
+    //     <Text style={styles.nameText}>{item.items}</Text>
+    //     <View style={styles.timeView}>
+    //       <Image source={pay} style={styles.pinIcon} />
+    //       <Text style={styles.timeText}>{item.price}</Text>
+    //     </View>
+    //   </View>
+
+    //   <View style={{ width: SW(60) }}>
+    //     <Text style={[styles.nameText, { color: COLORS.primary }]}>{item.deliveryType}</Text>
+    //     <View style={styles.timeView}>
+    //       <Image source={clock} style={styles.pinIcon} />
+    //       <Text style={styles.timeText}>{item.timeSlot}</Text>
+    //     </View>
+    //   </View>
+
+    //   <View style={styles.rightIconStyle}>
+    //     <Image source={rightIcon} style={styles.pinIcon} />
+    //   </View>
+    // </TouchableOpacity>
     <TouchableOpacity
       activeOpacity={viewAllReviews ? 0.5 : 1}
       // onPress={() => { viewAllReviews ? onPressReview(index) : null }}
-      style={styles.reviewRenderView}>
+      style={styles.reviewRenderView}
+    >
       <View style={{ width: SW(45) }}>
-        <Text numberOfLines={1} style={styles.nameText}>{item.name}</Text>
+        <Text numberOfLines={1} style={styles.nameText}>
+          {item.name}
+        </Text>
         <View style={styles.timeView}>
           <Image source={pin} style={styles.pinIcon} />
           <Text style={styles.timeText}>{item.time}</Text>
@@ -126,7 +161,9 @@ export function DeliveryOrder() {
       </View>
 
       <View style={{ width: SW(60) }}>
-        <Text style={[styles.nameText, { color: COLORS.primary }]}>{item.deliveryType}</Text>
+        <Text style={[styles.nameText, { color: COLORS.primary }]}>
+          {item.deliveryType}
+        </Text>
         <View style={styles.timeView}>
           <Image source={clock} style={styles.pinIcon} />
           <Text style={styles.timeText}>{item.timeSlot}</Text>
