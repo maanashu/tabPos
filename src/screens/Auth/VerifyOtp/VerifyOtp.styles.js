@@ -1,4 +1,4 @@
-import { StyleSheet,Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
 const windowWidth = Dimensions.get('window').width;
@@ -10,40 +10,40 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: COLORS.white,
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
     color: COLORS.black,
   },
   verifyContainer: {
-    width: windowWidth * 0.40,
-    height: windowHeight * 0.70,
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.7,
     // borderWidth: 1,
-    borderColor:'grey',
+    borderColor: 'grey',
     alignSelf: 'center',
-    borderRadius:15,
-    alignItems:'center',
-    backgroundColor:'#fff',
-    ...ShadowStyles.shadow2
+    borderRadius: 15,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    ...ShadowStyles.shadow2,
   },
-  header:{
-    fontSize:SF(24),
-    color:COLORS.dark_grey,
-    fontFamily:Fonts.MaisonBold
+  header: {
+    fontSize: SF(24),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.MaisonBold,
   },
-  subHeading:{
-    fontSize:SF(16),
-    color:COLORS.solid_grey,
-    fontFamily:Fonts.Regular
+  subHeading: {
+    fontSize: SF(16),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
   },
   alignSelfCenter: {
     alignSelf: 'center',
   },
   cellRoot: {
     backgroundColor: COLORS.textInputBackground,
-    height: moderateScale(45),
-    width: moderateScale(45),
+    height: moderateScale(40),
+    width: moderateScale(40),
     borderRadius: moderateScale(50),
     alignItems: 'center',
     justifyContent: 'center',
@@ -56,21 +56,20 @@ export const styles = StyleSheet.create({
     fontSize: scale(18),
     color: COLORS.black,
   },
-  selectedText:{
-    color:COLORS.white,
-    paddingVertical:verticalScale(10)
+  selectedText: {
+    color: COLORS.white,
+    paddingVertical: verticalScale(10),
   },
-  buttonText:{
-   color:COLORS.darkGray,
-   paddingVertical:verticalScale(10)
+  buttonText: {
+    color: COLORS.darkGray,
+    paddingVertical: verticalScale(10),
   },
-  submitButton:{
-     backgroundColor:COLORS.primary,
-     width: windowWidth * 0.35,
-  },
-  button:{
-    backgroundColor:COLORS.textInputBackground,
+  submitButton: {
+    backgroundColor: COLORS.primary,
     width: windowWidth * 0.35,
   },
-
+  button: {
+    backgroundColor: COLORS.textInputBackground,
+    width: windowWidth * 0.35,
+  },
 });

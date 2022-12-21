@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     height: windowHeight,
   },
   notificationCon: {
-    width: windowWidth * 0.24,
+    width: windowWidth * 0.3,
     // borderWidth:1,
     height: windowHeight,
   },
@@ -247,7 +247,7 @@ export const styles = StyleSheet.create({
   },
   schdule: {
     height: SH(670),
-    width: SH(750),
+    width: SH(650),
     resizeMode: 'contain',
   },
   monthlySchduel: {

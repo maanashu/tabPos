@@ -443,7 +443,7 @@ export const styles = StyleSheet.create({
   },
   map: {
     width: windowWidth / 2.3,
-    height: SW(130),
+    height: Platform.OS === 'android' ? SW(130) : SW(190),
     alignSelf: 'center',
     borderRadius: 6,
   },

@@ -95,15 +95,14 @@ export const styles = StyleSheet.create({
   },
   totalProductCon: {
     backgroundColor: COLORS.white,
-    width: Platform.OS === 'android' ? SW(300) : SW(600),
-    width:windowWidth * 0.44,
+    // width: Platform.OS === 'android' ? SW(300) : SW(400),
+    width: windowWidth * 0.42,
     height: SH(432),
     resizeMode: 'contain',
     ...ShadowStyles.shadow2,
     borderRadius: 10,
     paddingHorizontal: moderateScale(10),
     marginHorizontal: moderateScale(10),
-
     marginVertical: verticalScale(10),
   },
   rightlight: {
@@ -248,9 +247,9 @@ export const styles = StyleSheet.create({
     fontSize: SF(15),
   },
   categoryCon: {
-    width: SH(270),
+    // width: SH(170),
     height: SH(94),
-    // borderWidth:1,
+    // borderWidth: 1,
     borderRadius: 15,
     flexDirection: 'row',
     alignItems: 'center',
@@ -258,7 +257,7 @@ export const styles = StyleSheet.create({
     marginVertical: moderateScale(8),
   },
   categoryChildCon: {
-    width: SH(160),
+    width: SH(115),
     height: SH(94),
     borderBottomLeftRadius: 15,
     borderTopLeftRadius: 15,
@@ -268,7 +267,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   categoryChildPercent: {
-    width: SH(110),
+    width: SH(80),
     height: SH(94),
     borderBottomEndRadius: 15,
     borderTopEndRadius: 15,
@@ -290,12 +289,12 @@ export const styles = StyleSheet.create({
   categoryText: {
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
-    fontSize: SF(14),
+    fontSize: Platform.OS === 'android' ? SF(14) : SF(12),
   },
   categoryCount: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.solid_grey,
-    fontSize: SF(32),
+    fontSize: Platform.OS === 'android' ? SF(32) : SF(25),
   },
   productCategorychildcon: {
     // borderWidth:1,
