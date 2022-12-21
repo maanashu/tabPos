@@ -95,7 +95,8 @@ export const styles = StyleSheet.create({
   },
   totalProductCon: {
     backgroundColor: COLORS.white,
-    // width: Platform.OS === 'android' ? SH(632) : SH(600),
+    width: Platform.OS === 'android' ? SW(300) : SW(600),
+    width:windowWidth * 0.44,
     height: SH(432),
     resizeMode: 'contain',
     ...ShadowStyles.shadow2,
