@@ -9,8 +9,13 @@ import CountryPicker from 'react-native-country-picker-modal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { mobileReg, digits, emailReg } from '@/utils/validators';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function VerifyPhone() {
+  const dispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
@@ -19,7 +24,33 @@ export function VerifyPhone() {
   };
 
   const verifyPhoneHandler = () => {
-    navigate(NAVIGATION.verifyOtp);
+    if (phoneNumber && phoneNumber.length > 5) {
+      navigate(NAVIGATION.verifyOtp);
+    } else if (phoneNumber && phoneNumber.length < 5) {
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        text2: strings.valiadtion.validPhone,
+        visibilityTime: 2000,
+      });
+      return;
+    } else if (phoneNumber && mobileReg.test(phoneNumber) === false) {
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        text2: strings.valiadtion.validPhone,
+        visibilityTime: 2000,
+      });
+      return;
+    } else {
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        text2: strings.valiadtion.enterPhone,
+        visibilityTime: 2000,
+      });
+      return;
+    }
   };
   return (
     <KeyboardAwareScrollView
@@ -58,7 +89,7 @@ export function VerifyPhone() {
             <Text style={styles.countryCodeText}>{countryCode}</Text>
 
             <TextInput
-              maxLength={10}
+              maxLength={15}
               returnKeyType="done"
               keyboardType="number-pad"
               value={phoneNumber}

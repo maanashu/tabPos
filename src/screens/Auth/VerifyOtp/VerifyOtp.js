@@ -16,6 +16,10 @@ import {
   Cursor,
 } from 'react-native-confirmation-code-field';
 import { color } from 'react-native-reanimated';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { mobileReg,digits } from '@/utils/validators';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 const CELL_COUNT = 5;
 
 export function VerifyOtp() {
@@ -27,7 +31,34 @@ export function VerifyOtp() {
   });
 
   const verifyOtpHandler = () => {
-    navigate(NAVIGATION.passcode);
+    if(!value){
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        text2: strings.valiadtion.enterOtp,
+        visibilityTime: 2000
+      });
+      return;
+    }else if (value && value.length < 5){
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        text2: strings.valiadtion.validOtp,
+        visibilityTime: 2000
+      });
+      return;
+    }else if (value && digits.test(value) === false ){
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        // text2: strings.valiadtion.validOtp,
+        text2: 'hii',
+        visibilityTime: 2000
+      });
+      return;
+    }else {
+      navigate(NAVIGATION.verifySucess);
+    }
   };
 
   return (

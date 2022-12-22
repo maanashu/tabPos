@@ -8,6 +8,7 @@ import {
   VerifyOtp,
   Passcode,
   LoginIntial,
+  VerifySucess,
   Retails
 } from '@/screens';
 import { HomeNavigator } from '@/navigation/HomeNavigator'
@@ -42,6 +43,11 @@ export function AuthNavigator(props) {
       <Stack.Screen
         component={LoginIntial}
         name={NAVIGATION.loginIntial}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={VerifySucess}
+        name={NAVIGATION.verifySucess}
         options={{ headerShown: false }}
       />
       <Stack.Screen

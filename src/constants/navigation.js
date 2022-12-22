@@ -13,5 +13,6 @@ export const NAVIGATION = {
   management: 'Management',
   customers: 'Customers',
   calender: 'Calender',
-  analytics: 'Analytics'
+  analytics: 'Analytics',
+  verifySucess: 'VerifySucess'
 };

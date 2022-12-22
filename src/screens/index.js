@@ -6,6 +6,7 @@ export { VerifyPhone } from '@/screens/Auth/VerifyPhone/VerifyPhone';
 export { VerifyOtp } from '@/screens/Auth/VerifyOtp/VerifyOtp';
 export { Passcode } from '@/screens/Auth/Passcode/Passcode';
 export { LoginIntial } from '@/screens/Auth/LoginIntial/LoginIntial';
+export { VerifySucess } from '@/screens/Auth/VerifySucess/VerifySucess';
 
 // pos sales
 export { Retails } from '@/screens/PosSales/Retails/Retails';

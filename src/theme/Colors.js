@@ -23,7 +23,8 @@ export const COLORS = {
   roseRed:'#D33300',
   orange:'#F2994A',
   darkGreen:'#384048',
-  red: '#FB466C',
-  orange: '#FC7900'
+  red: '#ff0000',
+  orange: '#FC7900',
+  green:'#2EC759'
 };
    

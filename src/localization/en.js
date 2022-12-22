@@ -424,6 +424,15 @@ export const en = {
       contact:'Contact',
       fedEx:'FedEx',
       fedNumber:'936128'
+    },
+    valiadtion:{
+      validPhone :'Please enter valid phone number',
+      enterPhone:'Please enter phone number',
+      enterOtp:'Please enter OTP',
+      fiveDigitOtp:'Please enter five digit OTP',
+      validOtp:'Please enter valid OTP',
+      enterPassCode:'Please enter passcode',
+      validPasscode:'Please enter valid passcode'
     }
   
 };
