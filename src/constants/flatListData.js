@@ -64,6 +64,28 @@ export const CategoryData = [
     id: '3',
   },
 ];
+export const  CategoryDataHorizontal = [
+  {
+    name: 'Tobacco',
+    id: '1',
+  },
+  {
+    name: 'Vape',
+    id: '2',
+  },
+  {
+    name: 'Vape',
+    id: '3',
+  },
+  {
+    name: 'Vape',
+    id: '4',
+  },
+  {
+    name: 'Vape',
+    id: '5',
+  },
+] ;
 export const ProductData = [
   {
     name: 'Marlboro Red',

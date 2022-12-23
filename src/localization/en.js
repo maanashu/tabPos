@@ -149,6 +149,8 @@ export const en = {
     otherAmount: 'Other amount',
     changeDue: 'Change Due: $3.40',
     firstName: 'First name',
+    subCategory:'Sub-Category',
+    category:'Category'
   },
   posSale: {
     paymentHeader: 'Customer & Payment',
@@ -183,6 +185,9 @@ export const en = {
     back: 'Back',
     marboloRed: 'Marlboro Red-Pack',
     details: 'Details',
+    subCategory:'Sub-Category',
+    category:'Category',
+    brand:'Brand',
     productDes:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam elementum, ligula quis ultricies iaculis, odio augue venenatis eros, interdum suscipit ipsum turpis nec velit. Vivamus cursus, dui vitae auctor finibus, felis ex malesuada nunc, eget fringilla ante dui in diam. Integer non dapibus nulla.',
     },
@@ -432,7 +437,8 @@ export const en = {
       fiveDigitOtp:'Please enter five digit OTP',
       validOtp:'Please enter valid OTP',
       enterPassCode:'Please enter passcode',
-      validPasscode:'Please enter valid passcode'
+      validPasscode:'Please enter valid passcode',
+      error:'not found'
     }
   
 };

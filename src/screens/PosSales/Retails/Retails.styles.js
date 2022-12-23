@@ -106,13 +106,14 @@ export const styles = StyleSheet.create({
     width: SW(50),
   },
   catProcCon1: {
-    backgroundColor: COLORS.primary,
+    // backgroundColor: COLORS.primary,
     borderRadius: 5,
     height: SH(50),
     width: SW(50),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(7),
     marginHorizontal: moderateScale(3),
+    borderWidth:2
   },
   catProcCon2: {
     borderRadius: 5,
@@ -125,7 +126,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(3),
   },
   productName1: {
-    color: COLORS.white,
+    // color: COLORS.white,
     fontSize: SF(15),
     fontFamily: Fonts.SemiBold,
     paddingHorizontal: moderateScale(7),
@@ -1564,7 +1565,19 @@ export const styles = StyleSheet.create({
   },
   unitFlatlist: {
     justifyContent: 'space-between'
-  }
+  },
+  categoryImagecCon:{
+    borderWidth:2,
+    borderRadius:100,
+    borderColor:COLORS.white,
+    overflow:'hidden'
+  },
+  emptyListText: {
+    fontSize: SF(20),
+    color: COLORS.primary,
+    // fontFamily: Fonts.Medium,
+    // alignSelf: 'center',
+  },
 
   //  pos search css end
 });

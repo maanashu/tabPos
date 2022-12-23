@@ -51,8 +51,7 @@ export function VerifyOtp() {
       Toast.show({
         position: 'bottom',
         type: 'error_toast',
-        // text2: strings.valiadtion.validOtp,
-        text2: 'hii',
+        text2: strings.valiadtion.validOtp,
         visibilityTime: 2000
       });
       return;

@@ -54,18 +54,6 @@ const registerSuccess = register => ({
 });
 
 
-const getCountriesRequest = () => ({
-    type: TYPES.GET_COUNTRY_REQUEST,
-    payload: null,
-});
-const getCountriesSuccess = countryList => ({
-    type: TYPES.GET_COUNTRY_SUCCESS,
-    payload: { countryList },
-});
-const getCountriesError = error => ({
-    type: TYPES.GET_COUNTRY_ERROR,
-    payload: { error },
-});
 
 
 
@@ -84,6 +72,8 @@ export const sendOtp = (phoneNumber, countryCode, key) => async dispatch => {
         dispatch(sendOtpError(error.message));
     }
 };
+
+
 
 export const verifyOtp = (id, value, key) => async dispatch => {
     dispatch(verifyOtpRequest());

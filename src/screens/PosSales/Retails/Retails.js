@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -65,9 +65,18 @@ import {
   bundleOfferData,
   searchProductData,
   productUnitData,
+  CategoryDataHorizontal,
 } from '@/constants/flatListData';
+import { useDispatch, useSelector } from 'react-redux';
+import {getCategory, getBrand} from '@/actions/UserActions';
+import {getUser} from '@/selectors/UserSelectors'
 
 export function Retails() {
+  const dispatch = useDispatch();
+  const getUserData = useSelector(getUser);
+  const array = getUserData?.categories;
+  // const brandArray = getUserData;
+  // console.log(brandArray, '--------------------brandArray');
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
   const [title, setTitle] = useState('');
@@ -128,11 +137,18 @@ export function Retails() {
   const [tip1, setTip1] = useState(false);
   const [tip2, setTip2] = useState(false);
   const [tip3, setTip3] = useState(false);
-
   const [customerCashPaid, setCustomerCashPaid] = useState(false);
   const [posSearch, setPosSearch] = useState(false);
   const [searchProDetail, setSearchProDetail] = useState(false);
   const [searchProViewDetail, setSearchProViewDetail] = useState(false);
+  const [selectedId, setSelectedId] = useState(1);
+  const [subSelectedId, setSubSelectedId] = useState(1);
+  const [brandSelectedId, setBrandSelectedId] = useState(1);
+
+  useEffect(() => {
+     dispatch(getCategory())
+     dispatch(getBrand())
+  }, [])
 
   const menuHandler = () => {
     setCategoryModal(!categoryModal);
@@ -295,7 +311,7 @@ export function Retails() {
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.categoryHeader}>{item.name}</Text>
-          <View style={styles.catProcCon1}>
+          <View style={[styles.catProcCon1, {borderWidth:1}]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={categoryProduct} style={styles.categoryProduct} />
               <Text style={styles.productName1}>Tobacco</Text>
@@ -324,6 +340,88 @@ export function Retails() {
       </ScrollView>
     </View>
   );
+  const CategoryItemSelect = ({ item, onPress, backgroundColor, borderColor, color, fontFamily}) => (
+    <TouchableOpacity style={[styles.catProcCon1, backgroundColor, borderColor]} onPress={onPress}>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+       <View style={styles.categoryImagecCon}>
+          <Image source={{uri : item.image}} style={styles.categoryProduct} />
+       </View>
+      <Text numberOfLines={1} style={[styles.productName1, color, fontFamily]}>{item.name}</Text>
+    </View>
+  </TouchableOpacity>
+  );
+
+  const categoryItem = ({item}) => {
+    const backgroundColor = item.id === selectedId ? '#275AFF' : '#F5F6F7';
+    const borderColor = item.id === selectedId ? '#275AFF' : '#fff';
+    const color = item.id === selectedId ? '#fff' : '#A7A7A7';
+    const fontFamily = item.id === selectedId ? Fonts.SemiBold : Fonts.Regular;
+
+    return (
+      <CategoryItemSelect
+        item={item}
+        onPress={() => setSelectedId(item.id)}
+        backgroundColor={{ backgroundColor }}
+        borderColor = {{borderColor}}
+        color = {{color}}
+        fontFamily = {{fontFamily}}
+      />
+    ); 
+};
+
+const SubCategoryItemSelect = ({ item, onPress, backgroundColor, borderColor, color, fontFamily}) => (
+  <TouchableOpacity style={[styles.catProcCon1, backgroundColor, borderColor]} onPress={onPress}>
+  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+    <Image source={categoryProduct} style={styles.categoryProduct} />
+    <Text style={[styles.productName1, color, fontFamily]}>Tobacco</Text>
+  </View>
+</TouchableOpacity>
+);
+
+const subCategoryItem = ({item}) => {
+  const backgroundColor = item.id === subSelectedId ? '#275AFF' : '#F5F6F7';
+  const borderColor = item.id === subSelectedId ? '#275AFF' : '#fff';
+  const color = item.id === subSelectedId ? '#fff' : '#A7A7A7';
+  const fontFamily = item.id === subSelectedId ? Fonts.SemiBold : Fonts.Regular;
+  return (
+    <SubCategoryItemSelect
+      item={item}
+      onPress={() => setSubSelectedId(item.id)}
+      backgroundColor={{ backgroundColor }}
+      borderColor = {{borderColor}}
+      color = {{color}}
+      fontFamily ={{fontFamily}}
+    />
+  );
+  };
+
+  const BrandItemSelect = ({ item, onPress, backgroundColor, borderColor, color,fontFamily}) => (
+    <TouchableOpacity style={[styles.catProcCon1, backgroundColor, borderColor]} onPress={onPress}>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Image source={categoryProduct} style={styles.categoryProduct} />
+      <Text style={[styles.productName1, color, fontFamily]}>Tobacco</Text>
+    </View>
+  </TouchableOpacity>
+  );
+
+  const brandItem = ({item}) => {
+    const backgroundColor = item.id === brandSelectedId ? '#275AFF' : '#F5F6F7';
+    const borderColor = item.id === brandSelectedId ? '#275AFF' : '#fff';
+    const color = item.id === brandSelectedId ? '#fff' : '#A7A7A7';
+    const fontFamily = item.id === brandSelectedId ? Fonts.SemiBold : Fonts.Regular;
+    return (
+      <BrandItemSelect
+        item={item}
+        onPress={() => setBrandSelectedId(item.id)}
+        backgroundColor={{ backgroundColor }}
+        borderColor = {{borderColor}}
+        color = {{color}}
+        fontFamily ={{fontFamily}}
+      />
+    );
+    };
+
+
   const renderProductItem = ({ item }) => (
     <View style={styles.productContainer}>
       <View style={{ flexDirection: 'row' }}>
@@ -547,6 +645,14 @@ export function Retails() {
     </View>
   );
 
+  const renderEmptyContainer = () => {
+    return(
+      <Text style={styles.emptyListText}>
+      {strings.valiadtion.error}
+    </Text>
+    )
+  }
+
   return (
   
     // start  header section
@@ -590,7 +696,53 @@ export function Retails() {
       {/* End  header section */}
 
       {/* start  category  section */}
-      {categoryModal ? null : (
+
+    <View style={styles.categoryCon}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={styles.categoryHeader}>{strings.posSale.category}</Text>
+          <FlatList
+            // data={CategoryDataHorizontal}
+             data={array}
+            extraData={array}
+            renderItem={categoryItem}
+            keyExtractor={item => item.id}
+            // extraData={selectedId}
+            horizontal
+            ListEmptyComponent={renderEmptyContainer}
+          />
+        </View>
+      </ScrollView>
+    </View>
+    <View style={styles.categoryCon}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={styles.categoryHeader}>{strings.posSale.subCategory}</Text>
+          <FlatList
+            data={CategoryDataHorizontal}
+            renderItem={subCategoryItem}
+            keyExtractor={item => item.id}
+            extraData={subSelectedId}
+            horizontal
+          />
+        </View>
+      </ScrollView>
+    </View>
+    <View style={styles.categoryCon}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={styles.categoryHeader}>{strings.posSale.brand}</Text>
+          <FlatList
+            data={CategoryDataHorizontal}
+            renderItem={brandItem}
+            keyExtractor={item => item.id}
+            extraData={brandSelectedId}
+            horizontal
+          />
+        </View>
+      </ScrollView>
+    </View>
+      {/* {categoryModal ? null : (
         <View>
           <FlatList
             data={CategoryData}
@@ -598,7 +750,7 @@ export function Retails() {
             keyExtractor={item => item.id}
           />
         </View>
-      )}
+      )} */}
 
       {/* end  category  section */}
       <View style={styles.productbody}>

@@ -1,43 +1,71 @@
 import { UserController } from '@/controllers';
+import { TYPES } from "@/Types/Types";
 
-export const TYPES = {
-  CLEAR_STORE: 'CLEAR_STORE',
-  LOGIN: 'LOGIN',
-  LOGIN_REQUEST: 'LOGIN_REQUEST',
-  LOGIN_ERROR: 'LOGIN_ERROR',
-  LOGIN_SUCCESS: 'LOGIN_SUCCESS',
-};
 
-const loginRequest = () => ({
-  type: TYPES.LOGIN_REQUEST,
+// const loginRequest = () => ({
+//   type: TYPES.LOGIN_REQUEST,
+//   payload: null,
+// });
+
+
+
+const getCategoryRequest = () => ({
+  type: TYPES.GET_CATEGORY_REQUEST,
   payload: null,
 });
-
-const loginError = error => ({
-  type: TYPES.LOGIN_ERROR,
+const getCategorySuccess = categoryList => ({
+  type: TYPES.GET_CATEGORY_SUCCESS,
+  payload: { categoryList },
+});
+const getCategoryError = error => ({
+  type: TYPES.GET_CATEGORY_ERROR,
   payload: { error },
 });
 
-const loginSuccess = user => ({
-  type: TYPES.LOGIN_SUCCESS,
-  payload: { user },
-});
 
-const clearStore = () => ({
-  type: TYPES.CLEAR_STORE,
+const getBrandRequest = () => ({
+  type: TYPES.GET_BRAND_REQUEST,
   payload: null,
 });
+const getBrandSuccess = brandList => ({
+  type: TYPES.GET_BRAND_SUCCESS,
+  payload: { brandList },
+});
+const getBrandError = error => ({
+  type: TYPES.GET_BRAND_ERROR,
+  payload: { error },
+});
 
-export const login = (username, password) => async dispatch => {
-  dispatch(loginRequest());
+
+// export const login = (username, password) => async dispatch => {
+//   dispatch(loginRequest());
+//   try {
+//     const user = await UserController.login(username, password);
+//     dispatch(loginSuccess(user));
+//   } catch (error) {
+//     dispatch(loginError(error.message));
+//   }
+// };
+
+export const getCategory = () => async dispatch => {
+  dispatch(getCategoryRequest());
   try {
-    const user = await UserController.login(username, password);
-    dispatch(loginSuccess(user));
+      const res = await UserController.getCategory();
+      dispatch(getCategorySuccess(res));
   } catch (error) {
-    dispatch(loginError(error.message));
+      dispatch(getCategoryError(error.message));
   }
 };
 
+export const getBrand = () => async dispatch => {
+  dispatch(getBrandRequest());
+  try {
+      const res = await UserController.getBrand();
+      dispatch(getBrandSuccess(res));
+  } catch (error) {
+      dispatch(getBrandError(error.message));
+  }
+};
 export const logout = () => async dispatch => {
   try {
     await UserController.logout();
