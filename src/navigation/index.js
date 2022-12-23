@@ -15,11 +15,12 @@ const Drawer = createDrawerNavigator();
 
 export function RootNavigator() {
   const user = useSelector(getUser);
+  // console.log('----------------user', user)
   const scheme = useColorScheme();
   return (
     <NavigationContainer ref={navigationRef}>
-      {/* {user ? <HomeNavigator /> : <AuthNavigator />} */}
-      <HomeNavigator />
+      {user?.id ? <HomeNavigator /> : <AuthNavigator />}
+      {/* <HomeNavigator /> */}
     </NavigationContainer>
   );
 }
