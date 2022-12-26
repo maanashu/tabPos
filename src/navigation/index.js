@@ -18,8 +18,8 @@ export function RootNavigator() {
   const scheme = useColorScheme();
   return (
     <NavigationContainer ref={navigationRef}>
-      {/* {user ? <HomeNavigator /> : <AuthNavigator />} */}
-      <HomeNavigator />
+      {user?.id ? <HomeNavigator /> : <AuthNavigator />}
+      {/* <HomeNavigator /> */}
     </NavigationContainer>
   );
 }
