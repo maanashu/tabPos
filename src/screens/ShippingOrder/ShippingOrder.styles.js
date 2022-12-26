@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(25),
+    paddingVertical: SH(18),
     flexDirection: 'row',
   },
   truckStyle: {
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   deliveryText: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
-    fontSize: SF(20),
+    fontSize: SF(18),
     paddingLeft: SW(4),
   },
   searchView: {
@@ -72,7 +72,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.orderStatusBackground,
     borderRadius: 8,
     width: SW(80),
-    paddingVertical: SH(35),
+    height:SH(92),
+    // paddingVertical: SH(35),
     flexDirection: 'row',
   },
   contentContainer: {
@@ -85,8 +86,8 @@ export const styles = StyleSheet.create({
     paddingLeft: SW(5),
   },
   orderStatusImage: {
-    width: SW(13),
-    height: SW(13),
+    width: SW(10),
+    height: SW(10),
     resizeMode: 'contain',
   },
   countView: {
@@ -96,12 +97,12 @@ export const styles = StyleSheet.create({
   countText: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonRegular,
-    fontSize: SF(27),
+    fontSize: SF(18),
   },
   statusText: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(15),
+    fontSize: SF(13),
     textAlign: 'center',
   },
   orderNumberMainView: {
@@ -118,20 +119,20 @@ export const styles = StyleSheet.create({
   },
   chartView: {
     width: SW(168),
-    height: SH(330),
+    height: SW(60),
     alignSelf: 'flex-start',
     alignItems: 'center',
   },
   chartImageStyle: {
     width: SW(168),
-    height: SH(310),
+    height: SW(60),
     resizeMode: 'contain',
   },
   orderReviewRightView: {
     // width: windowWidth / 2.25,
     borderRadius: 5,
     ...ShadowStyles.shadow2,
-    height: SW(205),
+    height: SW(105),
     backgroundColor: COLORS.white,
   },
   orderReviewText: {
@@ -177,7 +178,7 @@ export const styles = StyleSheet.create({
   },
   pinIcon: {
     width: SW(5),
-    height: SW(5),
+    height: SW(8),
     resizeMode: 'contain',
   },
   rightIconStyle: {
@@ -205,8 +206,8 @@ export const styles = StyleSheet.create({
     paddingLeft: SW(7),
   },
   conversionBoxStyle: {
-    width: SW(60),
-    height: SW(60),
+    width: SW(40),
+    height: SW(40),
     resizeMode: 'contain',
   },
   orderFlatlistView: {
@@ -216,7 +217,7 @@ export const styles = StyleSheet.create({
   renderOrderView: {
     width: SW(70),
     borderRadius: 6,
-    height: SW(25),
+    height: SW(15),
     backgroundColor: COLORS.textInputBackground,
     marginTop: 5,
     paddingLeft: SW(6),
@@ -240,7 +241,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
   },
   totalText: {
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Regular,
     fontSize: SF(14),
     color: COLORS.solid_grey,
     paddingLeft: 2,

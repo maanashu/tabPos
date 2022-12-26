@@ -20,13 +20,13 @@ export const styles = StyleSheet.create({
   headerCon: {
     // borderBottomWidth: 1,
     borderBottomColor: COLORS.solidGrey,
-    height: SH(88),
+    height: SH(70),
     justifyContent: 'center',
     backgroundColor: COLORS.white,
   },
   menuStyle: {
-    width: SW(14),
-    height: SW(14),
+    width: SW(11),
+    height: SW(11),
     resizeMode: 'contain',
     backgroundColor: COLORS.white,
   },
@@ -37,8 +37,8 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(5),
   },
   scnStyle: {
-    width: SW(16),
-    height: SW(16),
+    width: SW(13),
+    height: SW(13),
     resizeMode: 'contain',
   },
   flexRow: {
@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: SW(202),
-    height: SH(55),
+    height: SH(45),
     justifyContent: 'space-between',
     marginHorizontal: moderateScale(10),
   },
@@ -69,11 +69,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 10,
-    height: SH(55),
+    height: SH(45),
   },
   purcheseStyle: {
-    width: SW(13),
-    height: SW(13),
+    width: SW(11),
+    height: SW(11),
     resizeMode: 'contain',
   },
   arrowStyle: {
@@ -95,7 +95,7 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 0.8,
     borderColor: COLORS.solidGrey,
-    height: SH(64),
+    height: SH(54),
     justifyContent: 'center',
   },
   categoryHeader: {
@@ -108,8 +108,8 @@ export const styles = StyleSheet.create({
   catProcCon1: {
     // backgroundColor: COLORS.primary,
     borderRadius: 5,
-    height: SH(50),
-    width: SW(50),
+    height: SH(40),
+    width: SW(45),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(7),
     marginHorizontal: moderateScale(3),
@@ -127,7 +127,7 @@ export const styles = StyleSheet.create({
   },
   productName1: {
     // color: COLORS.white,
-    fontSize: SF(15),
+    fontSize: SF(13),
     fontFamily: Fonts.SemiBold,
     paddingHorizontal: moderateScale(7),
   },
@@ -138,8 +138,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(7),
   },
   categoryProduct: {
-    width: SW(9),
-    height: SW(9),
+    width: SW(7),
+    height: SW(7),
     resizeMode: 'contain',
   },
 
@@ -147,7 +147,7 @@ export const styles = StyleSheet.create({
 
   productContainer: {
     width: SW(112),
-    height: SH(300),
+    height: SH(245),
     borderWidth: 1,
     borderColor: COLORS.textInputBackground,
     // ...ShadowStyles.shadow2,
@@ -169,12 +169,12 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   marboloStyle: {
-    width: SW(20),
-    height: SW(20),
+    width: SW(14),
+    height: SW(14),
     resizeMode: 'contain',
   },
   productName: {
-    fontSize: SF(24),
+    fontSize: SF(18),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
@@ -1573,7 +1573,7 @@ export const styles = StyleSheet.create({
     overflow:'hidden'
   },
   emptyListText: {
-    fontSize: SF(20),
+    fontSize: SF(16),
     color: COLORS.primary,
     // fontFamily: Fonts.Medium,
     // alignSelf: 'center',

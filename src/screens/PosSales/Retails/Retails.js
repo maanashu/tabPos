@@ -147,7 +147,7 @@ export function Retails() {
 
   useEffect(() => {
      dispatch(getCategory())
-     dispatch(getBrand())
+    //  dispatch(getBrand())
   }, [])
 
   const menuHandler = () => {
@@ -432,23 +432,23 @@ const subCategoryItem = ({item}) => {
           <Text style={styles.proSubName}>Marlboro</Text>
         </View>
       </View>
-      <Spacer space={SH(7)} />
+      <Spacer space={SH(5)} />
       <Text style={styles.size}>Size</Text>
-      <Spacer space={SH(7)} />
+      <Spacer space={SH(5)} />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.cartonButton}>Carton</Text>
         <Text style={styles.singlePackBtn}>Single Pack</Text>
       </View>
       <Spacer space={SH(7)} />
       <Text style={styles.size}>Price</Text>
-      <Spacer space={SH(7)} />
+      <Spacer space={SH(5)} />
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text style={styles.previousRate}>$5.65</Text>
         <Text style={styles.currentRate}>$5.65</Text>
       </View>
-      <Spacer space={SH(12)} />
+      <Spacer space={SH(8)} />
       <View style={styles.hrLine}></View>
-      <Spacer space={SH(15)} />
+      <Spacer space={SH(8)} />
       <View
         style={{
           flexDirection: 'row',
@@ -648,7 +648,7 @@ const subCategoryItem = ({item}) => {
   const renderEmptyContainer = () => {
     return(
       <Text style={styles.emptyListText}>
-      {strings.valiadtion.error}
+      {strings.valiadtion.loading}
     </Text>
     )
   }
@@ -698,24 +698,20 @@ const subCategoryItem = ({item}) => {
       {/* start  category  section */}
 
     <View style={styles.categoryCon}>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.categoryHeader}>{strings.posSale.category}</Text>
           <FlatList
-            // data={CategoryDataHorizontal}
              data={array}
             extraData={array}
             renderItem={categoryItem}
             keyExtractor={item => item.id}
-            // extraData={selectedId}
-            horizontal
             ListEmptyComponent={renderEmptyContainer}
+            horizontal
+            showsHorizontalScrollIndicator={false}
           />
         </View>
-      </ScrollView>
     </View>
     <View style={styles.categoryCon}>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.categoryHeader}>{strings.posSale.subCategory}</Text>
           <FlatList
@@ -726,10 +722,8 @@ const subCategoryItem = ({item}) => {
             horizontal
           />
         </View>
-      </ScrollView>
     </View>
     <View style={styles.categoryCon}>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.categoryHeader}>{strings.posSale.brand}</Text>
           <FlatList
@@ -740,7 +734,6 @@ const subCategoryItem = ({item}) => {
             horizontal
           />
         </View>
-      </ScrollView>
     </View>
       {/* {categoryModal ? null : (
         <View>
@@ -1721,8 +1714,8 @@ const subCategoryItem = ({item}) => {
       {/* {console.log(listOfItem, 'asdfghjkl')} */}
       {listOfItem ? 
 
-         ( <View style={[styles.displayFlex, {borderWidth:1}]}>
-          <View style={[styles.numpadContainer, {borderWidth:1}]}>
+         ( <View style={[styles.displayFlex]}>
+          <View style={[styles.numpadContainer]}>
               <View style={{ height: windowHeight, paddingBottom: 60 }}>
                  <Spacer space={SH(20)} />
                <View style={styles.displayFlex}>

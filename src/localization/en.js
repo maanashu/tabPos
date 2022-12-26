@@ -438,7 +438,8 @@ export const en = {
       validOtp:'Please enter valid OTP',
       enterPassCode:'Please enter passcode',
       validPasscode:'Please enter valid passcode',
-      error:'not found'
+      error:'not found',
+      loading:'loading...'
     }
   
 };

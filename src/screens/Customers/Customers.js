@@ -59,17 +59,7 @@ const windowHeight = Dimensions.get('window').height;
 import { DataTable } from 'react-native-paper';
 import { string } from 'prop-types';
 
-const newCustomerItem = ({item}) => (
-    <View style={styles.custometrCon}>
-    <View style={styles.flexAlign}>
-    <Image source={item.img} style={styles.newCustomer}/>
-       <View style={{paddingHorizontal:moderateScale(7)}}>
-           <Text style={styles.customerCount}>{item.count}</Text>
-           <Text style={styles.newCustomerHeading}>{item.customertype}</Text>
-       </View>
-    </View>
-</View>
-);
+
 const renderHeadingItem = ({ item, index }) => (
   <View style={styles.head}>
     <Text style={styles.text}>{item}</Text>
@@ -119,7 +109,7 @@ export function Customers() {
     setYearly(false);
   };
   const weeklyHandler = () => {
-    setWeeklyUser(!weeklyUser)
+   
     setWeekly(true);
     setToday(false);
     setMonthly(false);
@@ -171,6 +161,17 @@ export function Customers() {
     setTracking(false);
     setOrderModal(true);
   };
+  const newCustomerItem = ({item}) => (
+    <TouchableOpacity style={styles.custometrCon} onPress = {() =>  setWeeklyUser(!weeklyUser)}>
+    <View style={styles.flexAlign}>
+    <Image source={item.img} style={styles.newCustomer}/>
+       <View style={{paddingHorizontal:moderateScale(7)}}>
+           <Text style={styles.customerCount}>{item.count}</Text>
+           <Text style={styles.newCustomerHeading}>{item.customertype}</Text>
+       </View>
+    </View>
+</TouchableOpacity>
+);
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -232,7 +233,7 @@ export function Customers() {
           <View style={{flex:1,
             backgroundColor:COLORS.white
             }}>
-             <Spacer space={SH(20)} />
+             <Spacer space={SH(10)} />
                  <View style={styles.onlinedeliveryCon}>
                  <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
                      <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -254,18 +255,17 @@ export function Customers() {
                  </View>
                  <Spacer space={SH(12)} />
                  <View style={styles.trackingNoBody}>
-                      <ScrollView 
-                       showsVerticalScrollIndicator={false}>
+                      <View>
                       <Spacer space={SH(10)} />
-                       <View style={styles.displayFlex}>
-                          <View style={styles.mapContainer}>
+                       <View style={[styles.displayFlex, {alignItems:'flex-start'}]}>
+                          <View style={[styles.mapContainer]}>
                               <View style={[styles.costoContainer]}>
                                 <Spacer space={SH(10)} />
                                 <View style={{flexDirection:'row', }}>
                                     <Image source={angela} style={styles.trackingAngela}/>
                                     <View>
                                        <Text style={styles.costoName}>{strings.customers.costo}</Text>
-                                       <Spacer space={SH(10)} />
+                                       <Spacer space={SH(7)} />
                                        <View style={styles.flexAlign}> 
                                          <Image source={location} style={styles.Phonelight}/>
                                          <Text style={styles.costoAdd}>{strings.customers.costoAdd}</Text>
@@ -292,12 +292,12 @@ export function Customers() {
                                     </View> 
                                   </View>
                               </View>
-                              <Spacer space={SH(30)} />
+                              <Spacer space={SH(10)} />
                               <View style={{paddingHorizontal:moderateScale(18)}}>
                                 <Text style={styles.orderStatus}>{strings.customers.orderStatus}</Text>
                                 <Text style={[styles.orderStatus, {fontFamily:Fonts.Regular}]}>{strings.customers.assignDriver}</Text>
                                 <View style={[styles.costoHr, {marginVertical:verticalScale(8)}]}/>
-                                     <Spacer space={SH(20)} />
+                                     <Spacer space={SH(5)} />
                                 <View style={{flexDirection:'row'}}>
                                    <View style={{flexDirection:'column'}}>
                                       <Image source={blankRadio} style={styles.ticketImage}/>
@@ -351,11 +351,11 @@ export function Customers() {
                                          </View>
                                      </View>
                                 </View>
-                                <Spacer space={SH(25)} />
+                                <Spacer space={SH(10)} />
                                      <View style={styles.carriarCon}>
-                                        <Spacer space={SH(12)} />
+                                        <Spacer space={SH(5)} />
                                         <Text style={[styles.verifyTextLight,{color:COLORS.black}]}>{strings.customers.carriar}</Text>
-                                        <Spacer space={SH(12)} />
+                                        <Spacer space={SH(8)} />
                                         <View style={styles.displayFlex}>
                                              <View style={styles.flexAlign}>
                                               <Image source={angela2} style={styles.tracking2Angela}/>
@@ -368,7 +368,7 @@ export function Customers() {
                                                 </View>
                                              </View>
                                         </View>
-                                        <Spacer space={SH(12)} />
+                                        <Spacer space={SH(8)} />
                                      </View>
                               </View>
                           </View>
@@ -377,7 +377,7 @@ export function Customers() {
                           </View>
                        </View>
                        <Spacer space={SH(12)} />
-                      </ScrollView>
+                      </View>
                   </View>
            </View>
        
@@ -388,7 +388,7 @@ export function Customers() {
           <View style={{flex:1,
             backgroundColor:COLORS.white
             }}>
-             <Spacer space={SH(20)} />
+             <Spacer space={SH(10)} />
                  <View style={styles.onlinedeliveryCon}>
                  <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
                      <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -407,43 +407,41 @@ export function Customers() {
                      </TouchableOpacity>
                   </View>
                  </View>
-                 <ScrollView>
-                 <Spacer space={SH(20)} />
+                 <View>
+                 <Spacer space={SH(10)} />
                  <View style={styles.onlinedeliveryBody}>
                        <View style={styles.displayFlex}>
                        <View style={styles.buyerCon}>
-                         <Spacer space={SH(10)} />
+                         <Spacer space={SH(5)} />
                           <Text style={styles.buyer}>{strings.wallet.buyer}</Text>
-                          <Spacer space={SH(15)} />
+                          <Spacer space={SH(5)} />
                           <View style={{flexDirection:'row'}}>
                              <Image source={angela} style={styles.angelaPic}/>
                               <View style={{flexDirection:'column'}}>
                               <Text style={styles.angela}>{strings.wallet.angela}</Text>
-                              <Spacer space={SH(10)} />
+                              <Spacer space={SH(5)} />
                              <Text style={styles.angelaAddress}>{strings.wallet.angelaAddress1}</Text>
                              <Text style={styles.angelaAddress}>{strings.wallet.angelaAddress2}</Text>
                               </View>
                           </View>
-    
-                          <Spacer space={SH(20)} />
                       </View>
                       <View style={styles.invoiceCon}>
-                           <Spacer space={SH(10)} />
+                           <Spacer space={SH(5)} />
                            <Text style={styles.invoiceDetail}>{strings.wallet.invoiceDetails}</Text>
-                           <Spacer space={SH(10)} />
-                           <Text style={styles.invoiceId}>{strings.wallet.invoiceIdLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.invoiceId}</Text></Text>
-                           <Spacer space={SH(5)} />
-                           <Text style={styles.invoiceId}>{strings.wallet.createDateLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
-                           <Spacer space={SH(5)} />
-                           <Text style={styles.invoiceId}>{strings.wallet.dueDateLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
-                           <Spacer space={SH(5)} />
+                           <Spacer space={SH(3)} />
+                           <Text style={styles.invoiceId}>{strings.wallet.invoiceIdLabel}<Text style={{color:COLORS.solid_grey}}>{strings.wallet.invoiceId}</Text></Text>
+                           <Spacer space={SH(3)} />
+                           <Text style={styles.invoiceId}>{strings.wallet.createDateLabel}<Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
+                           <Spacer space={SH(3)} />
+                           <Text style={styles.invoiceId}>{strings.wallet.dueDateLabel}<Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
+                           <Spacer space={SH(3)} />
                            <Text style={styles.deliveryDate}>{strings.wallet.deliveryDate} <Text>{strings.wallet.createDate}</Text></Text>
                           <View style={styles.pointConOrder}>
                                 <Text style={styles.pointTextOrder}>{strings.wallet.point}</Text>
                           </View>
                       </View>
                        </View>
-                       <Spacer space={SH(30)} />
+                       <Spacer space={SH(15)} />
                        <View style={styles.tableContainer}>
                        <DataTable>
                         <DataTable.Header style={styles.tableheader}>
@@ -480,7 +478,7 @@ export function Customers() {
                         </DataTable.Row>
                           </DataTable>
     
-                       <Spacer space={SH(25)} />
+                       <Spacer space={SH(10)} />
                        <View style={[styles.displayFlex, {marginHorizontal:moderateScale(10)}]}>
                             {/* <View style={styles.noteContainer}>
                                
@@ -528,11 +526,11 @@ export function Customers() {
                        </View>
                        <Spacer space={SH(20)} />
                        </View>
-                       <Spacer space={SH(25)} />
+                       <Spacer space={SH(10)} />
                        <View>
                           <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
                        </View>
-                       <Spacer space={SH(20)} />
+                       <Spacer space={SH(10)} />
                        <View style={styles.trackingCon}>
                            <View style={styles.displayFlex}>
                                 <View style={{flexDirection:'row',alignItems:'center'}}>
@@ -561,7 +559,7 @@ export function Customers() {
                        <Spacer space={SH(20)} />
                        
                  </View>
-                 </ScrollView>
+                 </View>
            </View>
         )
       }
@@ -595,7 +593,7 @@ export function Customers() {
                             </View>
                            </View>
                            <View>
-                               <TouchableOpacity style={styles.pointCon} onPress={orderOnlineHandler}>
+                               <TouchableOpacity style={styles.pointCon}>
                                      <View style={styles.flexAlign}>
                                        <Image source={reward2} style={styles.rewardStyle}/>
                                          <Text style={styles.pointText}>{strings.customers.point}</Text>
@@ -739,7 +737,7 @@ export function Customers() {
             <View style={[styles.tableMainView]}>
                     <Table>
                         <Row data={ProfileTableHeading} style={styles.userTableHead} textStyle={styles.text} />
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={orderOnlineHandler}>
                         <Rows data={ProfileTableData} style={styles.usertableRowStyle} textStyle={styles.usertableRowText} />
                         </TouchableOpacity>
                     </Table>
@@ -868,7 +866,7 @@ export function Customers() {
         <View>
           {customHeader()}
           <View style={styles.customerHomeCon}>
-            <ScrollView   showsVerticalScrollIndicator={false}>
+            <View>
             <View>
               <FlatList
               columnWrapperStyle={{justifyContent:'space-between'}}
@@ -943,7 +941,7 @@ export function Customers() {
              <Image source={customersGraph} style={styles.customersGraph}/>
              {/* </View> */}
             <Spacer space={SH(200)} />
-            </ScrollView>
+            </View>
           </View>
         </View>
       )

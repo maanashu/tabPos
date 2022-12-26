@@ -123,7 +123,7 @@ export function Wallet() {
     setYearly(false);
   };
   const weeklyHandler = () => {
-    setWeeklyTrasaction(true);
+    
     setWeekly(true);
     setToday(false);
     setMonthly(false);
@@ -230,9 +230,9 @@ export function Wallet() {
   };
 
   const aboutTransactionItem = ({ item }) => (
-    <TouchableOpacity style={styles.jbrCoinCon}>
+    <TouchableOpacity style={styles.jbrCoinCon} onPress={() => setWeeklyTrasaction(true)}>
       <Image source={item.img} style={styles.jbrCoinStyle} />
-      <Spacer space={SH(12)} />
+      <Spacer space={SH(10)} />
       <View style={styles.displayFlex}>
         <Text style={styles.jbrCoinheading}>{item.aboutTransaction}</Text>
         <Image source={rightBack} style={styles.arrowStyle} />
@@ -295,7 +295,7 @@ export function Wallet() {
         <View style={{flex:1,
           backgroundColor:COLORS.white
           }}>
-           <Spacer space={SH(20)} />
+           <Spacer space={SH(10)} />
                <View style={styles.onlinedeliveryCon}>
                <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
                    <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -314,14 +314,14 @@ export function Wallet() {
                    </TouchableOpacity>
                 </View>
                </View>
-               <ScrollView>
-               <Spacer space={SH(20)} />
+               <View>
+               <Spacer space={SH(15)} />
                <View style={styles.onlinedeliveryBody}>
                      <View style={styles.displayFlex}>
                      <View style={styles.buyerCon}>
-                       <Spacer space={SH(10)} />
+                       <Spacer space={SH(5)} />
                         <Text style={styles.buyer}>{strings.wallet.buyer}</Text>
-                        <Spacer space={SH(15)} />
+                        <Spacer space={SH(8)} />
                         <View style={{flexDirection:'row'}}>
                            <Image source={angela} style={styles.angelaPic}/>
                             <View style={{flexDirection:'column'}}>
@@ -335,22 +335,22 @@ export function Wallet() {
                         <Spacer space={SH(20)} />
                     </View>
                     <View style={styles.invoiceCon}>
-                         <Spacer space={SH(10)} />
+                         <Spacer space={SH(4)} />
                          <Text style={styles.invoiceDetail}>{strings.wallet.invoiceDetails}</Text>
-                         <Spacer space={SH(10)} />
+                         <Spacer space={SH(5)} />
                          <Text style={styles.invoiceId}>{strings.wallet.invoiceIdLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.invoiceId}</Text></Text>
-                         <Spacer space={SH(5)} />
+                         <Spacer space={SH(4)} />
                          <Text style={styles.invoiceId}>{strings.wallet.createDateLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
-                         <Spacer space={SH(5)} />
+                         <Spacer space={SH(4)} />
                          <Text style={styles.invoiceId}>{strings.wallet.dueDateLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
-                         <Spacer space={SH(5)} />
+                         <Spacer space={SH(4)} />
                          <Text style={styles.deliveryDate}>{strings.wallet.deliveryDate} <Text>{strings.wallet.createDate}</Text></Text>
                         <View style={styles.pointCon}>
                               <Text style={styles.pointText}>{strings.wallet.point}</Text>
                         </View>
                     </View>
                      </View>
-                     <Spacer space={SH(30)} />
+                     <Spacer space={SH(15)} />
                      <View style={styles.tableContainer}>
                      <DataTable>
                       <DataTable.Header style={styles.tableheader}>
@@ -387,7 +387,7 @@ export function Wallet() {
                       </DataTable.Row>
                         </DataTable>
   
-                     <Spacer space={SH(25)} />
+                     <Spacer space={SH(15)} />
                      <View style={[styles.displayFlex, {marginHorizontal:moderateScale(10)}]}>
                           {/* <View style={styles.noteContainer}>
                              
@@ -400,7 +400,7 @@ export function Wallet() {
                           placeholderTextColor="#000"
                           />
                           <View style={styles.noteContainer}>
-                             <Spacer space={SH(12)} />
+                             <Spacer space={SH(5)} />
                                  <View style={styles.tablesubTotal}>
                                     <Text style={styles.tablesubTotalLabel}>{strings.wallet.subtotal}</Text>
                                     <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
@@ -430,16 +430,16 @@ export function Wallet() {
                                   </View>
                                   <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
                                  </View>
-                                 <Spacer space={SH(10)} />
+                                 <Spacer space={SH(5)} />
                           </View>
                      </View>
                      <Spacer space={SH(20)} />
                      </View>
-                     <Spacer space={SH(25)} />
+                     <Spacer space={SH(5)} />
                      <View>
                         <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
                      </View>
-                     <Spacer space={SH(20)} />
+                     <Spacer space={SH(5)} />
                      <View style={styles.trackingCon}>
                          <View style={styles.displayFlex}>
                               <View style={{flexDirection:'row',alignItems:'center'}}>
@@ -468,7 +468,7 @@ export function Wallet() {
                      <Spacer space={SH(20)} />
                      
                </View>
-               </ScrollView>
+               </View>
          </View>
    
 
@@ -515,7 +515,7 @@ export function Wallet() {
             </View>
           </View>
           <View style={[styles.rightSidecon]}>
-            <ScrollView>
+            <View>
             <Spacer space={SH(20)} />
             <View style={{ paddingHorizontal: moderateScale(10) }}>
               <View style={styles.displayFlex}>
@@ -526,11 +526,11 @@ export function Wallet() {
                   <Image source={crossButton} style={styles.crossButtonStyle} />
                 </TouchableOpacity>
               </View>
-              <Spacer space={SH(40)} />
+              <Spacer space={SH(20)} />
               <Text
                 style={[
                   styles.payDoneText,
-                  { fontSize: SF(20), alignSelf: 'center' },
+                  { fontSize: SF(17), alignSelf: 'center' },
                 ]}
               >
                 {strings.posSale.paymenttdone}
@@ -555,17 +555,17 @@ export function Wallet() {
               <Text style={styles.jbrWalllettext}>
                 <Text style={styles.viaText}>Via </Text>JBR Wallet
               </Text>
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(15)} />
               <View style={styles.customerCon}>
-                <Spacer space={SH(20)} />
+                <Spacer space={SH(10)} />
                 <Text style={styles.customerHeading}>Customer</Text>
-                <Spacer space={SH(20)} />
+                <Spacer space={SH(10)} />
                 <View
                   style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
                 >
                   <Image source={jbrCustomer} style={styles.jbrCustomer} />
                   <View style={{ paddingHorizontal: moderateScale(15) }}>
-                    <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
+                    <Text style={[styles.cusAddText, { fontSize: SF(18) }]}>
                       Terry Moore
                     </Text>
                     <Spacer space={SH(8)} />
@@ -587,7 +587,7 @@ export function Wallet() {
                   </Text>
                 </View>
               </View>
-              <Spacer space={SH(40)} />
+              <Spacer space={SH(20)} />
             </View>
             <View style={{ flex: 1 }}></View>
               <View style={styles.bottomContainer}>
@@ -596,19 +596,19 @@ export function Wallet() {
                   <Text style={styles.smalldarkText}>Sub Total</Text>
                   <Text style={styles.smallLightText}>$4.00</Text>
                 </View>
-                <Spacer space={SH(12)} />
+                <Spacer space={SH(8)} />
                 <View style={styles.bottomSubCon}>
                   <Text style={styles.smallLightText}>Discount</Text>
                   <Text style={styles.smallLightText}>-$2.00</Text>
                 </View>
-                <Spacer space={SH(12)} />
+                <Spacer space={SH(8)} />
                 <View style={styles.bottomSubCon}>
                   <Text style={styles.smallLightText}>Tax</Text>
                   <Text style={styles.smallLightText}>$4.00</Text>
                 </View>
-                <Spacer space={SH(12)} />
+                <Spacer space={SH(8)} />
                 <View style={styles.hr}></View>
-                <Spacer space={SH(12)} />
+                <Spacer space={SH(8)} />
                 <View style={styles.bottomSubCon}>
                   <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>
                     Total
@@ -617,11 +617,11 @@ export function Wallet() {
                     $254.60
                   </Text>
                 </View>
-                <Spacer space={SH(12)} />
+                <Spacer space={SH(8)} />
                 <View style={styles.bottomSubCon}>
                   <Text style={styles.smallLightText}>4 Items</Text>
                 </View>
-                <Spacer space={SH(12)} />
+                <Spacer space={SH(8)} />
                 <TouchableOpacity
                   style={styles.checkoutButton}
                   onPress={checkOutHandler}
@@ -630,7 +630,10 @@ export function Wallet() {
                   <Image source={checkArrow} style={styles.checkArrow} />
                 </TouchableOpacity>
               </View>
-              </ScrollView>
+              </View>
+          
+          
+          
           </View>
         </View>
       );
@@ -771,13 +774,6 @@ export function Wallet() {
               </>
             </View>
           </View>
-
-
-
-
-
-
-          
           <View style={[styles.jbrTypeCon, { zIndex: -2 }]}>
             <View
               style={{
@@ -938,9 +934,9 @@ export function Wallet() {
       return (
         <View style={{ marginHorizontal: moderateScale(10) }}>
           {customHeader()}
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
             <View style={styles.walletMainCon}>
-              <Spacer space={SH(15)} />
+              <Spacer space={SH(10)} />
               <View style={styles.displayFlex}>
                 <Text style={styles.trancationHeading}>
                   {strings.wallet.totalTransections}
@@ -998,11 +994,11 @@ export function Wallet() {
                   </TouchableOpacity>
                 </View>
               </View>
-              <Spacer space={SH(15)} />
+              <Spacer space={SH(5)} />
               <Text style={styles.transationPrice}>
                 {strings.wallet.transationPrice}
               </Text>
-              <Spacer space={SH(15)} />
+              <Spacer space={SH(10)} />
               <View>
                 <FlatList
                   showsHorizontalScrollIndicator={false}
@@ -1032,7 +1028,7 @@ export function Wallet() {
               />
             </View>
             <Spacer space={SH(120)} />
-          </ScrollView>
+          </View>
         </View>
       );
     }

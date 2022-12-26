@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(25),
+    paddingVertical: SH(18),
     flexDirection: 'row',
   },
   textInputStyle: {
@@ -96,14 +96,14 @@ export const styles = StyleSheet.create({
   totalProductCon: {
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
-    width: windowWidth * 0.42,
-    height: SH(432),
+    width: windowWidth * 0.43,
+    height: SH(310),
     resizeMode: 'contain',
     ...ShadowStyles.shadow2,
     borderRadius: 10,
     paddingHorizontal: moderateScale(10),
     marginHorizontal: moderateScale(10),
-    marginVertical: verticalScale(10),
+    marginVertical: verticalScale(5),
   },
   rightlight: {
     width: SH(36),
@@ -113,12 +113,12 @@ export const styles = StyleSheet.create({
   darkBlackText: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.black,
-    fontSize: SF(24),
+    fontSize: SF(18),
   },
   productMap: {
     // width: SH(350),
     width: windowWidth * 0.38,
-    height: SH(234),
+    height: SH(180),
     resizeMode: 'contain',
   },
   contentContainer: {
@@ -154,7 +154,7 @@ export const styles = StyleSheet.create({
   totalProductDetailCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
-    height: SH(426),
+    height: SH(325),
     paddingHorizontal: moderateScale(10),
   },
 
@@ -163,7 +163,7 @@ export const styles = StyleSheet.create({
   trancationHeading: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
-    fontSize: SF(24),
+    fontSize: SF(20),
   },
   byDayCon: {
     backgroundColor: COLORS.primary,
@@ -195,7 +195,7 @@ export const styles = StyleSheet.create({
   },
   productGraphchildcon: {
     // borderWidth:1,
-    height: SH(218),
+    height: SH(190),
     width: windowWidth * 0.43,
     backgroundColor: COLORS.white,
     borderRadius: 15,
@@ -204,7 +204,7 @@ export const styles = StyleSheet.create({
   newAddedcon: {
     borderRightWidth: 1,
     borderColor: COLORS.solidGrey,
-    height: SH(190),
+    height: SH(160),
     width: windowWidth * 0.23,
     paddingHorizontal: moderateScale(15),
   },
@@ -216,29 +216,27 @@ export const styles = StyleSheet.create({
   newAddText: {
     fontFamily: Fonts.Regular,
     color: COLORS.bluish_green,
-    fontSize: SF(16),
+    fontSize: SF(14),
   },
   newAddTextBold: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.bluish_green,
-    fontSize: SF(16),
+    fontSize: SF(14),
   },
   productDetails: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.black,
-    fontSize: SF(18),
+    fontSize: SF(15),
   },
   totalActiveProductCon: {
-    height: SH(190),
+    height: SH(150),
     width: windowWidth * 0.2,
-    // paddingHorizontal:moderateScale(15),
-    // borderWidth:1,
-    justifyContent: 'center',
     alignItems: 'center',
+    marginBottom:30
   },
   activeProduct: {
-    width: SH(130),
-    height: SH(130),
+    width: SH(100),
+    height: SH(100),
     resizeMode: 'contain',
   },
   activeProductText: {
@@ -248,17 +246,17 @@ export const styles = StyleSheet.create({
   },
   categoryCon: {
     // width: SH(170),
-    height: SH(94),
+    height: SH(84),
     // borderWidth: 1,
     borderRadius: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: moderateScale(15),
-    marginVertical: moderateScale(8),
+    marginHorizontal: moderateScale(35),
+    marginVertical: moderateScale(5),
   },
   categoryChildCon: {
     width: SH(115),
-    height: SH(94),
+    height: SH(84),
     borderBottomLeftRadius: 15,
     borderTopLeftRadius: 15,
     // borderRadius:15,
@@ -268,7 +266,7 @@ export const styles = StyleSheet.create({
   },
   categoryChildPercent: {
     width: SH(80),
-    height: SH(94),
+    height: SH(84),
     borderBottomEndRadius: 15,
     borderTopEndRadius: 15,
     // borderRadius:15,
@@ -277,8 +275,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   catPercent: {
-    width: SH(50),
-    height: SH(30),
+    width: SH(40),
+    height: SH(25),
     resizeMode: 'contain',
   },
   percentText: {
@@ -289,16 +287,16 @@ export const styles = StyleSheet.create({
   categoryText: {
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
-    fontSize: Platform.OS === 'android' ? SF(14) : SF(12),
+    fontSize: Platform.OS === 'android' ? SF(12) : SF(10),
   },
   categoryCount: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.solid_grey,
-    fontSize: Platform.OS === 'android' ? SF(32) : SF(25),
+    fontSize: Platform.OS === 'android' ? SF(20) : SF(20),
   },
   productCategorychildcon: {
     // borderWidth:1,
-    height: SH(245),
+    height: SH(200),
     width: windowWidth * 0.45,
     backgroundColor: COLORS.white,
     borderRadius: 15,
@@ -1010,7 +1008,7 @@ export const styles = StyleSheet.create({
   // TOTAL RENEVUE CSS START
   revenueGraph: {
     width: SH(1254),
-    height: SH(234),
+    height: SH(194),
     resizeMode: 'contain',
   },
   colorFrame: {
@@ -1021,15 +1019,15 @@ export const styles = StyleSheet.create({
   },
   totalOrderMap: {
     width: SH(570),
-    height: SH(225),
+    height: SH(205),
     resizeMode: 'contain',
   },
 
-  trancationHeading: {
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.black,
-    fontSize: SF(18),
-  },
+  // trancationHeading: {
+  //   fontFamily: Fonts.MaisonBold,
+  //   color: COLORS.black,
+  //   fontSize: SF(18),
+  // },
   totalTranStyle: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.primary,

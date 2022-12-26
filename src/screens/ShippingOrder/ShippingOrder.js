@@ -475,7 +475,6 @@ export function ShippingOrder() {
         <Text numberOfLines={1} style={styles.nameText}>
           {item.name}
         </Text>
-        <Spacer space={SH(6)} />
         <View style={styles.timeView}>
           <Image source={pin} style={styles.pinIcon} />
           <Text style={styles.timeText}>{item.time}</Text>
@@ -484,7 +483,6 @@ export function ShippingOrder() {
 
       <View style={{ width: SW(25) }}>
         <Text style={styles.nameText}>{item.items}</Text>
-        <Spacer space={SH(6)} />
         <View style={styles.timeView}>
           <Image source={pay} style={styles.pinIcon} />
           <Text style={styles.timeText}>{item.price}</Text>
@@ -495,7 +493,6 @@ export function ShippingOrder() {
         <Text style={[styles.nameText, { color: COLORS.primary }]}>
           {item.deliveryType}
         </Text>
-        <Spacer space={SH(6)} />
         <View style={styles.timeView}>
           <Image source={clock} style={styles.pinIcon} />
           <Text style={styles.timeText}>{item.timeSlot}</Text>
@@ -1348,7 +1345,7 @@ export function ShippingOrder() {
               </View>
             </View>
           </View>
-          <View style={{ paddingBottom: verticalScale(10) }}>
+          <View style={{ paddingBottom: verticalScale(4) }}>
             <FlatList
               scrollEnabled={false}
               data={deliveryOrderStatus}
@@ -1358,17 +1355,17 @@ export function ShippingOrder() {
             />
           </View>
 
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
             <View style={styles.scrollMainCon}>
               <View style={styles.headerMainView}>
                 <View style={{ flexDirection: 'column' }}>
                   <View style={styles.orderNumberLeftView}>
-                    <Spacer space={SH(30)} />
+                    <Spacer space={SH(8)} />
                     <Text style={styles.deliveryText}>
                       {strings.deliveryOrders.orderNumber}
                     </Text>
 
-                    <Spacer space={SH(20)} />
+                    <Spacer space={SH(10)} />
                     <View style={styles.chartView}>
                       {/* <LineChart
                       data={{
@@ -1415,17 +1412,17 @@ export function ShippingOrder() {
                     /> */}
                       <Image source={chart} style={styles.chartImageStyle} />
                     </View>
-                    <Spacer space={SH(30)} />
+                    <Spacer space={SH(20)} />
                   </View>
 
-                  <Spacer space={SH(50)} />
+                  <Spacer space={SH(10)} />
                   <View style={styles.orderNumberLeftView}>
-                    <Spacer space={SH(20)} />
+                    <Spacer space={SH(10)} />
                     <Text style={styles.deliveryText}>
                       {strings.deliveryOrders.orderConversion}
                     </Text>
 
-                    <Spacer space={SH(30)} />
+                    <Spacer space={SH(10)} />
                     <View style={styles.conversionRow}>
                       <Image
                         source={conversionBox}
@@ -1440,13 +1437,13 @@ export function ShippingOrder() {
                       </View>
                     </View>
 
-                    <Spacer space={SH(50)} />
+                    <Spacer space={SH(15)} />
                   </View>
                 </View>
 
                 <View style={{ flexDirection: 'column' }}>
                   <View style={styles.orderReviewRightView}>
-                    <Spacer space={SH(20)} />
+                    <Spacer space={SH(10)} />
                     <View style={styles.reviewHeadingView}>
                       <Text style={styles.orderReviewText}>
                         {strings.deliveryOrders.orderReview}
@@ -1464,12 +1461,14 @@ export function ShippingOrder() {
                       </TouchableOpacity>
                     </View>
 
-                    <Spacer space={SH(15)} />
-                    <FlatList
-                      data={orderReview}
-                      renderItem={renderReviewItem}
-                      showsVerticalScrollIndicator={false}
-                    />
+                    <Spacer space={SH(8)} />
+                    <View style={{ height: SH(350) }}>
+                      <FlatList
+                        data={orderReview}
+                        renderItem={renderReviewItem}
+                        // showsVerticalScrollIndicator={false}
+                      />
+                    </View>
 
                     <Spacer space={SH(15)} />
                   </View>
@@ -1489,7 +1488,7 @@ export function ShippingOrder() {
                 </View>
               </View>
             </View>
-          </ScrollView>
+          </View>
         </View>
       );
     }

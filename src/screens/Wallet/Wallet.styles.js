@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(25),
+    paddingVertical: SH(18),
     flexDirection: 'row',
   },
   backView: {
@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   deliveryText: {
-    fontFamily: Fonts.MaisonBold,
+    fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
     fontSize: SF(18),
     paddingLeft: SW(4),
@@ -88,6 +88,7 @@ export const styles = StyleSheet.create({
     // height: SH(63),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
+    // borderWidth:1
   },
   walletTranCon: {
     // borderRadius: 10,
@@ -129,7 +130,7 @@ export const styles = StyleSheet.create({
   transationPrice: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.primary,
-    fontSize: SF(54),
+    fontSize: SF(34),
   },
   trancationHeading: {
     fontFamily: Fonts.MaisonBold,
@@ -145,13 +146,13 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 5,
     paddingHorizontal: moderateScale(15),
-    paddingVertical: verticalScale(15),
+    paddingVertical: verticalScale(10),
     // width:SW(110)
     width: windowWidth * 0.28,
   },
   jbrCoinStyle: {
-    width: SW(15),
-    height: SW(15),
+    width: SW(12),
+    height: SW(12),
     resizeMode: 'contain',
   },
   arrowStyle: {
@@ -163,12 +164,12 @@ export const styles = StyleSheet.create({
   jbrCoinheading: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.black,
-    fontSize: SF(18),
+    fontSize: SF(16),
   },
   jbrCoinPrice: {
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
-    fontSize: SF(30),
+    fontSize: SF(20),
   },
   contentContainer: {
     justifyContent: 'space-between',
@@ -181,7 +182,7 @@ export const styles = StyleSheet.create({
   },
   transactionChartStyle: {
     width: SW(335),
-    height: SW(90),
+    height: SW(78),
     resizeMode: 'contain',
   },
   backButtonCon: {
@@ -478,7 +479,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: moderateScale(7),
-    paddingVertical: verticalScale(5),
+    paddingVertical: verticalScale(2),
     borderBottomWidth: 1,
     borderColor: COLORS.solidGrey,
   },
@@ -518,12 +519,12 @@ export const styles = StyleSheet.create({
   },
   paymentDone: {
     backgroundColor: COLORS.blue_shade,
-    height: SH(107),
+    height: SH(97),
     borderRadius: 5,
     justifyContent: 'center',
   },
   darkPricestyle: {
-    fontSize: SF(32),
+    fontSize: SF(28),
     fontFamily: Fonts.SemiBold,
     color: COLORS.primary,
   },
@@ -546,7 +547,7 @@ export const styles = StyleSheet.create({
   customerCon: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    height: SH(342),
+    height: SH(260),
     borderRadius: 5,
     paddingHorizontal: moderateScale(10),
   },
@@ -558,13 +559,13 @@ export const styles = StyleSheet.create({
   walletIdButtonCon: {
     borderTopWidth: 2,
     borderColor: COLORS.solidGrey,
-    height: SH(75),
+    height: SH(65),
     borderBottomEndRadius: 5,
     borderBottomLeftRadius: 5,
     position: 'absolute',
     bottom: 0,
     right: 0,
-    width: SW(104),
+    width: SW(107),
     backgroundColor: COLORS.solidGrey,
     justifyContent: 'center',
     alignItems: 'center',
@@ -575,7 +576,7 @@ export const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   cusAddText: {
-    fontSize: SF(16),
+    fontSize: SF(14),
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
   },
@@ -649,7 +650,7 @@ export const styles = StyleSheet.create({
 
   rightSidecon: {
     backgroundColor: COLORS.white,
-    height: windowHeight,
+    height: windowHeight * 0.95,
     width: SW(116),
     position: 'absolute',
     right: 0,
@@ -671,7 +672,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     width: windowWidth * 0.48,
-    height: SH(170),
+    height: SH(130),
     paddingHorizontal: moderateScale(8),
   },
   invoiceCon: {
@@ -679,7 +680,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     width: windowWidth * 0.3,
-    height: SH(170),
+    height: SH(130),
     paddingHorizontal: moderateScale(8),
   },
   angelaAddress: {
@@ -701,22 +702,22 @@ export const styles = StyleSheet.create({
   },
   buyer: {
     color: COLORS.dark_grey,
-    fontSize: SF(18),
+    fontSize: SF(16),
     fontFamily: Fonts.MaisonRegular,
   },
   invoiceId: {
     color: COLORS.brown,
-    fontSize: SF(14),
+    fontSize: SF(12),
     fontFamily: Fonts.Regular,
   },
   deliveryDate: {
     color: COLORS.sucx,
-    fontSize: SF(14),
+    fontSize: SF(13),
     fontFamily: Fonts.Regular,
   },
   invoiceDetail: {
     color: COLORS.solid_grey,
-    fontSize: SF(16),
+    fontSize: SF(15),
     fontFamily: Fonts.Italic,
   },
   pointCon: {
@@ -738,8 +739,6 @@ export const styles = StyleSheet.create({
     // borderWidth:1,
     backgroundColor: COLORS.white,
     ...ShadowStyles.shadow2,
-    // borderTopLeftRadius:12,
-    // borderTopRightRadius:12
     borderRadius: 12,
   },
   tableheader: {
@@ -774,7 +773,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     // backgroundColor:COLORS.,
     borderColor: COLORS.solidGrey,
-    height: SH(274),
+    height: SH(200),
     width: windowWidth * 0.38,
     borderRadius: 10,
     backgroundColor: COLORS.textInputBackground,
@@ -790,12 +789,12 @@ export const styles = StyleSheet.create({
   },
   tablesubTotalLabel: {
     color: COLORS.solid_grey,
-    fontSize: SF(14),
+    fontSize: SF(13),
     fontFamily: Fonts.Regular,
   },
   tablesubTotalText: {
     color: COLORS.solid_grey,
-    fontSize: SF(14),
+    fontSize: SF(13),
     fontFamily: Fonts.MaisonRegular,
   },
   paidContainer: {
@@ -813,12 +812,12 @@ export const styles = StyleSheet.create({
   subtotalHr: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    marginVertical: moderateScale(7),
+    marginVertical: moderateScale(5),
   },
   textInputStyle: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    height: SH(274),
+    height: SH(200),
     width: windowWidth * 0.38,
     borderRadius: 10,
     backgroundColor: COLORS.textInputBackground,

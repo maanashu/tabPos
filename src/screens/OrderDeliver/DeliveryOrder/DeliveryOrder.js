@@ -26,7 +26,7 @@ import {
   dropdown2,
   delivery,
   deliveryLine,
-  radio
+  radio,
 } from '@/assets';
 import { styles } from './DeliveryOrder.styles';
 import { strings } from '@/localization';
@@ -40,9 +40,7 @@ import {
 import { COLORS, SH, SW } from '@/theme';
 import { Button, Spacer } from '@/components';
 
-import {
-  LineChart,
-} from "react-native-chart-kit";
+import { LineChart } from 'react-native-chart-kit';
 import { verticalScale } from 'react-native-size-matters';
 
 export function DeliveryOrder() {
@@ -179,23 +177,39 @@ export function DeliveryOrder() {
   const renderOrder = ({ item, index }) => (
     <View style={styles.renderOrderView}>
       <Text style={styles.countText}>{item.total}</Text>
-      <Text style={[styles.statusText, { textAlign: 'left' }]}>{item.title}</Text>
+      <Text style={[styles.statusText, { textAlign: 'left' }]}>
+        {item.title}
+      </Text>
     </View>
   );
 
   const renderDeliveryOrders = ({ item, index }) => (
     <View style={styles.deliveryViewStyle}>
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
       <View style={{ flexDirection: 'row' }}>
-        <Image source={item.image} style={[styles.pinIcon, { tintColor: COLORS.primary }]} />
-        <Text style={[styles.timeText, { color: COLORS.primary }]}>{item.delivery}</Text>
-        <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
+        <Image
+          source={item.image}
+          style={[styles.pinIcon, { tintColor: COLORS.primary }]}
+        />
+        <Text style={[styles.timeText, { color: COLORS.primary }]}>
+          {item.delivery}
+        </Text>
       </View>
-      <Text style={styles.totalText}>{item.total}</Text>
+      <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
     </View>
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <Text style={styles.totalText}>{item.total}</Text>
+      {/* <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} /> */}
+      <Text style={{ color: COLORS.primary }}>-</Text>
+    </View>
+  </View>
   );
 
   const renderProductList = ({ item, index }) => (
-    <TouchableOpacity style={styles.productViewStyle} onPress={() => alert('coming soon')}>
+    <TouchableOpacity
+      style={styles.productViewStyle}
+      onPress={() => alert('coming soon')}
+    >
       <View style={styles.productImageView}>
         <Image source={item.image} style={styles.profileImage} />
 
@@ -209,20 +223,35 @@ export function DeliveryOrder() {
         <Text style={styles.priceText}>{'x'}</Text>
         <Text style={styles.priceText}>{item.quantity}</Text>
       </View>
-      <View style={{flexDirection:'row'}}>
-      <Text style={styles.priceText}>{item.price}</Text>
-      <Image source={rightIcon} style={[styles.pinIcon, {marginLeft:20}]} />
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.priceText}>{item.price}</Text>
+        <Image
+          source={rightIcon}
+          style={[styles.pinIcon, { marginLeft: 20 }]}
+        />
       </View>
     </TouchableOpacity>
   );
 
   const orderStatusText = () => {
     if (orderAccepted && readyPickup === false) {
-      return <Text style={styles.orderReviewText}>{strings.deliveryOrders.ordersPreparing}</Text>
+      return (
+        <Text style={styles.orderReviewText}>
+          {strings.deliveryOrders.ordersPreparing}
+        </Text>
+      );
     } else if (orderAccepted && readyPickup) {
-      return <Text style={styles.orderReviewText}>{strings.deliveryOrders.ready}</Text>
+      return (
+        <Text style={styles.orderReviewText}>
+          {strings.deliveryOrders.ready}
+        </Text>
+      );
     } else {
-      return <Text style={styles.orderReviewText}>{strings.deliveryOrders.orderReview}</Text>
+      return (
+        <Text style={styles.orderReviewText}>
+          {strings.deliveryOrders.orderReview}
+        </Text>
+      );
     }
   };
 
@@ -245,67 +274,113 @@ export function DeliveryOrder() {
           <View style={styles.orderDetailView}>
             <Spacer space={SH(20)} />
             <View style={styles.reviewHeadingView}>
-              <Text style={styles.orderReviewText}>{strings.deliveryOrders.orderId}</Text>
-              <Text style={styles.orderReviewText}>{strings.deliveryOrders.orderDate}</Text>
+              <Text style={styles.orderReviewText}>
+                {strings.deliveryOrders.orderId}
+              </Text>
+              <Text style={styles.orderReviewText}>
+                {strings.deliveryOrders.orderDate}
+              </Text>
             </View>
 
             <View style={styles.profileDetailView}>
               <Image source={profileImage} style={styles.profileImage} />
 
               <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
-                <Text style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}>{strings.deliveryOrders.name}</Text>
-                <Text style={[styles.timeText, { paddingLeft: 0 }]}>{strings.deliveryOrders.address}</Text>
+                <Text style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}>
+                  {strings.deliveryOrders.name}
+                </Text>
+                <Text style={[styles.timeText, { paddingLeft: 0 }]}>
+                  {strings.deliveryOrders.address}
+                </Text>
               </View>
 
               <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
                 <Image source={deliveryScooter} style={styles.profileImage} />
                 <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
-                  <Text style={[styles.nameText, { color: COLORS.primary, fontFamily: Fonts.SemiBold }]}>{strings.deliveryOrders.deliveryType}</Text>
-                  <Text style={styles.timeText}>{strings.deliveryOrders.time}</Text>
+                  <Text
+                    style={[
+                      styles.nameText,
+                      { color: COLORS.primary, fontFamily: Fonts.SemiBold },
+                    ]}
+                  >
+                    {strings.deliveryOrders.deliveryType}
+                  </Text>
+                  <Text style={styles.timeText}>
+                    {strings.deliveryOrders.time}
+                  </Text>
                 </View>
               </View>
             </View>
-             <Spacer space={SH(15)}/>
+            <Spacer space={SH(15)} />
             <View style={styles.horizontalLine} />
 
-            <View style={{height:SH(250)}}>
-            <FlatList
-              data={productList}
-              renderItem={renderProductList}
-              ItemSeparatorComponent={() => (
-                <View style={styles.itemSeparatorView} />
-              )}
-            />
+            <View style={{ height: SH(250) }}>
+              <FlatList
+                data={productList}
+                renderItem={renderProductList}
+                ItemSeparatorComponent={() => (
+                  <View style={styles.itemSeparatorView} />
+                )}
+              />
             </View>
 
             <View style={styles.bottomSheet}>
               <View style={styles.rowView}>
-                <Text style={styles.subTotal}>{strings.deliveryOrders.subTotal}</Text>
-                <Text style={styles.subTotalValue}>{strings.deliveryOrders.subTotalValue}</Text>
+                <Text style={styles.subTotal}>
+                  {strings.deliveryOrders.subTotal}
+                </Text>
+                <Text style={styles.subTotalValue}>
+                  {strings.deliveryOrders.subTotalValue}
+                </Text>
               </View>
 
               <View style={styles.rowView}>
-                <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>{strings.deliveryOrders.discount}</Text>
-                <Text style={styles.discountValue}>{strings.deliveryOrders.discountValue}</Text>
+                <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+                  {strings.deliveryOrders.discount}
+                </Text>
+                <Text style={styles.discountValue}>
+                  {strings.deliveryOrders.discountValue}
+                </Text>
               </View>
 
               <View style={styles.rowView}>
-                <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>{strings.deliveryOrders.tax}</Text>
-                <Text style={styles.discountValue}>{strings.deliveryOrders.subTotalValue}</Text>
+                <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+                  {strings.deliveryOrders.tax}
+                </Text>
+                <Text style={styles.discountValue}>
+                  {strings.deliveryOrders.subTotalValue}
+                </Text>
               </View>
-              <View style={{borderWidth:1, width:SH(385), alignSelf:'flex-end',borderStyle:'dashed', borderColor:COLORS.row_grey, marginVertical:verticalScale(3)}}/>
+              <View
+                style={{
+                  borderWidth: 1,
+                  width: SH(385),
+                  alignSelf: 'flex-end',
+                  borderStyle: 'dashed',
+                  borderColor: COLORS.row_grey,
+                  marginVertical: verticalScale(3),
+                }}
+              />
               <View style={styles.rowView}>
-                <Text style={styles.totalLabel}>{strings.deliveryOrders.total}</Text>
-                <Text style={styles.totalValue}>{strings.deliveryOrders.totalValue}</Text>
+                <Text style={styles.totalLabel}>
+                  {strings.deliveryOrders.total}
+                </Text>
+                <Text style={styles.totalValue}>
+                  {strings.deliveryOrders.totalValue}
+                </Text>
               </View>
 
               <View style={styles.rowView}>
-                <Text style={styles.discountValue}>{strings.deliveryOrders.items}</Text>
+                <Text style={styles.discountValue}>
+                  {strings.deliveryOrders.items}
+                </Text>
               </View>
 
               {orderAccepted ? (
                 <Button
-                  onPress={() => { setReadyForPickup(true) }}
+                  onPress={() => {
+                    setReadyForPickup(true);
+                  }}
                   style={styles.button}
                   title={strings.deliveryOrders.ready}
                   textStyle={styles.buttonText}
@@ -319,7 +394,9 @@ export function DeliveryOrder() {
                   />
 
                   <Button
-                    onPress={() => { setOrderAccepted(true) }}
+                    onPress={() => {
+                      setOrderAccepted(true);
+                    }}
                     style={styles.acceptButton}
                     title={strings.deliveryOrders.accept}
                     textStyle={styles.buttonText}
@@ -348,25 +425,49 @@ export function DeliveryOrder() {
           <View style={styles.orderDetailView}>
             <Spacer space={SH(20)} />
             <View style={styles.reviewHeadingView}>
-              <Text style={styles.orderReviewText}>{strings.deliveryOrders.orderId}</Text>
-              <Text style={styles.orderReviewText}>{strings.deliveryOrders.orderDate}</Text>
+              <Text style={styles.orderReviewText}>
+                {strings.deliveryOrders.orderId}
+              </Text>
+              <Text style={styles.orderReviewText}>
+                {strings.deliveryOrders.orderDate}
+              </Text>
             </View>
 
-            <View style={[styles.profileDetailView, { justifyContent: 'space-between' }]}>
+            <View
+              style={[
+                styles.profileDetailView,
+                { justifyContent: 'space-between' },
+              ]}
+            >
               <View style={{ flexDirection: 'row' }}>
                 <Image source={profileImage} style={styles.profileImage} />
 
                 <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
-                  <Text style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}>{strings.deliveryOrders.profileName}</Text>
-                  <Text style={[styles.timeText, { paddingLeft: 0 }]}>{strings.deliveryOrders.distance}</Text>
+                  <Text
+                    style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}
+                  >
+                    {strings.deliveryOrders.profileName}
+                  </Text>
+                  <Text style={[styles.timeText, { paddingLeft: 0 }]}>
+                    {strings.deliveryOrders.distance}
+                  </Text>
                 </View>
               </View>
 
               <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
                 <Image source={deliveryScooter} style={styles.profileImage} />
                 <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
-                  <Text style={[styles.nameText, { color: COLORS.primary, fontFamily: Fonts.SemiBold }]}>{strings.deliveryOrders.deliveryType}</Text>
-                  <Text style={styles.timeText}>{strings.deliveryOrders.time}</Text>
+                  <Text
+                    style={[
+                      styles.nameText,
+                      { color: COLORS.primary, fontFamily: Fonts.SemiBold },
+                    ]}
+                  >
+                    {strings.deliveryOrders.deliveryType}
+                  </Text>
+                  <Text style={styles.timeText}>
+                    {strings.deliveryOrders.time}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -383,11 +484,9 @@ export function DeliveryOrder() {
                   latitudeDelta: 0.0922,
                   longitudeDelta: 0.0421,
                 }}
-                style={styles.map}>
-              </MapView>
-              <View>
-                {showOrderStatusModal()}
-              </View>
+                style={styles.map}
+              ></MapView>
+              <View>{showOrderStatusModal()}</View>
             </View>
           </View>
         </View>
@@ -395,26 +494,27 @@ export function DeliveryOrder() {
     } else {
       return (
         <View style={{ flex: 1 }}>
-           <View style={{paddingBottom:verticalScale(10)}}>
-           <FlatList
-            scrollEnabled={false}
-            data={orderStatus}
-            renderItem={renderItem}
-            horizontal
-            contentContainerStyle={styles.contentContainer}
-          />
-           </View>
+          <View style={{ paddingBottom: verticalScale(4) }}>
+            <FlatList
+              scrollEnabled={false}
+              data={orderStatus}
+              renderItem={renderItem}
+              horizontal
+              contentContainerStyle={styles.contentContainer}
+            />
+          </View>
 
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
             <View style={styles.headerMainView}>
               <View style={{ flexDirection: 'column' }}>
                 <View style={styles.orderNumberLeftView}>
-                  <Spacer space={SH(30)} />
-                  <Text style={styles.deliveryText}>{strings.deliveryOrders.orderNumber}</Text>
+                  <Spacer space={SH(8)} />
+                  <Text style={styles.deliveryText}>
+                    {strings.deliveryOrders.orderNumber}
+                  </Text>
 
-                  <Spacer space={SH(20)} />
+                  <Spacer space={SH(10)} />
                   <View style={styles.chartView}>
-
                     {/* <LineChart
                       data={{
                         labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -460,53 +560,71 @@ export function DeliveryOrder() {
                     /> */}
                     <Image source={chart} style={styles.chartImageStyle} />
                   </View>
-                  <Spacer space={SH(30)} />
+                  <Spacer space={SH(20)} />
                 </View>
 
-                <Spacer space={SH(50)} />
+                <Spacer space={SH(10)} />
                 <View style={styles.orderNumberLeftView}>
-                  <Spacer space={SH(20)} />
-                  <Text style={styles.deliveryText}>{strings.deliveryOrders.orderConversion}</Text>
+                  <Spacer space={SH(10)} />
+                  <Text style={styles.deliveryText}>
+                    {strings.deliveryOrders.orderConversion}
+                  </Text>
 
-                  <Spacer space={SH(30)} />
+                  <Spacer space={SH(10)} />
                   <View style={styles.conversionRow}>
-                    <Image source={conversionBox} style={styles.conversionBoxStyle} />
+                    <Image
+                      source={conversionBox}
+                      style={styles.conversionBoxStyle}
+                    />
 
                     <View style={styles.orderFlatlistView}>
-                      <FlatList data={orderConversion} renderItem={renderOrder} />
+                      <FlatList
+                        data={orderConversion}
+                        renderItem={renderOrder}
+                      />
                     </View>
                   </View>
 
-                  <Spacer space={SH(50)} />
+                  <Spacer space={SH(15)} />
                 </View>
               </View>
 
               <View style={{ flexDirection: 'column' }}>
                 <View style={[styles.orderReviewRightView]}>
-                  <Spacer space={SH(20)} />
+                  <Spacer space={SH(10)} />
                   <View style={styles.reviewHeadingView}>
-                    <Text style={styles.orderReviewText}>{strings.deliveryOrders.orderReview}</Text>
+                    <Text style={styles.orderReviewText}>
+                      {strings.deliveryOrders.orderReview}
+                    </Text>
 
                     <TouchableOpacity
-                      onPress={() => { setViewAllReviews(true) }}
-                      style={styles.viewAllView}>
-                      <Text style={styles.viewText}>{strings.deliveryOrders.viewAll}</Text>
+                      onPress={() => {
+                        setViewAllReviews(true);
+                      }}
+                      style={styles.viewAllView}
+                    >
+                      <Text style={styles.viewText}>
+                        {strings.deliveryOrders.viewAll}
+                      </Text>
                     </TouchableOpacity>
                   </View>
 
+                  <Spacer space={SH(8)} />
+                  <View style={{ height: SH(350) }}>
+                    <FlatList
+                      data={orderReview}
+                      renderItem={renderReviewItem}
+                      // showsVerticalScrollIndicator={false}
+                    />
+                  </View>
                   <Spacer space={SH(15)} />
-                   <View style={{ height:SH(670)}}>
-                   <FlatList
-                    data={orderReview}
-                    renderItem={renderReviewItem}
-                    showsVerticalScrollIndicator={false}
-                  />
-                   </View>
                 </View>
 
-                <Spacer space={SH(20)} />
+                <Spacer space={SH(15)} />
                 <View style={styles.deliveryOrders}>
-                  <Text style={styles.orderReviewText}>{strings.deliveryOrders.deliveryOrders}</Text>
+                  <Text style={styles.orderReviewText}>
+                    {strings.deliveryOrders.deliveryOrders}
+                  </Text>
 
                   <FlatList
                     horizontal
@@ -516,7 +634,7 @@ export function DeliveryOrder() {
                 </View>
               </View>
             </View>
-          </ScrollView>
+          </View>
         </View>
       );
     }
@@ -527,76 +645,116 @@ export function DeliveryOrder() {
       <View style={styles.orderModalView}>
         <View style={styles.headerTab}>
           <View>
-            <Text style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}>{strings.deliveryOrders.orderStatus}</Text>
-            <Text style={styles.timeText}>{strings.deliveryOrders.assignedDriver}</Text>
+            <Text style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}>
+              {strings.deliveryOrders.orderStatus}
+            </Text>
+            <Text style={styles.timeText}>
+              {strings.deliveryOrders.assignedDriver}
+            </Text>
           </View>
 
-          <TouchableOpacity onPress={() => { setShowArea(!showArea) }}>
-            <Image source={dropdown2} style={[styles.searchImage, { right: 30 }]} />
+          <TouchableOpacity
+            onPress={() => {
+              setShowArea(!showArea);
+            }}
+          >
+            <Image
+              source={dropdown2}
+              style={[styles.searchImage, { right: 30 }]}
+            />
           </TouchableOpacity>
         </View>
 
         <View style={styles.horizontalLine} />
 
         <Spacer space={SH(20)} />
-        {showArea ? <View>
-          <View style={styles.deliveryStatus}>
-            <Image source={radio} style={styles.radioImage} />
-            <View style={[styles.justifyContentStyle, { left: 12 }]}>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.verifyCode}</Text>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.within}</Text>
+        {showArea ? (
+          <View>
+            <View style={styles.deliveryStatus}>
+              <Image source={radio} style={styles.radioImage} />
+              <View style={[styles.justifyContentStyle, { left: 12 }]}>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.verifyCode}
+                </Text>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.within}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.deliveryStatus}>
+              <Image source={delivery} style={styles.deliveryImage} />
+              <View style={styles.justifyContentStyle}>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.delivery}
+                </Text>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.within}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.deliveryStatus}>
+              <Image source={delivery} style={styles.deliveryImage} />
+              <View style={styles.justifyContentStyle}>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.nextTo}
+                </Text>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.within}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.deliveryStatus}>
+              <Image source={deliveryLine} style={styles.deliveryImage} />
+              <View style={styles.justifyContentStyle}>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.pickup}
+                </Text>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.within}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.deliveryStatus}>
+              <Image source={deliveryLine} style={styles.deliveryImage} />
+              <View style={styles.justifyContentStyle}>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.assign}
+                </Text>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.within}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.deliveryStatus}>
+              <Image source={deliveryLine} style={styles.deliveryImage} />
+              <View style={styles.justifyContentStyle}>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.readyToPickup}
+                </Text>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.within}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.deliveryStatus}>
+              <Image source={deliveryLine} style={styles.deliveryImage} />
+              <View style={styles.justifyContentStyle}>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.orderAccepted}
+                </Text>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.dateTime}
+                </Text>
+              </View>
             </View>
           </View>
-
-          <View style={styles.deliveryStatus}>
-            <Image source={delivery} style={styles.deliveryImage} />
-            <View style={styles.justifyContentStyle}>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.delivery}</Text>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.within}</Text>
-            </View>
-          </View>
-
-          <View style={styles.deliveryStatus}>
-            <Image source={delivery} style={styles.deliveryImage} />
-            <View style={styles.justifyContentStyle}>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.nextTo}</Text>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.within}</Text>
-            </View>
-          </View>
-
-          <View style={styles.deliveryStatus}>
-            <Image source={deliveryLine} style={styles.deliveryImage} />
-            <View style={styles.justifyContentStyle}>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.pickup}</Text>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.within}</Text>
-            </View>
-          </View>
-
-          <View style={styles.deliveryStatus}>
-            <Image source={deliveryLine} style={styles.deliveryImage} />
-            <View style={styles.justifyContentStyle}>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.assign}</Text>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.within}</Text>
-            </View>
-          </View>
-
-          <View style={styles.deliveryStatus}>
-            <Image source={deliveryLine} style={styles.deliveryImage} />
-            <View style={styles.justifyContentStyle}>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.readyToPickup}</Text>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.within}</Text>
-            </View>
-          </View>
-
-          <View style={styles.deliveryStatus}>
-            <Image source={deliveryLine} style={styles.deliveryImage} />
-            <View style={styles.justifyContentStyle}>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.orderAccepted}</Text>
-              <Text style={styles.verifyText}>{strings.deliveryOrders.dateTime}</Text>
-            </View>
-          </View>
-
-        </View> : null}
+        ) : null}
       </View>
     );
   };

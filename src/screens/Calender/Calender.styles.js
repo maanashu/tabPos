@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(35),
+    paddingVertical: SH(18),
     flexDirection: 'row',
   },
   textInputStyle: {
@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
     left: 3,
   },
   calenderCon: {
-    // width: windowWidth * 0.71,
+    width: windowWidth * 0.68,
     // borderWidth: 1,
     height: windowHeight,
   },
@@ -247,7 +247,8 @@ export const styles = StyleSheet.create({
   },
   schdule: {
     height: SH(670),
-    width: SH(650),
+    // width: SH(650),
+    width:windowWidth * 0.71,
     resizeMode: 'contain',
   },
   monthlySchduel: {

@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(25),
+    paddingVertical: SH(18),
     flexDirection: 'row',
   },
   backView: {
@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   deliveryText: {
-    fontFamily: Fonts.MaisonBold,
+    fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
     fontSize: SF(18),
     paddingLeft: SW(2),
@@ -154,11 +154,11 @@ export const styles = StyleSheet.create({
   totalCustomer:{
     fontFamily: Fonts.SemiBold,
     color: COLORS.primary,
-    fontSize: SF(54),
+    fontSize: SF(34),
   },
   customersGraph:{
     width:windowWidth * 0.90,
-    height:windowHeight * 0.60,
+    height:windowHeight * 0.40,
     resizeMode: 'contain',
   },
   orderTypeCon: {
@@ -587,12 +587,13 @@ usertableRowText: {
     // borderWidth:1,
     width:windowWidth * 0.80,
     alignSelf:'center',
-},buyerCon:{
+},
+buyerCon:{
   borderWidth:1,
   borderColor:COLORS.solidGrey,
   borderRadius:10,
   width:windowWidth * 0.48,
-  height:SH(170),
+  height:SH(130),
   paddingHorizontal:moderateScale(8)
 },
 invoiceCon:{
@@ -600,7 +601,7 @@ invoiceCon:{
   borderColor:COLORS.solidGrey,
   borderRadius:10,
   width:windowWidth * 0.30,
-  height:SH(170),
+  height:SH(130),
   paddingHorizontal:moderateScale(8)
 },
 angelaAddress:{
@@ -627,17 +628,17 @@ buyer:{
 },
 invoiceId:{
   color: COLORS.brown,
-  fontSize: SF(14),
+  fontSize: SF(12),
   fontFamily: Fonts.Regular,
 },
 deliveryDate:{
   color: COLORS.sucx,
-  fontSize: SF(14),
+  fontSize: SF(12),
   fontFamily: Fonts.Regular,
 },
 invoiceDetail:{
   color: COLORS.solid_grey,
-  fontSize: SF(16),
+  fontSize: SF(15),
   fontFamily: Fonts.Italic,
 },
 pointConOrder:{
@@ -696,7 +697,7 @@ noteContainer:{
   borderWidth:1,
   // backgroundColor:COLORS.,
   borderColor:COLORS.solidGrey,
-  height:SH(274),
+  height:SH(194),
   width:windowWidth * 0.38,
   borderRadius:10,
   backgroundColor:COLORS.textInputBackground
@@ -735,12 +736,12 @@ paidText:{
 subtotalHr:{
   borderWidth:1,
   borderColor:COLORS.solidGrey,
-  marginVertical:Platform.OS === 'android' ? moderateScale(9) : moderateScale(7)
+  marginVertical:Platform.OS === 'android' ? moderateScale(4) : moderateScale(7)
 },
 textInputStyle:{
   borderWidth:1,
   borderColor:COLORS.solidGrey,
-  height:SH(274),
+  height:SH(194),
   width:windowWidth * 0.38,
   borderRadius:10,
   backgroundColor:COLORS.textInputBackground,
@@ -841,23 +842,23 @@ orderNoStyle: {
   costoContainer:{
     borderWidth:1,
     width:windowWidth * 0.44,
-    height:SH(140),
+    height:SH(120),
     borderRadius:10,
     borderColor:COLORS.solidGrey,
   },
   trackingAngela:{
-    Width:SW(18),
-    height:SW(18),
+    Width:SW(15),
+    height:SW(15),
     resizeMode:'contain',
   },
   costoHr:{
-    borderWidth: 1,
+    borderWidth: 0.7,
     borderColor: COLORS.solidGrey,
     width:windowWidth * 0.34,
-    marginVertical:verticalScale(5)
+    marginVertical:verticalScale(3)
   },
   costoName:{
-    fontSize: SF(24),
+    fontSize: SF(16),
     color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonBold,
   },
@@ -880,8 +881,8 @@ orderNoStyle: {
     paddingHorizontal:moderateScale(4)
   },
   ticketImage:{
-    width: SW(8),
-    height: SW(8),
+    width: SW(4),
+    height: SW(4),
     resizeMode: 'contain',
   },
   detailText:{
@@ -897,30 +898,30 @@ orderNoStyle: {
   },
   mapStyle:{
     width: SW(165),
-    height: SH(1070),
+    height: SH(640),
     resizeMode: 'cover',
     borderRadius:15
   },
   orderStatus:{
     color:COLORS.solid_grey,
-    fontSize: SF(15),
+    fontSize: SF(12),
     fontFamily: Fonts.SemiBold,
   },
   movingArrow:{
-    width: SW(8),
-    height: SW(16),
+    width: SW(3),
+    height: SW(6),
     resizeMode: 'cover',
     marginTop:10,
     marginBottom:4
   },
   verifyTextLight:{
     color:COLORS.gerySkies,
-    fontSize: SF(12),
+    fontSize: SF(8),
     fontFamily: Fonts.SemiBold,
   },
   waitMinuteLight:{
     color:COLORS.gerySkies,
-    fontSize: SF(12),
+    fontSize: SF(10),
     fontFamily: Fonts.Regular,
   },
   carriarCon:{
@@ -928,7 +929,7 @@ orderNoStyle: {
     borderColor:COLORS.solidGrey,
     borderRadius:10,
     paddingHorizontal:moderateScale(10),
-    height:SH(102)
+    height:SH(85)
   },
   tracking2Angela:{
     width: SH(36),
@@ -937,7 +938,7 @@ orderNoStyle: {
   },
   gredoName:{
     color:COLORS.black,
-    fontSize: SF(18),
+    fontSize: SF(13),
     fontFamily: Fonts.SemiBold,
     paddingHorizontal:moderateScale(5)
   },
@@ -954,7 +955,7 @@ orderNoStyle: {
   },
   contactText:{
     color:COLORS.solid_grey,
-    fontSize: SF(14),
+    fontSize: SF(10),
     fontFamily: Fonts.SemiBold,
     paddingLeft:moderateScale(5)
   }

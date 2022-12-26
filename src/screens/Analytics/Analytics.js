@@ -1590,7 +1590,7 @@ export function Analytics(props) {
       <View style={styles.displayFlex}>
         <View>
           <Text style={styles.darkBlackText}>{item.headerType}</Text>
-          <Text style={[styles.darkBlackText, { fontSize: SF(54) }]}>
+          <Text style={[styles.darkBlackText, { fontSize: SF(34) }]}>
             {item.range}
           </Text>
         </View>
@@ -1610,7 +1610,7 @@ export function Analytics(props) {
     >
       <View style={styles.categoryChildCon}>
         <Text style={styles.categoryCount}>{item.categoryCount}</Text>
-        <Text style={styles.categoryText}>{item.category}</Text>
+        <Text numberOfLines={1} style={styles.categoryText}>{item.category}</Text>
       </View>
       <View style={styles.categoryChildPercent}>
         <Image source={catPercent} style={styles.catPercent} />
@@ -1626,11 +1626,11 @@ export function Analytics(props) {
     >
       <View style={styles.categoryChildCon}>
         <Text style={styles.categoryCount}>{item.categoryCount}</Text>
-        <Text style={styles.categoryText}>{item.category}</Text>
+        <Text numberOfLines={1} style={styles.categoryText}>{item.category}</Text>
       </View>
       <View style={styles.categoryChildPercent}>
         <Image source={catPercent} style={styles.catPercent} />
-        <Text style={styles.percentText}>{item.percentage}</Text>
+        <Text numberOfLines={1} style={styles.percentText}>{item.percentage}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -1641,7 +1641,7 @@ export function Analytics(props) {
     >
       <View style={styles.categoryChildCon}>
         <Text style={styles.categoryCount}>{item.categoryCount}</Text>
-        <Text style={styles.categoryText}>{item.category}</Text>
+        <Text numberOfLines={1} style={styles.categoryText}>{item.category}</Text>
       </View>
       <View style={styles.categoryChildPercent}>
         <Image source={catPercent} style={styles.catPercent} />
@@ -5470,9 +5470,9 @@ export function Analytics(props) {
     } else if (totalReveueDetail) {
       return (
         <View style={styles.totalProductBodyCon}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
             <View style={styles.totalProductDetailCon}>
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(10)} />
               <View style={styles.displayFlex}>
                 <Text style={styles.trancationHeading}>
                   {strings.analytics.totalRevenue}
@@ -5530,7 +5530,7 @@ export function Analytics(props) {
                   </TouchableOpacity>
                 </View>
               </View>
-              <Spacer space={SH(5)} />
+              <Spacer space={SH(2)} />
               <TouchableOpacity
                 onPress={() => {
                   setRevenueTable(true), setRevenueTableHeading('');
@@ -5539,106 +5539,22 @@ export function Analytics(props) {
                 <Text
                   style={[
                     styles.darkBlackText,
-                    { fontSize: SF(54), color: COLORS.primary },
+                    { fontSize: SF(34), color: COLORS.primary },
                   ]}
                 >
                   {strings.analytics.totalRevenueCount}
                 </Text>
               </TouchableOpacity>
               <Spacer space={SH(5)} />
-              {/* <View style={[styles.productGraphcon, {borderWidth:1}]}>
-              <View style={styles.displayFlex}>
-                <View style={styles.productGraphchildcon}>
-                  <Spacer space={SH(15)} />
-                  <View style={styles.displayFlex}>
-                    <View style={styles.newAddedcon}>
-                      <Text style={styles.productDetails}>
-                        {strings.analytics.productDetails}
-                      </Text>
-                      <Spacer space={SH(30)} />
-                      <View style={styles.displayFlex}>
-                        <Text style={styles.newAddText}>New added</Text>
-                        <Text style={styles.newAddTextBold}>25</Text>
-                      </View>
-                      <View style={styles.addedhr}></View>
-                      <Spacer space={SH(15)} />
-                      <View style={styles.displayFlex}>
-                        <Text
-                          style={[
-                            styles.newAddText,
-                            { color: COLORS.primary },
-                          ]}
-                        >
-                          Discontinued
-                        </Text>
-                        <Text
-                          style={[
-                            styles.newAddTextBold,
-                            { color: COLORS.primary },
-                          ]}
-                        >
-                          95
-                        </Text>
-                      </View>
-                      <View style={styles.addedhr}></View>
-                      <Spacer space={SH(15)} />
-                      <View style={styles.displayFlex}>
-                        <Text
-                          style={[
-                            styles.newAddText,
-                            { color: COLORS.solid_grey },
-                          ]}
-                        >
-                          Total active
-                        </Text>
-                        <Text
-                          style={[
-                            styles.newAddTextBold,
-                            { color: COLORS.solid_grey },
-                          ]}
-                        >
-                          311
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.totalActiveProductCon}>
-                      <Text style={styles.activeProductText}>
-                        {strings.analytics.totalActiveProduct}
-                      </Text>
-                      <Spacer space={SH(20)} />
-                      <Image
-                        source={activeProduct}
-                        style={styles.activeProduct}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={[
-                    styles.productCategorychildcon,
-                    { backgroundColor: 'transparent' },
-                  ]}
-                >
-                  <View>
-                    <FlatList
-                      data={categoryData}
-                      renderItem={categoryItem}
-                      keyExtractor={item => item.id}
-                      numColumns={2}
-                    />
-                  </View>
-                </View>
-              </View>
-            </View> */}
               <View>
                 <Image source={colorFrame} style={styles.colorFrame} />
                 <Spacer space={SH(5)} />
                 <Image source={revenueGraph} style={styles.revenueGraph} />
               </View>
             </View>
-            <Spacer space={SH(40)} />
+            <Spacer space={SH(15)} />
             <View style={styles.totalProductDetailCon}>
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(10)} />
               <View style={styles.displayFlex}>
                 <View style={styles.displayFlex}>
                   <TouchableOpacity
@@ -5696,12 +5612,12 @@ export function Analytics(props) {
                   {strings.analytics.totalOrder}
                 </Text>
               </View>
-              <Spacer space={SH(5)} />
+              <Spacer space={SH(2)} />
               <Text
                 style={[
                   styles.darkBlackText,
                   {
-                    fontSize: SF(54),
+                    fontSize: SF(34),
                     color: COLORS.primary,
                     alignSelf: 'flex-end',
                   },
@@ -5709,7 +5625,7 @@ export function Analytics(props) {
               >
                 $8,426,590
               </Text>
-              <Spacer space={SH(25)} />
+              <Spacer space={SH(5)} />
               <View style={styles.productGraphcon}>
                 <View style={styles.displayFlex}>
                   <View
@@ -5724,74 +5640,10 @@ export function Analytics(props) {
                         renderItem={totalOrderItem}
                         keyExtractor={item => item.id}
                         numColumns={2}
+                        scrollEnabled={false}
                       />
                     </View>
                   </View>
-                  {/* <View style={styles.productGraphchildcon}>
-                  <Spacer space={SH(15)} />
-                  <View style={styles.displayFlex}>
-                    <View style={styles.newAddedcon}>
-                      <Text style={styles.productDetails}>
-                        {strings.analytics.invetryDetail}
-                      </Text>
-                      <Spacer space={SH(25)} />
-                      <View style={styles.displayFlex}>
-                        <Text style={styles.newAddText}>Low stock items</Text>
-                        <Text style={styles.newAddTextBold}>25</Text>
-                      </View>
-                      <View style={styles.addedhr}></View>
-                      <Spacer space={SH(15)} />
-                      <View style={styles.displayFlex}>
-                        <Text
-                          style={[
-                            styles.newAddText,
-                            { color: COLORS.primary },
-                          ]}
-                        >
-                          Items to be adjusted
-                        </Text>
-                        <Text
-                          style={[
-                            styles.newAddTextBold,
-                            { color: COLORS.primary },
-                          ]}
-                        >
-                          95
-                        </Text>
-                      </View>
-                      <View style={styles.addedhr}></View>
-                      <Spacer space={SH(15)} />
-                      <View style={styles.displayFlex}>
-                        <Text
-                          style={[
-                            styles.newAddText,
-                            { color: COLORS.solid_grey },
-                          ]}
-                        >
-                          Items to be shipped
-                        </Text>
-                        <Text
-                          style={[
-                            styles.newAddTextBold,
-                            { color: COLORS.solid_grey },
-                          ]}
-                        >
-                          311
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.totalActiveProductCon}>
-                      <Text style={styles.activeProductText}>
-                        {strings.analytics.activeItem}
-                      </Text>
-                      <Spacer space={SH(20)} />
-                      <Image
-                        source={activeProduct}
-                        style={styles.activeProduct}
-                      />
-                    </View>
-                  </View>
-                </View> */}
                   <View>
                     <Image source={productMap} style={styles.totalOrderMap} />
                   </View>
@@ -5799,7 +5651,7 @@ export function Analytics(props) {
               </View>
             </View>
             <Spacer space={SH(40)} />
-          </ScrollView>
+          </View>
         </View>
       );
     } else if (inventoryProductTable) {
@@ -6233,9 +6085,9 @@ export function Analytics(props) {
     } else if (productDetail) {
       return (
         <View style={styles.totalProductBodyCon}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
             <View style={styles.totalProductDetailCon}>
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(10)} />
               <View style={styles.displayFlex}>
                 <Text style={styles.trancationHeading}>
                   {strings.analytics.totalProducts}
@@ -6293,16 +6145,16 @@ export function Analytics(props) {
                   </TouchableOpacity>
                 </View>
               </View>
-              <Spacer space={SH(5)} />
+              <Spacer space={SH(2)} />
               <Text
                 style={[
                   styles.darkBlackText,
-                  { fontSize: SF(54), color: COLORS.primary },
+                  { fontSize: SF(34), color: COLORS.primary },
                 ]}
               >
                 {strings.analytics.totalProductsCount}
               </Text>
-              <Spacer space={SH(25)} />
+              {/* <Spacer space={SH(5)} /> */}
               <View style={styles.productGraphcon}>
                 <View style={styles.displayFlex}>
                   <View style={styles.productGraphchildcon}>
@@ -6312,13 +6164,13 @@ export function Analytics(props) {
                         <Text style={styles.productDetails}>
                           {strings.analytics.productDetails}
                         </Text>
-                        <Spacer space={SH(30)} />
+                        <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
                           <Text style={styles.newAddText}>New added</Text>
                           <Text style={styles.newAddTextBold}>25</Text>
                         </View>
                         <View style={styles.addedhr}></View>
-                        <Spacer space={SH(15)} />
+                        <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
                           <Text
                             style={[
@@ -6338,7 +6190,7 @@ export function Analytics(props) {
                           </Text>
                         </View>
                         <View style={styles.addedhr}></View>
-                        <Spacer space={SH(15)} />
+                        <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
                           <Text
                             style={[
@@ -6362,7 +6214,7 @@ export function Analytics(props) {
                         <Text style={styles.activeProductText}>
                           {strings.analytics.totalActiveProduct}
                         </Text>
-                        <Spacer space={SH(20)} />
+                        <Spacer space={SH(30)} />
                         <Image
                           source={activeProduct}
                           style={styles.activeProduct}
@@ -6378,6 +6230,7 @@ export function Analytics(props) {
                   >
                     <View>
                       <FlatList
+                         scrollEnabled={false}
                         data={categoryData}
                         renderItem={categoryItem}
                         keyExtractor={item => item.id}
@@ -6388,9 +6241,9 @@ export function Analytics(props) {
                 </View>
               </View>
             </View>
-            <Spacer space={SH(40)} />
-            <View style={styles.totalProductDetailCon}>
-              <Spacer space={SH(20)} />
+            <Spacer space={SH(20)} />
+            <View style={[styles.totalProductDetailCon]}>
+              <Spacer space={SH(10)} />
               <View style={styles.displayFlex}>
                 <View style={styles.displayFlex}>
                   <TouchableOpacity
@@ -6448,12 +6301,12 @@ export function Analytics(props) {
                   {strings.analytics.totalInvetry}
                 </Text>
               </View>
-              <Spacer space={SH(5)} />
+              <Spacer space={SH(2)} />
               <Text
                 style={[
                   styles.darkBlackText,
                   {
-                    fontSize: SF(54),
+                    fontSize: SF(34),
                     color: COLORS.primary,
                     alignSelf: 'flex-end',
                   },
@@ -6461,7 +6314,7 @@ export function Analytics(props) {
               >
                 $8,426,590
               </Text>
-              <Spacer space={SH(25)} />
+              <Spacer space={SH(5)} />
               <View style={styles.productGraphcon}>
                 <View style={styles.displayFlex}>
                   <View
@@ -6472,6 +6325,7 @@ export function Analytics(props) {
                   >
                     <View>
                       <FlatList
+                      scrollEnabled={false}
                         data={inverntrycategoryData}
                         renderItem={categoryInventoryItem}
                         keyExtractor={item => item.id}
@@ -6486,13 +6340,13 @@ export function Analytics(props) {
                         <Text style={styles.productDetails}>
                           {strings.analytics.invetryDetail}
                         </Text>
-                        <Spacer space={SH(25)} />
+                        <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
                           <Text style={styles.newAddText}>Low stock items</Text>
                           <Text style={styles.newAddTextBold}>25</Text>
                         </View>
                         <View style={styles.addedhr}></View>
-                        <Spacer space={SH(15)} />
+                        <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
                           <Text
                             style={[
@@ -6512,7 +6366,7 @@ export function Analytics(props) {
                           </Text>
                         </View>
                         <View style={styles.addedhr}></View>
-                        <Spacer space={SH(15)} />
+                        <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
                           <Text
                             style={[
@@ -6548,7 +6402,7 @@ export function Analytics(props) {
               </View>
             </View>
             <Spacer space={SH(40)} />
-          </ScrollView>
+          </View>
         </View>
       );
     } else {
@@ -6556,7 +6410,7 @@ export function Analytics(props) {
         <View
           style={{
             paddingHorizontal: moderateScale(8),
-            paddingBottom: Platform.OS === 'ios' ? 30 : 110,
+            paddingBottom: Platform.OS === 'ios' ? 30 : 60,
           }}
         >
           <View>
