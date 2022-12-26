@@ -40,15 +40,15 @@ export class UserController {
     return new Promise((resolve, reject) => {
       const endpoint =
       PRODUCT_URL + ApiProductInventory.getBrand + `?page=1&limit=10&search=test`;
-      console.log('-------------------endpoint', endpoint)
+      // console.log('-------------------endpoint', endpoint)
       HttpClient.get(endpoint)
       
         .then(response => {
           resolve(response);
-          console.log('---------------------response', response)
+          // console.log('---------------------response', response)
         })
         .catch(error => {
-          console.log('jkhgfvkmc ')
+          // console.log('jkhgfvkmc ')
           Toast.show({
             text2: error.msg,
             position: 'bottom',
