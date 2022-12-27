@@ -1462,7 +1462,7 @@ export function ShippingOrder() {
                     </View>
 
                     <Spacer space={SH(8)} />
-                    <View style={{ height: SH(350) }}>
+                    <View style={{ height: SH(400) }}>
                       <FlatList
                         data={orderReview}
                         renderItem={renderReviewItem}

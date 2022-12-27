@@ -17,9 +17,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  flexAlign:{
-    flexDirection:'row',
-    alignItems:'center'
+  flexAlign: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   headerMainView: {
     width: windowWidth,
@@ -89,35 +89,35 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
     // height: SH(63),
-    justifyContent:'center',
+    justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
   },
-  customerHomeCon:{
+  customerHomeCon: {
     // borderWidth:1,
-    width:windowWidth * 0.86,
-    alignSelf:'center'
+    width: windowWidth * 0.86,
+    alignSelf: 'center',
   },
-  custometrCon:{
-    width:SW(75),
-    height:SH(94),
-    borderWidth:1,
-    borderRadius:10,
-    borderColor:COLORS.silver_solid,
-    justifyContent:'center',
-    alignItems:'center',
-    marginVertical:verticalScale(7)
+  custometrCon: {
+    width: SW(75),
+    height: SH(94),
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: COLORS.silver_solid,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: verticalScale(7),
   },
-  newCustomer:{
+  newCustomer: {
     width: SH(36),
     height: SH(36),
     resizeMode: 'contain',
   },
-  customerCount:{
+  customerCount: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
     fontSize: SF(24),
   },
-  newCustomerHeading:{
+  newCustomerHeading: {
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
     fontSize: SF(14),
@@ -151,14 +151,14 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(8),
     paddingVertical: verticalScale(2),
   },
-  totalCustomer:{
+  totalCustomer: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.primary,
     fontSize: SF(34),
   },
-  customersGraph:{
-    width:windowWidth * 0.90,
-    height:windowHeight * 0.40,
+  customersGraph: {
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.4,
     resizeMode: 'contain',
   },
   orderTypeCon: {
@@ -234,26 +234,26 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(8),
   },
   tableHeaderCon: {
-    borderTopWidth:1,
-    borderColor:COLORS.solidGrey,
+    borderTopWidth: 1,
+    borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.textInputBackground,
     height: SH(63),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(8),
   },
   tableRowCon: {
-    borderBottomWidth:1,
-    borderColor:COLORS.solidGrey,
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
     height: SH(63),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(8),
   },
-  tableRowText:{
+  tableRowText: {
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
   },
-  
+
   paginationCount: {
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
@@ -277,9 +277,9 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(12),
   },
-  jbrListCon:{
-     borderBottomWidth:1,
-     borderColor:COLORS.solidGrey
+  jbrListCon: {
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
   },
   unionConWhite: {
     backgroundColor: COLORS.white,
@@ -300,22 +300,22 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 3,
     borderColor: COLORS.solidGrey,
-    backgroundColor:COLORS.white
+    backgroundColor: COLORS.white,
   },
   placeholderStylePagination: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
     color: COLORS.black,
   },
-  tableHeader:{
+  tableHeader: {
     fontSize: SF(14),
     fontFamily: Fonts.MaisonBold,
     color: COLORS.dark_grey,
   },
   tableMainView: {
     // width: SW(330),
-// width:windowWidth * 0.96,
-// alignSelf:'center',
+    // width:windowWidth * 0.96,
+    // alignSelf:'center',
   },
   userTableHead: {
     height: SH(50),
@@ -323,25 +323,25 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     borderWidth: 0,
     borderColor: 'transparent',
-    borderWidth:1
-},
-text: {
+    borderWidth: 1,
+  },
+  text: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.text,
     fontSize: SF(12),
     textAlign: 'center',
-},
-usertableRowStyle: {
+  },
+  usertableRowStyle: {
     borderBottomWidth: 1,
     borderBottomColor: COLORS.solidGrey,
-    paddingVertical: SH(18)
-},
-usertableRowText: {
+    paddingVertical: SH(18),
+  },
+  usertableRowText: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: SF(12),
     textAlign: 'center',
-},
+  },
   head: {
     height: SH(50),
     width: SW(40),
@@ -378,93 +378,92 @@ usertableRowText: {
   },
 
   // user profile css start
-  useHeaderCon:{
-    borderBottomWidth:1,
-    borderColor:COLORS.solidGrey,
-    height:SH(62),
-    justifyContent:'center',
-    paddingHorizontal:moderateScale(10)
+  useHeaderCon: {
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+    height: SH(62),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(10),
   },
   leftBackStyle: {
     width: SW(9),
     height: SW(9),
     resizeMode: 'contain',
   },
-  profileHeaderText:{
+  profileHeaderText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(20),
     color: COLORS.dark_grey,
   },
-  editButtonCon:{
-     borderWidth:1,
-     borderColor:COLORS.primary,
-     borderRadius:7
+  editButtonCon: {
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    borderRadius: 7,
   },
-  editButtonText:{
-    color:COLORS.primary,
+  editButtonText: {
+    color: COLORS.primary,
     fontFamily: Fonts.Regular,
     fontSize: SF(12),
-    paddingHorizontal:moderateScale(7),
-    paddingVertical:verticalScale(2)
+    paddingHorizontal: moderateScale(7),
+    paddingVertical: verticalScale(2),
   },
-  profileCon:{
-    borderWidth:1,
-    borderColor:COLORS.solidGrey,
-    borderRadius:15,
-    height:SH(153),
-    justifyContent:'center'
+  profileCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 15,
+    height: SH(153),
+    justifyContent: 'center',
   },
-  lovingStyle:{
+  lovingStyle: {
     width: SW(25),
     height: SH(110),
     resizeMode: 'contain',
   },
-  Phonelight:{
+  Phonelight: {
     width: SW(5),
     height: SW(5),
     resizeMode: 'contain',
   },
-  angelaText:{
+  angelaText: {
     fontFamily: Fonts.MaisonRegular,
     fontSize: SF(24),
     color: COLORS.dark_grey,
   },
-  adressText:{
+  adressText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     color: COLORS.solid_grey,
-    paddingHorizontal:moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
-  pointCon:{
-    borderWidth:1,
-    borderColor:COLORS.primary,
-    borderRadius:7,
-    height:SH(48),
-    width:SW(60),
-    justifyContent:'center',
-    alignItems:'center'
+  pointCon: {
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    borderRadius: 7,
+    height: SH(48),
+    width: SW(60),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  acceptCon:{
-    borderColor:COLORS.solidGrey,
-  } ,
-  rewardStyle:{
+  acceptCon: {
+    borderColor: COLORS.solidGrey,
+  },
+  rewardStyle: {
     width: SW(8),
-
 
     height: SW(8),
     resizeMode: 'contain',
   },
-  pointText:{
+  pointText: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(13),
     color: COLORS.primary,
-    paddingHorizontal:moderateScale(3)
+    paddingHorizontal: moderateScale(3),
   },
-  acceptMarketText:{
+  acceptMarketText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(13),
     color: COLORS.dark_grey,
-    paddingHorizontal:moderateScale(3)
+    paddingHorizontal: moderateScale(3),
   },
 
   datePickerCon: {
@@ -526,9 +525,9 @@ usertableRowText: {
     borderRadius: 7,
     ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
-    top:Platform.OS === 'android' ? 30 : 15,
+    top: Platform.OS === 'android' ? 30 : 15,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
-    borderWidth:1
+    borderWidth: 1,
   },
   placeholderStyle: {
     fontSize: SF(12),
@@ -547,8 +546,8 @@ usertableRowText: {
     borderWidth: 1,
     borderRadius: 3,
     borderColor: COLORS.solidGrey,
-    backgroundColor:COLORS.white,
-    color:COLORS.solidGrey
+    backgroundColor: COLORS.white,
+    color: COLORS.solidGrey,
   },
   unionCon: {
     backgroundColor: COLORS.washGrey,
@@ -557,17 +556,16 @@ usertableRowText: {
     borderRadius: 4,
   },
 
-
   // order shipping css start
-  onlinedeliveryCon:{
-    borderBottomWidth:1,
-    borderColor:COLORS.solidGrey,
-    paddingVertical:verticalScale(5)
+  onlinedeliveryCon: {
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+    paddingVertical: verticalScale(5),
   },
-  onlinedeliveryBody:{
-      // borderWidth:1,
-      width:windowWidth * 0.80,
-      alignSelf:'center',
+  onlinedeliveryBody: {
+    // borderWidth:1,
+    width: windowWidth * 0.8,
+    alignSelf: 'center',
   },
   completedButton: {
     width: SW(30),
@@ -583,381 +581,380 @@ usertableRowText: {
     textAlign: 'center',
     color: COLORS.white,
   },
-  onlinedeliveryBody:{
+  onlinedeliveryBody: {
     // borderWidth:1,
-    width:windowWidth * 0.80,
-    alignSelf:'center',
-},
-buyerCon:{
-  borderWidth:1,
-  borderColor:COLORS.solidGrey,
-  borderRadius:10,
-  width:windowWidth * 0.48,
-  height:SH(130),
-  paddingHorizontal:moderateScale(8)
-},
-invoiceCon:{
-  borderWidth:1,
-  borderColor:COLORS.solidGrey,
-  borderRadius:10,
-  width:windowWidth * 0.30,
-  height:SH(130),
-  paddingHorizontal:moderateScale(8)
-},
-angelaAddress:{
-  color: COLORS.darkGray,
-  fontSize: SF(14),
-  fontFamily: Fonts.Regular,
-},
-angela:{
-  color: COLORS.solid_grey,
-  fontSize: SF(20),
-  fontFamily: Fonts.Regular,
-},
-angelaPic:{
-  Width:SW(10),
-  height:SW(10),
-  resizeMode:'contain',
-  marginRight:-20,
-  marginLeft:-35
-},
-buyer:{
-  color: COLORS.dark_grey,
-  fontSize: SF(18),
-  fontFamily: Fonts.MaisonRegular,
-},
-invoiceId:{
-  color: COLORS.brown,
-  fontSize: SF(12),
-  fontFamily: Fonts.Regular,
-},
-deliveryDate:{
-  color: COLORS.sucx,
-  fontSize: SF(12),
-  fontFamily: Fonts.Regular,
-},
-invoiceDetail:{
-  color: COLORS.solid_grey,
-  fontSize: SF(15),
-  fontFamily: Fonts.Italic,
-},
-pointConOrder:{
-  backgroundColor:COLORS.primary,
-  borderBottomLeftRadius:20,
-  position:'absolute',
-  top:-1,
-  right:-1
-},
-pointTextOrder:{
-  color: COLORS.solid_green,
-  fontSize: SF(12),
-  fontFamily: Fonts.Regular,
-  paddingHorizontal:moderateScale(18),
-  paddingVertical:verticalScale(3)
-  // paddingHorizontal
-},
-tableContainer:{
-  // borderWidth:1,
-  backgroundColor:COLORS.white,
-  ...ShadowStyles.shadow2,
-  // borderTopLeftRadius:12,
-  // borderTopRightRadius:12
-  borderRadius:12
-},
-tableheader:{
-  backgroundColor:COLORS.textInputBackground,
-  borderTopEndRadius:10,
-  borderTopLeftRadius:10,
-  borderColor:'transparent'
+    width: windowWidth * 0.8,
+    alignSelf: 'center',
+  },
+  buyerCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    width: windowWidth * 0.48,
+    height: SH(130),
+    paddingHorizontal: moderateScale(8),
+  },
+  invoiceCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    width: windowWidth * 0.3,
+    height: SH(130),
+    paddingHorizontal: moderateScale(8),
+  },
+  angelaAddress: {
+    color: COLORS.darkGray,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  angela: {
+    color: COLORS.solid_grey,
+    fontSize: SF(20),
+    fontFamily: Fonts.Regular,
+  },
+  angelaPic: {
+    Width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+    marginRight: -20,
+    marginLeft: -35,
+  },
+  buyer: {
+    color: COLORS.dark_grey,
+    fontSize: SF(18),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  invoiceId: {
+    color: COLORS.brown,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+  },
+  deliveryDate: {
+    color: COLORS.sucx,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+  },
+  invoiceDetail: {
+    color: COLORS.solid_grey,
+    fontSize: SF(15),
+    fontFamily: Fonts.Italic,
+  },
+  pointConOrder: {
+    backgroundColor: COLORS.primary,
+    borderBottomLeftRadius: 20,
+    position: 'absolute',
+    top: -1,
+    right: -1,
+  },
+  pointTextOrder: {
+    color: COLORS.solid_green,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(18),
+    paddingVertical: verticalScale(3),
+    // paddingHorizontal
+  },
+  tableContainer: {
+    // borderWidth:1,
+    backgroundColor: COLORS.white,
+    ...ShadowStyles.shadow2,
+    // borderTopLeftRadius:12,
+    // borderTopRightRadius:12
+    borderRadius: 12,
+  },
+  tableheader: {
+    backgroundColor: COLORS.textInputBackground,
+    borderTopEndRadius: 10,
+    borderTopLeftRadius: 10,
+    borderColor: 'transparent',
+  },
 
-},
-
-tableLabel:{
-  color: COLORS.dark_grey,
-  fontSize: SF(14),
-  fontFamily: Fonts.MaisonBold,
-  // paddingHorizontal:moderateScale(40)
-},
-rowText:{
-  color: COLORS.dark_grey,
-  fontSize: SF(14),
-  fontFamily: Fonts.Regular,
-},
-ashtonClass:{
-  Width:SW(10),
-  height:SW(10),
-  resizeMode:'contain',
-},
-tableSetting:{
-   width:SW(200),
+  tableLabel: {
+    color: COLORS.dark_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.MaisonBold,
+    // paddingHorizontal:moderateScale(40)
+  },
+  rowText: {
+    color: COLORS.dark_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  ashtonClass: {
+    Width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+  },
+  tableSetting: {
+    width: SW(200),
     // marginLeft:-150,
-     marginRight:170
-},
-noteContainer:{
-  borderWidth:1,
-  // backgroundColor:COLORS.,
-  borderColor:COLORS.solidGrey,
-  height:SH(194),
-  width:windowWidth * 0.38,
-  borderRadius:10,
-  backgroundColor:COLORS.textInputBackground
-},
-tablesubTotal:{
-  flexDirection:'row',
-  alignItems:'center',
-  justifyContent:'space-between',
-  paddingHorizontal:moderateScale(20),
-  // borderBottomWidth:1,
-  // borderColor:COLORS.solidGrey,
-  // paddingVertical:verticalScale(7)
-},
-tablesubTotalLabel:{
-  color: COLORS.solid_grey,
-  fontSize: SF(14),
-  fontFamily: Fonts.Regular,
-},
-tablesubTotalText:{
-  color: COLORS.solid_grey,
-  fontSize: SF(14),
-  fontFamily: Fonts.MaisonRegular,
-},
-paidContainer:{
-  backgroundColor:COLORS.primary,
-  borderRadius:3,
-  marginHorizontal:moderateScale(5)
-},
-paidText:{
-  color: COLORS.white,
-  fontSize: SF(12),
-  fontFamily: Fonts.Regular,
-  paddingHorizontal:moderateScale(6),
-  paddingVertical:verticalScale(1)
-},
-subtotalHr:{
-  borderWidth:1,
-  borderColor:COLORS.solidGrey,
-  marginVertical:Platform.OS === 'android' ? moderateScale(4) : moderateScale(7)
-},
-textInputStyle:{
-  borderWidth:1,
-  borderColor:COLORS.solidGrey,
-  height:SH(194),
-  width:windowWidth * 0.38,
-  borderRadius:10,
-  backgroundColor:COLORS.textInputBackground,
-  color:COLORS.black,
-  fontFamily:Fonts.Regular,
-  fontSize:SF(14),
-  textAlignVertical:'top',
-  paddingHorizontal:moderateScale(10)
-},
-noteplaceholderStyle:{
-  color:COLORS.black,
-  fontFamily:Fonts.Regular,
-  fontSize:SF(14),
-},
-shippingDetail:{
-  color:COLORS.solid_grey,
-  fontFamily:Fonts.MaisonRegular,
-  fontSize:SF(18),
-},
-trackingCon:{
-  borderWidth:1,
-  borderColor:COLORS.solidGrey,
-  borderRadius:10,
-  height:SH(102),
-  justifyContent:'center',
-  paddingHorizontal:moderateScale(8)
-},
-willis:{
-  resizeMode:'contain',
-  width:SW(25),
-  height:SW(25)
-},
-willisName:{
-  color:COLORS.black,
-  fontFamily:Fonts.SemiBold,
-  fontSize:SF(16),
-},
-trackingNumber:{
-  color:COLORS.black,
-  fontFamily:Fonts.Regular,
-  fontSize:SF(12),
-},
-deliverBtnCon:{
-  backgroundColor:COLORS.bluish_green,
-  flexDirection:'row',
-  height:SH(36),
-  // width:SW(40),
-  alignItems:'center',
-  borderRadius:6,
-  textAlign:'center'
-},
-trackingBtnCon:{
-  backgroundColor:COLORS.orange,
-},
-deliveryCheck:{
-  resizeMode:'contain',
-  width:SW(6),
-  height:SW(6),
-},
-deliveredText:{
-  color:COLORS.white,
-  fontFamily:Fonts.Regular,
-  fontSize:SF(14),
-  paddingHorizontal:moderateScale(1)
-},
-deliverTextCon:{
-  paddingHorizontal:moderateScale(10),
-  flexDirection:'row'
-},
-dateTableSetting:{
-  // justifyContent:'center',
-},
-orderNoStyle: {
-  fontSize: SF(20),
-  color: COLORS.dark_grey,
-  fontFamily: Fonts.Regular,
-  paddingHorizontal: moderateScale(7),
-},
+    marginRight: 170,
+  },
+  noteContainer: {
+    borderWidth: 1,
+    // backgroundColor:COLORS.,
+    borderColor: COLORS.solidGrey,
+    height: SH(194),
+    width: windowWidth * 0.38,
+    borderRadius: 10,
+    backgroundColor: COLORS.textInputBackground,
+  },
+  tablesubTotal: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(20),
+    // borderBottomWidth:1,
+    // borderColor:COLORS.solidGrey,
+    // paddingVertical:verticalScale(7)
+  },
+  tablesubTotalLabel: {
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  tablesubTotalText: {
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  paidContainer: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 3,
+    marginHorizontal: moderateScale(5),
+  },
+  paidText: {
+    color: COLORS.white,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(6),
+    paddingVertical: verticalScale(1),
+  },
+  subtotalHr: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    marginVertical:
+      Platform.OS === 'android' ? moderateScale(4) : moderateScale(5),
+  },
+  textInputStyle: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    height: SH(194),
+    width: windowWidth * 0.38,
+    borderRadius: 10,
+    backgroundColor: COLORS.textInputBackground,
+    color: COLORS.black,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    textAlignVertical: 'top',
+    paddingHorizontal: moderateScale(10),
+  },
+  noteplaceholderStyle: {
+    color: COLORS.black,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+  },
+  shippingDetail: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonRegular,
+    fontSize: SF(18),
+  },
+  trackingCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    height: SH(102),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(8),
+  },
+  willis: {
+    resizeMode: 'contain',
+    width: SW(25),
+    height: SW(25),
+  },
+  willisName: {
+    color: COLORS.black,
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+  },
+  trackingNumber: {
+    color: COLORS.black,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+  },
+  deliverBtnCon: {
+    backgroundColor: COLORS.bluish_green,
+    flexDirection: 'row',
+    height: SH(36),
+    // width:SW(40),
+    alignItems: 'center',
+    borderRadius: 6,
+    textAlign: 'center',
+  },
+  trackingBtnCon: {
+    backgroundColor: COLORS.orange,
+  },
+  deliveryCheck: {
+    resizeMode: 'contain',
+    width: SW(6),
+    height: SW(6),
+  },
+  deliveredText: {
+    color: COLORS.white,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    paddingHorizontal: moderateScale(1),
+  },
+  deliverTextCon: {
+    paddingHorizontal: moderateScale(10),
+    flexDirection: 'row',
+  },
+  dateTableSetting: {
+    // justifyContent:'center',
+  },
+  orderNoStyle: {
+    fontSize: SF(20),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(7),
+  },
   // order shipping css end
 
   // tracking number css start
 
-  trackingNoBody:{
-    borderWidth:1,
-    borderColor:COLORS.solidGrey,
-    borderRadius:10,
-    width:windowWidth * 0.92,
-    alignSelf:'center',
-    height:windowHeight * 0.82,
-    paddingHorizontal:moderateScale(10)
+  trackingNoBody: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    width: windowWidth * 0.92,
+    alignSelf: 'center',
+    height: windowHeight * 0.82,
+    paddingHorizontal: moderateScale(10),
   },
-  mapContainer:{
+  mapContainer: {
     // borderWidth:1,
-    width:windowWidth * 0.44,
+    width: windowWidth * 0.44,
     // height:windowHeight * 0.80,
-    borderRadius:10
+    borderRadius: 10,
   },
-  costoContainer:{
-    borderWidth:1,
-    width:windowWidth * 0.44,
-    height:SH(120),
-    borderRadius:10,
-    borderColor:COLORS.solidGrey,
+  costoContainer: {
+    borderWidth: 1,
+    width: windowWidth * 0.44,
+    height: SH(120),
+    borderRadius: 10,
+    borderColor: COLORS.solidGrey,
   },
-  trackingAngela:{
-    Width:SW(15),
-    height:SW(15),
-    resizeMode:'contain',
+  trackingAngela: {
+    Width: SW(15),
+    height: SW(15),
+    resizeMode: 'contain',
   },
-  costoHr:{
+  costoHr: {
     borderWidth: 0.7,
     borderColor: COLORS.solidGrey,
-    width:windowWidth * 0.34,
-    marginVertical:verticalScale(3)
+    width: windowWidth * 0.34,
+    marginVertical: verticalScale(3),
   },
-  costoName:{
+  costoName: {
     fontSize: SF(16),
     color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonBold,
   },
-  costoAdd:{
+  costoAdd: {
     fontSize: SF(14),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
-    paddingHorizontal:moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
-  costoPayCon:{
-    borderEndWidth:1,
-    borderColor:COLORS.solidGrey,
-    width:SW(50),
-    justifyContent:'center',
+  costoPayCon: {
+    borderEndWidth: 1,
+    borderColor: COLORS.solidGrey,
+    width: SW(50),
+    justifyContent: 'center',
   },
-  ciagrtext:{
+  ciagrtext: {
     fontSize: SF(16),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
-    paddingHorizontal:moderateScale(4)
+    paddingHorizontal: moderateScale(4),
   },
-  ticketImage:{
+  ticketImage: {
     width: SW(4),
     height: SW(4),
     resizeMode: 'contain',
   },
-  detailText:{
-    color:COLORS.primary,
+  detailText: {
+    color: COLORS.primary,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    paddingHorizontal:moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
-  dropRight:{
+  dropRight: {
     width: SW(6),
     height: SW(6),
     resizeMode: 'contain',
   },
-  mapStyle:{
+  mapStyle: {
     width: SW(165),
     height: SH(640),
     resizeMode: 'cover',
-    borderRadius:15
+    borderRadius: 15,
   },
-  orderStatus:{
-    color:COLORS.solid_grey,
+  orderStatus: {
+    color: COLORS.solid_grey,
     fontSize: SF(12),
     fontFamily: Fonts.SemiBold,
   },
-  movingArrow:{
+  movingArrow: {
     width: SW(3),
     height: SW(6),
     resizeMode: 'cover',
-    marginTop:10,
-    marginBottom:4
+    marginTop: 10,
+    marginBottom: 4,
   },
-  verifyTextLight:{
-    color:COLORS.gerySkies,
+  verifyTextLight: {
+    color: COLORS.gerySkies,
     fontSize: SF(8),
     fontFamily: Fonts.SemiBold,
   },
-  waitMinuteLight:{
-    color:COLORS.gerySkies,
+  waitMinuteLight: {
+    color: COLORS.gerySkies,
     fontSize: SF(10),
     fontFamily: Fonts.Regular,
   },
-  carriarCon:{
-    borderWidth:1,
-    borderColor:COLORS.solidGrey,
-    borderRadius:10,
-    paddingHorizontal:moderateScale(10),
-    height:SH(85)
+  carriarCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    paddingHorizontal: moderateScale(10),
+    height: SH(85),
   },
-  tracking2Angela:{
+  tracking2Angela: {
     width: SH(36),
     height: SH(36),
     resizeMode: 'contain',
   },
-  gredoName:{
-    color:COLORS.black,
+  gredoName: {
+    color: COLORS.black,
     fontSize: SF(13),
     fontFamily: Fonts.SemiBold,
-    paddingHorizontal:moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
-  contactButton:{
-    height:SH(36),
-    backgroundColor:COLORS.textInputBackground,
-    borderRadius:24,
-    justifyContent:'center'
+  contactButton: {
+    height: SH(36),
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 24,
+    justifyContent: 'center',
   },
-  contactStyle:{
+  contactStyle: {
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
   },
-  contactText:{
-    color:COLORS.solid_grey,
+  contactText: {
+    color: COLORS.solid_grey,
     fontSize: SF(10),
     fontFamily: Fonts.SemiBold,
-    paddingLeft:moderateScale(5)
-  }
- 
+    paddingLeft: moderateScale(5),
+  },
 });

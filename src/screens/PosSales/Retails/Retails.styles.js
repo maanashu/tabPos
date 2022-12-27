@@ -29,6 +29,7 @@ export const styles = StyleSheet.create({
     height: SW(11),
     resizeMode: 'contain',
     backgroundColor: COLORS.white,
+    marginTop: 10,
   },
   searchStyle: {
     width: SW(7),
@@ -113,7 +114,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: moderateScale(7),
     marginHorizontal: moderateScale(3),
-    borderWidth:2
+    borderWidth: 2,
   },
   catProcCon2: {
     borderRadius: 5,
@@ -418,7 +419,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.blue_shade,
     height: SH(107),
     borderRadius: 5,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   darkPricestyle: {
     fontSize: SF(32),
@@ -434,7 +435,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
     color: COLORS.primary,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   viaText: {
     fontSize: SF(10),
@@ -446,12 +447,12 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     height: SH(342),
     borderRadius: 5,
-    paddingHorizontal: moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
   jbrCustomer: {
     width: SW(15),
     height: SW(15),
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   walletIdButtonCon: {
     borderTopWidth: 2,
@@ -465,7 +466,7 @@ export const styles = StyleSheet.create({
     width: SW(107),
     backgroundColor: COLORS.solidGrey,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   customerHeading: {
     fontSize: SF(18),
@@ -488,20 +489,19 @@ export const styles = StyleSheet.create({
   bundleOfferText: {
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
-    color: COLORS.primary
+    color: COLORS.primary,
   },
   bundleOfferCon: {
     backgroundColor: COLORS.blue_shade,
     height: SH(48),
     borderRadius: 5,
     justifyContent: 'center',
-    marginVertical: verticalScale(2)
+    marginVertical: verticalScale(2),
   },
   buypackText: {
     color: COLORS.primary,
     fontSize: SF(16),
     fontFamily: Fonts.Regular,
-
   },
   bundleAddCon: {
     backgroundColor: COLORS.primary,
@@ -512,7 +512,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(12),
-    paddingVertical: verticalScale(3)
+    paddingVertical: verticalScale(3),
   },
   amountPopupCon: {
     width: windowWidth * 0.4,
@@ -591,8 +591,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     zIndex: 1,
     ...ShadowStyles.shadow,
-    top:55,
-    borderRadius:7
+    top: 55,
+    borderRadius: 7,
   },
   priceContainer: {
     borderWidth: 1,
@@ -604,7 +604,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: moderateScale(10),
-    zIndex:-20
+    zIndex: -20,
   },
   price: {
     fontSize: SF(14),
@@ -637,7 +637,7 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     paddingVertical: verticalScale(15),
-    alignSelf: 'center'
+    alignSelf: 'center',
     // position: 'absolute',
     // bottom: 20,
     // left: 22,
@@ -1022,7 +1022,7 @@ export const styles = StyleSheet.create({
   iconInLine: {
     flexDirection: 'row',
     alignSelf: 'center',
-    width: SW(30)
+    width: SW(30),
   },
 
   paymentOptionCon: {
@@ -1061,19 +1061,17 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(5),
   },
 
-
-
   //  customer and payment css start
   custPaymentBodyCon: {
     width: windowWidth * 0.25,
     alignSelf: 'center',
     alignItems: 'center',
-    flex: 1
+    flex: 1,
   },
   walletIdText: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonBold,
-    fontSize: SF(24)
+    fontSize: SF(24),
   },
   walletIdInput: {
     borderRadius: 7,
@@ -1082,49 +1080,49 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.25,
     fontSize: SF(16),
-    paddingHorizontal: moderateScale(70)
+    paddingHorizontal: moderateScale(70),
   },
   scanerCon: {
     backgroundColor: COLORS.textInputBackground,
     width: windowWidth * 0.25,
     height: windowHeight * 0.22,
-    borderRadius: 7
+    borderRadius: 7,
   },
   redrectingText: {
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     alignSelf: 'center',
-    paddingVertical: verticalScale(35)
+    paddingVertical: verticalScale(35),
   },
   loaderPic: {
     width: SW(6),
     height: SW(6),
     resizeMode: 'contain',
-    marginHorizontal: moderateScale(4)
+    marginHorizontal: moderateScale(4),
   },
   //  customer and payment css end
 
-  // payment with jbr wallet css start 
+  // payment with jbr wallet css start
   listOfItems: {
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(24)
+    fontSize: SF(24),
   },
   walletItem: {
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    paddingHorizontal: moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
   rewardPointStyle: {
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
-    fontSize: SF(18)
+    fontSize: SF(18),
   },
   jbrListCon: {
     borderBottomWidth: 1,
-    borderColor: COLORS.solidGrey
+    borderColor: COLORS.solidGrey,
   },
   ashtonStyle: {
     width: SW(12),
@@ -1134,18 +1132,18 @@ export const styles = StyleSheet.create({
   onexstyle: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(18)
+    fontSize: SF(18),
   },
   onlyxstyle: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(14)
+    fontSize: SF(14),
   },
   itmybdaystyle: {
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
-    paddingHorizontal: moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
   orderSideCon: {
     // borderWidth: 1,
@@ -1154,87 +1152,87 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
-    backgroundColor:COLORS.white,
-    borderBottomEndRadius:15,
-    ...ShadowStyles.shadow
+    backgroundColor: COLORS.white,
+    borderBottomEndRadius: 15,
+    ...ShadowStyles.shadow,
   },
-  moreActText:{
+  moreActText: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(16)
+    fontSize: SF(16),
   },
   crossButtonStyle: {
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
   },
-  paymenttdone:{
+  paymenttdone: {
     color: COLORS.black,
     fontFamily: Fonts.Regular,
     fontSize: SF(24),
-    alignSelf:'center'
+    alignSelf: 'center',
   },
-  paymentTipsCon:{
-    borderRadius:5,
-    backgroundColor:COLORS.orderStatusBackground,
+  paymentTipsCon: {
+    borderRadius: 5,
+    backgroundColor: COLORS.orderStatusBackground,
     // width:SH(403),
-    height:SH(107),
-    justifyContent:'center',
-    paddingHorizontal:moderateScale(10)
+    height: SH(107),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(10),
     // alignItems:'center'
   },
-  paymentTipsText:{
+  paymentTipsText: {
     color: COLORS.black,
     fontFamily: Fonts.Regular,
-    fontSize: SF(14)
+    fontSize: SF(14),
   },
-  paymentPay:{
+  paymentPay: {
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(32)
+    fontSize: SF(32),
   },
-  via:{
+  via: {
     color: COLORS.black,
     fontFamily: Fonts.Italic,
     fontSize: SF(14),
-    alignSelf:'center'
+    alignSelf: 'center',
   },
   customerAddreCons: {
-    borderWidth:1,
+    borderWidth: 1,
     height: SH(300),
-    borderRadius:5,
-    borderColor:COLORS.washGrey,
+    borderRadius: 5,
+    borderColor: COLORS.washGrey,
   },
-  customer:{
+  customer: {
     fontSize: SF(18),
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.primary,
-    paddingHorizontal:moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
   jbrCustomer: {
     width: SW(15),
     height: SW(15),
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   cusAddText: {
     fontSize: SF(16),
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
   },
-  walletIdCon:{
-    height:SH(75),
-    borderTopWidth:1,
-    borderColor:COLORS.washGrey,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:COLORS.solidGrey
+  walletIdCon: {
+    height: SH(75),
+    borderTopWidth: 1,
+    borderColor: COLORS.washGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.solidGrey,
   },
-  walletIdLabel:{
+  walletIdLabel: {
     fontSize: SF(16),
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
   },
-  walletId:{
+  walletId: {
     fontSize: SF(16),
     fontFamily: Fonts.Regular,
     color: COLORS.primary,
@@ -1283,13 +1281,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(6),
   },
 
-
-  // payment with jbr wallet css end 
+  // payment with jbr wallet css end
   // customer cash  modal css start
   customerNOStyle: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(20)
+    fontSize: SF(20),
   },
   customerInputWraper: {
     borderWidth: 1,
@@ -1298,7 +1295,7 @@ export const styles = StyleSheet.create({
     height: SH(60),
     width: windowWidth * 0.25,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   customerNameInput: {
     // borderWidth:1,
@@ -1311,7 +1308,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: moderateScale(10),
-    fontFamily: Fonts.Italic
+    fontFamily: Fonts.Italic,
   },
   firstNameAdd: {
     color: COLORS.dark_grey,
@@ -1322,14 +1319,14 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: SF(20),
     fontFamily: Fonts.Regular,
-    paddingHorizontal: moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
   customerAddreCon: {
     backgroundColor: COLORS.textInputBackground,
     height: SH(221),
     width: SW(94),
     borderRadius: 7,
-    paddingHorizontal: moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
   // customer cash  modal css end
 
@@ -1338,7 +1335,7 @@ export const styles = StyleSheet.create({
   custTotalAmountBodyCon: {
     width: windowWidth * 0.36,
     alignSelf: 'center',
-    flex: 1
+    flex: 1,
   },
   tipChildCon: {
     height: SH(60),
@@ -1378,7 +1375,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     fontFamily: Fonts.Italic,
     fontSize: SF(14),
-    paddingHorizontal: moderateScale(15)
+    paddingHorizontal: moderateScale(15),
   },
   //  customer cash total amount end
 
@@ -1386,11 +1383,11 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
     fontSize: SF(30),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   //  pos search css start
   searchproductCon2: {
-    height: windowHeight * 0.9
+    height: windowHeight * 0.9,
   },
   searchproductCon1: {
     width: windowWidth * 0.6,
@@ -1400,7 +1397,7 @@ export const styles = StyleSheet.create({
     // alignSelf: 'center',
     position: 'absolute',
     paddingHorizontal: moderateScale(12),
-    marginLeft: moderateScale(10)
+    marginLeft: moderateScale(10),
   },
   searchInputWraper: {
     backgroundColor: COLORS.textInputBackground,
@@ -1414,13 +1411,13 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(10),
     resizeMode: 'contain',
-    tintColor: COLORS.darkGray
+    tintColor: COLORS.darkGray,
   },
   searchCrossButton: {
     width: SW(8),
     height: SW(8),
     resizeMode: 'contain',
-    marginHorizontal: moderateScale(8)
+    marginHorizontal: moderateScale(8),
   },
   marboloRedPackStyle: {
     width: SW(20),
@@ -1445,23 +1442,22 @@ export const styles = StyleSheet.create({
   hr: {
     borderWidth: 1,
     borderColor: COLORS.row_grey,
-    marginVertical: verticalScale(5)
+    marginVertical: verticalScale(5),
   },
   flatlistHeight: {
-    height: windowHeight * 0.8
+    height: windowHeight * 0.8,
   },
   productDetailCon: {
     // borderWidth:1,
     width: windowWidth * 0.4,
     // height: windowHeight * 0.6,
-    alignSelf: 'center'
-
+    alignSelf: 'center',
   },
   availablestockHeading: {
     color: COLORS.bluish_green,
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   addcartButtonStyle: {
     backgroundColor: COLORS.primary,
@@ -1469,13 +1465,13 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.15,
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   addToCartText: {
     color: COLORS.white,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    paddingVertical: verticalScale(7)
+    paddingVertical: verticalScale(7),
   },
   searchDetailsCon2: {
     height: windowHeight * 0.7,
@@ -1483,7 +1479,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 100,
     left: 100,
-    ...ShadowStyles.shadow2
+    ...ShadowStyles.shadow2,
   },
   backButtonCon: {
     backgroundColor: COLORS.textInputBackground,
@@ -1491,13 +1487,13 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.07,
     // justifyContent:'center',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   backTextStyle: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
-    paddingVertical: verticalScale(5)
+    paddingVertical: verticalScale(5),
   },
   backButtonArrow: {
     width: SW(12),
@@ -1516,20 +1512,20 @@ export const styles = StyleSheet.create({
   },
   detailPriceCon: {
     // borderWidth:1,
-    width: windowWidth * 0.40,
+    width: windowWidth * 0.4,
   },
   marboloPackStyle: {
     width: SW(92),
     height: SW(60),
     resizeMode: 'contain',
-    marginTop: -15
+    marginTop: -15,
   },
   productDescrptionCon: {
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: COLORS.solidGrey,
     borderRadius: 5,
-    paddingHorizontal: moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
   productDes: {
     color: COLORS.dark_grey,
@@ -1551,7 +1547,7 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
-    paddingVertical: verticalScale(6)
+    paddingVertical: verticalScale(6),
   },
   unitTypeCon: {
     width: windowWidth * 0.12,
@@ -1561,16 +1557,16 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: moderateScale(5),
     marginHorizontal: moderateScale(5),
-    marginVertical: verticalScale(2)
+    marginVertical: verticalScale(2),
   },
   unitFlatlist: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
-  categoryImagecCon:{
-    borderWidth:2,
-    borderRadius:100,
-    borderColor:COLORS.white,
-    overflow:'hidden'
+  categoryImagecCon: {
+    borderWidth: 2,
+    borderRadius: 100,
+    borderColor: COLORS.white,
+    overflow: 'hidden',
   },
   emptyListText: {
     fontSize: SF(16),

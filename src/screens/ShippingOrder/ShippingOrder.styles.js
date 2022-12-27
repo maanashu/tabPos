@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.orderStatusBackground,
     borderRadius: 8,
     width: SW(80),
-    height:SH(92),
+    height: SH(92),
     // paddingVertical: SH(35),
     flexDirection: 'row',
   },
@@ -115,6 +115,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
+    height: SH(282),
     // width: SH(640),
   },
   chartView: {
@@ -132,7 +133,7 @@ export const styles = StyleSheet.create({
     // width: windowWidth / 2.25,
     borderRadius: 5,
     ...ShadowStyles.shadow2,
-    height: SW(105),
+    height: SH(450),
     backgroundColor: COLORS.white,
   },
   orderReviewText: {
@@ -217,7 +218,7 @@ export const styles = StyleSheet.create({
   renderOrderView: {
     width: SW(70),
     borderRadius: 6,
-    height: SW(15),
+    height: Platform.OS === 'ios' ? SH(65) : SW(15),
     backgroundColor: COLORS.textInputBackground,
     marginTop: 5,
     paddingLeft: SW(6),
@@ -237,7 +238,7 @@ export const styles = StyleSheet.create({
     paddingLeft: SW(2),
     paddingRight: SW(5),
     paddingVertical: SW(2),
-    width: SH(180),
+    width: Platform.OS === 'ios' ? SW(48) : SH(180),
     borderRadius: 5,
   },
   totalText: {

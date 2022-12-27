@@ -68,8 +68,8 @@ import {
   CategoryDataHorizontal,
 } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
-import {getCategory, getBrand} from '@/actions/UserActions';
-import {getUser} from '@/selectors/UserSelectors'
+import { getCategory, getBrand } from '@/actions/UserActions';
+import { getUser } from '@/selectors/UserSelectors';
 
 export function Retails() {
   const dispatch = useDispatch();
@@ -146,9 +146,9 @@ export function Retails() {
   const [brandSelectedId, setBrandSelectedId] = useState(1);
 
   useEffect(() => {
-     dispatch(getCategory())
+    dispatch(getCategory());
     //  dispatch(getBrand())
-  }, [])
+  }, []);
 
   const menuHandler = () => {
     setCategoryModal(!categoryModal);
@@ -311,7 +311,7 @@ export function Retails() {
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.categoryHeader}>{item.name}</Text>
-          <View style={[styles.catProcCon1, {borderWidth:1}]}>
+          <View style={[styles.catProcCon1, { borderWidth: 1 }]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={categoryProduct} style={styles.categoryProduct} />
               <Text style={styles.productName1}>Tobacco</Text>
@@ -340,18 +340,33 @@ export function Retails() {
       </ScrollView>
     </View>
   );
-  const CategoryItemSelect = ({ item, onPress, backgroundColor, borderColor, color, fontFamily}) => (
-    <TouchableOpacity style={[styles.catProcCon1, backgroundColor, borderColor]} onPress={onPress}>
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-       <View style={styles.categoryImagecCon}>
-          <Image source={{uri : item.image}} style={styles.categoryProduct} />
-       </View>
-      <Text numberOfLines={1} style={[styles.productName1, color, fontFamily]}>{item.name}</Text>
-    </View>
-  </TouchableOpacity>
+  const CategoryItemSelect = ({
+    item,
+    onPress,
+    backgroundColor,
+    borderColor,
+    color,
+    fontFamily,
+  }) => (
+    <TouchableOpacity
+      style={[styles.catProcCon1, backgroundColor, borderColor]}
+      onPress={onPress}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={styles.categoryImagecCon}>
+          <Image source={{ uri: item.image }} style={styles.categoryProduct} />
+        </View>
+        <Text
+          numberOfLines={1}
+          style={[styles.productName1, color, fontFamily]}
+        >
+          {item.name}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 
-  const categoryItem = ({item}) => {
+  const categoryItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#275AFF' : '#F5F6F7';
     const borderColor = item.id === selectedId ? '#275AFF' : '#fff';
     const color = item.id === selectedId ? '#fff' : '#A7A7A7';
@@ -362,65 +377,86 @@ export function Retails() {
         item={item}
         onPress={() => setSelectedId(item.id)}
         backgroundColor={{ backgroundColor }}
-        borderColor = {{borderColor}}
-        color = {{color}}
-        fontFamily = {{fontFamily}}
+        borderColor={{ borderColor }}
+        color={{ color }}
+        fontFamily={{ fontFamily }}
       />
-    ); 
-};
-
-const SubCategoryItemSelect = ({ item, onPress, backgroundColor, borderColor, color, fontFamily}) => (
-  <TouchableOpacity style={[styles.catProcCon1, backgroundColor, borderColor]} onPress={onPress}>
-  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-    <Image source={categoryProduct} style={styles.categoryProduct} />
-    <Text style={[styles.productName1, color, fontFamily]}>Tobacco</Text>
-  </View>
-</TouchableOpacity>
-);
-
-const subCategoryItem = ({item}) => {
-  const backgroundColor = item.id === subSelectedId ? '#275AFF' : '#F5F6F7';
-  const borderColor = item.id === subSelectedId ? '#275AFF' : '#fff';
-  const color = item.id === subSelectedId ? '#fff' : '#A7A7A7';
-  const fontFamily = item.id === subSelectedId ? Fonts.SemiBold : Fonts.Regular;
-  return (
-    <SubCategoryItemSelect
-      item={item}
-      onPress={() => setSubSelectedId(item.id)}
-      backgroundColor={{ backgroundColor }}
-      borderColor = {{borderColor}}
-      color = {{color}}
-      fontFamily ={{fontFamily}}
-    />
-  );
+    );
   };
 
-  const BrandItemSelect = ({ item, onPress, backgroundColor, borderColor, color,fontFamily}) => (
-    <TouchableOpacity style={[styles.catProcCon1, backgroundColor, borderColor]} onPress={onPress}>
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Image source={categoryProduct} style={styles.categoryProduct} />
-      <Text style={[styles.productName1, color, fontFamily]}>Tobacco</Text>
-    </View>
-  </TouchableOpacity>
+  const SubCategoryItemSelect = ({
+    item,
+    onPress,
+    backgroundColor,
+    borderColor,
+    color,
+    fontFamily,
+  }) => (
+    <TouchableOpacity
+      style={[styles.catProcCon1, backgroundColor, borderColor]}
+      onPress={onPress}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Image source={categoryProduct} style={styles.categoryProduct} />
+        <Text style={[styles.productName1, color, fontFamily]}>Tobacco</Text>
+      </View>
+    </TouchableOpacity>
   );
 
-  const brandItem = ({item}) => {
+  const subCategoryItem = ({ item }) => {
+    const backgroundColor = item.id === subSelectedId ? '#275AFF' : '#F5F6F7';
+    const borderColor = item.id === subSelectedId ? '#275AFF' : '#fff';
+    const color = item.id === subSelectedId ? '#fff' : '#A7A7A7';
+    const fontFamily =
+      item.id === subSelectedId ? Fonts.SemiBold : Fonts.Regular;
+    return (
+      <SubCategoryItemSelect
+        item={item}
+        onPress={() => setSubSelectedId(item.id)}
+        backgroundColor={{ backgroundColor }}
+        borderColor={{ borderColor }}
+        color={{ color }}
+        fontFamily={{ fontFamily }}
+      />
+    );
+  };
+
+  const BrandItemSelect = ({
+    item,
+    onPress,
+    backgroundColor,
+    borderColor,
+    color,
+    fontFamily,
+  }) => (
+    <TouchableOpacity
+      style={[styles.catProcCon1, backgroundColor, borderColor]}
+      onPress={onPress}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Image source={categoryProduct} style={styles.categoryProduct} />
+        <Text style={[styles.productName1, color, fontFamily]}>Tobacco</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
+  const brandItem = ({ item }) => {
     const backgroundColor = item.id === brandSelectedId ? '#275AFF' : '#F5F6F7';
     const borderColor = item.id === brandSelectedId ? '#275AFF' : '#fff';
     const color = item.id === brandSelectedId ? '#fff' : '#A7A7A7';
-    const fontFamily = item.id === brandSelectedId ? Fonts.SemiBold : Fonts.Regular;
+    const fontFamily =
+      item.id === brandSelectedId ? Fonts.SemiBold : Fonts.Regular;
     return (
       <BrandItemSelect
         item={item}
         onPress={() => setBrandSelectedId(item.id)}
         backgroundColor={{ backgroundColor }}
-        borderColor = {{borderColor}}
-        color = {{color}}
-        fontFamily ={{fontFamily}}
+        borderColor={{ borderColor }}
+        color={{ color }}
+        fontFamily={{ fontFamily }}
       />
     );
-    };
-
+  };
 
   const renderProductItem = ({ item }) => (
     <View style={styles.productContainer}>
@@ -601,7 +637,7 @@ const subCategoryItem = ({item}) => {
                 data={bundleOfferData}
                 renderItem={renderBundleItem}
                 keyExtractor={item => item.id}
-              // numColumns={2}
+                // numColumns={2}
               />
             </View>
             <Spacer space={SH(20)} />
@@ -646,15 +682,12 @@ const subCategoryItem = ({item}) => {
   );
 
   const renderEmptyContainer = () => {
-    return(
-      <Text style={styles.emptyListText}>
-      {strings.valiadtion.loading}
-    </Text>
-    )
-  }
+    return (
+      <Text style={styles.emptyListText}>{strings.valiadtion.loading}</Text>
+    );
+  };
 
   return (
-  
     // start  header section
     <View style={styles.container}>
       {/* <StatusBar barStyle = "dark-content"  backgroundColor = "#fff" /> */}
@@ -683,25 +716,27 @@ const subCategoryItem = ({item}) => {
               </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity style={styles.purchaseCon} onPress={sideContainerHandler}>
-              <Image source={purchese} style={styles.purcheseStyle} />
+          <TouchableOpacity
+            style={styles.purchaseCon}
+            onPress={sideContainerHandler}
+          >
+            <Image source={purchese} style={styles.purcheseStyle} />
             <Text style={styles.purchaseText}>
               Items: <Text style={styles.purchasecount}>4</Text>
             </Text>
             <Image source={arrow_right} style={styles.arrowStyle} />
           </TouchableOpacity>
-
         </View>
       </View>
       {/* End  header section */}
 
       {/* start  category  section */}
 
-    <View style={styles.categoryCon}>
+      <View style={styles.categoryCon}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.categoryHeader}>{strings.posSale.category}</Text>
           <FlatList
-             data={array}
+            data={array}
             extraData={array}
             renderItem={categoryItem}
             keyExtractor={item => item.id}
@@ -710,10 +745,12 @@ const subCategoryItem = ({item}) => {
             showsHorizontalScrollIndicator={false}
           />
         </View>
-    </View>
-    <View style={styles.categoryCon}>
+      </View>
+      <View style={styles.categoryCon}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={styles.categoryHeader}>{strings.posSale.subCategory}</Text>
+          <Text style={styles.categoryHeader}>
+            {strings.posSale.subCategory}
+          </Text>
           <FlatList
             data={CategoryDataHorizontal}
             renderItem={subCategoryItem}
@@ -722,8 +759,8 @@ const subCategoryItem = ({item}) => {
             horizontal
           />
         </View>
-    </View>
-    <View style={styles.categoryCon}>
+      </View>
+      <View style={styles.categoryCon}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.categoryHeader}>{strings.posSale.brand}</Text>
           <FlatList
@@ -734,7 +771,7 @@ const subCategoryItem = ({item}) => {
             horizontal
           />
         </View>
-    </View>
+      </View>
       {/* {categoryModal ? null : (
         <View>
           <FlatList
@@ -960,7 +997,9 @@ const subCategoryItem = ({item}) => {
             <View style={styles.hr}></View>
             <Spacer space={SH(12)} />
             <View style={styles.bottomSubCon}>
-              <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>Total</Text>
+              <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>
+                Total
+              </Text>
               <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
                 $254.60
               </Text>
@@ -987,9 +1026,7 @@ const subCategoryItem = ({item}) => {
       <Modal animationType="fade" transparent={true} isVisible={amountPopup}>
         <View style={styles.amountPopupCon}>
           <View style={styles.primaryHeader}>
-            <Text style={styles.headerText}>
-              Amount: $382
-            </Text>
+            <Text style={styles.headerText}>Amount: $382</Text>
             <TouchableOpacity
               onPress={amountRemoveHandler}
               style={styles.crossButtonPosition}
@@ -1059,7 +1096,7 @@ const subCategoryItem = ({item}) => {
                       data={bundleOfferData}
                       renderItem={renderBundleItem}
                       keyExtractor={item => item.id}
-                    // numColumns={2}
+                      // numColumns={2}
                     />
                   </View>
                 </View>
@@ -1712,177 +1749,178 @@ const subCategoryItem = ({item}) => {
 
       {/* payment with jbr wallet start */}
       {/* {console.log(listOfItem, 'asdfghjkl')} */}
-      {listOfItem ? 
-
-         ( <View style={[styles.displayFlex]}>
+      {listOfItem ? (
+        <View style={[styles.displayFlex]}>
           <View style={[styles.numpadContainer]}>
-              <View style={{ height: windowHeight, paddingBottom: 60 }}>
-                 <Spacer space={SH(20)} />
-               <View style={styles.displayFlex}>
-                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                   <Text style={styles.listOfItems}>
+            <View style={{ height: windowHeight, paddingBottom: 60 }}>
+              <Spacer space={SH(20)} />
+              <View style={styles.displayFlex}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.listOfItems}>
                     {strings.posSale.listOfItem}
-                   </Text>
-                    <Text style={styles.walletItem}>4 Items</Text>
-                </View>
-                  <Text style={styles.rewardPointStyle}>
-                    {strings.posSale.rewardpoint}
                   </Text>
+                  <Text style={styles.walletItem}>4 Items</Text>
                 </View>
-               <Spacer space={SH(20)} />
-   
+                <Text style={styles.rewardPointStyle}>
+                  {strings.posSale.rewardpoint}
+                </Text>
+              </View>
+              <Spacer space={SH(20)} />
+
               <View>
-                 <FlatList
-                    data={jbritemList}
-                    renderItem={renderJbrItem}
-                    keyExtractor={item => item.id}
-               />
-                </View>
-               <View style={{ flex: 1 }} />
+                <FlatList
+                  data={jbritemList}
+                  renderItem={renderJbrItem}
+                  keyExtractor={item => item.id}
+                />
+              </View>
+              <View style={{ flex: 1 }} />
               <View>
-                  <Text style={styles.walletItem}>{strings.posSale.notes}</Text>
-                 <Text style={styles.itmybdaystyle}>
-                   {strings.posSale.itMynday}
-                  </Text>
-               </View>
-             </View>
+                <Text style={styles.walletItem}>{strings.posSale.notes}</Text>
+                <Text style={styles.itmybdaystyle}>
+                  {strings.posSale.itMynday}
+                </Text>
+              </View>
+            </View>
           </View>
           <View style={styles.orderSideCon}>
-          <View style={{ width: SH(420), alignSelf: 'center' }}>
-                <Spacer space={SH(20)} />
-                   <View style={styles.displayFlex}>
-                     <Text style={styles.moreActText}>Payment Details</Text>
-                     <TouchableOpacity>
-                       <Image source={crossButton} style={styles.crossButtonStyle} />
-                     </TouchableOpacity>
-                   </View>
-                   <View style={{height:SH(730)}}>
-                     <ScrollView showsVerticalScrollIndicator={false}>
-                     <Spacer space={SH(20)} />
-                     <Text style={styles.paymenttdone}>
-                       {strings.posSale.paymenttdone}
-                     </Text>
-                     <Spacer space={SH(10)} />
-                     <View style={styles.paymentTipsCon}>
-                       <View style={styles.displayFlex}>
-                         <View>
-                           <Text style={styles.paymentTipsText}>
-                             Payable $254.60
-                           </Text>
-                           <Spacer space={SH(10)} />
-                           <Text style={styles.paymentTipsText}>Tips $0.60</Text>
-                         </View>
-                         <Text style={styles.paymentPay}>$254.60</Text>
-                       </View>
-                     </View>
-                     <Spacer space={SH(10)} />
-                     <Text style={styles.via}>
-                       Via{' '}
-                       <Text
-                         style={{
-                           color: COLORS.primary,
-                           fontSize: SF(18),
-                           fontFamily: Fonts.Regular,
-                         }}
-                       >
-                         Cash
-                       </Text>
-                     </Text>
-     
-                     <Spacer space={SH(25)} />
-                     <View style={styles.customerAddreCons}>
-                       <Spacer space={SH(15)} />
-                       <Text style={styles.customer}>Customer</Text>
-                       <Spacer space={SH(15)} />
-                       <View
-                         style={{
-                           flexDirection: 'row',
-                           justifyContent: 'flex-start',
-                           paddingHorizontal: moderateScale(10),
-                         }}
-                       >
-                         <Image source={jbrCustomer} style={styles.jbrCustomer} />
-                         <View style={{ paddingHorizontal: moderateScale(8) }}>
-                           <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
-                             {strings.posSale.customerName}
-                           </Text>
-                           <Spacer space={SH(8)} />
-                           <Text style={styles.cusAddText}>
-                             {strings.posSale.customerMobileNo}
-                           </Text>
-                           <Spacer space={SH(5)} />
-                           <Text style={styles.cusAddText}>
-                             {strings.posSale.customerEmail}
-                           </Text>
-                           <Spacer space={SH(8)} />
-                           <Text style={styles.cusAddText}>
-                             {strings.posSale.customerAddr}
-                           </Text>
-                           <Text style={styles.cusAddText}>
-                             {strings.posSale.customerAddr2}
-                           </Text>
-                         </View>
-                       </View>
-                       <View style={{ flex: 1 }}></View>
-                       <View style={styles.walletIdCon}>
-                         <Text style={styles.walletIdLabel}>
-                           {strings.analytics.walletIdLabel}
-                         </Text>
-                         <Spacer space={SH(5)} />
-                         <Text style={styles.walletId}>
-                           {strings.analytics.walletId}
-                         </Text>
-                       </View>
-                     </View>
-                     <Spacer space={SH(35)}/>
-                   <View style={styles.bottomContainer}>
-                     <Spacer space={SH(10)} />
-                     <View style={styles.bottomSubCon}>
-                       <Text style={styles.smalldarkText}>Sub Total</Text>
-                       <Text style={styles.smallLightText}>$4.00</Text>
-                     </View>
-                     <Spacer space={SH(12)} />
-                     <View style={styles.bottomSubCon}>
-                       <Text style={styles.smallLightText}>Discount</Text>
-                       <Text style={styles.smallLightText}>-$2.00</Text>
-                     </View>
-                     <Spacer space={SH(12)} />
-                     <View style={styles.bottomSubCon}>
-                       <Text style={styles.smallLightText}>Tax</Text>
-                       <Text style={styles.smallLightText}>$4.00</Text>
-                     </View>
-                     <Spacer space={SH(12)} />
-                     <View style={styles.hr}></View>
-                     <Spacer space={SH(12)} />
-                     <View style={styles.bottomSubCon}>
-                       <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>
-                         Total
-                       </Text>
-                       <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
-                         $254.60
-                       </Text>
-                     </View>
-                     <Spacer space={SH(12)} />
-                     <View style={styles.bottomSubCon}>
-                       <Text style={styles.smallLightText}>4 Items</Text>
-                     </View>
-                     <Spacer space={SH(12)} />
-                     <TouchableOpacity
-                       style={styles.checkoutButton}
-                       // onPress={checkOutHandler}
-                     >
-                       <Text style={styles.checkoutText}>Checkout</Text>
-                       <Image source={checkArrow} style={styles.checkArrow} />
-                     </TouchableOpacity>
-                   </View>
-                     </ScrollView>
-                     </View>
-           </View>
-           </View>
-          </View>)
-       : 
-        null
-      }
+            <View style={{ width: SH(420), alignSelf: 'center' }}>
+              <Spacer space={SH(20)} />
+              <View style={styles.displayFlex}>
+                <Text style={styles.moreActText}>Payment Details</Text>
+                <TouchableOpacity>
+                  <Image source={crossButton} style={styles.crossButtonStyle} />
+                </TouchableOpacity>
+              </View>
+              <View style={{ height: SH(730) }}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  <Spacer space={SH(20)} />
+                  <Text style={styles.paymenttdone}>
+                    {strings.posSale.paymenttdone}
+                  </Text>
+                  <Spacer space={SH(10)} />
+                  <View style={styles.paymentTipsCon}>
+                    <View style={styles.displayFlex}>
+                      <View>
+                        <Text style={styles.paymentTipsText}>
+                          Payable $254.60
+                        </Text>
+                        <Spacer space={SH(10)} />
+                        <Text style={styles.paymentTipsText}>Tips $0.60</Text>
+                      </View>
+                      <Text style={styles.paymentPay}>$254.60</Text>
+                    </View>
+                  </View>
+                  <Spacer space={SH(10)} />
+                  <Text style={styles.via}>
+                    Via{' '}
+                    <Text
+                      style={{
+                        color: COLORS.primary,
+                        fontSize: SF(18),
+                        fontFamily: Fonts.Regular,
+                      }}
+                    >
+                      Cash
+                    </Text>
+                  </Text>
+
+                  <Spacer space={SH(25)} />
+                  <View style={styles.customerAddreCons}>
+                    <Spacer space={SH(15)} />
+                    <Text style={styles.customer}>Customer</Text>
+                    <Spacer space={SH(15)} />
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        paddingHorizontal: moderateScale(10),
+                      }}
+                    >
+                      <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                      <View style={{ paddingHorizontal: moderateScale(8) }}>
+                        <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
+                          {strings.posSale.customerName}
+                        </Text>
+                        <Spacer space={SH(8)} />
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerMobileNo}
+                        </Text>
+                        <Spacer space={SH(5)} />
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerEmail}
+                        </Text>
+                        <Spacer space={SH(8)} />
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerAddr}
+                        </Text>
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerAddr2}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={{ flex: 1 }}></View>
+                    <View style={styles.walletIdCon}>
+                      <Text style={styles.walletIdLabel}>
+                        {strings.analytics.walletIdLabel}
+                      </Text>
+                      <Spacer space={SH(5)} />
+                      <Text style={styles.walletId}>
+                        {strings.analytics.walletId}
+                      </Text>
+                    </View>
+                  </View>
+                  <Spacer space={SH(35)} />
+                  <View style={styles.bottomContainer}>
+                    <Spacer space={SH(10)} />
+                    <View style={styles.bottomSubCon}>
+                      <Text style={styles.smalldarkText}>Sub Total</Text>
+                      <Text style={styles.smallLightText}>$4.00</Text>
+                    </View>
+                    <Spacer space={SH(12)} />
+                    <View style={styles.bottomSubCon}>
+                      <Text style={styles.smallLightText}>Discount</Text>
+                      <Text style={styles.smallLightText}>-$2.00</Text>
+                    </View>
+                    <Spacer space={SH(12)} />
+                    <View style={styles.bottomSubCon}>
+                      <Text style={styles.smallLightText}>Tax</Text>
+                      <Text style={styles.smallLightText}>$4.00</Text>
+                    </View>
+                    <Spacer space={SH(12)} />
+                    <View style={styles.hr}></View>
+                    <Spacer space={SH(12)} />
+                    <View style={styles.bottomSubCon}>
+                      <Text
+                        style={[styles.smalldarkText, { fontSize: SF(18) }]}
+                      >
+                        Total
+                      </Text>
+                      <Text
+                        style={[styles.smalldarkText, { fontSize: SF(20) }]}
+                      >
+                        $254.60
+                      </Text>
+                    </View>
+                    <Spacer space={SH(12)} />
+                    <View style={styles.bottomSubCon}>
+                      <Text style={styles.smallLightText}>4 Items</Text>
+                    </View>
+                    <Spacer space={SH(12)} />
+                    <TouchableOpacity
+                      style={styles.checkoutButton}
+                      // onPress={checkOutHandler}
+                    >
+                      <Text style={styles.checkoutText}>Checkout</Text>
+                      <Image source={checkArrow} style={styles.checkArrow} />
+                    </TouchableOpacity>
+                  </View>
+                </ScrollView>
+              </View>
+            </View>
+          </View>
+        </View>
+      ) : null}
 
       {/* payment with jbr wallet end */}
 
@@ -2235,7 +2273,9 @@ const subCategoryItem = ({item}) => {
                 styles.checkoutButton,
                 { marginVertical: moderateScale(20) },
               ]}
-              onPress={() => {setCustomerCashPaid(false), setListofItem(true)}}
+              onPress={() => {
+                setCustomerCashPaid(false), setListofItem(true);
+              }}
             >
               <Text
                 style={[styles.checkoutText, { fontFamily: Fonts.Regular }]}

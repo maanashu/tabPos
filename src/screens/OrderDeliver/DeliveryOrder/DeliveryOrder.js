@@ -185,24 +185,24 @@ export function DeliveryOrder() {
 
   const renderDeliveryOrders = ({ item, index }) => (
     <View style={styles.deliveryViewStyle}>
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-      <View style={{ flexDirection: 'row' }}>
-        <Image
-          source={item.image}
-          style={[styles.pinIcon, { tintColor: COLORS.primary }]}
-        />
-        <Text style={[styles.timeText, { color: COLORS.primary }]}>
-          {item.delivery}
-        </Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row' }}>
+          <Image
+            source={item.image}
+            style={[styles.pinIcon, { tintColor: COLORS.primary }]}
+          />
+          <Text style={[styles.timeText, { color: COLORS.primary }]}>
+            {item.delivery}
+          </Text>
+        </View>
+        <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
       </View>
-      <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={styles.totalText}>{item.total}</Text>
+        {/* <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} /> */}
+        <Text style={{ color: COLORS.primary }}>-</Text>
+      </View>
     </View>
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-      <Text style={styles.totalText}>{item.total}</Text>
-      {/* <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} /> */}
-      <Text style={{ color: COLORS.primary }}>-</Text>
-    </View>
-  </View>
   );
 
   const renderProductList = ({ item, index }) => (
@@ -610,7 +610,7 @@ export function DeliveryOrder() {
                   </View>
 
                   <Spacer space={SH(8)} />
-                  <View style={{ height: SH(350) }}>
+                  <View style={{ height: SH(400) }}>
                     <FlatList
                       data={orderReview}
                       renderItem={renderReviewItem}

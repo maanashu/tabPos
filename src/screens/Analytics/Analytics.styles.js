@@ -232,7 +232,7 @@ export const styles = StyleSheet.create({
     height: SH(150),
     width: windowWidth * 0.2,
     alignItems: 'center',
-    marginBottom:30
+    marginBottom: 30,
   },
   activeProduct: {
     width: SH(100),
@@ -251,7 +251,7 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: moderateScale(35),
+    marginHorizontal: moderateScale(15),
     marginVertical: moderateScale(5),
   },
   categoryChildCon: {

@@ -248,7 +248,7 @@ export const styles = StyleSheet.create({
   schdule: {
     height: SH(670),
     // width: SH(650),
-    width:windowWidth * 0.71,
+    width: windowWidth * 0.68,
     resizeMode: 'contain',
   },
   monthlySchduel: {
