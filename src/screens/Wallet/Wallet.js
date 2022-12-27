@@ -44,7 +44,7 @@ import {
   willis,
   Fonts,
   deliverCheck,
-  track
+  track,
 } from '@/assets';
 import { Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
@@ -101,7 +101,7 @@ export function Wallet() {
   ]);
   const [transactionClick, setTransactionClick] = useState(false);
   const [orderModel, setOrderModel] = useState(false);
-  const [detailShipping, setDetailShipping] = useState(false)
+  const [detailShipping, setDetailShipping] = useState(false);
 
   const naviagtionHandler = item => {
     if (item.transaction === 'All') {
@@ -123,7 +123,6 @@ export function Wallet() {
     setYearly(false);
   };
   const weeklyHandler = () => {
-    
     setWeekly(true);
     setToday(false);
     setMonthly(false);
@@ -165,10 +164,10 @@ export function Wallet() {
     setDetailShipping(!detailShipping);
     setOrderModel(false);
   };
-   const shippingDeliverRemoveHandler = () => {
+  const shippingDeliverRemoveHandler = () => {
     setDetailShipping(false);
     setOrderModel(true);
-   }
+  };
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -230,7 +229,10 @@ export function Wallet() {
   };
 
   const aboutTransactionItem = ({ item }) => (
-    <TouchableOpacity style={styles.jbrCoinCon} onPress={() => setWeeklyTrasaction(true)}>
+    <TouchableOpacity
+      style={styles.jbrCoinCon}
+      onPress={() => setWeeklyTrasaction(true)}
+    >
       <Image source={item.img} style={styles.jbrCoinStyle} />
       <Spacer space={SH(10)} />
       <View style={styles.displayFlex}>
@@ -251,7 +253,11 @@ export function Wallet() {
   );
   const allTransactionItem = ({ item }) => (
     <TouchableOpacity
-      style={[styles.allJbrCon, styles.allJbrConBluish,{marginVertical:verticalScale(4)}]}
+      style={[
+        styles.allJbrCon,
+        styles.allJbrConBluish,
+        { marginVertical: verticalScale(4) },
+      ]}
       onPress={() => naviagtionHandler(item)}
     >
       <Text style={[styles.allJbrText, styles.allJbrTextbluish]}>
@@ -290,80 +296,119 @@ export function Wallet() {
   );
 
   const changeView = () => {
-    if(detailShipping){
-      return(
-        <View style={{flex:1,
-          backgroundColor:COLORS.white
-          }}>
-           <Spacer space={SH(10)} />
-               <View style={styles.onlinedeliveryCon}>
-               <View style={[styles.displayFlex, {paddingHorizontal:moderateScale(10)}]}>
-                   <View style={{flexDirection:'row', alignItems:'center'}}>
-                   <TouchableOpacity onPress={shippingDeliverRemoveHandler}>
-                    <Image source={leftBack} style={styles.leftBackStyle} />
-                  </TouchableOpacity>
-                  <Text style={styles.orderNoStyle}>
-                    {strings.wallet.orderNo}
-                  </Text>
-                  <View style={styles.completedButton}>
-                    <Text style={styles.completedText}>Completed</Text>
-                  </View>
-                   </View>
-                   <TouchableOpacity onPress={shippingDeliverRemoveHandler}>
-                   <Image source={crossButton} style={styles.leftBackStyle} />
-                   </TouchableOpacity>
+    if (detailShipping) {
+      return (
+        <View style={{ flex: 1, backgroundColor: COLORS.white }}>
+          <Spacer space={SH(10)} />
+          <View style={styles.onlinedeliveryCon}>
+            <View
+              style={[
+                styles.displayFlex,
+                { paddingHorizontal: moderateScale(10) },
+              ]}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity onPress={shippingDeliverRemoveHandler}>
+                  <Image source={leftBack} style={styles.leftBackStyle} />
+                </TouchableOpacity>
+                <Text style={styles.orderNoStyle}>
+                  {strings.wallet.orderNo}
+                </Text>
+                <View style={styles.completedButton}>
+                  <Text style={styles.completedText}>Completed</Text>
                 </View>
-               </View>
-               <View>
-               <Spacer space={SH(15)} />
-               <View style={styles.onlinedeliveryBody}>
-                     <View style={styles.displayFlex}>
-                     <View style={styles.buyerCon}>
-                       <Spacer space={SH(5)} />
-                        <Text style={styles.buyer}>{strings.wallet.buyer}</Text>
-                        <Spacer space={SH(8)} />
-                        <View style={{flexDirection:'row'}}>
-                           <Image source={angela} style={styles.angelaPic}/>
-                            <View style={{flexDirection:'column'}}>
-                            <Text style={styles.angela}>{strings.wallet.angela}</Text>
-                            <Spacer space={SH(10)} />
-                           <Text style={styles.angelaAddress}>{strings.wallet.angelaAddress1}</Text>
-                           <Text style={styles.angelaAddress}>{strings.wallet.angelaAddress2}</Text>
-                            </View>
-                        </View>
-  
-                        <Spacer space={SH(20)} />
+              </View>
+              <TouchableOpacity onPress={shippingDeliverRemoveHandler}>
+                <Image source={crossButton} style={styles.leftBackStyle} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View>
+            <Spacer space={SH(15)} />
+            <View style={styles.onlinedeliveryBody}>
+              <View style={styles.displayFlex}>
+                <View style={styles.buyerCon}>
+                  <Spacer space={SH(5)} />
+                  <Text style={styles.buyer}>{strings.wallet.buyer}</Text>
+                  <Spacer space={SH(8)} />
+                  <View style={{ flexDirection: 'row' }}>
+                    <Image source={angela} style={styles.angelaPic} />
+                    <View style={{ flexDirection: 'column' }}>
+                      <Text style={styles.angela}>{strings.wallet.angela}</Text>
+                      <Spacer space={SH(10)} />
+                      <Text style={styles.angelaAddress}>
+                        {strings.wallet.angelaAddress1}
+                      </Text>
+                      <Text style={styles.angelaAddress}>
+                        {strings.wallet.angelaAddress2}
+                      </Text>
                     </View>
-                    <View style={styles.invoiceCon}>
-                         <Spacer space={SH(4)} />
-                         <Text style={styles.invoiceDetail}>{strings.wallet.invoiceDetails}</Text>
-                         <Spacer space={SH(5)} />
-                         <Text style={styles.invoiceId}>{strings.wallet.invoiceIdLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.invoiceId}</Text></Text>
-                         <Spacer space={SH(4)} />
-                         <Text style={styles.invoiceId}>{strings.wallet.createDateLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
-                         <Spacer space={SH(4)} />
-                         <Text style={styles.invoiceId}>{strings.wallet.dueDateLabel} <Text style={{color:COLORS.solid_grey}}>{strings.wallet.createDate}</Text></Text>
-                         <Spacer space={SH(4)} />
-                         <Text style={styles.deliveryDate}>{strings.wallet.deliveryDate} <Text>{strings.wallet.createDate}</Text></Text>
-                        <View style={styles.pointCon}>
-                              <Text style={styles.pointText}>{strings.wallet.point}</Text>
-                        </View>
-                    </View>
-                     </View>
-                     <Spacer space={SH(15)} />
-                     <View style={styles.tableContainer}>
-                     <DataTable>
-                      <DataTable.Header style={styles.tableheader}>
-                        <DataTable.Title><Text style={styles.tableLabel}>#</Text></DataTable.Title>
-                        <DataTable.Title style={styles.tableSetting}><Text style={styles.tableLabel}>Descriptions</Text></DataTable.Title>
-                        <DataTable.Title><Text style={styles.tableLabel}>No. of Items</Text></DataTable.Title>
-                        <DataTable.Title><Text style={styles.tableLabel}>Rate</Text></DataTable.Title>
-                        <DataTable.Title><Text style={styles.tableLabel}>Amount</Text></DataTable.Title>
-                      </DataTable.Header>
-  
-                      <DataTable.Row>
-                        <DataTable.Cell><Text style={styles.rowText}>1</Text></DataTable.Cell>
-                       {/* <DataTable.Cell>
+                  </View>
+
+                  <Spacer space={SH(20)} />
+                </View>
+                <View style={styles.invoiceCon}>
+                  <Spacer space={SH(4)} />
+                  <Text style={styles.invoiceDetail}>
+                    {strings.wallet.invoiceDetails}
+                  </Text>
+                  <Spacer space={SH(5)} />
+                  <Text style={styles.invoiceId}>
+                    {strings.wallet.invoiceIdLabel}{' '}
+                    <Text style={{ color: COLORS.solid_grey }}>
+                      {strings.wallet.invoiceId}
+                    </Text>
+                  </Text>
+                  <Spacer space={SH(4)} />
+                  <Text style={styles.invoiceId}>
+                    {strings.wallet.createDateLabel}{' '}
+                    <Text style={{ color: COLORS.solid_grey }}>
+                      {strings.wallet.createDate}
+                    </Text>
+                  </Text>
+                  <Spacer space={SH(4)} />
+                  <Text style={styles.invoiceId}>
+                    {strings.wallet.dueDateLabel}{' '}
+                    <Text style={{ color: COLORS.solid_grey }}>
+                      {strings.wallet.createDate}
+                    </Text>
+                  </Text>
+                  <Spacer space={SH(4)} />
+                  <Text style={styles.deliveryDate}>
+                    {strings.wallet.deliveryDate}{' '}
+                    <Text>{strings.wallet.createDate}</Text>
+                  </Text>
+                  <View style={styles.pointCon}>
+                    <Text style={styles.pointText}>{strings.wallet.point}</Text>
+                  </View>
+                </View>
+              </View>
+              <Spacer space={SH(15)} />
+              <View style={styles.tableContainer}>
+                <DataTable>
+                  <DataTable.Header style={styles.tableheader}>
+                    <DataTable.Title>
+                      <Text style={styles.tableLabel}>#</Text>
+                    </DataTable.Title>
+                    <DataTable.Title style={styles.tableSetting}>
+                      <Text style={styles.tableLabel}>Descriptions</Text>
+                    </DataTable.Title>
+                    <DataTable.Title>
+                      <Text style={styles.tableLabel}>No. of Items</Text>
+                    </DataTable.Title>
+                    <DataTable.Title>
+                      <Text style={styles.tableLabel}>Rate</Text>
+                    </DataTable.Title>
+                    <DataTable.Title>
+                      <Text style={styles.tableLabel}>Amount</Text>
+                    </DataTable.Title>
+                  </DataTable.Header>
+
+                  <DataTable.Row>
+                    <DataTable.Cell>
+                      <Text style={styles.rowText}>1</Text>
+                    </DataTable.Cell>
+                    {/* <DataTable.Cell>
                           <View style={{display:'flex',flexDirection:'row'}}>
                                  <Image source={ashtonClass} style={styles.ashtonClass}/>
                                 <View>
@@ -372,109 +417,180 @@ export function Wallet() {
                                 </View>
                            </View> 
                            </DataTable.Cell> */}
-                        <DataTable.Cell style={styles.tableSetting}><Text style={styles.rowText}>Ashton Classic</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.rowText}>16 Box</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.rowText}>16 Box</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.rowText}>$4,063.20</Text></DataTable.Cell>
-                      </DataTable.Row>
-  
-                      <DataTable.Row>
-                        <DataTable.Cell><Text style={styles.rowText}>1</Text></DataTable.Cell>
-                        <DataTable.Cell style={styles.tableSetting}><Text style={styles.rowText}>Ashton Classic</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.rowText}>16 Box</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.rowText}>16 Box</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.rowText}>$4,063.20</Text></DataTable.Cell>
-                      </DataTable.Row>
-                        </DataTable>
-  
-                     <Spacer space={SH(15)} />
-                     <View style={[styles.displayFlex, {marginHorizontal:moderateScale(10)}]}>
-                          {/* <View style={styles.noteContainer}>
+                    <DataTable.Cell style={styles.tableSetting}>
+                      <Text style={styles.rowText}>Ashton Classic</Text>
+                    </DataTable.Cell>
+                    <DataTable.Cell>
+                      <Text style={styles.rowText}>16 Box</Text>
+                    </DataTable.Cell>
+                    <DataTable.Cell>
+                      <Text style={styles.rowText}>16 Box</Text>
+                    </DataTable.Cell>
+                    <DataTable.Cell>
+                      <Text style={styles.rowText}>$4,063.20</Text>
+                    </DataTable.Cell>
+                  </DataTable.Row>
+
+                  <DataTable.Row>
+                    <DataTable.Cell>
+                      <Text style={styles.rowText}>1</Text>
+                    </DataTable.Cell>
+                    <DataTable.Cell style={styles.tableSetting}>
+                      <Text style={styles.rowText}>Ashton Classic</Text>
+                    </DataTable.Cell>
+                    <DataTable.Cell>
+                      <Text style={styles.rowText}>16 Box</Text>
+                    </DataTable.Cell>
+                    <DataTable.Cell>
+                      <Text style={styles.rowText}>16 Box</Text>
+                    </DataTable.Cell>
+                    <DataTable.Cell>
+                      <Text style={styles.rowText}>$4,063.20</Text>
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                </DataTable>
+
+                <Spacer space={SH(15)} />
+                <View
+                  style={[
+                    styles.displayFlex,
+                    { marginHorizontal: moderateScale(10) },
+                  ]}
+                >
+                  {/* <View style={styles.noteContainer}>
                              
                           </View> */}
-                          <TextInput
-                           multiline
-                           numberOfLines={4}
-                          style={styles.textInputStyle}
-                          placeholder='Note:'
-                          placeholderTextColor="#000"
-                          />
-                          <View style={styles.noteContainer}>
-                             <Spacer space={SH(5)} />
-                                 <View style={styles.tablesubTotal}>
-                                    <Text style={styles.tablesubTotalLabel}>{strings.wallet.subtotal}</Text>
-                                    <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
-                                 </View>
-                                 <View style={styles.subtotalHr}></View>
-                                 <View style={styles.tablesubTotal}>
-                                    <Text style={styles.tablesubTotalLabel}>{strings.wallet.serviceCharge}</Text>
-                                    <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
-                                 </View>
-                                 <View style={styles.subtotalHr}></View>
-                                 <View style={styles.tablesubTotal}>
-                                    <Text style={styles.tablesubTotalLabel}>{strings.wallet.discount}</Text>
-                                    <Text style={[styles.tablesubTotalText, {color:COLORS.roseRed}]}>{strings.wallet.subtotalPrice}</Text>
-                                 </View>
-                                 <View style={styles.subtotalHr}></View>
-                                 <View style={styles.tablesubTotal}>
-                                    <Text style={styles.tablesubTotalLabel}>{strings.wallet.shippingCharge}</Text>
-                                    <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
-                                 </View>
-                                 <View style={styles.subtotalHr}></View>
-                                 <View style={styles.tablesubTotal}>
-                                  <View style={{flexDirection:'row', alignItems:'center'}}>
-                                  <Text style={[styles.tablesubTotalLabel, {fontFamily:Fonts.SemiBold}]}>{strings.wallet.total}</Text>
-                                   <View style={styles.paidContainer}>
-                                      <Text style={styles.paidText}>{strings.wallet.paid}</Text>
-                                   </View>
-                                  </View>
-                                  <Text style={styles.tablesubTotalText}>{strings.wallet.subtotalPrice}</Text>
-                                 </View>
-                                 <Spacer space={SH(5)} />
-                          </View>
-                     </View>
-                     <Spacer space={SH(20)} />
-                     </View>
-                     <Spacer space={SH(5)} />
-                     <View>
-                        <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
-                     </View>
-                     <Spacer space={SH(5)} />
-                     <View style={styles.trackingCon}>
-                         <View style={styles.displayFlex}>
-                              <View style={{flexDirection:'row',alignItems:'center'}}>
-                                <Image source={willis} style={styles.willis}/>
-                              <View>
-                                <Text style={styles.willisName}>{strings.wallet.willis}</Text>
-                                <Text style={styles.trackingNumber}>{strings.wallet.trackingNo}</Text>
-                             </View>
-                              </View>
-                             <View style={{flexDirection:'row'}}>
-                                 <View style={[styles.deliverBtnCon, {marginHorizontal:moderateScale(8)}]}>
-                                      <View style={styles.deliverTextCon}>
-                                        <Image source={deliverCheck} style={styles.deliveryCheck}/>
-                                        <Text style={styles.deliveredText}>{strings.wallet.delivered}</Text>
-                                      </View>
-                                 </View>
-                                 <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
-                                      <View style={styles.deliverTextCon}>
-                                        <Image source={track} style={styles.deliveryCheck}/>
-                                        <Text style={styles.deliveredText}>{strings.wallet.tracking}</Text>
-                                      </View>
-                                 </View>
-                             </View>
-                         </View>
-                     </View>
-                     <Spacer space={SH(20)} />
-                     
-               </View>
-               </View>
-         </View>
-   
-
-      )
-    }
-    else if (orderModel) {
+                  <TextInput
+                    multiline
+                    numberOfLines={4}
+                    style={styles.textInputStyle}
+                    placeholder="Note:"
+                    placeholderTextColor="#000"
+                  />
+                  <View style={styles.noteContainer}>
+                    <Spacer space={SH(5)} />
+                    <View style={styles.tablesubTotal}>
+                      <Text style={styles.tablesubTotalLabel}>
+                        {strings.wallet.subtotal}
+                      </Text>
+                      <Text style={styles.tablesubTotalText}>
+                        {strings.wallet.subtotalPrice}
+                      </Text>
+                    </View>
+                    <View style={styles.subtotalHr}></View>
+                    <View style={styles.tablesubTotal}>
+                      <Text style={styles.tablesubTotalLabel}>
+                        {strings.wallet.serviceCharge}
+                      </Text>
+                      <Text style={styles.tablesubTotalText}>
+                        {strings.wallet.subtotalPrice}
+                      </Text>
+                    </View>
+                    <View style={styles.subtotalHr}></View>
+                    <View style={styles.tablesubTotal}>
+                      <Text style={styles.tablesubTotalLabel}>
+                        {strings.wallet.discount}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.tablesubTotalText,
+                          { color: COLORS.roseRed },
+                        ]}
+                      >
+                        {strings.wallet.subtotalPrice}
+                      </Text>
+                    </View>
+                    <View style={styles.subtotalHr}></View>
+                    <View style={styles.tablesubTotal}>
+                      <Text style={styles.tablesubTotalLabel}>
+                        {strings.wallet.shippingCharge}
+                      </Text>
+                      <Text style={styles.tablesubTotalText}>
+                        {strings.wallet.subtotalPrice}
+                      </Text>
+                    </View>
+                    <View style={styles.subtotalHr}></View>
+                    <View style={styles.tablesubTotal}>
+                      <View
+                        style={{ flexDirection: 'row', alignItems: 'center' }}
+                      >
+                        <Text
+                          style={[
+                            styles.tablesubTotalLabel,
+                            { fontFamily: Fonts.SemiBold },
+                          ]}
+                        >
+                          {strings.wallet.total}
+                        </Text>
+                        <View style={styles.paidContainer}>
+                          <Text style={styles.paidText}>
+                            {strings.wallet.paid}
+                          </Text>
+                        </View>
+                      </View>
+                      <Text style={styles.tablesubTotalText}>
+                        {strings.wallet.subtotalPrice}
+                      </Text>
+                    </View>
+                    <Spacer space={SH(5)} />
+                  </View>
+                </View>
+                <Spacer space={SH(20)} />
+              </View>
+              <Spacer space={SH(5)} />
+              <View>
+                <Text style={styles.shippingDetail}>
+                  {strings.wallet.shippingDetail}
+                </Text>
+              </View>
+              <Spacer space={SH(5)} />
+              <View style={styles.trackingCon}>
+                <View style={styles.displayFlex}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={willis} style={styles.willis} />
+                    <View>
+                      <Text style={styles.willisName}>
+                        {strings.wallet.willis}
+                      </Text>
+                      <Text style={styles.trackingNumber}>
+                        {strings.wallet.trackingNo}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View
+                      style={[
+                        styles.deliverBtnCon,
+                        { marginHorizontal: moderateScale(8) },
+                      ]}
+                    >
+                      <View style={styles.deliverTextCon}>
+                        <Image
+                          source={deliverCheck}
+                          style={styles.deliveryCheck}
+                        />
+                        <Text style={styles.deliveredText}>
+                          {strings.wallet.delivered}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
+                      <View style={styles.deliverTextCon}>
+                        <Image source={track} style={styles.deliveryCheck} />
+                        <Text style={styles.deliveredText}>
+                          {strings.wallet.tracking}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <Spacer space={SH(20)} />
+            </View>
+          </View>
+        </View>
+      );
+    } else if (orderModel) {
       return (
         <View>
           <View style={styles.numpadContainer}>
@@ -516,80 +632,88 @@ export function Wallet() {
           </View>
           <View style={[styles.rightSidecon]}>
             <View>
-            <Spacer space={SH(20)} />
-            <View style={{ paddingHorizontal: moderateScale(10) }}>
-              <View style={styles.displayFlex}>
-                <Text style={styles.paymentHeader}>
-                  {strings.wallet.PaymentDetails}
-                </Text>
-                <TouchableOpacity onPress={orderModelBackHandler}>
-                  <Image source={crossButton} style={styles.crossButtonStyle} />
-                </TouchableOpacity>
-              </View>
               <Spacer space={SH(20)} />
-              <Text
-                style={[
-                  styles.payDoneText,
-                  { fontSize: SF(17), alignSelf: 'center' },
-                ]}
-              >
-                {strings.posSale.paymenttdone}
-              </Text>
-              <Spacer space={SH(10)} />
-              <View style={styles.paymentDone}>
-                <View
+              <View style={{ paddingHorizontal: moderateScale(10) }}>
+                <View style={styles.displayFlex}>
+                  <Text style={styles.paymentHeader}>
+                    {strings.wallet.PaymentDetails}
+                  </Text>
+                  <TouchableOpacity onPress={orderModelBackHandler}>
+                    <Image
+                      source={crossButton}
+                      style={styles.crossButtonStyle}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Spacer space={SH(20)} />
+                <Text
                   style={[
-                    styles.displayFlex,
-                    { paddingHorizontal: moderateScale(10) },
+                    styles.payDoneText,
+                    { fontSize: SF(17), alignSelf: 'center' },
                   ]}
                 >
-                  <View>
-                    <Text style={styles.payDoneText}>Payable $254.60</Text>
-                    <Spacer space={SH(10)} />
-                    <Text style={styles.payDoneText}>Tips $254.60</Text>
+                  {strings.posSale.paymenttdone}
+                </Text>
+                <Spacer space={SH(10)} />
+                <View style={styles.paymentDone}>
+                  <View
+                    style={[
+                      styles.displayFlex,
+                      { paddingHorizontal: moderateScale(10) },
+                    ]}
+                  >
+                    <View>
+                      <Text style={styles.payDoneText}>Payable $254.60</Text>
+                      <Spacer space={SH(10)} />
+                      <Text style={styles.payDoneText}>Tips $254.60</Text>
+                    </View>
+                    <Text style={styles.darkPricestyle}>$306.60</Text>
                   </View>
-                  <Text style={styles.darkPricestyle}>$306.60</Text>
                 </View>
-              </View>
-              <Spacer space={SH(10)} />
-              <Text style={styles.jbrWalllettext}>
-                <Text style={styles.viaText}>Via </Text>JBR Wallet
-              </Text>
-              <Spacer space={SH(15)} />
-              <View style={styles.customerCon}>
                 <Spacer space={SH(10)} />
-                <Text style={styles.customerHeading}>Customer</Text>
-                <Spacer space={SH(10)} />
-                <View
-                  style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
-                >
-                  <Image source={jbrCustomer} style={styles.jbrCustomer} />
-                  <View style={{ paddingHorizontal: moderateScale(15) }}>
-                    <Text style={[styles.cusAddText, { fontSize: SF(18) }]}>
-                      Terry Moore
-                    </Text>
-                    <Spacer space={SH(8)} />
-                    <Text style={styles.cusAddText}>803-238-2630</Text>
+                <Text style={styles.jbrWalllettext}>
+                  <Text style={styles.viaText}>Via </Text>JBR Wallet
+                </Text>
+                <Spacer space={SH(15)} />
+                <View style={styles.customerCon}>
+                  <Spacer space={SH(10)} />
+                  <Text style={styles.customerHeading}>Customer</Text>
+                  <Spacer space={SH(10)} />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                    <View style={{ paddingHorizontal: moderateScale(15) }}>
+                      <Text style={[styles.cusAddText, { fontSize: SF(18) }]}>
+                        Terry Moore
+                      </Text>
+                      <Spacer space={SH(8)} />
+                      <Text style={styles.cusAddText}>803-238-2630</Text>
+                      <Spacer space={SH(5)} />
+                      <Text style={styles.cusAddText}>
+                        harryrady@jourrapide.com
+                      </Text>
+                      <Spacer space={SH(8)} />
+                      <Text style={styles.cusAddText}>4849 Owagner Lane</Text>
+                      <Text style={styles.cusAddText}>Seattle, WA 98101</Text>
+                    </View>
+                  </View>
+                  <View style={styles.walletIdButtonCon}>
+                    <Text style={styles.walletIdcontent}>Wallet Id</Text>
                     <Spacer space={SH(5)} />
-                    <Text style={styles.cusAddText}>
-                      harryrady@jourrapide.com
+                    <Text
+                      style={[styles.cusAddText, { color: COLORS.primary }]}
+                    >
+                      509 236 2365
                     </Text>
-                    <Spacer space={SH(8)} />
-                    <Text style={styles.cusAddText}>4849 Owagner Lane</Text>
-                    <Text style={styles.cusAddText}>Seattle, WA 98101</Text>
                   </View>
                 </View>
-                <View style={styles.walletIdButtonCon}>
-                  <Text style={styles.walletIdcontent}>Wallet Id</Text>
-                  <Spacer space={SH(5)} />
-                  <Text style={[styles.cusAddText, { color: COLORS.primary }]}>
-                    509 236 2365
-                  </Text>
-                </View>
+                <Spacer space={SH(20)} />
               </View>
-              <Spacer space={SH(20)} />
-            </View>
-            <View style={{ flex: 1 }}></View>
+              <View style={{ flex: 1 }}></View>
               <View style={styles.bottomContainer}>
                 <Spacer space={SH(10)} />
                 <View style={styles.bottomSubCon}>
@@ -630,10 +754,7 @@ export function Wallet() {
                   <Image source={checkArrow} style={styles.checkArrow} />
                 </TouchableOpacity>
               </View>
-              </View>
-          
-          
-          
+            </View>
           </View>
         </View>
       );
@@ -647,7 +768,10 @@ export function Wallet() {
             <View style={styles.displayFlex}>
               <Text style={styles.trancationHeading}>
                 {strings.wallet.totalTransections}
-                 <Text style={styles.totalTranStyle}> {strings.wallet.transationPrice}</Text>
+                <Text style={styles.totalTranStyle}>
+                  {' '}
+                  {strings.wallet.transationPrice}
+                </Text>
               </Text>
               <View style={styles.displayFlex}>
                 <TouchableOpacity
@@ -704,11 +828,11 @@ export function Wallet() {
             </View>
           </View>
           <View style={[styles.allTypeCon]}>
-          <FlatList
-            data={allTransactionData}
-            renderItem={allTransactionItem}
-            horizontal
-              />
+            <FlatList
+              data={allTransactionData}
+              renderItem={allTransactionItem}
+              horizontal
+            />
           </View>
           {/* </ScrollView> */}
           <View style={styles.orderTypeCon}>
@@ -785,13 +909,19 @@ export function Wallet() {
               <Text style={[styles.paginationCount, { fontSize: 12 }]}>
                 Showing Results
               </Text>
-              <View style={{marginHorizontal:moderateScale(10)}}>
+              <View style={{ marginHorizontal: moderateScale(10) }}>
                 <DropDownPicker
                   ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                    <Image
+                      source={dropdown2}
+                      style={styles.dropDownIconPagination}
+                    />
                   )}
                   ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                    <Image
+                      source={dropdown2}
+                      style={styles.dropDownIconPagination}
+                    />
                   )}
                   style={styles.dropdown}
                   containerStyle={[
@@ -889,19 +1019,36 @@ export function Wallet() {
                       )}
                     </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.tableRowStyle}>
-                    {item === 'Completed' ? (<View style={styles.completedButton}><Text style={styles.completedText}>Completed</Text></View>) : (<Text style={styles.tableRowText}>{item}</Text>)}
-                  </TouchableOpacity>
+                    <TouchableOpacity style={styles.tableRowStyle}>
+                      {item === 'Completed' ? (
+                        <View style={styles.completedButton}>
+                          <Text style={styles.completedText}>Completed</Text>
+                        </View>
+                      ) : (
+                        <Text style={styles.tableRowText}>{item}</Text>
+                      )}
+                    </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.tableRowStyle}>
-                    {item === 'Completed' ? (<View style={styles.completedButton}><Text style={styles.completedText}>Completed</Text></View>) : (<Text style={styles.tableRowText}>{item}</Text>)}
-                  </TouchableOpacity>
-                </View>
-              )}
-                contentContainerStyle={{ justifyContent: 'space-between', width: '100%', paddingHorizontal: 20, alignItems: 'flex-start' }}
+                    <TouchableOpacity style={styles.tableRowStyle}>
+                      {item === 'Completed' ? (
+                        <View style={styles.completedButton}>
+                          <Text style={styles.completedText}>Completed</Text>
+                        </View>
+                      ) : (
+                        <Text style={styles.tableRowText}>{item}</Text>
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                )}
+                contentContainerStyle={{
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  paddingHorizontal: 20,
+                  alignItems: 'flex-start',
+                }}
               />
             </View>
-             {/* <DataTable>
+            {/* <DataTable>
                       <DataTable.Header style={styles.tableheader}>
                         <DataTable.Title style={styles.dateTableSetting}><Text style={styles.tableLabel}>#</Text></DataTable.Title>
                         <DataTable.Title ><Text style={styles.tableLabel}>Date</Text></DataTable.Title>
@@ -1020,25 +1167,19 @@ export function Wallet() {
                   contentContainerStyle={styles.contentContainer}
                 />
               </View>
-              
+
               <Spacer space={SH(10)} />
               <Image
                 source={transactionChart}
                 style={styles.transactionChartStyle}
               />
             </View>
-            <Spacer space={SH(120)} />
+            {/* <Spacer space={SH(120)} /> */}
           </View>
         </View>
       );
     }
   };
 
-  return(
-      <View style={styles.container}>
-          {changeView()}
-      </View>
-      
-      
-  )
+  return <View style={styles.container}>{changeView()}</View>;
 }

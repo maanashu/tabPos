@@ -47,14 +47,13 @@ import { verticalScale } from 'react-native-size-matters';
 
 const windowHeight = Dimensions.get('window').height;
 
-
 export function DeliveryOrder() {
   const [viewAllReviews, setViewAllReviews] = useState(false);
   const [orderAccepted, setOrderAccepted] = useState(false);
   const [readyPickup, setReadyForPickup] = useState(false);
   const [showArea, setShowArea] = useState(true);
   const [headingType, setHeadingType] = useState('');
-  const [dataType, setDataType] = useState('')
+  const [dataType, setDataType] = useState('');
 
   const customHeader = () => {
     return (
@@ -95,28 +94,31 @@ export function DeliveryOrder() {
       </View>
     );
   };
-  const navigationHandler = (item) => {
-    if(item.status === 'Orders to Review'){
-      setViewAllReviews(true)
-      setHeadingType('Orders to Review')
-      setDataType('Orders to Review')
-    }else if(item.status === 'Order Preparing'){
-      setViewAllReviews(true)
-      setHeadingType('Order Preparing')
-      setDataType('Order Preparing')
-    }else if(item.status === 'Ready to pickup'){
-      setViewAllReviews(true)
-      setHeadingType('Ready to pickup')
-      setDataType('Ready to pickup')
-    }else if(item.status === 'Delivering'){
-      setViewAllReviews(true)
-      setHeadingType('Delivering')
-      setDataType('Delivering')
+  const navigationHandler = item => {
+    if (item.status === 'Orders to Review') {
+      setViewAllReviews(true);
+      setHeadingType('Orders to Review');
+      setDataType('Orders to Review');
+    } else if (item.status === 'Order Preparing') {
+      setViewAllReviews(true);
+      setHeadingType('Order Preparing');
+      setDataType('Order Preparing');
+    } else if (item.status === 'Ready to pickup') {
+      setViewAllReviews(true);
+      setHeadingType('Ready to pickup');
+      setDataType('Ready to pickup');
+    } else if (item.status === 'Delivering') {
+      setViewAllReviews(true);
+      setHeadingType('Delivering');
+      setDataType('Delivering');
     }
-  }
+  };
 
   const renderItem = ({ item, index }) => (
-    <TouchableOpacity style={styles.orderView} onPress={() => navigationHandler(item)}>
+    <TouchableOpacity
+      style={styles.orderView}
+      onPress={() => navigationHandler(item)}
+    >
       <View style={styles.orderStatusView}>
         <Image source={item.image} style={styles.orderStatusImage} />
       </View>
@@ -280,187 +282,209 @@ export function DeliveryOrder() {
       );
     }
   };
-  const headingAccordingShip = (headingType) => {
-    if(headingType === 'Orders to Review'){
-      return( <View><Text style={styles.reviewHeader}>{strings.deliveryOrders.orderView}</Text></View>)
-    }else if(headingType === 'Order Preparing'){
-      return( <View><Text style={styles.reviewHeader}>{strings.deliveryOrders.orderPrepare}</Text></View>)
-    }else if(headingType === 'Ready to pickup'){
-      return( <View><Text style={styles.reviewHeader}>{strings.deliveryOrders.readyPickup}</Text></View>)
-    }else if(headingType === 'Delivering'){
-      return( <View><Text style={styles.reviewHeader}>{strings.deliveryOrders.delivered}</Text></View>)
+  const headingAccordingShip = headingType => {
+    if (headingType === 'Orders to Review') {
+      return (
+        <View>
+          <Text style={styles.reviewHeader}>
+            {strings.deliveryOrders.orderView}
+          </Text>
+        </View>
+      );
+    } else if (headingType === 'Order Preparing') {
+      return (
+        <View>
+          <Text style={styles.reviewHeader}>
+            {strings.deliveryOrders.orderPrepare}
+          </Text>
+        </View>
+      );
+    } else if (headingType === 'Ready to pickup') {
+      return (
+        <View>
+          <Text style={styles.reviewHeader}>
+            {strings.deliveryOrders.readyPickup}
+          </Text>
+        </View>
+      );
+    } else if (headingType === 'Delivering') {
+      return (
+        <View>
+          <Text style={styles.reviewHeader}>
+            {strings.deliveryOrders.delivered}
+          </Text>
+        </View>
+      );
     }
   };
-  const dataAccordingShip = (dataType) => {
-    if(dataType === 'Orders to Review'){
-       return(
-        <View style={{height:windowHeight * 0.65}}>
-        <View style={{height:SH(285)}}>
-           <FlatList
-             data={productList}
-             renderItem={renderProductList}
-             ItemSeparatorComponent={() => (
-               <View style={styles.itemSeparatorView} />
-             )}
-           />
-         </View>
-         <View style={styles.bottomSheet}>
-           <View style={styles.rowView}>
-             <Text style={styles.subTotal}>
-               {strings.deliveryOrders.subTotal}
-             </Text>
-             <Text style={styles.subTotalValue}>
-               {strings.deliveryOrders.subTotalValue}
-             </Text>
-           </View>
-
-           <View style={styles.rowView}>
-             <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-               {strings.deliveryOrders.discount}
-             </Text>
-             <Text style={styles.discountValue}>
-               {strings.deliveryOrders.discountValue}
-             </Text>
-           </View>
-
-           <View style={styles.rowView}>
-             <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-               {strings.deliveryOrders.tax}
-             </Text>
-             <Text style={styles.discountValue}>
-               {strings.deliveryOrders.subTotalValue}
-             </Text>
-           </View>
-           <View style={styles.subtotalRow}/>
-           <View style={styles.rowView}>
-             <Text style={styles.totalLabel}>
-               {strings.deliveryOrders.total}
-             </Text>
-             <Text style={styles.totalValue}>
-               {strings.deliveryOrders.totalValue}
-             </Text>
-           </View>
-
-           <View style={styles.rowView}>
-             <Text style={styles.discountValue}>
-               {strings.deliveryOrders.items}
-             </Text>
-           </View>
-           <View style={styles.orderReviewButton}>
-               <Button
-                 style={styles.declineButton}
-                 title={strings.deliveryOrders.decline}
-                 textStyle={[styles.buttonText, { color: COLORS.primary }]}
-               />
-               <Button
-                 style={styles.acceptButton}
-                 title={strings.deliveryOrders.accept}
-                 textStyle={styles.buttonText}
-               />
-             </View>
-         </View>
-        </View>
-       )
-    }else if(dataType === 'Order Preparing'){
-      return(
-        <View style={{height:windowHeight * 0.65}}>
-        <View style={{height:SH(285)}}>
-           <FlatList
-             data={productList}
-             renderItem={renderProductList}
-             ItemSeparatorComponent={() => (
-               <View style={styles.itemSeparatorView} />
-             )}
-           />
-         </View>
-         <View style={styles.bottomSheet}>
-           <View style={styles.rowView}>
-             <Text style={styles.subTotal}>
-               {strings.deliveryOrders.subTotal}
-             </Text>
-             <Text style={styles.subTotalValue}>
-               {strings.deliveryOrders.subTotalValue}
-             </Text>
-           </View>
-
-           <View style={styles.rowView}>
-             <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-               {strings.deliveryOrders.discount}
-             </Text>
-             <Text style={styles.discountValue}>
-               {strings.deliveryOrders.discountValue}
-             </Text>
-           </View>
-
-           <View style={styles.rowView}>
-             <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-               {strings.deliveryOrders.tax}
-             </Text>
-             <Text style={styles.discountValue}>
-               {strings.deliveryOrders.subTotalValue}
-             </Text>
-           </View>
-           <View
-             style={styles.subtotalRow}
-           />
-           <View style={styles.rowView}>
-             <Text style={styles.totalLabel}>
-               {strings.deliveryOrders.total}
-             </Text>
-             <Text style={styles.totalValue}>
-               {strings.deliveryOrders.totalValue}
-             </Text>
-           </View>
-
-           <View style={styles.rowView}>
-             <Text style={styles.discountValue}>
-               {strings.deliveryOrders.items}
-             </Text>
-           </View>
-           <Button
-               style={styles.button}
-               title={strings.deliveryOrders.ready}
-               textStyle={styles.buttonText}
-             />
-         </View>
-        </View>
-       )
-    }else if (dataType === 'Ready to pickup'){
-      return(
-        <View style={styles.mapContainer}>
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                showCompass
-                region={{
-                  latitude: 27.2046,
-                  longitude: 77.4977,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                style={styles.map}
-              ></MapView>
-              <View>{showOrderStatusModal()}</View>
+  const dataAccordingShip = dataType => {
+    if (dataType === 'Orders to Review') {
+      return (
+        <View style={{ height: windowHeight * 0.65 }}>
+          <View style={{ height: SH(325) }}>
+            <FlatList
+              data={productList}
+              renderItem={renderProductList}
+              ItemSeparatorComponent={() => (
+                <View style={styles.itemSeparatorView} />
+              )}
+            />
+          </View>
+          <View style={styles.bottomSheet}>
+            <View style={styles.rowView}>
+              <Text style={styles.subTotal}>
+                {strings.deliveryOrders.subTotal}
+              </Text>
+              <Text style={styles.subTotalValue}>
+                {strings.deliveryOrders.subTotalValue}
+              </Text>
             </View>
-       )
-    }else if(dataType === 'Delivering'){
-      return(
-        <View style={styles.mapContainer}>
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                showCompass
-                region={{
-                  latitude: 27.2046,
-                  longitude: 77.4977,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                style={styles.map}
-              ></MapView>
-              <View>{showOrderStatusModal()}</View>
+
+            <View style={styles.rowView}>
+              <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+                {strings.deliveryOrders.discount}
+              </Text>
+              <Text style={styles.discountValue}>
+                {strings.deliveryOrders.discountValue}
+              </Text>
             </View>
-       )
+
+            <View style={styles.rowView}>
+              <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+                {strings.deliveryOrders.tax}
+              </Text>
+              <Text style={styles.discountValue}>
+                {strings.deliveryOrders.subTotalValue}
+              </Text>
+            </View>
+            <View style={styles.subtotalRow} />
+            <View style={styles.rowView}>
+              <Text style={styles.totalLabel}>
+                {strings.deliveryOrders.total}
+              </Text>
+              <Text style={styles.totalValue}>
+                {strings.deliveryOrders.totalValue}
+              </Text>
+            </View>
+
+            <View style={styles.rowView}>
+              <Text style={styles.discountValue}>
+                {strings.deliveryOrders.items}
+              </Text>
+            </View>
+            <View style={styles.orderReviewButton}>
+              <Button
+                style={styles.declineButton}
+                title={strings.deliveryOrders.decline}
+                textStyle={[styles.buttonText, { color: COLORS.primary }]}
+              />
+              <Button
+                style={styles.acceptButton}
+                title={strings.deliveryOrders.accept}
+                textStyle={styles.buttonText}
+              />
+            </View>
+          </View>
+        </View>
+      );
+    } else if (dataType === 'Order Preparing') {
+      return (
+        <View style={{ height: windowHeight * 0.65 }}>
+          <View style={{ height: SH(285) }}>
+            <FlatList
+              data={productList}
+              renderItem={renderProductList}
+              ItemSeparatorComponent={() => (
+                <View style={styles.itemSeparatorView} />
+              )}
+            />
+          </View>
+          <View style={styles.bottomSheet}>
+            <View style={styles.rowView}>
+              <Text style={styles.subTotal}>
+                {strings.deliveryOrders.subTotal}
+              </Text>
+              <Text style={styles.subTotalValue}>
+                {strings.deliveryOrders.subTotalValue}
+              </Text>
+            </View>
+
+            <View style={styles.rowView}>
+              <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+                {strings.deliveryOrders.discount}
+              </Text>
+              <Text style={styles.discountValue}>
+                {strings.deliveryOrders.discountValue}
+              </Text>
+            </View>
+
+            <View style={styles.rowView}>
+              <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
+                {strings.deliveryOrders.tax}
+              </Text>
+              <Text style={styles.discountValue}>
+                {strings.deliveryOrders.subTotalValue}
+              </Text>
+            </View>
+            <View style={styles.subtotalRow} />
+            <View style={styles.rowView}>
+              <Text style={styles.totalLabel}>
+                {strings.deliveryOrders.total}
+              </Text>
+              <Text style={styles.totalValue}>
+                {strings.deliveryOrders.totalValue}
+              </Text>
+            </View>
+
+            <View style={styles.rowView}>
+              <Text style={styles.discountValue}>
+                {strings.deliveryOrders.items}
+              </Text>
+            </View>
+            <Button
+              style={styles.button}
+              title={strings.deliveryOrders.ready}
+              textStyle={styles.buttonText}
+            />
+          </View>
+        </View>
+      );
+    } else if (dataType === 'Ready to pickup') {
+      return (
+        <View style={styles.mapContainer}>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            showCompass
+            region={{
+              latitude: 27.2046,
+              longitude: 77.4977,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+            style={styles.map}
+          ></MapView>
+          <View>{showOrderStatusModal()}</View>
+        </View>
+      );
+    } else if (dataType === 'Delivering') {
+      return (
+        <View style={styles.mapContainer}>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            showCompass
+            region={{
+              latitude: 27.2046,
+              longitude: 77.4977,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+            style={styles.map}
+          ></MapView>
+          <View>{showOrderStatusModal()}</View>
+        </View>
+      );
     }
-  }
+  };
 
   const changeView = () => {
     if (viewAllReviews && readyPickup === false) {
@@ -479,7 +503,9 @@ export function DeliveryOrder() {
             />
           </View>
 
-          <View style={[styles.orderDetailView, { height: windowHeight * 0.84}]}>
+          <View
+            style={[styles.orderDetailView, { height: windowHeight * 0.86 }]}
+          >
             <Spacer space={SH(20)} />
             <View style={styles.reviewHeadingView}>
               <Text style={styles.orderReviewText}>
@@ -491,17 +517,19 @@ export function DeliveryOrder() {
             </View>
 
             <View style={styles.profileDetailView}>
-               <View style={{flexDirection:'row'}}>
-               <Image source={profileImage} style={styles.profileImage} />
-              <View style={{ justifyContent: 'center', paddingLeft: 10 }}>
-                <Text style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}>
-                  {strings.deliveryOrders.name}
-                </Text>
-                <Text style={[styles.timeText, { paddingLeft: 0 }]}>
-                  {strings.deliveryOrders.address}
-                </Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Image source={profileImage} style={styles.profileImage} />
+                <View style={{ justifyContent: 'center', paddingLeft: 10 }}>
+                  <Text
+                    style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}
+                  >
+                    {strings.deliveryOrders.name}
+                  </Text>
+                  <Text style={[styles.timeText, { paddingLeft: 0 }]}>
+                    {strings.deliveryOrders.address}
+                  </Text>
+                </View>
               </View>
-               </View>
 
               <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
                 <Image source={deliveryScooter} style={styles.profileImage} />
@@ -524,13 +552,10 @@ export function DeliveryOrder() {
             <Spacer space={SH(15)} />
             <View style={styles.horizontalLine} />
             {dataAccordingShip(dataType)}
-            
-          
           </View>
         </View>
       );
-    }
-    else {
+    } else {
       return (
         <View style={{ flex: 1 }}>
           <View style={{ paddingBottom: verticalScale(4) }}>
@@ -606,7 +631,11 @@ export function DeliveryOrder() {
                   </View>
 
                   <Spacer space={SH(8)} />
-                  <View style={{ height: Platform.OS === 'android' ? SH(350) : SH(400) }}>
+                  <View
+                    style={{
+                      height: Platform.OS === 'android' ? SH(350) : SH(400),
+                    }}
+                  >
                     <FlatList
                       data={orderReview}
                       renderItem={renderReviewItem}
@@ -667,10 +696,10 @@ export function DeliveryOrder() {
         <Spacer space={SH(20)} />
         {showArea ? (
           <View>
-             <View style={styles.deliveryStatus}>
+            <View style={styles.deliveryStatus}>
               <Image source={radio} style={styles.radioImage} />
-              <View style={[styles.justifyContentStyle, { left: 22 } ]}>
-              <Text style={styles.verifyText}>
+              <View style={[styles.justifyContentStyle, { left: 22 }]}>
+                <Text style={styles.verifyText}>
                   {strings.deliveryOrders.verifyCode}
                 </Text>
                 <Text style={styles.verifyText}>
@@ -678,7 +707,6 @@ export function DeliveryOrder() {
                 </Text>
               </View>
             </View>
-            
 
             <View style={styles.deliveryStatus}>
               <Image source={delivery} style={styles.deliveryImage} />

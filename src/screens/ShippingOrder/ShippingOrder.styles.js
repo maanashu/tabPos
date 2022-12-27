@@ -115,14 +115,14 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    height: Platform.OS === 'android' ?  SH(272) : SH(282),
+    height: Platform.OS === 'android' ? SH(272) : SH(282),
     // width: SH(640),
   },
   orderNumberLeftViewmap: {
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    height:windowHeight * 0.88,
+    height: windowHeight * 0.88,
     // width: SH(640),
   },
   chartView: {
@@ -333,7 +333,7 @@ export const styles = StyleSheet.create({
   bottomSheet: {
     position: 'absolute',
     bottom: 40,
-    right:0,
+    right: 0,
     // height: SW(105),
     backgroundColor: COLORS.white,
     // width: windowWidth * 0.44,
@@ -515,7 +515,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: COLORS.solidGrey,
     paddingHorizontal: moderateScale(10),
-    height:windowHeight * 0.84
+    height: windowHeight * 0.84,
   },
   selectShipingCon: {
     // width: SH(510),
@@ -525,7 +525,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: moderateScale(10),
     justifyContent: 'center',
-    marginVertical:verticalScale(3)
+    marginVertical: verticalScale(3),
   },
   radioRound: {
     width: SH(24),
@@ -550,7 +550,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:verticalScale(10)
+    marginTop: verticalScale(10),
   },
   printText: {
     fontFamily: Fonts.SemiBold,
@@ -642,6 +642,12 @@ export const styles = StyleSheet.create({
     // borderWidth: 5,
     paddingHorizontal: moderateScale(5),
   },
-  mapContainer:
-  { flex: 1, marginTop: SH(15), borderWidth:2, overflow:'hidden', borderRadius:10, borderColor:COLORS.solidGrey }
+  mapContainer: {
+    flex: 1,
+    marginTop: SH(15),
+    borderWidth: 2,
+    overflow: 'hidden',
+    borderRadius: 10,
+    borderColor: COLORS.solidGrey,
+  },
 });

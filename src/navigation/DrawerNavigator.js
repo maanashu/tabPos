@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   iconStyle: {
-    width: SW(10),
-    height: SW(10),
+    width: SW(12),
+    height: SW(13),
     resizeMode: 'contain',
   },
   powerStyle: {

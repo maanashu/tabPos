@@ -7,7 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import {
@@ -34,7 +34,7 @@ import {
   fedx,
   verifyIcon,
   verified,
-  parachuteBox
+  parachuteBox,
 } from '@/assets';
 import { styles } from './ShippingOrder.styles';
 import { strings } from '@/localization';
@@ -194,53 +194,59 @@ export function ShippingOrder() {
     } else if (item.status === 'Ready To Ship') {
       setReadyShipPrintAgain(true);
       setDataShiping('Ready To Ship');
-      setHeadingShiping('Ready To Ship')
+      setHeadingShiping('Ready To Ship');
     } else if (item.status === 'Order Shipped') {
       setReadyShipPrintAgain(true);
       setDataShiping('Order Shipped');
-      setHeadingShiping('Order Shipped')
+      setHeadingShiping('Order Shipped');
     } else if (item.status === 'Cancelled') {
       setReadyShipPrintAgain(true);
       setDataShiping('Cancelled');
-      setHeadingShiping('Cancelled')
+      setHeadingShiping('Cancelled');
     }
   };
   const headingAccrodingShipType = headingShiping => {
     if (headingShiping === 'Ready To Ship') {
-       return(
-         <View>
-           <Text style={styles.orderOfReview}>{strings.shipingOrder.ReadyToShip}</Text>
-         </View>
-       )
-    }else if (headingShiping === 'Order Shipped' ){
-      return(
+      return (
         <View>
-        <Text style={styles.orderOfReview}>{strings.shipingOrder.orderShip}</Text>
+          <Text style={styles.orderOfReview}>
+            {strings.shipingOrder.ReadyToShip}
+          </Text>
         </View>
-      )
-    }else if (headingShiping === 'Cancelled' ){
-      return(
+      );
+    } else if (headingShiping === 'Order Shipped') {
+      return (
         <View>
-        <Text style={styles.orderOfReview}>{strings.shipingOrder.cancelShip}</Text>
+          <Text style={styles.orderOfReview}>
+            {strings.shipingOrder.orderShip}
+          </Text>
         </View>
-      )
+      );
+    } else if (headingShiping === 'Cancelled') {
+      return (
+        <View>
+          <Text style={styles.orderOfReview}>
+            {strings.shipingOrder.cancelShip}
+          </Text>
+        </View>
+      );
     }
-  }
+  };
 
   const dataAccrodingShipType = dataShiping => {
     if (dataShiping === 'Ready To Ship') {
       return (
-        <View style={{height:windowHeight * 0.70}}>
-           <View style={{height : windowHeight * 0.35 }}>
-           <FlatList
-               data={productList}
-               renderItem={readyShipRightList}
+        <View style={{ height: windowHeight * 0.7 }}>
+          <View style={{ height: windowHeight * 0.42 }}>
+            <FlatList
+              data={productList}
+              renderItem={readyShipRightList}
               ItemSeparatorComponent={() => (
-                 <View style={styles.itemSeparatorView} />
-             )}
+                <View style={styles.itemSeparatorView} />
+              )}
             />
-           </View>
-              <View style={[styles.bottomSheet]}>
+          </View>
+          <View style={[styles.bottomSheet]}>
             <View style={styles.rowView}>
               <Text style={styles.subTotal}>
                 {strings.deliveryOrders.subTotal}
@@ -311,7 +317,7 @@ export function ShippingOrder() {
         //       )}
         //     />
         //   </View>
-         
+
         // </View>
       );
     } else if (dataShiping === 'Order Shipped') {
@@ -333,8 +339,8 @@ export function ShippingOrder() {
             <View>{showOrderStatusModal()}</View>
           </View>
         ) : (
-          <View style={{height:windowHeight * 0.70}}>
-            <View style={{height : windowHeight * 0.35 }}>
+          <View style={{ height: windowHeight * 0.7 }}>
+            <View style={{ height: windowHeight * 0.35 }}>
               <FlatList
                 data={productList}
                 renderItem={readyShipRightList}
@@ -617,32 +623,32 @@ export function ShippingOrder() {
       </View>
     </TouchableOpacity>
   );
-  const selectShipingListList = ({item}) => (
+  const selectShipingListList = ({ item }) => (
     <View style={styles.selectShipingCon}>
-    <View style={[styles.displayFlex]}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Image source={radioRound} style={styles.radioRound} />
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingHorizontal: moderateScale(10),
-          }}
-        >
-          <Image source={ups2} style={styles.ups2} />
-          <View style={{ paddingHorizontal: moderateScale(5) }}>
-            <Text style={styles.shipingRate}>
-              {strings.shipingOrder.priorityMalling}
-            </Text>
-            <Text>{strings.shipingOrder.dayShiping}</Text>
+      <View style={[styles.displayFlex]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={radioRound} style={styles.radioRound} />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: moderateScale(10),
+            }}
+          >
+            <Image source={ups2} style={styles.ups2} />
+            <View style={{ paddingHorizontal: moderateScale(5) }}>
+              <Text style={styles.shipingRate}>
+                {strings.shipingOrder.priorityMalling}
+              </Text>
+              <Text>{strings.shipingOrder.dayShiping}</Text>
+            </View>
           </View>
         </View>
+        <Text style={styles.shipingRate}>
+          {strings.shipingOrder.shipingRate}
+        </Text>
       </View>
-      <Text style={styles.shipingRate}>
-        {strings.shipingOrder.shipingRate}
-      </Text>
     </View>
-  </View>
   );
   const readyShipRightList = ({ item, index }) => (
     <TouchableOpacity
@@ -726,12 +732,12 @@ export function ShippingOrder() {
             <View style={[styles.orderNumberLeftViewmap]}>
               <Spacer space={SH(20)} />
               {/* <Text style={styles.orderOfReview}> */}
-                {/* {strings.shipingOrder.readyToShip} */}
-                {headingAccrodingShipType(headingShiping)}
+              {/* {strings.shipingOrder.readyToShip} */}
+              {headingAccrodingShipType(headingShiping)}
               {/* </Text> */}
               {/* <Spacer space={SH(10)} /> */}
               <FlatList
-                contentContainerStyle={{ paddingBottom: 30}}
+                contentContainerStyle={{ paddingBottom: 30 }}
                 data={orderReview}
                 renderItem={readyToShipItem}
                 keyExtractor={item => item.id}
@@ -740,7 +746,9 @@ export function ShippingOrder() {
               />
             </View>
 
-            <View style={[styles.orderDetailView, { height: windowHeight * 0.84}]}>
+            <View
+              style={[styles.orderDetailView, { height: windowHeight * 0.86 }]}
+            >
               <Spacer space={SH(20)} />
               <View style={styles.reviewHeadingView}>
                 <Text style={styles.orderReviewText}>
@@ -784,37 +792,39 @@ export function ShippingOrder() {
                   </View>
                 </View>
               </View> */}
-                <View style={styles.profileDetailView}>
-               <View style={{flexDirection:'row'}}>
-               <Image source={profileImage} style={styles.profileImage} />
-              <View style={{ justifyContent: 'center', paddingLeft: 10 }}>
-                <Text style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}>
-                  {strings.deliveryOrders.name}
-                </Text>
-                <Text style={[styles.timeText, { paddingLeft: 0 }]}>
-                  {strings.deliveryOrders.address}
-                </Text>
-              </View>
-               </View>
+              <View style={styles.profileDetailView}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Image source={profileImage} style={styles.profileImage} />
+                  <View style={{ justifyContent: 'center', paddingLeft: 10 }}>
+                    <Text
+                      style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}
+                    >
+                      {strings.deliveryOrders.name}
+                    </Text>
+                    <Text style={[styles.timeText, { paddingLeft: 0 }]}>
+                      {strings.deliveryOrders.address}
+                    </Text>
+                  </View>
+                </View>
 
-              <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
-                <Image source={deliveryScooter} style={styles.profileImage} />
-                <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
-                  <Text
-                    style={[
-                      styles.nameText,
-                      { color: COLORS.primary, fontFamily: Fonts.SemiBold },
-                    ]}
-                  >
-                    {strings.deliveryOrders.deliveryType}
-                  </Text>
-                  <Text style={styles.timeText}>
-                    {strings.deliveryOrders.time}
-                  </Text>
+                <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+                  <Image source={deliveryScooter} style={styles.profileImage} />
+                  <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
+                    <Text
+                      style={[
+                        styles.nameText,
+                        { color: COLORS.primary, fontFamily: Fonts.SemiBold },
+                      ]}
+                    >
+                      {strings.deliveryOrders.deliveryType}
+                    </Text>
+                    <Text style={styles.timeText}>
+                      {strings.deliveryOrders.time}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-            <Spacer space={SH(15)} />
+              <Spacer space={SH(15)} />
 
               <View style={styles.horizontalLine} />
               {dataAccrodingShipType(dataShiping)}
@@ -903,7 +913,7 @@ export function ShippingOrder() {
 
               <View style={styles.horizontalLine} />
 
-              <View style={{ height: SH(340)}}>
+              <View style={{ height: SH(340) }}>
                 <FlatList
                   data={productList}
                   renderItem={renderProductList}
@@ -981,10 +991,7 @@ export function ShippingOrder() {
                 {strings.deliveryOrders.selectShip}
               </Text>
               <Spacer space={SH(20)} />
-              <FlatList
-                  data={productList}
-                  renderItem={selectShipingListList}
-                />
+              <FlatList data={productList} renderItem={selectShipingListList} />
               <View style={{ flex: 1 }}></View>
               <TouchableOpacity style={styles.printButtonCon}>
                 <Text style={styles.printText}>
@@ -1073,17 +1080,17 @@ export function ShippingOrder() {
               <Spacer space={SH(10)} />
 
               <View style={styles.profileDetailView}>
-              <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
-                <Image source={profileImage} style={styles.profileImage} />
+                <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+                  <Image source={profileImage} style={styles.profileImage} />
                   <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
-                  <Text
-                    style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}
-                  >
-                    {strings.deliveryOrders.name}
-                  </Text>
-                  <Text style={[styles.timeText, { paddingLeft: 0 }]}>
-                    {strings.deliveryOrders.address}
-                  </Text>
+                    <Text
+                      style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}
+                    >
+                      {strings.deliveryOrders.name}
+                    </Text>
+                    <Text style={[styles.timeText, { paddingLeft: 0 }]}>
+                      {strings.deliveryOrders.address}
+                    </Text>
                   </View>
                 </View>
                 <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
@@ -1465,7 +1472,11 @@ export function ShippingOrder() {
                     </View>
 
                     <Spacer space={SH(8)} />
-                    <View style={{ height: Platform.OS === 'android' ? SH(350) : SH(400) }}>
+                    <View
+                      style={{
+                        height: Platform.OS === 'android' ? SH(350) : SH(400),
+                      }}
+                    >
                       <FlatList
                         data={orderReview}
                         renderItem={renderReviewItem}

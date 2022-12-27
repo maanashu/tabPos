@@ -105,13 +105,13 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    height: Platform.OS === 'android' ?  SH(272) : SH(282),
+    height: Platform.OS === 'android' ? SH(272) : SH(282),
   },
   orderNumberLeftViewmap: {
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    height:windowHeight
+    height: windowHeight,
   },
   chartView: {
     width: SW(168),
@@ -265,9 +265,9 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: windowWidth * 0.48,
-    height: windowHeight * 0.84,
+    // height: windowHeight * 0.86,
     // width: windowWidth * 0.52,
-    borderWidth:1
+    borderWidth: 1,
   },
   profileDetailView: {
     // marginHorizontal: SW(5),
@@ -306,6 +306,7 @@ export const styles = StyleSheet.create({
   productViewStyle: {
     // marginLeft: SW(5),
     // marginRight: SW(6),
+    marginRight: SW(4),
     flexDirection: 'row',
     top: 7,
     justifyContent: 'space-between',
@@ -317,8 +318,8 @@ export const styles = StyleSheet.create({
   },
   bottomSheet: {
     position: 'absolute',
-    bottom: 20,
-    right:0,
+    bottom: Platform.OS === 'android' ? 20 : 0,
+    right: 0,
     // height: SW(105),
     backgroundColor: COLORS.white,
     width: windowWidth * 0.44,
@@ -410,6 +411,7 @@ export const styles = StyleSheet.create({
     height: 1,
     width: '92%',
     alignSelf: 'center',
+    marginVertical: verticalScale(3),
   },
   map: {
     width: windowWidth * 0.48,
@@ -458,21 +460,26 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     left: 10,
   },
-  reviewHeader:{
-    
+  reviewHeader: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
     color: COLORS.primary,
     paddingHorizontal: moderateScale(13),
   },
-  subtotalRow:{
-  borderWidth: 1,
-  width: SH(385),
-  alignSelf: 'flex-end',
-  borderStyle: 'dashed',
-  borderColor: COLORS.row_grey,
-  marginVertical: verticalScale(3),
+  subtotalRow: {
+    borderWidth: 1,
+    width: SH(385),
+    alignSelf: 'flex-end',
+    borderStyle: 'dashed',
+    borderColor: COLORS.row_grey,
+    marginVertical: verticalScale(3),
   },
-  mapContainer:
-  { flex: 1, marginTop: SH(15), borderWidth:2, overflow:'hidden', borderRadius:10, borderColor:COLORS.solidGrey }
+  mapContainer: {
+    flex: 1,
+    marginTop: SH(15),
+    borderWidth: 2,
+    overflow: 'hidden',
+    borderRadius: 10,
+    borderColor: COLORS.solidGrey,
+  },
 });

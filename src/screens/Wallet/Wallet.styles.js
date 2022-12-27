@@ -182,7 +182,7 @@ export const styles = StyleSheet.create({
   },
   transactionChartStyle: {
     width: SW(335),
-    height: SW(78),
+    height: SH(200),
     resizeMode: 'contain',
   },
   backButtonCon: {
