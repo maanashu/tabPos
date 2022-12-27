@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     height: SW(11),
     resizeMode: 'contain',
     backgroundColor: COLORS.white,
-    marginTop: 10,
+    marginTop: Platform.OS === 'ios' ? 10 : 0,
   },
   searchStyle: {
     width: SW(7),

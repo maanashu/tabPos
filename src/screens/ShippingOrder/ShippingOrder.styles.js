@@ -115,7 +115,14 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    height: SH(282),
+    height: Platform.OS === 'android' ?  SH(272) : SH(282),
+    // width: SH(640),
+  },
+  orderNumberLeftViewmap: {
+    borderRadius: 5,
+    ...ShadowStyles.shadow2,
+    backgroundColor: COLORS.white,
+    height:windowHeight * 0.88,
     // width: SH(640),
   },
   chartView: {
@@ -126,14 +133,14 @@ export const styles = StyleSheet.create({
   },
   chartImageStyle: {
     width: SW(168),
-    height: SW(60),
+    height: SH(210),
     resizeMode: 'contain',
   },
   orderReviewRightView: {
     // width: windowWidth / 2.25,
     borderRadius: 5,
     ...ShadowStyles.shadow2,
-    height: SH(450),
+    height: Platform.OS === 'android' ? SH(405) : SH(450),
     backgroundColor: COLORS.white,
   },
   orderReviewText: {
@@ -263,9 +270,8 @@ export const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
-    width: windowWidth * 0.44,
-    // borderWidth: 1,
-    // paddingRight: SW(50)
+    // paddingRight: SW(50),
+    width: windowWidth * 0.48,
   },
   orderDetailView2: {
     backgroundColor: COLORS.white,
@@ -273,12 +279,12 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
-    height: SH(660),
+    height: windowHeight * 0.84,
     // width: windowWidth * 0.52,
     paddingBottom: 20,
   },
   profileDetailView: {
-    marginHorizontal: SW(3),
+    // marginHorizontal: SW(5),
     paddingHorizontal: SW(5),
     paddingVertical: SW(3),
     borderRadius: 6,
@@ -303,7 +309,7 @@ export const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(18),
+    fontSize: SF(14),
     color: COLORS.black,
   },
   boxText: {
@@ -321,12 +327,13 @@ export const styles = StyleSheet.create({
   },
   priceText: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(18),
+    fontSize: SF(14),
     color: COLORS.solid_grey,
   },
   bottomSheet: {
-    // position: 'absolute',
-    // bottom: 0,
+    position: 'absolute',
+    bottom: 40,
+    right:0,
     // height: SW(105),
     backgroundColor: COLORS.white,
     // width: windowWidth * 0.44,
@@ -444,8 +451,8 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(2),
   },
   map: {
-    width: windowWidth / 2.3,
-    height: Platform.OS === 'android' ? SW(130) : SW(190),
+    width: windowWidth * 0.48,
+    height: Platform.OS === 'android' ? SH(520) : SW(190),
     alignSelf: 'center',
     borderRadius: 6,
   },
@@ -484,12 +491,12 @@ export const styles = StyleSheet.create({
   },
   verifyText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(11),
+    fontSize: SF(10),
     color: COLORS.solid_grey,
   },
   verifyTextLight: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(11),
+    fontSize: SF(10),
     color: COLORS.gerySkies,
   },
   justifyContentStyle: {
@@ -504,10 +511,11 @@ export const styles = StyleSheet.create({
   },
   selectShipingRightView: {
     borderWidth: 1,
-    // width: SH(545),
+    width: windowWidth * 0.42,
     borderRadius: 10,
     borderColor: COLORS.solidGrey,
     paddingHorizontal: moderateScale(10),
+    height:windowHeight * 0.84
   },
   selectShipingCon: {
     // width: SH(510),
@@ -517,6 +525,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: moderateScale(10),
     justifyContent: 'center',
+    marginVertical:verticalScale(3)
   },
   radioRound: {
     width: SH(24),
@@ -534,13 +543,14 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   printButtonCon: {
-    width: SH(510),
+    // width: SH(510),
     height: SH(64),
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:verticalScale(10)
   },
   printText: {
     fontFamily: Fonts.SemiBold,
@@ -566,7 +576,7 @@ export const styles = StyleSheet.create({
   fedContextCon: {
     borderWidth: 1,
     // width:SW(350),
-    height: SH(60),
+    height: SH(50),
     borderRadius: 10,
     borderColor: COLORS.solidGrey,
     marginHorizontal: moderateScale(10),
@@ -589,7 +599,7 @@ export const styles = StyleSheet.create({
   contactCon: {
     backgroundColor: COLORS.textInputBackground,
     width: SW(35),
-    height: SW(11),
+    height: SH(35),
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
@@ -597,7 +607,7 @@ export const styles = StyleSheet.create({
   },
   contact: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.solid_grey,
   },
   Phonelight: {
@@ -608,19 +618,19 @@ export const styles = StyleSheet.create({
     tintColor: COLORS.solid_grey,
   },
   fedx: {
-    width: SW(16),
-    height: SW(16),
+    width: SW(14),
+    height: SW(14),
     resizeMode: 'contain',
     marginTop: 10,
   },
   fedEx: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(16),
+    fontSize: SF(13),
     color: COLORS.black,
   },
   fedNumber: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(12),
+    fontSize: SF(10),
     color: COLORS.primary,
   },
   verifySuccess: {
@@ -632,4 +642,6 @@ export const styles = StyleSheet.create({
     // borderWidth: 5,
     paddingHorizontal: moderateScale(5),
   },
+  mapContainer:
+  { flex: 1, marginTop: SH(15), borderWidth:2, overflow:'hidden', borderRadius:10, borderColor:COLORS.solidGrey }
 });

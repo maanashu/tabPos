@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     borderWidth: 0,
     alignItems: 'center',
     flexDirection: 'row',
-    height: windowHeight * 0.10,
+    height: windowHeight * 0.08,
     width: windowWidth * 0.35,
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 5,

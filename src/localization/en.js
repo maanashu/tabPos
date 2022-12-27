@@ -94,7 +94,11 @@ export const en = {
     shipPtr:'Pickup by SHIP PTNR SITE USPS AWAITS ITEM',
     imperialAdd:'IMPERIAL, PA, 15126, US • Aug 5, 2:39am',
     delivered:'Delivered',
-    verifySuccess:'Verifiered successfull'
+    verifySuccess:'Verifiered successfull',
+    orderView:'Orders to review',
+    orderPrepare:'Order Preparing',
+    readyPickup:'Ready to pickup',
+    delivered:'Delivering'
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -428,7 +432,10 @@ export const en = {
       track:'Track',
       contact:'Contact',
       fedEx:'FedEx',
-      fedNumber:'936128'
+      fedNumber:'936128',
+      ReadyToShip:'Ready to ship',
+      orderShip:'Order Shipped',
+      cancelShip:'Cancelled Shipped'
     },
     valiadtion:{
       validPhone :'Please enter valid phone number',
