@@ -51,7 +51,12 @@ import {
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
-import { moderateScale, verticalScale, scale, moderateVerticalScale } from 'react-native-size-matters';
+import {
+  moderateScale,
+  verticalScale,
+  scale,
+  moderateVerticalScale,
+} from 'react-native-size-matters';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
@@ -152,10 +157,10 @@ export function Retails() {
   const [count, setCount] = useState(0);
   const [indexs, setIndexs] = useState('');
   const [tipSelectId, setTipsSelected] = useState(1);
-  const [amountSelectId, setAmountSelectId] = useState(1)
+  const [amountSelectId, setAmountSelectId] = useState(1);
 
   useEffect(() => {
-    dispatch(getCategory())
+    dispatch(getCategory());
     //  dispatch(getBrand())brandSelectedId
     // dispatch(getBrand())
   }, []);
@@ -318,10 +323,10 @@ export function Retails() {
   };
 
   const decrementCount = () => {
-    if (count > 0){
-      setCount(count -1)
+    if (count > 0) {
+      setCount(count - 1);
     }
-  }
+  };
 
   const renderCategoryItem = ({ item }) => (
     <View style={styles.categoryCon}>
@@ -358,13 +363,17 @@ export function Retails() {
     </View>
   );
 
-  const TipsItemSelect = ({item, borderColor, color,  onPress}) => (
-    <TouchableOpacity style={[styles.tipChildCon, borderColor, color]} onPress={onPress}>
-    <Text style={[styles.tipChildText, color]}>{item.percentage}</Text>
-   </TouchableOpacity>
+  const TipsItemSelect = ({ item, borderColor, color, onPress }) => (
+    <TouchableOpacity
+      style={[styles.tipChildCon, borderColor, color]}
+      onPress={onPress}
+    >
+      <Text style={[styles.tipChildText, color]}>{item.percentage}</Text>
+    </TouchableOpacity>
   );
-  const tipsItem = ({item}) => {
-    const borderColor = item.id === tipSelectId ? COLORS.primary : COLORS.solidGrey;
+  const tipsItem = ({ item }) => {
+    const borderColor =
+      item.id === tipSelectId ? COLORS.primary : COLORS.solidGrey;
     const color = item.id === tipSelectId ? COLORS.primary : COLORS.solid_grey;
 
     return (
@@ -372,26 +381,31 @@ export function Retails() {
         item={item}
         onPress={() => setTipsSelected(item.id)}
         borderColor={{ borderColor }}
-        color = {{color}}
+        color={{ color }}
       />
     );
   };
 
-  const AmountReceivedItemSelect = ({item, borderColor, color,  onPress}) => (
-    <TouchableOpacity style={[styles.tipChildCon, borderColor, color]} onPress={onPress}>
-    <Text style={[styles.tipChildText, color]}>{item.amount}</Text>
-   </TouchableOpacity>
+  const AmountReceivedItemSelect = ({ item, borderColor, color, onPress }) => (
+    <TouchableOpacity
+      style={[styles.tipChildCon, borderColor, color]}
+      onPress={onPress}
+    >
+      <Text style={[styles.tipChildText, color]}>{item.amount}</Text>
+    </TouchableOpacity>
   );
-  const amountReceivedItem = ({item}) => {
-    const borderColor = item.id === amountSelectId ? COLORS.primary : COLORS.solidGrey;
-    const color = item.id === amountSelectId ? COLORS.primary : COLORS.solid_grey;
+  const amountReceivedItem = ({ item }) => {
+    const borderColor =
+      item.id === amountSelectId ? COLORS.primary : COLORS.solidGrey;
+    const color =
+      item.id === amountSelectId ? COLORS.primary : COLORS.solid_grey;
 
     return (
       <AmountReceivedItemSelect
         item={item}
         onPress={() => setAmountSelectId(item.id)}
         borderColor={{ borderColor }}
-        color = {{color}}
+        color={{ color }}
       />
     );
   };
@@ -420,8 +434,6 @@ export function Retails() {
       </View>
     </TouchableOpacity>
   );
-
-  
 
   const categoryItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#275AFF' : '#F5F6F7';
@@ -549,19 +561,25 @@ export function Retails() {
           alignItems: 'center',
         }}
       >
-        <TouchableOpacity  onPress={() => {
-         setCount(count -1),
-         setIndexs(index)}
-        } style={{height:SH(35)}}>
-          <Image source={minus}
-          
-          style={styles.plusBtn} />
+        <TouchableOpacity
+          onPress={() => {
+            setCount(count - 1), setIndexs(index);
+          }}
+          style={{ height: SH(35) }}
+        >
+          <Image source={minus} style={styles.plusBtn} />
         </TouchableOpacity>
-             {indexs==index?<Text style={styles.count}>{count}</Text>:<Text style={styles.count}>0</Text>} 
-        <TouchableOpacity onPress={() => {
-         setCount(count + 1),
-         setIndexs(index)}
-        } style={{height:SH(35)}}>
+        {indexs == index ? (
+          <Text style={styles.count}>{count}</Text>
+        ) : (
+          <Text style={styles.count}>0</Text>
+        )}
+        <TouchableOpacity
+          onPress={() => {
+            setCount(count + 1), setIndexs(index);
+          }}
+          style={{ height: SH(35) }}
+        >
           <Image source={plus} style={styles.plusBtn} />
         </TouchableOpacity>
       </View>
@@ -753,165 +771,166 @@ export function Retails() {
   };
 
   const modalAccordingData = () => {
-    if(custCash){
-       return(
+    if (custCash) {
+      return (
         <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
-            <View style={styles.primaryHeader}>
-              <Text style={styles.headerText}>{strings.posSale.Customer}</Text>
-              <TouchableOpacity
-                // onPress={custCashRemoveHandler}
-                onPress={() => setCustCash(false)}
-                style={styles.crossButtonPosition}
-              >
-                <Image source={crossButton} style={styles.crossButton} />
-              </TouchableOpacity>
-            </View>
-            <View
-              style={[styles.custPaymentBodyCon, { alignItems: 'flex-start' }]}
+          <View style={styles.primaryHeader}>
+            <Text style={styles.headerText}>{strings.posSale.Customer}</Text>
+            <TouchableOpacity
+              // onPress={custCashRemoveHandler}
+              onPress={() => setCustCash(false)}
+              style={styles.crossButtonPosition}
             >
-              <Spacer space={SH(60)} />
-              <Text style={styles.customerNOStyle}>
-                {strings.posSale.customerNo}
-              </Text>
-              <Spacer space={SH(10)} />
-              <View style={styles.customerInputWraper}>
-                {customerPhoneNo ? null : (
-                  <Image
-                    source={search_light}
-                    style={[styles.searchStyle, { tintColor: COLORS.darkGray }]}
-                  />
-                )}
-                <TextInput
-                  style={styles.customerPhoneInput}
-                  value={customerPhoneNo}
-                  onChangeText={setCustomerPhoneNo}
-                  keyboardType="numeric"
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={[styles.custPaymentBodyCon, { alignItems: 'flex-start' }]}
+          >
+            <Spacer space={SH(60)} />
+            <Text style={styles.customerNOStyle}>
+              {strings.posSale.customerNo}
+            </Text>
+            <Spacer space={SH(10)} />
+            <View style={styles.customerInputWraper}>
+              {customerPhoneNo ? null : (
+                <Image
+                  source={search_light}
+                  style={[styles.searchStyle, { tintColor: COLORS.darkGray }]}
                 />
-              </View>
-              <Spacer space={SH(60)} />
-              {customerPhoneNo ? (
-                <View style={styles.customerAddreCon}>
-                  <Spacer space={SH(30)} />
-                  <View
-                    style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
-                  >
-                    <Image source={jbrCustomer} style={styles.jbrCustomer} />
-                    <View style={{ paddingHorizontal: moderateScale(8) }}>
-                      <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
-                        {strings.posSale.customerName}
-                      </Text>
-                      <Spacer space={SH(8)} />
-                      <Text style={styles.cusAddText}>
-                        {strings.posSale.customerMobileNo}
-                      </Text>
-                      <Spacer space={SH(5)} />
-                      <Text style={styles.cusAddText}>
-                        {strings.posSale.customerEmail}
-                      </Text>
-                      <Spacer space={SH(8)} />
-                      <Text style={styles.cusAddText}>
-                        {strings.posSale.customerAddr}
-                      </Text>
-                      <Text style={styles.cusAddText}>
-                        {strings.posSale.customerAddr2}
-                      </Text>
-                    </View>
+              )}
+              <TextInput
+                style={styles.customerPhoneInput}
+                value={customerPhoneNo}
+                onChangeText={setCustomerPhoneNo}
+                keyboardType="numeric"
+              />
+            </View>
+            <Spacer space={SH(60)} />
+            {customerPhoneNo ? (
+              <View style={styles.customerAddreCon}>
+                <Spacer space={SH(30)} />
+                <View
+                  style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
+                >
+                  <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                  <View style={{ paddingHorizontal: moderateScale(8) }}>
+                    <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
+                      {strings.posSale.customerName}
+                    </Text>
+                    <Spacer space={SH(8)} />
+                    <Text style={styles.cusAddText}>
+                      {strings.posSale.customerMobileNo}
+                    </Text>
+                    <Spacer space={SH(5)} />
+                    <Text style={styles.cusAddText}>
+                      {strings.posSale.customerEmail}
+                    </Text>
+                    <Spacer space={SH(8)} />
+                    <Text style={styles.cusAddText}>
+                      {strings.posSale.customerAddr}
+                    </Text>
+                    <Text style={styles.cusAddText}>
+                      {strings.posSale.customerAddr2}
+                    </Text>
                   </View>
                 </View>
-              ) : null}
-              <View style={{ flex: 1 }} />
-              {customerPhoneNo ? (
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                  }}
-                  // onPress={cusTotalAmountHandler}
-                  onPress={() => (setCustCash(false), setCutsomerTotalAmount(true))}
+              </View>
+            ) : null}
+            <View style={{ flex: 1 }} />
+            {customerPhoneNo ? (
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                }}
+                // onPress={cusTotalAmountHandler}
+                onPress={() => (
+                  setCustCash(false), setCutsomerTotalAmount(true)
+                )}
+              >
+                <Text
+                  style={[styles.redrectingText, { color: COLORS.primary }]}
                 >
-                  <Text
-                    style={[styles.redrectingText, { color: COLORS.primary }]}
-                  >
-                    {strings.posSale.rederecting}
-                  </Text>
-                  <Image source={loader} style={styles.loaderPic} />
-                </TouchableOpacity>
-              ) : (
-                <Text style={styles.redrectingText}>
                   {strings.posSale.rederecting}
                 </Text>
-              )}
-              
-            </View>
-          </View>
-       )
-    }else if (cutsomerTotalAmount){
-       return(
-        <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
-            <View style={styles.primaryHeader}>
-              <Text style={styles.headerText}>
-                {strings.posSale.customerTotalAmountHeader}
-              </Text>
-              <TouchableOpacity
-                // onPress={cusTotalAmountRemoveHandler}
-                onPress={() => (setCutsomerTotalAmount(false), setCustCash(true))}
-                style={styles.crossButtonPosition}
-              >
-                <Image source={crossButton} style={styles.crossButton} />
+                <Image source={loader} style={styles.loaderPic} />
               </TouchableOpacity>
+            ) : (
+              <Text style={styles.redrectingText}>
+                {strings.posSale.rederecting}
+              </Text>
+            )}
+          </View>
+        </View>
+      );
+    } else if (cutsomerTotalAmount) {
+      return (
+        <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
+          <View style={styles.primaryHeader}>
+            <Text style={styles.headerText}>
+              {strings.posSale.customerTotalAmountHeader}
+            </Text>
+            <TouchableOpacity
+              // onPress={cusTotalAmountRemoveHandler}
+              onPress={() => (setCutsomerTotalAmount(false), setCustCash(true))}
+              style={styles.crossButtonPosition}
+            >
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.custTotalAmountBodyCon]}>
+            <Spacer space={SH(20)} />
+            <Text
+              style={[
+                styles.tipChildText,
+                { paddingHorizontal: moderateScale(0) },
+              ]}
+            >
+              {strings.posSale.tips}
+            </Text>
+            <Spacer space={SH(10)} />
+            <View>
+              <FlatList
+                data={tipData}
+                renderItem={tipsItem}
+                keyExtractor={item => item.id}
+                extraData={tipSelectId}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.contentContainer}
+              />
             </View>
-            <View style={[styles.custTotalAmountBodyCon]}>
-              <Spacer space={SH(20)} />
-              <Text
-                style={[
-                  styles.tipChildText,
-                  { paddingHorizontal: moderateScale(0) },
-                ]}
-              >
-                {strings.posSale.tips}
+            <Spacer space={SH(15)} />
+            <View style={styles.noTipsButtonCon}>
+              <Text style={styles.noTipsTextStyle}>
+                {strings.posSale.noTips}
               </Text>
-              <Spacer space={SH(10)} />
-             <View>
-             <FlatList
-                 data={tipData}
-                 renderItem={tipsItem}
-                 keyExtractor={item => item.id}
-                 extraData={tipSelectId}
-                 horizontal
-                 showsHorizontalScrollIndicator={false}
-                 contentContainerStyle={styles.contentContainer}
-               />
-             </View>
-             <Spacer space={SH(15)} />
-              <View style={styles.noTipsButtonCon}>
-                <Text style={styles.noTipsTextStyle}>
-                  {strings.posSale.noTips}
-                </Text>
-              </View>
-              <Spacer space={SH(40)} />
-              <Text
-                style={[
-                  styles.tipChildText,
-                  { paddingHorizontal: moderateScale(0) },
-                ]}
-              >
-                {strings.posSale.cashRecive}
-              </Text>
-              <Spacer space={SH(20)} />
-              
-              <View>
-             <FlatList
-                 data={amountReceivedData}
-                 renderItem={amountReceivedItem}
-                 keyExtractor={item => item.id}
-                 extraData={amountSelectId}
-                 horizontal
-                 showsHorizontalScrollIndicator={false}
-                 contentContainerStyle={styles.contentContainer}
-               />
-             </View>
-              {/* <View style={styles.displayFlex}>
+            </View>
+            <Spacer space={SH(40)} />
+            <Text
+              style={[
+                styles.tipChildText,
+                { paddingHorizontal: moderateScale(0) },
+              ]}
+            >
+              {strings.posSale.cashRecive}
+            </Text>
+            <Spacer space={SH(20)} />
+
+            <View>
+              <FlatList
+                data={amountReceivedData}
+                renderItem={amountReceivedItem}
+                keyExtractor={item => item.id}
+                extraData={amountSelectId}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.contentContainer}
+              />
+            </View>
+            {/* <View style={styles.displayFlex}>
                 {cashAmount1 ? (
                   <TouchableOpacity
                     style={[styles.tipChildCon, styles.tipChildConChecked]}
@@ -971,91 +990,95 @@ export function Retails() {
                   </TouchableOpacity>
                 )}
               </View> */}
-              <Spacer space={SH(30)} />
-              <TextInput
-                placeholder={strings.posSale.otherAmount}
-                value={amount}
-                onChangeText={setAmount}
-                style={styles.otherAmountInput}
-                keyboardType="numeric"
-              />
-              <View style={{ flex: 1 }} />
-              {customerPhoneNo ? (
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                  }}
-                  onPress={cusCashPaidHandler}
+            <Spacer space={SH(30)} />
+            <TextInput
+              placeholder={strings.posSale.otherAmount}
+              value={amount}
+              onChangeText={setAmount}
+              style={styles.otherAmountInput}
+              keyboardType="numeric"
+            />
+            <View style={{ flex: 1 }} />
+            {customerPhoneNo ? (
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                }}
+                onPress={cusCashPaidHandler}
+              >
+                <Text
+                  style={[styles.redrectingText, { color: COLORS.primary }]}
                 >
-                  <Text
-                    style={[styles.redrectingText, { color: COLORS.primary }]}
-                  >
-                    {strings.posSale.rederecting}
-                  </Text>
-                  <Image source={loader} style={styles.loaderPic} />
-                </TouchableOpacity>
-              ) : (
-                <Text style={styles.redrectingText}>
                   {strings.posSale.rederecting}
                 </Text>
-              )}
-            </View>
+                <Image source={loader} style={styles.loaderPic} />
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.redrectingText}>
+                {strings.posSale.rederecting}
+              </Text>
+            )}
           </View>
-       )
-    }else if (customerCashPaid){
-      return(
+        </View>
+      );
+    } else if (customerCashPaid) {
+      return (
         <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
-        <View style={styles.primaryHeader}>
-          <Text style={styles.headerText}>
-            {strings.posSale.customerTotalAmountHeader}
-          </Text>
-          <TouchableOpacity
-            // onPress={cusCashPaidRemoveHandler}
-            onPress={() => (setCustomerCashPaid(false), setCutsomerTotalAmount(true))}
-            style={styles.crossButtonPosition}
-          >
-            <Image source={crossButton} style={styles.crossButton} />
-          </TouchableOpacity>
-        </View>
-        <View style={[styles.custTotalAmountBodyCon]}>
-          <Spacer space={SH(40)} />
-          <Text style={styles.changeDueText}>
-            {strings.posSale.changeDue}
-          </Text>
-          <View style={{ flex: 1 }} />
-          <TouchableOpacity
-            style={[
-              styles.checkoutButton,
-              { marginVertical: moderateScale(20) },
-            ]}
-            onPress={() => (setCustomerCashPaid(false), setListofItem(true))}
-            // onPress={() => alert('jgfhmcx')}
-          >
-            <Text
-              style={[styles.checkoutText, { fontFamily: Fonts.Regular }]}
-            >
-              Continue
+          <View style={styles.primaryHeader}>
+            <Text style={styles.headerText}>
+              {strings.posSale.customerTotalAmountHeader}
             </Text>
-            <Image source={checkArrow} style={styles.checkArrow} />
-          </TouchableOpacity>
+            <TouchableOpacity
+              // onPress={cusCashPaidRemoveHandler}
+              onPress={() => (
+                setCustomerCashPaid(false), setCutsomerTotalAmount(true)
+              )}
+              style={styles.crossButtonPosition}
+            >
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.custTotalAmountBodyCon]}>
+            <Spacer space={SH(40)} />
+            <Text style={styles.changeDueText}>
+              {strings.posSale.changeDue}
+            </Text>
+            <View style={{ flex: 1 }} />
+            <TouchableOpacity
+              style={[
+                styles.checkoutButton,
+                { marginVertical: moderateScale(20) },
+              ]}
+              onPress={() => (setCustomerCashPaid(false), setListofItem(true))}
+              // onPress={() => alert('jgfhmcx')}
+            >
+              <Text
+                style={[styles.checkoutText, { fontFamily: Fonts.Regular }]}
+              >
+                Continue
+              </Text>
+              <Image source={checkArrow} style={styles.checkArrow} />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      )
+      );
     }
-  }
+  };
 
   return (
     <>
-    {
-      listOfItem
-      ?
-      (
+      {listOfItem ? (
         <View style={styles.container}>
-           <StatusBar barStyle = "dark-content"  backgroundColor = "#fff" />
-            <View style={styles.displayFlex}>
-            <View style={[styles.numpadContainer, {paddingHorizontal:moderateVerticalScale(12)}]}>
+          <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+          <View style={styles.displayFlex}>
+            <View
+              style={[
+                styles.numpadContainer,
+                { paddingHorizontal: moderateVerticalScale(12) },
+              ]}
+            >
               <View style={{ height: windowHeight, paddingBottom: 60 }}>
                 <Spacer space={SH(20)} />
                 <View style={styles.displayFlex}>
@@ -1070,7 +1093,7 @@ export function Retails() {
                   </Text>
                 </View>
                 <Spacer space={SH(20)} />
-    
+
                 <View>
                   <FlatList
                     data={jbritemList}
@@ -1088,15 +1111,18 @@ export function Retails() {
               </View>
             </View>
             <View style={styles.orderSideCon}>
-              <View style={{ width: SH(420), alignSelf: 'center' }}>
+              <View style={{ width: SH(310), alignSelf: 'center' }}>
                 <Spacer space={SH(20)} />
                 <View style={styles.displayFlex}>
                   <Text style={styles.moreActText}>Payment Details</Text>
                   <TouchableOpacity onPress={() => setListofItem(false)}>
-                    <Image source={crossButton} style={styles.crossButtonStyle} />
+                    <Image
+                      source={crossButton}
+                      style={styles.crossButtonStyle}
+                    />
                   </TouchableOpacity>
                 </View>
-                <View >
+                <View>
                   <ScrollView showsVerticalScrollIndicator={false}>
                     <Spacer space={SH(20)} />
                     <Text style={styles.paymenttdone}>
@@ -1128,7 +1154,7 @@ export function Retails() {
                         Cash
                       </Text>
                     </Text>
-    
+
                     <Spacer space={SH(15)} />
                     <View style={styles.customerAddreCons}>
                       <Spacer space={SH(10)} />
@@ -1141,9 +1167,14 @@ export function Retails() {
                           paddingHorizontal: moderateScale(10),
                         }}
                       >
-                        <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                        <Image
+                          source={jbrCustomer}
+                          style={styles.jbrCustomer}
+                        />
                         <View style={{ paddingHorizontal: moderateScale(8) }}>
-                          <Text style={[styles.cusAddText, { fontSize: SF(18) }]}>
+                          <Text
+                            style={[styles.cusAddText, { fontSize: SF(18) }]}
+                          >
                             {strings.posSale.customerName}
                           </Text>
                           <Spacer space={SH(8)} />
@@ -1224,16 +1255,11 @@ export function Retails() {
               </View>
             </View>
           </View>
-
         </View>
-      
-        )
-        :
-
-        (
-          <View style={styles.container}>
-          <StatusBar barStyle = "dark-content"  backgroundColor = "#fff" />
-          <View style={[styles.headerCon, {zIndex:-99}]}>
+      ) : (
+        <View style={styles.container}>
+          <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+          <View style={[styles.headerCon, { zIndex: -99 }]}>
             <View style={styles.flexRow}>
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity onPress={menuHandler}>
@@ -1271,60 +1297,57 @@ export function Retails() {
             </View>
           </View>
           {/* End  header section */}
-    
+
           {/* start  category  section */}
-          {
-             categoryModal 
-             ?
-             null
-             :
-             (
-              <View style={{zIndex:-99}}>
+          {categoryModal ? null : (
+            <View style={{ zIndex: -99 }}>
               <View style={styles.categoryCon}>
-                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                   <Text style={styles.categoryHeader}>{strings.posSale.category}</Text>
-                   <FlatList
-                     data={array}
-                     extraData={array}
-                     renderItem={categoryItem}
-                     keyExtractor={item => item.id}
-                     ListEmptyComponent={renderEmptyContainer}
-                     horizontal
-                     showsHorizontalScrollIndicator={false}
-                   />
-                 </View>
-               </View>
-               <View style={styles.categoryCon}>
-                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                   <Text style={styles.categoryHeader}>
-                     {strings.posSale.subCategory}
-                   </Text>
-                   <FlatList
-                     data={CategoryDataHorizontal}
-                     renderItem={subCategoryItem}
-                     keyExtractor={item => item.id}
-                     extraData={subSelectedId}
-                     horizontal
-                   />
-                 </View>
-               </View>
-               <View style={styles.categoryCon}>
-                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                   <Text style={styles.categoryHeader}>{strings.posSale.brand}</Text>
-                   <FlatList
-                     data={CategoryDataHorizontal}
-                     renderItem={brandItem}
-                     keyExtractor={item => item.id}
-                     extraData={brandSelectedId}
-                     horizontal
-                   />
-                 </View>
-               </View>
-               </View>
-             )
-          }
-    
-        
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.categoryHeader}>
+                    {strings.posSale.category}
+                  </Text>
+                  <FlatList
+                    data={array}
+                    extraData={array}
+                    renderItem={categoryItem}
+                    keyExtractor={item => item.id}
+                    ListEmptyComponent={renderEmptyContainer}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                  />
+                </View>
+              </View>
+              <View style={styles.categoryCon}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.categoryHeader}>
+                    {strings.posSale.subCategory}
+                  </Text>
+                  <FlatList
+                    data={CategoryDataHorizontal}
+                    renderItem={subCategoryItem}
+                    keyExtractor={item => item.id}
+                    extraData={subSelectedId}
+                    horizontal
+                  />
+                </View>
+              </View>
+              <View style={styles.categoryCon}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.categoryHeader}>
+                    {strings.posSale.brand}
+                  </Text>
+                  <FlatList
+                    data={CategoryDataHorizontal}
+                    renderItem={brandItem}
+                    keyExtractor={item => item.id}
+                    extraData={brandSelectedId}
+                    horizontal
+                  />
+                </View>
+              </View>
+            </View>
+          )}
+
           {/* {categoryModal ? null : (
             <View>
               <FlatList
@@ -1334,9 +1357,9 @@ export function Retails() {
               />
             </View>
           )} */}
-    
+
           {/* end  category  section */}
-          <View style={[styles.productbody, {zIndex:-99}]}>
+          <View style={[styles.productbody, { zIndex: -99 }]}>
             {sideContainer || rightMoreAction ? (
               <FlatList
                 key={'_'}
@@ -1355,7 +1378,7 @@ export function Retails() {
               />
             )}
           </View>
-    
+
           {/* start right side view */}
           {sideContainer ? (
             <View style={[styles.rightSideContainer]}>
@@ -1363,9 +1386,14 @@ export function Retails() {
               {checkoutCon ? (
                 <View style={{ paddingHorizontal: moderateScale(10) }}>
                   <View style={styles.displayFlex}>
-                    <Text style={styles.moreActText}>Choose payment option</Text>
+                    <Text style={styles.moreActText}>
+                      Choose payment option
+                    </Text>
                     <TouchableOpacity onPress={choosePaymentCloseHandler}>
-                      <Image source={crossButton} style={styles.crossButtonStyle} />
+                      <Image
+                        source={crossButton}
+                        style={styles.crossButtonStyle}
+                      />
                     </TouchableOpacity>
                   </View>
                   <Spacer space={SH(30)} />
@@ -1388,7 +1416,9 @@ export function Retails() {
                       />
                       <Text
                         style={
-                          jbrCoin ? styles.jbrCoinTextColored : styles.jbrcoinText
+                          jbrCoin
+                            ? styles.jbrCoinTextColored
+                            : styles.jbrcoinText
                         }
                       >
                         JBR Coin
@@ -1458,7 +1488,10 @@ export function Retails() {
                 <View>
                   <View style={styles.flexRow}>
                     <TouchableOpacity onPress={rightConCloseHandler}>
-                      <Image source={doubleRight} style={styles.doubleRightstyle} />
+                      <Image
+                        source={doubleRight}
+                        style={styles.doubleRightstyle}
+                      />
                     </TouchableOpacity>
                     <View style={styles.flexRow2}>
                       <TouchableOpacity onPress={numpadConHandler}>
@@ -1484,7 +1517,9 @@ export function Retails() {
                         <Text style={styles.oneX}>x 1</Text>
                       </View>
                     </View>
-                    <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                    <View
+                      style={{ flexDirection: 'column', alignItems: 'center' }}
+                    >
                       <Text style={styles.rate}>{null}</Text>
                       <Text style={styles.rate}>$382.75</Text>
                     </View>
@@ -1499,11 +1534,16 @@ export function Retails() {
                         <Text style={styles.oneX}>x 1</Text>
                       </View>
                     </View>
-                    <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                      <TouchableOpacity onPress={bundleHandler} style={styles.bundleButtonCon}>
+                    <View
+                      style={{ flexDirection: 'column', alignItems: 'center' }}
+                    >
+                      <TouchableOpacity
+                        onPress={bundleHandler}
+                        style={styles.bundleButtonCon}
+                      >
                         <Text style={styles.bundleButton}>Bundle</Text>
                       </TouchableOpacity>
-    
+
                       <Text style={styles.rate}>{null}</Text>
                       <Text style={styles.rate}>$382.75</Text>
                     </View>
@@ -1518,17 +1558,24 @@ export function Retails() {
                         <Text style={styles.oneX}>x 1</Text>
                       </View>
                     </View>
-                    <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                    <View
+                      style={{ flexDirection: 'column', alignItems: 'center' }}
+                    >
                       <Text style={styles.rate}>{null}</Text>
                       <Text style={styles.rate}>{null}</Text>
-                      <TouchableOpacity onPress={updatePriceHandler} style={styles.updatePriceButtonCon}>
-                        <Text style={styles.updatePriceButton}>Update price</Text>
+                      <TouchableOpacity
+                        onPress={updatePriceHandler}
+                        style={styles.updatePriceButtonCon}
+                      >
+                        <Text style={styles.updatePriceButton}>
+                          Update price
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   </View>
                 </View>
               )}
-    
+
               <View style={{ flex: 1 }}></View>
               <View style={styles.bottomContainer}>
                 <Spacer space={SH(10)} />
@@ -1573,10 +1620,14 @@ export function Retails() {
             </View>
           ) : null}
           {/* end right side view */}
-    
+
           {/* Amount container start */}
-    
-          <Modal animationType="fade" transparent={true} isVisible={amountPopup}>
+
+          <Modal
+            animationType="fade"
+            transparent={true}
+            isVisible={amountPopup}
+          >
             <View style={styles.amountPopupCon}>
               <View style={styles.primaryHeader}>
                 <Text style={styles.headerText}>Amount: $382</Text>
@@ -1591,18 +1642,26 @@ export function Retails() {
               <ScrollView>
                 <View style={{ paddingHorizontal: moderateScale(20) }}>
                   <View style={styles.amountjfrContainer}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
                       <Image source={jfr} style={styles.amountjfrStyle} />
                       <Text style={styles.jfrmaduro}>JFR Maduro</Text>
                     </View>
-    
+
                     <View>
                       <DropDownPicker
                         ArrowUpIconComponent={({ style }) => (
-                          <Image source={dropdown2} style={styles.dropDownIcon} />
+                          <Image
+                            source={dropdown2}
+                            style={styles.dropDownIcon}
+                          />
                         )}
                         ArrowDownIconComponent={({ style }) => (
-                          <Image source={dropdown2} style={styles.dropDownIcon} />
+                          <Image
+                            source={dropdown2}
+                            style={styles.dropDownIcon}
+                          />
                         )}
                         style={styles.dropdown}
                         containerStyle={[
@@ -1665,7 +1724,7 @@ export function Retails() {
             </View>
           </Modal>
           {/* Amount container End */}
-    
+
           {/* Numpad container start */}
           {numPadContainer ? (
             <View style={styles.numpadContainer}>
@@ -1725,7 +1784,7 @@ export function Retails() {
               </View>
             </View>
           ) : null}
-    
+
           {/* Numpad container end */}
           {/* right side more action View start */}
           {rightMoreAction ? (
@@ -1747,7 +1806,10 @@ export function Retails() {
                 style={styles.discountCon}
                 onPress={addDiscountHandler}
               >
-                <Image source={addDiscountPic} style={styles.addDiscountStyle} />
+                <Image
+                  source={addDiscountPic}
+                  style={styles.addDiscountStyle}
+                />
                 <Text style={styles.addDiscountText}>Add Discount</Text>
               </TouchableOpacity>
               <Spacer space={SH(10)} />
@@ -1760,9 +1822,9 @@ export function Retails() {
               </TouchableOpacity>
             </View>
           ) : null}
-    
+
           {/* right side more action View end */}
-    
+
           {/* right side Add discount View start */}
           {addDiscount ? (
             <View
@@ -1793,11 +1855,18 @@ export function Retails() {
                   <View style={styles.displayFlex}>
                     <View style={styles.displayFlex}>
                       {checkboxs ? (
-                        <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
-                          <Image source={checkbox} style={styles.checkboxStyle} />
+                        <TouchableOpacity
+                          onPress={() => setCheckBoxs(!checkboxs)}
+                        >
+                          <Image
+                            source={checkbox}
+                            style={styles.checkboxStyle}
+                          />
                         </TouchableOpacity>
                       ) : (
-                        <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
+                        <TouchableOpacity
+                          onPress={() => setCheckBoxs(!checkboxs)}
+                        >
                           <Image
                             source={checkedCheckbox}
                             style={styles.checkboxStyle}
@@ -1805,7 +1874,9 @@ export function Retails() {
                         </TouchableOpacity>
                       )}
                       <Text
-                        style={amountDis ? styles.amountLabel2 : styles.amountLabel}
+                        style={
+                          amountDis ? styles.amountLabel2 : styles.amountLabel
+                        }
                       >
                         Amount Discount
                       </Text>
@@ -1833,11 +1904,18 @@ export function Retails() {
                   <View style={styles.displayFlex}>
                     <View style={styles.displayFlex}>
                       {checkboxs ? (
-                        <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
-                          <Image source={checkbox} style={styles.checkboxStyle} />
+                        <TouchableOpacity
+                          onPress={() => setCheckBoxs(!checkboxs)}
+                        >
+                          <Image
+                            source={checkbox}
+                            style={styles.checkboxStyle}
+                          />
                         </TouchableOpacity>
                       ) : (
-                        <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
+                        <TouchableOpacity
+                          onPress={() => setCheckBoxs(!checkboxs)}
+                        >
                           <Image
                             source={checkedCheckbox}
                             style={styles.checkboxStyle}
@@ -1875,11 +1953,18 @@ export function Retails() {
                   <View style={styles.displayFlex}>
                     <View style={styles.displayFlex}>
                       {checkboxs ? (
-                        <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
-                          <Image source={checkbox} style={styles.checkboxStyle} />
+                        <TouchableOpacity
+                          onPress={() => setCheckBoxs(!checkboxs)}
+                        >
+                          <Image
+                            source={checkbox}
+                            style={styles.checkboxStyle}
+                          />
                         </TouchableOpacity>
                       ) : (
-                        <TouchableOpacity onPress={() => setCheckBoxs(!checkboxs)}>
+                        <TouchableOpacity
+                          onPress={() => setCheckBoxs(!checkboxs)}
+                        >
                           <Image
                             source={checkedCheckbox}
                             style={styles.checkboxStyle}
@@ -1888,7 +1973,9 @@ export function Retails() {
                       )}
                       <Text
                         style={
-                          discountCode ? styles.amountLabel2 : styles.amountLabel
+                          discountCode
+                            ? styles.amountLabel2
+                            : styles.amountLabel
                         }
                       >
                         Discount Code
@@ -1909,14 +1996,17 @@ export function Retails() {
                 <Spacer space={SH(12)} />
                 <Text style={styles.discountTitle}>Discount Tittle</Text>
                 <Spacer space={SH(12)} />
-                <TextInput placeholder="Tittle" style={styles.discountTitleInput} />
+                <TextInput
+                  placeholder="Tittle"
+                  style={styles.discountTitleInput}
+                />
                 <Spacer space={SH(12)} />
               </View>
             </View>
           ) : null}
-    
+
           {/* right side Add discount View end */}
-    
+
           {/* right side Add notes View start */}
           {addNotes ? (
             <View
@@ -1953,12 +2043,16 @@ export function Retails() {
               </View>
             </View>
           ) : null}
-    
+
           {/* right side Add notes View end */}
-    
+
           {/* update price modal start */}
-    
-          <Modal animationType="fade" transparent={true} isVisible={updatePrice}>
+
+          <Modal
+            animationType="fade"
+            transparent={true}
+            isVisible={updatePrice}
+          >
             <View style={styles.amountPopupCon}>
               <View style={styles.primaryHeader}>
                 <Text style={styles.headerText}>Update price</Text>
@@ -1973,7 +2067,10 @@ export function Retails() {
               <View style={{ paddingHorizontal: moderateScale(20) }}>
                 <View style={styles.amountjfrContainer}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={marboloPlus} style={styles.marboloPlusStyle} />
+                    <Image
+                      source={marboloPlus}
+                      style={styles.marboloPlusStyle}
+                    />
                     <Text style={styles.jfrmaduro}>Marlboro Flavor Plus</Text>
                   </View>
                   <View>
@@ -2001,7 +2098,7 @@ export function Retails() {
                     />
                   </View>
                 </View>
-    
+
                 <Spacer space={SH(30)} />
                 <View
                   style={[
@@ -2018,7 +2115,10 @@ export function Retails() {
                 </View>
                 <Spacer space={SH(30)} />
                 <View
-                  style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
+                  style={[
+                    styles.priceContainer,
+                    { backgroundColor: COLORS.white },
+                  ]}
                 >
                   <Image source={minus} style={styles.plusBtn2} />
                   <Text style={[styles.price, { fontSize: SF(24) }]}>1</Text>
@@ -2040,7 +2140,9 @@ export function Retails() {
                     />
                   </View>
                   <View style={styles.invetryCon}>
-                    <Text style={styles.invertyLabel}>Inventory-Reorder Point</Text>
+                    <Text style={styles.invertyLabel}>
+                      Inventory-Reorder Point
+                    </Text>
                     <Spacer space={SH(15)} />
                     <TextInput
                       placeholder="Inventory-Reorder Point"
@@ -2049,7 +2151,7 @@ export function Retails() {
                   </View>
                 </View>
               </View>
-    
+
               <View style={{ flex: 1 }} />
               <View style={styles.buttonContainer}>
                 <Text style={styles.removeButton}>Remove from cart</Text>
@@ -2060,7 +2162,7 @@ export function Retails() {
             </View>
           </Modal>
           {/* update price modal end */}
-    
+
           {/*  add new product update  modal start */}
           <Modal
             animationType="fade"
@@ -2138,7 +2240,9 @@ export function Retails() {
                   </View>
                   <Spacer space={SH(20)} />
                   <View>
-                    <Text style={styles.newProductLabel}>Select Sub-category</Text>
+                    <Text style={styles.newProductLabel}>
+                      Select Sub-category
+                    </Text>
                     <Spacer space={SH(10)} />
                     <DropDownPicker
                       ArrowDownIconComponent={({ style }) => (
@@ -2233,7 +2337,7 @@ export function Retails() {
                     <Text style={[styles.price, { fontSize: SF(24) }]}>1</Text>
                     <Image source={plus} style={styles.plusBtn2} />
                   </View>
-    
+
                   <Spacer space={SH(30)} />
                   <View style={styles.buttonContainer}>
                     <Text style={styles.removeButton}>Remove from cart</Text>
@@ -2247,9 +2351,13 @@ export function Retails() {
             </View>
           </Modal>
           {/*  add new product update  modal end */}
-    
+
           {/*  customer and payment  modal start */}
-          <Modal animationType="fade" transparent={true} isVisible={custPayment}>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            isVisible={custPayment}
+          >
             <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
               <View style={styles.primaryHeader}>
                 <Text style={styles.headerText}>
@@ -2264,7 +2372,9 @@ export function Retails() {
               </View>
               <View style={styles.custPaymentBodyCon}>
                 <Spacer space={SH(60)} />
-                <Text style={styles.walletIdText}>{strings.posSale.walletId}</Text>
+                <Text style={styles.walletIdText}>
+                  {strings.posSale.walletId}
+                </Text>
                 <Spacer space={SH(10)} />
                 <TextInput
                   // placeholder="Search product here"
@@ -2274,7 +2384,9 @@ export function Retails() {
                   keyboardType="numeric"
                 />
                 <Spacer space={SH(60)} />
-                <Text style={styles.walletIdText}>{strings.posSale.scanText}</Text>
+                <Text style={styles.walletIdText}>
+                  {strings.posSale.scanText}
+                </Text>
                 <Spacer space={SH(10)} />
                 <View style={styles.scanerCon}></View>
                 {/* <Spacer space={SH(100)} /> */}
@@ -2299,7 +2411,7 @@ export function Retails() {
             </View>
           </Modal>
           {/*  customer and payment  modal end */}
-    
+
           {/* payment with jbr wallet start */}
           {/* {listOfItem ? (
             <View style={[styles.displayFlex, {zIndex:999}]}>
@@ -2475,11 +2587,17 @@ export function Retails() {
           ) : null}
      */}
           {/* payment with jbr wallet end */}
-    
+
           {/*  customer cash  modal start */}
-          <Modal animationType="fade" transparent={true} isVisible={custCash ? custCash : cutsomerTotalAmount || customerCashPaid }>
-               {modalAccordingData()}
-           
+          <Modal
+            animationType="fade"
+            transparent={true}
+            isVisible={
+              custCash ? custCash : cutsomerTotalAmount || customerCashPaid
+            }
+          >
+            {modalAccordingData()}
+
             {/* <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
                 <Spacer space={SH(7)}/>
                 <TextInput
@@ -2509,9 +2627,8 @@ export function Retails() {
                   style={styles.customerNameInput}
                   keyboardType='numeric'
                 /> */}
-                
           </Modal>
-    
+
           {/*  pos search  start */}
           <Modal animationType="fade" transparent={true} isVisible={posSearch}>
             <View style={[styles.searchproductCon1, styles.searchproductCon2]}>
@@ -2545,7 +2662,7 @@ export function Retails() {
             </View>
           </Modal>
           {/*  pos search  end */}
-    
+
           {/*  pos search details  start */}
           {searchProViewDetail ? (
             <View style={[styles.searchproductCon1, styles.searchDetailsCon2]}>
@@ -2615,16 +2732,10 @@ export function Retails() {
               </View>
             </View>
           ) : null}
-    
+
           {/*  pos search details  end */}
         </View>
-        )
-
-    }
+      )}
     </>
-  
-    
-   
-   
   );
 }

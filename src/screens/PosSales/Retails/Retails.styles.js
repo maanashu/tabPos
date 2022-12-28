@@ -234,7 +234,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
     color: COLORS.gerySkies,
     paddingHorizontal: moderateScale(10),
-    marginBottom:7
+    marginBottom: 7,
   },
 
   // Productcontainer css end
@@ -319,26 +319,27 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     color: COLORS.white,
   },
-  bundleButtonCon:{
-  backgroundColor:COLORS.bluish_green,
-  borderRadius: 3,
-  width: SW(18),
-  height:SH(25),
-  justifyContent: 'center',
-  alignItems:'center'
+  bundleButtonCon: {
+    backgroundColor: COLORS.bluish_green,
+    borderRadius: 3,
+    width: SW(18),
+    height: SH(25),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   updatePriceButton: {
     fontSize: SF(12),
     color: COLORS.white,
   },
-  updatePriceButtonCon:{
+  updatePriceButtonCon: {
     backgroundColor: COLORS.primary,
     borderRadius: 7,
-    width: SW(28),
+    width: SW(38),
+    height: SH(25),
     justifyContent: 'center',
     paddingLeft: moderateScale(8),
     paddingVertical: verticalScale(2),
-    marginHorizontal:moderateScale(8)
+    marginHorizontal: moderateScale(8),
   },
   checkoutButton: {
     flexDirection: 'row',
@@ -381,7 +382,7 @@ export const styles = StyleSheet.create({
   oneX: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
-    fontSize:SF(12)
+    fontSize: SF(12),
   },
   bottomContainer: {
     borderTopWidth: 1,
@@ -653,7 +654,7 @@ export const styles = StyleSheet.create({
   // numpad pop css start
 
   numpadContainer: {
-    width: SW(235),
+    width: windowWidth * 0.62,
     height: windowHeight,
     backgroundColor: COLORS.white,
     position: 'absolute',
@@ -699,7 +700,7 @@ export const styles = StyleSheet.create({
   addCartButton: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    width: SW(114),
+    width: SW(104),
     height: SH(55),
     borderRadius: 5,
     justifyContent: 'center',
@@ -936,7 +937,8 @@ export const styles = StyleSheet.create({
   },
   invertyInput: {
     borderRadius: 7,
-    width: 220,
+    width: SW(60),
+    height: SH(50),
     fontSize: SF(12),
     color: COLORS.gerySkies,
     fontFamily: Fonts.Italic,
@@ -1028,7 +1030,7 @@ export const styles = StyleSheet.create({
   iconInLine: {
     flexDirection: 'row',
     alignSelf: 'center',
-    width: SW(30),
+    width: SW(40),
   },
 
   paymentOptionCon: {
@@ -1087,6 +1089,7 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.25,
     fontSize: SF(16),
     paddingHorizontal: moderateScale(70),
+    height: SH(50),
   },
   scanerCon: {
     backgroundColor: COLORS.textInputBackground,
@@ -1153,7 +1156,8 @@ export const styles = StyleSheet.create({
   },
   orderSideCon: {
     // borderWidth: 1,
-    width: SH(450),
+    // width: SH(450),
+    width: windowWidth * 0.3,
     height: windowHeight,
     position: 'absolute',
     top: 0,
@@ -1215,7 +1219,7 @@ export const styles = StyleSheet.create({
     height: SW(15),
     resizeMode: 'contain',
   },
- 
+
   walletIdCon: {
     height: SH(55),
     borderTopWidth: 1,
@@ -1317,7 +1321,8 @@ export const styles = StyleSheet.create({
     fontSize: SF(20),
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(10),
-    width:SW(70)
+    width: SW(70),
+    // height: SH(50),
   },
   customerAddreCon: {
     backgroundColor: COLORS.textInputBackground,
@@ -1572,10 +1577,10 @@ export const styles = StyleSheet.create({
     // fontFamily: Fonts.Medium,
     // alignSelf: 'center',
   },
-  contentContainer:{
-    justifyContent:'space-between',
-    flex:1
-  }
+  contentContainer: {
+    justifyContent: 'space-between',
+    flex: 1,
+  },
 
   //  pos search css end
 });
