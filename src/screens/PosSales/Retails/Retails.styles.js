@@ -824,12 +824,14 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.darkGray,
     paddingHorizontal: moderateScale(5),
+    width: SW(40),
   },
   amountLabel2: {
     fontSize: SF(14),
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
     paddingHorizontal: moderateScale(5),
+    width: SW(40),
   },
   discountTitle: {
     fontSize: SF(16),

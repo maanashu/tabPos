@@ -1874,6 +1874,7 @@ export function Retails() {
                         </TouchableOpacity>
                       )}
                       <Text
+                        numberOfLines={1}
                         style={
                           amountDis ? styles.amountLabel2 : styles.amountLabel
                         }
@@ -1923,6 +1924,7 @@ export function Retails() {
                         </TouchableOpacity>
                       )}
                       <Text
+                        numberOfLines={1}
                         style={
                           percentDis ? styles.amountLabel2 : styles.amountLabel
                         }
@@ -1972,6 +1974,7 @@ export function Retails() {
                         </TouchableOpacity>
                       )}
                       <Text
+                        numberOfLines={1}
                         style={
                           discountCode
                             ? styles.amountLabel2
