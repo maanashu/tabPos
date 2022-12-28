@@ -86,6 +86,35 @@ export const  CategoryDataHorizontal = [
     id: '5',
   },
 ] ;
+
+export const tipData =[
+  {
+    percentage: '10%',
+    id: '1',
+  },
+  {
+    percentage: '20%',
+    id: '2',
+  },
+  {
+    percentage: '30%',
+    id: '3',
+  },
+];
+export const amountReceivedData =[
+  {
+    amount: '$280.00',
+    id: '1',
+  },
+  {
+    amount: '$280.00',
+    id: '2',
+  },
+  {
+    amount: '$280.00',
+    id: '3',
+  },
+];
 export const ProductData = [
   {
     name: 'Marlboro Red',

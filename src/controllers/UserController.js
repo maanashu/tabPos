@@ -42,7 +42,6 @@ export class UserController {
       PRODUCT_URL + ApiProductInventory.getBrand + `?page=1&limit=10&search=test`;
       // console.log('-------------------endpoint', endpoint)
       HttpClient.get(endpoint)
-      
         .then(response => {
           resolve(response);
           // console.log('---------------------response', response)

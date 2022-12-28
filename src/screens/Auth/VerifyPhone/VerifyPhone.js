@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image } from 'react-native';
+import { View, Text, TextInput, Image, StatusBar } from 'react-native';
 import { Spacer, Button } from '@/components';
 import { SH } from '@/theme';
 import { Fonts, dropdown } from '@/assets';
@@ -25,7 +25,7 @@ export function VerifyPhone() {
 
   const verifyPhoneHandler = () => {
     if (phoneNumber && phoneNumber.length > 5) {
-      navigate(NAVIGATION.verifyOtp);
+      navigate(NAVIGATION.passcode);
     } else if (phoneNumber && phoneNumber.length < 5) {
       Toast.show({
         position: 'bottom',
@@ -59,6 +59,8 @@ export function VerifyPhone() {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.container}>
+
+      <StatusBar barStyle = "dark-content"  backgroundColor = "#fff" />
         <Spacer space={SH(100)} />
         <View style={styles.verifyContainer}>
           <Spacer space={SH(40)} />
