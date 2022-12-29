@@ -121,7 +121,7 @@ export const en = {
   loginIntial: {
     heading: 'CONFIRM YOUR LOG IN',
     name: 'Millicent C. Edward',
-    id: 'ID:256913',
+    id: 'ID : ',
     date: 'Today Wednesday 11 Aug 2022',
     time: 'Time 3:25 pm',
   },
@@ -446,7 +446,11 @@ export const en = {
       enterPassCode:'Please enter passcode',
       validPasscode:'Please enter valid passcode',
       error:'not found',
-      loading:'loading...'
+      loading:'loading...',
+      phoneNotExist:'This number does not exist'
+    },
+    successMessages:{
+      loginSuccess:"Login succesfully"
     }
   
 };

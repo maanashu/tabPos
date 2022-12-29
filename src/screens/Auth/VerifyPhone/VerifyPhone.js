@@ -13,6 +13,8 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { mobileReg, digits, emailReg } from '@/utils/validators';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { verifyPhone } from '@/actions/AuthActions';
+import { TYPES } from '@/Types/Types';
 
 export function VerifyPhone() {
   const dispatch = useDispatch();
@@ -22,10 +24,18 @@ export function VerifyPhone() {
   const onChangePhoneNumber = phone => {
     setPhoneNumber(phone);
   };
+  const isLoading = useSelector(state =>
+    isLoadingSelector([TYPES.VERIFY_PHONE], state)
+  );
+  const clearInput = () => {
+    setPhoneNumber('')
+  }
 
   const verifyPhoneHandler = () => {
     if (phoneNumber && phoneNumber.length > 5) {
-      navigate(NAVIGATION.passcode);
+      dispatch(verifyPhone(phoneNumber, countryCode));
+      clearInput()
+      // navigate(NAVIGATION.passcode);
     } else if (phoneNumber && phoneNumber.length < 5) {
       Toast.show({
         position: 'bottom',
@@ -94,7 +104,7 @@ export function VerifyPhone() {
               maxLength={15}
               returnKeyType="done"
               keyboardType="number-pad"
-              value={phoneNumber}
+              value={phoneNumber.trim()}
               onChangeText={onChangePhoneNumber}
               style={styles.textInputContainer}
               placeholder={strings.verifyPhone.placeHolderText}
@@ -102,6 +112,7 @@ export function VerifyPhone() {
           </View>
           <View style={{ flex: 1 }} />
           <Button
+          pending={isLoading}
             onPress={verifyPhoneHandler}
             title={strings.verifyPhone.button}
             textStyle={phoneNumber ? styles.selectedText : styles.buttonText}

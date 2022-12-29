@@ -18,15 +18,26 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { mobileReg,digits } from '@/utils/validators';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { login } from '@/actions/AuthActions';
+import { TYPES } from '@/Types/Types';
 const CELL_COUNT = 4;
 
 export function Passcode() {
+  const dispatch = useDispatch();
+  const getData = useSelector(getAuthData);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
+  const phone_no = getData?.phoneData?.phoneNumber;
+  const country_code = getData?.phoneData?.countryCode;
+
+  const isLoading = useSelector(state =>
+    isLoadingSelector([TYPES.LOGIN], state)
+  );
 
  
 
@@ -56,7 +67,12 @@ export function Passcode() {
       });
       return;
     }else {
-        navigate(NAVIGATION.loginIntial)
+      const data ={
+        phone_no : phone_no,
+        country_code : country_code,
+        pin: value
+      }
+        dispatch(login(data))
     }
   }
   return (
@@ -94,6 +110,7 @@ export function Passcode() {
       
         <View style={{flex:1}}/>
         <Button
+          pending={isLoading}
         onPress={passcodeHandler}
           title={strings.verifyPhone.button}
           textStyle={value ? styles.selectedText :  styles.buttonText}

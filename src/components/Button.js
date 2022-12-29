@@ -4,12 +4,17 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { COLORS, ShadowStyles, TextStyles } from '@/theme';
 import { moderateScale, scale } from 'react-native-size-matters';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-export function Button({ style, textStyle, title, ...rest }) {
+export function Button({ style, textStyle, title,  pending,
+  disable, ...rest }) {
   const { colors } = useTheme();
 
   return (
-    <TouchableOpacity
+    pending
+    ?
+    (
+      <TouchableOpacity
       style={[
         styles.button,
         { borderColor: colors.border },
@@ -18,10 +23,28 @@ export function Button({ style, textStyle, title, ...rest }) {
       ]}
       {...rest}
     >
+       <Spinner visible={true} color={COLORS.primary} size='large' />
       <Text style={[{ color: COLORS.darkGray }, TextStyles.label, textStyle]}>
         {title}
       </Text>
     </TouchableOpacity>
+
+    )
+    :
+    <TouchableOpacity
+    style={[
+      styles.button,
+      { borderColor: colors.border },
+      style,
+      ShadowStyles,
+    ]}
+    {...rest}
+  >
+    <Text style={[{ color: COLORS.darkGray }, TextStyles.label, textStyle]}>
+      {title}
+    </Text>
+  </TouchableOpacity>
+  
   );
 }
 

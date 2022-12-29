@@ -7,7 +7,6 @@ import {
   VerifyPhone,
   VerifyOtp,
   Passcode,
-  LoginIntial,
   VerifySucess,
   Retails
 } from '@/screens';
@@ -41,20 +40,15 @@ export function AuthNavigator(props) {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        component={LoginIntial}
-        name={NAVIGATION.loginIntial}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         component={VerifySucess}
         name={NAVIGATION.verifySucess}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         component={HomeNavigator}
         name={NAVIGATION.retails}
         options={{ headerShown: false }}
-      />
+      /> */}
 
     </Stack.Navigator>
   );

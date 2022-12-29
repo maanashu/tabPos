@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     borderRadius:15,
     alignItems:'center',
     backgroundColor:COLORS.faded_grey,
-    ...ShadowStyles.shadow2
+    ...ShadowStyles.shadow2,
   },
   header:{
     fontSize:SF(24),
@@ -46,8 +46,9 @@ export const styles = StyleSheet.create({
      borderRadius:10
   },
   profilePic:{
-    width:SW(100),
+    width:SH(100),
     height:SH(100),
+    borderRadius:100,
     resizeMode:'contain'
   },
   darksmallText:{

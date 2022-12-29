@@ -1,44 +1,98 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TextInput, Image, StatusBar } from 'react-native';
 import { Spacer, Button } from '@/components';
 import { SH } from '@/theme';
 import { Fonts, profilePic } from '@/assets';
 import { styles } from '@/screens/Auth/LoginIntial/LoginIntial.styles';
 import { strings } from '@/localization';
-import { navigate } from '@/navigation/NavigationRef';
+import { navigate, navigationRef } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getProfile } from '@/actions/AuthActions';
+
+import { CommonActions, useIsFocused, useNavigation } from '@react-navigation/native';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
+import { ActivityIndicator } from 'react-native-paper';
 
 export function LoginIntial() {
-
+  const dispatch = useDispatch();
+  const getData = useSelector(getAuthData);
+  const  userData = getData?.user?.user_profiles?.profile_photo;
+  const id = getData?.user?.user_profiles?.id;
+  const profileData = getData?.user?.user_profiles?.profile_photo;
+  const userProfile = getData?.getProfile;
+  const firstName = getData?.getProfile?.user_profiles?.firstname;
+  const lastName = getData?.getProfile?.user_profiles?.lastname;
+  const userId = getData?.getProfile?.user_profiles?.id;
+  const fullName = firstName + ' ' +  lastName;
+  const focus = useIsFocused();
+const navigation = useNavigation()
 const  loginIntialHandler = () => {
   //  navigate('Retails', {screen : 'Retails'})
-  navigate(NAVIGATION.retails)
+  navigation.dispatch(
+    CommonActions.reset({
+      index: 0,
+      routes: [
+        { name: 'HOME' },
+        
+      ],
+    })
+  )
 }
+
+useEffect(() => {
+  if(focus){
+    dispatch(getProfile(id))
+  }
+}, [focus]);
+
+const isLoading = useSelector(state =>
+  isLoadingSelector([TYPES.GET_PROFILE], state)
+);
+
+
  
   return (
       <View style={styles.container}>
+         <StatusBar barStyle = "dark-content"  backgroundColor = "#fff" />
         <Spacer space={SH(100)} />
+        <View>
         <View style={styles.verifyContainer}>
-          <Spacer space={SH(80)} />
-          <Text style={styles.header}>{strings.loginIntial.heading}</Text>
-          <Spacer space={SH(25)} />
-          <Image source={profilePic} style={styles.profilePic}/>
-          <Spacer space={SH(25)} />
-          <Text style={styles.darksmallText}>{strings.loginIntial.name}</Text>
-          <Spacer space={SH(15)} />
-          <Text style={styles.darksmallText}>{strings.loginIntial.id}</Text>
-          <Spacer space={SH(15)} />
-          <Text style={styles.lightsmallText}>{strings.loginIntial.date}</Text>
-          <Spacer space={SH(8)} />
-          <Text style={styles.lightsmallText}>{strings.loginIntial.time}</Text>
-          <View style={{ flex: 1 }} />
-          <Button
-            onPress={loginIntialHandler}
-            title={strings.verifyPhone.button}
-            textStyle={styles.selectedText}
-            style={styles.submitButton}
-          />
-          <Spacer space={SH(40)} />
+          {
+            isLoading
+            ?
+            (  <View style={{marginTop:70}}>
+              <ActivityIndicator size="large" color="#0000ff" />
+            </View>)
+            :
+            (
+              <View style={{alignItems:'center'}}>
+              <Spacer space={SH(80)} />
+               <Text style={styles.header}>{strings.loginIntial.heading}</Text>
+               <Spacer space={SH(25)} />
+               <Image source={profileData ? {uri : profileData} : profilePic} style={styles.profilePic}/>
+               <Spacer space={SH(25)} />
+               <Text style={styles.darksmallText}>{fullName}</Text>
+               <Spacer space={SH(15)} />
+               <Text style={styles.darksmallText}>{strings.loginIntial.id}{userId}</Text>
+               <Spacer space={SH(15)} />
+               <Text style={styles.lightsmallText}>{strings.loginIntial.date}</Text>
+               <Spacer space={SH(8)} />
+               <Text style={styles.lightsmallText}>{strings.loginIntial.time}</Text>
+               <View style={{ flex: 1 }} />
+               <Button
+                 onPress={loginIntialHandler}
+                 title={strings.verifyPhone.button}
+                 textStyle={styles.selectedText}
+                 style={styles.submitButton}
+               />
+               <Spacer space={SH(40)} />
+               </View>
+            )
+          }
+        </View>
         </View>
       </View>
   );

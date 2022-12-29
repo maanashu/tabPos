@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { StyleSheet, Image, View, Alert } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { COLORS, SF, SW } from '@/theme';
 import { navigate } from '@/navigation/NavigationRef';
@@ -27,9 +27,29 @@ import {
   bluetray,
   blueCalender,
 } from '@/assets';
+import { useDispatch } from 'react-redux';
+import { logoutFunction } from '@/actions/AuthActions';
 
 export function DrawerNavigator(props) {
+  const dispatch = useDispatch();
   const [active, setActive] = useState('retail');
+
+  const logoutHandler = () => {
+       Alert.alert('Logout', 'Are you sure you want to logout ?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          dispatch(logoutFunction());
+          // dispatch(logoutUserFunction());
+        },
+      },
+    ]);
+  };
 
   return (
     <DrawerContentScrollView
@@ -193,9 +213,9 @@ export function DrawerNavigator(props) {
 
       {/* <View style={{ backgroundColor: COLORS.textInputBackground }}> */}
       <DrawerItem
-        onPress={() => {
-          alert('coming soon');
-        }}
+       onPress={() => {
+        logoutHandler();
+      }}
         label=""
         icon={({ focused, color, size }) => (
           <Image source={power} style={styles.iconStyle} />

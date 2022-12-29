@@ -3,8 +3,8 @@ import { AuthController } from "@/controllers/AuthController";
 import { navigate } from "@/navigation/NavigationRef";
 import { TYPES } from "@/Types/Types";
 
-const sendOtpRequest = () => ({
-    type: TYPES.SEND_OTP_REQUEST,
+const verifyPhoneRequest = () => ({
+    type: TYPES.VERIFY_PHONE_REQUEST,
     payload: null,
 });
 
@@ -13,31 +13,41 @@ const savePhone = (phone) => ({
     payload: phone
 });
 
-const sendOtpError = error => ({
-    type: TYPES.SEND_OTP_ERROR,
+const verifyPhoneError = error => ({
+    type: TYPES.VERIFY_PHONE_ERROR,
     payload: { error },
 });
 
-const sendOtpSuccess = otp => ({
-    type: TYPES.SEND_OTP_SUCCESS,
+const verifyPhoneSuccess = otp => ({
+    type: TYPES.VERIFY_PHONE_SUCCESS,
     payload: { otp },
 });
 
-const verifyOtpRequest = () => ({
-    type: TYPES.VERIFY_OTP_REQUEST,
+const loginRequest = () => ({
+    type: TYPES.LOGIN_REQUEST,
     payload: null,
 });
-
-const verifyOtpError = error => ({
-    type: TYPES.VERIFY_OTP_ERROR,
+const loginError = error => ({
+    type: TYPES.LOGIN_ERROR,
     payload: { error },
 });
-
-const verifyOtpSuccess = verify => ({
-    type: TYPES.VERIFY_OTP_SUCCESS,
-    payload: { verify },
+const loginSuccess = user => ({
+    type: TYPES.LOGIN_SUCCESS,
+    payload: { user },
 });
 
+const getProfileRequest = () => ({
+    type: TYPES.GET_PROFILE_REQUEST,
+    payload: null,
+});
+const getProfileError = error => ({
+    type: TYPES.GET_PROFILE_ERROR,
+    payload: { error },
+});
+const getProfileSuccess = getProfile => ({
+    type: TYPES.GET_PROFILE_SUCCESS,
+    payload: { getProfile },
+});
 const registerRequest = () => ({
     type: TYPES.REGISTER_REQUEST,
     payload: null,
@@ -53,37 +63,40 @@ const registerSuccess = register => ({
     payload: { register },
 });
 
-
-
-
-
 const clearStore = () => ({
     type: TYPES.CLEAR_STORE,
     payload: null,
 });
 
-export const sendOtp = (phoneNumber, countryCode, key) => async dispatch => {
-    dispatch(sendOtpRequest());
+export const verifyPhone = (phoneNumber, countryCode) => async dispatch => {
+    dispatch(verifyPhoneRequest());
     try {
         dispatch(savePhone({ phoneNumber, countryCode }))
-        const res = await AuthController.sendOtp(phoneNumber, countryCode, key);
-        dispatch(sendOtpSuccess(res));
+        const res = await AuthController.verifyPhone(phoneNumber, countryCode);
+        dispatch(verifyPhoneSuccess(res));
     } catch (error) {
-        dispatch(sendOtpError(error.message));
+        dispatch(verifyPhoneError(error.message));
     }
 };
 
-
-
-export const verifyOtp = (id, value, key) => async dispatch => {
-    dispatch(verifyOtpRequest());
+export const login = (data) => async dispatch => {
+    dispatch(loginRequest());
     try {
-        const res = await AuthController.verifyOtp(id, value, key);
-        dispatch(verifyOtpSuccess(res));
+        const res = await AuthController.login(data);
+        dispatch(loginSuccess(res));
     } catch (error) {
-        dispatch(verifyOtpError(error.message));
+        dispatch(loginError(error.message));
     }
 };
+export const getProfile = (id) => async dispatch => {
+    dispatch(getProfileRequest());
+    try {
+      const res = await AuthController.getProfile(id);
+      dispatch(getProfileSuccess(res));
+    } catch (error) {
+      dispatch(getProfileError(error.message));
+    }
+  };
 
 export const register = (data, params) => async dispatch => {
     dispatch(registerRequest());

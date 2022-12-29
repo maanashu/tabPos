@@ -13,6 +13,7 @@ import {
   Calender,
   Analytics,
   ShippingOrder,
+  LoginIntial
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';

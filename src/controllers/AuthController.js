@@ -7,31 +7,28 @@ import { strings } from '@/localization';
 
 export class AuthController {
 
-  static async sendOtp(phoneNumber, countryCode, key) {
-    const endpoint = USER_URL + ApiUserInventory.sendOtp;
-    const body = key ? {
+  static async verifyPhone(phoneNumber, countryCode) {
+    const endpoint = USER_URL + ApiUserInventory.verifyPhone;
+    const body =  {
       phone_code: countryCode,
       phone_no: phoneNumber,
-      isAlreadyCheck: true,
-    } : {
-      phone_code: countryCode,
-      phone_no: phoneNumber,
+      // isAlreadyCheck: true,
     };
     await HttpClient.post(endpoint, body)
       .then(response => {
         if (response.status_code === 200) {
           if (response?.payload?.is_phone_exits) {
-            navigate(NAVIGATION.login);
+            navigate(NAVIGATION.passcode);
           } else {
             Toast.show({
+              text2: strings.valiadtion.phoneNotExist,
               position: 'bottom',
-              type: 'success_toast',
-              text2: 'OTP sent successfully !',
+              type: 'error_toast',
               visibilityTime: 2000,
             });
-            navigate(NAVIGATION.verify, { id: response.payload.id, key: key });
           }
-        } else {
+        } 
+        else {
           Toast.show({
             text2: response.msg,
             position: 'bottom',
@@ -100,12 +97,14 @@ export class AuthController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.login;
       const body = {
-        phone_code: data.phone_code,
+        phone_code: data.country_code,
         phone_number: data.phone_no,
         password: data.pin
       };
+      console.log(body, '--------------------body')
       HttpClient.post(endpoint, body)
         .then(response => {
+          console.log(response, '--------------------response')
           if (response.status_code === 200) {
             Toast.show({
               type: 'success_toast',
@@ -114,6 +113,7 @@ export class AuthController {
               visibilityTime: 1500,
             });
             resolve(response);
+            navigate(NAVIGATION.loginIntial)
           } else {
             Toast.show({
               text2: response.msg,
@@ -123,26 +123,35 @@ export class AuthController {
             });
           }
         }).catch(error => {
-          if (error.status_code === 409 && error.msg === 'security pin not set yet.') {
-            Toast.show({
-              text2: strings.validation.setPin,
-              position: 'bottom',
-              type: 'error_toast',
-              visibilityTime: 1500,
-            });
-            navigate(NAVIGATION.setPin)
-          } else {
             Toast.show({
               text2: error.msg,
               position: 'bottom',
               type: 'error_toast',
               visibilityTime: 1500
             })
-          }
           reject(error.msg);
         });
     })
-  }
+  };
+
+  static async getProfile(id) {
+    return new Promise((resolve, reject) => {
+      const endpoint =  USER_URL + ApiUserInventory.getProfile + `${id}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.verify.error = error.msg)));
+        });
+    });
+  };
 
   static async setPin(data) {
     const endpoint = USER_URL + ApiUserInventory.setPin;

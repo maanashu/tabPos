@@ -1,13 +1,22 @@
 import axios from 'axios';
 import { Config } from 'react-native-config';
 import { strings } from '@/localization';
+import { store } from '@/store';
 
 const client = axios.create({
-  baseURL: Config.API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  // baseURL: Config.API_BASE_URL,
+  // headers: {
+  //   'Content-Type': 'application/json',
+  // },
 });
+// client.interceptors.request.use(function (config) {
+//   const register = store.getState().auth?.user?.token;
+//   console.log('tpoken----', store.getState().auth.user);
+//   // const user = store.getState().auth?.user?.token;
+//   // const token = register ? register : user ? user : null;
+//   config.headers.Authorization = token;
+//   return config;
+// });
 
 client.interceptors.response.use(
   response => response.data,

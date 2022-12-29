@@ -1,6 +1,9 @@
 import { TYPES } from '@/Types/Types';
 
 const INITIALSTATE = {
+  phoneData:{},
+  user:{},
+  getProfile:{}
  
 };
 
@@ -11,23 +14,16 @@ export const authReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         phoneData: payload,
       };
-   
-    case TYPES.GET_STATE_SUCCESS:
+    case TYPES.GET_PROFILE_SUCCESS:
       return {
         ...state,
-        stateList: payload.stateList.payload.data,
+        getProfile: payload.getProfile.payload,
       };
-    case TYPES.GET_CITIES_SUCCESS:
-      return {
-        ...state,
-        citiesList: payload.citiesList.payload.data,
-      };
-    case TYPES.REGISTER_SUCCESS:
-      return {
-        ...state,
-        registered: payload.register.payload,
-      };
-      case TYPES.PERSONALINFORMATION_SUCCESS:
+      case TYPES.LOGIN_SUCCESS:
+        return {
+          ...state,
+          user: payload.user.payload,
+        };
      
     case TYPES.CLEAR_STORE:
       return INITIALSTATE;

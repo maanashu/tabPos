@@ -4,12 +4,15 @@ export const USER_URL = 'https://apiuserservice.jobr.com/api/v1/';
 export const PRODUCT_URL = 'https://apiproductmgmt.jobr.com/api/v1/'
 
 export const ApiUserInventory = {
+    verifyPhone:'user_phones/',
+    login: 'users/login/',
+    getProfile:'users/'
  
 };
 
 export const ApiProductInventory = {
     getCategory:'categories',
-    getBrand:'brands'
+    getBrand:'brands',
 };
 
 // export const ApiSupportInventory = {
