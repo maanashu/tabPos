@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     height: SH(70),
     justifyContent: 'center',
     backgroundColor: COLORS.white,
-    width:windowWidth * 0.94
+    width: windowWidth * 0.94,
   },
   menuStyle: {
     width: SW(11),
@@ -169,7 +169,7 @@ export const styles = StyleSheet.create({
   productbody: {
     flex: 1,
     backgroundColor: COLORS.white,
-    width:windowWidth * 0.94
+    width: windowWidth * 0.94,
   },
   marboloStyle: {
     width: SW(14),
@@ -339,7 +339,7 @@ export const styles = StyleSheet.create({
     width: SW(28),
     height: SH(25),
     justifyContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
     marginHorizontal: moderateScale(8),
   },
   checkoutButton: {
@@ -386,9 +386,9 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
   },
   bottomContainer: {
-    // position:'absolute',
-    // bottom:0,
-    // right:15,
+    // position: 'absolute',
+    // bottom: 0,
+    // right: 15,
     borderTopWidth: 1,
     height: SH(350),
     borderColor: COLORS.row_grey,
@@ -658,7 +658,7 @@ export const styles = StyleSheet.create({
   // numpad pop css start
 
   numpadContainer: {
-    width: windowWidth * 0.63,
+    width: Platform.OS === 'android' ? windowWidth * 0.63 : windowWidth * 0.61,
     height: windowHeight,
     backgroundColor: COLORS.white,
     position: 'absolute',
@@ -1165,7 +1165,7 @@ export const styles = StyleSheet.create({
     // width: SH(450),
     height: windowHeight,
     width: windowWidth * 0.31,
-    paddingHorizontal:moderateScale(10),
+    paddingHorizontal: moderateScale(10),
     position: 'absolute',
     top: 0,
     right: 0,

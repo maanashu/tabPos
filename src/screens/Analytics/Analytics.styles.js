@@ -96,8 +96,8 @@ export const styles = StyleSheet.create({
   totalProductCon: {
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
-    width: windowWidth * 0.44,
-    height: windowHeight *  0.40,
+    width: windowWidth * 0.42,
+    height: windowHeight * 0.4,
     resizeMode: 'contain',
     ...ShadowStyles.shadow2,
     borderRadius: 10,
@@ -148,14 +148,14 @@ export const styles = StyleSheet.create({
   totalProductBodyCon: {
     flex: 1,
     alignSelf: 'center',
-    paddingHorizontal:moderateScale(10),
+    paddingHorizontal: moderateScale(10),
     width: windowWidth * 0.94,
   },
   totalProductDetailCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
-    width: windowWidth * 0.92,
-    height: windowHeight * 0.40,
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.4,
     paddingHorizontal: moderateScale(10),
   },
 
@@ -365,7 +365,7 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
-    top: Platform.OS === 'android' ? 30 : 15,
+    top: Platform.OS === 'android' ? 30 : 32,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   placeholderStyle: {
@@ -393,7 +393,7 @@ export const styles = StyleSheet.create({
     tintColor: COLORS.darkGreen,
   },
   containerStylePagination: {
-    width: SW(20),
+    width: SW(30),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,
@@ -1652,11 +1652,11 @@ export const styles = StyleSheet.create({
     width: SH(20),
     // justifyContent:'center',
   },
-  homeMainContainer:{
+  homeMainContainer: {
     paddingHorizontal: moderateScale(8),
     paddingBottom: Platform.OS === 'ios' ? 30 : 60,
-    width:windowWidth * 0.92,
-    height:windowHeight,
+    width: windowWidth * 0.92,
+    height: windowHeight,
   },
 
   // tracking number css

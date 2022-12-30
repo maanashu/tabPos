@@ -85,8 +85,9 @@ export const styles = StyleSheet.create({
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
-    width:windowWidth * 0.92,
-    height: windowHeight  * 0.84,
+    alignSelf: 'center',
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.84,
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
     // borderWidth:1
@@ -184,7 +185,7 @@ export const styles = StyleSheet.create({
   transactionChartStyle: {
     width: windowWidth,
     // height: SH(200),
-    height:windowHeight * 0.30,
+    height: windowHeight * 0.3,
     resizeMode: 'contain',
   },
   backButtonCon: {
@@ -313,7 +314,7 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
-    top: Platform.OS === 'android' ? 30 : 15,
+    top: Platform.OS === 'android' ? 30 : 32,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   placeholderStyle: {
@@ -327,7 +328,7 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
   },
   containerStylePagination: {
-    width: SW(20),
+    width: SW(30),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,

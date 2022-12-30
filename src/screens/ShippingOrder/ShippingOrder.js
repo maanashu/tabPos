@@ -746,9 +746,7 @@ export function ShippingOrder() {
               />
             </View>
 
-            <View
-              style={[styles.orderDetailView, { height: windowHeight }]}
-            >
+            <View style={[styles.orderDetailView, { height: windowHeight }]}>
               <Spacer space={SH(20)} />
               <View style={styles.reviewHeadingView}>
                 <Text style={styles.orderReviewText}>
@@ -1474,7 +1472,7 @@ export function ShippingOrder() {
                     <Spacer space={SH(8)} />
                     <View
                       style={{
-                        height: Platform.OS === 'android' ? SH(350) : SH(400),
+                        height: Platform.OS === 'android' ? SH(350) : SH(350),
                       }}
                     >
                       <FlatList

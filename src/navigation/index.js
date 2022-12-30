@@ -17,13 +17,13 @@ const Drawer = createDrawerNavigator();
 
 export function RootNavigator() {
   const user = useSelector(getAuthData);
-  const userToken = user?.user?.token
-  console.log('----------------userToken', userToken)
+  const userToken = user?.user?.token;
+  console.log('----------------userToken', userToken);
   const scheme = useColorScheme();
   return (
     <NavigationContainer ref={navigationRef}>
-      {/* {userToken? <InitialNav /> : <AuthNavigator />} */}
-      <HomeNavigator />
+      {userToken ? <InitialNav /> : <AuthNavigator />}
+      {/* <HomeNavigator /> */}
     </NavigationContainer>
   );
 }

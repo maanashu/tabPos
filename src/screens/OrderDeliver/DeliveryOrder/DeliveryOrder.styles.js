@@ -11,11 +11,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
   },
-  mainScreenContiner:{
-    flex:1,
-    width:windowWidth * 0.94,
-    alignSelf:'center',
-    height:windowHeight,
+  mainScreenContiner: {
+    flex: 1,
+    width: windowWidth * 0.94,
+    alignSelf: 'center',
+    height: windowHeight,
   },
   headerMainView: {
     width: windowWidth,
@@ -112,15 +112,15 @@ export const styles = StyleSheet.create({
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
     // height: Platform.OS === 'android' ? SH(272) : SH(282),
-    height:windowHeight * 0.34,
-    width:windowWidth * 0.45
+    height: windowHeight * 0.34,
+    width: windowWidth * 0.45,
   },
   orderNumberLeftViewmap: {
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    height:windowHeight,
-    width:windowWidth * 0.44
+    height: windowHeight,
+    width: windowWidth * 0.44,
   },
   chartView: {
     width: SW(168),
@@ -139,8 +139,8 @@ export const styles = StyleSheet.create({
     ...ShadowStyles.shadow2,
     // height: Platform.OS === 'android' ? SH(405) : SH(450),
     backgroundColor: COLORS.white,
-    height:windowHeight * 0.50,
-    width:windowWidth * 0.45
+    height: windowHeight * 0.5,
+    width: windowWidth * 0.45,
   },
   orderReviewText: {
     fontFamily: Fonts.MaisonBold,
@@ -231,12 +231,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   deliveryOrders: {
-    width: windowWidth * 0.45,
+    width: windowWidth * 0.44,
     backgroundColor: COLORS.orderStatusBackground,
     borderRadius: 5,
     paddingHorizontal: SW(5),
     paddingTop: SW(3),
-    height:windowHeight * 0.17
+    height: windowHeight * 0.15,
   },
   deliveryViewStyle: {
     backgroundColor: COLORS.white,
@@ -272,7 +272,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     // paddingRight: SW(50),
     width: windowWidth * 0.46,
-    height:windowHeight * 0.88,
+    height: windowHeight * 0.88,
   },
   orderDetailView2: {
     backgroundColor: COLORS.white,
@@ -428,7 +428,8 @@ export const styles = StyleSheet.create({
   },
   map: {
     width: windowWidth * 0.48,
-    height: Platform.OS === 'android' ? SH(520) : SW(190),
+    // height: Platform.OS === 'android' ? SH(520) : SW(190),
+    height: windowHeight * 0.7,
     alignSelf: 'center',
     borderRadius: 6,
   },
@@ -488,11 +489,12 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(3),
   },
   mapContainer: {
-    flex: 1,
+    // flex: 1,
     marginTop: SH(15),
-    borderWidth: 2,
+    borderWidth: 1,
     overflow: 'hidden',
     borderRadius: 10,
     borderColor: COLORS.solidGrey,
+    height: windowHeight * 0.7,
   },
 });
