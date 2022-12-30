@@ -146,7 +146,6 @@ export const styles = StyleSheet.create({
     // paddingHorizontal:moderateScale(5)
   },
   totalProductBodyCon: {
-    // borderWidth:1,
     flex: 1,
     alignSelf: 'center',
     paddingHorizontal:moderateScale(10),
@@ -1656,8 +1655,8 @@ export const styles = StyleSheet.create({
   homeMainContainer:{
     paddingHorizontal: moderateScale(8),
     paddingBottom: Platform.OS === 'ios' ? 30 : 60,
-    width:windowWidth * 0.94,
-    height:windowHeight
+    width:windowWidth * 0.92,
+    height:windowHeight,
   },
 
   // tracking number css

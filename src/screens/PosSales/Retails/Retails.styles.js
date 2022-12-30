@@ -386,9 +386,9 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
   },
   bottomContainer: {
-    position:'absolute',
-    bottom:0,
-    right:15,
+    // position:'absolute',
+    // bottom:0,
+    // right:15,
     borderTopWidth: 1,
     height: SH(350),
     borderColor: COLORS.row_grey,
@@ -658,7 +658,7 @@ export const styles = StyleSheet.create({
   // numpad pop css start
 
   numpadContainer: {
-    width: windowWidth * 0.62,
+    width: windowWidth * 0.63,
     height: windowHeight,
     backgroundColor: COLORS.white,
     position: 'absolute',
@@ -1163,8 +1163,9 @@ export const styles = StyleSheet.create({
   orderSideCon: {
     // borderWidth: 1,
     // width: SH(450),
-    width: windowWidth * 0.3,
     height: windowHeight,
+    width: windowWidth * 0.31,
+    paddingHorizontal:moderateScale(10),
     position: 'absolute',
     top: 0,
     right: 0,

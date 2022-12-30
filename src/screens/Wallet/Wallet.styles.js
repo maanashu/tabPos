@@ -85,11 +85,10 @@ export const styles = StyleSheet.create({
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
-    width:windowWidth * 0.94,
-    height: windowHeight  * 0.88,
+    width:windowWidth * 0.92,
+    height: windowHeight  * 0.84,
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
-    borderWidth:1
     // borderWidth:1
   },
   walletTranCon: {

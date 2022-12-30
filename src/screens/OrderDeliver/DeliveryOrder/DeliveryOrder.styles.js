@@ -119,7 +119,8 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    height: windowHeight,
+    height:windowHeight,
+    width:windowWidth * 0.44
   },
   chartView: {
     width: SW(168),
@@ -270,7 +271,8 @@ export const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     // paddingRight: SW(50),
-    width: windowWidth * 0.48,
+    width: windowWidth * 0.46,
+    height:windowHeight * 0.88,
   },
   orderDetailView2: {
     backgroundColor: COLORS.white,

@@ -1111,7 +1111,7 @@ export function Retails() {
               </View>
             </View>
             <View style={styles.orderSideCon}>
-              <View style={{ width: SH(310), alignSelf: 'center' }}>
+              {/* <View style={{paddingHorizontal:modalAccordingData(10), borderWidth:1}}> */}
                 <Spacer space={SH(20)} />
                 <View style={styles.displayFlex}>
                   <Text style={styles.moreActText}>Payment Details</Text>
@@ -1252,7 +1252,7 @@ export function Retails() {
                     </View>
                   </ScrollView>
                 </View>
-              </View>
+              {/* </View> */}
             </View>
           </View>
         </View>

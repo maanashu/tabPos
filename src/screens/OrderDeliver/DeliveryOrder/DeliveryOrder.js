@@ -320,7 +320,7 @@ export function DeliveryOrder() {
   const dataAccordingShip = dataType => {
     if (dataType === 'Orders to Review') {
       return (
-        <View style={{ height: windowHeight * 0.65 }}>
+        <View style={{ height: windowHeight * 0.68 }}>
           <View style={{ height: SH(325) }}>
             <FlatList
               data={productList}
@@ -504,7 +504,7 @@ export function DeliveryOrder() {
           </View>
 
           <View
-            style={[styles.orderDetailView, { height: windowHeight * 0.86 }]}
+            style={[styles.orderDetailView, { height: windowHeight}]}
           >
             <Spacer space={SH(20)} />
             <View style={styles.reviewHeadingView}>

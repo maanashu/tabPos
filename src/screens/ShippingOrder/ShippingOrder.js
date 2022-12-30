@@ -747,7 +747,7 @@ export function ShippingOrder() {
             </View>
 
             <View
-              style={[styles.orderDetailView, { height: windowHeight * 0.86 }]}
+              style={[styles.orderDetailView, { height: windowHeight }]}
             >
               <Spacer space={SH(20)} />
               <View style={styles.reviewHeadingView}>
