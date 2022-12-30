@@ -99,12 +99,13 @@ export class AuthController {
       const body = {
         phone_code: data.country_code,
         phone_number: data.phone_no,
-        password: data.pin
+        password: data.pin,
+        role_slug:'pos'
       };
-      console.log(body, '--------------------body')
+      // console.log(body, '--------------------body')
       HttpClient.post(endpoint, body)
         .then(response => {
-          console.log(response, '--------------------response')
+          // console.log(response, '--------------------response')
           if (response.status_code === 200) {
             Toast.show({
               type: 'success_toast',

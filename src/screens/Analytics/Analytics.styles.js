@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
   totalProductCon: {
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
-    width: windowWidth * 0.42,
+    width: Platform.OS === 'android' ?  windowWidth * 0.44 : windowWidth * 0.42,
     height: windowHeight * 0.4,
     resizeMode: 'contain',
     ...ShadowStyles.shadow2,
@@ -154,7 +154,7 @@ export const styles = StyleSheet.create({
   totalProductDetailCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
-    width: windowWidth * 0.9,
+    width: Platform.OS === 'android' ?  windowWidth * 0.92 : windowWidth * 0.90,
     height: windowHeight * 0.4,
     paddingHorizontal: moderateScale(10),
   },
@@ -1655,7 +1655,7 @@ export const styles = StyleSheet.create({
   homeMainContainer: {
     paddingHorizontal: moderateScale(8),
     paddingBottom: Platform.OS === 'ios' ? 30 : 60,
-    width: windowWidth * 0.92,
+    width: Platform.OS === 'android' ?  windowWidth * 0.94 : windowWidth * 0.92 ,
     height: windowHeight,
   },
 
