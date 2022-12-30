@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
     height: SH(70),
     justifyContent: 'center',
     backgroundColor: COLORS.white,
+    width:windowWidth * 0.94
   },
   menuStyle: {
     width: SW(11),
@@ -147,7 +148,7 @@ export const styles = StyleSheet.create({
   // Productcontainer css start
 
   productContainer: {
-    width: SW(112),
+    width: windowWidth * 0.295,
     height: SH(245),
     borderWidth: 1,
     borderColor: COLORS.textInputBackground,
@@ -168,6 +169,7 @@ export const styles = StyleSheet.create({
   productbody: {
     flex: 1,
     backgroundColor: COLORS.white,
+    width:windowWidth * 0.94
   },
   marboloStyle: {
     width: SW(14),
@@ -242,7 +244,7 @@ export const styles = StyleSheet.create({
   rightSideContainer: {
     backgroundColor: COLORS.white,
     height: windowHeight,
-    width: SW(116),
+    width: windowWidth * 0.31,
     position: 'absolute',
     right: 0,
     top: 0,
@@ -334,11 +336,10 @@ export const styles = StyleSheet.create({
   updatePriceButtonCon: {
     backgroundColor: COLORS.primary,
     borderRadius: 7,
-    width: SW(38),
+    width: SW(28),
     height: SH(25),
     justifyContent: 'center',
-    paddingLeft: moderateScale(8),
-    paddingVertical: verticalScale(2),
+    alignItems:'center',
     marginHorizontal: moderateScale(8),
   },
   checkoutButton: {
@@ -385,6 +386,9 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
   },
   bottomContainer: {
+    position:'absolute',
+    bottom:0,
+    right:15,
     borderTopWidth: 1,
     height: SH(350),
     borderColor: COLORS.row_grey,
@@ -1239,11 +1243,6 @@ export const styles = StyleSheet.create({
     fontSize: SF(13),
     fontFamily: Fonts.Regular,
     color: COLORS.primary,
-  },
-  bottomContainer: {
-    borderTopWidth: 1,
-    height: SH(350),
-    borderColor: COLORS.row_grey,
   },
   bottomSubCon: {
     flexDirection: 'row',

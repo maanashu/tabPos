@@ -557,7 +557,7 @@ export function DeliveryOrder() {
       );
     } else {
       return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.mainScreenContiner}>
           <View style={{ paddingBottom: verticalScale(4) }}>
             <FlatList
               scrollEnabled={false}

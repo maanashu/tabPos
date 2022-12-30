@@ -85,9 +85,11 @@ export const styles = StyleSheet.create({
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
-    // height: SH(63),
+    width:windowWidth * 0.94,
+    height: windowHeight  * 0.88,
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
+    borderWidth:1
     // borderWidth:1
   },
   walletTranCon: {
@@ -181,8 +183,9 @@ export const styles = StyleSheet.create({
     // width:windowWidth * 0.30
   },
   transactionChartStyle: {
-    width: SW(335),
-    height: SH(200),
+    width: windowWidth,
+    // height: SH(200),
+    height:windowHeight * 0.30,
     resizeMode: 'contain',
   },
   backButtonCon: {

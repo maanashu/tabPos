@@ -1313,7 +1313,7 @@ export function ShippingOrder() {
       );
     } else {
       return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.mainScreenContiner}>
           <View style={styles.headerMainView}>
             {/* {viewAllReviews ? (
           <TouchableOpacity

@@ -122,8 +122,8 @@ export const en = {
     heading: 'CONFIRM YOUR LOG IN',
     name: 'Millicent C. Edward',
     id: 'ID : ',
-    date: 'Today Wednesday 11 Aug 2022',
-    time: 'Time 3:25 pm',
+    date: 'Today',
+    time: 'Time ',
   },
   posSale: {
     paymentHeader: 'Customer & Payment',

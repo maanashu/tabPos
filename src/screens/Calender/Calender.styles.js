@@ -21,8 +21,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  calenderContainer:{
+  width:windowWidth * 0.94,
+  height:windowHeight
+  },
   headerMainView: {
-    width: windowWidth - 10,
+    width: windowWidth,
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
@@ -48,7 +52,7 @@ export const styles = StyleSheet.create({
   deliveryText: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
-    fontSize: SF(20),
+    fontSize: SF(18),
     paddingLeft: SW(4),
   },
   searchView: {
@@ -67,13 +71,11 @@ export const styles = StyleSheet.create({
     left: 3,
   },
   calenderCon: {
-    width: windowWidth * 0.68,
-    // borderWidth: 1,
+    width: windowWidth * 0.64,
     height: windowHeight,
   },
   notificationCon: {
-    width: windowWidth * 0.3,
-    // borderWidth:1,
+    width: windowWidth * 0.30,
     height: windowHeight,
   },
   approveButtonCon: {

@@ -211,7 +211,7 @@ const schduleDetailModal = () => {
   return (
     <View style={styles.container}>
       {customHeader()}
-      <View style={styles.displayFlex}>
+      <View style={[styles.displayFlex, styles.calenderContainer]}>
         <View style={styles.calenderCon}>
            <View style={styles.calenderHeader}>
                 <View style={styles.displayFlex}>
@@ -244,7 +244,8 @@ const schduleDetailModal = () => {
                    <Text>{null}</Text>
                 </View>
            </View>
-           <Image source={schdule} style={styles.schdule}/>
+           {/* <Image source={schdule} style={styles.schdule}/> */}
+           <Text style={{alignSelf:'center', marginTop:100, color:COLORS.primary}}>Coming soon</Text>
         </View>
         <View style={styles.notificationCon}>
           <View>

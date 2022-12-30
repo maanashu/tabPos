@@ -6235,6 +6235,7 @@ export function Analytics(props) {
                         renderItem={categoryItem}
                         keyExtractor={item => item.id}
                         numColumns={2}
+                         contentContainerStyle={styles.contentContainer}
                       />
                     </View>
                   </View>
@@ -6408,10 +6409,7 @@ export function Analytics(props) {
     } else {
       return (
         <View
-          style={{
-            paddingHorizontal: moderateScale(8),
-            paddingBottom: Platform.OS === 'ios' ? 30 : 60,
-          }}
+          style={styles.homeMainContainer}
         >
           <View>
             <FlatList
@@ -6419,6 +6417,7 @@ export function Analytics(props) {
               renderItem={totalProductItem}
               keyExtractor={item => item.id}
               numColumns={2}
+              contentContainerStyle={styles.contentContainer}
             />
           </View>
         </View>

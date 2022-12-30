@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.25,
   },
   headerMainView: {
-    width: windowWidth - 10,
+    width: windowWidth,
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
@@ -96,8 +96,8 @@ export const styles = StyleSheet.create({
   totalProductCon: {
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
-    width: windowWidth * 0.43,
-    height: SH(310),
+    width: windowWidth * 0.44,
+    height: windowHeight *  0.40,
     resizeMode: 'contain',
     ...ShadowStyles.shadow2,
     borderRadius: 10,
@@ -123,7 +123,7 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     justifyContent: 'space-between',
-    flex: 1,
+    // flex: 1,
   },
   backButtonCon: {
     backgroundColor: COLORS.textInputBackground,
@@ -149,12 +149,14 @@ export const styles = StyleSheet.create({
     // borderWidth:1,
     flex: 1,
     alignSelf: 'center',
-    width: windowWidth * 0.9,
+    paddingHorizontal:moderateScale(10),
+    width: windowWidth * 0.94,
   },
   totalProductDetailCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
-    height: SH(325),
+    width: windowWidth * 0.92,
+    height: windowHeight * 0.40,
     paddingHorizontal: moderateScale(10),
   },
 
@@ -295,7 +297,6 @@ export const styles = StyleSheet.create({
     fontSize: Platform.OS === 'android' ? SF(20) : SF(20),
   },
   productCategorychildcon: {
-    // borderWidth:1,
     height: SH(200),
     width: windowWidth * 0.45,
     backgroundColor: COLORS.white,
@@ -543,10 +544,6 @@ export const styles = StyleSheet.create({
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
     color: COLORS.dark_grey,
-  },
-  contentContainer: {
-    justifyContent: 'space-between',
-    flex: 1,
   },
   saveButtonCon: {
     width: SH(65),
@@ -1656,6 +1653,13 @@ export const styles = StyleSheet.create({
     width: SH(20),
     // justifyContent:'center',
   },
+  homeMainContainer:{
+    paddingHorizontal: moderateScale(8),
+    paddingBottom: Platform.OS === 'ios' ? 30 : 60,
+    width:windowWidth * 0.94,
+    height:windowHeight
+  },
+
   // tracking number css
 
   // TOTAL RENEVUE CSS END

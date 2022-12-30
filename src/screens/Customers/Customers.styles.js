@@ -94,7 +94,9 @@ export const styles = StyleSheet.create({
   },
   customerHomeCon: {
     // borderWidth:1,
-    width: windowWidth * 0.86,
+    width: windowWidth * 0.94,
+    height:windowHeight * 0.86,
+    paddingHorizontal:moderateScale(10),
     alignSelf: 'center',
   },
   custometrCon: {

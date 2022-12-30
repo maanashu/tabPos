@@ -1259,7 +1259,7 @@ export function Retails() {
       ) : (
         <View style={styles.container}>
           <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-          <View style={[styles.headerCon, { zIndex: -99 }]}>
+          <View style={styles.headerCon}>
             <View style={styles.flexRow}>
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity onPress={menuHandler}>
@@ -1359,7 +1359,7 @@ export function Retails() {
           )} */}
 
           {/* end  category  section */}
-          <View style={[styles.productbody, { zIndex: -99 }]}>
+          <View style={styles.productbody}>
             {sideContainer || rightMoreAction ? (
               <FlatList
                 key={'_'}

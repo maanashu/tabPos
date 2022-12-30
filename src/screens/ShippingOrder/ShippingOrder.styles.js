@@ -11,6 +11,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
   },
+  mainScreenContiner:{
+    flex:1,
+    width:windowWidth * 0.94,
+    height:windowHeight,
+    alignSelf:'center',
+  },
   displayFlex: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -115,8 +121,8 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    height: Platform.OS === 'android' ? SH(272) : SH(282),
-    // width: SH(640),
+    height:windowHeight * 0.34,
+    width:windowWidth * 0.45
   },
   orderNumberLeftViewmap: {
     borderRadius: 5,
@@ -140,8 +146,10 @@ export const styles = StyleSheet.create({
     // width: windowWidth / 2.25,
     borderRadius: 5,
     ...ShadowStyles.shadow2,
-    height: Platform.OS === 'android' ? SH(405) : SH(450),
+    // height: Platform.OS === 'android' ? SH(405) : SH(450),
     backgroundColor: COLORS.white,
+    height:windowHeight * 0.50,
+    width:windowWidth * 0.45
   },
   orderReviewText: {
     fontFamily: Fonts.MaisonBold,
@@ -232,11 +240,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   deliveryOrders: {
-    width: windowWidth / 2.25,
+    width: windowWidth * 0.45,
     backgroundColor: COLORS.orderStatusBackground,
     borderRadius: 5,
     paddingHorizontal: SW(5),
     paddingTop: SW(3),
+    height:windowHeight * 0.17
   },
   deliveryViewStyle: {
     backgroundColor: COLORS.white,
