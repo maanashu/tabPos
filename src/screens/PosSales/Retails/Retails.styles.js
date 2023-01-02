@@ -1583,6 +1583,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 1,
   },
+  selected:{
+    backgroundColor:COLORS.primary
+  },
+  list:{
+    backgroundColor:COLORS.white
+
+  }
 
   //  pos search css end
 });

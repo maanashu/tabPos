@@ -46,7 +46,7 @@ import {
   deliverCheck,
   track,
 } from '@/assets';
-import { Spacer } from '@/components';
+import { DaySelector, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table, Row, Rows } from 'react-native-table-component';
@@ -73,11 +73,6 @@ const data = {
 };
 
 export function Wallet() {
-  const [today, setToday] = useState(false);
-  const [weekly, setWeekly] = useState(true);
-  const [monthly, setMonthly] = useState(false);
-  const [quertly, setQuertly] = useState(false);
-  const [yearly, setYearly] = useState(false);
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [statusModalOpen, setStatusModelOpen] = useState(false);
   const [statusModalValue, setStatusModalValue] = useState(null);
@@ -115,41 +110,7 @@ export function Wallet() {
     }
   };
 
-  const todayHandler = () => {
-    setToday(true);
-    setWeekly(false);
-    setMonthly(false);
-    setQuertly(false);
-    setYearly(false);
-  };
-  const weeklyHandler = () => {
-    setWeekly(true);
-    setToday(false);
-    setMonthly(false);
-    setQuertly(false);
-    setYearly(false);
-  };
-  const monthlyHandler = () => {
-    setMonthly(true);
-    setWeekly(false);
-    setToday(false);
-    setQuertly(false);
-    setYearly(false);
-  };
-  const quaterlyHandler = () => {
-    setQuertly(true);
-    setMonthly(false);
-    setWeekly(false);
-    setToday(false);
-    setYearly(false);
-  };
-  const yearlyHandler = () => {
-    setYearly(true);
-    setQuertly(false);
-    setMonthly(false);
-    setWeekly(false);
-    setToday(false);
-  };
+
   const weeklyTraRemoveHandler = () => {
     setWeeklyTrasaction(false);
   };
@@ -773,57 +734,8 @@ export function Wallet() {
                   {strings.wallet.transationPrice}
                 </Text>
               </Text>
-              <View style={styles.displayFlex}>
-                <TouchableOpacity
-                  style={today ? styles.byDayCon : styles.byDayConLight}
-                  onPress={todayHandler}
-                >
-                  <Text
-                    style={today ? styles.todayText : styles.todayTextLight}
-                  >
-                    {strings.wallet.today}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={weekly ? styles.byDayCon : styles.byDayConLight}
-                  onPress={weeklyHandler}
-                >
-                  <Text
-                    style={weekly ? styles.todayText : styles.todayTextLight}
-                  >
-                    {strings.wallet.weekly}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={monthly ? styles.byDayCon : styles.byDayConLight}
-                  onPress={monthlyHandler}
-                >
-                  <Text
-                    style={monthly ? styles.todayText : styles.todayTextLight}
-                  >
-                    {strings.wallet.monthly}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={quertly ? styles.byDayCon : styles.byDayConLight}
-                  onPress={quaterlyHandler}
-                >
-                  <Text
-                    style={quertly ? styles.todayText : styles.todayTextLight}
-                  >
-                    {strings.wallet.quaterly}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={yearly ? styles.byDayCon : styles.byDayConLight}
-                  onPress={yearlyHandler}
-                >
-                  <Text
-                    style={yearly ? styles.todayText : styles.todayTextLight}
-                  >
-                    {strings.wallet.yearly}
-                  </Text>
-                </TouchableOpacity>
+              <View>
+              <DaySelector/>
               </View>
             </View>
           </View>
@@ -1088,57 +1000,8 @@ export function Wallet() {
                 <Text style={styles.trancationHeading}>
                   {strings.wallet.totalTransections}
                 </Text>
-                <View style={styles.displayFlex}>
-                  <TouchableOpacity
-                    style={today ? styles.byDayCon : styles.byDayConLight}
-                    onPress={todayHandler}
-                  >
-                    <Text
-                      style={today ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.today}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={weekly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={weeklyHandler}
-                  >
-                    <Text
-                      style={weekly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.weekly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={monthly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={monthlyHandler}
-                  >
-                    <Text
-                      style={monthly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.monthly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={quertly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={quaterlyHandler}
-                  >
-                    <Text
-                      style={quertly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.quaterly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={yearly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={yearlyHandler}
-                  >
-                    <Text
-                      style={yearly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.yearly}
-                    </Text>
-                  </TouchableOpacity>
+                <View>
+                <DaySelector/>
                 </View>
               </View>
               <Spacer space={SH(5)} />

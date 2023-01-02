@@ -36,6 +36,26 @@ export class UserController {
     });
   };
 
+  static async getSubCategory() {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+      PRODUCT_URL + ApiProductInventory.getSubCategory + `?category_id=1`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  };
+
   static async getBrand() {
     return new Promise((resolve, reject) => {
       const endpoint =

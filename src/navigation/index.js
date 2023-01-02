@@ -18,7 +18,7 @@ const Drawer = createDrawerNavigator();
 export function RootNavigator() {
   const user = useSelector(getAuthData);
   const userToken = user?.user?.token;
-  console.log('----------------userToken', userToken);
+  // console.log('----------------userToken', userToken);
   const scheme = useColorScheme();
   return (
     <NavigationContainer ref={navigationRef}>

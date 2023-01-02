@@ -12,6 +12,7 @@ export const ApiUserInventory = {
 
 export const ApiProductInventory = {
     getCategory:'categories',
+    getSubCategory:'categories',
     getBrand:'brands',
 };
 

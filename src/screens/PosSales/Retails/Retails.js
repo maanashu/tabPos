@@ -75,7 +75,7 @@ import {
   amountReceivedData,
 } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategory, getBrand } from '@/actions/UserActions';
+import { getCategory, getBrand, getSubCategory } from '@/actions/UserActions';
 import { getUser } from '@/selectors/UserSelectors';
 import { color } from 'react-native-reanimated';
 
@@ -83,10 +83,28 @@ export function Retails() {
   const dispatch = useDispatch();
   const getUserData = useSelector(getUser);
   const array = getUserData?.categories;
-  // const brandArray = getUserData;
+  const array2 = getUserData?.categories;
+  const subCategoriesArray = getUserData?.subCategories;
+  const brandArray = getUserData?.brands;
+
+  const [categoryId, setCategoryId] = useState([]);
+
+  const [arrays, setArrays] = useState(array);
+
+  const getCategoryId = () => {
+    if(array2){
+        const arr = [];
+        const get = array2.map(item => {
+          arr.push({category_Id: item.id });
+        });
+        setCategoryId(arr);
+      }
+}
+
+const id = categoryId
 
   // const brandArray = getUserData;
-  // console.log(brandArray, '--------------------brandArray');
+  console.log(array,'--------------------array');
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
   const [title, setTitle] = useState('');
@@ -160,9 +178,9 @@ export function Retails() {
   const [amountSelectId, setAmountSelectId] = useState(1);
 
   useEffect(() => {
-    dispatch(getCategory());
-    //  dispatch(getBrand())brandSelectedId
-    // dispatch(getBrand())
+    dispatch(getCategory())
+    dispatch(getSubCategory())
+    dispatch(getBrand())
   }, []);
 
   const menuHandler = () => {
@@ -436,15 +454,34 @@ export function Retails() {
   );
 
   const categoryItem = ({ item }) => {
+    
     const backgroundColor = item.id === selectedId ? '#275AFF' : '#F5F6F7';
     const borderColor = item.id === selectedId ? '#275AFF' : '#fff';
     const color = item.id === selectedId ? '#fff' : '#A7A7A7';
     const fontFamily = item.id === selectedId ? Fonts.SemiBold : Fonts.Regular;
+    // item.isSelect = !item.isSelect;
+    // item.selectedClass = item.isSelect
+    //    ? styles.selected: styles.list;
+
+      //  const selecetdFunction = ({item}) => {
+      //   const index = arrays.findIndex(
+      //     item => item.id === item.id
+      //   );
+      //   arrays[index] = item;
+      //   setArrays(arrays)
+      //  }
+
+        
+     
+      // console.log(arrays, '--------------------arrays')
+      
 
     return (
       <CategoryItemSelect
         item={item}
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => (setSelectedId(item.id), getCategoryId())}
+     
+        // onPress={() => selecetdFunction() }
         backgroundColor={{ backgroundColor }}
         borderColor={{ borderColor }}
         color={{ color }}
@@ -466,8 +503,10 @@ export function Retails() {
       onPress={onPress}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Image source={categoryProduct} style={styles.categoryProduct} />
-        <Text style={[styles.productName1, color, fontFamily]}>Tobacco</Text>
+      <View style={styles.categoryImagecCon}>
+        <Image source={item.image ? {uri : item.image} : categoryProduct} style={styles.categoryProduct} />
+      </View>
+        <Text numberOfLines={1} style={[styles.productName1, color, fontFamily]}>{item.name}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -503,8 +542,10 @@ export function Retails() {
       onPress={onPress}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Image source={categoryProduct} style={styles.categoryProduct} />
-        <Text style={[styles.productName1, color, fontFamily]}>Tobacco</Text>
+      <View style={styles.categoryImagecCon}>
+        <Image source={item.image ? {uri : item.image} : categoryProduct} style={styles.categoryProduct} />
+      </View>
+        <Text numberOfLines={1} style={[styles.productName1, color, fontFamily]}>{item.name}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -1323,11 +1364,13 @@ export function Retails() {
                     {strings.posSale.subCategory}
                   </Text>
                   <FlatList
-                    data={CategoryDataHorizontal}
+                    data={subCategoriesArray}
+                    extraData={subCategoriesArray}
                     renderItem={subCategoryItem}
                     keyExtractor={item => item.id}
-                    extraData={subSelectedId}
                     horizontal
+                    showsHorizontalScrollIndicator={false}
+                    ListEmptyComponent={renderEmptyContainer}
                   />
                 </View>
               </View>
@@ -1337,11 +1380,13 @@ export function Retails() {
                     {strings.posSale.brand}
                   </Text>
                   <FlatList
-                    data={CategoryDataHorizontal}
+                     data={brandArray}
+                     extraData={brandArray}
                     renderItem={brandItem}
                     keyExtractor={item => item.id}
-                    extraData={brandSelectedId}
                     horizontal
+                    showsHorizontalScrollIndicator={false}
+                    ListEmptyComponent={renderEmptyContainer}
                   />
                 </View>
               </View>

@@ -49,9 +49,9 @@ import {
   box,
   dropRight,
   users,
-  Fonts,willis,deliverCheck, track,map,blankRadio,movingArrow,fillRadio,movingArrowBlue,angela2,contact
+  Fonts,willis,deliverCheck, track,map,blankRadio,movingArrow,fillRadio,movingArrowBlue,angela2,contact, clay
 } from '@/assets';
-import { Spacer } from '@/components';
+import { DaySelector, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table, Row, Rows } from 'react-native-table-component';
@@ -846,8 +846,68 @@ export function Customers() {
               </View>
             </View>
           </View>
+          <View style={[styles.tableMainView, { zIndex: -9 }]}>
+          <ScrollView>
+            <DataTable style={{ zIndex: -99 }}>
+              <DataTable.Header
+                style={styles.tableHeader}
+              >
+                <DataTable.Title style={styles.dateTableSettingFirst}>
+                  <Text style={styles.revenueText}>#</Text>
+                </DataTable.Title>
+                <DataTable.Title style={styles.dateTablealignStartname}>
+                  <Text style={styles.revenueText}>Name</Text>
+                </DataTable.Title>
+                <DataTable.Title style={styles.dateTablealignStart}>
+                  <Text style={styles.revenueText}>Total orders</Text>
+                </DataTable.Title>
+                <DataTable.Title style={styles.dateTablealignStart}>
+                  <Text style={styles.revenueText}>Total Products </Text>
+                </DataTable.Title>
+                <DataTable.Title style={styles.dateTableSetting}>
+                  <Text style={styles.revenueText}>Lifetime spent</Text>
+                </DataTable.Title>
+               
+              </DataTable.Header>
+
+              <TouchableOpacity style={{ height: SH(380), zIndex: -99 }} onPress={userProfileHandler}>
+                {/* <ScrollView> */}
+                <DataTable.Row >
+                  <DataTable.Cell style={styles.dateTableSettingFirst}>
+                    <Text style={styles.revenueDataText}>1</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTablealignStartname}>
+                   <View style={[styles.flexAlign]}>
+                   <Image source={clay} style={styles.clay}/>
+                      <Text style={styles.revenueDataText}>Curtis M. Wheeler</Text>
+                    {/* <View>
+                      <Text style={styles.revenueDataText}>Curtis M. Wheeler</Text>
+                      <Text style={styles.revenueDataTextLight}>4318 Daffodil Lane, Savage,Virginia(VA), 20763</Text>
+                    </View> */}
+                   </View>
+                  </DataTable.Cell>
+                 
+               
+                
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>61</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>4809</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.dateTableSetting}>
+                    <Text style={styles.revenueDataText}>$6,850.00</Text>
+                  </DataTable.Cell>
+                 
+                </DataTable.Row>
+               
+                {/* </ScrollView> */}
+              </TouchableOpacity>
+            </DataTable>
+          </ScrollView>
+        </View>
           
-         <View style={{zIndex:-999}}>
+         {/* <View style={{zIndex:-999}}>
          <ScrollView>
             <View style={[styles.tableMainView]}>
                     <Table>
@@ -858,7 +918,7 @@ export function Customers() {
                     </Table>
                 </View>
           </ScrollView>
-         </View>
+         </View> */}
          </View>
       )
     } else{
@@ -881,58 +941,9 @@ export function Customers() {
                   <Text style={styles.trancationHeading}>
                     {strings.customers.totalCustomer}
                   </Text>
-                  <View style={styles.displayFlex}>
-                    <TouchableOpacity
-                      style={today ? styles.byDayCon : styles.byDayConLight}
-                      onPress={todayHandler}
-                    >
-                      <Text
-                        style={today ? styles.todayText : styles.todayTextLight}
-                      >
-                        {strings.wallet.today}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={weekly ? styles.byDayCon : styles.byDayConLight}
-                      onPress={weeklyHandler}
-                    >
-                      <Text
-                        style={weekly ? styles.todayText : styles.todayTextLight}
-                      >
-                        {strings.wallet.weekly}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={monthly ? styles.byDayCon : styles.byDayConLight}
-                      onPress={monthlyHandler}
-                    >
-                      <Text
-                        style={monthly ? styles.todayText : styles.todayTextLight}
-                      >
-                        {strings.wallet.monthly}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={quertly ? styles.byDayCon : styles.byDayConLight}
-                      onPress={quaterlyHandler}
-                    >
-                      <Text
-                        style={quertly ? styles.todayText : styles.todayTextLight}
-                      >
-                        {strings.wallet.quaterly}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={yearly ? styles.byDayCon : styles.byDayConLight}
-                      onPress={yearlyHandler}
-                    >
-                      <Text
-                        style={yearly ? styles.todayText : styles.todayTextLight}
-                      >
-                        {strings.wallet.yearly}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                 <View>
+                    <DaySelector/>
+                 </View>
             </View>
             <Spacer space={SH(5)} />
             <Text style={styles.totalCustomer}>{strings.customers.customerCount}</Text>

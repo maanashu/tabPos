@@ -74,7 +74,7 @@ import {
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
-import { Button, Spacer } from '@/components';
+import { Button, DaySelector, Spacer } from '@/components';
 import { styles } from '@/screens/Analytics/Analytics.styles';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -127,10 +127,7 @@ export function Analytics(props) {
   const [editButton, setEditButton] = useState(false);
   const [reOrder, setReOrder] = useState(false);
   const [sellingPrice, setSellingPrice] = useState(false);
-  const [today, setToday] = useState(false);
-  const [weekly, setWeekly] = useState(true);
-  const [monthly, setMonthly] = useState(false);
-  const [quertly, setQuertly] = useState(false);
+
   const [invoiceModel, setInvoiceModal] = useState(false);
   const [inventoryProductTable, setInverntoryProductTable] = useState(false);
   const [inventoryChangeTable, setInventoryChangeTable] = useState(false);
@@ -188,41 +185,7 @@ export function Analytics(props) {
     { label: 'xyz', value: 'xyz' },
     { label: 'abc', value: 'abc' },
   ]);
-  const todayHandler = () => {
-    setToday(true);
-    setWeekly(false);
-    setMonthly(false);
-    setQuertly(false);
-    setYearly(false);
-  };
-  const weeklyHandler = () => {
-    setWeekly(true);
-    setToday(false);
-    setMonthly(false);
-    setQuertly(false);
-    setYearly(false);
-  };
-  const monthlyHandler = () => {
-    setMonthly(true);
-    setWeekly(false);
-    setToday(false);
-    setQuertly(false);
-    setYearly(false);
-  };
-  const quaterlyHandler = () => {
-    setQuertly(true);
-    setMonthly(false);
-    setWeekly(false);
-    setToday(false);
-    setYearly(false);
-  };
-  const yearlyHandler = () => {
-    setYearly(true);
-    setQuertly(false);
-    setMonthly(false);
-    setWeekly(false);
-    setToday(false);
-  };
+  
 
   const tobacoTableHandler = () => {
     setDetailtable(true);
@@ -5477,57 +5440,8 @@ export function Analytics(props) {
                 <Text style={styles.trancationHeading}>
                   {strings.analytics.totalRevenue}
                 </Text>
-                <View style={styles.displayFlex}>
-                  <TouchableOpacity
-                    style={today ? styles.byDayCon : styles.byDayConLight}
-                    onPress={todayHandler}
-                  >
-                    <Text
-                      style={today ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.today}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={weekly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={weeklyHandler}
-                  >
-                    <Text
-                      style={weekly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.weekly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={monthly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={monthlyHandler}
-                  >
-                    <Text
-                      style={monthly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.monthly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={quertly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={quaterlyHandler}
-                  >
-                    <Text
-                      style={quertly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.quaterly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={yearly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={yearlyHandler}
-                  >
-                    <Text
-                      style={yearly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.yearly}
-                    </Text>
-                  </TouchableOpacity>
+                <View>
+                   <DaySelector/>
                 </View>
               </View>
               <Spacer space={SH(2)} />
@@ -5556,57 +5470,8 @@ export function Analytics(props) {
             <View style={styles.totalProductDetailCon}>
               <Spacer space={SH(10)} />
               <View style={styles.displayFlex}>
-                <View style={styles.displayFlex}>
-                  <TouchableOpacity
-                    style={today ? styles.byDayCon : styles.byDayConLight}
-                    onPress={todayHandler}
-                  >
-                    <Text
-                      style={today ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.today}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={weekly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={weeklyHandler}
-                  >
-                    <Text
-                      style={weekly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.weekly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={monthly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={monthlyHandler}
-                  >
-                    <Text
-                      style={monthly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.monthly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={quertly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={quaterlyHandler}
-                  >
-                    <Text
-                      style={quertly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.quaterly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={yearly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={yearlyHandler}
-                  >
-                    <Text
-                      style={yearly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.yearly}
-                    </Text>
-                  </TouchableOpacity>
+                <View>
+                  <DaySelector/>
                 </View>
                 <Text style={styles.trancationHeading}>
                   {strings.analytics.totalOrder}
@@ -6092,58 +5957,9 @@ export function Analytics(props) {
                 <Text style={styles.trancationHeading}>
                   {strings.analytics.totalProducts}
                 </Text>
-                <View style={styles.displayFlex}>
-                  <TouchableOpacity
-                    style={today ? styles.byDayCon : styles.byDayConLight}
-                    onPress={todayHandler}
-                  >
-                    <Text
-                      style={today ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.today}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={weekly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={weeklyHandler}
-                  >
-                    <Text
-                      style={weekly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.weekly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={monthly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={monthlyHandler}
-                  >
-                    <Text
-                      style={monthly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.monthly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={quertly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={quaterlyHandler}
-                  >
-                    <Text
-                      style={quertly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.quaterly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={yearly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={yearlyHandler}
-                  >
-                    <Text
-                      style={yearly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.yearly}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                 <View>
+                  <DaySelector/>
+                 </View>
               </View>
               <Spacer space={SH(2)} />
               <Text
@@ -6246,57 +6062,8 @@ export function Analytics(props) {
             <View style={[styles.totalProductDetailCon]}>
               <Spacer space={SH(10)} />
               <View style={styles.displayFlex}>
-                <View style={styles.displayFlex}>
-                  <TouchableOpacity
-                    style={today ? styles.byDayCon : styles.byDayConLight}
-                    onPress={todayHandler}
-                  >
-                    <Text
-                      style={today ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.today}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={weekly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={weeklyHandler}
-                  >
-                    <Text
-                      style={weekly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.weekly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={monthly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={monthlyHandler}
-                  >
-                    <Text
-                      style={monthly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.monthly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={quertly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={quaterlyHandler}
-                  >
-                    <Text
-                      style={quertly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.quaterly}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={yearly ? styles.byDayCon : styles.byDayConLight}
-                    onPress={yearlyHandler}
-                  >
-                    <Text
-                      style={yearly ? styles.todayText : styles.todayTextLight}
-                    >
-                      {strings.wallet.yearly}
-                    </Text>
-                  </TouchableOpacity>
+                <View>
+                  <DaySelector/>
                 </View>
                 <Text style={styles.trancationHeading}>
                   {strings.analytics.totalInvetry}

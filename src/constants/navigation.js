@@ -14,5 +14,6 @@ export const NAVIGATION = {
   customers: 'Customers',
   calender: 'Calender',
   analytics: 'Analytics',
-  verifySucess: 'VerifySucess'
+  verifySucess: 'VerifySucess',
+  reward: 'Reward'
 };

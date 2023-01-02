@@ -192,8 +192,10 @@ export function DrawerNavigator(props) {
       />
 
       <DrawerItem
+        activeBackgroundColor="transparent"
+        focused={active === 'reward' ? true : false}
         onPress={() => {
-          alert('coming soon');
+          setActive('reward'), navigate(NAVIGATION.reward);
         }}
         label=""
         icon={({ focused, color, size }) => (

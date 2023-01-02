@@ -812,7 +812,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dateTableSetting: {
-    // justifyContent:'center',
+    justifyContent:'center',
   },
   orderNoStyle: {
     fontSize: SF(20),
@@ -959,4 +959,47 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     paddingLeft: moderateScale(5),
   },
+  dateTableSettingFirst: {
+    width: SH(100),
+    justifyContent: 'flex-start',
+  },
+  dateTablealignStart: {
+    width: SH(285),
+    justifyContent: 'center',
+  },
+  dateTablealignStartname: {
+    width: SH(285),
+    justifyContent: 'flex-start',
+  },
+  revenueText: {
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    textAlign: 'center',
+    letterSpacing: -1,
+    // paddingHorizontal:moderateScale(40)
+  },
+  revenueDataText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+    // paddingHorizontal: moderateScale(3),
+  },
+
+  revenueDataTextLight: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.gerySkies,
+    fontSize: SF(10),
+  },
+  clay: {
+    width: SH(30),
+    height: SH(30),
+    resizeMode: 'contain',
+  },
+  tableHeader:{
+    backgroundColor:COLORS.textInputBackground,
+    borderTopWidth:1,
+    borderColor:COLORS.solidGrey
+  }
+ 
 });
