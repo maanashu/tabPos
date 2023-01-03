@@ -12,7 +12,7 @@ const client = axios.create({
 client.interceptors.request.use(function (config) {
   const register = store.getState().auth?.user?.token;
   
-  console.log('tpoken----', register);
+  // console.log('tpoken----', register);
   const user = store.getState().user?.user?.token;
   const token = register ? register : user ? user : null;
   config.headers.Authorization = token;

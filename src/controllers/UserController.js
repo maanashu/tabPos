@@ -36,12 +36,15 @@ export class UserController {
     });
   };
 
-  static async getSubCategory() {
+  static async getSubCategory(selectedId) {
     return new Promise((resolve, reject) => {
       const endpoint =
-      PRODUCT_URL + ApiProductInventory.getSubCategory + `?category_id=1`;
+      PRODUCT_URL + ApiProductInventory.getSubCategory + `?category_id=` + `${selectedId}`;
       HttpClient.get(endpoint)
         .then(response => {
+            if(response === ''){
+              resolve([]);
+            }
           resolve(response);
         })
         .catch(error => {
@@ -56,13 +59,16 @@ export class UserController {
     });
   };
 
-  static async getBrand() {
+  static async getBrand(selectedId) {
     return new Promise((resolve, reject) => {
       const endpoint =
-      PRODUCT_URL + ApiProductInventory.getBrand + `?page=1&limit=10&search=test`;
-      // console.log('-------------------endpoint', endpoint)
+      PRODUCT_URL + ApiProductInventory.getBrand + `?page=1&limit=10&category_id=`+ `${selectedId}` ;
       HttpClient.get(endpoint)
         .then(response => {
+          if(response.status === 204){
+            console.log('no content')
+            resolve([]);
+          }
           resolve(response);
           // console.log('---------------------response', response)
         })

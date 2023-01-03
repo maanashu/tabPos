@@ -447,7 +447,8 @@ export const en = {
       validPasscode:'Please enter valid passcode',
       error:'not found',
       loading:'loading...',
-      phoneNotExist:'This number does not exist'
+      phoneNotExist:'This number does not exist',
+      noData: 'No Data',
     },
     successMessages:{
       loginSuccess:"Login succesfully"

@@ -131,7 +131,7 @@ export const styles = StyleSheet.create({
     // color: COLORS.white,
     fontSize: SF(13),
     fontFamily: Fonts.SemiBold,
-    paddingHorizontal: moderateScale(7),
+    paddingHorizontal: moderateScale(4),
   },
   productName2: {
     color: COLORS.gerySkies,

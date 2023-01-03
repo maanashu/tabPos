@@ -70,21 +70,20 @@ export const getCategory = () => async dispatch => {
   }
 };
 
-export const getSubCategory = () => async dispatch => {
+export const getSubCategory = (selectedId) => async dispatch => {
   dispatch(getSubCategoryRequest());
   try {
-      const res = await UserController.getSubCategory();
+      const res = await UserController.getSubCategory(selectedId);
       dispatch(getSubCategorySuccess(res));
-      // console.log('------------------res', res)
   } catch (error) {
       dispatch(getSubCategoryError(error.message));
   }
 };
 
-export const getBrand = () => async dispatch => {
+export const getBrand = (selectedId) => async dispatch => {
   dispatch(getBrandRequest());
   try {
-      const res = await UserController.getBrand();
+      const res = await UserController.getBrand(selectedId);
       dispatch(getBrandSuccess(res));
   } catch (error) {
       dispatch(getBrandError(error.message));

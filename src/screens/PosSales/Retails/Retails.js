@@ -63,6 +63,7 @@ import { NAVIGATION } from '@/constants';
 import Modal from 'react-native-modal';
 import DropDownPicker from 'react-native-dropdown-picker';
 const windowHeight = Dimensions.get('window').height;
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import {
   jbritemList,
   CategoryData,
@@ -78,33 +79,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategory, getBrand, getSubCategory } from '@/actions/UserActions';
 import { getUser } from '@/selectors/UserSelectors';
 import { color } from 'react-native-reanimated';
+import { TYPES } from '@/Types/Types';
 
 export function Retails() {
   const dispatch = useDispatch();
   const getUserData = useSelector(getUser);
   const array = getUserData?.categories;
   const array2 = getUserData?.categories;
-  const subCategoriesArray = getUserData?.subCategories;
-  const brandArray = getUserData?.brands;
+  const subCategoriesArray = getUserData?.subCategories ?? []
+  const brandArray = getUserData?.brands ?? []
+  // console.log('------------brandArray', brandArray)
 
   const [categoryId, setCategoryId] = useState([]);
-
-  const [arrays, setArrays] = useState(array);
-
-  const getCategoryId = () => {
-    if(array2){
-        const arr = [];
-        const get = array2.map(item => {
-          arr.push({category_Id: item.id });
-        });
-        setCategoryId(arr);
-      }
-}
-
-const id = categoryId
-
-  // const brandArray = getUserData;
-  console.log(array,'--------------------array');
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
   const [title, setTitle] = useState('');
@@ -178,10 +164,30 @@ const id = categoryId
   const [amountSelectId, setAmountSelectId] = useState(1);
 
   useEffect(() => {
-    dispatch(getCategory())
-    dispatch(getSubCategory())
-    dispatch(getBrand())
+    dispatch(getCategory());
+    setSelectedId(1)
+    // dispatch(getBrand(selectedId))
   }, []);
+
+  const subcategoryFunction = id => {
+    // console.log(id);
+    dispatch(getSubCategory(id));
+    dispatch(getBrand(id));
+    setSelectedId(id)
+  };
+
+
+  const isLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_CATEGORY], state),
+  );
+
+  const isSubLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_SUB_CATEGORY], state)
+  );
+
+  const isCatLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_BRAND], state)
+  );
 
   const menuHandler = () => {
     setCategoryModal(!categoryModal);
@@ -454,33 +460,15 @@ const id = categoryId
   );
 
   const categoryItem = ({ item }) => {
-    
     const backgroundColor = item.id === selectedId ? '#275AFF' : '#F5F6F7';
     const borderColor = item.id === selectedId ? '#275AFF' : '#fff';
     const color = item.id === selectedId ? '#fff' : '#A7A7A7';
     const fontFamily = item.id === selectedId ? Fonts.SemiBold : Fonts.Regular;
-    // item.isSelect = !item.isSelect;
-    // item.selectedClass = item.isSelect
-    //    ? styles.selected: styles.list;
-
-      //  const selecetdFunction = ({item}) => {
-      //   const index = arrays.findIndex(
-      //     item => item.id === item.id
-      //   );
-      //   arrays[index] = item;
-      //   setArrays(arrays)
-      //  }
-
-        
-     
-      // console.log(arrays, '--------------------arrays')
-      
 
     return (
       <CategoryItemSelect
         item={item}
-        onPress={() => (setSelectedId(item.id), getCategoryId())}
-     
+        onPress={() => subcategoryFunction(item.id)}
         // onPress={() => selecetdFunction() }
         backgroundColor={{ backgroundColor }}
         borderColor={{ borderColor }}
@@ -503,10 +491,18 @@ const id = categoryId
       onPress={onPress}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <View style={styles.categoryImagecCon}>
-        <Image source={item.image ? {uri : item.image} : categoryProduct} style={styles.categoryProduct} />
-      </View>
-        <Text numberOfLines={1} style={[styles.productName1, color, fontFamily]}>{item.name}</Text>
+        <View style={styles.categoryImagecCon}>
+          <Image
+            source={item.image ? { uri: item.image } : categoryProduct}
+            style={styles.categoryProduct}
+          />
+        </View>
+        <Text
+          numberOfLines={1}
+          style={[styles.productName1, color, fontFamily]}
+        >
+          {item.name}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -542,10 +538,18 @@ const id = categoryId
       onPress={onPress}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <View style={styles.categoryImagecCon}>
-        <Image source={item.image ? {uri : item.image} : categoryProduct} style={styles.categoryProduct} />
-      </View>
-        <Text numberOfLines={1} style={[styles.productName1, color, fontFamily]}>{item.name}</Text>
+        <View style={styles.categoryImagecCon}>
+          <Image
+            source={item.image ? { uri: item.image } : categoryProduct}
+            style={styles.categoryProduct}
+          />
+        </View>
+        <Text
+          numberOfLines={1}
+          style={[styles.productName1, color, fontFamily]}
+        >
+          {item.name}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -807,7 +811,9 @@ const id = categoryId
 
   const renderEmptyContainer = () => {
     return (
-      <Text style={styles.emptyListText}>{strings.valiadtion.loading}</Text>
+      <View>
+      <Text style={styles.emptyListText}>{strings.valiadtion.noData}</Text>
+      </View>
     );
   };
 
@@ -1153,146 +1159,138 @@ const id = categoryId
             </View>
             <View style={styles.orderSideCon}>
               {/* <View style={{paddingHorizontal:modalAccordingData(10), borderWidth:1}}> */}
-                <Spacer space={SH(20)} />
-                <View style={styles.displayFlex}>
-                  <Text style={styles.moreActText}>Payment Details</Text>
-                  <TouchableOpacity onPress={() => setListofItem(false)}>
-                    <Image
-                      source={crossButton}
-                      style={styles.crossButtonStyle}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View>
-                  <ScrollView showsVerticalScrollIndicator={false}>
-                    <Spacer space={SH(20)} />
-                    <Text style={styles.paymenttdone}>
-                      {strings.posSale.paymenttdone}
-                    </Text>
-                    <Spacer space={SH(10)} />
-                    <View style={styles.paymentTipsCon}>
-                      <View style={styles.displayFlex}>
-                        <View>
-                          <Text style={styles.paymentTipsText}>
-                            Payable $254.60
-                          </Text>
-                          <Spacer space={SH(10)} />
-                          <Text style={styles.paymentTipsText}>Tips $0.60</Text>
-                        </View>
-                        <Text style={styles.paymentPay}>$254.60</Text>
+              <Spacer space={SH(20)} />
+              <View style={styles.displayFlex}>
+                <Text style={styles.moreActText}>Payment Details</Text>
+                <TouchableOpacity onPress={() => setListofItem(false)}>
+                  <Image source={crossButton} style={styles.crossButtonStyle} />
+                </TouchableOpacity>
+              </View>
+              <View>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  <Spacer space={SH(20)} />
+                  <Text style={styles.paymenttdone}>
+                    {strings.posSale.paymenttdone}
+                  </Text>
+                  <Spacer space={SH(10)} />
+                  <View style={styles.paymentTipsCon}>
+                    <View style={styles.displayFlex}>
+                      <View>
+                        <Text style={styles.paymentTipsText}>
+                          Payable $254.60
+                        </Text>
+                        <Spacer space={SH(10)} />
+                        <Text style={styles.paymentTipsText}>Tips $0.60</Text>
                       </View>
+                      <Text style={styles.paymentPay}>$254.60</Text>
                     </View>
-                    <Spacer space={SH(10)} />
-                    <Text style={styles.via}>
-                      Via{' '}
-                      <Text
-                        style={{
-                          color: COLORS.primary,
-                          fontSize: SF(18),
-                          fontFamily: Fonts.Regular,
-                        }}
-                      >
-                        Cash
-                      </Text>
+                  </View>
+                  <Spacer space={SH(10)} />
+                  <Text style={styles.via}>
+                    Via{' '}
+                    <Text
+                      style={{
+                        color: COLORS.primary,
+                        fontSize: SF(18),
+                        fontFamily: Fonts.Regular,
+                      }}
+                    >
+                      Cash
                     </Text>
+                  </Text>
 
-                    <Spacer space={SH(15)} />
-                    <View style={styles.customerAddreCons}>
-                      <Spacer space={SH(10)} />
-                      <Text style={styles.customer}>Customer</Text>
-                      <Spacer space={SH(10)} />
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'flex-start',
-                          paddingHorizontal: moderateScale(10),
-                        }}
-                      >
-                        <Image
-                          source={jbrCustomer}
-                          style={styles.jbrCustomer}
-                        />
-                        <View style={{ paddingHorizontal: moderateScale(8) }}>
-                          <Text
-                            style={[styles.cusAddText, { fontSize: SF(18) }]}
-                          >
-                            {strings.posSale.customerName}
-                          </Text>
-                          <Spacer space={SH(8)} />
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerMobileNo}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerEmail}
-                          </Text>
-                          <Spacer space={SH(8)} />
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerAddr}
-                          </Text>
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerAddr2}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={{ flex: 1 }}></View>
-                      <View style={styles.walletIdCon}>
-                        <Text style={styles.walletIdLabel}>
-                          {strings.analytics.walletIdLabel}
+                  <Spacer space={SH(15)} />
+                  <View style={styles.customerAddreCons}>
+                    <Spacer space={SH(10)} />
+                    <Text style={styles.customer}>Customer</Text>
+                    <Spacer space={SH(10)} />
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        paddingHorizontal: moderateScale(10),
+                      }}
+                    >
+                      <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                      <View style={{ paddingHorizontal: moderateScale(8) }}>
+                        <Text style={[styles.cusAddText, { fontSize: SF(18) }]}>
+                          {strings.posSale.customerName}
+                        </Text>
+                        <Spacer space={SH(8)} />
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerMobileNo}
                         </Text>
                         <Spacer space={SH(5)} />
-                        <Text style={styles.walletId}>
-                          {strings.analytics.walletId}
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerEmail}
+                        </Text>
+                        <Spacer space={SH(8)} />
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerAddr}
+                        </Text>
+                        <Text style={styles.cusAddText}>
+                          {strings.posSale.customerAddr2}
                         </Text>
                       </View>
+                    </View>
+                    <View style={{ flex: 1 }}></View>
+                    <View style={styles.walletIdCon}>
+                      <Text style={styles.walletIdLabel}>
+                        {strings.analytics.walletIdLabel}
+                      </Text>
+                      <Spacer space={SH(5)} />
+                      <Text style={styles.walletId}>
+                        {strings.analytics.walletId}
+                      </Text>
+                    </View>
+                  </View>
+                  <Spacer space={SH(8)} />
+                  <View style={styles.bottomContainer}>
+                    <Spacer space={SH(8)} />
+                    <View style={styles.bottomSubCon}>
+                      <Text style={styles.smalldarkText}>Sub Total</Text>
+                      <Text style={styles.smallLightText}>$4.00</Text>
                     </View>
                     <Spacer space={SH(8)} />
-                    <View style={styles.bottomContainer}>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.bottomSubCon}>
-                        <Text style={styles.smalldarkText}>Sub Total</Text>
-                        <Text style={styles.smallLightText}>$4.00</Text>
-                      </View>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.bottomSubCon}>
-                        <Text style={styles.smallLightText}>Discount</Text>
-                        <Text style={styles.smallLightText}>-$2.00</Text>
-                      </View>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.bottomSubCon}>
-                        <Text style={styles.smallLightText}>Tax</Text>
-                        <Text style={styles.smallLightText}>$4.00</Text>
-                      </View>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.hr}></View>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.bottomSubCon}>
-                        <Text
-                          style={[styles.smalldarkText, { fontSize: SF(16) }]}
-                        >
-                          Total
-                        </Text>
-                        <Text
-                          style={[styles.smalldarkText, { fontSize: SF(16) }]}
-                        >
-                          $254.60
-                        </Text>
-                      </View>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.bottomSubCon}>
-                        <Text style={styles.smallLightText}>4 Items</Text>
-                      </View>
-                      <Spacer space={SH(8)} />
-                      <TouchableOpacity
-                        style={styles.checkoutButton}
-                        // onPress={checkOutHandler}
-                      >
-                        <Text style={styles.checkoutText}>Checkout</Text>
-                        <Image source={checkArrow} style={styles.checkArrow} />
-                      </TouchableOpacity>
+                    <View style={styles.bottomSubCon}>
+                      <Text style={styles.smallLightText}>Discount</Text>
+                      <Text style={styles.smallLightText}>-$2.00</Text>
                     </View>
-                  </ScrollView>
-                </View>
+                    <Spacer space={SH(8)} />
+                    <View style={styles.bottomSubCon}>
+                      <Text style={styles.smallLightText}>Tax</Text>
+                      <Text style={styles.smallLightText}>$4.00</Text>
+                    </View>
+                    <Spacer space={SH(8)} />
+                    <View style={styles.hr}></View>
+                    <Spacer space={SH(8)} />
+                    <View style={styles.bottomSubCon}>
+                      <Text
+                        style={[styles.smalldarkText, { fontSize: SF(16) }]}
+                      >
+                        Total
+                      </Text>
+                      <Text
+                        style={[styles.smalldarkText, { fontSize: SF(16) }]}
+                      >
+                        $254.60
+                      </Text>
+                    </View>
+                    <Spacer space={SH(8)} />
+                    <View style={styles.bottomSubCon}>
+                      <Text style={styles.smallLightText}>4 Items</Text>
+                    </View>
+                    <Spacer space={SH(8)} />
+                    <TouchableOpacity
+                      style={styles.checkoutButton}
+                      // onPress={checkOutHandler}
+                    >
+                      <Text style={styles.checkoutText}>Checkout</Text>
+                      <Image source={checkArrow} style={styles.checkArrow} />
+                    </TouchableOpacity>
+                  </View>
+                </ScrollView>
+              </View>
               {/* </View> */}
             </View>
           </View>
@@ -1347,15 +1345,25 @@ const id = categoryId
                   <Text style={styles.categoryHeader}>
                     {strings.posSale.category}
                   </Text>
-                  <FlatList
-                    data={array}
-                    extraData={array}
-                    renderItem={categoryItem}
-                    keyExtractor={item => item.id}
-                    ListEmptyComponent={renderEmptyContainer}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                  />
+                  {
+                    isLoading
+                    ?
+                       (<View>
+                        <Text style={styles.emptyListText}>{strings.valiadtion.loading}</Text>
+                        </View>)
+                        :
+                        <FlatList
+                        data={array}
+                        extraData={array}
+                        renderItem={categoryItem}
+                        keyExtractor={item => item.id}
+                        ListEmptyComponent={renderEmptyContainer}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                      />
+
+                  }
+                  
                 </View>
               </View>
               <View style={styles.categoryCon}>
@@ -1363,15 +1371,25 @@ const id = categoryId
                   <Text style={styles.categoryHeader}>
                     {strings.posSale.subCategory}
                   </Text>
-                  <FlatList
-                    data={subCategoriesArray}
-                    extraData={subCategoriesArray}
-                    renderItem={subCategoryItem}
-                    keyExtractor={item => item.id}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    ListEmptyComponent={renderEmptyContainer}
-                  />
+                  {
+                    isSubLoading
+                    ?
+                    (<View>
+                      <Text style={styles.emptyListText}>{strings.valiadtion.loading}</Text>
+                      </View>)
+                      :
+                      <FlatList
+                      data={subCategoriesArray}
+                      extraData={subCategoriesArray}
+                      renderItem={subCategoryItem}
+                      keyExtractor={item => item.id}
+                      horizontal
+                      bounces={false}
+                      showsHorizontalScrollIndicator={false}
+                      ListEmptyComponent={renderEmptyContainer}
+                    />
+                  }
+                 
                 </View>
               </View>
               <View style={styles.categoryCon}>
@@ -1379,15 +1397,26 @@ const id = categoryId
                   <Text style={styles.categoryHeader}>
                     {strings.posSale.brand}
                   </Text>
-                  <FlatList
-                     data={brandArray}
-                     extraData={brandArray}
-                    renderItem={brandItem}
-                    keyExtractor={item => item.id}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    ListEmptyComponent={renderEmptyContainer}
-                  />
+                  {
+                    isCatLoading
+                    ?
+                    (<View>
+                      <Text style={styles.emptyListText}>{strings.valiadtion.loading}</Text>
+                      </View>)
+                      :
+                      <FlatList
+                      data={brandArray}
+                      extraData={brandArray}
+                      renderItem={brandItem}
+                      keyExtractor={item => item.id}
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      ListEmptyComponent={renderEmptyContainer}
+                    />
+
+                  }
+                 
+                   
                 </View>
               </View>
             </View>
@@ -2495,7 +2524,8 @@ const id = categoryId
                 </View>
               </View>
             </View>
-            <View style={styles.orderSideCon}>
+            <View style={styles.orderSideCon}> dispatch(getSubCategory(id));
+    dispatch(getBrand(id));
               <View style={{ width: SH(420), alignSelf: 'center' }}>
                 <Spacer space={SH(20)} />
                 <View style={styles.displayFlex}>
@@ -2566,7 +2596,8 @@ const id = categoryId
                           <Text style={styles.cusAddText}>
                             {strings.posSale.customerAddr}
                           </Text>
-                          <Text style={styles.cusAddText}>
+                          <Text style={styles.cusAddText}> dispatch(getSubCategory(id));
+    dispatch(getBrand(id));
                             {strings.posSale.customerAddr2}
                           </Text>
                         </View>

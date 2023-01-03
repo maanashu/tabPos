@@ -29,7 +29,11 @@ export function Reward() {
 
   return (
     <View style={styles.container}>
-     <DaySelector/>
+     {/* <DaySelector/>
+      */}
+      <View style={{alignSelf:'center'}}>
+        <Text>comimg soon</Text>
+      </View>
     </View>
   );
 }
