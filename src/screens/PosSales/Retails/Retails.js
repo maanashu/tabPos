@@ -9,8 +9,15 @@ import {
   ScrollView,
   Dimensions,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
-import { Spacer, Button, TextField } from '@/components';
+import {
+  Spacer,
+  Button,
+  TextField,
+  AddNewProduct,
+  ProductCard,
+} from '@/components';
 import { SH, SF, COLORS, SW } from '@/theme';
 import {
   Fonts,
@@ -58,8 +65,6 @@ import {
   moderateVerticalScale,
 } from 'react-native-size-matters';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
 import Modal from 'react-native-modal';
 import DropDownPicker from 'react-native-dropdown-picker';
 const windowHeight = Dimensions.get('window').height;
@@ -76,21 +81,24 @@ import {
   amountReceivedData,
 } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategory, getBrand, getSubCategory } from '@/actions/UserActions';
+import {
+  getCategory,
+  getBrand,
+  getSubCategory,
+  getProduct,
+} from '@/actions/UserActions';
 import { getUser } from '@/selectors/UserSelectors';
-import { color } from 'react-native-reanimated';
 import { TYPES } from '@/Types/Types';
+import { AddDiscountToCart, UpdatePrice } from '@/components';
 
 export function Retails() {
   const dispatch = useDispatch();
   const getUserData = useSelector(getUser);
   const array = getUserData?.categories;
-  const array2 = getUserData?.categories;
-  const subCategoriesArray = getUserData?.subCategories ?? []
-  const brandArray = getUserData?.brands ?? []
-  // console.log('------------brandArray', brandArray)
-
-  const [categoryId, setCategoryId] = useState([]);
+  const subCategoriesArray = getUserData?.subCategories ?? [];
+  const brandArray = getUserData?.brands ?? [];
+  const productArray = getUserData?.products ?? [];
+  // console.log('productArray', productArray)
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
   const [title, setTitle] = useState('');
@@ -99,10 +107,6 @@ export function Retails() {
   const [rightMoreAction, setRightMoreAction] = useState(false);
   const [addDiscount, setAddDiscount] = useState(false);
   const [addNotes, setAddNotes] = useState(false);
-  const [checkboxs, setCheckBoxs] = useState(true);
-  const [amountDis, setAmountDis] = useState('');
-  const [percentDis, setPercentDis] = useState('');
-  const [discountCode, setDiscountCode] = useState('');
   const [numPadContainer, setNumpadContainer] = useState(false);
   const [amountPopup, setAmountPopup] = useState(false);
   const [updatePrice, setUpdatePrice] = useState(false);
@@ -144,41 +148,52 @@ export function Retails() {
   const [customerPhoneNo, setCustomerPhoneNo] = useState('');
   const [cutsomerTotalAmount, setCutsomerTotalAmount] = useState(false);
 
-  const [cashAmount1, setCashAmount1] = useState(false);
-  const [cashAmount2, setCashAmount2] = useState(false);
-  const [cashAmount3, setCashAmount3] = useState(false);
-
-  const [tip1, setTip1] = useState(false);
-  const [tip2, setTip2] = useState(false);
-  const [tip3, setTip3] = useState(false);
   const [customerCashPaid, setCustomerCashPaid] = useState(false);
   const [posSearch, setPosSearch] = useState(false);
   const [searchProDetail, setSearchProDetail] = useState(false);
   const [searchProViewDetail, setSearchProViewDetail] = useState(false);
   const [selectedId, setSelectedId] = useState(1);
-  const [subSelectedId, setSubSelectedId] = useState(1);
-  const [brandSelectedId, setBrandSelectedId] = useState(1);
+  const [subSelectedId, setSubSelectedId] = useState(null);
+  const [brandSelectedId, setBrandSelectedId] = useState(null);
   const [count, setCount] = useState(0);
   const [indexs, setIndexs] = useState('');
   const [tipSelectId, setTipsSelected] = useState(1);
   const [amountSelectId, setAmountSelectId] = useState(1);
+  const [amountDis, setAmountDis] = useState('');
+  const [percentDis, setPercentDis] = useState('');
+  const [discountCode, setDiscountCode] = useState('');
+  const [updatePriceCounter, setUpdatePriceCounter] = useState(0);
+  const [addProductCounter, setAddProductCounter] = useState(0);
 
-  useEffect(() => {
+  useEffect(id => {
     dispatch(getCategory());
-    setSelectedId(1)
-    // dispatch(getBrand(selectedId))
+    dispatch(getSubCategory(1));
+     dispatch(getBrand(1));
+     dispatch(getProduct(1));
   }, []);
 
-  const subcategoryFunction = id => {
-    // console.log(id);
+  const categoryFunction = id => {
+    console.log('-----categoryID', id);
     dispatch(getSubCategory(id));
     dispatch(getBrand(id));
-    setSelectedId(id)
+    dispatch(getProduct(id));
+    setSelectedId(id);
   };
 
+  const subCategoryFunction = id => {
+    console.log('-----subCategoryID', id);
+    dispatch(getProduct(selectedId, id));
+    setSubSelectedId(id);
+  };
+
+  const brandFunction = id => {
+    console.log('-----brandId', id);
+    dispatch(getProduct(selectedId, subSelectedId, id));
+    setBrandSelectedId(id);
+  };
 
   const isLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_CATEGORY], state),
+    isLoadingSelector([TYPES.GET_CATEGORY], state)
   );
 
   const isSubLoading = useSelector(state =>
@@ -187,6 +202,9 @@ export function Retails() {
 
   const isCatLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_BRAND], state)
+  );
+  const isProductLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_PRODUCT], state)
   );
 
   const menuHandler = () => {
@@ -236,7 +254,6 @@ export function Retails() {
     setAddNotes(false);
     setRightMoreAction(true);
   };
-
   const updatePriceHandler = () => {
     setUpdatePrice(!updatePrice);
   };
@@ -245,9 +262,6 @@ export function Retails() {
   };
   const addNewProHandler = () => {
     setAddNewProupdate(!addNewProupdate);
-  };
-  const newProductRemoveHandler = () => {
-    setAddNewProupdate(false);
   };
   const checkOutHandler = () => {
     setCheckoutCon(!checkoutCon);
@@ -279,53 +293,9 @@ export function Retails() {
   const choosePaymentCloseHandler = () => {
     setCheckoutCon(false);
   };
-  const custCashRemoveHandler = () => {
-    setCustCash(false);
-  };
-  const cusTotalAmountHandler = () => {
-    setCutsomerTotalAmount(!cutsomerTotalAmount);
-    setCustCash(false);
-  };
-
-  const cusTotalAmountRemoveHandler = () => {
-    setCutsomerTotalAmount(false);
-  };
-  const cashAmount1Handler = () => {
-    setCashAmount1(!cashAmount1);
-    setCashAmount2(false);
-    setCashAmount3(false);
-  };
-  const cashAmount2Handler = () => {
-    setCashAmount2(!cashAmount2);
-    setCashAmount1(false);
-    setCashAmount3(false);
-  };
-  const cashAmount3Handler = () => {
-    setCashAmount3(!cashAmount3);
-    setCashAmount1(false);
-    setCashAmount2(false);
-  };
-  const tip1Handler = () => {
-    setTip1(!cashAmount1);
-    setTip2(false);
-    setTip3(false);
-  };
-  const tip2Handler = () => {
-    setTip2(!cashAmount2);
-    setTip1(false);
-    setTip3(false);
-  };
-  const tip3Handler = () => {
-    setTip3(!cashAmount3);
-    setTip1(false);
-    setTip2(false);
-  };
   const cusCashPaidHandler = () => {
     setCutsomerTotalAmount(false);
     setCustomerCashPaid(!customerCashPaid);
-  };
-  const cusCashPaidRemoveHandler = () => {
-    setCustomerCashPaid(false);
   };
   const posSearchHandler = () => {
     setPosSearch(!posSearch);
@@ -352,40 +322,16 @@ export function Retails() {
     }
   };
 
-  const renderCategoryItem = ({ item }) => (
-    <View style={styles.categoryCon}>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={styles.categoryHeader}>{item.name}</Text>
-          <View style={[styles.catProcCon1, { borderWidth: 1 }]}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image source={categoryProduct} style={styles.categoryProduct} />
-              <Text style={styles.productName1}>Tobacco</Text>
-            </View>
-          </View>
-          <View style={styles.catProcCon2}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image source={categoryProduct} style={styles.categoryProduct} />
-              <Text style={styles.productName2}>Vape</Text>
-            </View>
-          </View>
-
-          <View style={styles.catProcCon2}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image source={categoryProduct} style={styles.categoryProduct} />
-              <Text style={styles.productName2}>Vape</Text>
-            </View>
-          </View>
-          <View style={styles.catProcCon2}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image source={categoryProduct} style={styles.categoryProduct} />
-              <Text style={styles.productName2}>Vape</Text>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
+  const updatePricedecrement = () => {
+    if (updatePriceCounter > 0) {
+      setUpdatePriceCounter(updatePriceCounter - 1);
+    }
+  };
+  const addProductCounterFunction = () => {
+    if (addProductCounter > 0) {
+      setAddProductCounter(addProductCounter - 1);
+    }
+  };
 
   const TipsItemSelect = ({ item, borderColor, color, onPress }) => (
     <TouchableOpacity
@@ -460,15 +406,20 @@ export function Retails() {
   );
 
   const categoryItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? '#275AFF' : '#F5F6F7';
-    const borderColor = item.id === selectedId ? '#275AFF' : '#fff';
-    const color = item.id === selectedId ? '#fff' : '#A7A7A7';
+    const backgroundColor =
+      item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
+    const borderColor = item.id === selectedId ? COLORS.primary : COLORS.white;
+    const color = item.id === selectedId ? COLORS.white : COLORS.gerySkies;
     const fontFamily = item.id === selectedId ? Fonts.SemiBold : Fonts.Regular;
 
     return (
       <CategoryItemSelect
         item={item}
-        onPress={() => subcategoryFunction(item.id)}
+        onPress={() => (
+          categoryFunction(item.id),
+          setSubSelectedId(null),
+          setBrandSelectedId(null)
+        )}
         // onPress={() => selecetdFunction() }
         backgroundColor={{ backgroundColor }}
         borderColor={{ borderColor }}
@@ -490,7 +441,7 @@ export function Retails() {
       style={[styles.catProcCon1, backgroundColor, borderColor]}
       onPress={onPress}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={styles.flexAlign}>
         <View style={styles.categoryImagecCon}>
           <Image
             source={item.image ? { uri: item.image } : categoryProduct}
@@ -508,15 +459,19 @@ export function Retails() {
   );
 
   const subCategoryItem = ({ item }) => {
-    const backgroundColor = item.id === subSelectedId ? '#275AFF' : '#F5F6F7';
-    const borderColor = item.id === subSelectedId ? '#275AFF' : '#fff';
-    const color = item.id === subSelectedId ? '#fff' : '#A7A7A7';
+    const backgroundColor =
+      item.id === subSelectedId ? COLORS.primary : COLORS.textInputBackground;
+    const borderColor =
+      item.id === subSelectedId ? COLORS.primary : COLORS.white;
+    const color = item.id === subSelectedId ? COLORS.white : COLORS.gerySkies;
     const fontFamily =
       item.id === subSelectedId ? Fonts.SemiBold : Fonts.Regular;
+
     return (
       <SubCategoryItemSelect
         item={item}
-        onPress={() => setSubSelectedId(item.id)}
+        // onPress={() => setSubSelectedId(item.id)}
+        onPress={() => (subCategoryFunction(item.id), setBrandSelectedId(null))}
         backgroundColor={{ backgroundColor }}
         borderColor={{ borderColor }}
         color={{ color }}
@@ -537,7 +492,7 @@ export function Retails() {
       style={[styles.catProcCon1, backgroundColor, borderColor]}
       onPress={onPress}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={styles.flexAlign}>
         <View style={styles.categoryImagecCon}>
           <Image
             source={item.image ? { uri: item.image } : categoryProduct}
@@ -555,15 +510,19 @@ export function Retails() {
   );
 
   const brandItem = ({ item }) => {
-    const backgroundColor = item.id === brandSelectedId ? '#275AFF' : '#F5F6F7';
-    const borderColor = item.id === brandSelectedId ? '#275AFF' : '#fff';
-    const color = item.id === brandSelectedId ? '#fff' : '#A7A7A7';
+    const backgroundColor =
+      item.id === brandSelectedId ? COLORS.primary : COLORS.textInputBackground;
+    const borderColor =
+      item.id === brandSelectedId ? COLORS.primary : COLORS.white;
+    const color = item.id === brandSelectedId ? COLORS.white : COLORS.gerySkies;
     const fontFamily =
       item.id === brandSelectedId ? Fonts.SemiBold : Fonts.Regular;
+
     return (
       <BrandItemSelect
         item={item}
-        onPress={() => setBrandSelectedId(item.id)}
+        // onPress={() => setBrandSelectedId(item.id)}
+        onPress={() => brandFunction(item.id)}
         backgroundColor={{ backgroundColor }}
         borderColor={{ borderColor }}
         color={{ color }}
@@ -573,63 +532,14 @@ export function Retails() {
   };
 
   const renderProductItem = ({ item, index }) => (
-    <View style={styles.productContainer}>
-      <View style={{ flexDirection: 'row' }}>
-        <Image source={marboloRed} style={styles.marboloStyle} />
-        <View style={{ paddingHorizontal: moderateScale(5) }}>
-          <Text style={styles.productName}>{item.name}</Text>
-          <Spacer space={SH(3)} />
-          <Text style={styles.proSubName}>Marlboro</Text>
-        </View>
-      </View>
-      <Spacer space={SH(5)} />
-      <Text style={styles.size}>Size</Text>
-      <Spacer space={SH(5)} />
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={styles.cartonButton}>Carton</Text>
-        <Text style={styles.singlePackBtn}>Single Pack</Text>
-      </View>
-      <Spacer space={SH(7)} />
-      <Text style={styles.size}>Price</Text>
-      <Spacer space={SH(5)} />
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={styles.previousRate}>$5.65</Text>
-        <Text style={styles.currentRate}>$5.65</Text>
-      </View>
-      <Spacer space={SH(8)} />
-      <View style={styles.hrLine}></View>
-      <Spacer space={SH(8)} />
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            setCount(count - 1), setIndexs(index);
-          }}
-          style={{ height: SH(35) }}
-        >
-          <Image source={minus} style={styles.plusBtn} />
-        </TouchableOpacity>
-        {indexs == index ? (
-          <Text style={styles.count}>{count}</Text>
-        ) : (
-          <Text style={styles.count}>0</Text>
-        )}
-        <TouchableOpacity
-          onPress={() => {
-            setCount(count + 1), setIndexs(index);
-          }}
-          style={{ height: SH(35) }}
-        >
-          <Image source={plus} style={styles.plusBtn} />
-        </TouchableOpacity>
-      </View>
-    </View>
+    <ProductCard
+      productName={item.name}
+      productImage={{ uri: item.image }}
+      productPrice={item.price}
+      ProductBrandName={item.brand.name}
+    />
   );
+
   const renderBundleItem = ({ item }) => (
     <View style={styles.bundleOfferCon}>
       <View
@@ -812,7 +722,16 @@ export function Retails() {
   const renderEmptyContainer = () => {
     return (
       <View>
-      <Text style={styles.emptyListText}>{strings.valiadtion.noData}</Text>
+        <Text style={styles.emptyListText}>{strings.valiadtion.noData}</Text>
+      </View>
+    );
+  };
+  const renderEmptyProducts = () => {
+    return (
+      <View style={styles.noProductText}>
+        <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+          {strings.valiadtion.noProduct}
+        </Text>
       </View>
     );
   };
@@ -977,66 +896,7 @@ export function Retails() {
                 contentContainerStyle={styles.contentContainer}
               />
             </View>
-            {/* <View style={styles.displayFlex}>
-                {cashAmount1 ? (
-                  <TouchableOpacity
-                    style={[styles.tipChildCon, styles.tipChildConChecked]}
-                    onPress={cashAmount1Handler}
-                  >
-                    <Text
-                      style={[styles.tipChildText, { color: COLORS.primary }]}
-                    >
-                      $280.00
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    style={styles.tipChildCon}
-                    onPress={cashAmount1Handler}
-                  >
-                    <Text style={styles.tipChildText}>$280.00</Text>
-                  </TouchableOpacity>
-                )}
-  
-                {cashAmount2 ? (
-                  <TouchableOpacity
-                    style={[styles.tipChildCon, styles.tipChildConChecked]}
-                    onPress={cashAmount2Handler}
-                  >
-                    <Text
-                      style={[styles.tipChildText, { color: COLORS.primary }]}
-                    >
-                      $290.00
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    style={styles.tipChildCon}
-                    onPress={cashAmount2Handler}
-                  >
-                    <Text style={styles.tipChildText}>$290.00</Text>
-                  </TouchableOpacity>
-                )}
-                {cashAmount3 ? (
-                  <TouchableOpacity
-                    style={[styles.tipChildCon, styles.tipChildConChecked]}
-                    onPress={cashAmount3Handler}
-                  >
-                    <Text
-                      style={[styles.tipChildText, { color: COLORS.primary }]}
-                    >
-                      $300.00
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    style={styles.tipChildCon}
-                    onPress={cashAmount3Handler}
-                  >
-                    <Text style={styles.tipChildText}>$300.00</Text>
-                  </TouchableOpacity>
-                )}
-              </View> */}
+
             <Spacer space={SH(30)} />
             <TextInput
               placeholder={strings.posSale.otherAmount}
@@ -1345,25 +1205,23 @@ export function Retails() {
                   <Text style={styles.categoryHeader}>
                     {strings.posSale.category}
                   </Text>
-                  {
-                    isLoading
-                    ?
-                       (<View>
-                        <Text style={styles.emptyListText}>{strings.valiadtion.loading}</Text>
-                        </View>)
-                        :
-                        <FlatList
-                        data={array}
-                        extraData={array}
-                        renderItem={categoryItem}
-                        keyExtractor={item => item.id}
-                        ListEmptyComponent={renderEmptyContainer}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                      />
-
-                  }
-                  
+                  {isLoading ? (
+                    <View>
+                      <Text style={styles.emptyListText}>
+                        {strings.valiadtion.loading}
+                      </Text>
+                    </View>
+                  ) : (
+                    <FlatList
+                      data={array}
+                      extraData={array}
+                      renderItem={categoryItem}
+                      keyExtractor={item => item.id}
+                      ListEmptyComponent={renderEmptyContainer}
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  )}
                 </View>
               </View>
               <View style={styles.categoryCon}>
@@ -1371,14 +1229,14 @@ export function Retails() {
                   <Text style={styles.categoryHeader}>
                     {strings.posSale.subCategory}
                   </Text>
-                  {
-                    isSubLoading
-                    ?
-                    (<View>
-                      <Text style={styles.emptyListText}>{strings.valiadtion.loading}</Text>
-                      </View>)
-                      :
-                      <FlatList
+                  {isSubLoading ? (
+                    <View>
+                      <Text style={styles.emptyListText}>
+                        {strings.valiadtion.loading}
+                      </Text>
+                    </View>
+                  ) : (
+                    <FlatList
                       data={subCategoriesArray}
                       extraData={subCategoriesArray}
                       renderItem={subCategoryItem}
@@ -1388,8 +1246,7 @@ export function Retails() {
                       showsHorizontalScrollIndicator={false}
                       ListEmptyComponent={renderEmptyContainer}
                     />
-                  }
-                 
+                  )}
                 </View>
               </View>
               <View style={styles.categoryCon}>
@@ -1397,14 +1254,14 @@ export function Retails() {
                   <Text style={styles.categoryHeader}>
                     {strings.posSale.brand}
                   </Text>
-                  {
-                    isCatLoading
-                    ?
-                    (<View>
-                      <Text style={styles.emptyListText}>{strings.valiadtion.loading}</Text>
-                      </View>)
-                      :
-                      <FlatList
+                  {isCatLoading ? (
+                    <View>
+                      <Text style={styles.emptyListText}>
+                        {strings.valiadtion.loading}
+                      </Text>
+                    </View>
+                  ) : (
+                    <FlatList
                       data={brandArray}
                       extraData={brandArray}
                       renderItem={brandItem}
@@ -1413,42 +1270,36 @@ export function Retails() {
                       showsHorizontalScrollIndicator={false}
                       ListEmptyComponent={renderEmptyContainer}
                     />
-
-                  }
-                 
-                   
+                  )}
                 </View>
               </View>
             </View>
           )}
-
-          {/* {categoryModal ? null : (
-            <View>
-              <FlatList
-                data={CategoryData}
-                renderItem={renderCategoryItem}
-                keyExtractor={item => item.id}
-              />
-            </View>
-          )} */}
-
           {/* end  category  section */}
           <View style={styles.productbody}>
-            {sideContainer || rightMoreAction ? (
+            {isProductLoading ? (
+              <View style={{ marginTop: 100 }}>
+                <ActivityIndicator size="large" color="#0000ff" />
+              </View>
+            ) : sideContainer || rightMoreAction ? (
               <FlatList
                 key={'_'}
-                data={ProductData}
+                data={productArray}
+                extraData={productArray}
                 renderItem={renderProductItem}
                 keyExtractor={item => '_' + item.id}
                 numColumns={2}
+                ListEmptyComponent={renderEmptyProducts}
               />
             ) : (
               <FlatList
                 key={'#'}
-                data={ProductData}
+                data={productArray}
+                extraData={productArray}
                 renderItem={renderProductItem}
                 keyExtractor={item => '#' + item.id}
                 numColumns={3}
+                ListEmptyComponent={renderEmptyProducts}
               />
             )}
           </View>
@@ -1908,177 +1759,23 @@ export function Retails() {
               ]}
             >
               <Spacer space={SH(20)} />
+
               <View style={styles.displayFlex}>
                 <Text style={styles.moreActText}>Add discount to cart</Text>
                 <TouchableOpacity onPress={addDiscountCloseHandler}>
                   <Image source={crossButton} style={styles.crossButtonStyle} />
                 </TouchableOpacity>
               </View>
+
               <Spacer space={SH(30)} />
-              <View style={styles.adddiscountCon}>
-                <Spacer space={SH(12)} />
-                <Text style={styles.discountHeader}>Discount</Text>
-                <Spacer space={SH(12)} />
-                <View
-                  style={
-                    amountDis
-                      ? styles.dicountInputWraper2
-                      : styles.dicountInputWraper
-                  }
-                >
-                  <View style={styles.displayFlex}>
-                    <View style={styles.displayFlex}>
-                      {checkboxs ? (
-                        <TouchableOpacity
-                          onPress={() => setCheckBoxs(!checkboxs)}
-                        >
-                          <Image
-                            source={checkbox}
-                            style={styles.checkboxStyle}
-                          />
-                        </TouchableOpacity>
-                      ) : (
-                        <TouchableOpacity
-                          onPress={() => setCheckBoxs(!checkboxs)}
-                        >
-                          <Image
-                            source={checkedCheckbox}
-                            style={styles.checkboxStyle}
-                          />
-                        </TouchableOpacity>
-                      )}
-                      <Text
-                        numberOfLines={1}
-                        style={
-                          amountDis ? styles.amountLabel2 : styles.amountLabel
-                        }
-                      >
-                        Amount Discount
-                      </Text>
-                    </View>
-                    <TextInput
-                      placeholder="$ 00.00"
-                      style={
-                        amountDis
-                          ? styles.amountDiscountInput2
-                          : styles.amountDiscountInput
-                      }
-                      value={amountDis}
-                      onChangeText={setAmountDis}
-                    />
-                  </View>
-                </View>
-                <Spacer space={SH(12)} />
-                <View
-                  style={
-                    percentDis
-                      ? styles.dicountInputWraper2
-                      : styles.dicountInputWraper
-                  }
-                >
-                  <View style={styles.displayFlex}>
-                    <View style={styles.displayFlex}>
-                      {checkboxs ? (
-                        <TouchableOpacity
-                          onPress={() => setCheckBoxs(!checkboxs)}
-                        >
-                          <Image
-                            source={checkbox}
-                            style={styles.checkboxStyle}
-                          />
-                        </TouchableOpacity>
-                      ) : (
-                        <TouchableOpacity
-                          onPress={() => setCheckBoxs(!checkboxs)}
-                        >
-                          <Image
-                            source={checkedCheckbox}
-                            style={styles.checkboxStyle}
-                          />
-                        </TouchableOpacity>
-                      )}
-                      <Text
-                        numberOfLines={1}
-                        style={
-                          percentDis ? styles.amountLabel2 : styles.amountLabel
-                        }
-                      >
-                        Percentage Discount
-                      </Text>
-                    </View>
-                    <TextInput
-                      placeholder="$ 00.00"
-                      style={
-                        percentDis
-                          ? styles.amountDiscountInput2
-                          : styles.amountDiscountInput
-                      }
-                      value={percentDis}
-                      onChangeText={setPercentDis}
-                    />
-                  </View>
-                </View>
-                <Spacer space={SH(12)} />
-                <View
-                  style={
-                    discountCode
-                      ? styles.dicountInputWraper2
-                      : styles.dicountInputWraper
-                  }
-                >
-                  <View style={styles.displayFlex}>
-                    <View style={styles.displayFlex}>
-                      {checkboxs ? (
-                        <TouchableOpacity
-                          onPress={() => setCheckBoxs(!checkboxs)}
-                        >
-                          <Image
-                            source={checkbox}
-                            style={styles.checkboxStyle}
-                          />
-                        </TouchableOpacity>
-                      ) : (
-                        <TouchableOpacity
-                          onPress={() => setCheckBoxs(!checkboxs)}
-                        >
-                          <Image
-                            source={checkedCheckbox}
-                            style={styles.checkboxStyle}
-                          />
-                        </TouchableOpacity>
-                      )}
-                      <Text
-                        numberOfLines={1}
-                        style={
-                          discountCode
-                            ? styles.amountLabel2
-                            : styles.amountLabel
-                        }
-                      >
-                        Discount Code
-                      </Text>
-                    </View>
-                    <TextInput
-                      placeholder="CODE"
-                      style={
-                        discountCode
-                          ? styles.amountDiscountInput2
-                          : styles.amountDiscountInput
-                      }
-                      value={discountCode}
-                      onChangeText={setDiscountCode}
-                    />
-                  </View>
-                </View>
-                <Spacer space={SH(12)} />
-                <Text style={styles.discountTitle}>Discount Tittle</Text>
-                <Spacer space={SH(12)} />
-                <TextInput
-                  placeholder="Tittle"
-                  style={styles.discountTitleInput}
-                />
-                <Spacer space={SH(12)} />
-              </View>
+              <AddDiscountToCart
+                amountDis={amountDis}
+                setAmountDis={setAmountDis}
+                percentDis={percentDis}
+                setPercentDis={setPercentDis}
+                discountCode={discountCode}
+                setDiscountCode={setDiscountCode}
+              />
             </View>
           ) : null}
 
@@ -2130,113 +1827,16 @@ export function Retails() {
             transparent={true}
             isVisible={updatePrice}
           >
-            <View style={styles.amountPopupCon}>
-              <View style={styles.primaryHeader}>
-                <Text style={styles.headerText}>Update price</Text>
-                <TouchableOpacity
-                  onPress={updatePriceRemoveHandler}
-                  style={styles.crossButtonPosition}
-                >
-                  <Image source={crossButton} style={styles.crossButton} />
-                </TouchableOpacity>
-              </View>
-              <Spacer space={SH(40)} />
-              <View style={{ paddingHorizontal: moderateScale(20) }}>
-                <View style={styles.amountjfrContainer}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image
-                      source={marboloPlus}
-                      style={styles.marboloPlusStyle}
-                    />
-                    <Text style={styles.jfrmaduro}>Marlboro Flavor Plus</Text>
-                  </View>
-                  <View>
-                    <DropDownPicker
-                      ArrowUpIconComponent={({ style }) => (
-                        <Image source={dropdown2} style={styles.dropDownIcon} />
-                      )}
-                      ArrowDownIconComponent={({ style }) => (
-                        <Image source={dropdown2} style={styles.dropDownIcon} />
-                      )}
-                      style={styles.dropdown}
-                      containerStyle={[
-                        styles.containerStyle,
-                        { zIndex: Platform.OS === 'ios' ? 100 : 2 },
-                      ]}
-                      dropDownContainerStyle={styles.dropDownContainerStyle}
-                      open={cityModalOpen}
-                      value={cityModalValue}
-                      items={cityItems}
-                      setOpen={setCityModelOpen}
-                      setValue={setCityModalValue}
-                      setItems={setCityItems}
-                      placeholder="Pack"
-                      placeholderStyle={{ color: '#14171A' }}
-                    />
-                  </View>
-                </View>
-
-                <Spacer space={SH(30)} />
-                <View
-                  style={[
-                    styles.priceContainer,
-                    { paddingHorizontal: moderateScale(0), zIndex: -2 },
-                  ]}
-                >
-                  <Text style={[styles.updateprice, { fontSize: SF(14) }]}>
-                    Selling Price
-                  </Text>
-                  <View style={styles.updateAmount}>
-                    <Text style={styles.updateprice}>$0.00</Text>
-                  </View>
-                </View>
-                <Spacer space={SH(30)} />
-                <View
-                  style={[
-                    styles.priceContainer,
-                    { backgroundColor: COLORS.white },
-                  ]}
-                >
-                  <Image source={minus} style={styles.plusBtn2} />
-                  <Text style={[styles.price, { fontSize: SF(24) }]}>1</Text>
-                  <Image source={plus} style={styles.plusBtn2} />
-                </View>
-                {/* <View style={{flex:1}}></View> */}
-                <Spacer space={SH(30)} />
-                <Text style={styles.trackLabel}>
-                  Track Inventory for this item{' '}
-                </Text>
-                <Spacer space={SH(20)} />
-                <View style={styles.displayFlex}>
-                  <View style={styles.invetryCon}>
-                    <Text style={styles.invertyLabel}>Inventory-Opening</Text>
-                    <Spacer space={SH(15)} />
-                    <TextInput
-                      placeholder="Inventory-Opening"
-                      style={styles.invertyInput}
-                    />
-                  </View>
-                  <View style={styles.invetryCon}>
-                    <Text style={styles.invertyLabel}>
-                      Inventory-Reorder Point
-                    </Text>
-                    <Spacer space={SH(15)} />
-                    <TextInput
-                      placeholder="Inventory-Reorder Point"
-                      style={styles.invertyInput}
-                    />
-                  </View>
-                </View>
-              </View>
-
-              <View style={{ flex: 1 }} />
-              <View style={styles.buttonContainer}>
-                <Text style={styles.removeButton}>Remove from cart</Text>
-                <Text style={[styles.removeButton, styles.updateButton]}>
-                  Update to cart
-                </Text>
-              </View>
-            </View>
+            <UpdatePrice
+              onPress={updatePriceRemoveHandler}
+              removeCartOnPress={() => alert('coming soon')}
+              updateCartOnPress={() => alert('coming soon')}
+              updatePriceCount={updatePriceCounter}
+              updPriMinusOnPress={() => updatePricedecrement()}
+              updPriPlusOnPress={() =>
+                setUpdatePriceCounter(updatePriceCounter + 1)
+              }
+            />
           </Modal>
           {/* update price modal end */}
 
@@ -2246,186 +1846,16 @@ export function Retails() {
             transparent={true}
             isVisible={addNewProupdate}
           >
-            <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
-              <View style={styles.primaryHeader}>
-                <Text style={styles.headerText}>Add new product</Text>
-                <TouchableOpacity
-                  onPress={newProductRemoveHandler}
-                  style={styles.crossButtonPosition}
-                >
-                  <Image source={crossButton} style={styles.crossButton} />
-                </TouchableOpacity>
-              </View>
-              {/* <Spacer space={SH(30)} /> */}
-              <ScrollView>
-                <View style={{ paddingHorizontal: moderateScale(20) }}>
-                  <Text style={styles.barCodeText}>Barcode</Text>
-                  <Spacer space={SH(10)} />
-                  <Image source={scanner} style={styles.scanerStyle} />
-                  <Spacer space={SH(10)} />
-                  <View>
-                    <Text style={styles.newProductLabel}>Scanned Barcode</Text>
-                    <Spacer space={SH(10)} />
-                    <View style={styles.scannedbarCodeCon}>
-                      <Text style={styles.barCodeNumText}>0123-4567</Text>
-                    </View>
-                  </View>
-                  <Spacer space={SH(20)} />
-                  <View>
-                    <Text style={styles.newProductLabel}>Product Name</Text>
-                    <Spacer space={SH(10)} />
-                    <TextInput
-                      placeholder="Product name"
-                      style={styles.productInput}
-                    />
-                  </View>
-                  <Spacer space={SH(20)} />
-                  <View>
-                    <Text style={styles.newProductLabel}>Select Category</Text>
-                    <Spacer space={SH(10)} />
-                    <DropDownPicker
-                      ArrowDownIconComponent={({ style }) => (
-                        <Image
-                          source={dropdown}
-                          style={styles.newProductdropDownIcon}
-                        />
-                      )}
-                      ArrowUpIconComponent={({ style }) => (
-                        <Image
-                          source={dropdown}
-                          style={styles.newProductdropDownIcon}
-                        />
-                      )}
-                      style={styles.newProductdropdown}
-                      containerStyle={[
-                        styles.newProductcontainerStyle,
-                        { zIndex: Platform.OS === 'ios' ? 100 : 3 },
-                      ]}
-                      open={productCategory}
-                      value={productCategoryValue}
-                      items={productCategoryItem}
-                      setOpen={setProductCategory}
-                      setValue={setProductCategoryValue}
-                      setItems={setProductCategoryItem}
-                      placeholder="Select Category"
-                      placeholderStyle={{
-                        color: '#A7A7A7',
-                        fontFamily: Fonts.Italic,
-                        fontSize: SF(14),
-                      }}
-                    />
-                  </View>
-                  <Spacer space={SH(20)} />
-                  <View>
-                    <Text style={styles.newProductLabel}>
-                      Select Sub-category
-                    </Text>
-                    <Spacer space={SH(10)} />
-                    <DropDownPicker
-                      ArrowDownIconComponent={({ style }) => (
-                        <Image
-                          source={dropdown}
-                          style={styles.newProductdropDownIcon}
-                        />
-                      )}
-                      ArrowUpIconComponent={({ style }) => (
-                        <Image
-                          source={dropdown}
-                          style={styles.newProductdropDownIcon}
-                        />
-                      )}
-                      style={styles.newProductdropdown}
-                      containerStyle={[
-                        styles.newProductcontainerStyle,
-                        { zIndex: Platform.OS === 'ios' ? 100 : 2 },
-                      ]}
-                      open={productSubCategory}
-                      value={productSubCategoryValue}
-                      items={productSubCategoryItem}
-                      setOpen={setProductSubCategory}
-                      setValue={setProductSubCategoryValue}
-                      setItems={setProductSubCategoryItem}
-                      placeholder="Select Sub-category"
-                      placeholderStyle={{
-                        color: '#A7A7A7',
-                        fontFamily: Fonts.Italic,
-                        fontSize: SF(14),
-                      }}
-                    />
-                  </View>
-                  <Spacer space={SH(20)} />
-                  <View>
-                    <Text style={styles.newProductLabel}>Select Brand</Text>
-                    <Spacer space={SH(10)} />
-                    <DropDownPicker
-                      ArrowDownIconComponent={({ style }) => (
-                        <Image
-                          source={dropdown}
-                          style={styles.newProductdropDownIcon}
-                        />
-                      )}
-                      ArrowUpIconComponent={({ style }) => (
-                        <Image
-                          source={dropdown}
-                          style={styles.newProductdropDownIcon}
-                        />
-                      )}
-                      style={styles.newProductdropdown}
-                      containerStyle={[
-                        styles.newProductcontainerStyle,
-                        { zIndex: Platform.OS === 'ios' ? 100 : 1 },
-                      ]}
-                      open={productBrand}
-                      value={productBrandValue}
-                      items={productBrandItem}
-                      setOpen={setProductBrand}
-                      setValue={setProductBrandValue}
-                      setItems={setProductBrandItem}
-                      placeholder="Select brand"
-                      placeholderStyle={{
-                        color: '#A7A7A7',
-                        fontFamily: Fonts.Italic,
-                        fontSize: SF(14),
-                      }}
-                    />
-                  </View>
-                  <Spacer space={SH(20)} />
-                  <View
-                    style={[
-                      styles.priceContainer,
-                      { paddingHorizontal: moderateScale(0) },
-                    ]}
-                  >
-                    <Text style={[styles.updateprice, { fontSize: SF(14) }]}>
-                      Selling Price
-                    </Text>
-                    <View style={styles.updateAmount}>
-                      <Text style={styles.updateprice}>$0.00</Text>
-                    </View>
-                  </View>
-                  <Spacer space={SH(30)} />
-                  <View
-                    style={[
-                      styles.priceContainer,
-                      { backgroundColor: COLORS.white },
-                    ]}
-                  >
-                    <Image source={minus} style={styles.plusBtn2} />
-                    <Text style={[styles.price, { fontSize: SF(24) }]}>1</Text>
-                    <Image source={plus} style={styles.plusBtn2} />
-                  </View>
-
-                  <Spacer space={SH(30)} />
-                  <View style={styles.buttonContainer}>
-                    <Text style={styles.removeButton}>Remove from cart</Text>
-                    <Text style={[styles.removeButton, styles.updateButton]}>
-                      Update to cart
-                    </Text>
-                  </View>
-                </View>
-              </ScrollView>
-              {/* <View style={{ flex: 1 }} /> */}
-            </View>
+            <AddNewProduct
+              onPress={() => setAddNewProupdate(false)}
+              removeToCartOnPress={() => alert('coming soon')}
+              updateToCartOnPress={() => alert('coming soon')}
+              addProMinusOnPress={() => addProductCounterFunction()}
+              addProPlusOnPress={() =>
+                setAddProductCounter(addProductCounter + 1)
+              }
+              addProductCount={addProductCounter}
+            />
           </Modal>
           {/*  add new product update  modal end */}
 
@@ -2488,185 +1918,6 @@ export function Retails() {
             </View>
           </Modal>
           {/*  customer and payment  modal end */}
-
-          {/* payment with jbr wallet start */}
-          {/* {listOfItem ? (
-            <View style={[styles.displayFlex, {zIndex:999}]}>
-            <View style={[styles.numpadContainer, {paddingHorizontal:moderateVerticalScale(12)}]}>
-              <View style={{ height: windowHeight, paddingBottom: 60 }}>
-                <Spacer space={SH(20)} />
-                <View style={styles.displayFlex}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.listOfItems}>
-                      {strings.posSale.listOfItem}
-                    </Text>
-                    <Text style={styles.walletItem}>4 Items</Text>
-                  </View>
-                  <Text style={styles.rewardPointStyle}>
-                    {strings.posSale.rewardpoint}
-                  </Text>
-                </View>
-                <Spacer space={SH(20)} />
-    
-                <View>
-                  <FlatList
-                    data={jbritemList}
-                    renderItem={renderJbrItem}
-                    keyExtractor={item => item.id}
-                  />
-                </View>
-                <View style={{ flex: 1 }} />
-                <View>
-                  <Text style={styles.walletItem}>{strings.posSale.notes}</Text>
-                  <Text style={styles.itmybdaystyle}>
-                    {strings.posSale.itMynday}
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.orderSideCon}> dispatch(getSubCategory(id));
-    dispatch(getBrand(id));
-              <View style={{ width: SH(420), alignSelf: 'center' }}>
-                <Spacer space={SH(20)} />
-                <View style={styles.displayFlex}>
-                  <Text style={styles.moreActText}>Payment Details</Text>
-                  <TouchableOpacity>
-                    <Image source={crossButton} style={styles.crossButtonStyle} />
-                  </TouchableOpacity>
-                </View>
-                <View >
-                  <ScrollView showsVerticalScrollIndicator={false}>
-                    <Spacer space={SH(20)} />
-                    <Text style={styles.paymenttdone}>
-                      {strings.posSale.paymenttdone}
-                    </Text>
-                    <Spacer space={SH(10)} />
-                    <View style={styles.paymentTipsCon}>
-                      <View style={styles.displayFlex}>
-                        <View>
-                          <Text style={styles.paymentTipsText}>
-                            Payable $254.60
-                          </Text>
-                          <Spacer space={SH(10)} />
-                          <Text style={styles.paymentTipsText}>Tips $0.60</Text>
-                        </View>
-                        <Text style={styles.paymentPay}>$254.60</Text>
-                      </View>
-                    </View>
-                    <Spacer space={SH(10)} />
-                    <Text style={styles.via}>
-                      Via{' '}
-                      <Text
-                        style={{
-                          color: COLORS.primary,
-                          fontSize: SF(18),
-                          fontFamily: Fonts.Regular,
-                        }}
-                      >
-                        Cash
-                      </Text>
-                    </Text>
-    
-                    <Spacer space={SH(15)} />
-                    <View style={styles.customerAddreCons}>
-                      <Spacer space={SH(10)} />
-                      <Text style={styles.customer}>Customer</Text>
-                      <Spacer space={SH(10)} />
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'flex-start',
-                          paddingHorizontal: moderateScale(10),
-                        }}
-                      >
-                        <Image source={jbrCustomer} style={styles.jbrCustomer} />
-                        <View style={{ paddingHorizontal: moderateScale(8) }}>
-                          <Text style={[styles.cusAddText, { fontSize: SF(18) }]}>
-                            {strings.posSale.customerName}
-                          </Text>
-                          <Spacer space={SH(8)} />
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerMobileNo}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerEmail}
-                          </Text>
-                          <Spacer space={SH(8)} />
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerAddr}
-                          </Text>
-                          <Text style={styles.cusAddText}> dispatch(getSubCategory(id));
-    dispatch(getBrand(id));
-                            {strings.posSale.customerAddr2}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={{ flex: 1 }}></View>
-                      <View style={styles.walletIdCon}>
-                        <Text style={styles.walletIdLabel}>
-                          {strings.analytics.walletIdLabel}
-                        </Text>
-                        <Spacer space={SH(5)} />
-                        <Text style={styles.walletId}>
-                          {strings.analytics.walletId}
-                        </Text>
-                      </View>
-                    </View>
-                    <Spacer space={SH(8)} />
-                    <View style={styles.bottomContainer}>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.bottomSubCon}>
-                        <Text style={styles.smalldarkText}>Sub Total</Text>
-                        <Text style={styles.smallLightText}>$4.00</Text>
-                      </View>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.bottomSubCon}>
-                        <Text style={styles.smallLightText}>Discount</Text>
-                        <Text style={styles.smallLightText}>-$2.00</Text>
-                      </View>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.bottomSubCon}>
-                        <Text style={styles.smallLightText}>Tax</Text>
-                        <Text style={styles.smallLightText}>$4.00</Text>
-                      </View>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.hr}></View>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.bottomSubCon}>
-                        <Text
-                          style={[styles.smalldarkText, { fontSize: SF(16) }]}
-                        >
-                          Total
-                        </Text>
-                        <Text
-                          style={[styles.smalldarkText, { fontSize: SF(16) }]}
-                        >
-                          $254.60
-                        </Text>
-                      </View>
-                      <Spacer space={SH(8)} />
-                      <View style={styles.bottomSubCon}>
-                        <Text style={styles.smallLightText}>4 Items</Text>
-                      </View>
-                      <Spacer space={SH(8)} />
-                      <TouchableOpacity
-                        style={styles.checkoutButton}
-                        // onPress={checkOutHandler}
-                      >
-                        <Text style={styles.checkoutText}>Checkout</Text>
-                        <Image source={checkArrow} style={styles.checkArrow} />
-                      </TouchableOpacity>
-                    </View>
-                  </ScrollView>
-                </View>
-              </View>
-            </View>
-          </View>
-          ) : null}
-     */}
-          {/* payment with jbr wallet end */}
-
           {/*  customer cash  modal start */}
           <Modal
             animationType="fade"

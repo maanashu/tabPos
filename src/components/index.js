@@ -4,3 +4,7 @@ export { TabBarIcon } from '@/components/TabBarIcon';
 export { TextField } from '@/components/TextField';
 export { Spacer } from '@/components/Spacer';
 export { DaySelector } from '@/components/DaySelector';
+export { AddDiscountToCart } from '@/components/AddDiscountToCart';
+export { UpdatePrice } from '@/components/UpdatePrice';
+export { AddNewProduct } from '@/components/AddNewProduct';
+export { ProductCard } from '@/components/ProductCard';

@@ -16,6 +16,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  flexAlign:{
+    flexDirection: 'row',
+     alignItems: 'center' 
+  },
   // hedaer  css start
   headerCon: {
     // borderBottomWidth: 1,
@@ -1576,7 +1580,7 @@ export const styles = StyleSheet.create({
   emptyListText: {
     fontSize: SF(16),
     color: COLORS.primary,
-    // fontFamily: Fonts.Medium,
+    fontFamily: Fonts.Regular,
     // alignSelf: 'center',
   },
   contentContainer: {
@@ -1589,6 +1593,11 @@ export const styles = StyleSheet.create({
   list:{
     backgroundColor:COLORS.white
 
+  },
+  noProductText:{
+    justifyContent:'center',
+    alignItems:'center',
+    marginVertical:verticalScale(50)
   }
 
   //  pos search css end

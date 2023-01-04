@@ -4,7 +4,8 @@ import { TYPES } from '@/Types/Types';
 const INITIALSTATE = {
   categories:[],
   subCategories:[],
-  brands:{}
+  brands:{},
+  products:[]
   
 };
 
@@ -31,6 +32,12 @@ export const userReducer = (state = {INITIALSTATE}, { payload, type }) => {
             ...state,
             brands: payload.brandList?.payload?.data ?? [],
           };
+
+          case TYPES.GET_PRODUCT_SUCCESS:
+            return {
+              ...state,
+              products: payload?.productList?.payload?.data ?? [],
+            };
       
     case TYPES.CLEAR_STORE:
       return {};

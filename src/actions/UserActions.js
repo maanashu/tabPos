@@ -49,6 +49,19 @@ const getBrandError = error => ({
   payload: { error },
 });
 
+const getProductRequest = () => ({
+  type: TYPES.GET_PRODUCT_REQUEST,
+  payload: null,
+});
+const getProductSuccess = productList => ({
+  type: TYPES.GET_PRODUCT_SUCCESS,
+  payload: { productList },
+});
+const getProductError = error => ({
+  type: TYPES.GET_PRODUCT_ERROR,
+  payload: { error },
+});
+
 
 // export const login = (username, password) => async dispatch => {
 //   dispatch(loginRequest());
@@ -89,6 +102,18 @@ export const getBrand = (selectedId) => async dispatch => {
       dispatch(getBrandError(error.message));
   }
 };
+
+export const getProduct = (selectedId, subSelectedId,brandSelectedId) => async dispatch => {
+  dispatch(getProductRequest());
+  try {
+      const res = await UserController.getProduct(selectedId, subSelectedId,brandSelectedId);
+      dispatch(getProductSuccess(res));
+  } catch (error) {
+      dispatch(getProductError(error.message));
+  }
+};
+
+
 export const logout = () => async dispatch => {
   try {
     await UserController.logout();
