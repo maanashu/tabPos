@@ -62,6 +62,19 @@ const getProductError = error => ({
   payload: { error },
 });
 
+const getSeaProductRequest = () => ({
+  type: TYPES.GET_SEAPRODUCT_REQUEST,
+  payload: null,
+});
+const getSeaProductSuccess = SeaProductList => ({
+  type: TYPES.GET_SEAPRODUCT_SUCCESS,
+  payload: { SeaProductList },
+});
+const getSeaProductError = error => ({
+  type: TYPES.GET_SEAPRODUCT_ERROR,
+  payload: { error },
+});
+
 
 // export const login = (username, password) => async dispatch => {
 //   dispatch(loginRequest());
@@ -103,13 +116,23 @@ export const getBrand = (selectedId) => async dispatch => {
   }
 };
 
-export const getProduct = (selectedId, subSelectedId,brandSelectedId) => async dispatch => {
+export const getProduct = (brandSelectedId , selectedId, search, subSelectedId) => async dispatch => {
   dispatch(getProductRequest());
   try {
-      const res = await UserController.getProduct(selectedId, subSelectedId,brandSelectedId);
+      const res = await UserController.getProduct(brandSelectedId , selectedId, search, subSelectedId);
       dispatch(getProductSuccess(res));
   } catch (error) {
       dispatch(getProductError(error.message));
+  }
+};
+
+export const getSearchProduct = (search) => async dispatch => {
+  dispatch(getSeaProductRequest());
+  try {
+      const res = await UserController.getSearchProduct(search);
+      dispatch(getSeaProductSuccess(res));
+  } catch (error) {
+      dispatch(getSeaProductError(error.message));
   }
 };
 

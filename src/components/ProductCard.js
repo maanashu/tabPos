@@ -32,7 +32,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import DropDownPicker from 'react-native-dropdown-picker';
 
-export function ProductCard({ productName,productImage,productPrice,ProductBrandName}) {
+export function ProductCard({ productName,productImage,productPrice,ProductBrandName, cartMinusOnPress,cartPlusOnPress,productCount}) {
 
 
   return (
@@ -70,19 +70,15 @@ export function ProductCard({ productName,productImage,productPrice,ProductBrand
       }}
     >
       <TouchableOpacity
-        // onPress={() => {
-        //   setCount(count - 1), setIndexs(index);
-        // }}
+         onPress={cartMinusOnPress}
         style={{ height: SH(35) }}
       >
         <Image source={minus} style={styles.plusBtn} />
       </TouchableOpacity>
   
-        <Text style={styles.count}>0</Text>
+        <Text style={styles.count}>{productCount}</Text>
       <TouchableOpacity
-        // onPress={() => {
-        //   setCount(count + 1), setIndexs(index);
-        // }}
+        onPress={cartPlusOnPress}
         style={{ height: SH(35) }}
       >
         <Image source={plus} style={styles.plusBtn} />

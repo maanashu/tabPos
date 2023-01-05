@@ -10,6 +10,7 @@ import {
   Dimensions,
   StatusBar,
   ActivityIndicator,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {
   Spacer,
@@ -86,6 +87,7 @@ import {
   getBrand,
   getSubCategory,
   getProduct,
+  getSearchProduct,
 } from '@/actions/UserActions';
 import { getUser } from '@/selectors/UserSelectors';
 import { TYPES } from '@/Types/Types';
@@ -98,7 +100,9 @@ export function Retails() {
   const subCategoriesArray = getUserData?.subCategories ?? [];
   const brandArray = getUserData?.brands ?? [];
   const productArray = getUserData?.products ?? [];
-  // console.log('productArray', productArray)
+  const serProductArray = getUserData?.SeaProductList;
+  // const searchProductId = getUserData?.SeaProductList;
+  // console.log('serProductArray', serProductArray);
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
   const [title, setTitle] = useState('');
@@ -164,6 +168,10 @@ export function Retails() {
   const [discountCode, setDiscountCode] = useState('');
   const [updatePriceCounter, setUpdatePriceCounter] = useState(0);
   const [addProductCounter, setAddProductCounter] = useState(0);
+  const [cardCounter, setCardCounter] = useState(0);
+  const [search, setSearch] = useState('');
+  const [selectedData, setSelectedData] = useState();
+  const [storeData, setStoreData] = useState();
 
   useEffect(id => {
     dispatch(getCategory());
@@ -173,7 +181,7 @@ export function Retails() {
   }, []);
 
   const categoryFunction = id => {
-    console.log('-----categoryID', id);
+    // console.log('-----categoryID', id);
     dispatch(getSubCategory(id));
     dispatch(getBrand(id));
     dispatch(getProduct(id));
@@ -181,16 +189,23 @@ export function Retails() {
   };
 
   const subCategoryFunction = id => {
-    console.log('-----subCategoryID', id);
+    // console.log('-----subCategoryID', id);
     dispatch(getProduct(selectedId, id));
     setSubSelectedId(id);
   };
 
   const brandFunction = id => {
-    console.log('-----brandId', id);
+    // console.log('-----brandId', id);
     dispatch(getProduct(selectedId, subSelectedId, id));
     setBrandSelectedId(id);
   };
+
+  const onChangeFun = (search) => {
+    if (search.length > 3) { 
+         dispatch(getSearchProduct(search));
+        setPosSearch(true);
+    }
+  }
 
   const isLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_CATEGORY], state)
@@ -205,6 +220,9 @@ export function Retails() {
   );
   const isProductLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_PRODUCT], state)
+  );
+  const isSearchProLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_SEAPRODUCT], state)
   );
 
   const menuHandler = () => {
@@ -303,11 +321,15 @@ export function Retails() {
   const searchConRemoveHandler = () => {
     setPosSearch(false);
   };
-  const searchProdutDetailHandler = () => {
+  const searchProdutDetailHandler = (item) => {
+    console.log('-------------------', item.id)
+    setStoreData(item)
     setSearchProDetail(!searchProDetail);
   };
-  const viewDetailHandler = () => {
-    setPosSearch(false);
+
+  const viewDetailHandler = (item) => {
+    setPosSearch(false)
+    setSelectedData(item)
     setSearchProViewDetail(!searchProViewDetail);
   };
 
@@ -537,6 +559,9 @@ export function Retails() {
       productImage={{ uri: item.image }}
       productPrice={item.price}
       ProductBrandName={item.brand.name}
+      cartMinusOnPress = {() => setCardCounter(cardCounter - 1)}
+      cartPlusOnPress = {() => setCardCounter(cardCounter + 1)}
+      productCount= {cardCounter}
     />
   );
 
@@ -588,29 +613,30 @@ export function Retails() {
     </View>
   );
 
-  const renderSearchItem = ({ item }) => (
+  const renderSearchItem = ({ item, index }) => (
     <View>
       <Spacer space={SH(15)} />
-      <View style={styles.displayFlex}>
+      <TouchableOpacity style={[styles.displayFlex, styles.padding]} onPress={ () => (searchProdutDetailHandler(item))}>
         <View style={styles.displayFlex}>
-          <Image source={marboloRedPack} style={styles.marboloRedPackStyle} />
-          <View>
-            <Text style={styles.marbolorRedStyle}>{item.productName}</Text>
+          <Image source={{uri : item.image}} style={styles.marboloRedPackStyle} />
+          <View style={styles.locStock}>
+            <Text style={styles.marbolorRedStyle}>{item.name}</Text>
             <Spacer space={SH(5)} />
-            <Text style={styles.stockStyle}>{item.stock}</Text>
-            <Text style={styles.searchItalicText}>{item.location}</Text>
+            <Text style={styles.stockStyle}>{strings.posSale.stock}</Text>
+            <Text style={styles.searchItalicText}>{strings.posSale.location}</Text>
+            {/* <Text>{index}</Text> */}
           </View>
         </View>
         <View style={{ alignItems: 'flex-end' }}>
           <Text style={styles.marbolorRedStyle}>{item.price}</Text>
           <Spacer space={SH(5)} />
-          <TouchableOpacity onPress={searchProdutDetailHandler}>
+          <TouchableOpacity onPress={() => viewDetailHandler(item)} style={styles.viewDetailCon}>
             <Text style={[styles.stockStyle, { color: COLORS.primary }]}>
               View details
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
       {searchProDetail ? (
         <View style={styles.productDetailCon}>
           <Spacer space={SH(25)} />
@@ -621,10 +647,10 @@ export function Retails() {
           <View style={styles.amountjfrContainer}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
-                source={marboloRedPack}
+                source={{uri : item.image}}
                 style={styles.marboloRedPackStyle}
               />
-              <Text style={styles.jfrmaduro}>Marlboro Red-Pack</Text>
+              <Text style={styles.jfrmaduro}>{item.name}</Text>
             </View>
 
             <View>
@@ -656,7 +682,7 @@ export function Retails() {
           <Spacer space={SH(25)} />
           <View style={styles.priceContainer}>
             <Text style={styles.price}>Price</Text>
-            <Text style={[styles.price, { fontSize: SF(18) }]}>$382.75</Text>
+            <Text style={[styles.price, { fontSize: SF(18) }]}>{item.price}</Text>
           </View>
           <Spacer space={SH(25)} />
           <View
@@ -681,7 +707,7 @@ export function Retails() {
             <Spacer space={SH(20)} />
             <TouchableOpacity
               style={styles.addcartButtonStyle}
-              onPress={viewDetailHandler}
+              
             >
               <Text style={styles.addToCartText}>
                 {strings.posSale.addToCart}
@@ -974,6 +1000,8 @@ export function Retails() {
     }
   };
 
+ 
+
   return (
     <>
       {listOfItem ? (
@@ -1176,6 +1204,10 @@ export function Retails() {
                     <TextInput
                       placeholder="Search product here"
                       style={styles.searchInput}
+                      value={search}
+                      // onChangeText={setSearch}
+                      onChangeText={(search) => (setSearch(search), onChangeFun(search) ) }
+                      // onChangeText={onChangeFun}
                     />
                   </View>
                   <TouchableOpacity onPress={addNewProHandler}>
@@ -1961,15 +1993,26 @@ export function Retails() {
 
           {/*  pos search  start */}
           <Modal animationType="fade" transparent={true} isVisible={posSearch}>
+         
             <View style={[styles.searchproductCon1, styles.searchproductCon2]}>
               <Spacer space={SH(20)} />
               <View style={styles.searchInputWraper}>
                 <View style={styles.displayFlex}>
+                  <TouchableOpacity onPress={searchConRemoveHandler}>
                   <Image source={backArrow2} style={styles.backArrow2Style} />
-                  <TextInput
+                  </TouchableOpacity>
+                  {/* <TextInput
                   // placeholder="Search product here"
                   // style={styles.searchInput}
-                  />
+                  /> */}
+                   <TextInput
+                      placeholder="Search product here"
+                      style={styles.searchInput2}
+                      value={search}
+                      // onChangeText={setSearch}
+                      onChangeText={(search) => (setSearch(search), onChangeFun(search) ) }
+                      // onChangeText={onChangeFun}
+                    />
                 </View>
                 <TouchableOpacity onPress={searchConRemoveHandler}>
                   <Image
@@ -1982,12 +2025,27 @@ export function Retails() {
                 </TouchableOpacity>
               </View>
               <View>
-                <FlatList
-                  data={searchProductData}
+                {
+                  isSearchProLoading
+                  ?
+                  (
+                    <View style={{ marginTop: 100 }}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                  </View>
+                  )
+                  :
+                  <FlatList
+                  data={serProductArray}
+                  extraData={serProductArray}
                   renderItem={renderSearchItem}
                   keyExtractor={item => item.id}
                   style={styles.flatlistHeight}
+                   ListEmptyComponent={renderEmptyProducts}
                 />
+
+                 
+                }
+               
               </View>
             </View>
           </Modal>
@@ -2006,12 +2064,12 @@ export function Retails() {
               </TouchableOpacity>
               <Spacer space={SH(20)} />
               <Text style={styles.productDetailHeader}>
-                {strings.posSale.marboloRed}
+              {selectedData.name}
               </Text>
               <Spacer space={SH(10)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
                 <View style={styles.detailImageCon}>
-                  <Image source={marboloPack} style={styles.marboloPackStyle} />
+                  <Image source={{ uri : selectedData.image}} style={styles.marboloPackStyle} />
                   <Spacer space={SH(15)} />
                   <View style={styles.productDescrptionCon}>
                     <Spacer space={SH(10)} />
@@ -2020,7 +2078,7 @@ export function Retails() {
                     </Text>
                     <Spacer space={SH(4)} />
                     <Text style={styles.productDes}>
-                      {strings.posSale.productDes}
+                      {selectedData.description}
                     </Text>
                     <Spacer space={SH(8)} />
                   </View>
@@ -2029,7 +2087,7 @@ export function Retails() {
                   <View style={styles.priceContainer}>
                     <Text style={styles.price}>Price</Text>
                     <Text style={[styles.price, { fontSize: SF(18) }]}>
-                      $382.75
+                     {selectedData.price}
                     </Text>
                   </View>
                   <Spacer space={SH(25)} />

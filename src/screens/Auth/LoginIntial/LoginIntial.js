@@ -27,6 +27,9 @@ export function LoginIntial() {
   const lastName = getData?.getProfile?.user_profiles?.lastname;
   const userId = getData?.getProfile?.user_profiles?.id;
   const fullName = firstName + ' ' +  lastName;
+
+  const [dt, setDt] = useState(new Date().toLocaleString());
+  const [hr, setHr] = useState(new Date().toLocaleString());
   const focus = useIsFocused();
 const navigation = useNavigation();
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -46,9 +49,24 @@ const formatAMPM = (date) => {
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? '0'+minutes : minutes;
-  var strTime = hours + ':' + minutes + ' ' + ampm;
+  // var strTime = hours + ':' + minutes + ' ' + ampm;
+  var strTime = ampm;
   return strTime;
 };
+
+
+useEffect(() => {
+  let secTimer = setInterval( () => {
+    setDt(new Date().getMinutes())
+  },1000)
+  let secHour = setInterval( () => {
+    setHr(new Date().getHours())
+  },1000)
+
+  return () => clearInterval(secTimer, secHour);
+}, []);
+const hour12 = hr % 12 || 12
+
 
 const  loginIntialHandler = () => {
   //  navigate('Retails', {screen : 'Retails'})
@@ -102,7 +120,7 @@ const isLoading = useSelector(state =>
                <Spacer space={SH(15)} />
                <Text style={styles.lightsmallText}>{strings.loginIntial.date} {day} {dateMonthYear}</Text>
                <Spacer space={SH(8)} />
-               <Text style={styles.lightsmallText}>{strings.loginIntial.time}{formatAMPM(new Date)}</Text>
+               <Text style={styles.lightsmallText}>{strings.loginIntial.time}{hour12}:{dt} {formatAMPM(new Date)}</Text>
                <View style={{ flex: 1 }} />
                <Button
                  onPress={loginIntialHandler}

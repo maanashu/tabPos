@@ -89,10 +89,8 @@ export class UserController {
             resolve([]);
           }
           resolve(response);
-          // console.log('---------------------response', response)
         })
         .catch(error => {
-          // console.log('jkhgfvkmc ')
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -104,14 +102,15 @@ export class UserController {
     });
   }
 
-  static async getProduct(selectedId, subSelectedId,brandSelectedId) {
+  static async getProduct(selectedId, subSelectedId, brandSelectedId, search) {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL + ApiProductInventory.getProduct + `?page=1&limit=10`;
 
-      const selectedCatArr = selectedId ? [selectedId] : []
-      const selectedSubCatArr = subSelectedId ? [subSelectedId] : []
-      const selectedBrandCatArr = brandSelectedId ? [brandSelectedId] : []
+      const selectedCatArr = selectedId ? [selectedId] : [];
+      const selectedSubCatArr = subSelectedId ? [subSelectedId] : [];
+      const selectedBrandCatArr = brandSelectedId ? [brandSelectedId] : [];
+      // const searchingProArr = search ? search : ""
 
       const body = {
         category_id: selectedCatArr,
@@ -119,11 +118,45 @@ export class UserController {
         name: '',
         brand_id: selectedBrandCatArr,
       }
-      
+
       HttpClient.post(endpoint, body)
         .then(response => {
-          // console.log('response', response)
-          // console.log('body', body)
+          if (response?.status_code === 200) {
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: response?.msg,
+              visibilityTime: 2000,
+            });
+          }
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
+        });
+    });
+  }
+
+  static async getSearchProduct(search) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL + ApiProductInventory.getProduct + `?page=1&limit=10`;
+      const searchingProArr = search ? search : '';
+
+      const body =  {
+        category_id: [],
+        subcategory_id: [],
+        name: searchingProArr,
+        brand_id: [],
+      }
+      HttpClient.post(endpoint, body)
+        .then(response => {
           if (response?.status_code === 200) {
             Toast.show({
               position: 'bottom',

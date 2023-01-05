@@ -56,8 +56,14 @@ export const styles = StyleSheet.create({
   },
   searchInput: {
     borderRadius: 7,
-    width: 200,
+    width: SW(170),
     fontFamily: Fonts.Italic,
+  },
+  searchInput2: {
+    borderRadius: 7,
+    width: SW(170),
+    color:COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
   },
   inputWraper: {
     backgroundColor: COLORS.textInputBackground,
@@ -581,6 +587,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
+    paddingHorizontal:moderateScale(10)
   },
   dropDownIcon: {
     width: SW(3),
@@ -1438,10 +1445,20 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(20),
   },
+  viewDetailCon:{
+    zIndex:99,
+    height:35
+  },
   stockStyle: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
+  },
+  padding:{
+     paddingRight:moderateScale(15)
+  },
+  locStock:{
+    paddingHorizontal:moderateScale(10)
   },
   searchItalicText: {
     color: COLORS.darkGray,

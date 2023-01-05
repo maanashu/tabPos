@@ -5,7 +5,8 @@ const INITIALSTATE = {
   categories:[],
   subCategories:[],
   brands:{},
-  products:[]
+  products:[],
+  SeaProductList:[]
   
 };
 
@@ -38,6 +39,12 @@ export const userReducer = (state = {INITIALSTATE}, { payload, type }) => {
               ...state,
               products: payload?.productList?.payload?.data ?? [],
             };
+
+            case TYPES.GET_SEAPRODUCT_SUCCESS:
+              return {
+                ...state,
+                SeaProductList: payload?.SeaProductList?.payload?.data ?? [],
+              };
       
     case TYPES.CLEAR_STORE:
       return {};
