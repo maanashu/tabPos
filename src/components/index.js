@@ -8,3 +8,4 @@ export { AddDiscountToCart } from '@/components/AddDiscountToCart';
 export { UpdatePrice } from '@/components/UpdatePrice';
 export { AddNewProduct } from '@/components/AddNewProduct';
 export { ProductCard } from '@/components/ProductCard';
+export { ChoosePayment } from '@/components/ChoosePayment';

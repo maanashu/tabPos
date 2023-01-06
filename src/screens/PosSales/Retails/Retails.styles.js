@@ -311,7 +311,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   jfrStyle: {
-    width: SW(20),
+    width: SW(15),
     height: SW(20),
     resizeMode: 'contain',
   },
@@ -319,6 +319,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingLeft:moderateScale(10)
   },
   jfrContainer2: {
     display: 'flex',
@@ -412,6 +413,10 @@ export const styles = StyleSheet.create({
   smalldarkText: {
     fontSize: SF(14),
     fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+  },
+  smalldarkText2: {
+    fontSize: SF(18),
     color: COLORS.solid_grey,
   },
   smallLightText: {
@@ -1262,11 +1267,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
     alignItems: 'center',
   },
-  smalldarkText: {
-    fontSize: SF(14),
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.solid_grey,
-  },
   smallLightText: {
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
@@ -1544,7 +1544,7 @@ export const styles = StyleSheet.create({
     width: SW(92),
     height: SW(60),
     resizeMode: 'contain',
-    marginTop: -15,
+    // marginTop: -15,
   },
   productDescrptionCon: {
     borderWidth: 1,
@@ -1598,6 +1598,13 @@ export const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
+    // alignSelf: 'center',
+  },
+  noCart: {
+    fontSize: SF(16),
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+    alignSelf:'center'
     // alignSelf: 'center',
   },
   contentContainer: {

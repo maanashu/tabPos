@@ -1,5 +1,6 @@
 import { UserController } from '@/controllers';
 import { TYPES } from "@/Types/Types";
+import { LogBox } from 'react-native';
 
 
 // const loginRequest = () => ({
@@ -75,6 +76,45 @@ const getSeaProductError = error => ({
   payload: { error },
 });
 
+const getAllCartRequest = () => ({
+  type: TYPES.GET_ALL_CART_REQUEST,
+  payload: null,
+});
+const getAllCartSuccess = getAllCart => ({
+  type: TYPES.GET_ALL_CART_SUCCESS,
+  payload: { getAllCart },
+});
+const getAllCartError = error => ({
+  type: TYPES.GET_ALL_CART_ERROR,
+  payload: { error },
+});
+
+const getClearAllCartRequest = () => ({
+  type: TYPES.GET_CLEAR_ALL_CART_REQUEST,
+  payload: null,
+});
+const getClearAllCartSuccess = ()  => ({
+  type: TYPES.GET_CLEAR_ALL_CART_SUCCESS,
+  payload: {  },
+});
+const getClearAllCartError = error => ({
+  type: TYPES.GET_CLEAR_ALL_CART_ERROR,
+  payload: { error },
+});
+
+const addTocartRequest = () => ({
+  type: TYPES.ADDCART_REQUEST,
+  payload: null,
+});
+const addTocartSuccess = ()  => ({
+  type: TYPES.ADDCART_SUCCESS,
+  payload: {  },
+});
+const addTocartError = error => ({
+  type: TYPES.ADDCART_ERROR,
+  payload: { error },
+});
+
 
 // export const login = (username, password) => async dispatch => {
 //   dispatch(loginRequest());
@@ -133,6 +173,37 @@ export const getSearchProduct = (search) => async dispatch => {
       dispatch(getSeaProductSuccess(res));
   } catch (error) {
       dispatch(getSeaProductError(error.message));
+  }
+};
+
+export const getAllCart = () => async dispatch => {
+  dispatch(getAllCartRequest());
+  try {
+      const res = await UserController.getAllCartCategory();
+      dispatch(getAllCartSuccess(res));
+  } catch (error) {
+      dispatch(getAllCartError(error.message));
+  }
+};
+
+export const clearAllCart = () => async dispatch => {
+  dispatch(getClearAllCartRequest());
+  try {
+      const res = await UserController.clearAllCart();
+      dispatch(getClearAllCartSuccess(res));
+  } catch (error) {
+      dispatch(getClearAllCartError(error.message));
+  }
+};
+
+export const addTocart = (data) => async dispatch => {
+  dispatch(addTocartRequest());
+  try {
+      const res = await UserController.addTocart(data);
+      dispatch(addTocartSuccess(res));
+      dispatch(getAllCart())
+  } catch (error) {
+      dispatch(addTocartError(error.message));
   }
 };
 

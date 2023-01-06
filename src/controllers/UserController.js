@@ -4,6 +4,8 @@ import {
   PRODUCT_URL,
   ApiProductInventory,
   ApiUserInventory,
+  ORDER_URL,
+  ApiOrderInventory,
 } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
@@ -47,7 +49,7 @@ export class UserController {
           reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
-  }
+  };
 
   static async getSubCategory(selectedId) {
     return new Promise((resolve, reject) => {
@@ -141,7 +143,7 @@ export class UserController {
           reject(error.msg);
         });
     });
-  }
+  };
 
   static async getSearchProduct(search) {
     return new Promise((resolve, reject) => {
@@ -158,6 +160,80 @@ export class UserController {
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.status_code === 200) {
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: response?.msg,
+              visibilityTime: 2000,
+            });
+          }
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
+        });
+    });
+  };
+
+  static async getAllCartCategory() {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
+      // console.log('endpoint',endpoint)
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  };
+
+  static async clearAllCart() {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.clearAllCart;
+      HttpClient.delete(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  };
+
+  static async addTocart(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.clearAllCart;
+      const body = {
+        seller_id:data.seller_id,
+        product_id: data.product_id,
+        service_id: data.service_id,
+        qty: data.qty,
+        attribute_value_ids: data.attribute_value_ids
+      }
+
+      HttpClient.post(endpoint, body)
+        .then(response => {
+          if (response?.status_code === 201) {
             Toast.show({
               position: 'bottom',
               type: 'success_toast',

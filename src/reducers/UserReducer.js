@@ -6,7 +6,8 @@ const INITIALSTATE = {
   subCategories:[],
   brands:{},
   products:[],
-  SeaProductList:[]
+  SeaProductList:[],
+  getAllCart:[]
   
 };
 
@@ -44,6 +45,11 @@ export const userReducer = (state = {INITIALSTATE}, { payload, type }) => {
               return {
                 ...state,
                 SeaProductList: payload?.SeaProductList?.payload?.data ?? [],
+              };
+               case TYPES.GET_ALL_CART_SUCCESS:
+              return {
+                ...state,
+                getAllCart: payload?.getAllCart?.payload ?? [],
               };
       
     case TYPES.CLEAR_STORE:

@@ -474,7 +474,8 @@ export const en = {
       loading:'loading...',
       phoneNotExist:'This number does not exist',
       noData: 'No Data',
-      noProduct:'Product not found'
+      noProduct:'Product not found',
+      noCart:'No cart'
     },
     successMessages:{
       loginSuccess:"Login succesfully"

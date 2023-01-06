@@ -11,6 +11,7 @@ import {
   StatusBar,
   ActivityIndicator,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import {
   Spacer,
@@ -18,6 +19,7 @@ import {
   TextField,
   AddNewProduct,
   ProductCard,
+  ChoosePayment,
 } from '@/components';
 import { SH, SF, COLORS, SW } from '@/theme';
 import {
@@ -80,6 +82,7 @@ import {
   CategoryDataHorizontal,
   tipData,
   amountReceivedData,
+  cartData,
 } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -88,6 +91,9 @@ import {
   getSubCategory,
   getProduct,
   getSearchProduct,
+  getAllCart,
+  clearAllCart,
+  addTocart,
 } from '@/actions/UserActions';
 import { getUser } from '@/selectors/UserSelectors';
 import { TYPES } from '@/Types/Types';
@@ -101,6 +107,10 @@ export function Retails() {
   const brandArray = getUserData?.brands ?? [];
   const productArray = getUserData?.products ?? [];
   const serProductArray = getUserData?.SeaProductList;
+  const allCartArray = getUserData?.getAllCart?.poscart_products;
+  const getCartAmount = getUserData?.getAllCart?.amount;
+  const getTotalCart = getUserData?.getAllCart?.poscart_products?.length;
+  const totalCart = getTotalCart ? getTotalCart : "0";
   // const searchProductId = getUserData?.SeaProductList;
   // console.log('serProductArray', serProductArray);
   const [checkoutCon, setCheckoutCon] = useState(false);
@@ -178,6 +188,7 @@ export function Retails() {
     dispatch(getSubCategory(1));
      dispatch(getBrand(1));
      dispatch(getProduct(1));
+     dispatch(getAllCart())
   }, []);
 
   const categoryFunction = id => {
@@ -224,6 +235,41 @@ export function Retails() {
   const isSearchProLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_SEAPRODUCT], state)
   );
+  const isGetCartLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ALL_CART_SUCCESS], state)
+  );
+
+  const clearCartHandler = () => {
+    Alert.alert('Clear cart', 'Are you sure you want to clear cart ?', [
+   {
+     text: 'No',
+     onPress: () => console.log('Cancel Pressed'),
+     style: 'cancel',
+   },
+   {
+     text: 'YES',
+     onPress: () => {
+       dispatch(clearAllCart());
+       dispatch(getAllCart())
+       // dispatch(logoutUserFunction());
+     },
+   },
+ ]);
+};
+
+const addToCartHandler = () => {
+  console.log('fghjk')
+  const data = {
+    seller_id:'b169ed4d-be27-44eb-9a08-74f997bc6a2a',
+    product_id: 5,
+    service_id: 4,
+    qty: 200,
+    attribute_value_ids: [24]
+  }
+    dispatch(addTocart(data));
+    setPosSearch(false)
+
+};
 
   const menuHandler = () => {
     setCategoryModal(!categoryModal);
@@ -237,6 +283,7 @@ export function Retails() {
     setSideContainer(false);
   };
   const amountPopHandler = () => {
+      // alert('fghjkfghjk')
     setAmountPopup(!amountPopup);
     setBundleOffer(false);
   };
@@ -332,6 +379,7 @@ export function Retails() {
     setSelectedData(item)
     setSearchProViewDetail(!searchProViewDetail);
   };
+
 
   const searchProDetRemoveHandlwe = () => {
     setSearchProViewDetail(false);
@@ -707,7 +755,7 @@ export function Retails() {
             <Spacer space={SH(20)} />
             <TouchableOpacity
               style={styles.addcartButtonStyle}
-              
+              onPress={addToCartHandler}
             >
               <Text style={styles.addToCartText}>
                 {strings.posSale.addToCart}
@@ -745,10 +793,17 @@ export function Retails() {
     </View>
   );
 
-  const renderEmptyContainer = () => {
+  const renderEmptyContainer = (allCartArray) => {
     return (
       <View>
-        <Text style={styles.emptyListText}>{strings.valiadtion.noData}</Text>
+        {
+          allCartArray
+          ?
+          (<Text style={styles.noCart}>{strings.valiadtion.noCart}</Text>)
+          :
+          <Text style={styles.emptyListText}>{strings.valiadtion.noData}</Text>
+        }
+        
       </View>
     );
   };
@@ -1000,6 +1055,35 @@ export function Retails() {
     }
   };
 
+  const cartListItem = ({item}) => (
+    <TouchableOpacity style={styles.jfrContainer} onPress={amountPopHandler}>
+    <View style={styles.jfrContainer2}>
+      <Image source={{uri : item.product_details.image}} style={styles.jfrStyle} />
+      <View style={{ padding:5 }}>
+        <Text style={styles.jfrText}>{item.product_details.name}</Text>
+        <Text style={styles.boxText}>Box</Text>
+        <Spacer space={SH(5)} />
+        <Text style={styles.oneX}>x {item.qty}</Text>
+      </View>
+    </View>
+    <View
+      style={{ flexDirection: 'column', alignItems: 'center' }}
+    >
+      <Text style={styles.rate}>{null}</Text>
+      <Text style={styles.rate}>{null}</Text>
+      <Text style={styles.rate}>{item.product_details.price}</Text>
+      {/* <TouchableOpacity
+        onPress={updatePriceHandler}
+        style={styles.updatePriceButtonCon}
+      >
+        <Text style={styles.updatePriceButton}>
+          Update price
+        </Text>
+      </TouchableOpacity> */}
+    </View>
+  </TouchableOpacity>
+  );
+
  
 
   return (
@@ -1221,7 +1305,7 @@ export function Retails() {
               >
                 <Image source={purchese} style={styles.purcheseStyle} />
                 <Text style={styles.purchaseText}>
-                  Items: <Text style={styles.purchasecount}>4</Text>
+                  Items: <Text style={styles.purchasecount}>{totalCart}</Text>
                 </Text>
                 <Image source={arrow_right} style={styles.arrowStyle} />
               </TouchableOpacity>
@@ -1354,7 +1438,15 @@ export function Retails() {
                     </TouchableOpacity>
                   </View>
                   <Spacer space={SH(30)} />
-                  <TouchableOpacity
+                  <ChoosePayment
+                  jbrCoin={jbrCoin}
+                  cardChoose={cardChoose}
+                  cashChoose={cashChoose}
+                  jbrCoinChoseHandler={jbrCoinChoseHandler}
+                  cashChooseHandler={cashChooseHandler}
+                  cardChooseHandler={cardChooseHandler}
+                  />
+                  {/* <TouchableOpacity
                     style={
                       jbrCoin
                         ? [styles.paymentOptionCon, styles.paymentOptionCon2]
@@ -1439,7 +1531,7 @@ export function Retails() {
                         Card
                       </Text>
                     </View>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
               ) : (
                 <View>
@@ -1454,82 +1546,35 @@ export function Retails() {
                       <TouchableOpacity onPress={numpadConHandler}>
                         <Text style={styles.countCart}>123</Text>
                       </TouchableOpacity>
+                      <TouchableOpacity onPress={clearCartHandler}>
                       <Text style={styles.clearCart}>Clear cart</Text>
+                      </TouchableOpacity>
                       <TouchableOpacity onPress={moreActionHandler}>
                         <Text style={styles.actionButton}>More action</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
                   <Spacer space={SH(30)} />
-                  <TouchableOpacity
-                    style={styles.jfrContainer}
-                    onPress={amountPopHandler}
-                  >
-                    <View style={styles.jfrContainer2}>
-                      <Image source={jfr} style={styles.jfrStyle} />
-                      <View style={{ paddingVertical: verticalScale(4) }}>
-                        <Text style={styles.jfrText}>JFR Maduro</Text>
-                        <Text style={styles.boxText}>Box</Text>
-                        <Spacer space={SH(5)} />
-                        <Text style={styles.oneX}>x 1</Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{ flexDirection: 'column', alignItems: 'center' }}
-                    >
-                      <Text style={styles.rate}>{null}</Text>
-                      <Text style={styles.rate}>$382.75</Text>
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.jfrContainer} onPress={amountPopHandler}>
-                    <View style={styles.jfrContainer2}>
-                      <Image source={jfr} style={styles.jfrStyle} />
-                      <View style={{ paddingVertical: verticalScale(4) }}>
-                        <Text style={styles.jfrText}>JFR Maduro</Text>
-                        <Text style={styles.boxText}>Box</Text>
-                        <Spacer space={SH(5)} />
-                        <Text style={styles.oneX}>x 1</Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{ flexDirection: 'column', alignItems: 'center' }}
-                    >
-                      <TouchableOpacity
-                        onPress={bundleHandler}
-                        style={styles.bundleButtonCon}
-                      >
-                        <Text style={styles.bundleButton}>Bundle</Text>
-                      </TouchableOpacity>
+                  {
+                    isGetCartLoading
+                    ?
+                    (
+                      <View style={{ marginTop: 50 }}>
+                      <ActivityIndicator size="large" color="#0000ff" />
+                  </View>
+                    )
+                    :
+                    <FlatList
+                    data={allCartArray}
+                    extraData={allCartArray}
+                   renderItem={cartListItem}
+                   keyExtractor={item => item.id}
+                   ListEmptyComponent={renderEmptyContainer}
+                 />
 
-                      <Text style={styles.rate}>{null}</Text>
-                      <Text style={styles.rate}>$382.75</Text>
-                    </View>
-                  </View>
-                  <View style={styles.jfrContainer} onPress={amountPopHandler}>
-                    <View style={styles.jfrContainer2}>
-                      <Image source={jfr} style={styles.jfrStyle} />
-                      <View style={{ paddingVertical: verticalScale(4) }}>
-                        <Text style={styles.jfrText}>JFR Maduro</Text>
-                        <Text style={styles.boxText}>Box</Text>
-                        <Spacer space={SH(5)} />
-                        <Text style={styles.oneX}>x 1</Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{ flexDirection: 'column', alignItems: 'center' }}
-                    >
-                      <Text style={styles.rate}>{null}</Text>
-                      <Text style={styles.rate}>{null}</Text>
-                      <TouchableOpacity
-                        onPress={updatePriceHandler}
-                        style={styles.updatePriceButtonCon}
-                      >
-                        <Text style={styles.updatePriceButton}>
-                          Update price
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+                  }
+                
+
                 </View>
               )}
 
@@ -1538,7 +1583,7 @@ export function Retails() {
                 <Spacer space={SH(10)} />
                 <View style={styles.bottomSubCon}>
                   <Text style={styles.smalldarkText}>Sub Total</Text>
-                  <Text style={styles.smallLightText}>$4.00</Text>
+                  <Text style={styles.smallLightText}>${getCartAmount?.products_price}</Text>
                 </View>
                 <Spacer space={SH(12)} />
                 <View style={styles.bottomSubCon}>
@@ -1558,12 +1603,12 @@ export function Retails() {
                     Total
                   </Text>
                   <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
-                    $254.60
+                  <Text style={styles.smalldarkText2}>$</Text>{getCartAmount?.total_amount}
                   </Text>
                 </View>
                 <Spacer space={SH(12)} />
                 <View style={styles.bottomSubCon}>
-                  <Text style={styles.smallLightText}>4 Items</Text>
+                  <Text style={styles.smallLightText}>{totalCart} Items</Text>
                 </View>
                 <Spacer space={SH(12)} />
                 <TouchableOpacity
@@ -1993,7 +2038,6 @@ export function Retails() {
 
           {/*  pos search  start */}
           <Modal animationType="fade" transparent={true} isVisible={posSearch}>
-         
             <View style={[styles.searchproductCon1, styles.searchproductCon2]}>
               <Spacer space={SH(20)} />
               <View style={styles.searchInputWraper}>

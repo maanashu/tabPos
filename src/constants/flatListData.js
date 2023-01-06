@@ -347,6 +347,16 @@ export const ProfileTableData = [
     'Store',
   ],
 ];
+export const cartData = [
+  {
+    id:1,
+    name:'ghjkl'
+  },
+  {
+    id:2,
+    name:'ghjkl'
+  },
+];
 
 export const sessionHistoryTableHeading = [
   '#',
