@@ -250,7 +250,7 @@ export function Retails() {
      text: 'YES',
      onPress: () => {
        dispatch(clearAllCart());
-       dispatch(getAllCart())
+      
        // dispatch(logoutUserFunction());
      },
    },

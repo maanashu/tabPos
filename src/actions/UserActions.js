@@ -191,6 +191,7 @@ export const clearAllCart = () => async dispatch => {
   try {
       const res = await UserController.clearAllCart();
       dispatch(getClearAllCartSuccess(res));
+      dispatch(getAllCart())
   } catch (error) {
       dispatch(getClearAllCartError(error.message));
   }
