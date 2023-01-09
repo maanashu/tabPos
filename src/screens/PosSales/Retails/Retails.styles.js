@@ -592,7 +592,8 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
-    paddingHorizontal:moderateScale(10)
+    paddingHorizontal:moderateScale(10),
+    width:SW(70),
   },
   dropDownIcon: {
     width: SW(3),

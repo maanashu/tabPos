@@ -220,6 +220,38 @@ export class UserController {
     });
   };
 
+  static async clearOneCart(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+         ORDER_URL + ApiOrderInventory.clearAllCart + `/` +  `${data.cartId}` + `/` + `${data.productId}`;
+      const body =  {
+        cartId: data.cartId,
+        productId: data.productId,
+      }
+      HttpClient.delete(endpoint, body)
+        .then(response => {
+          if (response?.status_code === 200) {
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: response?.msg,
+              visibilityTime: 2000,
+            });
+          }
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
+        });
+    });
+  };
+
   static async addTocart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.clearAllCart;

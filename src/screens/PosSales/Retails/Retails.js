@@ -94,6 +94,7 @@ import {
   getAllCart,
   clearAllCart,
   addTocart,
+  clearOneCart,
 } from '@/actions/UserActions';
 import { getUser } from '@/selectors/UserSelectors';
 import { TYPES } from '@/Types/Types';
@@ -182,6 +183,11 @@ export function Retails() {
   const [search, setSearch] = useState('');
   const [selectedData, setSelectedData] = useState();
   const [storeData, setStoreData] = useState();
+  const [cartData, setCartData] = useState();
+  const cartId = cartData?.cart_id;
+  const productId = cartData?.product_id;
+  const cartTotalAmount = getCartAmount?.total_amount;
+
 
   useEffect(id => {
     dispatch(getCategory());
@@ -212,7 +218,7 @@ export function Retails() {
   };
 
   const onChangeFun = (search) => {
-    if (search.length > 3) { 
+    if (search.length > 1) { 
          dispatch(getSearchProduct(search));
         setPosSearch(true);
     }
@@ -250,15 +256,22 @@ export function Retails() {
      text: 'YES',
      onPress: () => {
        dispatch(clearAllCart());
-      
-       // dispatch(logoutUserFunction());
      },
    },
  ]);
 };
 
+const removeOneCart = () => {
+  const data = {
+    cartId : cartId,
+    productId : productId
+
+  }
+   dispatch(clearOneCart(data));
+   setAmountPopup(false)
+};
+
 const addToCartHandler = () => {
-  console.log('fghjk')
   const data = {
     seller_id:'b169ed4d-be27-44eb-9a08-74f997bc6a2a',
     product_id: 5,
@@ -282,8 +295,10 @@ const addToCartHandler = () => {
   const rightConCloseHandler = () => {
     setSideContainer(false);
   };
-  const amountPopHandler = () => {
+  const amountPopHandler = (item) => {
+    // console.log(item, 'item----------------')
       // alert('fghjkfghjk')
+      setCartData(item);
     setAmountPopup(!amountPopup);
     setBundleOffer(false);
   };
@@ -369,7 +384,7 @@ const addToCartHandler = () => {
     setPosSearch(false);
   };
   const searchProdutDetailHandler = (item) => {
-    console.log('-------------------', item.id)
+    // console.log('-------------------', item.id)
     setStoreData(item)
     setSearchProDetail(!searchProDetail);
   };
@@ -387,7 +402,7 @@ const addToCartHandler = () => {
   };
 
   const decrementCount = () => {
-    if (count > 0) {
+    if (count > 3) {
       setCount(count - 1);
     }
   };
@@ -796,13 +811,13 @@ const addToCartHandler = () => {
   const renderEmptyContainer = (allCartArray) => {
     return (
       <View>
-        {
+        {/* {
           allCartArray
           ?
           (<Text style={styles.noCart}>{strings.valiadtion.noCart}</Text>)
-          :
-          <Text style={styles.emptyListText}>{strings.valiadtion.noData}</Text>
-        }
+          : */}
+          <Text style={styles.noCart}>{strings.valiadtion.noData}</Text>
+        {/* } */}
         
       </View>
     );
@@ -1056,7 +1071,7 @@ const addToCartHandler = () => {
   };
 
   const cartListItem = ({item}) => (
-    <TouchableOpacity style={styles.jfrContainer} onPress={amountPopHandler}>
+    <TouchableOpacity style={styles.jfrContainer} onPress={() => amountPopHandler(item)}>
     <View style={styles.jfrContainer2}>
       <Image source={{uri : item.product_details.image}} style={styles.jfrStyle} />
       <View style={{ padding:5 }}>
@@ -1583,7 +1598,7 @@ const addToCartHandler = () => {
                 <Spacer space={SH(10)} />
                 <View style={styles.bottomSubCon}>
                   <Text style={styles.smalldarkText}>Sub Total</Text>
-                  <Text style={styles.smallLightText}>${getCartAmount?.products_price}</Text>
+                  <Text style={styles.smallLightText}>${getCartAmount?.products_price ? getCartAmount?.products_price : '0.00'}</Text>
                 </View>
                 <Spacer space={SH(12)} />
                 <View style={styles.bottomSubCon}>
@@ -1603,7 +1618,7 @@ const addToCartHandler = () => {
                     Total
                   </Text>
                   <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
-                  <Text style={styles.smalldarkText2}>$</Text>{getCartAmount?.total_amount}
+                  <Text style={styles.smalldarkText2}>$</Text>{getCartAmount?.total_amount ? getCartAmount?.total_amount : '0.00'}
                   </Text>
                 </View>
                 <Spacer space={SH(12)} />
@@ -1632,7 +1647,7 @@ const addToCartHandler = () => {
           >
             <View style={styles.amountPopupCon}>
               <View style={styles.primaryHeader}>
-                <Text style={styles.headerText}>Amount: $382</Text>
+                <Text style={styles.headerText}>Amount: ${cartTotalAmount}</Text>
                 <TouchableOpacity
                   onPress={amountRemoveHandler}
                   style={styles.crossButtonPosition}
@@ -1647,8 +1662,8 @@ const addToCartHandler = () => {
                     <View
                       style={{ flexDirection: 'row', alignItems: 'center' }}
                     >
-                      <Image source={jfr} style={styles.amountjfrStyle} />
-                      <Text style={styles.jfrmaduro}>JFR Maduro</Text>
+                      <Image source={{uri : cartData?.product_details?.image} ? {uri : cartData?.product_details?.image}  : jfr} style={styles.amountjfrStyle} />
+                      <Text numberOfLines={1} style={styles.jfrmaduro}>{cartData?.product_details?.name}sdqee</Text>
                     </View>
 
                     <View>
@@ -1686,7 +1701,7 @@ const addToCartHandler = () => {
                   <View style={styles.priceContainer}>
                     <Text style={styles.price}>Price</Text>
                     <Text style={[styles.price, { fontSize: SF(18) }]}>
-                      $382.75
+                     {cartData?.product_details?.price}
                     </Text>
                   </View>
                   <Spacer space={SH(25)} />
@@ -1694,10 +1709,9 @@ const addToCartHandler = () => {
                     style={[
                       styles.priceContainer,
                       { backgroundColor: COLORS.white },
-                    ]}
-                  >
+                    ]}>
                     <Image source={minus} style={styles.plusBtn2} />
-                    <Text style={[styles.price, { fontSize: SF(24) }]}>1</Text>
+                    <Text style={[styles.price, { fontSize: SF(24) }]}>{cartData?.qty}</Text>
                     <Image source={plus} style={styles.plusBtn2} />
                   </View>
                   <Spacer space={SH(30)} />
@@ -1716,11 +1730,17 @@ const addToCartHandler = () => {
                     </View>
                   ) : null}
                   <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={removeOneCart}>
                     <Text style={styles.removeButton}>Remove from cart</Text>
+                    </TouchableOpacity>
                     <Text style={[styles.removeButton, styles.updateButton]}>
                       Update to cart
                     </Text>
                   </View>
+                 {/* <View>
+                 <Text>{cartData?.product_id}</Text> 
+                  <Text>{cartData?.cart_id}</Text>
+                 </View> */}
                 </View>
               </ScrollView>
             </View>

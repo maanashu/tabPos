@@ -102,6 +102,19 @@ const getClearAllCartError = error => ({
   payload: { error },
 });
 
+const ClearOneCartRequest = () => ({
+  type: TYPES.GET_CLEAR_ONE_CART_REQUEST,
+  payload: null,
+});
+const clearOneCartSuccess = ()  => ({
+  type: TYPES.GET_CLEAR_ONE_CART_SUCCESS,
+  payload: {  },
+});
+const clearOneCartError = error => ({
+  type: TYPES.GET_CLEAR_ONE_CART_ERROR,
+  payload: { error },
+});
+
 const addTocartRequest = () => ({
   type: TYPES.ADDCART_REQUEST,
   payload: null,
@@ -190,10 +203,20 @@ export const clearAllCart = () => async dispatch => {
   dispatch(getClearAllCartRequest());
   try {
       const res = await UserController.clearAllCart();
-      dispatch(getClearAllCartSuccess(res));
+      dispatch(getClearAllCartSuccess('res', res));
       dispatch(getAllCart())
   } catch (error) {
       dispatch(getClearAllCartError(error.message));
+  }
+};
+export const clearOneCart = (data) => async dispatch => {
+  dispatch(ClearOneCartRequest());
+  try {
+      const res = await UserController.clearOneCart(data);
+      dispatch(clearOneCartSuccess(res));
+      dispatch(getAllCart())
+  } catch (error) {
+      dispatch(clearOneCartError(error.message));
   }
 };
 
