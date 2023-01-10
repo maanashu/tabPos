@@ -39,7 +39,7 @@ export { default as upMenu } from '@/assets/icons/ic_retail/upMenu.png';
 export { default as dropdown2 } from '@/assets/icons/ic_retail/dropdown.png';
 export { default as dollar } from '@/assets/icons/ic_retail/dollar.png';
 export { default as addDiscountPic } from '@/assets/icons/ic_retail/addDiscount.png';
-export { default as notes } from '@/assets/icons/ic_retail/notes.png';
+export { default as notess } from '@/assets/icons/ic_retail/notes.png';
 export { default as checkbox } from '@/assets/icons/ic_retail/checkbox.png';
 export { default as checkedCheckbox } from '@/assets/icons/ic_retail/checkedCheckbox.png';
 export { default as checkArrow } from '@/assets/icons/ic_retail/checkArrow.png';

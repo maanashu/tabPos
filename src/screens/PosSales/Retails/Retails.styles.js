@@ -1411,7 +1411,6 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.8,
     backgroundColor: COLORS.white,
     borderRadius: 12,
-    // alignSelf: 'center',
     position: 'absolute',
     paddingHorizontal: moderateScale(12),
     marginLeft: moderateScale(10),

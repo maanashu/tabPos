@@ -128,6 +128,19 @@ const addTocartError = error => ({
   payload: { error },
 });
 
+const addNotesRequest = () => ({
+  type: TYPES.ADDNOTES_REQUEST,
+  payload: null,
+});
+const addNotesSuccess = ()  => ({
+  type: TYPES.ADDNOTES_SUCCESS,
+  payload: {  },
+});
+const addNotesError = error => ({
+  type: TYPES.ADDNOTES_ERROR,
+  payload: { error },
+});
+
 
 // export const login = (username, password) => async dispatch => {
 //   dispatch(loginRequest());
@@ -228,6 +241,16 @@ export const addTocart = (data) => async dispatch => {
       dispatch(getAllCart())
   } catch (error) {
       dispatch(addTocartError(error.message));
+  }
+};
+
+export const addNotescart = (data) => async dispatch => {
+  dispatch(addNotesRequest());
+  try {
+      const res = await UserController.addNotes(data);
+      dispatch(addNotesSuccess(res));
+  } catch (error) {
+      dispatch(addNotesError(error.message));
   }
 };
 

@@ -42,7 +42,7 @@ import {
   dropdown2,
   dollar,
   addDiscountPic,
-  notes,
+  notess,
   checkbox,
   checkedCheckbox,
   checkArrow,
@@ -95,10 +95,12 @@ import {
   clearAllCart,
   addTocart,
   clearOneCart,
+  addNotescart,
 } from '@/actions/UserActions';
 import { getUser } from '@/selectors/UserSelectors';
 import { TYPES } from '@/Types/Types';
 import { AddDiscountToCart, UpdatePrice } from '@/components';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export function Retails() {
   const dispatch = useDispatch();
@@ -109,6 +111,7 @@ export function Retails() {
   const productArray = getUserData?.products ?? [];
   const serProductArray = getUserData?.SeaProductList;
   const allCartArray = getUserData?.getAllCart?.poscart_products;
+  const cartID2 = getUserData?.getAllCart?.id;
   const getCartAmount = getUserData?.getAllCart?.amount;
   const getTotalCart = getUserData?.getAllCart?.poscart_products?.length;
   const totalCart = getTotalCart ? getTotalCart : "0";
@@ -187,6 +190,7 @@ export function Retails() {
   const cartId = cartData?.cart_id;
   const productId = cartData?.product_id;
   const cartTotalAmount = getCartAmount?.total_amount;
+  const [notes, setNotes] = useState('')
 
 
   useEffect(id => {
@@ -218,9 +222,11 @@ export function Retails() {
   };
 
   const onChangeFun = (search) => {
-    if (search.length > 1) { 
+    if (search.length > 3) { 
          dispatch(getSearchProduct(search));
         setPosSearch(true);
+    }else if(search.length < 3){
+      setPosSearch(false);
     }
   }
 
@@ -246,19 +252,24 @@ export function Retails() {
   );
 
   const clearCartHandler = () => {
-    Alert.alert('Clear cart', 'Are you sure you want to clear cart ?', [
-   {
-     text: 'No',
-     onPress: () => console.log('Cancel Pressed'),
-     style: 'cancel',
-   },
-   {
-     text: 'YES',
-     onPress: () => {
-       dispatch(clearAllCart());
-     },
-   },
- ]);
+    if (totalCart === '0'){
+      Alert.alert(strings.posSale.cartAlraedyEmpty)
+    }else{
+      Alert.alert('Clear cart', 'Are you sure you want to clear cart ?', [
+        {
+          text: 'No',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'YES',
+          onPress: () => {
+            dispatch(clearAllCart());
+          },
+        },
+         ]);
+    }
+   
 };
 
 const removeOneCart = () => {
@@ -282,6 +293,30 @@ const addToCartHandler = () => {
     dispatch(addTocart(data));
     setPosSearch(false)
 
+};
+
+const saveNotesHandler = () => {
+  if (!notes){
+    Toast.show({
+      text2: strings.posSale.pleaseAddNotes,
+      position: 'bottom',
+      type: 'error_toast',
+      visibilityTime: 1500,
+    });
+  }else {
+    const data = {
+      cartId:cartID2,
+      notes:notes
+    }
+    dispatch(addNotescart(data));
+    clearInput()
+
+  }
+   
+};
+
+const clearInput =() => {
+  setNotes('')
 };
 
   const menuHandler = () => {
@@ -382,6 +417,7 @@ const addToCartHandler = () => {
   };
   const searchConRemoveHandler = () => {
     setPosSearch(false);
+    setSearchProDetail(false)
   };
   const searchProdutDetailHandler = (item) => {
     // console.log('-------------------', item.id)
@@ -402,7 +438,7 @@ const addToCartHandler = () => {
   };
 
   const decrementCount = () => {
-    if (count > 3) {
+    if (count > 0) {
       setCount(count - 1);
     }
   };
@@ -776,7 +812,7 @@ const addToCartHandler = () => {
                 {strings.posSale.addToCart}
               </Text>
             </TouchableOpacity>
-            <Spacer space={SH(15)} />
+            <Spacer space={SH(35)} />
           </View>
         </View>
       ) : (
@@ -1839,7 +1875,7 @@ const addToCartHandler = () => {
                 style={styles.discountCon}
                 onPress={addNotesHandler}
               >
-                <Image source={notes} style={styles.addDiscountStyle} />
+                <Image source={notess} style={styles.addDiscountStyle} />
                 <Text style={styles.addDiscountText}>Add Notes</Text>
               </TouchableOpacity>
             </View>
@@ -1872,6 +1908,7 @@ const addToCartHandler = () => {
                 setPercentDis={setPercentDis}
                 discountCode={discountCode}
                 setDiscountCode={setDiscountCode}
+                // saveDiscountHandler={saveDiscountHandler}
               />
             </View>
           ) : null}
@@ -1903,14 +1940,16 @@ const addToCartHandler = () => {
                   multiline={true}
                   numberOfLines={4}
                   style={styles.addNoteInput}
+                  value= {notes}
+                  onChangeText={setNotes}
                 />
                 <Spacer space={SH(12)} />
               </View>
               <Spacer space={SH(15)} />
               <View style={styles.saveButtonCon}>
-                <View style={styles.saveNotesButton}>
+                <TouchableOpacity style={styles.saveNotesButton} onPress={saveNotesHandler}>
                   <Text style={styles.saveNotesText}>Save notes</Text>
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
           ) : null}
@@ -2058,6 +2097,7 @@ const addToCartHandler = () => {
 
           {/*  pos search  start */}
           <Modal animationType="fade" transparent={true} isVisible={posSearch}>
+          <KeyboardAvoidingView style={{flex:1}}>
             <View style={[styles.searchproductCon1, styles.searchproductCon2]}>
               <Spacer space={SH(20)} />
               <View style={styles.searchInputWraper}>
@@ -2065,10 +2105,6 @@ const addToCartHandler = () => {
                   <TouchableOpacity onPress={searchConRemoveHandler}>
                   <Image source={backArrow2} style={styles.backArrow2Style} />
                   </TouchableOpacity>
-                  {/* <TextInput
-                  // placeholder="Search product here"
-                  // style={styles.searchInput}
-                  /> */}
                    <TextInput
                       placeholder="Search product here"
                       style={styles.searchInput2}
@@ -2112,6 +2148,7 @@ const addToCartHandler = () => {
                
               </View>
             </View>
+            </KeyboardAvoidingView>
           </Modal>
           {/*  pos search  end */}
 

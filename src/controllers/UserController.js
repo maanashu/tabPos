@@ -285,6 +285,66 @@ export class UserController {
           reject(error.msg);
         });
     });
+  };
+  static async addNotes(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.addNotes;
+
+      const body = {
+        cart_id:data.cartId,
+        notes: data.notes
+      }
+
+      HttpClient.post(endpoint, body)
+        .then(response => {
+        //   if (response?.status_code === 200) {
+        //     // Toast.show({
+        //     //   position: 'bottom',
+        //     //   type: 'success_toast',
+        //     //   // text2: response?.msg,
+        //     //   text:'successs',
+        //     //   visibilityTime: 2000,
+        //     // });
+        //     console.log('dfghjsdfghjk')
+        //   }
+        //   resolve(response);
+        // })
+        // .catch(error => {
+        //   Toast.show({
+        //     position: 'bottom',
+        //     type: 'error_toast',
+        //     text2: error.msg,
+        //     visibilityTime: 2000,
+        //   });
+        //   reject(error.msg);
+        // });
+        if (response?.status_code === 200) {
+          Toast.show({
+            type: 'success_toast',
+            text2: strings.successMessages.loginSuccess,
+            position: 'bottom',
+            visibilityTime: 1500,
+          });
+          // console.log('fghj,./')
+          resolve(response);
+        } else {
+          Toast.show({
+            text2: response.msg,
+            position: 'bottom',
+            type: 'success_toast',
+            visibilityTime: 1500,
+          });
+        }
+      }).catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500
+          })
+        reject(error.msg);
+      });
+    });
   }
 
   static async logout() {

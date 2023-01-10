@@ -176,7 +176,10 @@ export const en = {
     location:'Available in another location',
     addToCart:'Add to cart',
     back:'Back',
-    details:'Details'
+    details:'Details',
+    cartAlraedyEmpty:'Your cart is currently empty',
+    saveDiscount:'Save Discount',
+    pleaseAddNotes:'Please add notes'
 
 
 

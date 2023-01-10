@@ -23,6 +23,7 @@ export const ApiProductInventory = {
 
 export const ApiOrderInventory = {
     getAllCart:'poscarts/user',
-    clearAllCart:'poscarts'
+    clearAllCart:'poscarts',
+    addNotes:'poscarts/addnotes'
 
 }
