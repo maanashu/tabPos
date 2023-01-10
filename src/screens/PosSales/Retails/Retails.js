@@ -24,8 +24,6 @@ import {
 import { SH, SF, COLORS, SW } from '@/theme';
 import {
   Fonts,
-  deliveryTruck,
-  dropdown,
   crossButton,
   menu,
   search_light,
@@ -33,7 +31,6 @@ import {
   purchese,
   arrow_right,
   categoryProduct,
-  marboloRed,
   plus,
   minus,
   doubleRight,
@@ -43,46 +40,29 @@ import {
   dollar,
   addDiscountPic,
   notess,
-  checkbox,
-  checkedCheckbox,
   checkArrow,
-  scanner,
-  jbr_icon,
-  money,
-  card,
-  marboloPlus,
   loader,
-  ashton,
   jbrCustomer,
   backArrow2,
   backArrow,
-  marboloRedPack,
-  marboloPack,
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
 import {
   moderateScale,
   verticalScale,
-  scale,
   moderateVerticalScale,
 } from 'react-native-size-matters';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Modal from 'react-native-modal';
 import DropDownPicker from 'react-native-dropdown-picker';
 const windowHeight = Dimensions.get('window').height;
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import {
   jbritemList,
-  CategoryData,
-  ProductData,
   bundleOfferData,
-  searchProductData,
   productUnitData,
-  CategoryDataHorizontal,
   tipData,
   amountReceivedData,
-  cartData,
 } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -96,6 +76,7 @@ import {
   addTocart,
   clearOneCart,
   addNotescart,
+  addDiscountToCart,
 } from '@/actions/UserActions';
 import { getUser } from '@/selectors/UserSelectors';
 import { TYPES } from '@/Types/Types';
@@ -114,9 +95,7 @@ export function Retails() {
   const cartID2 = getUserData?.getAllCart?.id;
   const getCartAmount = getUserData?.getAllCart?.amount;
   const getTotalCart = getUserData?.getAllCart?.poscart_products?.length;
-  const totalCart = getTotalCart ? getTotalCart : "0";
-  // const searchProductId = getUserData?.SeaProductList;
-  // console.log('serProductArray', serProductArray);
+  const totalCart = getTotalCart ? getTotalCart : '0';
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
   const [title, setTitle] = useState('');
@@ -134,24 +113,6 @@ export function Retails() {
   const [cityItems, setCityItems] = useState([
     { label: 'Miami', value: 'miami' },
     { label: 'abc', value: 'abc' },
-  ]);
-  const [productCategory, setProductCategory] = useState(false);
-  const [productCategoryValue, setProductCategoryValue] = useState(null);
-  const [productCategoryItem, setProductCategoryItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
-  ]);
-  const [productSubCategory, setProductSubCategory] = useState(false);
-  const [productSubCategoryValue, setProductSubCategoryValue] = useState(null);
-  const [productSubCategoryItem, setProductSubCategoryItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
-  ]);
-  const [productBrand, setProductBrand] = useState(false);
-  const [productBrandValue, setProductBrandValue] = useState(null);
-  const [productBrandItem, setProductBrandItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
   ]);
 
   const [jbrCoin, setJbrCoin] = useState(false);
@@ -177,9 +138,12 @@ export function Retails() {
   const [indexs, setIndexs] = useState('');
   const [tipSelectId, setTipsSelected] = useState(1);
   const [amountSelectId, setAmountSelectId] = useState(1);
+
   const [amountDis, setAmountDis] = useState('');
   const [percentDis, setPercentDis] = useState('');
   const [discountCode, setDiscountCode] = useState('');
+  const [descriptionDis, setDescriptionDis] = useState('');
+
   const [updatePriceCounter, setUpdatePriceCounter] = useState(0);
   const [addProductCounter, setAddProductCounter] = useState(0);
   const [cardCounter, setCardCounter] = useState(0);
@@ -190,15 +154,16 @@ export function Retails() {
   const cartId = cartData?.cart_id;
   const productId = cartData?.product_id;
   const cartTotalAmount = getCartAmount?.total_amount;
-  const [notes, setNotes] = useState('')
-
+  const [notes, setNotes] = useState('');
+  const [value, setValue] = useState('');
+  const cartIDdiscount = JSON.stringify(cartID2);
 
   useEffect(id => {
     dispatch(getCategory());
     dispatch(getSubCategory(1));
-     dispatch(getBrand(1));
-     dispatch(getProduct(1));
-     dispatch(getAllCart())
+    dispatch(getBrand(1));
+    dispatch(getProduct(1));
+    dispatch(getAllCart());
   }, []);
 
   const categoryFunction = id => {
@@ -221,14 +186,14 @@ export function Retails() {
     setBrandSelectedId(id);
   };
 
-  const onChangeFun = (search) => {
-    if (search.length > 3) { 
-         dispatch(getSearchProduct(search));
-        setPosSearch(true);
-    }else if(search.length < 3){
+  const onChangeFun = search => {
+    if (search.length > 3) {
+      dispatch(getSearchProduct(search));
+      setPosSearch(true);
+    } else if (search.length < 3) {
       setPosSearch(false);
     }
-  }
+  };
 
   const isLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_CATEGORY], state)
@@ -252,9 +217,9 @@ export function Retails() {
   );
 
   const clearCartHandler = () => {
-    if (totalCart === '0'){
-      Alert.alert(strings.posSale.cartAlraedyEmpty)
-    }else{
+    if (totalCart === '0') {
+      Alert.alert(strings.posSale.cartAlraedyEmpty);
+    } else {
       Alert.alert('Clear cart', 'Are you sure you want to clear cart ?', [
         {
           text: 'No',
@@ -267,57 +232,107 @@ export function Retails() {
             dispatch(clearAllCart());
           },
         },
-         ]);
+      ]);
     }
-   
-};
+  };
 
-const removeOneCart = () => {
-  const data = {
-    cartId : cartId,
-    productId : productId
-
-  }
-   dispatch(clearOneCart(data));
-   setAmountPopup(false)
-};
-
-const addToCartHandler = () => {
-  const data = {
-    seller_id:'b169ed4d-be27-44eb-9a08-74f997bc6a2a',
-    product_id: 5,
-    service_id: 4,
-    qty: 200,
-    attribute_value_ids: [24]
-  }
-    dispatch(addTocart(data));
-    setPosSearch(false)
-
-};
-
-const saveNotesHandler = () => {
-  if (!notes){
-    Toast.show({
-      text2: strings.posSale.pleaseAddNotes,
-      position: 'bottom',
-      type: 'error_toast',
-      visibilityTime: 1500,
-    });
-  }else {
+  const removeOneCart = () => {
     const data = {
-      cartId:cartID2,
-      notes:notes
+      cartId: cartId,
+      productId: productId,
+    };
+    dispatch(clearOneCart(data));
+    setAmountPopup(false);
+  };
+
+  const addToCartHandler = () => {
+    const data = {
+      seller_id: 'b169ed4d-be27-44eb-9a08-74f997bc6a2a',
+      product_id: 5,
+      service_id: 4,
+      qty: 200,
+      attribute_value_ids: [24],
+    };
+    dispatch(addTocart(data));
+    setPosSearch(false);
+  };
+
+  const saveNotesHandler = () => {
+    if (!cartIDdiscount) {
+      Toast.show({
+        text2: strings.posSale.addItemCart,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    }else if (!notes) {
+      Toast.show({
+        text2: strings.posSale.pleaseAddNotes,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      const data = {
+        cartId: cartID2,
+        notes: notes,
+      };
+      dispatch(addNotescart(data));
+      clearInput();
     }
-    dispatch(addNotescart(data));
-    clearInput()
+  };
 
-  }
-   
-};
+  const saveDiscountHandler = () => {
+    if (!cartIDdiscount) {
+      Toast.show({
+        text2: strings.posSale.addItemCart,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (value === '') {
+      Toast.show({
+        text2: strings.posSale.discountType,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (!amountDis && !percentDis && !discountCode) {
+      Toast.show({
+        text2: strings.posSale.enterfield,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (!descriptionDis) {
+      Toast.show({
+        text2: strings.posSale.selectDisTitle,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      const data = {
+        amountDis: amountDis,
+        percentDis: percentDis,
+        discountCode: discountCode,
+        value: value,
+        cartId: cartID2,
+        descriptionDis: descriptionDis,
+      };
+      dispatch(addDiscountToCart(data));
+      clearInput();
+    }
+  };
 
-const clearInput =() => {
-  setNotes('')
-};
+  const clearInput = () => {
+    setNotes('');
+    setAmountDis('');
+    setPercentDis('');
+    setDiscountCode('');
+    setValue('');
+    setDescriptionDis('');
+  };
 
   const menuHandler = () => {
     setCategoryModal(!categoryModal);
@@ -330,10 +345,10 @@ const clearInput =() => {
   const rightConCloseHandler = () => {
     setSideContainer(false);
   };
-  const amountPopHandler = (item) => {
+  const amountPopHandler = item => {
     // console.log(item, 'item----------------')
-      // alert('fghjkfghjk')
-      setCartData(item);
+    // alert('fghjkfghjk')
+    setCartData(item);
     setAmountPopup(!amountPopup);
     setBundleOffer(false);
   };
@@ -417,20 +432,19 @@ const clearInput =() => {
   };
   const searchConRemoveHandler = () => {
     setPosSearch(false);
-    setSearchProDetail(false)
+    setSearchProDetail(false);
   };
-  const searchProdutDetailHandler = (item) => {
+  const searchProdutDetailHandler = item => {
     // console.log('-------------------', item.id)
-    setStoreData(item)
+    setStoreData(item);
     setSearchProDetail(!searchProDetail);
   };
 
-  const viewDetailHandler = (item) => {
-    setPosSearch(false)
-    setSelectedData(item)
+  const viewDetailHandler = item => {
+    setPosSearch(false);
+    setSelectedData(item);
     setSearchProViewDetail(!searchProViewDetail);
   };
-
 
   const searchProDetRemoveHandlwe = () => {
     setSearchProViewDetail(false);
@@ -658,9 +672,9 @@ const clearInput =() => {
       productImage={{ uri: item.image }}
       productPrice={item.price}
       ProductBrandName={item.brand.name}
-      cartMinusOnPress = {() => setCardCounter(cardCounter - 1)}
-      cartPlusOnPress = {() => setCardCounter(cardCounter + 1)}
-      productCount= {cardCounter}
+      cartMinusOnPress={() => setCardCounter(cardCounter - 1)}
+      cartPlusOnPress={() => setCardCounter(cardCounter + 1)}
+      productCount={cardCounter}
     />
   );
 
@@ -715,21 +729,32 @@ const clearInput =() => {
   const renderSearchItem = ({ item, index }) => (
     <View>
       <Spacer space={SH(15)} />
-      <TouchableOpacity style={[styles.displayFlex, styles.padding]} onPress={ () => (searchProdutDetailHandler(item))}>
+      <TouchableOpacity
+        style={[styles.displayFlex, styles.padding]}
+        onPress={() => searchProdutDetailHandler(item)}
+      >
         <View style={styles.displayFlex}>
-          <Image source={{uri : item.image}} style={styles.marboloRedPackStyle} />
+          <Image
+            source={{ uri: item.image }}
+            style={styles.marboloRedPackStyle}
+          />
           <View style={styles.locStock}>
             <Text style={styles.marbolorRedStyle}>{item.name}</Text>
             <Spacer space={SH(5)} />
             <Text style={styles.stockStyle}>{strings.posSale.stock}</Text>
-            <Text style={styles.searchItalicText}>{strings.posSale.location}</Text>
+            <Text style={styles.searchItalicText}>
+              {strings.posSale.location}
+            </Text>
             {/* <Text>{index}</Text> */}
           </View>
         </View>
         <View style={{ alignItems: 'flex-end' }}>
           <Text style={styles.marbolorRedStyle}>{item.price}</Text>
           <Spacer space={SH(5)} />
-          <TouchableOpacity onPress={() => viewDetailHandler(item)} style={styles.viewDetailCon}>
+          <TouchableOpacity
+            onPress={() => viewDetailHandler(item)}
+            style={styles.viewDetailCon}
+          >
             <Text style={[styles.stockStyle, { color: COLORS.primary }]}>
               View details
             </Text>
@@ -746,7 +771,7 @@ const clearInput =() => {
           <View style={styles.amountjfrContainer}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
-                source={{uri : item.image}}
+                source={{ uri: item.image }}
                 style={styles.marboloRedPackStyle}
               />
               <Text style={styles.jfrmaduro}>{item.name}</Text>
@@ -781,7 +806,9 @@ const clearInput =() => {
           <Spacer space={SH(25)} />
           <View style={styles.priceContainer}>
             <Text style={styles.price}>Price</Text>
-            <Text style={[styles.price, { fontSize: SF(18) }]}>{item.price}</Text>
+            <Text style={[styles.price, { fontSize: SF(18) }]}>
+              {item.price}
+            </Text>
           </View>
           <Spacer space={SH(25)} />
           <View
@@ -844,7 +871,7 @@ const clearInput =() => {
     </View>
   );
 
-  const renderEmptyContainer = (allCartArray) => {
+  const renderEmptyContainer = allCartArray => {
     return (
       <View>
         {/* {
@@ -852,9 +879,8 @@ const clearInput =() => {
           ?
           (<Text style={styles.noCart}>{strings.valiadtion.noCart}</Text>)
           : */}
-          <Text style={styles.noCart}>{strings.valiadtion.noData}</Text>
+        <Text style={styles.noCart}>{strings.valiadtion.noData}</Text>
         {/* } */}
-        
       </View>
     );
   };
@@ -1106,24 +1132,28 @@ const clearInput =() => {
     }
   };
 
-  const cartListItem = ({item}) => (
-    <TouchableOpacity style={styles.jfrContainer} onPress={() => amountPopHandler(item)}>
-    <View style={styles.jfrContainer2}>
-      <Image source={{uri : item.product_details.image}} style={styles.jfrStyle} />
-      <View style={{ padding:5 }}>
-        <Text style={styles.jfrText}>{item.product_details.name}</Text>
-        <Text style={styles.boxText}>Box</Text>
-        <Spacer space={SH(5)} />
-        <Text style={styles.oneX}>x {item.qty}</Text>
-      </View>
-    </View>
-    <View
-      style={{ flexDirection: 'column', alignItems: 'center' }}
+  const cartListItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.jfrContainer}
+      onPress={() => amountPopHandler(item)}
     >
-      <Text style={styles.rate}>{null}</Text>
-      <Text style={styles.rate}>{null}</Text>
-      <Text style={styles.rate}>{item.product_details.price}</Text>
-      {/* <TouchableOpacity
+      <View style={styles.jfrContainer2}>
+        <Image
+          source={{ uri: item.product_details.image }}
+          style={styles.jfrStyle}
+        />
+        <View style={{ padding: 5 }}>
+          <Text style={styles.jfrText}>{item.product_details.name}</Text>
+          <Text style={styles.boxText}>Box</Text>
+          <Spacer space={SH(5)} />
+          <Text style={styles.oneX}>x {item.qty}</Text>
+        </View>
+      </View>
+      <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+        <Text style={styles.rate}>{null}</Text>
+        <Text style={styles.rate}>{null}</Text>
+        <Text style={styles.rate}>{item.product_details.price}</Text>
+        {/* <TouchableOpacity
         onPress={updatePriceHandler}
         style={styles.updatePriceButtonCon}
       >
@@ -1131,11 +1161,9 @@ const clearInput =() => {
           Update price
         </Text>
       </TouchableOpacity> */}
-    </View>
-  </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
   );
-
- 
 
   return (
     <>
@@ -1341,7 +1369,9 @@ const clearInput =() => {
                       style={styles.searchInput}
                       value={search}
                       // onChangeText={setSearch}
-                      onChangeText={(search) => (setSearch(search), onChangeFun(search) ) }
+                      onChangeText={search => (
+                        setSearch(search), onChangeFun(search)
+                      )}
                       // onChangeText={onChangeFun}
                     />
                   </View>
@@ -1490,12 +1520,12 @@ const clearInput =() => {
                   </View>
                   <Spacer space={SH(30)} />
                   <ChoosePayment
-                  jbrCoin={jbrCoin}
-                  cardChoose={cardChoose}
-                  cashChoose={cashChoose}
-                  jbrCoinChoseHandler={jbrCoinChoseHandler}
-                  cashChooseHandler={cashChooseHandler}
-                  cardChooseHandler={cardChooseHandler}
+                    jbrCoin={jbrCoin}
+                    cardChoose={cardChoose}
+                    cashChoose={cashChoose}
+                    jbrCoinChoseHandler={jbrCoinChoseHandler}
+                    cashChooseHandler={cashChooseHandler}
+                    cardChooseHandler={cardChooseHandler}
                   />
                   {/* <TouchableOpacity
                     style={
@@ -1598,7 +1628,7 @@ const clearInput =() => {
                         <Text style={styles.countCart}>123</Text>
                       </TouchableOpacity>
                       <TouchableOpacity onPress={clearCartHandler}>
-                      <Text style={styles.clearCart}>Clear cart</Text>
+                        <Text style={styles.clearCart}>Clear cart</Text>
                       </TouchableOpacity>
                       <TouchableOpacity onPress={moreActionHandler}>
                         <Text style={styles.actionButton}>More action</Text>
@@ -1606,26 +1636,19 @@ const clearInput =() => {
                     </View>
                   </View>
                   <Spacer space={SH(30)} />
-                  {
-                    isGetCartLoading
-                    ?
-                    (
-                      <View style={{ marginTop: 50 }}>
+                  {isGetCartLoading ? (
+                    <View style={{ marginTop: 50 }}>
                       <ActivityIndicator size="large" color="#0000ff" />
-                  </View>
-                    )
-                    :
+                    </View>
+                  ) : (
                     <FlatList
-                    data={allCartArray}
-                    extraData={allCartArray}
-                   renderItem={cartListItem}
-                   keyExtractor={item => item.id}
-                   ListEmptyComponent={renderEmptyContainer}
-                 />
-
-                  }
-                
-
+                      data={allCartArray}
+                      extraData={allCartArray}
+                      renderItem={cartListItem}
+                      keyExtractor={item => item.id}
+                      ListEmptyComponent={renderEmptyContainer}
+                    />
+                  )}
                 </View>
               )}
 
@@ -1634,7 +1657,12 @@ const clearInput =() => {
                 <Spacer space={SH(10)} />
                 <View style={styles.bottomSubCon}>
                   <Text style={styles.smalldarkText}>Sub Total</Text>
-                  <Text style={styles.smallLightText}>${getCartAmount?.products_price ? getCartAmount?.products_price : '0.00'}</Text>
+                  <Text style={styles.smallLightText}>
+                    $
+                    {getCartAmount?.products_price
+                      ? getCartAmount?.products_price
+                      : '0.00'}
+                  </Text>
                 </View>
                 <Spacer space={SH(12)} />
                 <View style={styles.bottomSubCon}>
@@ -1654,7 +1682,10 @@ const clearInput =() => {
                     Total
                   </Text>
                   <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
-                  <Text style={styles.smalldarkText2}>$</Text>{getCartAmount?.total_amount ? getCartAmount?.total_amount : '0.00'}
+                    <Text style={styles.smalldarkText2}>$</Text>
+                    {getCartAmount?.total_amount
+                      ? getCartAmount?.total_amount
+                      : '0.00'}
                   </Text>
                 </View>
                 <Spacer space={SH(12)} />
@@ -1683,7 +1714,9 @@ const clearInput =() => {
           >
             <View style={styles.amountPopupCon}>
               <View style={styles.primaryHeader}>
-                <Text style={styles.headerText}>Amount: ${cartTotalAmount}</Text>
+                <Text style={styles.headerText}>
+                  Amount: ${cartTotalAmount}
+                </Text>
                 <TouchableOpacity
                   onPress={amountRemoveHandler}
                   style={styles.crossButtonPosition}
@@ -1698,8 +1731,17 @@ const clearInput =() => {
                     <View
                       style={{ flexDirection: 'row', alignItems: 'center' }}
                     >
-                      <Image source={{uri : cartData?.product_details?.image} ? {uri : cartData?.product_details?.image}  : jfr} style={styles.amountjfrStyle} />
-                      <Text numberOfLines={1} style={styles.jfrmaduro}>{cartData?.product_details?.name}sdqee</Text>
+                      <Image
+                        source={
+                          { uri: cartData?.product_details?.image }
+                            ? { uri: cartData?.product_details?.image }
+                            : jfr
+                        }
+                        style={styles.amountjfrStyle}
+                      />
+                      <Text numberOfLines={1} style={styles.jfrmaduro}>
+                        {cartData?.product_details?.name}sdqee
+                      </Text>
                     </View>
 
                     <View>
@@ -1737,7 +1779,7 @@ const clearInput =() => {
                   <View style={styles.priceContainer}>
                     <Text style={styles.price}>Price</Text>
                     <Text style={[styles.price, { fontSize: SF(18) }]}>
-                     {cartData?.product_details?.price}
+                      {cartData?.product_details?.price}
                     </Text>
                   </View>
                   <Spacer space={SH(25)} />
@@ -1745,9 +1787,12 @@ const clearInput =() => {
                     style={[
                       styles.priceContainer,
                       { backgroundColor: COLORS.white },
-                    ]}>
+                    ]}
+                  >
                     <Image source={minus} style={styles.plusBtn2} />
-                    <Text style={[styles.price, { fontSize: SF(24) }]}>{cartData?.qty}</Text>
+                    <Text style={[styles.price, { fontSize: SF(24) }]}>
+                      {cartData?.qty}
+                    </Text>
                     <Image source={plus} style={styles.plusBtn2} />
                   </View>
                   <Spacer space={SH(30)} />
@@ -1767,13 +1812,13 @@ const clearInput =() => {
                   ) : null}
                   <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={removeOneCart}>
-                    <Text style={styles.removeButton}>Remove from cart</Text>
+                      <Text style={styles.removeButton}>Remove from cart</Text>
                     </TouchableOpacity>
                     <Text style={[styles.removeButton, styles.updateButton]}>
                       Update to cart
                     </Text>
                   </View>
-                 {/* <View>
+                  {/* <View>
                  <Text>{cartData?.product_id}</Text> 
                   <Text>{cartData?.cart_id}</Text>
                  </View> */}
@@ -1908,7 +1953,12 @@ const clearInput =() => {
                 setPercentDis={setPercentDis}
                 discountCode={discountCode}
                 setDiscountCode={setDiscountCode}
-                // saveDiscountHandler={saveDiscountHandler}
+                descriptionDis={descriptionDis}
+                setDescriptionDis={setDescriptionDis}
+                setValue={setValue}
+                value={value}
+                saveDiscountHandler={saveDiscountHandler}
+                clearInput={clearInput}
               />
             </View>
           ) : null}
@@ -1940,14 +1990,17 @@ const clearInput =() => {
                   multiline={true}
                   numberOfLines={4}
                   style={styles.addNoteInput}
-                  value= {notes}
+                  value={notes}
                   onChangeText={setNotes}
                 />
                 <Spacer space={SH(12)} />
               </View>
               <Spacer space={SH(15)} />
               <View style={styles.saveButtonCon}>
-                <TouchableOpacity style={styles.saveNotesButton} onPress={saveNotesHandler}>
+                <TouchableOpacity
+                  style={styles.saveNotesButton}
+                  onPress={saveNotesHandler}
+                >
                   <Text style={styles.saveNotesText}>Save notes</Text>
                 </TouchableOpacity>
               </View>
@@ -2097,57 +2150,57 @@ const clearInput =() => {
 
           {/*  pos search  start */}
           <Modal animationType="fade" transparent={true} isVisible={posSearch}>
-          <KeyboardAvoidingView style={{flex:1}}>
-            <View style={[styles.searchproductCon1, styles.searchproductCon2]}>
-              <Spacer space={SH(20)} />
-              <View style={styles.searchInputWraper}>
-                <View style={styles.displayFlex}>
-                  <TouchableOpacity onPress={searchConRemoveHandler}>
-                  <Image source={backArrow2} style={styles.backArrow2Style} />
-                  </TouchableOpacity>
-                   <TextInput
+            <KeyboardAvoidingView style={{ flex: 1 }}>
+              <View
+                style={[styles.searchproductCon1, styles.searchproductCon2]}
+              >
+                <Spacer space={SH(20)} />
+                <View style={styles.searchInputWraper}>
+                  <View style={styles.displayFlex}>
+                    <TouchableOpacity onPress={searchConRemoveHandler}>
+                      <Image
+                        source={backArrow2}
+                        style={styles.backArrow2Style}
+                      />
+                    </TouchableOpacity>
+                    <TextInput
                       placeholder="Search product here"
                       style={styles.searchInput2}
                       value={search}
                       // onChangeText={setSearch}
-                      onChangeText={(search) => (setSearch(search), onChangeFun(search) ) }
+                      onChangeText={search => (
+                        setSearch(search), onChangeFun(search)
+                      )}
                       // onChangeText={onChangeFun}
                     />
-                </View>
-                <TouchableOpacity onPress={searchConRemoveHandler}>
-                  <Image
-                    source={crossButton}
-                    style={[
-                      styles.searchCrossButton,
-                      { tintColor: COLORS.darkGray },
-                    ]}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View>
-                {
-                  isSearchProLoading
-                  ?
-                  (
-                    <View style={{ marginTop: 100 }}>
-                    <ActivityIndicator size="large" color="#0000ff" />
                   </View>
-                  )
-                  :
-                  <FlatList
-                  data={serProductArray}
-                  extraData={serProductArray}
-                  renderItem={renderSearchItem}
-                  keyExtractor={item => item.id}
-                  style={styles.flatlistHeight}
-                   ListEmptyComponent={renderEmptyProducts}
-                />
-
-                 
-                }
-               
+                  <TouchableOpacity onPress={searchConRemoveHandler}>
+                    <Image
+                      source={crossButton}
+                      style={[
+                        styles.searchCrossButton,
+                        { tintColor: COLORS.darkGray },
+                      ]}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  {isSearchProLoading ? (
+                    <View style={{ marginTop: 100 }}>
+                      <ActivityIndicator size="large" color="#0000ff" />
+                    </View>
+                  ) : (
+                    <FlatList
+                      data={serProductArray}
+                      extraData={serProductArray}
+                      renderItem={renderSearchItem}
+                      keyExtractor={item => item.id}
+                      style={styles.flatlistHeight}
+                      ListEmptyComponent={renderEmptyProducts}
+                    />
+                  )}
+                </View>
               </View>
-            </View>
             </KeyboardAvoidingView>
           </Modal>
           {/*  pos search  end */}
@@ -2165,12 +2218,15 @@ const clearInput =() => {
               </TouchableOpacity>
               <Spacer space={SH(20)} />
               <Text style={styles.productDetailHeader}>
-              {selectedData.name}
+                {selectedData.name}
               </Text>
               <Spacer space={SH(10)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
                 <View style={styles.detailImageCon}>
-                  <Image source={{ uri : selectedData.image}} style={styles.marboloPackStyle} />
+                  <Image
+                    source={{ uri: selectedData.image }}
+                    style={styles.marboloPackStyle}
+                  />
                   <Spacer space={SH(15)} />
                   <View style={styles.productDescrptionCon}>
                     <Spacer space={SH(10)} />
@@ -2188,7 +2244,7 @@ const clearInput =() => {
                   <View style={styles.priceContainer}>
                     <Text style={styles.price}>Price</Text>
                     <Text style={[styles.price, { fontSize: SF(18) }]}>
-                     {selectedData.price}
+                      {selectedData.price}
                     </Text>
                   </View>
                   <Spacer space={SH(25)} />

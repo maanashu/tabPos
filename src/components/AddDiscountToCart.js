@@ -27,14 +27,16 @@ export function AddDiscountToCart({
   setPercentDis,
   discountCode,
   setDiscountCode,
-  saveDiscountHandler
+  saveDiscountHandler,
+  descriptionDis,
+  setDescriptionDis,
+  setValue
 
 }) {
   const [amountCheck, setAmountCheck] = useState(false);
   const [percentageCheck, setPercentageCheck] = useState(false);
   const [discountCheck, setDiscountCheck] = useState(false);
-  const [value, setValue] = useState('');
-  console.log(value)
+  // const [value, setValue] = useState('');
 
   return (
 
@@ -52,7 +54,7 @@ export function AddDiscountToCart({
         <Spacer space={SH(12)} />
         <View
           style={
-            amountDis ? styles.dicountInputWraper2 : styles.dicountInputWraper
+            amountCheck ? styles.dicountInputWraper2 : styles.dicountInputWraper
           }>
           <View style={styles.displayFlex}>
             <View style={styles.displayFlex}>
@@ -61,9 +63,10 @@ export function AddDiscountToCart({
                   setAmountCheck(!amountCheck),
                   setPercentageCheck(false),
                   setDiscountCheck(false),
-                  setValue('Amount')
-                )}
-              >
+                  setValue('Amount'),
+                  setPercentDis(''),
+                  setDiscountCode('')
+                )}>
                 <Image
                   source={amountCheck ? checkedCheckbox : checkbox}
                   style={styles.checkboxStyle}
@@ -71,7 +74,7 @@ export function AddDiscountToCart({
               </TouchableOpacity>
               <Text
                 numberOfLines={1}
-                style={amountDis ? styles.amountLabel2 : styles.amountLabel}
+                style={amountCheck ? styles.amountLabel2 : styles.amountLabel}
               >
                 Amount Discount
               </Text>
@@ -80,19 +83,20 @@ export function AddDiscountToCart({
               placeholder="$ 00.00"
               keyboardType="numeric"
               style={
-                amountDis
+                amountCheck
                   ? styles.amountDiscountInput2
                   : styles.amountDiscountInput
               }
               value={amountDis}
               onChangeText={setAmountDis}
+              editable={ percentageCheck || discountCheck ? false : true }
             />
           </View>
         </View>
         <Spacer space={SH(12)} />
         <View
           style={
-            percentDis ? styles.dicountInputWraper2 : styles.dicountInputWraper
+            percentageCheck ? styles.dicountInputWraper2 : styles.dicountInputWraper
           }
         >
           <View style={styles.displayFlex}>
@@ -102,7 +106,9 @@ export function AddDiscountToCart({
                   setPercentageCheck(!percentageCheck),
                   setAmountCheck(false),
                   setDiscountCheck(false),
-                  setValue('Percentage')
+                  setValue('Percentage'),
+                  setDiscountCode(''),
+                  setAmountDis('')
                 )}
               >
                 <Image
@@ -112,28 +118,30 @@ export function AddDiscountToCart({
               </TouchableOpacity>
               <Text
                 numberOfLines={1}
-                style={percentDis ? styles.amountLabel2 : styles.amountLabel}
+                style={percentageCheck ? styles.amountLabel2 : styles.amountLabel}
               >
                 Percentage Discount
               </Text>
             </View>
             <TextInput
-              placeholder="$ 00.00"
+              placeholder="0.00%"
               keyboardType="numeric"
               style={
-                percentDis
+                percentageCheck
                   ? styles.amountDiscountInput2
                   : styles.amountDiscountInput
               }
               value={percentDis}
               onChangeText={setPercentDis}
+              
+              editable={discountCheck || amountCheck ? false : true}
             />
           </View>
         </View>
         <Spacer space={SH(12)} />
         <View
           style={
-            discountCode
+            discountCheck
               ? styles.dicountInputWraper2
               : styles.dicountInputWraper
           }
@@ -145,6 +153,8 @@ export function AddDiscountToCart({
                   setDiscountCheck(!discountCheck),
                   setPercentageCheck(false),
                   setAmountCheck(false),
+                  setPercentDis(''),
+                  setAmountDis(''),
 
                   setValue('Code')
                 )}
@@ -156,7 +166,7 @@ export function AddDiscountToCart({
               </TouchableOpacity>
               <Text
                 numberOfLines={1}
-                style={discountCode ? styles.amountLabel2 : styles.amountLabel}
+                style={discountCheck ? styles.amountLabel2 : styles.amountLabel}
               >
                 Discount Code
               </Text>
@@ -165,19 +175,26 @@ export function AddDiscountToCart({
               placeholder="CODE"
               keyboardType="numeric"
               style={
-                discountCode
+                discountCheck
                   ? styles.amountDiscountInput2
                   : styles.amountDiscountInput
               }
               value={discountCode}
               onChangeText={setDiscountCode}
+              editable={percentageCheck || amountCheck ? false : true}
             />
           </View>
         </View>
         <Spacer space={SH(12)} />
         <Text style={styles.discountTitle}>Discount Tittle</Text>
         <Spacer space={SH(12)} />
-        <TextInput placeholder="Tittle" style={styles.discountTitleInput} />
+        <TextInput
+         placeholder="Tittle" 
+         style={styles.discountTitleInput}
+         value={descriptionDis}
+         onChangeText={setDescriptionDis}
+         
+         />
         <Spacer space={SH(12)} />
         </KeyboardAwareScrollView>
       

@@ -345,6 +345,49 @@ export class UserController {
         reject(error.msg);
       });
     });
+  };
+
+  static async addDiscountToCart(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.addDiscountToCart;
+      const  description = data.descriptionDis ? data.descriptionDis  : '';
+      const discountInput = data.amountDis ? data.amountDis : data.percentDis ? data.percentDis : data.discountCode;
+      const  cartID = JSON.stringify(data.cartId);
+
+      const body = {
+        cart_id:cartID,
+        discount:discountInput,
+        discount_flag:data.value,
+        discount_desc: description
+      }
+      HttpClient.post(endpoint, body)
+        .then(response => {
+        if (response?.status_code === 200) {
+          Toast.show({
+            type: 'success_toast',
+            text2: strings.successMessages.loginSuccess,
+            position: 'bottom',
+            visibilityTime: 1500,
+          });
+          resolve(response);
+        } else {
+          Toast.show({
+            text2: response.msg,
+            position: 'bottom',
+            type: 'success_toast',
+            visibilityTime: 1500,
+          });
+        }
+      }).catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500
+          })
+        reject(error.msg);
+      });
+    });
   }
 
   static async logout() {

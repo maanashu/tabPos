@@ -141,6 +141,19 @@ const addNotesError = error => ({
   payload: { error },
 });
 
+const addDiscountRequest = () => ({
+  type: TYPES.ADD_DISCOUNT_REQUEST,
+  payload: null,
+});
+const addDiscountSuccess = ()  => ({
+  type: TYPES.ADD_DISCOUNT_SUCCESS,
+  payload: {  },
+});
+const addDiscountError = error => ({
+  type: TYPES.ADD_DISCOUNT_ERROR,
+  payload: { error },
+});
+
 
 // export const login = (username, password) => async dispatch => {
 //   dispatch(loginRequest());
@@ -254,6 +267,16 @@ export const addNotescart = (data) => async dispatch => {
   }
 };
 
+export const addDiscountToCart = (data) => async dispatch => {
+  dispatch(addDiscountRequest());
+  try {
+      const res = await UserController.addDiscountToCart(data);
+      dispatch(addDiscountSuccess(res));
+      console.log('res', res)
+  } catch (error) {
+      dispatch(addDiscountError(error.message));
+  }
+};
 
 export const logout = () => async dispatch => {
   try {

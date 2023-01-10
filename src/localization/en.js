@@ -179,7 +179,11 @@ export const en = {
     details:'Details',
     cartAlraedyEmpty:'Your cart is currently empty',
     saveDiscount:'Save Discount',
-    pleaseAddNotes:'Please add notes'
+    pleaseAddNotes:'Please add notes',
+    discountType:'Please select discount type',
+    enterfield:'Please enter field',
+    addItemCart:'Please item add in the cart',
+    selectDisTitle:'Please select discount title'
 
 
 
