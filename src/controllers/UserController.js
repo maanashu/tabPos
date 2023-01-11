@@ -388,7 +388,27 @@ export class UserController {
         reject(error.msg);
       });
     });
-  }
+  };
+
+  static async getProductBundle(BundleproductId) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.getProductBundle + '?' + `${BundleproductId}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  };
+
 
   static async logout() {
     return new Promise(resolve => {

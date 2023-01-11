@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -6,98 +6,71 @@ import {
   TouchableOpacity,
   View,
   Image,
-  TextInput,
 } from 'react-native';
-import { COLORS, SF, SH, ShadowStyles, SW, TextStyles } from '@/theme';
-import {
-  moderateScale,
-  moderateVerticalScale,
-  scale,
-  verticalScale,
-} from 'react-native-size-matters';
-import {
-  checkbox,
-  checkedCheckbox,
-  crossButton,
-  dropdown2,
-  Fonts,
-  marboloPlus,
-  marboloRed,
-  minus,
-  plus,
-} from '@/assets';
+import { COLORS, SF, SH, SW } from '@/theme';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
+import { Fonts, minus, plus } from '@/assets';
 import { Spacer } from './Spacer';
-import { strings } from '@/localization';
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-import DropDownPicker from 'react-native-dropdown-picker';
 
-export function ProductCard({ productName,productImage,productPrice,ProductBrandName, cartMinusOnPress,cartPlusOnPress,productCount}) {
-
-
+export function ProductCard({
+  productName,
+  productImage,
+  productPrice,
+  ProductBrandName,
+  cartMinusOnPress,
+  cartPlusOnPress,
+  productCount,
+}) {
   return (
     <View style={styles.productContainer}>
-    <View style={{ flexDirection: 'row' }}>
-      <Image source={productImage} style={styles.marboloStyle} />
-      <View style={{ paddingHorizontal: moderateScale(5) }}>
-        <Text numberOfLines={1} style={styles.productName}>{productName}</Text>
-        <Spacer space={SH(3)} />
-        <Text style={styles.proSubName}>{ProductBrandName}</Text>
+      <View style={{ flexDirection: 'row' }}>
+        <Image source={productImage} style={styles.marboloStyle} />
+        <View style={{ paddingHorizontal: moderateScale(5) }}>
+          <Text numberOfLines={1} style={styles.productName}>
+            {productName}
+          </Text>
+          <Spacer space={SH(3)} />
+          <Text style={styles.proSubName}>{ProductBrandName}</Text>
+        </View>
+      </View>
+      <Spacer space={SH(5)} />
+      <Text style={styles.size}>Size</Text>
+      <Spacer space={SH(5)} />
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.cartonButton}>Carton</Text>
+        <Text style={styles.singlePackBtn}>Single Pack</Text>
+      </View>
+      <Spacer space={SH(7)} />
+      <Text style={styles.size}>Price</Text>
+      <Spacer space={SH(5)} />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={styles.previousRate}>$5.65</Text>
+        <Text style={styles.currentRate}>{productPrice}</Text>
+      </View>
+      <Spacer space={SH(8)} />
+      <View style={styles.hrLine}></View>
+      <Spacer space={SH(8)} />
+      <View style={styles.productCardcon}>
+        <TouchableOpacity onPress={cartMinusOnPress} style={{ height: SH(35) }}>
+          <Image source={minus} style={styles.plusBtn} />
+        </TouchableOpacity>
+
+        <Text style={styles.count}>{productCount}</Text>
+        <TouchableOpacity onPress={cartPlusOnPress} style={{ height: SH(35) }}>
+          <Image source={plus} style={styles.plusBtn} />
+        </TouchableOpacity>
       </View>
     </View>
-    <Spacer space={SH(5)} />
-    <Text style={styles.size}>Size</Text>
-    <Spacer space={SH(5)} />
-    <View style={{ flexDirection: 'row' }}>
-      <Text style={styles.cartonButton}>Carton</Text>
-      <Text style={styles.singlePackBtn}>Single Pack</Text>
-    </View>
-    <Spacer space={SH(7)} />
-    <Text style={styles.size}>Price</Text>
-    <Spacer space={SH(5)} />
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Text style={styles.previousRate}>$5.65</Text>
-      <Text style={styles.currentRate}>{productPrice}</Text>
-    </View>
-    <Spacer space={SH(8)} />
-    <View style={styles.hrLine}></View>
-    <Spacer space={SH(8)} />
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <TouchableOpacity
-         onPress={cartMinusOnPress}
-        style={{ height: SH(35) }}
-      >
-        <Image source={minus} style={styles.plusBtn} />
-      </TouchableOpacity>
-  
-        <Text style={styles.count}>{productCount}</Text>
-      <TouchableOpacity
-        onPress={cartPlusOnPress}
-        style={{ height: SH(35) }}
-      >
-        <Image source={plus} style={styles.plusBtn} />
-      </TouchableOpacity>
-    </View>
-  </View>
-    
-
   );
 }
 
 const styles = StyleSheet.create({
-
   productContainer: {
     width: windowWidth * 0.295,
     height: SH(245),
     borderWidth: 1,
     borderColor: COLORS.textInputBackground,
-    // ...ShadowStyles.shadow2,
     borderRadius: 10,
     backgroundColor: COLORS.white,
     margin: Platform.OS === 'ios' ? 4 : 11,
@@ -125,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: SF(18),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
-    width: windowWidth * 0.200,
+    width: windowWidth * 0.2,
   },
   proSubName: {
     fontSize: SF(11),
@@ -183,5 +156,10 @@ const styles = StyleSheet.create({
     color: COLORS.gerySkies,
     paddingHorizontal: moderateScale(10),
     marginBottom: 7,
+  },
+  productCardcon: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

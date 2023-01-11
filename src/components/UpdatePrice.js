@@ -8,16 +8,12 @@ import {
   Image,
   TextInput,
 } from 'react-native';
-import { COLORS, SF, SH, ShadowStyles, SW, TextStyles } from '@/theme';
+import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
 import {
   moderateScale,
-  moderateVerticalScale,
-  scale,
   verticalScale,
 } from 'react-native-size-matters';
 import {
-  checkbox,
-  checkedCheckbox,
   crossButton,
   dropdown2,
   Fonts,
@@ -145,7 +141,6 @@ export function UpdatePrice({ onPress, removeCartOnPress, updateCartOnPress,upda
           ]}
           onPress={updateCartOnPress}
         >
-          {/* <Text style={styles.removeButton}>Remove from cart</Text> */}
           <Text style={[styles.removeButton, { color: COLORS.white }]}>
             {strings.posSale.updateCart}
           </Text>
@@ -364,9 +359,7 @@ const styles = StyleSheet.create({
     color: COLORS.solid_grey,
   },
   updateAmount: {
-    // borderWidth:1,
     backgroundColor: COLORS.white,
-    // borderRadius: 5,
     height: SH(44),
     width: SW(65),
     borderBottomRightRadius: 5,
@@ -404,7 +397,6 @@ const styles = StyleSheet.create({
   invetryCon: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    // borderWidth:1
   },
   invertyInput: {
     borderRadius: 7,

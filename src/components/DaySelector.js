@@ -1,8 +1,7 @@
 
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { COLORS, SF, SH, ShadowStyles, TextStyles } from '@/theme';
-import { moderateScale, scale } from 'react-native-size-matters';
+import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { COLORS, SF, SH} from '@/theme';
 import { Fonts } from '@/assets';
 
 const selectData =[
@@ -46,7 +45,6 @@ export function DaySelector(){
       <ItemSelect
         item={item}
         onPress={() => setSelectId(item.id)}
-        // onPress={() => selecetdFunction() }
         backgroundColor={{ backgroundColor }}
         color={{ color }}
       />
@@ -54,18 +52,13 @@ export function DaySelector(){
    
   }
   return(
-    // <View style={styles.container}>
     <FlatList
      data={selectData}
      extraData={setSelectId}
      renderItem={selectItem}
      keyExtractor={item => item.id}
      horizontal
-     // numColumns={2}
-     // contentContainerStyle={styles.contentContainer}
    />
-
-// </View>
   )
 }
 
@@ -77,7 +70,6 @@ const styles = StyleSheet.create({
 selectItemConatiner:{
   width:SH(90),
   height:SH(30),
-  // borderWidth:1,
   borderRadius:3,
   justifyContent:'center',
   alignItems:'center',

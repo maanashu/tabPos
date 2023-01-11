@@ -125,6 +125,40 @@ export const en = {
     date: 'Today',
     time: 'Time ',
   },
+  retail:{
+    numpadButton:'123',
+    clearCart:'Clear cart',
+    moreAction:'More action',
+    subTotal:'Sub Total',
+    discount:'Discount',
+    tax:'Tax',
+    total:'Total',
+    items:'Items',
+    checkOut:'Checkout',
+    price:'Price',
+    bundleOffer:'Bundle offer',
+    removecart:'Remove from cart',
+    updateCart:'Update to cart',
+    addDiscount:'Add Discount',
+    addNotes:'Add Notes',
+    addDiscountTocart:'Add discount to cart',
+    notes:'Notes',
+    saveNotes:'Save notes',
+    writeNoteHere:'Write notes here',
+    continue:'Continue',  
+    box:'Box',
+    paymentDetail:'Payment Details',
+    payable:'Payable $254.60',
+    tips:'Tips $0.60',
+    cash:'Cash',
+    customer:'Customer',
+    searchProduct:'Search product here',
+    addTocart:'   Add to cart',
+    amountDis:'Amount Discount',
+    perDis:'Percentage Discount',
+    DisCode:'Discount Code',
+    DisTitle:'Discount Title'
+  },
   posSale: {
     paymentHeader: 'Customer & Payment',
     walletId: 'Wallet Id',
@@ -183,50 +217,14 @@ export const en = {
     discountType:'Please select discount type',
     enterfield:'Please enter field',
     addItemCart:'Please item add in the cart',
-    selectDisTitle:'Please select discount title'
+    selectDisTitle:'Please select discount title',
+    availableStock:'Available in stock: 206',
+    viewDetail:'View details'
 
 
 
   },
-  // posSale: {
-  //   paymentHeader: 'Customer & Payment',
-  //   walletId: 'Wallet Id',
-  //   scanText: 'or Scan',
-  //   rederecting: 'Redirecting',
-  //   listOfItem: 'List of items',
-  //   rewardpoint: 'Reward Points : 500',
-  //   onex: '1',
-  //   price: '$382.75',
-  //   onlyx: 'x',
-  //   notes: 'Notes:',
-  //   itMynday: 'Its for my birthday!',
-  //   paymentdetail: 'Payment Details',
-  //   paymenttdone: 'Payment Done!',
-  //   Customer: 'Customer',
-  //   customerNo: 'Customer phone number',
-  //   customerName: 'Terry Moore',
-  //   customerMobileNo: '803-238-2630',
-  //   customerEmail: 'harryrady@jourrapide.com',
-  //   customerAddr: '4849 Owagner Lane',
-  //   customerAddr2: 'Seattle, WA 98101',
-  //   customerTotalAmountHeader: 'Total amount: $254.60',
-  //   tips: 'Tips',
-  //   noTips: 'No Tips',
-  //   cashRecive: 'Cash amount received',
-  //   otherAmount: 'Other amount',
-  //   changeDue: 'Change Due: $3.40',
-  //   firstName: 'First name',
-  //   availableStock: 'Available in stock: 206',
-  //   addToCart: 'Add to cart',
-  //   back: 'Back',
-  //   marboloRed: 'Marlboro Red-Pack',
-  //   details: 'Details',
-  //   subCategory:'Sub-Category',
-  //   category:'Category',
-  //   brand:'Brand',
-  //   productDes:
-  //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam elementum, ligula quis ultricies iaculis, odio augue venenatis eros, interdum suscipit ipsum turpis nec velit. Vivamus cursus, dui vitae auctor finibus, felis ex malesuada nunc, eget fringilla ante dui in diam. Integer non dapibus nulla.',
-  //   },
+  
   wallet: {
     wallet: 'Wallet',
     totalTransections: 'Total Transactions:',
@@ -353,7 +351,9 @@ export const en = {
     carriar:'Carriar:',
     geredo:'Gerardo K. Jennings',
     contact:'Contact',
-    customer:'Customers'
+    customer:'Customers',
+    showResult:'Showing Results',
+    completed:'Completed'
 
   },
   trackingNumber:{
@@ -486,6 +486,7 @@ export const en = {
     },
     successMessages:{
       loginSuccess:"Login succesfully"
-    }
+    },
   
+
 };

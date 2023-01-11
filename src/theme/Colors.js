@@ -25,6 +25,7 @@ export const COLORS = {
   darkGreen:'#384048',
   red: '#ff0000',
   orange: '#FC7900',
-  green:'#2EC759'
+  green:'#2EC759',
+  indicator:'#0000ff'
 };
    

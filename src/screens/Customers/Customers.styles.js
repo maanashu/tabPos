@@ -272,6 +272,7 @@ export const styles = StyleSheet.create({
     height: SH(40),
     justifyContent: 'center',
     borderRadius: 4,
+    marginRight:7
   },
   unionStyle: {
     width: SW(5),
@@ -282,12 +283,6 @@ export const styles = StyleSheet.create({
   jbrListCon: {
     borderBottomWidth: 1,
     borderColor: COLORS.solidGrey,
-  },
-  unionConWhite: {
-    backgroundColor: COLORS.white,
-    height: SH(40),
-    justifyContent: 'center',
-    borderRadius: 4,
   },
   dropDownIconPagination: {
     width: SW(4),
@@ -309,15 +304,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.black,
   },
-  tableHeader: {
-    fontSize: SF(14),
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.dark_grey,
-  },
   tableMainView: {
-    // width: SW(330),
-    // width:windowWidth * 0.96,
-    // alignSelf:'center',
   },
   userTableHead: {
     height: SH(50),
@@ -529,7 +516,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     top: Platform.OS === 'android' ? 30 : 15,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   placeholderStyle: {
     fontSize: SF(12),
@@ -551,12 +538,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     color: COLORS.solidGrey,
   },
-  unionCon: {
-    backgroundColor: COLORS.washGrey,
-    height: SH(40),
-    justifyContent: 'center',
-    borderRadius: 4,
-  },
+ 
 
   // order shipping css start
   onlinedeliveryCon: {
@@ -977,13 +959,11 @@ export const styles = StyleSheet.create({
     fontSize: SF(13),
     textAlign: 'center',
     letterSpacing: -1,
-    // paddingHorizontal:moderateScale(40)
   },
   revenueDataText: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: SF(12),
-    // paddingHorizontal: moderateScale(3),
   },
 
   revenueDataTextLight: {
@@ -999,7 +979,17 @@ export const styles = StyleSheet.create({
   tableHeader:{
     backgroundColor:COLORS.textInputBackground,
     borderTopWidth:1,
-    borderColor:COLORS.solidGrey
+    borderColor:COLORS.solidGrey,
+  },
+  paginationEnd:{
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  columnSpace:{
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(5),
   }
  
 });

@@ -154,6 +154,19 @@ const addDiscountError = error => ({
   payload: { error },
 });
 
+const getProductBundleRequest = () => ({
+  type: TYPES.GET_BUNDLEOFFER_REQUEST,
+  payload: null,
+});
+const getProductBundleSuccess = (productbunList)  => ({
+  type: TYPES.GET_BUNDLEOFFER_SUCCESS,
+  payload: { productbunList },
+});
+const getProductBundleError = error => ({
+  type: TYPES.GET_BUNDLEOFFER_ERROR,
+  payload: { error },
+});
+
 
 // export const login = (username, password) => async dispatch => {
 //   dispatch(loginRequest());
@@ -275,6 +288,16 @@ export const addDiscountToCart = (data) => async dispatch => {
       console.log('res', res)
   } catch (error) {
       dispatch(addDiscountError(error.message));
+  }
+};
+
+export const getProductBundle = (BundleproductId) => async dispatch => {
+  dispatch(getProductBundleRequest());
+  try {
+      const res = await UserController.getProductBundle(BundleproductId);
+      dispatch(getProductBundleSuccess(res));
+  } catch (error) {
+      dispatch(getProductBundleError(error.message));
   }
 };
 

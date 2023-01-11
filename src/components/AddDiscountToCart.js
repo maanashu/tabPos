@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  FlatList,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -8,17 +7,15 @@ import {
   Image,
   TextInput,
 } from 'react-native';
-import { COLORS, SF, SH, ShadowStyles, SW, TextStyles } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import {
   moderateScale,
   moderateVerticalScale,
-  scale,
 } from 'react-native-size-matters';
 import { checkbox, checkedCheckbox, Fonts } from '@/assets';
 import { Spacer } from './Spacer';
 import { strings } from '@/localization';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export function AddDiscountToCart({
   amountDis,
@@ -30,182 +27,180 @@ export function AddDiscountToCart({
   saveDiscountHandler,
   descriptionDis,
   setDescriptionDis,
-  setValue
-
+  setValue,
 }) {
   const [amountCheck, setAmountCheck] = useState(false);
   const [percentageCheck, setPercentageCheck] = useState(false);
   const [discountCheck, setDiscountCheck] = useState(false);
-  // const [value, setValue] = useState('');
 
   return (
-
     <View>
       <View style={styles.adddiscountCon}>
-       
-          <View style={{height:SH(350)}}>
+        <View style={{ height: SH(350) }}>
           <KeyboardAwareScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-    >
-        <Spacer space={SH(12)} />
-        <Text style={styles.discountHeader}>{strings.posSale.discount}</Text>
-        <Spacer space={SH(12)} />
-        <View
-          style={
-            amountCheck ? styles.dicountInputWraper2 : styles.dicountInputWraper
-          }>
-          <View style={styles.displayFlex}>
-            <View style={styles.displayFlex}>
-              <TouchableOpacity
-                onPress={() => (
-                  setAmountCheck(!amountCheck),
-                  setPercentageCheck(false),
-                  setDiscountCheck(false),
-                  setValue('Amount'),
-                  setPercentDis(''),
-                  setDiscountCode('')
-                )}>
-                <Image
-                  source={amountCheck ? checkedCheckbox : checkbox}
-                  style={styles.checkboxStyle}
-                />
-              </TouchableOpacity>
-              <Text
-                numberOfLines={1}
-                style={amountCheck ? styles.amountLabel2 : styles.amountLabel}
-              >
-                Amount Discount
-              </Text>
-            </View>
-            <TextInput
-              placeholder="$ 00.00"
-              keyboardType="numeric"
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}>
+            <Spacer space={SH(12)} />
+            <Text style={styles.discountHeader}>
+              {strings.posSale.discount}
+            </Text>
+            <Spacer space={SH(12)} />
+            <View
               style={
                 amountCheck
-                  ? styles.amountDiscountInput2
-                  : styles.amountDiscountInput
+                  ? styles.dicountInputWraper2
+                  : styles.dicountInputWraper
               }
-              value={amountDis}
-              onChangeText={setAmountDis}
-              editable={ percentageCheck || discountCheck ? false : true }
-            />
-          </View>
-        </View>
-        <Spacer space={SH(12)} />
-        <View
-          style={
-            percentageCheck ? styles.dicountInputWraper2 : styles.dicountInputWraper
-          }
-        >
-          <View style={styles.displayFlex}>
-            <View style={styles.displayFlex}>
-              <TouchableOpacity
-                onPress={() => (
-                  setPercentageCheck(!percentageCheck),
-                  setAmountCheck(false),
-                  setDiscountCheck(false),
-                  setValue('Percentage'),
-                  setDiscountCode(''),
-                  setAmountDis('')
-                )}
-              >
-                <Image
-                  source={percentageCheck ? checkedCheckbox : checkbox}
-                  style={styles.checkboxStyle}
+            >
+              <View style={styles.displayFlex}>
+                <View style={styles.displayFlex}>
+                  <TouchableOpacity
+                    onPress={() => (
+                      setAmountCheck(!amountCheck),
+                      setPercentageCheck(false),
+                      setDiscountCheck(false),
+                      setValue('Amount'),
+                      setPercentDis(''),
+                      setDiscountCode('')
+                    )}
+                  >
+                    <Image
+                      source={amountCheck ? checkedCheckbox : checkbox}
+                      style={styles.checkboxStyle}
+                    />
+                  </TouchableOpacity>
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      amountCheck ? styles.amountLabel2 : styles.amountLabel
+                    }
+                  >
+                    {strings.retail.amountDis}
+                  </Text>
+                </View>
+                <TextInput
+                  placeholder="$ 00.00"
+                  keyboardType="numeric"
+                  style={[styles.amountDiscountInput, {color : amountCheck ? COLORS.primary : COLORS.gerySkies }]}
+                  value={amountDis}
+                  onChangeText={setAmountDis}
+                  editable={percentageCheck || discountCheck ? false : true}
                 />
-              </TouchableOpacity>
-              <Text
-                numberOfLines={1}
-                style={percentageCheck ? styles.amountLabel2 : styles.amountLabel}
-              >
-                Percentage Discount
-              </Text>
+              </View>
             </View>
-            <TextInput
-              placeholder="0.00%"
-              keyboardType="numeric"
+            <Spacer space={SH(12)} />
+            <View
               style={
                 percentageCheck
-                  ? styles.amountDiscountInput2
-                  : styles.amountDiscountInput
+                  ? styles.dicountInputWraper2
+                  : styles.dicountInputWraper
               }
-              value={percentDis}
-              onChangeText={setPercentDis}
-              
-              editable={discountCheck || amountCheck ? false : true}
-            />
-          </View>
-        </View>
-        <Spacer space={SH(12)} />
-        <View
-          style={
-            discountCheck
-              ? styles.dicountInputWraper2
-              : styles.dicountInputWraper
-          }
-        >
-          <View style={styles.displayFlex}>
-            <View style={styles.displayFlex}>
-              <TouchableOpacity
-                onPress={() => (
-                  setDiscountCheck(!discountCheck),
-                  setPercentageCheck(false),
-                  setAmountCheck(false),
-                  setPercentDis(''),
-                  setAmountDis(''),
-
-                  setValue('Code')
-                )}
-              >
-                <Image
-                  source={discountCheck ? checkedCheckbox : checkbox}
-                  style={styles.checkboxStyle}
+            >
+              <View style={styles.displayFlex}>
+                <View style={styles.displayFlex}>
+                  <TouchableOpacity
+                    onPress={() => (
+                      setPercentageCheck(!percentageCheck),
+                      setAmountCheck(false),
+                      setDiscountCheck(false),
+                      setValue('Percentage'),
+                      setDiscountCode(''),
+                      setAmountDis('')
+                    )}
+                  >
+                    <Image
+                      source={percentageCheck ? checkedCheckbox : checkbox}
+                      style={styles.checkboxStyle}
+                    />
+                  </TouchableOpacity>
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      percentageCheck ? styles.amountLabel2 : styles.amountLabel
+                    }
+                  >
+                      {strings.retail.perDis}
+                  </Text>
+                </View>
+                <TextInput
+                  placeholder="0.00%"
+                  keyboardType="numeric"
+                  style={[styles.amountDiscountInput, {color : percentageCheck ? COLORS.primary : COLORS.gerySkies }]}
+                  value={percentDis}
+                  onChangeText={setPercentDis}
+                  editable={discountCheck || amountCheck ? false : true}
                 />
-              </TouchableOpacity>
-              <Text
-                numberOfLines={1}
-                style={discountCheck ? styles.amountLabel2 : styles.amountLabel}
-              >
-                Discount Code
-              </Text>
+              </View>
             </View>
-            <TextInput
-              placeholder="CODE"
-              keyboardType="numeric"
+            <Spacer space={SH(12)} />
+            <View
               style={
                 discountCheck
-                  ? styles.amountDiscountInput2
-                  : styles.amountDiscountInput
+                  ? styles.dicountInputWraper2
+                  : styles.dicountInputWraper
               }
-              value={discountCode}
-              onChangeText={setDiscountCode}
-              editable={percentageCheck || amountCheck ? false : true}
+            >
+              <View style={styles.displayFlex}>
+                <View style={styles.displayFlex}>
+                  <TouchableOpacity
+                    onPress={() => (
+                      setDiscountCheck(!discountCheck),
+                      setPercentageCheck(false),
+                      setAmountCheck(false),
+                      setPercentDis(''),
+                      setAmountDis(''),
+                      setValue('Code')
+                    )}
+                  >
+                    <Image
+                      source={discountCheck ? checkedCheckbox : checkbox}
+                      style={styles.checkboxStyle}
+                    />
+                  </TouchableOpacity>
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      discountCheck ? styles.amountLabel2 : styles.amountLabel
+                    }
+                  >
+                    {strings.retail.DisCode}
+                  </Text>
+                </View>
+                <TextInput
+                  placeholder="CODE"
+                  keyboardType="numeric"
+                  style={[styles.amountDiscountInput, {color : discountCheck ? COLORS.primary : COLORS.gerySkies }]}
+                  value={discountCode}
+                  onChangeText={setDiscountCode}
+                  editable={percentageCheck || amountCheck ? false : true}
+                />
+              </View>
+            </View>
+            <Spacer space={SH(12)} />
+            <Text style={styles.discountTitle}> {strings.retail.DisTitle}</Text>
+            <Spacer space={SH(12)} />
+            <TextInput
+              placeholder="Tittle"
+              style={styles.discountTitleInput}
+              value={descriptionDis}
+              onChangeText={setDescriptionDis}
             />
-          </View>
-        </View>
-        <Spacer space={SH(12)} />
-        <Text style={styles.discountTitle}>Discount Tittle</Text>
-        <Spacer space={SH(12)} />
-        <TextInput
-         placeholder="Tittle" 
-         style={styles.discountTitleInput}
-         value={descriptionDis}
-         onChangeText={setDescriptionDis}
-         
-         />
-        <Spacer space={SH(12)} />
-        </KeyboardAwareScrollView>
-      
+            <Spacer space={SH(12)} />
+          </KeyboardAwareScrollView>
         </View>
       </View>
 
       <Spacer space={SH(12)} />
 
       <View style={styles.saveButtonCon}>
-        <TouchableOpacity style={styles.saveNotesButton} onPress={saveDiscountHandler}>
-          <Text style={styles.saveNotesText}>{strings.posSale.saveDiscount}</Text>
+        <TouchableOpacity
+          style={styles.saveNotesButton}
+          onPress={saveDiscountHandler}
+        >
+          <Text style={styles.saveNotesText}>
+            {strings.posSale.saveDiscount}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -249,18 +244,7 @@ const styles = StyleSheet.create({
     fontSize: SF(14),
     fontFamily: Fonts.Italic,
     paddingHorizontal: moderateScale(5),
-  },
-  amountDiscountInput2: {
-    backgroundColor: COLORS.white,
-    height: SH(38),
-    width: SW(40),
-    borderRadius: 3,
-    borderColor: COLORS.solidGrey,
-    color: COLORS.primary,
-    justifyContent: 'center',
-    fontSize: SF(14),
-    fontFamily: Fonts.Italic,
-    paddingHorizontal: moderateScale(5),
+    backgroundColor:COLORS.white
   },
   displayFlex: {
     flexDirection: 'row',

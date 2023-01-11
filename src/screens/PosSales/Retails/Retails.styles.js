@@ -530,14 +530,16 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   bundleAddCon: {
-    backgroundColor: COLORS.primary,
+    // backgroundColor: COLORS.primary,
     borderRadius: 3,
+    width:SW(20),
+    alignItems:'center'
   },
   bundleAddText: {
     color: COLORS.white,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    paddingHorizontal: moderateScale(12),
+    // paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(3),
   },
   amountPopupCon: {
@@ -574,13 +576,14 @@ export const styles = StyleSheet.create({
     top: 20,
   },
   amountjfrContainer: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: COLORS.textInputBackground,
     borderRadius: 5,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal:moderateScale(5)
   },
   amountjfrStyle: {
     width: SW(20),
@@ -666,9 +669,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: verticalScale(15),
     alignSelf: 'center',
-    // position: 'absolute',
-    // bottom: 20,
-    // left: 22,
   },
   // amount popup css end
 
@@ -681,98 +681,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    paddingLeft: moderateScale(10),
-  },
-  amountInput: {
-    borderRadius: 7,
-    width: 200,
-    fontSize: SF(20),
-    color: COLORS.solid_grey,
-    fontFamily: Fonts.SemiBold,
-  },
-  titleInput: {
-    borderWidth: 1,
-    height: SH(65),
-    borderRadius: 5,
-    borderColor: COLORS.solidGrey,
     paddingHorizontal: moderateScale(10),
-    fontFamily: Fonts.Regular,
-    fontSize: SF(18),
-    justifyContent: 'center',
-  },
-  addButtonCon: {
-    borderWidth: 1,
-    height: SH(55),
-    borderRadius: 5,
-    borderColor: COLORS.solidGrey,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addButtonText: {
-    fontSize: SF(14),
-    fontFamily: Fonts.Regular,
-    color: COLORS.darkGray,
-  },
-  directionInRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  addCartButton: {
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    width: SW(104),
-    height: SH(55),
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addCartButtonFill: {
-    // borderWidth:1,
-    // borderColor:COLORS.solidGrey,
-    backgroundColor: COLORS.black,
-    width: SW(114),
-    height: SH(55),
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addcountButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    backgroundColor: COLORS.textInputBackground,
-    borderColor: 'transparent',
-  },
-  inputWraper2: {
-    backgroundColor: COLORS.textInputBackground,
-    borderRadius: 7,
-    flexDirection: 'row',
-    alignItems: 'center',
-    // width: SW(208),
-    height: SH(65),
-    justifyContent: 'space-between',
-  },
-  minusBtn2: {
-    tintColor: COLORS.mid_grey,
-    width: SW(24),
-    height: SH(24),
-    resizeMode: 'contain',
-  },
-  plusCartBtn: {
-    tintColor: COLORS.darkGray,
-  },
-  addCartText: {
-    fontSize: SF(20),
-    color: COLORS.mid_grey,
-  },
-  addCartBtnTextsubmit: {
-    fontSize: SF(16),
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.white,
-  },
-  addCartBtnText: {
-    fontSize: SF(16),
-    fontFamily: Fonts.Regular,
   },
   // numpad pop css end
 
@@ -1120,6 +1029,11 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.22,
     borderRadius: 7,
   },
+  customerPhoneCon:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
   redrectingText: {
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
@@ -1225,6 +1139,17 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
     fontSize: SF(14),
     alignSelf: 'center',
+  },
+  viaText:{
+    color: COLORS.primary,
+                        fontSize: SF(18),
+                        fontFamily: Fonts.Regular,
+  },
+  customerImage:
+  {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    paddingHorizontal: moderateScale(10),
   },
   customerAddreCons: {
     borderWidth: 1,
@@ -1563,6 +1488,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
   },
+  detailHeader2:{ color: COLORS.dark_grey, fontFamily: Fonts.MaisonRegular},
   descriptionAddCon: {
     backgroundColor: COLORS.primary,
     borderRadius: 5,

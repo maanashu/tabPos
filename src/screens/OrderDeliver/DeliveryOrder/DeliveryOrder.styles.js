@@ -67,7 +67,6 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     width: SW(80),
     height: SH(92),
-    // paddingVertical: SH(35),
     flexDirection: 'row',
   },
 

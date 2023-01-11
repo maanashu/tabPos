@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Dimensions,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -9,136 +8,67 @@ import {
   TextInput,
 } from 'react-native';
 import { COLORS, SF, SH, ShadowStyles, SW, TextStyles } from '@/theme';
-import {
-  moderateScale,
-  moderateVerticalScale,
-  scale,
-  verticalScale,
-} from 'react-native-size-matters';
-import {
-  card,
-  checkbox,
-  checkedCheckbox,
-  crossButton,
-  dropdown2,
-  Fonts,
-  jbr_icon,
-  marboloPlus,
-  marboloRed,
-  minus,
-  money,
-  plus,
-} from '@/assets';
+import { moderateScale } from 'react-native-size-matters';
+import { card, Fonts, jbr_icon, money } from '@/assets';
 import { Spacer } from './Spacer';
-import { strings } from '@/localization';
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-import DropDownPicker from 'react-native-dropdown-picker';
 
-export function ChoosePayment({jbrCoinChoseHandler,cashChooseHandler,cardChooseHandler,jbrCoin,cashChoose,cardChoose}) {
-
-  // const [jbrCoin, setJbrCoin] = useState(false);
-  // const [cashChoose, setCashChoose] = useState(false);
-  // const [cardChoose, setCardChoose] = useState(false);
-  // const [custPayment, setCustPayment] = useState(false);
-
+export function ChoosePayment({
+  jbrCoinChoseHandler,
+  cashChooseHandler,
+  cardChooseHandler,
+  jbrCoin,
+  cashChoose,
+  cardChoose,
+}) {
   return (
     <View>
-       <TouchableOpacity
-                    style={
-                      jbrCoin
-                        ? [styles.paymentOptionCon, styles.paymentOptionCon2]
-                        : styles.paymentOptionCon
-                    }
-                    onPress={jbrCoinChoseHandler }
-                  >
-                    <View style={styles.iconInLine}>
-                      <Image
-                        source={jbr_icon}
-                        style={
-                          jbrCoin
-                            ? [styles.jbrIconColored, styles.jbrIcon]
-                            : styles.jbrIcon
-                        }
-                      />
-                      <Text
-                        style={
-                          jbrCoin
-                            ? styles.jbrCoinTextColored
-                            : styles.jbrcoinText
-                        }
-                      >
-                        JBR Coin
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <Spacer space={SH(10)} />
-                  <TouchableOpacity
-                    style={
-                      cashChoose
-                        ? [styles.paymentOptionCon, styles.paymentOptionCon2]
-                        : styles.paymentOptionCon
-                    }
-                    onPress={cashChooseHandler}
-                  >
-                    <View style={styles.iconInLine}>
-                      <Image
-                        source={money}
-                        style={
-                          cashChoose
-                            ? [styles.jbrIconColored, styles.jbrIcon]
-                            : styles.jbrIcon
-                        }
-                      />
-                      <Text
-                        style={
-                          cashChoose
-                            ? styles.jbrCoinTextColored
-                            : styles.jbrcoinText
-                        }
-                      >
-                        Cash
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <Spacer space={SH(10)} />
-                  <TouchableOpacity
-                    style={
-                      cardChoose
-                        ? [styles.paymentOptionCon, styles.paymentOptionCon2]
-                        : styles.paymentOptionCon
-                    }
-                    onPress={cardChooseHandler}
-                  >
-                    <View style={styles.iconInLine}>
-                      <Image
-                        source={card}
-                        style={
-                          cardChoose
-                            ? [styles.jbrIconColored, styles.jbrIcon]
-                            : styles.jbrIcon
-                        }
-                      />
-                      <Text
-                        style={
-                          cardChoose
-                            ? styles.jbrCoinTextColored
-                            : styles.jbrcoinText
-                        }
-                      >
-                        Card
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
+      <TouchableOpacity
+      style={[styles.paymentOptionCon, {color : jbrCoin ? COLORS.primary : COLORS.solidGrey }]}
+        onPress={jbrCoinChoseHandler}>
+        <View style={styles.iconInLine}>
+          <Image
+            source={jbr_icon}
+            style={[styles.jbrIcon, {tintColor: jbrCoin ? COLORS.primary : COLORS.solid_grey}]}
+          />
+          <Text
+            style={[styles.jbrcoinText, {color:jbrCoin ? COLORS.primary : COLORS.solid_grey}]}>JBR Coin
+          </Text>
+        </View>
+      </TouchableOpacity>
+      <Spacer space={SH(10)} />
+      <TouchableOpacity
+       style={[styles.paymentOptionCon, {color : cashChoose ? COLORS.primary : COLORS.solidGrey }]}
+        onPress={cashChooseHandler}>
+        <View style={styles.iconInLine}>
+          <Image
+            source={money}
+            style={[styles.jbrIcon, {tintColor: cashChoose ? COLORS.primary : COLORS.solid_grey}]}
+          />
+          <Text style={[styles.jbrcoinText, {color:cashChoose ? COLORS.primary : COLORS.solid_grey}]}>
+            Cash
+          </Text>
+        </View>
+      </TouchableOpacity>
+      <Spacer space={SH(10)} />
+      <TouchableOpacity
+       style={[styles.paymentOptionCon, {color : cardChoose ? COLORS.primary : COLORS.solidGrey }]}
+        onPress={cardChooseHandler}>
+        <View style={styles.iconInLine}>
+          <Image
+            source={card}
+            style={[styles.jbrIcon, {tintColor: cardChoose ? COLORS.primary : COLORS.solid_grey}]}
+          />
+          <Text
+             style={[styles.jbrcoinText, {color:cardChoose ? COLORS.primary : COLORS.solid_grey}]}>
+            Card
+          </Text>
+        </View>
+      </TouchableOpacity>
     </View>
-   
-    
-
   );
 }
 
 const styles = StyleSheet.create({
-
   paymentOptionCon: {
     borderWidth: 1,
     height: SH(60),
@@ -147,9 +77,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-  },
-  paymentOptionCon2: {
-    borderColor: COLORS.primary,
   },
   iconInLine: {
     flexDirection: 'row',
@@ -165,13 +92,7 @@ const styles = StyleSheet.create({
   jbrcoinText: {
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
-    paddingHorizontal: moderateScale(5),
-  },
-  jbrCoinTextColored: {
-    fontSize: SF(16),
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.primary,
+    color:COLORS.solid_grey,
     paddingHorizontal: moderateScale(5),
   },
   jbrIcon: {
@@ -185,5 +106,4 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.primary,
   },
-
 });
