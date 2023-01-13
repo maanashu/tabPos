@@ -291,10 +291,10 @@ export const addDiscountToCart = (data) => async dispatch => {
   }
 };
 
-export const getProductBundle = (BundleproductId) => async dispatch => {
+export const getProductBundle = (id) => async dispatch => {
   dispatch(getProductBundleRequest());
   try {
-      const res = await UserController.getProductBundle(BundleproductId);
+      const res = await UserController.getProductBundle(id);
       dispatch(getProductBundleSuccess(res));
   } catch (error) {
       dispatch(getProductBundleError(error.message));

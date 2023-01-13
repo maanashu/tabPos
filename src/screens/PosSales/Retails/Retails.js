@@ -86,6 +86,25 @@ import { AddDiscountToCart, UpdatePrice } from '@/components';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { ListOfItem } from './ListOfItem';
 
+const items = [
+  {
+    name: 'item 1',
+    qty: 0,
+  },
+  {
+    name: 'item 2',
+    qty: 0,
+  },
+  {
+    name: 'item 3',
+    qty: 0,
+  },
+  {
+    name: 'item 4',
+    qty: 0,
+  },
+];
+
 export function Retails() {
   const dispatch = useDispatch();
   const getUserData = useSelector(getUser);
@@ -139,6 +158,7 @@ export function Retails() {
   const [brandSelectedId, setBrandSelectedId] = useState(null);
 
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
+  const [searchSelectedId, setSearchSelectedId] = useState(null);
   const [count, setCount] = useState(0);
   const [tipSelectId, setTipsSelected] = useState(1);
   const [amountSelectId, setAmountSelectId] = useState(1);
@@ -163,7 +183,30 @@ export function Retails() {
   const [value, setValue] = useState('');
   const cartIDdiscount = JSON.stringify(cartID2);
   const [add, setAdd] = useState('Add');
-  const bunndleProArray = getUserData?.productbunList;
+  const bunndleProArray = getUserData?.productbunList ?? [];
+  const [data, setData] = useState(serProductArray);
+  const [refresh, setRefresh] = useState(''); 
+  const [temp, setTemp] = useState(data?.map(item => ({...item, qty: 0})))
+  // console.log(temp?.qty, '-------------')
+
+  const handleIncrease = (index) => {
+    const array = temp;
+    // console.log('temp',temp);
+    array[index].qty = array[index].qty + 1;
+    setData(array);
+    setTemp(array);
+    setRefresh(Math.random()); 
+  };
+
+  const handleDecrease = (index) => {
+    const array = temp;
+    // console.log(array);
+    array[index].qty = array[index].qty - 1;
+    setData(array);
+    setTemp(array);
+    setRefresh(Math.random()); 
+  };
+  // console.log(addRemoveSelectedId, 'bunndleProArray')
 
   useEffect(id => {
     dispatch(getCategory());
@@ -190,8 +233,15 @@ export function Retails() {
     setBrandSelectedId(id);
   };
 
+  const searchFunction = id => {
+    setSearchSelectedId(id);
+    setSearchProDetail(true);
+    // console.log('item',id);
+    dispatch(getProductBundle(id))
+  };
+
   const onChangeFun = search => {
-    if (search.length > 3) {
+    if (search.length > 1) {
       dispatch(getSearchProduct(search));
       setPosSearch(true);
     } else if (search.length < 3) {
@@ -220,7 +270,7 @@ export function Retails() {
     isLoadingSelector([TYPES.GET_ALL_CART_SUCCESS], state)
   );
   const isBundleLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_BUNDLEOFFER_SUCCESS], state)
+    isLoadingSelector([TYPES.GET_BUNDLEOFFER], state)
   );
 
   const clearCartHandler = () => {
@@ -251,14 +301,15 @@ export function Retails() {
     setAmountPopup(false);
   };
 
-  const addToCartHandler = () => {
+  const addToCartHandler = (id) => {
+    console.log('id', id)
     const data = {
       seller_id: 'b169ed4d-be27-44eb-9a08-74f997bc6a2a',
-      product_id: 5,
+      product_id: id,
       service_id: 4,
-      qty: 200,
-      attribute_value_ids: [24],
+      qty: count,
     };
+    // console.log('data', data)
     dispatch(addTocart(data));
     setPosSearch(false);
   };
@@ -438,9 +489,9 @@ export function Retails() {
     setSearchProDetail(false);
   };
   const searchProdutDetailHandler = item => {
-    setStoreData(item);
     setSearchProDetail(!searchProDetail);
-    // console.log('item',BundleproductId);
+    setStoreData(item);
+    console.log('item',BundleproductId);
     dispatch(getProductBundle(BundleproductId))
   };
 
@@ -456,6 +507,7 @@ export function Retails() {
   };
 
   const increment = () => {
+    console.log(index)
     setCount(count + 1);
   };
 
@@ -742,6 +794,7 @@ export function Retails() {
     );
   };
 
+
   const renderJbrItem = ({ item }) => (
     <View style={styles.jbrListCon}>
       <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
@@ -765,145 +818,165 @@ export function Retails() {
     </View>
   );
 
-  const renderSearchItem = ({ item, index }) => (
+  const SearchItemSelect = ({
+    item,
+    onPress,
+    index
+  }) => (
+    // console.log('------------data',data),
     <View>
-      <Spacer space={SH(15)} />
-      <TouchableOpacity
-        style={[styles.displayFlex, styles.padding]}
-        onPress={() => searchProdutDetailHandler(item)}
+    <Spacer space={SH(15)} />
+    <TouchableOpacity 
+      onPress={onPress}
+      style={[styles.displayFlex, styles.padding]}
+      // onPress={() => (onPress , searchProdutDetailHandler(item))}
       >
-        <View style={styles.displayFlex}>
-          <Image
-            source={{ uri: item.image }}
-            style={styles.marboloRedPackStyle}
-          />
-          <View style={styles.locStock}>
-            <Text style={styles.marbolorRedStyle}>{item.name}</Text>
-            <Spacer space={SH(5)} />
-            <Text style={styles.stockStyle}>{strings.posSale.stock}</Text>
-            <Text style={styles.searchItalicText}>
-              {strings.posSale.location}
-            </Text>
+      <View style={styles.displayFlex}>
+        <Image
+          source={{ uri: item.image }}
+          style={styles.marboloRedPackStyle}
+        />
+        <View style={styles.locStock}>
+          <Text style={styles.marbolorRedStyle}>{item.name}</Text>
+          <Spacer space={SH(5)} />
+          <Text style={styles.stockStyle}>{strings.posSale.stock}</Text>
+          <Text style={styles.searchItalicText}>
+            {strings.posSale.location}
+          </Text>
+        </View>
+      </View>
+      <View style={{ alignItems: 'flex-end' }}>
+        <Text style={styles.marbolorRedStyle}>{item.price}</Text>
+        <Spacer space={SH(5)} />
+        <TouchableOpacity
+          onPress={() => viewDetailHandler(item)}
+          style={styles.viewDetailCon}
+        >
+          <Text style={[styles.stockStyle, { color: COLORS.primary }]}>
+           {strings.posSale.viewDetail}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
+    {
+      searchSelectedId === item.id
+      ?
+      (
+          <View style={styles.productDetailCon}>
+        <Spacer space={SH(25)} />
+        <Text style={styles.availablestockHeading}>
+          {strings.posSale.availableStock}
+        </Text>
+        <Spacer space={SH(15)} />
+        <View style={styles.amountjfrContainer}>
+          <View style={styles.flexAlign}>
+            <Image
+              source={{ uri: item.image }}
+              style={styles.marboloRedPackStyle}
+            />
+            <Text style={styles.jfrmaduro}>{item.name}</Text>
+          </View>
+
+          <View>
+            <DropDownPicker
+              ArrowUpIconComponent={({ style }) => (
+                <Image source={dropdown2} style={styles.dropDownIcon} />
+              )}
+              ArrowDownIconComponent={({ style }) => (
+                <Image source={dropdown2} style={styles.dropDownIcon} />
+              )}
+              style={styles.dropdown}
+              containerStyle={[
+                styles.containerStyle,
+                { zIndex: Platform.OS === 'ios' ? 100 : 1 },
+              ]}
+              dropDownContainerStyle={styles.dropDownContainerStyle}
+              open={cityModalOpen}
+              value={cityModalValue}
+              items={cityItems}
+              setOpen={setCityModelOpen}
+              setValue={setCityModalValue}
+              setItems={setCityItems}
+              placeholder="Pack"
+              placeholderStyle={{ color: '#14171A' }}
+            />
           </View>
         </View>
-        <View style={{ alignItems: 'flex-end' }}>
-          <Text style={styles.marbolorRedStyle}>{item.price}</Text>
-          <Spacer space={SH(5)} />
-          <TouchableOpacity
-            onPress={() => viewDetailHandler(item)}
-            style={styles.viewDetailCon}
-          >
-            <Text style={[styles.stockStyle, { color: COLORS.primary }]}>
-             {strings.posSale.viewDetail}
-            </Text>
+
+        <Spacer space={SH(25)} />
+        <View style={styles.priceContainer}>
+          <Text style={styles.price}>{strings.retail.price}</Text>
+          <Text style={[styles.price, { fontSize: SF(18) }]}>
+            {item.price}
+          </Text>
+        </View>
+        <Spacer space={SH(25)} />
+        <View
+          style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
+        >
+          <TouchableOpacity onPress={() => handleDecrease(index)}>
+            <Image source={minus} style={styles.plusBtn2} />
+          </TouchableOpacity>
+          <Text style={[styles.price, { fontSize: SF(24) }]}>{item.qty ? item.qty : '0'}</Text>
+          <TouchableOpacity onPress={() => handleIncrease(index)}>
+            <Image source={plus} style={styles.plusBtn2} />
           </TouchableOpacity>
         </View>
-      </TouchableOpacity>
-      {searchProDetail ? (
-        <View style={styles.productDetailCon}>
-          <Spacer space={SH(25)} />
-          <Text style={styles.availablestockHeading}>
-            {strings.posSale.availableStock}
+        <Spacer space={SH(30)} />
+        <View>
+          <Text style={styles.bundleOfferText}>
+            {strings.retail.bundleOffer}
           </Text>
-          <Spacer space={SH(15)} />
-          <View style={styles.amountjfrContainer}>
-            <View style={styles.flexAlign}>
-              <Image
-                source={{ uri: item.image }}
-                style={styles.marboloRedPackStyle}
-              />
-              <Text style={styles.jfrmaduro}>{item.name}</Text>
-            </View>
+          <Spacer space={SH(10)} />
+          <View style={{ height: SH(250) }}>
+            {
+              isBundleLoading
+              ?
+              (
+                <View style={{ marginTop: 100 }}>
+                <ActivityIndicator size="large" color={COLORS.indicator} />
+              </View>
+              )
+              :
+              <FlatList
+              data={bunndleProArray}
+              renderItem={renderBundleItem}
+              keyExtractor={item => item.id}
+              extraData={bunndleProArray}
+            />
 
-            <View>
-              <DropDownPicker
-                ArrowUpIconComponent={({ style }) => (
-                  <Image source={dropdown2} style={styles.dropDownIcon} />
-                )}
-                ArrowDownIconComponent={({ style }) => (
-                  <Image source={dropdown2} style={styles.dropDownIcon} />
-                )}
-                style={styles.dropdown}
-                containerStyle={[
-                  styles.containerStyle,
-                  { zIndex: Platform.OS === 'ios' ? 100 : 1 },
-                ]}
-                dropDownContainerStyle={styles.dropDownContainerStyle}
-                open={cityModalOpen}
-                value={cityModalValue}
-                items={cityItems}
-                setOpen={setCityModelOpen}
-                setValue={setCityModalValue}
-                setItems={setCityItems}
-                placeholder="Pack"
-                placeholderStyle={{ color: '#14171A' }}
-              />
-            </View>
-          </View>
 
-          <Spacer space={SH(25)} />
-          <View style={styles.priceContainer}>
-            <Text style={styles.price}>{strings.retail.price}</Text>
-            <Text style={[styles.price, { fontSize: SF(18) }]}>
-              {item.price}
-            </Text>
+            }
+            
           </View>
-          <Spacer space={SH(25)} />
-          <View
-            style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
+          <TouchableOpacity
+            style={styles.addcartButtonStyle}
+            onPress={() => addToCartHandler(item.id)}
           >
-            <TouchableOpacity onPress={decrement}>
-              <Image source={minus} style={styles.plusBtn2} />
-            </TouchableOpacity>
-            <Text style={[styles.price, { fontSize: SF(24) }]}>{count}</Text>
-            <TouchableOpacity onPress={increment}>
-              <Image source={plus} style={styles.plusBtn2} />
-            </TouchableOpacity>
-          </View>
-          <Spacer space={SH(30)} />
-          <View>
-            <Text style={styles.bundleOfferText}>
-              {strings.retail.bundleOffer}
+            <Text style={styles.addToCartText}>
+              {strings.posSale.addToCart}
             </Text>
-            <Spacer space={SH(10)} />
-            <View style={{ height: SH(250) }}>
-              {
-                isBundleLoading
-                ?
-                (
-                  <View style={{ marginTop: 100 }}>
-                  <ActivityIndicator size="large" color={COLORS.indicator} />
-                </View>
-                )
-                :
-                <FlatList
-                data={bunndleProArray}
-                renderItem={renderBundleItem}
-                keyExtractor={item => item.id}
-                extraData={bunndleProArray}
-              />
-
-
-              }
-              
-            </View>
-            <Spacer space={SH(20)} />
-            <TouchableOpacity
-              style={styles.addcartButtonStyle}
-              onPress={addToCartHandler}
-            >
-              <Text style={styles.addToCartText}>
-                {strings.posSale.addToCart}
-              </Text>
-            </TouchableOpacity>
-            <Spacer space={SH(35)} />
-          </View>
+          </TouchableOpacity>
+          <Spacer space={SH(35)} />
         </View>
-      ) : (
-        <View style={styles.hr} />
-      )}
-    </View>
+      </View>
+      )
+      :
+      <View style={styles.hr} />
+    }
+  </View>
   );
+
+  const renderSearchItem = ({ item, index }) => {
+    return (
+      <SearchItemSelect
+        item={item}
+        index = {index}
+        onPress={() => searchFunction(item.id)}
+      />
+    );
+  };
+
   const productUnitItem = ({ item }) => (
     <View style={styles.unitTypeCon}>
       <Spacer space={SH(8)} />
@@ -1347,7 +1420,7 @@ export function Retails() {
                 key={'#'}
                 data={productArray}
                 extraData={productArray}
-                renderItem={renderProductItem}
+                renderItem={renderProductItem} 
                 keyExtractor={item => '#' + item.id}
                 numColumns={3}
                 ListEmptyComponent={renderEmptyProducts}
@@ -1948,14 +2021,21 @@ export function Retails() {
                       data={serProductArray}
                       extraData={serProductArray}
                       renderItem={renderSearchItem}
-                      keyExtractor={item => item.id}
+                      // keyExtractor={item => item.id}
+                      keyExtractor={(item, index) => String(index)}
                       style={styles.flatlistHeight}
                       ListEmptyComponent={renderEmptyProducts}
                     />
                   )}
                 </View>
+              
+              
+              
+                <Spacer space={SH(100)} />
               </View>
+             
             </KeyboardAvoidingView>
+            
           </Modal>
           {/*  pos search  end */}
 

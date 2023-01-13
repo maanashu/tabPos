@@ -55,7 +55,7 @@ export const userReducer = (state = {INITIALSTATE}, { payload, type }) => {
               case TYPES.GET_BUNDLEOFFER_SUCCESS:
                 return {
                   ...state,
-                  productbunList: payload?.productbunList?.payload?.data,
+                  productbunList: payload?.productbunList?.payload?.data ?? [],
                 };
       
     case TYPES.CLEAR_STORE:

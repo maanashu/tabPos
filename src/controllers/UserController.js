@@ -260,7 +260,6 @@ export class UserController {
         product_id: data.product_id,
         service_id: data.service_id,
         qty: data.qty,
-        attribute_value_ids: data.attribute_value_ids
       }
 
       HttpClient.post(endpoint, body)
@@ -390,11 +389,15 @@ export class UserController {
     });
   };
 
-  static async getProductBundle(BundleproductId) {
+  static async getProductBundle(id) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.getProductBundle + '?' + `${BundleproductId}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.getProductBundle + '?product_id=' + `${id}`;
       HttpClient.get(endpoint)
         .then(response => {
+          if (response.status === 204) {
+            console.log('no content');
+            resolve([]);
+          }
           resolve(response);
         })
         .catch(error => {
