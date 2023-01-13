@@ -1,4 +1,4 @@
-import { StyleSheet,Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
 import { verticalScale } from 'react-native-size-matters';
@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: COLORS.white,
   },
   text: {
@@ -16,49 +17,50 @@ export const styles = StyleSheet.create({
   },
   verifyContainer: {
     width: windowWidth * 0.35,
-    height: windowHeight * 0.70,
+    height: windowHeight * 0.55,
     // borderWidth: 1,
-    borderColor:'grey',
+    borderColor: 'grey',
     alignSelf: 'center',
-    borderRadius:15,
-    alignItems:'center',
-    backgroundColor:COLORS.faded_grey,
+    borderRadius: 15,
+    alignItems: 'center',
+    backgroundColor: COLORS.faded_grey,
     ...ShadowStyles.shadow2,
+    marginBottom: 100,
   },
-  header:{
-    fontSize:SF(24),
-    color:COLORS.dark_grey,
-    fontFamily:Fonts.MaisonBold
+  header: {
+    fontSize: SF(24),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.MaisonBold,
   },
-  selectedText:{
-    color:COLORS.white,
-    textAlign:'center',
-    fontSize:SF(16)
+  selectedText: {
+    color: COLORS.white,
+    textAlign: 'center',
+    fontSize: SF(16),
   },
-  submitButton:{
-     backgroundColor:COLORS.primary,
-     width:SW(110),
-     height:SH(60),
-     alignItems:'center',
-     justifyContent:'center',
+  submitButton: {
+    backgroundColor: COLORS.primary,
+    width: SW(110),
+    height: SH(60),
+    alignItems: 'center',
+    justifyContent: 'center',
     //  width: windowWidth * 0.30,
     //  height: windowHeight * 0.10,
-     borderRadius:10
+    borderRadius: 10,
   },
-  profilePic:{
-    width:SH(100),
-    height:SH(100),
-    borderRadius:100,
-    resizeMode:'contain'
+  profilePic: {
+    width: SH(100),
+    height: SH(100),
+    borderRadius: 100,
+    resizeMode: 'contain',
   },
-  darksmallText:{
-    fontSize:SF(16),
-    color:COLORS.solid_grey,
-    fontFamily:Fonts.SemiBold
+  darksmallText: {
+    fontSize: SF(16),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
   },
-  lightsmallText:{
-    fontSize:SF(12),
-    color:COLORS.solid_grey,
-    fontFamily:Fonts.Regular
-  }
+  lightsmallText: {
+    fontSize: SF(12),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+  },
 });

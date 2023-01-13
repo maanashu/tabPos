@@ -40,7 +40,8 @@ export function AddDiscountToCart({
           <KeyboardAwareScrollView
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}>
+            showsVerticalScrollIndicator={false}
+          >
             <Spacer space={SH(12)} />
             <Text style={styles.discountHeader}>
               {strings.posSale.discount}
@@ -82,7 +83,10 @@ export function AddDiscountToCart({
                 <TextInput
                   placeholder="$ 00.00"
                   keyboardType="numeric"
-                  style={[styles.amountDiscountInput, {color : amountCheck ? COLORS.primary : COLORS.gerySkies }]}
+                  style={[
+                    styles.amountDiscountInput,
+                    { color: amountCheck ? COLORS.primary : COLORS.gerySkies },
+                  ]}
                   value={amountDis}
                   onChangeText={setAmountDis}
                   editable={percentageCheck || discountCheck ? false : true}
@@ -120,13 +124,20 @@ export function AddDiscountToCart({
                       percentageCheck ? styles.amountLabel2 : styles.amountLabel
                     }
                   >
-                      {strings.retail.perDis}
+                    {strings.retail.perDis}
                   </Text>
                 </View>
                 <TextInput
                   placeholder="0.00%"
                   keyboardType="numeric"
-                  style={[styles.amountDiscountInput, {color : percentageCheck ? COLORS.primary : COLORS.gerySkies }]}
+                  style={[
+                    styles.amountDiscountInput,
+                    {
+                      color: percentageCheck
+                        ? COLORS.primary
+                        : COLORS.gerySkies,
+                    },
+                  ]}
                   value={percentDis}
                   onChangeText={setPercentDis}
                   editable={discountCheck || amountCheck ? false : true}
@@ -170,7 +181,12 @@ export function AddDiscountToCart({
                 <TextInput
                   placeholder="CODE"
                   keyboardType="numeric"
-                  style={[styles.amountDiscountInput, {color : discountCheck ? COLORS.primary : COLORS.gerySkies }]}
+                  style={[
+                    styles.amountDiscountInput,
+                    {
+                      color: discountCheck ? COLORS.primary : COLORS.gerySkies,
+                    },
+                  ]}
                   value={discountCode}
                   onChangeText={setDiscountCode}
                   editable={percentageCheck || amountCheck ? false : true}
@@ -215,7 +231,7 @@ const styles = StyleSheet.create({
   },
   discountHeader: {
     fontSize: SF(24),
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.MaisonBold,
     color: COLORS.black,
   },
   dicountInputWraper: {
@@ -242,9 +258,9 @@ const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
     fontSize: SF(14),
-    fontFamily: Fonts.Italic,
+    fontFamily: Fonts.SemiBold,
     paddingHorizontal: moderateScale(5),
-    backgroundColor:COLORS.white
+    backgroundColor: COLORS.white,
   },
   displayFlex: {
     flexDirection: 'row',
@@ -276,7 +292,7 @@ const styles = StyleSheet.create({
   },
   discountTitle: {
     fontSize: SF(16),
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.SemiBold,
     color: COLORS.dark_grey,
   },
   discountTitleInput: {

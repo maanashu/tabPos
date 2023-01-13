@@ -10,3 +10,4 @@ export { AddNewProduct } from '@/components/AddNewProduct';
 export { ProductCard } from '@/components/ProductCard';
 export { ChoosePayment } from '@/components/ChoosePayment';
 export { NumericContainer } from '@/components/NumericContainer';
+export { ScreenWrapper } from '@/components/ScreenWrapper';

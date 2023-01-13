@@ -38,19 +38,23 @@ export function ProductCard({
       <Text style={styles.size}>Size</Text>
       <Spacer space={SH(5)} />
       <View style={{ flexDirection: 'row' }}>
-        <Text style={styles.cartonButton}>Carton</Text>
-        <Text style={styles.singlePackBtn}>Single Pack</Text>
+        <View style={styles.cartonButtonCon}>
+          <Text style={styles.cartonButton}>Carton</Text>
+        </View>
+        <View style={styles.singlePackBtnCon}>
+          <Text style={styles.singlePackBtn}>Single Pack</Text>
+        </View>
       </View>
       <Spacer space={SH(7)} />
       <Text style={styles.size}>Price</Text>
       <Spacer space={SH(5)} />
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text style={styles.previousRate}>$5.65</Text>
-        <Text style={styles.currentRate}>{productPrice}</Text>
+        <Text style={styles.currentRate}>${productPrice}</Text>
       </View>
       <Spacer space={SH(8)} />
       <View style={styles.hrLine}></View>
-      <Spacer space={SH(8)} />
+      <Spacer space={SH(12)} />
       <View style={styles.productCardcon}>
         <TouchableOpacity onPress={cartMinusOnPress} style={{ height: SH(35) }}>
           <Image source={minus} style={styles.plusBtn} />
@@ -68,7 +72,7 @@ export function ProductCard({
 const styles = StyleSheet.create({
   productContainer: {
     width: windowWidth * 0.295,
-    height: SH(245),
+    height: SH(230),
     borderWidth: 1,
     borderColor: COLORS.textInputBackground,
     borderRadius: 10,
@@ -110,24 +114,34 @@ const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
-  cartonButton: {
+  cartonButtonCon: {
     backgroundColor: COLORS.primary,
+    borderRadius: 3,
+    width: SW(22),
+    height: SH(25),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartonButton: {
     color: COLORS.white,
     fontSize: SF(12),
-    paddingHorizontal: moderateScale(10),
     paddingVertical: verticalScale(2),
+  },
+  singlePackBtnCon: {
     borderRadius: 3,
+    borderColor: COLORS.gerySkies,
+    alignItems: 'center',
+    borderWidth: 1,
+    width: SW(35),
+    height: SH(25),
+    marginLeft: 10,
+    justifyContent: 'center',
   },
   singlePackBtn: {
     color: COLORS.gerySkies,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    borderWidth: 1,
-    paddingHorizontal: moderateScale(10),
     paddingVertical: verticalScale(2),
-    borderRadius: 3,
-    borderColor: COLORS.gerySkies,
-    marginHorizontal: moderateScale(6),
   },
   previousRate: {
     color: COLORS.gerySkies,

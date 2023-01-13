@@ -16,25 +16,26 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  flexAlign:{
+  flexAlign: {
     flexDirection: 'row',
-     alignItems: 'center' 
+    alignItems: 'center',
   },
   // hedaer  css start
   headerCon: {
-    // borderBottomWidth: 1,
     borderBottomColor: COLORS.solidGrey,
     height: SH(70),
     justifyContent: 'center',
     backgroundColor: COLORS.white,
     width: windowWidth * 0.94,
+    paddingHorizontal: moderateScale(10),
   },
   menuStyle: {
-    width: SW(11),
-    height: SW(11),
+    width: SW(14),
+    height: SW(14),
     resizeMode: 'contain',
     backgroundColor: COLORS.white,
-    marginTop: Platform.OS === 'ios' ? 10 : 0,
+    marginLeft: -20,
+    // marginTop: Platform.OS === 'ios' ? 10 : 0,
   },
   searchStyle: {
     width: SW(7),
@@ -43,8 +44,8 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(5),
   },
   scnStyle: {
-    width: SW(13),
-    height: SW(13),
+    width: SW(16),
+    height: SW(17),
     resizeMode: 'contain',
   },
   flexRow: {
@@ -62,7 +63,7 @@ export const styles = StyleSheet.create({
   searchInput2: {
     borderRadius: 7,
     width: SW(170),
-    color:COLORS.solid_grey,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   inputWraper: {
@@ -84,8 +85,8 @@ export const styles = StyleSheet.create({
     height: SH(45),
   },
   purcheseStyle: {
-    width: SW(11),
-    height: SW(11),
+    width: SW(14),
+    height: SW(15),
     resizeMode: 'contain',
   },
   arrowStyle: {
@@ -319,7 +320,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft:moderateScale(10)
+    paddingLeft: moderateScale(10),
   },
   jfrContainer2: {
     display: 'flex',
@@ -519,7 +520,7 @@ export const styles = StyleSheet.create({
   },
   bundleOfferCon: {
     backgroundColor: COLORS.blue_shade,
-    height: SH(48),
+    height: SH(42),
     borderRadius: 5,
     justifyContent: 'center',
     marginVertical: verticalScale(2),
@@ -532,8 +533,8 @@ export const styles = StyleSheet.create({
   bundleAddCon: {
     // backgroundColor: COLORS.primary,
     borderRadius: 3,
-    width:SW(20),
-    alignItems:'center'
+    width: SW(20),
+    alignItems: 'center',
   },
   bundleAddText: {
     color: COLORS.white,
@@ -549,6 +550,10 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     alignSelf: 'center',
     position: 'absolute',
+  },
+  amountPopUPBody: {
+    height: windowHeight * 0.68,
+    paddingHorizontal: moderateScale(20),
   },
   primaryHeader: {
     width: windowWidth * 0.4,
@@ -583,7 +588,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal:moderateScale(5)
+    paddingHorizontal: moderateScale(5),
   },
   amountjfrStyle: {
     width: SW(20),
@@ -595,8 +600,8 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
-    paddingHorizontal:moderateScale(10),
-    width:SW(70),
+    paddingHorizontal: moderateScale(10),
+    width: SW(70),
   },
   dropDownIcon: {
     width: SW(3),
@@ -606,23 +611,30 @@ export const styles = StyleSheet.create({
     // paddingRight: 30,
   },
   dropdown: {
+    alignSelf: 'center',
     borderColor: 'transparent',
     backgroundColor: 'transparent',
     zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   containerStyle: {
     width: SW(40),
+    height: SH(35),
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 7,
     backgroundColor: COLORS.white,
+    justifyContent: 'center',
+    right: 28,
+    // alignItems: 'center',
   },
   dropDownContainerStyle: {
-    borderWidth: 0,
+    borderWidth: 0.5,
+    borderColor: '#AAAAAA',
     backgroundColor: COLORS.white,
     zIndex: 1,
     ...ShadowStyles.shadow,
-    top: 55,
+    elevation: 2,
+    top: 35,
     borderRadius: 7,
   },
   priceContainer: {
@@ -649,21 +661,26 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
   },
+  removeButtonCon: {
+    backgroundColor: COLORS.silver_solid,
+    borderRadius: 5,
+    width: SW(50),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   removeButton: {
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
-    backgroundColor: COLORS.silver_solid,
-    paddingHorizontal: moderateScale(15),
-    paddingVertical: verticalScale(7),
-    borderRadius: 5,
-    marginHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(9),
+  },
+  updateButtonCon: {
+    backgroundColor: COLORS.bluish_green,
+    marginLeft: 10,
   },
   updateButton: {
     color: COLORS.white,
-    color: COLORS.white,
-    backgroundColor: COLORS.bluish_green,
-    paddingHorizontal: moderateScale(20),
+    marginLeft: 5,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -1020,7 +1037,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.25,
     fontSize: SF(16),
-    paddingHorizontal: moderateScale(70),
+    // paddingHorizontal: moderateScale(70),
     height: SH(50),
   },
   scanerCon: {
@@ -1029,7 +1046,7 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.22,
     borderRadius: 7,
   },
-  customerPhoneCon:{
+  customerPhoneCon: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
@@ -1140,13 +1157,12 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     alignSelf: 'center',
   },
-  viaText:{
+  viaText: {
     color: COLORS.primary,
-                        fontSize: SF(18),
-                        fontFamily: Fonts.Regular,
+    fontSize: SF(18),
+    fontFamily: Fonts.Regular,
   },
-  customerImage:
-  {
+  customerImage: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingHorizontal: moderateScale(10),
@@ -1370,20 +1386,20 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(20),
   },
-  viewDetailCon:{
-    zIndex:99,
-    height:35
+  viewDetailCon: {
+    zIndex: 99,
+    height: 35,
   },
   stockStyle: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
   },
-  padding:{
-     paddingRight:moderateScale(15)
+  padding: {
+    paddingRight: moderateScale(15),
   },
-  locStock:{
-    paddingHorizontal:moderateScale(10)
+  locStock: {
+    paddingHorizontal: moderateScale(10),
   },
   searchItalicText: {
     color: COLORS.darkGray,
@@ -1488,7 +1504,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
   },
-  detailHeader2:{ color: COLORS.dark_grey, fontFamily: Fonts.MaisonRegular},
+  detailHeader2: { color: COLORS.dark_grey, fontFamily: Fonts.MaisonRegular },
   descriptionAddCon: {
     backgroundColor: COLORS.primary,
     borderRadius: 5,
@@ -1530,25 +1546,24 @@ export const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
-    alignSelf:'center'
+    alignSelf: 'center',
     // alignSelf: 'center',
   },
   contentContainer: {
     justifyContent: 'space-between',
     flex: 1,
   },
-  selected:{
-    backgroundColor:COLORS.primary
+  selected: {
+    backgroundColor: COLORS.primary,
   },
-  list:{
-    backgroundColor:COLORS.white
-
+  list: {
+    backgroundColor: COLORS.white,
   },
-  noProductText:{
-    justifyContent:'center',
-    alignItems:'center',
-    marginVertical:verticalScale(50)
-  }
+  noProductText: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: verticalScale(50),
+  },
 
   //  pos search css end
 });
