@@ -54,6 +54,7 @@ import {
   moderateScale,
   verticalScale,
   moderateVerticalScale,
+  s,
 } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -189,26 +190,22 @@ export function Retails() {
   const [data, setData] = useState(serProductArray);
   const [refresh, setRefresh] = useState('');
   const [temp, setTemp] = useState(data?.map(item => ({ ...item, qty: 0 })));
-  // console.log(temp?.qty, '-------------')
+  var result = temp.find(item => item.id === searchSelectedId);
 
   const handleIncrease = index => {
     const array = temp;
-    // console.log('temp',temp);
     array[index].qty = array[index].qty + 1;
     setData(array);
     setTemp(array);
     setRefresh(Math.random());
   };
-
   const handleDecrease = index => {
     const array = temp;
-    // console.log(array);
-    array[index].qty = array[index].qty - 1;
+    array[index].qty = array[index].qty > 0 ? array[index].qty - 1 : array[index].qty;
     setData(array);
     setTemp(array);
     setRefresh(Math.random());
   };
-  // console.log(addRemoveSelectedId, 'bunndleProArray')
 
   useEffect(id => {
     dispatch(getCategory());
@@ -827,7 +824,6 @@ export function Retails() {
       <TouchableOpacity
         onPress={onPress}
         style={[styles.displayFlex, styles.padding]}
-        // onPress={() => (onPress , searchProdutDetailHandler(item))}
       >
         <View style={styles.displayFlex}>
           <Image
@@ -857,6 +853,7 @@ export function Retails() {
         </View>
       </TouchableOpacity>
       {searchSelectedId === item.id ? (
+        
         <View style={styles.productDetailCon}>
           <Spacer space={SH(25)} />
           <Text style={styles.availablestockHeading}>
@@ -913,7 +910,7 @@ export function Retails() {
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
             <Text style={[styles.price, { fontSize: SF(24) }]}>
-              {item.qty ? item.qty : '0'}
+              {result?.qty ? result?.qty :'0' }
             </Text>
             <TouchableOpacity onPress={() => handleIncrease(index)}>
               <Image source={plus} style={styles.plusBtn2} />
@@ -925,19 +922,21 @@ export function Retails() {
               {strings.retail.bundleOffer}
             </Text>
             <Spacer space={SH(10)} />
-            <View style={{ height: SH(250) }}>
+            
+            <View>
               {isBundleLoading ? (
-                <View style={{ marginTop: 100 }}>
+                <View style={{ marginTop: 10 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
-              ) : (
+               ) : ( 
                 <FlatList
                   data={bunndleProArray}
                   renderItem={renderBundleItem}
                   keyExtractor={item => item.id}
                   extraData={bunndleProArray}
+                  ListEmptyComponent={renderEmptyContainer}
                 />
-              )}
+               )} 
             </View>
             <TouchableOpacity
               style={styles.addcartButtonStyle}
