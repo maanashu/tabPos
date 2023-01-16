@@ -1582,7 +1582,7 @@ export function Retails() {
                   <Image source={crossButton} style={styles.crossButton} />
                 </TouchableOpacity>
               </View>
-              <Spacer space={SH(25)} />
+              <Spacer space={SH(20)} />
               <View style={styles.amountPopUPBody}>
                 <View style={styles.amountjfrContainer}>
                   <View style={styles.flexAlign}>
@@ -1624,14 +1624,14 @@ export function Retails() {
                     />
                   </View>
                 </View>
-                <Spacer space={SH(25)} />
+                <Spacer space={SH(20)} />
                 <View style={styles.priceContainer}>
                   <Text style={styles.price}>{strings.retail.price}</Text>
                   <Text style={[styles.price, { fontSize: SF(18) }]}>
                     {cartData?.product_details?.price}
                   </Text>
                 </View>
-                <Spacer space={SH(25)} />
+                <Spacer space={SH(20)} />
                 <View
                   style={[
                     styles.priceContainer,
@@ -1646,21 +1646,18 @@ export function Retails() {
                 </View>
                 <Spacer space={SH(10)} />
                 {/* {bundleOffer ? ( */}
-                <View>
+                {/* <View>
                   <Text style={styles.bundleOfferText}>
                     {strings.retail.bundleOffer}
                   </Text>
                   <Spacer space={SH(10)} />
-                  {/* <View style={{ height: SH(220) }}> */}
                   <FlatList
                     data={bundleOfferData}
                     renderItem={renderBundleItem}
                     keyExtractor={item => item.id}
                     extraData={addRemoveSelectedId}
-                    // numColumns={2}
                   />
-                  {/* </View> */}
-                </View>
+                </View> */}
                 {/* // ) : null} */}
                 <View style={{ flex: 1 }} />
                 <View style={styles.buttonContainer}>
@@ -1969,8 +1966,7 @@ export function Retails() {
           <Modal animationType="fade" transparent={true} isVisible={posSearch}>
             <KeyboardAvoidingView style={{ flex: 1 }}>
               <View
-                style={[styles.searchproductCon1, styles.searchproductCon2]}
-              >
+                style={[styles.searchproductCon1, styles.searchproductCon2]}>
                 <Spacer space={SH(20)} />
                 <View style={styles.searchInputWraper}>
                   <View style={styles.displayFlex}>
