@@ -844,7 +844,7 @@ export function Retails() {
           </View>
         </View>
         <View style={{ alignItems: 'flex-end' }}>
-          <Text style={styles.marbolorRedStyle}>{item.price}</Text>
+          <Text style={styles.marbolorRedStyle}>${item.price}</Text>
           <Spacer space={SH(5)} />
           <TouchableOpacity
             onPress={() => viewDetailHandler(item)}
@@ -902,7 +902,7 @@ export function Retails() {
           <View style={styles.priceContainer}>
             <Text style={styles.price}>{strings.retail.price}</Text>
             <Text style={[styles.price, { fontSize: SF(18) }]}>
-              {item.price}
+              ${item.price}
             </Text>
           </View>
           <Spacer space={SH(25)} />
@@ -1277,9 +1277,11 @@ export function Retails() {
                 </TouchableOpacity>
                 <View style={styles.inputWraper}>
                   <View style={styles.flexAlign}>
-                    <TouchableOpacity onPress={posSearchHandler}>
+                    <View
+                    //  onPress={posSearchHandler}
+                     >
                       <Image source={search_light} style={styles.searchStyle} />
-                    </TouchableOpacity>
+                    </View>
                     <TextInput
                       placeholder={strings.retail.searchProduct}
                       style={styles.searchInput}

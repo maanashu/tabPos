@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Image, StatusBar } from 'react-native';
 import { Spacer, Button } from '@/components';
-import { SH } from '@/theme';
-import { Fonts, dropdown } from '@/assets';
+import {  SH } from '@/theme';
+import { dropdown } from '@/assets';
 import { styles } from './VerifyPhone.styles';
 import { strings } from '@/localization';
 import CountryPicker from 'react-native-country-picker-modal';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { mobileReg, digits, emailReg } from '@/utils/validators';
+import { mobileReg} from '@/utils/validators';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { verifyPhone } from '@/actions/AuthActions';
 import { TYPES } from '@/Types/Types';
@@ -35,7 +33,6 @@ export function VerifyPhone() {
     if (phoneNumber && phoneNumber.length > 5) {
       dispatch(verifyPhone(phoneNumber, countryCode));
       clearInput()
-      // navigate(NAVIGATION.passcode);
     } else if (phoneNumber && phoneNumber.length < 5) {
       Toast.show({
         position: 'bottom',
@@ -95,7 +92,6 @@ export function VerifyPhone() {
               withFilter
               withCallingCode
             />
-
             <Image source={dropdown} style={styles.dropDownIcon} />
 
             <Text style={styles.countryCodeText}>{countryCode}</Text>
@@ -108,6 +104,7 @@ export function VerifyPhone() {
               onChangeText={onChangePhoneNumber}
               style={styles.textInputContainer}
               placeholder={strings.verifyPhone.placeHolderText}
+              placeholderTextColor="#626262" 
             />
           </View>
           <View style={{ flex: 1 }} />

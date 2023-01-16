@@ -6,11 +6,10 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  ScrollView,
   Platform,
   Dimensions,
 } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import {
   deliveryTruck,
   notifications,
@@ -40,10 +39,11 @@ import {
   productList,
 } from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
-import { Button, Spacer } from '@/components';
+import { Button, ScreenWrapper, Spacer } from '@/components';
 
 import { LineChart } from 'react-native-chart-kit';
 import { verticalScale } from 'react-native-size-matters';
+import { BottomSheet } from './BottomSheet';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -213,7 +213,7 @@ export function DeliveryOrder() {
 
   const renderDeliveryOrders = ({ item, index }) => (
     <View style={styles.deliveryViewStyle}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={styles.rowSpaceBetween}>
         <View style={{ flexDirection: 'row' }}>
           <Image
             source={item.image}
@@ -225,7 +225,7 @@ export function DeliveryOrder() {
         </View>
         <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={styles.rowSpaceBetween}>
         <Text style={styles.totalText}>{item.total}</Text>
         {/* <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} /> */}
         <Text style={{ color: COLORS.primary }}>-</Text>
@@ -331,47 +331,7 @@ export function DeliveryOrder() {
             />
           </View>
           <View style={styles.bottomSheet}>
-            <View style={styles.rowView}>
-              <Text style={styles.subTotal}>
-                {strings.deliveryOrders.subTotal}
-              </Text>
-              <Text style={styles.subTotalValue}>
-                {strings.deliveryOrders.subTotalValue}
-              </Text>
-            </View>
-
-            <View style={styles.rowView}>
-              <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                {strings.deliveryOrders.discount}
-              </Text>
-              <Text style={styles.discountValue}>
-                {strings.deliveryOrders.discountValue}
-              </Text>
-            </View>
-
-            <View style={styles.rowView}>
-              <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                {strings.deliveryOrders.tax}
-              </Text>
-              <Text style={styles.discountValue}>
-                {strings.deliveryOrders.subTotalValue}
-              </Text>
-            </View>
-            <View style={styles.subtotalRow} />
-            <View style={styles.rowView}>
-              <Text style={styles.totalLabel}>
-                {strings.deliveryOrders.total}
-              </Text>
-              <Text style={styles.totalValue}>
-                {strings.deliveryOrders.totalValue}
-              </Text>
-            </View>
-
-            <View style={styles.rowView}>
-              <Text style={styles.discountValue}>
-                {strings.deliveryOrders.items}
-              </Text>
-            </View>
+             <BottomSheet/>
             <View style={styles.orderReviewButton}>
               <Button
                 style={styles.declineButton}
@@ -400,47 +360,7 @@ export function DeliveryOrder() {
             />
           </View>
           <View style={styles.bottomSheet}>
-            <View style={styles.rowView}>
-              <Text style={styles.subTotal}>
-                {strings.deliveryOrders.subTotal}
-              </Text>
-              <Text style={styles.subTotalValue}>
-                {strings.deliveryOrders.subTotalValue}
-              </Text>
-            </View>
-
-            <View style={styles.rowView}>
-              <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                {strings.deliveryOrders.discount}
-              </Text>
-              <Text style={styles.discountValue}>
-                {strings.deliveryOrders.discountValue}
-              </Text>
-            </View>
-
-            <View style={styles.rowView}>
-              <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                {strings.deliveryOrders.tax}
-              </Text>
-              <Text style={styles.discountValue}>
-                {strings.deliveryOrders.subTotalValue}
-              </Text>
-            </View>
-            <View style={styles.subtotalRow} />
-            <View style={styles.rowView}>
-              <Text style={styles.totalLabel}>
-                {strings.deliveryOrders.total}
-              </Text>
-              <Text style={styles.totalValue}>
-                {strings.deliveryOrders.totalValue}
-              </Text>
-            </View>
-
-            <View style={styles.rowView}>
-              <Text style={styles.discountValue}>
-                {strings.deliveryOrders.items}
-              </Text>
-            </View>
+             <BottomSheet/>
             <Button
               style={styles.button}
               title={strings.deliveryOrders.ready}
@@ -637,7 +557,6 @@ export function DeliveryOrder() {
                     <FlatList
                       data={orderReview}
                       renderItem={renderReviewItem}
-                      // showsVerticalScrollIndicator={false}
                     />
                   </View>
                   <Spacer space={SH(15)} />
@@ -684,11 +603,10 @@ export function DeliveryOrder() {
           >
             <Image
               source={dropdown2}
-              style={[styles.searchImage, { right: 30 }]}
+              style={[styles.searchImage, { right: 10 }]}
             />
           </TouchableOpacity>
         </View>
-
         <View style={styles.horizontalLine} />
 
         <Spacer space={SH(20)} />
@@ -784,10 +702,13 @@ export function DeliveryOrder() {
   };
 
   return (
+    <ScreenWrapper>
     <View style={styles.container}>
       {customHeader()}
 
       {changeView()}
     </View>
+      
+      </ScreenWrapper>
   );
 }

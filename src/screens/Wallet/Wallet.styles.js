@@ -17,6 +17,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  flexAlign:{
+    flexDirection: 'row',
+     alignItems: 'center' 
+  },
 
   headerMainView: {
     width: windowWidth,
@@ -224,17 +228,16 @@ export const styles = StyleSheet.create({
     height: SH(42),
     width: SW(30),
     borderRadius: 7,
-    borderColor: COLORS.solidGrey,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: moderateScale(4),
+    marginRight: moderateScale(4),
+    marginVertical:verticalScale(4)
   },
   allJbrConBluish: {
     borderColor: COLORS.primary,
   },
   allJbrText: {
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
     fontSize: SF(14),
   },
   allJbrTextbluish: {

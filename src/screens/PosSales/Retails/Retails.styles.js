@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: SW(202),
-    height: SH(45),
+    height: Platform.OS === 'android' ?  SH(55) : SH(45),
     justifyContent: 'space-between',
     marginHorizontal: moderateScale(10),
   },
@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 10,
-    height: SH(45),
+    height: Platform.OS === 'android' ?  SH(55) : SH(45),
   },
   purcheseStyle: {
     width: SW(14),

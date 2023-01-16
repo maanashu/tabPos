@@ -6,10 +6,9 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  ScrollView,
   Dimensions,
 } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import {
   deliveryTruck,
   notifications,
@@ -28,11 +27,9 @@ import {
   delivery,
   deliveryLine,
   Phone_light,
-  radio,
   radioRound,
   ups2,
   fedx,
-  verifyIcon,
   verified,
   parachuteBox,
 } from '@/assets';
@@ -47,13 +44,12 @@ import {
   shipdeliveryOrders,
 } from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
-import { Button, Spacer } from '@/components';
-
-import { LineChart } from 'react-native-chart-kit';
+import { Button, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
+import { BottomSheet } from './BottomSheet';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -237,7 +233,7 @@ export function ShippingOrder() {
     if (dataShiping === 'Ready To Ship') {
       return (
         <View style={{ height: windowHeight * 0.7 }}>
-          <View style={{ height: windowHeight * 0.42 }}>
+          <View style={{ height: windowHeight * 0.35 }}>
             <FlatList
               data={productList}
               renderItem={readyShipRightList}
@@ -247,56 +243,7 @@ export function ShippingOrder() {
             />
           </View>
           <View style={[styles.bottomSheet]}>
-            <View style={styles.rowView}>
-              <Text style={styles.subTotal}>
-                {strings.deliveryOrders.subTotal}
-              </Text>
-              <Text style={styles.subTotalValue}>
-                {strings.deliveryOrders.subTotalValue}
-              </Text>
-            </View>
-
-            <View style={styles.rowView}>
-              <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                {strings.deliveryOrders.discount}
-              </Text>
-              <Text style={styles.discountValue}>
-                {strings.deliveryOrders.discountValue}
-              </Text>
-            </View>
-            <View
-              style={{
-                borderWidth: 1,
-                borderStyle: 'dashed',
-                width: SH(380),
-                alignSelf: 'flex-end',
-                borderColor: COLORS.row_grey,
-                marginVertical: verticalScale(2),
-              }}
-            />
-            <View style={styles.rowView}>
-              <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                {strings.deliveryOrders.tax}
-              </Text>
-              <Text style={styles.discountValue}>
-                {strings.deliveryOrders.subTotalValue}
-              </Text>
-            </View>
-
-            <View style={styles.rowView}>
-              <Text style={styles.totalLabel}>
-                {strings.deliveryOrders.total}
-              </Text>
-              <Text style={styles.totalValue}>
-                {strings.deliveryOrders.totalValue}
-              </Text>
-            </View>
-
-            <View style={styles.rowView}>
-              <Text style={styles.discountValue}>
-                {strings.deliveryOrders.items}
-              </Text>
-            </View>
+          <BottomSheet/>
 
             <Button
               // onPress={() => { setOrderAccepted(true) }}
@@ -350,57 +297,7 @@ export function ShippingOrder() {
               />
             </View>
             <View style={[styles.bottomSheet]}>
-              <View style={styles.rowView}>
-                <Text style={styles.subTotal}>
-                  {strings.deliveryOrders.subTotal}
-                </Text>
-                <Text style={styles.subTotalValue}>
-                  {strings.deliveryOrders.subTotalValue}
-                </Text>
-              </View>
-
-              <View style={styles.rowView}>
-                <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                  {strings.deliveryOrders.discount}
-                </Text>
-                <Text style={styles.discountValue}>
-                  {strings.deliveryOrders.discountValue}
-                </Text>
-              </View>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderStyle: 'dashed',
-                  width: SH(380),
-                  alignSelf: 'flex-end',
-                  borderColor: COLORS.row_grey,
-                  marginVertical: verticalScale(2),
-                }}
-              />
-              <View style={styles.rowView}>
-                <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                  {strings.deliveryOrders.tax}
-                </Text>
-                <Text style={styles.discountValue}>
-                  {strings.deliveryOrders.subTotalValue}
-                </Text>
-              </View>
-
-              <View style={styles.rowView}>
-                <Text style={styles.totalLabel}>
-                  {strings.deliveryOrders.total}
-                </Text>
-                <Text style={styles.totalValue}>
-                  {strings.deliveryOrders.totalValue}
-                </Text>
-              </View>
-
-              <View style={styles.rowView}>
-                <Text style={styles.discountValue}>
-                  {strings.deliveryOrders.items}
-                </Text>
-              </View>
-
+              <BottomSheet/>
               <Button
                 onPress={() => setMapShow(true)}
                 style={[styles.printAgainButton, styles.printAgainTack]}
@@ -432,66 +329,7 @@ export function ShippingOrder() {
             <Spacer space={SH(8)} />
             <Text style={styles.note}>{strings.shipingOrder.outStock}</Text>
           </View>
-          {/* <View style={[styles.bottomSheet]}>
-         <View style={styles.rowView}>
-           <Text style={styles.subTotal}>
-             {strings.deliveryOrders.subTotal}
-           </Text>
-           <Text style={styles.subTotalValue}>
-             {strings.deliveryOrders.subTotalValue}
-           </Text>
-         </View>
-
-         <View style={styles.rowView}>
-           <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-             {strings.deliveryOrders.discount}
-           </Text>
-           <Text style={styles.discountValue}>
-             {strings.deliveryOrders.discountValue}
-           </Text>
-         </View>
-         <View
-           style={{
-             borderWidth: 1,
-             borderStyle: 'dashed',
-             width: SH(380),
-             alignSelf: 'flex-end',
-             borderColor: COLORS.row_grey,
-             marginVertical: verticalScale(2),
-           }}
-         />
-         <View style={styles.rowView}>
-           <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-             {strings.deliveryOrders.tax}
-           </Text>
-           <Text style={styles.discountValue}>
-             {strings.deliveryOrders.subTotalValue}
-           </Text>
-         </View>
-
-         <View style={styles.rowView}>
-           <Text style={styles.totalLabel}>
-             {strings.deliveryOrders.total}
-           </Text>
-           <Text style={styles.totalValue}>
-             {strings.deliveryOrders.totalValue}
-           </Text>
-         </View>
-
-         <View style={styles.rowView}>
-           <Text style={styles.discountValue}>
-             {strings.deliveryOrders.items}
-           </Text>
-         </View>
-
-         <Button
-           // onPress={() => { setOrderAccepted(true) }}
-           // onPress={()=>  (setPrintScreen(true), setViewAllReviews(false), saveKey())}
-           style={styles.printAgainButton}
-           title={strings.shipingOrder.printAgain}
-           textStyle={styles.buttonText}
-         />
-       </View>  */}
+          
         </View>
       );
     }
@@ -922,64 +760,8 @@ export function ShippingOrder() {
               </View>
 
               <View style={[styles.bottomSheet, styles.bottomSheet2]}>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    width: SH(385),
-                    alignSelf: 'flex-end',
-                  }}
-                />
-                <View style={styles.rowView}>
-                  <Text style={styles.subTotal}>
-                    {strings.deliveryOrders.subTotal}
-                  </Text>
-                  <Text style={styles.subTotalValue}>
-                    {strings.deliveryOrders.subTotalValue}
-                  </Text>
-                </View>
-
-                <View style={styles.rowView}>
-                  <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                    {strings.deliveryOrders.discount}
-                  </Text>
-                  <Text style={styles.discountValue}>
-                    {strings.deliveryOrders.discountValue}
-                  </Text>
-                </View>
-
-                <View style={styles.rowView}>
-                  <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                    {strings.deliveryOrders.tax}
-                  </Text>
-                  <Text style={styles.discountValue}>
-                    {strings.deliveryOrders.subTotalValue}
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    borderWidth: 1,
-                    width: SH(385),
-                    alignSelf: 'flex-end',
-                    borderStyle: 'dashed',
-                    borderColor: COLORS.row_grey,
-                    marginVertical: verticalScale(3),
-                  }}
-                />
-                <View style={styles.rowView}>
-                  <Text style={styles.totalLabel}>
-                    {strings.deliveryOrders.total}
-                  </Text>
-                  <Text style={styles.totalValue}>
-                    {strings.deliveryOrders.totalValue}
-                  </Text>
-                </View>
-
-                <View style={styles.rowView}>
-                  <Text style={styles.discountValue}>
-                    {strings.deliveryOrders.items}
-                  </Text>
-                </View>
+                <View style={styles.borderSheetBorder}/>
+                <BottomSheet/>
                 <Spacer SH={SH(30)} />
               </View>
             </View>
@@ -1122,64 +904,9 @@ export function ShippingOrder() {
               </View>
 
               <View style={styles.bottomSheet}>
-                <View style={styles.rowView}>
-                  <Text style={styles.subTotal}>
-                    {strings.deliveryOrders.subTotal}
-                  </Text>
-                  <Text style={styles.subTotalValue}>
-                    {strings.deliveryOrders.subTotalValue}
-                  </Text>
-                </View>
-
-                <View style={styles.rowView}>
-                  <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                    {strings.deliveryOrders.discount}
-                  </Text>
-                  <Text style={styles.discountValue}>
-                    {strings.deliveryOrders.discountValue}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    borderStyle: 'dashed',
-                    width: SH(380),
-                    alignSelf: 'flex-end',
-                    borderColor: COLORS.row_grey,
-                    marginVertical: verticalScale(2),
-                  }}
-                />
-                <View style={styles.rowView}>
-                  <Text style={[styles.subTotal, { color: COLORS.darkGray }]}>
-                    {strings.deliveryOrders.tax}
-                  </Text>
-                  <Text style={styles.discountValue}>
-                    {strings.deliveryOrders.subTotalValue}
-                  </Text>
-                </View>
-
-                <View style={styles.rowView}>
-                  <Text style={styles.totalLabel}>
-                    {strings.deliveryOrders.total}
-                  </Text>
-                  <Text style={styles.totalValue}>
-                    {strings.deliveryOrders.totalValue}
-                  </Text>
-                </View>
-
-                <View style={styles.rowView}>
-                  <Text style={styles.discountValue}>
-                    {strings.deliveryOrders.items}
-                  </Text>
-                </View>
+                <BottomSheet/>
 
                 {keyValue ? (
-                  // <Button
-                  // onPress={() => { setOrderAccepted(true) }}
-                  // style={styles.printAgainCon}
-                  // title={strings.shipingOrder.printAgain}
-                  // textStyle={styles.buttonText}
-                  // />
                   <View style={styles.orderReviewButton}>
                     <Button
                       style={styles.declineButton}
@@ -1206,9 +933,7 @@ export function ShippingOrder() {
                       title={strings.deliveryOrders.decline}
                       textStyle={[styles.buttonText, { color: COLORS.primary }]}
                     />
-
                     <Button
-                      // onPress={() => { setOrderAccepted(true) }}
                       onPress={() => (
                         setPrintScreen(true),
                         setViewAllReviews(false),
@@ -1313,24 +1038,6 @@ export function ShippingOrder() {
       return (
         <View style={styles.mainScreenContiner}>
           <View style={styles.headerMainView}>
-            {/* {viewAllReviews ? (
-          <TouchableOpacity
-            onPress={() => {
-              setViewAllReviews(false);
-            }}
-            style={styles.backView}
-          >
-            <Image source={backArrow} style={styles.truckStyle} />
-            <Text style={styles.backText}>{strings.deliveryOrders.back}</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.deliveryView}>
-            <Image source={deliveryTruck} style={styles.truckStyle} />
-            <Text style={styles.deliveryText}>
-              {strings.deliveryOrders.heading}
-            </Text>
-          </View>
-        )} */}
             <View style={styles.deliveryView}>
               <Image source={parachuteBox} style={styles.truckStyle} />
               <Text style={styles.deliveryText}>
@@ -1616,12 +1323,9 @@ export function ShippingOrder() {
             </View>
           </View>
         ) : null}
-
         <View style={styles.fedContextCon}>
           <View style={styles.displayFlex}>
-            <View
-              style={[styles.displayFlex, { justifyContent: 'flex-start' }]}
-            >
+            <View style={[styles.displayFlex, { justifyContent: 'flex-start' }]}>
               <Image source={fedx} style={styles.fedx} />
               <View>
                 <Text style={styles.fedEx}>{strings.shipingOrder.fedEx}</Text>
@@ -1641,10 +1345,11 @@ export function ShippingOrder() {
   };
 
   return (
-    <View style={styles.container}>
-      {/* {customHeader()} */}
-
-      {changeView()}
-    </View>
+    <ScreenWrapper>
+      <View style={styles.container}>
+         {changeView()}
+      </View>
+    </ScreenWrapper>
+    
   );
 }

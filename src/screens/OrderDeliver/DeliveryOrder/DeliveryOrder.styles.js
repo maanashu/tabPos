@@ -51,8 +51,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchImage: {
-    width: SH(24),
-    height: SH(24),
+    width: SH(20),
+    height: SH(20),
     resizeMode: 'contain',
     left: 3,
   },
@@ -158,7 +158,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.bluish_green,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 2,
+    borderRadius: 4,
   },
   viewText: {
     fontFamily: Fonts.SemiBold,
@@ -246,6 +246,10 @@ export const styles = StyleSheet.create({
     paddingVertical: SW(2),
     width: Platform.OS === 'ios' ? SW(48) : SH(180),
     borderRadius: 5,
+  },
+  rowSpaceBetween:{
+   flexDirection:"row",
+   justifyContent:'space-between'
   },
   totalText: {
     fontFamily: Fonts.Regular,

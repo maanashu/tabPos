@@ -346,9 +346,6 @@ export const styles = StyleSheet.create({
     right: 0,
     // height: SW(105),
     backgroundColor: COLORS.white,
-    // width: windowWidth * 0.44,
-    // ...ShadowStyles.shadow2,
-    // paddingHorizontal: 30,
     paddingTop: 10,
     borderTopWidth: 1,
     borderColor: COLORS.row_grey,
@@ -359,6 +356,11 @@ export const styles = StyleSheet.create({
     ...ShadowStyles.shadow1,
     // width: windowWidth * 0.5,
     height: SH(200),
+  },
+  borderSheetBorder:{
+    borderWidth: 1,
+    width: SH(385),
+    alignSelf: 'flex-end',
   },
   rowView: {
     flexDirection: 'row',
@@ -662,4 +664,20 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     height: windowHeight * 0.7,
   },
+  flexVertical:{
+    borderWidth: 1,
+    width: SH(385),
+    alignSelf: 'flex-end',
+    borderStyle: 'dashed',
+    borderColor: COLORS.row_grey,
+    marginVertical: verticalScale(3),
+  },
+  bottomDashedRow:{
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    width: SH(380),
+    alignSelf: 'flex-end',
+    borderColor: COLORS.row_grey,
+    marginVertical: verticalScale(2),
+  }
 });

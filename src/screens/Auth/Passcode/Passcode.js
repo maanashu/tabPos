@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text} from 'react-native';
 import { Spacer, Button } from '@/components';
 import { SH } from '@/theme';
-import {verifyIcon, crossButton } from '@/assets';
 import { styles } from '@/screens/Auth/Passcode/Passcode.styles';
 import { strings } from '@/localization';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   CodeField,
@@ -16,7 +13,7 @@ import {
 } from 'react-native-confirmation-code-field';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { mobileReg,digits } from '@/utils/validators';
+import { digits } from '@/utils/validators';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { login } from '@/actions/AuthActions';

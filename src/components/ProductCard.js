@@ -72,7 +72,7 @@ export function ProductCard({
 const styles = StyleSheet.create({
   productContainer: {
     width: windowWidth * 0.295,
-    height: SH(230),
+    height: SH(240),
     borderWidth: 1,
     borderColor: COLORS.textInputBackground,
     borderRadius: 10,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   cartonButton: {
     color: COLORS.white,
     fontSize: SF(12),
-    paddingVertical: verticalScale(2),
+    // paddingVertical: verticalScale(2),
   },
   singlePackBtnCon: {
     borderRadius: 3,
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     color: COLORS.gerySkies,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    paddingVertical: verticalScale(2),
+    // paddingVertical: verticalScale(2),
   },
   previousRate: {
     color: COLORS.gerySkies,

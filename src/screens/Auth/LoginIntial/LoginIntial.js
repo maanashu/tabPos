@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Image, StatusBar } from 'react-native';
+import { View, Text,  Image, StatusBar } from 'react-native';
 import { Spacer, Button } from '@/components';
 import { SH } from '@/theme';
-import { Fonts, profilePic } from '@/assets';
+import {  profilePic } from '@/assets';
 import { styles } from '@/screens/Auth/LoginIntial/LoginIntial.styles';
 import { strings } from '@/localization';
-import { navigate, navigationRef } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getProfile } from '@/actions/AuthActions';
@@ -147,6 +145,7 @@ export function LoginIntial() {
                 {strings.loginIntial.time}
                 {hour12}:{dt} {formatAMPM(new Date())}
               </Text>
+              <Spacer space={SH(8)} />
               <View style={{ flex: 1 }} />
               <Button
                 onPress={loginIntialHandler}
