@@ -104,43 +104,40 @@ export class UserController {
     });
   }
 
-  static async getProduct(selectedId, subSelectedId, brandSelectedId, search) {
-    return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL + ApiProductInventory.getProduct + `?page=1&limit=10`;
-
-      const selectedCatArr = selectedId ? [selectedId] : [];
-      const selectedSubCatArr = subSelectedId ? [subSelectedId] : [];
-      const selectedBrandCatArr = brandSelectedId ? [brandSelectedId] : [];
-      // const searchingProArr = search ? search : ""
-
-      const body = {
-        category_id: selectedCatArr,
-        subcategory_id: selectedSubCatArr,
-        name: '',
-        brand_id: selectedBrandCatArr,
+  static async getProduct(selectedId ,subSelectedId ,brandSelectedId ,sellerID) {
+    const urlAccCat = (selectedId, subSelectedId,brandSelectedId, sellerID) => {
+      if(selectedId &&  sellerID && !subSelectedId && !brandSelectedId  ){
+         return(
+          PRODUCT_URL + ApiProductInventory.getProduct + `/${sellerID}?page=1&limit=10&category_id=${selectedId}`
+         )
+      }else if (selectedId &&  subSelectedId && sellerID && !brandSelectedId){
+        return(
+          PRODUCT_URL + ApiProductInventory.getProduct + `/${sellerID}?page=1&limit=10&category_id=${selectedId}&sub_category_id=${subSelectedId}`
+        )
+      }else if(selectedId &&  subSelectedId && brandSelectedId &&  sellerID) {
+        return(
+          PRODUCT_URL + ApiProductInventory.getProduct + `/${sellerID}?page=1&limit=10&category_id=${selectedId}&sub_category_id=${subSelectedId}&brand_id=${brandSelectedId}`
+        )
       }
-
-      HttpClient.post(endpoint, body)
+    };
+    return new Promise((resolve, reject) => {
+      const endpoint = urlAccCat(selectedId ,subSelectedId ,brandSelectedId ,sellerID);
+      HttpClient.get(endpoint)
         .then(response => {
-          if (response?.status_code === 200) {
-            Toast.show({
-              position: 'bottom',
-              type: 'success_toast',
-              text2: response?.msg,
-              visibilityTime: 2000,
-            });
+          if (response.status === 204) {
+            console.log('no content');
+            resolve([]);
           }
           resolve(response);
         })
         .catch(error => {
           Toast.show({
+            text2: error.msg,
             position: 'bottom',
             type: 'error_toast',
-            text2: error.msg,
-            visibilityTime: 2000,
+            visibilityTime: 1500,
           });
-          reject(error.msg);
+          reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
   };

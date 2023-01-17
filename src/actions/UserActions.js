@@ -208,10 +208,19 @@ export const getBrand = (selectedId) => async dispatch => {
   }
 };
 
-export const getProduct = (brandSelectedId , selectedId, search, subSelectedId) => async dispatch => {
+// export const getProduct = (brandSelectedId , selectedId, search, subSelectedId,sellerID) => async dispatch => {
+//   dispatch(getProductRequest());
+//   try {
+//       const res = await UserController.getProduct(brandSelectedId , selectedId, search, subSelectedId,sellerID);
+//       dispatch(getProductSuccess(res));
+//   } catch (error) {
+//       dispatch(getProductError(error.message));
+//   }
+// };
+export const getProduct = (selectedId ,subSelectedId ,brandSelectedId ,sellerID) => async dispatch => {
   dispatch(getProductRequest());
   try {
-      const res = await UserController.getProduct(brandSelectedId , selectedId, search, subSelectedId);
+      const res = await UserController.getProduct(selectedId ,subSelectedId ,brandSelectedId ,sellerID);
       dispatch(getProductSuccess(res));
   } catch (error) {
       dispatch(getProductError(error.message));

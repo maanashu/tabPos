@@ -83,6 +83,7 @@ import {
   getProductBundle,
 } from '@/actions/UserActions';
 import { getUser } from '@/selectors/UserSelectors';
+import {getAuthData} from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
 import { AddDiscountToCart, UpdatePrice } from '@/components';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
@@ -90,28 +91,12 @@ import { ListOfItem } from './ListOfItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ProductViewDetail } from './ProductViewDetail';
 
-const items = [
-  {
-    name: 'item 1',
-    qty: 0,
-  },
-  {
-    name: 'item 2',
-    qty: 0,
-  },
-  {
-    name: 'item 3',
-    qty: 0,
-  },
-  {
-    name: 'item 4',
-    qty: 0,
-  },
-];
 
 export function Retails() {
   const dispatch = useDispatch();
   const getUserData = useSelector(getUser);
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.getProfile?.unique_uuid;
   const array = getUserData?.categories;
   const subCategoriesArray = getUserData?.subCategories ?? [];
   const brandArray = getUserData?.brands ?? [];
@@ -214,25 +199,35 @@ export function Retails() {
     dispatch(getCategory());
     dispatch(getSubCategory(1));
     dispatch(getBrand(1));
-    dispatch(getProduct(1));
+    dispatch(getProduct(1,subSelectedId,brandSelectedId,sellerID));
     dispatch(getAllCart());
   }, []);
 
   const categoryFunction = id => {
     dispatch(getSubCategory(id));
     dispatch(getBrand(id));
-    dispatch(getProduct(id));
+    dispatch(getProduct(id,subSelectedId,brandSelectedId, sellerID));
     setSelectedId(id);
   };
 
   const subCategoryFunction = id => {
-    dispatch(getProduct(selectedId, id));
+    dispatch(getProduct(selectedId ,id,brandSelectedId, sellerID));
     setSubSelectedId(id);
   };
 
   const brandFunction = id => {
-    dispatch(getProduct(selectedId, subSelectedId, id));
-    setBrandSelectedId(id);
+    if (!subSelectedId){
+      Toast.show({
+        text2: strings.valiadtion.pleaseSelectSubCat,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    }else if (subSelectedId){
+      dispatch(getProduct(selectedId, subSelectedId, id, sellerID ));
+      setBrandSelectedId(id);
+    }
+    
   };
 
   const searchFunction = id => {

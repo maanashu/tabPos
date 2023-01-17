@@ -482,7 +482,8 @@ export const en = {
       phoneNotExist:'This number does not exist',
       noData: 'No Data',
       noProduct:'Product not found',
-      noCart:'No cart'
+      noCart:'No cart',
+      pleaseSelectSubCat:'First select sub-category'
     },
     successMessages:{
       loginSuccess:"Login succesfully"
