@@ -137,8 +137,9 @@ export function Retails() {
   const [cityModalOpen, setCityModelOpen] = useState(false);
   const [cityModalValue, setCityModalValue] = useState(null);
   const [cityItems, setCityItems] = useState([
-    { label: 'Miami', value: 'miami' },
-    { label: 'abc', value: 'abc' },
+    { label: 'aa', value: 'aa' },
+    { label: 'bb', value: 'bb' },
+    { label: 'cc', value: 'cc' },
   ]);
 
   const [jbrCoin, setJbrCoin] = useState(false);
@@ -202,7 +203,8 @@ export function Retails() {
   };
   const handleDecrease = index => {
     const array = temp;
-    array[index].qty = array[index].qty > 0 ? array[index].qty - 1 : array[index].qty;
+    array[index].qty =
+      array[index].qty > 0 ? array[index].qty - 1 : array[index].qty;
     setData(array);
     setTemp(array);
     setRefresh(Math.random());
@@ -302,14 +304,14 @@ export function Retails() {
   };
 
   const addToCartHandler = id => {
-    console.log('id', id);
+    // console.log('id', id);
     const data = {
       seller_id: 'b169ed4d-be27-44eb-9a08-74f997bc6a2a',
       product_id: id,
       service_id: 4,
       qty: result?.qty,
     };
-    console.log('data', data)
+    // console.log('data', data)
     dispatch(addTocart(data));
     setPosSearch(false);
   };
@@ -498,7 +500,7 @@ export function Retails() {
   const viewDetailHandler = item => {
     setPosSearch(false);
     setSelectedData(item);
-    setSearchProViewDetail(true)
+    setSearchProViewDetail(true);
     // if(posSearch === false){
     //   setSearchProViewDetail(true);
     // }
@@ -856,7 +858,6 @@ export function Retails() {
         </View>
       </TouchableOpacity>
       {searchSelectedId === item.id ? (
-        
         <View style={styles.productDetailCon}>
           <Spacer space={SH(25)} />
           <Text style={styles.availablestockHeading}>
@@ -913,7 +914,7 @@ export function Retails() {
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
             <Text style={[styles.price, { fontSize: SF(24) }]}>
-              {result?.qty ? result?.qty :'0' }
+              {result?.qty ? result?.qty : '0'}
             </Text>
             <TouchableOpacity onPress={() => handleIncrease(index)}>
               <Image source={plus} style={styles.plusBtn2} />
@@ -925,13 +926,13 @@ export function Retails() {
               {strings.retail.bundleOffer}
             </Text>
             <Spacer space={SH(10)} />
-            
+
             <View>
               {isBundleLoading ? (
                 <View style={{ marginTop: 10 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
-               ) : ( 
+              ) : (
                 <FlatList
                   data={bunndleProArray}
                   renderItem={renderBundleItem}
@@ -939,7 +940,7 @@ export function Retails() {
                   extraData={bunndleProArray}
                   ListEmptyComponent={renderEmptyContainer}
                 />
-               )} 
+              )}
             </View>
             <TouchableOpacity
               style={styles.addcartButtonStyle}
@@ -1262,7 +1263,7 @@ export function Retails() {
                   <View style={styles.flexAlign}>
                     <View
                     //  onPress={posSearchHandler}
-                     >
+                    >
                       <Image source={search_light} style={styles.searchStyle} />
                     </View>
                     <TextInput
@@ -1949,7 +1950,8 @@ export function Retails() {
           <Modal animationType="fade" transparent={true} isVisible={posSearch}>
             <KeyboardAvoidingView style={{ flex: 1 }}>
               <View
-                style={[styles.searchproductCon1, styles.searchproductCon2]}>
+                style={[styles.searchproductCon1, styles.searchproductCon2]}
+              >
                 <Spacer space={SH(20)} />
                 <View style={styles.searchInputWraper}>
                   <View style={styles.displayFlex}>
@@ -2009,13 +2011,14 @@ export function Retails() {
           <Modal
             animationType="fade"
             transparent={true}
-            isVisible={searchProViewDetail}>
-           <ProductViewDetail
-            searchProDetRemoveHandlwe = {searchProDetRemoveHandlwe}
-            selectedDataName = {selectedData?.name}
-            selectedDataImage ={{ uri: selectedData?.image }}
-            selectedDataDes = {selectedData?.description}
-            selectedDataPrice  = {selectedData?.price}
+            isVisible={searchProViewDetail}
+          >
+            <ProductViewDetail
+              searchProDetRemoveHandlwe={searchProDetRemoveHandlwe}
+              selectedDataName={selectedData?.name}
+              selectedDataImage={{ uri: selectedData?.image }}
+              selectedDataDes={selectedData?.description}
+              selectedDataPrice={selectedData?.price}
             />
           </Modal>
           {/* {searchProViewDetail ? (

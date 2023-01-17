@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: SW(202),
-    height: Platform.OS === 'android' ?  SH(55) : SH(45),
+    height: Platform.OS === 'android' ? SH(55) : SH(45),
     justifyContent: 'space-between',
     marginHorizontal: moderateScale(10),
   },
@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 10,
-    height: Platform.OS === 'android' ?  SH(55) : SH(45),
+    height: Platform.OS === 'android' ? SH(55) : SH(45),
   },
   purcheseStyle: {
     width: SW(14),
@@ -628,13 +628,13 @@ export const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   dropDownContainerStyle: {
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderColor: '#AAAAAA',
     backgroundColor: COLORS.white,
-    zIndex: 1,
+    zIndex: 999,
     ...ShadowStyles.shadow,
     elevation: 2,
-    top: 35,
+    top: 38,
     borderRadius: 7,
   },
   priceContainer: {
@@ -647,7 +647,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: moderateScale(10),
-    zIndex: -20,
+    zIndex: -99,
   },
   price: {
     fontSize: SF(14),

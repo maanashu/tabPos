@@ -16,6 +16,7 @@ import { checkbox, checkedCheckbox, Fonts } from '@/assets';
 import { Spacer } from './Spacer';
 import { strings } from '@/localization';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export function AddDiscountToCart({
   amountDis,
@@ -35,13 +36,14 @@ export function AddDiscountToCart({
 
   return (
     <View>
-      <View style={styles.adddiscountCon}>
-        <View style={{ height: SH(350) }}>
-          <KeyboardAwareScrollView
+      <ScrollView>
+        <View style={styles.adddiscountCon}>
+          <View style={{ height: SH(350) }}>
+            {/* <KeyboardAwareScrollView
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
-          >
+          > */}
             <Spacer space={SH(12)} />
             <Text style={styles.discountHeader}>
               {strings.posSale.discount}
@@ -90,6 +92,7 @@ export function AddDiscountToCart({
                   value={amountDis}
                   onChangeText={setAmountDis}
                   editable={percentageCheck || discountCheck ? false : true}
+                  placeholderTextColor={COLORS.darkGray}
                 />
               </View>
             </View>
@@ -141,6 +144,7 @@ export function AddDiscountToCart({
                   value={percentDis}
                   onChangeText={setPercentDis}
                   editable={discountCheck || amountCheck ? false : true}
+                  placeholderTextColor={COLORS.darkGray}
                 />
               </View>
             </View>
@@ -190,6 +194,7 @@ export function AddDiscountToCart({
                   value={discountCode}
                   onChangeText={setDiscountCode}
                   editable={percentageCheck || amountCheck ? false : true}
+                  placeholderTextColor={COLORS.darkGray}
                 />
               </View>
             </View>
@@ -201,24 +206,26 @@ export function AddDiscountToCart({
               style={styles.discountTitleInput}
               value={descriptionDis}
               onChangeText={setDescriptionDis}
+              placeholderTextColor={COLORS.darkGray}
             />
             <Spacer space={SH(12)} />
-          </KeyboardAwareScrollView>
+            {/* </KeyboardAwareScrollView> */}
+          </View>
         </View>
-      </View>
 
-      <Spacer space={SH(12)} />
+        <Spacer space={SH(12)} />
 
-      <View style={styles.saveButtonCon}>
-        <TouchableOpacity
-          style={styles.saveNotesButton}
-          onPress={saveDiscountHandler}
-        >
-          <Text style={styles.saveNotesText}>
-            {strings.posSale.saveDiscount}
-          </Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.saveButtonCon}>
+          <TouchableOpacity
+            style={styles.saveNotesButton}
+            onPress={saveDiscountHandler}
+          >
+            <Text style={styles.saveNotesText}>
+              {strings.posSale.saveDiscount}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 }

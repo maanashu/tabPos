@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, Alert } from 'react-native';
+import { StyleSheet, Image, Dimensions, Alert, View } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { COLORS, SF, SW } from '@/theme';
 import { navigate } from '@/navigation/NavigationRef';
@@ -30,12 +30,14 @@ import {
 import { useDispatch } from 'react-redux';
 import { logoutFunction } from '@/actions/AuthActions';
 
+const windowHeight = Dimensions.get('window').height;
+
 export function DrawerNavigator(props) {
   const dispatch = useDispatch();
   const [active, setActive] = useState('retail');
 
   const logoutHandler = () => {
-       Alert.alert('Logout', 'Are you sure you want to logout ?', [
+    Alert.alert('Logout', 'Are you sure you want to logout ?', [
       {
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
@@ -59,11 +61,12 @@ export function DrawerNavigator(props) {
       vertical
       contentContainerStyle={{
         alignItems: 'flex-start',
-        justifyContent: 'space-evenly',
+        // justifyContent: 'space-evenly',
         left: 0,
         right: 10,
         // borderWidth: 1,
         width: SW(25),
+        height: windowHeight,
       }}
       {...props}
     >
@@ -213,17 +216,24 @@ export function DrawerNavigator(props) {
         )}
       />
 
-      {/* <View style={{ backgroundColor: COLORS.textInputBackground }}> */}
-      <DrawerItem
-       onPress={() => {
-        logoutHandler();
-      }}
-        label=""
-        icon={({ focused, color, size }) => (
-          <Image source={power} style={styles.iconStyle} />
-        )}
-      />
-      {/* </View> */}
+      <View
+        style={{
+          backgroundColor: COLORS.textInputBackground,
+          position: 'absolute',
+          left: 0,
+          bottom: 0,
+        }}
+      >
+        <DrawerItem
+          onPress={() => {
+            logoutHandler();
+          }}
+          label=""
+          icon={({ focused, color, size }) => (
+            <Image source={power} style={styles.iconStyle} />
+          )}
+        />
+      </View>
     </DrawerContentScrollView>
   );
 }

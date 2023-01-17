@@ -14,7 +14,7 @@ import {
   Analytics,
   ShippingOrder,
   LoginIntial,
-  Reward
+  Reward,
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
@@ -30,7 +30,7 @@ export function HomeNavigator() {
       screenOptions={{
         drawerStyle: {
           backgroundColor: COLORS.white,
-          width: Platform.OS === 'android' ? SW(22) : SW(30),
+          width: Platform.OS === 'android' ? SW(22) : SW(25),
           alignItems: 'center',
         },
         drawerPosition: 'left',
@@ -78,7 +78,7 @@ export function HomeNavigator() {
         name={NAVIGATION.analytics}
         options={{ headerShown: false }}
       />
-        <Drawer.Screen
+      <Drawer.Screen
         component={Reward}
         name={NAVIGATION.reward}
         options={{ headerShown: false }}
