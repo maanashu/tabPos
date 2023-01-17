@@ -88,6 +88,7 @@ import { AddDiscountToCart, UpdatePrice } from '@/components';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { ListOfItem } from './ListOfItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ProductViewDetail } from './ProductViewDetail';
 
 const items = [
   {
@@ -190,7 +191,7 @@ export function Retails() {
   const [data, setData] = useState(serProductArray);
   const [refresh, setRefresh] = useState('');
   const [temp, setTemp] = useState(data?.map(item => ({ ...item, qty: 0 })));
-  var result = temp.find(item => item.id === searchSelectedId);
+  const result = temp?.find(item => item.id === searchSelectedId);
 
   const handleIncrease = index => {
     const array = temp;
@@ -306,9 +307,9 @@ export function Retails() {
       seller_id: 'b169ed4d-be27-44eb-9a08-74f997bc6a2a',
       product_id: id,
       service_id: 4,
-      qty: count,
+      qty: result?.qty,
     };
-    // console.log('data', data)
+    console.log('data', data)
     dispatch(addTocart(data));
     setPosSearch(false);
   };
@@ -497,12 +498,15 @@ export function Retails() {
   const viewDetailHandler = item => {
     setPosSearch(false);
     setSelectedData(item);
-    setSearchProViewDetail(!searchProViewDetail);
+    setSearchProViewDetail(true)
+    // if(posSearch === false){
+    //   setSearchProViewDetail(true);
+    // }
   };
 
   const searchProDetRemoveHandlwe = () => {
     setSearchProViewDetail(false);
-    setPosSearch(!posSearch);
+    setPosSearch(true);
   };
 
   const increment = () => {
@@ -818,7 +822,6 @@ export function Retails() {
   );
 
   const SearchItemSelect = ({ item, onPress, index }) => (
-    // console.log('------------data',data),
     <View>
       <Spacer space={SH(15)} />
       <TouchableOpacity
@@ -964,25 +967,6 @@ export function Retails() {
       />
     );
   };
-
-  const productUnitItem = ({ item }) => (
-    <View style={styles.unitTypeCon}>
-      <Spacer space={SH(8)} />
-      <Text style={[styles.detailHeader, styles.detailHeader2]}>
-        {item.unitType}
-      </Text>
-      <Spacer space={SH(5)} />
-      <Text
-        style={[
-          styles.detailHeader,
-          { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-        ]}
-      >
-        {item.price}
-      </Text>
-      <Spacer space={SH(8)} />
-    </View>
-  );
 
   const renderEmptyContainer = allCartArray => {
     return (
@@ -2007,7 +1991,6 @@ export function Retails() {
                       data={serProductArray}
                       extraData={serProductArray}
                       renderItem={renderSearchItem}
-                      // keyExtractor={item => item.id}
                       keyExtractor={(item, index) => String(index)}
                       style={styles.flatlistHeight}
                       ListEmptyComponent={renderEmptyProducts}
@@ -2022,84 +2005,28 @@ export function Retails() {
           {/*  pos search  end */}
 
           {/*  pos search details  start */}
-          {searchProViewDetail ? (
-            <View style={[styles.searchproductCon1, styles.searchDetailsCon2]}>
-              <Spacer space={SH(20)} />
-              <TouchableOpacity
-                style={styles.backButtonCon}
-                onPress={searchProDetRemoveHandlwe}
-              >
-                <Image source={backArrow} style={styles.backButtonArrow} />
-                <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
-              </TouchableOpacity>
-              <Spacer space={SH(20)} />
-              <Text style={styles.productDetailHeader}>
-                {selectedData.name}
-              </Text>
-              <Spacer space={SH(10)} />
-              <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
-                <View style={styles.detailImageCon}>
-                  <Image
-                    source={{ uri: selectedData.image }}
-                    style={styles.marboloPackStyle}
-                  />
-                  <Spacer space={SH(15)} />
-                  <View style={styles.productDescrptionCon}>
-                    <Spacer space={SH(10)} />
-                    <Text style={styles.detailHeader}>
-                      {strings.posSale.details}
-                    </Text>
-                    <Spacer space={SH(4)} />
-                    <Text style={styles.productDes}>
-                      {selectedData.description}
-                    </Text>
-                    <Spacer space={SH(8)} />
-                  </View>
-                </View>
-                <View style={styles.detailPriceCon}>
-                  <View style={styles.priceContainer}>
-                    <Text style={styles.price}>{strings.retail.price}</Text>
-                    <Text style={[styles.price, { fontSize: SF(18) }]}>
-                      {selectedData.price}
-                    </Text>
-                  </View>
-                  <Spacer space={SH(25)} />
-                  <View
-                    style={[
-                      styles.priceContainer,
-                      { backgroundColor: COLORS.white },
-                    ]}
-                  >
-                    <TouchableOpacity onPress={decrement}>
-                      <Image source={minus} style={styles.plusBtn2} />
-                    </TouchableOpacity>
-                    <Text style={[styles.price, { fontSize: SF(24) }]}>
-                      {count}
-                    </Text>
-                    <TouchableOpacity onPOress={increment}>
-                      <Image source={plus} style={styles.plusBtn2} />
-                    </TouchableOpacity>
-                  </View>
-                  <Spacer space={SH(20)} />
-                  <View style={styles.descriptionAddCon}>
-                    <Text style={styles.desAddCartText}>
-                      {strings.posSale.addToCart}
-                    </Text>
-                  </View>
-                  <Spacer space={SH(38)} />
-                  <View>
-                    <FlatList
-                      data={productUnitData}
-                      renderItem={productUnitItem}
-                      keyExtractor={item => item.id}
-                      numColumns={3}
-                    />
-                  </View>
-                </View>
-              </View>
-            </View>
-          ) : null}
 
+          <Modal
+            animationType="fade"
+            transparent={true}
+            isVisible={searchProViewDetail}>
+           <ProductViewDetail
+            searchProDetRemoveHandlwe = {searchProDetRemoveHandlwe}
+            selectedDataName = {selectedData?.name}
+            selectedDataImage ={{ uri: selectedData?.image }}
+            selectedDataDes = {selectedData?.description}
+            selectedDataPrice  = {selectedData?.price}
+            />
+          </Modal>
+          {/* {searchProViewDetail ? (
+            <ProductViewDetail
+            searchProDetRemoveHandlwe = {searchProDetRemoveHandlwe}
+            selectedDataName = {selectedData.name}
+            selectedDataImage ={{ uri: selectedData.image }}
+            selectedDataDes = {selectedData.description}
+            selectedDataPrice  = {selectedData.price}
+            />
+          ) : null} */}
           {/*  pos search details  end */}
         </View>
       )}

@@ -1444,7 +1444,7 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.7,
     width: windowWidth * 0.7,
     position: 'absolute',
-    top: 100,
+    top: 30,
     left: 100,
     ...ShadowStyles.shadow2,
   },
