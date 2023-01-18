@@ -263,7 +263,10 @@ export const en = {
     trackingNo:'Tracking number#  6533284651BC12',
     willis:'Willis V Burleson',
     delivered:'Delivered',
-    tracking:'Tracking'
+    tracking:'Tracking',
+    listOfItem:'List of items',
+    item:'items',
+    rewardPoint:'Reward Points:'
   },
   management: {
     cashTracking: 'Cash Tracking',
@@ -353,7 +356,8 @@ export const en = {
     contact:'Contact',
     customer:'Customers',
     showResult:'Showing Results',
-    completed:'Completed'
+    completed:'Completed',
+    userdetail:'User details'
 
   },
   trackingNumber:{

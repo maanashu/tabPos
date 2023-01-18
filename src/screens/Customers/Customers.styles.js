@@ -8,9 +8,7 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
     backgroundColor: COLORS.white,
-    // paddingHorizontal:moderateScale(10),
   },
   displayFlex: {
     flexDirection: 'row',
@@ -66,7 +64,6 @@ export const styles = StyleSheet.create({
   deliveryView: {
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'center',
   },
   deliveryText: {
     fontFamily: Fonts.MaisonRegular,
@@ -88,15 +85,13 @@ export const styles = StyleSheet.create({
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
-    // height: SH(63),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
   },
   customerHomeCon: {
-    // borderWidth:1,
     width: windowWidth * 0.94,
-    height:windowHeight * 0.86,
-    paddingHorizontal:moderateScale(10),
+    height: windowHeight * 0.86,
+    paddingHorizontal: moderateScale(10),
     alignSelf: 'center',
   },
   custometrCon: {
@@ -135,7 +130,6 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(3),
   },
   byDayConLight: {
-    // backgroundColor:COLORS.textInputBackground,
     borderRadius: 3,
     marginHorizontal: moderateScale(3),
   },
@@ -272,7 +266,7 @@ export const styles = StyleSheet.create({
     height: SH(40),
     justifyContent: 'center',
     borderRadius: 4,
-    marginRight:7
+    marginRight: 7,
   },
   unionStyle: {
     width: SW(5),
@@ -290,22 +284,12 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.darkGreen,
   },
-  containerStylePagination: {
-    width: SW(20),
-    height: SH(35),
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderRadius: 3,
-    borderColor: COLORS.solidGrey,
-    backgroundColor: COLORS.white,
-  },
   placeholderStylePagination: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
     color: COLORS.black,
   },
-  tableMainView: {
-  },
+  tableMainView: {},
   userTableHead: {
     height: SH(50),
     backgroundColor: '#E1E3E4',
@@ -406,6 +390,11 @@ export const styles = StyleSheet.create({
   lovingStyle: {
     width: SW(25),
     height: SH(110),
+    resizeMode: 'contain',
+  },
+  lovingStyleData: {
+    width: SW(10),
+    height: SW(10),
     resizeMode: 'contain',
   },
   Phonelight: {
@@ -516,7 +505,6 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     top: Platform.OS === 'android' ? 30 : 15,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
-    // borderWidth: 1,
   },
   placeholderStyle: {
     fontSize: SF(12),
@@ -529,7 +517,7 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
   },
   containerStylePagination: {
-    width: SW(20),
+    width: SW(22),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,
@@ -538,7 +526,6 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     color: COLORS.solidGrey,
   },
- 
 
   // order shipping css start
   onlinedeliveryCon: {
@@ -547,7 +534,6 @@ export const styles = StyleSheet.create({
     paddingVertical: verticalScale(5),
   },
   onlinedeliveryBody: {
-    // borderWidth:1,
     width: windowWidth * 0.8,
     alignSelf: 'center',
   },
@@ -566,7 +552,6 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
   },
   onlinedeliveryBody: {
-    // borderWidth:1,
     width: windowWidth * 0.8,
     alignSelf: 'center',
   },
@@ -639,11 +624,8 @@ export const styles = StyleSheet.create({
     // paddingHorizontal
   },
   tableContainer: {
-    // borderWidth:1,
     backgroundColor: COLORS.white,
     ...ShadowStyles.shadow2,
-    // borderTopLeftRadius:12,
-    // borderTopRightRadius:12
     borderRadius: 12,
   },
   tableheader: {
@@ -657,7 +639,6 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontSize: SF(14),
     fontFamily: Fonts.MaisonBold,
-    // paddingHorizontal:moderateScale(40)
   },
   rowText: {
     color: COLORS.dark_grey,
@@ -671,12 +652,10 @@ export const styles = StyleSheet.create({
   },
   tableSetting: {
     width: SW(200),
-    // marginLeft:-150,
     marginRight: 170,
   },
   noteContainer: {
     borderWidth: 1,
-    // backgroundColor:COLORS.,
     borderColor: COLORS.solidGrey,
     height: SH(194),
     width: windowWidth * 0.38,
@@ -688,9 +667,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(20),
-    // borderBottomWidth:1,
-    // borderColor:COLORS.solidGrey,
-    // paddingVertical:verticalScale(7)
   },
   tablesubTotalLabel: {
     color: COLORS.solid_grey,
@@ -770,7 +746,6 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.bluish_green,
     flexDirection: 'row',
     height: SH(36),
-    // width:SW(40),
     alignItems: 'center',
     borderRadius: 6,
     textAlign: 'center',
@@ -794,7 +769,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dateTableSetting: {
-    justifyContent:'center',
+    justifyContent: 'center',
   },
   orderNoStyle: {
     fontSize: SF(20),
@@ -816,9 +791,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   mapContainer: {
-    // borderWidth:1,
     width: windowWidth * 0.44,
-    // height:windowHeight * 0.80,
     borderRadius: 10,
   },
   costoContainer: {
@@ -829,8 +802,8 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   trackingAngela: {
-    Width: SW(15),
-    height: SW(15),
+    Width: SH(60),
+    height: SH(60),
     resizeMode: 'contain',
   },
   costoHr: {
@@ -976,20 +949,121 @@ export const styles = StyleSheet.create({
     height: SH(30),
     resizeMode: 'contain',
   },
-  tableHeader:{
-    backgroundColor:COLORS.textInputBackground,
-    borderTopWidth:1,
-    borderColor:COLORS.solidGrey,
+  tableHeader: {
+    backgroundColor: COLORS.textInputBackground,
+    borderTopWidth: 1,
+    borderColor: COLORS.solidGrey,
   },
-  paginationEnd:{
+  paginationEnd: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  columnSpace:{
+  columnSpace: {
     flexDirection: 'column',
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(5),
-  }
- 
+  },
+
+  // table css start
+
+  tableDataHeaderCon: {
+    height: SH(50),
+    backgroundColor: COLORS.textInputBackground,
+    textAlign: 'center',
+    borderColor: COLORS.solidGrey,
+    paddingHorizontal: moderateScale(20),
+    justifyContent: 'center',
+  },
+  tableHeaderLeft: {
+    flexDirection: 'row',
+    width: windowWidth * 0.4,
+  },
+  tableHeaderLeftPro: {
+    flexDirection: 'row',
+    width: windowWidth * 0.01,
+  },
+  tableHeaderRightPro: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: windowWidth * 0.87,
+    // paddingRight: Platform.OS === 'ios' ? 40 : 0,
+  },
+  tableHeaderRight: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: windowWidth * 0.5,
+    // paddingRight: Platform.OS === 'ios' ? 40 : 0,
+  },
+  tableTextHea: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(14),
+    letterSpacing: -1,
+    width: windowWidth * 0.1,
+  },
+  tableTextData: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    width: windowWidth * 0.1,
+  },
+  tableTextDataAdd: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    width: windowWidth * 0.3,
+  },
+  tableTextDataName: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    width: windowWidth * 0.2,
+  },
+  tableTextDataCom: {
+    backgroundColor: COLORS.bluish_green,
+    paddingHorizontal: moderateScale(4),
+    paddingVertical: verticalScale(1),
+    marginRight: 40,
+    fontSize: SF(14),
+    color: COLORS.white,
+    borderRadius: 3,
+  },
+  tableTextHeaFirst: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(14),
+    letterSpacing: -1,
+    width: windowWidth * 0.01,
+  },
+  tableTextDataFirst: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    letterSpacing: -1,
+    width: windowWidth * 0.01,
+  },
+  tableTextCenter: {
+    alignSelf: 'center',
+    width: windowWidth * 0.1,
+  },
+
+  tableHeaderRightOrder: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: windowWidth * 0.36,
+    // paddingRight: Platform.OS === 'ios' ? 40 : 0,
+  },
+  orderCigrate: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+  },
+  tableDataCon: {
+    height: SH(55),
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(20),
+  },
 });

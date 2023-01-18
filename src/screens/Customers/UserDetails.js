@@ -5,6 +5,7 @@ import { moderateScale } from 'react-native-size-matters';
 import {
   dropdown2,
   email,
+  leftBack,
   location,
   loving,
   mask,
@@ -19,10 +20,10 @@ import { strings } from '@/localization';
 import { styles } from './Customers.styles';
 
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Spacer, TableDropdown } from '@/components';
+import { Spacer } from '@/components';
 import { Table } from 'react-native-table-component';
 
-export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
+export function UserDetails({ userRemoveRemoveHandler }) {
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
   const [paginationModalItems, setPaginationModalItems] = useState([
@@ -34,6 +35,22 @@ export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
 
   return (
     <View>
+      <View style={styles.useHeaderCon}>
+        <Spacer space={SH(10)} />
+        <View style={styles.displayFlex}>
+          <View style={styles.flexAlign}>
+            <TouchableOpacity onPress={userRemoveRemoveHandler}>
+              <Image source={leftBack} style={styles.leftBackStyle} />
+            </TouchableOpacity>
+            <Text style={styles.profileHeaderText}>
+              {strings.customers.userdetail}
+            </Text>
+          </View>
+          <View style={styles.editButtonCon}>
+            <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
+          </View>
+        </View>
+      </View>
       <View style={{ paddingHorizontal: moderateScale(10) }}>
         <Spacer space={SH(20)} />
         <View style={styles.profileCon}>
@@ -73,10 +90,7 @@ export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
               </View>
             </View>
             <View>
-              <TouchableOpacity
-                style={styles.pointCon}
-                onPress={userDetailHandler}
-              >
+              <TouchableOpacity style={styles.pointCon}>
                 <View style={styles.flexAlign}>
                   <Image source={reward2} style={styles.rewardStyle} />
                   <Text style={styles.pointText}>
@@ -98,16 +112,6 @@ export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
         </View>
       </View>
       <Spacer space={SH(20)} />
-      <View style={styles.orderTypeCon}>
-        <View style={styles.flexAlign}>
-          <View style={{ marginHorizontal: moderateScale(8) }}>
-            <TableDropdown placeholder="Month" />
-          </View>
-          <>
-            <TableDropdown placeholder="Store location" />
-          </>
-        </View>
-      </View>
       <View style={[styles.jbrTypeCon, { zIndex: -2 }]}>
         <View style={styles.paginationEnd}>
           <Text style={[styles.paginationCount, { fontSize: 12 }]}>
@@ -175,17 +179,13 @@ export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
                 <Text style={styles.tableTextHea}>Order id#</Text>
                 <Text style={styles.tableTextHea}>Date</Text>
                 <Text style={styles.tableTextHea}>Store location</Text>
-                <Text style={styles.tableTextHea}>Responsible</Text>
-                <Text style={styles.tableTextHea}>No. of items</Text>
-                <Text style={styles.tableTextHea}>Amount</Text>
-                <Text style={styles.tableTextHea}>Sales type</Text>
+                <Text style={styles.tableTextHea}>Buying amount</Text>
+                <Text style={styles.tableTextHea}>Points</Text>
+                <Text style={styles.tableTextHea}>Status</Text>
               </View>
             </View>
           </View>
-          <TouchableOpacity
-            style={styles.tableDataCon}
-            onPress={orderOnlineHandler}
-          >
+          <TouchableOpacity style={styles.tableDataCon}>
             <View style={styles.displayFlex}>
               <View style={styles.tableHeaderLeftPro}>
                 <Text style={styles.tableTextDataFirst}>1</Text>
@@ -194,10 +194,9 @@ export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
                 <Text style={styles.tableTextData}>362501</Text>
                 <Text style={styles.tableTextData}>Jun 11, 2022</Text>
                 <Text style={styles.tableTextData}>Maimi</Text>
-                <Text style={styles.tableTextData}>DHL</Text>
-                <Text style={styles.tableTextData}>3 times</Text>
                 <Text style={styles.tableTextData}>$6,850.00</Text>
-                <Text style={styles.tableTextData}>Shipping</Text>
+                <Text style={styles.tableTextData}>75</Text>
+                <Text style={styles.tableTextData}></Text>
               </View>
             </View>
           </TouchableOpacity>

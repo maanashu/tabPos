@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, Dimensions, Alert, View } from 'react-native';
+import { StyleSheet, Image, Dimensions, Alert, View, Platform } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { COLORS, SF, SW } from '@/theme';
 import { navigate } from '@/navigation/NavigationRef';
@@ -66,10 +66,9 @@ export function DrawerNavigator(props) {
         right: 10,
         // borderWidth: 1,
         width: SW(25),
-        height: windowHeight,
+        height: Platform.OS === 'android' ?  windowHeight * 0.95 : windowHeight,
       }}
-      {...props}
-    >
+      {...props}>
       <DrawerItem
         label=""
         icon={({ focused, color, size }) => (
@@ -245,8 +244,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   iconStyle: {
-    width: SW(10),
-    height: SW(10),
+    width: Platform.OS === 'android' ? SW(9) : SW(10),
+    height: Platform.OS === 'android' ? SW(9) : SW(10),
     resizeMode: 'contain',
   },
   powerStyle: {

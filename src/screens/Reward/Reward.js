@@ -110,13 +110,16 @@ export function Reward() {
 
   return (
     <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
-    <View style={{ flex: 1 }}>
+      <View>
+         <Text>coming soon</Text>
+      </View>
+    {/* <View style={{ flex: 1 }}>
       <FlatList
         data={data}
         renderItem={renderItem}
         keyExtractor={(item, index) => String(index)}
       />
-    </View>
+    </View> */}
   </SafeAreaView>
   );
 }

@@ -10,11 +10,11 @@ import { COLORS, SH,  } from '@/theme';
 import {
   moderateScale,
 } from 'react-native-size-matters';
-import { angela, checkArrow, crossButton, deliverCheck, Fonts, leftBack, track, willis } from '@/assets';
+import { angela, checkArrow, crossButton, deliverCheck, Fonts, leftBack, orderCigrate, track, willis } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { styles } from './Wallet.styles';
-import { DataTable } from 'react-native-paper';
+import { Table } from 'react-native-table-component';
 
 export function DetailShipping({shippingDeliverRemoveHandler}) {
   return (
@@ -24,7 +24,6 @@ export function DetailShipping({shippingDeliverRemoveHandler}) {
       <View
         style={[
           styles.displayFlex,
-          { paddingHorizontal: moderateScale(10) },
         ]}
       >
         <View style={styles.flexAlign}>
@@ -107,7 +106,7 @@ export function DetailShipping({shippingDeliverRemoveHandler}) {
         </View>
         <Spacer space={SH(15)} />
         <View style={styles.tableContainer}>
-          <DataTable>
+          {/* <DataTable>
             <DataTable.Header style={styles.tableheader}>
               <DataTable.Title>
                 <Text style={styles.tableLabel}>#</Text>
@@ -161,7 +160,45 @@ export function DetailShipping({shippingDeliverRemoveHandler}) {
                 <Text style={styles.rowText}>$4,063.20</Text>
               </DataTable.Cell>
             </DataTable.Row>
-          </DataTable>
+          </DataTable> */}
+
+<Table>
+            <View style={styles.tableDataHeaderCon}>
+              <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                <Text style={styles.tableTextHeaFirst}>#</Text>
+                  <Text style={[styles.tableTextHea, {marginLeft:30}]}>Descriptions</Text>
+                </View>
+                <View style={styles.tableHeaderRightOrder}>
+                  <Text style={styles.tableTextHea}>No. of Items</Text>
+                  <Text style={styles.tableTextHea}>Rate</Text>
+                  <Text style={[styles.tableTextHea, {marginRight:-35}]}>Amount</Text>  
+                </View>
+              </View>
+            </View>
+            <View style={styles.tableDataCon}>
+            <View style={styles.displayFlex}>
+                <View style={styles.tableHeaderLeft}>
+                <Text style={styles.tableTextDataFirst}>1</Text>
+                <View style={{flexDirection:'row', marginLeft:30}}>
+                  <Image source={orderCigrate} style={styles.orderCigrate}/>
+                <View style={{flexDirection:'column', marginLeft:8}}>
+                <Text style={styles.tableTextData}>Ashton Classic</Text>
+                <Text style={[styles.tableTextData, {color:COLORS.gerySkies}]}>Box of 25</Text>
+                </View>
+
+                </View>
+                
+                  
+                </View>
+                <View style={styles.tableHeaderRightOrder}>
+                  <Text style={styles.tableTextData}>2565916565..</Text>
+                  <Text style={styles.tableTextData}>Sales</Text>
+                  <Text style={[styles.tableTextData, {marginRight:-35}]}>JBR </Text>  
+                </View>
+              </View>
+            </View>
+          </Table>
 
           <Spacer space={SH(15)} />
           <View

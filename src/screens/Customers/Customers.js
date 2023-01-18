@@ -34,15 +34,17 @@ import {
   movingArrowBlue,
   angela2,
   contact,
+  orderCigrate,
 } from '@/assets';
-import { DaySelector, Spacer } from '@/components';
+import { DaySelector, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
-import { DataTable } from 'react-native-paper';
-import { Users, UserProfile } from '@/screens/Customers';
+import { Users, UserProfile, UserDetails } from '@/screens/Customers';
+import { Table } from 'react-native-table-component';
 
 export function Customers() {
   const [weeklyUser, setWeeklyUser] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
+  const [userDetail, setUserDetail] = useState(false);
   const [orderModal, setOrderModal] = useState(false);
   const [tracking, setTracking] = useState(false);
 
@@ -73,7 +75,8 @@ export function Customers() {
   const newCustomerItem = ({ item }) => (
     <TouchableOpacity
       style={styles.custometrCon}
-      onPress={() => setWeeklyUser(!weeklyUser)}>
+      onPress={() => setWeeklyUser(!weeklyUser)}
+    >
       <View style={styles.flexAlign}>
         <Image source={item.img} style={styles.newCustomer} />
         <View style={{ paddingHorizontal: moderateScale(7) }}>
@@ -154,7 +157,8 @@ export function Customers() {
               style={[
                 styles.displayFlex,
                 { paddingHorizontal: moderateScale(10) },
-              ]}>
+              ]}
+            >
               <View style={styles.flexAlign}>
                 <TouchableOpacity onPress={trackingRemoveHandler}>
                   <Image source={leftBack} style={styles.leftBackStyle} />
@@ -163,7 +167,9 @@ export function Customers() {
                   {strings.trackingNumber.trackingNo}
                 </Text>
                 <View style={styles.completedButton}>
-                  <Text style={styles.completedText}>{strings.customers.completed}</Text>
+                  <Text style={styles.completedText}>
+                    {strings.customers.completed}
+                  </Text>
                 </View>
               </View>
               <TouchableOpacity onPress={trackingRemoveHandler}>
@@ -181,7 +187,7 @@ export function Customers() {
                     <Spacer space={SH(10)} />
                     <View style={{ flexDirection: 'row' }}>
                       <Image source={angela} style={styles.trackingAngela} />
-                      <View>
+                      <View style={{ marginLeft: -15 }}>
                         <Text style={styles.costoName}>
                           {strings.customers.costo}
                         </Text>
@@ -207,7 +213,8 @@ export function Customers() {
                             style={[
                               styles.costoPayCon,
                               { alignItems: 'center' },
-                            ]}>
+                            ]}
+                          >
                             <View style={styles.flexAlign}>
                               <Image source={box} style={styles.ticketImage} />
                               <Text style={styles.ciagrtext}>
@@ -237,7 +244,8 @@ export function Customers() {
                       style={[
                         styles.orderStatus,
                         { fontFamily: Fonts.Regular },
-                      ]}>
+                      ]}
+                    >
                       {strings.customers.assignDriver}
                     </Text>
                     <View
@@ -281,8 +289,7 @@ export function Customers() {
                         />
                         <Image source={fillRadio} style={styles.ticketImage} />
                       </View>
-                      <View
-                        style={styles.columnSpace}>
+                      <View style={styles.columnSpace}>
                         <View style={{ marginTop: -14 }}>
                           <Text style={styles.verifyTextLight}>
                             {strings.customers.verifyCode}
@@ -506,7 +513,7 @@ export function Customers() {
               </View>
               <Spacer space={SH(15)} />
               <View style={styles.tableContainer}>
-                <DataTable>
+                {/* <DataTable>
                   <DataTable.Header style={styles.tableheader}>
                     <DataTable.Title>
                       <Text style={styles.tableLabel}>#</Text>
@@ -560,16 +567,113 @@ export function Customers() {
                       <Text style={styles.rowText}>$4,063.20</Text>
                     </DataTable.Cell>
                   </DataTable.Row>
-                </DataTable>
+                </DataTable> */}
+                <Table>
+                  <View style={styles.tableDataHeaderCon}>
+                    <View style={styles.displayFlex}>
+                      <View style={styles.tableHeaderLeft}>
+                        <Text style={styles.tableTextHeaFirst}>#</Text>
+                        <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>
+                          Descriptions
+                        </Text>
+                      </View>
+                      <View style={styles.tableHeaderRightOrder}>
+                        <Text style={styles.tableTextHea}>No. of Items</Text>
+                        <Text style={styles.tableTextHea}>Rate</Text>
+                        <Text
+                          style={[styles.tableTextHea, { marginRight: -35 }]}
+                        >
+                          Amount
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.tableDataCon}>
+                    <View style={styles.displayFlex}>
+                      <View style={styles.tableHeaderLeft}>
+                        <Text style={styles.tableTextDataFirst}>1</Text>
+                        <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                          <Image
+                            source={orderCigrate}
+                            style={styles.orderCigrate}
+                          />
+                          <View
+                            style={{ flexDirection: 'column', marginLeft: 8 }}
+                          >
+                            <Text style={styles.tableTextData}>
+                              Ashton Classic
+                            </Text>
+                            <Text
+                              style={[
+                                styles.tableTextData,
+                                { color: COLORS.gerySkies },
+                              ]}
+                            >
+                              Box of 25
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      <View style={styles.tableHeaderRightOrder}>
+                        <Text style={styles.tableTextData}>16 Box</Text>
+                        <Text style={styles.tableTextData}>$253.95</Text>
+                        <Text
+                          style={[styles.tableTextData, { marginRight: -35 }]}
+                        >
+                          $4,063.20
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.tableDataCon}>
+                    <View style={styles.displayFlex}>
+                      <View style={styles.tableHeaderLeft}>
+                        <Text style={styles.tableTextDataFirst}>1</Text>
+                        <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                          <Image
+                            source={orderCigrate}
+                            style={styles.orderCigrate}
+                          />
+                          <View
+                            style={{ flexDirection: 'column', marginLeft: 8 }}
+                          >
+                            <Text style={styles.tableTextData}>
+                              Ashton Classic
+                            </Text>
+                            <Text
+                              style={[
+                                styles.tableTextData,
+                                { color: COLORS.gerySkies },
+                              ]}
+                            >
+                              Box of 25
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      <View style={styles.tableHeaderRightOrder}>
+                        <Text style={styles.tableTextData}>16 Box</Text>
+                        <Text style={styles.tableTextData}>$253.95</Text>
+                        <Text
+                          style={[styles.tableTextData, { marginRight: -35 }]}
+                        >
+                          $4,063.20
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </Table>
 
                 <Spacer space={SH(10)} />
                 <View
                   style={[
                     styles.displayFlex,
                     { marginHorizontal: moderateScale(10) },
-                  ]}>
+                  ]}
+                >
                   <TextInput
                     multiline
+                    editable={false}
                     numberOfLines={4}
                     style={styles.textInputStyle}
                     placeholder="Note:"
@@ -701,11 +805,26 @@ export function Customers() {
           </View>
         </View>
       );
+    } else if (userDetail) {
+      return (
+        <View>
+          <UserDetails
+            userRemoveRemoveHandler={() => (
+              setUserDetail(false), setUserProfile(true)
+            )}
+          />
+        </View>
+      );
     } else if (userProfile) {
       return (
         <View>
           {customUserHeader()}
-          <UserProfile orderOnlineHandler={orderOnlineHandler} />
+          <UserProfile
+            orderOnlineHandler={orderOnlineHandler}
+            userDetailHandler={() => (
+              setUserProfile(false), setUserDetail(true)
+            )}
+          />
         </View>
       );
     } else if (weeklyUser) {
@@ -752,5 +871,9 @@ export function Customers() {
       );
     }
   };
-  return <View style={styles.container}>{bodyView()}</View>;
+  return (
+    <ScreenWrapper>
+      <View style={styles.container}>{bodyView()}</View>
+    </ScreenWrapper>
+  );
 }

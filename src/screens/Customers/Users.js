@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { Text, TouchableOpacity, View, Image } from 'react-native';
+import { COLORS} from '@/theme';
 import { moderateScale } from 'react-native-size-matters';
 import {
   calendar1,
-  clay,
   dropdown2,
+  loving,
   mask,
   maskRight,
-  menu,
   Union,
   unionRight,
 } from '@/assets';
@@ -23,16 +15,10 @@ import { strings } from '@/localization';
 import { styles } from './Customers.styles';
 
 import DropDownPicker from 'react-native-dropdown-picker';
-import { DataTable } from 'react-native-paper';
+import { TableDropdown } from '@/components';
+import { Table } from 'react-native-table-component';
 
 export function Users({ userProfileHandler }) {
-  const [statusModalOpen, setStatusModelOpen] = useState(false);
-  const [statusModalValue, setStatusModalValue] = useState(null);
-  const [statusItems, setStatusItems] = useState([
-    { label: 'xyz', value: 'xyz' },
-    { label: 'abc', value: 'abc' },
-  ]);
-
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
   const [paginationModalItems, setPaginationModalItems] = useState([
@@ -50,33 +36,8 @@ export function Users({ userProfileHandler }) {
             <Image source={calendar1} style={styles.calendarStyle} />
             <Text style={styles.datePlaceholder}>Date</Text>
           </View>
-
           <View style={{ marginHorizontal: moderateScale(10) }}>
-            <DropDownPicker
-              ArrowUpIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIcon} />
-              )}
-              ArrowDownIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIcon} />
-              )}
-              style={styles.dropdown}
-              containerStyle={[
-                styles.containerStyle,
-                { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-              ]}
-              dropDownContainerStyle={styles.dropDownContainerStyle}
-              listItemLabelStyle={styles.listItemLabelStyle}
-              labelStyle={styles.labelStyle}
-              selectedItemLabelStyle={styles.selectedItemLabelStyle}
-              open={statusModalOpen}
-              value={statusModalValue}
-              items={statusItems}
-              setOpen={setStatusModelOpen}
-              setValue={setStatusModalValue}
-              setItems={setStatusItems}
-              placeholder="Area"
-              placeholderStyle={styles.placeholderStyle}
-            />
+            <TableDropdown placeholder="Area" />
           </View>
         </View>
       </View>
@@ -135,59 +96,55 @@ export function Users({ userProfileHandler }) {
           </View>
         </View>
       </View>
-      <View style={[styles.tableMainView, { zIndex: -99 }]}>
-        <ScrollView>
-          <DataTable style={{ zIndex: -99 }}>
-            <DataTable.Header style={styles.tableHeader}>
-              <DataTable.Title style={styles.dateTableSettingFirst}>
-                <Text style={styles.revenueText}>#</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTablealignStartname}>
-                <Text style={styles.revenueText}>Name</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Total orders</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Total Products </Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Lifetime spent</Text>
-              </DataTable.Title>
-            </DataTable.Header>
-
-            <TouchableOpacity
-              style={{ height: SH(380), zIndex: -99 }}
-              onPress={userProfileHandler}
-            >
-              {/* <ScrollView> */}
-              <DataTable.Row>
-                <DataTable.Cell style={styles.dateTableSettingFirst}>
-                  <Text style={styles.revenueDataText}>1</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTablealignStartname}>
-                  <View style={[styles.flexAlign]}>
-                    <Image source={clay} style={styles.clay} />
-                    <Text style={styles.revenueDataText}>
+      <View style={{ zIndex: -9 }}>
+        <Table>
+          <View style={styles.tableDataHeaderCon}>
+            <View style={styles.displayFlex}>
+              <View style={styles.tableHeaderLeft}>
+                <Text style={styles.tableTextHeaFirst}>#</Text>
+                <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>
+                  Name
+                </Text>
+              </View>
+              <View style={styles.tableHeaderRight}>
+                <Text style={styles.tableTextHea}>Total orders</Text>
+                <Text style={styles.tableTextHea}>Total Products </Text>
+                <Text style={styles.tableTextHea}>Lifetime spent</Text>
+              </View>
+            </View>
+          </View>
+          <TouchableOpacity
+            style={styles.tableDataCon}
+            onPress={userProfileHandler}
+          >
+            <View style={styles.displayFlex}>
+              <View style={styles.tableHeaderLeft}>
+                <Text style={styles.tableTextDataFirst}>1</Text>
+                <View style={[styles.flexAlign, { marginLeft: 25 }]}>
+                  <Image source={loving} style={styles.lovingStyleData} />
+                  <View style={{ flexDirection: 'column', marginLeft: 10 }}>
+                    <Text style={styles.tableTextDataName}>
                       Curtis M. Wheeler
                     </Text>
+                    <Text
+                      style={[
+                        styles.tableTextDataAdd,
+                        { color: COLORS.gerySkies },
+                      ]}
+                    >
+                      4318 Daffodil Lane, Savage,Virginia(VA), 20763
+                    </Text>
                   </View>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>61</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>4809</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$6,850.00</Text>
-                </DataTable.Cell>
-              </DataTable.Row>
-
-              {/* </ScrollView> */}
-            </TouchableOpacity>
-          </DataTable>
-        </ScrollView>
+                </View>
+              </View>
+              <View style={styles.tableHeaderRight}>
+                <Text style={styles.tableTextData}>60</Text>
+                <Text style={styles.tableTextData}>455</Text>
+                <Text style={styles.tableTextData}>$6,850.00</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </Table>
       </View>
     </View>
   );

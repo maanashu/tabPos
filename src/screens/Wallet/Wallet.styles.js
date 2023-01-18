@@ -1,25 +1,23 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
-import { moderateScale, verticalScale, scale } from 'react-native-size-matters';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
     backgroundColor: COLORS.white,
-    // paddingHorizontal:moderateScale(10),
   },
   displayFlex: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  flexAlign:{
+  flexAlign: {
     flexDirection: 'row',
-     alignItems: 'center' 
+    alignItems: 'center',
   },
 
   headerMainView: {
@@ -67,7 +65,6 @@ export const styles = StyleSheet.create({
   deliveryView: {
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'center',
   },
   deliveryText: {
     fontFamily: Fonts.MaisonRegular,
@@ -92,20 +89,15 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     width: windowWidth * 0.9,
     height: windowHeight * 0.84,
-    justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
-    // borderWidth:1
   },
   walletTranCon: {
-    // borderRadius: 10,
-    height: SH(63),
+    height: SH(40),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
   },
   allTypeCon: {
     backgroundColor: COLORS.textInputBackground,
-    // borderRadius: 10,
-    // height: SH(63),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
   },
@@ -115,7 +107,6 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(3),
   },
   byDayConLight: {
-    // backgroundColor:COLORS.textInputBackground,
     borderRadius: 3,
     marginHorizontal: moderateScale(3),
   },
@@ -153,7 +144,6 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(10),
-    // width:SW(110)
     width: windowWidth * 0.28,
   },
   jbrCoinStyle: {
@@ -180,15 +170,9 @@ export const styles = StyleSheet.create({
   contentContainer: {
     justifyContent: 'space-between',
     flex: 1,
-    // paddingHorizontal: SW(5),
-  },
-  chartCon: {
-    // borderWidth:1,
-    // width:windowWidth * 0.30
   },
   transactionChartStyle: {
     width: windowWidth,
-    // height: SH(200),
     height: windowHeight * 0.3,
     resizeMode: 'contain',
   },
@@ -210,7 +194,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
     paddingVertical: verticalScale(5),
-    // paddingHorizontal:moderateScale(5)
   },
   trancationHeadingMono: {
     fontFamily: Fonts.MaisonBold,
@@ -219,19 +202,19 @@ export const styles = StyleSheet.create({
   },
   jbrTypeCon: {
     backgroundColor: COLORS.textInputBackground,
-    height: SH(63),
+    height: SH(55),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(8),
   },
   allJbrCon: {
     borderWidth: 1,
-    height: SH(42),
+    height: SH(35),
     width: SW(30),
     borderRadius: 7,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: moderateScale(4),
-    marginVertical:verticalScale(4)
+    marginVertical: verticalScale(4),
   },
   allJbrConBluish: {
     borderColor: COLORS.primary,
@@ -331,7 +314,7 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
   },
   containerStylePagination: {
-    width: SW(30),
+    width: SW(22),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,
@@ -395,7 +378,6 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   tableMainView: {
-    // width: SW(330),
     zIndex: 1,
   },
   completedButton: {
@@ -420,7 +402,6 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    // paddingLeft: moderateScale(10),
   },
   listOfItem: {
     color: COLORS.black,
@@ -446,12 +427,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(5),
   },
   jfrText: {
-    fontSize: SF(18),
+    fontSize: SF(16),
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
   },
   boxText: {
-    fontSize: SF(11),
+    fontSize: SF(9),
     color: COLORS.darkGray,
     fontFamily: Fonts.Italic,
   },
@@ -466,8 +447,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   ashtonStyle: {
-    width: SW(12),
-    height: SW(12),
+    width: SW(11),
+    height: SW(11),
     resizeMode: 'contain',
   },
   leftBackStyle: {
@@ -485,23 +466,23 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: moderateScale(7),
-    paddingVertical: verticalScale(2),
+    paddingVertical: verticalScale(7),
     borderBottomWidth: 1,
     borderColor: COLORS.solidGrey,
   },
   listItemStyle: {
-    fontSize: SF(24),
+    fontSize: SF(20),
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
   },
   itemStyle: {
-    fontSize: SF(14),
+    fontSize: SF(11),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(5),
   },
   rewardPointStyle: {
-    fontSize: SF(18),
+    fontSize: SF(16),
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
   },
@@ -616,6 +597,8 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: COLORS.row_grey,
+    width: windowWidth * 0.29,
+    alignSelf: 'center',
   },
   selectedText: {
     color: COLORS.white,
@@ -630,7 +613,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 5,
     paddingVertical: verticalScale(9),
-    // marginVertical:verticalScale(10)
   },
   checkoutText: {
     color: COLORS.white,
@@ -646,18 +628,18 @@ export const styles = StyleSheet.create({
   onlinedeliveryCon: {
     borderBottomWidth: 1,
     borderColor: COLORS.solidGrey,
-    paddingVertical: verticalScale(5),
+    paddingHorizontal: moderateScale(7),
+    paddingVertical: verticalScale(7),
   },
   onlinedeliveryBody: {
-    // borderWidth:1,
     width: windowWidth * 0.8,
     alignSelf: 'center',
   },
 
   rightSidecon: {
     backgroundColor: COLORS.white,
-    height: windowHeight * 0.95,
-    width: SW(116),
+    height: windowHeight,
+    width: windowWidth * 0.31,
     position: 'absolute',
     right: 0,
     top: 0,
@@ -739,10 +721,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(18),
     paddingVertical: verticalScale(3),
-    // paddingHorizontal
   },
   tableContainer: {
-    // borderWidth:1,
     backgroundColor: COLORS.white,
     ...ShadowStyles.shadow2,
     borderRadius: 12,
@@ -758,7 +738,6 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontSize: SF(14),
     fontFamily: Fonts.MaisonBold,
-    // paddingHorizontal:moderateScale(40)
   },
   rowText: {
     color: COLORS.dark_grey,
@@ -772,12 +751,10 @@ export const styles = StyleSheet.create({
   },
   tableSetting: {
     width: SW(200),
-    // marginLeft:-150,
     marginRight: 170,
   },
   noteContainer: {
     borderWidth: 1,
-    // backgroundColor:COLORS.,
     borderColor: COLORS.solidGrey,
     height: SH(200),
     width: windowWidth * 0.38,
@@ -788,10 +765,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: moderateScale(20),
-    // borderBottomWidth:1,
-    // borderColor:COLORS.solidGrey,
-    // paddingVertical:verticalScale(7)
+    paddingHorizontal: moderateScale(20)
   },
   tablesubTotalLabel: {
     color: COLORS.solid_grey,
@@ -893,7 +867,83 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
     flexDirection: 'row',
   },
-  dateTableSetting: {
-    // justifyContent:'center',
+
+  tableDataHeaderCon: {
+    height: SH(50),
+    backgroundColor: COLORS.textInputBackground,
+    textAlign: 'center',
+    borderTopWidth: 1,
+    borderColor: COLORS.solidGrey,
+    paddingHorizontal: moderateScale(20),
+    justifyContent: 'center',
+  },
+  tableHeaderLeft: {
+    flexDirection: 'row',
+    width: windowWidth * 0.15,
+  },
+  tableHeaderRight: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: windowWidth * 0.72,
+    // paddingRight: Platform.OS === 'ios' ? 40 : 0,
+  },
+  tableTextHea: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(14),
+    letterSpacing: -1,
+    width: windowWidth * 0.1,
+  },
+  tableTextData: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    width: windowWidth * 0.1,
+  },
+  tableTextDataCom: {
+    backgroundColor: COLORS.bluish_green,
+    paddingHorizontal: moderateScale(4),
+    paddingVertical: verticalScale(1),
+    marginRight: 40,
+    fontSize: SF(14),
+    color: COLORS.white,
+    borderRadius: 3,
+  },
+  tableTextHeaFirst: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(14),
+    letterSpacing: -1,
+    width: windowWidth * 0.01,
+  },
+  tableTextDataFirst: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    letterSpacing: -1,
+    width: windowWidth * 0.01,
+  },
+  tableTextCenter: {
+    alignSelf: 'center',
+    width: windowWidth * 0.1,
+  },
+
+  tableHeaderRightOrder: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: windowWidth * 0.36,
+    // paddingRight: Platform.OS === 'ios' ? 40 : 0,
+  },
+  orderCigrate: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+  },
+  tableDataCon: {
+    height: SH(55),
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(20),
   },
 });
