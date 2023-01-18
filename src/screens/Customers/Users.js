@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View, Image } from 'react-native';
-import { COLORS} from '@/theme';
+import { COLORS } from '@/theme';
 import { moderateScale } from 'react-native-size-matters';
 import {
   calendar1,
@@ -98,7 +98,12 @@ export function Users({ userProfileHandler }) {
       </View>
       <View style={{ zIndex: -9 }}>
         <Table>
-          <View style={styles.tableDataHeaderCon}>
+          <View
+            style={[
+              styles.tableDataHeaderCon,
+              { borderTopWidth: 1, borderColor: COLORS.solidGrey },
+            ]}
+          >
             <View style={styles.displayFlex}>
               <View style={styles.tableHeaderLeft}>
                 <Text style={styles.tableTextHeaFirst}>#</Text>

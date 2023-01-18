@@ -357,7 +357,7 @@ export const styles = StyleSheet.create({
     // width: windowWidth * 0.5,
     height: SH(200),
   },
-  borderSheetBorder:{
+  borderSheetBorder: {
     borderWidth: 1,
     width: SH(385),
     alignSelf: 'flex-end',
@@ -478,7 +478,7 @@ export const styles = StyleSheet.create({
   orderModalView: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    bottom: Platform.OS === 'android' ? 20 : 10,
+    bottom: Platform.OS === 'android' ? 40 : 30,
     backgroundColor: COLORS.white,
     right: SW(5),
     width: SW(100),
@@ -664,7 +664,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     height: windowHeight * 0.7,
   },
-  flexVertical:{
+  flexVertical: {
     borderWidth: 1,
     width: SH(385),
     alignSelf: 'flex-end',
@@ -672,12 +672,12 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.row_grey,
     marginVertical: verticalScale(3),
   },
-  bottomDashedRow:{
+  bottomDashedRow: {
     borderWidth: 1,
     borderStyle: 'dashed',
     width: SH(380),
     alignSelf: 'flex-end',
     borderColor: COLORS.row_grey,
     marginVertical: verticalScale(2),
-  }
+  },
 });

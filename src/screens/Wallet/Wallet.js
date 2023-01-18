@@ -361,7 +361,7 @@ export function Wallet() {
                     <Text style={styles.tableTextHea}>Mode of payment</Text>
                     <Text style={styles.tableTextHea}>Cash In</Text>
                     <Text style={styles.tableTextHea}>Cash Out</Text>
-                    <Text style={[styles.tableTextHea, { marginRight: -8 }]}>
+                    <Text style={[styles.tableTextHea, { marginRight: -2 }]}>
                       Status
                     </Text>
                   </View>
@@ -397,7 +397,6 @@ export function Wallet() {
               </View>
             </Table>
           </View>
-
         </View>
       );
     } else {

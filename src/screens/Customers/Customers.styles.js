@@ -158,7 +158,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderTypeCon: {
-    height: SH(63),
+    height: SH(55),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(8),
     borderBottomWidth: 1,
@@ -225,7 +225,7 @@ export const styles = StyleSheet.create({
   },
   jbrTypeCon: {
     backgroundColor: COLORS.textInputBackground,
-    height: SH(63),
+    height: SH(55),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(8),
   },
@@ -384,7 +384,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 15,
-    height: SH(153),
+    height: SH(130),
     justifyContent: 'center',
   },
   lovingStyle: {
@@ -418,7 +418,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.primary,
     borderRadius: 7,
     height: SH(48),
-    width: SW(60),
+    width: SW(70),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -503,7 +503,7 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
-    top: Platform.OS === 'android' ? 30 : 15,
+    top: Platform.OS === 'android' ? 30 : 35,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   placeholderStyle: {
@@ -560,7 +560,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     width: windowWidth * 0.48,
-    height: SH(130),
+    height: SH(120),
     paddingHorizontal: moderateScale(8),
   },
   invoiceCon: {
@@ -568,7 +568,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     width: windowWidth * 0.3,
-    height: SH(130),
+    height: SH(120),
     paddingHorizontal: moderateScale(8),
   },
   angelaAddress: {
@@ -582,8 +582,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   angelaPic: {
-    Width: SW(10),
-    height: SW(10),
+    Width: SH(50),
+    height: SH(50),
     resizeMode: 'contain',
     marginRight: -20,
     marginLeft: -35,
@@ -794,6 +794,10 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.44,
     borderRadius: 10,
   },
+  mapConatinerHeight: {
+    // borderWidth: 1,
+    height: windowHeight * 0.79,
+  },
   costoContainer: {
     borderWidth: 1,
     width: windowWidth * 0.44,
@@ -810,7 +814,7 @@ export const styles = StyleSheet.create({
     borderWidth: 0.7,
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.34,
-    marginVertical: verticalScale(3),
+    marginVertical: verticalScale(7),
   },
   costoName: {
     fontSize: SF(16),
@@ -826,7 +830,7 @@ export const styles = StyleSheet.create({
   costoPayCon: {
     borderEndWidth: 1,
     borderColor: COLORS.solidGrey,
-    width: SW(50),
+    width: SW(45),
     justifyContent: 'center',
   },
   ciagrtext: {
@@ -885,6 +889,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: moderateScale(10),
     height: SH(85),
+    bottom: 0,
   },
   tracking2Angela: {
     width: SH(36),
@@ -975,13 +980,17 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(20),
     justifyContent: 'center',
   },
+  tableheaderRadius: {
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+  },
   tableHeaderLeft: {
     flexDirection: 'row',
     width: windowWidth * 0.4,
   },
   tableHeaderLeftPro: {
     flexDirection: 'row',
-    width: windowWidth * 0.01,
+    width: windowWidth * 0.03,
   },
   tableHeaderRightPro: {
     flexDirection: 'row',
@@ -992,7 +1001,7 @@ export const styles = StyleSheet.create({
   tableHeaderRight: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth * 0.5,
+    width: windowWidth * 0.48,
     // paddingRight: Platform.OS === 'ios' ? 40 : 0,
   },
   tableTextHea: {

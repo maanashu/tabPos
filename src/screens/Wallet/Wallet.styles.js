@@ -172,8 +172,8 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   transactionChartStyle: {
-    width: windowWidth,
-    height: windowHeight * 0.3,
+    width: windowWidth * 0.83,
+    height: windowHeight * 0.4,
     resizeMode: 'contain',
   },
   backButtonCon: {
@@ -228,7 +228,7 @@ export const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   orderTypeCon: {
-    height: SH(63),
+    height: SH(55),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
     borderBottomWidth: 1,
@@ -552,7 +552,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    width: SW(107),
+    width: SW(104),
     backgroundColor: COLORS.solidGrey,
     justifyContent: 'center',
     alignItems: 'center',
@@ -660,7 +660,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     width: windowWidth * 0.48,
-    height: SH(130),
+    height: SH(120),
     paddingHorizontal: moderateScale(8),
   },
   invoiceCon: {
@@ -668,7 +668,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     width: windowWidth * 0.3,
-    height: SH(130),
+    height: SH(120),
     paddingHorizontal: moderateScale(8),
   },
   angelaAddress: {
@@ -682,8 +682,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   angelaPic: {
-    Width: SW(10),
-    height: SW(10),
+    Width: SH(50),
+    height: SH(50),
     resizeMode: 'contain',
     marginRight: -20,
     marginLeft: -35,
@@ -765,7 +765,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: moderateScale(20)
+    paddingHorizontal: moderateScale(20),
   },
   tablesubTotalLabel: {
     color: COLORS.solid_grey,
@@ -792,7 +792,7 @@ export const styles = StyleSheet.create({
   subtotalHr: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    marginVertical: moderateScale(5),
+    marginVertical: moderateScale(6),
   },
   textInputStyle: {
     borderWidth: 1,

@@ -182,12 +182,12 @@ export function Customers() {
             <View>
               <Spacer space={SH(10)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
-                <View style={[styles.mapContainer]}>
+                <View style={[styles.mapContainer, styles.mapConatinerHeight]}>
                   <View style={[styles.costoContainer]}>
                     <Spacer space={SH(10)} />
                     <View style={{ flexDirection: 'row' }}>
                       <Image source={angela} style={styles.trackingAngela} />
-                      <View style={{ marginLeft: -15 }}>
+                      <View style={{ marginLeft: -20 }}>
                         <Text style={styles.costoName}>
                           {strings.customers.costo}
                         </Text>
@@ -251,7 +251,7 @@ export function Customers() {
                     <View
                       style={[
                         styles.costoHr,
-                        { marginVertical: verticalScale(8) },
+                        { marginVertical: verticalScale(15) },
                       ]}
                     />
                     <Spacer space={SH(5)} />
@@ -372,7 +372,8 @@ export function Customers() {
                         </View>
                       </View>
                     </View>
-                    <Spacer space={SH(10)} />
+                    <Spacer space={SH(60)} />
+                    {/* <View style={{ flex: 1 }} /> */}
                     <View style={styles.carriarCon}>
                       <Spacer space={SH(5)} />
                       <Text
@@ -478,28 +479,28 @@ export function Customers() {
                   <Text style={styles.invoiceDetail}>
                     {strings.wallet.invoiceDetails}
                   </Text>
-                  <Spacer space={SH(3)} />
+                  <Spacer space={SH(6)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.invoiceIdLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
                       {strings.wallet.invoiceId}
                     </Text>
                   </Text>
-                  <Spacer space={SH(3)} />
+                  <Spacer space={SH(4)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.createDateLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
                       {strings.wallet.createDate}
                     </Text>
                   </Text>
-                  <Spacer space={SH(3)} />
+                  <Spacer space={SH(4)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.dueDateLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
                       {strings.wallet.createDate}
                     </Text>
                   </Text>
-                  <Spacer space={SH(3)} />
+                  <Spacer space={SH(4)} />
                   <Text style={styles.deliveryDate}>
                     {strings.wallet.deliveryDate}{' '}
                     <Text>{strings.wallet.createDate}</Text>
@@ -513,63 +514,13 @@ export function Customers() {
               </View>
               <Spacer space={SH(15)} />
               <View style={styles.tableContainer}>
-                {/* <DataTable>
-                  <DataTable.Header style={styles.tableheader}>
-                    <DataTable.Title>
-                      <Text style={styles.tableLabel}>#</Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={styles.tableSetting}>
-                      <Text style={styles.tableLabel}>Descriptions</Text>
-                    </DataTable.Title>
-                    <DataTable.Title>
-                      <Text style={styles.tableLabel}>No. of Items</Text>
-                    </DataTable.Title>
-                    <DataTable.Title>
-                      <Text style={styles.tableLabel}>Rate</Text>
-                    </DataTable.Title>
-                    <DataTable.Title>
-                      <Text style={styles.tableLabel}>Amount</Text>
-                    </DataTable.Title>
-                  </DataTable.Header>
-
-                  <DataTable.Row>
-                    <DataTable.Cell>
-                      <Text style={styles.rowText}>1</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.tableSetting}>
-                      <Text style={styles.rowText}>Ashton Classic</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={styles.rowText}>16 Box</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={styles.rowText}>16 Box</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={styles.rowText}>$4,063.20</Text>
-                    </DataTable.Cell>
-                  </DataTable.Row>
-
-                  <DataTable.Row>
-                    <DataTable.Cell>
-                      <Text style={styles.rowText}>1</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.tableSetting}>
-                      <Text style={styles.rowText}>Ashton Classic</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={styles.rowText}>16 Box</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={styles.rowText}>16 Box</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={styles.rowText}>$4,063.20</Text>
-                    </DataTable.Cell>
-                  </DataTable.Row>
-                </DataTable> */}
                 <Table>
-                  <View style={styles.tableDataHeaderCon}>
+                  <View
+                    style={[
+                      styles.tableDataHeaderCon,
+                      styles.tableheaderRadius,
+                    ]}
+                  >
                     <View style={styles.displayFlex}>
                       <View style={styles.tableHeaderLeft}>
                         <Text style={styles.tableTextHeaFirst}>#</Text>

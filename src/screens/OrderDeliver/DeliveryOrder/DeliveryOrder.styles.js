@@ -247,9 +247,9 @@ export const styles = StyleSheet.create({
     width: Platform.OS === 'ios' ? SW(48) : SH(180),
     borderRadius: 5,
   },
-  rowSpaceBetween:{
-   flexDirection:"row",
-   justifyContent:'space-between'
+  rowSpaceBetween: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   totalText: {
     fontFamily: Fonts.Regular,
@@ -445,7 +445,7 @@ export const styles = StyleSheet.create({
   orderModalView: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    bottom: Platform.OS === 'android' ? 40 : 10,
+    bottom: Platform.OS === 'android' ? 40 : 30,
     backgroundColor: COLORS.white,
     right: SW(5),
     width: SW(100),

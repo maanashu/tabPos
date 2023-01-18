@@ -8,7 +8,7 @@ import {
   ScrollView,
   SectionList,
   ViewComponent,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {
@@ -22,11 +22,11 @@ import {
   calendar1,
   dropdown2,
   roundCalender,
-  allien
+  allien,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
-import { Button, Spacer } from '@/components';
+import { Button, ScreenWrapper, Spacer } from '@/components';
 import { styles } from '@/screens/Management/Management.styles';
 import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -35,13 +35,12 @@ import { goBack } from '@/navigation/NavigationRef';
 const windowWidth = Dimensions.get('window').width;
 import {
   sessionHistoryTableHeading,
-  sessionHistoryTableData
+  sessionHistoryTableData,
 } from '@/constants/flatListData';
 
 import { Table, Row, Rows } from 'react-native-table-component';
 
 export function Management(props) {
- 
   const [addCash, setAddCash] = useState(false);
   const [cashSummary, setCashSummary] = useState('');
   const [saveSession, setSaveSession] = useState('');
@@ -56,7 +55,7 @@ export function Management(props) {
   const [statusModalValue, setStatusModalValue] = useState(null);
   const [sessionHistory, setSessionHistory] = useState(false);
   const [historyHeader, setHistoryHeader] = useState(false);
-  
+
   const [statusItems, setStatusItems] = useState([
     { label: 'one', value: 'one' },
     { label: 'All', value: 'All' },
@@ -65,30 +64,24 @@ export function Management(props) {
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
-        {
-          sessionHistory
-          ?
-          (
-            <TouchableOpacity
+        {sessionHistory ? (
+          <TouchableOpacity
             style={styles.backButtonCon}
             onPress={() => {
-              setSessionHistory(false)
+              setSessionHistory(false);
             }}
           >
             <Image source={backArrow} style={styles.backButtonArrow} />
             <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
-          </TouchableOpacity> 
-          )
-          :
-           (
-            <View style={styles.deliveryView}>
-          <Image source={tray} style={styles.truckStyle} />
-          <Text style={styles.deliveryText}>
-            {strings.management.cashTracking}
-          </Text>
-        </View>
-           )
-        }
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.deliveryView}>
+            <Image source={tray} style={styles.truckStyle} />
+            <Text style={styles.deliveryText}>
+              {strings.management.cashTracking}
+            </Text>
+          </View>
+        )}
         <View style={styles.deliveryView}>
           <Image
             source={notifications}
@@ -285,208 +278,303 @@ export function Management(props) {
     );
   };
 
-  const contentFunction = (props) => {
-    if(sessionHistory){
-     return(
-      <View>
-      <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
-      <Spacer space={SH(20)} />
-      <View style={styles.datePickerCon}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-         <View style={styles.datepickerConatiner}>
-             <View style={styles.displayFlex}>
-                  <View style={{flexDirection:'row', }}>
-                    <Image source={roundCalender} style={styles.calendarStyle} />
-                     <Text style={styles.datePlaceholder}>Date</Text>
+  const contentFunction = props => {
+    if (sessionHistory) {
+      return (
+        <View>
+          <Text style={styles.sessionHistory}>
+            {strings.management.sessionHistory}
+          </Text>
+          <Spacer space={SH(20)} />
+          <View style={styles.datePickerCon}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.datepickerConatiner}>
+                <View style={styles.displayFlex}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Image
+                      source={roundCalender}
+                      style={styles.calendarStyle}
+                    />
+                    <Text style={styles.datePlaceholder}>Date</Text>
                   </View>
-             </View>
-           </View>
-           
-           <View style={{ marginHorizontal: moderateScale(10) }}>
-           <DropDownPicker
-               ArrowUpIconComponent={({ style }) => (
-                 <Image source={dropdown2} style={styles.dropDownIcon} />
-               )}
-               ArrowDownIconComponent={({ style }) => (
-                 <Image source={dropdown2} style={styles.dropDownIcon} />
-               )}
-               style={styles.dropdown}
-               containerStyle={[
-                 styles.containerStyle,
-                 { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-               ]}
-               dropDownContainerStyle={styles.dropDownContainerStyle}
-               listItemLabelStyle={styles.listItemLabelStyle}
-               labelStyle={styles.labelStyle}
-               selectedItemLabelStyle={styles.selectedItemLabelStyle}
-               open={statusModalOpen}
-               value={statusModalValue}
-               items={statusItems}
-               setOpen={setStatusModelOpen}
-               setValue={setStatusModalValue}
-               setItems={setStatusItems}
-               placeholder="Staff"
-               placeholderStyle={styles.placeholderStyle}
-             />
-           </View>
-      </View>
-      </View>
-      {/* <ScrollView>ssssss */}
-         <View style={[styles.tableMainView]}>
-                 <Table>
-                     {/* <Row data={sessionHistoryTableHeading} style={styles.userTableHead} textStyle={styles.text} /> */}
-                     {/* <TouchableOpacity onPress={() => {setSessionHistory(false), setSummaryHistory(true), setHistoryHeader(true) }}>
+                </View>
+              </View>
+
+              <View style={{ marginHorizontal: moderateScale(10) }}>
+                <DropDownPicker
+                  ArrowUpIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIcon} />
+                  )}
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIcon} />
+                  )}
+                  style={styles.dropdown}
+                  containerStyle={[
+                    styles.containerStyle,
+                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
+                  ]}
+                  dropDownContainerStyle={styles.dropDownContainerStyle}
+                  listItemLabelStyle={styles.listItemLabelStyle}
+                  labelStyle={styles.labelStyle}
+                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                  open={statusModalOpen}
+                  value={statusModalValue}
+                  items={statusItems}
+                  setOpen={setStatusModelOpen}
+                  setValue={setStatusModalValue}
+                  setItems={setStatusItems}
+                  placeholder="Staff"
+                  placeholderStyle={styles.placeholderStyle}
+                />
+              </View>
+            </View>
+          </View>
+          {/* <ScrollView>ssssss */}
+          <View style={[styles.tableMainView]}>
+            <Table>
+              {/* <Row data={sessionHistoryTableHeading} style={styles.userTableHead} textStyle={styles.text} /> */}
+              {/* <TouchableOpacity onPress={() => {setSessionHistory(false), setSummaryHistory(true), setHistoryHeader(true) }}>
                      <Rows data={sessionHistoryTableData} style={styles.usertableRowStyle} textStyle={styles.usertableRowText} />
                      </TouchableOpacity> */}
-                      <View style={styles.tableDataHeaderCon}>
-                      <View style={styles.displayFlex}>
-                           <View style={{flexDirection:'row', width:windowWidth * 0.25}}>
-                             <Text style={styles.text}>#</Text>
-                             <Text style={[styles.text, {paddingHorizontal:moderateScale(10)}]}>Date</Text>
-                           </View>
-                           <View style={{flexDirection:'row', justifyContent:'space-between',width:windowWidth * 0.65}}>
-                          <Text style={styles.text}>Ended By</Text>
-                           <Text style={styles.text}>Session Started</Text>
-                           <Text style={styles.text}>Added cash</Text>
-                           <Text style={styles.text}>Removed cash</Text>
-                           <Text style={styles.text}>Counted cash</Text>
-                           <Text style={[styles.text, {paddingRight:25}]}>Session Ended</Text>
-                           </View>
-                      </View>
-                        
-                     </View>
-                     <View style={styles.tableDataCon}>
-                      <View style={styles.displayFlex}>
-                           <View style={{flexDirection:'row', width:windowWidth * 0.25}}>
-                             <Text style={styles.usertableRowText}>1</Text>
-                              <View style={{ paddingHorizontal:moderateScale(10)}}>
-                                 <Text style={styles.usertableRowText}>Jun 21, 2022</Text>
-                                 <Text style={styles.usertableRowText}>2:28 PM</Text>
-                              </View>
-                           </View>
-                           <View style={{flexDirection:'row', justifyContent:'space-between',width:windowWidth * 0.65, paddingRight:50}}>
-                           <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}} onPress={() => {setSessionHistory(false), setSummaryHistory(true), setHistoryHeader(true) }}>
-                            <Image source={allien} style={styles.allienpic}/>
-                            <Text style={[styles.usertableRowText, {paddingHorizontal:moderateScale(3)}]}>Allein</Text>
-                           </TouchableOpacity>
-                           <Text style={styles.usertableRowText}>$0.00</Text>
-                           <Text style={styles.usertableRowText}>$6,590.00</Text>
-                           <Text style={styles.usertableRowText}>$1,350.00</Text>
-                           <Text style={styles.usertableRowText}>$5,200.00</Text>
-                           <Text style={[styles.usertableRowText,{color:COLORS.orange}]}>-$40.00</Text>
-                           </View>
-                      </View>
-                        
-                     </View>
-                     <View style={styles.tableDataCon}>
-                      <View style={styles.displayFlex}>
-                           <View style={{flexDirection:'row', width:windowWidth * 0.25}}>
-                             <Text style={styles.usertableRowText}>1</Text>
-                              <View style={{ paddingHorizontal:moderateScale(10)}}>
-                                 <Text style={styles.usertableRowText}>Jun 21, 2022</Text>
-                                 <Text style={styles.usertableRowText}>2:28 PM</Text>
-                              </View>
-                           </View>
-                           <View style={{flexDirection:'row', justifyContent:'space-between',width:windowWidth * 0.65, paddingRight:50}}>
-                           <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}} onPress={() => {setSessionHistory(false), setSummaryHistory(true), setHistoryHeader(true) }}>
-                            <Image source={allien} style={styles.allienpic}/>
-                            <Text style={[styles.usertableRowText, {paddingHorizontal:moderateScale(3)}]}>Allein</Text>
-                           </TouchableOpacity>
-                           <Text style={styles.usertableRowText}>$0.00</Text>
-                           <Text style={styles.usertableRowText}>$6,590.00</Text>
-                           <Text style={styles.usertableRowText}>$1,350.00</Text>
-                           <Text style={styles.usertableRowText}>$5,200.00</Text>
-                           <Text style={[styles.usertableRowText,{color:COLORS.orange}]}>-$40.00</Text>
-                           </View>
-                      </View>
-                        
-                     </View>
-                     <View style={styles.tableDataCon}>
-                      <View style={styles.displayFlex}>
-                           <View style={{flexDirection:'row', width:windowWidth * 0.25}}>
-                             <Text style={styles.usertableRowText}>1</Text>
-                              <View style={{ paddingHorizontal:moderateScale(10)}}>
-                                 <Text style={styles.usertableRowText}>Jun 21, 2022</Text>
-                                 <Text style={styles.usertableRowText}>2:28 PM</Text>
-                              </View>
-                           </View>
-                           <View style={{flexDirection:'row', justifyContent:'space-between',width:windowWidth * 0.65, paddingRight:50}}>
-                           <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}} onPress={() => {setSessionHistory(false), setSummaryHistory(true), setHistoryHeader(true) }}>
-                            <Image source={allien} style={styles.allienpic}/>
-                            <Text style={[styles.usertableRowText, {paddingHorizontal:moderateScale(3)}]}>Allein</Text>
-                           </TouchableOpacity>
-                           <Text style={styles.usertableRowText}>$0.00</Text>
-                           <Text style={styles.usertableRowText}>$6,590.00</Text>
-                           <Text style={styles.usertableRowText}>$1,350.00</Text>
-                           <Text style={styles.usertableRowText}>$5,200.00</Text>
-                           <Text style={[styles.usertableRowText]}>$0.00</Text>
-                           </View>
-                      </View>
-                        
-                     </View>
-                 </Table>
-             </View>
-       {/* </ScrollView>s */}
-   </View>
-     )
-    }
-    else if (summaryHistory) {
+              <View style={styles.tableDataHeaderCon}>
+                <View style={styles.displayFlex}>
+                  <View
+                    style={{ flexDirection: 'row', width: windowWidth * 0.25 }}
+                  >
+                    <Text style={styles.text}>#</Text>
+                    <Text
+                      style={[
+                        styles.text,
+                        { paddingHorizontal: moderateScale(10) },
+                      ]}
+                    >
+                      Date
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: windowWidth * 0.65,
+                    }}
+                  >
+                    <Text style={styles.text}>Ended By</Text>
+                    <Text style={styles.text}>Session Started</Text>
+                    <Text style={styles.text}>Added cash</Text>
+                    <Text style={styles.text}>Removed cash</Text>
+                    <Text style={styles.text}>Counted cash</Text>
+                    <Text style={[styles.text, { paddingRight: 25 }]}>
+                      Session Ended
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.tableDataCon}>
+                <View style={styles.displayFlex}>
+                  <View
+                    style={{ flexDirection: 'row', width: windowWidth * 0.25 }}
+                  >
+                    <Text style={styles.usertableRowText}>1</Text>
+                    <View style={{ paddingHorizontal: moderateScale(10) }}>
+                      <Text style={styles.usertableRowText}>Jun 21, 2022</Text>
+                      <Text style={styles.usertableRowText}>2:28 PM</Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: windowWidth * 0.65,
+                      paddingRight: 50,
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                      onPress={() => {
+                        setSessionHistory(false),
+                          setSummaryHistory(true),
+                          setHistoryHeader(true);
+                      }}
+                    >
+                      <Image source={allien} style={styles.allienpic} />
+                      <Text
+                        style={[
+                          styles.usertableRowText,
+                          { paddingHorizontal: moderateScale(3) },
+                        ]}
+                      >
+                        Allein
+                      </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.usertableRowText}>$0.00</Text>
+                    <Text style={styles.usertableRowText}>$6,590.00</Text>
+                    <Text style={styles.usertableRowText}>$1,350.00</Text>
+                    <Text style={styles.usertableRowText}>$5,200.00</Text>
+                    <Text
+                      style={[
+                        styles.usertableRowText,
+                        { color: COLORS.orange },
+                      ]}
+                    >
+                      -$40.00
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.tableDataCon}>
+                <View style={styles.displayFlex}>
+                  <View
+                    style={{ flexDirection: 'row', width: windowWidth * 0.25 }}
+                  >
+                    <Text style={styles.usertableRowText}>1</Text>
+                    <View style={{ paddingHorizontal: moderateScale(10) }}>
+                      <Text style={styles.usertableRowText}>Jun 21, 2022</Text>
+                      <Text style={styles.usertableRowText}>2:28 PM</Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: windowWidth * 0.65,
+                      paddingRight: 50,
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                      onPress={() => {
+                        setSessionHistory(false),
+                          setSummaryHistory(true),
+                          setHistoryHeader(true);
+                      }}
+                    >
+                      <Image source={allien} style={styles.allienpic} />
+                      <Text
+                        style={[
+                          styles.usertableRowText,
+                          { paddingHorizontal: moderateScale(3) },
+                        ]}
+                      >
+                        Allein
+                      </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.usertableRowText}>$0.00</Text>
+                    <Text style={styles.usertableRowText}>$6,590.00</Text>
+                    <Text style={styles.usertableRowText}>$1,350.00</Text>
+                    <Text style={styles.usertableRowText}>$5,200.00</Text>
+                    <Text
+                      style={[
+                        styles.usertableRowText,
+                        { color: COLORS.orange },
+                      ]}
+                    >
+                      -$40.00
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.tableDataCon}>
+                <View style={styles.displayFlex}>
+                  <View
+                    style={{ flexDirection: 'row', width: windowWidth * 0.25 }}
+                  >
+                    <Text style={styles.usertableRowText}>1</Text>
+                    <View style={{ paddingHorizontal: moderateScale(10) }}>
+                      <Text style={styles.usertableRowText}>Jun 21, 2022</Text>
+                      <Text style={styles.usertableRowText}>2:28 PM</Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: windowWidth * 0.65,
+                      paddingRight: 50,
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                      onPress={() => {
+                        setSessionHistory(false),
+                          setSummaryHistory(true),
+                          setHistoryHeader(true);
+                      }}
+                    >
+                      <Image source={allien} style={styles.allienpic} />
+                      <Text
+                        style={[
+                          styles.usertableRowText,
+                          { paddingHorizontal: moderateScale(3) },
+                        ]}
+                      >
+                        Allein
+                      </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.usertableRowText}>$0.00</Text>
+                    <Text style={styles.usertableRowText}>$6,590.00</Text>
+                    <Text style={styles.usertableRowText}>$1,350.00</Text>
+                    <Text style={styles.usertableRowText}>$5,200.00</Text>
+                    <Text style={[styles.usertableRowText]}>$0.00</Text>
+                  </View>
+                </View>
+              </View>
+            </Table>
+          </View>
+          {/* </ScrollView>s */}
+        </View>
+      );
+    } else if (summaryHistory) {
       return (
         <View>
           <View style={styles.summaryHeaderCon}>
             <View style={styles.displayFlex}>
-              {
-                 historyHeader  === true
-                 ?
-                 (
-                  <TouchableOpacity
+              {historyHeader === true ? (
+                <TouchableOpacity
                   style={styles.backButtonCon}
                   onPress={() => {
-                    setSummaryHistory(false)
-                    setSessionHistory(true)
+                    setSummaryHistory(false);
+                    setSessionHistory(true);
                   }}
                 >
                   <Image source={backArrow} style={styles.backButtonArrow} />
-                  <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
+                  <Text style={styles.backTextStyle}>
+                    {strings.posSale.back}
+                  </Text>
                 </TouchableOpacity>
-                 )
-                 :
-                 (
-                  <TouchableOpacity
+              ) : (
+                <TouchableOpacity
                   style={styles.backButtonCon}
                   onPress={() => {
                     setSummaryHistory(false), setViewSession(true);
                   }}
                 >
                   <Image source={backArrow} style={styles.backButtonArrow} />
-                  <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
+                  <Text style={styles.backTextStyle}>
+                    {strings.posSale.back}
+                  </Text>
                 </TouchableOpacity>
-                 )
+              )}
 
-              }
-             
               <View>
-                {
-                  historyHeader  === true
-                  ?
-                  ( <Text style={styles.summaryText}>
+                {historyHeader === true ? (
+                  <Text style={styles.summaryText}>
                     {strings.management.sessionHistory}{' '}
-                     <Text style={[styles.summaryText, { color: COLORS.primary }]}>
-                      {strings.management.date}
-                    </Text>
-                  </Text> )
-                  :
-                  (
-                    <Text style={styles.summaryText}>
-                    {strings.management.summary}{' '}
-                     <Text style={[styles.summaryText, { color: COLORS.primary }]}>
+                    <Text
+                      style={[styles.summaryText, { color: COLORS.primary }]}
+                    >
                       {strings.management.date}
                     </Text>
                   </Text>
-                  )
-                 
-                 
-                }
+                ) : (
+                  <Text style={styles.summaryText}>
+                    {strings.management.summary}{' '}
+                    <Text
+                      style={[styles.summaryText, { color: COLORS.primary }]}
+                    >
+                      {strings.management.date}
+                    </Text>
+                  </Text>
+                )}
               </View>
               <View>
                 <Text>{null}</Text>
@@ -713,24 +801,21 @@ export function Management(props) {
                   </View>
                 </View>
                 <Spacer space={SH(50)} />
-                {
-                  historyHeader === true
-                  ?
-                  null
-                  :
-                  (<Button
+                {historyHeader === true ? null : (
+                  <Button
                     title={strings.management.sendEmailButton}
                     textStyle={styles.buttonText}
                     style={styles.senEmailButton}
                     onPress={() => {
                       // setTrackingSession(false), setSaveSession('save');
-                      setSummaryHistory(false), setViewSession(false), contentFunction(), setNewTrackingSession(true)
+                      setSummaryHistory(false),
+                        setViewSession(false),
+                        contentFunction(),
+                        setNewTrackingSession(true);
                     }}
-                  />)
-                 
-                  
-                }
-                
+                  />
+                )}
+
                 <Spacer space={SH(50)} />
               </View>
             </ScrollView>
@@ -928,7 +1013,7 @@ export function Management(props) {
               {strings.management.sessionHistory}
             </Text>
             <TouchableOpacity onPress={() => setSessionHistory(true)}>
-            <Image source={rightIcon} style={styles.rightIconStyle} />
+              <Image source={rightIcon} style={styles.rightIconStyle} />
             </TouchableOpacity>
           </View>
         </View>
@@ -1221,13 +1306,14 @@ export function Management(props) {
     }
   };
   return (
-    <View style={styles.container}>
-      {summaryHistory ? null : customHeader()}
-      {contentFunction()}
-      {trackinSessionModal()}
-      {addCashModal()}
-      {endSessionModal()}
-    </View>
+    <ScreenWrapper>
+      <View style={styles.container}>
+        {summaryHistory ? null : customHeader()}
+        {contentFunction()}
+        {trackinSessionModal()}
+        {addCashModal()}
+        {endSessionModal()}
+      </View>
+    </ScreenWrapper>
   );
 }
-

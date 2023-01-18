@@ -100,7 +100,7 @@ export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
       <Spacer space={SH(20)} />
       <View style={styles.orderTypeCon}>
         <View style={styles.flexAlign}>
-          <View style={{ marginHorizontal: moderateScale(8) }}>
+          <View style={{ marginHorizontal: moderateScale(5) }}>
             <TableDropdown placeholder="Month" />
           </View>
           <>
@@ -166,7 +166,12 @@ export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
 
       <View style={{ zIndex: -9 }}>
         <Table>
-          <View style={styles.tableDataHeaderCon}>
+          <View
+            style={[
+              styles.tableDataHeaderCon,
+              { borderTopWidth: 1, borderColor: COLORS.solidGrey },
+            ]}
+          >
             <View style={styles.displayFlex}>
               <View style={styles.tableHeaderLeftPro}>
                 <Text style={styles.tableTextHeaFirst}>#</Text>
