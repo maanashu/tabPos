@@ -304,7 +304,7 @@ export const en = {
     totalCash:'USD $6,590.00',
     netPayment:'Net Payment',
     cashActivity:'Cash activity',
-    endTrackingSession:'Ended tracking session',
+    endTrackingSessions:'Ended tracking session',
     leftDrawer:'Amount left in drawer : USD $0.00',
     dateTime:'Today Friday Auguest 26, 2022   | 11.04 AM',
     allein:'Allein',
@@ -323,6 +323,11 @@ export const en = {
     manual:'Manual',
     removeusd:'-USD $25.10',
     sessionHistory:'Session history',
+    cashSummary:"Cash summary",
+    amountexpect:"Amount expected", 
+    amountCounted:'Amount counted',
+    selectAmountDra:'Select amount to leave in drawer',
+    otherAmountusd:'Other amount (USD)'
   },
   customers:{
     sales:'Sales',

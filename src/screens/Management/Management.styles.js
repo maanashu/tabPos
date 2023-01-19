@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
   cashDrawerText: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
-    fontSize: SF(20),
+    fontSize: SF(15),
   },
   drawerIdText: {
     fontFamily: Fonts.Regular,
@@ -128,7 +128,7 @@ export const styles = StyleSheet.create({
   sessionHistoryText: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.primary,
-    fontSize: SF(20),
+    fontSize: SF(15),
   },
   rightIconStyle: {
     width: SH(24),
@@ -137,14 +137,16 @@ export const styles = StyleSheet.create({
   },
   modalMainView: {
     backgroundColor: COLORS.white,
-    width: SW(180),
+    width: SW(160),
     borderRadius: 12,
     alignSelf: 'center',
     justifyContent: 'center',
+    height: windowHeight - 200,
+    // borderWidth:10
   },
   headerView: {
     backgroundColor: COLORS.primary,
-    width: SW(180),
+    width: SW(160),
     height: SH(60),
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -152,6 +154,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    // position: 'absolute',
+    // top: 0,
   },
   crossIconStyle: {
     width: SH(24),
@@ -166,7 +170,7 @@ export const styles = StyleSheet.create({
   countCashText: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.solid_grey,
-    fontSize: SF(24),
+    fontSize: SF(22),
   },
   amountCountedText: {
     fontFamily: Fonts.Medium,
@@ -175,7 +179,7 @@ export const styles = StyleSheet.create({
   },
   inputStyle: {
     marginTop: 4,
-    width: SW(130),
+    // width: SW(130),
     height: SH(60),
     borderRadius: 5,
     fontFamily: Fonts.Regular,
@@ -205,14 +209,14 @@ export const styles = StyleSheet.create({
   },
   saveButton: {
     alignSelf: 'center',
-    width: SW(130),
+    width: windowWidth * 0.28,
     height: SH(60),
   },
   sessionMainView: {
-    width: windowWidth - 90,
+    width: windowWidth - 110,
     alignSelf: 'center',
     borderRadius: 10,
-    paddingTop: SH(30),
+    paddingTop: SH(10),
     backgroundColor: COLORS.textInputBackground,
   },
   sessionView: {
@@ -223,7 +227,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   usdText: {
-    fontSize: SF(54),
+    fontSize: SF(38),
     color: COLORS.primary,
     textAlign: 'center',
     fontFamily: Fonts.SemiBold,
@@ -235,7 +239,7 @@ export const styles = StyleSheet.create({
   },
   addCashView: {
     width: SW(144),
-    height: SH(110),
+    height: SH(90),
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
@@ -243,7 +247,7 @@ export const styles = StyleSheet.create({
   },
   removeCashView: {
     width: SW(144),
-    height: SH(110),
+    height: SH(90),
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
@@ -259,11 +263,11 @@ export const styles = StyleSheet.create({
     borderBottomColor: COLORS.solidGrey,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: SH(40),
+    paddingTop: SH(20),
     paddingBottom: SH(15),
   },
   buttonStyle: {
-    width: windowWidth - 90,
+    width: windowWidth - 110,
     height: SH(90),
     alignSelf: 'center',
   },
@@ -301,9 +305,13 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
   },
   bodyContainer: {
-    // borderWidth:1,
     width: windowWidth * 0.88,
-    height: windowHeight * 0.83,
+    height: windowHeight * 0.68,
+    alignSelf: 'center',
+  },
+  bodyContainer2: {
+    width: windowWidth * 0.88,
+    height: windowHeight * 0.84,
     alignSelf: 'center',
   },
   allCashText: {
@@ -510,4 +518,33 @@ export const styles = StyleSheet.create({
   },
 
   // summary history css end
+
+  trackingBodyCon: {
+    width: SW(110),
+    alignSelf: 'center',
+    height: windowHeight * 0.62,
+  },
+  absoluteZero:{
+    position:'absolute', top:0
+  },
+  centerSw:{
+    width: SW(145), alignItems: 'center' 
+  },
+  amountExpect :{
+    fontFamily: Fonts.Regular,
+    color: COLORS.dark_grey,
+    fontSize: SF(18),
+  },
+  removerDarkText:{
+    textAlign: 'center',
+    fontFamily: Fonts.Bold,
+    fontSize: SF(25),
+    color: COLORS.solid_grey,
+  },
+  removerDarkTextRegular:{
+    textAlign: 'center',
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+  }
 });
