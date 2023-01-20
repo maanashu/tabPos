@@ -179,26 +179,27 @@ export function Retails() {
   const bunndleProArray = getUserData?.productbunList ?? [];
   const [data, setData] = useState(serProductArray);
   const [refresh, setRefresh] = useState('');
-  const [temp, setTemp] = useState(data?.map(item => ({ ...item, qty: 0 })));
+  const [temp, setTemp] = useState(serProductArray?.map(item => ({ ...item, qty: 0 })));
   const result = temp?.find(item => item.id === searchSelectedId);
   const [againRemove , setAgainRemove] = useState(false);
-
   const [count, setCount] = useState(cartData?.qty);
+  // console.log("data",data)
 
   const handleIncrease = index => {
-    const array = temp;
-    array[index].qty = array[index].qty + 1;
-    setData(array);
-    setTemp(array);
-    setRefresh(Math.random());
+      const array = temp;
+      array[index].qty = array[index].qty + 1;
+      setData(array);
+      setTemp(array);
+      setRefresh(Math.random());
   };
   const handleDecrease = index => {
-    const array = temp;
-    array[index].qty =
+      const array = temp;
+      array[index].qty =
       array[index].qty > 0 ? array[index].qty - 1 : array[index].qty;
-    setData(array);
-    setTemp(array);
-    setRefresh(Math.random());
+      setData(array);
+      setTemp(array);
+      setRefresh(Math.random());
+  
   };
 
   useEffect(id => {
@@ -309,7 +310,8 @@ export function Retails() {
       seller_id: sellerID,
       product_id: id,
       service_id: service_id,
-      qty: result?.qty,
+      // qty: result?.qty,
+      qty:1,
       bundleId : addRemoveSelectedId
     };
     dispatch(addTocart(data));
@@ -925,13 +927,17 @@ export function Retails() {
           <View
             style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
           >
-            <TouchableOpacity onPress={() => handleDecrease(index)}>
+            <TouchableOpacity
+            //  onPress={() => handleDecrease(index)}
+             >
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
             <Text style={[styles.price, { fontSize: SF(24) }]}>
               {result?.qty ? result?.qty : '0'}
             </Text>
-            <TouchableOpacity onPress={() => handleIncrease(index)}>
+            <TouchableOpacity
+            //  onPress={() => handleIncrease(index)}
+             >
               <Image source={plus} style={styles.plusBtn2} />
             </TouchableOpacity>
           </View>
