@@ -340,6 +340,7 @@ export const styles = StyleSheet.create({
     height: SH(25),
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight:12
   },
   updatePriceButton: {
     fontSize: SF(12),

@@ -227,10 +227,10 @@ export const getProduct = (selectedId ,subSelectedId ,brandSelectedId ,sellerID)
   }
 };
 
-export const getSearchProduct = (search) => async dispatch => {
+export const getSearchProduct = (search,sellerID) => async dispatch => {
   dispatch(getSeaProductRequest());
   try {
-      const res = await UserController.getSearchProduct(search);
+      const res = await UserController.getSearchProduct(search,sellerID);
       dispatch(getSeaProductSuccess(res));
   } catch (error) {
       dispatch(getSeaProductError(error.message));

@@ -142,38 +142,25 @@ export class UserController {
     });
   };
 
-  static async getSearchProduct(search) {
+  static async getSearchProduct(search, sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL + ApiProductInventory.getProduct + `?page=1&limit=10`;
-      const searchingProArr = search ? search : '';
-
-      const body =  {
-        category_id: [],
-        subcategory_id: [],
-        name: searchingProArr,
-        brand_id: [],
-      }
-      HttpClient.post(endpoint, body)
+      const endpoint = PRODUCT_URL + ApiProductInventory.getProduct +`/${sellerID}?page=1&limit=10&search=${search}`;
+      HttpClient.get(endpoint)
         .then(response => {
-          if (response?.status_code === 200) {
-            Toast.show({
-              position: 'bottom',
-              type: 'success_toast',
-              text2: response?.msg,
-              visibilityTime: 2000,
-            });
+          if (response.status === 204) {
+            console.log('no content');
+            resolve([]);
           }
           resolve(response);
         })
         .catch(error => {
           Toast.show({
+            text2: error.msg,
             position: 'bottom',
             type: 'error_toast',
-            text2: error.msg,
-            visibilityTime: 2000,
+            visibilityTime: 1500,
           });
-          reject(error.msg);
+          reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
   };
@@ -181,7 +168,6 @@ export class UserController {
   static async getAllCartCategory() {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
-      // console.log('endpoint',endpoint)
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -252,13 +238,20 @@ export class UserController {
   static async addTocart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.clearAllCart;
-      const body = {
+      const body = data.bundleId ? 
+       {
+        seller_id:data.seller_id,
+        product_id: data.product_id,
+        service_id: data.service_id,
+        qty: data.qty ? data.qty : 0 ,
+        bundle_id : data.bundleId
+      }
+      :{
         seller_id:data.seller_id,
         product_id: data.product_id,
         service_id: data.service_id,
         qty: data.qty,
       }
-
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.status_code === 201) {
@@ -293,27 +286,6 @@ export class UserController {
 
       HttpClient.post(endpoint, body)
         .then(response => {
-        //   if (response?.status_code === 200) {
-        //     // Toast.show({
-        //     //   position: 'bottom',
-        //     //   type: 'success_toast',
-        //     //   // text2: response?.msg,
-        //     //   text:'successs',
-        //     //   visibilityTime: 2000,
-        //     // });
-        //     console.log('dfghjsdfghjk')
-        //   }
-        //   resolve(response);
-        // })
-        // .catch(error => {
-        //   Toast.show({
-        //     position: 'bottom',
-        //     type: 'error_toast',
-        //     text2: error.msg,
-        //     visibilityTime: 2000,
-        //   });
-        //   reject(error.msg);
-        // });
         if (response?.status_code === 200) {
           Toast.show({
             type: 'success_toast',
@@ -388,7 +360,7 @@ export class UserController {
 
   static async getProductBundle(id) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.getProductBundle + '?product_id=' + `${id}`;
+      const endpoint = PRODUCT_URL + ApiOrderInventory.getProductBundle + '?product_id=' + `${id}`;
       HttpClient.get(endpoint)
         .then(response => {
           if (response.status === 204) {

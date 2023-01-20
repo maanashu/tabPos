@@ -149,7 +149,9 @@ export function Retails() {
 
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
   const [searchSelectedId, setSearchSelectedId] = useState(null);
-  const [count, setCount] = useState(0);
+
+  // const [count, setCount] = useState(cartData?.qty);
+  
   const [tipSelectId, setTipsSelected] = useState(1);
   const [amountSelectId, setAmountSelectId] = useState(1);
 
@@ -166,6 +168,7 @@ export function Retails() {
   const [storeData, setStoreData] = useState();
   const BundleproductId = storeData?.id;
   const [cartData, setCartData] = useState();
+ 
   const cartId = cartData?.cart_id;
   const productId = cartData?.product_id;
   const cartTotalAmount = getCartAmount?.total_amount;
@@ -178,6 +181,9 @@ export function Retails() {
   const [refresh, setRefresh] = useState('');
   const [temp, setTemp] = useState(data?.map(item => ({ ...item, qty: 0 })));
   const result = temp?.find(item => item.id === searchSelectedId);
+  const [againRemove , setAgainRemove] = useState(false);
+
+  const [count, setCount] = useState(cartData?.qty);
 
   const handleIncrease = index => {
     const array = temp;
@@ -233,13 +239,12 @@ export function Retails() {
   const searchFunction = id => {
     setSearchSelectedId(id);
     setSearchProDetail(true);
-    // console.log('item',id);
     dispatch(getProductBundle(id));
   };
 
   const onChangeFun = search => {
-    if (search.length > 1) {
-      dispatch(getSearchProduct(search));
+    if (search.length > 3) {
+      dispatch(getSearchProduct(search,sellerID));
       setPosSearch(true);
     } else if (search.length < 3) {
       setPosSearch(false);
@@ -298,18 +303,33 @@ export function Retails() {
     setAmountPopup(false);
   };
 
-  const addToCartHandler = id => {
-    // console.log('id', id);
+  const addToCartHandler = (id, service_id) => {
+    setAddRemoveSelectedId(null);
     const data = {
-      seller_id: 'b169ed4d-be27-44eb-9a08-74f997bc6a2a',
+      seller_id: sellerID,
       product_id: id,
-      service_id: 4,
+      service_id: service_id,
       qty: result?.qty,
+      bundleId : addRemoveSelectedId
     };
-    // console.log('data', data)
     dispatch(addTocart(data));
     setPosSearch(false);
   };
+
+  const updateToCart = ({service_id,count}) => {
+    alert('coming soon')
+    // const data = {
+    //   seller_id: sellerID,
+    //   product_id: productId,
+    //   service_id: service_id,
+    //   qty: count,
+    //   bundleId : addRemoveSelectedId
+    // };
+    // console.log('data', data)
+    // dispatch(addTocart(data));
+    // setPosSearch(false);
+  };
+  
 
   const saveNotesHandler = () => {
     if (!cartIDdiscount) {
@@ -400,6 +420,7 @@ export function Retails() {
   };
   const amountPopHandler = item => {
     setCartData(item);
+    setCount(item.qty)
     setAmountPopup(!amountPopup);
     setBundleOffer(false);
   };
@@ -489,7 +510,7 @@ export function Retails() {
     setSearchProDetail(!searchProDetail);
     setStoreData(item);
     console.log('item', BundleproductId);
-    dispatch(getProductBundle(BundleproductId));
+    // dispatch(getProductBundle(BundleproductId));
   };
 
   const viewDetailHandler = item => {
@@ -507,7 +528,6 @@ export function Retails() {
   };
 
   const increment = () => {
-    console.log(index);
     setCount(count + 1);
   };
 
@@ -779,15 +799,15 @@ export function Retails() {
 
   const renderBundleItem = ({ item }) => {
     const backgroundColor =
-      item.id === addRemoveSelectedId ? COLORS.white : COLORS.primary;
+      item.id === addRemoveSelectedId && againRemove  ? COLORS.white : COLORS.primary;
     const color =
-      item.id === addRemoveSelectedId ? COLORS.primary : COLORS.white;
-    const text = item.id === addRemoveSelectedId ? 'Remove' : 'Add';
+    item.id === addRemoveSelectedId && againRemove ? COLORS.primary : COLORS.white;
+    const text = item.id === addRemoveSelectedId && againRemove ? 'Remove' : 'Add';
 
     return (
       <AddRemoveItemSelect
         item={item}
-        onPress={() => setAddRemoveSelectedId(item.id)}
+        onPress={() =>  {setAddRemoveSelectedId(item.id), setAgainRemove(!againRemove)}}
         backgroundColor={{ backgroundColor }}
         color={{ color }}
         addRemove={text}
@@ -939,7 +959,7 @@ export function Retails() {
             </View>
             <TouchableOpacity
               style={styles.addcartButtonStyle}
-              onPress={() => addToCartHandler(item.id)}
+              onPress={() => addToCartHandler(item.id, item.category?.service_id)}
             >
               <Text style={styles.addToCartText}>
                 {strings.posSale.addToCart}
@@ -1208,8 +1228,7 @@ export function Retails() {
   const cartListItem = ({ item }) => (
     <TouchableOpacity
       style={styles.jfrContainer}
-      onPress={() => amountPopHandler(item)}
-    >
+      onPress={() => amountPopHandler(item)}>
       <View style={styles.jfrContainer2}>
         <Image
           source={{ uri: item.product_details.image }}
@@ -1222,10 +1241,23 @@ export function Retails() {
           <Text style={styles.oneX}>x {item.qty}</Text>
         </View>
       </View>
-      <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+      <View style={{ flexDirection: 'column', alignItems:'flex-end' }}>
+        {
+          item.is_bundle
+          ?
+          <TouchableOpacity
+          style={styles.bundleButtonCon}>
+          <Text style={styles.updatePriceButton}>
+            Bundle
+          </Text>
+        </TouchableOpacity>
+        :
+        null
+
+        }
+        
         <Text style={styles.rate}>{null}</Text>
-        <Text style={styles.rate}>{null}</Text>
-        <Text style={styles.rate}>{item.product_details.price}</Text>
+        <Text style={styles.rate}>${item.product_details.price}</Text>
         {/* <TouchableOpacity
         onPress={updatePriceHandler}
         style={styles.updatePriceButtonCon}
@@ -1498,14 +1530,21 @@ export function Retails() {
                   <Text style={styles.smallLightText}>
                     {strings.retail.discount}
                   </Text>
-                  <Text style={styles.smallLightText}>-$2.00</Text>
+                  <Text style={styles.smallLightText}> $
+                    {getCartAmount?.discount
+                      ? getCartAmount?.discount
+                      : '0.00'}</Text>
                 </View>
                 <Spacer space={SH(12)} />
                 <View style={styles.bottomSubCon}>
                   <Text style={styles.smallLightText}>
                     {strings.retail.tax}
                   </Text>
-                  <Text style={styles.smallLightText}>$4.00</Text>
+                  <Text style={styles.smallLightText}>$
+                  {getCartAmount?.tax
+                      ? getCartAmount?.tax
+                      : '0.00'}
+                  </Text>
                 </View>
                 <Spacer space={SH(12)} />
                 <View style={styles.hr}></View>
@@ -1615,29 +1654,34 @@ export function Retails() {
                   style={[
                     styles.priceContainer,
                     { backgroundColor: COLORS.white },
-                  ]}
-                >
+                  ]}>
+                  <TouchableOpacity onPress={decrement}>
                   <Image source={minus} style={styles.plusBtn2} />
+                  </TouchableOpacity>
                   <Text style={[styles.price, { fontSize: SF(24) }]}>
-                    {cartData?.qty}
+                     {count}
                   </Text>
+                  <TouchableOpacity onPress={increment}>
                   <Image source={plus} style={styles.plusBtn2} />
+                  </TouchableOpacity>
                 </View>
                 <Spacer space={SH(10)} />
-                {/* {bundleOffer ? ( */}
-                {/* <View>
-                  <Text style={styles.bundleOfferText}>
-                    {strings.retail.bundleOffer}
-                  </Text>
-                  <Spacer space={SH(10)} />
-                  <FlatList
-                    data={bundleOfferData}
-                    renderItem={renderBundleItem}
-                    keyExtractor={item => item.id}
-                    extraData={addRemoveSelectedId}
-                  />
-                </View> */}
-                {/* // ) : null} */}
+                {cartData?.is_bundle ? ( 
+                  <View>
+                    <Text style={styles.bundleOfferText}>
+                      {strings.retail.bundleOffer}
+                    </Text> 
+                    <Spacer space={SH(10)} />
+                    <FlatList
+                      data={bunndleProArray}
+                     renderItem={renderBundleItem}
+                     keyExtractor={item => item.id}
+                     extraData={bunndleProArray}
+                      />
+                  </View> 
+                  ) : 
+                  null
+                  }
                 <View style={{ flex: 1 }} />
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
@@ -1645,10 +1689,10 @@ export function Retails() {
                     style={styles.removeButtonCon}
                   >
                     <Text style={styles.removeButton}>
-                      {strings.retail.removecart}
+                      {strings.retail.removecart} {cartData?.service_id}
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity
+                  <TouchableOpacity onPress={() => updateToCart({count, service_id})}
                     style={[styles.removeButtonCon, styles.updateButtonCon]}
                   >
                     <Text style={[styles.removeButton, styles.updateButton]}>
@@ -2014,6 +2058,7 @@ export function Retails() {
               selectedDataImage={{ uri: selectedData?.image }}
               selectedDataDes={selectedData?.description}
               selectedDataPrice={selectedData?.price}
+              sku={selectedData?.sku ? selectedData?.sku : '0'}
             />
           </Modal>
           {/* {searchProViewDetail ? (
