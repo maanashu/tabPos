@@ -1,8 +1,7 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
-import { height, width } from '@/theme/ScalerDimensions';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -79,7 +78,6 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     width: SW(80),
     height: SH(92),
-    // paddingVertical: SH(35),
     flexDirection: 'row',
   },
   contentContainer: {
@@ -143,7 +141,6 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderReviewRightView: {
-    // width: windowWidth / 2.25,
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     // height: Platform.OS === 'android' ? SH(405) : SH(450),
@@ -279,7 +276,6 @@ export const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
-    // paddingRight: SW(50),
     width: windowWidth * 0.46,
     height: windowHeight * 0.88,
   },
@@ -290,11 +286,9 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     height: windowHeight * 0.84,
-    // width: windowWidth * 0.52,
     paddingBottom: 20,
   },
   profileDetailView: {
-    // marginHorizontal: SW(5),
     paddingHorizontal: SW(5),
     paddingVertical: SW(3),
     borderRadius: 6,
@@ -329,7 +323,6 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
   },
   productViewStyle: {
-    // marginLeft: SW(5),
     marginRight: SW(4),
     flexDirection: 'row',
     top: 7,
@@ -344,7 +337,6 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 40,
     right: 0,
-    // height: SW(105),
     backgroundColor: COLORS.white,
     paddingTop: 10,
     borderTopWidth: 1,
@@ -354,7 +346,6 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     ...ShadowStyles.shadow1,
-    // width: windowWidth * 0.5,
     height: SH(200),
   },
   borderSheetBorder: {
@@ -442,7 +433,6 @@ export const styles = StyleSheet.create({
     width: SH(700),
     backgroundColor: COLORS.primary,
     alignSelf: 'flex-end',
-    // marginRight: 6,
     top: 8,
   },
   orderReviewButton: {
@@ -531,7 +521,6 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.84,
   },
   selectShipingCon: {
-    // width: SH(510),
     height: SH(56),
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
@@ -556,7 +545,6 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   printButtonCon: {
-    // width: SH(510),
     height: SH(64),
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
@@ -588,7 +576,6 @@ export const styles = StyleSheet.create({
   },
   fedContextCon: {
     borderWidth: 1,
-    // width:SW(350),
     height: SH(50),
     borderRadius: 10,
     borderColor: COLORS.solidGrey,
@@ -652,11 +639,9 @@ export const styles = StyleSheet.create({
     color: COLORS.bluish_green,
   },
   scrollMainCon: {
-    // borderWidth: 5,
     paddingHorizontal: moderateScale(5),
   },
   mapContainer: {
-    // flex: 1,
     marginTop: SH(15),
     borderWidth: 2,
     overflow: 'hidden',

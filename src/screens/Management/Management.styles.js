@@ -154,8 +154,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    // position: 'absolute',
-    // top: 0,
   },
   crossIconStyle: {
     width: SH(24),
@@ -179,7 +177,6 @@ export const styles = StyleSheet.create({
   },
   inputStyle: {
     marginTop: 4,
-    // width: SW(130),
     height: SH(60),
     borderRadius: 5,
     fontFamily: Fonts.Regular,
@@ -274,7 +271,6 @@ export const styles = StyleSheet.create({
 
   // summary history css start
   summaryHeaderCon: {
-    // borderWidth:1,
     height: SH(100),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(10),
@@ -297,7 +293,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
     paddingVertical: verticalScale(5),
-    // paddingHorizontal:moderateScale(5)
   },
   summaryText: {
     color: COLORS.black,
@@ -379,7 +374,6 @@ export const styles = StyleSheet.create({
   },
   senEmailButton: {
     alignSelf: 'center',
-    // width: SW(130),
     width: windowWidth * 0.88,
     height: SH(70),
   },
@@ -405,9 +399,7 @@ export const styles = StyleSheet.create({
     width: SW(45),
     borderRadius: 3,
     borderColor: COLORS.solidGrey,
-    // alignItems: 'center',
     paddingHorizontal: moderateScale(7),
-    // flexDirection: 'row',
     justifyContent: 'center',
   },
   calendarStyle: {
@@ -426,7 +418,6 @@ export const styles = StyleSheet.create({
     width: SW(4),
     height: SW(4),
     resizeMode: 'contain',
-    // tintColor: COLORS.solidGrey,
   },
   dropdown: {
     alignSelf: 'center',

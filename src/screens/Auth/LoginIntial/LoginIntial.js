@@ -153,7 +153,7 @@ export function LoginIntial() {
                 textStyle={styles.selectedText}
                 style={styles.submitButton}
               />
-              <Spacer space={SH(40)} />
+               
             </View>
           )}
         </View>

@@ -23,7 +23,6 @@ export function RootNavigator() {
   return (
     <NavigationContainer ref={navigationRef}>
       {userToken ? <InitialNav /> : <AuthNavigator />}
-      {/* <HomeNavigator /> */}
     </NavigationContainer>
   );
 }

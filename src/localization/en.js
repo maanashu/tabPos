@@ -460,6 +460,15 @@ export const en = {
      deliveryOrder:'Delivery Order',
      shipingOrder:"Shipping Order"
     },
+
+    TotalProSub:{
+      newAdd:"New added",
+      totalActive:'Total active',
+      discontinued:'Discontinued',
+      lowStock:'Low stock items',
+      itemAdjust:' Items to be adjusted',
+      itemShipped:'Items to be shipped'
+    },
     shipingOrder:{
       shipingRate:'$11.50',
       priorityMalling:'Priority Mailing services',

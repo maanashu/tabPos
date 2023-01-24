@@ -8,7 +8,6 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
     backgroundColor: COLORS.textInputBackground,
   },
   displayFlex: {
@@ -119,7 +118,6 @@ export const styles = StyleSheet.create({
     width: SW(50),
   },
   catProcCon1: {
-    // backgroundColor: COLORS.primary,
     borderRadius: 5,
     height: SH(40),
     width: SW(45),
@@ -139,7 +137,6 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(3),
   },
   productName1: {
-    // color: COLORS.white,
     fontSize: SF(13),
     fontFamily: Fonts.SemiBold,
     paddingHorizontal: moderateScale(4),
@@ -163,7 +160,6 @@ export const styles = StyleSheet.create({
     height: SH(245),
     borderWidth: 1,
     borderColor: COLORS.textInputBackground,
-    // ...ShadowStyles.shadow2,
     borderRadius: 10,
     backgroundColor: COLORS.white,
     margin: Platform.OS === 'ios' ? 4 : 11,
@@ -259,9 +255,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: 0,
-    //  borderWidth:1,
     borderColor: COLORS.black,
-    //  ...ShadowStyles.shadow2
     elevation: 30,
     shadowColor: '#000000',
     shadowRadius: 4.84,
@@ -326,8 +320,6 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // paddingVertical:verticalScale(20)
-    // alignItems:'center'
   },
   bundleButton: {
     fontSize: SF(12),
@@ -364,7 +356,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 5,
     paddingVertical: verticalScale(9),
-    // marginVertical:verticalScale(10)
   },
   checkoutText: {
     color: COLORS.white,
@@ -399,9 +390,6 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
   },
   bottomContainer: {
-    // position: 'absolute',
-    // bottom: 0,
-    // right: 15,
     borderTopWidth: 1,
     height: SH(350),
     borderColor: COLORS.row_grey,
@@ -532,7 +520,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   bundleAddCon: {
-    // backgroundColor: COLORS.primary,
     borderRadius: 3,
     width: SW(20),
     alignItems: 'center',
@@ -541,7 +528,6 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    // paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(3),
   },
   amountPopupCon: {
@@ -609,7 +595,6 @@ export const styles = StyleSheet.create({
     height: SW(3),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
-    // paddingRight: 30,
   },
   dropdown: {
     alignSelf: 'center',
@@ -626,7 +611,6 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     justifyContent: 'center',
     right: 28,
-    // alignItems: 'center',
   },
   dropDownContainerStyle: {
     borderWidth: 1,
@@ -855,9 +839,7 @@ export const styles = StyleSheet.create({
 
   //  modal update price  css start
   updateAmount: {
-    // borderWidth:1,
     backgroundColor: COLORS.white,
-    // borderRadius: 5,
     height: SH(44),
     width: SW(65),
     borderBottomRightRadius: 5,
@@ -952,8 +934,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   newProductdropdown: {
-    // width: SW(330),
-    // height:SH(60),
     alignSelf: 'center',
     backgroundColor: COLORS.textInputBackground,
     borderColor: 'transparent',
@@ -969,11 +949,8 @@ export const styles = StyleSheet.create({
     paddingRight: 30,
   },
   newProductcontainerStyle: {
-    // width: SW(330),
-    // height:SH(100),
     alignSelf: 'center',
     backgroundColor: COLORS.white,
-    // marginVertical: verticalScale(7),
   },
 
   //  modal add new product  css end
@@ -1038,7 +1015,6 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.25,
     fontSize: SF(16),
-    // paddingHorizontal: moderateScale(70),
     height: SH(50),
   },
   scanerCon: {
@@ -1110,8 +1086,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(5),
   },
   orderSideCon: {
-    // borderWidth: 1,
-    // width: SH(450),
     height: windowHeight,
     width: windowWidth * 0.31,
     paddingHorizontal: moderateScale(10),
@@ -1136,11 +1110,9 @@ export const styles = StyleSheet.create({
   paymentTipsCon: {
     borderRadius: 5,
     backgroundColor: COLORS.orderStatusBackground,
-    // width:SH(403),
     height: SH(80),
     justifyContent: 'center',
-    paddingHorizontal: moderateScale(10),
-    // alignItems:'center'
+    paddingHorizontal: moderateScale(10)
   },
   paymentTipsText: {
     color: COLORS.black,
@@ -1224,7 +1196,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 5,
     paddingVertical: verticalScale(9),
-    // marginVertical:verticalScale(10)
   },
   checkoutText: {
     color: COLORS.white,
@@ -1255,7 +1226,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   customerNameInput: {
-    // borderWidth:1,
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 7,
@@ -1278,7 +1248,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(10),
     width: SW(70),
-    // height: SH(50),
   },
   customerAddreCon: {
     backgroundColor: COLORS.textInputBackground,
@@ -1416,9 +1385,7 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.8,
   },
   productDetailCon: {
-    // borderWidth:1,
     width: windowWidth * 0.4,
-    // height: windowHeight * 0.6,
     alignSelf: 'center',
   },
   availablestockHeading: {
@@ -1475,18 +1442,15 @@ export const styles = StyleSheet.create({
     fontSize: SF(32),
   },
   detailImageCon: {
-    // borderWidth:1,
     width: windowWidth * 0.25,
   },
   detailPriceCon: {
-    // borderWidth:1,
     width: windowWidth * 0.4,
   },
   marboloPackStyle: {
     width: SW(92),
     height: SW(60),
     resizeMode: 'contain',
-    // marginTop: -15,
   },
   productDescrptionCon: {
     borderWidth: 1,
@@ -1541,14 +1505,12 @@ export const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
-    // alignSelf: 'center',
   },
   noCart: {
     fontSize: SF(16),
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
     alignSelf: 'center',
-    // alignSelf: 'center',
   },
   contentContainer: {
     justifyContent: 'space-between',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   View,
   Text,
@@ -44,16 +44,59 @@ import { Button, ScreenWrapper, Spacer } from '@/components';
 import { LineChart } from 'react-native-chart-kit';
 import { verticalScale } from 'react-native-size-matters';
 import { BottomSheet } from './BottomSheet';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrders } from '@/actions/DeliveryAction';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getDelivery } from '@/selectors/DeliverySelector';
+
+
 
 const windowHeight = Dimensions.get('window').height;
 
 export function DeliveryOrder() {
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const getDeliveryData = useSelector(getDelivery);
+  const orderCount = getDeliveryData?.orderList;
+  console.log('getDeliveryData', getDeliveryData?.orderList)
   const [viewAllReviews, setViewAllReviews] = useState(false);
   const [orderAccepted, setOrderAccepted] = useState(false);
   const [readyPickup, setReadyForPickup] = useState(false);
   const [showArea, setShowArea] = useState(true);
   const [headingType, setHeadingType] = useState('');
   const [dataType, setDataType] = useState('');
+
+  const reviewArray = [
+    {
+      key: '1',
+      status: 'Orders to Review',
+      count: orderCount?.totalReview,
+      image: require('@/assets/icons/ic_deliveryOrder/order.png'),
+    }, {
+      key: '2',
+      status: 'Order Preparing',
+      count: orderCount?.totalPrepairing,
+      image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
+    },
+    {
+      key: '3',
+      status: 'Ready to pickup',
+      count: orderCount?.totalReadyForPickup,
+      image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
+    },
+    {
+      key: '4',
+      status: 'Delivering',
+      count: orderCount?.totalDelivering,
+      image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
+    },
+
+  ]
+
+
+  useEffect(() => {
+    dispatch(getOrders())
+  }, [])
 
   const customHeader = () => {
     return (
@@ -479,7 +522,8 @@ export function DeliveryOrder() {
           <View style={{ paddingBottom: verticalScale(4) }}>
             <FlatList
               scrollEnabled={false}
-              data={orderStatus}
+              data={reviewArray}
+              extraData={reviewArray}
               renderItem={renderItem}
               horizontal
               contentContainerStyle={styles.contentContainer}

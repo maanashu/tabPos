@@ -3,10 +3,14 @@ import { errorReducer } from '@/reducers/ErrorReducer';
 import { statusReducer } from '@/reducers/StatusReducer';
 import { userReducer } from '@/reducers/UserReducer';
 import { authReducer } from './AuthReducer';
+import { retailReducer } from '@/reducers/RetailReducer';
+import { deliveryReducer } from '@/reducers/DeliveryReducer';
 
 export const rootReducer = combineReducers({
   error: errorReducer,
   status: statusReducer,
   user: userReducer,
-  auth: authReducer
+  auth: authReducer,
+  retail : retailReducer,
+  delivery : deliveryReducer
 });

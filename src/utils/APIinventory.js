@@ -26,6 +26,7 @@ export const ApiOrderInventory = {
     clearAllCart:'poscarts',
     addNotes:'poscarts/add_notes',
     addDiscountToCart:'poscarts/add_discount',
-    getProductBundle:'bundle_products'
+    getProductBundle:'bundle_products',
+    getOrders:'orders/pos'
 
 }

@@ -74,7 +74,7 @@ import {
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
-import { Button, DaySelector, Spacer } from '@/components';
+import { Button, DaySelector, Spacer, TableDropdown } from '@/components';
 import { styles } from '@/screens/Analytics/Analytics.styles';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -83,7 +83,7 @@ import Modal from 'react-native-modal';
 import { Table, Row, Rows } from 'react-native-table-component';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DataTable } from 'react-native-paper';
-
+import {TotalProductSub, TotalRevenueSub} from '@/screens/Analytics';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import {
@@ -134,37 +134,9 @@ export function Analytics(props) {
   const [yearly, setYearly] = useState(false);
   const [detailTable, setDetailtable] = useState(false);
   const [productCat, setProductCat] = useState(false);
-  const [categoryModalOpen, setCategoryModelOpen] = useState(false);
-  const [categoryModalValue, setCategoryModalValue] = useState(null);
-  const [categoryItems, setCategoryItems] = useState([
-    { label: 'xyz', value: 'xyz' },
-    { label: 'abc', value: 'abc' },
-  ]);
-  const [subcategoryModalOpen, setSubCategoryModelOpen] = useState(false);
-  const [subcategoryModalValue, setSubCategoryModalValue] = useState(null);
-  const [subcategoryItems, setSubCategoryItems] = useState([
-    { label: 'xyz', value: 'xyz' },
-    { label: 'abc', value: 'abc' },
-  ]);
-  const [brandModalOpen, setBrandModelOpen] = useState(false);
-  const [brandModalValue, setBrandModalValue] = useState(null);
-  const [brandItems, setBrandItems] = useState([
-    { label: 'xyz', value: 'xyz' },
-    { label: 'abc', value: 'abc' },
-  ]);
-  const [stockModalOpen, setStockModelOpen] = useState(false);
-  const [stockModalValue, setStockModalValue] = useState(null);
-  const [stockItems, setStockItems] = useState([
-    { label: 'xyz', value: 'xyz' },
-    { label: 'abc', value: 'abc' },
-  ]);
-  const [weeklyModalOpen, setWeeklyModelOpen] = useState(false);
-  const [weeklyModalValue, setWeeklyModalValue] = useState(null);
-  const [weeklyItems, setWeeklyItems] = useState([
-    { label: 'Today', value: 'Today' },
-    { label: 'Weekly', value: 'Weekly' },
-    { label: 'Monthly', value: 'Monthly' },
-  ]);
+  const [selectedId, setSelectedId] = useState();
+
+
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
   const [paginationModalItems, setPaginationModalItems] = useState([
@@ -173,18 +145,12 @@ export function Analytics(props) {
     { label: '50', value: '50' },
     { label: '70', value: '70' },
   ]);
-  const [statusModalOpen, setStatusModelOpen] = useState(false);
-  const [statusModalValue, setStatusModalValue] = useState(null);
-  const [statusItems, setStatusItems] = useState([
-    { label: 'xyz', value: 'xyz' },
-    { label: 'abc', value: 'abc' },
-  ]);
-  const [orderModalOpen, setOrderModelOpen] = useState(false);
-  const [orderModalValue, setOrderModalValue] = useState(null);
-  const [orderItems, setOrderItems] = useState([
-    { label: 'xyz', value: 'xyz' },
-    { label: 'abc', value: 'abc' },
-  ]);
+
+
+  const totalRevenueHandler =()=> {
+    setRevenueTable(true), 
+    setRevenueTableHeading('');
+  }
   
 
   // const DUMMY_DATA = 
@@ -1536,20 +1502,33 @@ export function Analytics(props) {
       return alert('Shipping');
     }
   };
-  const allTransactionItem = ({ item }) => (
+
+  const TransactionTypeItem = ({item, onPress, borderColor, color,fontFamily}) => (
     <TouchableOpacity
-      style={[
-        styles.allJbrCon,
-        styles.allJbrConBluish,
-        { marginVertical: verticalScale(4) },
-      ]}
-      onPress={() => naviagtionHandler(item)}
-    >
-      <Text style={[styles.allJbrText, styles.allJbrTextbluish]}>
-        {item.transaction} {item.count}
-      </Text>
-    </TouchableOpacity>
+    onPress={onPress}
+    style={[styles.allJbrCon, {borderColor}]}>
+    <Text style={[styles.allJbrText, {color, fontFamily}]}>
+      {item.transaction} {item.count}
+    </Text>
+  </TouchableOpacity>
   );
+  
+  const allTransactionItem = ({ item }) => {
+    const borderColor = item.id === selectedId ? COLORS.primary : COLORS.solidGrey;
+    const color = item.id === selectedId ? COLORS.primary : COLORS.dark_grey;
+    const fontFamily = item.id === selectedId ? Fonts.SemiBold : Fonts.Regular;
+
+    return (
+      <TransactionTypeItem
+        item={item}
+        onPress={() => setSelectedId(item.id)}
+        borderColor={borderColor}
+        color = {color}
+        fontFamily = {fontFamily}
+      />
+    );
+   
+};
 
   const totalProductItem = ({ item }) => (
     <View style={styles.totalProductCon}>
@@ -1568,53 +1547,6 @@ export function Analytics(props) {
       <Spacer space={SH(22)} />
       <Image source={productMap} style={styles.productMap} />
     </View>
-  );
-
-  const categoryItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.categoryCon}
-      onPress={() => tableAccCatHandler(item)}
-    >
-      <View style={styles.categoryChildCon}>
-        <Text style={styles.categoryCount}>{item.categoryCount}</Text>
-        <Text numberOfLines={1} style={styles.categoryText}>{item.category}</Text>
-      </View>
-      <View style={styles.categoryChildPercent}>
-        <Image source={catPercent} style={styles.catPercent} />
-        <Text style={styles.percentText}>{item.percentage}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
-  const categoryInventoryItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.categoryCon}
-      onPress={() => inverntoryUnitViseHandler(item)}
-    >
-      <View style={styles.categoryChildCon}>
-        <Text style={styles.categoryCount}>{item.categoryCount}</Text>
-        <Text numberOfLines={1} style={styles.categoryText}>{item.category}</Text>
-      </View>
-      <View style={styles.categoryChildPercent}>
-        <Image source={catPercent} style={styles.catPercent} />
-        <Text numberOfLines={1} style={styles.percentText}>{item.percentage}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-  const totalOrderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.categoryCon}
-      onPress={() => totalOrderViseHandler(item)}
-    >
-      <View style={styles.categoryChildCon}>
-        <Text style={styles.categoryCount}>{item.categoryCount}</Text>
-        <Text numberOfLines={1} style={styles.categoryText}>{item.category}</Text>
-      </View>
-      <View style={styles.categoryChildPercent}>
-        <Image source={catPercent} style={styles.catPercent} />
-        <Text style={styles.percentText}>{item.percentage}</Text>
-      </View>
-    </TouchableOpacity>
   );
   const productDetailItem = ({ item }) => (
     <View style={[styles.sellingPriceConblue, styles.sellingPriceCongrey]}>
@@ -5298,6 +5230,8 @@ export function Analytics(props) {
             <FlatList
               data={allRevenueTypeData}
               renderItem={allTransactionItem}
+              keyExtractor={item => item.id}
+              extraData={selectedId}
               horizontal
             />
           </View>
@@ -5309,57 +5243,13 @@ export function Analytics(props) {
               </View>
 
               <View style={{ marginHorizontal: moderateScale(10) }}>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyle}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={statusModalOpen}
-                  value={statusModalValue}
-                  items={statusItems}
-                  setOpen={setStatusModelOpen}
-                  setValue={setStatusModalValue}
-                  setItems={setStatusItems}
-                  placeholder="Status"
-                  placeholderStyle={styles.placeholderStyle}
+                <TableDropdown
+                placeholder='Status'
                 />
               </View>
               <>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 1 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyle}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={orderModalOpen}
-                  value={orderModalValue}
-                  items={orderItems}
-                  setOpen={setOrderModelOpen}
-                  setValue={setOrderModalValue}
-                  setItems={setOrderItems}
-                  placeholder="Order type"
-                  placeholderStyle={styles.placeholderStyle}
+                 <TableDropdown
+                placeholder='Order type'
                 />
               </>
             </View>
@@ -5436,92 +5326,10 @@ export function Analytics(props) {
       );
     } else if (totalReveueDetail) {
       return (
-        <View style={styles.totalProductBodyCon}>
-          <View>
-            <View style={styles.totalProductDetailCon}>
-              <Spacer space={SH(10)} />
-              <View style={styles.displayFlex}>
-                <Text style={styles.trancationHeading}>
-                  {strings.analytics.totalRevenue}
-                </Text>
-                <View>
-                   <DaySelector/>
-                </View>
-              </View>
-              <Spacer space={SH(2)} />
-              <TouchableOpacity
-                onPress={() => {
-                  setRevenueTable(true), setRevenueTableHeading('');
-                }}
-              >
-                <Text
-                  style={[
-                    styles.darkBlackText,
-                    { fontSize: SF(34), color: COLORS.primary },
-                  ]}
-                >
-                  {strings.analytics.totalRevenueCount}
-                </Text>
-              </TouchableOpacity>
-              <Spacer space={SH(5)} />
-              <View>
-                <Image source={colorFrame} style={styles.colorFrame} />
-                <Spacer space={SH(5)} />
-                <Image source={revenueGraph} style={styles.revenueGraph} />
-              </View>
-            </View>
-            <Spacer space={SH(15)} />
-            <View style={styles.totalProductDetailCon}>
-              <Spacer space={SH(10)} />
-              <View style={styles.displayFlex}>
-                <View>
-                  <DaySelector/>
-                </View>
-                <Text style={styles.trancationHeading}>
-                  {strings.analytics.totalOrder}
-                </Text>
-              </View>
-              <Spacer space={SH(2)} />
-              <Text
-                style={[
-                  styles.darkBlackText,
-                  {
-                    fontSize: SF(34),
-                    color: COLORS.primary,
-                    alignSelf: 'flex-end',
-                  },
-                ]}
-              >
-                $8,426,590
-              </Text>
-              <Spacer space={SH(5)} />
-              <View style={styles.productGraphcon}>
-                <View style={styles.displayFlex}>
-                  <View
-                    style={[
-                      styles.productCategorychildcon,
-                      { backgroundColor: 'transparent' },
-                    ]}
-                  >
-                    <View>
-                      <FlatList
-                        data={totalOrderData}
-                        renderItem={totalOrderItem}
-                        keyExtractor={item => item.id}
-                        numColumns={2}
-                        scrollEnabled={false}
-                      />
-                    </View>
-                  </View>
-                  <View>
-                    <Image source={productMap} style={styles.totalOrderMap} />
-                  </View>
-                </View>
-              </View>
-            </View>
-            <Spacer space={SH(40)} />
-          </View>
-        </View>
+         <TotalRevenueSub
+         totalOrderViseHandler={totalOrderViseHandler}
+         totalRevenueHandler={totalRevenueHandler}
+         />
       );
     } else if (inventoryProductTable) {
       return (
@@ -5534,138 +5342,28 @@ export function Analytics(props) {
           <View style={styles.orderTypeCon}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyle}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={categoryModalOpen}
-                  value={categoryModalValue}
-                  items={categoryItems}
-                  setOpen={setCategoryModelOpen}
-                  setValue={setCategoryModalValue}
-                  setItems={setCategoryItems}
-                  placeholder="Category"
-                  placeholderStyle={styles.placeholderStyle}
+                 <TableDropdown
+                placeholder='Category'
                 />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyle}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={subcategoryModalOpen}
-                  value={subcategoryModalValue}
-                  items={subcategoryItems}
-                  setOpen={setSubCategoryModelOpen}
-                  setValue={setSubCategoryModalValue}
-                  setItems={setSubCategoryItems}
-                  placeholder="Sub Category"
-                  placeholderStyle={styles.placeholderStyle}
+                 <TableDropdown
+                placeholder='Sub Category'
                 />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyle}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={brandModalOpen}
-                  value={brandModalValue}
-                  items={brandItems}
-                  setOpen={setBrandModelOpen}
-                  setValue={setBrandModalValue}
-                  setItems={setBrandItems}
-                  placeholder="Brand"
-                  placeholderStyle={styles.placeholderStyle}
+              <TableDropdown
+                placeholder='Brand'
                 />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyle}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={stockModalOpen}
-                  value={stockModalValue}
-                  items={stockItems}
-                  setOpen={setStockModelOpen}
-                  setValue={setStockModalValue}
-                  setItems={setStockItems}
-                  placeholder="Stock Level"
-                  placeholderStyle={styles.placeholderStyle}
+              <TableDropdown
+                placeholder='Stock level'
                 />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyleWeekly}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={weeklyModalOpen}
-                  value={weeklyModalValue}
-                  items={weeklyItems}
-                  setOpen={setWeeklyModelOpen}
-                  setValue={setWeeklyModalValue}
-                  setItems={setWeeklyItems}
-                  placeholder="Weekly"
-                  placeholderStyle={styles.placeholderStyleWeekly}
+                 <TableDropdown
+                placeholder='Weekly'
                 />
               </View>
             </View>
@@ -5759,114 +5457,27 @@ export function Analytics(props) {
             : tableHeaderAccCat(accCatTable)}
 
           <Spacer space={SH(40)} />
-          <View style={styles.orderTypeCon}>
+          <View style={styles.orderTypeCon}> 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyle}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={categoryModalOpen}
-                  value={categoryModalValue}
-                  items={categoryItems}
-                  setOpen={setCategoryModelOpen}
-                  setValue={setCategoryModalValue}
-                  setItems={setCategoryItems}
-                  placeholder="Category"
-                  placeholderStyle={styles.placeholderStyle}
+              <TableDropdown
+                placeholder='Category'
                 />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyle}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={subcategoryModalOpen}
-                  value={subcategoryModalValue}
-                  items={subcategoryItems}
-                  setOpen={setSubCategoryModelOpen}
-                  setValue={setSubCategoryModalValue}
-                  setItems={setSubCategoryItems}
-                  placeholder="Sub Category"
-                  placeholderStyle={styles.placeholderStyle}
+              <TableDropdown
+                placeholder='Sub Category'
+                />
+              
+              </View>
+              <View style={{ marginHorizontal: moderateScale(5) }}>
+              <TableDropdown
+                placeholder='Brand'
                 />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyle}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={brandModalOpen}
-                  value={brandModalValue}
-                  items={brandItems}
-                  setOpen={setBrandModelOpen}
-                  setValue={setBrandModalValue}
-                  setItems={setBrandItems}
-                  placeholder="Brand"
-                  placeholderStyle={styles.placeholderStyle}
-                />
-              </View>
-              <View style={{ marginHorizontal: moderateScale(5) }}>
-                <DropDownPicker
-                  ArrowUpIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown2} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-                  ]}
-                  dropDownContainerStyle={styles.dropDownContainerStyle}
-                  listItemLabelStyle={styles.listItemLabelStyle}
-                  labelStyle={styles.labelStyle}
-                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                  open={stockModalOpen}
-                  value={stockModalValue}
-                  items={stockItems}
-                  setOpen={setStockModelOpen}
-                  setValue={setStockModalValue}
-                  setItems={setStockItems}
-                  placeholder="Stock Level"
-                  placeholderStyle={styles.placeholderStyle}
+              <TableDropdown
+                placeholder='Stock level'
                 />
               </View>
             </View>
@@ -5953,229 +5564,10 @@ export function Analytics(props) {
       );
     } else if (productDetail) {
       return (
-        <View style={styles.totalProductBodyCon}>
-          <View>
-            <View style={styles.totalProductDetailCon}>
-              <Spacer space={SH(10)} />
-              <View style={styles.displayFlex}>
-                <Text style={styles.trancationHeading}>
-                  {strings.analytics.totalProducts}
-                </Text>
-                 <View>
-                  <DaySelector/>
-                 </View>
-              </View>
-              <Spacer space={SH(2)} />
-              <Text
-                style={[
-                  styles.darkBlackText,
-                  { fontSize: SF(34), color: COLORS.primary },
-                ]}
-              >
-                {strings.analytics.totalProductsCount}
-              </Text>
-              {/* <Spacer space={SH(5)} /> */}
-              <View style={styles.productGraphcon}>
-                <View style={styles.displayFlex}>
-                  <View style={styles.productGraphchildcon}>
-                    <Spacer space={SH(15)} />
-                    <View style={styles.displayFlex}>
-                      <View style={styles.newAddedcon}>
-                        <Text style={styles.productDetails}>
-                          {strings.analytics.productDetails}
-                        </Text>
-                        <Spacer space={SH(10)} />
-                        <View style={styles.displayFlex}>
-                          <Text style={styles.newAddText}>New added</Text>
-                          <Text style={styles.newAddTextBold}>25</Text>
-                        </View>
-                        <View style={styles.addedhr}></View>
-                        <Spacer space={SH(10)} />
-                        <View style={styles.displayFlex}>
-                          <Text
-                            style={[
-                              styles.newAddText,
-                              { color: COLORS.primary },
-                            ]}
-                          >
-                            Discontinued
-                          </Text>
-                          <Text
-                            style={[
-                              styles.newAddTextBold,
-                              { color: COLORS.primary },
-                            ]}
-                          >
-                            95
-                          </Text>
-                        </View>
-                        <View style={styles.addedhr}></View>
-                        <Spacer space={SH(10)} />
-                        <View style={styles.displayFlex}>
-                          <Text
-                            style={[
-                              styles.newAddText,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
-                            Total active
-                          </Text>
-                          <Text
-                            style={[
-                              styles.newAddTextBold,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
-                            311
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.totalActiveProductCon}>
-                        <Text style={styles.activeProductText}>
-                          {strings.analytics.totalActiveProduct}
-                        </Text>
-                        <Spacer space={SH(30)} />
-                        <Image
-                          source={activeProduct}
-                          style={styles.activeProduct}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                  <View
-                    style={[
-                      styles.productCategorychildcon,
-                      { backgroundColor: 'transparent' },
-                    ]}
-                  >
-                    <View>
-                      <FlatList
-                         scrollEnabled={false}
-                        data={categoryData}
-                        renderItem={categoryItem}
-                        keyExtractor={item => item.id}
-                        numColumns={2}
-                         contentContainerStyle={styles.contentContainer}
-                      />
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <Spacer space={SH(20)} />
-            <View style={[styles.totalProductDetailCon]}>
-              <Spacer space={SH(10)} />
-              <View style={styles.displayFlex}>
-                <View>
-                  <DaySelector/>
-                </View>
-                <Text style={styles.trancationHeading}>
-                  {strings.analytics.totalInvetry}
-                </Text>
-              </View>
-              <Spacer space={SH(2)} />
-              <Text
-                style={[
-                  styles.darkBlackText,
-                  {
-                    fontSize: SF(34),
-                    color: COLORS.primary,
-                    alignSelf: 'flex-end',
-                  },
-                ]}
-              >
-                $8,426,590
-              </Text>
-              <Spacer space={SH(5)} />
-              <View style={styles.productGraphcon}>
-                <View style={styles.displayFlex}>
-                  <View
-                    style={[
-                      styles.productCategorychildcon,
-                      { backgroundColor: 'transparent' },
-                    ]}
-                  >
-                    <View>
-                      <FlatList
-                      scrollEnabled={false}
-                        data={inverntrycategoryData}
-                        renderItem={categoryInventoryItem}
-                        keyExtractor={item => item.id}
-                        numColumns={2}
-                      />
-                    </View>
-                  </View>
-                  <View style={styles.productGraphchildcon}>
-                    <Spacer space={SH(15)} />
-                    <View style={styles.displayFlex}>
-                      <View style={styles.newAddedcon}>
-                        <Text style={styles.productDetails}>
-                          {strings.analytics.invetryDetail}
-                        </Text>
-                        <Spacer space={SH(10)} />
-                        <View style={styles.displayFlex}>
-                          <Text style={styles.newAddText}>Low stock items</Text>
-                          <Text style={styles.newAddTextBold}>25</Text>
-                        </View>
-                        <View style={styles.addedhr}></View>
-                        <Spacer space={SH(10)} />
-                        <View style={styles.displayFlex}>
-                          <Text
-                            style={[
-                              styles.newAddText,
-                              { color: COLORS.primary },
-                            ]}
-                          >
-                            Items to be adjusted
-                          </Text>
-                          <Text
-                            style={[
-                              styles.newAddTextBold,
-                              { color: COLORS.primary },
-                            ]}
-                          >
-                            95
-                          </Text>
-                        </View>
-                        <View style={styles.addedhr}></View>
-                        <Spacer space={SH(10)} />
-                        <View style={styles.displayFlex}>
-                          <Text
-                            style={[
-                              styles.newAddText,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
-                            Items to be shipped
-                          </Text>
-                          <Text
-                            style={[
-                              styles.newAddTextBold,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
-                            311
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.totalActiveProductCon}>
-                        <Text style={styles.activeProductText}>
-                          {strings.analytics.activeItem}
-                        </Text>
-                        <Spacer space={SH(20)} />
-                        <Image
-                          source={activeProduct}
-                          style={styles.activeProduct}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <Spacer space={SH(40)} />
-          </View>
-        </View>
+        <TotalProductSub
+        inverntoryUnitViseHandler ={inverntoryUnitViseHandler}
+        tableAccCatHandler={tableAccCatHandler}
+        />
       );
     } else {
       return (

@@ -162,9 +162,9 @@ export const styles = StyleSheet.create({
   //   totalProductDetail css start
 
   trancationHeading: {
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.MaisonBold,
     color: COLORS.solid_grey,
-    fontSize: SF(20),
+    fontSize: SF(18),
   },
   byDayCon: {
     backgroundColor: COLORS.primary,
@@ -1031,17 +1031,14 @@ export const styles = StyleSheet.create({
   },
   allTypeCon: {
     backgroundColor: COLORS.textInputBackground,
-    // borderRadius: 10,
-    // height: SH(63),
+    height: SH(55),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
   },
   allJbrCon: {
     borderWidth: 1,
-    height: SH(42),
-    // width: SW(30),
+    height: SH(38),
     borderRadius: 7,
-    borderColor: COLORS.solidGrey,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: moderateScale(4),

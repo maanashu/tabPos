@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
+import { View, Text} from 'react-native';
 import { Spacer, Button } from '@/components';
-import { SH, COLORS } from '@/theme';
-import { verifyIcon, crossButton } from '@/assets';
+import { SH } from '@/theme';
 import { styles } from '@/screens/Auth/VerifyOtp/VerifyOtp.styles';
-import Modal from 'react-native-modal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
@@ -15,11 +13,8 @@ import {
   useClearByFocusCell,
   Cursor,
 } from 'react-native-confirmation-code-field';
-import { color } from 'react-native-reanimated';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { mobileReg,digits } from '@/utils/validators';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { digits } from '@/utils/validators';
 const CELL_COUNT = 5;
 
 export function VerifyOtp() {

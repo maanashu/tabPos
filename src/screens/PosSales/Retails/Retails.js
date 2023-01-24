@@ -81,7 +81,7 @@ import {
   addNotescart,
   addDiscountToCart,
   getProductBundle,
-} from '@/actions/UserActions';
+} from '@/actions/RetailAction';
 import { getUser } from '@/selectors/UserSelectors';
 import {getAuthData} from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
@@ -90,22 +90,26 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { ListOfItem } from './ListOfItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ProductViewDetail } from './ProductViewDetail';
+import { getRetail } from '@/selectors/RetailSelectors';
 
 
 export function Retails() {
   const dispatch = useDispatch();
-  const getUserData = useSelector(getUser);
+  // const getRetailData = useSelector(getUser);
+  const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.getProfile?.unique_uuid;
-  const array = getUserData?.categories;
-  const subCategoriesArray = getUserData?.subCategories ?? [];
-  const brandArray = getUserData?.brands ?? [];
-  const productArray = getUserData?.products ?? [];
-  const serProductArray = getUserData?.SeaProductList;
-  const allCartArray = getUserData?.getAllCart?.poscart_products;
-  const cartID2 = getUserData?.getAllCart?.id;
-  const getCartAmount = getUserData?.getAllCart?.amount;
-  const getTotalCart = getUserData?.getAllCart?.poscart_products?.length;
+  const array = getRetailData?.categories;
+  const subCategoriesArray = getRetailData?.subCategories ?? [];
+  const brandArray = getRetailData?.brands ?? [];
+  const productArray = getRetailData?.products ?? [];
+  const serProductArray = getRetailData?.SeaProductList;
+  // console.log("serProductArray----",serProductArray);
+  const allCartArray = getRetailData?.getAllCart?.poscart_products;
+  const cartProductServiceId = getRetailData?.getAllCart?.service_id;
+  const cartID2 = getRetailData?.getAllCart?.id;
+  const getCartAmount = getRetailData?.getAllCart?.amount;
+  const getTotalCart = getRetailData?.getAllCart?.poscart_products?.length;
   const totalCart = getTotalCart ? getTotalCart : '0';
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
@@ -149,9 +153,6 @@ export function Retails() {
 
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
   const [searchSelectedId, setSearchSelectedId] = useState(null);
-
-  // const [count, setCount] = useState(cartData?.qty);
-  
   const [tipSelectId, setTipsSelected] = useState(1);
   const [amountSelectId, setAmountSelectId] = useState(1);
 
@@ -176,14 +177,16 @@ export function Retails() {
   const [value, setValue] = useState('');
   const cartIDdiscount = JSON.stringify(cartID2);
   const [add, setAdd] = useState('Add');
-  const bunndleProArray = getUserData?.productbunList ?? [];
-  const [data, setData] = useState(serProductArray);
+  const bunndleProArray = getRetailData?.productbunList ?? [];
+  const [data, setData] = useState(serProductArray ?? []);
   const [refresh, setRefresh] = useState('');
   const [temp, setTemp] = useState(serProductArray?.map(item => ({ ...item, qty: 0 })));
   const result = temp?.find(item => item.id === searchSelectedId);
   const [againRemove , setAgainRemove] = useState(false);
   const [count, setCount] = useState(cartData?.qty);
-  // console.log("data",data)
+
+  // console.log('temp', temp);
+  // console.log('data', data);
 
   const handleIncrease = index => {
       const array = temp;
@@ -270,7 +273,7 @@ export function Retails() {
     isLoadingSelector([TYPES.GET_SEAPRODUCT], state)
   );
   const isGetCartLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_ALL_CART_SUCCESS], state)
+    isLoadingSelector([TYPES.GET_ALL_CART], state)
   );
   const isBundleLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_BUNDLEOFFER], state)
@@ -311,25 +314,24 @@ export function Retails() {
       product_id: id,
       service_id: service_id,
       // qty: result?.qty,
-      qty:1,
+      qty:2,
       bundleId : addRemoveSelectedId
     };
     dispatch(addTocart(data));
     setPosSearch(false);
   };
 
-  const updateToCart = ({service_id,count}) => {
-    alert('coming soon')
-    // const data = {
-    //   seller_id: sellerID,
-    //   product_id: productId,
-    //   service_id: service_id,
-    //   qty: count,
-    //   bundleId : addRemoveSelectedId
-    // };
+  const updateToCart = ({cartProductServiceId,count}) => {
+    const data = {
+      seller_id: sellerID,
+      product_id: productId,
+      service_id: cartProductServiceId,
+      qty: count,
+      bundleId : addRemoveSelectedId
+    };
     // console.log('data', data)
-    // dispatch(addTocart(data));
-    // setPosSearch(false);
+    dispatch(addTocart(data));
+    setAmountPopup(false);
   };
   
 
@@ -1698,11 +1700,11 @@ export function Retails() {
                       {strings.retail.removecart} {cartData?.service_id}
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => updateToCart({count, service_id})}
+                  <TouchableOpacity onPress={() => updateToCart({count, cartProductServiceId})}
                     style={[styles.removeButtonCon, styles.updateButtonCon]}
                   >
                     <Text style={[styles.removeButton, styles.updateButton]}>
-                      {strings.retail.updateCart}
+                      {strings.retail.updateCart}{cartProductServiceId}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -2067,15 +2069,6 @@ export function Retails() {
               sku={selectedData?.sku ? selectedData?.sku : '0'}
             />
           </Modal>
-          {/* {searchProViewDetail ? (
-            <ProductViewDetail
-            searchProDetRemoveHandlwe = {searchProDetRemoveHandlwe}
-            selectedDataName = {selectedData.name}
-            selectedDataImage ={{ uri: selectedData.image }}
-            selectedDataDes = {selectedData.description}
-            selectedDataPrice  = {selectedData.price}
-            />
-          ) : null} */}
           {/*  pos search details  end */}
         </View>
       )}

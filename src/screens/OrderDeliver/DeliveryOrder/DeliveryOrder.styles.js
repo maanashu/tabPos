@@ -1,8 +1,7 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
-import { height, width } from '@/theme/ScalerDimensions';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -281,8 +280,6 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: windowWidth * 0.48,
-    // height: windowHeight * 0.86,
-    // width: windowWidth * 0.52,
     borderWidth: 1,
   },
   profileDetailView: {
@@ -320,8 +317,6 @@ export const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   productViewStyle: {
-    // marginLeft: SW(5),
-    // marginRight: SW(6),
     marginRight: SW(4),
     flexDirection: 'row',
     top: 7,
@@ -336,11 +331,9 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: Platform.OS === 'android' ? 20 : 0,
     right: 0,
-    // height: SW(105),
     backgroundColor: COLORS.white,
     width: windowWidth * 0.44,
     ...ShadowStyles.shadow1,
-    // paddingHorizontal: 15,
     paddingTop: 10,
   },
   rowView: {
@@ -492,7 +485,6 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(3),
   },
   mapContainer: {
-    // flex: 1,
     marginTop: SH(15),
     borderWidth: 1,
     overflow: 'hidden',
