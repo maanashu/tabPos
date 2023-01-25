@@ -1348,7 +1348,7 @@ export const styles = StyleSheet.create({
   },
   marboloRedPackStyle: {
     width: SW(20),
-    height: SW(20),
+    height: SW(18),
     resizeMode: 'contain',
   },
   marbolorRedStyle: {
@@ -1529,4 +1529,44 @@ export const styles = StyleSheet.create({
   },
 
   //  pos search css end
+
+  productModCon:{
+    backgroundColor:COLORS.white,
+    width:windowWidth * 0.48,
+    height:windowHeight * 0.85,
+    borderRadius:15,
+  },
+  productModCon2:{
+    backgroundColor:COLORS.white,
+    width:windowWidth * 0.70,
+    height:windowHeight * 0.70,
+    borderRadius:15,
+    paddingHorizontal:moderateScale(15),
+    paddingVertical:verticalScale(8)
+  },
+  productModConBody:{
+    width:windowWidth * 0.35,
+    height:windowHeight * 0.72,
+    alignSelf:'center'
+  },
+  backView: {
+    width: SW(28),
+    height: SW(11),
+    backgroundColor: COLORS.textInputBackground,
+    flexDirection: 'row',
+    borderRadius: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: verticalScale(10)
+  },
+  truckStyle: {
+    width: SH(32),
+    height: SH(32),
+    resizeMode: 'contain',
+  },
+  backText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+    color: COLORS.dark_grey,
+  },
 });

@@ -21,9 +21,10 @@ export function ProductCard({
   cartMinusOnPress,
   cartPlusOnPress,
   productCount,
+  ProductHandler
 }) {
   return (
-    <View style={styles.productContainer}>
+    <TouchableOpacity style={styles.productContainer} onPress={ProductHandler}>
       <View style={{ flexDirection: 'row' }}>
         <Image source={productImage} style={styles.marboloStyle} />
         <View style={{ paddingHorizontal: moderateScale(5) }}>
@@ -60,12 +61,12 @@ export function ProductCard({
           <Image source={minus} style={styles.plusBtn} />
         </TouchableOpacity>
 
-        <Text style={styles.count}>{productCount}</Text>
+        <Text style={styles.count}>{productCount?.qty ? productCount?.qty : 0 }</Text>
         <TouchableOpacity onPress={cartPlusOnPress} style={{ height: SH(35) }}>
           <Image source={plus} style={styles.plusBtn} />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
