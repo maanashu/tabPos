@@ -196,14 +196,14 @@ export function Retails() {
 
   const cartPlusOnPress = (id, index) => {
     setItemIndex(id);
-    const array = temp;
+    const array = productArray;
     array[index].qty = array[index].qty + 1;
     setProductArray(array);
     setRefresh(Math.random());
   };
 
   const cartMinusOnPress = (id, index) => {
-    const array = temp;
+    const array = productArray;
     array[index].qty =
       array[index].qty > 0 ? array[index].qty - 1 : array[index].qty;
     setData(array);
@@ -234,7 +234,7 @@ export function Retails() {
   // };
 
   useEffect(() => {
-    setTemp(getRetailData?.products?.map(item => ({ ...item, qty: 0 })) ?? []);
+    setProductArray(getRetailData?.products?.map(item => ({ ...item, qty: 0 })) ?? []);
   }, [getRetailData?.products]);
 
   useEffect(id => {
