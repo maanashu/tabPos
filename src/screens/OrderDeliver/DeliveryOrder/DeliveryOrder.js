@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Platform,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import {
@@ -459,18 +460,26 @@ export function DeliveryOrder() {
             <Spacer space={SH(20)} />
             {/* <View style={styles.reviewHeadingView}>{orderStatusText()}</View> */}
             {headingAccordingShip(headingType)}
-
-            <FlatList
-              contentContainerStyle={{ paddingBottom: 180 }}
-              data={orderArray}
-              extraData={orderArray}
-              keyExtractor={item => item.id}
-              renderItem={renderReviewItem}
-              showsVerticalScrollIndicator={false}
-              selectedIndex={0}
-            />
+            {
+                isPosOrderLoading
+                ?
+                (
+                  <View style={{ marginTop: 10 }}>
+                   <ActivityIndicator size="large" color={COLORS.indicator} />
+                 </View>
+                )
+                :
+                <FlatList
+                contentContainerStyle={{ paddingBottom: 180 }}
+                data={orderArray}
+                extraData={orderArray}
+                keyExtractor={item => item.id}
+                renderItem={renderReviewItem}
+                showsVerticalScrollIndicator={false}
+                selectedIndex={0}
+              />
+             }
           </View>
-
           <View style={[styles.orderDetailView, { height: windowHeight }]}>
             <Spacer space={SH(20)} />
             <View style={styles.reviewHeadingView}>
@@ -604,12 +613,24 @@ export function DeliveryOrder() {
                       height: Platform.OS === 'android' ? SH(350) : SH(350),
                     }}
                   >
-                    <FlatList
+                    {
+                      isPosOrderLoading
+                      ?
+                      (
+                        <View style={{ marginTop: 10 }}>
+                         <ActivityIndicator size="large" color={COLORS.indicator} />
+                       </View>
+                      )
+                      :
+                      <FlatList
                       data={orderArray}
                       extraData={orderArray}
                       keyExtractor={item => item.id}
                       renderItem={renderReviewItem}
                     />
+
+                    }
+                   
                   </View>
                   <Spacer space={SH(15)} />
                 </View>
