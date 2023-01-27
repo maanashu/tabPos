@@ -6,7 +6,6 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  ScrollView,
   Dimensions,
   StatusBar,
   ActivityIndicator,
@@ -22,6 +21,7 @@ import {
   ChoosePayment,
   NumericContainer,
   ScreenWrapper,
+  TableDropdown,
 } from '@/components';
 import { SH, SF, COLORS, SW } from '@/theme';
 import {
@@ -44,7 +44,6 @@ import {
   notess,
   checkArrow,
   loader,
-  jbrCustomer,
   backArrow2,
   backArrow,
   marboloPlus,
@@ -53,18 +52,12 @@ import { styles } from './Retails.styles';
 import { strings } from '@/localization';
 import {
   moderateScale,
-  verticalScale,
-  moderateVerticalScale,
   s,
 } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import DropDownPicker from 'react-native-dropdown-picker';
-const windowHeight = Dimensions.get('window').height;
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import {
-  jbritemList,
-  bundleOfferData,
-  productUnitData,
   tipData,
   amountReceivedData,
 } from '@/constants/flatListData';
@@ -83,19 +76,18 @@ import {
   addDiscountToCart,
   getProductBundle,
 } from '@/actions/RetailAction';
-import { getUser } from '@/selectors/UserSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
 import { AddDiscountToCart, UpdatePrice } from '@/components';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { ListOfItem } from './ListOfItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ProductViewDetail } from './ProductViewDetail';
+
 import { getRetail } from '@/selectors/RetailSelectors';
+import { CategoryProductDetail, ChangeDue, CustomerPhone } from './Component';
 
 export function Retails() {
   const dispatch = useDispatch();
-  // const getRetailData = useSelector(getUser);
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.getProfile?.unique_uuid;
@@ -396,6 +388,7 @@ export function Retails() {
         cartId: cartID2,
         notes: notes,
       };
+      console.log('data',data)
       dispatch(addNotescart(data));
       clearInput();
     }
@@ -566,15 +559,9 @@ export function Retails() {
     setPosSearch(false);
     setSelectedData(item);
     setSearchProViewDetail(true);
-    // if(posSearch === false){
-    //   setSearchProViewDetail(true);
-    // }
   };
 
-  const searchProDetRemoveHandlwe = () => {
-    setSearchProViewDetail(false);
-    setPosSearch(true);
-  };
+
 
   const increment = () => {
     setCount(count + 1);
@@ -872,29 +859,6 @@ export function Retails() {
     );
   };
 
-  const renderJbrItem = ({ item }) => (
-    <View style={styles.jbrListCon}>
-      <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
-        <View style={{ flexDirection: 'row', width: SW(60) }}>
-          <Image source={menu} style={styles.ashtonStyle} />
-          <View style={{ paddingHorizontal: moderateScale(10) }}>
-            <Text style={[styles.jfrText, { color: COLORS.black }]}>
-              {item.name}
-            </Text>
-            <Text style={styles.boxText}>Box</Text>
-          </View>
-        </View>
-        <Text style={styles.onexstyle}>
-          <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>
-          {strings.posSale.onex}
-        </Text>
-        <Text style={[styles.jfrText, { color: COLORS.black }]}>
-          {item.price}
-        </Text>
-      </View>
-    </View>
-  );
-
   const SearchItemSelect = ({ item, onPress, index }) => (
     <View>
       <Spacer space={SH(15)} />
@@ -1047,7 +1011,7 @@ export function Retails() {
     );
   };
 
-  const renderEmptyContainer = allCartArray => {
+  const renderEmptyContainer = () => {
     return (
       <View>
         <Text style={styles.noCart}>{strings.valiadtion.noData}</Text>
@@ -1067,90 +1031,10 @@ export function Retails() {
   const modalAccordingData = () => {
     if (custCash) {
       return (
-        <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
-          <View style={styles.primaryHeader}>
-            <Text style={styles.headerText}>{strings.posSale.Customer}</Text>
-            <TouchableOpacity
-              // onPress={custCashRemoveHandler}
-              onPress={() => setCustCash(false)}
-              style={styles.crossButtonPosition}
-            >
-              <Image source={crossButton} style={styles.crossButton} />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={[styles.custPaymentBodyCon, { alignItems: 'flex-start' }]}
-          >
-            <Spacer space={SH(60)} />
-            <Text style={styles.customerNOStyle}>
-              {strings.posSale.customerNo}
-            </Text>
-            <Spacer space={SH(10)} />
-            <View style={styles.customerInputWraper}>
-              {customerPhoneNo ? null : (
-                <Image
-                  source={search_light}
-                  style={[styles.searchStyle, { tintColor: COLORS.darkGray }]}
-                />
-              )}
-              <TextInput
-                style={styles.customerPhoneInput}
-                value={customerPhoneNo}
-                onChangeText={setCustomerPhoneNo}
-                keyboardType="numeric"
-              />
-            </View>
-            <Spacer space={SH(60)} />
-            {customerPhoneNo ? (
-              <View style={styles.customerAddreCon}>
-                <Spacer space={SH(30)} />
-                <View style={styles.flexAlign}>
-                  <Image source={jbrCustomer} style={styles.jbrCustomer} />
-                  <View style={{ paddingHorizontal: moderateScale(8) }}>
-                    <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
-                      {strings.posSale.customerName}
-                    </Text>
-                    <Spacer space={SH(8)} />
-                    <Text style={styles.cusAddText}>
-                      {strings.posSale.customerMobileNo}
-                    </Text>
-                    <Spacer space={SH(5)} />
-                    <Text style={styles.cusAddText}>
-                      {strings.posSale.customerEmail}
-                    </Text>
-                    <Spacer space={SH(8)} />
-                    <Text style={styles.cusAddText}>
-                      {strings.posSale.customerAddr}
-                    </Text>
-                    <Text style={styles.cusAddText}>
-                      {strings.posSale.customerAddr2}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            ) : null}
-            <View style={{ flex: 1 }} />
-            {customerPhoneNo ? (
-              <TouchableOpacity
-                style={styles.customerPhoneCon}
-                onPress={() => (
-                  setCustCash(false), setCutsomerTotalAmount(true)
-                )}
-              >
-                <Text
-                  style={[styles.redrectingText, { color: COLORS.primary }]}
-                >
-                  {strings.posSale.rederecting}
-                </Text>
-                <Image source={loader} style={styles.loaderPic} />
-              </TouchableOpacity>
-            ) : (
-              <Text style={styles.redrectingText}>
-                {strings.posSale.rederecting}
-              </Text>
-            )}
-          </View>
-        </View>
+        <CustomerPhone
+        customerPhoneNo={customerPhoneNo}
+        crosshandler={()=> setCustCash(false)}
+        />
       );
     } else if (cutsomerTotalAmount) {
       return (
@@ -1248,42 +1132,10 @@ export function Retails() {
       );
     } else if (customerCashPaid) {
       return (
-        <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
-          <View style={styles.primaryHeader}>
-            <Text style={styles.headerText}>
-              {strings.posSale.customerTotalAmountHeader}
-            </Text>
-            <TouchableOpacity
-              onPress={() => (
-                setCustomerCashPaid(false), setCutsomerTotalAmount(true)
-              )}
-              style={styles.crossButtonPosition}
-            >
-              <Image source={crossButton} style={styles.crossButton} />
-            </TouchableOpacity>
-          </View>
-          <View style={[styles.custTotalAmountBodyCon]}>
-            <Spacer space={SH(40)} />
-            <Text style={styles.changeDueText}>
-              {strings.posSale.changeDue}
-            </Text>
-            <View style={{ flex: 1 }} />
-            <TouchableOpacity
-              style={[
-                styles.checkoutButton,
-                { marginVertical: moderateScale(20) },
-              ]}
-              onPress={() => (setCustomerCashPaid(false), setListofItem(true))}
-            >
-              <Text
-                style={[styles.checkoutText, { fontFamily: Fonts.Regular }]}
-              >
-                {strings.retail.continue}
-              </Text>
-              <Image source={checkArrow} style={styles.checkArrow} />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <ChangeDue
+        crossButtonHandler={()=> (setCustomerCashPaid(false), setCutsomerTotalAmount(true))}
+        continueHandler={()=> (setCustomerCashPaid(false), setListofItem(true))}
+        />
       );
     }
   };
@@ -2109,12 +1961,13 @@ export function Retails() {
             transparent={true}
             isVisible={searchProViewDetail}
           >
-            <ProductViewDetail
-              searchProDetRemoveHandlwe={searchProDetRemoveHandlwe}
-              selectedDataName={selectedData?.name}
-              selectedDataImage={{ uri: selectedData?.image }}
-              selectedDataDes={selectedData?.description}
-              selectedDataPrice={selectedData?.price}
+            <CategoryProductDetail
+             backArrowhandler={() =>  (setSearchProViewDetail(false), setPosSearch(true))}
+              addToCartCat={()=> alert('coming soon')}
+              productName={selectedData?.name}
+              proudctImage={{ uri: selectedData?.image }}
+              productDes={selectedData?.description}
+              productPrice={selectedData?.price}
               sku={selectedData?.sku ? selectedData?.sku : '0'}
             />
           </Modal>
@@ -2124,196 +1977,20 @@ export function Retails() {
             animationType="fade"
             transparent={true}
             isVisible={productModal}>
-            <View
-              style={
-                productViewDetail ? styles.productModCon2 : styles.productModCon
-              }
-            >
+            <View>
               {productViewDetail ? (
-                <View>
-                  <TouchableOpacity
-                    style={styles.backButtonCon}
-                    onPress={() => setProductViewDetail(false)}
-                  >
-                    <Image source={backArrow} style={styles.backButtonArrow} />
-                    <Text style={styles.backTextStyle}>
-                      {strings.posSale.back}
-                    </Text>
-                  </TouchableOpacity>
-                  <Spacer space={SH(20)} />
-                  <Text style={styles.productDetailHeader}>
-                    {productData?.name}
-                  </Text>
-                  <Spacer space={SH(10)} />
-                  <View
-                    style={[styles.displayFlex, { alignItems: 'flex-start' }]}
-                  >
-                    <View style={styles.detailImageCon}>
-                      <Image
-                        source={{ uri: productData?.image }}
-                        style={styles.marboloPackStyle}
-                      />
-                      <Spacer space={SH(15)} />
-                      <View style={styles.productDescrptionCon}>
-                        <Spacer space={SH(10)} />
-                        <Text style={styles.detailHeader}>
-                          {strings.posSale.details}
-                        </Text>
-                        <Spacer space={SH(4)} />
-                        <Text style={styles.productDes}>
-                          {productData?.description}
-                        </Text>
-                        <Spacer space={SH(8)} />
-                      </View>
-                    </View>
-                    <View style={styles.detailPriceCon}>
-                      <View style={styles.priceContainer}>
-                        <Text style={styles.price}>{strings.retail.price}</Text>
-                        <Text style={[styles.price, { fontSize: SF(18) }]}>
-                          ${productData?.price}
-                        </Text>
-                      </View>
-                      <Spacer space={SH(25)} />
-                      <View
-                        style={[
-                          styles.priceContainer,
-                          { backgroundColor: COLORS.white },
-                        ]}
-                      >
-                        <TouchableOpacity>
-                          <Image source={minus} style={styles.plusBtn2} />
-                        </TouchableOpacity>
-                        <Text style={[styles.price, { fontSize: SF(24) }]}>
-                          {productData?.qty}
-                        </Text>
-                        <TouchableOpacity>
-                          <Image source={plus} style={styles.plusBtn2} />
-                        </TouchableOpacity>
-                      </View>
-                      <Spacer space={SH(20)} />
-                      <TouchableOpacity style={styles.descriptionAddCon} onPress={() => (setProductViewDetail(false),  addToCartCatPro(productData?.category?.service_id, productData?.qty, productData?.id ))}>
-                        <Text style={styles.desAddCartText}>
-                          {strings.posSale.addToCart}
-                        </Text>
-                      </TouchableOpacity>
-                      <Spacer space={SH(38)} />
-                      <View style={{ flexDirection: 'row' }}>
-                        <View style={styles.unitTypeCon}>
-                          <Spacer space={SH(8)} />
-                          <Text
-                            style={[styles.detailHeader, styles.detailHeader2]}
-                          >
-                            unit Type
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text
-                            style={[
-                              styles.detailHeader,
-                              { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                            ]}
-                          >
-                            0
-                          </Text>
-                          <Spacer space={SH(8)} />
-                        </View>
-                        <View style={styles.unitTypeCon}>
-                          <Spacer space={SH(8)} />
-                          <Text
-                            style={[styles.detailHeader, styles.detailHeader2]}
-                          >
-                            Unit Weight
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text
-                            style={[
-                              styles.detailHeader,
-                              { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                            ]}
-                          >
-                            0
-                          </Text>
-                          <Spacer space={SH(8)} />
-                        </View>
-                        <View style={styles.unitTypeCon}>
-                          <Spacer space={SH(8)} />
-                          <Text
-                            style={[styles.detailHeader, styles.detailHeader2]}
-                          >
-                            SKU
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text
-                            style={[
-                              styles.detailHeader,
-                              { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                            ]}
-                          >
-                            {productData?.sku}
-                          </Text>
-                          <Spacer space={SH(8)} />
-                        </View>
-                      </View>
-                      <View style={{ flexDirection: 'row' }}>
-                        <View style={styles.unitTypeCon}>
-                          <Spacer space={SH(8)} />
-                          <Text
-                            style={[styles.detailHeader, styles.detailHeader2]}
-                          >
-                            Barcode
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text
-                            style={[
-                              styles.detailHeader,
-                              { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                            ]}
-                          >
-                            0
-                          </Text>
-                          <Spacer space={SH(8)} />
-                        </View>
-                        <View style={styles.unitTypeCon}>
-                          <Spacer space={SH(8)} />
-                          <Text
-                            style={[styles.detailHeader, styles.detailHeader2]}
-                          >
-                            Stock
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text
-                            style={[
-                              styles.detailHeader,
-                              { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                            ]}
-                          >
-                            0
-                          </Text>
-                          <Spacer space={SH(8)} />
-                        </View>
-                        <View style={styles.unitTypeCon}>
-                          <Spacer space={SH(8)} />
-                          <Text
-                            style={[styles.detailHeader, styles.detailHeader2]}
-                          >
-                            Stock
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text
-                            style={[
-                              styles.detailHeader,
-                              { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                            ]}
-                          >
-                           0
-                          </Text>
-                          <Spacer space={SH(8)} />
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                </View>
+                <CategoryProductDetail
+                qty={productData?.qty}
+                sku={productData?.sku}
+                productPrice={productData?.price}
+                proudctImage={{uri: productData?.image}} 
+                productDes={productData?.description}
+                productName={productData?.name}
+                addToCartCat={() => (setProductViewDetail(false), addToCartCatPro(productData?.category?.service_id, productData?.qty,productData?.id))}
+                backArrowhandler={() => setProductViewDetail(false)}
+                />
               ) : (
-                <View>
+                <View style={styles.productModCon}>
                   <View
                     style={[
                       styles.displayFlex,
@@ -2397,8 +2074,6 @@ export function Retails() {
                         { backgroundColor: COLORS.white },
                       ]}
                     >
-
-
                       <TouchableOpacity
                       >
                         <Image source={minus} style={styles.plusBtn2} />

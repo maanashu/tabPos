@@ -310,6 +310,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     color: COLORS.black,
+    width:SW(60)
   },
   boxText: {
     fontFamily: Fonts.Italic,

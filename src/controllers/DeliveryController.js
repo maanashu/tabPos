@@ -15,7 +15,7 @@ export class DeliveryController {
 
   static async getOrders() {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.getOrders + `?seller_id=b169ed4d-be27-44eb-9a08-74f997bc6a2a`;
+      const endpoint = ORDER_URL + ApiOrderInventory.getOrders + `?seller_id=b169ed4d-be27-44eb-9a08-74f997bc6a2a&status=0`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

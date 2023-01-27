@@ -229,6 +229,7 @@ export function ListOfItem({listOfItemCloseHandler}) {
           </View>
         </View>
   );
-}
+};
+
 
 

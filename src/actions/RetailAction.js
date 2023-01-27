@@ -158,7 +158,6 @@ const getProductBundleError = error => ({
   payload: { error },
 });
 
-
 export const getCategory = () => async dispatch => {
   dispatch(getCategoryRequest());
   try {

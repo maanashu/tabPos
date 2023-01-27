@@ -48,23 +48,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getOrders } from '@/actions/DeliveryAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 
 
 const windowHeight = Dimensions.get('window').height;
+
+
+
 
 export function DeliveryOrder() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getDeliveryData = useSelector(getDelivery);
   const orderCount = getDeliveryData?.orderList;
-  console.log('getDeliveryData', getDeliveryData?.orderList)
+  const orderArray = getDeliveryData?.orderList?.data;
+  // console.log('orderArray', getDeliveryData?.orderList.data)
   const [viewAllReviews, setViewAllReviews] = useState(false);
   const [orderAccepted, setOrderAccepted] = useState(false);
   const [readyPickup, setReadyForPickup] = useState(false);
   const [showArea, setShowArea] = useState(true);
   const [headingType, setHeadingType] = useState('');
   const [dataType, setDataType] = useState('');
+
+  const [selectedId, setSelectedId] = useState(0);
+  const [itemssss, setItem] = useState();
+  const customerProduct = itemssss?.order_details
+
 
   const reviewArray = [
     {
@@ -95,8 +106,13 @@ export function DeliveryOrder() {
 
 
   useEffect(() => {
-    dispatch(getOrders())
+    dispatch(getOrders());
+    setSelectedId
   }, [])
+
+  const isPosOrderLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER], state)
+  );
 
   const customHeader = () => {
     return (
@@ -172,78 +188,63 @@ export function DeliveryOrder() {
       </View>
     </TouchableOpacity>
   );
-
-  const renderReviewItem = ({ item, index }) => (
-    // <TouchableOpacity
-    //   activeOpacity={viewAllReviews ? 0.5 : 1}
-    //   // onPress={() => { viewAllReviews ? onPressReview(index) : null }}
-    //   style={styles.reviewRenderView}>
-    //   <View style={{ width: SW(45) }}>
-    //     <Text numberOfLines={1} style={styles.nameText}>{item.name}</Text>
-    //     <View style={styles.timeView}>
-    //       <Image source={pin} style={styles.pinIcon} />
-    //       <Text style={styles.timeText}>{item.time}</Text>
-    //     </View>
-    //   </View>
-
-    //   <View style={{ width: SW(25) }}>
-    //     <Text style={styles.nameText}>{item.items}</Text>
-    //     <View style={styles.timeView}>
-    //       <Image source={pay} style={styles.pinIcon} />
-    //       <Text style={styles.timeText}>{item.price}</Text>
-    //     </View>
-    //   </View>
-
-    //   <View style={{ width: SW(60) }}>
-    //     <Text style={[styles.nameText, { color: COLORS.primary }]}>{item.deliveryType}</Text>
-    //     <View style={styles.timeView}>
-    //       <Image source={clock} style={styles.pinIcon} />
-    //       <Text style={styles.timeText}>{item.timeSlot}</Text>
-    //     </View>
-    //   </View>
-
-    //   <View style={styles.rightIconStyle}>
-    //     <Image source={rightIcon} style={styles.pinIcon} />
-    //   </View>
-    // </TouchableOpacity>
+  const OrderReviewItem = ({item,index, onPress, backgroundColor, }) => (
+  //  console.log(index),
     <TouchableOpacity
-      activeOpacity={viewAllReviews ? 0.5 : 1}
-      // onPress={() => { viewAllReviews ? onPressReview(index) : null }}
-      style={styles.reviewRenderView}
-    >
-      <View style={{ width: SW(45) }}>
-        <Text numberOfLines={1} style={styles.nameText}>
-          {item.name}
-        </Text>
-        <View style={styles.timeView}>
-          <Image source={pin} style={styles.pinIcon} />
-          <Text style={styles.timeText}>{item.time}</Text>
-        </View>
-      </View>
+    selected={index === 0}
 
-      <View style={{ width: SW(25) }}>
-        <Text style={styles.nameText}>{item.items}</Text>
-        <View style={styles.timeView}>
-          <Image source={pay} style={styles.pinIcon} />
-          <Text style={styles.timeText}>{item.price}</Text>
-        </View>
+    onPress={onPress}
+    // activeOpacity={viewAllReviews ? 0.5 : 1}
+    // onPress={() => { viewAllReviews ? onPressReview(index) : null }}
+    style={[styles.reviewRenderView, {backgroundColor}]}
+  >
+    <View style={{ width: SW(45) }}>
+      <Text numberOfLines={1} style={styles.nameText}>
+      {item?.user_data?.user_profiles?.firstname ? item?.user_data?.user_profiles?.firstname  : 'user name' }
+      </Text>
+      <View style={styles.timeView}>
+        <Image source={pin} style={styles.pinIcon} />
+        <Text style={styles.timeText}>{'2miles'}</Text>
       </View>
-
-      <View style={{ width: SW(60) }}>
-        <Text style={[styles.nameText, { color: COLORS.primary }]}>
-          {item.deliveryType}
-        </Text>
-        <View style={styles.timeView}>
-          <Image source={clock} style={styles.pinIcon} />
-          <Text style={styles.timeText}>{item.timeSlot}</Text>
-        </View>
+    </View>
+  
+    <View style={{ width: SW(25) }}>
+      <Text style={styles.nameText}>{'3items'}</Text>
+      <View style={styles.timeView}>
+        <Image source={pay} style={styles.pinIcon} />
+        <Text style={styles.timeText}>5000</Text>
       </View>
-
-      <View style={styles.rightIconStyle}>
-        <Image source={rightIcon} style={styles.pinIcon} />
+    </View>
+  
+    <View style={{ width: SW(60) }}>
+      <Text style={[styles.nameText, { color: COLORS.primary }]}>
+        {item?.shipping}
+      </Text>
+      <View style={styles.timeView}>
+        <Image source={clock} style={styles.pinIcon} />
+        <Text style={styles.timeText}>{item?.preffered_delivery_start_time ? item?.preffered_delivery_start_time : '00.00'} - {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00' } </Text>
       </View>
-    </TouchableOpacity>
+    </View>
+  
+    <View style={styles.rightIconStyle}>
+      <Image source={rightIcon} style={styles.pinIcon} />
+    </View>
+  </TouchableOpacity>
   );
+
+  const renderReviewItem = ({ item, index }) => {
+    const backgroundColor = item.id === selectedId ? '#E5F0FF' : '#fff';
+
+    return (
+      <OrderReviewItem
+        item={item}
+        index={index}
+        onPress={() => (setSelectedId(item.id, index), setItem(item))}
+        backgroundColor={backgroundColor}
+      />
+    );
+    
+  };
 
   const renderOrder = ({ item, index }) => (
     <View style={styles.renderOrderView}>
@@ -282,20 +283,20 @@ export function DeliveryOrder() {
       onPress={() => alert('coming soon')}
     >
       <View style={styles.productImageView}>
-        <Image source={item.image} style={styles.profileImage} />
+        <Image source={{ uri : item?.product_image}} style={styles.profileImage} />
 
         <View>
-          <Text style={styles.titleText}>{item.title}</Text>
-          <Text style={styles.boxText}>{item.box}</Text>
+          <Text numberOfLines={1} style={styles.titleText}>{item?.product_name}</Text>
+          <Text style={styles.boxText}>{'Box'}</Text>
         </View>
       </View>
 
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.priceText}>{'x'}</Text>
-        <Text style={styles.priceText}>{item.quantity}</Text>
+        <Text style={styles.priceText}>{item?.qty}</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <Text style={styles.priceText}>{item.price}</Text>
+        <Text style={styles.priceText}>{item?.price}</Text>
         <Image
           source={rightIcon}
           style={[styles.pinIcon, { marginLeft: 20 }]}
@@ -366,7 +367,8 @@ export function DeliveryOrder() {
         <View style={{ height: windowHeight * 0.68 }}>
           <View style={{ height: SH(325) }}>
             <FlatList
-              data={productList}
+              data={customerProduct}
+              extraData={customerProduct}
               renderItem={renderProductList}
               ItemSeparatorComponent={() => (
                 <View style={styles.itemSeparatorView} />
@@ -460,9 +462,12 @@ export function DeliveryOrder() {
 
             <FlatList
               contentContainerStyle={{ paddingBottom: 180 }}
-              data={orderReview}
+              data={orderArray}
+              extraData={orderArray}
+              keyExtractor={item => item.id}
               renderItem={renderReviewItem}
               showsVerticalScrollIndicator={false}
+              selectedIndex={0}
             />
           </View>
 
@@ -582,7 +587,8 @@ export function DeliveryOrder() {
 
                     <TouchableOpacity
                       onPress={() => {
-                        setViewAllReviews(true);
+                        setViewAllReviews(true), setHeadingType('Orders to Review'),
+                        setDataType('Orders to Review')
                       }}
                       style={styles.viewAllView}
                     >
@@ -599,7 +605,9 @@ export function DeliveryOrder() {
                     }}
                   >
                     <FlatList
-                      data={orderReview}
+                      data={orderArray}
+                      extraData={orderArray}
+                      keyExtractor={item => item.id}
                       renderItem={renderReviewItem}
                     />
                   </View>

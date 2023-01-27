@@ -11,6 +11,8 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class RetailController {
+
+  
   static async getCategory() {
     return new Promise((resolve, reject) => {
       const endpoint = PRODUCT_URL + ApiProductInventory.getCategory;
