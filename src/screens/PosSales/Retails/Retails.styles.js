@@ -1569,4 +1569,15 @@ export const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.dark_grey,
   },
+  cameraContainer:{
+    height:windowHeight * 0.95,
+    paddingBottom:20
+  },
+  crossButtonRed:{
+    width:SW(30),
+    height:SH(50),
+    resizeMode:'contain',
+    backgroundColor:'#000',
+    alignSelf:"center"
+  }
 });

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -29,6 +29,7 @@ import {
   delivery,
   deliveryLine,
   radio,
+  userImage,
 } from '@/assets';
 import { styles } from './DeliveryOrder.styles';
 import { strings } from '@/localization';
@@ -46,18 +47,14 @@ import { LineChart } from 'react-native-chart-kit';
 import { verticalScale } from 'react-native-size-matters';
 import { BottomSheet } from './BottomSheet';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrders } from '@/actions/DeliveryAction';
+import { acceptOrder, getOrders } from '@/actions/DeliveryAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-
-
-
 const windowHeight = Dimensions.get('window').height;
-
-
-
+import CircularProgress from 'react-native-circular-progress-indicator';
+import moment from 'moment';
 
 export function DeliveryOrder() {
   const dispatch = useDispatch();
@@ -65,7 +62,6 @@ export function DeliveryOrder() {
   const getDeliveryData = useSelector(getDelivery);
   const orderCount = getDeliveryData?.orderList;
   const orderArray = getDeliveryData?.orderList?.data;
-  // console.log('orderArray', getDeliveryData?.orderList.data)
   const [viewAllReviews, setViewAllReviews] = useState(false);
   const [orderAccepted, setOrderAccepted] = useState(false);
   const [readyPickup, setReadyForPickup] = useState(false);
@@ -73,10 +69,14 @@ export function DeliveryOrder() {
   const [headingType, setHeadingType] = useState('');
   const [dataType, setDataType] = useState('');
 
-  const [selectedId, setSelectedId] = useState(0);
-  const [itemssss, setItem] = useState();
-  const customerProduct = itemssss?.order_details
-
+  const [selectedId, setSelectedId] = useState(2);
+  const [itemss, setItem] = useState();
+  const customerProduct = itemss?.order_details;
+  const custProLength = customerProduct?.length;
+  const userProfile = itemss?.user_data?.user_profiles;
+  const [orderId, setOrderId]= useState()
+  const [orderIdDate, setOrderIdDate]= useState()
+  const orderDate = moment(orderIdDate).format('LL');
 
   const reviewArray = [
     {
@@ -84,7 +84,8 @@ export function DeliveryOrder() {
       status: 'Orders to Review',
       count: orderCount?.totalReview,
       image: require('@/assets/icons/ic_deliveryOrder/order.png'),
-    }, {
+    },
+    {
       key: '2',
       status: 'Order Preparing',
       count: orderCount?.totalPrepairing,
@@ -102,14 +103,24 @@ export function DeliveryOrder() {
       count: orderCount?.totalDelivering,
       image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
     },
-
-  ]
-
+  ];
 
   useEffect(() => {
-    dispatch(getOrders());
-    setSelectedId
-  }, [])
+    dispatch(getOrders(2))
+    if(orderArray?.length > 0){
+      setSelectedId(orderArray[0].id);
+      setItem(orderArray[0]);
+    }
+   
+  }, []);
+
+  const accetedOrderHandler = () => {
+      const data = {
+         orderId : selectedId,
+         status : 2
+      }
+      dispatch(acceptOrder(data))
+  }
 
   const isPosOrderLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER], state)
@@ -154,30 +165,39 @@ export function DeliveryOrder() {
       </View>
     );
   };
-  const navigationHandler = item => {
+  const navigationHandler = (item, index) => {
     if (item.status === 'Orders to Review') {
-      setViewAllReviews(true);
-      setHeadingType('Orders to Review');
-      setDataType('Orders to Review');
+      // setViewAllReviews(true);
+      // setHeadingType('Orders to Review');
+      // setDataType('Orders to Review');
+      // dispatch(getOrders(0))
+      alert('in progress')
     } else if (item.status === 'Order Preparing') {
       setViewAllReviews(true);
       setHeadingType('Order Preparing');
       setDataType('Order Preparing');
+      dispatch(getOrders(2))
     } else if (item.status === 'Ready to pickup') {
-      setViewAllReviews(true);
-      setHeadingType('Ready to pickup');
-      setDataType('Ready to pickup');
+      alert('in progress')
+      // setViewAllReviews(true);
+      // setViewAllReviews(true);
+      // setHeadingType('Ready to pickup');
+      // setDataType('Ready to pickup');
+      // dispatch(getOrders(3))
     } else if (item.status === 'Delivering') {
-      setViewAllReviews(true);
-      setHeadingType('Delivering');
-      setDataType('Delivering');
+      alert('in progress')
+      // setViewAllReviews(true);
+      // setViewAllReviews(true);
+      // setHeadingType('Delivering');
+      // setDataType('Delivering');
+      // dispatch(getOrders(6))
     }
   };
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
       style={styles.orderView}
-      onPress={() => navigationHandler(item)}
+      onPress={() => navigationHandler(item, index)}
     >
       <View style={styles.orderStatusView}>
         <Image source={item.image} style={styles.orderStatusImage} />
@@ -189,62 +209,73 @@ export function DeliveryOrder() {
       </View>
     </TouchableOpacity>
   );
-  const OrderReviewItem = ({item,index, onPress, backgroundColor, }) => (
-  //  console.log(index),
-    <TouchableOpacity
-    selected={index === 0}
+  const orderIdFun = (item) => {
+    item.order_details.map(item => setOrderId(item.order_id))
+    item.order_details.map(item => setOrderIdDate(item.created_at))
+  };
+  const OrderReviewItem = ({ item, index, onPress, backgroundColor }) => (
+    (
+      <TouchableOpacity
+        onPress={onPress}
+        style={[styles.reviewRenderView, { backgroundColor }]}
+      >
+        <View style={{ width: SW(45) }}>
+          <Text numberOfLines={1} style={styles.nameText}>
+            {item?.user_data?.user_profiles?.firstname
+              ? item?.user_data?.user_profiles?.firstname
+              : 'user name'}
+          </Text>
+          <View style={styles.timeView}>
+            <Image source={pin} style={styles.pinIcon} />
+            <Text style={styles.timeText}>{'2miles'}{item.order_id}</Text>
+          </View>
+        </View>
 
-    onPress={onPress}
-    // activeOpacity={viewAllReviews ? 0.5 : 1}
-    // onPress={() => { viewAllReviews ? onPressReview(index) : null }}
-    style={[styles.reviewRenderView, {backgroundColor}]}
-  >
-    <View style={{ width: SW(45) }}>
-      <Text numberOfLines={1} style={styles.nameText}>
-      {item?.user_data?.user_profiles?.firstname ? item?.user_data?.user_profiles?.firstname  : 'user name' }
-      </Text>
-      <View style={styles.timeView}>
-        <Image source={pin} style={styles.pinIcon} />
-        <Text style={styles.timeText}>{'2miles'}</Text>
-      </View>
-    </View>
-  
-    <View style={{ width: SW(25) }}>
-      <Text style={styles.nameText}>{'3items'}</Text>
-      <View style={styles.timeView}>
-        <Image source={pay} style={styles.pinIcon} />
-        <Text style={styles.timeText}>5000</Text>
-      </View>
-    </View>
-  
-    <View style={{ width: SW(60) }}>
-      <Text style={[styles.nameText, { color: COLORS.primary }]}>
-        {item?.shipping}
-      </Text>
-      <View style={styles.timeView}>
-        <Image source={clock} style={styles.pinIcon} />
-        <Text style={styles.timeText}>{item?.preffered_delivery_start_time ? item?.preffered_delivery_start_time : '00.00'} - {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00' } </Text>
-      </View>
-    </View>
-  
-    <View style={styles.rightIconStyle}>
-      <Image source={rightIcon} style={styles.pinIcon} />
-    </View>
-  </TouchableOpacity>
+        <View style={{ width: SW(25) }}>
+          <Text style={styles.nameText}>{'3items'}</Text>
+          <View style={styles.timeView}>
+            <Image source={pay} style={styles.pinIcon} />
+            <Text style={styles.timeText}>5000</Text>
+          </View>
+        </View>
+
+        <View style={{ width: SW(60) }}>
+          <Text style={[styles.nameText, { color: COLORS.primary }]}>
+            {item?.shipping}
+          </Text>
+          <View style={styles.timeView}>
+            <Image source={clock} style={styles.pinIcon} />
+            <Text style={styles.timeText}>
+              {item?.preffered_delivery_start_time
+                ? item?.preffered_delivery_start_time
+                : '00.00'}{' '}
+              -{' '}
+              {item?.preffered_delivery_end_time
+                ? item?.preffered_delivery_end_time
+                : '00.00'}{' '}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.rightIconStyle}>
+          <Image source={rightIcon} style={styles.pinIcon} />
+        </View>
+      </TouchableOpacity>
+    )
   );
 
   const renderReviewItem = ({ item, index }) => {
+   
     const backgroundColor = item.id === selectedId ? '#E5F0FF' : '#fff';
 
     return (
       <OrderReviewItem
         item={item}
         index={index}
-        onPress={() => (setSelectedId(item.id, index), setItem(item))}
+        onPress={() => (setSelectedId(item.id, index), setItem(item), orderIdFun(item))}
         backgroundColor={backgroundColor}
       />
     );
-    
   };
 
   const renderOrder = ({ item, index }) => (
@@ -284,10 +315,15 @@ export function DeliveryOrder() {
       onPress={() => alert('coming soon')}
     >
       <View style={styles.productImageView}>
-        <Image source={{ uri : item?.product_image}} style={styles.profileImage} />
+        <Image
+          source={{ uri: item?.product_image }}
+          style={styles.profileImage}
+        />
 
         <View>
-          <Text numberOfLines={1} style={styles.titleText}>{item?.product_name}</Text>
+          <Text numberOfLines={1} style={styles.titleText}>
+            {item?.product_name} {item?.order_id} 
+          </Text>
           <Text style={styles.boxText}>{'Box'}</Text>
         </View>
       </View>
@@ -377,7 +413,13 @@ export function DeliveryOrder() {
             />
           </View>
           <View style={styles.bottomSheet}>
-             <BottomSheet/>
+            <BottomSheet
+              discount={itemss?.discount ? itemss?.discount : '0'}
+              subTotal="4444"
+              tax={itemss?.tax ? itemss?.tax : '0'}
+              total={itemss?.payable_amount}
+              item={custProLength ? custProLength : '0'}
+            />
             <View style={styles.orderReviewButton}>
               <Button
                 style={styles.declineButton}
@@ -388,6 +430,7 @@ export function DeliveryOrder() {
                 style={styles.acceptButton}
                 title={strings.deliveryOrders.accept}
                 textStyle={styles.buttonText}
+                onPress={accetedOrderHandler}
               />
             </View>
           </View>
@@ -398,15 +441,23 @@ export function DeliveryOrder() {
         <View style={{ height: windowHeight * 0.65 }}>
           <View style={{ height: SH(285) }}>
             <FlatList
-              data={productList}
-              renderItem={renderProductList}
+               data={customerProduct}
+               extraData={customerProduct}
+               renderItem={renderProductList}
               ItemSeparatorComponent={() => (
                 <View style={styles.itemSeparatorView} />
               )}
             />
           </View>
           <View style={styles.bottomSheet}>
-             <BottomSheet/>
+            <BottomSheet
+             discount={itemss?.discount ? itemss?.discount : '0'}
+             subTotal={itemss?.actual_amount ? itemss?.actual_amount : '0'}
+             tax={itemss?.tax ? itemss?.tax : '0'}
+             total={itemss?.payable_amount}
+             item={custProLength ? custProLength : '0'}
+            
+            />
             <Button
               style={styles.button}
               title={strings.deliveryOrders.ready}
@@ -460,16 +511,12 @@ export function DeliveryOrder() {
             <Spacer space={SH(20)} />
             {/* <View style={styles.reviewHeadingView}>{orderStatusText()}</View> */}
             {headingAccordingShip(headingType)}
-            {
-                isPosOrderLoading
-                ?
-                (
-                  <View style={{ marginTop: 10 }}>
-                   <ActivityIndicator size="large" color={COLORS.indicator} />
-                 </View>
-                )
-                :
-                <FlatList
+            {isPosOrderLoading ? (
+              <View style={{ marginTop: 10 }}>
+                <ActivityIndicator size="large" color={COLORS.indicator} />
+              </View>
+            ) : (
+              <FlatList
                 contentContainerStyle={{ paddingBottom: 180 }}
                 data={orderArray}
                 extraData={orderArray}
@@ -478,30 +525,42 @@ export function DeliveryOrder() {
                 showsVerticalScrollIndicator={false}
                 selectedIndex={0}
               />
-             }
+            )}
           </View>
           <View style={[styles.orderDetailView, { height: windowHeight }]}>
             <Spacer space={SH(20)} />
             <View style={styles.reviewHeadingView}>
               <Text style={styles.orderReviewText}>
-                {strings.deliveryOrders.orderId}
+                 {strings.deliveryOrders.orderId}{orderId}
               </Text>
               <Text style={styles.orderReviewText}>
-                {strings.deliveryOrders.orderDate}
+              {orderDate}
               </Text>
             </View>
 
             <View style={styles.profileDetailView}>
               <View style={{ flexDirection: 'row' }}>
-                <Image source={profileImage} style={styles.profileImage} />
+                <Image
+                  source={
+                    userProfile?.profile_photo
+                      ? { uri: userProfile?.profile_photo }
+                      : userImage
+                  }
+                  style={styles.profileImage}
+                />
                 <View style={{ justifyContent: 'center', paddingLeft: 10 }}>
                   <Text
                     style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}
                   >
-                    {strings.deliveryOrders.name}
+                    {userProfile?.firstname
+                      ? userProfile?.firstname
+                      : 'user name'}
                   </Text>
-                  <Text style={[styles.timeText, { paddingLeft: 0 }]}>
-                    {strings.deliveryOrders.address}
+                  <Text
+                    numberOfLines={1}
+                    style={[styles.timeText, { paddingLeft: 0, width: SW(90) }]}
+                  >
+                    {itemss?.address ? itemss?.address : 'no address'}
                   </Text>
                 </View>
               </View>
@@ -515,7 +574,7 @@ export function DeliveryOrder() {
                       { color: COLORS.primary, fontFamily: Fonts.SemiBold },
                     ]}
                   >
-                    {strings.deliveryOrders.deliveryType}
+                    {itemss?.shipping ? itemss?.shipping : 'no delivery type'}
                   </Text>
                   <Text style={styles.timeText}>
                     {strings.deliveryOrders.time}
@@ -569,10 +628,23 @@ export function DeliveryOrder() {
 
                   <Spacer space={SH(10)} />
                   <View style={styles.conversionRow}>
-                    <Image
+                    <CircularProgress
+                      value={97}
+                      radius={80}
+                      activeStrokeWidth={30}
+                      inActiveStrokeWidth={30}
+                      activeStrokeColor="#275AFF"
+                      inActiveStrokeColor="#EFEFEF"
+                      strokeLinecap="butt"
+                      // title='97.51%'
+                      // titleColor='#000'
+                      // titleFontSize={24}
+                      // titleStyle={{fontWeight:'bold'}}
+                    />
+                    {/* <Image
                       source={conversionBox}
                       style={styles.conversionBoxStyle}
-                    />
+                    /> */}
 
                     <View style={styles.orderFlatlistView}>
                       <FlatList
@@ -596,8 +668,9 @@ export function DeliveryOrder() {
 
                     <TouchableOpacity
                       onPress={() => {
-                        setViewAllReviews(true), setHeadingType('Orders to Review'),
-                        setDataType('Orders to Review')
+                        setViewAllReviews(true),
+                          setHeadingType('Orders to Review'),
+                          setDataType('Orders to Review');
                       }}
                       style={styles.viewAllView}
                     >
@@ -613,24 +686,21 @@ export function DeliveryOrder() {
                       height: Platform.OS === 'android' ? SH(350) : SH(350),
                     }}
                   >
-                    {
-                      isPosOrderLoading
-                      ?
-                      (
-                        <View style={{ marginTop: 10 }}>
-                         <ActivityIndicator size="large" color={COLORS.indicator} />
-                       </View>
-                      )
-                      :
+                    {isPosOrderLoading ? (
+                      <View style={{ marginTop: 10 }}>
+                        <ActivityIndicator
+                          size="large"
+                          color={COLORS.indicator}
+                        />
+                      </View>
+                    ) : (
                       <FlatList
-                      data={orderArray}
-                      extraData={orderArray}
-                      keyExtractor={item => item.id}
-                      renderItem={renderReviewItem}
-                    />
-
-                    }
-                   
+                        data={orderArray}
+                        extraData={orderArray}
+                        keyExtractor={item => item.id}
+                        renderItem={renderReviewItem}
+                      />
+                    )}
                   </View>
                   <Spacer space={SH(15)} />
                 </View>
@@ -776,12 +846,11 @@ export function DeliveryOrder() {
 
   return (
     <ScreenWrapper>
-    <View style={styles.container}>
-      {customHeader()}
+      <View style={styles.container}>
+        {customHeader()}
 
-      {changeView()}
-    </View>
-      
-      </ScreenWrapper>
+        {changeView()}
+      </View>
+    </ScreenWrapper>
   );
 }

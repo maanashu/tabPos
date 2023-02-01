@@ -322,6 +322,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     top: 7,
     justifyContent: 'space-between',
+
   },
   priceText: {
     fontFamily: Fonts.Regular,
@@ -418,10 +419,10 @@ export const styles = StyleSheet.create({
   },
   itemSeparatorView: {
     backgroundColor: COLORS.solidGrey,
-    height: 1,
+    height: 2,
     width: '92%',
     alignSelf: 'center',
-    marginVertical: verticalScale(3),
+    // marginVertical: verticalScale(3),
   },
   map: {
     width: windowWidth * 0.48,

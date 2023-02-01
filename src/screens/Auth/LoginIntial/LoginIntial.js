@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text,  Image, StatusBar } from 'react-native';
+import { View, Text, Image, StatusBar } from 'react-native';
 import { Spacer, Button } from '@/components';
 import { SH } from '@/theme';
-import {  profilePic } from '@/assets';
+import { profilePic } from '@/assets';
 import { styles } from '@/screens/Auth/LoginIntial/LoginIntial.styles';
 import { strings } from '@/localization';
 import { useDispatch, useSelector } from 'react-redux';
@@ -158,6 +158,8 @@ export function LoginIntial() {
           )}
         </View>
       </View>
+
+     
     </View>
   );
 }

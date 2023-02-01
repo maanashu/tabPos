@@ -47,6 +47,7 @@ import {
   backArrow2,
   backArrow,
   marboloPlus,
+  crossButton3,
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
@@ -85,6 +86,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { getRetail } from '@/selectors/RetailSelectors';
 import { CategoryProductDetail, ChangeDue, CustomerPhone } from './Component';
+import { CameraScreen } from 'react-native-camera-kit';
 
 export function Retails() {
   const dispatch = useDispatch();
@@ -185,6 +187,7 @@ export function Retails() {
   const [productData, setProductData] = useState();
   const [catCount, setCatCount] = useState(productData?.qty);
   const [result, setResult] = useState([]);
+  const [openScanner, setOpenScanner] = useState(false)
 
   const cartPlusOnPress = (id, index) => {
     setItemIndex(id);
@@ -562,7 +565,7 @@ export function Retails() {
   };
 
 
-
+                         
   const increment = () => {
     setCount(count + 1);
   };
@@ -1180,10 +1183,36 @@ export function Retails() {
 
   return (
     <ScreenWrapper>
-      {listOfItem ? (
+
+      {
+        listOfItem
+        ?
         <ListOfItem listOfItemCloseHandler={() => setListofItem(false)} />
-      ) : (
-        <View style={styles.container}>
+        :
+        openScanner
+        ?
+        (
+          <View style={styles.cameraContainer}>
+          <CameraScreen
+          focusMode='on'
+        scanBarcode={true}
+        showFrame={true} 
+        laserColor='red' 
+        frameColor='white'
+        onReadCode={(event) => alert(event.nativeEvent.codeStringValue)}
+        
+        />
+      <TouchableOpacity
+        style={[styles.backView, {position: 'absolute', top:0, left:20}]} onPress={() => setOpenScanner(false)}>
+        <Image source={backArrow} style={styles.truckStyle} />
+        <Text style={styles.backText}>
+          {strings.deliveryOrders.back}
+        </Text>
+      </TouchableOpacity>
+        </View>
+        ):
+        (
+          <View style={styles.container}>
           <StatusBar barStyle="dark-content" backgroundColor="#fff" />
           <View style={styles.headerCon}>
             <View style={styles.flexRow}>
@@ -1210,7 +1239,11 @@ export function Retails() {
                       )}
                     />
                   </View>
-                  <TouchableOpacity onPress={addNewProHandler}>
+                  <TouchableOpacity
+                  // onPress={addNewProHandler}
+                  // onPress={}
+                  onPress={() => (setCategoryModal(false), setOpenScanner(true))}
+                  >
                     <Image source={scn} style={styles.scnStyle} />
                   </TouchableOpacity>
                 </View>
@@ -2126,7 +2159,8 @@ export function Retails() {
             </View>
           </Modal>
         </View>
-      )}
+        )
+      }
     </ScreenWrapper>
   );
 }
