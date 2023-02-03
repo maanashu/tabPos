@@ -158,6 +158,32 @@ const getProductBundleError = error => ({
   payload: { error },
 });
 
+const getUserDetailRequest = () => ({
+  type: TYPES.GET_USERDETAIL_REQUEST,
+  payload: null,
+});
+export const getUserDetailSuccess = (getUserDetail)  => ({
+  type: TYPES.GET_USERDETAIL_SUCCESS,
+  payload: { getUserDetail },
+});
+const getUserDetailError = error => ({
+  type: TYPES.GET_USERDETAIL_ERROR,
+  payload: { error },
+});
+
+const sendInvitationRequest = () => ({
+  type: TYPES.SEND_INVITATION_REQUEST,
+  payload: null,
+});
+const sendInvitationSuccess = ()  => ({
+  type: TYPES.SEND_INVITATION_SUCCESS,
+  payload: {  },
+});
+const sendInvitationError = error => ({
+  type: TYPES.SEND_INVITATION_ERROR,
+  payload: { error },
+});
+
 export const getCategory = () => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -277,6 +303,26 @@ export const getProductBundle = (id) => async dispatch => {
       dispatch(getProductBundleSuccess(res));
   } catch (error) {
       dispatch(getProductBundleError(error.message));
+  }
+};
+
+export const getUserDetail = (customerPhoneNo) => async dispatch => {
+  dispatch(getUserDetailRequest());
+  try {
+      const res = await RetailController.getUserDetail(customerPhoneNo);
+      dispatch(getUserDetailSuccess(res));
+  } catch (error) {
+      dispatch(getUserDetailError(error.message));
+  }
+};
+
+export const sendInvitation = (data) => async dispatch => {
+  dispatch(sendInvitationRequest());
+  try {
+      const res = await RetailController.sendInvitation(data);
+      dispatch(sendInvitationSuccess(res));
+  } catch (error) {
+      dispatch(sendInvitationError(error.message));
   }
 };
 

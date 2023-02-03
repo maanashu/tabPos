@@ -87,6 +87,21 @@ export const  CategoryDataHorizontal = [
   },
 ] ;
 
+export const userData =[
+  {
+    percentage: '10%',
+    id: '1',
+  },
+  {
+    percentage: '20%',
+    id: '2',
+  },
+  {
+    percentage: '30%',
+    id: '3',
+  },
+];
+
 export const tipData =[
   {
     percentage: '10%',

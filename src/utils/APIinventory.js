@@ -6,7 +6,11 @@ export const PRODUCT_URL = 'https://apiproductmgmt.jobr.com/api/v1/'
 export const ApiUserInventory = {
     verifyPhone:'user_phones/',
     login: 'users/login/',
-    getProfile:'users/'
+    getProfile:'users/',
+    getUserDetail:'users/get_users/by_phone',
+    sendInvitation:'users/send_invitation'
+    
+    
  
 };
 

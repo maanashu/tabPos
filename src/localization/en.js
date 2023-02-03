@@ -219,7 +219,10 @@ export const en = {
     addItemCart:'Please item add in the cart',
     selectDisTitle:'Please select discount title',
     availableStock:'Available in stock: 206',
-    viewDetail:'View details'
+    viewDetail:'View details',
+    CusNotInSystem:'Customer not in system',
+    lastname:'Last name',
+    emailAdd:'Email address'
 
 
 
@@ -501,7 +504,12 @@ export const en = {
       noData: 'No Data',
       noProduct:'Product not found',
       noCart:'No cart',
-      pleaseSelectSubCat:'First select sub-category'
+      pleaseSelectSubCat:'First select sub-category',
+      pleaseEnterFirstName:'Please enter first name',
+      pleaseEnterPH:'Please enter phone number',
+      pleaseEnterLastName:'Please enter last name',
+      pleaseEnterEmail:'Please enter Email',
+      validEmail:'Please enter valid email'
     },
     successMessages:{
       loginSuccess:"Login succesfully"

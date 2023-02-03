@@ -158,8 +158,6 @@ export function LoginIntial() {
           )}
         </View>
       </View>
-
-     
     </View>
   );
 }

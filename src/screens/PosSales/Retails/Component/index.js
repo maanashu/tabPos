@@ -16,12 +16,14 @@ import {
   moderateVerticalScale,
   verticalScale,
 } from 'react-native-size-matters';
-import { backArrow, checkArrow, crossButton, Fonts, jbrCustomer, loader, menu, minus, plus, search_light } from '@/assets';
+import { backArrow, checkArrow, crossButton, Fonts, jbrCustomer, loader, menu, minus, plus, search_light, userImage } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { styles } from '@/screens/PosSales/Retails/Retails.styles';
 const windowHeight = Dimensions.get('window').height;
 import { jbritemList } from '@/constants/flatListData';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 export function CategoryProductDetail({qty, backArrowhandler, addToCartCat,proudctImage,productPrice, sku, productName, productDes}) {
   return (
@@ -246,14 +248,17 @@ export function ChangeDue({crossButtonHandler, continueHandler}) {
   };
 
 
-  export function CustomerPhone({customerPhoneNo, crosshandler}) {
+  export function CustomerPhone({customerPhone, crosshandler, setCustomerPhone, userItem, customerToRedirect}) {
+    console.log('userItem-------------', userItem)
+    const [userProfiles, setUserProfiles] = useState();
+    useEffect(() => {
+      userItem.map( (userProfiles) => setUserProfiles(userProfiles))
+    }, []);
     return (
         <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
           <View style={styles.primaryHeader}>
             <Text style={styles.headerText}>{strings.posSale.Customer}</Text>
             <TouchableOpacity
-              // onPress={custCashRemoveHandler}
-            //   onPress={() => setCustCash(false)}
             onPress={crosshandler}
               style={styles.crossButtonPosition}
             >
@@ -269,7 +274,7 @@ export function ChangeDue({crossButtonHandler, continueHandler}) {
             </Text>
             <Spacer space={SH(10)} />
             <View style={styles.customerInputWraper}>
-              {customerPhoneNo ? null : (
+              {customerPhone?.length > 9 ? null : (
                 <Image
                   source={search_light}
                   style={[styles.searchStyle, { tintColor: COLORS.darkGray }]}
@@ -277,28 +282,29 @@ export function ChangeDue({crossButtonHandler, continueHandler}) {
               )}
               <TextInput
                 style={styles.customerPhoneInput}
-                // value={customerPhoneNo}
-                // onChangeText={setCustomerPhoneNo}
+                value={customerPhone}
+                onChangeText={setCustomerPhone}
                 keyboardType="numeric"
               />
             </View>
+            <View style={{height:SH(430), width:SW(93)}}>
             <Spacer space={SH(60)} />
-            {customerPhoneNo ? (
+            {userProfiles?.user_profiles?.firstname || customerPhone?.length > 8  ? (
               <View style={styles.customerAddreCon}>
                 <Spacer space={SH(30)} />
-                <View style={styles.flexAlign}>
-                  <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                <View style={[styles.flexAlign, {alignItems:'flex-start'}]}>
+                  <Image source={userProfiles?.user_profiles?.profile_photo ? {uri : userProfiles?.user_profiles?.profile_photo} : userImage} style={styles.jbrCustomer} />
                   <View style={{ paddingHorizontal: moderateScale(8) }}>
-                    <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
-                      {strings.posSale.customerName}
+                    <Text numberOfLines={1} style={[styles.cusAddText, { fontSize: SF(20) }]}>
+                    {userProfiles?.user_profiles?.firstname}
                     </Text>
                     <Spacer space={SH(8)} />
                     <Text style={styles.cusAddText}>
-                      {strings.posSale.customerMobileNo}
+                    {userProfiles?.user_profiles?.phone_no}
                     </Text>
                     <Spacer space={SH(5)} />
                     <Text style={styles.cusAddText}>
-                      {strings.posSale.customerEmail}
+                    {userProfiles?.email}
                     </Text>
                     <Spacer space={SH(8)} />
                     <Text style={styles.cusAddText}>
@@ -311,17 +317,13 @@ export function ChangeDue({crossButtonHandler, continueHandler}) {
                 </View>
               </View>
             ) : null}
-            <View style={{ flex: 1 }} />
-            {customerPhoneNo ? (
+             <View style={{ flex: 1 }} />
+            {customerPhone?.length > 9 ? (
               <TouchableOpacity
                 style={styles.customerPhoneCon}
-                // onPress={() => (
-                //   setCustCash(false), setCutsomerTotalAmount(true)
-                // )}
-              >
+                onPress={customerToRedirect}>
                 <Text
-                  style={[styles.redrectingText, { color: COLORS.primary }]}
-                >
+                  style={[styles.redrectingText, { color: COLORS.primary }]}>
                   {strings.posSale.rederecting}
                 </Text>
                 <Image source={loader} style={styles.loaderPic} />
@@ -331,6 +333,60 @@ export function ChangeDue({crossButtonHandler, continueHandler}) {
                 {strings.posSale.rederecting}
               </Text>
             )}
+
+            </View>
+
+              {/* <View>
+                <Spacer space={SH(20)}/>
+              <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
+                <Spacer space={SH(7)}/>
+                <TextInput
+                  placeholder={strings.posSale.firstName}
+                  // value={amount}
+                  // onChangeText={setAmount}
+                  style={styles.customerNameInput}
+                  keyboardType='numeric'
+                />
+                 <Spacer space={SH(20)} />
+                 <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
+                <Spacer space={SH(7)}/>
+                <TextInput
+                  placeholder={strings.posSale.firstName}
+                  // value={amount}
+                  // onChangeText={setAmount}
+                  style={styles.customerNameInput}
+                  keyboardType='numeric'
+                />
+                  <Spacer space={SH(20)} />
+                 <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
+                <Spacer space={SH(7)}/>
+                <TextInput
+                  placeholder={strings.posSale.firstName}
+                  // value={amount}
+                  // onChangeText={setAmount}
+                  style={styles.customerNameInput}
+                  keyboardType='numeric'
+                />
+
+           <TouchableOpacity
+            style={[
+              styles.checkoutButton,
+              { marginVertical: moderateScale(20) },
+            ]}
+            // onPress={() => (setCustomerCashPaid(false), setListofItem(true))}
+            // onPress={continueHandler}
+          >
+            <Text
+              style={[styles.checkoutText, { fontFamily: Fonts.Regular }]}
+            >
+              {strings.retail.continue}
+            </Text>
+            <Image source={checkArrow} style={styles.checkArrow} />
+          </TouchableOpacity>
+         
+           
+              </View> */}
+              
           </View>
         </View>
     );

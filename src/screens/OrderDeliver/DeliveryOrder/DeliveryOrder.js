@@ -61,7 +61,7 @@ export function DeliveryOrder() {
   const getAuth = useSelector(getAuthData);
   const getDeliveryData = useSelector(getDelivery);
   const orderCount = getDeliveryData?.orderList;
-  const orderArray = getDeliveryData?.orderList?.data;
+  const orderArray = getDeliveryData?.orderList?.data ?? [];
   const [viewAllReviews, setViewAllReviews] = useState(false);
   const [orderAccepted, setOrderAccepted] = useState(false);
   const [readyPickup, setReadyForPickup] = useState(false);
@@ -106,13 +106,13 @@ export function DeliveryOrder() {
   ];
 
   useEffect(() => {
-    dispatch(getOrders(2))
+    dispatch(getOrders(2));
     if(orderArray?.length > 0){
       setSelectedId(orderArray[0].id);
       setItem(orderArray[0]);
     }
    
-  }, []);
+  }, []);          
 
   const accetedOrderHandler = () => {
       const data = {

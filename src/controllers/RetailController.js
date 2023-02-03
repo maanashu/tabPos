@@ -7,6 +7,7 @@ import {
   ORDER_URL,
   ApiOrderInventory,
 } from '@/utils/APIinventory';
+import { Alert } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
@@ -352,6 +353,63 @@ export class RetailController {
             visibilityTime: 1500,
           });
           reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  };
+
+  static async getUserDetail(customerPhoneNo) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getUserDetail +`?phone=${customerPhoneNo}`;
+      console.log('endpoint',endpoint)
+      HttpClient.get(endpoint)
+        .then(response => {
+          if (response.status === 204) {
+            resolve([]);
+          }
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  };
+
+  static async sendInvitation(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.sendInvitation;
+      const body = {
+        firstName:data.userFirstname,
+        lastName:data.userLastName,
+        email:data.userEmailAdd,
+        phone:data.userPhoneNo
+      }
+      HttpClient.post(endpoint, body)
+        .then(response => {
+          if (response?.status_code === 200) {
+            // Toast.show({
+            //   position: 'bottom',
+            //   type: 'success_toast',
+            //   text2: response?.msg,
+            //   visibilityTime: 2000,
+            // });
+           Alert.alert(response?.msg)
+          }
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
         });
     });
   };

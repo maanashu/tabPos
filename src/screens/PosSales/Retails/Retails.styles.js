@@ -352,7 +352,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.primary,
-    width: SW(107),
+    width: SW(30),
     alignSelf: 'center',
     borderRadius: 5,
     paddingVertical: verticalScale(9),
@@ -464,11 +464,6 @@ export const styles = StyleSheet.create({
     height: SH(342),
     borderRadius: 5,
     paddingHorizontal: moderateScale(10),
-  },
-  jbrCustomer: {
-    width: SW(15),
-    height: SW(15),
-    resizeMode: 'contain',
   },
   walletIdButtonCon: {
     borderTopWidth: 2,
@@ -1156,6 +1151,8 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(15),
     resizeMode: 'contain',
+    borderRadius:100
+    
   },
 
   walletIdCon: {
@@ -1229,7 +1226,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 7,
-    height: SH(60),
+    height: SH(50),
     fontSize: SF(13),
     width: windowWidth * 0.25,
     flexDirection: 'row',
@@ -1239,8 +1236,13 @@ export const styles = StyleSheet.create({
   },
   firstNameAdd: {
     color: COLORS.dark_grey,
-    fontSize: SF(14),
+    fontSize: SF(11),
     fontFamily: Fonts.SemiBold,
+  },
+  CusNotInSystem: {
+    color: COLORS.darkGray,
+    fontSize: SF(11),
+    fontFamily: Fonts.Regular,
   },
   customerPhoneInput: {
     color: COLORS.black,
@@ -1255,6 +1257,7 @@ export const styles = StyleSheet.create({
     width: SW(94),
     borderRadius: 7,
     paddingHorizontal: moderateScale(10),
+    marginVertical:moderateScale(5)
   },
   // customer cash  modal css end
 

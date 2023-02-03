@@ -1,7 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { COLORS, ShadowStyles, TextStyles } from '@/theme';
 import { moderateScale, scale } from 'react-native-size-matters';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -31,7 +31,9 @@ export function Button({ style, textStyle, title,  pending,
 
     )
     :
-    <TouchableOpacity
+    <TouchableHighlight
+    activeOpacity={0.9}
+    underlayColor="#0E86D4"
     style={[
       styles.button,
       { borderColor: colors.border },
@@ -43,7 +45,7 @@ export function Button({ style, textStyle, title,  pending,
     <Text style={[{ color: COLORS.darkGray }, TextStyles.label, textStyle]}>
       {title}
     </Text>
-  </TouchableOpacity>
+  </TouchableHighlight>
   
   );
 }

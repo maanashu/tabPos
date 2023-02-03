@@ -8,7 +8,8 @@ const INITIALSTATE = {
   products:[],
   SeaProductList:[],
   getAllCart:[],
-  productbunList:[]
+  productbunList:[],
+  getUserDetail:[]
   
 };
 
@@ -53,6 +54,11 @@ export const retailReducer = (state = {INITIALSTATE}, { payload, type }) => {
                   ...state,
                   productbunList: payload?.productbunList?.payload?.data ?? [],
                 };
+                case TYPES.GET_USERDETAIL_SUCCESS:
+                  return {
+                    ...state,
+                    getUserDetail: payload?.getUserDetail?.payload?.users ?? [],
+                  };
       
     case TYPES.CLEAR_STORE:
       return {};

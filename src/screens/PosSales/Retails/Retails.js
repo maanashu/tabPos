@@ -48,6 +48,7 @@ import {
   backArrow,
   marboloPlus,
   crossButton3,
+  userImage,
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
@@ -61,6 +62,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import {
   tipData,
   amountReceivedData,
+  userData
 } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -76,6 +78,9 @@ import {
   addNotescart,
   addDiscountToCart,
   getProductBundle,
+  getUserDetail,
+  getUserDetailSuccess,
+  sendInvitation,
 } from '@/actions/RetailAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
@@ -87,6 +92,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { CategoryProductDetail, ChangeDue, CustomerPhone } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
+import { emailReg } from '@/utils/validators';
 
 export function Retails() {
   const dispatch = useDispatch();
@@ -185,9 +191,15 @@ export function Retails() {
   const [productModal, setProductModal] = useState(false);
   const [productViewDetail, setProductViewDetail] = useState(false);
   const [productData, setProductData] = useState();
+ 
   const [catCount, setCatCount] = useState(productData?.qty);
   const [result, setResult] = useState([]);
-  const [openScanner, setOpenScanner] = useState(false)
+  const [openScanner, setOpenScanner] = useState(false);
+  const getuserDetailByNo  = getRetailData?.getUserDetail ?? [];
+  const [userEAdd,setUserEAdd] =  useState('');
+  const [userLName, setUserLName] =  useState('');
+  const [userFName, setUserFName] =  useState('')
+  // console.log('getuserDetailByNo',getuserDetailByNo)
 
   const cartPlusOnPress = (id, index) => {
     setItemIndex(id);
@@ -281,6 +293,38 @@ export function Retails() {
     }
   };
 
+  const phoneNumberSearchFun = customerPhoneNo => {
+    console.log('customerPhoneNo',customerPhoneNo)
+     if (customerPhoneNo?.length > 3){
+        dispatch(getUserDetail(customerPhoneNo));
+     }else if (customerPhoneNo?.length < 4){
+      dispatch(getUserDetailSuccess([]));
+     }
+  };
+
+  const userContinueHandler = () => {   
+      if(!customerPhoneNo){
+        alert(strings.valiadtion.pleaseEnterPH)
+      }else if (!userFName){
+        alert(strings.valiadtion.pleaseEnterFirstName)
+      }else if (!userLName){
+        alert(strings.valiadtion.pleaseEnterLastName)
+      }else if (!userEAdd){
+        alert(strings.valiadtion.pleaseEnterEmail)
+      }else if (userEAdd && emailReg.test(userEAdd) === false){
+        alert(strings.valiadtion.validEmail)
+      }else {
+        const data = {
+           userPhoneNo: customerPhoneNo,
+           userFirstname : userFName,
+           userLastName : userLName,
+           userEmailAdd : userEAdd
+         }
+         dispatch(sendInvitation(data))
+      }
+    
+  };
+
   const isLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_CATEGORY], state)
   );
@@ -303,6 +347,9 @@ export function Retails() {
   );
   const isBundleLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_BUNDLEOFFER], state)
+  );
+  const isUserDetailLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_USERDETAIL], state)
   );
 
   const clearCartHandler = () => {
@@ -528,6 +575,7 @@ export function Retails() {
     setCashChoose(true);
     setJbrCoin(false);
     setCardChoose(false);
+    // setUserItem([]);
     setCustCash(!custCash);
   };
   const cardChooseHandler = () => {
@@ -862,6 +910,7 @@ export function Retails() {
     );
   };
 
+
   const SearchItemSelect = ({ item, onPress, index }) => (
     <View>
       <Spacer space={SH(15)} />
@@ -1031,13 +1080,188 @@ export function Retails() {
     );
   };
 
+
+  const userDataItem = ({item, index}) => (
+    <View style={styles.customerAddreCon}>
+    <Spacer space={SH(30)} />
+    <View style={[styles.flexAlign, {alignItems:'flex-start'}]}>
+      <Image source={item?.user_profiles?.profile_photo ? {uri : item?.user_profiles?.profile_photo } :  userImage} style={styles.jbrCustomer} />
+      <View style={{ paddingHorizontal: moderateScale(8) }}>
+        <Text numberOfLines={1} style={[styles.cusAddText, { fontSize: SF(20) }]}>
+         {item?.user_profiles?.firstname}
+        </Text>
+        <Spacer space={SH(8)} />
+        <Text style={styles.cusAddText}>
+        {item?.user_profiles?.phone_no}
+        </Text>
+        <Spacer space={SH(5)} />
+        <Text style={styles.cusAddText}>
+          {item.email}
+        </Text>
+        <Spacer space={SH(8)} />
+        <Text style={styles.cusAddText}>
+          {strings.posSale.customerAddr}
+        </Text>
+        <Text style={styles.cusAddText}>
+          {strings.posSale.customerAddr2}
+        </Text>
+      </View>
+    </View>
+  </View>
+  );
+
+
   const modalAccordingData = () => {
     if (custCash) {
       return (
-        <CustomerPhone
-        customerPhoneNo={customerPhoneNo}
-        crosshandler={()=> setCustCash(false)}
-        />
+        <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
+          <View style={styles.primaryHeader}>
+            <Text style={styles.headerText}>{strings.posSale.Customer}</Text>
+            <TouchableOpacity
+               onPress={()=> { 
+                setCustCash(false) 
+                setCustomerPhoneNo('')
+                dispatch(getUserDetailSuccess([]));
+              }}
+              style={styles.crossButtonPosition}
+            >
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={[styles.custPaymentBodyCon, { alignItems: 'flex-start' }]}
+          >
+            <Spacer space={SH(60)} />
+            <Text style={styles.customerNOStyle}>
+              {strings.posSale.customerNo}
+            </Text>
+            <Spacer space={SH(10)} />
+            <View style={styles.customerInputWraper}>
+              {customerPhoneNo?.length > 5 ? null : (
+                <Image
+                  source={search_light}
+                  style={[styles.searchStyle, { tintColor: COLORS.darkGray }]}
+                />
+              )}
+              <TextInput
+                style={styles.customerPhoneInput}
+                value={customerPhoneNo}
+                onChangeText={ (customerPhoneNo) =>  {
+                  setCustomerPhoneNo(customerPhoneNo)
+                   phoneNumberSearchFun(customerPhoneNo)
+                  }}
+                keyboardType="numeric"
+                maxLength={10}
+              />
+            </View>
+            {
+              getuserDetailByNo?.length > 0
+              ?
+              (
+               <View>
+                 <View style={{height:SH(300), width:SW(93)}}>
+                {isUserDetailLoading
+                ?
+                (
+                  <View style={{ marginTop: 100 }}>
+                    <ActivityIndicator size="large" color={COLORS.indicator} />
+                  </View>
+                )
+                :
+                   <FlatList
+                    data={getuserDetailByNo}
+                    extraData={getuserDetailByNo}
+                    renderItem={userDataItem}
+                    keyExtractor={item => item.id}
+                    // ListEmptyComponent={userEmptyDetail}
+                  />
+                   }
+                </View>
+
+                {
+               getuserDetailByNo?.length > 0
+              ?
+              <TouchableOpacity
+                style={styles.customerPhoneCon}
+                onPress={() => {
+                   setCustCash(false),
+                   setCutsomerTotalAmount(true)
+                }}
+                >
+                <Text
+                  style={[styles.redrectingText, { color: COLORS.primary }]}>
+                  {strings.posSale.rederecting}
+                </Text>
+                <Image source={loader} style={styles.loaderPic} />
+              </TouchableOpacity>
+              :
+              <Text style={styles.redrectingText}>
+                {strings.posSale.rederecting}
+              </Text>
+             }
+                </View>
+              )
+              :
+              (
+                <View style={{height:SH(400), width:SW(93)}}>
+                  <View>
+                   <Text style={styles.CusNotInSystem}>{strings.posSale.CusNotInSystem}</Text>
+             <Spacer space={SH(20)}/>
+              <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
+                <Spacer space={SH(7)}/>
+                <TextInput
+                  placeholder={strings.posSale.firstName}
+                  value={userFName}
+                  onChangeText={setUserFName}
+                  style={styles.customerNameInput}
+                />
+                 <Spacer space={SH(20)} />
+                 <Text style={styles.firstNameAdd}>{strings.posSale.lastname}</Text>
+                <Spacer space={SH(7)}/>
+                <TextInput
+                  placeholder={strings.posSale.lastname}
+                  value={userLName}
+                  onChangeText={setUserLName}
+                  style={styles.customerNameInput}
+                />
+                  <Spacer space={SH(20)} />
+                 <Text style={styles.firstNameAdd}>{strings.posSale.emailAdd}</Text>
+                <Spacer space={SH(7)}/>
+                <TextInput
+                  placeholder={strings.posSale.emailAdd}
+                  value={userEAdd}
+                  onChangeText={setUserEAdd}
+                  style={styles.customerNameInput}
+                />
+
+           <TouchableOpacity
+            style={[
+              styles.checkoutButton,
+              { marginVertical: moderateScale(15) },
+            ]}
+            // onPress={() => (setCustomerCashPaid(false), setListofItem(true))}
+             onPress={userContinueHandler}
+          >
+            <Text
+              style={[styles.checkoutText, { fontFamily: Fonts.Regular }]}
+            >
+              {strings.retail.continue}
+            </Text>
+            <Image source={checkArrow} style={styles.checkArrow} />
+          </TouchableOpacity>
+              </View>
+              </View>
+              )
+            }
+          </View>
+        </View>
+        // <CustomerPhone
+        // customerPhone={customerPhoneNo}
+        // setCustomerPhone={customerPhoneNo => (setCustomerPhoneNo(customerPhoneNo), phoneNumberSearchFun(customerPhoneNo) )}
+        // crosshandler={()=> (setCustCash(false),setCustomerPhoneNo(''))}
+        // userItem={userItem}
+        // customerToRedirect={()=> (setCustCash(false), setCutsomerTotalAmount(true))}
+        // />
       );
     } else if (cutsomerTotalAmount) {
       return (
