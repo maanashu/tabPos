@@ -17,7 +17,7 @@ const toastConfig = {
   success_toast : ({text1, text2, ...rest}) => (
     <BaseToast
     {...rest}
-    style ={{borderLeftColor: COLORS.green}}
+    style ={{borderLeftColor: COLORS.green, zIndex:999}}
     contentContainerstyle = {{paddingHorizontal: SW(15)}}
     leadingIcon={success}
     text2Style={{
@@ -36,7 +36,7 @@ const toastConfig = {
    error_toast: ({text1, text2, ...rest}) => (
     <BaseToast
     {...rest}
-    style ={{borderLeftColor: COLORS.red}}
+    style ={{borderLeftColor: COLORS.red, zIndex:999}}
     contentContainerstyle = {{paddingHorizontal: SW(15)}}
     leadingIcon={error}
     text2Style={{

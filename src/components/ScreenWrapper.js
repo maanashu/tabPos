@@ -17,9 +17,7 @@ export function ScreenWrapper(props) {
     StyleSheet.create({
       containerStyle: {
         backgroundColor: COLORS.white,
-
         flex: 1,
-
         paddingHorizontal: Platform.OS === 'ios' ? 0 : SW(0),
       },
     })
@@ -30,14 +28,11 @@ export function ScreenWrapper(props) {
       <View
         style={{
           paddingHorizontal: Platform.OS === 'ios' ? SW(0) : SW(0),
-
           flex: 1,
-
           overflow: Platform.OS === 'ios' ? 'hidden' : 'visible',
         }}
       >
         <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
-
         {props.children}
       </View>
     </SafeAreaView>
@@ -48,9 +43,7 @@ export function ScreenWrapper(props) {
 
 ScreenWrapper.propTypes = {
   styles: PropTypes.style,
-
   backgroundColor: PropTypes.string,
-
   containerPropStyle: PropTypes.shape({}),
 };
 
@@ -58,8 +51,6 @@ ScreenWrapper.propTypes = {
 
 ScreenWrapper.defaultProps = {
   backgroundColor: COLORS.white,
-
   containerPropStyle: {},
-
   styles: {},
 };

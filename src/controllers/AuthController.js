@@ -1,4 +1,9 @@
-import { USER_URL,PRODUCT_URL, ApiProductInventory, ApiUserInventory } from '@/utils/APIinventory';
+import {
+  USER_URL,
+  PRODUCT_URL,
+  ApiProductInventory,
+  ApiUserInventory,
+} from '@/utils/APIinventory';
 import { HttpClient } from './HttpClient';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
@@ -6,10 +11,9 @@ import Toast from 'react-native-toast-message';
 import { strings } from '@/localization';
 
 export class AuthController {
-
   static async verifyPhone(phoneNumber, countryCode) {
     const endpoint = USER_URL + ApiUserInventory.verifyPhone;
-    const body =  {
+    const body = {
       phone_code: countryCode,
       phone_no: phoneNumber,
       // isAlreadyCheck: true,
@@ -27,8 +31,7 @@ export class AuthController {
               visibilityTime: 2000,
             });
           }
-        } 
-        else {
+        } else {
           Toast.show({
             text2: response.msg,
             position: 'bottom',
@@ -49,16 +52,18 @@ export class AuthController {
 
   static async verifyOtp(id, value, key) {
     const endpoint = USER_URL + ApiUserInventory.verifyOtp;
-    const body = key ? {
-      otp: 1234,
-      id: id,
-      role_id: 2,
-      isAlreadyCheck: true
-    } : {
-      otp: 1234,
-      id: id,
-      role_id: 2
-    };
+    const body = key
+      ? {
+          otp: 1234,
+          id: id,
+          role_id: 2,
+          isAlreadyCheck: true,
+        }
+      : {
+          otp: 1234,
+          id: id,
+          role_id: 2,
+        };
     await HttpClient.post(endpoint, body)
       .then(response => {
         if (response.status_code === 200) {
@@ -88,11 +93,6 @@ export class AuthController {
       });
   }
 
- 
-
-
-
-
   static async login(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.login;
@@ -100,7 +100,7 @@ export class AuthController {
         phone_code: data.country_code,
         phone_number: data.phone_no,
         password: data.pin,
-        role_slug:'pos'
+        role_slug: 'pos',
       };
       HttpClient.post(endpoint, body)
         .then(response => {
@@ -112,7 +112,7 @@ export class AuthController {
               visibilityTime: 1500,
             });
             resolve(response);
-            navigate(NAVIGATION.loginIntial)
+            navigate(NAVIGATION.loginIntial);
           } else {
             Toast.show({
               text2: response.msg,
@@ -121,21 +121,22 @@ export class AuthController {
               visibilityTime: 1500,
             });
           }
-        }).catch(error => {
-            Toast.show({
-              text2: error.msg,
-              position: 'bottom',
-              type: 'error_toast',
-              visibilityTime: 1500
-            })
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
           reject(error.msg);
         });
-    })
-  };
+    });
+  }
 
   static async getProfile(id) {
     return new Promise((resolve, reject) => {
-      const endpoint =  USER_URL + ApiUserInventory.getProfile + `${id}`;
+      const endpoint = USER_URL + ApiUserInventory.getProfile + `${id}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -150,7 +151,7 @@ export class AuthController {
           reject(new Error((strings.verify.error = error.msg)));
         });
     });
-  };
+  }
 
   static async setPin(data) {
     const endpoint = USER_URL + ApiUserInventory.setPin;
@@ -158,8 +159,8 @@ export class AuthController {
       phone_code: data.phone_code,
       phone_number: data.phone_no,
       pin: data.pin,
-      otp: data.otp
-    }
+      otp: data.otp,
+    };
     await HttpClient.post(endpoint, body)
       .then(response => {
         if (response?.status_code === 200) {
@@ -169,15 +170,16 @@ export class AuthController {
             text2: response?.msg,
             visibilityTime: 2000,
           });
-          navigate(NAVIGATION.login)
+          navigate(NAVIGATION.login);
         }
-      }).catch(error => {
+      })
+      .catch(error => {
         Toast.show({
           position: 'bottom',
           type: 'error_toast',
           text2: error.msg,
           visibilityTime: 2000,
         });
-      })
+      });
   }
 }
