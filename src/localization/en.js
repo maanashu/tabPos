@@ -98,7 +98,8 @@ export const en = {
     orderView:'Orders to review',
     orderPrepare:'Order Preparing',
     readyPickup:'Ready to pickup',
-    delivered:'Delivering'
+    delivered:'Delivering',
+    cancelled:'Cancelled'
   },
   verifyPhone: {
     heading: 'Verify your phone number',

@@ -31,6 +31,29 @@ export class DeliveryController {
           reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
+  };
+
+  static async getOrderList() {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.getOrders +
+        `?seller_id=b169ed4d-be27-44eb-9a08-74f997bc6a2a&status`;
+        console.log('endpoint',endpoint);
+         HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
   }
 
   static async acceptOrder(data) {

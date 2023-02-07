@@ -6,7 +6,6 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  Dimensions,
   StatusBar,
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -14,14 +13,11 @@ import {
 } from 'react-native';
 import {
   Spacer,
-  Button,
-  TextField,
   AddNewProduct,
   ProductCard,
   ChoosePayment,
   NumericContainer,
   ScreenWrapper,
-  TableDropdown,
 } from '@/components';
 import { SH, SF, COLORS, SW } from '@/theme';
 import {
@@ -39,27 +35,23 @@ import {
   jfr,
   upMenu,
   dropdown2,
-  dollar,
   addDiscountPic,
   notess,
   checkArrow,
   loader,
   backArrow2,
   backArrow,
-  marboloPlus,
-  crossButton3,
   userImage,
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
-import { moderateScale, s } from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import {
   tipData,
   amountReceivedData,
-  userData,
 } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -84,10 +76,9 @@ import { TYPES } from '@/Types/Types';
 import { AddDiscountToCart, UpdatePrice } from '@/components';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { ListOfItem } from './ListOfItem';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { getRetail } from '@/selectors/RetailSelectors';
-import { CategoryProductDetail, ChangeDue, CustomerPhone } from './Component';
+import { CategoryProductDetail, ChangeDue } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
 import { emailReg } from '@/utils/validators';
 
@@ -198,13 +189,17 @@ export function Retails() {
   const [userEAdd, setUserEAdd] = useState('');
   const [userLName, setUserLName] = useState('');
   const [userFName, setUserFName] = useState('');
+  const [sendInventer, setSendInventer] = useState(false);
 
-  const debouncedValue = useDebounce(customerPhoneNo, 800);
+  const debouncedValue = useDebounce(customerPhoneNo, 2000);
 
-  // useEffect(() => {
-  //   dispatch(getUserDetail(customerPhoneNo));
-  // }, []);
-  // console.log('getuserDetailByNo',getuserDetailByNo)
+  useEffect(() => {
+     if(getuserDetailByNo?.length === 0){
+      setSendInventer(true)
+     } else {
+      setSendInventer(false)
+     }
+  }, [getuserDetailByNo?.length]);
 
   const cartPlusOnPress = (id, index) => {
     setItemIndex(id);
@@ -1126,6 +1121,119 @@ export function Retails() {
     </View>
   );
 
+  const changeView = () => {
+    if (getuserDetailByNo?.length > 0) {
+      return (
+        <View style={{ height: SH(400), width: SW(93) }}>
+          <View style={{height: SH(300), width: SW(93) }}>
+            {isUserDetailLoading ? (
+              <View style={{ marginTop: 100 }}>
+                <ActivityIndicator size="large" color={COLORS.indicator} />
+              </View>
+            ) : (
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={getuserDetailByNo}
+                extraData={getuserDetailByNo}
+                renderItem={userDataItem}
+                keyExtractor={item => item.id}
+                // ListEmptyComponent={userEmptyDetail}
+              />
+            )}
+          </View>
+
+          {getuserDetailByNo?.length > 0 ? (
+            <TouchableOpacity
+              style={styles.customerPhoneCon}
+              onPress={() => {
+                setCustCash(false), setCutsomerTotalAmount(true);
+              }}
+            >
+              <Text style={[styles.redrectingText, { color: COLORS.primary }]}>
+                {strings.posSale.rederecting}
+              </Text>
+              <Image source={loader} style={styles.loaderPic} />
+            </TouchableOpacity>
+          ) : (
+            <Text style={styles.redrectingText}>
+              {strings.posSale.rederecting}
+            </Text>
+          )}
+        </View>
+      );
+    } else if(getuserDetailByNo?.length === 0 && sendInventer && customerPhoneNo?.length > 3){
+      return  (
+        <View style={{ height: SH(400), width: SW(93) }}>
+        <View>
+          <Text style={styles.CusNotInSystem}>
+            {strings.posSale.CusNotInSystem}
+          </Text>
+          <Spacer space={SH(20)} />
+          <Text style={styles.firstNameAdd}>
+            {strings.posSale.firstName}
+          </Text>
+          <Spacer space={SH(7)} />
+          <TextInput
+            placeholder={strings.posSale.firstName}
+            value={userFName}
+            onChangeText={setUserFName}
+            style={styles.customerNameInput}
+          />
+          <Spacer space={SH(20)} />
+          <Text style={styles.firstNameAdd}>
+            {strings.posSale.lastname}
+          </Text>
+          <Spacer space={SH(7)} />
+          <TextInput
+            placeholder={strings.posSale.lastname}
+            value={userLName}
+            onChangeText={setUserLName}
+            style={styles.customerNameInput}
+          />
+          <Spacer space={SH(20)} />
+          <Text style={styles.firstNameAdd}>
+            {strings.posSale.emailAdd}
+          </Text>
+          <Spacer space={SH(7)} />
+          <TextInput
+            placeholder={strings.posSale.emailAdd}
+            value={userEAdd}
+            onChangeText={setUserEAdd}
+            style={styles.customerNameInput}
+          />
+
+          {isSendInvitationLoading ? (
+            <View style={{ marginTop: 10 }}>
+              <ActivityIndicator
+                size="large"
+                color={COLORS.indicator}
+              />
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={[
+                styles.checkoutButton,
+                { marginVertical: moderateScale(15) },
+              ]}
+              onPress={userContinueHandler}
+            >
+              <Text
+                style={[
+                  styles.checkoutText,
+                  { fontFamily: Fonts.Regular },
+                ]}
+              >
+                {strings.retail.continue}
+              </Text>
+              <Image source={checkArrow} style={styles.checkArrow} />
+            </TouchableOpacity>
+          )}
+        </View>
+        </View>
+      )
+    }
+  };
+
   const modalAccordingData = () => {
     if (custCash) {
       return (
@@ -1136,6 +1244,7 @@ export function Retails() {
               onPress={() => {
                 setCustCash(false);
                 setCustomerPhoneNo('');
+                setSendInventer(false);
                 dispatch(getUserDetailSuccess([]));
               }}
               style={styles.crossButtonPosition}
@@ -1147,150 +1256,111 @@ export function Retails() {
             style={[styles.custPaymentBodyCon, { alignItems: 'flex-start' }]}
           >
             <Spacer space={SH(60)} />
-            <Text style={styles.customerNOStyle}>
-              {strings.posSale.customerNo}
-            </Text>
-            <Spacer space={SH(10)} />
-            <View style={styles.customerInputWraper}>
-              {customerPhoneNo?.length > 5 ? null : (
-                <Image
-                  source={search_light}
-                  style={[styles.searchStyle, { tintColor: COLORS.darkGray }]}
-                />
-              )}
-              <TextInput
-                style={styles.customerPhoneInput}
-                value={customerPhoneNo}
-                onChangeText={ (customerPhoneNo) =>  {
-                  setCustomerPhoneNo(customerPhoneNo)
-                   phoneNumberSearchFun(customerPhoneNo)
-                  }}
-                // onChangeText={customerPhoneNo =>
-                //   setCustomerPhoneNo(customerPhoneNo)
-                // }
-                keyboardType="numeric"
-                maxLength={10}
-              />
-            </View>
-            {getuserDetailByNo?.length > 0 ? (
-              <View>
-                <View style={{ height: SH(300), width: SW(93) }}>
-                  {isUserDetailLoading ? (
-                    <View style={{ marginTop: 100 }}>
-                      <ActivityIndicator
-                        size="large"
-                        color={COLORS.indicator}
-                      />
-                    </View>
-                  ) : (
-                    <FlatList
-                      data={getuserDetailByNo}
-                      extraData={getuserDetailByNo}
-                      renderItem={userDataItem}
-                      keyExtractor={item => item.id}
-                      // ListEmptyComponent={userEmptyDetail}
-                    />
-                  )}
-                </View>
 
-                {getuserDetailByNo?.length > 0 ? (
-                  <TouchableOpacity
-                    style={styles.customerPhoneCon}
-                    onPress={() => {
-                      setCustCash(false), setCutsomerTotalAmount(true);
-                    }}
-                  >
-                    <Text
-                      style={[styles.redrectingText, { color: COLORS.primary }]}
-                    >
-                      {strings.posSale.rederecting}
-                    </Text>
-                    <Image source={loader} style={styles.loaderPic} />
-                  </TouchableOpacity>
-                ) : (
-                  <Text style={styles.redrectingText}>
-                    {strings.posSale.rederecting}
-                  </Text>
+            <View>
+              <Text style={styles.customerNOStyle}>
+                {strings.posSale.customerNo}
+              </Text>
+              <Spacer space={SH(10)} />
+              <View style={[styles.customerInputWraper, { borderWidth: 2 }]}>
+                {customerPhoneNo?.length > 5 ? null : (
+                  <Image
+                    source={search_light}
+                    style={[styles.searchStyle, { tintColor: COLORS.darkGray }]}
+                  />
                 )}
+                <TextInput
+                  style={styles.customerPhoneInput}
+                  value={customerPhoneNo}
+                  onChangeText={customerPhoneNo => {
+                    setCustomerPhoneNo(customerPhoneNo);
+                    phoneNumberSearchFun(customerPhoneNo);
+                  }}
+                  // onChangeText={customerPhoneNo =>
+                  //   setCustomerPhoneNo(customerPhoneNo)
+                  // }
+                  keyboardType="numeric"
+                  maxLength={10}
+                />
               </View>
-            ) : (
-              <View style={{ height: SH(400), width: SW(93) }}>
-                <View>
-                  <Text style={styles.CusNotInSystem}>
-                    {strings.posSale.CusNotInSystem}
-                  </Text>
-                  <Spacer space={SH(20)} />
-                  <Text style={styles.firstNameAdd}>
-                    {strings.posSale.firstName}
-                  </Text>
-                  <Spacer space={SH(7)} />
-                  <TextInput
-                    placeholder={strings.posSale.firstName}
-                    value={userFName}
-                    onChangeText={setUserFName}
-                    style={styles.customerNameInput}
-                  />
-                  <Spacer space={SH(20)} />
-                  <Text style={styles.firstNameAdd}>
-                    {strings.posSale.lastname}
-                  </Text>
-                  <Spacer space={SH(7)} />
-                  <TextInput
-                    placeholder={strings.posSale.lastname}
-                    value={userLName}
-                    onChangeText={setUserLName}
-                    style={styles.customerNameInput}
-                  />
-                  <Spacer space={SH(20)} />
-                  <Text style={styles.firstNameAdd}>
-                    {strings.posSale.emailAdd}
-                  </Text>
-                  <Spacer space={SH(7)} />
-                  <TextInput
-                    placeholder={strings.posSale.emailAdd}
-                    value={userEAdd}
-                    onChangeText={setUserEAdd}
-                    style={styles.customerNameInput}
-                  />
+            </View>
 
-                  {isSendInvitationLoading ? (
-                    <View style={{ marginTop: 10 }}>
-                      <ActivityIndicator
-                        size="large"
-                        color={COLORS.indicator}
-                      />
-                    </View>
-                  ) : (
-                    <TouchableOpacity
-                      style={[
-                        styles.checkoutButton,
-                        { marginVertical: moderateScale(15) },
-                      ]}
-                      onPress={userContinueHandler}
-                    >
-                      <Text
-                        style={[
-                          styles.checkoutText,
-                          { fontFamily: Fonts.Regular },
-                        ]}
-                      >
-                        {strings.retail.continue}
+            {changeView()}
+            {/* :
+                  (
+                    <View style={{borderWidth:1, height: SH(400), width: SW(93) }}>
+                    <View>
+                      <Text style={styles.CusNotInSystem}>
+                        {strings.posSale.CusNotInSystem}
                       </Text>
-                      <Image source={checkArrow} style={styles.checkArrow} />
-                    </TouchableOpacity>
-                  )}
-                </View>
-              </View>
-            )}
+                      <Spacer space={SH(20)} />
+                      <Text style={styles.firstNameAdd}>
+                        {strings.posSale.firstName}
+                      </Text>
+                      <Spacer space={SH(7)} />
+                      <TextInput
+                        placeholder={strings.posSale.firstName}
+                        value={userFName}
+                        onChangeText={setUserFName}
+                        style={styles.customerNameInput}
+                      />
+                      <Spacer space={SH(20)} />
+                      <Text style={styles.firstNameAdd}>
+                        {strings.posSale.lastname}
+                      </Text>
+                      <Spacer space={SH(7)} />
+                      <TextInput
+                        placeholder={strings.posSale.lastname}
+                        value={userLName}
+                        onChangeText={setUserLName}
+                        style={styles.customerNameInput}
+                      />
+                      <Spacer space={SH(20)} />
+                      <Text style={styles.firstNameAdd}>
+                        {strings.posSale.emailAdd}
+                      </Text>
+                      <Spacer space={SH(7)} />
+                      <TextInput
+                        placeholder={strings.posSale.emailAdd}
+                        value={userEAdd}
+                        onChangeText={setUserEAdd}
+                        style={styles.customerNameInput}
+                      />
+    
+                      {isSendInvitationLoading ? (
+                        <View style={{ marginTop: 10 }}>
+                          <ActivityIndicator
+                            size="large"
+                            color={COLORS.indicator}
+                          />
+                        </View>
+                      ) : (
+                        <TouchableOpacity
+                          style={[
+                            styles.checkoutButton,
+                            { marginVertical: moderateScale(15) },
+                          ]}
+                          onPress={userContinueHandler}
+                        >
+                          <Text
+                            style={[
+                              styles.checkoutText,
+                              { fontFamily: Fonts.Regular },
+                            ]}
+                          >
+                            {strings.retail.continue}
+                          </Text>
+                          <Image source={checkArrow} style={styles.checkArrow} />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                    </View>
+                  )
+                  :
+                  
+null */}
           </View>
         </View>
-        // <CustomerPhone
-        // customerPhone={customerPhoneNo}
-        // setCustomerPhone={customerPhoneNo => (setCustomerPhoneNo(customerPhoneNo), phoneNumberSearchFun(customerPhoneNo) )}
-        // crosshandler={()=> (setCustCash(false),setCustomerPhoneNo(''))}
-        // userItem={userItem}
-        // customerToRedirect={()=> (setCustCash(false), setCutsomerTotalAmount(true))}
-        // />
       );
     } else if (cutsomerTotalAmount) {
       return (

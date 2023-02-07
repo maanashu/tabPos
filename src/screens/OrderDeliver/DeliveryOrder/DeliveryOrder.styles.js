@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
   orderView: {
     backgroundColor: COLORS.orderStatusBackground,
     borderRadius: 8,
-    width: SW(80),
+    width: SW(65),
     height: SH(92),
     flexDirection: 'row',
   },
@@ -79,8 +79,8 @@ export const styles = StyleSheet.create({
     paddingLeft: SW(5),
   },
   orderStatusImage: {
-    width: SW(10),
-    height: SW(10),
+    width: SW(7),
+    height: SW(7),
     resizeMode: 'contain',
   },
   countView: {
@@ -90,13 +90,13 @@ export const styles = StyleSheet.create({
   countText: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonRegular,
-    fontSize: SF(18),
+    fontSize: SF(16),
   },
 
   statusText: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(13),
+    fontSize: SF(11),
     textAlign: 'center',
   },
   orderNumberMainView: {
