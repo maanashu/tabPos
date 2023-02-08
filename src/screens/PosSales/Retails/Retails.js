@@ -196,6 +196,18 @@ export function Retails() {
 
   const debouncedValue = useDebounce(customerPhoneNo, 2000);
 
+  
+//   setTimeout( () => {
+//   setTimePassed();
+//  },3000);
+
+//  const setTimePassed = () => {
+//   if(getuserDetailByNo?.length > 0){
+//     setCustCash(false), setCutsomerTotalAmount(true);
+//    }
+//  }
+  
+
   useEffect(() => {
     if (getuserDetailByNo?.length === 0) {
       setSendInventer(true);
@@ -299,9 +311,9 @@ export function Retails() {
   };
 
   const phoneNumberSearchFun = customerPhoneNo => {
-    if (customerPhoneNo?.length > 3) {
+    if (customerPhoneNo?.length > 9) {
       dispatch(getUserDetail(customerPhoneNo));
-    } else if (customerPhoneNo?.length < 4) {
+    } else if (customerPhoneNo?.length < 10) {
       dispatch(getUserDetailSuccess([]));
     }
   };
@@ -1211,6 +1223,7 @@ export function Retails() {
           {getuserDetailByNo?.length > 0 ? (
             <TouchableOpacity
               style={styles.customerPhoneCon}
+              
               onPress={() => {
                 setCustCash(false), setCutsomerTotalAmount(true);
               }}
@@ -1230,7 +1243,7 @@ export function Retails() {
     } else if (
       getuserDetailByNo?.length === 0 &&
       sendInventer &&
-      customerPhoneNo?.length > 3
+      customerPhoneNo?.length > 9
     ) {
       return (
         <View style={{ height: SH(400), width: SW(93) }}>
@@ -1570,11 +1583,9 @@ null */}
     <ScreenWrapper>
       {listOfItem ? (
         <ListOfItem
-          listOfItemCloseHandler={() => (
-            setListofItem(false),
-            setSendInventer(false),
-            dispatch(getUserDetailSuccess([]))
-          )}
+          listOfItemCloseHandler={() => 
+            setListofItem(false)
+          }
           checkOutHandler={createOrderHandler}
           jbritemList={allCartArray}
           price="67678"
