@@ -45,13 +45,14 @@ import {
 } from '@/assets';
 import { styles } from './Retails.styles';
 import { strings } from '@/localization';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import {
   tipData,
   amountReceivedData,
+  jbritemList,
 } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -70,6 +71,7 @@ import {
   getUserDetail,
   getUserDetailSuccess,
   sendInvitation,
+  createOrder,
 } from '@/actions/RetailAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
@@ -96,6 +98,7 @@ export function Retails() {
   const serProductArray = getRetailData?.SeaProductList;
   const allCartArray = getRetailData?.getAllCart?.poscart_products;
   const cartProductServiceId = getRetailData?.getAllCart?.service_id;
+  const cartUpperdat = getRetailData?.getAllCart;
   const cartID2 = getRetailData?.getAllCart?.id;
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const getTotalCart = getRetailData?.getAllCart?.poscart_products?.length;
@@ -194,11 +197,11 @@ export function Retails() {
   const debouncedValue = useDebounce(customerPhoneNo, 2000);
 
   useEffect(() => {
-     if(getuserDetailByNo?.length === 0){
-      setSendInventer(true)
-     } else {
-      setSendInventer(false)
-     }
+    if (getuserDetailByNo?.length === 0) {
+      setSendInventer(true);
+    } else {
+      setSendInventer(false);
+    }
   }, [getuserDetailByNo?.length]);
 
   const cartPlusOnPress = (id, index) => {
@@ -513,6 +516,39 @@ export function Retails() {
     setProductData(item);
     setProductModal(true);
     dispatch(getProductBundle(id));
+  };
+
+  const createOrderHandler = () => {
+    if (!cartIDdiscount) {
+      Toast.show({
+        text2: strings.posSale.addItemCart,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      const data = {
+        cartid: '1',
+        address_id: 1,
+        address_type: 'home',
+        address: '3157 Housing Board Colony Dhanas Chandigarh',
+        address_2: '3157 Housing Board Colony Dhanas Chandigarh',
+        city: 'Chandigarh',
+        state: 'Punjab',
+        zip: '140016',
+        country: 'India',
+        fax: '465',
+        shipping: 'Delivery',
+        date: '2022-03-12',
+        delivery_type_id: '2',
+        preffered_delivery_start_time: '02:00 PM',
+        preffered_delivery_end_time: '03:00 PM',
+        service_id: '1',
+        coordinates: [79.114052, 29.611231],
+        is_favourite: false,
+      };
+      dispatch(createOrder(data));
+    }
   };
 
   const menuHandler = () => {
@@ -1063,6 +1099,36 @@ export function Retails() {
     </View>
   );
 
+  const renderJbrItem = ({ item }) => (
+    <View style={styles.jbrListCon}>
+      <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
+        <View style={{ flexDirection: 'row', width: SW(60) }}>
+          <Image
+            source={
+              item.product_details.image
+                ? { uri: item.product_details.image }
+                : menu
+            }
+            style={styles.ashtonStyle}
+          />
+          <View style={{ paddingHorizontal: moderateScale(10) }}>
+            <Text style={[styles.jfrText, { color: COLORS.black }]}>
+              {item.product_details.name}
+            </Text>
+            <Text style={styles.boxText}>{strings.retail.box}</Text>
+          </View>
+        </View>
+        <Text style={styles.onexstyle}>
+          <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>{' '}
+          {item.qty}
+        </Text>
+        <Text style={[styles.jfrText, { color: COLORS.black }]}>
+          ${item.product_details.price}
+        </Text>
+      </View>
+    </View>
+  );
+
   const renderSearchItem = ({ item, index }) => {
     return (
       <SearchItemSelect
@@ -1125,7 +1191,7 @@ export function Retails() {
     if (getuserDetailByNo?.length > 0) {
       return (
         <View style={{ height: SH(400), width: SW(93) }}>
-          <View style={{height: SH(300), width: SW(93) }}>
+          <View style={{ height: SH(300), width: SW(93) }}>
             {isUserDetailLoading ? (
               <View style={{ marginTop: 100 }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
@@ -1161,76 +1227,68 @@ export function Retails() {
           )}
         </View>
       );
-    } else if(getuserDetailByNo?.length === 0 && sendInventer && customerPhoneNo?.length > 3){
-      return  (
+    } else if (
+      getuserDetailByNo?.length === 0 &&
+      sendInventer &&
+      customerPhoneNo?.length > 3
+    ) {
+      return (
         <View style={{ height: SH(400), width: SW(93) }}>
-        <View>
-          <Text style={styles.CusNotInSystem}>
-            {strings.posSale.CusNotInSystem}
-          </Text>
-          <Spacer space={SH(20)} />
-          <Text style={styles.firstNameAdd}>
-            {strings.posSale.firstName}
-          </Text>
-          <Spacer space={SH(7)} />
-          <TextInput
-            placeholder={strings.posSale.firstName}
-            value={userFName}
-            onChangeText={setUserFName}
-            style={styles.customerNameInput}
-          />
-          <Spacer space={SH(20)} />
-          <Text style={styles.firstNameAdd}>
-            {strings.posSale.lastname}
-          </Text>
-          <Spacer space={SH(7)} />
-          <TextInput
-            placeholder={strings.posSale.lastname}
-            value={userLName}
-            onChangeText={setUserLName}
-            style={styles.customerNameInput}
-          />
-          <Spacer space={SH(20)} />
-          <Text style={styles.firstNameAdd}>
-            {strings.posSale.emailAdd}
-          </Text>
-          <Spacer space={SH(7)} />
-          <TextInput
-            placeholder={strings.posSale.emailAdd}
-            value={userEAdd}
-            onChangeText={setUserEAdd}
-            style={styles.customerNameInput}
-          />
+          <View>
+            <Text style={styles.CusNotInSystem}>
+              {strings.posSale.CusNotInSystem}
+            </Text>
+            <Spacer space={SH(20)} />
+            <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
+            <Spacer space={SH(7)} />
+            <TextInput
+              placeholder={strings.posSale.firstName}
+              value={userFName}
+              onChangeText={setUserFName}
+              style={styles.customerNameInput}
+            />
+            <Spacer space={SH(20)} />
+            <Text style={styles.firstNameAdd}>{strings.posSale.lastname}</Text>
+            <Spacer space={SH(7)} />
+            <TextInput
+              placeholder={strings.posSale.lastname}
+              value={userLName}
+              onChangeText={setUserLName}
+              style={styles.customerNameInput}
+            />
+            <Spacer space={SH(20)} />
+            <Text style={styles.firstNameAdd}>{strings.posSale.emailAdd}</Text>
+            <Spacer space={SH(7)} />
+            <TextInput
+              placeholder={strings.posSale.emailAdd}
+              value={userEAdd}
+              onChangeText={setUserEAdd}
+              style={styles.customerNameInput}
+            />
 
-          {isSendInvitationLoading ? (
-            <View style={{ marginTop: 10 }}>
-              <ActivityIndicator
-                size="large"
-                color={COLORS.indicator}
-              />
-            </View>
-          ) : (
-            <TouchableOpacity
-              style={[
-                styles.checkoutButton,
-                { marginVertical: moderateScale(15) },
-              ]}
-              onPress={userContinueHandler}
-            >
-              <Text
+            {isSendInvitationLoading ? (
+              <View style={{ marginTop: 10 }}>
+                <ActivityIndicator size="large" color={COLORS.indicator} />
+              </View>
+            ) : (
+              <TouchableOpacity
                 style={[
-                  styles.checkoutText,
-                  { fontFamily: Fonts.Regular },
+                  styles.checkoutButton,
+                  { marginVertical: moderateScale(15) },
                 ]}
+                onPress={userContinueHandler}
               >
-                {strings.retail.continue}
-              </Text>
-              <Image source={checkArrow} style={styles.checkArrow} />
-            </TouchableOpacity>
-          )}
+                <Text
+                  style={[styles.checkoutText, { fontFamily: Fonts.Regular }]}
+                >
+                  {strings.retail.continue}
+                </Text>
+                <Image source={checkArrow} style={styles.checkArrow} />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
-        </View>
-      )
+      );
     }
   };
 
@@ -1511,7 +1569,29 @@ null */}
   return (
     <ScreenWrapper>
       {listOfItem ? (
-        <ListOfItem listOfItemCloseHandler={() => setListofItem(false)} />
+        <ListOfItem
+          listOfItemCloseHandler={() => (
+            setListofItem(false),
+            setSendInventer(false),
+            dispatch(getUserDetailSuccess([]))
+          )}
+          checkOutHandler={createOrderHandler}
+          jbritemList={allCartArray}
+          price="67678"
+          renderJbrItem={renderJbrItem}
+          totalAmount={
+            getCartAmount?.total_amount ? getCartAmount?.total_amount : '0.00'
+          }
+          subTotal={
+            getCartAmount?.products_price
+              ? getCartAmount?.products_price
+              : '0.00'
+          }
+          discount={getCartAmount?.discount ? getCartAmount?.discount : '0.00'}
+          tax={getCartAmount?.tax ? getCartAmount?.tax : '0.00'}
+          productItem={totalCart}
+          notes={cartUpperdat?.notes}
+        />
       ) : openScanner ? (
         <View style={styles.cameraContainer}>
           <CameraScreen

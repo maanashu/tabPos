@@ -21,35 +21,8 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { styles } from './Retails.styles';
 const windowHeight = Dimensions.get('window').height;
-import {
-    jbritemList,
-  } from '@/constants/flatListData';
 
-export function ListOfItem({listOfItemCloseHandler}) {
-
-    const renderJbrItem = ({ item }) => (
-        <View style={styles.jbrListCon}>
-          <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
-            <View style={{ flexDirection: 'row', width: SW(60) }}>
-              <Image source={menu} style={styles.ashtonStyle} />
-              <View style={{ paddingHorizontal: moderateScale(10) }}>
-                <Text style={[styles.jfrText, { color: COLORS.black }]}>
-                  {item.name}
-                </Text>
-                <Text style={styles.boxText}>{strings.retail.box}</Text>
-              </View>
-            </View>
-            <Text style={styles.onexstyle}>
-              <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>
-              {strings.posSale.onex}
-            </Text>
-            <Text style={[styles.jfrText, { color: COLORS.black }]}>
-              {item.price}
-            </Text>
-          </View>
-        </View>
-      );
-
+export function ListOfItem({listOfItemCloseHandler, checkOutHandler, jbritemList,renderJbrItem,notes,  totalAmount, subTotal, discount, tax, productItem}) {
   return (
      <View style={styles.container}>
           <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -67,7 +40,7 @@ export function ListOfItem({listOfItemCloseHandler}) {
                     <Text style={styles.listOfItems}>
                       {strings.posSale.listOfItem}
                     </Text>
-                    <Text style={styles.walletItem}>4 {strings.retail.items}</Text>
+                    <Text style={styles.walletItem}>{productItem} {strings.retail.items}</Text>
                   </View>
                   <Text style={styles.rewardPointStyle}>
                     {strings.posSale.rewardpoint}
@@ -78,6 +51,7 @@ export function ListOfItem({listOfItemCloseHandler}) {
                 <View>
                   <FlatList
                     data={jbritemList}
+                    extraData={jbritemList}
                     renderItem={renderJbrItem}
                     keyExtractor={item => item.id}
                   />
@@ -86,7 +60,7 @@ export function ListOfItem({listOfItemCloseHandler}) {
                 <View>
                   <Text style={styles.walletItem}>{strings.posSale.notes}</Text>
                   <Text style={styles.itmybdaystyle}>
-                    {strings.posSale.itMynday}
+                  {notes}
                   </Text>
                 </View>
               </View>
@@ -177,21 +151,21 @@ export function ListOfItem({listOfItemCloseHandler}) {
                       <Text style={styles.smalldarkText}>
                         {strings.retail.subTotal}
                       </Text>
-                      <Text style={styles.smallLightText}>$4.00</Text>
+                      <Text style={styles.smallLightText}>${subTotal}</Text>
                     </View>
                     <Spacer space={SH(8)} />
                     <View style={styles.bottomSubCon}>
                       <Text style={styles.smallLightText}>
                         {strings.retail.discount}
                       </Text>
-                      <Text style={styles.smallLightText}>-$2.00</Text>
+                      <Text style={styles.smallLightText}>-${discount}</Text>
                     </View>
                     <Spacer space={SH(8)} />
                     <View style={styles.bottomSubCon}>
                       <Text style={styles.smallLightText}>
                         {strings.retail.tax}
                       </Text>
-                      <Text style={styles.smallLightText}>$4.00</Text>
+                      <Text style={styles.smallLightText}>${tax}</Text>
                     </View>
                     <Spacer space={SH(8)} />
                     <View style={styles.hr}></View>
@@ -205,17 +179,17 @@ export function ListOfItem({listOfItemCloseHandler}) {
                       <Text
                         style={[styles.smalldarkText, { fontSize: SF(16) }]}
                       >
-                        $254.60
+                        ${totalAmount}
                       </Text>
                     </View>
                     <Spacer space={SH(8)} />
                     <View style={styles.bottomSubCon}>
                       <Text style={styles.smallLightText}>
-                        4 {strings.retail.items}
+                        {productItem} {strings.retail.items}
                       </Text>
                     </View>
                     <Spacer space={SH(8)} />
-                    <TouchableOpacity style={styles.checkoutButton}>
+                    <TouchableOpacity style={styles.checkoutButton} onPress={checkOutHandler}>
                       <Text style={styles.checkoutText}>
                         {strings.retail.checkOut}
                       </Text>

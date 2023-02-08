@@ -451,6 +451,55 @@ export class RetailController {
     });
   }
 
+  static async createOrder(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
+      const body = {
+        cart_id: data.cartid,
+        address_id: data.address_id,
+        address_type: data.address_type,
+        address: data.address,
+        address_2: data.address_2,
+        city: data.city,
+        state: data.state,
+        zip: data.zip,
+        country: data.country,
+        fax: data.fax,
+        shipping: data.shipping,
+        date: data.date,
+        delivery_type_id: data.delivery_type_id,
+        preffered_delivery_start_time: data.preffered_delivery_start_time,
+        preffered_delivery_end_time: data.preffered_delivery_end_time,
+        service_id: data.service_id,
+        coordinates: data.coordinates,
+        is_favourite: data.is_favourite,
+      };
+       console.log('body', body),
+       console.log('endpoint', endpoint);
+        HttpClient.post(endpoint, body)
+        .then(response => {
+          if (response?.status_code === 200) {
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: response?.msg,
+              visibilityTime: 2000,
+            });
+          }
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
+        });
+    });
+  }
+
   static async logout() {
     return new Promise(resolve => {
       setTimeout(resolve, 500);

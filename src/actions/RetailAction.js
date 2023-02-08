@@ -184,6 +184,19 @@ const sendInvitationError = error => ({
   payload: { error },
 });
 
+const createOrderRequest = () => ({
+  type: TYPES.CREATE_ORDER_REQUEST,
+  payload: null,
+});
+const createOrderSuccess = ()  => ({
+  type: TYPES.CREATE_ORDER_SUCCESS,
+  payload: {  },
+});
+const createOrderError = error => ({
+  type: TYPES.CREATE_ORDER_ERROR,
+  payload: { error },
+});
+
 export const getCategory = () => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -323,6 +336,17 @@ export const sendInvitation = (data) => async dispatch => {
       dispatch(sendInvitationSuccess(res));
   } catch (error) {
       dispatch(sendInvitationError(error.message));
+  }
+};
+
+export const createOrder = (data) => async dispatch => {
+  dispatch(createOrderRequest());
+  try {
+      const res = await RetailController.createOrder(data);
+      dispatch(createOrderSuccess(res));
+      console.log('res', res);
+  } catch (error) {
+      dispatch(createOrderError(error.message));
   }
 };
 

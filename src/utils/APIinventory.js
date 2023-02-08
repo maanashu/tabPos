@@ -32,6 +32,7 @@ export const ApiOrderInventory = {
     addDiscountToCart:'poscarts/add_discount',
     getProductBundle:'bundle_products',
     getOrders:'orders/pos',
-    acceptOrder: 'orders/pos/change_status'
+    acceptOrder: 'orders/pos/change_status',
+    createOrder:'orders/pos/order'
 
 }
