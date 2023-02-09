@@ -176,7 +176,6 @@ export function Retails() {
   const [itemIndex, setItemIndex] = useState();
   const [temp, setTemp] = useState(
     []
-    // productArray?.map(item => ({ ...item, qty: 0 }))
   );
   const [againRemove, setAgainRemove] = useState(false);
   const [count, setCount] = useState(cartData?.qty);
@@ -189,6 +188,7 @@ export function Retails() {
   const [result, setResult] = useState([]);
   const [openScanner, setOpenScanner] = useState(false);
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
+  const customer = getuserDetailByNo[0]?.user_profiles;
   const [userEAdd, setUserEAdd] = useState('');
   const [userLName, setUserLName] = useState('');
   const [userFName, setUserFName] = useState('');
@@ -540,7 +540,7 @@ export function Retails() {
       });
     } else {
       const data = {
-        cartid: '1',
+        cartid: cartIDdiscount,
         address_id: 1,
         address_type: 'home',
         address: '3157 Housing Board Colony Dhanas Chandigarh',
@@ -555,7 +555,7 @@ export function Retails() {
         delivery_type_id: '2',
         preffered_delivery_start_time: '02:00 PM',
         preffered_delivery_end_time: '03:00 PM',
-        service_id: '1',
+        service_id: cartProductServiceId,
         coordinates: [79.114052, 29.611231],
         is_favourite: false,
       };
@@ -1192,8 +1192,7 @@ export function Retails() {
           <Spacer space={SH(5)} />
           <Text style={styles.cusAddText}>{item.email}</Text>
           <Spacer space={SH(8)} />
-          <Text style={styles.cusAddText}>{strings.posSale.customerAddr}</Text>
-          <Text style={styles.cusAddText}>{strings.posSale.customerAddr2}</Text>
+          <Text style={styles.cusAddText}>{item?.user_profiles?.current_address}</Text>
         </View>
       </View>
     </View>
@@ -1203,7 +1202,7 @@ export function Retails() {
     if (getuserDetailByNo?.length > 0) {
       return (
         <View style={{ height: SH(400), width: SW(93) }}>
-          <View style={{ height: SH(300), width: SW(93) }}>
+          <View style={{ height: SH(280), width: SW(93) }}>
             {isUserDetailLoading ? (
               <View style={{ marginTop: 100 }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
@@ -1357,79 +1356,7 @@ export function Retails() {
             </View>
 
             {changeView()}
-            {/* :
-                  (
-                    <View style={{borderWidth:1, height: SH(400), width: SW(93) }}>
-                    <View>
-                      <Text style={styles.CusNotInSystem}>
-                        {strings.posSale.CusNotInSystem}
-                      </Text>
-                      <Spacer space={SH(20)} />
-                      <Text style={styles.firstNameAdd}>
-                        {strings.posSale.firstName}
-                      </Text>
-                      <Spacer space={SH(7)} />
-                      <TextInput
-                        placeholder={strings.posSale.firstName}
-                        value={userFName}
-                        onChangeText={setUserFName}
-                        style={styles.customerNameInput}
-                      />
-                      <Spacer space={SH(20)} />
-                      <Text style={styles.firstNameAdd}>
-                        {strings.posSale.lastname}
-                      </Text>
-                      <Spacer space={SH(7)} />
-                      <TextInput
-                        placeholder={strings.posSale.lastname}
-                        value={userLName}
-                        onChangeText={setUserLName}
-                        style={styles.customerNameInput}
-                      />
-                      <Spacer space={SH(20)} />
-                      <Text style={styles.firstNameAdd}>
-                        {strings.posSale.emailAdd}
-                      </Text>
-                      <Spacer space={SH(7)} />
-                      <TextInput
-                        placeholder={strings.posSale.emailAdd}
-                        value={userEAdd}
-                        onChangeText={setUserEAdd}
-                        style={styles.customerNameInput}
-                      />
-    
-                      {isSendInvitationLoading ? (
-                        <View style={{ marginTop: 10 }}>
-                          <ActivityIndicator
-                            size="large"
-                            color={COLORS.indicator}
-                          />
-                        </View>
-                      ) : (
-                        <TouchableOpacity
-                          style={[
-                            styles.checkoutButton,
-                            { marginVertical: moderateScale(15) },
-                          ]}
-                          onPress={userContinueHandler}
-                        >
-                          <Text
-                            style={[
-                              styles.checkoutText,
-                              { fontFamily: Fonts.Regular },
-                            ]}
-                          >
-                            {strings.retail.continue}
-                          </Text>
-                          <Image source={checkArrow} style={styles.checkArrow} />
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                    </View>
-                  )
-                  :
-                  
-null */}
+            
           </View>
         </View>
       );
@@ -1584,7 +1511,7 @@ null */}
       {listOfItem ? (
         <ListOfItem
           listOfItemCloseHandler={() => 
-            setListofItem(false)
+            (setListofItem(false), setCustomerPhoneNo(false))
           }
           checkOutHandler={createOrderHandler}
           jbritemList={allCartArray}
@@ -1602,6 +1529,11 @@ null */}
           tax={getCartAmount?.tax ? getCartAmount?.tax : '0.00'}
           productItem={totalCart}
           notes={cartUpperdat?.notes}
+          customerProfileImage={customer?.profile_photo ? { uri : customer?.profile_photo} : userImage}
+          customerName={customer?.firstname}
+          customerMobileNo={customer?.phone_no}
+          customerEmail={getuserDetailByNo[0]?.email}
+          customerAddr={customer?.current_address}
         />
       ) : openScanner ? (
         <View style={styles.cameraContainer}>

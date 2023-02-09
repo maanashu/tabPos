@@ -476,6 +476,7 @@ export class RetailController {
       };
        console.log('body', body),
        console.log('endpoint', endpoint);
+       return
         HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.status_code === 200) {

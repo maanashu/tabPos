@@ -22,7 +22,7 @@ import { strings } from '@/localization';
 import { styles } from './Retails.styles';
 const windowHeight = Dimensions.get('window').height;
 
-export function ListOfItem({listOfItemCloseHandler, checkOutHandler, jbritemList,renderJbrItem,notes,  totalAmount, subTotal, discount, tax, productItem}) {
+export function ListOfItem({listOfItemCloseHandler, customerProfileImage,customerAddr, customerEmail,  customerMobileNo,  customerName,  checkOutHandler, jbritemList,renderJbrItem,notes,  totalAmount, subTotal, discount, tax, productItem}) {
   return (
      <View style={styles.container}>
           <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -111,25 +111,22 @@ export function ListOfItem({listOfItemCloseHandler, checkOutHandler, jbritemList
                     </Text>
                     <Spacer space={SH(10)} />
                     <View style={styles.customerImage}>
-                      <Image source={jbrCustomer} style={styles.jbrCustomer} />
+                      <Image source={customerProfileImage} style={styles.jbrCustomer} />
                       <View style={{ paddingHorizontal: moderateScale(8) }}>
                         <Text style={[styles.cusAddText, { fontSize: SF(18) }]}>
-                          {strings.posSale.customerName}
+                          {customerName ? customerName : 'userName'}
                         </Text>
                         <Spacer space={SH(8)} />
                         <Text style={styles.cusAddText}>
-                          {strings.posSale.customerMobileNo}
+                          {customerMobileNo ? customerMobileNo: '000-000-0000'}
                         </Text>
                         <Spacer space={SH(5)} />
                         <Text style={styles.cusAddText}>
-                          {strings.posSale.customerEmail}
+                          {customerEmail}
                         </Text>
                         <Spacer space={SH(8)} />
                         <Text style={styles.cusAddText}>
-                          {strings.posSale.customerAddr}
-                        </Text>
-                        <Text style={styles.cusAddText}>
-                          {strings.posSale.customerAddr2}
+                          {customerAddr}
                         </Text>
                       </View>
                     </View>
