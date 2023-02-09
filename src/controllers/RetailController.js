@@ -38,6 +38,7 @@ export class RetailController {
         ApiProductInventory.getSubCategory +
         `?category_id=` +
         `${selectedId}`;
+        console.log('endpoint==========', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           if (response === '') {
@@ -140,7 +141,31 @@ export class RetailController {
           reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
-  }
+  };
+
+
+  static async getProductDefault( sellerID ) {
+    return new Promise((resolve, reject) => {
+      const endpoint =  PRODUCT_URL + ApiProductInventory.getProduct +`/${sellerID}?page=1&limit=10`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          if (response.status === 204) {
+            console.log('no content');
+            resolve([]);
+          }
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  };
 
   static async getSearchProduct(search, sellerID) {
     return new Promise((resolve, reject) => {

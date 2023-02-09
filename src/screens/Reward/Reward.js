@@ -124,3 +124,19 @@ export function Reward() {
   );
 }
 
+
+// useEffect(() => {
+//   setSelect(array)
+// }, [])
+
+// const SelectCategory = (item) => {
+//    const newItem = select.map((val) => {
+//      if (val.id === item.id) {
+//        return { ...val, selectedId: !val.selectedId };
+//      } else { 
+//       return val;
+//     }
+//   });
+//      setSelect(newItem)
+//     };
+

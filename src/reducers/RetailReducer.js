@@ -39,6 +39,12 @@ export const retailReducer = (state = {INITIALSTATE}, { payload, type }) => {
               products: payload?.productList?.payload?.data ?? [],
             };
 
+            case TYPES.GET_PRODUCTDEF_SUCCESS:
+              return {
+                ...state,
+                products: payload?.productList?.payload?.data ?? [],
+              };
+
             case TYPES.GET_SEAPRODUCT_SUCCESS:
               return {
                 ...state,

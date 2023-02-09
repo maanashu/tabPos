@@ -54,6 +54,19 @@ const getProductError = error => ({
   payload: { error },
 });
 
+const getProductDefRequest = () => ({
+  type: TYPES.GET_PRODUCTDEF_REQUEST,
+  payload: null,
+});
+const getProductDefSuccess = productList => ({
+  type: TYPES.GET_PRODUCTDEF_SUCCESS,
+  payload: { productList },
+});
+const getProductDefError = error => ({
+  type: TYPES.GET_PRODUCTDEF_ERROR,
+  payload: { error },
+});
+
 const getSeaProductRequest = () => ({
   type: TYPES.GET_SEAPRODUCT_REQUEST,
   payload: null,
@@ -197,6 +210,11 @@ const createOrderError = error => ({
   payload: { error },
 });
 
+const clearRetailStore = () => ({
+  type: TYPES.CLEAR_RETAIL_STORE,
+  payload: null,
+});
+
 export const getCategory = () => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -233,6 +251,16 @@ export const getProduct = (selectedId ,subSelectedId ,brandSelectedId ,sellerID)
       dispatch(getProductSuccess(res));
   } catch (error) {
       dispatch(getProductError(error.message));
+  }
+};
+
+export const getProductDefault = (sellerID) => async dispatch => {
+  dispatch(getProductDefRequest());
+  try {
+      const res = await RetailController.getProductDefault(sellerID);
+      dispatch(getProductDefSuccess(res));
+  } catch (error) {
+      dispatch(getProductDefError(error.message));
   }
 };
 
@@ -357,3 +385,7 @@ export const logout = () => async dispatch => {
     dispatch(clearStore());
   }
 };
+
+export const retailclearstore = () => async dispatch => {
+    dispatch(clearRetailStore());
+}

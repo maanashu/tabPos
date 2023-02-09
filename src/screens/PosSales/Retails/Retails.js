@@ -72,6 +72,8 @@ import {
   getUserDetailSuccess,
   sendInvitation,
   createOrder,
+  getProductDefault,
+  retailclearstore,
 } from '@/actions/RetailAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
@@ -94,7 +96,7 @@ export function Retails() {
   const array = getRetailData?.categories;
   const subCategoriesArray = getRetailData?.subCategories ?? [];
   const brandArray = getRetailData?.brands ?? [];
-  const products = getRetailData?.products ?? [];
+  const products = getRetailData?.products;
   const serProductArray = getRetailData?.SeaProductList;
   const allCartArray = getRetailData?.getAllCart?.poscart_products;
   const cartProductServiceId = getRetailData?.getAllCart?.service_id;
@@ -140,7 +142,8 @@ export function Retails() {
   const [posSearch, setPosSearch] = useState(false);
   const [searchProDetail, setSearchProDetail] = useState(false);
   const [searchProViewDetail, setSearchProViewDetail] = useState(false);
-  const [selectedId, setSelectedId] = useState(1);
+  const [selectedId, setSelectedId] = useState(null);
+  console.log('selectedId',selectedId);
   const [subSelectedId, setSubSelectedId] = useState(null);
   const [brandSelectedId, setBrandSelectedId] = useState(null);
 
@@ -196,18 +199,6 @@ export function Retails() {
 
   const debouncedValue = useDebounce(customerPhoneNo, 2000);
 
-  
-//   setTimeout( () => {
-//   setTimePassed();
-//  },3000);
-
-//  const setTimePassed = () => {
-//   if(getuserDetailByNo?.length > 0){
-//     setCustCash(false), setCutsomerTotalAmount(true);
-//    }
-//  }
-  
-
   useEffect(() => {
     if (getuserDetailByNo?.length === 0) {
       setSendInventer(true);
@@ -261,12 +252,11 @@ export function Retails() {
     );
   }, [getRetailData?.products]);
 
-  useEffect(id => {
+  useEffect(() => {
     dispatch(getCategory());
-    dispatch(getSubCategory(1));
-    dispatch(getBrand(1));
-    dispatch(getProduct(1, subSelectedId, brandSelectedId, sellerID));
+    dispatch(getProductDefault(sellerID));
     dispatch(getAllCart());
+    dispatch(retailclearstore()) 
   }, []);
 
   const categoryFunction = id => {
@@ -773,10 +763,10 @@ export function Retails() {
   );
 
   const categoryItem = ({ item }) => {
-    const backgroundColor =
-      item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
-    const borderColor = item.id === selectedId ? COLORS.primary : COLORS.white;
-    const color = item.id === selectedId ? COLORS.white : COLORS.gerySkies;
+    const backgroundColor = 
+    item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
+    const borderColor = item.id ===  selectedId ? COLORS.primary : COLORS.white;
+    const color = item.id ===  selectedId ? COLORS.white : COLORS.gerySkies;
     const fontFamily = item.id === selectedId ? Fonts.SemiBold : Fonts.Regular;
 
     return (
