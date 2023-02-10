@@ -143,7 +143,6 @@ export function Retails() {
   const [searchProDetail, setSearchProDetail] = useState(false);
   const [searchProViewDetail, setSearchProViewDetail] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  console.log('selectedId',selectedId);
   const [subSelectedId, setSubSelectedId] = useState(null);
   const [brandSelectedId, setBrandSelectedId] = useState(null);
 
@@ -253,25 +252,29 @@ export function Retails() {
   }, [getRetailData?.products]);
 
   useEffect(() => {
-    dispatch(getCategory());
+    dispatch(retailclearstore());
+    dispatch(getCategory(sellerID));
     dispatch(getProductDefault(sellerID));
-    dispatch(getAllCart());
-    dispatch(retailclearstore()) 
+    // dispatch(getAllCart());
   }, []);
-
+ 
   const categoryFunction = id => {
-    dispatch(getSubCategory(id));
-    dispatch(getBrand(id));
-    dispatch(getProduct(id, subSelectedId, brandSelectedId, sellerID));
-    setSelectedId(id);
+      {id === null  ?  dispatch(getProductDefault(sellerID)):  dispatch(getProduct(id, subSelectedId, brandSelectedId, sellerID)),   dispatch(getSubCategory(sellerID,id)),  dispatch(getBrand(sellerID, id)), setSelectedId(id)    }
   };
 
   const subCategoryFunction = id => {
-    dispatch(getProduct(selectedId, id, brandSelectedId, sellerID));
-    setSubSelectedId(id);
+    console.log('brandSelectedId---------',brandSelectedId)
+    if(brandSelectedId){
+       setBrandSelectedId(null)
+      }
+    else 
+    {
+      id === null ?  dispatch(getProduct(selectedId,id, brandSelectedId, sellerID)) :  dispatch(getProduct(selectedId, id, brandSelectedId, sellerID)), setSubSelectedId(id)
+    }
   };
 
   const brandFunction = id => {
+    console.log('ghj', id)
     if (!subSelectedId) {
       Toast.show({
         text2: strings.valiadtion.pleaseSelectSubCat,
@@ -280,8 +283,9 @@ export function Retails() {
         visibilityTime: 1500,
       });
     } else if (subSelectedId) {
-      dispatch(getProduct(selectedId, subSelectedId, id, sellerID));
-      setBrandSelectedId(id);
+      
+        id === null ? dispatch(getProduct(selectedId, subSelectedId, id, sellerID)) :  dispatch(getProduct(selectedId, subSelectedId, id, sellerID)), setBrandSelectedId(id)
+      
     }
   };
 
@@ -352,6 +356,9 @@ export function Retails() {
     isLoadingSelector([TYPES.GET_BRAND], state)
   );
   const isProductLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_PRODUCTDEF], state)
+  );
+  const isProductDefLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_PRODUCT], state)
   );
   const isSearchProLoading = useSelector(state =>
@@ -772,8 +779,7 @@ export function Retails() {
     return (
       <CategoryItemSelect
         item={item}
-        onPress={() => (
-          categoryFunction(item.id),
+        onPress={() => (categoryFunction( selectedId === item.id ? null : item.id),
           setSubSelectedId(null),
           setBrandSelectedId(null)
         )}
@@ -827,7 +833,7 @@ export function Retails() {
     return (
       <SubCategoryItemSelect
         item={item}
-        onPress={() => (subCategoryFunction(item.id), setBrandSelectedId(null))}
+        onPress={() => (subCategoryFunction( subSelectedId === item.id ? null : item.id))}
         backgroundColor={{ backgroundColor }}
         borderColor={{ borderColor }}
         color={{ color }}
@@ -877,7 +883,7 @@ export function Retails() {
     return (
       <BrandItemSelect
         item={item}
-        onPress={() => brandFunction(item.id)}
+        onPress={() => brandFunction( brandSelectedId === item.id ? null : item.id)}
         backgroundColor={{ backgroundColor }}
         borderColor={{ borderColor }}
         color={{ color }}
@@ -1626,60 +1632,80 @@ export function Retails() {
                   )}
                 </View>
               </View>
-              <View style={styles.categoryCon}>
-                <View style={styles.flexAlign}>
-                  <Text style={styles.categoryHeader}>
-                    {strings.posSale.subCategory}
-                  </Text>
-                  {isSubLoading ? (
-                    <View>
-                      <Text style={styles.emptyListText}>
-                        {strings.valiadtion.loading}
-                      </Text>
-                    </View>
-                  ) : (
-                    <FlatList
-                      data={subCategoriesArray}
-                      extraData={subCategoriesArray}
-                      renderItem={subCategoryItem}
-                      keyExtractor={item => item.id}
-                      horizontal
-                      bounces={false}
-                      showsHorizontalScrollIndicator={false}
-                      ListEmptyComponent={renderEmptyContainer}
-                    />
-                  )}
+              {
+                selectedId 
+                ?
+                (
+                  <View style={styles.categoryCon}>
+                  <View style={styles.flexAlign}>
+                    <Text style={styles.categoryHeader}>
+                      {strings.posSale.subCategory}
+                    </Text>
+                    {isSubLoading ? (
+                      <View>
+                        <Text style={styles.emptyListText}>
+                          {strings.valiadtion.loading}
+                        </Text>
+                      </View>
+                    ) : (
+                      <FlatList
+                        data={subCategoriesArray}
+                        extraData={subCategoriesArray}
+                        renderItem={subCategoryItem}
+                        keyExtractor={item => item.id}
+                        horizontal
+                        bounces={false}
+                        showsHorizontalScrollIndicator={false}
+                        ListEmptyComponent={renderEmptyContainer}
+                      />
+                    )}
+                  </View>
                 </View>
-              </View>
-              <View style={styles.categoryCon}>
-                <View style={styles.flexAlign}>
-                  <Text style={styles.categoryHeader}>
-                    {strings.posSale.brand}
-                  </Text>
-                  {isCatLoading ? (
-                    <View>
-                      <Text style={styles.emptyListText}>
-                        {strings.valiadtion.loading}
-                      </Text>
-                    </View>
-                  ) : (
-                    <FlatList
-                      data={brandArray}
-                      extraData={brandArray}
-                      renderItem={brandItem}
-                      keyExtractor={item => item.id}
-                      horizontal
-                      showsHorizontalScrollIndicator={false}
-                      ListEmptyComponent={renderEmptyContainer}
-                    />
-                  )}
+              )
+                 :
+                null
+
+               }
+
+              {
+                selectedId
+                ?
+                (
+                  <View style={styles.categoryCon}>
+                  <View style={styles.flexAlign}>
+                    <Text style={styles.categoryHeader}>
+                      {strings.posSale.brand}
+                    </Text>
+                    {isCatLoading ? (
+                      <View>
+                        <Text style={styles.emptyListText}>
+                          {strings.valiadtion.loading}
+                        </Text>
+                      </View>
+                    ) : (
+                      <FlatList
+                        data={brandArray}
+                        extraData={brandArray}
+                        renderItem={brandItem}
+                        keyExtractor={item => item.id}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        ListEmptyComponent={renderEmptyContainer}
+                      />
+                    )}
+                  </View>
                 </View>
-              </View>
+                )
+                :
+                null
+              } 
+             
+             
             </View>
           )}
           {/* end  category  section */}
           <View style={styles.productbody}>
-            {isProductLoading ? (
+            {isProductLoading || isProductDefLoading  ? (
               <View style={{ marginTop: 100 }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
               </View>

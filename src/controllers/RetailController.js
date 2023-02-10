@@ -12,9 +12,9 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class RetailController {
-  static async getCategory() {
+  static async getCategory(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint = PRODUCT_URL + ApiProductInventory.getCategory;
+      const endpoint = PRODUCT_URL + ApiProductInventory.getCategory + `?page=1&limit=20&seller_id=${sellerID}&main_category=true`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -31,14 +31,9 @@ export class RetailController {
     });
   }
 
-  static async getSubCategory(selectedId) {
+  static async getSubCategory(sellerID, selectedId) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.getSubCategory +
-        `?category_id=` +
-        `${selectedId}`;
-        console.log('endpoint==========', endpoint);
+      const endpoint = PRODUCT_URL + ApiProductInventory.getSubCategory + `?page=1&limit=20&category_id=${selectedId}&seller_id=${sellerID}&main_category=true`;
       HttpClient.get(endpoint)
         .then(response => {
           if (response === '') {
@@ -58,13 +53,11 @@ export class RetailController {
     });
   }
 
-  static async getBrand(selectedId) {
+  static async getBrand(sellerID, selectedId) {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
-        ApiProductInventory.getBrand +
-        `?page=1&limit=10&category_id=` +
-        `${selectedId}`;
+        ApiProductInventory.getBrand + `?page=1&limit=10&seller_id=${sellerID}&category_id=${selectedId}`
       HttpClient.get(endpoint)
         .then(response => {
           if (response.status === 204) {
@@ -100,19 +93,17 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getProduct +
-          `/${sellerID}?page=1&limit=10&category_id=${selectedId}`
+          `?page=1&limit=10&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       } else if (selectedId && subSelectedId && sellerID && !brandSelectedId) {
         return (
           PRODUCT_URL +
-          ApiProductInventory.getProduct +
-          `/${sellerID}?page=1&limit=10&category_id=${selectedId}&sub_category_id=${subSelectedId}`
+          ApiProductInventory.getProduct + `?page=1&limit=10&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       } else if (selectedId && subSelectedId && brandSelectedId && sellerID) {
         return (
           PRODUCT_URL +
-          ApiProductInventory.getProduct +
-          `/${sellerID}?page=1&limit=10&category_id=${selectedId}&sub_category_id=${subSelectedId}&brand_id=${brandSelectedId}`
+          ApiProductInventory.getProduct +`?page=1&limit=10&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       }
     };
@@ -123,6 +114,7 @@ export class RetailController {
         brandSelectedId,
         sellerID
       );
+      console.log('endpoint',endpoint)
       HttpClient.get(endpoint)
         .then(response => {
           if (response.status === 204) {
@@ -146,7 +138,8 @@ export class RetailController {
 
   static async getProductDefault( sellerID ) {
     return new Promise((resolve, reject) => {
-      const endpoint =  PRODUCT_URL + ApiProductInventory.getProduct +`/${sellerID}?page=1&limit=10`;
+      const endpoint =  PRODUCT_URL + ApiProductInventory.getProduct +`?page=1&limit=10&seller_id=${sellerID}`;
+      console.log
       HttpClient.get(endpoint)
         .then(response => {
           if (response.status === 204) {

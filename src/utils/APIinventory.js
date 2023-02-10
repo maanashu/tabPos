@@ -1,7 +1,7 @@
-export const USER_URL = 'https://apiuserservice.jobr.com/api/v1/';
+export const USER_URL = 'https://stgapiuserservice.jobr.com/api/v1/';
 // export const SUPPORT_URL = 'https://apisupport.jobr.com/api/v1/';
-export const ORDER_URL = 'https://apiorder.jobr.com:8004/api/v1/';
-export const PRODUCT_URL = 'https://apiproductmgmt.jobr.com/api/v1/'
+export const ORDER_URL = 'https://stgdapiorder.jobr.com:8024/api/v1/';
+export const PRODUCT_URL = 'https://stgapiproductmgmt.jobr.com/api/v1/'
 
 export const ApiUserInventory = {
     verifyPhone:'user_phones/',
@@ -9,16 +9,13 @@ export const ApiUserInventory = {
     getProfile:'users/',
     getUserDetail:'users/get_users/by_phone',
     sendInvitation:'users/send_invitation'
-    
-    
- 
 };
 
 export const ApiProductInventory = {
     getCategory:'categories',
     getSubCategory:'categories',
     getBrand:'brands',
-    getProduct:'products/pos'
+    getProduct:'products'
 };
 
 // export const ApiSupportInventory = {
@@ -34,5 +31,4 @@ export const ApiOrderInventory = {
     getOrders:'orders/pos',
     acceptOrder: 'orders/pos/change_status',
     createOrder:'orders/pos/order'
-
 }

@@ -215,30 +215,30 @@ const clearRetailStore = () => ({
   payload: null,
 });
 
-export const getCategory = () => async dispatch => {
+export const getCategory = (sellerID) => async dispatch => {
   dispatch(getCategoryRequest());
   try {
-      const res = await RetailController.getCategory();
+      const res = await RetailController.getCategory(sellerID);
       dispatch(getCategorySuccess(res));
   } catch (error) {
       dispatch(getCategoryError(error.message));
   }
 };
 
-export const getSubCategory = (selectedId) => async dispatch => {
+export const getSubCategory = (sellerID, selectedId) => async dispatch => {
   dispatch(getSubCategoryRequest());
   try {
-      const res = await RetailController.getSubCategory(selectedId);
+      const res = await RetailController.getSubCategory(sellerID, selectedId);
       dispatch(getSubCategorySuccess(res));
   } catch (error) {
       dispatch(getSubCategoryError(error.message));
   }
 };
 
-export const getBrand = (selectedId) => async dispatch => {
+export const getBrand = (sellerID, selectedId) => async dispatch => {
   dispatch(getBrandRequest());
   try {
-      const res = await RetailController.getBrand(selectedId);
+      const res = await RetailController.getBrand(sellerID, selectedId);
       dispatch(getBrandSuccess(res));
   } catch (error) {
       dispatch(getBrandError(error.message));
