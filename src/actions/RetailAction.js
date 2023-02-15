@@ -331,7 +331,6 @@ export const addDiscountToCart = (data) => async dispatch => {
   try {
       const res = await RetailController.addDiscountToCart(data);
       dispatch(addDiscountSuccess(res));
-      console.log('res', res)
   } catch (error) {
       dispatch(addDiscountError(error.message));
   }
@@ -372,7 +371,6 @@ export const createOrder = (data) => async dispatch => {
   try {
       const res = await RetailController.createOrder(data);
       dispatch(createOrderSuccess(res));
-      console.log('res', res);
   } catch (error) {
       dispatch(createOrderError(error.message));
   }

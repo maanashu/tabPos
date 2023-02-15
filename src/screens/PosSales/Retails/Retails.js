@@ -18,6 +18,7 @@ import {
   ChoosePayment,
   NumericContainer,
   ScreenWrapper,
+  Button,
 } from '@/components';
 import { SH, SF, COLORS, SW } from '@/theme';
 import {
@@ -86,7 +87,6 @@ import { CategoryProductDetail, ChangeDue } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
 import { emailReg } from '@/utils/validators';
 
-import { useDebounce } from 'use-lodash-debounce';
 
 export function Retails() {
   const dispatch = useDispatch();
@@ -185,6 +185,7 @@ export function Retails() {
   const [productModal, setProductModal] = useState(false);
   const [productViewDetail, setProductViewDetail] = useState(false);
   const [productData, setProductData] = useState();
+  // console.log('productData', productData);
 
   const [catCount, setCatCount] = useState(productData?.qty);
   const [result, setResult] = useState([]);
@@ -195,8 +196,22 @@ export function Retails() {
   const [userLName, setUserLName] = useState('');
   const [userFName, setUserFName] = useState('');
   const [sendInventer, setSendInventer] = useState(false);
+  const [serPro, setSerPro] = useState(productData?.qty ? productData?.qty : 0);
 
-  const debouncedValue = useDebounce(customerPhoneNo, 2000);
+  const serProPlus = () => {
+    setSerPro(serPro + 1)
+  };
+  const serProMinus = () => {
+    if (serPro > 0){
+      setSerPro(serPro - 1)
+    }
+  };
+
+  useEffect(() => {
+  if (productData?.qty){
+    setSerPro(productData?.qty)
+  }
+  },[productData?.qty])
 
   useEffect(() => {
     if (getuserDetailByNo?.length === 0) {
@@ -265,9 +280,14 @@ export function Retails() {
   const subCategoryFunction = id => {
     console.log('brandSelectedId---------',brandSelectedId)
     if(brandSelectedId){
-       setBrandSelectedId(null)
+      Toast.show({
+        text2: 'Please first unselect brands ',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
       }
-    else 
+    else if (!brandSelectedId)
     {
       id === null ?  dispatch(getProduct(selectedId,id, brandSelectedId, sellerID)) :  dispatch(getProduct(selectedId, id, brandSelectedId, sellerID)), setSubSelectedId(id)
     }
@@ -347,11 +367,9 @@ export function Retails() {
   const isLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_CATEGORY], state)
   );
-
   const isSubLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_SUB_CATEGORY], state)
   );
-
   const isCatLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_BRAND], state)
   );
@@ -377,9 +395,18 @@ export function Retails() {
     isLoadingSelector([TYPES.SEND_INVITATION], state)
   );
 
+  const isAddNotesLoading = useSelector(state =>
+    isLoadingSelector([TYPES.ADDNOTES], state)
+  );
+
   const clearCartHandler = () => {
     if (totalCart === '0') {
-      Alert.alert(strings.posSale.cartAlraedyEmpty);
+      Toast.show({
+        text2: strings.posSale.cartAlraedyEmpty,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
     } else {
       Alert.alert('Clear cart', 'Are you sure you want to clear cart ?', [
         {
@@ -418,12 +445,14 @@ export function Retails() {
     dispatch(addTocart(data));
     setPosSearch(false);
   };
-  const addToCartCatPro = (service_id, qty, id) => {
+  const addToCartCatPro = (productData) => {
     const data = {
       seller_id: sellerID,
-      product_id: id,
-      service_id: service_id,
-      qty: qty,
+      // product_id: productData?.id,
+      // service_id: productData?.service_id,
+       product_id: 1,
+      service_id: 1,
+      qty: serPro,
       bundleId: addRemoveSelectedId,
     };
     dispatch(addTocart(data));
@@ -438,7 +467,6 @@ export function Retails() {
       qty: count,
       bundleId: addRemoveSelectedId,
     };
-    // console.log('data', data)
     dispatch(addTocart(data));
     setAmountPopup(false);
   };
@@ -463,7 +491,6 @@ export function Retails() {
         cartId: cartID2,
         notes: notes,
       };
-      console.log('data', data);
       dispatch(addNotescart(data));
       clearInput();
     }
@@ -505,7 +532,9 @@ export function Retails() {
         discountCode: discountCode,
         value: value,
         cartId: cartID2,
-        descriptionDis: descriptionDis,
+        orderAmount:getCartAmount?.total_amount
+        // descriptionDis: descriptionDis,
+        // descriptionDis:'discount title'
       };
       dispatch(addDiscountToCart(data));
       clearInput();
@@ -833,7 +862,7 @@ export function Retails() {
     return (
       <SubCategoryItemSelect
         item={item}
-        onPress={() => (subCategoryFunction( subSelectedId === item.id ? null : item.id))}
+        onPress={() => (subCategoryFunction( subSelectedId === item.id ? null : item.id), setBrandSelectedId(null))}
         backgroundColor={{ backgroundColor }}
         borderColor={{ borderColor }}
         color={{ color }}
@@ -956,7 +985,7 @@ export function Retails() {
       <AddRemoveItemSelect
         item={item}
         onPress={() => {
-          setAddRemoveSelectedId(item.id), setAgainRemove(!againRemove);
+          setAddRemoveSelectedId(addRemoveSelectedId === item.id ? null : item.id), setAgainRemove(!againRemove);
         }}
         backgroundColor={{ backgroundColor }}
         color={{ color }}
@@ -1091,7 +1120,7 @@ export function Retails() {
             <TouchableOpacity
               style={styles.addcartButtonStyle}
               onPress={() =>
-                addToCartHandler(item.id, item.category?.service_id)
+                addToCartHandler(item.id, item?.service_id)
               }
             >
               <Text style={styles.addToCartText}>
@@ -2388,7 +2417,7 @@ export function Retails() {
                   addToCartCat={() => (
                     setProductViewDetail(false),
                     addToCartCatPro(
-                      productData?.category?.service_id,
+                      productData?.service_id,
                       productData?.qty,
                       productData?.id
                     )
@@ -2480,13 +2509,13 @@ export function Retails() {
                         { backgroundColor: COLORS.white },
                       ]}
                     >
-                      <TouchableOpacity>
+                      <TouchableOpacity onPress={serProMinus}>
                         <Image source={minus} style={styles.plusBtn2} />
                       </TouchableOpacity>
                       <Text style={[styles.price, { fontSize: SF(24) }]}>
-                        {productData?.qty}
+                        {serPro}
                       </Text>
-                      <TouchableOpacity>
+                      <TouchableOpacity onPress={serProPlus}>
                         <Image source={plus} style={styles.plusBtn2} />
                       </TouchableOpacity>
                     </View>
@@ -2521,14 +2550,7 @@ export function Retails() {
                     <View style={{ flex: 1 }} />
                     <TouchableOpacity
                       style={styles.addcartButtonStyle}
-                      onPress={() =>
-                        addToCartCatPro(
-                          productData?.category?.service_id,
-                          productData?.qty,
-                          productData?.id
-                        )
-                      }
-                    >
+                      onPress={() => addToCartCatPro(productData)}>
                       <Text style={styles.addToCartText}>
                         {strings.posSale.addToCart}
                       </Text>

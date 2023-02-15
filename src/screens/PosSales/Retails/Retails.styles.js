@@ -822,7 +822,7 @@ export const styles = StyleSheet.create({
   saveNotesText: {
     color: COLORS.white,
     fontSize: SF(12),
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.Medium,
   },
   saveButtonCon: {
     flexDirection: 'row',

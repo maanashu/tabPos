@@ -114,7 +114,6 @@ export class RetailController {
         brandSelectedId,
         sellerID
       );
-      console.log('endpoint',endpoint)
       HttpClient.get(endpoint)
         .then(response => {
           if (response.status === 204) {
@@ -139,7 +138,7 @@ export class RetailController {
   static async getProductDefault( sellerID ) {
     return new Promise((resolve, reject) => {
       const endpoint =  PRODUCT_URL + ApiProductInventory.getProduct +`?page=1&limit=10&seller_id=${sellerID}`;
-      console.log
+   
       HttpClient.get(endpoint)
         .then(response => {
           if (response.status === 204) {
@@ -164,8 +163,7 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
-        ApiProductInventory.getProduct +
-        `/${sellerID}?page=1&limit=10&search=${search}`;
+        ApiProductInventory.getProduct + `?page=1&limit=10&search=${search}&seller_id=${sellerID}`
       HttpClient.get(endpoint)
         .then(response => {
           if (response.status === 204) {
@@ -302,12 +300,11 @@ export class RetailController {
   }
   static async addNotes(data) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.addNotes;
+      const endpoint = ORDER_URL + ApiOrderInventory.addNotes+`/${data.cartId}`;
       const body = {
-        cart_id: data.cartId,
         notes: data.notes,
       };
-      HttpClient.post(endpoint, body)
+      HttpClient.put(endpoint, body)
         .then(response => {
           if (response?.status_code === 200) {
             Toast.show({
@@ -319,7 +316,7 @@ export class RetailController {
             resolve(response);
           } else {
             Toast.show({
-              text2: response.msg,
+              text2: 'Notes add succesfully',
               position: 'bottom',
               type: 'success_toast',
               visibilityTime: 1500,
@@ -340,21 +337,28 @@ export class RetailController {
 
   static async addDiscountToCart(data) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.addDiscountToCart;
-      const description = data.descriptionDis ? data.descriptionDis : '';
+      const endpoint = ORDER_URL + ApiOrderInventory.addNotes+`/${data.cartId}`;
+      const orderAmountstrfy = JSON.stringify(data.orderAmount)
       const discountInput = data.amountDis
         ? data.amountDis
         : data.percentDis
         ? data.percentDis
         : data.discountCode;
-      const cartID = JSON.stringify(data.cartId);
       const body = {
-        cart_id: cartID,
-        discount: discountInput,
+        discount_value: discountInput,
         discount_flag: data.value,
-        discount_desc: description,
+        order_amount: orderAmountstrfy
       };
-      HttpClient.post(endpoint, body)
+      
+      // data.value = 
+      // "Code" ?
+      //  {
+      //   discount_value: discountInput,
+      //   discount_flag: data.value,
+      //   order_amount: data.orderAmount
+      // }
+      // :
+      HttpClient.put(endpoint, body)
         .then(response => {
           if (response?.status_code === 200) {
             Toast.show({
@@ -366,7 +370,7 @@ export class RetailController {
             resolve(response);
           } else {
             Toast.show({
-              text2: response.msg,
+              text2: 'Discount add succesfully',
               position: 'bottom',
               type: 'success_toast',
               visibilityTime: 1500,
@@ -492,9 +496,6 @@ export class RetailController {
         coordinates: data.coordinates,
         is_favourite: data.is_favourite,
       };
-       console.log('body', body),
-       console.log('endpoint', endpoint);
-       return
         HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.status_code === 200) {

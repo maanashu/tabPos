@@ -45,7 +45,6 @@ export const getOrderList = () => async dispatch => {
   try {
       const res = await DeliveryController.getOrderList();
       dispatch(getOrderListSuccess(res));
-      console.log('res',res)
   } catch (error) {
       dispatch(getOrderListError(error.message));
   }

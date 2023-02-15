@@ -140,7 +140,6 @@ export function ShippingOrder() {
 
   const getKeyValue = async () => {
     const get = await AsyncStorage.getItem('acceptOrder');
-    // console.log('get---------', get);
     setKeyValue(get);
   };
 

@@ -39,7 +39,6 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?seller_id=b169ed4d-be27-44eb-9a08-74f997bc6a2a&status`;
-        console.log('endpoint',endpoint);
          HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
