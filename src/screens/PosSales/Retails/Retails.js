@@ -120,6 +120,10 @@ export function Retails() {
   const [cityModalOpen, setCityModelOpen] = useState(false);
   const [cityModalValue, setCityModalValue] = useState(null);
   const [productArray, setProductArray] = useState(products ?? []);
+  const [serProductArrayj, setSerProductArrayj] = useState(serProductArray ?? []);
+  console.log(serProductArrayj, 'serProductArrayj');
+  const serProductCount = serProductArrayj.map(item => item.qty);
+  console.log('serProductCount', serProductCount)
   const [cityItems, setCityItems] = useState([
     { label: 'aa', value: 'aa' },
     { label: 'bb', value: 'bb' },
@@ -244,21 +248,27 @@ export function Retails() {
   // console.log('temp', temp);
   // console.log('data', data);
 
-  // const handleIncrease = index => {
-  //   const array = temp;
-  //   array[index].qty = array[index].qty + 1;
-  //   setData(array);
-  //   setTemp(array);
-  //   setRefresh(Math.random());
-  // };
-  // const handleDecrease = index => {
-  //   const array = temp;
-  //   array[index].qty =
-  //     array[index].qty > 0 ? array[index].qty - 1 : array[index].qty;
-  //   setData(array);
-  //   setTemp(array);
-  //   setRefresh(Math.random());
-  // };
+  useEffect(() => {
+    setSerProductArrayj(
+      getRetailData?.SeaProductList?.map(item => ({ ...item, qty: 0 })) ?? []
+    );
+  }, [getRetailData?.SeaProductList]);
+
+  const handleIncrease =( id, index) => {
+    setItemIndex(id);
+    const array = serProductArrayj;
+    array[id].qty = array[id].qty + 1;
+    setSerProductArrayj(array);
+    setRefresh(Math.random());
+  };
+  const handleDecrease = (id, index) => {
+    const array = serProductArrayj;
+    array[id].qty =
+      array[id].qty > 0 ? array[id].qty - 1 : array[id].qty;
+    setData(array);
+    setSerProductArrayj(array);
+    setRefresh(Math.random());
+  };
 
   useEffect(() => {
     setProductArray(
@@ -432,26 +442,25 @@ export function Retails() {
     setAmountPopup(false);
   };
 
-  const addToCartHandler = (id, service_id) => {
+  const addToCartHandler = (id, service_id, serProductCount) => {
+    alert('in Progress')
+    return
     setAddRemoveSelectedId(null);
     const data = {
       seller_id: sellerID,
       product_id: id,
       service_id: service_id,
-      // qty: result?.qty,
-      qty: 2,
+      qty: serProductCount,
       bundleId: addRemoveSelectedId,
     };
     dispatch(addTocart(data));
     setPosSearch(false);
   };
-  const addToCartCatPro = (productData) => {
+  const addToCartCatPro = (id,service_id ) => {
     const data = {
       seller_id: sellerID,
-      // product_id: productData?.id,
-      // service_id: productData?.service_id,
-       product_id: 1,
-      service_id: 1,
+      product_id: id,
+      service_id: service_id,
       qty: serPro,
       bundleId: addRemoveSelectedId,
     };
@@ -1043,7 +1052,6 @@ export function Retails() {
               />
               <Text style={styles.jfrmaduro}>{item.name}</Text>
             </View>
-
             <View>
               <DropDownPicker
                 ArrowUpIconComponent={({ style }) => (
@@ -1081,17 +1089,13 @@ export function Retails() {
           <View
             style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
           >
-            <TouchableOpacity
-            //  onPress={() => handleDecrease(index)}
-            >
+            <TouchableOpacity onPress={() => handleDecrease(index, item.id)}>
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
             <Text style={[styles.price, { fontSize: SF(24) }]}>
-              {result?.qty ? result?.qty : '0'}
+              {serProductCount ? serProductCount : '0'}
             </Text>
-            <TouchableOpacity
-            //  onPress={() => handleIncrease(index)}
-            >
+            <TouchableOpacity onPress={() => handleIncrease(index, item.id)}>
               <Image source={plus} style={styles.plusBtn2} />
             </TouchableOpacity>
           </View>
@@ -1120,7 +1124,7 @@ export function Retails() {
             <TouchableOpacity
               style={styles.addcartButtonStyle}
               onPress={() =>
-                addToCartHandler(item.id, item?.service_id)
+                addToCartHandler(item.id, item?.service_id, serProductCount)
               }
             >
               <Text style={styles.addToCartText}>
@@ -2550,7 +2554,7 @@ export function Retails() {
                     <View style={{ flex: 1 }} />
                     <TouchableOpacity
                       style={styles.addcartButtonStyle}
-                      onPress={() => addToCartCatPro(productData)}>
+                      onPress={() => addToCartCatPro(productData?.id, productData?.service_id)}>
                       <Text style={styles.addToCartText}>
                         {strings.posSale.addToCart}
                       </Text>
