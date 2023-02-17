@@ -251,7 +251,7 @@ export function Customers() {
                     <View
                       style={[
                         styles.costoHr,
-                        { marginVertical: verticalScale(15) },
+                        { marginVertical: verticalScale(8) },
                       ]}
                     />
                     <Spacer space={SH(5)} />
@@ -372,7 +372,7 @@ export function Customers() {
                         </View>
                       </View>
                     </View>
-                    <Spacer space={SH(60)} />
+                    <Spacer space={SH(10)} />
                     {/* <View style={{ flex: 1 }} /> */}
                     <View style={styles.carriarCon}>
                       <Spacer space={SH(5)} />

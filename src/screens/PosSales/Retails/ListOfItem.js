@@ -4,19 +4,17 @@ import {
   TouchableOpacity,
   View,
   Image,
-  TextInput,
   StatusBar,
   Dimensions,
   FlatList,
   ScrollView,
 } from 'react-native';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { SF, SH } from '@/theme';
 import {
   moderateScale,
   moderateVerticalScale,
-  verticalScale,
 } from 'react-native-size-matters';
-import { checkArrow, crossButton, jbrCustomer, menu } from '@/assets';
+import { checkArrow, crossButton} from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { styles } from './Retails.styles';

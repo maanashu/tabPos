@@ -18,7 +18,6 @@ import {
   ChoosePayment,
   NumericContainer,
   ScreenWrapper,
-  Button,
 } from '@/components';
 import { SH, SF, COLORS, SW } from '@/theme';
 import {
@@ -53,7 +52,6 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import {
   tipData,
   amountReceivedData,
-  jbritemList,
 } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -106,7 +104,6 @@ export function Retails() {
   const totalCart = getTotalCart ? getTotalCart : '0';
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
-  const [title, setTitle] = useState('');
   const [categoryModal, setCategoryModal] = useState(false);
   const [sideContainer, setSideContainer] = useState(false);
   const [rightMoreAction, setRightMoreAction] = useState(false);
@@ -119,8 +116,7 @@ export function Retails() {
   const [cityModalOpen, setCityModelOpen] = useState(false);
   const [cityModalValue, setCityModalValue] = useState(null);
   const [productArray, setProductArray] = useState(products ?? []);
-  const [serProductArrayj, setSerProductArrayj] = useState(serProductArray ?? []
-  );
+  const [serProductArrayj, setSerProductArrayj] = useState(serProductArray ?? []);
   const serProductCount = serProductArrayj.map(item => item.qty);
   const serProductCount2 = serProductCount[0];
   const [proCount, setProCount] = useState(serProductCount2);
@@ -162,7 +158,6 @@ export function Retails() {
 
   const [updatePriceCounter, setUpdatePriceCounter] = useState(0);
   const [addProductCounter, setAddProductCounter] = useState(0);
-  const [cardCounter, setCardCounter] = useState(0);
   const [search, setSearch] = useState('');
   const [selectedData, setSelectedData] = useState();
   const [storeData, setStoreData] = useState();
@@ -175,7 +170,6 @@ export function Retails() {
   const [notes, setNotes] = useState('');
   const [value, setValue] = useState('');
   const cartIDdiscount = JSON.stringify(cartID2);
-  const [add, setAdd] = useState('Add');
   const bunndleProArray = getRetailData?.productbunList ?? [];
   const [data, setData] = useState(serProductArray ?? []);
   const [refresh, setRefresh] = useState('');
@@ -187,10 +181,6 @@ export function Retails() {
   const [productModal, setProductModal] = useState(false);
   const [productViewDetail, setProductViewDetail] = useState(false);
   const [productData, setProductData] = useState();
-  // console.log('productData', productData);
-
-  const [catCount, setCatCount] = useState(productData?.qty);
-  const [result, setResult] = useState([]);
   const [openScanner, setOpenScanner] = useState(false);
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo[0]?.user_profiles;
@@ -242,13 +232,6 @@ export function Retails() {
     setProductArray(array);
     setRefresh(Math.random());
   };
-
-  // cartMinusOnPress={cartMinusOnPress(index)}
-  //     cartPlusOnPress={cartPlusOnPress(index)}
-
-  // console.log('temp', temp);
-  // console.log('data', data);
-
   useEffect(() => {
     setSerProductArrayj(
       getRetailData?.SeaProductList?.map(item => ({ ...item, qty: 0 })) ?? []
@@ -312,7 +295,6 @@ export function Retails() {
   };
 
   const brandFunction = id => {
-    console.log('ghj', id);
     if (!subSelectedId) {
       Toast.show({
         text2: strings.valiadtion.pleaseSelectSubCat,
@@ -413,11 +395,6 @@ export function Retails() {
   const isSendInvitationLoading = useSelector(state =>
     isLoadingSelector([TYPES.SEND_INVITATION], state)
   );
-
-  const isAddNotesLoading = useSelector(state =>
-    isLoadingSelector([TYPES.ADDNOTES], state)
-  );
-
   const clearCartHandler = () => {
     if (totalCart === '0') {
       Toast.show({
@@ -452,7 +429,6 @@ export function Retails() {
   };
 
   const addToCartHandler = (id, service_id, serProductCount2, proCount) => {
-    console.log('hiiii');
     setAddRemoveSelectedId(null);
     const data = {
       seller_id: sellerID,
@@ -611,7 +587,6 @@ export function Retails() {
   };
   const sideContainerHandler = () => {
     setSideContainer(!sideContainer);
-    // setCategoryModal(true);
   };
   const rightConCloseHandler = () => {
     setSideContainer(false);
@@ -647,9 +622,6 @@ export function Retails() {
     setAddDiscount(false);
     setRightMoreAction(true);
   };
-  const addNotesHandler = () => {
-    setAddNotes(!addNotes);
-  };
   const addNotesCloseHandler = () => {
     setAddNotes(false);
     setRightMoreAction(true);
@@ -659,9 +631,6 @@ export function Retails() {
   };
   const updatePriceRemoveHandler = () => {
     setUpdatePrice(false);
-  };
-  const addNewProHandler = () => {
-    setAddNewProupdate(!addNewProupdate);
   };
   const checkOutHandler = () => {
     setCheckoutCon(!checkoutCon);
@@ -679,7 +648,6 @@ export function Retails() {
     setCashChoose(true);
     setJbrCoin(false);
     setCardChoose(false);
-    // setUserItem([]);
     setCustCash(!custCash);
   };
   const cardChooseHandler = () => {
@@ -691,25 +659,14 @@ export function Retails() {
     setCustPayment(false);
     setListofItem(true);
   };
-  const choosePaymentCloseHandler = () => {
-    setCheckoutCon(false);
-  };
   const cusCashPaidHandler = () => {
     setCutsomerTotalAmount(false);
     setCustomerCashPaid(!customerCashPaid);
-  };
-  const posSearchHandler = () => {
-    setPosSearch(!posSearch);
   };
   const searchConRemoveHandler = () => {
     setPosSearch(false);
     setSearchProDetail(false);
   };
-  const searchProdutDetailHandler = item => {
-    setSearchProDetail(!searchProDetail);
-    setStoreData(item);
-  };
-
   const viewDetailHandler = item => {
     setPosSearch(false);
     setSelectedData(item);
@@ -723,13 +680,6 @@ export function Retails() {
       setCount(count - 1);
     }
   };
-
-  const decrementCount = () => {
-    if (count > 0) {
-      setCount(count - 1);
-    }
-  };
-
   const updatePricedecrement = () => {
     if (updatePriceCounter > 0) {
       setUpdatePriceCounter(updatePriceCounter - 1);
@@ -1396,9 +1346,6 @@ export function Retails() {
                     setCustomerPhoneNo(customerPhoneNo);
                     phoneNumberSearchFun(customerPhoneNo);
                   }}
-                  // onChangeText={customerPhoneNo =>
-                  //   setCustomerPhoneNo(customerPhoneNo)
-                  // }
                   keyboardType="numeric"
                   maxLength={10}
                 />
@@ -1638,8 +1585,6 @@ export function Retails() {
                     />
                   </View>
                   <TouchableOpacity
-                    // onPress={addNewProHandler}
-                    // onPress={}
                     onPress={() => (
                       setCategoryModal(false), setOpenScanner(true)
                     )}
@@ -1784,7 +1729,7 @@ export function Retails() {
                     <Text style={styles.moreActText}>
                       Choose payment option
                     </Text>
-                    <TouchableOpacity onPress={choosePaymentCloseHandler}>
+                    <TouchableOpacity onPress={() => setCheckoutCon(false)}>
                       <Image
                         source={crossButton}
                         style={styles.crossButtonStyle}
@@ -2095,7 +2040,7 @@ export function Retails() {
               <Spacer space={SH(10)} />
               <TouchableOpacity
                 style={styles.discountCon}
-                onPress={addNotesHandler}
+                onPress={() =>  setAddNotes(!addNotes) }
               >
                 <Image source={notess} style={styles.addDiscountStyle} />
                 <Text style={styles.addDiscountText}>
@@ -2302,36 +2247,6 @@ export function Retails() {
             }
           >
             {modalAccordingData()}
-
-            {/* <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
-                <Spacer space={SH(7)}/>
-                <TextInput
-                  placeholder={strings.posSale.firstName}
-                  value={amount}
-                  onChangeText={setAmount}
-                  style={styles.customerNameInput}
-                  keyboardType='numeric'
-                />
-                 <Spacer space={SH(20)} />
-                 <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
-                <Spacer space={SH(7)}/>
-                <TextInput
-                  placeholder={strings.posSale.firstName}
-                  value={amount}
-                  onChangeText={setAmount}
-                  style={styles.customerNameInput}
-                  keyboardType='numeric'
-                />
-                  <Spacer space={SH(20)} />
-                 <Text style={styles.firstNameAdd}>{strings.posSale.firstName}</Text>
-                <Spacer space={SH(7)}/>
-                <TextInput
-                  placeholder={strings.posSale.firstName}
-                  value={amount}
-                  onChangeText={setAmount}
-                  style={styles.customerNameInput}
-                  keyboardType='numeric'
-                /> */}
           </Modal>
 
           {/*  pos search  start */}
@@ -2417,7 +2332,6 @@ export function Retails() {
                       />
                     )}
                   </View>
-
                   <Spacer space={SH(100)} />
                 </View>
               </KeyboardAvoidingView>
@@ -2425,25 +2339,6 @@ export function Retails() {
           </Modal>
           {/*  pos search  end */}
 
-          {/*  pos search details  start */}
-
-          {/* <Modal
-            animationType="fade"
-            transparent={true}
-            isVisible={searchProViewDetail}
-          >
-            <CategoryProductDetail
-              backArrowhandler={() => (
-                setSearchProViewDetail(false), setPosSearch(true)
-              )}
-              addToCartCat={() => alert('coming soon')}
-              productName={selectedData?.name}
-              proudctImage={{ uri: selectedData?.image }}
-              productDes={selectedData?.description}
-              productPrice={selectedData?.price}
-              sku={selectedData?.sku ? selectedData?.sku : '0'}
-            />
-          </Modal> */}
           {/*  pos search details  end */}
 
           <Modal
