@@ -45,6 +45,7 @@ export { default as checkedCheckbox } from '@/assets/icons/ic_retail/checkedChec
 export { default as checkArrow } from '@/assets/icons/ic_retail/checkArrow.png';
 export { default as scanner } from '@/assets/icons/ic_retail/scanner.png';
 export { default as jbr_icon } from '@/assets/icons/ic_retail/logo_icon.png';
+export { default as jbr_icon2 } from '@/assets/icons/ic_retail/logo_icon2.png';
 export { default as card } from '@/assets/icons/ic_retail/card.png';
 export { default as money } from '@/assets/icons/ic_retail/money.png';
 export { default as marboloPlus } from '@/assets/icons/ic_retail/marboloPlus.png';

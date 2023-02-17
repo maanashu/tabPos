@@ -275,7 +275,6 @@ export class RetailController {
             service_id: data.service_id,
             qty: data.qty,
           };
-          console.log('body', body)
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.status_code === 201) {
@@ -421,7 +420,6 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint =
         USER_URL + ApiUserInventory.getUserDetail + `?phone=${customerPhoneNo}`;
-        console.log('endpoint', endpoint)
       HttpClient.get(endpoint)
         .then(response => {
           if (response.status === 204) {

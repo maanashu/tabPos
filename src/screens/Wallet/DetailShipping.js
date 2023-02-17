@@ -232,7 +232,7 @@ export function DetailShipping({ shippingDeliverRemoveHandler }) {
             </View>
             <Spacer space={SH(20)} />
           </View>
-          <Spacer space={SH(5)} />
+          <Spacer space={SH(15)} />
           <View>
             <Text style={styles.shippingDetail}>
               {strings.wallet.shippingDetail}

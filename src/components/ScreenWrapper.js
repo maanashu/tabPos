@@ -42,7 +42,7 @@ export function ScreenWrapper(props) {
 // defines the types for prop
 
 ScreenWrapper.propTypes = {
-  styles: PropTypes.style,
+  // styles: PropTypes.style,
   backgroundColor: PropTypes.string,
   containerPropStyle: PropTypes.shape({}),
 };

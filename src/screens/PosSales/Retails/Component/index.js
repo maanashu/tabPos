@@ -25,7 +25,7 @@ import { jbritemList } from '@/constants/flatListData';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-export function CategoryProductDetail({qty, backArrowhandler, addToCartCat,proudctImage,productPrice, sku, productName, productDes}) {
+export function CategoryProductDetail({qty,minusBtn,plusBtn,  backArrowhandler, addToCartCat,proudctImage,productPrice, sku, productName, productDes}) {
   return (
         <View style={styles.productModCon2}>
         <TouchableOpacity
@@ -65,13 +65,13 @@ export function CategoryProductDetail({qty, backArrowhandler, addToCartCat,proud
           <View
             style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={minusBtn}>
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
             <Text style={[styles.price, { fontSize: SF(24) }]}>
               {qty}
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={plusBtn}>
               <Image source={plus} style={styles.plusBtn2} />
             </TouchableOpacity>
           </View>

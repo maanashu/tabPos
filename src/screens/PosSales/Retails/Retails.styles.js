@@ -1318,7 +1318,7 @@ export const styles = StyleSheet.create({
   },
   //  pos search css start
   searchproductCon2: {
-    height: windowHeight * 0.9,
+    height: windowHeight * 0.8,
   },
   searchproductCon1: {
     width: windowWidth * 0.6,

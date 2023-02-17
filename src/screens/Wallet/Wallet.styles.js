@@ -660,7 +660,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     width: windowWidth * 0.48,
-    height: SH(120),
+    height: SH(135),
     paddingHorizontal: moderateScale(8),
   },
   invoiceCon: {
@@ -668,7 +668,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     width: windowWidth * 0.3,
-    height: SH(120),
+    height: SH(135),
     paddingHorizontal: moderateScale(8),
   },
   angelaAddress: {
@@ -792,7 +792,7 @@ export const styles = StyleSheet.create({
   subtotalHr: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    marginVertical: moderateScale(6),
+    marginVertical: moderateScale(5),
   },
   textInputStyle: {
     borderWidth: 1,

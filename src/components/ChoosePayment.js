@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { COLORS, SF, SH, ShadowStyles, SW, TextStyles } from '@/theme';
 import { moderateScale } from 'react-native-size-matters';
-import { card, Fonts, jbr_icon, money } from '@/assets';
+import { card, Fonts, jbr_icon, jbr_icon2, money } from '@/assets';
 import { Spacer } from './Spacer';
 
 export function ChoosePayment({
@@ -27,8 +27,8 @@ export function ChoosePayment({
         onPress={jbrCoinChoseHandler}>
         <View style={styles.iconInLine}>
           <Image
-            source={jbr_icon}
-            style={[styles.jbrIcon, {tintColor: jbrCoin ? COLORS.primary : COLORS.solid_grey}]}
+            source={ jbrCoin ? jbr_icon2 : jbr_icon}
+            style={[styles.jbrIcon]}
           />
           <Text
             style={[styles.jbrcoinText, {color:jbrCoin ? COLORS.primary : COLORS.solid_grey}]}>JBR Coin

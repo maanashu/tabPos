@@ -87,7 +87,6 @@ import { CategoryProductDetail, ChangeDue } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
 import { emailReg } from '@/utils/validators';
 
-
 export function Retails() {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
@@ -120,10 +119,11 @@ export function Retails() {
   const [cityModalOpen, setCityModelOpen] = useState(false);
   const [cityModalValue, setCityModalValue] = useState(null);
   const [productArray, setProductArray] = useState(products ?? []);
-  const [serProductArrayj, setSerProductArrayj] = useState(serProductArray ?? []);
-  console.log(serProductArrayj, 'serProductArrayj');
+  const [serProductArrayj, setSerProductArrayj] = useState(serProductArray ?? []
+  );
   const serProductCount = serProductArrayj.map(item => item.qty);
-  console.log('serProductCount', serProductCount)
+  const serProductCount2 = serProductCount[0];
+  const [proCount, setProCount] = useState(serProductCount2);
   const [cityItems, setCityItems] = useState([
     { label: 'aa', value: 'aa' },
     { label: 'bb', value: 'bb' },
@@ -180,9 +180,7 @@ export function Retails() {
   const [data, setData] = useState(serProductArray ?? []);
   const [refresh, setRefresh] = useState('');
   const [itemIndex, setItemIndex] = useState();
-  const [temp, setTemp] = useState(
-    []
-  );
+  const [temp, setTemp] = useState([]);
   const [againRemove, setAgainRemove] = useState(false);
   const [count, setCount] = useState(cartData?.qty);
 
@@ -203,19 +201,22 @@ export function Retails() {
   const [serPro, setSerPro] = useState(productData?.qty ? productData?.qty : 0);
 
   const serProPlus = () => {
-    setSerPro(serPro + 1)
+    setSerPro(serPro + 1);
   };
   const serProMinus = () => {
-    if (serPro > 0){
-      setSerPro(serPro - 1)
+    if (serPro > 0) {
+      setSerPro(serPro - 1);
     }
   };
 
   useEffect(() => {
-  if (productData?.qty){
-    setSerPro(productData?.qty)
-  }
-  },[productData?.qty])
+    if (productData?.qty) {
+      setSerPro(productData?.qty);
+    }
+    if (serProductCount2) {
+      setProCount(serProductCount2);
+    }
+  }, [productData?.qty, serProductCount2]);
 
   useEffect(() => {
     if (getuserDetailByNo?.length === 0) {
@@ -254,7 +255,7 @@ export function Retails() {
     );
   }, [getRetailData?.SeaProductList]);
 
-  const handleIncrease =( id, index) => {
+  const handleIncrease = (id, index) => {
     setItemIndex(id);
     const array = serProductArrayj;
     array[id].qty = array[id].qty + 1;
@@ -263,8 +264,7 @@ export function Retails() {
   };
   const handleDecrease = (id, index) => {
     const array = serProductArrayj;
-    array[id].qty =
-      array[id].qty > 0 ? array[id].qty - 1 : array[id].qty;
+    array[id].qty = array[id].qty > 0 ? array[id].qty - 1 : array[id].qty;
     setData(array);
     setSerProductArrayj(array);
     setRefresh(Math.random());
@@ -282,29 +282,37 @@ export function Retails() {
     dispatch(getProductDefault(sellerID));
     // dispatch(getAllCart());
   }, []);
- 
+
   const categoryFunction = id => {
-      {id === null  ?  dispatch(getProductDefault(sellerID)):  dispatch(getProduct(id, subSelectedId, brandSelectedId, sellerID)),   dispatch(getSubCategory(sellerID,id)),  dispatch(getBrand(sellerID, id)), setSelectedId(id)    }
+    {
+      id === null
+        ? dispatch(getProductDefault(sellerID))
+        : dispatch(getProduct(id, subSelectedId, brandSelectedId, sellerID)),
+        dispatch(getSubCategory(sellerID, id)),
+        dispatch(getBrand(sellerID, id)),
+        setSelectedId(id);
+    }
   };
 
   const subCategoryFunction = id => {
-    console.log('brandSelectedId---------',brandSelectedId)
-    if(brandSelectedId){
+    console.log('brandSelectedId---------', brandSelectedId);
+    if (brandSelectedId) {
       Toast.show({
         text2: 'Please first unselect brands ',
         position: 'bottom',
         type: 'error_toast',
         visibilityTime: 1500,
       });
-      }
-    else if (!brandSelectedId)
-    {
-      id === null ?  dispatch(getProduct(selectedId,id, brandSelectedId, sellerID)) :  dispatch(getProduct(selectedId, id, brandSelectedId, sellerID)), setSubSelectedId(id)
+    } else if (!brandSelectedId) {
+      id === null
+        ? dispatch(getProduct(selectedId, id, brandSelectedId, sellerID))
+        : dispatch(getProduct(selectedId, id, brandSelectedId, sellerID)),
+        setSubSelectedId(id);
     }
   };
 
   const brandFunction = id => {
-    console.log('ghj', id)
+    console.log('ghj', id);
     if (!subSelectedId) {
       Toast.show({
         text2: strings.valiadtion.pleaseSelectSubCat,
@@ -313,9 +321,10 @@ export function Retails() {
         visibilityTime: 1500,
       });
     } else if (subSelectedId) {
-      
-        id === null ? dispatch(getProduct(selectedId, subSelectedId, id, sellerID)) :  dispatch(getProduct(selectedId, subSelectedId, id, sellerID)), setBrandSelectedId(id)
-      
+      id === null
+        ? dispatch(getProduct(selectedId, subSelectedId, id, sellerID))
+        : dispatch(getProduct(selectedId, subSelectedId, id, sellerID)),
+        setBrandSelectedId(id);
     }
   };
 
@@ -442,21 +451,20 @@ export function Retails() {
     setAmountPopup(false);
   };
 
-  const addToCartHandler = (id, service_id, serProductCount) => {
-    alert('in Progress')
-    return
+  const addToCartHandler = (id, service_id, serProductCount2, proCount) => {
+    console.log('hiiii');
     setAddRemoveSelectedId(null);
     const data = {
       seller_id: sellerID,
       product_id: id,
       service_id: service_id,
-      qty: serProductCount,
+      qty: proCount ? proCount : serProductCount2,
       bundleId: addRemoveSelectedId,
     };
     dispatch(addTocart(data));
     setPosSearch(false);
   };
-  const addToCartCatPro = (id,service_id ) => {
+  const addToCartCatPro = (id, service_id) => {
     const data = {
       seller_id: sellerID,
       product_id: id,
@@ -541,7 +549,7 @@ export function Retails() {
         discountCode: discountCode,
         value: value,
         cartId: cartID2,
-        orderAmount:getCartAmount?.total_amount
+        orderAmount: getCartAmount?.total_amount,
         // descriptionDis: descriptionDis,
         // descriptionDis:'discount title'
       };
@@ -603,10 +611,13 @@ export function Retails() {
   };
   const sideContainerHandler = () => {
     setSideContainer(!sideContainer);
-    setCategoryModal(true);
+    // setCategoryModal(true);
   };
   const rightConCloseHandler = () => {
     setSideContainer(false);
+    if (numPadContainer) {
+      setNumpadContainer(false);
+    }
   };
   const amountPopHandler = item => {
     setCartData(item);
@@ -620,9 +631,6 @@ export function Retails() {
   };
   const amountRemoveHandler = () => {
     setAmountPopup(false);
-  };
-  const numpadConHandler = () => {
-    setNumpadContainer(!numPadContainer);
   };
   const moreActionHandler = () => {
     setRightMoreAction(!rightMoreAction);
@@ -707,11 +715,9 @@ export function Retails() {
     setSelectedData(item);
     setSearchProViewDetail(true);
   };
-
   const increment = () => {
     setCount(count + 1);
   };
-
   const decrement = () => {
     if (count > 0) {
       setCount(count - 1);
@@ -808,16 +814,17 @@ export function Retails() {
   );
 
   const categoryItem = ({ item }) => {
-    const backgroundColor = 
-    item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
-    const borderColor = item.id ===  selectedId ? COLORS.primary : COLORS.white;
-    const color = item.id ===  selectedId ? COLORS.white : COLORS.gerySkies;
+    const backgroundColor =
+      item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
+    const borderColor = item.id === selectedId ? COLORS.primary : COLORS.white;
+    const color = item.id === selectedId ? COLORS.white : COLORS.gerySkies;
     const fontFamily = item.id === selectedId ? Fonts.SemiBold : Fonts.Regular;
 
     return (
       <CategoryItemSelect
         item={item}
-        onPress={() => (categoryFunction( selectedId === item.id ? null : item.id),
+        onPress={() => (
+          categoryFunction(selectedId === item.id ? null : item.id),
           setSubSelectedId(null),
           setBrandSelectedId(null)
         )}
@@ -871,7 +878,10 @@ export function Retails() {
     return (
       <SubCategoryItemSelect
         item={item}
-        onPress={() => (subCategoryFunction( subSelectedId === item.id ? null : item.id), setBrandSelectedId(null))}
+        onPress={() => (
+          subCategoryFunction(subSelectedId === item.id ? null : item.id),
+          setBrandSelectedId(null)
+        )}
         backgroundColor={{ backgroundColor }}
         borderColor={{ borderColor }}
         color={{ color }}
@@ -921,7 +931,9 @@ export function Retails() {
     return (
       <BrandItemSelect
         item={item}
-        onPress={() => brandFunction( brandSelectedId === item.id ? null : item.id)}
+        onPress={() =>
+          brandFunction(brandSelectedId === item.id ? null : item.id)
+        }
         backgroundColor={{ backgroundColor }}
         borderColor={{ borderColor }}
         color={{ color }}
@@ -939,7 +951,7 @@ export function Retails() {
       cartMinusOnPress={() => cartMinusOnPress(item.id, index)}
       cartPlusOnPress={() => cartPlusOnPress(item.id, index)}
       productCount={item}
-      ProductHandler={() => ProductHandler(item, item.id)}
+      ProductHandler={() => ProductHandler(item, item.id, index)}
     />
   );
 
@@ -994,7 +1006,10 @@ export function Retails() {
       <AddRemoveItemSelect
         item={item}
         onPress={() => {
-          setAddRemoveSelectedId(addRemoveSelectedId === item.id ? null : item.id), setAgainRemove(!againRemove);
+          setAddRemoveSelectedId(
+            addRemoveSelectedId === item.id ? null : item.id
+          ),
+            setAgainRemove(!againRemove);
         }}
         backgroundColor={{ backgroundColor }}
         color={{ color }}
@@ -1093,7 +1108,7 @@ export function Retails() {
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
             <Text style={[styles.price, { fontSize: SF(24) }]}>
-              {serProductCount ? serProductCount : '0'}
+              {proCount ? proCount : serProductCount2}
             </Text>
             <TouchableOpacity onPress={() => handleIncrease(index, item.id)}>
               <Image source={plus} style={styles.plusBtn2} />
@@ -1124,7 +1139,12 @@ export function Retails() {
             <TouchableOpacity
               style={styles.addcartButtonStyle}
               onPress={() =>
-                addToCartHandler(item.id, item?.service_id, serProductCount)
+                addToCartHandler(
+                  item.id,
+                  item?.service_id,
+                  serProductCount2,
+                  proCount
+                )
               }
             >
               <Text style={styles.addToCartText}>
@@ -1221,7 +1241,9 @@ export function Retails() {
           <Spacer space={SH(5)} />
           <Text style={styles.cusAddText}>{item.email}</Text>
           <Spacer space={SH(8)} />
-          <Text style={styles.cusAddText}>{item?.user_profiles?.current_address}</Text>
+          <Text style={styles.cusAddText}>
+            {item?.user_profiles?.current_address}
+          </Text>
         </View>
       </View>
     </View>
@@ -1251,7 +1273,6 @@ export function Retails() {
           {getuserDetailByNo?.length > 0 ? (
             <TouchableOpacity
               style={styles.customerPhoneCon}
-              
               onPress={() => {
                 setCustCash(false), setCutsomerTotalAmount(true);
               }}
@@ -1385,7 +1406,6 @@ export function Retails() {
             </View>
 
             {changeView()}
-            
           </View>
         </View>
       );
@@ -1539,9 +1559,9 @@ export function Retails() {
     <ScreenWrapper>
       {listOfItem ? (
         <ListOfItem
-          listOfItemCloseHandler={() => 
-            (setListofItem(false), setCustomerPhoneNo(false))
-          }
+          listOfItemCloseHandler={() => (
+            setListofItem(false), setCustomerPhoneNo(false)
+          )}
           checkOutHandler={createOrderHandler}
           jbritemList={allCartArray}
           price="67678"
@@ -1558,7 +1578,11 @@ export function Retails() {
           tax={getCartAmount?.tax ? getCartAmount?.tax : '0.00'}
           productItem={totalCart}
           notes={cartUpperdat?.notes}
-          customerProfileImage={customer?.profile_photo ? { uri : customer?.profile_photo} : userImage}
+          customerProfileImage={
+            customer?.profile_photo
+              ? { uri: customer?.profile_photo }
+              : userImage
+          }
           customerName={customer?.firstname}
           customerMobileNo={customer?.phone_no}
           customerEmail={getuserDetailByNo[0]?.email}
@@ -1665,11 +1689,8 @@ export function Retails() {
                   )}
                 </View>
               </View>
-              {
-                selectedId 
-                ?
-                (
-                  <View style={styles.categoryCon}>
+              {selectedId ? (
+                <View style={styles.categoryCon}>
                   <View style={styles.flexAlign}>
                     <Text style={styles.categoryHeader}>
                       {strings.posSale.subCategory}
@@ -1694,17 +1715,10 @@ export function Retails() {
                     )}
                   </View>
                 </View>
-              )
-                 :
-                null
+              ) : null}
 
-               }
-
-              {
-                selectedId
-                ?
-                (
-                  <View style={styles.categoryCon}>
+              {selectedId ? (
+                <View style={styles.categoryCon}>
                   <View style={styles.flexAlign}>
                     <Text style={styles.categoryHeader}>
                       {strings.posSale.brand}
@@ -1728,17 +1742,12 @@ export function Retails() {
                     )}
                   </View>
                 </View>
-                )
-                :
-                null
-              } 
-             
-             
+              ) : null}
             </View>
           )}
           {/* end  category  section */}
           <View style={styles.productbody}>
-            {isProductLoading || isProductDefLoading  ? (
+            {isProductLoading || isProductDefLoading ? (
               <View style={{ marginTop: 100 }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
               </View>
@@ -1802,7 +1811,9 @@ export function Retails() {
                       />
                     </TouchableOpacity>
                     <View style={styles.flexRow2}>
-                      <TouchableOpacity onPress={numpadConHandler}>
+                      <TouchableOpacity
+                        onPress={() => setNumpadContainer(!numPadContainer)}
+                      >
                         <Text
                           style={[
                             styles.countCart,
@@ -2324,68 +2335,99 @@ export function Retails() {
           </Modal>
 
           {/*  pos search  start */}
-          <Modal animationType="fade" transparent={true} isVisible={posSearch}>
-            <KeyboardAvoidingView style={{ flex: 1 }}>
-              <View
-                style={[styles.searchproductCon1, styles.searchproductCon2]}
-              >
-                <Spacer space={SH(20)} />
-                <View style={styles.searchInputWraper}>
-                  <View style={styles.displayFlex}>
-                    <TouchableOpacity onPress={searchConRemoveHandler}>
-                      <Image
-                        source={backArrow2}
-                        style={styles.backArrow2Style}
-                      />
-                    </TouchableOpacity>
-                    <TextInput
-                      placeholder="Search product here"
-                      style={styles.searchInput2}
-                      value={search}
-                      onChangeText={search => (
-                        setSearch(search), onChangeFun(search)
-                      )}
-                    />
-                  </View>
-                  <TouchableOpacity onPress={searchConRemoveHandler}>
-                    <Image
-                      source={crossButton}
-                      style={[
-                        styles.searchCrossButton,
-                        { tintColor: COLORS.darkGray },
-                      ]}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View>
-                  {isSearchProLoading ? (
-                    <View style={{ marginTop: 100 }}>
-                      <ActivityIndicator
-                        size="large"
-                        color={COLORS.indicator}
+          <Modal
+            animationType="fade"
+            transparent={true}
+            isVisible={posSearch || searchProViewDetail}
+          >
+            {searchProViewDetail ? (
+              <CategoryProductDetail
+                backArrowhandler={() => (
+                  setSearchProViewDetail(false), setPosSearch(true)
+                )}
+                productName={selectedData?.name}
+                proudctImage={{ uri: selectedData?.image }}
+                productDes={selectedData?.description}
+                productPrice={selectedData?.price}
+                sku={selectedData?.sku ? selectedData?.sku : '0'}
+                plusBtn={() => setProCount(proCount + 1)}
+                minusBtn={() => {
+                  if (proCount > 0) {
+                    setProCount(proCount - 1);
+                  }
+                }}
+                qty={proCount}
+                addToCartCat={() =>
+                  addToCartHandler(
+                    selectedData?.service_id,
+                    selectedData?.id,
+                    proCount
+                  )
+                }
+              />
+            ) : (
+              <KeyboardAvoidingView style={{ flex: 1 }}>
+                <View
+                  style={[styles.searchproductCon1, styles.searchproductCon2]}
+                >
+                  <Spacer space={SH(20)} />
+                  <View style={styles.searchInputWraper}>
+                    <View style={styles.displayFlex}>
+                      <TouchableOpacity onPress={searchConRemoveHandler}>
+                        <Image
+                          source={backArrow2}
+                          style={styles.backArrow2Style}
+                        />
+                      </TouchableOpacity>
+                      <TextInput
+                        placeholder="Search product here"
+                        style={styles.searchInput2}
+                        value={search}
+                        onChangeText={search => (
+                          setSearch(search), onChangeFun(search)
+                        )}
                       />
                     </View>
-                  ) : (
-                    <FlatList
-                      data={serProductArray}
-                      extraData={serProductArray}
-                      renderItem={renderSearchItem}
-                      keyExtractor={(item, index) => String(index)}
-                      style={styles.flatlistHeight}
-                      ListEmptyComponent={renderEmptyProducts}
-                    />
-                  )}
-                </View>
+                    <TouchableOpacity onPress={searchConRemoveHandler}>
+                      <Image
+                        source={crossButton}
+                        style={[
+                          styles.searchCrossButton,
+                          { tintColor: COLORS.darkGray },
+                        ]}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    {isSearchProLoading ? (
+                      <View style={{ marginTop: 100 }}>
+                        <ActivityIndicator
+                          size="large"
+                          color={COLORS.indicator}
+                        />
+                      </View>
+                    ) : (
+                      <FlatList
+                        data={serProductArray}
+                        extraData={serProductArray}
+                        renderItem={renderSearchItem}
+                        keyExtractor={(item, index) => String(index)}
+                        style={styles.flatlistHeight}
+                        ListEmptyComponent={renderEmptyProducts}
+                      />
+                    )}
+                  </View>
 
-                <Spacer space={SH(100)} />
-              </View>
-            </KeyboardAvoidingView>
+                  <Spacer space={SH(100)} />
+                </View>
+              </KeyboardAvoidingView>
+            )}
           </Modal>
           {/*  pos search  end */}
 
           {/*  pos search details  start */}
 
-          <Modal
+          {/* <Modal
             animationType="fade"
             transparent={true}
             isVisible={searchProViewDetail}
@@ -2401,7 +2443,7 @@ export function Retails() {
               productPrice={selectedData?.price}
               sku={selectedData?.sku ? selectedData?.sku : '0'}
             />
-          </Modal>
+          </Modal> */}
           {/*  pos search details  end */}
 
           <Modal
@@ -2412,7 +2454,7 @@ export function Retails() {
             <View>
               {productViewDetail ? (
                 <CategoryProductDetail
-                  qty={productData?.qty}
+                  qty={serPro}
                   sku={productData?.sku}
                   productPrice={productData?.price}
                   proudctImage={{ uri: productData?.image }}
@@ -2427,6 +2469,8 @@ export function Retails() {
                     )
                   )}
                   backArrowhandler={() => setProductViewDetail(false)}
+                  plusBtn={serProPlus}
+                  minusBtn={serProMinus}
                 />
               ) : (
                 <View style={styles.productModCon}>
@@ -2554,7 +2598,13 @@ export function Retails() {
                     <View style={{ flex: 1 }} />
                     <TouchableOpacity
                       style={styles.addcartButtonStyle}
-                      onPress={() => addToCartCatPro(productData?.id, productData?.service_id)}>
+                      onPress={() =>
+                        addToCartCatPro(
+                          productData?.id,
+                          productData?.service_id
+                        )
+                      }
+                    >
                       <Text style={styles.addToCartText}>
                         {strings.posSale.addToCart}
                       </Text>

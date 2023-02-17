@@ -95,7 +95,9 @@ export function DrawerNavigator(props) {
         activeBackgroundColor="transparent"
         focused={active === 'delivery' ? true : false}
         onPress={() => {
-          setActive('delivery'), navigate(NAVIGATION.deliveryOrder);
+          setActive('delivery'),
+          Alert.alert('coming soon', 'delivery module in progress')
+          //  navigate(NAVIGATION.deliveryOrder);
         }}
         label=""
         icon={({ focused, color, size }) => (
