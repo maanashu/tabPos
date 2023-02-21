@@ -439,6 +439,7 @@ export function Retails() {
     };
     dispatch(addTocart(data));
     setPosSearch(false);
+    setSearchProViewDetail(false)
   };
   const addToCartCatPro = (id, service_id) => {
     const data = {
@@ -560,24 +561,9 @@ export function Retails() {
     } else {
       const data = {
         cartid: cartIDdiscount,
-        address_id: 1,
-        address_type: 'home',
-        address: '3157 Housing Board Colony Dhanas Chandigarh',
-        address_2: '3157 Housing Board Colony Dhanas Chandigarh',
-        city: 'Chandigarh',
-        state: 'Punjab',
-        zip: '140016',
-        country: 'India',
-        fax: '465',
-        shipping: 'Delivery',
-        date: '2022-03-12',
-        delivery_type_id: '2',
-        preffered_delivery_start_time: '02:00 PM',
-        preffered_delivery_end_time: '03:00 PM',
-        service_id: cartProductServiceId,
-        coordinates: [79.114052, 29.611231],
-        is_favourite: false,
       };
+      console.log('data', data);
+      return
       dispatch(createOrder(data));
     }
   };
@@ -1380,7 +1366,7 @@ export function Retails() {
             >
               {strings.posSale.tips}
             </Text>
-            <Spacer space={SH(10)} />
+            <Spacer space={SH(20)} />
             <View>
               <FlatList
                 data={tipData}
@@ -1398,7 +1384,7 @@ export function Retails() {
                 {strings.posSale.noTips}
               </Text>
             </View>
-            <Spacer space={SH(40)} />
+            <Spacer space={SH(10)} />
             <Text
               style={[
                 styles.tipChildText,
@@ -1406,6 +1392,7 @@ export function Retails() {
               ]}
             >
               {strings.posSale.cashRecive}
+            <Spacer space={SH(40)} />
             </Text>
             <Spacer space={SH(20)} />
 
@@ -1422,6 +1409,7 @@ export function Retails() {
             </View>
 
             <Spacer space={SH(30)} />
+            {/* <Spacer space={SH(40)} /> */}
             <TextInput
               placeholder={strings.posSale.otherAmount}
               value={amount}
@@ -1467,8 +1455,7 @@ export function Retails() {
   const cartListItem = ({ item }) => (
     <TouchableOpacity
       style={styles.jfrContainer}
-      onPress={() => amountPopHandler(item)}
-    >
+      onPress={() => amountPopHandler(item)}>
       <View style={styles.jfrContainer2}>
         <Image
           source={{ uri: item.product_details.image }}
@@ -1507,7 +1494,9 @@ export function Retails() {
       {listOfItem ? (
         <ListOfItem
           listOfItemCloseHandler={() => (
-            setListofItem(false), setCustomerPhoneNo(false)
+            setListofItem(false), setCustomerPhoneNo(false),setCustomerPhoneNo(''),
+            setSendInventer(false),
+            dispatch(getUserDetailSuccess([]))
           )}
           checkOutHandler={createOrderHandler}
           jbritemList={allCartArray}
