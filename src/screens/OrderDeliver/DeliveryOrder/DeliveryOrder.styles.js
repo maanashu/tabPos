@@ -67,12 +67,11 @@ export const styles = StyleSheet.create({
     width: SW(65),
     height: SH(92),
     flexDirection: 'row',
+    marginHorizontal:moderateScale(7)
   },
 
   contentContainer: {
-    justifyContent: 'space-between',
-    flex: 1,
-    paddingHorizontal: SW(5),
+    paddingHorizontal: SW(2),
   },
   orderStatusView: {
     justifyContent: 'center',

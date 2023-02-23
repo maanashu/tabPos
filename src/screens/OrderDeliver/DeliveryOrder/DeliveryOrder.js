@@ -42,12 +42,14 @@ import {
 } from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
 import { Button, ScreenWrapper, Spacer } from '@/components';
-
-import { LineChart } from 'react-native-chart-kit';
-import { verticalScale } from 'react-native-size-matters';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 import { BottomSheet } from './BottomSheet';
 import { useDispatch, useSelector } from 'react-redux';
-import { acceptOrder, getOrders } from '@/actions/DeliveryAction';
+import {
+  acceptOrder,
+  getOrderCount,
+  getOrders,
+} from '@/actions/DeliveryAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -59,7 +61,9 @@ import moment from 'moment';
 export function DeliveryOrder() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.getProfile?.unique_uuid;
   const getDeliveryData = useSelector(getDelivery);
+  const orderHeadCount = getDeliveryData?.getOrderCount;
   const orderCount = getDeliveryData?.orderList;
   const orderArray = getDeliveryData?.orderList?.data ?? [];
   const [viewAllReviews, setViewAllReviews] = useState(false);
@@ -77,46 +81,71 @@ export function DeliveryOrder() {
   const [orderId, setOrderId] = useState();
   const [orderIdDate, setOrderIdDate] = useState();
   const orderDate = moment(orderIdDate).format('LL');
-
+ 
   const reviewArray = [
     {
       key: '1',
       status: 'Orders to Review',
-      count: orderCount?.totalReview,
+      count: orderHeadCount?.[0].count,
       image: require('@/assets/icons/ic_deliveryOrder/order.png'),
     },
     {
       key: '2',
-      status: 'Order Preparing',
-      count: orderCount?.totalPrepairing,
+      status: 'Accept By Seller',
+      count: orderHeadCount?.[1].count,
       image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
     },
     {
       key: '3',
-      status: 'Ready to pickup',
-      count: orderCount?.totalReadyForPickup,
+      status: 'Order Preparing',
+      count: orderHeadCount?.[2].count,
       image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
     },
     {
       key: '4',
-      status: 'Delivering',
-      count: orderCount?.totalDelivering,
-      image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
+      status: 'Ready to pickup',
+      count: orderHeadCount?.[3].count,
+      image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
     },
     {
       key: '5',
-      status: 'Cancelled',
-      count: orderCount?.totalCancel,
+      status: 'Assign to Driver',
+      count: orderHeadCount?.[4].count,
       image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
+    },
+    {
+      key: '6',
+      status: 'Pickup',
+      count: orderHeadCount?.[5].count,
+      image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
+    },
+    {
+      key: '7',
+      status: 'Delivered',
+      count: orderHeadCount?.[6].count,
+      image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
+    },
+    {
+      key: '8',
+      status: 'Cancelled',
+      count: orderHeadCount?.[7].count,
+      image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
+    },
+    {
+      key: '9',
+      status: 'Order Rejected',
+      count: orderHeadCount?.[8].count,
+      image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
     },
   ];
 
   useEffect(() => {
-    dispatch(getOrders(0));
-    if (orderArray?.length > 0) {
-      setSelectedId(orderArray[0].id);
-      setItem(orderArray[0]);
-    }
+    dispatch(getOrderCount(sellerID));
+    //   dispatch(getOrders(0));
+    //   if (orderArray?.length > 0) {
+    //   setSelectedId(orderArray[0].id);
+    //   setItem(orderArray[0]);
+    // }
   }, []);
 
   const accetedOrderHandler = () => {
@@ -128,7 +157,7 @@ export function DeliveryOrder() {
   };
 
   const isPosOrderLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_ORDER], state)
+    isLoadingSelector([TYPES.GET_ORDER_COUNT], state)
   );
 
   const customHeader = () => {
@@ -172,33 +201,38 @@ export function DeliveryOrder() {
   };
   const navigationHandler = (item, index) => {
     if (item.status === 'Orders to Review') {
-      setViewAllReviews(true);
-      setHeadingType('Orders to Review');
-      setDataType('Orders to Review');
-      dispatch(getOrders(0));
+      alert('In Progres')
+      // setViewAllReviews(true);
+      // setHeadingType('Orders to Review');
+      // setDataType('Orders to Review');
+      // dispatch(getOrders(0));
     } else if (item.status === 'Order Preparing') {
-      setViewAllReviews(true);
-      setHeadingType('Order Preparing');
-      setDataType('Order Preparing');
-      dispatch(getOrders(2));
+      alert('In Progres')
+      // setViewAllReviews(true);
+      // setHeadingType('Order Preparing');
+      // setDataType('Order Preparing');
+      // dispatch(getOrders(2));
     } else if (item.status === 'Ready to pickup') {
-      setViewAllReviews(true);
-      setViewAllReviews(true);
-      setHeadingType('Ready to pickup');
-      setDataType('Ready to pickup');
-      dispatch(getOrders(3));
+      alert('In Progres')
+      // setViewAllReviews(true);
+      // setViewAllReviews(true);
+      // setHeadingType('Ready to pickup');
+      // setDataType('Ready to pickup');
+      // dispatch(getOrders(3));
     } else if (item.status === 'Delivering') {
-      setViewAllReviews(true);
-      setViewAllReviews(true);
-      setHeadingType('Delivering');
-      setDataType('Delivering');
-      dispatch(getOrders(6));
+      alert('In Progres')
+      // setViewAllReviews(true);
+      // setViewAllReviews(true);
+      // setHeadingType('Delivering');
+      // setDataType('Delivering');
+      // dispatch(getOrders(6));
     } else if (item.status === 'Cancelled') {
-      setViewAllReviews(true);
-      setViewAllReviews(true);
-      setHeadingType('Cancelled');
-      setDataType('Cancelled');
-      dispatch(getOrders(7));
+      alert('In Progres')
+      // setViewAllReviews(true);
+      // setViewAllReviews(true);
+      // setHeadingType('Cancelled');
+      // setDataType('Cancelled');
+      // dispatch(getOrders(7));
     }
   };
 
@@ -645,14 +679,14 @@ export function DeliveryOrder() {
     } else {
       return (
         <View style={styles.mainScreenContiner}>
-          <View style={{ paddingBottom: verticalScale(4) }}>
+          <View style={{paddingVertical:moderateScale(5)}}>
             {isPosOrderLoading ? (
               <View style={{ marginTop: 10, height: SW(21) }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
               </View>
             ) : (
-              <FlatList
-                scrollEnabled={false}
+               <FlatList
+                scrollEnabled
                 data={reviewArray}
                 extraData={reviewArray}
                 renderItem={renderItem}
@@ -893,7 +927,6 @@ export function DeliveryOrder() {
       </View>
     );
   };
-
   return (
     <ScreenWrapper>
       <View style={styles.container}>

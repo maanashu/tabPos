@@ -96,8 +96,7 @@ export function DrawerNavigator(props) {
         focused={active === 'delivery' ? true : false}
         onPress={() => {
           setActive('delivery'),
-          Alert.alert('coming soon', 'delivery module in progress')
-          //  navigate(NAVIGATION.deliveryOrder);
+           navigate(NAVIGATION.deliveryOrder);
         }}
         label=""
         icon={({ focused, color, size }) => (

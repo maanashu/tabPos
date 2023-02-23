@@ -30,5 +30,6 @@ export const ApiOrderInventory = {
     getProductBundle:'bundle_products',
     getOrders:'orders/pos',
     acceptOrder: 'orders/pos/change_status',
-    createOrder:'orders/pos/order'
+    createOrder:'orders/pos',
+    getOrderCount:'orders/pos/statistics'
 }

@@ -562,8 +562,6 @@ export function Retails() {
       const data = {
         cartid: cartIDdiscount,
       };
-      console.log('data', data);
-      return
       dispatch(createOrder(data));
     }
   };

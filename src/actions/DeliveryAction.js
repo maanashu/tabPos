@@ -1,5 +1,19 @@
 import { DeliveryController } from '@/controllers';
 import { TYPES } from "@/Types/Types";
+import { LogBox } from 'react-native';
+
+const getOrderCountRequest = () => ({
+  type: TYPES.GET_ORDER_COUNT_REQUEST,
+  payload: null,
+});
+const getOrderCountSuccess = getOrderCount => ({
+  type: TYPES.GET_ORDER_COUNT_SUCCESS,
+  payload: { getOrderCount },
+});
+const getOrderCountError = error => ({
+  type: TYPES.GET_ORDER_COUNT_ERROR,
+  payload: { error },
+});
 
 const getOrderListRequest = () => ({
   type: TYPES.GET_ORDER_LIST_REQUEST,
@@ -39,6 +53,16 @@ const acceptOrderError = error => ({
   type: TYPES.ACCEPT_ORDER_ERROR,
   payload: { error },
 });
+
+export const getOrderCount = (status) => async dispatch => {
+  dispatch(getOrderCountRequest());
+  try {
+      const res = await DeliveryController.getOrderCount(status);
+      dispatch(getOrderCountSuccess(res));
+  } catch (error) {
+      dispatch(getOrderCountError(error.message));
+  }
+};
 
 export const getOrderList = () => async dispatch => {
   dispatch(getOrderListRequest());
