@@ -99,7 +99,9 @@ export const en = {
     orderPrepare:'Order Preparing',
     readyPickup:'Ready to pickup',
     delivered:'Delivering',
-    cancelled:'Cancelled'
+    cancelled:'Cancelled',
+    acceptSeller:'Accept By Seller',
+    orderPrepare:'Order Prepare'
   },
   verifyPhone: {
     heading: 'Verify your phone number',

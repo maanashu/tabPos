@@ -74,10 +74,10 @@ export const getOrderList = () => async dispatch => {
   }
 };
 
-export const getOrders = (status) => async dispatch => {
+export const getOrders = (status, sellerID) => async dispatch => {
   dispatch(getOrdersRequest());
   try {
-      const res = await DeliveryController.getOrders(status);
+      const res = await DeliveryController.getOrders(status, sellerID);
       dispatch(getOrdersSuccess(res));
   } catch (error) {
       dispatch(getOrdersError(error.message));
@@ -89,7 +89,7 @@ export const acceptOrder = (data) => async dispatch => {
   try {
       const res = await DeliveryController.acceptOrder(data);
       dispatch(acceptOrderSuccess(res));
-      dispatch(getOrders());
+      dispatch(getOrderCount(data.sellerID));
   } catch (error) {
       dispatch(acceptOrderError(error.message));
   }

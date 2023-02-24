@@ -263,7 +263,7 @@ export function Retails() {
     dispatch(retailclearstore());
     dispatch(getCategory(sellerID));
     dispatch(getProductDefault(sellerID));
-    // dispatch(getAllCart());
+    dispatch(getAllCart());
   }, []);
 
   const categoryFunction = id => {
@@ -395,6 +395,7 @@ export function Retails() {
   const isSendInvitationLoading = useSelector(state =>
     isLoadingSelector([TYPES.SEND_INVITATION], state)
   );
+
   const clearCartHandler = () => {
     if (totalCart === '0') {
       Toast.show({
@@ -563,6 +564,11 @@ export function Retails() {
         cartid: cartIDdiscount,
       };
       dispatch(createOrder(data));
+      setListofItem(false);
+      setCheckoutCon(false);
+      setCustomerPhoneNo(''),
+      setSendInventer(false),
+      dispatch(getUserDetailSuccess([]))
     }
   };
 

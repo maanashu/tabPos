@@ -28,8 +28,8 @@ export const ApiOrderInventory = {
     addNotes:'poscarts',
     addDiscountToCart:'poscarts/add_discount',
     getProductBundle:'bundle_products',
-    getOrders:'orders/pos',
-    acceptOrder: 'orders/pos/change_status',
+    getOrders:'orders',
+    acceptOrder: 'orders/status',
     createOrder:'orders/pos',
     getOrderCount:'orders/pos/statistics'
 }

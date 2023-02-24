@@ -371,6 +371,8 @@ export const createOrder = (data) => async dispatch => {
   try {
       const res = await RetailController.createOrder(data);
       dispatch(createOrderSuccess(res));
+      dispatch(clearAllCart());
+      dispatch(getAllCart())
   } catch (error) {
       dispatch(createOrderError(error.message));
   }

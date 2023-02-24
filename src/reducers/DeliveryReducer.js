@@ -3,7 +3,7 @@ import { TYPES } from '@/Types/Types';
 
 const INITIALSTATE = {
   getOrderCount:{},
-  orderList:{},
+  orderList:[],
   getorderList:{}
   
   
@@ -19,7 +19,7 @@ export const deliveryReducer = (state = {INITIALSTATE}, { payload, type }) => {
       case TYPES.GET_ORDER_SUCCESS:
         return {
           ...state,
-          orderList: payload.orderList.payload,
+          orderList: payload.orderList.payload.data,
         };
         case TYPES.GET_ORDER_LIST_SUCCESS:
           return {

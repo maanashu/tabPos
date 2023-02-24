@@ -13,7 +13,6 @@ import { HttpClient } from './HttpClient';
 export class DeliveryController {
 
   static async getOrderCount(status) {
-    console.log(status);
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
@@ -34,12 +33,13 @@ export class DeliveryController {
     });
   }
 
-  static async getOrders(status) {
+  static async getOrders(status, sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?seller_id=b169ed4d-be27-44eb-9a08-74f997bc6a2a&status=${status}`;
+        `?status=${status}&seller_id=${sellerID}`;
+     
          HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -80,14 +80,13 @@ export class DeliveryController {
 
   static async acceptOrder(data) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.acceptOrder;
+      const endpoint = ORDER_URL + ApiOrderInventory.acceptOrder + `/${data.orderId}`;
       const body = {
-        order_id: data.orderId,
         status: data.status,
       };
       HttpClient.put(endpoint, body)
         .then(response => {
-          if (response?.status_code === 200) {
+          if (response?.msg ===  "Order status updated successfully!") {
             Toast.show({
               position: 'bottom',
               type: 'success_toast',

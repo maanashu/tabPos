@@ -419,9 +419,9 @@ export const styles = StyleSheet.create({
   itemSeparatorView: {
     backgroundColor: COLORS.solidGrey,
     height: 2,
-    width: '92%',
-    alignSelf: 'center',
-    // marginVertical: verticalScale(3),
+    width: '96%',
+    // alignSelf: 'center',
+    marginVertical: verticalScale(3),
   },
   map: {
     width: windowWidth * 0.48,
@@ -493,4 +493,11 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     height: windowHeight * 0.7,
   },
+  nodata:{
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(22),
+    color: COLORS.primary,
+    alignSelf:'center',
+    marginVertical:moderateScale(30)
+  }
 });
