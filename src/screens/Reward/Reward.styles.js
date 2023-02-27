@@ -24,4 +24,37 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(12),
   },
+  orderView: {
+    backgroundColor: COLORS.orderStatusBackground,
+    borderRadius: 8,
+    width: SW(65),
+    height: SH(92),
+    flexDirection: 'row',
+    marginHorizontal:moderateScale(7),
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  orderViewBody:{
+     width: SW(60),
+     height: SH(50),
+     justifyContent:'center'
+  },
+  imageCon:{
+    borderRadius:10,
+     width: SW(15),
+     height: SH(50),
+     backgroundColor:COLORS.textInputBackground
+  },
+  textSkelton:{
+     borderRadius:5,
+     width: SW(15),
+     height: SH(20),
+     backgroundColor:COLORS.textInputBackground
+  },
+  textSkelton2:{
+    borderRadius:5,
+    width: SW(42),
+    height: SH(20),
+    backgroundColor:COLORS.textInputBackground
+ }
 });

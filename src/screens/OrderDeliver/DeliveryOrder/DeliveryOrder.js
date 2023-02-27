@@ -39,6 +39,7 @@ import {
   orderReview,
   orderStatus,
   productList,
+  loadingData
 } from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
 import { Button, ScreenWrapper, Spacer } from '@/components';
@@ -57,6 +58,7 @@ import { TYPES } from '@/Types/Types';
 const windowHeight = Dimensions.get('window').height;
 import CircularProgress from 'react-native-circular-progress-indicator';
 import moment from 'moment';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export function DeliveryOrder() {
   const dispatch = useDispatch();
@@ -74,7 +76,7 @@ export function DeliveryOrder() {
   const [headingType, setHeadingType] = useState('');
   const [dataType, setDataType] = useState('');
 
-  const [selectedId, setSelectedId] = useState(getDeliveryData?.orderList[0]?.id);
+  const [selectedId, setSelectedId] = useState(getDeliveryData?.orderList?.[0].id);
   const [itemss, setItem] = useState();
   const customerProduct = itemss?.order_details;
   const custProLength = customerProduct?.length;
@@ -82,6 +84,11 @@ export function DeliveryOrder() {
   const [orderId, setOrderId] = useState();
   const [orderIdDate, setOrderIdDate] = useState();
   const orderDate = moment(orderIdDate).format('LL');
+  const length = orderHeadCount?.map(item => item.count);
+  const orderPlaced = length?.reduce((sum, num) => sum + num);
+  const orderValueMulti = orderHeadCount?.[6].count * 100;
+  const orderValue = orderValueMulti / orderPlaced
+  const orderValueDecimal = orderValue.toFixed(2);
  
   const reviewArray = [
     {
@@ -139,30 +146,64 @@ export function DeliveryOrder() {
       image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
     },
   ];
+  const orderConversion = [
+    {
+      key: '1',
+      status: 'Orders Placed',
+      count: orderPlaced,
+      image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
+    },
+   
+    {
+      key: '2',
+      status: 'Orders Cancelled',
+      count: orderHeadCount?.[7].count,
+      image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
+    },
+    {
+      key: '3',
+      status: 'Orders delivered',
+      count: orderHeadCount?.[6].count,
+      image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
+    },
+    
+  ];
 
   useEffect(() => {
     dispatch(getOrderCount(sellerID));
     if (getDeliveryData?.orderList?.length > 0) {
       setOrderCount(getDeliveryData?.orderList);
     };
-    setSelectedId(getDeliveryData?.orderList[0]?.id)
+    setSelectedId(getDeliveryData?.orderList?.[0].id);
+    setItem(getDeliveryData?.orderList?.[0]);
   }, [getDeliveryData?.orderList]);
 
-  const accetedOrderHandler = () => {
-    alert('In Progress')
-    return
+  const changeStatusHandler = (dataType) => {
     const data = {
       orderId: selectedId,
-      status: 1,
+      status: dataType === 'Orders to Review' ? 1 : dataType === 'Accept By Seller' ? 2 : 3,
       sellerID:sellerID
     };
     dispatch(acceptOrder(data));
     setViewAllReviews(false);
   };
 
+  const orderCancelHandler = () => {
+    const data = {
+      orderId: selectedId,
+      status: 7,
+      sellerID:sellerID
+    };
+    dispatch(acceptOrder(data));
+    setViewAllReviews(false);
+  };
+ 
+
   const isPosOrderLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_COUNT], state)
   );
+
+ 
 
   const customHeader = () => {
     return (
@@ -203,12 +244,28 @@ export function DeliveryOrder() {
       </View>
     );
   };
+   const ReviewFunction = () => {
+     if (length[0] === 0){
+      Toast.show({
+        text2: 'No order review',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+     }else {
+      setViewAllReviews(true),
+      setHeadingType('Orders to Review'),
+      setDataType('Orders to Review')
+     }
+   }
+
   const navigationHandler = (item, index) => {
     if (item.status === 'Orders to Review') {
-      setViewAllReviews(true);
-      setHeadingType('Orders to Review');
-      setDataType('Orders to Review');
       dispatch(getOrders(0, sellerID ));
+      {
+        ReviewFunction()
+      }
+           
     } else if (item.status === 'Accept By Seller'){
        setViewAllReviews(true);
       setHeadingType('Accept By Seller');
@@ -221,12 +278,11 @@ export function DeliveryOrder() {
       setDataType('Order Preparing');
       dispatch(getOrders(2, sellerID ));
     } else if (item.status === 'Ready to pickup') {
-      alert('In Progres')
-      // setViewAllReviews(true);
-      // setViewAllReviews(true);
-      // setHeadingType('Ready to pickup');
-      // setDataType('Ready to pickup');
-      // dispatch(getOrders(3));
+      setViewAllReviews(true);
+      setViewAllReviews(true);
+      setHeadingType('Ready to pickup');
+      setDataType('Ready to pickup');
+      dispatch(getOrders(3, sellerID));
     } else if (item.status === 'Delivering') {
       alert('In Progres')
       // setViewAllReviews(true);
@@ -256,6 +312,15 @@ export function DeliveryOrder() {
       <View style={styles.countView}>
         <Text style={styles.countText}>{item.count}</Text>
         <Text style={styles.statusText}>{item.status}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+  const renderItem2 = ({ item, index }) => (
+    <TouchableOpacity
+      style={[styles.orderView, {justifyContent:'center', alignItems:'center'}]}
+    >
+      <View style={styles.orderViewBody}>
+       <ActivityIndicator size="small" color="#0000ff" />
       </View>
     </TouchableOpacity>
   );
@@ -331,9 +396,9 @@ export function DeliveryOrder() {
 
   const renderOrder = ({ item, index }) => (
     <View style={styles.renderOrderView}>
-      <Text style={styles.countText}>{item.total}</Text>
+      <Text style={styles.countText}>{item.count}</Text>
       <Text style={[styles.statusText, { textAlign: 'left' }]}>
-        {item.title}
+        {item.status}
       </Text>
     </View>
   );
@@ -490,12 +555,13 @@ export function DeliveryOrder() {
                 style={styles.declineButton}
                 title={strings.deliveryOrders.decline}
                 textStyle={[styles.buttonText, { color: COLORS.primary }]}
+                onPress={orderCancelHandler}
               />
               <Button
                 style={styles.acceptButton}
                 title={strings.deliveryOrders.accept}
                 textStyle={styles.buttonText}
-                onPress={accetedOrderHandler}
+                onPress={() => changeStatusHandler(dataType)}
               />
             </View>
           </View>
@@ -524,6 +590,7 @@ export function DeliveryOrder() {
             />
             <View style={styles.orderReviewButton}>
             <Button
+            onPress={() => changeStatusHandler(dataType)}
               style={styles.button}
               title={strings.deliveryOrders.orderPrepare}
               textStyle={styles.buttonText}
@@ -533,7 +600,6 @@ export function DeliveryOrder() {
         </View>
       );
     }
-    
     else if (dataType === 'Order Preparing') {
       return (
         <View style={{ height: windowHeight * 0.65 }}>
@@ -559,6 +625,7 @@ export function DeliveryOrder() {
               style={styles.button}
               title={strings.deliveryOrders.ready}
               textStyle={styles.buttonText}
+              onPress={() => changeStatusHandler(dataType)}
             />
           </View>
         </View>
@@ -737,9 +804,13 @@ export function DeliveryOrder() {
         <View style={styles.mainScreenContiner}>
           <View style={{paddingVertical:moderateScale(5)}}>
             {isPosOrderLoading ? (
-              <View style={{ marginTop: 10, height: SW(21) }}>
-                <ActivityIndicator size="large" color={COLORS.indicator} />
-              </View>
+              <FlatList
+                scrollEnabled
+                data={loadingData}
+                renderItem={renderItem2}
+                horizontal
+                contentContainerStyle={styles.contentContainer}
+              />
             ) : (
                <FlatList
                 scrollEnabled
@@ -778,13 +849,15 @@ export function DeliveryOrder() {
                   <Spacer space={SH(10)} />
                   <View style={styles.conversionRow}>
                     <CircularProgress
-                      value={97}
-                      radius={80}
+                      value={orderValueDecimal}
+                      radius={90}
                       activeStrokeWidth={30}
                       inActiveStrokeWidth={30}
                       activeStrokeColor="#275AFF"
                       inActiveStrokeColor="#EFEFEF"
                       strokeLinecap="butt"
+                      valueSuffix={'%'}
+                      progressValueStyle={{ fontWeight: '600', color: 'black', fontSize:20 }}
                     />
                     <View style={styles.orderFlatlistView}>
                       <FlatList
@@ -808,7 +881,7 @@ export function DeliveryOrder() {
 
                     <TouchableOpacity
                       onPress={() => {
-                        setViewAllReviews(true),
+                          setViewAllReviews(true),
                           setHeadingType('Orders to Review'),
                           setDataType('Orders to Review');
                       }}

@@ -24,6 +24,36 @@ export const orderStatus = [
     image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
   },
 ];
+
+export const loadingData = [
+  {
+    key: '1',
+  },
+  {
+    key: '2',
+  },
+  {
+    key: '3',
+  },
+  {
+    key: '4',
+  },
+  {
+    key: '5',
+  },
+  {
+    key: '6',
+  },
+  {
+    key: '7',
+  },
+  {
+    key: '8',
+  },
+  {
+    key: '9',
+  },
+];
 export const deliveryOrderStatus = [
   {
     key: '1',

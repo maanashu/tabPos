@@ -439,7 +439,7 @@ export const styles = StyleSheet.create({
   orderModalView: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    bottom: Platform.OS === 'android' ? 40 : 30,
+    bottom: Platform.OS === 'android' ? 50 : 30,
     backgroundColor: COLORS.white,
     right: SW(5),
     width: SW(100),
@@ -491,7 +491,7 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 10,
     borderColor: COLORS.solidGrey,
-    height: windowHeight * 0.7,
+    height: windowHeight * 0.65,
   },
   nodata:{
     fontFamily: Fonts.MaisonBold,
@@ -499,5 +499,10 @@ export const styles = StyleSheet.create({
     color: COLORS.primary,
     alignSelf:'center',
     marginVertical:moderateScale(30)
-  }
+  },
+  orderViewBody:{
+    width: SW(60),
+    height: SH(50),
+    justifyContent:'center'
+ },
 });

@@ -34,7 +34,9 @@ import {
   FlatList,
   StatusBar,
   Button,
+  ActivityIndicator,
 } from 'react-native';
+import { styles } from './Reward.styles';
 
 const items = [
   {
@@ -110,9 +112,26 @@ export function Reward() {
 
   return (
     <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
-      <View>
-         <Text>coming soon</Text>
-      </View>
+      <View
+      style={styles.orderView}
+    >
+       <View style={styles.orderViewBody}>
+        {/* <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+            <View style={styles.imageCon}>
+            </View>
+            <View style={{flexDirection:'column', justifyContent:'space-between'}}>
+            <View style={styles.textSkelton}>
+            </View>
+            <View style={styles.textSkelton2}>
+            </View>
+
+            </View>
+            
+        </View> 
+           */}
+          <ActivityIndicator size="small" color="#0000ff" />
+       </View>
+    </View>
     {/* <View style={{ flex: 1 }}>
       <FlatList
         data={data}
