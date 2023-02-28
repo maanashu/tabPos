@@ -20,7 +20,7 @@ client.interceptors.request.use(function (config) {
 });
 
 client.interceptors.response.use(
-  response => response.data,
+  response => response.status === 204 ?  Promise.reject({ error: "emptyContent", statusCode: 204 }) : response.data,
   error => {
     if (error.response) {
       return Promise.reject(error.response.data);

@@ -98,10 +98,12 @@ export const en = {
     orderView:'Orders to review',
     orderPrepare:'Order Preparing',
     readyPickup:'Ready to pickup',
-    delivered:'Delivering',
     cancelled:'Cancelled',
     acceptSeller:'Accept By Seller',
-    orderPrepare:'Order Prepare'
+    orderPrepare:'Order Prepare',
+    assignToDriver:'Assign to Driver',
+    pickup:'Pickup',
+    orderReject:'Order rejected'
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -512,7 +514,8 @@ export const en = {
       pleaseEnterPH:'Please enter phone number',
       pleaseEnterLastName:'Please enter last name',
       pleaseEnterEmail:'Please enter Email',
-      validEmail:'Please enter valid email'
+      validEmail:'Please enter valid email',
+      ordernotfound:'Order not found'
     },
     successMessages:{
       loginSuccess:"Login succesfully"

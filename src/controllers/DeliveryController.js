@@ -23,7 +23,8 @@ export class DeliveryController {
         })
         .catch(error => {
           Toast.show({
-            text2: error.msg,
+            // text2: error.msg,
+            text2: '1',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
@@ -31,7 +32,32 @@ export class DeliveryController {
           reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
-  }
+  };
+
+
+  static async getReviewDefault(status, sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.getOrders +
+        `?status=${status}&seller_id=${sellerID}`;
+      
+         HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          // Toast.show({
+          //   // text2: error.msg,
+          //   text2: '2',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
+        });
+    });
+  };
 
   static async getOrders(status, sellerID) {
     return new Promise((resolve, reject) => {
@@ -39,19 +65,19 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}`;
-     
          HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          // Toast.show({
+          //   // text2: error.msg,
+          //   text2: '3',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
         });
     });
   };
@@ -68,7 +94,8 @@ export class DeliveryController {
         })
         .catch(error => {
           Toast.show({
-            text2: error.msg,
+            // text2: error.msg,
+            text2: '4',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
@@ -97,13 +124,14 @@ export class DeliveryController {
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
-            text2: error.msg,
-            visibilityTime: 2000,
-          });
-          reject(error.msg);
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   // text2: error.msg,
+          //   text2: '5',
+          //   visibilityTime: 2000,
+          // });
+          reject(error);
         });
     });
   }

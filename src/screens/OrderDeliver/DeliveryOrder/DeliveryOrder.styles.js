@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
   orderView: {
     backgroundColor: COLORS.orderStatusBackground,
     borderRadius: 8,
-    width: SW(65),
+    width: SW(32),
     height: SH(92),
     flexDirection: 'row',
     marginHorizontal:moderateScale(7)
@@ -75,16 +75,16 @@ export const styles = StyleSheet.create({
   },
   orderStatusView: {
     justifyContent: 'center',
-    paddingLeft: SW(5),
+    paddingLeft: SW(2),
   },
   orderStatusImage: {
-    width: SW(7),
-    height: SW(7),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
   },
   countView: {
     justifyContent: 'center',
-    paddingLeft: SW(3),
+    paddingLeft: SW(2),
   },
   countText: {
     color: COLORS.solid_grey,
@@ -93,6 +93,13 @@ export const styles = StyleSheet.create({
   },
 
   statusText: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(11),
+    // textAlign: 'center',
+    width:SW(20)
+  },
+  statusText2: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(11),
@@ -505,4 +512,19 @@ export const styles = StyleSheet.create({
     height: SH(50),
     justifyContent:'center'
  },
+ noteContainer: {
+  position:'absolute',
+  bottom:10,
+  borderWidth: 2,
+  borderColor: COLORS.solidGrey,
+  width:windowWidth * 0.46,
+  height: SH(126),
+  borderRadius: 5,
+  paddingHorizontal: moderateScale(15),
+},
+note: {
+  fontFamily: Fonts.SemiBold,
+  fontSize: SF(14),
+  color: COLORS.black,
+},
 });

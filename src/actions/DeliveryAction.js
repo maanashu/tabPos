@@ -28,6 +28,23 @@ const getOrderListError = error => ({
   payload: { error },
 });
 
+const getReviewDefRequest = () => ({
+  type: TYPES.GET_REVIEW_DEF_REQUEST,
+  payload: null,
+});
+const getReviewDefSuccess = getReviewDef => ({
+  type: TYPES.GET_REVIEW_DEF_SUCCESS,
+  payload: { getReviewDef },
+});
+const getReviewDefError = error => ({
+  type: TYPES.GET_REVIEW_DEF_ERROR,
+  payload: { error },
+});
+const getReviewDefReset = () => ({
+  type: TYPES.GET_REVIEW_DEF_RESET,
+  payload: null,
+});
+
 const getOrdersRequest = () => ({
   type: TYPES.GET_ORDER_REQUEST,
   payload: null,
@@ -63,12 +80,25 @@ export const getOrderCount = (status) => async dispatch => {
       dispatch(getOrderCountError(error.message));
   }
 };
+export const getReviewDefault = (status, sellerID) => async dispatch => {
+  dispatch(getReviewDefRequest());
+  try {
+      const res = await DeliveryController.getReviewDefault(status, sellerID);
+      dispatch(getReviewDefSuccess(res));
+  } catch (error) {
+    if (error?.statusCode === 204){
+      dispatch(getReviewDefReset());
+    }
+      dispatch(getReviewDefError(error.message));
+  }
+};
 
 export const getOrderList = () => async dispatch => {
   dispatch(getOrderListRequest());
   try {
       const res = await DeliveryController.getOrderList();
       dispatch(getOrderListSuccess(res));
+      console.log('res', res);
   } catch (error) {
       dispatch(getOrderListError(error.message));
   }
@@ -90,6 +120,7 @@ export const acceptOrder = (data) => async dispatch => {
       const res = await DeliveryController.acceptOrder(data);
       dispatch(acceptOrderSuccess(res));
       dispatch(getOrderCount(data.sellerID));
+      dispatch(getReviewDefault(0, sellerID ));
   } catch (error) {
       dispatch(acceptOrderError(error.message));
   }
