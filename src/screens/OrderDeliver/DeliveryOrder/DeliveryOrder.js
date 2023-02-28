@@ -30,10 +30,7 @@ import {
 } from '@/assets';
 import { styles } from './DeliveryOrder.styles';
 import { strings } from '@/localization';
-import {
-  deliveryOrders,
-  loadingData,
-} from '@/constants/staticData';
+import { deliveryOrders, loadingData } from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale } from 'react-native-size-matters';
@@ -54,9 +51,7 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import moment from 'moment';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useIsFocused } from '@react-navigation/native';
-import {
-  LineChart,
-} from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 
 export function DeliveryOrder() {
   const isFocused = useIsFocused();
@@ -253,9 +248,7 @@ export function DeliveryOrder() {
     );
   };
 
-
-
-  const orderAccType = (item) => {
+  const orderAccType = item => {
     if (length[item.key] === 0) {
       Toast.show({
         text2: strings.valiadtion.ordernotfound,
@@ -264,33 +257,50 @@ export function DeliveryOrder() {
         visibilityTime: 1500,
       });
     } else {
-        dispatch(getOrders(item.key, sellerID));
-        setViewAllReviews(true),
+      dispatch(getOrders(item.key, sellerID));
+      setViewAllReviews(true),
         setHeadingType(item.status),
         setDataType(item.status);
     }
   };
 
-
   const navigationHandler = (item, index) => {
     if (item.status === 'Orders to Review') {
-      { orderAccType(item)}
+      {
+        orderAccType(item);
+      }
     } else if (item.status === 'Accept By Seller') {
-      { orderAccType(item)}
+      {
+        orderAccType(item);
+      }
     } else if (item.status === 'Order Preparing') {
-      { orderAccType(item)}
+      {
+        orderAccType(item);
+      }
     } else if (item.status === 'Ready to pickup') {
-      { orderAccType(item)}
-    }else if (item.status === 'Assign to Driver') {
-      { orderAccType(item)}
-    }else if (item.status === 'Pickup') {
-      { orderAccType(item)}
+      {
+        orderAccType(item);
+      }
+    } else if (item.status === 'Assign to Driver') {
+      {
+        orderAccType(item);
+      }
+    } else if (item.status === 'Pickup') {
+      {
+        orderAccType(item);
+      }
     } else if (item.status === 'Delivered') {
-      { orderAccType(item)}
+      {
+        orderAccType(item);
+      }
     } else if (item.status === 'Cancelled') {
-      { orderAccType(item)}
-    }else if (item.status === 'Order Rejected') {
-      { orderAccType(item)}
+      {
+        orderAccType(item);
+      }
+    } else if (item.status === 'Order Rejected') {
+      {
+        orderAccType(item);
+      }
     }
   };
 
@@ -429,8 +439,13 @@ export function DeliveryOrder() {
         <View style={styles.timeView}>
           <Image source={clock} style={styles.pinIcon} />
           <Text style={styles.timeText}>
-            {item?.preffered_delivery_start_time ? item?.preffered_delivery_start_time : '00.00'}
-            {'-'} {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00'}
+            {item?.preffered_delivery_start_time
+              ? item?.preffered_delivery_start_time
+              : '00.00'}
+            {'-'}{' '}
+            {item?.preffered_delivery_end_time
+              ? item?.preffered_delivery_end_time
+              : '00.00'}
           </Text>
         </View>
       </View>
@@ -444,7 +459,7 @@ export function DeliveryOrder() {
   const renderOrder = ({ item, index }) => (
     <View style={styles.renderOrderView}>
       <Text style={styles.countText}>{item.count ? item.count : '0'}</Text>
-      <Text style={[styles.statusText2, { textAlign: 'left', }]}>
+      <Text style={[styles.statusText2, { textAlign: 'left' }]}>
         {item.status}
       </Text>
     </View>
@@ -565,7 +580,7 @@ export function DeliveryOrder() {
           </Text>
         </View>
       );
-    }else if (headingType === 'Pickup') {
+    } else if (headingType === 'Pickup') {
       return (
         <View>
           <Text style={styles.reviewHeader}>
@@ -589,7 +604,7 @@ export function DeliveryOrder() {
           </Text>
         </View>
       );
-    }else if (headingType === 'Order Rejected') {
+    } else if (headingType === 'Order Rejected') {
       return (
         <View>
           <Text style={styles.reviewHeader}>
@@ -717,7 +732,7 @@ export function DeliveryOrder() {
           <View>{showOrderStatusModal()}</View>
         </View>
       );
-    }else if (dataType === 'Assign to Driver') {
+    } else if (dataType === 'Assign to Driver') {
       return (
         <View style={{ height: windowHeight * 0.65 }}>
           <View style={{ height: SH(285) }}>
@@ -747,7 +762,7 @@ export function DeliveryOrder() {
           </View>
         </View>
       );
-    }else if (dataType === 'Pickup') {
+    } else if (dataType === 'Pickup') {
       return (
         <View style={styles.mapContainer}>
           <MapView
@@ -815,7 +830,7 @@ export function DeliveryOrder() {
           </View>
         </View>
       );
-    }else if (dataType === 'Order Rejected') {
+    } else if (dataType === 'Order Rejected') {
       return (
         <View style={{ height: windowHeight * 0.68 }}>
           <View style={{ height: SH(375) }}>
@@ -946,7 +961,7 @@ export function DeliveryOrder() {
               />
             ) : (
               <FlatList
-                scrollEnabled
+                scrollEnabled={false}
                 data={reviewArray}
                 extraData={reviewArray}
                 renderItem={renderItem}
@@ -970,13 +985,13 @@ export function DeliveryOrder() {
                     <LineChart
                       data={{
                         labels: [
-                          'Monday',
-                          'Tuesday',
-                          'Wednesday',
-                          'Thrusday',
-                          'Friday',
-                          'Saturday',
-                          'sunday',
+                          'Mon',
+                          'Tue',
+                          'Wed',
+                          'Thr',
+                          'Fri',
+                          'Sat',
+                          'sun',
                         ],
                         datasets: [
                           {
@@ -984,10 +999,10 @@ export function DeliveryOrder() {
                           },
                         ],
                       }}
-                      width={Dimensions.get('window').width * 0.44} 
+                      width={Dimensions.get('window').width * 0.44}
                       height={190}
                       chartConfig={{
-                        decimalPlaces: 0 ,
+                        decimalPlaces: 0,
                         backgroundColor: '#000',
                         backgroundGradientFrom: '#fff',
                         backgroundGradientTo: '#fff',
@@ -1002,7 +1017,7 @@ export function DeliveryOrder() {
                           // r: '7',
                           // strokeWidth: '1',
                           // stroke: '#275AFF',
-                          dot: false
+                          dot: false,
                         },
                       }}
                       // bezier
@@ -1065,9 +1080,10 @@ export function DeliveryOrder() {
 
                     <TouchableOpacity
                       onPress={() => {
-                        setViewAllReviews(true),
-                          setHeadingType('Orders to Review'),
-                          setDataType('Orders to Review');
+                        alert('in progress');
+                        // setViewAllReviews(true),
+                        //   setHeadingType('Orders to Review'),
+                        //   setDataType('Orders to Review');
                       }}
                       style={styles.viewAllView}
                     >

@@ -64,10 +64,10 @@ export const styles = StyleSheet.create({
   orderView: {
     backgroundColor: COLORS.orderStatusBackground,
     borderRadius: 8,
-    width: SW(32),
+    width: Platform.OS === 'android' ? SW(32) : SW(30),
     height: SH(92),
     flexDirection: 'row',
-    marginHorizontal:moderateScale(7)
+    marginHorizontal: moderateScale(7),
   },
 
   contentContainer: {
@@ -95,9 +95,9 @@ export const styles = StyleSheet.create({
   statusText: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(11),
+    fontSize: SF(10),
     // textAlign: 'center',
-    width:SW(20)
+    width: SW(20),
   },
   statusText2: {
     color: COLORS.dark_grey,
@@ -316,7 +316,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     color: COLORS.black,
-    width:SW(60)
+    width: SW(60),
   },
   boxText: {
     fontFamily: Fonts.Italic,
@@ -328,7 +328,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     top: 7,
     justifyContent: 'space-between',
-
   },
   priceText: {
     fontFamily: Fonts.Regular,
@@ -500,31 +499,31 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     height: windowHeight * 0.65,
   },
-  nodata:{
+  nodata: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(22),
     color: COLORS.primary,
-    alignSelf:'center',
-    marginVertical:moderateScale(30)
+    alignSelf: 'center',
+    marginVertical: moderateScale(30),
   },
-  orderViewBody:{
+  orderViewBody: {
     width: SW(60),
     height: SH(50),
-    justifyContent:'center'
- },
- noteContainer: {
-  position:'absolute',
-  bottom:10,
-  borderWidth: 2,
-  borderColor: COLORS.solidGrey,
-  width:windowWidth * 0.46,
-  height: SH(126),
-  borderRadius: 5,
-  paddingHorizontal: moderateScale(15),
-},
-note: {
-  fontFamily: Fonts.SemiBold,
-  fontSize: SF(14),
-  color: COLORS.black,
-},
+    justifyContent: 'center',
+  },
+  noteContainer: {
+    position: 'absolute',
+    bottom: 10,
+    borderWidth: 2,
+    borderColor: COLORS.solidGrey,
+    width: windowWidth * 0.46,
+    height: SH(126),
+    borderRadius: 5,
+    paddingHorizontal: moderateScale(15),
+  },
+  note: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    color: COLORS.black,
+  },
 });
