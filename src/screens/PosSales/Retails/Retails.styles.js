@@ -1008,10 +1008,16 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    width: windowWidth * 0.28,
+    // width: windowWidth * 0.28,
     fontSize: SF(16),
     height: SH(50),
-    color:COLORS.dark_grey
+    color:COLORS.dark_grey,
+    paddingHorizontal:moderateScale(10)
+  },
+  walletAddresStyle:{
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(16),
   },
   scanerCon: {
     backgroundColor: COLORS.textInputBackground,

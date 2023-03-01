@@ -370,6 +370,9 @@ export function Retails() {
   const isLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_CATEGORY], state)
   );
+  const isWalletIdLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_WALLET], state)
+  );
   const isSubLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_SUB_CATEGORY], state)
   );
@@ -2194,45 +2197,56 @@ export function Retails() {
                   <Image source={crossButton} style={styles.crossButton} />
                 </TouchableOpacity>
               </View>
-              <View style={styles.custPaymentBodyCon}>
-                <Spacer space={SH(60)} />
-                <Text style={styles.walletIdText}>
-                  {strings.posSale.walletId}
-                </Text>
-                <Spacer space={SH(10)} />
-                 <TextInput
-                   editable={false}
-                  style={styles.walletIdInput}
-                  value={walletId}
-                  textAlign={'center'}
-                  onChangeText={setWalletId}
-                  keyboardType="numeric"
-                />
-                <Spacer space={SH(20)} />
-                <Text style={styles.walletIdText}>
-                  {strings.posSale.scanText}
-                </Text>
-                <Spacer space={SH(10)} />
-                {/* <View style={styles.scanerCon}></View> */}
-                <Image source={{uri : walletData?.qr_code}} style={styles.qrcodeImage}/>
-                {walletId ? (
-                  <TouchableOpacity
-                    style={styles.flexAlign}
-                    onPress={listOfItemHandler}
-                  >
-                    <Text
-                      style={[styles.redrectingText, { color: COLORS.primary }]}
-                    >
-                      {strings.posSale.rederecting}{' '}
+              
+                {
+                  isWalletIdLoading
+                  ?
+                  (
+                    <View style={{marginTop: 50}}>
+                      <ActivityIndicator size="large" color={COLORS.indicator}/>
+                      </View>
+                  )
+                  :
+                  (
+                    <View style={styles.custPaymentBodyCon}>
+                    <Spacer space={SH(60)} />
+                    <Text style={styles.walletIdText}>
+                      {strings.posSale.walletId}
                     </Text>
-                    <Image source={loader} style={styles.loaderPic} />
-                  </TouchableOpacity>
-                ) : (
-                  <Text style={styles.redrectingText}>
-                    {strings.posSale.rederecting}
-                  </Text>
-                )}
-              </View>
+                    <Spacer space={SH(10)} />
+                    <View style={styles.walletIdInput}>
+                        <Text style={styles.walletAddresStyle}>{walletData?.wallet_address}</Text>
+                    </View>
+                    <Spacer space={SH(20)} />
+                    <Text style={styles.walletIdText}>
+                      {strings.posSale.scanText}
+                    </Text>
+                    <Spacer space={SH(10)} />
+                    <Image source={{uri : walletData?.qr_code}} style={styles.qrcodeImage}/>
+                    {walletId ? (
+                      <TouchableOpacity
+                        style={styles.flexAlign}
+                        onPress={listOfItemHandler}
+                      >
+                        <Text
+                          style={[styles.redrectingText, { color: COLORS.primary }]}
+                        >
+                          {strings.posSale.rederecting}{' '}
+                        </Text>
+                        <Image source={loader} style={styles.loaderPic} />
+                      </TouchableOpacity>
+                    ) : (
+                      <Text style={styles.redrectingText}>
+                        {strings.posSale.rederecting}
+                      </Text>
+                    )}
+                  </View>
+
+                  )
+
+                }
+                
+             
             </View>
           </Modal>
           {/*  customer and payment  modal end */}
