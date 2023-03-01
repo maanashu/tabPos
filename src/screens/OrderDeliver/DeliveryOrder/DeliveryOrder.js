@@ -1278,8 +1278,8 @@ export function DeliveryOrder() {
                   </View>
 
                   <Spacer space={SH(8)} />
-                  {
-                    isPosOrderDefLoading
+                  
+                  {  isPosOrderDefLoading
                     ?
                     (
                       <View style={{ marginTop: 10 }}>
@@ -1290,7 +1290,7 @@ export function DeliveryOrder() {
                     </View>
                     )
                     :
-                      length[0] === 0
+                      length?.[0] === 0
                       ?
                       (
                         <View>
@@ -1314,6 +1314,7 @@ export function DeliveryOrder() {
                     </View>
                       )
                     }
+                    
                   <Spacer space={SH(15)} />
                 </View>
 
