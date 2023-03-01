@@ -74,7 +74,7 @@ import {
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
-import { Button, DaySelector, Spacer, TableDropdown } from '@/components';
+import { Button, DaySelector, Spacer, TableDropdown, ChartKit } from '@/components';
 import { styles } from '@/screens/Analytics/Analytics.styles';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -1536,7 +1536,7 @@ export function Analytics(props) {
       <View style={styles.displayFlex}>
         <View>
           <Text style={styles.darkBlackText}>{item.headerType}</Text>
-          <Text style={[styles.darkBlackText, { fontSize: SF(34) }]}>
+          <Text style={[styles.darkBlackText, { fontSize: SF(32) }]}>
             {item.range}
           </Text>
         </View>
@@ -1544,8 +1544,8 @@ export function Analytics(props) {
           <Image source={rightlight} style={styles.rightlight} />
         </TouchableOpacity>
       </View>
-      <Spacer space={SH(22)} />
-      <Image source={productMap} style={styles.productMap} />
+      <Spacer space={SH(5)} />
+         <ChartKit/>
     </View>
   );
   const productDetailItem = ({ item }) => (

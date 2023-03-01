@@ -26,6 +26,10 @@ const getSubCategoryError = error => ({
   type: TYPES.GET_SUB_CATEGORY_ERROR,
   payload: { error },
 });
+const getSubCategoryReset = () => ({
+  type: TYPES.GET_SUB_CATEGORY_RESET,
+  payload: null,
+});
 
 
 const getBrandRequest = () => ({
@@ -215,6 +219,24 @@ const clearRetailStore = () => ({
   payload: null,
 });
 
+
+const getWalletIdRequest = () => ({
+  type: TYPES.GET_WALLET_REQUEST,
+  payload: null,
+});
+const getWalletIdSuccess = getWallet => ({
+  type: TYPES.GET_WALLET_SUCCESS,
+  payload: { getWallet },
+});
+const getWalletIdError = error => ({
+  type: TYPES.GET_WALLET_ERROR,
+  payload: { error },
+});
+const getWalletIdReset = () => ({
+  type: TYPES.GET_WALLET_RESET,
+  payload: null,
+});
+
 export const getCategory = (sellerID) => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -230,9 +252,12 @@ export const getSubCategory = (sellerID, selectedId) => async dispatch => {
   try {
       const res = await RetailController.getSubCategory(sellerID, selectedId);
       dispatch(getSubCategorySuccess(res));
-  } catch (error) {
-      dispatch(getSubCategoryError(error.message));
-  }
+    } catch (error) {
+      if (error?.statusCode === 204){
+        dispatch(getSubCategoryReset());
+      }
+        dispatch(getSubCategoryError(error.message));
+    }
 };
 
 export const getBrand = (sellerID, selectedId) => async dispatch => {
@@ -378,6 +403,19 @@ export const createOrder = (data) => async dispatch => {
   }
 };
 
+export const getWalletId = (sellerID) => async dispatch => {
+  dispatch(getWalletIdRequest());
+  try {
+      const res = await RetailController.getWalletId(sellerID);
+      dispatch(getWalletIdSuccess(res));
+    } catch (error) {
+      if (error?.statusCode === 204){
+        dispatch(getWalletIdReset());
+      }
+        dispatch(getWalletIdError(error.message));
+    }
+};
+
 export const logout = () => async dispatch => {
   try {
     await RetailController.logout();
@@ -385,6 +423,8 @@ export const logout = () => async dispatch => {
     dispatch(clearStore());
   }
 };
+
+
 
 export const retailclearstore = () => async dispatch => {
     dispatch(clearRetailStore());

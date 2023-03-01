@@ -6,8 +6,11 @@ import {
   ApiUserInventory,
   ORDER_URL,
   ApiOrderInventory,
+  ApiWalletInventory,
+  WALLET_URL,
 } from '@/utils/APIinventory';
-import { Alert } from 'react-native';
+import { Alert, LogBox } from 'react-native';
+import { longPressHandlerName } from 'react-native-gesture-handler/lib/typescript/handlers/LongPressGestureHandler';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
@@ -36,19 +39,19 @@ export class RetailController {
       const endpoint = PRODUCT_URL + ApiProductInventory.getSubCategory + `?page=1&limit=20&category_id=${selectedId}&seller_id=${sellerID}&main_category=true`;
       HttpClient.get(endpoint)
         .then(response => {
-          if (response === '') {
-            resolve([]);
-          }
+          // if (response === '') {
+          //   resolve([]);
+          // }
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          // Toast.show({
+          //   text2: error?.error,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
         });
     });
   }
@@ -500,6 +503,25 @@ export class RetailController {
             visibilityTime: 2000,
           });
           reject(error.msg);
+        });
+    });
+  };
+
+  static async getWalletId(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint = WALLET_URL + ApiWalletInventory.getWallet+`${sellerID}` ;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          // Toast.show({
+          //   text2: error?.error,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
         });
     });
   }

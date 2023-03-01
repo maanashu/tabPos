@@ -9,7 +9,8 @@ const INITIALSTATE = {
   SeaProductList:[],
   getAllCart:[],
   productbunList:[],
-  getUserDetail:[]
+  getUserDetail:[],
+  getWallet:{}
   
 };
 
@@ -25,6 +26,11 @@ export const retailReducer = (state = {INITIALSTATE}, { payload, type }) => {
           return {
             ...state,
             subCategories: payload.subCategoryList?.payload?.data ?? [],
+          };
+          case TYPES.GET_SUB_CATEGORY_RESET:
+          return {
+            ...state,
+            subCategories: [],
           };
 
         case TYPES.GET_BRAND_SUCCESS:
@@ -65,6 +71,16 @@ export const retailReducer = (state = {INITIALSTATE}, { payload, type }) => {
                     ...state,
                     getUserDetail: payload?.getUserDetail?.payload?.users ?? [],
                   };
+                  case TYPES.GET_WALLET_SUCCESS:
+                    return {
+                      ...state,
+                      getWallet: payload?.getWallet?.payload,
+                    };
+                    case TYPES.GET_WALLET_RESET:
+                      return {
+                        ...state,
+                        getWallet: [],
+                      };
       
     case TYPES.CLEAR_STORE:
       return {};

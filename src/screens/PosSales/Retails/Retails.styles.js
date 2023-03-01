@@ -1008,9 +1008,10 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    width: windowWidth * 0.25,
+    width: windowWidth * 0.28,
     fontSize: SF(16),
     height: SH(50),
+    color:COLORS.dark_grey
   },
   scanerCon: {
     backgroundColor: COLORS.textInputBackground,
@@ -1028,7 +1029,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     alignSelf: 'center',
-    paddingVertical: verticalScale(35),
+    paddingVertical: verticalScale(10),
   },
   loaderPic: {
     width: SW(6),
@@ -1582,5 +1583,11 @@ export const styles = StyleSheet.create({
     resizeMode:'contain',
     backgroundColor:'#000',
     alignSelf:"center"
+  },
+  qrcodeImage:{
+    width:SW(300),
+    height:SH(300),
+    resizeMode:'contain'
   }
+
 });

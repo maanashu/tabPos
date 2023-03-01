@@ -12,3 +12,4 @@ export { ChoosePayment } from '@/components/ChoosePayment';
 export { NumericContainer } from '@/components/NumericContainer';
 export { ScreenWrapper } from '@/components/ScreenWrapper';
 export { TableDropdown } from '@/components/TableDropdown';
+export { ChartKit } from '@/components/ChartKit';

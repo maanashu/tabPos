@@ -73,6 +73,7 @@ import {
   createOrder,
   getProductDefault,
   retailclearstore,
+  getWalletId,
 } from '@/actions/RetailAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
@@ -91,6 +92,7 @@ export function Retails() {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const array = getRetailData?.categories;
+  const walletData = getRetailData?.getWallet;
   const subCategoriesArray = getRetailData?.subCategories ?? [];
   const brandArray = getRetailData?.brands ?? [];
   const products = getRetailData?.products;
@@ -132,7 +134,7 @@ export function Retails() {
 
   const [bundleOffer, setBundleOffer] = useState(false);
   const [custPayment, setCustPayment] = useState(false);
-  const [walletId, setWalletId] = useState('');
+  const [walletId, setWalletId] = useState(walletData?.wallet_address);
   const [listOfItem, setListofItem] = useState(false);
   const [custCash, setCustCash] = useState(false);
   const [customerPhoneNo, setCustomerPhoneNo] = useState('');
@@ -630,6 +632,7 @@ export function Retails() {
     setJbrCoin(true);
     setCashChoose(false);
     setCardChoose(false);
+    dispatch(getWalletId(sellerID))
   };
   const custPaymentRemoveHandler = () => {
     setCustPayment(false);
@@ -2197,19 +2200,21 @@ export function Retails() {
                   {strings.posSale.walletId}
                 </Text>
                 <Spacer space={SH(10)} />
-                <TextInput
+                 <TextInput
+                   editable={false}
                   style={styles.walletIdInput}
                   value={walletId}
                   textAlign={'center'}
                   onChangeText={setWalletId}
                   keyboardType="numeric"
                 />
-                <Spacer space={SH(60)} />
+                <Spacer space={SH(20)} />
                 <Text style={styles.walletIdText}>
                   {strings.posSale.scanText}
                 </Text>
                 <Spacer space={SH(10)} />
-                <View style={styles.scanerCon}></View>
+                {/* <View style={styles.scanerCon}></View> */}
+                <Image source={{uri : walletData?.qr_code}} style={styles.qrcodeImage}/>
                 {walletId ? (
                   <TouchableOpacity
                     style={styles.flexAlign}

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
-export function Reward() {
+export function ChartKit() {
   return (
    <View>
      <LineChart
@@ -32,7 +32,6 @@ export function Reward() {
     }}
     width={Dimensions.get('window').width * 0.42}
     height={190}
-    withDots='false'
     chartConfig={{
       decimalPlaces: 0,
       backgroundColor: '#000',

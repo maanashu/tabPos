@@ -1,7 +1,8 @@
 export const USER_URL = 'https://stgapiuserservice.jobr.com/api/v1/';
 // export const SUPPORT_URL = 'https://apisupport.jobr.com/api/v1/';
 export const ORDER_URL = 'https://stgdapiorder.jobr.com:8024/api/v1/';
-export const PRODUCT_URL = 'https://stgapiproductmgmt.jobr.com/api/v1/'
+export const PRODUCT_URL = 'https://stgapiproductmgmt.jobr.com/api/v1/';
+export const WALLET_URL = 'https://stgbewalletmanagement.jobr.com/api/v1/'
 
 export const ApiUserInventory = {
     verifyPhone:'user_phones/',
@@ -32,4 +33,9 @@ export const ApiOrderInventory = {
     acceptOrder: 'orders/status',
     createOrder:'orders/pos',
     getOrderCount:'orders/pos/statistics'
+};
+
+export const ApiWalletInventory = {
+    getWallet:'wallets/user/',
+   
 }
