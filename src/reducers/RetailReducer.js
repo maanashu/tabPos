@@ -38,12 +38,27 @@ export const retailReducer = (state = {INITIALSTATE}, { payload, type }) => {
             ...state,
             brands: payload.brandList?.payload?.data ?? [],
           };
+          case TYPES.GET_BRAND_RESET:
+          return {
+            ...state,
+            brands:  [],
+          };
 
           case TYPES.GET_PRODUCT_SUCCESS:
             return {
               ...state,
               products: payload?.productList?.payload?.data ?? [],
             };
+            case TYPES.GET_PRODUCT_RESET:
+              return {
+                ...state,
+                products:[],
+              };
+            case TYPES.GET_PRODUCTDEF_RESET:
+              return {
+                ...state,
+                products: [],
+              };
 
             case TYPES.GET_PRODUCTDEF_SUCCESS:
               return {
@@ -61,10 +76,20 @@ export const retailReducer = (state = {INITIALSTATE}, { payload, type }) => {
                 ...state,
                 getAllCart: payload?.getAllCart?.payload ?? [],
               };
+              case TYPES.GET_ALL_CART_RESET:
+                return {
+                  ...state,
+                  getAllCart: [],
+                };
               case TYPES.GET_BUNDLEOFFER_SUCCESS:
                 return {
                   ...state,
                   productbunList: payload?.productbunList?.payload?.data ?? [],
+                };
+                case TYPES.GET_BUNDLEOFFER_RESET:
+                return {
+                  ...state,
+                  productbunList: [],
                 };
                 case TYPES.GET_USERDETAIL_SUCCESS:
                   return {

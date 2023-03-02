@@ -280,7 +280,6 @@ export function Retails() {
   };
 
   const subCategoryFunction = id => {
-    console.log('brandSelectedId---------', brandSelectedId);
     if (brandSelectedId) {
       Toast.show({
         text2: 'Please first unselect brands ',
@@ -603,8 +602,18 @@ export function Retails() {
     setAmountPopup(false);
   };
   const moreActionHandler = () => {
-    setRightMoreAction(!rightMoreAction);
-    setSideContainer(!sideContainer);
+    if(totalCart === '0'){
+      Toast.show({
+        text2: 'Cart is currently empty',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    }else{
+      setRightMoreAction(!rightMoreAction);
+      setSideContainer(!sideContainer);
+    }
+    
   };
   const moreActionCloseHandler = () => {
     setRightMoreAction(false);
@@ -628,7 +637,17 @@ export function Retails() {
     setUpdatePrice(false);
   };
   const checkOutHandler = () => {
-    setCheckoutCon(!checkoutCon);
+    if(totalCart === '0'){
+      Toast.show({
+        text2: 'Cart is currently empty',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    }else {
+      setCheckoutCon(!checkoutCon);
+    }
+    
   };
   const jbrCoinChoseHandler = () => {
     setCustPayment(!custPayment);
@@ -2202,8 +2221,8 @@ export function Retails() {
                   isWalletIdLoading
                   ?
                   (
-                    <View style={{marginTop: 50}}>
-                      <ActivityIndicator size="large" color={COLORS.indicator}/>
+                       <View style={{marginTop: 50}}>
+                         <ActivityIndicator size="large" color={COLORS.indicator}/>
                       </View>
                   )
                   :

@@ -44,6 +44,10 @@ const getBrandError = error => ({
   type: TYPES.GET_BRAND_ERROR,
   payload: { error },
 });
+const getBrandReset = () => ({
+  type: TYPES.GET_BRAND_RESET,
+  payload: null,
+});
 
 const getProductRequest = () => ({
   type: TYPES.GET_PRODUCT_REQUEST,
@@ -57,6 +61,10 @@ const getProductError = error => ({
   type: TYPES.GET_PRODUCT_ERROR,
   payload: { error },
 });
+const getProductReset = () => ({
+  type: TYPES.GET_PRODUCT_RESET,
+  payload: null,
+});
 
 const getProductDefRequest = () => ({
   type: TYPES.GET_PRODUCTDEF_REQUEST,
@@ -69,6 +77,10 @@ const getProductDefSuccess = productList => ({
 const getProductDefError = error => ({
   type: TYPES.GET_PRODUCTDEF_ERROR,
   payload: { error },
+});
+const getProductDefReset = () => ({
+  type: TYPES.GET_PRODUCTDEF_RESET,
+  payload: null,
 });
 
 const getSeaProductRequest = () => ({
@@ -96,6 +108,11 @@ const getAllCartError = error => ({
   type: TYPES.GET_ALL_CART_ERROR,
   payload: { error },
 });
+const getAllCartReset = () => ({
+  type: TYPES.GET_ALL_CART_RESET,
+  payload: null,
+});
+
 
 const getClearAllCartRequest = () => ({
   type: TYPES.GET_CLEAR_ALL_CART_REQUEST,
@@ -121,6 +138,10 @@ const clearOneCartSuccess = ()  => ({
 const clearOneCartError = error => ({
   type: TYPES.GET_CLEAR_ONE_CART_ERROR,
   payload: { error },
+});
+const getOneCartReset = () => ({
+  type: TYPES.GET_CLEAR_ONE_CART_RESET,
+  payload: null,
 });
 
 const addTocartRequest = () => ({
@@ -173,6 +194,10 @@ const getProductBundleSuccess = (productbunList)  => ({
 const getProductBundleError = error => ({
   type: TYPES.GET_BUNDLEOFFER_ERROR,
   payload: { error },
+});
+const getProductBundleReset = () => ({
+  type: TYPES.GET_BUNDLEOFFER_RESET,
+  payload: null,
 });
 
 const getUserDetailRequest = () => ({
@@ -265,18 +290,24 @@ export const getBrand = (sellerID, selectedId) => async dispatch => {
   try {
       const res = await RetailController.getBrand(sellerID, selectedId);
       dispatch(getBrandSuccess(res));
-  } catch (error) {
-      dispatch(getBrandError(error.message));
-  }
+    } catch (error) {
+      if (error?.statusCode === 204){
+        dispatch(getBrandReset());
+      }
+        dispatch(getBrandError(error.message));
+    }
 };
 export const getProduct = (selectedId ,subSelectedId ,brandSelectedId ,sellerID) => async dispatch => {
   dispatch(getProductRequest());
   try {
       const res = await RetailController.getProduct(selectedId ,subSelectedId ,brandSelectedId ,sellerID);
       dispatch(getProductSuccess(res));
-  } catch (error) {
-      dispatch(getProductError(error.message));
-  }
+    } catch (error) {
+      if (error?.statusCode === 204){
+        dispatch(getProductReset());
+      }
+        dispatch(getProductError(error.message));
+    }
 };
 
 export const getProductDefault = (sellerID) => async dispatch => {
@@ -284,9 +315,12 @@ export const getProductDefault = (sellerID) => async dispatch => {
   try {
       const res = await RetailController.getProductDefault(sellerID);
       dispatch(getProductDefSuccess(res));
-  } catch (error) {
-      dispatch(getProductDefError(error.message));
-  }
+    } catch (error) {
+      if (error?.statusCode === 204){
+        dispatch(getProductDefReset());
+      }
+        dispatch(getProductDefError(error.message));
+    }
 };
 
 export const getSearchProduct = (search,sellerID) => async dispatch => {
@@ -304,16 +338,19 @@ export const getAllCart = () => async dispatch => {
   try {
       const res = await RetailController.getAllCartCategory();
       dispatch(getAllCartSuccess(res));
-  } catch (error) {
-      dispatch(getAllCartError(error.message));
-  }
+    } catch (error) {
+      if (error?.statusCode === 204){
+        dispatch(getAllCartReset());
+      }
+        dispatch(getAllCartError(error.message));
+    }
 };
 
 export const clearAllCart = () => async dispatch => {
   dispatch(getClearAllCartRequest());
   try {
       const res = await RetailController.clearAllCart();
-      dispatch(getClearAllCartSuccess('res', res));
+      dispatch(getClearAllCartSuccess(res));
       dispatch(getAllCart())
   } catch (error) {
       dispatch(getClearAllCartError(error.message));
@@ -325,9 +362,12 @@ export const clearOneCart = (data) => async dispatch => {
       const res = await RetailController.clearOneCart(data);
       dispatch(clearOneCartSuccess(res));
       dispatch(getAllCart())
-  } catch (error) {
-      dispatch(clearOneCartError(error.message));
+} catch (error) {
+  if (error?.statusCode === 204){
+    dispatch(getOneCartReset());
   }
+    dispatch(clearOneCartError(error.message));
+}
 };
 
 export const addTocart = (data) => async dispatch => {
@@ -366,9 +406,12 @@ export const getProductBundle = (id) => async dispatch => {
   try {
       const res = await RetailController.getProductBundle(id);
       dispatch(getProductBundleSuccess(res));
-  } catch (error) {
-      dispatch(getProductBundleError(error.message));
+} catch (error) {
+  if (error?.statusCode === 204){
+    dispatch(getProductBundleReset());
   }
+    dispatch(getProductBundleError(error.message));
+}
 };
 
 export const getUserDetail = (customerPhoneNo) => async dispatch => {

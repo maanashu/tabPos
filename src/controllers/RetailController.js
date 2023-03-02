@@ -24,7 +24,7 @@ export class RetailController {
         })
         .catch(error => {
           Toast.show({
-            text2: error.msg,
+            text2: 'catgory error',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
@@ -39,18 +39,15 @@ export class RetailController {
       const endpoint = PRODUCT_URL + ApiProductInventory.getSubCategory + `?page=1&limit=20&category_id=${selectedId}&seller_id=${sellerID}&main_category=true`;
       HttpClient.get(endpoint)
         .then(response => {
-          // if (response === '') {
-          //   resolve([]);
-          // }
           resolve(response);
         })
         .catch(error => {
-          // Toast.show({
-          //   text2: error?.error,
-          //   position: 'bottom',
-          //   type: 'error_toast',
-          //   visibilityTime: 1500,
-          // });
+          Toast.show({
+            text2: 'Sub-Category not found',
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
           reject(error);
         });
     });
@@ -63,19 +60,16 @@ export class RetailController {
         ApiProductInventory.getBrand + `?page=1&limit=10&seller_id=${sellerID}&category_id=${selectedId}`
       HttpClient.get(endpoint)
         .then(response => {
-          if (response.status === 204) {
-            resolve([]);
-          }
           resolve(response);
         })
         .catch(error => {
           Toast.show({
-            text2: error.msg,
+            text2: 'Brands not found',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   }
@@ -119,20 +113,16 @@ export class RetailController {
       );
       HttpClient.get(endpoint)
         .then(response => {
-          if (response.status === 204) {
-            console.log('no content');
-            resolve([]);
-          }
           resolve(response);
         })
         .catch(error => {
           Toast.show({
-            text2: error.msg,
+            text2: 'Product not found',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   };
@@ -144,20 +134,20 @@ export class RetailController {
    
       HttpClient.get(endpoint)
         .then(response => {
-          if (response.status === 204) {
-            console.log('no content');
-            resolve([]);
-          }
+          // if (response.status === 204) {
+          //   console.log('no content');
+          //   resolve([]);
+          // }
           resolve(response);
         })
         .catch(error => {
           Toast.show({
-            text2: error.msg,
+            text2: 'def product error',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error)
         });
     });
   };
@@ -201,7 +191,7 @@ export class RetailController {
           //   type: 'error_toast',
           //   visibilityTime: 1500,
           // });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   }
@@ -215,7 +205,7 @@ export class RetailController {
         })
         .catch(error => {
           Toast.show({
-            text2: error.msg,
+            text2: 'dfghjkl;----------',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
@@ -254,7 +244,7 @@ export class RetailController {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
-            text2: error.msg,
+            text2: error?.msg,
             visibilityTime: 2000,
           });
           reject(error.msg);
@@ -402,20 +392,10 @@ export class RetailController {
         `${id}`;
       HttpClient.get(endpoint)
         .then(response => {
-          if (response.status === 204) {
-            console.log('no content');
-            resolve([]);
-          }
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   }
