@@ -71,6 +71,8 @@ export const styles = StyleSheet.create({
   },
 
   contentContainer: {
+    flex:1,
+    justifyContent:'space-between',
     paddingHorizontal: SW(2),
   },
   orderStatusView: {
@@ -96,7 +98,6 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(10),
-    // textAlign: 'center',
     width: SW(20),
   },
   statusText2: {

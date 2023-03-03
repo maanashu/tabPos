@@ -307,8 +307,9 @@ export const styles = StyleSheet.create({
   },
   jfrStyle: {
     width: SW(15),
-    height: SW(20),
+    height: SW(15),
     resizeMode: 'contain',
+    borderRadius:50
   },
   jfrContainer: {
     flexDirection: 'row',
@@ -573,10 +574,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(5),
   },
   amountjfrStyle: {
-    width: SW(20),
-    height: SW(20),
+    width: SW(15),
+    height: SW(15),
     resizeMode: 'contain',
+    borderRadius:50,
     elevation: 10,
+    marginVertical:verticalScale(4)
   },
   jfrmaduro: {
     fontSize: SF(18),
@@ -1357,9 +1360,11 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(8),
   },
   marboloRedPackStyle: {
-    width: SW(20),
-    height: SW(18),
+    width: SW(15),
+    height: SW(15),
     resizeMode: 'contain',
+    borderRadius:50,
+    marginVertical:verticalScale(4)
   },
   marbolorRedStyle: {
     color: COLORS.solid_grey,

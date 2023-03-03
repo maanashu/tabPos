@@ -44,12 +44,14 @@ import {
   shipdeliveryOrders,
 } from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
-import { Button, ScreenWrapper, Spacer } from '@/components';
+import { Button, ChartKit, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import { BottomSheet } from './BottomSheet';
+
+import CircularProgress from 'react-native-circular-progress-indicator';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -404,7 +406,7 @@ export function ShippingOrder() {
   const renderOrder = ({ item, index }) => (
     <View style={styles.renderOrderView}>
       <Text style={styles.countText}>{item.total}</Text>
-      <Text style={[styles.statusText, { textAlign: 'left' }]}>
+      <Text style={[styles.statusText2, { textAlign: 'left' }]}>
         {item.title}
       </Text>
     </View>
@@ -1059,7 +1061,7 @@ export function ShippingOrder() {
               </View>
             </View>
           </View>
-          <View style={{ paddingBottom: verticalScale(4) }}>
+          <View style={{ paddingVertical : moderateScale(5)}}>
             <FlatList
               scrollEnabled={false}
               data={deliveryOrderStatus}
@@ -1081,50 +1083,7 @@ export function ShippingOrder() {
 
                     <Spacer space={SH(10)} />
                     <View style={styles.chartView}>
-                      {/* <LineChart
-                      data={{
-                        labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-                        datasets: [
-                          {
-                            data: [
-                              5,45,15,35
-                            ]
-                          }
-                        ]
-                      }}
-                      width={SW(168)} // from react-native
-                      height={SH(310)}
-                      withDots={false}
-                      withHorizontalLines
-                      withVerticalLines
-                      withInnerLines
-                      fromZero
-                      yAxisLabel={''}
-                      segments={3}
-                      // yAxisInterval={2} // optional, defaults to 1
-                      chartConfig={{
-                        backgroundColor: COLORS.white,
-                        backgroundGradientFrom: COLORS.bluish_green,
-                        backgroundGradientTo: COLORS.bluish_green,
-                        decimalPlaces: 0, // optional, defaults to 2dp
-                        color: (opacity = 1) => COLORS.white,
-                        labelColor: (opacity = 1) => COLORS.darkGray,
-                        // style: {
-                        //   borderRadius: 16
-                        // },
-                        propsForDots: {
-                          r: "6",
-                          strokeWidth: "2",
-                          stroke: COLORS.primary
-                        }
-                      }}
-                      // bezier
-                      style={{
-                        marginVertical: 8,
-                        // borderRadius: 16
-                      }}
-                    /> */}
-                      <Image source={chart} style={styles.chartImageStyle} />
+                       <ChartKit/>
                     </View>
                     <Spacer space={SH(20)} />
                   </View>
@@ -1138,11 +1097,25 @@ export function ShippingOrder() {
 
                     <Spacer space={SH(10)} />
                     <View style={styles.conversionRow}>
-                      <Image
-                        source={conversionBox}
-                        style={styles.conversionBoxStyle}
-                      />
-
+                    <CircularProgress
+                      value={20}
+                      radius={90}
+                      activeStrokeWidth={30}
+                      inActiveStrokeWidth={30}
+                      activeStrokeColor="#275AFF"
+                      inActiveStrokeColor="#EFEFEF"
+                      strokeLinecap="butt"
+                      valueSuffix={'%'}
+                      progressValueStyle={{
+                        fontWeight: '600',
+                        color: 'black',
+                        fontSize: 20,
+                      }}
+                      progressFormatter={value => {
+                        'worklet';
+                        return value.toFixed(2);
+                      }}
+                    />
                       <View style={styles.orderFlatlistView}>
                         <FlatList
                           data={orderConversion}

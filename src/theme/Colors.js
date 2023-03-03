@@ -28,4 +28,5 @@ export const COLORS = {
   green:'#2EC759',
   indicator:'#0000ff'
 };
+
    

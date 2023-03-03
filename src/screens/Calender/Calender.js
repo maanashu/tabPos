@@ -112,19 +112,21 @@ const schduleDetailModal = () => {
     <Modal transparent isVisible={schduleDetail}>
       <View style={styles.modalMainView}>
       <View style={styles.headerView}>
-            <View style={{ width: SW(170), alignItems: 'center' }}>
+            <View style={styles.headerBody}>
+              <Text>{null}</Text>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
                 {strings.calender.scheduledetails}
               </Text>
-            </View>
-            <TouchableOpacity
+              <TouchableOpacity
               onPress={() => {
                 setSchduleDetail(false);
               }}
-              style={{ width: SW(10) }}
+              style={{ width: SW(2)}}
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
+            </View>
+          
           </View>
           <View style={{paddingHorizontal:moderateScale(15)}}>
             <Spacer space={SH(30)}/>

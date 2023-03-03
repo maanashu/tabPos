@@ -326,6 +326,12 @@ export function Retails() {
     }
   };
 
+  const loderFun = ()=> {
+      setTimeout(() => {
+        <ActivityIndicator size="large" color={COLORS.indicator} />
+      }, 3000);
+  }
+
   const phoneNumberSearchFun = customerPhoneNo => {
     if (customerPhoneNo?.length > 9) {
       dispatch(getUserDetail(customerPhoneNo));
@@ -1217,7 +1223,7 @@ export function Retails() {
   const changeView = () => {
     if (getuserDetailByNo?.length > 0) {
       return (
-        <View style={{ height: SH(400), width: SW(93) }}>
+        <View style={{ height: SH(400), width: SW(93)}}>
           <View style={{ height: SH(280), width: SW(93) }}>
             {isUserDetailLoading ? (
               <View style={{ marginTop: 100 }}>
@@ -1260,6 +1266,7 @@ export function Retails() {
       customerPhoneNo?.length > 9
     ) {
       return (
+
         <View style={{ height: SH(400), width: SW(93) }}>
           <View>
             <Text style={styles.CusNotInSystem}>
@@ -1490,7 +1497,7 @@ export function Retails() {
           source={{ uri: item.product_details.image }}
           style={styles.jfrStyle}
         />
-        <View style={{ padding: 5 }}>
+        <View style={{ paddingLeft: 5 }}>
           <Text style={styles.jfrText}>{item.product_details.name}</Text>
           <Text style={styles.boxText}>{strings.retail.box}</Text>
           <Spacer space={SH(5)} />

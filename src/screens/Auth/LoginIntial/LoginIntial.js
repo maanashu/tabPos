@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StatusBar } from 'react-native';
 import { Spacer, Button } from '@/components';
-import { SH } from '@/theme';
+import { SF, SH } from '@/theme';
 import { profilePic } from '@/assets';
 import { styles } from '@/screens/Auth/LoginIntial/LoginIntial.styles';
 import { strings } from '@/localization';
@@ -119,8 +119,10 @@ export function LoginIntial() {
           {isLoading ? (
             <View style={{ marginTop: 70 }}>
               <ActivityIndicator size="large" color="#0000ff" />
+              <Spacer space={SH(10)}/>
+              <Text style={{color:"#0000ff", fontSize:SF(18)}}>Loading Data...</Text>
             </View>
-          ) : (
+            ) : (
             <View style={{ alignItems: 'center' }}>
               <Spacer space={SH(40)} />
               <Text style={styles.header}>{strings.loginIntial.heading}</Text>
@@ -155,7 +157,7 @@ export function LoginIntial() {
               />
               <Spacer space={SH(20)} />
             </View>
-          )}
+          )} 
         </View>
       </View>
     </View>

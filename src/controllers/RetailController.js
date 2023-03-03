@@ -204,13 +204,7 @@ export class RetailController {
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            text2: 'dfghjkl;----------',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   }

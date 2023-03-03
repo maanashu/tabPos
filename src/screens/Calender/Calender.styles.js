@@ -273,4 +273,11 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     paddingHorizontal: moderateScale(5),
   },
+  headerBody:{
+    width: SW(170),
+    flexDirection:'row', 
+    justifyContent:'space-between',
+    alignItems: 'center',
+     paddingHorizontal:moderateScale(10)
+  }
 });

@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     width: SW(14),
     height: SW(14),
     resizeMode: 'contain',
+    borderRadius:50
   },
   productName: {
     fontSize: SF(18),

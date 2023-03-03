@@ -126,6 +126,10 @@ const getClearAllCartError = error => ({
   type: TYPES.GET_CLEAR_ALL_CART_ERROR,
   payload: { error },
 });
+const getClearAllCartReset = () => ({
+  type: TYPES.GET_CLEAR_ALL_CART_RESET,
+  payload: null,
+});
 
 const ClearOneCartRequest = () => ({
   type: TYPES.GET_CLEAR_ONE_CART_REQUEST,
@@ -352,9 +356,12 @@ export const clearAllCart = () => async dispatch => {
       const res = await RetailController.clearAllCart();
       dispatch(getClearAllCartSuccess(res));
       dispatch(getAllCart())
-  } catch (error) {
-      dispatch(getClearAllCartError(error.message));
-  }
+    } catch (error) {
+      if (error?.statusCode === 204){
+        dispatch(getClearAllCartReset());
+      }
+        dispatch(getClearAllCartError(error.message));
+    }
 };
 export const clearOneCart = (data) => async dispatch => {
   dispatch(ClearOneCartRequest());

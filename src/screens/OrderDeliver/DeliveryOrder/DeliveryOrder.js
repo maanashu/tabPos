@@ -32,7 +32,7 @@ import { styles } from './DeliveryOrder.styles';
 import { strings } from '@/localization';
 import { deliveryOrders, loadingData } from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
-import { Button, ScreenWrapper, Spacer } from '@/components';
+import { Button, ChartKit, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale } from 'react-native-size-matters';
 import { BottomSheet } from './BottomSheet';
 import { useDispatch, useSelector } from 'react-redux';
@@ -1138,7 +1138,7 @@ export function DeliveryOrder() {
     } else {
       return (
         <View style={styles.mainScreenContiner}>
-          <View style={{ paddingVertical: moderateScale(5) }}>
+          <View style={{ paddingVertical: moderateScale(5)}}>
             {isPosOrderLoading ? (
               <FlatList
                 scrollEnabled
@@ -1170,51 +1170,7 @@ export function DeliveryOrder() {
 
                   <Spacer space={SH(10)} />
                   <View style={styles.chartView}>
-                    <LineChart
-                      data={{
-                        labels: [
-                          'Mon',
-                          'Tue',
-                          'Wed',
-                          'Thr',
-                          'Fri',
-                          'Sat',
-                          'sun',
-                        ],
-                        datasets: [
-                          {
-                            data: [0, 25, 50, 40, 100, 50, 40],
-                          },
-                        ],
-                      }}
-                      width={Dimensions.get('window').width * 0.44}
-                      height={190}
-                      chartConfig={{
-                        decimalPlaces: 0,
-                        backgroundColor: '#000',
-                        backgroundGradientFrom: '#fff',
-                        backgroundGradientTo: '#fff',
-                        decimalPlaces: 2,
-                        color: () => `rgba(39, 90, 255, 1)`,
-                        labelColor: (opacity = 1) =>
-                          `rgba(98, 98, 98, ${opacity})`,
-                        style: {
-                          borderRadius: 16,
-                        },
-                        propsForBackgroundLines: {
-                          strokeWidth: 1,
-                          stroke: '#CCCCCC',
-                        },
-                        propsForDots: {
-                          r: '0',
-                          strokeWidth: '2',
-                        },
-                      }}
-                      style={{
-                        marginVertical: 8,
-                        borderRadius: 16,
-                      }}
-                    />
+                   <ChartKit/>
                   </View>
                   <Spacer space={SH(20)} />
                 </View>
