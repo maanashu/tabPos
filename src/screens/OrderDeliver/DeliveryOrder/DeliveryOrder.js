@@ -41,6 +41,7 @@ import {
   getOrderCount,
   getOrders,
   getReviewDefault,
+  getOrdersSuccess
 } from '@/actions/DeliveryAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
@@ -70,7 +71,6 @@ export function DeliveryOrder() {
   const [showArea, setShowArea] = useState(true);
   const [headingType, setHeadingType] = useState('');
   const [dataType, setDataType] = useState('');
-
   const [selectedId, setSelectedId] = useState(
     getDeliveryData?.orderList?.[0].id
   );
@@ -169,8 +169,8 @@ export function DeliveryOrder() {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getOrderCount(sellerID)),
-      dispatch(getReviewDefault(0, sellerID));
+        dispatch(getOrderCount(sellerID)),
+        dispatch(getReviewDefault(0, sellerID));
     }
     if (getDeliveryData?.orderList?.length > 0) {
       setOrderCount(getDeliveryData?.orderList);
@@ -191,17 +191,17 @@ export function DeliveryOrder() {
       sellerID: sellerID,
     };
     dispatch(acceptOrder(data));
-     setViewAllReviews(false);
+    setViewAllReviews(false);
   };
 
   const singleOrderAccept = id => {
     const data = {
       orderId: id,
-      status:1,
+      status: 1,
       sellerID: sellerID,
     };
-     dispatch(acceptOrder(data));
-     setSingleOrderView(false) 
+    dispatch(acceptOrder(data));
+    setSingleOrderView(false);
   };
 
   const orderCancelHandler = () => {
@@ -210,9 +210,8 @@ export function DeliveryOrder() {
       status: 7,
       sellerID: sellerID,
     };
-     dispatch(acceptOrder(data));
-     setViewAllReviews(false);
-    
+    dispatch(acceptOrder(data));
+    setViewAllReviews(false);
   };
   const singleorderCancelHandler = id => {
     const data = {
@@ -221,8 +220,7 @@ export function DeliveryOrder() {
       sellerID: sellerID,
     };
     dispatch(acceptOrder(data));
-    setSingleOrderView(false) 
-    
+    setSingleOrderView(false);
   };
 
   const isPosOrderLoading = useSelector(state =>
@@ -237,7 +235,12 @@ export function DeliveryOrder() {
       <View style={styles.headerMainView}>
         {viewAllReviews || singleOrderView ? (
           <TouchableOpacity
-            onPress={() => {viewAllReviews ?  setViewAllReviews(false) : setSingleOrderView(false)
+            onPress={() => {
+              viewAllReviews
+                ?
+                setViewAllReviews(false)
+                :
+                 setSingleOrderView(false)
             }}
             style={styles.backView}
           >
@@ -286,10 +289,10 @@ export function DeliveryOrder() {
         visibilityTime: 1500,
       });
     } else {
-      dispatch(getOrders(item.key, sellerID));
-      setViewAllReviews(true),
-        setHeadingType(item.status),
-        setDataType(item.status);
+          dispatch(getOrders(item.key, sellerID));
+         setViewAllReviews(true),
+          setHeadingType(item.status),
+          setDataType(item.status);
     }
   };
 
@@ -915,43 +918,54 @@ export function DeliveryOrder() {
         <View style={[styles.headerMainView, { paddingVertical: SH(0) }]}>
           <View style={styles.orderNumberLeftViewmap}>
             <Spacer space={SH(20)} />
-            <TouchableOpacity
-             
-              style={styles.reviewRenderView}
-            >
+            <TouchableOpacity style={styles.reviewRenderView}>
               <View style={{ width: SW(45) }}>
                 <Text numberOfLines={1} style={styles.nameText}>
-                 {singleOrder?.user_details?.firstname ? singleOrder?.user_details?.firstname : 'user name'}
+                  {singleOrder?.user_details?.firstname
+                    ? singleOrder?.user_details?.firstname
+                    : 'user name'}
                 </Text>
                 <View style={styles.timeView}>
                   <Image source={pin} style={styles.pinIcon} />
                   <Text style={styles.timeText}>
-                   {singleOrder?.distance ? singleOrder?.distance : '00.00'}
+                    {singleOrder?.distance ? singleOrder?.distance : '00.00'}
                   </Text>
                 </View>
               </View>
 
               <View style={{ width: SW(25) }}>
                 <Text style={styles.nameText}>
-                {singleOrder?.order_details?.length ? singleOrder?.order_details?.length : '0'}Item
+                  {singleOrder?.order_details?.length
+                    ? singleOrder?.order_details?.length
+                    : '0'}
+                  Item
                 </Text>
                 <View style={styles.timeView}>
                   <Image source={pay} style={styles.pinIcon} />
                   <Text style={styles.timeText}>
-                  {singleOrder?.payable_amount ? singleOrder?.payable_amount : '0'}
+                    {singleOrder?.payable_amount
+                      ? singleOrder?.payable_amount
+                      : '0'}
                   </Text>
                 </View>
               </View>
 
               <View style={{ width: SW(60) }}>
                 <Text style={[styles.nameText, { color: COLORS.primary }]}>
-                {singleOrder?.shipping ? singleOrder?.shipping : 'no delivery type'}
+                  {singleOrder?.shipping
+                    ? singleOrder?.shipping
+                    : 'no delivery type'}
                 </Text>
                 <View style={styles.timeView}>
                   <Image source={clock} style={styles.pinIcon} />
                   <Text style={styles.timeText}>
-                   {singleOrder?.preffered_delivery_start_time ? singleOrder?.preffered_delivery_start_time :'00.00'}{'-'}
-                   {singleOrder?.preffered_delivery_end_time ? singleOrder?.preffered_delivery_end_time :'00.00'}
+                    {singleOrder?.preffered_delivery_start_time
+                      ? singleOrder?.preffered_delivery_start_time
+                      : '00.00'}
+                    {'-'}
+                    {singleOrder?.preffered_delivery_end_time
+                      ? singleOrder?.preffered_delivery_end_time
+                      : '00.00'}
                   </Text>
                 </View>
               </View>
@@ -974,20 +988,26 @@ export function DeliveryOrder() {
             <View style={styles.profileDetailView}>
               <View style={{ flexDirection: 'row' }}>
                 <Image
-                  source={singleOrder?.user_details?.profile_photo ? { uri : singleOrder?.user_details?.profile_photo} :userImage}
+                  source={
+                    singleOrder?.user_details?.profile_photo
+                      ? { uri: singleOrder?.user_details?.profile_photo }
+                      : userImage
+                  }
                   style={styles.profileImage}
                 />
                 <View style={{ justifyContent: 'center', paddingLeft: 10 }}>
                   <Text
                     style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}
                   >
-                    {singleOrder?.user_details?.firstname ? singleOrder?.user_details?.firstname : 'user name'}
+                    {singleOrder?.user_details?.firstname
+                      ? singleOrder?.user_details?.firstname
+                      : 'user name'}
                   </Text>
                   <Text
                     numberOfLines={1}
                     style={[styles.timeText, { paddingLeft: 0, width: SW(90) }]}
                   >
-                   {singleOrder?.address ? singleOrder?.address : 'no address'}
+                    {singleOrder?.address ? singleOrder?.address : 'no address'}
                   </Text>
                 </View>
               </View>
@@ -1001,7 +1021,9 @@ export function DeliveryOrder() {
                       { color: COLORS.primary, fontFamily: Fonts.SemiBold },
                     ]}
                   >
-                  {singleOrder?.shipping ? singleOrder?.shipping : 'no delivery type' }
+                    {singleOrder?.shipping
+                      ? singleOrder?.shipping
+                      : 'no delivery type'}
                   </Text>
                   <Text style={styles.timeText}>
                     {strings.deliveryOrders.time}
@@ -1012,42 +1034,54 @@ export function DeliveryOrder() {
             <Spacer space={SH(15)} />
             <View style={styles.horizontalLine} />
             <View style={{ height: windowHeight * 0.68 }}>
-          <View style={{ height: SH(325) }}>
-            <FlatList
-              data={singleOrder?.order_details}
-              extraData={singleOrder?.order_details}
-              renderItem={renderProductList}
-              ItemSeparatorComponent={() => (
-                <View style={styles.itemSeparatorView} />
-              )}
-            />
-          </View>
-          <View style={styles.bottomSheet}>
-            <BottomSheet
-              discount={singleOrder?.discount ? singleOrder?.discount :  '0'}
-              subTotal={singleOrder?.actual_amount ? singleOrder?.actual_amount :  '0'}
-              tax={singleOrder?.tax ? singleOrder?.tax :  '0'}
-              total={singleOrder?.payable_amount ? singleOrder?.payable_amount :  '0'}
-              item= {singleOrder?.order_details?.length ? singleOrder?.order_details?.length : '0'}Item
-            />
-            <View style={styles.orderReviewButton}>
-              <Button
-                style={styles.declineButton}
-                title={strings.deliveryOrders.decline}
-                textStyle={[styles.buttonText, { color: COLORS.primary }]}
-                onPress={() => singleorderCancelHandler(singleOrder?.id)}
-              />
-              <Button
-                style={styles.acceptButton}
-                title={strings.deliveryOrders.accept}
-                textStyle={styles.buttonText}
-                onPress={() => singleOrderAccept(singleOrder?.id)}
-              />
+              <View style={{ height: SH(325) }}>
+                <FlatList
+                  data={singleOrder?.order_details}
+                  extraData={singleOrder?.order_details}
+                  renderItem={renderProductList}
+                  ItemSeparatorComponent={() => (
+                    <View style={styles.itemSeparatorView} />
+                  )}
+                />
+              </View>
+              <View style={styles.bottomSheet}>
+                <BottomSheet
+                  discount={singleOrder?.discount ? singleOrder?.discount : '0'}
+                  subTotal={
+                    singleOrder?.actual_amount
+                      ? singleOrder?.actual_amount
+                      : '0'
+                  }
+                  tax={singleOrder?.tax ? singleOrder?.tax : '0'}
+                  total={
+                    singleOrder?.payable_amount
+                      ? singleOrder?.payable_amount
+                      : '0'
+                  }
+                  item={
+                    singleOrder?.order_details?.length
+                      ? singleOrder?.order_details?.length
+                      : '0'
+                  }
+                  Item
+                />
+                <View style={styles.orderReviewButton}>
+                  <Button
+                    style={styles.declineButton}
+                    title={strings.deliveryOrders.decline}
+                    textStyle={[styles.buttonText, { color: COLORS.primary }]}
+                    onPress={() => singleorderCancelHandler(singleOrder?.id)}
+                  />
+                  <Button
+                    style={styles.acceptButton}
+                    title={strings.deliveryOrders.accept}
+                    textStyle={styles.buttonText}
+                    onPress={() => singleOrderAccept(singleOrder?.id)}
+                  />
+                </View>
+              </View>
             </View>
           </View>
-        </View>
-          </View>
-
         </View>
       );
     } else if (viewAllReviews && readyPickup === false) {
@@ -1138,7 +1172,7 @@ export function DeliveryOrder() {
     } else {
       return (
         <View style={styles.mainScreenContiner}>
-          <View style={{ paddingVertical: moderateScale(5)}}>
+          <View style={{ paddingVertical: moderateScale(5) }}>
             {isPosOrderLoading ? (
               <FlatList
                 scrollEnabled
@@ -1170,7 +1204,7 @@ export function DeliveryOrder() {
 
                   <Spacer space={SH(10)} />
                   <View style={styles.chartView}>
-                   <ChartKit/>
+                    <ChartKit />
                   </View>
                   <Spacer space={SH(20)} />
                 </View>
@@ -1234,43 +1268,34 @@ export function DeliveryOrder() {
                   </View>
 
                   <Spacer space={SH(8)} />
-                  
-                  {  isPosOrderDefLoading
-                    ?
-                    (
-                      <View style={{ marginTop: 10 }}>
+
+                  {isPosOrderDefLoading ? (
+                    <View style={{ marginTop: 10 }}>
                       <ActivityIndicator
                         size="large"
                         color={COLORS.indicator}
                       />
                     </View>
-                    )
-                    :
-                      length?.[0] === 0
-                      ?
-                      (
-                        <View>
-                        <Text style={styles.nodata}>No data found</Text>
-                         </View>
-                      )
-                      :
-                      (
-                        <View
+                  ) : length?.[0] === 0 ? (
+                    <View>
+                      <Text style={styles.nodata}>No data found</Text>
+                    </View>
+                  ) : (
+                    <View
                       style={{
                         height: Platform.OS === 'android' ? SH(350) : SH(350),
                       }}
                     >
-                        <FlatList
-                          data={getDeliveryData?.getReviewDef}
-                          extraData={getDeliveryData?.getReviewDef}
-                          keyExtractor={item => item.id}
-                          renderItem={renderReviewItemDef}
-                          ListEmptyComponent={ListEmptyComponent}
-                        />
+                      <FlatList
+                        data={getDeliveryData?.getReviewDef}
+                        extraData={getDeliveryData?.getReviewDef}
+                        keyExtractor={item => item.id}
+                        renderItem={renderReviewItemDef}
+                        ListEmptyComponent={ListEmptyComponent}
+                      />
                     </View>
-                      )
-                    }
-                    
+                  )}
+
                   <Spacer space={SH(15)} />
                 </View>
 
@@ -1307,21 +1332,46 @@ export function DeliveryOrder() {
               {strings.deliveryOrders.assignedDriver}
             </Text>
           </View>
-
           <TouchableOpacity
             onPress={() => {
               setShowArea(!showArea);
             }}
+            style={styles.dropdown2Con}
           >
             <Image
               source={dropdown2}
-              style={[styles.searchImage, { right: 10 }]}
+              style={[styles.searchImage, { right: 30 }]}
             />
           </TouchableOpacity>
         </View>
         <View style={styles.horizontalLine} />
+        {/* <Spacer space={SH(10)} /> */}
+        {
+          showArea === false 
+          ?
+          (
+            <View style={styles.deliveryStatus2}>
+          <View style={styles.flexRow}>
+            <Image source={deliveryLine} style={styles.deliveryImage} />
+            <View style={styles.justifyContentStyle}>
+              <Text style={styles.verifyText}>
+                {strings.deliveryOrders.orderAccepted}
+              </Text>
+              <Text style={styles.verifyText}>
+                {strings.deliveryOrders.dateTime}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.nineXCon}>
+            <Text style={styles.nineXText}>659X</Text>
+          </View>
+        </View>
+          ):
+          null
+        }
+        
 
-        <Spacer space={SH(20)} />
+        <Spacer space={SH(10)} />
         {showArea ? (
           <View>
             <View style={styles.deliveryStatus}>
@@ -1361,7 +1411,7 @@ export function DeliveryOrder() {
             </View>
 
             <View style={styles.deliveryStatus}>
-              <Image source={deliveryLine} style={styles.deliveryImage} />
+              <Image source={delivery} style={styles.deliveryImage} />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.pickup}
@@ -1373,7 +1423,7 @@ export function DeliveryOrder() {
             </View>
 
             <View style={styles.deliveryStatus}>
-              <Image source={deliveryLine} style={styles.deliveryImage} />
+              <Image source={itemss?.status >= 4 ? deliveryLine : delivery} style={styles.deliveryImage} />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.assign}
@@ -1385,7 +1435,7 @@ export function DeliveryOrder() {
             </View>
 
             <View style={styles.deliveryStatus}>
-              <Image source={deliveryLine} style={styles.deliveryImage} />
+              <Image source={itemss?.status >= 3 ? deliveryLine : delivery} style={styles.deliveryImage} />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.readyToPickup}
@@ -1395,12 +1445,33 @@ export function DeliveryOrder() {
                 </Text>
               </View>
             </View>
-
             <View style={styles.deliveryStatus}>
-              <Image source={deliveryLine} style={styles.deliveryImage} />
+              <Image source={itemss?.status >= 2 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <View style={styles.justifyContentStyle}>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.orderPrepare}
+                </Text>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.within}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.deliveryStatus}>
+              <Image source={itemss?.status >=1 ? deliveryLine : delivery} style={styles.deliveryImage} />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.orderAccepted}
+                </Text>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.dateTime}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.deliveryStatus}>
+              <Image source={itemss?.status >= 0 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <View style={styles.justifyContentStyle}>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.orderOfReview}{itemss?.status}
                 </Text>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.dateTime}

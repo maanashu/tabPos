@@ -55,6 +55,12 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     left: 3,
   },
+  dropdown2Con:{
+     width:SW(15),
+     height:SH(30),
+     flexDirection:'row',
+     justifyContent:'space-evenly'
+  },
   textInputStyle: {
     width: SW(45),
     marginLeft: 10,
@@ -449,27 +455,49 @@ export const styles = StyleSheet.create({
     bottom: Platform.OS === 'android' ? 50 : 30,
     backgroundColor: COLORS.white,
     right: SW(5),
-    width: SW(100),
+    width: SW(95),
     paddingVertical: 8,
     borderRadius: 7,
   },
   deliveryImage: {
-    width: SW(15),
-    height: SH(46),
+    width: SW(13),
+    height: SH(40),
     resizeMode: 'contain',
     alignSelf: 'flex-end',
   },
+  deliveryStatus2:{
+    flexDirection: 'row',
+    alignItems:"center",
+    justifyContent:'space-between',
+    height: SH(53),
+    paddingRight:moderateScale(7),
+    marginTop:10
+  },
   deliveryStatus: {
     flexDirection: 'row',
-    height: SH(53),
+    height: SH(44),
+    paddingRight:moderateScale(7)
   },
   verifyText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(12),
-    color: COLORS.gerySkies,
+    fontSize: SF(11),
+    color: COLORS.dark_grey,
   },
   justifyContentStyle: {
     justifyContent: 'flex-end',
+  },
+  nineXCon:{
+    width:SW(22),
+    height:SH(45),
+    borderRadius:10,
+    backgroundColor:COLORS.primary,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  nineXText:{
+    color:COLORS.white,
+    fontFamily:Fonts.SemiBold,
+    fontSize:SF(17)
   },
   radioImage: {
     width: SW(6),
@@ -527,4 +555,8 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     color: COLORS.black,
   },
+  flexRow:{
+    flexDirection:'row',
+    alignItems:'center'
+  }
 });

@@ -49,10 +49,7 @@ import { moderateScale, verticalScale } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import {
-  tipData,
-  amountReceivedData,
-} from '@/constants/flatListData';
+import { tipData, amountReceivedData } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getCategory,
@@ -80,7 +77,6 @@ import { TYPES } from '@/Types/Types';
 import { AddDiscountToCart, UpdatePrice } from '@/components';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { ListOfItem } from './ListOfItem';
-
 import { getRetail } from '@/selectors/RetailSelectors';
 import { CategoryProductDetail, ChangeDue } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
@@ -118,7 +114,9 @@ export function Retails() {
   const [cityModalOpen, setCityModelOpen] = useState(false);
   const [cityModalValue, setCityModalValue] = useState(null);
   const [productArray, setProductArray] = useState(products ?? []);
-  const [serProductArrayj, setSerProductArrayj] = useState(serProductArray ?? []);
+  const [serProductArrayj, setSerProductArrayj] = useState(
+    serProductArray ?? []
+  );
   const serProductCount = serProductArrayj.map(item => item.qty);
   const serProductCount2 = serProductCount[0];
   const [proCount, setProCount] = useState(serProductCount2);
@@ -326,11 +324,11 @@ export function Retails() {
     }
   };
 
-  const loderFun = ()=> {
-      setTimeout(() => {
-        <ActivityIndicator size="large" color={COLORS.indicator} />
-      }, 3000);
-  }
+  const loderFun = () => {
+    setTimeout(() => {
+      <ActivityIndicator size="large" color={COLORS.indicator} />;
+    }, 3000);
+  };
 
   const phoneNumberSearchFun = customerPhoneNo => {
     if (customerPhoneNo?.length > 9) {
@@ -450,7 +448,7 @@ export function Retails() {
     };
     dispatch(addTocart(data));
     setPosSearch(false);
-    setSearchProViewDetail(false)
+    setSearchProViewDetail(false);
   };
   const addToCartCatPro = (id, service_id) => {
     const data = {
@@ -577,8 +575,8 @@ export function Retails() {
       setListofItem(false);
       setCheckoutCon(false);
       setCustomerPhoneNo(''),
-      setSendInventer(false),
-      dispatch(getUserDetailSuccess([]))
+        setSendInventer(false),
+        dispatch(getUserDetailSuccess([]));
     }
   };
 
@@ -608,18 +606,17 @@ export function Retails() {
     setAmountPopup(false);
   };
   const moreActionHandler = () => {
-    if(totalCart === '0'){
+    if (totalCart === '0') {
       Toast.show({
         text2: 'Cart is currently empty',
         position: 'bottom',
         type: 'error_toast',
         visibilityTime: 1500,
       });
-    }else{
+    } else {
       setRightMoreAction(!rightMoreAction);
       setSideContainer(!sideContainer);
     }
-    
   };
   const moreActionCloseHandler = () => {
     setRightMoreAction(false);
@@ -643,24 +640,23 @@ export function Retails() {
     setUpdatePrice(false);
   };
   const checkOutHandler = () => {
-    if(totalCart === '0'){
+    if (totalCart === '0') {
       Toast.show({
         text2: 'Cart is currently empty',
         position: 'bottom',
         type: 'error_toast',
         visibilityTime: 1500,
       });
-    }else {
+    } else {
       setCheckoutCon(!checkoutCon);
     }
-    
   };
   const jbrCoinChoseHandler = () => {
     setCustPayment(!custPayment);
     setJbrCoin(true);
     setCashChoose(false);
     setCardChoose(false);
-    dispatch(getWalletId(sellerID))
+    dispatch(getWalletId(sellerID));
   };
   const custPaymentRemoveHandler = () => {
     setCustPayment(false);
@@ -672,7 +668,7 @@ export function Retails() {
     setCustCash(!custCash);
   };
   const cardChooseHandler = () => {
-    setCardChoose(!cardChoose);
+    setCardChoose(!cardChoose);productArrayproductArrayproductArray
     setCashChoose(false);
     setJbrCoin(false);
   };
@@ -1223,7 +1219,7 @@ export function Retails() {
   const changeView = () => {
     if (getuserDetailByNo?.length > 0) {
       return (
-        <View style={{ height: SH(400), width: SW(93)}}>
+        <View style={{ height: SH(400), width: SW(93) }}>
           <View style={{ height: SH(280), width: SW(93) }}>
             {isUserDetailLoading ? (
               <View style={{ marginTop: 100 }}>
@@ -1266,7 +1262,6 @@ export function Retails() {
       customerPhoneNo?.length > 9
     ) {
       return (
-
         <View style={{ height: SH(400), width: SW(93) }}>
           <View>
             <Text style={styles.CusNotInSystem}>
@@ -1428,7 +1423,7 @@ export function Retails() {
               ]}
             >
               {strings.posSale.cashRecive}
-            <Spacer space={SH(40)} />
+              <Spacer space={SH(40)} />
             </Text>
             <Spacer space={SH(20)} />
 
@@ -1491,7 +1486,8 @@ export function Retails() {
   const cartListItem = ({ item }) => (
     <TouchableOpacity
       style={styles.jfrContainer}
-      onPress={() => amountPopHandler(item)}>
+      onPress={() => amountPopHandler(item)}
+    >
       <View style={styles.jfrContainer2}>
         <Image
           source={{ uri: item.product_details.image }}
@@ -1530,7 +1526,9 @@ export function Retails() {
       {listOfItem ? (
         <ListOfItem
           listOfItemCloseHandler={() => (
-            setListofItem(false), setCustomerPhoneNo(false),setCustomerPhoneNo(''),
+            setListofItem(false),
+            setCustomerPhoneNo(false),
+            setCustomerPhoneNo(''),
             setSendInventer(false),
             dispatch(getUserDetailSuccess([]))
           )}
@@ -2065,7 +2063,7 @@ export function Retails() {
               <Spacer space={SH(10)} />
               <TouchableOpacity
                 style={styles.discountCon}
-                onPress={() =>  setAddNotes(!addNotes) }
+                onPress={() => setAddNotes(!addNotes)}
               >
                 <Image source={notess} style={styles.addDiscountStyle} />
                 <Text style={styles.addDiscountText}>
@@ -2223,56 +2221,54 @@ export function Retails() {
                   <Image source={crossButton} style={styles.crossButton} />
                 </TouchableOpacity>
               </View>
-              
-                {
-                  isWalletIdLoading
-                  ?
-                  (
-                       <View style={{marginTop: 50}}>
-                         <ActivityIndicator size="large" color={COLORS.indicator}/>
-                      </View>
-                  )
-                  :
-                  (
-                    <View style={styles.custPaymentBodyCon}>
-                    <Spacer space={SH(60)} />
-                    <Text style={styles.walletIdText}>
-                      {strings.posSale.walletId}
+
+              {isWalletIdLoading ? (
+                <View style={{ marginTop: 50 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : (
+                <View style={styles.custPaymentBodyCon}>
+                  <Spacer space={SH(60)} />
+                  <Text style={styles.walletIdText}>
+                    {strings.posSale.walletId}
+                  </Text>
+                  <Spacer space={SH(10)} />
+                  <View style={styles.walletIdInput}>
+                    <Text style={styles.walletAddresStyle}>
+                      {walletData?.wallet_address}
                     </Text>
-                    <Spacer space={SH(10)} />
-                    <View style={styles.walletIdInput}>
-                        <Text style={styles.walletAddresStyle}>{walletData?.wallet_address}</Text>
-                    </View>
-                    <Spacer space={SH(20)} />
-                    <Text style={styles.walletIdText}>
-                      {strings.posSale.scanText}
-                    </Text>
-                    <Spacer space={SH(10)} />
-                    <Image source={{uri : walletData?.qr_code}} style={styles.qrcodeImage}/>
-                    {walletId ? (
-                      <TouchableOpacity
-                        style={styles.flexAlign}
-                        onPress={listOfItemHandler}
-                      >
-                        <Text
-                          style={[styles.redrectingText, { color: COLORS.primary }]}
-                        >
-                          {strings.posSale.rederecting}{' '}
-                        </Text>
-                        <Image source={loader} style={styles.loaderPic} />
-                      </TouchableOpacity>
-                    ) : (
-                      <Text style={styles.redrectingText}>
-                        {strings.posSale.rederecting}
-                      </Text>
-                    )}
                   </View>
-
-                  )
-
-                }
-                
-             
+                  <Spacer space={SH(20)} />
+                  <Text style={styles.walletIdText}>
+                    {strings.posSale.scanText}
+                  </Text>
+                  <Spacer space={SH(10)} />
+                  <Image
+                    source={{ uri: walletData?.qr_code }}
+                    style={styles.qrcodeImage}
+                  />
+                  {walletId ? (
+                    <TouchableOpacity
+                      style={styles.flexAlign}
+                      onPress={listOfItemHandler}
+                    >
+                      <Text
+                        style={[
+                          styles.redrectingText,
+                          { color: COLORS.primary },
+                        ]}
+                      >
+                        {strings.posSale.rederecting}{' '}
+                      </Text>
+                      <Image source={loader} style={styles.loaderPic} />
+                    </TouchableOpacity>
+                  ) : (
+                    <Text style={styles.redrectingText}>
+                      {strings.posSale.rederecting}
+                    </Text>
+                  )}
+                </View>
+              )}
             </View>
           </Modal>
           {/*  customer and payment  modal end */}

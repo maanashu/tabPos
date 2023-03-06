@@ -39,6 +39,12 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  reviewHeader: {
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(18),
+    color: COLORS.primary,
+    paddingHorizontal: moderateScale(13),
+  },
   deliveryText: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
@@ -80,6 +86,11 @@ export const styles = StyleSheet.create({
     height: SH(92),
     flexDirection: 'row',
     marginHorizontal: moderateScale(7),
+  },
+  orderViewBody: {
+    width: SW(60),
+    height: SH(50),
+    justifyContent: 'center',
   },
   contentContainer: {
     flex:1,

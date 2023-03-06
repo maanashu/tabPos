@@ -9,15 +9,17 @@ import {
   ApiWalletInventory,
   WALLET_URL,
 } from '@/utils/APIinventory';
-import { Alert, LogBox } from 'react-native';
-import { longPressHandlerName } from 'react-native-gesture-handler/lib/typescript/handlers/LongPressGestureHandler';
+import { Alert } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class RetailController {
   static async getCategory(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint = PRODUCT_URL + ApiProductInventory.getCategory + `?page=1&limit=20&seller_id=${sellerID}&main_category=true`;
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.getCategory +
+        `?page=1&limit=20&seller_id=${sellerID}&main_category=true`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -36,7 +38,10 @@ export class RetailController {
 
   static async getSubCategory(sellerID, selectedId) {
     return new Promise((resolve, reject) => {
-      const endpoint = PRODUCT_URL + ApiProductInventory.getSubCategory + `?page=1&limit=20&category_id=${selectedId}&seller_id=${sellerID}&main_category=true`;
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.getSubCategory +
+        `?page=1&limit=20&category_id=${selectedId}&seller_id=${sellerID}&main_category=true`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -57,7 +62,8 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
-        ApiProductInventory.getBrand + `?page=1&limit=10&seller_id=${sellerID}&category_id=${selectedId}`
+        ApiProductInventory.getBrand +
+        `?page=1&limit=10&seller_id=${sellerID}&category_id=${selectedId}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -95,12 +101,14 @@ export class RetailController {
       } else if (selectedId && subSelectedId && sellerID && !brandSelectedId) {
         return (
           PRODUCT_URL +
-          ApiProductInventory.getProduct + `?page=1&limit=10&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+          ApiProductInventory.getProduct +
+          `?page=1&limit=10&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       } else if (selectedId && subSelectedId && brandSelectedId && sellerID) {
         return (
           PRODUCT_URL +
-          ApiProductInventory.getProduct +`?page=1&limit=10&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+          ApiProductInventory.getProduct +
+          `?page=1&limit=10&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       }
     };
@@ -125,19 +133,17 @@ export class RetailController {
           reject(error);
         });
     });
-  };
+  }
 
-
-  static async getProductDefault( sellerID ) {
+  static async getProductDefault(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint =  PRODUCT_URL + ApiProductInventory.getProduct +`?page=1&limit=10&seller_id=${sellerID}`;
-   
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.getProduct +
+        `?page=1&limit=10&seller_id=${sellerID}`;
+
       HttpClient.get(endpoint)
         .then(response => {
-          // if (response.status === 204) {
-          //   console.log('no content');
-          //   resolve([]);
-          // }
           resolve(response);
         })
         .catch(error => {
@@ -147,16 +153,17 @@ export class RetailController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(error)
+          reject(error);
         });
     });
-  };
+  }
 
   static async getSearchProduct(search, sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
-        ApiProductInventory.getProduct + `?page=1&limit=10&search=${search}&seller_id=${sellerID}`
+        ApiProductInventory.getProduct +
+        `?page=1&limit=10&search=${search}&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then(response => {
           if (response.status === 204) {
@@ -184,13 +191,6 @@ export class RetailController {
           resolve(response);
         })
         .catch(error => {
-          // Toast.show({
-          //   // text2: error.msg,
-          //   text2: '222',
-          //   position: 'bottom',
-          //   type: 'error_toast',
-          //   visibilityTime: 1500,
-          // });
           reject(error);
         });
     });
@@ -288,7 +288,8 @@ export class RetailController {
   }
   static async addNotes(data) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.addNotes+`/${data.cartId}`;
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.addNotes + `/${data.cartId}`;
       const body = {
         notes: data.notes,
       };
@@ -325,8 +326,9 @@ export class RetailController {
 
   static async addDiscountToCart(data) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.addNotes+`/${data.cartId}`;
-      const orderAmountstrfy = JSON.stringify(data.orderAmount)
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.addNotes + `/${data.cartId}`;
+      const orderAmountstrfy = JSON.stringify(data.orderAmount);
       const discountInput = data.amountDis
         ? data.amountDis
         : data.percentDis
@@ -335,17 +337,8 @@ export class RetailController {
       const body = {
         discount_value: discountInput,
         discount_flag: data.value,
-        order_amount: orderAmountstrfy
+        order_amount: orderAmountstrfy,
       };
-      
-      // data.value = 
-      // "Code" ?
-      //  {
-      //   discount_value: discountInput,
-      //   discount_flag: data.value,
-      //   order_amount: data.orderAmount
-      // }
-      // :
       HttpClient.put(endpoint, body)
         .then(response => {
           if (response?.status_code === 200) {
@@ -429,13 +422,6 @@ export class RetailController {
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.status_code === 200) {
-            // Toast.show({
-            //   position: 'bottom',
-            //   type: 'success_toast',
-            //   text2: response?.msg,
-            //   visibilityTime: 2000,
-            // });
-            Alert.alert(response?.msg);
           }
           resolve(response);
         })
@@ -457,9 +443,9 @@ export class RetailController {
       const body = {
         cart_id: data.cartid,
       };
-        HttpClient.post(endpoint, body)
+      HttpClient.post(endpoint, body)
         .then(response => {
-          if (response?.msg ===  "Order placed successfully!") {
+          if (response?.msg === 'Order placed successfully!') {
             Toast.show({
               position: 'bottom',
               type: 'success_toast',
@@ -479,22 +465,17 @@ export class RetailController {
           reject(error.msg);
         });
     });
-  };
+  }
 
   static async getWalletId(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint = WALLET_URL + ApiWalletInventory.getWallet+`${sellerID}` ;
+      const endpoint =
+        WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
-          // Toast.show({
-          //   text2: error?.error,
-          //   position: 'bottom',
-          //   type: 'error_toast',
-          //   visibilityTime: 1500,
-          // });
           reject(error);
         });
     });

@@ -1,6 +1,5 @@
-import { DeliveryController } from '@/controllers';
+import { ShippingController } from '@/controllers';
 import { TYPES } from "@/Types/Types";
-import { LogBox } from 'react-native';
 
 const getOrderCountRequest = () => ({
   type: TYPES.GET_ORDER_COUNT_REQUEST,
@@ -74,7 +73,7 @@ const acceptOrderError = error => ({
 export const getOrderCount = (status) => async dispatch => {
   dispatch(getOrderCountRequest());
   try {
-      const res = await DeliveryController.getOrderCount(status);
+      const res = await ShippingController.getOrderCount(status);
       dispatch(getOrderCountSuccess(res));
   } catch (error) {
       dispatch(getOrderCountError(error.message));
@@ -83,7 +82,7 @@ export const getOrderCount = (status) => async dispatch => {
 export const getReviewDefault = (status, sellerID) => async dispatch => {
   dispatch(getReviewDefRequest());
   try {
-      const res = await DeliveryController.getReviewDefault(status, sellerID);
+      const res = await ShippingController.getReviewDefault(status, sellerID);
       dispatch(getReviewDefSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204){
@@ -97,7 +96,7 @@ export const getReviewDefault = (status, sellerID) => async dispatch => {
 export const getOrders = (status, sellerID) => async dispatch => {
   dispatch(getOrdersRequest());
   try {
-      const res = await DeliveryController.getOrders(status, sellerID);
+      const res = await ShippingController.getOrders(status, sellerID);
       dispatch(getOrdersSuccess(res));
   } catch (error) {
       dispatch(getOrdersError(error.message));
@@ -107,7 +106,7 @@ export const getOrders = (status, sellerID) => async dispatch => {
 export const acceptOrder = (data) => async dispatch => {
   dispatch(acceptOrderRequest());
   try {
-      const res = await DeliveryController.acceptOrder(data);
+      const res = await ShippingController.acceptOrder(data);
       dispatch(acceptOrderSuccess(res));
       dispatch(getOrderCount(data.sellerID));
       dispatch(getReviewDefault(0, sellerID ));

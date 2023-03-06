@@ -84,6 +84,7 @@ export const en = {
     nextTo: 'Next to your block',
     assign: 'Assign Driver',
     orderAccepted: 'Order accepted',
+    orderOfReview:'Order review',
     readyToPickup: 'Ready to pickup',
     within: 'with in 10 minutes',
     dateTime: '21 Jun, 2022  |   10:30 am',
@@ -100,7 +101,6 @@ export const en = {
     readyPickup:'Ready to pickup',
     cancelled:'Cancelled',
     acceptSeller:'Accept By Seller',
-    orderPrepare:'Order Prepare',
     assignToDriver:'Assign to Driver',
     pickup:'Pickup',
     orderReject:'Order rejected'

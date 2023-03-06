@@ -5,6 +5,7 @@ import { userReducer } from '@/reducers/UserReducer';
 import { authReducer } from './AuthReducer';
 import { retailReducer } from '@/reducers/RetailReducer';
 import { deliveryReducer } from '@/reducers/DeliveryReducer';
+import { shippingReducer } from '@/reducers/ShippingReducer';
 
 export const rootReducer = combineReducers({
   error: errorReducer,
@@ -12,5 +13,6 @@ export const rootReducer = combineReducers({
   user: userReducer,
   auth: authReducer,
   retail : retailReducer,
-  delivery : deliveryReducer
+  delivery : deliveryReducer,
+  shipping : shippingReducer
 });

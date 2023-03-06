@@ -3,7 +3,7 @@ import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
-export class DeliveryController {
+export class ShippingController {
   static async getOrderCount(status) {
     return new Promise((resolve, reject) => {
       const endpoint =
