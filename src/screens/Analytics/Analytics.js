@@ -74,7 +74,13 @@ import {
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
-import { Button, DaySelector, Spacer, TableDropdown, ChartKit } from '@/components';
+import {
+  Button,
+  DaySelector,
+  Spacer,
+  TableDropdown,
+  ChartKit,
+} from '@/components';
 import { styles } from '@/screens/Analytics/Analytics.styles';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -83,9 +89,10 @@ import Modal from 'react-native-modal';
 import { Table, Row, Rows } from 'react-native-table-component';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DataTable } from 'react-native-paper';
-import {TotalProductSub, TotalRevenueSub} from '@/screens/Analytics';
+import { TotalProductSub, TotalRevenueSub } from '@/screens/Analytics';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import {
   sessionHistoryTableHeading,
   sessionHistoryTableData,
@@ -99,11 +106,29 @@ import {
   allRevenueTypeData,
   totalOrderData,
 } from '@/constants/flatListData';
+import { HomeGraph } from './Components';
+import { createDispatchHook, useDispatch, useSelector } from 'react-redux';
+import { getAuthData } from '@/selectors/AuthSelector';
+import {
+  totalInvernteryGraph,
+  totalOrderGraph,
+  totalProGraph,
+  totalRevenueGraph,
+} from '@/actions/AnalyticsAction';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { useIsFocused } from '@react-navigation/native';
+
 export function Analytics(props) {
-  useEffect(() => {
-    // console.log(props.route.params.name, 'nameCategory')
-  });
-  // const [sellPriceArray, setSellPriceArray] = useState(productDetailData);
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.getProfile?.unique_uuid;
+  const getAnalyticsData = useSelector(getAnalytics);
+  const productGraphObject2 = getAnalyticsData?.getTotalGraph;
+  const orderGraphObject = getAnalyticsData?.getOrderGraph;
+  const inventeryGraphObject = getAnalyticsData?.getInventeryGraph;
+  const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
   const [value, setValue] = useState('Weekly');
   const [accCatTable, setAccCatTable] = useState('');
   const [revenueTableHeading, setRevenueTableHeading] = useState('');
@@ -136,7 +161,6 @@ export function Analytics(props) {
   const [productCat, setProductCat] = useState(false);
   const [selectedId, setSelectedId] = useState();
 
-
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
   const [paginationModalItems, setPaginationModalItems] = useState([
@@ -145,17 +169,19 @@ export function Analytics(props) {
     { label: '50', value: '50' },
     { label: '70', value: '70' },
   ]);
+  const totalRevenueHandler = () => {
+    setRevenueTable(true), setRevenueTableHeading('');
+  };
 
-
-  const totalRevenueHandler =()=> {
-    setRevenueTable(true), 
-    setRevenueTableHeading('');
-  }
-  
-
-  // const DUMMY_DATA = 
-  //   [{catName:'sample', barcode:'sample',cat:'test',sub_cat:'subs',brand:'adidas'},{catName:'sample', barcode:'sample',cat:'test',sub_cat:'subs',brand:'adidas'},{catName:'sample', barcode:'sample',cat:'test',sub_cat:'subs',brand:'adidas'}]
-  
+  useEffect(() => {
+    dispatch(totalProGraph(sellerID));
+    dispatch(totalOrderGraph(sellerID));
+    dispatch(totalInvernteryGraph(sellerID));
+    dispatch(totalRevenueGraph(sellerID));
+  }, []);
+  const productGraphLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_TOTAL_GRAPH], state)
+  );
 
   const tobacoTableHandler = () => {
     setDetailtable(true);
@@ -169,14 +195,14 @@ export function Analytics(props) {
     setSellPriceArray(sellPriceArray);
   };
 
-  const navigationHandler = item => {
-    if (item.headerType === 'Total Products') {
+  const graphHandler = item => {
+    if (item === 'Total Products') {
       setProductDetail(true);
-    } else if (item.headerType === 'Total Inventory  Cost') {
+    } else if (item === 'Total Inventory  Cost') {
       setProductDetail(true);
-    } else if (item.headerType === 'Total Revenue') {
+    } else if (item === 'Total Revenue') {
       setTotalRevenueDetail(true);
-    } else if (item.headerType === 'Total Orders') {
+    } else if (item === 'Total Orders') {
       setTotalRevenueDetail(true);
     }
   };
@@ -1503,18 +1529,26 @@ export function Analytics(props) {
     }
   };
 
-  const TransactionTypeItem = ({item, onPress, borderColor, color,fontFamily}) => (
+  const TransactionTypeItem = ({
+    item,
+    onPress,
+    borderColor,
+    color,
+    fontFamily,
+  }) => (
     <TouchableOpacity
-    onPress={onPress}
-    style={[styles.allJbrCon, {borderColor}]}>
-    <Text style={[styles.allJbrText, {color, fontFamily}]}>
-      {item.transaction} {item.count}
-    </Text>
-  </TouchableOpacity>
+      onPress={onPress}
+      style={[styles.allJbrCon, { borderColor }]}
+    >
+      <Text style={[styles.allJbrText, { color, fontFamily }]}>
+        {item.transaction} {item.count}
+      </Text>
+    </TouchableOpacity>
   );
-  
+
   const allTransactionItem = ({ item }) => {
-    const borderColor = item.id === selectedId ? COLORS.primary : COLORS.solidGrey;
+    const borderColor =
+      item.id === selectedId ? COLORS.primary : COLORS.solidGrey;
     const color = item.id === selectedId ? COLORS.primary : COLORS.dark_grey;
     const fontFamily = item.id === selectedId ? Fonts.SemiBold : Fonts.Regular;
 
@@ -1523,31 +1557,30 @@ export function Analytics(props) {
         item={item}
         onPress={() => setSelectedId(item.id)}
         borderColor={borderColor}
-        color = {color}
-        fontFamily = {fontFamily}
+        color={color}
+        fontFamily={fontFamily}
       />
     );
-   
-};
+  };
 
-  const totalProductItem = ({ item }) => (
-    <View style={styles.totalProductCon}>
-      <Spacer space={SH(20)} />
-      <View style={styles.displayFlex}>
-        <View>
-          <Text style={styles.darkBlackText}>{item.headerType}</Text>
-          <Text style={[styles.darkBlackText, { fontSize: SF(32) }]}>
-            {item.range}
-          </Text>
-        </View>
-        <TouchableOpacity onPress={() => navigationHandler(item)}>
-          <Image source={rightlight} style={styles.rightlight} />
-        </TouchableOpacity>
-      </View>
-      <Spacer space={SH(5)} />
-         <ChartKit/>
-    </View>
-  );
+  // const totalProductItem = ({ item }) => (
+  //   <View style={styles.totalProductCon}>
+  //     <Spacer space={SH(20)} />
+  //     <View style={styles.displayFlex}>
+  //       <View>
+  //         <Text style={styles.darkBlackText}>{item.headerType}</Text>
+  //         <Text style={[styles.darkBlackText, { fontSize: SF(32) }]}>
+  //           {item.range}
+  //         </Text>
+  //       </View>
+  //       <TouchableOpacity onPress={() => navigationHandler(item)}>
+  //         <Image source={rightlight} style={styles.rightlight} />
+  //       </TouchableOpacity>
+  //     </View>
+  //     <Spacer space={SH(5)} />
+  //        <ChartKit/>
+  //   </View>
+  // );
   const productDetailItem = ({ item }) => (
     <View style={[styles.sellingPriceConblue, styles.sellingPriceCongrey]}>
       <Text
@@ -5243,14 +5276,10 @@ export function Analytics(props) {
               </View>
 
               <View style={{ marginHorizontal: moderateScale(10) }}>
-                <TableDropdown
-                placeholder='Status'
-                />
+                <TableDropdown placeholder="Status" />
               </View>
               <>
-                 <TableDropdown
-                placeholder='Order type'
-                />
+                <TableDropdown placeholder="Order type" />
               </>
             </View>
           </View>
@@ -5326,10 +5355,10 @@ export function Analytics(props) {
       );
     } else if (totalReveueDetail) {
       return (
-         <TotalRevenueSub
-         totalOrderViseHandler={totalOrderViseHandler}
-         totalRevenueHandler={totalRevenueHandler}
-         />
+        <TotalRevenueSub
+          totalOrderViseHandler={totalOrderViseHandler}
+          totalRevenueHandler={totalRevenueHandler}
+        />
       );
     } else if (inventoryProductTable) {
       return (
@@ -5342,29 +5371,19 @@ export function Analytics(props) {
           <View style={styles.orderTypeCon}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                 <TableDropdown
-                placeholder='Category'
-                />
+                <TableDropdown placeholder="Category" />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                 <TableDropdown
-                placeholder='Sub Category'
-                />
+                <TableDropdown placeholder="Sub Category" />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-              <TableDropdown
-                placeholder='Brand'
-                />
+                <TableDropdown placeholder="Brand" />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-              <TableDropdown
-                placeholder='Stock level'
-                />
+                <TableDropdown placeholder="Stock level" />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-                 <TableDropdown
-                placeholder='Weekly'
-                />
+                <TableDropdown placeholder="Weekly" />
               </View>
             </View>
           </View>
@@ -5457,28 +5476,19 @@ export function Analytics(props) {
             : tableHeaderAccCat(accCatTable)}
 
           <Spacer space={SH(40)} />
-          <View style={styles.orderTypeCon}> 
+          <View style={styles.orderTypeCon}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-              <TableDropdown
-                placeholder='Category'
-                />
+                <TableDropdown placeholder="Category" />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-              <TableDropdown
-                placeholder='Sub Category'
-                />
-              
+                <TableDropdown placeholder="Sub Category" />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-              <TableDropdown
-                placeholder='Brand'
-                />
+                <TableDropdown placeholder="Brand" />
               </View>
               <View style={{ marginHorizontal: moderateScale(5) }}>
-              <TableDropdown
-                placeholder='Stock level'
-                />
+                <TableDropdown placeholder="Stock level" />
               </View>
             </View>
           </View>
@@ -5565,22 +5575,39 @@ export function Analytics(props) {
     } else if (productDetail) {
       return (
         <TotalProductSub
-        inverntoryUnitViseHandler ={inverntoryUnitViseHandler}
-        tableAccCatHandler={tableAccCatHandler}
+          inverntoryUnitViseHandler={inverntoryUnitViseHandler}
+          tableAccCatHandler={tableAccCatHandler}
         />
       );
     } else {
       return (
-        <View
-          style={styles.homeMainContainer}
-        >
-          <View>
-            <FlatList
-              data={totalProductData}
-              renderItem={totalProductItem}
-              keyExtractor={item => item.id}
-              numColumns={2}
-              contentContainerStyle={styles.contentContainer}
+        <View style={styles.homeMainContainer}>
+          <View style={{ flexDirection: 'row' }}>
+            <HomeGraph
+              header="Total Products"
+              subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '0'}
+              productGraphObject={productGraphObject2}
+              homeGraphHandler={() => graphHandler('Total Products')}
+            />
+            <HomeGraph
+              header="Total Inventory  Cost"
+              subHeader={ getAnalyticsData?.getInventeryGraph?.totalResult.toFixed(2) ?? '0'}
+              productGraphObject={inventeryGraphObject}
+              homeGraphHandler={() => graphHandler('Total Inventory  Cost')}
+            />
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <HomeGraph
+              header="Total Revenue"
+              subHeader= {getAnalyticsData?.getRevenueGraph?.totalResult.toFixed(2) ?? '$0'}
+              productGraphObject={revenueGraphObject}
+              homeGraphHandler={() => graphHandler('Total Revenue')}
+            />
+            <HomeGraph
+              header="Total Orders"
+              subHeader={getAnalyticsData?.getOrderGraph?.totalResult.toFixed(2) ?? '0'}
+              productGraphObject={orderGraphObject}
+              homeGraphHandler={() => graphHandler('Total Orders')}
             />
           </View>
         </View>

@@ -32,7 +32,12 @@ export const ApiOrderInventory = {
     getOrders:'orders',
     acceptOrder: 'orders/status',
     createOrder:'orders/pos',
-    getOrderCount:'orders/pos/statistics'
+    getOrderCount:'orders/pos/statistics',
+    totalProGraph:'orders/pos/statistics/products',
+    totalOrderGraph:'orders/pos/statistics/orders',
+    totalInvernteryGraph:'orders/pos/statistics/inventory-cost',
+    totalRevenueGraph:'orders/pos/statistics/revenue'
+
 };
 
 export const ApiWalletInventory = {
