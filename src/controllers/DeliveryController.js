@@ -7,7 +7,7 @@ export class DeliveryController {
   static async getOrderCount(status) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${status}`;
+        ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${status}&shipping_type=Delivery`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -29,7 +29,7 @@ export class DeliveryController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerID}`;
+        `?status=${status}&seller_id=${sellerID}&shipping_type=Delivery`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

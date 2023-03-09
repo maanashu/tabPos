@@ -5588,12 +5588,14 @@ export function Analytics(props) {
               subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '0'}
               productGraphObject={productGraphObject2}
               homeGraphHandler={() => graphHandler('Total Products')}
+              arrayLength = {productGraphObject2?.datasets?.length}
             />
             <HomeGraph
               header="Total Inventory  Cost"
               subHeader={ getAnalyticsData?.getInventeryGraph?.totalResult.toFixed(2) ?? '0'}
               productGraphObject={inventeryGraphObject}
               homeGraphHandler={() => graphHandler('Total Inventory  Cost')}
+              arrayLength = {inventeryGraphObject?.datasets?.length}
             />
           </View>
           <View style={{ flexDirection: 'row' }}>
@@ -5602,12 +5604,14 @@ export function Analytics(props) {
               subHeader= {getAnalyticsData?.getRevenueGraph?.totalResult.toFixed(2) ?? '$0'}
               productGraphObject={revenueGraphObject}
               homeGraphHandler={() => graphHandler('Total Revenue')}
+              arrayLength = {revenueGraphObject?.datasets?.length}
             />
             <HomeGraph
               header="Total Orders"
               subHeader={getAnalyticsData?.getOrderGraph?.totalResult.toFixed(2) ?? '0'}
               productGraphObject={orderGraphObject}
               homeGraphHandler={() => graphHandler('Total Orders')}
+              arrayLength = {orderGraphObject?.datasets?.length}
             />
           </View>
         </View>

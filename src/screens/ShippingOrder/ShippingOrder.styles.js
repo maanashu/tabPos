@@ -13,13 +13,12 @@ export const styles = StyleSheet.create({
   mainScreenContiner: {
     flex: 1,
     width: windowWidth * 0.94,
-    height: windowHeight,
     alignSelf: 'center',
+    height: windowHeight,
   },
-  displayFlex: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  flexRowCenter:{
+    flexDirection:'row', 
+    alignItems:'center'
   },
   headerMainView: {
     width: windowWidth,
@@ -39,12 +38,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  reviewHeader: {
-    fontFamily: Fonts.MaisonBold,
-    fontSize: SF(18),
-    color: COLORS.primary,
-    paddingHorizontal: moderateScale(13),
-  },
   deliveryText: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
@@ -61,17 +54,16 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchImage: {
-    width: SH(24),
-    height: SH(24),
+    width: SH(20),
+    height: SH(20),
     resizeMode: 'contain',
     left: 3,
   },
-  searchImage2: {
-    width: SH(24),
-    height: SH(24),
-    resizeMode: 'contain',
-    left: 3,
-    transform: [{ rotate: '180deg' }],
+  dropdown2Con:{
+     width:SW(15),
+     height:SH(30),
+     flexDirection:'row',
+     justifyContent:'space-evenly'
   },
   textInputStyle: {
     width: SW(45),
@@ -87,11 +79,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: moderateScale(7),
   },
-  orderViewBody: {
-    width: SW(60),
-    height: SH(50),
-    justifyContent: 'center',
-  },
+
   contentContainer: {
     flex:1,
     justifyContent:'space-between',
@@ -115,17 +103,18 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonRegular,
     fontSize: SF(16),
   },
-  statusText2: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: SF(11),
-    textAlign: 'center',
-  },
+
   statusText: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(10),
     width: SW(20),
+  },
+  statusText2: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(11),
+    textAlign: 'center',
   },
   orderNumberMainView: {
     width: windowWidth,
@@ -137,6 +126,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
+    // height: Platform.OS === 'android' ? SH(272) : SH(282),
     height: windowHeight * 0.34,
     width: windowWidth * 0.45,
   },
@@ -159,6 +149,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderReviewRightView: {
+    width: windowWidth / 2.25,
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     // height: Platform.OS === 'android' ? SH(405) : SH(450),
@@ -272,6 +263,10 @@ export const styles = StyleSheet.create({
     width: Platform.OS === 'ios' ? SW(48) : SH(180),
     borderRadius: 5,
   },
+  rowSpaceBetween: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   totalText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
@@ -294,19 +289,18 @@ export const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
+    // paddingRight: SW(50),
     width: windowWidth * 0.46,
     height: windowHeight * 0.88,
   },
   orderDetailView2: {
     backgroundColor: COLORS.white,
-    paddingRight: SW(0),
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
     borderRadius: 10,
-    height: windowHeight * 0.84,
-    paddingBottom: 20,
+    width: windowWidth * 0.48,
+    borderWidth: 1,
   },
   profileDetailView: {
+    // marginHorizontal: SW(5),
     paddingHorizontal: SW(5),
     paddingVertical: SW(3),
     borderRadius: 6,
@@ -333,12 +327,12 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     color: COLORS.black,
+    width: SW(60),
   },
   boxText: {
     fontFamily: Fonts.Italic,
     fontSize: SF(11),
     color: COLORS.darkGray,
-    marginBottom: 5,
   },
   productViewStyle: {
     marginRight: SW(4),
@@ -353,23 +347,12 @@ export const styles = StyleSheet.create({
   },
   bottomSheet: {
     position: 'absolute',
-    bottom: 40,
+    bottom: Platform.OS === 'android' ? 20 : 0,
     right: 0,
     backgroundColor: COLORS.white,
-    paddingTop: 10,
-    borderTopWidth: 1,
-    borderColor: COLORS.row_grey,
-  },
-  bottomSheet2: {
-    position: 'absolute',
-    bottom: 10,
+    width: windowWidth * 0.44,
     ...ShadowStyles.shadow1,
-    height: SH(200),
-  },
-  borderSheetBorder: {
-    borderWidth: 1,
-    width: SH(385),
-    alignSelf: 'flex-end',
+    paddingTop: 10,
   },
   rowView: {
     flexDirection: 'row',
@@ -378,7 +361,6 @@ export const styles = StyleSheet.create({
     paddingVertical: 2,
     alignSelf: 'flex-end',
     paddingRight: 10,
-    paddingVertical: verticalScale(2),
   },
   subTotal: {
     fontFamily: Fonts.MaisonRegular,
@@ -423,11 +405,6 @@ export const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.white,
   },
-  buttonTextTrack: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(16),
-    color: COLORS.primary,
-  },
   declineButton: {
     width: SW(50),
     height: SW(15),
@@ -446,13 +423,6 @@ export const styles = StyleSheet.create({
     marginRight: 6,
     top: 8,
   },
-  printAgainCon: {
-    height: SW(15),
-    width: SH(700),
-    backgroundColor: COLORS.primary,
-    alignSelf: 'flex-end',
-    top: 8,
-  },
   orderReviewButton: {
     flexDirection: 'row',
     alignItems: 'flex-end',
@@ -461,14 +431,14 @@ export const styles = StyleSheet.create({
   horizontalLine: {
     borderWidth: 0.5,
     borderColor: COLORS.solidGrey,
-    marginTop: 10,
+    marginTop: 7,
   },
   itemSeparatorView: {
     backgroundColor: COLORS.solidGrey,
-    height: 1,
-    width: '92%',
-    alignSelf: 'center',
-    marginVertical: verticalScale(2),
+    height: 2,
+    width: '96%',
+    // alignSelf: 'center',
+    marginVertical: verticalScale(3),
   },
   map: {
     width: windowWidth * 0.48,
@@ -486,125 +456,100 @@ export const styles = StyleSheet.create({
   orderModalView: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    bottom: Platform.OS === 'android' ? 40 : 30,
+    bottom: Platform.OS === 'android' ? 50 : 30,
     backgroundColor: COLORS.white,
     right: SW(5),
-    width: SW(100),
+    width: SW(95),
     paddingVertical: 8,
     borderRadius: 7,
   },
   deliveryImage: {
-    width: SW(15),
-    height: SH(46),
+    width: SW(13),
+    height: SH(40),
     resizeMode: 'contain',
     alignSelf: 'flex-end',
   },
-  verified: {
-    width: SW(6),
-    height: SW(6),
-    resizeMode: 'contain',
-    alignSelf: 'flex-end',
-    marginLeft: 15,
+  deliveryStatus2:{
+    flexDirection: 'row',
+    alignItems:"center",
+    justifyContent:'space-between',
+    height: SH(53),
+    paddingRight:moderateScale(7),
+    marginTop:10
   },
   deliveryStatus: {
     flexDirection: 'row',
-    height: SH(50),
+    height: SH(44),
+    paddingRight:moderateScale(7)
   },
   verifyText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(10),
-    color: COLORS.solid_grey,
-  },
-  verifyTextLight: {
-    fontFamily: Fonts.Regular,
-    fontSize: SF(10),
-    color: COLORS.gerySkies,
+    fontSize: SF(11),
+    color: COLORS.dark_grey,
   },
   justifyContentStyle: {
     justifyContent: 'flex-end',
   },
+  nineXCon:{
+    width:SW(22),
+    height:SH(45),
+    borderRadius:10,
+    backgroundColor:COLORS.primary,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  nineXText:{
+    color:COLORS.white,
+    fontFamily:Fonts.SemiBold,
+    fontSize:SF(17)
+  },
   radioImage: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
     alignSelf: 'center',
-    left: 6,
+    left: 10,
   },
-  selectShipingRightView: {
-    borderWidth: 1,
-    width: windowWidth * 0.42,
-    borderRadius: 10,
-    borderColor: COLORS.solidGrey,
-    paddingHorizontal: moderateScale(10),
-    height: windowHeight * 0.84,
-  },
-  selectShipingCon: {
-    height: SH(56),
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 10,
-    paddingHorizontal: moderateScale(10),
-    justifyContent: 'center',
-    marginVertical: verticalScale(3),
-  },
-  radioRound: {
-    width: SH(24),
-    height: SH(24),
-    resizeMode: 'contain',
-  },
-  shipingRate: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
-    color: COLORS.solid_grey,
-  },
-  ups2: {
-    width: SH(36),
-    height: SH(36),
-    resizeMode: 'contain',
-  },
-  printButtonCon: {
-    height: SH(64),
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: verticalScale(10),
-  },
-  printText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(16),
-    color: COLORS.darkGray,
-  },
-  orderOfReview: {
+  reviewHeader: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
     color: COLORS.primary,
     paddingHorizontal: moderateScale(13),
   },
-  printAgainButton: {
-    width: SW(160),
-    height: SW(15),
-    backgroundColor: COLORS.primary,
-    top: 8,
-    alignSelf: 'center',
-  },
-  printAgainTack: {
-    backgroundColor: COLORS.blue_shade,
-  },
-  fedContextCon: {
+  subtotalRow: {
     borderWidth: 1,
-    height: SH(50),
+    width: SH(385),
+    alignSelf: 'flex-end',
+    borderStyle: 'dashed',
+    borderColor: COLORS.row_grey,
+    marginVertical: verticalScale(3),
+  },
+  mapContainer: {
+    marginTop: SH(15),
+    borderWidth: 1,
+    overflow: 'hidden',
     borderRadius: 10,
     borderColor: COLORS.solidGrey,
-    marginHorizontal: moderateScale(10),
-    marginTop: SH(10),
+    height: windowHeight * 0.65,
+  },
+  nodata: {
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(22),
+    color: COLORS.primary,
+    alignSelf: 'center',
+    marginVertical: moderateScale(30),
+  },
+  orderViewBody: {
+    width: SW(60),
+    height: SH(50),
     justifyContent: 'center',
-    paddingHorizontal: moderateScale(5),
   },
   noteContainer: {
+    position: 'absolute',
+    bottom: 10,
     borderWidth: 2,
     borderColor: COLORS.solidGrey,
+    width: windowWidth * 0.46,
     height: SH(126),
     borderRadius: 5,
     paddingHorizontal: moderateScale(15),
@@ -614,73 +559,8 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     color: COLORS.black,
   },
-  contactCon: {
-    backgroundColor: COLORS.textInputBackground,
-    width: SW(35),
-    height: SH(35),
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  contact: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(12),
-    color: COLORS.solid_grey,
-  },
-  Phonelight: {
-    width: SW(5),
-    height: SW(5),
-    resizeMode: 'contain',
-    marginHorizontal: moderateScale(5),
-    tintColor: COLORS.solid_grey,
-  },
-  fedx: {
-    width: SW(14),
-    height: SW(14),
-    resizeMode: 'contain',
-    marginTop: 10,
-  },
-  fedEx: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(13),
-    color: COLORS.black,
-  },
-  fedNumber: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(10),
-    color: COLORS.primary,
-  },
-  verifySuccess: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(12),
-    color: COLORS.bluish_green,
-  },
-  scrollMainCon: {
-    paddingHorizontal: moderateScale(5),
-  },
-  mapContainer: {
-    marginTop: SH(15),
-    borderWidth: 2,
-    overflow: 'hidden',
-    borderRadius: 10,
-    borderColor: COLORS.solidGrey,
-    height: windowHeight * 0.7,
-  },
-  flexVertical: {
-    borderWidth: 1,
-    width: SH(385),
-    alignSelf: 'flex-end',
-    borderStyle: 'dashed',
-    borderColor: COLORS.row_grey,
-    marginVertical: verticalScale(3),
-  },
-  bottomDashedRow: {
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    width: SH(380),
-    alignSelf: 'flex-end',
-    borderColor: COLORS.row_grey,
-    marginVertical: verticalScale(2),
-  },
+  flexRow:{
+    flexDirection:'row',
+    alignItems:'center'
+  }
 });
