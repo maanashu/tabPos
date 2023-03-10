@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Customers/Customers.styles';
@@ -35,47 +36,61 @@ import {
   angela2,
   contact,
   orderCigrate,
+  loving,
+  userImage,
 } from '@/assets';
 import { DaySelector, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import { Users, UserProfile, UserDetails } from '@/screens/Customers';
 import { Table } from 'react-native-table-component';
+import { useIsFocused } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { useEffect } from 'react';
+import { getOrderUser, getUserOrder } from '@/actions/CustomersAction';
+import {getCustomers } from '@/selectors/CustomersSelector'
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import {TYPES} from '@/Types/CustomersTypes'
+import { longPressHandlerName } from 'react-native-gesture-handler/lib/typescript/handlers/LongPressGestureHandler';
+import moment from 'moment';
 
 export function Customers() {
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const getCustomerData = useSelector(getCustomers);
+  const userOrderArray = getCustomerData?.getUserOrder;
+  const orderUserArray = getCustomerData?.getOrderUser;
+  const orderDetailArray = getCustomerData?.getOrderUser?.order_details;
+  const sellerID = getAuth?.getProfile?.unique_uuid;
   const [weeklyUser, setWeeklyUser] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
   const [userDetail, setUserDetail] = useState(false);
   const [orderModal, setOrderModal] = useState(false);
   const [tracking, setTracking] = useState(false);
+  const [userStore, setUserStore] = useState('');
 
-  const userProfileHandler = () => {
+  useEffect(() => {
+    // dispatch(getUserOrder(sellerID))
+  }, [])
+
+  const isSearchProLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_USER_ORDER], state)
+  );
+  const isOrderUserLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER_USER], state)
+  );
+  const userClickHandler = ({item, sellerID}) => {
     setWeeklyUser(false);
     setUserProfile(!userProfile);
-  };
-  const userProfileRemoveHandler = () => {
-    setUserProfile(false);
-    setWeeklyUser(true);
-  };
-  const orderOnlineHandler = () => {
-    setOrderModal(true);
-    setUserProfile(false);
-  };
-  const orderOnlineRemoveHandler = () => {
-    setOrderModal(false);
-    setUserProfile(true);
-  };
-  const trackingHandler = () => {
-    setTracking(true);
-    setOrderModal(false);
-  };
-  const trackingRemoveHandler = () => {
-    setTracking(false);
-    setOrderModal(true);
-  };
+    setUserStore(item);
+    dispatch(getOrderUser(item?.user_id,sellerID))
+  }
+
   const newCustomerItem = ({ item }) => (
     <TouchableOpacity
       style={styles.custometrCon}
-      onPress={() => setWeeklyUser(!weeklyUser)}
+      onPress={() => (setWeeklyUser(!weeklyUser), dispatch(getUserOrder(sellerID)))}
     >
       <View style={styles.flexAlign}>
         <Image source={item.img} style={styles.newCustomer} />
@@ -133,7 +148,7 @@ export function Customers() {
         <Spacer space={SH(10)} />
         <View style={styles.displayFlex}>
           <View style={styles.flexAlign}>
-            <TouchableOpacity onPress={userProfileRemoveHandler}>
+            <TouchableOpacity onPress={() => (setUserProfile(false), setWeeklyUser(true))}>
               <Image source={leftBack} style={styles.leftBackStyle} />
             </TouchableOpacity>
             <Text style={styles.profileHeaderText}>
@@ -147,6 +162,8 @@ export function Customers() {
       </View>
     );
   };
+
+
   const bodyView = () => {
     if (tracking) {
       return (
@@ -160,7 +177,7 @@ export function Customers() {
               ]}
             >
               <View style={styles.flexAlign}>
-                <TouchableOpacity onPress={trackingRemoveHandler}>
+                <TouchableOpacity onPress={() =>  (setTracking(false), setOrderModal(true))}>
                   <Image source={leftBack} style={styles.leftBackStyle} />
                 </TouchableOpacity>
                 <Text style={styles.orderNoStyle}>
@@ -172,7 +189,7 @@ export function Customers() {
                   </Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={trackingRemoveHandler}>
+              <TouchableOpacity onPress={() =>  (setTracking(false), setOrderModal(true))}>
                 <Image source={crossButton} style={styles.leftBackStyle} />
               </TouchableOpacity>
             </View>
@@ -437,7 +454,7 @@ export function Customers() {
               ]}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity onPress={orderOnlineRemoveHandler}>
+                <TouchableOpacity onPress={() => (setOrderModal(false), setUserProfile(true))}>
                   <Image source={leftBack} style={styles.leftBackStyle} />
                 </TouchableOpacity>
                 <Text style={styles.orderNoStyle}>
@@ -447,7 +464,7 @@ export function Customers() {
                   <Text style={styles.completedText}>Completed</Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={orderOnlineRemoveHandler}>
+              <TouchableOpacity onPress={() => (setOrderModal(false), setUserProfile(true))}>
                 <Image source={crossButton} style={styles.leftBackStyle} />
               </TouchableOpacity>
             </View>
@@ -475,32 +492,32 @@ export function Customers() {
                   </View>
                 </View>
                 <View style={styles.invoiceCon}>
-                  <Spacer space={SH(5)} />
+                  <Spacer space={SH(4)} />
                   <Text style={styles.invoiceDetail}>
                     {strings.wallet.invoiceDetails}
                   </Text>
-                  <Spacer space={SH(6)} />
+                  <Spacer space={SH(4)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.invoiceIdLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
                       {strings.wallet.invoiceId}
                     </Text>
                   </Text>
-                  <Spacer space={SH(4)} />
+                  <Spacer space={SH(3)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.createDateLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
                       {strings.wallet.createDate}
                     </Text>
                   </Text>
-                  <Spacer space={SH(4)} />
+                  <Spacer space={SH(3)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.dueDateLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
                       {strings.wallet.createDate}
                     </Text>
                   </Text>
-                  <Spacer space={SH(4)} />
+                  <Spacer space={SH(3)} />
                   <Text style={styles.deliveryDate}>
                     {strings.wallet.deliveryDate}{' '}
                     <Text>{strings.wallet.createDate}</Text>
@@ -740,7 +757,7 @@ export function Customers() {
                     <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
                       <TouchableOpacity
                         style={styles.deliverTextCon}
-                        onPress={trackingHandler}
+                        onPress={() =>  (setTracking(true), setOrderModal(false))}
                       >
                         <Image source={track} style={styles.deliveryCheck} />
                         <Text style={styles.deliveredText}>
@@ -771,18 +788,127 @@ export function Customers() {
         <View>
           {customUserHeader()}
           <UserProfile
-            orderOnlineHandler={orderOnlineHandler}
+            userName = {userStore?.user_details?.firstname}
+            userProfile={userStore?.user_details?.profile_photo}
+            // userPhoneNumber={}
+            userEmail={userStore?.user_details?.email}
             userDetailHandler={() => (
               setUserProfile(false), setUserDetail(true)
             )}
           />
+          {
+            isOrderUserLoading
+            ?
+            (
+              <View style={{ marginTop: 100 }}>
+              <ActivityIndicator
+                size="large"
+                color={COLORS.indicator}
+              />
+            </View>
+            )
+            :
+              orderUserArray.length === 0 
+              ?
+               <View style={{marginTop:80}}>
+                <Text style={styles.userNotFound}>Order not found</Text>
+               </View>
+              :
+              orderUserArray.map((item, index) => (
+                <TouchableOpacity
+                key={index}
+                style={[styles.tableDataCon, {zIndex:-99}]}
+                onPress={() => (setOrderModal(true), setUserProfile(false)) }
+              >
+                <View style={styles.displayFlex}>
+                  <View style={styles.tableHeaderLeftPro}>
+                    <Text style={styles.tableTextDataFirst}>{index+1}</Text>
+                  </View>
+                  <View style={styles.tableHeaderRightPro}>
+                    <Text style={styles.tableTextData}>{item.id}</Text>
+                    <Text style={styles.tableTextData}>{moment(item.date).format('LL')}</Text>
+                    <Text style={styles.tableTextData}>Maimi</Text>
+                    <Text style={styles.tableTextData}>DHL</Text>
+                    <Text style={styles.tableTextData}>{item.total_items} times</Text>
+                    <Text style={styles.tableTextData}>${item.payable_amount}</Text>
+                    <View style={styles.saleTypeView}>
+                    <Text  style={styles.saleTypeText}>{item.shipping}</Text>
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+              ))
+
+          }
+          
+         
         </View>
       );
     } else if (weeklyUser) {
       return (
         <View>
           {customHeader()}
-          <Users userProfileHandler={userProfileHandler} />
+          <Users />
+          {
+            isSearchProLoading
+            ?
+            (
+              <View style={{ marginTop: 100 }}>
+              <ActivityIndicator
+                size="large"
+                color={COLORS.indicator}
+              />
+            </View>
+            )
+            :
+            
+             userOrderArray?.length === 0
+             ?
+              <View style={{marginTop:80}}>
+              <Text style={styles.userNotFound}>User not found</Text>
+              </View>
+                :
+              userOrderArray.map((item, index) => (
+               <TouchableOpacity
+               key={index}
+               style={[styles.tableDataCon, {zIndex:-99}]}
+               activeOpacity={0.7}
+               // onPress={() => alert(item?.user_id)}
+               onPress={() => userClickHandler( {item, sellerID} )}
+               
+             >
+               <View style={styles.displayFlex}>
+                 <View style={styles.tableHeaderLeft}>
+                   <Text style={styles.tableTextDataFirst}>{index+1}</Text>
+                   <View style={[styles.flexAlign, { marginLeft: 25 }]}>
+                     <Image source={item?.user_details?.profile_photo ? {uri :item?.user_details?.profile_photo} : userImage} style={styles.lovingStyleData} />
+                     <View style={{ flexDirection: 'column', marginLeft: 10 }}>
+                       <Text style={styles.tableTextDataName}>
+                         {item?.user_details?.firstname}
+                       </Text>
+                       <Text
+                         style={[
+                           styles.tableTextDataAdd,
+                           { color: COLORS.gerySkies },
+                         ]}
+                       >
+                         4318 Daffodil Lane, Savage,Virginia(VA), 20763
+                       </Text>
+                     </View>
+                   </View>
+                 </View>
+                 <View style={styles.tableHeaderRight}>
+                   <Text style={styles.tableTextData}>{item?.total_orders}</Text>
+                   <Text style={styles.tableTextData}>{item?.total_products}</Text>
+                   <Text style={styles.tableTextData}>{item?.life_time_spent?.toFixed(2)}</Text>
+                 </View>
+               </View>
+             </TouchableOpacity>
+              ))
+             }
+
+         
+          
         </View>
       );
     } else {

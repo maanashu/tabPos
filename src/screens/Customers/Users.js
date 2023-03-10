@@ -18,7 +18,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { TableDropdown } from '@/components';
 import { Table } from 'react-native-table-component';
 
-export function Users({ userProfileHandler }) {
+export function Users() {
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
   const [paginationModalItems, setPaginationModalItems] = useState([
@@ -41,7 +41,7 @@ export function Users({ userProfileHandler }) {
           </View>
         </View>
       </View>
-      <View style={[styles.jbrTypeCon, { zIndex: -99 }]}>
+      <View style={[styles.jbrTypeCon, {zIndex:-1}]}>
         <View style={styles.paginationEnd}>
           <Text style={[styles.paginationCount, { fontSize: 12 }]}>
             {strings.customers.showResult}
@@ -118,37 +118,7 @@ export function Users({ userProfileHandler }) {
               </View>
             </View>
           </View>
-          <TouchableOpacity
-            style={styles.tableDataCon}
-            onPress={userProfileHandler}
-          >
-            <View style={styles.displayFlex}>
-              <View style={styles.tableHeaderLeft}>
-                <Text style={styles.tableTextDataFirst}>1</Text>
-                <View style={[styles.flexAlign, { marginLeft: 25 }]}>
-                  <Image source={loving} style={styles.lovingStyleData} />
-                  <View style={{ flexDirection: 'column', marginLeft: 10 }}>
-                    <Text style={styles.tableTextDataName}>
-                      Curtis M. Wheeler
-                    </Text>
-                    <Text
-                      style={[
-                        styles.tableTextDataAdd,
-                        { color: COLORS.gerySkies },
-                      ]}
-                    >
-                      4318 Daffodil Lane, Savage,Virginia(VA), 20763
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.tableHeaderRight}>
-                <Text style={styles.tableTextData}>60</Text>
-                <Text style={styles.tableTextData}>455</Text>
-                <Text style={styles.tableTextData}>$6,850.00</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+        
         </Table>
       </View>
     </View>

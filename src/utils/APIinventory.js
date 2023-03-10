@@ -36,7 +36,9 @@ export const ApiOrderInventory = {
     totalProGraph:'orders/pos/statistics/products',
     totalOrderGraph:'orders/pos/statistics/orders',
     totalInvernteryGraph:'orders/pos/statistics/inventory-cost',
-    totalRevenueGraph:'orders/pos/statistics/revenue'
+    totalRevenueGraph:'orders/pos/statistics/revenue',
+    getUserOrder:'orders/users/analysis',
+    getOrderUser:'orders'
 
 };
 

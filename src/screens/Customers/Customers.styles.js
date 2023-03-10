@@ -389,13 +389,15 @@ export const styles = StyleSheet.create({
   },
   lovingStyle: {
     width: SW(25),
-    height: SH(110),
+    height: SW(25),
     resizeMode: 'contain',
+    borderRadius:50
   },
   lovingStyleData: {
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
+    borderRadius:50
   },
   Phonelight: {
     width: SW(5),
@@ -605,7 +607,7 @@ export const styles = StyleSheet.create({
   },
   invoiceDetail: {
     color: COLORS.solid_grey,
-    fontSize: SF(15),
+    fontSize: SF(14),
     fontFamily: Fonts.Italic,
   },
   pointConOrder: {
@@ -1009,7 +1011,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(14),
     letterSpacing: -1,
-    width: windowWidth * 0.1,
+    width: windowWidth * 0.09,
   },
   tableTextData: {
     color: COLORS.solid_grey,
@@ -1075,4 +1077,23 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: moderateScale(20),
   },
+  saleTypeView:{
+    backgroundColor:COLORS.marshmallow,
+    width: windowWidth * 0.08,
+    height:SH(30),
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:3
+  },
+  saleTypeText:{
+    color: COLORS.white,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+  },
+  userNotFound:{
+    color: COLORS.primary,
+    fontFamily: Fonts.MaisonRegular,
+    fontSize: SF(20),
+    alignSelf:'center'
+  }
 });

@@ -26,7 +26,9 @@ export const COLORS = {
   red: '#ff0000',
   orange: '#FC7900',
   green:'#2EC759',
-  indicator:'#0000ff'
+  indicator:'#0000ff',
+  marshmallow:'#6C63F0'
+
 };
 
    

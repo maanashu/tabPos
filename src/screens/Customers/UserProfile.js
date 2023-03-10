@@ -14,6 +14,7 @@ import {
   toggle,
   Union,
   unionRight,
+  userImage,
 } from '@/assets';
 import { strings } from '@/localization';
 import { styles } from './Customers.styles';
@@ -22,7 +23,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Spacer, TableDropdown } from '@/components';
 import { Table } from 'react-native-table-component';
 
-export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
+export function UserProfile({ userDetailHandler, userName,userProfile,userPhoneNumber, userEmail }) {
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
   const [paginationModalItems, setPaginationModalItems] = useState([
@@ -31,7 +32,6 @@ export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
     { label: '50', value: '50' },
     { label: '70', value: '70' },
   ]);
-
   return (
     <View>
       <View style={{ paddingHorizontal: moderateScale(10) }}>
@@ -43,24 +43,24 @@ export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
               { paddingHorizontal: moderateScale(10) },
             ]}
           >
-            <View style={{ flexDirection: 'row' }}>
-              <Image source={loving} style={styles.lovingStyle} />
+            <View style={{ flexDirection: 'row', alignItems:'center' }}>
+              <Image source={userProfile ? {uri : userProfile} : userImage} style={styles.lovingStyle} />
               <View style={{ paddingHorizontal: moderateScale(10) }}>
                 <Text style={styles.angelaText}>
-                  {strings.customers.angela}
+                  {userName}
                 </Text>
-                <Spacer space={SH(15)} />
+                <Spacer space={SH(10)} />
                 <View style={styles.flexAlign}>
                   <Image source={Phone_light} style={styles.Phonelight} />
                   <Text style={styles.adressText}>
-                    {strings.customers.phoneNumber}
+                   {userPhoneNumber}
                   </Text>
                 </View>
                 <Spacer space={SH(5)} />
                 <View style={styles.flexAlign}>
                   <Image source={email} style={styles.Phonelight} />
                   <Text style={styles.adressText}>
-                    {strings.customers.email}
+                  {userEmail}
                   </Text>
                 </View>
                 <Spacer space={SH(5)} />
@@ -187,25 +187,7 @@ export function UserProfile({ orderOnlineHandler, userDetailHandler }) {
               </View>
             </View>
           </View>
-          <TouchableOpacity
-            style={styles.tableDataCon}
-            onPress={orderOnlineHandler}
-          >
-            <View style={styles.displayFlex}>
-              <View style={styles.tableHeaderLeftPro}>
-                <Text style={styles.tableTextDataFirst}>1</Text>
-              </View>
-              <View style={styles.tableHeaderRightPro}>
-                <Text style={styles.tableTextData}>362501</Text>
-                <Text style={styles.tableTextData}>Jun 11, 2022</Text>
-                <Text style={styles.tableTextData}>Maimi</Text>
-                <Text style={styles.tableTextData}>DHL</Text>
-                <Text style={styles.tableTextData}>3 times</Text>
-                <Text style={styles.tableTextData}>$6,850.00</Text>
-                <Text style={styles.tableTextData}>Shipping</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+         
         </Table>
       </View>
     </View>
