@@ -15,6 +15,7 @@ import {
   toggle,
   Union,
   unionRight,
+  userImage,
 } from '@/assets';
 import { strings } from '@/localization';
 import { styles } from './Customers.styles';
@@ -23,7 +24,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Spacer } from '@/components';
 import { Table } from 'react-native-table-component';
 
-export function UserDetails({ userRemoveRemoveHandler }) {
+export function UserDetails({ userRemoveRemoveHandler, userName,userProfile,userPhoneNumber, userEmail }) {
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
   const [paginationModalItems, setPaginationModalItems] = useState([
@@ -60,24 +61,24 @@ export function UserDetails({ userRemoveRemoveHandler }) {
               { paddingHorizontal: moderateScale(10) },
             ]}
           >
-            <View style={{ flexDirection: 'row' }}>
-              <Image source={loving} style={styles.lovingStyle} />
+            <View style={{ flexDirection: 'row', alignItems:'center' }}>
+              <Image source={userProfile ? {uri : userProfile} : userImage} style={styles.lovingStyle} />
               <View style={{ paddingHorizontal: moderateScale(10) }}>
                 <Text style={styles.angelaText}>
-                  {strings.customers.angela}
+                {userName}
                 </Text>
-                <Spacer space={SH(15)} />
+                <Spacer space={SH(10)} />
                 <View style={styles.flexAlign}>
                   <Image source={Phone_light} style={styles.Phonelight} />
                   <Text style={styles.adressText}>
-                    {strings.customers.phoneNumber}
+                  {userPhoneNumber}
                   </Text>
                 </View>
                 <Spacer space={SH(5)} />
                 <View style={styles.flexAlign}>
                   <Image source={email} style={styles.Phonelight} />
                   <Text style={styles.adressText}>
-                    {strings.customers.email}
+                  {userEmail}
                   </Text>
                 </View>
                 <Spacer space={SH(5)} />

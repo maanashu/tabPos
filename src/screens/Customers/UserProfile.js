@@ -23,7 +23,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Spacer, TableDropdown } from '@/components';
 import { Table } from 'react-native-table-component';
 
-export function UserProfile({ userDetailHandler, userName,userProfile,userPhoneNumber, userEmail }) {
+export function UserProfile({ userDetailHandler, userName,userProfile,userPhoneNumber, userEmail, userAddress }) {
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
   const [paginationModalItems, setPaginationModalItems] = useState([
@@ -32,6 +32,7 @@ export function UserProfile({ userDetailHandler, userName,userProfile,userPhoneN
     { label: '50', value: '50' },
     { label: '70', value: '70' },
   ]);
+  const [toggle, setToggle] =  useState(false);
   return (
     <View>
       <View style={{ paddingHorizontal: moderateScale(10) }}>
@@ -67,7 +68,7 @@ export function UserProfile({ userDetailHandler, userName,userProfile,userPhoneN
                 <View style={styles.flexAlign}>
                   <Image source={location} style={styles.Phonelight} />
                   <Text style={styles.adressText}>
-                    {strings.customers.address}
+                    {userAddress}
                   </Text>
                 </View>
               </View>
@@ -79,7 +80,7 @@ export function UserProfile({ userDetailHandler, userName,userProfile,userPhoneN
               >
                 <View style={styles.flexAlign}>
                   <Image source={reward2} style={styles.rewardStyle} />
-                  <Text style={styles.pointText}>
+                  <Text style={styles.pointText}>   
                     {strings.customers.point}
                   </Text>
                 </View>

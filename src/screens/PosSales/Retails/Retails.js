@@ -1617,8 +1617,9 @@ export function Retails() {
                 </View>
               </View>
               <TouchableOpacity
-                style={styles.purchaseCon}
+                style={[styles.purchaseCon, {opacity: totalCart === '0' ? 0.4 : 1}]}
                 onPress={sideContainerHandler}
+                disabled={totalCart === '0' ? true : false}
               >
                 <Image source={purchese} style={styles.purcheseStyle} />
                 <Text style={styles.purchaseText}>

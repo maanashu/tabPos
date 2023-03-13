@@ -167,19 +167,17 @@ export const styles = StyleSheet.create({
   },
   datePickerCon: {
     borderWidth: 1,
-    height: SH(35),
+    height: SH(38),
     width: SW(45),
     borderRadius: 7,
     borderColor: COLORS.solidGrey,
+    flexDirection: 'row',
+    justifyContent:'center',
     alignItems: 'center',
     paddingHorizontal: moderateScale(7),
-    flexDirection: 'row',
+   
   },
-  calendarStyle: {
-    width: SW(5),
-    height: SW(5),
-    resizeMode: 'contain',
-  },
+
   dropDownIcon: {
     width: SW(4),
     height: SW(4),
@@ -429,9 +427,9 @@ export const styles = StyleSheet.create({
   },
   rewardStyle: {
     width: SW(8),
-
     height: SW(8),
     resizeMode: 'contain',
+    // transform: [{ rotate: '180deg'}]
   },
   pointText: {
     fontFamily: Fonts.SemiBold,
@@ -443,18 +441,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(13),
     color: COLORS.dark_grey,
-    paddingHorizontal: moderateScale(3),
-  },
-
-  datePickerCon: {
-    borderWidth: 1,
-    height: SH(35),
-    width: SW(45),
-    borderRadius: 7,
-    borderColor: COLORS.solidGrey,
-    alignItems: 'center',
-    paddingHorizontal: moderateScale(7),
-    flexDirection: 'row',
+    // paddingHorizontal: moderateScale(5),
   },
   calendarStyle: {
     width: SW(5),
@@ -584,11 +571,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   angelaPic: {
-    Width: SH(50),
-    height: SH(50),
-    resizeMode: 'contain',
-    marginRight: -20,
-    marginLeft: -35,
+    width:SW(15),
+     height:SW(15),
+      resizeMode:'contain',
+       borderRadius:50,
+       marginRight:10
   },
   buyer: {
     color: COLORS.dark_grey,
@@ -796,9 +783,17 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.44,
     borderRadius: 10,
   },
+  mapContainer2: {
+    borderRadius: 10,
+    overflow: 'hidden'
+  },
   mapConatinerHeight: {
-    // borderWidth: 1,
     height: windowHeight * 0.79,
+  },
+  map: {
+    width: windowWidth * 0.44,
+    height: windowHeight * 0.79,
+    borderRadius: 20,
   },
   costoContainer: {
     borderWidth: 1,
@@ -808,12 +803,14 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   trackingAngela: {
-    Width: SH(60),
-    height: SH(60),
-    resizeMode: 'contain',
+    width:SW(17),
+     height:SW(17),
+      resizeMode:'contain',
+       borderRadius:50,
+       marginHorizontal:10
   },
   costoHr: {
-    borderWidth: 0.7,
+    borderWidth: 0.4,
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.34,
     marginVertical: verticalScale(7),
@@ -998,13 +995,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: windowWidth * 0.87,
-    // paddingRight: Platform.OS === 'ios' ? 40 : 0,
   },
   tableHeaderRight: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: windowWidth * 0.48,
-    // paddingRight: Platform.OS === 'ios' ? 40 : 0,
   },
   tableTextHea: {
     color: COLORS.dark_grey,
@@ -1018,6 +1013,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     width: windowWidth * 0.1,
+    textAlign:"center"
   },
   tableTextDataAdd: {
     color: COLORS.solid_grey,

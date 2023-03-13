@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Customers/Customers.styles';
@@ -19,7 +20,6 @@ import {
   customersGraph,
   location,
   crossButton,
-  angela,
   ticket,
   box,
   dropRight,
@@ -28,15 +28,12 @@ import {
   willis,
   deliverCheck,
   track,
-  map,
   blankRadio,
   movingArrow,
   fillRadio,
   movingArrowBlue,
   angela2,
   contact,
-  orderCigrate,
-  loving,
   userImage,
 } from '@/assets';
 import { DaySelector, ScreenWrapper, Spacer } from '@/components';
@@ -48,10 +45,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
 import { getOrderUser, getUserOrder } from '@/actions/CustomersAction';
-import {getCustomers } from '@/selectors/CustomersSelector'
+import { getCustomers } from '@/selectors/CustomersSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import {TYPES} from '@/Types/CustomersTypes'
-import { longPressHandlerName } from 'react-native-gesture-handler/lib/typescript/handlers/LongPressGestureHandler';
+import { TYPES } from '@/Types/CustomersTypes';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
 
 export function Customers() {
@@ -69,10 +66,11 @@ export function Customers() {
   const [orderModal, setOrderModal] = useState(false);
   const [tracking, setTracking] = useState(false);
   const [userStore, setUserStore] = useState('');
+  const [orderDetail, setOrderDetail] = useState('');
 
   useEffect(() => {
     // dispatch(getUserOrder(sellerID))
-  }, [])
+  }, []);
 
   const isSearchProLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_USER_ORDER], state)
@@ -80,17 +78,19 @@ export function Customers() {
   const isOrderUserLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_USER], state)
   );
-  const userClickHandler = ({item, sellerID}) => {
+  const userClickHandler = ({ item, sellerID }) => {
     setWeeklyUser(false);
     setUserProfile(!userProfile);
     setUserStore(item);
-    dispatch(getOrderUser(item?.user_id,sellerID))
-  }
+    dispatch(getOrderUser(item?.user_id, sellerID));
+  };
 
   const newCustomerItem = ({ item }) => (
     <TouchableOpacity
       style={styles.custometrCon}
-      onPress={() => (setWeeklyUser(!weeklyUser), dispatch(getUserOrder(sellerID)))}
+      onPress={() => (
+        setWeeklyUser(!weeklyUser), dispatch(getUserOrder(sellerID))
+      )}
     >
       <View style={styles.flexAlign}>
         <Image source={item.img} style={styles.newCustomer} />
@@ -148,7 +148,9 @@ export function Customers() {
         <Spacer space={SH(10)} />
         <View style={styles.displayFlex}>
           <View style={styles.flexAlign}>
-            <TouchableOpacity onPress={() => (setUserProfile(false), setWeeklyUser(true))}>
+            <TouchableOpacity
+              onPress={() => (setUserProfile(false), setWeeklyUser(true))}
+            >
               <Image source={leftBack} style={styles.leftBackStyle} />
             </TouchableOpacity>
             <Text style={styles.profileHeaderText}>
@@ -163,7 +165,6 @@ export function Customers() {
     );
   };
 
-
   const bodyView = () => {
     if (tracking) {
       return (
@@ -177,7 +178,9 @@ export function Customers() {
               ]}
             >
               <View style={styles.flexAlign}>
-                <TouchableOpacity onPress={() =>  (setTracking(false), setOrderModal(true))}>
+                <TouchableOpacity
+                  onPress={() => (setTracking(false), setOrderModal(true))}
+                >
                   <Image source={leftBack} style={styles.leftBackStyle} />
                 </TouchableOpacity>
                 <Text style={styles.orderNoStyle}>
@@ -189,7 +192,9 @@ export function Customers() {
                   </Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={() =>  (setTracking(false), setOrderModal(true))}>
+              <TouchableOpacity
+                onPress={() => (setTracking(false), setOrderModal(true))}
+              >
                 <Image source={crossButton} style={styles.leftBackStyle} />
               </TouchableOpacity>
             </View>
@@ -203,10 +208,19 @@ export function Customers() {
                   <View style={[styles.costoContainer]}>
                     <Spacer space={SH(10)} />
                     <View style={{ flexDirection: 'row' }}>
-                      <Image source={angela} style={styles.trackingAngela} />
-                      <View style={{ marginLeft: -20 }}>
+                      <Image
+                        source={
+                          orderDetail?.seller_details?.profile_photo
+                            ? {
+                                uri: orderDetail?.seller_details?.profile_photo,
+                              }
+                            : userImage
+                        }
+                        style={styles.trackingAngela}
+                      />
+                      <View>
                         <Text style={styles.costoName}>
-                          {strings.customers.costo}
+                          {orderDetail?.seller_details?.firstname}
                         </Text>
                         <Spacer space={SH(7)} />
                         <View style={styles.flexAlign}>
@@ -223,7 +237,9 @@ export function Customers() {
                                 source={ticket}
                                 style={styles.ticketImage}
                               />
-                              <Text style={styles.ciagrtext}>$516.30</Text>
+                              <Text style={styles.ciagrtext}>
+                                ${orderDetail?.payable_amount}
+                              </Text>
                             </View>
                           </View>
                           <View
@@ -433,8 +449,19 @@ export function Customers() {
                     </View>
                   </View>
                 </View>
-                <View style={styles.mapContainer}>
-                  <Image source={map} style={styles.mapStyle} />
+                <View style={styles.mapContainer2}>
+                  <MapView
+                    provider={PROVIDER_GOOGLE}
+                    showCompass
+                    region={{
+                      latitude: 27.2046,
+                      longitude: 77.4977,
+                      latitudeDelta: 0.0922,
+                      longitudeDelta: 0.0421,
+                    }}
+                    style={styles.map}
+                  ></MapView>
+                  {/* <Image source={map} style={styles.mapStyle} /> */}
                 </View>
               </View>
               <Spacer space={SH(12)} />
@@ -453,18 +480,23 @@ export function Customers() {
                 { paddingHorizontal: moderateScale(10) },
               ]}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity onPress={() => (setOrderModal(false), setUserProfile(true))}>
+              <View style={styles.flexAlign}>
+                <TouchableOpacity
+                  onPress={() => (setOrderModal(false), setUserProfile(true))}
+                >
                   <Image source={leftBack} style={styles.leftBackStyle} />
                 </TouchableOpacity>
                 <Text style={styles.orderNoStyle}>
                   {strings.wallet.orderNo}
+                  {orderDetail?.id}
                 </Text>
                 <View style={styles.completedButton}>
                   <Text style={styles.completedText}>Completed</Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => (setOrderModal(false), setUserProfile(true))}>
+              <TouchableOpacity
+                onPress={() => (setOrderModal(false), setUserProfile(true))}
+              >
                 <Image source={crossButton} style={styles.leftBackStyle} />
               </TouchableOpacity>
             </View>
@@ -478,15 +510,25 @@ export function Customers() {
                   <Text style={styles.buyer}>{strings.wallet.buyer}</Text>
                   <Spacer space={SH(5)} />
                   <View style={{ flexDirection: 'row' }}>
-                    <Image source={angela} style={styles.angelaPic} />
+                    <Image
+                      source={
+                        userStore?.user_details?.profile_photo
+                          ? { uri: userStore?.user_details?.profile_photo }
+                          : userImage
+                      }
+                      style={styles.angelaPic}
+                    />
                     <View style={{ flexDirection: 'column' }}>
-                      <Text style={styles.angela}>{strings.wallet.angela}</Text>
+                      <Text style={styles.angela}>
+                        {userStore?.user_details?.firstname}
+                      </Text>
                       <Spacer space={SH(5)} />
                       <Text style={styles.angelaAddress}>
-                        {strings.wallet.angelaAddress1}
+                        {userStore?.user_details?.current_address}
                       </Text>
                       <Text style={styles.angelaAddress}>
                         {strings.wallet.angelaAddress2}
+                        {userStore?.user_details?.phone_number}
                       </Text>
                     </View>
                   </View>
@@ -556,79 +598,64 @@ export function Customers() {
                       </View>
                     </View>
                   </View>
-                  <View style={styles.tableDataCon}>
-                    <View style={styles.displayFlex}>
-                      <View style={styles.tableHeaderLeft}>
-                        <Text style={styles.tableTextDataFirst}>1</Text>
-                        <View style={{ flexDirection: 'row', marginLeft: 30 }}>
-                          <Image
-                            source={orderCigrate}
-                            style={styles.orderCigrate}
-                          />
-                          <View
-                            style={{ flexDirection: 'column', marginLeft: 8 }}
-                          >
-                            <Text style={styles.tableTextData}>
-                              Ashton Classic
-                            </Text>
-                            <Text
-                              style={[
-                                styles.tableTextData,
-                                { color: COLORS.gerySkies },
-                              ]}
-                            >
-                              Box of 25
-                            </Text>
+                  <View style={{ height: SH(120) }}>
+                    <ScrollView>
+                      {orderDetail?.order_details.map((item, index) => (
+                        <View style={styles.tableDataCon} key={index}>
+                          <View style={styles.displayFlex}>
+                            <View style={styles.tableHeaderLeft}>
+                              <Text style={styles.tableTextDataFirst}>
+                                {index + 1}
+                              </Text>
+                              <View
+                                style={{ flexDirection: 'row', marginLeft: 30 }}
+                              >
+                                {item.product_image ? (
+                                  <Image
+                                    source={{ uri: item.product_image }}
+                                    style={styles.orderCigrate}
+                                  />
+                                ) : null}
+                                <View
+                                  style={{
+                                    flexDirection: 'column',
+                                    marginLeft: 8,
+                                  }}
+                                >
+                                  <Text style={styles.tableTextData}>
+                                    {item.product_name}
+                                  </Text>
+                                  <Text
+                                    style={[
+                                      styles.tableTextData,
+                                      { color: COLORS.gerySkies },
+                                    ]}
+                                  >
+                                    Box of {item.qty}
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                            <View style={styles.tableHeaderRightOrder}>
+                              <Text style={styles.tableTextData}>
+                                {item.qty} Box
+                              </Text>
+                              <Text style={styles.tableTextData}>
+                                ${item.price}
+                              </Text>
+                              <Text
+                                style={[
+                                  styles.tableTextData,
+                                  { marginRight: -35 },
+                                ]}
+                              >
+                                ${item.qty * item.price}
+                              </Text>
+                            </View>
                           </View>
                         </View>
-                      </View>
-                      <View style={styles.tableHeaderRightOrder}>
-                        <Text style={styles.tableTextData}>16 Box</Text>
-                        <Text style={styles.tableTextData}>$253.95</Text>
-                        <Text
-                          style={[styles.tableTextData, { marginRight: -35 }]}
-                        >
-                          $4,063.20
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={styles.tableDataCon}>
-                    <View style={styles.displayFlex}>
-                      <View style={styles.tableHeaderLeft}>
-                        <Text style={styles.tableTextDataFirst}>1</Text>
-                        <View style={{ flexDirection: 'row', marginLeft: 30 }}>
-                          <Image
-                            source={orderCigrate}
-                            style={styles.orderCigrate}
-                          />
-                          <View
-                            style={{ flexDirection: 'column', marginLeft: 8 }}
-                          >
-                            <Text style={styles.tableTextData}>
-                              Ashton Classic
-                            </Text>
-                            <Text
-                              style={[
-                                styles.tableTextData,
-                                { color: COLORS.gerySkies },
-                              ]}
-                            >
-                              Box of 25
-                            </Text>
-                          </View>
-                        </View>
-                      </View>
-                      <View style={styles.tableHeaderRightOrder}>
-                        <Text style={styles.tableTextData}>16 Box</Text>
-                        <Text style={styles.tableTextData}>$253.95</Text>
-                        <Text
-                          style={[styles.tableTextData, { marginRight: -35 }]}
-                        >
-                          $4,063.20
-                        </Text>
-                      </View>
-                    </View>
+                      ))}
+                    </ScrollView>
                   </View>
                 </Table>
 
@@ -654,7 +681,10 @@ export function Customers() {
                         {strings.wallet.subtotal}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
+                        $
+                        {orderDetail?.actual_amount
+                          ? orderDetail?.actual_amount
+                          : '0'}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -663,7 +693,7 @@ export function Customers() {
                         {strings.wallet.serviceCharge}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
+                        ${orderDetail?.tax ? orderDetail?.tax : '0'}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -677,7 +707,7 @@ export function Customers() {
                           { color: COLORS.roseRed },
                         ]}
                       >
-                        {strings.wallet.subtotalPrice}
+                        ${orderDetail?.discount ? orderDetail?.discount : '0'}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -685,9 +715,7 @@ export function Customers() {
                       <Text style={styles.tablesubTotalLabel}>
                         {strings.wallet.shippingCharge}
                       </Text>
-                      <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
-                      </Text>
+                      <Text style={styles.tablesubTotalText}>${'0'}</Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
                     <View style={styles.tablesubTotal}>
@@ -709,7 +737,10 @@ export function Customers() {
                         </View>
                       </View>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
+                        $
+                        {orderDetail?.payable_amount
+                          ? orderDetail?.payable_amount
+                          : '0'}
                       </Text>
                     </View>
                     <Spacer space={SH(10)} />
@@ -754,17 +785,17 @@ export function Customers() {
                         </Text>
                       </View>
                     </View>
-                    <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
-                      <TouchableOpacity
-                        style={styles.deliverTextCon}
-                        onPress={() =>  (setTracking(true), setOrderModal(false))}
-                      >
+                    <TouchableOpacity
+                      style={[styles.deliverBtnCon, styles.trackingBtnCon]}
+                      onPress={() => (setTracking(true), setOrderModal(false))}
+                    >
+                      <View style={styles.deliverTextCon}>
                         <Image source={track} style={styles.deliveryCheck} />
                         <Text style={styles.deliveredText}>
                           {strings.wallet.tracking}
                         </Text>
-                      </TouchableOpacity>
-                    </View>
+                      </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -777,6 +808,10 @@ export function Customers() {
       return (
         <View>
           <UserDetails
+            userName={userStore?.user_details?.firstname}
+            userProfile={userStore?.user_details?.profile_photo}
+            userPhoneNumber={userStore?.user_details?.phone_number}
+            userEmail={userStore?.user_details?.email}
             userRemoveRemoveHandler={() => (
               setUserDetail(false), setUserProfile(true)
             )}
@@ -788,60 +823,61 @@ export function Customers() {
         <View>
           {customUserHeader()}
           <UserProfile
-            userName = {userStore?.user_details?.firstname}
+            userName={userStore?.user_details?.firstname}
             userProfile={userStore?.user_details?.profile_photo}
-            // userPhoneNumber={}
+            userPhoneNumber={userStore?.user_details?.phone_number}
+            userAddress={userStore?.user_details?.current_address}
             userEmail={userStore?.user_details?.email}
             userDetailHandler={() => (
               setUserProfile(false), setUserDetail(true)
             )}
           />
-          {
-            isOrderUserLoading
-            ?
-            (
-              <View style={{ marginTop: 100 }}>
-              <ActivityIndicator
-                size="large"
-                color={COLORS.indicator}
-              />
+          {isOrderUserLoading ? (
+            <View style={{ marginTop: 100 }}>
+              <ActivityIndicator size="large" color={COLORS.indicator} />
             </View>
-            )
-            :
-              orderUserArray.length === 0 
-              ?
-               <View style={{marginTop:80}}>
-                <Text style={styles.userNotFound}>Order not found</Text>
-               </View>
-              :
-              orderUserArray.map((item, index) => (
-                <TouchableOpacity
+          ) : orderUserArray.length === 0 ? (
+            <View style={{ marginTop: 80 }}>
+              <Text style={styles.userNotFound}>Order not found</Text>
+            </View>
+          ) : (
+            orderUserArray.map((item, index) => (
+              <TouchableOpacity
                 key={index}
-                style={[styles.tableDataCon, {zIndex:-99}]}
-                onPress={() => (setOrderModal(true), setUserProfile(false)) }
+                style={[styles.tableDataCon, { zIndex: -99 }]}
+                onPress={() => (
+                  setOrderModal(true),
+                  setUserProfile(false),
+                  setOrderDetail(item)
+                )}
               >
                 <View style={styles.displayFlex}>
                   <View style={styles.tableHeaderLeftPro}>
-                    <Text style={styles.tableTextDataFirst}>{index+1}</Text>
+                    <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
                   </View>
                   <View style={styles.tableHeaderRightPro}>
                     <Text style={styles.tableTextData}>{item.id}</Text>
-                    <Text style={styles.tableTextData}>{moment(item.date).format('LL')}</Text>
+                    <Text style={styles.tableTextData}>
+                      {item.date
+                        ? moment(item.date).format('LL')
+                        : 'date not found'}
+                    </Text>
                     <Text style={styles.tableTextData}>Maimi</Text>
                     <Text style={styles.tableTextData}>DHL</Text>
-                    <Text style={styles.tableTextData}>{item.total_items} times</Text>
-                    <Text style={styles.tableTextData}>${item.payable_amount}</Text>
+                    <Text style={styles.tableTextData}>
+                      {item.total_items} times
+                    </Text>
+                    <Text style={styles.tableTextData}>
+                      ${item.payable_amount}
+                    </Text>
                     <View style={styles.saleTypeView}>
-                    <Text  style={styles.saleTypeText}>{item.shipping}</Text>
+                      <Text style={styles.saleTypeText}>{item.shipping}</Text>
                     </View>
                   </View>
                 </View>
               </TouchableOpacity>
-              ))
-
-          }
-          
-         
+            ))
+          )}
         </View>
       );
     } else if (weeklyUser) {
@@ -849,66 +885,64 @@ export function Customers() {
         <View>
           {customHeader()}
           <Users />
-          {
-            isSearchProLoading
-            ?
-            (
-              <View style={{ marginTop: 100 }}>
-              <ActivityIndicator
-                size="large"
-                color={COLORS.indicator}
-              />
+          {isSearchProLoading ? (
+            <View style={{ marginTop: 100 }}>
+              <ActivityIndicator size="large" color={COLORS.indicator} />
             </View>
-            )
-            :
-            
-             userOrderArray?.length === 0
-             ?
-              <View style={{marginTop:80}}>
+          ) : userOrderArray?.length === 0 ? (
+            <View style={{ marginTop: 80 }}>
               <Text style={styles.userNotFound}>User not found</Text>
-              </View>
-                :
-              userOrderArray.map((item, index) => (
-               <TouchableOpacity
-               key={index}
-               style={[styles.tableDataCon, {zIndex:-99}]}
-               activeOpacity={0.7}
-               // onPress={() => alert(item?.user_id)}
-               onPress={() => userClickHandler( {item, sellerID} )}
-               
-             >
-               <View style={styles.displayFlex}>
-                 <View style={styles.tableHeaderLeft}>
-                   <Text style={styles.tableTextDataFirst}>{index+1}</Text>
-                   <View style={[styles.flexAlign, { marginLeft: 25 }]}>
-                     <Image source={item?.user_details?.profile_photo ? {uri :item?.user_details?.profile_photo} : userImage} style={styles.lovingStyleData} />
-                     <View style={{ flexDirection: 'column', marginLeft: 10 }}>
-                       <Text style={styles.tableTextDataName}>
-                         {item?.user_details?.firstname}
-                       </Text>
-                       <Text
-                         style={[
-                           styles.tableTextDataAdd,
-                           { color: COLORS.gerySkies },
-                         ]}
-                       >
-                         4318 Daffodil Lane, Savage,Virginia(VA), 20763
-                       </Text>
-                     </View>
-                   </View>
-                 </View>
-                 <View style={styles.tableHeaderRight}>
-                   <Text style={styles.tableTextData}>{item?.total_orders}</Text>
-                   <Text style={styles.tableTextData}>{item?.total_products}</Text>
-                   <Text style={styles.tableTextData}>{item?.life_time_spent?.toFixed(2)}</Text>
-                 </View>
-               </View>
-             </TouchableOpacity>
-              ))
-             }
-
-         
-          
+            </View>
+          ) : (
+            userOrderArray.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[styles.tableDataCon, { zIndex: -99 }]}
+                activeOpacity={0.7}
+                onPress={() => userClickHandler({ item, sellerID })}
+              >
+                <View style={styles.displayFlex}>
+                  <View style={styles.tableHeaderLeft}>
+                    <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
+                    <View style={[styles.flexAlign, { marginLeft: 25 }]}>
+                      <Image
+                        source={
+                          item?.user_details?.profile_photo
+                            ? { uri: item?.user_details?.profile_photo }
+                            : userImage
+                        }
+                        style={styles.lovingStyleData}
+                      />
+                      <View style={{ flexDirection: 'column', marginLeft: 10 }}>
+                        <Text style={styles.tableTextDataName}>
+                          {item?.user_details?.firstname}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.tableTextDataAdd,
+                            { color: COLORS.gerySkies },
+                          ]}
+                        >
+                          {item?.user_details?.current_address}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.tableHeaderRight}>
+                    <Text style={styles.tableTextData}>
+                      {item?.total_orders}
+                    </Text>
+                    <Text style={styles.tableTextData}>
+                      {item?.total_products}
+                    </Text>
+                    <Text style={styles.tableTextData}>
+                      {item?.life_time_spent?.toFixed(2)}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))
+          )}
         </View>
       );
     } else {
