@@ -4,7 +4,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class CustomersController {
-  static async getUserOrder(sellerID,selectedValue) {
+  static async getUserOrder(sellerID, selectedValue) {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL + ApiOrderInventory.getUserOrder + `?seller_id=${sellerID}&limit=${selectedValue}`;

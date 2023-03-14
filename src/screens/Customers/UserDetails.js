@@ -24,7 +24,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Spacer } from '@/components';
 import { Table } from 'react-native-table-component';
 
-export function UserDetails({ userRemoveRemoveHandler, userName,userProfile,userPhoneNumber, userEmail }) {
+export function UserDetails({ userRemoveRemoveHandler, userName,userProfile,userPhoneNumber, userEmail, userAddress}) {
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
   const [paginationModalItems, setPaginationModalItems] = useState([
@@ -35,7 +35,7 @@ export function UserDetails({ userRemoveRemoveHandler, userName,userProfile,user
   ]);
 
   return (
-    <View>
+    <View>  
       <View style={styles.useHeaderCon}>
         <Spacer space={SH(10)} />
         <View style={styles.displayFlex}>
@@ -82,12 +82,21 @@ export function UserDetails({ userRemoveRemoveHandler, userName,userProfile,user
                   </Text>
                 </View>
                 <Spacer space={SH(5)} />
-                <View style={styles.flexAlign}>
-                  <Image source={location} style={styles.Phonelight} />
-                  <Text style={styles.adressText}>
-                    {strings.customers.address}
-                  </Text>
-                </View>
+                {
+                    userAddress
+                    ?
+                    <View style={styles.flexAlign}>
+                    <Image source={location} style={styles.Phonelight} />
+                   
+                    <Text style={styles.adressText} numberOfLines={1}>
+                      {userAddress?.street_address},  {userAddress?.city},  {userAddress?.state},  {userAddress?.country},  {userAddress?.postal_code}, 
+                    </Text>
+                  </View>
+                  :
+                  <Text></Text>
+
+                }
+               
               </View>
             </View>
             <View>

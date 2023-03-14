@@ -49,7 +49,7 @@ const getCustomersError = error => ({
 export const getUserOrder = (sellerID,selectedValue) => async dispatch => {
   dispatch(getUserOrderRequest());
   try {
-      const res = await CustomersController.getUserOrder(sellerID,selectedValue);
+      const res = await CustomersController.getUserOrder(sellerID, selectedValue);
       dispatch(getUserOrderSuccess(res));
   } catch (error) {
       dispatch(getUserOrderError(error.message));

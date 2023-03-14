@@ -67,9 +67,17 @@ export function UserProfile({ userDetailHandler, userName,userProfile,userPhoneN
                 <Spacer space={SH(5)} />
                 <View style={styles.flexAlign}>
                   <Image source={location} style={styles.Phonelight} />
-                  <Text style={styles.adressText}>
-                    {userAddress}
-                  </Text>
+                  {
+                    userAddress
+                    ?
+                    <Text style={styles.adressText} numberOfLines={1}>
+                    {userAddress?.street_address}, {userAddress?.city}, {userAddress?.state}, {userAddress?.country}, {userAddress?.postal_code}
+                    </Text>
+                    :
+                    null
+
+                  }
+                
                 </View>
               </View>
             </View>

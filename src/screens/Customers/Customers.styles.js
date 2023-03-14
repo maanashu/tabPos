@@ -416,6 +416,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     color: COLORS.solid_grey,
     paddingHorizontal: moderateScale(5),
+    width:windowWidth * 0.40,
   },
   pointCon: {
     borderWidth: 1,
@@ -568,6 +569,7 @@ export const styles = StyleSheet.create({
     color: COLORS.darkGray,
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
+    width:windowWidth * 0.40
   },
   angela: {
     color: COLORS.solid_grey,

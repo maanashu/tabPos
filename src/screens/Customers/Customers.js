@@ -73,7 +73,7 @@ export function Customers() {
   const [orderDetail, setOrderDetail] = useState('');
   const [selectedValue, setSelectedValue] = useState(+5);
 
-  const selected = value => (setSelectedValue(value), dispatch(getUserOrder(sellerID,selectedValue)));  
+  const selected = value => (setSelectedValue(value), dispatch(getUserOrder(sellerID,selectedValue))); 
   
   
   const newCustomerData = [
@@ -130,7 +130,7 @@ export function Customers() {
     <TouchableOpacity
       style={styles.custometrCon}
       onPress={() => (
-        setWeeklyUser(!weeklyUser), dispatch(getUserOrder(sellerID,selectedValue))
+        setWeeklyUser(!weeklyUser), dispatch(getUserOrder(sellerID, selectedValue))
       )}
     >
       <View style={styles.flexAlign}>
@@ -578,7 +578,11 @@ export function Customers() {
                       </Text>
                       <Spacer space={SH(5)} />
                       <Text style={styles.angelaAddress}>
-                        {userStore?.user_details?.current_address}
+                        {userStore?.user_details?.current_address?.street_address}, 
+                        {userStore?.user_details?.current_address?.city},
+                        {userStore?.user_details?.current_address?.state},
+                        {userStore?.user_details?.current_address?.country},
+                        {userStore?.user_details?.current_address?.postal_code},
                       </Text>
                       <Text style={styles.angelaAddress}>
                         {strings.wallet.angelaAddress2}
@@ -866,6 +870,7 @@ export function Customers() {
             userProfile={userStore?.user_details?.profile_photo}
             userPhoneNumber={userStore?.user_details?.phone_number}
             userEmail={userStore?.user_details?.email}
+            userAddress={userStore?.user_details?.current_address}
             userRemoveRemoveHandler={() => (
               setUserDetail(false), setUserProfile(true)
             )}
@@ -940,7 +945,6 @@ export function Customers() {
           {customHeader()}
           <Users   
            selectedNo={selected} 
-          
           />
           {isSearchProLoading ? (
             <View style={{ marginTop: 100 }}>
@@ -974,14 +978,30 @@ export function Customers() {
                         <Text style={styles.tableTextDataName}>
                           {item?.user_details?.firstname}
                         </Text>
-                        <Text
+                        {
+                          item?.user_details
+                          ?
+                          (
+                            <Text
                           style={[
                             styles.tableTextDataAdd,
                             { color: COLORS.gerySkies },
                           ]}
+                          numberOfLines={1}
                         >
-                          {item?.user_details?.current_address}
+                          
+                          {item?.user_details?.current_address?.street_address},
+                          {item?.user_details?.current_address?.city},
+                           {item?.user_details?.current_address?.state}, 
+                           {item?.user_details?.current_address?.country},
+                           {item?.user_details?.current_address?.postal_code},
                         </Text>
+                          )
+                          :
+                          <Text></Text>
+
+                        }
+                        
                       </View>
                     </View>
                   </View>
@@ -1028,7 +1048,7 @@ export function Customers() {
                     contentContainerStyle={styles.contentContainerStyle}
                   />
 
-                }
+                 } 
               
               </View>
               <Spacer space={SH(15)} />
