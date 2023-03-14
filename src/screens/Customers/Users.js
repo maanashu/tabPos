@@ -19,10 +19,9 @@ import { Table } from 'react-native-table-component';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment';
 
-export function Users() {
+export function Users({selectedNo}) {
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
-  console.log('paginationModalValue', paginationModalValue);
   const [paginationModalItems, setPaginationModalItems] = useState([
     { label: '5', value: '5' },
     { label: '10', value: '10' },
@@ -30,7 +29,7 @@ export function Users() {
     { label: '20', value: '20' },
   ]);
 
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
   const [date, setDate] = useState(new Date());
   const [dateformat, setDateformat] = useState('');
 
@@ -121,11 +120,12 @@ export function Users() {
               open={paginationModalOpen}
               value={paginationModalValue}
               items={paginationModalItems}
-              setOpen={setPaginationModalOpen}
+              setOpen={() => setPaginationModalOpen(!paginationModalOpen)}
               setValue={setPaginationModalValue}
               setItems={setPaginationModalItems}
               placeholder="5"
               placeholderStyle={styles.placeholderStylePagination}
+              onSelectItem={item => selectedNo(item.value)}
             />
           </View>
           <View style={styles.unionCon}>

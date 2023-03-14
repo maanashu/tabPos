@@ -31,12 +31,25 @@ const getOrderUsertReset = () => ({
   payload: null,
 });
 
+const getCustomersRequest = () => ({
+  type: TYPES.GET_CUSTOMERS_REQUEST,
+  payload: null,
+});
+const getCustomersSuccess = getCustomers => ({
+  type: TYPES.GET_CUSTOMERS_SUCCESS,
+  payload: { getCustomers },
+});
+const getCustomersError = error => ({
+  type: TYPES.GET_CUSTOMERS_ERROR,
+  payload: { error },
+});
 
 
-export const getUserOrder = (sellerID) => async dispatch => {
+
+export const getUserOrder = (sellerID,selectedValue) => async dispatch => {
   dispatch(getUserOrderRequest());
   try {
-      const res = await CustomersController.getUserOrder(sellerID);
+      const res = await CustomersController.getUserOrder(sellerID,selectedValue);
       dispatch(getUserOrderSuccess(res));
   } catch (error) {
       dispatch(getUserOrderError(error.message));
@@ -54,6 +67,15 @@ export const getOrderUser = (status, sellerID) => async dispatch => {
       }
         dispatch(getOrderUserError(error.message));
     }
+};
+export const getCustomer = (sellerID) => async dispatch => {
+  dispatch(getCustomersRequest());
+  try {
+      const res = await CustomersController.getCustomers(sellerID);
+      dispatch(getCustomersSuccess(res));
+    } catch (error) {
+      dispatch(getCustomersError(error.message));
+  }
 };
 
 

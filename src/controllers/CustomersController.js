@@ -4,17 +4,17 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class CustomersController {
-  static async getUserOrder(sellerID) {
+  static async getUserOrder(sellerID,selectedValue) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getUserOrder + `?seller_id=${sellerID}`;
+        ORDER_URL + ApiOrderInventory.getUserOrder + `?seller_id=${sellerID}&limit=${selectedValue}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
           Toast.show({
-            text2: 'ertyuiop',
+            text2: error.msg,
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
@@ -37,7 +37,27 @@ export class CustomersController {
           reject(error);
         });
     });
-  }
+  };
+
+  static async getCustomers(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.getCustomers + `?seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  };
 
 
 

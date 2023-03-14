@@ -405,55 +405,28 @@ export const sessionHistoryTableData = [
     '-$40.00',
   ],
 ];
-export const newCustomerData = [
+export const newCustomerDataLoader = [
   {
     customertype: 'New Customers',
-    count: '2906',
     img: newCustomer,
     id: '1',
   },
   {
     customertype: 'Returning Customers',
-    count: '2906',
     img: returnCustomer,
     id: '2',
   },
   {
     customertype: 'Online Customers',
-    count: '2906',
     img: onlineCutomer,
     id: '3',
   },
   {
     customertype: 'Shipping Customers',
-    count: '2906',
     img: onlineCutomer,
     id: '4',
   },
-  {
-    customertype: 'Online Customers',
-    count: '2906',
-    img: newCustomer,
-    id: '5',
-  },
-  {
-    customertype: 'Returning Customers',
-    count: '2906',
-    img: returnCustomer,
-    id: '6',
-  },
-  {
-    customertype: 'Shipping Customers',
-    count: '2906',
-    img: onlineCutomer,
-    id: '7',
-  },
-  {
-    customertype: 'Shipping Customers',
-    count: '2906',
-    img: onlineCutomer,
-    id: '8',
-  },
+
 ];
 
 export const notificationData = [

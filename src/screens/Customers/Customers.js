@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Customers/Customers.styles';
-import { newCustomerData } from '@/constants/flatListData';
+import { newCustomerData, newCustomerDataLoader } from '@/constants/flatListData';
 import { strings } from '@/localization';
 import {
   notifications,
@@ -35,6 +35,9 @@ import {
   angela2,
   contact,
   userImage,
+  newCustomer,
+  returnCustomer,
+  onlineCutomer,
 } from '@/assets';
 import { DaySelector, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
@@ -44,21 +47,22 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
-import { getOrderUser, getUserOrder } from '@/actions/CustomersAction';
+import { getCustomer, getOrderUser, getUserOrder } from '@/actions/CustomersAction';
 import { getCustomers } from '@/selectors/CustomersSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CustomersTypes';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
 
+
 export function Customers() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
+  const getCustomerStatitics = getCustomerData?.getCustomers;
   const userOrderArray = getCustomerData?.getUserOrder;
   const orderUserArray = getCustomerData?.getOrderUser;
-  const orderDetailArray = getCustomerData?.getOrderUser?.order_details;
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const [weeklyUser, setWeeklyUser] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
@@ -67,16 +71,53 @@ export function Customers() {
   const [tracking, setTracking] = useState(false);
   const [userStore, setUserStore] = useState('');
   const [orderDetail, setOrderDetail] = useState('');
+  const [selectedValue, setSelectedValue] = useState(+5);
+
+  const selected = value => (setSelectedValue(value), dispatch(getUserOrder(sellerID,selectedValue)));  
+  
+  
+  const newCustomerData = [
+    {
+      customertype: 'New Customers',
+      count: getCustomerStatitics?.new_customers,
+      img: newCustomer,
+      id: '1',
+    },
+    {
+      customertype: 'Returning Customers',
+      count: getCustomerStatitics?.returning_customers,
+      img: returnCustomer,
+      id: '2',
+    },
+    {
+      customertype: 'Online Customers',
+      count: getCustomerStatitics?.online_customers,
+      img: onlineCutomer,
+      id: '3',
+    },
+    {
+      customertype: 'Shipping Customers',
+      count: getCustomerStatitics?.shipping_customers,
+      img: onlineCutomer,
+      id: '4',
+    },
+  
+  ];
 
   useEffect(() => {
-    // dispatch(getUserOrder(sellerID))
-  }, []);
+    if(isFocused){
+      dispatch(getCustomer(sellerID));
+    };
+  }, [isFocused]);
 
   const isSearchProLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_USER_ORDER], state)
   );
   const isOrderUserLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_USER], state)
+  );
+  const isCustomerLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_CUSTOMERS], state)
   );
   const userClickHandler = ({ item, sellerID }) => {
     setWeeklyUser(false);
@@ -89,7 +130,7 @@ export function Customers() {
     <TouchableOpacity
       style={styles.custometrCon}
       onPress={() => (
-        setWeeklyUser(!weeklyUser), dispatch(getUserOrder(sellerID))
+        setWeeklyUser(!weeklyUser), dispatch(getUserOrder(sellerID,selectedValue))
       )}
     >
       <View style={styles.flexAlign}>
@@ -100,6 +141,19 @@ export function Customers() {
         </View>
       </View>
     </TouchableOpacity>
+  );
+  const newCustomerItemLoader = ({ item }) => (
+    <View style={styles.custometrCon}>
+      <View style={styles.flexAlign}>
+        <Image source={item.img} style={styles.newCustomer} />
+        <View style={{ paddingHorizontal: moderateScale(7) }}>
+           <View style={{ justifyContent:'center', alignItems:'flex-start', height:SH(37)}}>
+            <ActivityIndicator size="small" color={COLORS.indicator} />
+            </View>
+          <Text style={styles.newCustomerHeading}>{item.customertype}</Text>
+        </View>
+      </View>
+    </View>
   );
   const customHeader = () => {
     return (
@@ -884,7 +938,10 @@ export function Customers() {
       return (
         <View>
           {customHeader()}
-          <Users />
+          <Users   
+           selectedNo={selected} 
+          
+          />
           {isSearchProLoading ? (
             <View style={{ marginTop: 100 }}>
               <ActivityIndicator size="large" color={COLORS.indicator} />
@@ -894,7 +951,7 @@ export function Customers() {
               <Text style={styles.userNotFound}>User not found</Text>
             </View>
           ) : (
-            userOrderArray.map((item, index) => (
+            userOrderArray?.map((item, index) => (
               <TouchableOpacity
                 key={index}
                 style={[styles.tableDataCon, { zIndex: -99 }]}
@@ -952,13 +1009,27 @@ export function Customers() {
           <View style={styles.customerHomeCon}>
             <View>
               <View>
-                <FlatList
-                  columnWrapperStyle={{ justifyContent: 'space-between' }}
-                  data={newCustomerData}
-                  renderItem={newCustomerItem}
+                {
+                  isCustomerLoading
+                  ?
+                  <FlatList
+                  data={newCustomerDataLoader}
+                  renderItem={newCustomerItemLoader}
                   keyExtractor={item => item.id}
-                  numColumns={4}
+                  horizontal
+                  contentContainerStyle={styles.contentContainerStyle}
                 />
+                    :
+                    <FlatList
+                    data={newCustomerData}
+                    renderItem={newCustomerItem}
+                    keyExtractor={item => item.id}
+                    horizontal
+                    contentContainerStyle={styles.contentContainerStyle}
+                  />
+
+                }
+              
               </View>
               <Spacer space={SH(15)} />
               <View style={styles.displayFlex}>

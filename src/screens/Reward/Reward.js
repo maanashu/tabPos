@@ -5,61 +5,38 @@ import {
   View,
   Dimensions
 } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+import PureChart from 'react-native-pure-chart';
 
 export function Reward() {
+
+
+  let sampleData = [
+    {
+      seriesName: 'series1',
+      data: [
+        {x: '2018-02-01', y: 30},
+        {x: '2018-02-02', y: 200},
+        {x: '2018-02-03', y: 170},
+        {x: '2018-02-04', y: 250},
+        {x: '2018-02-05', y: 10}
+      ],
+      color: '#297AB1'
+    },
+    {
+      seriesName: 'series2',
+      data: [
+        {x: '2018-02-01', y: 20},
+        {x: '2018-02-02', y: 100},
+        {x: '2018-02-03', y: 140},
+        {x: '2018-02-04', y: 550},
+        {x: '2018-02-05', y: 40}
+      ],
+      color: 'yellow'
+    }
+  ]
   return (
     <View>
-       <LineChart
-      data={{
-       labels: ["January", "February", "March", "April", "May", "June"],
-       datasets: [
-        
-        {
-          data: [20, 45, 28, 80, 99, 43],
-          color: () => `rgba(31, 179, 255, 1)`,
-          strokeWidth: 3,
-         
-        },
-        // {
-        //   data: [20, 70, 28, 80, 99, 43],
-        //   color: () => `rgba(39, 90, 255, 1)`,
-        //   withShadow: false,
-        //   strokeWidth: 3, // optional
-        // }
-       ]
-     }}
-     width={Dimensions.get('window').width * 0.42}
-     height={190}
-     chartConfig={{
-       decimalPlaces: 0,
-       backgroundColor: '#000',
-       backgroundGradientFrom: '#fff',
-       backgroundGradientTo: '#fff',
-       decimalPlaces: 2,
-       color: () => `rgba(31, 179, 255, 0)`,
-       labelColor: (opacity = 1) =>
-         `rgba(98, 98, 98, ${opacity})`,
-       style: {
-         borderRadius: 16,
-       },
-      
-       useShadowColorFromDataset: false,
-       propsForBackgroundLines: {
-         strokeWidth: 1,
-         stroke: '#CCCCCC'
-     },
-     propsForDots: {
-       r: "0",
-       strokeWidth: "2",
-     }
-     }}
-     // bezier
-     style={{
-       marginVertical: 8,
-       borderRadius: 16,
-     }}
-     />
+       <PureChart data={sampleData} type='line' />
   
     </View>
    );

@@ -94,6 +94,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
     alignSelf: 'center',
   },
+  contentContainerStyle:{
+     flex:1,
+     justifyContent:'space-between'
+  },
   custometrCon: {
     width: SW(75),
     height: SH(94),
@@ -1013,7 +1017,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     width: windowWidth * 0.1,
-    textAlign:"center"
   },
   tableTextDataAdd: {
     color: COLORS.solid_grey,

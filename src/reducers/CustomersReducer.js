@@ -3,7 +3,8 @@ import { TYPES } from '@/Types/CustomersTypes';
 
 const INITIALSTATE = {
   getUserOrder:{},
-  getOrderUser:[]
+  getOrderUser:[],
+  getCustomers:{}
  
   
   
@@ -28,6 +29,11 @@ export const customersReducer = (state = {INITIALSTATE}, { payload, type }) => {
             ...state,
             getOrderUser: [],
           };
+          case TYPES.GET_CUSTOMERS_SUCCESS:
+            return {
+              ...state,
+              getCustomers: payload.getCustomers.payload,
+            };
    
     
         
