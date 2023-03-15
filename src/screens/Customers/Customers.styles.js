@@ -849,6 +849,20 @@ export const styles = StyleSheet.create({
     height: SW(4),
     resizeMode: 'contain',
   },
+  greyRadioArr:{
+    width: SW(7),
+    height: SW(11),
+    resizeMode: 'contain',
+    // marginVertical:verticalScale(1)
+  },
+  greyRadioCon:{
+     flexDirection:'row',
+      paddingVertical:verticalScale(3)
+  },
+  greyRadioBody:{
+    flexDirection:'column',
+     justifyContent:'flex-end'
+  },
   detailText: {
     color: COLORS.primary,
     fontSize: SF(12),
@@ -880,6 +894,11 @@ export const styles = StyleSheet.create({
   },
   verifyTextLight: {
     color: COLORS.gerySkies,
+    fontSize: SF(8),
+    fontFamily: Fonts.SemiBold,
+  },
+  verifyTextDark: {
+    color: COLORS.solid_grey,
     fontSize: SF(8),
     fontFamily: Fonts.SemiBold,
   },
@@ -1079,12 +1098,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(20),
   },
   saleTypeView:{
-    backgroundColor:COLORS.marshmallow,
+    // backgroundColor:COLORS.marshmallow,
     width: windowWidth * 0.08,
     height:SH(30),
     justifyContent:'center',
     alignItems:'center',
-    borderRadius:3
+    borderRadius:4
   },
   saleTypeText:{
     color: COLORS.white,

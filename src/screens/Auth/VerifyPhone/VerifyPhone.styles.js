@@ -60,6 +60,7 @@ export const styles = StyleSheet.create({
     borderWidth: 0,
     height: SH(50),
     // fontStyle: 'italic',
+    color:COLORS.darkGray,
     fontFamily: Fonts.Italic,
     paddingLeft: 10,
   },

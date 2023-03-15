@@ -370,7 +370,8 @@ export const en = {
     customer:'Customers',
     showResult:'Showing Results',
     completed:'Completed',
-    userdetail:'User details'
+    userdetail:'User details',
+    orderReview:'Order review'
 
   },
   trackingNumber:{

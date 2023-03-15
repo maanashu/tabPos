@@ -144,6 +144,10 @@ export { default as asthonLogo } from '@/assets/icons/ic_analytics/asthonLogo.pn
 export { default as radioRound } from '@/assets/icons/ic_shipingOrder/radioRound.png';
 export { default as ups2 } from '@/assets/icons/ic_shipingOrder/ups.png';
 export { default as verified } from '@/assets/icons/ic_shipingOrder/verified.png';
+export { default as blueLocation } from '@/assets/icons/ic_customers/blueLocation.png';
+export { default as shop_light } from '@/assets/icons/ic_customers/shop_light.png';
+export { default as greyRadioArr } from '@/assets/icons/ic_customers/greyRadioArr.png';
+export { default as radioArrBlue } from '@/assets/icons/ic_customers/radioArrBlue.png';
 // export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */

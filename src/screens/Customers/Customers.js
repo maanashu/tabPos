@@ -11,7 +11,10 @@ import {
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Customers/Customers.styles';
-import { newCustomerData, newCustomerDataLoader } from '@/constants/flatListData';
+import {
+  newCustomerData,
+  newCustomerDataLoader,
+} from '@/constants/flatListData';
 import { strings } from '@/localization';
 import {
   notifications,
@@ -38,6 +41,10 @@ import {
   newCustomer,
   returnCustomer,
   onlineCutomer,
+  blueLocation,
+  shop_light,
+  greyRadioArr,
+  radioArrBlue,
 } from '@/assets';
 import { DaySelector, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
@@ -47,13 +54,16 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
-import { getCustomer, getOrderUser, getUserOrder } from '@/actions/CustomersAction';
+import {
+  getCustomer,
+  getOrderUser,
+  getUserOrder,
+} from '@/actions/CustomersAction';
 import { getCustomers } from '@/selectors/CustomersSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CustomersTypes';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
-
 
 export function Customers() {
   const isFocused = useIsFocused();
@@ -72,10 +82,12 @@ export function Customers() {
   const [userStore, setUserStore] = useState('');
   const [orderDetail, setOrderDetail] = useState('');
   const [selectedValue, setSelectedValue] = useState(+5);
+  const orderStatus = orderDetail?.status;
 
-  const selected = value => (setSelectedValue(value), dispatch(getUserOrder(sellerID,selectedValue))); 
-  
-  
+  const selected = value => (
+    setSelectedValue(value), dispatch(getUserOrder(sellerID, selectedValue))
+  );
+
   const newCustomerData = [
     {
       customertype: 'New Customers',
@@ -101,13 +113,12 @@ export function Customers() {
       img: onlineCutomer,
       id: '4',
     },
-  
   ];
 
   useEffect(() => {
-    if(isFocused){
+    if (isFocused) {
       dispatch(getCustomer(sellerID));
-    };
+    }
   }, [isFocused]);
 
   const isSearchProLoading = useSelector(state =>
@@ -130,7 +141,8 @@ export function Customers() {
     <TouchableOpacity
       style={styles.custometrCon}
       onPress={() => (
-        setWeeklyUser(!weeklyUser), dispatch(getUserOrder(sellerID, selectedValue))
+        setWeeklyUser(!weeklyUser),
+        dispatch(getUserOrder(sellerID, selectedValue))
       )}
     >
       <View style={styles.flexAlign}>
@@ -147,9 +159,15 @@ export function Customers() {
       <View style={styles.flexAlign}>
         <Image source={item.img} style={styles.newCustomer} />
         <View style={{ paddingHorizontal: moderateScale(7) }}>
-           <View style={{ justifyContent:'center', alignItems:'flex-start', height:SH(37)}}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              height: SH(37),
+            }}
+          >
             <ActivityIndicator size="small" color={COLORS.indicator} />
-            </View>
+          </View>
           <Text style={styles.newCustomerHeading}>{item.customertype}</Text>
         </View>
       </View>
@@ -344,118 +362,143 @@ export function Customers() {
                     <Spacer space={SH(5)} />
                     <View style={{ flexDirection: 'row' }}>
                       <View style={{ flexDirection: 'column' }}>
-                        <Image source={blankRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrow}
-                          style={styles.movingArrow}
-                        />
-                        <Image source={blankRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrow}
-                          style={styles.movingArrow}
-                        />
-                        <Image source={blankRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrow}
-                          style={styles.movingArrow}
-                        />
-                        <Image source={blankRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrow}
-                          style={styles.movingArrow}
-                        />
-                        <Image source={blankRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrowBlue}
-                          style={styles.movingArrow}
-                        />
-                        <Image source={fillRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrowBlue}
-                          style={styles.movingArrow}
-                        />
-                        <Image source={fillRadio} style={styles.ticketImage} />
-                      </View>
-                      <View style={styles.columnSpace}>
-                        <View style={{ marginTop: -14 }}>
-                          <Text style={styles.verifyTextLight}>
-                            {strings.customers.verifyCode}
-                          </Text>
-                          <Text style={styles.waitMinuteLight}>_ _ _ _ _</Text>
+                        <View style={styles.greyRadioCon}>
+                          <Image
+                            source={
+                              orderStatus >= 6 ? radioArrBlue : greyRadioArr
+                            }
+                            style={styles.greyRadioArr}
+                          />
+                          <View style={styles.greyRadioBody}>
+                            <Text
+                              style={
+                                orderStatus >= 6
+                                  ? styles.verifyTextDark
+                                  : styles.verifyTextLight
+                              }
+                            >
+                              {strings.customers.delivery}
+                            </Text>
+                            <Spacer space={SH(5)} />
+                            <Text style={styles.waitMinuteLight}>
+                              {strings.customers.waitMinute}
+                            </Text>
+                          </View>
                         </View>
-                        <View>
-                          <Text style={styles.verifyTextLight}>
-                            {strings.customers.delivery}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
+                        <View style={styles.greyRadioCon}>
+                          <Image
+                            source={
+                              orderStatus >= 5 ? radioArrBlue : greyRadioArr
+                            }
+                            style={styles.greyRadioArr}
+                          />
+                          <View style={styles.greyRadioBody}>
+                            <Text
+                              style={
+                                orderStatus >= 5
+                                  ? styles.verifyTextDark
+                                  : styles.verifyTextLight
+                              }
+                            >
+                              {strings.customers.productPick}
+                            </Text>
+                            <Spacer space={SH(5)} />
+                            <Text style={styles.waitMinuteLight}>
+                              {strings.customers.waitMinute}
+                            </Text>
+                          </View>
                         </View>
-                        <View>
-                          <Text style={styles.verifyTextLight}>
-                            {strings.customers.yourBlock}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
+                        <View style={styles.greyRadioCon}>
+                          <Image
+                            source={
+                              orderStatus >= 4 ? radioArrBlue : greyRadioArr
+                            }
+                            style={styles.greyRadioArr}
+                          />
+                          <View style={styles.greyRadioBody}>
+                            <Text
+                              style={
+                                orderStatus >= 4
+                                  ? styles.verifyTextDark
+                                  : styles.verifyTextLight
+                              }
+                            >
+                              {strings.customers.assignDriver}
+                            </Text>
+                            <Spacer space={SH(5)} />
+                            <Text style={styles.waitMinuteLight}>
+                              {strings.customers.waitMinute}
+                            </Text>
+                          </View>
                         </View>
-                        <View>
-                          <Text style={styles.verifyTextLight}>
-                            {strings.customers.productPick}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
+                        <View style={styles.greyRadioCon}>
+                          <Image
+                            source={
+                              orderStatus >= 3 ? radioArrBlue : greyRadioArr
+                            }
+                            style={styles.greyRadioArr}
+                          />
+                          <View style={styles.greyRadioBody}>
+                            <Text
+                              style={
+                                orderStatus >= 3
+                                  ? styles.verifyTextDark
+                                  : styles.verifyTextLight
+                              }
+                            >
+                              {strings.customers.readyPickup}
+                            </Text>
+                            <Spacer space={SH(5)} />
+                            <Text style={styles.waitMinuteLight}>
+                              {strings.customers.waitMinute}
+                            </Text>
+                          </View>
                         </View>
-                        <View>
-                          <Text style={styles.verifyTextLight}>
-                            {strings.customers.assignDriver}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
+                        <View style={styles.greyRadioCon}>
+                          <Image
+                            source={
+                              orderStatus >= 1 ? radioArrBlue : greyRadioArr
+                            }
+                            style={styles.greyRadioArr}
+                          />
+                          <View style={styles.greyRadioBody}>
+                            <Text
+                              style={
+                                orderStatus >= 1
+                                  ? styles.verifyTextDark
+                                  : styles.verifyTextLight
+                              }
+                            >
+                              {strings.customers.orderAccepted}
+                            </Text>
+                            <Spacer space={SH(5)} />
+                            <Text style={styles.waitMinuteLight}>
+                              {strings.customers.waitMinute}
+                            </Text>
+                          </View>
                         </View>
-                        <View>
-                          <Text
-                            style={[
-                              styles.verifyTextLight,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
-                            {strings.customers.readyPickup}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text
-                            style={[
-                              styles.waitMinuteLight,
-                              { color: COLORS.dark_grey },
-                            ]}
-                          >
-                            {strings.customers.waitMinute}
-                          </Text>
-                        </View>
-                        <View>
-                          <Text
-                            style={[
-                              styles.verifyTextLight,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
-                            {strings.customers.orderAccepted}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text
-                            style={[
-                              styles.waitMinuteLight,
-                              { color: COLORS.dark_grey },
-                            ]}
-                          >
-                            {strings.customers.dateTime}
-                          </Text>
+                        <View style={styles.greyRadioCon}>
+                          <Image
+                            source={
+                              orderStatus >= 0 ? radioArrBlue : greyRadioArr
+                            }
+                            style={styles.greyRadioArr}
+                          />
+                          <View style={styles.greyRadioBody}>
+                            <Text
+                              style={
+                                orderStatus >= 0
+                                  ? styles.verifyTextDark
+                                  : styles.verifyTextLight
+                              }
+                            >
+                              {strings.customers.orderReview}
+                            </Text>
+                            <Spacer space={SH(5)} />
+                            <Text style={styles.waitMinuteLight}>
+                              {strings.customers.waitMinute}
+                            </Text>
+                          </View>
                         </View>
                       </View>
                     </View>
@@ -508,14 +551,62 @@ export function Customers() {
                     provider={PROVIDER_GOOGLE}
                     showCompass
                     region={{
-                      latitude: 27.2046,
-                      longitude: 77.4977,
-                      latitudeDelta: 0.0922,
-                      longitudeDelta: 0.0421,
+                      latitude: orderDetail?.coordinates?.[0]
+                        ? orderDetail?.coordinates?.[0]
+                        : 0,
+                      longitude: orderDetail?.coordinates?.[1]
+                        ? orderDetail?.coordinates?.[1]
+                        : 0,
+                      latitudeDelta: 0.09,
+                      longitudeDelta: 0.09,
                     }}
                     style={styles.map}
-                  ></MapView>
-                  {/* <Image source={map} style={styles.mapStyle} /> */}
+                  >
+                    <Marker
+                      coordinate={{
+                        latitude: orderDetail?.coordinates?.[0]
+                          ? orderDetail?.coordinates?.[0]
+                          : 0,
+                        longitude: orderDetail?.coordinates?.[1]
+                          ? orderDetail?.coordinates?.[1]
+                          : 0,
+                      }}
+                      image={shop_light}
+                      style={{ width: 8, height: 8 }}
+                    ></Marker>
+                    <Marker
+                      coordinate={{
+                        latitude: orderDetail?.coordinates?.[0]
+                          ? orderDetail?.coordinates?.[0]
+                          : 0,
+                        longitude: orderDetail?.coordinates?.[1]
+                          ? orderDetail?.coordinates?.[1]
+                          : 0,
+                      }}
+                      image={blueLocation}
+                      style={{ width: 8, height: 8 }}
+                    >
+                      {/* <Image
+                          source={blueLocation}
+                          style={{width: 15, height: 15,}}
+                          resizeMode="cover"
+                        /> */}
+                    </Marker>
+
+                    {/* <Polyline
+                      strokeWidth={2}
+                       strokeColor="red"
+                       strokeColors={[
+                        '#7F0000',
+                        '#00000000', 
+                        '#B24112',
+                        '#E5845C',
+                        '#238C23',
+                        '#7F0000'
+                      ]}
+                      coordinates={[ {latitude : 79.114052 , longitude : 29.611231} ]}
+                      /> */}
+                  </MapView>
                 </View>
               </View>
               <Spacer space={SH(12)} />
@@ -578,8 +669,11 @@ export function Customers() {
                       </Text>
                       <Spacer space={SH(5)} />
                       <Text style={styles.angelaAddress}>
-                        {userStore?.user_details?.current_address?.street_address}, 
-                        {userStore?.user_details?.current_address?.city},
+                        {
+                          userStore?.user_details?.current_address
+                            ?.street_address
+                        }
+                        ,{userStore?.user_details?.current_address?.city},
                         {userStore?.user_details?.current_address?.state},
                         {userStore?.user_details?.current_address?.country},
                         {userStore?.user_details?.current_address?.postal_code},
@@ -929,7 +1023,18 @@ export function Customers() {
                     <Text style={styles.tableTextData}>
                       ${item.payable_amount}
                     </Text>
-                    <View style={styles.saleTypeView}>
+                    <View
+                      style={[
+                        styles.saleTypeView,
+                        {
+                          backgroundColor:
+                            item.shipping === 'Delivery' ||
+                            item.shipping === 'Shipping'
+                              ? COLORS.marshmallow
+                              : COLORS.lightGreen,
+                        },
+                      ]}
+                    >
                       <Text style={styles.saleTypeText}>{item.shipping}</Text>
                     </View>
                   </View>
@@ -943,9 +1048,7 @@ export function Customers() {
       return (
         <View>
           {customHeader()}
-          <Users   
-           selectedNo={selected} 
-          />
+          <Users selectedNo={selected} />
           {isSearchProLoading ? (
             <View style={{ marginTop: 100 }}>
               <ActivityIndicator size="large" color={COLORS.indicator} />
@@ -978,30 +1081,26 @@ export function Customers() {
                         <Text style={styles.tableTextDataName}>
                           {item?.user_details?.firstname}
                         </Text>
-                        {
-                          item?.user_details
-                          ?
-                          (
-                            <Text
-                          style={[
-                            styles.tableTextDataAdd,
-                            { color: COLORS.gerySkies },
-                          ]}
-                          numberOfLines={1}
-                        >
-                          
-                          {item?.user_details?.current_address?.street_address},
-                          {item?.user_details?.current_address?.city},
-                           {item?.user_details?.current_address?.state}, 
-                           {item?.user_details?.current_address?.country},
-                           {item?.user_details?.current_address?.postal_code},
-                        </Text>
-                          )
-                          :
+                        {item?.user_details ? (
+                          <Text
+                            style={[
+                              styles.tableTextDataAdd,
+                              { color: COLORS.gerySkies },
+                            ]}
+                            numberOfLines={1}
+                          >
+                            {
+                              item?.user_details?.current_address
+                                ?.street_address
+                            }
+                            ,{item?.user_details?.current_address?.city},
+                            {item?.user_details?.current_address?.state},
+                            {item?.user_details?.current_address?.country},
+                            {item?.user_details?.current_address?.postal_code},
+                          </Text>
+                        ) : (
                           <Text></Text>
-
-                        }
-                        
+                        )}
                       </View>
                     </View>
                   </View>
@@ -1029,27 +1128,23 @@ export function Customers() {
           <View style={styles.customerHomeCon}>
             <View>
               <View>
-                {
-                  isCustomerLoading
-                  ?
+                {isCustomerLoading ? (
                   <FlatList
-                  data={newCustomerDataLoader}
-                  renderItem={newCustomerItemLoader}
-                  keyExtractor={item => item.id}
-                  horizontal
-                  contentContainerStyle={styles.contentContainerStyle}
-                />
-                    :
-                    <FlatList
+                    data={newCustomerDataLoader}
+                    renderItem={newCustomerItemLoader}
+                    keyExtractor={item => item.id}
+                    horizontal
+                    contentContainerStyle={styles.contentContainerStyle}
+                  />
+                ) : (
+                  <FlatList
                     data={newCustomerData}
                     renderItem={newCustomerItem}
                     keyExtractor={item => item.id}
                     horizontal
                     contentContainerStyle={styles.contentContainerStyle}
                   />
-
-                 } 
-              
+                )}
               </View>
               <Spacer space={SH(15)} />
               <View style={styles.displayFlex}>
