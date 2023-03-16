@@ -94,7 +94,7 @@ export const retailReducer = (state = {INITIALSTATE}, { payload, type }) => {
                 case TYPES.GET_USERDETAIL_SUCCESS:
                   return {
                     ...state,
-                    getUserDetail: payload?.getUserDetail?.payload?.users ?? [],
+                    getUserDetail: payload?.getUserDetail?.payload?.data ?? [],
                   };
                   case TYPES.GET_WALLET_SUCCESS:
                     return {

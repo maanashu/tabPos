@@ -551,12 +551,8 @@ export function Customers() {
                     provider={PROVIDER_GOOGLE}
                     showCompass
                     region={{
-                      latitude: orderDetail?.coordinates?.[0]
-                        ? orderDetail?.coordinates?.[0]
-                        : 0,
-                      longitude: orderDetail?.coordinates?.[1]
-                        ? orderDetail?.coordinates?.[1]
-                        : 0,
+                      latitude: orderDetail?.seller_details?.seller_location?.[0],
+                      longitude: orderDetail?.seller_details?.seller_location?.[1],
                       latitudeDelta: 0.09,
                       longitudeDelta: 0.09,
                     }}
@@ -564,11 +560,11 @@ export function Customers() {
                   >
                     <Marker
                       coordinate={{
-                        latitude: orderDetail?.coordinates?.[0]
-                          ? orderDetail?.coordinates?.[0]
+                        latitude: orderDetail?.seller_details?.seller_location?.[0]
+                          ? orderDetail?.seller_details?.seller_location?.[0]
                           : 0,
-                        longitude: orderDetail?.coordinates?.[1]
-                          ? orderDetail?.coordinates?.[1]
+                        longitude: orderDetail?.seller_details?.seller_location?.[1]
+                          ? orderDetail?.seller_details?.seller_location?.[1]
                           : 0,
                       }}
                       image={shop_light}
@@ -586,26 +582,7 @@ export function Customers() {
                       image={blueLocation}
                       style={{ width: 8, height: 8 }}
                     >
-                      {/* <Image
-                          source={blueLocation}
-                          style={{width: 15, height: 15,}}
-                          resizeMode="cover"
-                        /> */}
                     </Marker>
-
-                    {/* <Polyline
-                      strokeWidth={2}
-                       strokeColor="red"
-                       strokeColors={[
-                        '#7F0000',
-                        '#00000000', 
-                        '#B24112',
-                        '#E5845C',
-                        '#238C23',
-                        '#7F0000'
-                      ]}
-                      coordinates={[ {latitude : 79.114052 , longitude : 29.611231} ]}
-                      /> */}
                   </MapView>
                 </View>
               </View>
@@ -668,7 +645,7 @@ export function Customers() {
                         {userStore?.user_details?.firstname}
                       </Text>
                       <Spacer space={SH(5)} />
-                      <Text style={styles.angelaAddress}>
+                      <Text style={styles.angelaAddress} numberOfLines={1}>
                         {
                           userStore?.user_details?.current_address
                             ?.street_address

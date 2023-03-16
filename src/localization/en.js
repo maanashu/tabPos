@@ -162,7 +162,8 @@ export const en = {
     amountDis:'Amount Discount',
     perDis:'Percentage Discount',
     DisCode:'Discount Code',
-    DisTitle:'Discount Title'
+    DisTitle:'Discount Title',
+    sendRequest:'Send Request'
   },
   posSale: {
     paymentHeader: 'Customer & Payment',

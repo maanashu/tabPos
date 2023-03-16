@@ -1599,6 +1599,21 @@ export const styles = StyleSheet.create({
     width:SW(300),
     height:SH(300),
     resizeMode:'contain'
-  }
+  },
+  submitButtons: {
+    backgroundColor: COLORS.primary,
+    width: SW(93),
+    height: SH(60),
+    alignItems: 'center',
+    justifyContent: 'center',
+    //  width: windowWidth * 0.30,
+    //  height: windowHeight * 0.10,
+    borderRadius: 10,
+  },
+  selectedText: {
+    color: COLORS.white,
+    textAlign: 'center',
+    fontSize: SF(16),
+  },
 
 });

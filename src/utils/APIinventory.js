@@ -8,7 +8,6 @@ export const ApiUserInventory = {
     verifyPhone:'user_phones/',
     login: 'users/login/',
     getProfile:'users/',
-    getUserDetail:'users/get_users/by_phone',
     sendInvitation:'users/send_invitation'
 };
 
@@ -45,5 +44,6 @@ export const ApiOrderInventory = {
 
 export const ApiWalletInventory = {
     getWallet:'wallets/user/',
+    getUserDetail:'wallets/other',
    
 }

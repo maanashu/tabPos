@@ -18,6 +18,7 @@ import {
   ChoosePayment,
   NumericContainer,
   ScreenWrapper,
+  Button,
 } from '@/components';
 import { SH, SF, COLORS, SW } from '@/theme';
 import {
@@ -183,7 +184,7 @@ export function Retails() {
   const [productData, setProductData] = useState();
   const [openScanner, setOpenScanner] = useState(false);
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
-  const customer = getuserDetailByNo[0]?.user_profiles;
+  const customer = getuserDetailByNo?.[0];
   const [userEAdd, setUserEAdd] = useState('');
   const [userLName, setUserLName] = useState('');
   const [userFName, setUserFName] = useState('');
@@ -264,6 +265,7 @@ export function Retails() {
     dispatch(getCategory(sellerID));
     dispatch(getProductDefault(sellerID));
     dispatch(getAllCart());
+    dispatch(getUserDetailSuccess([]));
   }, []);
 
   const categoryFunction = id => {
@@ -651,6 +653,23 @@ export function Retails() {
       setCheckoutCon(!checkoutCon);
     }
   };
+
+  const sendReuest = () => {
+    console.log('getuserDetailByNo?.[0]',getuserDetailByNo?.[0]);
+    if(getuserDetailByNo?.[0]?.is_wallet === false){
+      return(
+          alert('Please First Create Wallet')
+      )
+    }else if(getuserDetailByNo?.[0]?.user_profiles?.wallet_steps >= 2){
+      retun(
+        alert('Please First Complete Wallet Steps')
+      )
+    }else {
+      return(
+        alert('Done')
+      )
+    }
+  };
   const jbrCoinChoseHandler = () => {
     setCustPayment(!custPayment);
     setJbrCoin(true);
@@ -668,7 +687,8 @@ export function Retails() {
     setCustCash(!custCash);
   };
   const cardChooseHandler = () => {
-    setCardChoose(!cardChoose);productArrayproductArrayproductArray
+    setCardChoose(!cardChoose);
+    // productArrayproductArrayproductArray;
     setCashChoose(false);
     setJbrCoin(false);
   };
@@ -1185,7 +1205,10 @@ export function Retails() {
   };
 
   const userDataItem = ({ item, index }) => (
-    <View style={styles.customerAddreCon}>
+    <TouchableOpacity
+      style={[styles.customerAddreCon, { borderWidth: 1 }]}
+      // onPress={() => walletUserClickFun(item)}
+    >
       <Spacer space={SH(30)} />
       <View style={[styles.flexAlign, { alignItems: 'flex-start' }]}>
         <Image
@@ -1209,11 +1232,12 @@ export function Retails() {
           <Text style={styles.cusAddText}>{item.email}</Text>
           <Spacer space={SH(8)} />
           <Text style={styles.cusAddText}>
-            {item?.user_profiles?.current_address}
+            4849 Owagner Lanee Seattle, WA 98101
           </Text>
+          <Text>{item.is_wallet === false ? 1 : 0}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   const changeView = () => {
@@ -1226,30 +1250,69 @@ export function Retails() {
                 <ActivityIndicator size="large" color={COLORS.indicator} />
               </View>
             ) : (
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={getuserDetailByNo}
-                extraData={getuserDetailByNo}
-                renderItem={userDataItem}
-                keyExtractor={item => item.id}
-                // ListEmptyComponent={userEmptyDetail}
-              />
+              // <FlatList
+              //   showsVerticalScrollIndicator={false}
+              //   data={getuserDetailByNo}
+              //   extraData={getuserDetailByNo}
+              //   renderItem={userDataItem}
+              //   keyExtractor={item => item.id}
+              //   // ListEmptyComponent={userEmptyDetail}
+              // />
+              <View
+                style={styles.customerAddreCon}>
+                <Spacer space={SH(30)} />
+                <View style={[styles.flexAlign, { alignItems: 'flex-start' }]}>
+                  <Image
+                    source={
+                      getuserDetailByNo?.[0]?.profile_photo
+                        ? { uri:   getuserDetailByNo?.[0]?.profile_photo}
+                        : userImage
+                    }
+                    style={styles.jbrCustomer}
+                  />
+                  <View style={{ paddingHorizontal: moderateScale(8) }}>
+                    <Text
+                      numberOfLines={1}
+                      style={[styles.cusAddText, { fontSize: SF(20) }]}
+                    >
+                      {getuserDetailByNo?.[0]?.first_name}
+                    </Text>
+                    <Spacer space={SH(8)} />
+                    <Text style={styles.cusAddText}>
+                    {getuserDetailByNo?.[0]?.phone_number}
+                    </Text>
+                    <Spacer space={SH(5)} />
+                    <Text style={styles.cusAddText}>{getuserDetailByNo?.[0]?.email} </Text>
+                    <Spacer space={SH(8)} />
+                    <Text style={styles.cusAddText}>
+                    {getuserDetailByNo?.[0]?.city},{getuserDetailByNo?.[0]?.address},{getuserDetailByNo?.[0]?.state} {getuserDetailByNo?.[0]?.zip}
+                    </Text>
+                  </View>
+                </View>
+              </View>
             )}
           </View>
 
           {getuserDetailByNo?.length > 0 ? (
+            // <Button
+            //   onPress={() => sendReuest()}
+            //   title={strings.retail.sendRequest}
+            //   textStyle={styles.selectedText}
+            //   style={styles.submitButtons}
+            // />
             <TouchableOpacity
-              style={styles.customerPhoneCon}
-              onPress={() => {
-                setCustCash(false), setCutsomerTotalAmount(true);
-              }}
-            >
-              <Text style={[styles.redrectingText, { color: COLORS.primary }]}>
-                {strings.posSale.rederecting}
-              </Text>
-              <Image source={loader} style={styles.loaderPic} />
-            </TouchableOpacity>
+            style={styles.customerPhoneCon}
+            onPress={() => {
+              setCustCash(false), setCutsomerTotalAmount(true);
+            }}
+          >
+            <Text style={[styles.redrectingText, { color: COLORS.primary }]}>
+              {strings.posSale.rederecting}
+            </Text>
+            <Image source={loader} style={styles.loaderPic} />
+          </TouchableOpacity>
           ) : (
+          
             <Text style={styles.redrectingText}>
               {strings.posSale.rederecting}
             </Text>
@@ -1553,10 +1616,10 @@ export function Retails() {
               ? { uri: customer?.profile_photo }
               : userImage
           }
-          customerName={customer?.firstname}
-          customerMobileNo={customer?.phone_no}
-          customerEmail={getuserDetailByNo[0]?.email}
-          customerAddr={customer?.current_address}
+          customerName={customer?.first_name}
+          customerMobileNo={customer?.phone_number}
+          customerEmail={customer?.email}
+          customerAddr={customer}
         />
       ) : openScanner ? (
         <View style={styles.cameraContainer}>
@@ -1617,7 +1680,10 @@ export function Retails() {
                 </View>
               </View>
               <TouchableOpacity
-                style={[styles.purchaseCon, {opacity: totalCart === '0' ? 0.4 : 1}]}
+                style={[
+                  styles.purchaseCon,
+                  { opacity: totalCart === '0' ? 0.4 : 1 },
+                ]}
                 onPress={sideContainerHandler}
                 disabled={totalCart === '0' ? true : false}
               >

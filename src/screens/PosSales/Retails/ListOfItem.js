@@ -123,8 +123,11 @@ export function ListOfItem({listOfItemCloseHandler, customerProfileImage,custome
                           {customerEmail}
                         </Text>
                         <Spacer space={SH(8)} />
-                        <Text style={styles.cusAddText}>
-                          {customerAddr}
+                        <Text style={styles.cusAddText} numberOfLines={1}>
+                          {customerAddr?.city}
+                        </Text>
+                        <Text style={styles.cusAddText} numberOfLines={1}>
+                           {customerAddr?.address},{customerAddr?.state} {customerAddr?.zip}
                         </Text>
                       </View>
                     </View>

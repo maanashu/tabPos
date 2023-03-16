@@ -390,12 +390,12 @@ export class RetailController {
   static async getUserDetail(customerPhoneNo) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        USER_URL + ApiUserInventory.getUserDetail + `?phone=${customerPhoneNo}`;
+      WALLET_URL + ApiWalletInventory.getUserDetail + `?page=1&limit=10&search=${customerPhoneNo}`;
       HttpClient.get(endpoint)
         .then(response => {
-          if (response.status === 204) {
-            resolve([]);
-          }
+          // if (response.status === 204) {
+          //   resolve([]);
+          // }
           resolve(response);
         })
         .catch(error => {
