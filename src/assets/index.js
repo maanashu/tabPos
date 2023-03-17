@@ -4,6 +4,8 @@ export { default as dropdown } from '@/assets/icons/ic_auth/dropdown.png';
 export { default as crossButton } from '@/assets/icons/ic_auth/crossButton.png';
 export { default as verifyIcon } from '@/assets/icons/ic_auth/verifyIcon.png';
 export { default as profilePic } from '@/assets/icons/ic_auth/profilePic.png';
+export { default as toastcross } from '@/assets/icons/ic_auth/toastcross.png';
+export { default as toastcheck } from '@/assets/icons/ic_auth/toastcheck.png';
 export { default as deliveryTruck } from '@/assets/icons/ic_navigator/deliveryTruck.png';
 export { default as blueTruck } from '@/assets/icons/ic_navigator/blueTruck.png';
 export { default as logo_icon } from '@/assets/icons/ic_navigator/logo_icon.png';
@@ -148,6 +150,7 @@ export { default as blueLocation } from '@/assets/icons/ic_customers/blueLocatio
 export { default as shop_light } from '@/assets/icons/ic_customers/shop_light.png';
 export { default as greyRadioArr } from '@/assets/icons/ic_customers/greyRadioArr.png';
 export { default as radioArrBlue } from '@/assets/icons/ic_customers/radioArrBlue.png';
+export { default as cusBarClr } from '@/assets/icons/ic_customers/cusBarClr.png';
 // export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */

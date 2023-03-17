@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Customers/Customers.styles';
@@ -45,8 +46,9 @@ import {
   shop_light,
   greyRadioArr,
   radioArrBlue,
+  cusBarClr,
 } from '@/assets';
-import { DaySelector, ScreenWrapper, Spacer } from '@/components';
+import { BarChartCom, DaySelector, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import { Users, UserProfile, UserDetails } from '@/screens/Customers';
 import { Table } from 'react-native-table-component';
@@ -64,6 +66,8 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CustomersTypes';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+const windowWidth = Dimensions.get('window') * 0.98;
 
 export function Customers() {
   const isFocused = useIsFocused();
@@ -71,6 +75,8 @@ export function Customers() {
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
   const getCustomerStatitics = getCustomerData?.getCustomers;
+  const getAnalyticsData = useSelector(getAnalytics);
+  const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
   const userOrderArray = getCustomerData?.getUserOrder;
   const orderUserArray = getCustomerData?.getOrderUser;
   const sellerID = getAuth?.getProfile?.unique_uuid;
@@ -84,6 +90,8 @@ export function Customers() {
   const [selectedValue, setSelectedValue] = useState(+5);
   const orderStatus = orderDetail?.status;
 
+  // const revenueGraphObject =
+
   const selected = value => (
     setSelectedValue(value), dispatch(getUserOrder(sellerID, selectedValue))
   );
@@ -94,6 +102,8 @@ export function Customers() {
       count: getCustomerStatitics?.new_customers,
       img: newCustomer,
       id: '1',
+
+
     },
     {
       customertype: 'Returning Customers',
@@ -1136,9 +1146,20 @@ export function Customers() {
               <Text style={styles.totalCustomer}>
                 {strings.customers.customerCount}
               </Text>
-              <Spacer space={SH(10)} />
+              {/* <Spacer space={SH(10)} />
               <Image source={customersGraph} style={styles.customersGraph} />
-              <Spacer space={SH(200)} />
+              <Spacer space={SH(200)} /> */}
+              <View style={{marginTop:30}}>
+                <Image source={cusBarClr} style={styles.cusBarClr}/>
+              <BarChartCom
+               barWid={SH(1300)}
+               barHei={300}
+               barSpacing={100}
+               barW={20}
+               labelTextSty= {{color: COLORS.gerySkies, fontSize:11}}
+               revenueData = {revenueGraphObject}
+               />
+              </View>
             </View>
           </View>
         </View>

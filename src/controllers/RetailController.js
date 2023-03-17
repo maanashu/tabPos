@@ -422,6 +422,7 @@ export class RetailController {
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.status_code === 200) {
+            alert('successfully send invitation on your email')
           }
           resolve(response);
         })

@@ -80,6 +80,7 @@ import {
   Spacer,
   TableDropdown,
   ChartKit,
+  BarChartCom,
 } from '@/components';
 import { styles } from '@/screens/Analytics/Analytics.styles';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
@@ -5599,13 +5600,39 @@ export function Analytics(props) {
             />
           </View>
           <View style={{ flexDirection: 'row' }}>
-            <HomeGraph
+            {/* <HomeGraph
               header="Total Revenue"
               subHeader= {getAnalyticsData?.getRevenueGraph?.totalResult.toFixed(2) ?? '$0'}
               productGraphObject={revenueGraphObject}
               homeGraphHandler={() => graphHandler('Total Revenue')}
               arrayLength = {revenueGraphObject?.datasets?.length}
-            />
+            /> */}
+
+<View style={styles.totalProductCon}>
+      <Spacer space={SH(20)} />
+      <View style={styles.displayFlex}>
+        <View>
+          <Text style={styles.darkBlackText}>Total Revenue</Text>
+          <Text style={[styles.darkBlackText, { fontSize: SF(32) }]}>
+            ${revenueGraphObject?.totalResult ? revenueGraphObject?.totalResult : 0}
+          </Text>
+        </View>
+        <TouchableOpacity
+        onPress={() => graphHandler('Total Revenue')}
+         >
+          <Image source={rightlight} style={styles.rightlight} />
+        </TouchableOpacity>
+      </View>
+      <Spacer space={SH(5)} />
+               <BarChartCom
+               barWid={SH(550)}
+               barHei={150}
+               barSpacing={30}
+               barW={10}
+               labelTextSty= {{color: COLORS.gerySkies, fontSize:11}}
+               revenueData = {revenueGraphObject}
+               />
+               </View>
             <HomeGraph
               header="Total Orders"
               subHeader={getAnalyticsData?.getOrderGraph?.totalResult.toFixed(2) ?? '0'}

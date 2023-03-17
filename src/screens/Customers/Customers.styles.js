@@ -128,6 +128,12 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: SF(18),
   },
+  cusBarClr:{
+     width:SW(200),
+     height:SH(20),
+     resizeMode:"contain",
+     alignSelf:"center"
+  },
   byDayCon: {
     backgroundColor: COLORS.primary,
     borderRadius: 3,

@@ -1,4 +1,5 @@
-import React, { useEffect,useCallback } from 'react';
+import React, { useEffect,useCallback, useRef, useState } from 'react';
+import { AppState, Image, StyleSheet , Text, View } from "react-native";
 import { hide } from 'react-native-bootsplash';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
@@ -6,10 +7,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/store';
 import { RootNavigator } from '@/navigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
 import Toast, {BaseToast} from 'react-native-toast-message';
-import { Fonts,success, error  } from '@/assets';
+import { Fonts,success, error, toastcross, toastcheck  } from '@/assets';
 import { COLORS, SF, SH, SW } from './theme';
+import NetInfo from "@react-native-community/netinfo";
+
 
 enableScreens();
 
@@ -19,7 +21,9 @@ const toastConfig = {
     {...rest}
     style ={{borderLeftColor: COLORS.green, zIndex:999}}
     contentContainerstyle = {{paddingHorizontal: SW(15)}}
-    leadingIcon={success}
+    renderTrailingIcon={() => (
+      <Image source={toastcheck}  style={styles.tralingicon}/>
+   )}
     text2Style={{
     fontSize: SF(14),
     color:COLORS.green,
@@ -38,7 +42,9 @@ const toastConfig = {
     {...rest}
     style ={{borderLeftColor: COLORS.red, zIndex:999}}
     contentContainerstyle = {{paddingHorizontal: SW(15)}}
-    leadingIcon={error}
+    renderTrailingIcon={() => (
+       <Image source={toastcross}  style={styles.tralingicon}/>
+    )}
     text2Style={{
     fontSize: SF(14),
     color:COLORS.red,
@@ -54,21 +60,51 @@ const toastConfig = {
    ),
 };
 
-
+const unsubscribe = NetInfo.addEventListener(state => {
+  // console.log("Connection type", state.type);
+  // console.log("Is connected?", state.isConnected);
+  if(state.isConnected  === false){
+    Toast.show({
+      text2: 'Go offline',
+      position: 'bottom',
+      type: 'error_toast',
+      visibilityTime: 9000,
+    });
+  }else if (state.isConnected  === true){
+    Toast.show({
+      text2: 'Back online',
+      position: 'bottom',
+      type: 'success_toast',
+      visibilityTime: 2500,
+    });
+  }
+});
 export function App() {
+
   useEffect(() => {
    return async () => await AsyncStorage.removeItem('acceptOrder');
-  }, []);
-  // useEffect(() => {
-  //   Orientation.lockToLandscape();
-  // }, []);
+   unsubscribe();
 
+  
+ 
+
+  }, []);
   return (
-    <Provider store={store}>
-      <PersistGate onBeforeLift={hide} persistor={persistor}>
-        <RootNavigator />
-        <Toast config={toastConfig}/>
-      </PersistGate>
-    </Provider>
+      
+       <Provider store={store}>
+         <PersistGate onBeforeLift={hide} persistor={persistor}>
+           <RootNavigator />
+           <Toast config={toastConfig}/>
+         </PersistGate>
+       </Provider>
   );
 }
+
+const styles = StyleSheet.create({
+  tralingicon:{
+    width:SW(20),
+    height:SH(20),
+    alignSelf:'center',
+    resizeMode:'contain',
+  }
+})
