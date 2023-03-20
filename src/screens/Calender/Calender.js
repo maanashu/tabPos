@@ -36,6 +36,18 @@ import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { goBack } from '@/navigation/NavigationRef';
 import Modal from 'react-native-modal';
+const events = [
+  {
+    title: 'Meeting',
+    start: new Date(2020, 1, 11, 10, 0),
+    end: new Date(2020, 1, 11, 10, 30),
+  },
+  {
+    title: 'Coffee break',
+    start: new Date(2020, 1, 11, 15, 45),
+    end: new Date(2020, 1, 11, 16, 30),
+  },
+]
 
 const windowWidth = Dimensions.get('window').width;
 import {
@@ -247,7 +259,7 @@ const schduleDetailModal = () => {
                 </View>
            </View>
            {/* <Image source={schdule} style={styles.schdule}/> */}
-           <Text style={{alignSelf:'center', marginTop:100, color:COLORS.primary}}>Coming soon</Text>
+           {/* <Text style={{alignSelf:'center', marginTop:100, color:COLORS.primary}}>Coming soon</Text> */}
         </View>
         <View style={styles.notificationCon}>
           <View>

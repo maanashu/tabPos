@@ -1014,9 +1014,11 @@ export const styles = StyleSheet.create({
     // width: windowWidth * 0.28,
     fontSize: SF(16),
     height: SH(50),
+    width: SW(70), 
     color:COLORS.dark_grey,
-    paddingHorizontal:moderateScale(10)
+    paddingHorizontal:moderateScale(10),
   },
+
   walletAddresStyle:{
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,

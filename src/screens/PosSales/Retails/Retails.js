@@ -81,7 +81,7 @@ import { ListOfItem } from './ListOfItem';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { CategoryProductDetail, ChangeDue } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
-import { emailReg } from '@/utils/validators';
+import { emailReg, mobileReg } from '@/utils/validators';
 
 export function Retails() {
   const dispatch = useDispatch();
@@ -190,6 +190,7 @@ export function Retails() {
   const [userFName, setUserFName] = useState('');
   const [sendInventer, setSendInventer] = useState(false);
   const [serPro, setSerPro] = useState(productData?.qty ? productData?.qty : 0);
+  const [walletIdInp, setWalletIdInp] = useState()
 
   const serProPlus = () => {
     setSerPro(serPro + 1);
@@ -339,6 +340,11 @@ export function Retails() {
       dispatch(getUserDetailSuccess([]));
     }
   };
+  const walletIdInpFun = walletIdInp => {
+    if(walletIdInp?.length > 9){
+        alert('inProgress')
+    } 
+  }
 
   const userContinueHandler = () => {
     if (!customerPhoneNo) {
@@ -2300,11 +2306,20 @@ export function Retails() {
                     {strings.posSale.walletId}
                   </Text>
                   <Spacer space={SH(10)} />
-                  <View style={styles.walletIdInput}>
+                  {/* <View style={styles.walletIdInput}>
                     <Text style={styles.walletAddresStyle}>
                       {walletData?.wallet_address}
                     </Text>
-                  </View>
+                  </View> */}
+                  <TextInput
+                     style={styles.walletIdInput}
+                      onChangeText={walletIdInp => (setWalletIdInp(walletIdInp), walletIdInpFun(walletIdInp)) }
+                      value={walletIdInp}
+                      placeholder="Wallet Id"
+                      keyboardType="numeric"
+                      placeholderStyle={styles.walletAddresStyle}
+                      maxLength={10}
+                    />
                   <Spacer space={SH(20)} />
                   <Text style={styles.walletIdText}>
                     {strings.posSale.scanText}

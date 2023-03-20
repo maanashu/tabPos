@@ -5625,9 +5625,9 @@ export function Analytics(props) {
       </View>
       <Spacer space={SH(5)} />
                <BarChartCom
-               barWid={SH(550)}
+               barWid={Platform.OS === 'android' ? SH(550) : SH(380) }
                barHei={150}
-               barSpacing={30}
+               barSpacing={Platform.OS === 'android' ? 30 : 20}
                barW={10}
                labelTextSty= {{color: COLORS.gerySkies, fontSize:11}}
                revenueData = {revenueGraphObject}

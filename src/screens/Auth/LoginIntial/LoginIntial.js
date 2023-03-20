@@ -17,6 +17,7 @@ import {
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ActivityIndicator } from 'react-native-paper';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export function LoginIntial() {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ export function LoginIntial() {
   const firstName = getData?.getProfile?.user_profiles?.firstname;
   const lastName = getData?.getProfile?.user_profiles?.lastname;
   const userId = getData?.getProfile?.user_profiles?.id;
-  const fullName = firstName + ' ' + lastName;
+  const fullName = firstName + ' ' + lastName;                                                                                                                                                                                                                                                                              
 
   const [dt, setDt] = useState(new Date().toLocaleString());
   const [hr, setHr] = useState(new Date().toLocaleString());
@@ -91,13 +92,30 @@ export function LoginIntial() {
   const hour12 = hr % 12 || 12;
 
   const loginIntialHandler = () => {
-    //  navigate('Retails', {screen : 'Retails'})
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'HOME' }],
-      })
-    );
+    // if(getData?.getProfile?.is_wallet === false ){
+    //   Toast.show({
+    //     text2: 'Please First Create Wallet',
+    //     position: 'bottom',
+    //     type: 'error_toast',
+    //     visibilityTime: 1500,
+    //   });
+    // }else
+     if (getData?.getProfile?.wallet_step <= 1 || null){
+      Toast.show({
+        text2: 'Please First complete Wallet Steps',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    }else {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'HOME' }],
+        })
+      );
+    }
+   
   };
 
   useEffect(() => {

@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   ScrollView,
   Dimensions,
+  Platform,
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Customers/Customers.styles';
@@ -1152,9 +1153,9 @@ export function Customers() {
               <View style={{marginTop:30}}>
                 <Image source={cusBarClr} style={styles.cusBarClr}/>
               <BarChartCom
-               barWid={SH(1300)}
+               barWid={Platform.OS === 'android' ?  SH(1250) : SH(930)}
                barHei={300}
-               barSpacing={100}
+               barSpacing={Platform.OS === 'android' ?  94 : 60}
                barW={20}
                labelTextSty= {{color: COLORS.gerySkies, fontSize:11}}
                revenueData = {revenueGraphObject}
