@@ -9,7 +9,7 @@ import {
   ApiWalletInventory,
   WALLET_URL,
 } from '@/utils/APIinventory';
-import { Alert } from 'react-native';
+import { Alert, LogBox } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
@@ -473,13 +473,59 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint =
         WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
-        console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
           reject(error);
+        });
+    });
+  };
+
+  static async walletGetByPhone(walletIdInp) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+      WALLET_URL + ApiWalletInventory.walletGetByPhone + `?search=${walletIdInp}`;
+      HttpClient.get(endpoint)
+      .then(response => {
+         if(response?.msg === "api wallets found"){
+          alert('Wallet found successfully')
+         }
+        resolve(response);
+      })
+      .catch(error => {
+        if(error?.error === "emptyContent"){
+           alert('Wallet not found')
+        }
+        reject(error);
+      });
+    });
+  }
+
+  static async requestMoney(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =  WALLET_URL + ApiWalletInventory.requestMoney;
+      const body = {
+        amount:data.amount,
+        reciever_address:data.wallletAdd
+      };
+      HttpClient.post(endpoint, body)
+        .then(response => {
+          if (response?.msg === "Payment request sent success!") {
+            alert('Payment request sent successfully!')
+          }
+          resolve(response);
+        })
+        .catch(error => {
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   text2: error.msg,
+          //   visibilityTime: 2000,
+          // });
+          alert(error)
+          reject(error.msg);
         });
     });
   }

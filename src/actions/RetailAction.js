@@ -266,6 +266,37 @@ const getWalletIdReset = () => ({
   payload: null,
 });
 
+
+const walletGetByPhoneRequest = () => ({
+  type: TYPES.GET_WALLET_PHONE_REQUEST,
+  payload: null,
+});
+const walletGetByPhoneSuccess = walletGetByPhone => ({
+  type: TYPES.GET_WALLET_PHONE_SUCCESS,
+  payload: { walletGetByPhone },
+});
+const walletGetByPhoneError = error => ({
+  type: TYPES.GET_WALLET_PHONE_ERROR,
+  payload: { error },
+});
+const walletGetByPhoneReset = () => ({
+  type: TYPES.GET_WALLET_PHONE_RESET,
+  payload: null,
+});
+
+const requestMoneyRequest = () => ({
+  type: TYPES.REQUEST_MONEY_REQUEST,
+  payload: null,
+});
+const requestMoneySuccess = ()  => ({
+  type: TYPES.REQUEST_MONEY_SUCCESS,
+  payload: {  },
+});
+const requestMoneyError = error => ({
+  type: TYPES.REQUEST_MONEY_ERROR,
+  payload: { error },
+});
+
 export const getCategory = (sellerID) => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -426,6 +457,7 @@ export const getUserDetail = (customerPhoneNo) => async dispatch => {
   try {
       const res = await RetailController.getUserDetail(customerPhoneNo);
       dispatch(getUserDetailSuccess(res));
+      console.log('res', res);
   } catch (error) {
       dispatch(getUserDetailError(error.message));
   }
@@ -465,6 +497,30 @@ export const getWalletId = (sellerID) => async dispatch => {
         dispatch(getWalletIdError(error.message));
     }
 };
+
+export const walletGetByPhone = (walletIdInp) => async dispatch => {
+  dispatch(walletGetByPhoneRequest());
+  try {
+      const res = await RetailController.walletGetByPhone(walletIdInp);
+      dispatch(walletGetByPhoneSuccess(res));
+    } catch (error) {
+      if (error?.statusCode === 204){
+        dispatch(walletGetByPhoneReset());
+      }
+        dispatch(walletGetByPhoneError(error.message));
+    }
+};
+
+export const requestMoney = (data) => async dispatch => {
+  dispatch(requestMoneyRequest());
+  try {
+      const res = await RetailController.requestMoney(data);
+      dispatch(requestMoneySuccess(res));
+  } catch (error) {
+      dispatch(requestMoneyError(error.message));
+  }
+};
+
 
 export const logout = () => async dispatch => {
   try {

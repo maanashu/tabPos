@@ -45,5 +45,7 @@ export const ApiOrderInventory = {
 export const ApiWalletInventory = {
     getWallet:'wallets/user/',
     getUserDetail:'wallets/other',
+    walletGetByPhone:'wallets/other',
+    requestMoney:'transactions/request-money'
    
 }

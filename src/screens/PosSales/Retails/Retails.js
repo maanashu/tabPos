@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Alert,
+  Keyboard,
 } from 'react-native';
 import {
   Spacer,
@@ -72,6 +73,8 @@ import {
   getProductDefault,
   retailclearstore,
   getWalletId,
+  walletGetByPhone,
+  requestMoney,
 } from '@/actions/RetailAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
@@ -101,6 +104,8 @@ export function Retails() {
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const getTotalCart = getRetailData?.getAllCart?.poscart_products?.length;
   const totalCart = getTotalCart ? getTotalCart : '0';
+  const walletUser= getRetailData?.walletGetByPhone?.[0];
+  const walletUserStep = walletUser?.step;
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
   const [categoryModal, setCategoryModal] = useState(false);
@@ -328,9 +333,7 @@ export function Retails() {
   };
 
   const loderFun = () => {
-    setTimeout(() => {
-      <ActivityIndicator size="large" color={COLORS.indicator} />;
-    }, 3000);
+      <ActivityIndicator size="large" color={COLORS.indicator} />
   };
 
   const phoneNumberSearchFun = customerPhoneNo => {
@@ -340,11 +343,25 @@ export function Retails() {
       dispatch(getUserDetailSuccess([]));
     }
   };
+  
   const walletIdInpFun = walletIdInp => {
     if(walletIdInp?.length > 9){
-        alert('inProgress')
-    } 
+      dispatch(walletGetByPhone(walletIdInp))
+    }
   }
+  const sendRequestFun = () => {
+    if(walletUser?.step <=1 ){
+      alert('Please complete the wallet step')
+    }
+     else if(walletUser?.step >=2 && walletIdInp?.length > 9 ){
+        const data={
+           amount:getCartAmount?.total_amount,
+           wallletAdd:walletUser?.business?.wallet_address
+         }
+         dispatch(requestMoney(data));
+         setWalletIdInp('')
+      } 
+  };
 
   const userContinueHandler = () => {
     if (!customerPhoneNo) {
@@ -411,6 +428,13 @@ export function Retails() {
   const isSendInvitationLoading = useSelector(state =>
     isLoadingSelector([TYPES.SEND_INVITATION], state)
   );
+  const wallerUserLoader = useSelector(state =>
+    isLoadingSelector([TYPES.GET_WALLET_PHONE], state)
+  );
+  const sendRequestLoader = useSelector(state =>
+    isLoadingSelector([TYPES.REQUEST_MONEY], state)
+  );
+
 
   const clearCartHandler = () => {
     if (totalCart === '0') {
@@ -660,22 +684,6 @@ export function Retails() {
     }
   };
 
-  const sendReuest = () => {
-    console.log('getuserDetailByNo?.[0]',getuserDetailByNo?.[0]);
-    if(getuserDetailByNo?.[0]?.is_wallet === false){
-      return(
-          alert('Please First Create Wallet')
-      )
-    }else if(getuserDetailByNo?.[0]?.user_profiles?.wallet_steps >= 2){
-      retun(
-        alert('Please First Complete Wallet Steps')
-      )
-    }else {
-      return(
-        alert('Done')
-      )
-    }
-  };
   const jbrCoinChoseHandler = () => {
     setCustPayment(!custPayment);
     setJbrCoin(true);
@@ -685,6 +693,7 @@ export function Retails() {
   };
   const custPaymentRemoveHandler = () => {
     setCustPayment(false);
+    setWalletIdInp('')
   };
   const cashChooseHandler = () => {
     setCashChoose(true);
@@ -1300,12 +1309,6 @@ export function Retails() {
           </View>
 
           {getuserDetailByNo?.length > 0 ? (
-            // <Button
-            //   onPress={() => sendReuest()}
-            //   title={strings.retail.sendRequest}
-            //   textStyle={styles.selectedText}
-            //   style={styles.submitButtons}
-            // />
             <TouchableOpacity
             style={styles.customerPhoneCon}
             onPress={() => {
@@ -2288,7 +2291,7 @@ export function Retails() {
                   {strings.posSale.paymentHeader}
                 </Text>
                 <TouchableOpacity
-                  onPress={custPaymentRemoveHandler}
+                  onPress={() => (setCustPayment(false),setWalletIdInp(''))}
                   style={styles.crossButtonPosition}
                 >
                   <Image source={crossButton} style={styles.crossButton} />
@@ -2301,7 +2304,7 @@ export function Retails() {
                 </View>
               ) : (
                 <View style={styles.custPaymentBodyCon}>
-                  <Spacer space={SH(60)} />
+                  <Spacer space={SH(30)} />
                   <Text style={styles.walletIdText}>
                     {strings.posSale.walletId}
                   </Text>
@@ -2314,11 +2317,13 @@ export function Retails() {
                   <TextInput
                      style={styles.walletIdInput}
                       onChangeText={walletIdInp => (setWalletIdInp(walletIdInp), walletIdInpFun(walletIdInp)) }
+                      // onChangeText={setWalletIdInp}
                       value={walletIdInp}
                       placeholder="Wallet Id"
                       keyboardType="numeric"
                       placeholderStyle={styles.walletAddresStyle}
                       maxLength={10}
+                      // onSubmitEditing={() =>  dispatch(walletGetByPhone(walletIdInp)) }
                     />
                   <Spacer space={SH(20)} />
                   <Text style={styles.walletIdText}>
@@ -2329,7 +2334,9 @@ export function Retails() {
                     source={{ uri: walletData?.qr_code }}
                     style={styles.qrcodeImage}
                   />
-                  {walletId ? (
+
+                  <Spacer space={SH(20)} />
+                  {/* {walletId ? (
                     <TouchableOpacity
                       style={styles.flexAlign}
                       onPress={listOfItemHandler}
@@ -2348,7 +2355,21 @@ export function Retails() {
                     <Text style={styles.redrectingText}>
                       {strings.posSale.rederecting}
                     </Text>
-                  )}
+                  )} */}
+                  {
+                    walletUser?.step >=2 && walletIdInp?.length > 9
+                    ?
+                    <Button
+                    onPress={() => sendRequestFun()}
+                    title={strings.retail.sendRequest}
+                    textStyle={styles.selectedText}
+                    style={styles.submitButtons}
+                    pending={sendRequestLoader}
+                 />
+                 :
+                 null
+                  }
+            
                 </View>
               )}
             </View>
