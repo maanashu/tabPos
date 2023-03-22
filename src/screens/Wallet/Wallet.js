@@ -12,8 +12,6 @@ import {
 import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Wallet/Wallet.styles';
 import { strings } from '@/localization';
-
-const windowWidth = Dimensions.get('window').width;
 import {
   aboutTransactionData,
   tipsData,
@@ -32,11 +30,7 @@ import {
   mask,
   maskRight,
   unionRight,
-  menu,
   Fonts,
-  deliverCheck,
-  track,
-  tobaco,
 } from '@/assets';
 import {
   DaySelector,
@@ -44,29 +38,10 @@ import {
   Spacer,
   TableDropdown,
 } from '@/components';
-import { moderateScale, verticalScale } from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
 import { DetailShipping, OrderList } from '@/screens/Wallet';
-const data = {
-  labels: [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-  ],
-  datasets: [
-    {
-      data: [0, 25, 50, 75, 100, 80, 44],
-    },
-    {
-      data: [0, 25, 50, 75, 100, 80, 44],
-    },
-  ],
-};
 
 export function Wallet() {
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
@@ -135,31 +110,6 @@ export function Wallet() {
       </View>
     );
   };
-  const chartConfig = {
-    // backgroundGradientFrom: "#fff",
-    backgroundGradientTo: '#fff',
-    barPercentage: 0.7,
-    height: 5000,
-    fillShadowGradient: `rgba(1, 122, 205, 1)`,
-    fillShadowGradientOpacity: 1,
-    decimalPlaces: 0, // optional, defaults to 2dp
-    color: (opacity = 1) => `rgba(1, 122, 205, 1)`,
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, 1)`,
-
-    style: {
-      borderRadius: 16,
-      // fontFamily: "Bogle-Regular",
-    },
-    propsForBackgroundLines: {
-      strokeWidth: 1,
-      stroke: COLORS.solidGrey,
-      // strokeDasharray: "0",
-    },
-    propsForLabels: {
-      // fontFamily: "Bogle-Regular",
-    },
-  };
-
   const aboutTransactionItem = ({ item }) => (
     <TouchableOpacity
       style={styles.jbrCoinCon}

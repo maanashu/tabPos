@@ -84,6 +84,7 @@ export function ShippingOrder() {
   const orderDate = moment(orderIdDate).format('LL');
   const length = orderHeadCount?.map(item => item.count);
   const orderPlaced = length?.reduce((sum, num) => sum + num);
+  console.log(orderPlaced), orderPlaced;
   const orderValueMulti = orderHeadCount?.[6].count * 100;
   const orderValue = orderValueMulti / orderPlaced;
   const orderValueDecimal = orderValue;

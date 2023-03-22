@@ -393,9 +393,6 @@ export class RetailController {
       WALLET_URL + ApiWalletInventory.getUserDetail + `?page=1&limit=10&search=${customerPhoneNo}`;
       HttpClient.get(endpoint)
         .then(response => {
-          // if (response.status === 204) {
-          //   resolve([]);
-          // }
           resolve(response);
         })
         .catch(error => {
@@ -527,6 +524,20 @@ export class RetailController {
           alert(error)
           reject(error.msg);
         });
+    });
+  };
+
+  static async getTips(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+      ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;
+      HttpClient.get(endpoint)
+      .then(response => {
+        resolve(response);
+      })
+      .catch(error => {
+        reject(error);
+      });
     });
   }
 

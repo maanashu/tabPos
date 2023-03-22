@@ -163,7 +163,8 @@ export const en = {
     perDis:'Percentage Discount',
     DisCode:'Discount Code',
     DisTitle:'Discount Title',
-    sendRequest:'Send Request'
+    sendRequest:'Send Request',
+    next:'Next'
   },
   posSale: {
     paymentHeader: 'Customer & Payment',
@@ -186,7 +187,7 @@ export const en = {
     customerEmail: 'harryrady@jourrapide.com',
     customerAddr: '4849 Owagner Lane',
     customerAddr2: 'Seattle, WA 98101',
-    customerTotalAmountHeader: 'Total amount: $254.60',
+    customerTotalAmountHeader: 'Total amount: $',
     tips: 'Tips',
     noTips: 'No Tips',
     cashRecive: 'Cash amount received',
@@ -517,7 +518,8 @@ export const en = {
       pleaseEnterLastName:'Please enter last name',
       pleaseEnterEmail:'Please enter Email',
       validEmail:'Please enter valid email',
-      ordernotfound:'Order not found'
+      ordernotfound:'Order not found',
+      completeStep:'Please complete the wallet step'
     },
     successMessages:{
       loginSuccess:"Login succesfully"

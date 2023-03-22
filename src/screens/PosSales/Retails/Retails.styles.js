@@ -34,7 +34,6 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     backgroundColor: COLORS.white,
     marginLeft: -20,
-    // marginTop: Platform.OS === 'ios' ? 10 : 0,
   },
   searchStyle: {
     width: SW(7),
@@ -863,7 +862,6 @@ export const styles = StyleSheet.create({
   invetryCon: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    // borderWidth:1
   },
   invertyInput: {
     borderRadius: 7,
@@ -923,7 +921,6 @@ export const styles = StyleSheet.create({
   },
   productInput: {
     borderRadius: 5,
-    // width: 220,
     height: SH(54),
     fontSize: SF(12),
     color: COLORS.gerySkies,
@@ -1011,7 +1008,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    // width: windowWidth * 0.28,
     fontSize: SF(16),
     height: SH(50),
     width: SW(70), 
@@ -1437,7 +1433,6 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 3,
     width: windowWidth * 0.07,
-    // justifyContent:'center',
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -1608,8 +1603,6 @@ export const styles = StyleSheet.create({
     height: SH(60),
     alignItems: 'center',
     justifyContent: 'center',
-    //  width: windowWidth * 0.30,
-    //  height: windowHeight * 0.10,
     borderRadius: 10,
   },
   selectedText: {

@@ -51,7 +51,7 @@ import { moderateScale, verticalScale } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { tipData, amountReceivedData } from '@/constants/flatListData';
+import {tipDataDummy } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getCategory,
@@ -75,6 +75,8 @@ import {
   getWalletId,
   walletGetByPhone,
   requestMoney,
+  getTips,
+  getTip,
 } from '@/actions/RetailAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
@@ -86,6 +88,7 @@ import { CategoryProductDetail, ChangeDue } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
 import { emailReg, mobileReg } from '@/utils/validators';
 
+
 export function Retails() {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
@@ -96,6 +99,7 @@ export function Retails() {
   const subCategoriesArray = getRetailData?.subCategories ?? [];
   const brandArray = getRetailData?.brands ?? [];
   const products = getRetailData?.products;
+  const getTips = getRetailData?.getTips;
   const serProductArray = getRetailData?.SeaProductList;
   const allCartArray = getRetailData?.getAllCart?.poscart_products;
   const cartProductServiceId = getRetailData?.getAllCart?.service_id;
@@ -154,8 +158,8 @@ export function Retails() {
 
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
   const [searchSelectedId, setSearchSelectedId] = useState(null);
-  const [tipSelectId, setTipsSelected] = useState(1);
-  const [amountSelectId, setAmountSelectId] = useState(1);
+  const [tipSelectId, setTipsSelected] = useState();
+  const [amountSelectId, setAmountSelectId] = useState();
 
   const [amountDis, setAmountDis] = useState('');
   const [percentDis, setPercentDis] = useState('');
@@ -195,7 +199,42 @@ export function Retails() {
   const [userFName, setUserFName] = useState('');
   const [sendInventer, setSendInventer] = useState(false);
   const [serPro, setSerPro] = useState(productData?.qty ? productData?.qty : 0);
-  const [walletIdInp, setWalletIdInp] = useState()
+  const [walletIdInp, setWalletIdInp] = useState();
+  const [tipState,setTipState] =  useState(1);
+  const getPerc = tipState?.percentage ===  undefined ? '1' : tipState?.percentage
+  const amountPer = getCartAmount?.total_amount *  getPerc;
+  const recevAmount = amountPer / 100;
+  const recevAmountDec = recevAmount;
+  const  finalReceviedAmount = getCartAmount?.total_amount + recevAmountDec;
+  const tipData =[
+    {
+      percentage: getTips?.first_tips ?? 0,
+      id: '1',
+    },
+    {
+      percentage: getTips?.second_tips ?? 0,
+      id: '2',
+    },
+    {
+      percentage: getTips?.third_tips ?? 0,
+      id: '3',
+    },
+  ];
+
+const amountReceivedData =[
+    {
+      amount: tipSelectId === null || undefined ? getCartAmount?.total_amount :  amountPer === undefined ? getCartAmount?.total_amount : finalReceviedAmount .toFixed(2),
+      id: '1',
+    },
+    {
+      amount:tipSelectId === null || undefined ? getCartAmount?.total_amount + 10 : amountPer === undefined ? getCartAmount?.total_amount + 10 :(finalReceviedAmount + 10.00).toFixed(2) ?? 0,
+      id: '2',
+    },
+    {
+      amount:tipSelectId === null || undefined ? getCartAmount?.total_amount + 20 :amountPer === undefined ? getCartAmount?.total_amount + 10 :  (finalReceviedAmount + 20.00).toFixed(2) ?? 0,
+      id: '3',
+    },
+  ];
 
   const serProPlus = () => {
     setSerPro(serPro + 1);
@@ -332,10 +371,6 @@ export function Retails() {
     }
   };
 
-  const loderFun = () => {
-      <ActivityIndicator size="large" color={COLORS.indicator} />
-  };
-
   const phoneNumberSearchFun = customerPhoneNo => {
     if (customerPhoneNo?.length > 9) {
       dispatch(getUserDetail(customerPhoneNo));
@@ -346,14 +381,15 @@ export function Retails() {
   
   const walletIdInpFun = walletIdInp => {
     if(walletIdInp?.length > 9){
-      dispatch(walletGetByPhone(walletIdInp))
+      dispatch(walletGetByPhone(walletIdInp));
+      Keyboard.dismiss()
     }
   }
   const sendRequestFun = () => {
     if(walletUser?.step <=1 ){
-      alert('Please complete the wallet step')
-    }
-     else if(walletUser?.step >=2 && walletIdInp?.length > 9 ){
+      alert(strings.valiadtion.completeStep)
+       }
+      else if(walletUser?.step >=2 && walletIdInp?.length > 9 ){
         const data={
            amount:getCartAmount?.total_amount,
            wallletAdd:walletUser?.business?.wallet_address
@@ -433,6 +469,9 @@ export function Retails() {
   );
   const sendRequestLoader = useSelector(state =>
     isLoadingSelector([TYPES.REQUEST_MONEY], state)
+  );
+  const tipsLoader = useSelector(state =>
+    isLoadingSelector([TYPES.GET_TIPS], state)
   );
 
 
@@ -743,35 +782,50 @@ export function Retails() {
     }
   };
 
+  const tipsSelectFunction = id => {
+      {
+        id === null
+          ? console.log('null')
+          : setTipsSelected(id);
+      }
+  }
+
   const TipsItemSelect = ({ item, borderColor, color, onPress }) => (
     <TouchableOpacity
       style={[styles.tipChildCon, borderColor, color]}
       onPress={onPress}
     >
-      <Text style={[styles.tipChildText, color]}>{item.percentage}</Text>
+      <Text style={[styles.tipChildText, color]}>{item.percentage}%</Text>
     </TouchableOpacity>
   );
   const tipsItem = ({ item }) => {
-    const borderColor =
-      item.id === tipSelectId ? COLORS.primary : COLORS.solidGrey;
+    const borderColor = item.id === tipSelectId ? COLORS.primary : COLORS.solidGrey;
     const color = item.id === tipSelectId ? COLORS.primary : COLORS.solid_grey;
 
     return (
       <TipsItemSelect
         item={item}
-        onPress={() => setTipsSelected(item.id)}
+        onPress={() => (setTipsSelected(tipSelectId === item.id ? null : item.id), setTipState(item))}
         borderColor={{ borderColor }}
         color={{ color }}
       />
     );
   };
 
+  const tipDataDummyItem = ({ item }) => (
+    <View
+      style={styles.tipChildCon}
+    >
+       <ActivityIndicator size="small" color={COLORS.black} />
+    </View>
+  );
+
   const AmountReceivedItemSelect = ({ item, borderColor, color, onPress }) => (
     <TouchableOpacity
       style={[styles.tipChildCon, borderColor, color]}
       onPress={onPress}
     >
-      <Text style={[styles.tipChildText, color]}>{item.amount}</Text>
+      <Text style={[styles.tipChildText, color]}>${item.amount}</Text>
     </TouchableOpacity>
   );
   const amountReceivedItem = ({ item }) => {
@@ -1309,17 +1363,24 @@ export function Retails() {
           </View>
 
           {getuserDetailByNo?.length > 0 ? (
-            <TouchableOpacity
-            style={styles.customerPhoneCon}
-            onPress={() => {
-              setCustCash(false), setCutsomerTotalAmount(true);
-            }}
-          >
-            <Text style={[styles.redrectingText, { color: COLORS.primary }]}>
-              {strings.posSale.rederecting}
-            </Text>
-            <Image source={loader} style={styles.loaderPic} />
-          </TouchableOpacity>
+          //   <TouchableOpacity
+          //   style={styles.customerPhoneCon}
+          //   onPress={() => {
+          //     setCustCash(false), setCutsomerTotalAmount(true);
+          //   }}
+          // >
+          //   <Text style={[styles.redrectingText, { color: COLORS.primary }]}>
+          //     {strings.posSale.rederecting}sssss
+          //   </Text>
+          //   <Image source={loader} style={styles.loaderPic} />
+          // </TouchableOpacity>
+                  <Button
+                    onPress={() => {setCustCash(false), setCutsomerTotalAmount(true), dispatch(getTip(sellerID))}}
+                    title={strings.retail.next}
+                    textStyle={styles.selectedText}
+                    style={styles.submitButtons}
+                    // pending={sendRequestLoader}
+                 />
           ) : (
           
             <Text style={styles.redrectingText}>
@@ -1450,7 +1511,7 @@ export function Retails() {
         <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
           <View style={styles.primaryHeader}>
             <Text style={styles.headerText}>
-              {strings.posSale.customerTotalAmountHeader}
+              {strings.posSale.customerTotalAmountHeader}{getCartAmount?.total_amount ?? 0.00}
             </Text>
             <TouchableOpacity
               onPress={() => (setCutsomerTotalAmount(false), setCustCash(true))}
@@ -1471,22 +1532,34 @@ export function Retails() {
             </Text>
             <Spacer space={SH(20)} />
             <View>
-              <FlatList
-                data={tipData}
-                renderItem={tipsItem}
+
+              {
+                tipsLoader
+                ?
+                <FlatList
+                data={tipDataDummy}
+                renderItem={tipDataDummyItem}
                 keyExtractor={item => item.id}
-                extraData={tipSelectId}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.contentContainer}
               />
+              :
+              <FlatList
+              data={tipData}
+              extraData={tipData}
+              renderItem={tipsItem}
+              keyExtractor={item => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.contentContainer}
+            />
+              }
             </View>
             <Spacer space={SH(15)} />
-            <View style={styles.noTipsButtonCon}>
-              <Text style={styles.noTipsTextStyle}>
-                {strings.posSale.noTips}
-              </Text>
-            </View>
+            <TouchableOpacity style={styles.noTipsButtonCon} activeOpacity={0.4} onPress={() => setTipsSelected(null)}>
+              <Text style={styles.noTipsTextStyle}>{strings.posSale.noTips}</Text>
+            </TouchableOpacity>
             <Spacer space={SH(10)} />
             <Text
               style={[
@@ -2323,18 +2396,16 @@ export function Retails() {
                       keyboardType="numeric"
                       placeholderStyle={styles.walletAddresStyle}
                       maxLength={10}
-                      // onSubmitEditing={() =>  dispatch(walletGetByPhone(walletIdInp)) }
                     />
                   <Spacer space={SH(20)} />
                   <Text style={styles.walletIdText}>
                     {strings.posSale.scanText}
                   </Text>
                   <Spacer space={SH(10)} />
-                  <Image
+                    <Image
                     source={{ uri: walletData?.qr_code }}
                     style={styles.qrcodeImage}
                   />
-
                   <Spacer space={SH(20)} />
                   {/* {walletId ? (
                     <TouchableOpacity

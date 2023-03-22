@@ -1,11 +1,10 @@
 import React from 'react';
-import { Text, TouchableOpacity, View, Image, FlatList } from 'react-native';
+import { Text, TouchableOpacity, View, Image } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { backArrow, Fonts, minus, plus } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { styles } from './Retails.styles';
-import { productUnitData } from '@/constants/flatListData';
 
 export function ProductViewDetail({
   searchProDetRemoveHandlwe,

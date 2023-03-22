@@ -241,13 +241,12 @@ const schduleDetailModal = () => {
                           onPress={monthHandler}>
                           <Text style={month ? styles.checkedText : styles.unCheckedText}>{strings.calender.month}</Text>
                          </TouchableOpacity>
-
                    </View>
                    <Text>{null}</Text>
                 </View>
            </View>
            {/* <Image source={schdule} style={styles.schdule}/> */}
-           {/* <Text style={{alignSelf:'center', marginTop:100, color:COLORS.primary}}>Coming soon</Text> */}
+           <Text style={{alignSelf:'center', marginTop:100, color:COLORS.primary}}>Coming soon</Text>
         </View>
         <View style={styles.notificationCon}>
           <View>

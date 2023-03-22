@@ -11,7 +11,8 @@ const INITIALSTATE = {
   productbunList:[],
   getUserDetail:[],
   getWallet:{},
-  walletGetByPhone:[]
+  walletGetByPhone:[],
+  getTips:{}
   
 };
 
@@ -118,6 +119,17 @@ export const retailReducer = (state = {INITIALSTATE}, { payload, type }) => {
                             ...state,
                             walletGetByPhone: [],
                           };
+
+                          case TYPES.GET_TIPS_SUCCESS:
+                            return {
+                              ...state,
+                              getTips: payload?.getTips?.payload,
+                            };
+                            case TYPES.GET_TIPS_RESET:
+                              return {
+                                ...state,
+                                getTips: [],
+                              };
       
     case TYPES.CLEAR_STORE:
       return {};

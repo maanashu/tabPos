@@ -297,6 +297,24 @@ const requestMoneyError = error => ({
   payload: { error },
 });
 
+
+const getTipsRequest = () => ({
+  type: TYPES.GET_TIPS_REQUEST,
+  payload: null,
+});
+const getTipsSuccess = getTips => ({
+  type: TYPES.GET_TIPS_SUCCESS,
+  payload: { getTips },
+});
+const getTipsError = error => ({
+  type: TYPES.GET_TIPS_ERROR,
+  payload: { error },
+});
+const getTipsReset = () => ({
+  type: TYPES.GET_TIPS_RESET,
+  payload: null,
+});
+
 export const getCategory = (sellerID) => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -457,7 +475,6 @@ export const getUserDetail = (customerPhoneNo) => async dispatch => {
   try {
       const res = await RetailController.getUserDetail(customerPhoneNo);
       dispatch(getUserDetailSuccess(res));
-      console.log('res', res);
   } catch (error) {
       dispatch(getUserDetailError(error.message));
   }
@@ -519,6 +536,19 @@ export const requestMoney = (data) => async dispatch => {
   } catch (error) {
       dispatch(requestMoneyError(error.message));
   }
+};
+
+export const getTip = (sellerID) => async dispatch => {
+  dispatch(getTipsRequest());
+  try {
+      const res = await RetailController.getTips(sellerID);
+      dispatch(getTipsSuccess(res));
+    } catch (error) {
+      if (error?.statusCode === 204){
+        dispatch(getTipsReset());
+      }
+        dispatch(getTipsError(error.message));
+    }
 };
 
 

@@ -1,145 +1,82 @@
-import React from 'react';
-import { StyleSheet, View,Text, Dimensions } from 'react-native';
+import { Spacer } from '@/components';
+import { strings } from '@/localization';
+import { COLORS, SH } from '@/theme';
+import React, { useState } from 'react';
+import { StyleSheet, View,Text, Dimensions, FlatList, TouchableOpacity } from 'react-native';
 import {BarChart} from 'react-native-gifted-charts';
+import { moderateScale } from 'react-native-size-matters';
+import { styles } from '../PosSales/Retails/Retails.styles';
 
 export function Reward() {
-  const barData = [
+  const [tipSelectId, setTipsSelected] = useState();
+  console.log('tipSelectId',tipSelectId);
+
+  const tipData =[
     {
-      value: 100,
-      spacing: 4,
-      labelWidth: 40,
-      labelTextStyle: {color: '#3C444D'},
-      frontColor: '#275AFF',
+      percentage: '1',
+      id: '1',
     },
     {
-      value: 50,
-      spacing: 4,
-      label: 'Jan',
-      labelWidth: 50,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#1FB3FF',
-    },
-    {value: 10, frontColor: '#1CD3FF'},
-    {
-      value: 50,
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
+      percentage: '2',
+      id: '2',
     },
     {
-      value: 50,
-      label: 'Feb',
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
+      percentage: '3',
+      id: '3',
     },
-    
-    {value: 40, frontColor: '#ED6665'},
-    {
-      value: 75,
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
-    },
-    {
-      value: 75,
-      label: 'Mar',
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
-    },
-    {value: 25, frontColor: '#ED6665'},
-    {
-      value: 30,
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
-    },
-    {
-      value: 30,
-      label: 'Apr',
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
-    },
-    {value: 20, frontColor: '#ED6665'},
-    {
-      value: 60,
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
-    },
-    {
-      value: 60,
-      label: 'May',
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
-    },
-    {value: 40, frontColor: '#ED6665'},
-    {
-      value: 65,
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
-    },
-    {
-      value: 65,
-      label: 'Jun',
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
-    },
-    {value: 30, frontColor: '#ED6665'},
-    {
-      value: 65,
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
-    },
-    {
-      value: 65,
-      label: 'Jun',
-      spacing: 4,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#177AD5',
-    },
-    {value: 30, frontColor: '#ED6665'},
   ];
+
+  const TipsItemSelect = ({ item, borderColor, color, onPress }) => (
+    <TouchableOpacity
+      style={[styles.tipChildCon, borderColor, color]}
+      onPress={onPress}
+    >
+      <Text style={[styles.tipChildText, color]}>{item.percentage}%</Text>
+    </TouchableOpacity>
+  );
+  const tipsItem = ({ item }) => {
+    const borderColor = item.id === tipSelectId ? COLORS.primary : COLORS.solidGrey;
+    const color = item.id === tipSelectId ? COLORS.primary : COLORS.solid_grey;
+
+    return (
+      <TipsItemSelect
+        item={item}
+        onPress={() => setTipsSelected(tipSelectId === item.id ? null : item.id)}
+        borderColor={{ borderColor }}
+        color={{ color }}
+      />
+    );
+  };
+
+  
+  
   return (
-    <View style={{borderWidth:1, height:400}}>
-       <BarChart
-          data={barData}
-          barWidth={20}
-          spacing={30}
-          roundedTop
-          // hideRules
-          xAxisThickness={1}
-          yAxisThickness={0}
-          xAxisType={'dashed'}
-          xAxisColor={'#1FB3FF'}
-          yAxisTextStyle={{color: '#275AFF'}}
-          noOfSections={4}
-          maxValue={100}
-          // style={{borderWidth:1, width:400, height:500}}
-          // stepH
-          // stepHeight={300}
-          yAxisLength={400}
-          height={350}
-        />
-    </View>
+
+    <View style={[styles.custTotalAmountBodyCon]}>
+            <View>
+              <FlatList
+              data={tipData}
+              extraData={tipData}
+              renderItem={tipsItem}
+              keyExtractor={item => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.contentContainer}
+            />
+             
+            </View>
+            <Spacer space={SH(15)} />
+            <View style={styles.noTipsButtonCon}>
+              <Text style={styles.noTipsTextStyle}>
+                {strings.posSale.noTips}
+              </Text>
+            </View>
+            
+
+          
+           
+          </View>
+   
   );
 }
 

@@ -102,7 +102,7 @@ export const userData =[
   },
 ];
 
-export const tipData =[
+export const tipDataDummy =[
   {
     percentage: '10%',
     id: '1',
@@ -116,20 +116,7 @@ export const tipData =[
     id: '3',
   },
 ];
-export const amountReceivedData =[
-  {
-    amount: '$280.00',
-    id: '1',
-  },
-  {
-    amount: '$280.00',
-    id: '2',
-  },
-  {
-    amount: '$280.00',
-    id: '3',
-  },
-];
+
 export const ProductData = [
   {
     name: 'Marlboro Red',
