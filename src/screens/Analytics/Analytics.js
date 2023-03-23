@@ -11,6 +11,7 @@ import {
   FlatList,
   Dimensions,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import {
   crossButton,
@@ -53,9 +54,6 @@ import {
   checkArrow,
   ups,
   share,
-  saleLogo,
-  revenueGraph,
-  colorFrame,
   calendar1,
   clay,
   dropdown,
@@ -85,10 +83,8 @@ import {
 import { styles } from '@/screens/Analytics/Analytics.styles';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { goBack } from '@/navigation/NavigationRef';
 import Modal from 'react-native-modal';
 import { Table, Row, Rows } from 'react-native-table-component';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DataTable } from 'react-native-paper';
 import { TotalProductSub, TotalRevenueSub } from '@/screens/Analytics';
 const windowWidth = Dimensions.get('window').width;
@@ -175,13 +171,24 @@ export function Analytics(props) {
   };
 
   useEffect(() => {
-    dispatch(totalProGraph(sellerID));
-    dispatch(totalOrderGraph(sellerID));
-    dispatch(totalInvernteryGraph(sellerID));
-    dispatch(totalRevenueGraph(sellerID));
-  }, []);
+    if (isFocused){
+      dispatch(totalProGraph(sellerID));
+      dispatch(totalInvernteryGraph(sellerID));
+      dispatch(totalRevenueGraph(sellerID));
+      dispatch(totalOrderGraph(sellerID));
+    }
+  }, [isFocused]);
   const productGraphLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_TOTAL_GRAPH], state)
+  );
+  const totalInventoryLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_INVENTERY_GRAPH], state)
+  );
+  const totalGraphLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER_GRAPH], state)
+  );
+  const totalRevenueLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_REVENUE_GRAPH], state)
   );
 
   const tobacoTableHandler = () => {
@@ -5590,6 +5597,7 @@ export function Analytics(props) {
               productGraphObject={productGraphObject2}
               homeGraphHandler={() => graphHandler('Total Products')}
               arrayLength = {productGraphObject2?.datasets?.length}
+              productLoader={productGraphLoading}
             />
             <HomeGraph
               header="Total Inventory  Cost"
@@ -5597,6 +5605,7 @@ export function Analytics(props) {
               productGraphObject={inventeryGraphObject}
               homeGraphHandler={() => graphHandler('Total Inventory  Cost')}
               arrayLength = {inventeryGraphObject?.datasets?.length}
+              productLoader={totalInventoryLoading}
             />
           </View>
           <View style={{ flexDirection: 'row' }}>
@@ -5624,7 +5633,14 @@ export function Analytics(props) {
         </TouchableOpacity>
       </View>
       <Spacer space={SH(5)} />
-               <BarChartCom
+      {
+        totalRevenueLoading
+        ?
+         <View style={{ marginTop: 50 }}>
+           <ActivityIndicator size="large" color={COLORS.indicator} />
+          </View>
+      :
+             <BarChartCom
                barWid={Platform.OS === 'android' ? SH(550) : SH(380) }
                barHei={150}
                barSpacing={Platform.OS === 'android' ? 30 : 20}
@@ -5632,6 +5648,9 @@ export function Analytics(props) {
                labelTextSty= {{color: COLORS.gerySkies, fontSize:11}}
                revenueData = {revenueGraphObject}
                />
+
+      }
+               
                </View>
             <HomeGraph
               header="Total Orders"
@@ -5639,6 +5658,7 @@ export function Analytics(props) {
               productGraphObject={orderGraphObject}
               homeGraphHandler={() => graphHandler('Total Orders')}
               arrayLength = {orderGraphObject?.datasets?.length}
+              productLoader={totalGraphLoading}
             />
           </View>
         </View>

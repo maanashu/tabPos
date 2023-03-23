@@ -4,15 +4,16 @@ import {
   TouchableOpacity,
   View,
   Image,
+  ActivityIndicator
 } from 'react-native';
-import {  SF, SH } from '@/theme';
+import {  COLORS, SF, SH } from '@/theme';
 import {
   rightlight,
 } from '@/assets';
 import { ChartKit, Spacer } from '@/components';
 import { styles } from '../Analytics.styles';
 
-export function HomeGraph({ header, subHeader, productGraphObject,homeGraphHandler, arrayLength}) {
+export function HomeGraph({ header, subHeader, productGraphObject,homeGraphHandler, arrayLength, productLoader}) {
   
   return (
     <View style={styles.totalProductCon}>
@@ -31,10 +32,23 @@ export function HomeGraph({ header, subHeader, productGraphObject,homeGraphHandl
         </TouchableOpacity>
       </View>
       <Spacer space={SH(5)} />
-      <ChartKit
-      productGraphObject={productGraphObject}
-      arrayLength={arrayLength}
-      />
+      {
+        productLoader
+        ?
+        <View style={{ marginTop: 50, borderWidth:1 }}>
+         <View style={{borderWidth:1}}>
+          <Text>Loading </Text>
+          <ActivityIndicator size="large" color={COLORS.indicator} />
+          </View>
+         </View>
+          :
+          <ChartKit
+          productGraphObject={productGraphObject}
+          arrayLength={arrayLength}
+          />
+
+      }
+     
     </View>
   );
 }

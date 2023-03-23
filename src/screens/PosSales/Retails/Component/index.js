@@ -199,12 +199,12 @@ export function CategoryProductDetail({
   );
 }
 
-export function ChangeDue({ crossButtonHandler, continueHandler }) {
+export function ChangeDue({ crossButtonHandler, continueHandler, changeDue, totalAmt }) {
   return (
     <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
       <View style={styles.primaryHeader}>
         <Text style={styles.headerText}>
-          {strings.posSale.customerTotalAmountHeader}
+          {strings.posSale.customerTotalAmountHeader}{totalAmt}
         </Text>
         <TouchableOpacity
           onPress={crossButtonHandler}
@@ -215,7 +215,7 @@ export function ChangeDue({ crossButtonHandler, continueHandler }) {
       </View>
       <View style={[styles.custTotalAmountBodyCon]}>
         <Spacer space={SH(40)} />
-        <Text style={styles.changeDueText}>{strings.posSale.changeDue}</Text>
+        <Text style={styles.changeDueText}>{strings.posSale.changeDue}{changeDue}</Text>
         <View style={{ flex: 1 }} />
         <TouchableOpacity
           style={[styles.checkoutButton, { marginVertical: moderateScale(20) }]}

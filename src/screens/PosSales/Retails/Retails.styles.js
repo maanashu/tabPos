@@ -1604,6 +1604,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
+    alignSelf:'center'
   },
   selectedText: {
     color: COLORS.white,

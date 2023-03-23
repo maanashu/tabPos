@@ -192,7 +192,7 @@ export const en = {
     noTips: 'No Tips',
     cashRecive: 'Cash amount received',
     otherAmount: 'Other amount',
-    changeDue: 'Change Due: $3.40',
+    changeDue: 'Change Due: $',
     firstName: 'First name',
     subCategory:'Sub-Category',
     category:'Category',
