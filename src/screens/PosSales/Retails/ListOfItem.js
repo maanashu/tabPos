@@ -20,7 +20,7 @@ import { strings } from '@/localization';
 import { styles } from './Retails.styles';
 const windowHeight = Dimensions.get('window').height;
 
-export function ListOfItem({listOfItemCloseHandler, customerProfileImage,customerAddr, customerEmail,  customerMobileNo,  customerName,  checkOutHandler, jbritemList,renderJbrItem,notes,  totalAmount, subTotal, discount, tax, productItem}) {
+export function ListOfItem({listOfItemCloseHandler,walletId, customerProfileImage,customerAddr, customerEmail, tipsRate,payable1,  customerMobileNo,  customerName,  checkOutHandler, jbritemList,renderJbrItem,notes,  totalAmount, subTotal, discount, tax, productItem, payable}) {
   return (
      <View style={styles.container}>
           <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -85,14 +85,14 @@ export function ListOfItem({listOfItemCloseHandler, customerProfileImage,custome
                     <View style={styles.displayFlex}>
                       <View>
                         <Text style={styles.paymentTipsText}>
-                          {strings.retail.payable}
+                          {strings.retail.payable}{payable1}
                         </Text>
                         <Spacer space={SH(10)} />
                         <Text style={styles.paymentTipsText}>
-                          {strings.retail.tips}
+                          {strings.retail.tips}{tipsRate}
                         </Text>
                       </View>
-                      <Text style={styles.paymentPay}>$254.60</Text>
+                      <Text style={styles.paymentPay}>${payable}</Text>
                     </View>
                   </View>
                   <Spacer space={SH(10)} />
@@ -138,7 +138,7 @@ export function ListOfItem({listOfItemCloseHandler, customerProfileImage,custome
                       </Text>
                       <Spacer space={SH(5)} />
                       <Text style={styles.walletId}>
-                        {strings.analytics.walletId}
+                         {walletId}
                       </Text>
                     </View>
                   </View>

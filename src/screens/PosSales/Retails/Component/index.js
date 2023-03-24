@@ -204,7 +204,7 @@ export function ChangeDue({ crossButtonHandler, continueHandler, changeDue, tota
     <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
       <View style={styles.primaryHeader}>
         <Text style={styles.headerText}>
-          {strings.posSale.customerTotalAmountHeader}{totalAmt}
+          {strings.posSale.paid}{totalAmt}
         </Text>
         <TouchableOpacity
           onPress={crossButtonHandler}

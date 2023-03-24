@@ -51,7 +51,7 @@ import { moderateScale, verticalScale } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import {tipDataDummy } from '@/constants/flatListData';
+import { tipDataDummy } from '@/constants/flatListData';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getCategory,
@@ -82,12 +82,11 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
 import { AddDiscountToCart, UpdatePrice } from '@/components';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { ListOfItem } from './ListOfItem';  
+import { ListOfItem } from './ListOfItem';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { CategoryProductDetail, ChangeDue } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
 import { emailReg, mobileReg } from '@/utils/validators';
-
 
 export function Retails() {
   const dispatch = useDispatch();
@@ -108,7 +107,7 @@ export function Retails() {
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const getTotalCart = getRetailData?.getAllCart?.poscart_products?.length;
   const totalCart = getTotalCart ? getTotalCart : '0';
-  const walletUser= getRetailData?.walletGetByPhone?.[0];
+  const walletUser = getRetailData?.walletGetByPhone?.[0];
   const walletUserStep = walletUser?.step;
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
@@ -159,12 +158,8 @@ export function Retails() {
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
   const [searchSelectedId, setSearchSelectedId] = useState(null);
   const [tipSelectId, setTipsSelected] = useState();
-  console.log('tipSelectId',tipSelectId);
   const [amountSelectId, setAmountSelectId] = useState();
   const [amountReceived, setAmountReceived] = useState();
-  console.log('amountReceived',amountReceived?.amount);
-  
-
   const [amountDis, setAmountDis] = useState('');
   const [percentDis, setPercentDis] = useState('');
   const [discountCode, setDiscountCode] = useState('');
@@ -198,20 +193,22 @@ export function Retails() {
   const [openScanner, setOpenScanner] = useState(false);
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
+  console.log('customer', customer);
   const [userEAdd, setUserEAdd] = useState('');
   const [userLName, setUserLName] = useState('');
   const [userFName, setUserFName] = useState('');
   const [sendInventer, setSendInventer] = useState(false);
   const [serPro, setSerPro] = useState(productData?.qty ? productData?.qty : 0);
   const [walletIdInp, setWalletIdInp] = useState();
-  const [tipState,setTipState] =  useState(1);
-  const getPerc = tipState?.percentage ===  undefined ? '1' : tipState?.percentage;
-  const amountPer = getCartAmount?.total_amount *  getPerc;
+  const [tipState, setTipState] = useState(1);
+  const getPerc =
+    tipState?.percentage === undefined ? '1' : tipState?.percentage;
+  const amountPer = getCartAmount?.total_amount * getPerc;
   const recevAmount = amountPer / 100;
   const recevAmountDec = recevAmount;
-  const  finalReceviedAmount = getCartAmount?.total_amount + recevAmountDec;
+  const finalReceviedAmount = getCartAmount?.total_amount + recevAmountDec;
   const [tipsData, setTipsData] = useState();
-  const tipData =[
+  const tipData = [
     {
       percentage: getTips?.first_tips ?? 0,
       id: '1',
@@ -225,20 +222,33 @@ export function Retails() {
       id: '3',
     },
   ];
-  
 
-const amountReceivedData =[
+  const amountReceivedData = [
     {
-      amount: tipSelectId === null || tipSelectId === undefined ? getCartAmount?.total_amount : amountPer === undefined ? getCartAmount?.total_amount : finalReceviedAmount .toFixed(2),
-
+      amount:
+        tipSelectId === null || tipSelectId === undefined
+          ? getCartAmount?.total_amount
+          : amountPer === undefined
+          ? getCartAmount?.total_amount
+          : finalReceviedAmount.toFixed(2),
       id: '1',
     },
     {
-      amount:tipSelectId === null || tipSelectId === undefined ? getCartAmount?.total_amount + 10 : amountPer === undefined ? getCartAmount?.total_amount + 10 :(finalReceviedAmount + 10.00).toFixed(2) ?? 0,
+      amount:
+        tipSelectId === null || tipSelectId === undefined
+          ? getCartAmount?.total_amount + 10
+          : amountPer === undefined
+          ? getCartAmount?.total_amount + 10
+          : (finalReceviedAmount + 10.0).toFixed(2) ?? 0,
       id: '2',
     },
     {
-      amount:tipSelectId === null || tipSelectId === undefined ? getCartAmount?.total_amount + 20 :amountPer === undefined ? getCartAmount?.total_amount + 10 :  (finalReceviedAmount + 20.00).toFixed(2) ?? 0,
+      amount:
+        tipSelectId === null || tipSelectId === undefined
+          ? getCartAmount?.total_amount + 20
+          : amountPer === undefined
+          ? getCartAmount?.total_amount + 10
+          : (finalReceviedAmount + 20.0).toFixed(2) ?? 0,
       id: '3',
     },
   ];
@@ -381,30 +391,29 @@ const amountReceivedData =[
   const phoneNumberSearchFun = customerPhoneNo => {
     if (customerPhoneNo?.length > 9) {
       dispatch(getUserDetail(customerPhoneNo));
-      Keyboard.dismiss()
+      Keyboard.dismiss();
     } else if (customerPhoneNo?.length < 10) {
       dispatch(getUserDetailSuccess([]));
     }
   };
-  
+
   const walletIdInpFun = walletIdInp => {
-    if(walletIdInp?.length > 9){
+    if (walletIdInp?.length > 9) {
       dispatch(walletGetByPhone(walletIdInp));
-      Keyboard.dismiss()
+      Keyboard.dismiss();
     }
-  }
+  };
   const sendRequestFun = () => {
-    if(walletUser?.step <=1 ){
-      alert(strings.valiadtion.completeStep)
-       }
-      else if(walletUser?.step >=2 && walletIdInp?.length > 9 ){
-        const data={
-           amount:getCartAmount?.total_amount,
-           wallletAdd:walletUser?.business?.wallet_address
-         }
-         dispatch(requestMoney(data));
-         setWalletIdInp('')
-      } 
+    if (walletUser?.step <= 1) {
+      alert(strings.valiadtion.completeStep);
+    } else if (walletUser?.step >= 2 && walletIdInp?.length > 9) {
+      const data = {
+        amount: getCartAmount?.total_amount,
+        wallletAdd: walletUser?.business?.wallet_address,
+      };
+      dispatch(requestMoney(data));
+      setWalletIdInp('');
+    }
   };
 
   const userContinueHandler = () => {
@@ -484,8 +493,6 @@ const amountReceivedData =[
   const userDetalLoader = useSelector(state =>
     isLoadingSelector([TYPES.GET_USERDETAIL], state)
   );
-
-
 
   const clearCartHandler = () => {
     if (totalCart === '0') {
@@ -653,6 +660,7 @@ const amountReceivedData =[
     } else {
       const data = {
         cartid: cartIDdiscount,
+        userId : customer?.user_id
       };
       dispatch(createOrder(data));
       setListofItem(false);
@@ -744,7 +752,7 @@ const amountReceivedData =[
   };
   const custPaymentRemoveHandler = () => {
     setCustPayment(false);
-    setWalletIdInp('')
+    setWalletIdInp('');
   };
   const cashChooseHandler = () => {
     setCashChoose(true);
@@ -754,28 +762,28 @@ const amountReceivedData =[
   };
   const cardChooseHandler = () => {
     setCardChoose(!cardChoose);
-    // productArrayproductArrayproductArray;
     setCashChoose(false);
     setJbrCoin(false);
   };
   const cusCashPaidHandler = () => {
     setCutsomerTotalAmount(false);
     setCustomerCashPaid(!customerCashPaid);
-    setTipsData(
-       {
-      tips:tipState?.percentage ?? 0, 
-      amountReceived:amountReceived?.amount === undefined ? getCartAmount?.total_amount  :  amountReceived?.amount ,
-      otherAmount:amount ?? 0,
-     chnageDue: tipSelectId === null ? 0 :  recevAmountDec.toFixed(2)
-  }
-   )
-    const data = {
-      tips: tipSelectId === null || tipSelectId === undefined ? 0 :  tipState?.percentage, 
-      amountReceived:tipSelectId === null || tipSelectId === undefined  ? getCartAmount?.total_amount  : amountReceived?.amount,
-      otherAmount:amount ?? 0,
-     chnageDue: tipSelectId === null ? 0 :  recevAmountDec.toFixed(2)
-    }
-     console.log('data', data);
+    setTipsData({
+      tips:
+        tipSelectId === null || tipSelectId === undefined
+          ? 0
+          : tipState?.percentage,
+      amountReceived:
+        amountSelectId === null || amountSelectId === undefined
+          ? getCartAmount?.total_amount
+          : amountReceived?.amount,
+      otherAmount: amount ?? 0,
+      chnageDue:
+        tipSelectId === null || tipSelectId === undefined
+          ? 0
+          : recevAmountDec.toFixed(2),
+    });
+    setAmount('');
   };
   const searchConRemoveHandler = () => {
     setPosSearch(false);
@@ -805,7 +813,6 @@ const amountReceivedData =[
     }
   };
 
-
   const TipsItemSelect = ({ item, borderColor, color, onPress }) => (
     <TouchableOpacity
       style={[styles.tipChildCon, borderColor, color]}
@@ -815,13 +822,17 @@ const amountReceivedData =[
     </TouchableOpacity>
   );
   const tipsItem = ({ item }) => {
-    const borderColor = item.id === tipSelectId ? COLORS.primary : COLORS.solidGrey;
+    const borderColor =
+      item.id === tipSelectId ? COLORS.primary : COLORS.solidGrey;
     const color = item.id === tipSelectId ? COLORS.primary : COLORS.solid_grey;
 
     return (
       <TipsItemSelect
         item={item}
-        onPress={() => (setTipsSelected(tipSelectId === item.id ? null : item.id), setTipState(item))}
+        onPress={() => (
+          setTipsSelected(tipSelectId === item.id ? null : item.id),
+          setTipState(item)
+        )}
         borderColor={{ borderColor }}
         color={{ color }}
       />
@@ -829,10 +840,8 @@ const amountReceivedData =[
   };
 
   const tipDataDummyItem = ({ item }) => (
-    <View
-      style={styles.tipChildCon}
-    >
-       <ActivityIndicator size="small" color={COLORS.black} />
+    <View style={styles.tipChildCon}>
+      <ActivityIndicator size="small" color={COLORS.black} />
     </View>
   );
 
@@ -853,7 +862,10 @@ const amountReceivedData =[
     return (
       <AmountReceivedItemSelect
         item={item}
-        onPress={() => (setAmountSelectId(amountSelectId === item.id ? null :  item.id), setAmountReceived(item))}
+        onPress={() => (
+          setAmountSelectId(amountSelectId === item.id ? null : item.id),
+          setAmountReceived(item)
+        )}
         borderColor={{ borderColor }}
         color={{ color }}
       />
@@ -1328,56 +1340,63 @@ const amountReceivedData =[
   const changeView = () => {
     if (getuserDetailByNo?.length > 0) {
       return (
-        <View style={{ height: SH(416), width: SW(93)}}>
-           <Spacer space={SH(30)} />
-            {isUserDetailLoading ? (
-              <View style={{ marginTop: 100 }}>
-                <ActivityIndicator size="large" color={COLORS.indicator} />
-              </View>
-            ) : (
-              <View
-                style={styles.customerAddreCon}>
-                <Spacer space={SH(30)} />
-                <View style={[styles.flexAlign, { alignItems: 'flex-start' }]}>
-                  <Image
-                    source={
-                      getuserDetailByNo?.[0]?.profile_photo
-                        ? { uri:   getuserDetailByNo?.[0]?.profile_photo}
-                        : userImage
-                    }
-                    style={styles.jbrCustomer}
-                  />
-                  <View style={{ paddingHorizontal: moderateScale(8) }}>
-                    <Text
-                      numberOfLines={1}
-                      style={[styles.cusAddText, { fontSize: SF(20) }]}
-                    >
-                      {getuserDetailByNo?.[0]?.first_name}
-                    </Text>
-                    <Spacer space={SH(8)} />
-                    <Text style={styles.cusAddText}>
+        <View style={{ height: SH(416), width: SW(93) }}>
+          <Spacer space={SH(30)} />
+          {isUserDetailLoading ? (
+            <View style={{ marginTop: 100 }}>
+              <ActivityIndicator size="large" color={COLORS.indicator} />
+            </View>
+          ) : (
+            <View style={styles.customerAddreCon}>
+              <Spacer space={SH(30)} />
+              <View style={[styles.flexAlign, { alignItems: 'flex-start' }]}>
+                <Image
+                  source={
+                    getuserDetailByNo?.[0]?.profile_photo
+                      ? { uri: getuserDetailByNo?.[0]?.profile_photo }
+                      : userImage
+                  }
+                  style={styles.jbrCustomer}
+                />
+                <View style={{ paddingHorizontal: moderateScale(8) }}>
+                  <Text
+                    numberOfLines={1}
+                    style={[styles.cusAddText, { fontSize: SF(20) }]}
+                  >
+                    {getuserDetailByNo?.[0]?.first_name}
+                  </Text>
+                  <Spacer space={SH(8)} />
+                  <Text style={styles.cusAddText}>
                     {getuserDetailByNo?.[0]?.phone_number}
-                    </Text>
-                    <Spacer space={SH(5)} />
-                    <Text style={styles.cusAddText}>{getuserDetailByNo?.[0]?.email} </Text>
-                    <Spacer space={SH(8)} />
-                    <Text style={styles.cusAddText}>
-                    {getuserDetailByNo?.[0]?.city},{getuserDetailByNo?.[0]?.address},{getuserDetailByNo?.[0]?.state} {getuserDetailByNo?.[0]?.zip}
-                    </Text>
-                  </View>
+                  </Text>
+                  <Spacer space={SH(5)} />
+                  <Text style={styles.cusAddText}>
+                    {getuserDetailByNo?.[0]?.email}{' '}
+                  </Text>
+                  <Spacer space={SH(8)} />
+                  <Text style={styles.cusAddText}>
+                    {getuserDetailByNo?.[0]?.city},
+                    {getuserDetailByNo?.[0]?.address},
+                    {getuserDetailByNo?.[0]?.state}{' '}
+                    {getuserDetailByNo?.[0]?.zip}
+                  </Text>
                 </View>
-                <View style={{flex:1}}/>
               </View>
-
-            )}
-             <View style={{flex:1}}/>
-                 <Button
-                  onPress={() => {setCustCash(false), setCutsomerTotalAmount(true), dispatch(getTip(sellerID))}}
-                  title={strings.retail.next}
-                  textStyle={styles.selectedText}
-                  style={styles.submitButtons}
-               />
-            <Spacer space={SH(20)} />
+              <View style={{ flex: 1 }} />
+            </View>
+          )}
+          <View style={{ flex: 1 }} />
+          <Button
+            onPress={() => {
+              setCustCash(false),
+                setCutsomerTotalAmount(true),
+                dispatch(getTip(sellerID));
+            }}
+            title={strings.retail.next}
+            textStyle={styles.selectedText}
+            style={styles.submitButtons}
+          />
+          <Spacer space={SH(20)} />
         </View>
       );
     } else if (
@@ -1492,13 +1511,14 @@ const amountReceivedData =[
                 />
               </View>
             </View>
-            
-            {userDetalLoader
-             ?
-             <View style={{ marginTop: 40, alignSelf:'center'}}>
-               <ActivityIndicator size="large" color={COLORS.indicator} />
-             </View>
-             :  changeView()}
+
+            {userDetalLoader ? (
+              <View style={{ marginTop: 40, alignSelf: 'center' }}>
+                <ActivityIndicator size="large" color={COLORS.indicator} />
+              </View>
+            ) : (
+              changeView()
+            )}
           </View>
         </View>
       );
@@ -1507,10 +1527,15 @@ const amountReceivedData =[
         <View style={[styles.amountPopupCon, styles.addNewProdouctCon]}>
           <View style={styles.primaryHeader}>
             <Text style={styles.headerText}>
-              {strings.posSale.customerTotalAmountHeader}{getCartAmount?.total_amount ?? 0.00}
+              {strings.posSale.customerTotalAmountHeader}
+              {getCartAmount?.total_amount ?? 0.0}
             </Text>
             <TouchableOpacity
-              onPress={() => (setCutsomerTotalAmount(false), setCustCash(true),setCustomerPhoneNo(''))}
+              onPress={() => (
+                setCutsomerTotalAmount(false),
+                setCustCash(true),
+                setCustomerPhoneNo('')
+              )}
               style={styles.crossButtonPosition}
             >
               <Image source={crossButton} style={styles.crossButton} />
@@ -1528,33 +1553,36 @@ const amountReceivedData =[
             </Text>
             <Spacer space={SH(20)} />
             <View>
-
-              {
-                tipsLoader
-                ?
+              {tipsLoader ? (
                 <FlatList
-                data={tipDataDummy}
-                renderItem={tipDataDummyItem}
-                keyExtractor={item => item.id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.contentContainer}
-              />
-              :
-              <FlatList
-              data={tipData}
-              extraData={tipData}
-              renderItem={tipsItem}
-              keyExtractor={item => item.id}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.contentContainer}
-            />
-              }
+                  data={tipDataDummy}
+                  renderItem={tipDataDummyItem}
+                  keyExtractor={item => item.id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.contentContainer}
+                />
+              ) : (
+                <FlatList
+                  data={tipData}
+                  extraData={tipData}
+                  renderItem={tipsItem}
+                  keyExtractor={item => item.id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.contentContainer}
+                />
+              )}
             </View>
             <Spacer space={SH(15)} />
-            <TouchableOpacity style={styles.noTipsButtonCon} activeOpacity={0.4} onPress={() => setTipsSelected(null)}>
-              <Text style={styles.noTipsTextStyle}>{strings.posSale.noTips}</Text>
+            <TouchableOpacity
+              style={styles.noTipsButtonCon}
+              activeOpacity={0.4}
+              onPress={() => setTipsSelected(null)}
+            >
+              <Text style={styles.noTipsTextStyle}>
+                {strings.posSale.noTips}
+              </Text>
             </TouchableOpacity>
             <Spacer space={SH(10)} />
             <Text
@@ -1590,13 +1618,13 @@ const amountReceivedData =[
               keyboardType="numeric"
             />
             <View style={{ flex: 1 }} />
-                    <Button
-                    onPress={cusCashPaidHandler}
-                    title={strings.retail.next}
-                    textStyle={styles.selectedText}
-                    style={styles.submitButtons}
-                 />
-                    <Spacer space={SH(30)} />
+            <Button
+              onPress={cusCashPaidHandler}
+              title={strings.retail.next}
+              textStyle={styles.selectedText}
+              style={styles.submitButtons}
+            />
+            <Spacer space={SH(30)} />
           </View>
         </View>
       );
@@ -1610,7 +1638,11 @@ const amountReceivedData =[
             setCustomerCashPaid(false), setListofItem(true)
           )}
           changeDue={tipsData?.chnageDue}
-          totalAmt={tipsData?.amountReceived}
+          totalAmt={
+            tipsData?.otherAmount === ''
+              ? tipsData?.amountReceived
+              : tipsData?.otherAmount
+          }
         />
       );
     }
@@ -1690,6 +1722,16 @@ const amountReceivedData =[
           customerMobileNo={customer?.phone_number}
           customerEmail={customer?.email}
           customerAddr={customer}
+          walletId={customer?.wallet_address}
+          payable={
+            tipsData?.otherAmount === ''
+              ? tipsData?.amountReceived
+              : tipsData?.otherAmount
+          }
+          tipsRate={tipsData?.chnageDue}
+          payable1={
+            getCartAmount?.total_amount ? getCartAmount?.total_amount : '0.00'
+          }
         />
       ) : openScanner ? (
         <View style={styles.cameraContainer}>
@@ -2352,7 +2394,7 @@ const amountReceivedData =[
                   {strings.posSale.paymentHeader}
                 </Text>
                 <TouchableOpacity
-                  onPress={() => (setCustPayment(false),setWalletIdInp(''))}
+                  onPress={() => (setCustPayment(false), setWalletIdInp(''))}
                   style={styles.crossButtonPosition}
                 >
                   <Image source={crossButton} style={styles.crossButton} />
@@ -2376,39 +2418,36 @@ const amountReceivedData =[
                     </Text>
                   </View> */}
                   <TextInput
-                     style={styles.walletIdInput}
-                      onChangeText={walletIdInp => (setWalletIdInp(walletIdInp), walletIdInpFun(walletIdInp)) }
-                      // onChangeText={setWalletIdInp}
-                      value={walletIdInp}
-                      placeholder="Wallet Id"
-                      keyboardType="numeric"
-                      placeholderStyle={styles.walletAddresStyle}
-                      maxLength={10}
-                    />
+                    style={styles.walletIdInput}
+                    onChangeText={walletIdInp => (
+                      setWalletIdInp(walletIdInp), walletIdInpFun(walletIdInp)
+                    )}
+                    // onChangeText={setWalletIdInp}
+                    value={walletIdInp}
+                    placeholder="Wallet Id"
+                    keyboardType="numeric"
+                    placeholderStyle={styles.walletAddresStyle}
+                    maxLength={10}
+                  />
                   <Spacer space={SH(20)} />
                   <Text style={styles.walletIdText}>
                     {strings.posSale.scanText}
                   </Text>
                   <Spacer space={SH(10)} />
-                    <Image
+                  <Image
                     source={{ uri: walletData?.qr_code }}
                     style={styles.qrcodeImage}
                   />
                   <Spacer space={SH(20)} />
-                  {
-                    walletUser?.step >=2 && walletIdInp?.length > 9
-                    ?
+                  {walletUser?.step >= 2 && walletIdInp?.length > 9 ? (
                     <Button
-                    onPress={() => sendRequestFun()}
-                    title={strings.retail.sendRequest}
-                    textStyle={styles.selectedText}
-                    style={styles.submitButtons}
-                    pending={sendRequestLoader}
-                 />
-                 :
-                 null
-                  }
-            
+                      onPress={() => sendRequestFun()}
+                      title={strings.retail.sendRequest}
+                      textStyle={styles.selectedText}
+                      style={styles.submitButtons}
+                      pending={sendRequestLoader}
+                    />
+                  ) : null}
                 </View>
               )}
             </View>

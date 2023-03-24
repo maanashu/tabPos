@@ -35,11 +35,9 @@ export function HomeGraph({ header, subHeader, productGraphObject,homeGraphHandl
       {
         productLoader
         ?
-        <View style={{ marginTop: 50, borderWidth:1 }}>
-         <View style={{borderWidth:1}}>
-          <Text>Loading </Text>
+        <View style={{ marginTop: 50}}>
+        
           <ActivityIndicator size="large" color={COLORS.indicator} />
-          </View>
          </View>
           :
           <ChartKit

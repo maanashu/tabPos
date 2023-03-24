@@ -439,6 +439,7 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
       const body = {
         cart_id: data.cartid,
+        user_id : data. userId,
         shipping : "Delivery"
       };
       HttpClient.post(endpoint, body)
