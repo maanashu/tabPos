@@ -51,7 +51,7 @@ import {
 } from '@/assets';
 import { BarChartCom, DaySelector, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
-import { Users, UserProfile, UserDetails } from '@/screens/Customers';
+import {UserProfile, UserDetails, Users} from '@/screens/Customers/Components';
 import { Table } from 'react-native-table-component';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -102,15 +102,13 @@ export function Customers() {
       customertype: 'New Customers',
       count: getCustomerStatitics?.new_customers,
       img: newCustomer,
-      id: '1',
-
-
+      id: '1'
     },
     {
       customertype: 'Returning Customers',
       count: getCustomerStatitics?.returning_customers,
       img: returnCustomer,
-      id: '2',
+      id: '2'
     },
     {
       customertype: 'Online Customers',
@@ -590,6 +588,7 @@ export function Customers() {
                           ? orderDetail?.coordinates?.[1]
                           : 0,
                       }}
+                      
                       image={blueLocation}
                       style={{ width: 8, height: 8 }}
                     >

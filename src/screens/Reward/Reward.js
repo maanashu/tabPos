@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View,Text, Dimensions, FlatList, TouchableOpacity } from 'react-native';
 import {BarChart} from 'react-native-gifted-charts';
 import { moderateScale } from 'react-native-size-matters';
-import { styles } from '../PosSales/Retails/Retails.styles';
+import { styles } from '../Retails/Retails.styles';
 
 export function Reward() {
 

@@ -515,27 +515,40 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     height: windowHeight * 0.62,
   },
-  absoluteZero:{
-    position:'absolute', top:0
+  absoluteZero: {
+    position: 'absolute',
+    top: 0,
   },
-  centerSw:{
-    width: SW(145), alignItems: 'center' 
+  centerSw: {
+    width: SW(145),
+    alignItems: 'center',
   },
-  amountExpect :{
+  amountExpect: {
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
     fontSize: SF(18),
   },
-  removerDarkText:{
+  removerDarkText: {
     textAlign: 'center',
     fontFamily: Fonts.Bold,
     fontSize: SF(25),
     color: COLORS.solid_grey,
   },
-  removerDarkTextRegular:{
+  removerDarkTextRegular: {
     textAlign: 'center',
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     color: COLORS.solid_grey,
+  },
+  dateTimeAlign: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: windowWidth * 0.65,
+    paddingRight: 50,
+  },
+  dateHeadAlign:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: windowWidth * 0.65,
   }
 });

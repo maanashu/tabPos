@@ -94,9 +94,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
     alignSelf: 'center',
   },
-  contentContainerStyle:{
-     flex:1,
-     justifyContent:'space-between'
+  contentContainerStyle: {
+    flex: 1,
+    justifyContent: 'space-between',
   },
   custometrCon: {
     width: SW(75),
@@ -128,11 +128,11 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: SF(18),
   },
-  cusBarClr:{
-     width:SW(200),
-     height:SH(20),
-     resizeMode:"contain",
-     alignSelf:"center"
+  cusBarClr: {
+    width: SW(200),
+    height: SH(20),
+    resizeMode: 'contain',
+    alignSelf: 'center',
   },
   byDayCon: {
     backgroundColor: COLORS.primary,
@@ -182,10 +182,9 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     borderColor: COLORS.solidGrey,
     flexDirection: 'row',
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: moderateScale(7),
-   
   },
 
   dropDownIcon: {
@@ -399,13 +398,13 @@ export const styles = StyleSheet.create({
     width: SW(25),
     height: SW(25),
     resizeMode: 'contain',
-    borderRadius:50
+    borderRadius: 50,
   },
   lovingStyleData: {
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
-    borderRadius:50
+    borderRadius: 50,
   },
   Phonelight: {
     width: SW(5),
@@ -422,7 +421,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     color: COLORS.solid_grey,
     paddingHorizontal: moderateScale(5),
-    width:windowWidth * 0.40,
+    width: windowWidth * 0.4,
   },
   pointCon: {
     borderWidth: 1,
@@ -440,7 +439,6 @@ export const styles = StyleSheet.create({
     width: SW(8),
     height: SW(8),
     resizeMode: 'contain',
-    // transform: [{ rotate: '180deg'}]
   },
   pointText: {
     fontFamily: Fonts.SemiBold,
@@ -452,7 +450,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(13),
     color: COLORS.dark_grey,
-    // paddingHorizontal: moderateScale(5),
   },
   calendarStyle: {
     width: SW(5),
@@ -575,7 +572,7 @@ export const styles = StyleSheet.create({
     color: COLORS.darkGray,
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
-    width:windowWidth * 0.40
+    width: windowWidth * 0.4,
   },
   angela: {
     color: COLORS.solid_grey,
@@ -583,11 +580,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   angelaPic: {
-    width:SW(15),
-     height:SW(15),
-      resizeMode:'contain',
-       borderRadius:50,
-       marginRight:10
+    width: SW(15),
+    height: SW(15),
+    resizeMode: 'contain',
+    borderRadius: 50,
+    marginRight: 10,
   },
   buyer: {
     color: COLORS.dark_grey,
@@ -622,7 +619,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(18),
     paddingVertical: verticalScale(3),
-    // paddingHorizontal
   },
   tableContainer: {
     backgroundColor: COLORS.white,
@@ -797,7 +793,7 @@ export const styles = StyleSheet.create({
   },
   mapContainer2: {
     borderRadius: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   mapConatinerHeight: {
     height: windowHeight * 0.79,
@@ -815,11 +811,11 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   trackingAngela: {
-    width:SW(17),
-     height:SW(17),
-      resizeMode:'contain',
-       borderRadius:50,
-       marginHorizontal:10
+    width: SW(17),
+    height: SW(17),
+    resizeMode: 'contain',
+    borderRadius: 50,
+    marginHorizontal: 10,
   },
   costoHr: {
     borderWidth: 0.4,
@@ -855,19 +851,19 @@ export const styles = StyleSheet.create({
     height: SW(4),
     resizeMode: 'contain',
   },
-  greyRadioArr:{
+  greyRadioArr: {
     width: SW(7),
     height: SW(11),
     resizeMode: 'contain',
     // marginVertical:verticalScale(1)
   },
-  greyRadioCon:{
-     flexDirection:'row',
-      paddingVertical:verticalScale(3)
+  greyRadioCon: {
+    flexDirection: 'row',
+    paddingVertical: verticalScale(3),
   },
-  greyRadioBody:{
-    flexDirection:'column',
-     justifyContent:'flex-end'
+  greyRadioBody: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
   detailText: {
     color: COLORS.primary,
@@ -1089,7 +1085,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: windowWidth * 0.36,
-    // paddingRight: Platform.OS === 'ios' ? 40 : 0,
   },
   orderCigrate: {
     width: SW(10),
@@ -1103,23 +1098,29 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: moderateScale(20),
   },
-  saleTypeView:{
-    // backgroundColor:COLORS.marshmallow,
+  saleTypeView: {
     width: windowWidth * 0.08,
-    height:SH(30),
-    justifyContent:'center',
-    alignItems:'center',
-    borderRadius:4
+    height: SH(30),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
   },
-  saleTypeText:{
+  saleTypeText: {
     color: COLORS.white,
     fontFamily: Fonts.Regular,
     fontSize: SF(12),
   },
-  userNotFound:{
+  userNotFound: {
     color: COLORS.primary,
     fontFamily: Fonts.MaisonRegular,
     fontSize: SF(20),
-    alignSelf:'center'
-  }
+    alignSelf: 'center',
+  },
+  txtInput: {
+    flex: 1,
+    justifyContent: 'center',
+    fontSize: SF(11),
+    top: 2,
+    color: COLORS.solid_grey,
+  },
 });

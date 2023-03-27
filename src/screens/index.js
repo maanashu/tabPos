@@ -9,10 +9,8 @@ export { LoginIntial } from '@/screens/Auth/LoginIntial/LoginIntial';
 export { VerifySucess } from '@/screens/Auth/VerifySucess/VerifySucess';
 
 // pos sales
-export { Retails } from '@/screens/PosSales/Retails/Retails';
-
-// Delivery order
-export { DeliveryOrder } from '@/screens/OrderDeliver/DeliveryOrder/DeliveryOrder';
+export { Retails } from '@/screens/Retails/Retails';
+export { DeliveryOrder } from '@/screens/DeliveryOrder/DeliveryOrder';
 export { ShippingOrder } from '@/screens/ShippingOrder/ShippingOrder';
 export { Wallet } from '@/screens/Wallet/Wallet';
 export { Management } from '@/screens/Management/Management';

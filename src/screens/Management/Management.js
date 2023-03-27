@@ -21,8 +21,7 @@ import { COLORS, SF, SW, SH } from '@/theme';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { styles } from '@/screens/Management/Management.styles';
 
-import { SessionHistoryTable } from './SessionHistoryTable';
-import { SummaryHistory } from './SummaryHistory';
+import { SessionHistoryTable, SummaryHistory } from '@/screens/Management/Components';
 
 export function Management() {
   const [addCash, setAddCash] = useState(false);

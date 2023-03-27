@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { moderateScale, verticalScale } from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
 import { Fonts, minus, plus } from '@/assets';
 import { Spacer } from './Spacer';
 const windowWidth = Dimensions.get('window').width;
@@ -24,9 +24,9 @@ export function ProductCard({
   ProductHandler
 }) {
   return (
-    <TouchableOpacity style={styles.productContainer} onPress={ProductHandler}>
+    <TouchableOpacity style={styles.productContainer} onPress={ProductHandler} activeOpacity={0.7}>
       <View style={{ flexDirection: 'row' }}>
-        <Image source={productImage} style={styles.marboloStyle} />
+        <Image source={productImage} style={styles.marboloStyle}/>
         <View style={{ paddingHorizontal: moderateScale(5) }}>
           <Text numberOfLines={1} style={styles.productName}>
             {productName}
@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
   cartonButton: {
     color: COLORS.white,
     fontSize: SF(12),
-    // paddingVertical: verticalScale(2),
   },
   singlePackBtnCon: {
     borderRadius: 3,
@@ -143,7 +142,6 @@ const styles = StyleSheet.create({
     color: COLORS.gerySkies,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    // paddingVertical: verticalScale(2),
   },
   previousRate: {
     color: COLORS.gerySkies,

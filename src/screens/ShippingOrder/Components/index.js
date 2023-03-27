@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { COLORS } from '@/theme';
 import { strings } from '@/localization';
-import { styles } from './DeliveryOrder.styles';
+import { styles } from '@/screens/ShippingOrder/ShippingOrder.styles';
 
 export function BottomSheet({ subTotal, tax, total, item, discount }) {
   return (

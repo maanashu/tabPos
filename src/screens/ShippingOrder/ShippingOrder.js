@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import {
-  deliveryTruck,
   notifications,
   search_light,
   pin,
@@ -35,7 +34,7 @@ import { deliveryOrders, loadingData } from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
 import { Button, ChartKit, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale } from 'react-native-size-matters';
-import { BottomSheet } from './BottomSheet';
+import { BottomSheet } from '@/screens/ShippingOrder/Components';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   acceptOrder,
@@ -53,7 +52,6 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import moment from 'moment';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useIsFocused } from '@react-navigation/native';
-import { LineChart } from 'react-native-chart-kit';
 
 export function ShippingOrder() {
   const isFocused = useIsFocused();
@@ -84,7 +82,6 @@ export function ShippingOrder() {
   const orderDate = moment(orderIdDate).format('LL');
   const length = orderHeadCount?.map(item => item.count);
   const orderPlaced = length?.reduce((sum, num) => sum + num);
-  console.log(orderPlaced), orderPlaced;
   const orderValueMulti = orderHeadCount?.[6].count * 100;
   const orderValue = orderValueMulti / orderPlaced;
   const orderValueDecimal = orderValue;

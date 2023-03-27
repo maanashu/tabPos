@@ -28,13 +28,13 @@ import {
   radio,
   userImage,
 } from '@/assets';
-import { styles } from './DeliveryOrder.styles';
+import { styles } from '@/screens/DeliveryOrder/DeliveryOrder.styles';
 import { strings } from '@/localization';
 import { deliveryOrders, loadingData } from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
 import { Button, ChartKit, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale } from 'react-native-size-matters';
-import { BottomSheet } from './BottomSheet';
+import { BottomSheet } from '@/screens/DeliveryOrder/Components';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   acceptOrder,
@@ -52,7 +52,6 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import moment from 'moment';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useIsFocused } from '@react-navigation/native';
-import { LineChart } from 'react-native-chart-kit';
 
 export function DeliveryOrder() {
   const isFocused = useIsFocused();
@@ -541,8 +540,7 @@ export function DeliveryOrder() {
   const renderProductList = ({ item, index }) => (
     <TouchableOpacity
       style={styles.productViewStyle}
-      onPress={() => alert('coming soon')}
-    >
+      onPress={() => alert('coming soon')}>
       <View style={styles.productImageView}>
         <Image
           source={{ uri: item?.product_image }}

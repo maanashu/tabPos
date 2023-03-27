@@ -5,6 +5,7 @@ import { activeProduct, catPercent } from '@/assets';
 import { strings } from '@/localization';
 import { styles } from './Analytics.styles';
 import { categoryData, inverntrycategoryData } from '@/constants/flatListData';
+import CircularProgress from 'react-native-circular-progress-indicator';
 
 import { DaySelector, Spacer } from '@/components';
 
@@ -129,10 +130,29 @@ export function TotalProductSub({
                     <Text style={styles.activeProductText}>
                       {strings.analytics.totalActiveProduct}
                     </Text>
-                    <Spacer space={SH(30)} />
-                    <Image
+                    <Spacer space={SH(15)} />
+                    {/* <Image
                       source={activeProduct}
                       style={styles.activeProduct}
+                    /> */}
+                    <CircularProgress
+                      value={50}
+                      radius={55}
+                      activeStrokeWidth={18}
+                      inActiveStrokeWidth={18}
+                      activeStrokeColor="#275AFF"
+                      inActiveStrokeColor="#EFEFEF"
+                      strokeLinecap="butt"
+                      valueSuffix={'%'}
+                      progressValueStyle={{
+                        fontWeight: '600',
+                        color: 'black',
+                        fontSize: 12,
+                      }}
+                      progressFormatter={value => {
+                        'worklet';
+                        return value.toFixed(2);
+                      }}
                     />
                   </View>
                 </View>
@@ -254,10 +274,25 @@ export function TotalProductSub({
                     <Text style={styles.activeProductText}>
                       {strings.analytics.activeItem}
                     </Text>
-                    <Spacer space={SH(20)} />
-                    <Image
-                      source={activeProduct}
-                      style={styles.activeProduct}
+                    <Spacer space={SH(10)} />
+                    <CircularProgress
+                      value={50}
+                      radius={55}
+                      activeStrokeWidth={18}
+                      inActiveStrokeWidth={18}
+                      activeStrokeColor="#275AFF"
+                      inActiveStrokeColor="#EFEFEF"
+                      strokeLinecap="butt"
+                      valueSuffix={'%'}
+                      progressValueStyle={{
+                        fontWeight: '600',
+                        color: 'black',
+                        fontSize: 12,
+                      }}
+                      progressFormatter={value => {
+                        'worklet';
+                        return value.toFixed(2);
+                      }}
                     />
                   </View>
                 </View>

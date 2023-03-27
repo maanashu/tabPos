@@ -82,9 +82,8 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { TYPES } from '@/Types/Types';
 import { AddDiscountToCart, UpdatePrice } from '@/components';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { ListOfItem } from './ListOfItem';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { CategoryProductDetail, ChangeDue } from './Component';
+import { CategoryProductDetail, ChangeDue, ListOfItem } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
 import { emailReg, mobileReg } from '@/utils/validators';
 
@@ -193,7 +192,6 @@ export function Retails() {
   const [openScanner, setOpenScanner] = useState(false);
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
-  console.log('customer', customer);
   const [userEAdd, setUserEAdd] = useState('');
   const [userLName, setUserLName] = useState('');
   const [userFName, setUserFName] = useState('');
@@ -750,10 +748,6 @@ export function Retails() {
     setCardChoose(false);
     dispatch(getWalletId(sellerID));
   };
-  const custPaymentRemoveHandler = () => {
-    setCustPayment(false);
-    setWalletIdInp('');
-  };
   const cashChooseHandler = () => {
     setCashChoose(true);
     setJbrCoin(false);
@@ -1301,42 +1295,6 @@ export function Retails() {
     );
   };
 
-  const userDataItem = ({ item, index }) => (
-    <TouchableOpacity
-      style={[styles.customerAddreCon, { borderWidth: 1 }]}
-      // onPress={() => walletUserClickFun(item)}
-    >
-      <Spacer space={SH(30)} />
-      <View style={[styles.flexAlign, { alignItems: 'flex-start' }]}>
-        <Image
-          source={
-            item?.user_profiles?.profile_photo
-              ? { uri: item?.user_profiles?.profile_photo }
-              : userImage
-          }
-          style={styles.jbrCustomer}
-        />
-        <View style={{ paddingHorizontal: moderateScale(8) }}>
-          <Text
-            numberOfLines={1}
-            style={[styles.cusAddText, { fontSize: SF(20) }]}
-          >
-            {item?.user_profiles?.firstname}
-          </Text>
-          <Spacer space={SH(8)} />
-          <Text style={styles.cusAddText}>{item?.user_profiles?.phone_no}</Text>
-          <Spacer space={SH(5)} />
-          <Text style={styles.cusAddText}>{item.email}</Text>
-          <Spacer space={SH(8)} />
-          <Text style={styles.cusAddText}>
-            4849 Owagner Lanee Seattle, WA 98101
-          </Text>
-          <Text>{item.is_wallet === false ? 1 : 0}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
   const changeView = () => {
     if (getuserDetailByNo?.length > 0) {
       return (
@@ -1729,9 +1687,7 @@ export function Retails() {
               : tipsData?.otherAmount
           }
           tipsRate={tipsData?.chnageDue}
-          payable1={
-            getCartAmount?.total_amount ? getCartAmount?.total_amount : '0.00'
-          }
+          payable1={getCartAmount?.total_amount ? getCartAmount?.total_amount : '0.00'}
         />
       ) : openScanner ? (
         <View style={styles.cameraContainer}>
