@@ -4,8 +4,6 @@ import { COLORS } from '@/theme';
 import { strings } from '@/localization';
 import { styles } from '@/screens/DeliveryOrder/DeliveryOrder.styles';
 
-
-
 export function BottomSheet({ subTotal, tax, total, item, discount }) {
   return (
     <View>

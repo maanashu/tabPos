@@ -26,15 +26,18 @@ import {
   deliveryLine,
   radio,
   userImage,
-  parachuteBox
+  parachuteBox,
+  radioRound,
+  ups2,
+  profileImage
 } from '@/assets';
 import { styles } from './ShippingOrder.styles';
 import { strings } from '@/localization';
-import { deliveryOrders, loadingData } from '@/constants/staticData';
+import { deliveryOrders, loadingData, productList, selectShippingList } from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
 import { Button, ChartKit, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale } from 'react-native-size-matters';
-import { BottomSheet } from '@/screens/ShippingOrder/Components';
+import { BottomSheet, PrintScreenUI } from '@/screens/ShippingOrder/Components';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   acceptOrder,
@@ -87,6 +90,7 @@ export function ShippingOrder() {
   const orderValueDecimal = orderValue;
   const [singleOrder, setSingleOrder] = useState('');
   const [singleOrderView, setSingleOrderView] = useState(false);
+  const [printScreen, setPrintScreen] = useState(false); 
 
   const reviewArray = [
     {
@@ -176,7 +180,7 @@ export function ShippingOrder() {
     }
     setSelectedId(getDeliveryData?.orderList?.[0].id);
     setItem(getDeliveryData?.orderList?.[0]);
-  }, [getDeliveryData?.orderList, isFocused]);
+  }, [getDeliveryData?.orderList, isFocused, orderId]);
 
   const changeStatusHandler = dataType => {
     const data = {
@@ -191,6 +195,7 @@ export function ShippingOrder() {
     };
     dispatch(acceptOrder(data));
     setViewAllReviews(false);
+   
   };
 
   const singleOrderAccept = id => {
@@ -232,12 +237,16 @@ export function ShippingOrder() {
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
-        {viewAllReviews || singleOrderView ? (
+        {viewAllReviews || singleOrderView || printScreen ? (
           <TouchableOpacity
             onPress={() => {
               viewAllReviews
                 ?
                 setViewAllReviews(false)
+                :
+                printScreen
+                ?
+                (setPrintScreen(false), setViewAllReviews(true))
                 :
                  setSingleOrderView(false)
             }}
@@ -547,6 +556,8 @@ export function ShippingOrder() {
     </View>
   );
 
+ 
+
   const renderProductList = ({ item, index }) => (
     <TouchableOpacity
       style={styles.productViewStyle}
@@ -577,6 +588,7 @@ export function ShippingOrder() {
       </View>
     </TouchableOpacity>
   );
+ 
 
   const orderStatusText = () => {
     if (orderAccepted && readyPickup === false) {
@@ -922,7 +934,25 @@ export function ShippingOrder() {
   };
 
   const changeView = () => {
-    if (singleOrderView) {
+    if(printScreen){
+       return(
+        <PrintScreenUI
+        orderId={orderId}
+        orderDate={orderDate}
+        userProfile={userProfile?.profile_photo ? { uri : userProfile?.profile_photo} :userImage }
+        firstName={userProfile?.firstname ? userProfile?.firstname : 'user name'}
+        address= {itemss?.address ? itemss?.address : 'no address'}
+        shipingType={itemss?.shipping ? itemss?.shipping : 'no shipping type'}
+        customerProduct={customerProduct}
+        renderProductList={renderProductList}
+        itemss={itemss}
+        custProLength={custProLength}
+        selectShippingList={selectShippingList}
+        selectAndConHandler={() => (setPrintScreen(false), setViewAllReviews(true))}
+        />
+       )
+    } 
+    else if (singleOrderView) {
       return (
         <View style={[styles.headerMainView, { paddingVertical: SH(0) }]}>
           <View style={styles.orderNumberLeftViewmap}>
@@ -1127,7 +1157,7 @@ export function ShippingOrder() {
               <Text style={styles.orderReviewText}>{orderDate}</Text>
             </View>
 
-            <View style={styles.profileDetailView}>
+            <TouchableOpacity style={styles.profileDetailView} onPress={() => (setPrintScreen(true), setViewAllReviews(false))}>
               <View style={{ flexDirection: 'row' }}>
                 <Image
                   source={
@@ -1170,7 +1200,7 @@ export function ShippingOrder() {
                   </Text>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
 
             <Spacer space={SH(15)} />
             <View style={styles.horizontalLine} />

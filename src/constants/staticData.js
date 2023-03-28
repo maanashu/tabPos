@@ -290,3 +290,25 @@ export const productList = [
     price: '$43.99',
   },
 ];
+
+export const selectShippingList = [
+  {
+    id: '1',
+    heading : 'Priority Mailing services',
+    subHeading:'1-3 days shipping',
+    price:'$10.50'
+  },
+  {
+    id: '2',
+    heading : 'Priority Mailing services',
+    subHeading:'1-3 days shipping',
+    price:'$10.50'
+  },
+  {
+    id: '3',
+    heading : 'Priority Mailing services',
+    subHeading:'1-3 days shipping',
+    price:'$10.50'
+  },
+ 
+];

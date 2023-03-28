@@ -296,6 +296,8 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     width: windowWidth * 0.48,
     borderWidth: 1,
+    borderColor:COLORS.solidGrey,
+    paddingHorizontal:10
   },
   profileDetailView: {
     paddingHorizontal: SW(5),
@@ -311,9 +313,11 @@ export const styles = StyleSheet.create({
     width: SW(50),
   },
   profileImage: {
-    width: SW(12),
-    height: SW(12),
+    width: SW(13),
+    height: SW(13),
     resizeMode: 'contain',
+    borderRadius:50,
+    marginRight:5
   },
   scooter: {
     width: SW(17),
@@ -557,5 +561,63 @@ export const styles = StyleSheet.create({
   flexRow:{
     flexDirection:'row',
     alignItems:'center'
+  },
+  selectShipingRightView: {
+    borderWidth: 1,
+    width: windowWidth * 0.42,
+    borderRadius: 10,
+    borderColor: COLORS.solidGrey,
+    paddingHorizontal: moderateScale(10),
+    height: windowHeight * 0.84,
+  },
+  selectShipingCon: {
+    height: SH(56),
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: moderateScale(10),
+    justifyContent: 'center',
+    marginVertical: verticalScale(3),
+  },
+  radioRound: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+  },
+  shipingRate: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(13),
+    color: COLORS.solid_grey,
+  },
+  shipingRateSubHead: {
+    fontSize: SF(11),
+  },
+  ups2: {
+    width: SH(36),
+    height: SH(36),
+    resizeMode: 'contain',
+  },
+  printButtonCon: {
+    height: SH(64),
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: verticalScale(10),
+  },
+  printText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+    color: COLORS.darkGray,
+  },
+  displayFlex: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  shipingRadioBtn:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(10),
   }
 });
