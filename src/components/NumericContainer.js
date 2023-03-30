@@ -18,7 +18,17 @@ const windowHeight = Dimensions.get('window').height;
 
 export function NumericContainer() {
   const [amount, setAmount] = useState();
-  const [title, setTitle] = useState()
+  const [title, setTitle] = useState();
+  const [count, setCount] =  useState(0);
+
+  const plusHandler = () => {
+    setCount(count + 1)
+  };
+  const minusHandler = () => {
+    if(count > 0){
+      setCount(count - 1)
+    }
+  }
 
   return (
     <View style={{ height: windowHeight, paddingBottom: 60 }}>
@@ -50,12 +60,16 @@ export function NumericContainer() {
     <View style={{ flex: 1 }} />
     <View style={styles.directionInRow}>
       <View style={[styles.addCartButton, styles.addcountButton]}>
-        <Image source={minus} style={styles.minusBtn2} />
-        <Text style={styles.addCartText}>0</Text>
+         <TouchableOpacity onPress={() => minusHandler()}>
+         <Image source={minus} style={[styles.minusBtn2, {tintColor : count < 1 ? COLORS.mid_grey : COLORS.darkGray}]} />
+         </TouchableOpacity>
+        <Text style={[styles.addCartText, {color : count < 1 ? COLORS.mid_grey : COLORS.darkGray}]}>{count}</Text>
+        <TouchableOpacity onPress={() => plusHandler()}>
         <Image
           source={plus}
           style={[styles.minusBtn2, styles.plusCartBtn]}
         />
+        </TouchableOpacity>
       </View>
       <View
         style={
@@ -143,12 +157,10 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     flexDirection: 'row',
     alignItems: 'center',
-    // width: SW(208),
     height: SH(65),
     justifyContent: 'space-between',
   },
   minusBtn2: {
-    tintColor: COLORS.mid_grey,
     width: SW(24),
     height: SH(24),
     resizeMode: 'contain',
@@ -158,7 +170,6 @@ const styles = StyleSheet.create({
   },
   addCartText: {
     fontSize: SF(20),
-    color: COLORS.mid_grey,
   },
   addCartBtnTextsubmit: {
     fontSize: SF(16),

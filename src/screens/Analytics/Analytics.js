@@ -5623,7 +5623,7 @@ export function Analytics(props) {
         <View>
           <Text style={styles.darkBlackText}>Total Revenue</Text>
           <Text style={[styles.darkBlackText, { fontSize: SF(32) }]}>
-            ${revenueGraphObject?.totalResult ? revenueGraphObject?.totalResult : 0}
+            ${revenueGraphObject?.totalResult ? revenueGraphObject?.totalResult.toFixed(2) : 0}
           </Text>
         </View>
         <TouchableOpacity

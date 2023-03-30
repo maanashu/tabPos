@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { FlatList, Image, Text, View , TouchableOpacity} from 'react-native';
-import { COLORS, SH } from '@/theme';
+import { FlatList, Image, Text, View , TouchableOpacity, Dimensions} from 'react-native';
+import { COLORS, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { styles } from '@/screens/ShippingOrder/ShippingOrder.styles';
-import { deliveryScooter, Fonts, radioRound, ups2, userImage } from '@/assets';
-import { Spacer } from '@/components';
+import { clock, deliveryScooter, Fonts, pay, pin, radioRound, rightIcon, ups2, userImage } from '@/assets';
+import { Button, Spacer } from '@/components';
 import { moderateScale } from 'react-native-size-matters';
+import moment from 'moment';
+const windowHeight = Dimensions.get('window').height;
 
 export function BottomSheet({ subTotal, tax, total, item, discount }) {
   return (
@@ -178,5 +180,155 @@ export function PrintScreenUI ({orderDate, orderId, userProfile, selectAndConHan
       </View>
     </View>
     </View>
+  )
+};
+
+export function SingleOrderView ({selectShipingHandler, singleorderCancelHandler, singleOrderAccept, firstname,distance,itemLength,payAmount,deliveryType,orderSecondTime,orderFirstTime,userProfile,userFirstName,userAddress,driverShipping, renderProductList,singleOrder}) {
+   const orderDate = moment(singleOrder?.created_at).format('LL');
+   const orderId = singleOrder?.id
+  
+  return(
+  <View style={[styles.headerMainView, { paddingVertical: SH(0) }]}>
+    <View style={styles.orderNumberLeftViewmap}>
+      <Spacer space={SH(20)} />
+      <TouchableOpacity style={styles.reviewRenderView}>
+        <View style={{ width: SW(45) }}>
+          <Text numberOfLines={1} style={styles.nameText}>
+            {firstname ? firstname : 'user name'}
+          </Text>
+          <View style={styles.timeView}>
+            <Image source={pin} style={styles.pinIcon} />
+            <Text style={styles.timeText}>
+              {distance ? distance : '00.00'}
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ width: SW(25) }}>
+          <Text style={styles.nameText}>
+            {itemLength ? itemLength : '0'}
+            Item
+          </Text>
+          <View style={styles.timeView}>
+            <Image source={pay} style={styles.pinIcon} />
+            <Text style={styles.timeText}>
+              {payAmount ?  payAmount : '0'}
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ width: SW(60) }}>
+          <Text style={[styles.nameText, { color: COLORS.primary }]}>
+            {deliveryType ? deliveryType : 'no shipping type'}
+          </Text>
+          <View style={styles.timeView}>
+            <Image source={clock} style={styles.pinIcon} />
+            <Text style={styles.timeText}>
+              {orderFirstTime ? orderFirstTime : '00.00' }
+              {'-'}
+              {orderSecondTime ? orderSecondTime : '00.00' }
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.rightIconStyle}>
+          <Image source={rightIcon} style={styles.pinIcon} />
+        </View>
+      </TouchableOpacity>
+    </View>
+    <View style={[styles.orderDetailView, { height: windowHeight }]}>
+      <Spacer space={SH(20)} />
+      <View style={styles.reviewHeadingView}>
+        <Text style={styles.orderReviewText}>
+          {strings.deliveryOrders.orderId} {orderId}
+        </Text>
+        <Text style={styles.orderReviewText}>{orderDate}</Text>
+      </View>
+      <TouchableOpacity style={styles.profileDetailView} onPress={() => selectShipingHandler()} >
+        <View style={{ flexDirection: 'row' }}>
+          <Image
+            source={userProfile ? { uri : userProfile} : userImage}
+            style={styles.profileImage}
+          />
+          <View style={{ justifyContent: 'center', paddingLeft: 10 }}>
+            <Text
+              style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}>
+              {userFirstName ? userFirstName : 'user name'}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={[styles.timeText, { paddingLeft: 0, width: SW(90) }]}>
+              {userAddress ? userAddress : 'no address' }
+            </Text>
+          </View>
+        </View>
+        <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+          <Image source={deliveryScooter} style={styles.profileImage} />
+          <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
+            <Text
+              style={[
+                styles.nameText,
+                { color: COLORS.primary, fontFamily: Fonts.SemiBold },
+              ]}>
+              {driverShipping ? driverShipping : 'no shipping type' }
+            </Text>
+            <Text style={styles.timeText}>
+              {strings.deliveryOrders.time}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+      <Spacer space={SH(15)} />
+      <View style={styles.horizontalLine} />
+      <View style={{ height: windowHeight * 0.68 }}>
+        <View style={{ height: SH(325) }}>
+          <FlatList
+            data={singleOrder?.order_details}
+            extraData={singleOrder?.order_details}
+            renderItem={renderProductList}
+            ItemSeparatorComponent={() => (
+              <View style={styles.itemSeparatorView} />
+            )}
+          />
+        </View>
+        <View style={styles.bottomSheet}>
+          <BottomSheet
+            discount={singleOrder?.discount ? singleOrder?.discount : '0'}
+            subTotal={
+              singleOrder?.actual_amount
+                ? singleOrder?.actual_amount
+                : '0'
+            }
+            tax={singleOrder?.tax ? singleOrder?.tax : '0'}
+            total={
+              singleOrder?.payable_amount
+                ? singleOrder?.payable_amount
+                : '0'
+            }
+            item={
+              singleOrder?.order_details?.length
+                ? singleOrder?.order_details?.length
+                : '0'
+            }
+            Item
+          />
+          <View style={styles.orderReviewButton}>
+            <Button
+              style={styles.declineButton}
+              title={strings.deliveryOrders.decline}
+              textStyle={[styles.buttonText, { color: COLORS.primary }]}
+              onPress={() => singleorderCancelHandler(singleOrder?.id)}
+            />
+            <Button
+              style={styles.acceptButton}
+              title={strings.deliveryOrders.accept}
+              textStyle={styles.buttonText}
+              onPress={() => singleOrderAccept(singleOrder?.id)}
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
   )
 }

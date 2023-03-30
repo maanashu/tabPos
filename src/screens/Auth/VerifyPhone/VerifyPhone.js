@@ -9,7 +9,7 @@ import CountryPicker from 'react-native-country-picker-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { mobileReg} from '@/utils/validators';
+import { digits, mobileReg} from '@/utils/validators';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { verifyPhone } from '@/actions/AuthActions';
 import { TYPES } from '@/Types/Types';
@@ -30,7 +30,7 @@ export function VerifyPhone() {
   }
 
   const verifyPhoneHandler = () => {
-    if (phoneNumber && phoneNumber.length > 5) {
+    if (phoneNumber && phoneNumber.length > 5 && digits.test(phoneNumber)) {
       dispatch(verifyPhone(phoneNumber, countryCode));
       clearInput()
     } else if (phoneNumber && phoneNumber.length < 5) {
@@ -41,7 +41,7 @@ export function VerifyPhone() {
         visibilityTime: 2000,
       });
       return;
-    } else if (phoneNumber && mobileReg.test(phoneNumber) === false) {
+    } else if (phoneNumber && digits.test(phoneNumber) === false) {
       Toast.show({
         position: 'bottom',
         type: 'error_toast',

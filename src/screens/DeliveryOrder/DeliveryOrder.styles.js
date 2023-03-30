@@ -122,7 +122,6 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    // height: Platform.OS === 'android' ? SH(272) : SH(282),
     height: windowHeight * 0.34,
     width: windowWidth * 0.45,
   },
@@ -148,7 +147,6 @@ export const styles = StyleSheet.create({
     width: windowWidth / 2.25,
     borderRadius: 5,
     ...ShadowStyles.shadow2,
-    // height: Platform.OS === 'android' ? SH(405) : SH(450),
     backgroundColor: COLORS.white,
     height: windowHeight * 0.5,
     width: windowWidth * 0.45,
@@ -285,7 +283,6 @@ export const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
-    // paddingRight: SW(50),
     width: windowWidth * 0.46,
     height: windowHeight * 0.88,
   },
@@ -296,7 +293,6 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
   },
   profileDetailView: {
-    // marginHorizontal: SW(5),
     paddingHorizontal: SW(5),
     paddingVertical: SW(3),
     borderRadius: 6,
@@ -313,6 +309,7 @@ export const styles = StyleSheet.create({
     width: SW(12),
     height: SW(12),
     resizeMode: 'contain',
+    borderRadius:50
   },
   scooter: {
     width: SW(17),
@@ -433,12 +430,10 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.solidGrey,
     height: 2,
     width: '96%',
-    // alignSelf: 'center',
     marginVertical: verticalScale(3),
   },
   map: {
     width: windowWidth * 0.48,
-    // height: Platform.OS === 'android' ? SH(520) : SW(190),
     height: windowHeight * 0.7,
     alignSelf: 'center',
     borderRadius: 6,

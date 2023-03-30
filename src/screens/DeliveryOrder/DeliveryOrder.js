@@ -87,6 +87,7 @@ export function DeliveryOrder() {
   const orderValueDecimal = orderValue;
   const [singleOrder, setSingleOrder] = useState('');
   const [singleOrderView, setSingleOrderView] = useState(false);
+   const singleOrderDate  = moment(singleOrder?.created_at).format('LL');
 
   const reviewArray = [
     {
@@ -293,6 +294,14 @@ export function DeliveryOrder() {
           setHeadingType(item.status),
           setDataType(item.status);
     }
+  };
+
+  const orderStatusReach = () => {
+        return(
+          <View>
+             <Text style={styles.verifyText}>{itemss?.status === 0 ? 'Order review' : itemss?.status === 1 ? 'Order accepted' : itemss?.status === 2 ? 'Order prepare' : itemss?.status === 3 ? 'Ready to pickup' : 'Assign Driver'}</Text>
+          </View>
+        )
   };
 
   const viewAllHandler = () => {
@@ -977,10 +986,10 @@ export function DeliveryOrder() {
             <Spacer space={SH(20)} />
             <View style={styles.reviewHeadingView}>
               <Text style={styles.orderReviewText}>
-                {strings.deliveryOrders.orderId}
-                {/* {orderId} */}
+                {strings.deliveryOrders.orderId}{singleOrder?.id}
+                
               </Text>
-              <Text style={styles.orderReviewText}>fdgrg</Text>
+              <Text style={styles.orderReviewText}>{singleOrderDate}</Text>
             </View>
 
             <View style={styles.profileDetailView}>
@@ -1353,7 +1362,7 @@ export function DeliveryOrder() {
             <Image source={deliveryLine} style={styles.deliveryImage} />
             <View style={styles.justifyContentStyle}>
               <Text style={styles.verifyText}>
-                {strings.deliveryOrders.orderAccepted}
+                {orderStatusReach()}
               </Text>
               <Text style={styles.verifyText}>
                 {strings.deliveryOrders.dateTime}

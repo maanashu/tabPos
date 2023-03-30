@@ -27,24 +27,28 @@ import {
   radio,
   userImage,
   parachuteBox,
-  radioRound,
-  ups2,
-  profileImage
 } from '@/assets';
 import { styles } from './ShippingOrder.styles';
 import { strings } from '@/localization';
-import { deliveryOrders, loadingData, productList, selectShippingList } from '@/constants/staticData';
+import {
+  deliveryOrders,
+  loadingData,
+  selectShippingList,
+} from '@/constants/staticData';
 import { COLORS, SH, SW } from '@/theme';
 import { Button, ChartKit, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale } from 'react-native-size-matters';
-import { BottomSheet, PrintScreenUI } from '@/screens/ShippingOrder/Components';
+import {
+  BottomSheet,
+  PrintScreenUI,
+  SingleOrderView,
+} from '@/screens/ShippingOrder/Components';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   acceptOrder,
   getOrderCount,
   getOrders,
   getReviewDefault,
-  getOrdersSuccess
 } from '@/actions/ShippingAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getShipping } from '@/selectors/ShippingSelector';
@@ -63,9 +67,7 @@ export function ShippingOrder() {
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getDeliveryData = useSelector(getShipping);
   const orderHeadCount = getDeliveryData?.getOrderCount;
-  const [orderCount, setOrderCount] = useState(
-    getDeliveryData?.orderList ?? []
-  );
+  const [orderCount, setOrderCount] = useState(getDeliveryData?.orderList ?? []);
   const orderArray = getDeliveryData?.orderList?.data ?? [];
   const [viewAllReviews, setViewAllReviews] = useState(false);
   const [orderAccepted, setOrderAccepted] = useState(false);
@@ -73,9 +75,7 @@ export function ShippingOrder() {
   const [showArea, setShowArea] = useState(true);
   const [headingType, setHeadingType] = useState('');
   const [dataType, setDataType] = useState('');
-  const [selectedId, setSelectedId] = useState(
-    getDeliveryData?.orderList?.[0].id
-  );
+  const [selectedId, setSelectedId] = useState(getDeliveryData?.orderList?.[0].id);
   const [itemss, setItem] = useState();
   const customerProduct = itemss?.order_details;
   const custProLength = customerProduct?.length;
@@ -90,7 +90,8 @@ export function ShippingOrder() {
   const orderValueDecimal = orderValue;
   const [singleOrder, setSingleOrder] = useState('');
   const [singleOrderView, setSingleOrderView] = useState(false);
-  const [printScreen, setPrintScreen] = useState(false); 
+  const [printScreen, setPrintScreen] = useState(false);
+  const [otherState, setOtherState] = useState(false);
 
   const reviewArray = [
     {
@@ -172,7 +173,7 @@ export function ShippingOrder() {
 
   useEffect(() => {
     if (isFocused) {
-        dispatch(getOrderCount(sellerID)),
+      dispatch(getOrderCount(sellerID)),
         dispatch(getReviewDefault(0, sellerID));
     }
     if (getDeliveryData?.orderList?.length > 0) {
@@ -195,7 +196,6 @@ export function ShippingOrder() {
     };
     dispatch(acceptOrder(data));
     setViewAllReviews(false);
-   
   };
 
   const singleOrderAccept = id => {
@@ -237,18 +237,17 @@ export function ShippingOrder() {
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
-        {viewAllReviews || singleOrderView || printScreen ? (
+        {viewAllReviews || singleOrderView || printScreen || otherState ? (
           <TouchableOpacity
             onPress={() => {
               viewAllReviews
-                ?
-                setViewAllReviews(false)
+                ? setViewAllReviews(false) :
+                 otherState && printScreen
+                ?(setPrintScreen(false), setSingleOrderView(true), setOtherState(false))
+                : printScreen
+                ? (setPrintScreen(false), setViewAllReviews(true))
                 :
-                printScreen
-                ?
-                (setPrintScreen(false), setViewAllReviews(true))
-                :
-                 setSingleOrderView(false)
+                 setSingleOrderView(false);
             }}
             style={styles.backView}
           >
@@ -297,10 +296,10 @@ export function ShippingOrder() {
         visibilityTime: 1500,
       });
     } else {
-          dispatch(getOrders(item.key, sellerID));
-         setViewAllReviews(true),
-          setHeadingType(item.status),
-          setDataType(item.status);
+      dispatch(getOrders(item.key, sellerID));
+      setViewAllReviews(true),
+        setHeadingType(item.status),
+        setDataType(item.status);
     }
   };
 
@@ -359,6 +358,13 @@ export function ShippingOrder() {
       }
     }
   };
+  const orderStatusReach = () => {
+    return(
+      <View>
+         <Text style={styles.verifyText}>{itemss?.status === 0 ? 'Order review' : itemss?.status === 1 ? 'Order accepted' : itemss?.status === 2 ? 'Order prepare' : itemss?.status === 3 ? 'Ready to pickup' : 'Assign Driver'}</Text>
+      </View>
+    )
+};
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
@@ -396,22 +402,29 @@ export function ShippingOrder() {
       onPress={onPress}
       style={[styles.reviewRenderView, { backgroundColor }]}
     >
-      <View style={{ width: SW(45)}}>
+      <View style={{ width: SW(45) }}>
         <View style={styles.flexRowCenter}>
-        <Image source={item?.user_details?.profile_photo ? {uri : item?.user_details?.profile_photo} :   userImage} style={styles.profileImage}/>
-        <View>
-        <Text numberOfLines={1} style={styles.nameText}>
-          {item?.user_details?.firstname
-            ? item?.user_details?.firstname
-            : 'user name'}
-        </Text>
-        <View style={styles.timeView}>
-          <Image source={pin} style={styles.pinIcon} />
-          <Text style={styles.timeText}>
-            {item?.distance ? item?.distance : '0miles'}
-          </Text>
-        </View>
-        </View>
+          <Image
+            source={
+              item?.user_details?.profile_photo
+                ? { uri: item?.user_details?.profile_photo }
+                : userImage
+            }
+            style={styles.profileImage}
+          />
+          <View>
+            <Text numberOfLines={1} style={styles.nameText}>
+              {item?.user_details?.firstname
+                ? item?.user_details?.firstname
+                : 'user name'}
+            </Text>
+            <View style={styles.timeView}>
+              <Image source={pin} style={styles.pinIcon} />
+              <Text style={styles.timeText}>
+                {item?.distance ? item?.distance : '0miles'}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
 
@@ -429,26 +442,26 @@ export function ShippingOrder() {
       </View>
 
       <View style={{ width: SW(45) }}>
-       <View style={styles.flexRowCenter}>
-       <Image source={deliveryScooter} style={styles.profileImage}/>
-       <View>
-       <Text style={[styles.nameText, { color: COLORS.primary }]}>
-          {item?.shipping ? item?.shipping : 'no delivery type'}
-        </Text>
-        <View style={styles.timeView}>
-          <Image source={clock} style={styles.pinIcon} />
-          <Text style={styles.timeText}>
-            {item?.preffered_delivery_start_time
-              ? item?.preffered_delivery_start_time
-              : '00.00'}{' '}
-            -{' '}
-            {item?.preffered_delivery_end_time
-              ? item?.preffered_delivery_end_time
-              : '00.00'}{' '}
-          </Text>
+        <View style={styles.flexRowCenter}>
+          <Image source={deliveryScooter} style={styles.profileImage} />
+          <View>
+            <Text style={[styles.nameText, { color: COLORS.primary }]}>
+              {item?.shipping ? item?.shipping : 'no delivery type'}
+            </Text>
+            <View style={styles.timeView}>
+              <Image source={clock} style={styles.pinIcon} />
+              <Text style={styles.timeText}>
+                {item?.preffered_delivery_start_time
+                  ? item?.preffered_delivery_start_time
+                  : '00.00'}{' '}
+                -{' '}
+                {item?.preffered_delivery_end_time
+                  ? item?.preffered_delivery_end_time
+                  : '00.00'}{' '}
+              </Text>
+            </View>
+          </View>
         </View>
-       </View>
-       </View>
       </View>
 
       <View style={styles.rightIconStyle}>
@@ -475,7 +488,7 @@ export function ShippingOrder() {
   const renderReviewItemDef = ({ item, index }) => (
     <TouchableOpacity
       style={[styles.reviewRenderView]}
-      onPress={() => singleOrderReview(item)}
+      onPress={() => (singleOrderReview(item), setItem(item))}
     >
       <View style={{ width: SW(45) }}>
         <Text numberOfLines={1} style={styles.nameText}>
@@ -556,8 +569,6 @@ export function ShippingOrder() {
     </View>
   );
 
- 
-
   const renderProductList = ({ item, index }) => (
     <TouchableOpacity
       style={styles.productViewStyle}
@@ -588,7 +599,6 @@ export function ShippingOrder() {
       </View>
     </TouchableOpacity>
   );
- 
 
   const orderStatusText = () => {
     if (orderAccepted && readyPickup === false) {
@@ -934,194 +944,51 @@ export function ShippingOrder() {
   };
 
   const changeView = () => {
-    if(printScreen){
-       return(
-        <PrintScreenUI
-        orderId={orderId}
-        orderDate={orderDate}
-        userProfile={userProfile?.profile_photo ? { uri : userProfile?.profile_photo} :userImage }
-        firstName={userProfile?.firstname ? userProfile?.firstname : 'user name'}
-        address= {itemss?.address ? itemss?.address : 'no address'}
-        shipingType={itemss?.shipping ? itemss?.shipping : 'no shipping type'}
-        customerProduct={customerProduct}
-        renderProductList={renderProductList}
-        itemss={itemss}
-        custProLength={custProLength}
-        selectShippingList={selectShippingList}
-        selectAndConHandler={() => (setPrintScreen(false), setViewAllReviews(true))}
-        />
-       )
-    } 
-    else if (singleOrderView) {
+    if (printScreen) {
       return (
-        <View style={[styles.headerMainView, { paddingVertical: SH(0) }]}>
-          <View style={styles.orderNumberLeftViewmap}>
-            <Spacer space={SH(20)} />
-            <TouchableOpacity style={styles.reviewRenderView}>
-              <View style={{ width: SW(45) }}>
-                <Text numberOfLines={1} style={styles.nameText}>
-                  {singleOrder?.user_details?.firstname
-                    ? singleOrder?.user_details?.firstname
-                    : 'user name'}
-                </Text>
-                <View style={styles.timeView}>
-                  <Image source={pin} style={styles.pinIcon} />
-                  <Text style={styles.timeText}>
-                    {singleOrder?.distance ? singleOrder?.distance : '00.00'}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={{ width: SW(25) }}>
-                <Text style={styles.nameText}>
-                  {singleOrder?.order_details?.length
-                    ? singleOrder?.order_details?.length
-                    : '0'}
-                  Item
-                </Text>
-                <View style={styles.timeView}>
-                  <Image source={pay} style={styles.pinIcon} />
-                  <Text style={styles.timeText}>
-                    {singleOrder?.payable_amount
-                      ? singleOrder?.payable_amount
-                      : '0'}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={{ width: SW(60) }}>
-                <Text style={[styles.nameText, { color: COLORS.primary }]}>
-                  {singleOrder?.shipping
-                    ? singleOrder?.shipping
-                    : 'no delivery type'}
-                </Text>
-                <View style={styles.timeView}>
-                  <Image source={clock} style={styles.pinIcon} />
-                  <Text style={styles.timeText}>
-                    {singleOrder?.preffered_delivery_start_time
-                      ? singleOrder?.preffered_delivery_start_time
-                      : '00.00'}
-                    {'-'}
-                    {singleOrder?.preffered_delivery_end_time
-                      ? singleOrder?.preffered_delivery_end_time
-                      : '00.00'}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.rightIconStyle}>
-                <Image source={rightIcon} style={styles.pinIcon} />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={[styles.orderDetailView, { height: windowHeight }]}>
-            <Spacer space={SH(20)} />
-            <View style={styles.reviewHeadingView}>
-              <Text style={styles.orderReviewText}>
-                {strings.deliveryOrders.orderId}
-                {/* {orderId} */}
-              </Text>
-              <Text style={styles.orderReviewText}>fdgrg</Text>
-            </View>
-
-            <View style={styles.profileDetailView}>
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  source={
-                    singleOrder?.user_details?.profile_photo
-                      ? { uri: singleOrder?.user_details?.profile_photo }
-                      : userImage
-                  }
-                  style={styles.profileImage}
-                />
-                <View style={{ justifyContent: 'center', paddingLeft: 10 }}>
-                  <Text
-                    style={[styles.nameText, { fontFamily: Fonts.SemiBold }]}
-                  >
-                    {singleOrder?.user_details?.firstname
-                      ? singleOrder?.user_details?.firstname
-                      : 'user name'}
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    style={[styles.timeText, { paddingLeft: 0, width: SW(90) }]}
-                  >
-                    {singleOrder?.address ? singleOrder?.address : 'no address'}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
-                <Image source={deliveryScooter} style={styles.profileImage} />
-                <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
-                  <Text
-                    style={[
-                      styles.nameText,
-                      { color: COLORS.primary, fontFamily: Fonts.SemiBold },
-                    ]}
-                  >
-                    {singleOrder?.shipping
-                      ? singleOrder?.shipping
-                      : 'no delivery type'}
-                  </Text>
-                  <Text style={styles.timeText}>
-                    {strings.deliveryOrders.time}
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <Spacer space={SH(15)} />
-            <View style={styles.horizontalLine} />
-            <View style={{ height: windowHeight * 0.68 }}>
-              <View style={{ height: SH(325) }}>
-                <FlatList
-                  data={singleOrder?.order_details}
-                  extraData={singleOrder?.order_details}
-                  renderItem={renderProductList}
-                  ItemSeparatorComponent={() => (
-                    <View style={styles.itemSeparatorView} />
-                  )}
-                />
-              </View>
-              <View style={styles.bottomSheet}>
-                <BottomSheet
-                  discount={singleOrder?.discount ? singleOrder?.discount : '0'}
-                  subTotal={
-                    singleOrder?.actual_amount
-                      ? singleOrder?.actual_amount
-                      : '0'
-                  }
-                  tax={singleOrder?.tax ? singleOrder?.tax : '0'}
-                  total={
-                    singleOrder?.payable_amount
-                      ? singleOrder?.payable_amount
-                      : '0'
-                  }
-                  item={
-                    singleOrder?.order_details?.length
-                      ? singleOrder?.order_details?.length
-                      : '0'
-                  }
-                  Item
-                />
-                <View style={styles.orderReviewButton}>
-                  <Button
-                    style={styles.declineButton}
-                    title={strings.deliveryOrders.decline}
-                    textStyle={[styles.buttonText, { color: COLORS.primary }]}
-                    onPress={() => singleorderCancelHandler(singleOrder?.id)}
-                  />
-                  <Button
-                    style={styles.acceptButton}
-                    title={strings.deliveryOrders.accept}
-                    textStyle={styles.buttonText}
-                    onPress={() => singleOrderAccept(singleOrder?.id)}
-                  />
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
+        <PrintScreenUI
+          orderId={orderId}
+          orderDate={orderDate}
+          userProfile={
+            userProfile?.profile_photo
+              ? { uri: userProfile?.profile_photo }
+              : userImage
+          }
+          firstName={
+            userProfile?.firstname ? userProfile?.firstname : 'user name'
+          }
+          address={itemss?.address ? itemss?.address : 'no address'}
+          shipingType={itemss?.shipping ? itemss?.shipping : 'no shipping type'}
+          customerProduct={customerProduct}
+          renderProductList={renderProductList}
+          itemss={itemss}
+          custProLength={custProLength}
+          selectShippingList={selectShippingList}
+          selectAndConHandler={() => (
+            setPrintScreen(false), setViewAllReviews(true)
+          )}
+        />
+      );
+    } else if (singleOrderView) {
+      return (
+        <SingleOrderView
+          firstname={singleOrder?.user_details?.firstname}
+          distance={singleOrder?.distance}
+          itemLength={singleOrder?.order_details?.length}
+          payAmount={singleOrder?.payable_amount}
+          deliveryType={singleOrder?.shipping}
+          orderFirstTime={singleOrder?.preffered_delivery_start_time}
+          orderSecondTime={singleOrder?.preffered_delivery_end_time}
+          userProfile={singleOrder?.user_details?.profile_photo}
+          userFirstName={singleOrder?.user_details?.firstname}
+          userAddress={singleOrder?.address}
+          driverShipping={singleOrder?.shipping}
+          singleOrder={singleOrder}
+          renderProductList={renderProductList}
+          singleorderCancelHandler={singleorderCancelHandler}
+          singleOrderAccept={singleOrderAccept}
+          selectShipingHandler={() => (setPrintScreen(true), setSingleOrderView(false),setOtherState(true))}
+        />
       );
     } else if (viewAllReviews && readyPickup === false) {
       return (
@@ -1157,7 +1024,10 @@ export function ShippingOrder() {
               <Text style={styles.orderReviewText}>{orderDate}</Text>
             </View>
 
-            <TouchableOpacity style={styles.profileDetailView} onPress={() => (setPrintScreen(true), setViewAllReviews(false))}>
+            <TouchableOpacity
+              style={styles.profileDetailView}
+              onPress={() => (setPrintScreen(true), setViewAllReviews(false))}
+            >
               <View style={{ flexDirection: 'row' }}>
                 <Image
                   source={
@@ -1358,6 +1228,7 @@ export function ShippingOrder() {
     }
   };
 
+
   const showOrderStatusModal = () => {
     return (
       <View style={styles.orderModalView}>
@@ -1384,30 +1255,22 @@ export function ShippingOrder() {
         </View>
         <View style={styles.horizontalLine} />
         {/* <Spacer space={SH(10)} /> */}
-        {
-          showArea === false 
-          ?
-          (
-            <View style={styles.deliveryStatus2}>
-          <View style={styles.flexRow}>
-            <Image source={deliveryLine} style={styles.deliveryImage} />
-            <View style={styles.justifyContentStyle}>
-              <Text style={styles.verifyText}>
-                {strings.deliveryOrders.orderAccepted}
-              </Text>
-              <Text style={styles.verifyText}>
-                {strings.deliveryOrders.dateTime}
-              </Text>
+        {showArea === false ? (
+          <View style={styles.deliveryStatus2}>
+            <View style={styles.flexRow}>
+              <Image source={deliveryLine} style={styles.deliveryImage} />
+              <View style={styles.justifyContentStyle}>
+                {orderStatusReach()}
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.dateTime}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.nineXCon}>
+              <Text style={styles.nineXText}>659X</Text>
             </View>
           </View>
-          <View style={styles.nineXCon}>
-            <Text style={styles.nineXText}>659X</Text>
-          </View>
-        </View>
-          ):
-          null
-        }
-        
+        ) : null}
 
         <Spacer space={SH(10)} />
         {showArea ? (
@@ -1461,7 +1324,10 @@ export function ShippingOrder() {
             </View>
 
             <View style={styles.deliveryStatus}>
-              <Image source={itemss?.status >= 4 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <Image
+                source={itemss?.status >= 4 ? deliveryLine : delivery}
+                style={styles.deliveryImage}
+              />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.assign}
@@ -1473,7 +1339,10 @@ export function ShippingOrder() {
             </View>
 
             <View style={styles.deliveryStatus}>
-              <Image source={itemss?.status >= 3 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <Image
+                source={itemss?.status >= 3 ? deliveryLine : delivery}
+                style={styles.deliveryImage}
+              />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.readyToPickup}
@@ -1484,7 +1353,10 @@ export function ShippingOrder() {
               </View>
             </View>
             <View style={styles.deliveryStatus}>
-              <Image source={itemss?.status >= 2 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <Image
+                source={itemss?.status >= 2 ? deliveryLine : delivery}
+                style={styles.deliveryImage}
+              />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.orderPrepare}
@@ -1495,7 +1367,10 @@ export function ShippingOrder() {
               </View>
             </View>
             <View style={styles.deliveryStatus}>
-              <Image source={itemss?.status >=1 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <Image
+                source={itemss?.status >= 1 ? deliveryLine : delivery}
+                style={styles.deliveryImage}
+              />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.orderAccepted}
@@ -1506,10 +1381,14 @@ export function ShippingOrder() {
               </View>
             </View>
             <View style={styles.deliveryStatus}>
-              <Image source={itemss?.status >= 0 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <Image
+                source={itemss?.status >= 0 ? deliveryLine : delivery}
+                style={styles.deliveryImage}
+              />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.orderOfReview}{itemss?.status}
+                  {strings.deliveryOrders.orderOfReview}
+                  {itemss?.status}
                 </Text>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.dateTime}

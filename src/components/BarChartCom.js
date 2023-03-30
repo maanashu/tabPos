@@ -251,13 +251,9 @@ export function BarChartCom({
         yAxisTextStyle={{ color: '#275AFF', fontSize: 11 }}
         noOfSections={4}
         maxValue={100}
-        // style={{borderWidth:1, width:400, height:500}}
-        // stepH
-        // stepHeight={300}
         yAxisLength={400}
         height={barHei}
         width={barWid}
-        // adjustToWidth={true}
       />
     </View>
   );

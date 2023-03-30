@@ -315,6 +315,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingLeft: moderateScale(10),
+    marginVertical:verticalScale(3)
   },
   jfrContainer2: {
     display: 'flex',

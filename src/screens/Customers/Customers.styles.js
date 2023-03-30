@@ -440,6 +440,22 @@ export const styles = StyleSheet.create({
     height: SW(8),
     resizeMode: 'contain',
   },
+  toggleBtnStyle: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+  },
+  toggleBtnCon:{
+    width: SW(11),
+    height: SW(8),
+  },
+  toggleBtnStyle2: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+    tintColor : COLORS.gerySkies,
+    transform:[{rotate:'180deg'}]
+  },
   pointText: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(13),
@@ -1040,6 +1056,18 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     width: windowWidth * 0.1,
+  },
+  tableTextDataRes: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    width: windowWidth * 0.03,
+    borderWidth:1
+  },
+  resImage:{
+    width: windowWidth * 0.03,
+    height:SH(20),
+    resizeMode:'contain'
   },
   tableTextDataAdd: {
     color: COLORS.solid_grey,

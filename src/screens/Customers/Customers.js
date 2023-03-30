@@ -68,6 +68,7 @@ import { TYPES } from '@/Types/CustomersTypes';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { useNetInfo } from '@react-native-community/netinfo';
 const windowWidth = Dimensions.get('window') * 0.98;
 
 export function Customers() {
@@ -228,7 +229,7 @@ export function Customers() {
       <View style={styles.useHeaderCon}>
         <Spacer space={SH(10)} />
         <View style={styles.displayFlex}>
-          <View style={styles.flexAlign}>
+          <View style={styles.flexAlign}>                                                       
             <TouchableOpacity
               onPress={() => (setUserProfile(false), setWeeklyUser(true))}
             >

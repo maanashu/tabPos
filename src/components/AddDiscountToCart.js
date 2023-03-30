@@ -35,7 +35,11 @@ export function AddDiscountToCart({
   const [discountCheck, setDiscountCheck] = useState(false);
 
   return (
-    <View>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+    >
       <ScrollView>
         <View style={styles.adddiscountCon}>
           <View style={{ height: SH(350) }}>
@@ -207,6 +211,8 @@ export function AddDiscountToCart({
               value={descriptionDis}
               onChangeText={setDescriptionDis}
               placeholderTextColor={COLORS.darkGray}
+              autoCorrect={false}
+              spellCheck={false}
             />
             <Spacer space={SH(12)} />
             {/* </KeyboardAwareScrollView> */}
@@ -226,7 +232,7 @@ export function AddDiscountToCart({
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+      </KeyboardAwareScrollView>
   );
 }
 
