@@ -41,7 +41,7 @@ import {
   getOrderCount,
   getOrders,
   getReviewDefault,
-  getOrdersSuccess
+  getOrdersSuccess,
 } from '@/actions/DeliveryAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
@@ -87,7 +87,7 @@ export function DeliveryOrder() {
   const orderValueDecimal = orderValue;
   const [singleOrder, setSingleOrder] = useState('');
   const [singleOrderView, setSingleOrderView] = useState(false);
-   const singleOrderDate  = moment(singleOrder?.created_at).format('LL');
+  const singleOrderDate = moment(singleOrder?.created_at).format('LL');
 
   const reviewArray = [
     {
@@ -169,7 +169,7 @@ export function DeliveryOrder() {
 
   useEffect(() => {
     if (isFocused) {
-        dispatch(getOrderCount(sellerID)),
+      dispatch(getOrderCount(sellerID)),
         dispatch(getReviewDefault(0, sellerID));
     }
     if (getDeliveryData?.orderList?.length > 0) {
@@ -237,10 +237,8 @@ export function DeliveryOrder() {
           <TouchableOpacity
             onPress={() => {
               viewAllReviews
-                ?
-                setViewAllReviews(false)
-                :
-                 setSingleOrderView(false)
+                ? setViewAllReviews(false)
+                : setSingleOrderView(false);
             }}
             style={styles.backView}
           >
@@ -289,19 +287,29 @@ export function DeliveryOrder() {
         visibilityTime: 1500,
       });
     } else {
-          dispatch(getOrders(item.key, sellerID));
-         setViewAllReviews(true),
-          setHeadingType(item.status),
-          setDataType(item.status);
+      dispatch(getOrders(item.key, sellerID));
+      setViewAllReviews(true),
+        setHeadingType(item.status),
+        setDataType(item.status);
     }
   };
 
   const orderStatusReach = () => {
-        return(
-          <View>
-             <Text style={styles.verifyText}>{itemss?.status === 0 ? 'Order review' : itemss?.status === 1 ? 'Order accepted' : itemss?.status === 2 ? 'Order prepare' : itemss?.status === 3 ? 'Ready to pickup' : 'Assign Driver'}</Text>
-          </View>
-        )
+    return (
+      <View>
+        <Text style={styles.verifyText}>
+          {itemss?.status === 0
+            ? 'Order review'
+            : itemss?.status === 1
+            ? 'Order accepted'
+            : itemss?.status === 2
+            ? 'Order prepare'
+            : itemss?.status === 3
+            ? 'Ready to pickup'
+            : 'Assign Driver'}
+        </Text>
+      </View>
+    );
   };
 
   const viewAllHandler = () => {
@@ -549,7 +557,8 @@ export function DeliveryOrder() {
   const renderProductList = ({ item, index }) => (
     <TouchableOpacity
       style={styles.productViewStyle}
-      onPress={() => alert('coming soon')}>
+      onPress={() => alert('coming soon')}
+    >
       <View style={styles.productImageView}>
         <Image
           source={{ uri: item?.product_image }}
@@ -986,8 +995,8 @@ export function DeliveryOrder() {
             <Spacer space={SH(20)} />
             <View style={styles.reviewHeadingView}>
               <Text style={styles.orderReviewText}>
-                {strings.deliveryOrders.orderId}{singleOrder?.id}
-                
+                {strings.deliveryOrders.orderId}
+                {singleOrder?.id}
               </Text>
               <Text style={styles.orderReviewText}>{singleOrderDate}</Text>
             </View>
@@ -1353,30 +1362,22 @@ export function DeliveryOrder() {
         </View>
         <View style={styles.horizontalLine} />
         {/* <Spacer space={SH(10)} /> */}
-        {
-          showArea === false 
-          ?
-          (
-            <View style={styles.deliveryStatus2}>
-          <View style={styles.flexRow}>
-            <Image source={deliveryLine} style={styles.deliveryImage} />
-            <View style={styles.justifyContentStyle}>
-              <Text style={styles.verifyText}>
-                {orderStatusReach()}
-              </Text>
-              <Text style={styles.verifyText}>
-                {strings.deliveryOrders.dateTime}
-              </Text>
+        {showArea === false ? (
+          <View style={styles.deliveryStatus2}>
+            <View style={styles.flexRow}>
+              <Image source={deliveryLine} style={styles.deliveryImage} />
+              <View style={styles.justifyContentStyle}>
+                <Text style={styles.verifyText}>{orderStatusReach()}</Text>
+                <Text style={styles.verifyText}>
+                  {strings.deliveryOrders.dateTime}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.nineXCon}>
+              <Text style={styles.nineXText}>659X</Text>
             </View>
           </View>
-          <View style={styles.nineXCon}>
-            <Text style={styles.nineXText}>659X</Text>
-          </View>
-        </View>
-          ):
-          null
-        }
-        
+        ) : null}
 
         <Spacer space={SH(10)} />
         {showArea ? (
@@ -1430,7 +1431,10 @@ export function DeliveryOrder() {
             </View>
 
             <View style={styles.deliveryStatus}>
-              <Image source={itemss?.status >= 4 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <Image
+                source={itemss?.status >= 4 ? deliveryLine : delivery}
+                style={styles.deliveryImage}
+              />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.assign}
@@ -1442,7 +1446,10 @@ export function DeliveryOrder() {
             </View>
 
             <View style={styles.deliveryStatus}>
-              <Image source={itemss?.status >= 3 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <Image
+                source={itemss?.status >= 3 ? deliveryLine : delivery}
+                style={styles.deliveryImage}
+              />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.readyToPickup}
@@ -1453,7 +1460,10 @@ export function DeliveryOrder() {
               </View>
             </View>
             <View style={styles.deliveryStatus}>
-              <Image source={itemss?.status >= 2 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <Image
+                source={itemss?.status >= 2 ? deliveryLine : delivery}
+                style={styles.deliveryImage}
+              />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.orderPrepare}
@@ -1464,7 +1474,10 @@ export function DeliveryOrder() {
               </View>
             </View>
             <View style={styles.deliveryStatus}>
-              <Image source={itemss?.status >=1 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <Image
+                source={itemss?.status >= 1 ? deliveryLine : delivery}
+                style={styles.deliveryImage}
+              />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.orderAccepted}
@@ -1475,10 +1488,14 @@ export function DeliveryOrder() {
               </View>
             </View>
             <View style={styles.deliveryStatus}>
-              <Image source={itemss?.status >= 0 ? deliveryLine : delivery} style={styles.deliveryImage} />
+              <Image
+                source={itemss?.status >= 0 ? deliveryLine : delivery}
+                style={styles.deliveryImage}
+              />
               <View style={styles.justifyContentStyle}>
                 <Text style={styles.verifyText}>
-                  {strings.deliveryOrders.orderOfReview}{itemss?.status}
+                  {strings.deliveryOrders.orderOfReview}
+                  {itemss?.status}
                 </Text>
                 <Text style={styles.verifyText}>
                   {strings.deliveryOrders.dateTime}

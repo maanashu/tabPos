@@ -171,7 +171,7 @@ export function Analytics(props) {
   };
 
   useEffect(() => {
-    if (isFocused){
+    if (isFocused) {
       dispatch(totalProGraph(sellerID));
       dispatch(totalInvernteryGraph(sellerID));
       dispatch(totalRevenueGraph(sellerID));
@@ -5596,15 +5596,18 @@ export function Analytics(props) {
               subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '0'}
               productGraphObject={productGraphObject2}
               homeGraphHandler={() => graphHandler('Total Products')}
-              arrayLength = {productGraphObject2?.datasets?.length}
+              arrayLength={productGraphObject2?.datasets?.length}
               productLoader={productGraphLoading}
             />
             <HomeGraph
               header="Total Inventory  Cost"
-              subHeader={ getAnalyticsData?.getInventeryGraph?.totalResult.toFixed(2) ?? '0'}
+              subHeader={
+                getAnalyticsData?.getInventeryGraph?.totalResult.toFixed(2) ??
+                '0'
+              }
               productGraphObject={inventeryGraphObject}
               homeGraphHandler={() => graphHandler('Total Inventory  Cost')}
-              arrayLength = {inventeryGraphObject?.datasets?.length}
+              arrayLength={inventeryGraphObject?.datasets?.length}
               productLoader={totalInventoryLoading}
             />
           </View>
@@ -5617,47 +5620,46 @@ export function Analytics(props) {
               arrayLength = {revenueGraphObject?.datasets?.length}
             /> */}
 
-<View style={styles.totalProductCon}>
-      <Spacer space={SH(20)} />
-      <View style={styles.displayFlex}>
-        <View>
-          <Text style={styles.darkBlackText}>Total Revenue</Text>
-          <Text style={[styles.darkBlackText, { fontSize: SF(32) }]}>
-            ${revenueGraphObject?.totalResult ? revenueGraphObject?.totalResult.toFixed(2) : 0}
-          </Text>
-        </View>
-        <TouchableOpacity
-        onPress={() => graphHandler('Total Revenue')}
-         >
-          <Image source={rightlight} style={styles.rightlight} />
-        </TouchableOpacity>
-      </View>
-      <Spacer space={SH(5)} />
-      {
-        totalRevenueLoading
-        ?
-         <View style={{ marginTop: 50 }}>
-           <ActivityIndicator size="large" color={COLORS.indicator} />
-          </View>
-      :
-             <BarChartCom
-               barWid={Platform.OS === 'android' ? SH(550) : SH(380) }
-               barHei={150}
-               barSpacing={Platform.OS === 'android' ? 30 : 20}
-               barW={10}
-               labelTextSty= {{color: COLORS.gerySkies, fontSize:11}}
-               revenueData = {revenueGraphObject}
-               />
-
-      }
-               
-               </View>
+            <View style={styles.totalProductCon}>
+              <Spacer space={SH(20)} />
+              <View style={styles.displayFlex}>
+                <View>
+                  <Text style={styles.darkBlackText}>Total Revenue</Text>
+                  <Text style={[styles.darkBlackText, { fontSize: SF(32) }]}>
+                    $
+                    {revenueGraphObject?.totalResult
+                      ? revenueGraphObject?.totalResult.toFixed(2)
+                      : 0}
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={() => graphHandler('Total Revenue')}>
+                  <Image source={rightlight} style={styles.rightlight} />
+                </TouchableOpacity>
+              </View>
+              <Spacer space={SH(5)} />
+              {totalRevenueLoading ? (
+                <View style={{ marginTop: 50 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : (
+                <BarChartCom
+                  barWid={Platform.OS === 'android' ? SH(550) : SH(380)}
+                  barHei={150}
+                  barSpacing={Platform.OS === 'android' ? 30 : 18}
+                  barW={Platform.OS === 'android' ? 10 : 7}
+                  labelTextSty={{ color: COLORS.gerySkies, fontSize: 11 }}
+                  revenueData={revenueGraphObject}
+                />
+              )}
+            </View>
             <HomeGraph
               header="Total Orders"
-              subHeader={getAnalyticsData?.getOrderGraph?.totalResult.toFixed(2) ?? '0'}
+              subHeader={
+                getAnalyticsData?.getOrderGraph?.totalResult.toFixed(2) ?? '0'
+              }
               productGraphObject={orderGraphObject}
               homeGraphHandler={() => graphHandler('Total Orders')}
-              arrayLength = {orderGraphObject?.datasets?.length}
+              arrayLength={orderGraphObject?.datasets?.length}
               productLoader={totalGraphLoading}
             />
           </View>

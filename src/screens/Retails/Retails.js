@@ -658,7 +658,7 @@ export function Retails() {
     } else {
       const data = {
         cartid: cartIDdiscount,
-        userId : customer?.user_id
+        userId: customer?.user_id,
       };
       dispatch(createOrder(data));
       setListofItem(false);
@@ -1687,7 +1687,9 @@ export function Retails() {
               : tipsData?.otherAmount
           }
           tipsRate={tipsData?.chnageDue}
-          payable1={getCartAmount?.total_amount ? getCartAmount?.total_amount : '0.00'}
+          payable1={
+            getCartAmount?.total_amount ? getCartAmount?.total_amount : '0.00'
+          }
         />
       ) : openScanner ? (
         <View style={styles.cameraContainer}>

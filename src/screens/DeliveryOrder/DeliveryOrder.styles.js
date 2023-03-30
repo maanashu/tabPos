@@ -55,11 +55,11 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     left: 3,
   },
-  dropdown2Con:{
-     width:SW(15),
-     height:SH(30),
-     flexDirection:'row',
-     justifyContent:'space-evenly'
+  dropdown2Con: {
+    width: SW(15),
+    height: SH(30),
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   textInputStyle: {
     width: SW(45),
@@ -77,8 +77,8 @@ export const styles = StyleSheet.create({
   },
 
   contentContainer: {
-    flex:1,
-    justifyContent:'space-between',
+    flex: 1,
+    justifyContent: 'space-between',
     paddingHorizontal: SW(2),
   },
   orderStatusView: {
@@ -268,8 +268,8 @@ export const styles = StyleSheet.create({
     paddingLeft: 2,
   },
   backView: {
-    width: SW(25),
-    height: SW(12),
+    width: SW(30),
+    height: SW(14),
     backgroundColor: COLORS.textInputBackground,
     flexDirection: 'row',
     borderRadius: 3,
@@ -309,7 +309,7 @@ export const styles = StyleSheet.create({
     width: SW(12),
     height: SW(12),
     resizeMode: 'contain',
-    borderRadius:50
+    borderRadius: 50,
   },
   scooter: {
     width: SW(17),
@@ -343,9 +343,11 @@ export const styles = StyleSheet.create({
     bottom: Platform.OS === 'android' ? 20 : 0,
     right: 0,
     backgroundColor: COLORS.white,
-    width: windowWidth * 0.44,
-    ...ShadowStyles.shadow1,
-    paddingTop: 10,
+    width: windowWidth * 0.46,
+    height: windowHeight * 0.25,
+    ...ShadowStyles.shadow,
+    padding: 10,
+    justifyContent: 'center',
   },
   rowView: {
     flexDirection: 'row',
@@ -447,7 +449,7 @@ export const styles = StyleSheet.create({
   orderModalView: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    bottom: Platform.OS === 'android' ? 50 : 30,
+    bottom: 50,
     backgroundColor: COLORS.white,
     right: SW(5),
     width: SW(95),
@@ -460,18 +462,18 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignSelf: 'flex-end',
   },
-  deliveryStatus2:{
+  deliveryStatus2: {
     flexDirection: 'row',
-    alignItems:"center",
-    justifyContent:'space-between',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     height: SH(53),
-    paddingRight:moderateScale(7),
-    marginTop:10
+    paddingRight: moderateScale(7),
+    marginTop: 10,
   },
   deliveryStatus: {
     flexDirection: 'row',
     height: SH(44),
-    paddingRight:moderateScale(7)
+    paddingRight: moderateScale(7),
   },
   verifyText: {
     fontFamily: Fonts.SemiBold,
@@ -481,18 +483,18 @@ export const styles = StyleSheet.create({
   justifyContentStyle: {
     justifyContent: 'flex-end',
   },
-  nineXCon:{
-    width:SW(22),
-    height:SH(45),
-    borderRadius:10,
-    backgroundColor:COLORS.primary,
-    justifyContent:'center',
-    alignItems:'center'
+  nineXCon: {
+    width: SW(22),
+    height: SH(45),
+    borderRadius: 10,
+    backgroundColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  nineXText:{
-    color:COLORS.white,
-    fontFamily:Fonts.SemiBold,
-    fontSize:SF(17)
+  nineXText: {
+    color: COLORS.white,
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(17),
   },
   radioImage: {
     width: SW(6),
@@ -509,7 +511,7 @@ export const styles = StyleSheet.create({
   },
   subtotalRow: {
     borderWidth: 1,
-    width: SH(385),
+    width: SH(300),
     alignSelf: 'flex-end',
     borderStyle: 'dashed',
     borderColor: COLORS.row_grey,
@@ -550,8 +552,8 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     color: COLORS.black,
   },
-  flexRow:{
-    flexDirection:'row',
-    alignItems:'center'
-  }
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });

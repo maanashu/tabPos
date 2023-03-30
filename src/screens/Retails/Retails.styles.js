@@ -308,14 +308,14 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(15),
     resizeMode: 'contain',
-    borderRadius:50
+    borderRadius: 50,
   },
   jfrContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingLeft: moderateScale(10),
-    marginVertical:verticalScale(3)
+    marginVertical: verticalScale(3),
   },
   jfrContainer2: {
     display: 'flex',
@@ -333,7 +333,7 @@ export const styles = StyleSheet.create({
     height: SH(25),
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight:12
+    marginRight: 12,
   },
   updatePriceButton: {
     fontSize: SF(12),
@@ -392,7 +392,7 @@ export const styles = StyleSheet.create({
   },
   bottomContainer: {
     borderTopWidth: 1,
-    height: SH(350),
+    height: SH(300),
     borderColor: COLORS.row_grey,
   },
   bottomSubCon: {
@@ -577,9 +577,9 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(15),
     resizeMode: 'contain',
-    borderRadius:50,
+    borderRadius: 50,
     elevation: 10,
-    marginVertical:verticalScale(4)
+    marginVertical: verticalScale(4),
   },
   jfrmaduro: {
     fontSize: SF(18),
@@ -1011,12 +1011,12 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     fontSize: SF(16),
     height: SH(50),
-    width: SW(70), 
-    color:COLORS.dark_grey,
-    paddingHorizontal:moderateScale(10),
+    width: SW(70),
+    color: COLORS.dark_grey,
+    paddingHorizontal: moderateScale(10),
   },
 
-  walletAddresStyle:{
+  walletAddresStyle: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(16),
@@ -1116,7 +1116,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.orderStatusBackground,
     height: SH(80),
     justifyContent: 'center',
-    paddingHorizontal: moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
   paymentTipsText: {
     color: COLORS.black,
@@ -1160,8 +1160,7 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(15),
     resizeMode: 'contain',
-    borderRadius:100
-    
+    borderRadius: 100,
   },
 
   walletIdCon: {
@@ -1266,7 +1265,7 @@ export const styles = StyleSheet.create({
     width: SW(94),
     borderRadius: 7,
     paddingHorizontal: moderateScale(10),
-    marginVertical:moderateScale(5)
+    marginVertical: moderateScale(5),
   },
   // customer cash  modal css end
 
@@ -1362,8 +1361,8 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(15),
     resizeMode: 'contain',
-    borderRadius:50,
-    marginVertical:verticalScale(4)
+    borderRadius: 50,
+    marginVertical: verticalScale(4),
   },
   marbolorRedStyle: {
     color: COLORS.solid_grey,
@@ -1543,24 +1542,24 @@ export const styles = StyleSheet.create({
 
   //  pos search css end
 
-  productModCon:{
-    backgroundColor:COLORS.white,
-    width:windowWidth * 0.48,
-    height:windowHeight * 0.85,
-    borderRadius:15,
+  productModCon: {
+    backgroundColor: COLORS.white,
+    width: windowWidth * 0.48,
+    height: windowHeight * 0.85,
+    borderRadius: 15,
   },
-  productModCon2:{
-    backgroundColor:COLORS.white,
-    width:windowWidth * 0.70,
-    height:windowHeight * 0.70,
-    borderRadius:15,
-    paddingHorizontal:moderateScale(15),
-    paddingVertical:verticalScale(8)
+  productModCon2: {
+    backgroundColor: COLORS.white,
+    width: windowWidth * 0.7,
+    height: windowHeight * 0.7,
+    borderRadius: 15,
+    paddingHorizontal: moderateScale(15),
+    paddingVertical: verticalScale(8),
   },
-  productModConBody:{
-    width:windowWidth * 0.35,
-    height:windowHeight * 0.72,
-    alignSelf:'center'
+  productModConBody: {
+    width: windowWidth * 0.35,
+    height: windowHeight * 0.72,
+    alignSelf: 'center',
   },
   backView: {
     width: SW(28),
@@ -1570,7 +1569,7 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: verticalScale(10)
+    marginVertical: verticalScale(10),
   },
   truckStyle: {
     width: SH(32),
@@ -1582,21 +1581,21 @@ export const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.dark_grey,
   },
-  cameraContainer:{
-    height:windowHeight * 0.95,
-    paddingBottom:20
+  cameraContainer: {
+    height: windowHeight * 0.95,
+    paddingBottom: 20,
   },
-  crossButtonRed:{
-    width:SW(30),
-    height:SH(50),
-    resizeMode:'contain',
-    backgroundColor:'#000',
-    alignSelf:"center"
+  crossButtonRed: {
+    width: SW(30),
+    height: SH(50),
+    resizeMode: 'contain',
+    backgroundColor: '#000',
+    alignSelf: 'center',
   },
-  qrcodeImage:{
-    width:SW(300),
-    height:SH(300),
-    resizeMode:'contain'
+  qrcodeImage: {
+    width: SW(300),
+    height: SH(300),
+    resizeMode: 'contain',
   },
   submitButtons: {
     backgroundColor: COLORS.primary,
@@ -1605,12 +1604,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    alignSelf:'center'
+    alignSelf: 'center',
   },
   selectedText: {
     color: COLORS.white,
     textAlign: 'center',
     fontSize: SF(16),
   },
-
 });

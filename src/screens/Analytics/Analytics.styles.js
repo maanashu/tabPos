@@ -96,13 +96,13 @@ export const styles = StyleSheet.create({
   totalProductCon: {
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
-    width: Platform.OS === 'android' ?  windowWidth * 0.44 : windowWidth * 0.42,
+    width: Platform.OS === 'android' ? windowWidth * 0.44 : windowWidth * 0.44,
     height: windowHeight * 0.4,
     resizeMode: 'contain',
     ...ShadowStyles.shadow2,
     borderRadius: 10,
-    paddingHorizontal: moderateScale(10),
-    marginHorizontal: moderateScale(10),
+    paddingHorizontal: moderateScale(15),
+    marginHorizontal: moderateScale(5),
     marginVertical: verticalScale(5),
   },
   rightlight: {
@@ -154,7 +154,7 @@ export const styles = StyleSheet.create({
   totalProductDetailCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
-    width: Platform.OS === 'android' ?  windowWidth * 0.92 : windowWidth * 0.90,
+    width: Platform.OS === 'android' ? windowWidth * 0.92 : windowWidth * 0.9,
     height: windowHeight * 0.4,
     paddingHorizontal: moderateScale(10),
   },
@@ -1650,9 +1650,9 @@ export const styles = StyleSheet.create({
     // justifyContent:'center',
   },
   homeMainContainer: {
-    paddingHorizontal: moderateScale(8),
+    paddingHorizontal: moderateScale(2),
     paddingBottom: Platform.OS === 'ios' ? 30 : 60,
-    width: Platform.OS === 'android' ?  windowWidth * 0.94 : windowWidth * 0.92 ,
+    width: Platform.OS === 'android' ? windowWidth * 0.94 : windowWidth * 0.92,
     height: windowHeight,
   },
 
