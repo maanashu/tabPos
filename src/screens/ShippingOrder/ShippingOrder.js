@@ -421,7 +421,7 @@ export function ShippingOrder() {
             <View style={styles.timeView}>
               <Image source={pin} style={styles.pinIcon} />
               <Text style={styles.timeText}>
-                {item?.distance ? item?.distance : '0miles'}
+                {item?.distance ? item?.distance : '0miles'} miles
               </Text>
             </View>
           </View>
@@ -436,7 +436,7 @@ export function ShippingOrder() {
         <View style={styles.timeView}>
           <Image source={pay} style={styles.pinIcon} />
           <Text style={styles.timeText}>
-            {item.payable_amount ? item.payable_amount : '0'}
+            ${item.payable_amount ? item.payable_amount : '0'}
           </Text>
         </View>
       </View>

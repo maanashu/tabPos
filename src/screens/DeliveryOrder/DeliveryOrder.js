@@ -413,7 +413,7 @@ export function DeliveryOrder() {
         <View style={styles.timeView}>
           <Image source={pin} style={styles.pinIcon} />
           <Text style={styles.timeText}>
-            {item?.distance ? item?.distance : '0miles'}
+            {item?.distance ? item?.distance : '0miles'} miles
           </Text>
         </View>
       </View>
@@ -426,7 +426,7 @@ export function DeliveryOrder() {
         <View style={styles.timeView}>
           <Image source={pay} style={styles.pinIcon} />
           <Text style={styles.timeText}>
-            {item.payable_amount ? item.payable_amount : '0'}
+            ${item.payable_amount ? item.payable_amount : '0'}
           </Text>
         </View>
       </View>
@@ -944,7 +944,7 @@ export function DeliveryOrder() {
                 <View style={styles.timeView}>
                   <Image source={pin} style={styles.pinIcon} />
                   <Text style={styles.timeText}>
-                    {singleOrder?.distance ? singleOrder?.distance : '00.00'}
+                    {singleOrder?.distance ? singleOrder?.distance : '00.00'} miles
                   </Text>
                 </View>
               </View>
@@ -959,7 +959,7 @@ export function DeliveryOrder() {
                 <View style={styles.timeView}>
                   <Image source={pay} style={styles.pinIcon} />
                   <Text style={styles.timeText}>
-                    {singleOrder?.payable_amount
+                    ${singleOrder?.payable_amount
                       ? singleOrder?.payable_amount
                       : '0'}
                   </Text>

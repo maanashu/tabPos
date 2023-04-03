@@ -38,7 +38,7 @@ export function Passcode() {
 
  
 
-  const passcodeHandler = () =>{
+  const passcodeHandler = async () =>{
     if(!value){
       Toast.show({
         position: 'bottom',
@@ -69,7 +69,11 @@ export function Passcode() {
         country_code : country_code,
         pin: value
       }
-        dispatch(login(data))
+       const res = await dispatch(login(data)) 
+         if(res?.type === "LOGIN_ERROR" ){
+          setValue('')
+         }
+       
     }
   }
   return (

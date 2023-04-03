@@ -58,6 +58,7 @@ export const styles = StyleSheet.create({
   dropdown2Con: {
     width: SW(15),
     height: SH(30),
+    
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
@@ -249,7 +250,7 @@ export const styles = StyleSheet.create({
   },
   deliveryViewStyle: {
     backgroundColor: COLORS.white,
-    marginVertical: SH(15),
+    marginVertical: SH(8),
     marginHorizontal: SW(3),
     paddingLeft: SW(2),
     paddingRight: SW(5),
@@ -344,8 +345,8 @@ export const styles = StyleSheet.create({
     right: 0,
     backgroundColor: COLORS.white,
     width: windowWidth * 0.46,
-    height: windowHeight * 0.25,
-    ...ShadowStyles.shadow,
+    height: windowHeight * 0.30,
+    // ...ShadowStyles.shadow,
     padding: 10,
     justifyContent: 'center',
   },

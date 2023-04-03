@@ -83,9 +83,9 @@ export const login = (data) => async dispatch => {
     dispatch(loginRequest());
     try {
         const res = await AuthController.login(data);
-        dispatch(loginSuccess(res));
+        return dispatch(loginSuccess(res));
     } catch (error) {
-        dispatch(loginError(error.message));
+        return  dispatch(loginError(error));
     }
 };
 export const getProfile = (id) => async dispatch => {

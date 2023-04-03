@@ -72,7 +72,7 @@ export function DrawerNavigator(props) {
       <DrawerItem
         label=""
         icon={({ focused, color, size }) => (
-          <Image source={logo_icon} style={styles.iconStyle} />
+          <Image source={logo_icon} style={styles.iconStyle1} />
         )}
       />
 
@@ -247,6 +247,11 @@ const styles = StyleSheet.create({
   iconStyle: {
     width: Platform.OS === 'android' ? SW(9) : SW(10),
     height: Platform.OS === 'android' ? SW(9) : SW(10),
+    resizeMode: 'contain',
+  },
+  iconStyle1: {
+    width: Platform.OS === 'android' ? SW(11) : SW(10),
+    height: Platform.OS === 'android' ? SW(11) : SW(10),
     resizeMode: 'contain',
   },
   powerStyle: {

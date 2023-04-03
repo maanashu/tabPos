@@ -199,7 +199,7 @@ export function SingleOrderView ({selectShipingHandler, singleorderCancelHandler
           <View style={styles.timeView}>
             <Image source={pin} style={styles.pinIcon} />
             <Text style={styles.timeText}>
-              {distance ? distance : '00.00'}
+              {distance ? distance : '00.00'} miles
             </Text>
           </View>
         </View>
@@ -212,7 +212,7 @@ export function SingleOrderView ({selectShipingHandler, singleorderCancelHandler
           <View style={styles.timeView}>
             <Image source={pay} style={styles.pinIcon} />
             <Text style={styles.timeText}>
-              {payAmount ?  payAmount : '0'}
+              ${payAmount ?  payAmount : '0'}
             </Text>
           </View>
         </View>

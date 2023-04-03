@@ -86,6 +86,8 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { CategoryProductDetail, ChangeDue, ListOfItem } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
 import { emailReg, mobileReg } from '@/utils/validators';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export function Retails() {
   const dispatch = useDispatch();
@@ -205,7 +207,10 @@ export function Retails() {
   const recevAmount = amountPer / 100;
   const recevAmountDec = recevAmount;
   const finalReceviedAmount = getCartAmount?.total_amount + recevAmountDec;
-  const [tipsData, setTipsData] = useState();
+  const [tipsData, setTipsData] = useState(); 
+  const [amountCheck, setAmountCheck] = useState(false);
+  const [percentageCheck, setPercentageCheck] = useState(false);
+    const [discountCheck, setDiscountCheck] = useState(false);
   const tipData = [
     {
       percentage: getTips?.first_tips ?? 0,
@@ -587,6 +592,16 @@ export function Retails() {
     }
   };
 
+  const saveDiscountHandler1 = () => {
+    if(amountCheck){
+     setAmountCheck(false)
+    }else if(percentageCheck) {
+     setPercentageCheck(false)
+    }else if (discountCheck){
+     setDiscountCheck(false)
+    }
+   }
+
   const saveDiscountHandler = () => {
     if (!cartIDdiscount) {
       Toast.show({
@@ -639,6 +654,13 @@ export function Retails() {
     setDiscountCode('');
     setValue('');
     setDescriptionDis('');
+      if(amountCheck){
+      setAmountCheck(false)
+     }else if(percentageCheck) {
+      setPercentageCheck(false)
+     }else if (discountCheck){
+      setDiscountCheck(false)
+     }
   };
 
   const ProductHandler = (item, id) => {
@@ -693,6 +715,7 @@ export function Retails() {
   };
   const amountRemoveHandler = () => {
     setAmountPopup(false);
+    setCityModelOpen(false)
   };
   const moreActionHandler = () => {
     if (totalCart === '0') {
@@ -1437,7 +1460,9 @@ export function Retails() {
               }}
               style={styles.crossButtonPosition}
             >
+              <View style={styles.crossBtnCon}>
               <Image source={crossButton} style={styles.crossButton} />
+              </View>
             </TouchableOpacity>
           </View>
           <View
@@ -1451,7 +1476,7 @@ export function Retails() {
               </Text>
               <Spacer space={SH(10)} />
               <View style={[styles.customerInputWraper, { borderWidth: 2 }]}>
-                {customerPhoneNo?.length > 5 ? null : (
+                {customerPhoneNo?.length > 9 ? null : (
                   <Image
                     source={search_light}
                     style={[styles.searchStyle, { tintColor: COLORS.darkGray }]}
@@ -1496,7 +1521,9 @@ export function Retails() {
               )}
               style={styles.crossButtonPosition}
             >
+              <View style={styles.crossBtnCon}>
               <Image source={crossButton} style={styles.crossButton} />
+              </View>
             </TouchableOpacity>
           </View>
           <View style={[styles.custTotalAmountBodyCon]}>
@@ -2029,6 +2056,7 @@ export function Retails() {
                   <Image source={checkArrow} style={styles.checkArrow} />
                 </TouchableOpacity>
               </View>
+              <Spacer space={SH(30)} />
             </View>
           ) : null}
           {/* end right side view */}
@@ -2042,14 +2070,21 @@ export function Retails() {
           >
             <View style={styles.amountPopupCon}>
               <View style={styles.primaryHeader}>
-                <Text style={styles.headerText}>
-                  Amount: ${cartTotalAmount}
-                </Text>
+                {/* <Text style={styles.headerText}>
+                  Amount: <Text style={{lineHeight:10}}>$</Text>{cartTotalAmount}
+                </Text> */}
+                <View style={{flexDirection:'row'}}>
+                   <Text style={styles.headerText}>Amount:</Text>
+                   <Text style={styles.headerTextDollar}> $</Text>
+                   <Text style={styles.headerText}>{cartTotalAmount}</Text>
+                </View>
                 <TouchableOpacity
                   onPress={amountRemoveHandler}
                   style={styles.crossButtonPosition}
                 >
-                  <Image source={crossButton} style={styles.crossButton} />
+                 <View style={styles.crossBtnCon}>
+                 <Image source={crossButton} style={styles.crossButton} />
+                 </View>
                 </TouchableOpacity>
               </View>
               <Spacer space={SH(20)} />
@@ -2098,7 +2133,7 @@ export function Retails() {
                 <View style={styles.priceContainer}>
                   <Text style={styles.price}>{strings.retail.price}</Text>
                   <Text style={[styles.price, { fontSize: SF(18) }]}>
-                    {cartData?.product_details?.price}
+                    ${cartData?.product_details?.price}
                   </Text>
                 </View>
                 <Spacer space={SH(20)} />
@@ -2180,7 +2215,7 @@ export function Retails() {
                 <Text style={styles.moreActText}>
                   {strings.retail.moreAction}
                 </Text>
-                <TouchableOpacity onPress={moreActionCloseHandler}>
+                <TouchableOpacity onPress={moreActionCloseHandler} style={styles.crossBtnCon}>
                   <Image source={crossButton} style={styles.crossButtonStyle} />
                 </TouchableOpacity>
               </View>
@@ -2232,6 +2267,7 @@ export function Retails() {
               </View>
 
               <Spacer space={SH(30)} />
+             
               <AddDiscountToCart
                 amountDis={amountDis}
                 setAmountDis={setAmountDis}
@@ -2245,6 +2281,12 @@ export function Retails() {
                 value={value}
                 saveDiscountHandler={saveDiscountHandler}
                 clearInput={clearInput}
+                amountCheck={amountCheck}
+                setAmountCheck={setAmountCheck}
+                percentageCheck={percentageCheck}
+                setPercentageCheck={setPercentageCheck}
+                discountCheck={discountCheck}
+                setDiscountCheck={setDiscountCheck}
               />
             </View>
           ) : null}

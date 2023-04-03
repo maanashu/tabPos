@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Image, StatusBar } from 'react-native';
 import { Spacer, Button } from '@/components';
 import {  SH } from '@/theme';
@@ -25,6 +25,9 @@ export function VerifyPhone() {
   const isLoading = useSelector(state =>
     isLoadingSelector([TYPES.VERIFY_PHONE], state)
   );
+  useEffect(() => {
+    clearInput()
+  },[])
   const clearInput = () => {
     setPhoneNumber('')
   }
@@ -32,7 +35,7 @@ export function VerifyPhone() {
   const verifyPhoneHandler = () => {
     if (phoneNumber && phoneNumber.length > 5 && digits.test(phoneNumber)) {
       dispatch(verifyPhone(phoneNumber, countryCode));
-      clearInput()
+      // clearInput()
     } else if (phoneNumber && phoneNumber.length < 5) {
       Toast.show({
         position: 'bottom',

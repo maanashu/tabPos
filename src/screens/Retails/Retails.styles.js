@@ -252,6 +252,7 @@ export const styles = StyleSheet.create({
     height: windowHeight,
     width: windowWidth * 0.31,
     position: 'absolute',
+
     right: 0,
     top: 0,
     borderColor: COLORS.black,
@@ -551,6 +552,13 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
     fontFamily: Fonts.SemiBold,
     color: COLORS.white,
+    // lineHeight:20
+  },
+  headerTextDollar:{
+    fontSize: SF(13),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.white,
+    lineHeight:17
   },
   crossButton: {
     width: SW(24),
@@ -1611,4 +1619,10 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: SF(16),
   },
+  crossBtnCon:{
+    height:SH(40),
+    width:SW(25),
+    // borderWidth:1,
+    alignItems:'flex-end'
+  }
 });

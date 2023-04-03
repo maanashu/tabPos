@@ -213,7 +213,7 @@ export const en = {
     inventryOpen:'Inventory-Opening',
     inventryRenderPoint:'Inventory-Reorder Point',
     pack:'Pack',
-    brand:'brands',
+    brand:'Brands',
     stock:'206 in stock',
     location:'Available in another location',
     addToCart:'Add to cart',

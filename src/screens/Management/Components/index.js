@@ -76,7 +76,7 @@ export function SessionHistoryTable({ tableTouchHandler }) {
                     <Text style={[styles.usertableRowText, {textAlign:'left'}]}>1</Text>
                     <View style={{ paddingHorizontal: moderateScale(10) }}>
                       <Text style={styles.usertableRowText}>Jun 21, 2022</Text>
-                      <Text style={styles.usertableRowText}>2:28 PM</Text>
+                      <Text style={[styles.usertableRowText, {textAlign:'left'}]}>2:28 PM</Text>
                     </View>
                   </View>
                   <View style={styles.dateTimeAlign}>
