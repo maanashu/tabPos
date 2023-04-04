@@ -27,6 +27,7 @@ import {
   radio,
   userImage,
   parachuteBox,
+  parcel,
 } from '@/assets';
 import { styles } from './ShippingOrder.styles';
 import { strings } from '@/localization';
@@ -46,6 +47,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   acceptOrder,
+  deliveringOrd,
   getOrderCount,
   getOrders,
   getReviewDefault,
@@ -53,7 +55,7 @@ import {
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getShipping } from '@/selectors/ShippingSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/Types';
+import { TYPES } from '@/Types/ShippingOrderTypes';
 const windowHeight = Dimensions.get('window').height;
 import CircularProgress from 'react-native-circular-progress-indicator';
 import moment from 'moment';
@@ -67,7 +69,10 @@ export function ShippingOrder() {
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getDeliveryData = useSelector(getShipping);
   const orderHeadCount = getDeliveryData?.getOrderCount;
-  const [orderCount, setOrderCount] = useState(getDeliveryData?.orderList ?? []);
+  const deliveringOrder = getDeliveryData?.deliveryOrd;
+  const [orderCount, setOrderCount] = useState(
+    getDeliveryData?.orderList ?? []
+  );
   const orderArray = getDeliveryData?.orderList?.data ?? [];
   const [viewAllReviews, setViewAllReviews] = useState(false);
   const [orderAccepted, setOrderAccepted] = useState(false);
@@ -75,7 +80,9 @@ export function ShippingOrder() {
   const [showArea, setShowArea] = useState(true);
   const [headingType, setHeadingType] = useState('');
   const [dataType, setDataType] = useState('');
-  const [selectedId, setSelectedId] = useState(getDeliveryData?.orderList?.[0].id);
+  const [selectedId, setSelectedId] = useState(
+    getDeliveryData?.orderList?.[0].id
+  );
   const [itemss, setItem] = useState();
   const customerProduct = itemss?.order_details;
   const custProLength = customerProduct?.length;
@@ -175,6 +182,7 @@ export function ShippingOrder() {
     if (isFocused) {
       dispatch(getOrderCount(sellerID)),
         dispatch(getReviewDefault(0, sellerID));
+      dispatch(deliveringOrd());
     }
     if (getDeliveryData?.orderList?.length > 0) {
       setOrderCount(getDeliveryData?.orderList);
@@ -233,6 +241,9 @@ export function ShippingOrder() {
   const isPosOrderDefLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_REVIEW_DEF], state)
   );
+  const isDeliveringOrd = useSelector(state =>
+    isLoadingSelector([TYPES.DELIVERING_ORDER], state)
+  );
 
   const customHeader = () => {
     return (
@@ -241,13 +252,14 @@ export function ShippingOrder() {
           <TouchableOpacity
             onPress={() => {
               viewAllReviews
-                ? setViewAllReviews(false) :
-                 otherState && printScreen
-                ?(setPrintScreen(false), setSingleOrderView(true), setOtherState(false))
+                ? setViewAllReviews(false)
+                : otherState && printScreen
+                ? (setPrintScreen(false),
+                  setSingleOrderView(true),
+                  setOtherState(false))
                 : printScreen
                 ? (setPrintScreen(false), setViewAllReviews(true))
-                :
-                 setSingleOrderView(false);
+                : setSingleOrderView(false);
             }}
             style={styles.backView}
           >
@@ -359,12 +371,22 @@ export function ShippingOrder() {
     }
   };
   const orderStatusReach = () => {
-    return(
+    return (
       <View>
-         <Text style={styles.verifyText}>{itemss?.status === 0 ? 'Order review' : itemss?.status === 1 ? 'Order accepted' : itemss?.status === 2 ? 'Order prepare' : itemss?.status === 3 ? 'Ready to pickup' : 'Assign Driver'}</Text>
+        <Text style={styles.verifyText}>
+          {itemss?.status === 0
+            ? 'Order review'
+            : itemss?.status === 1
+            ? 'Order accepted'
+            : itemss?.status === 2
+            ? 'Order prepare'
+            : itemss?.status === 3
+            ? 'Ready to pickup'
+            : 'Assign Driver'}
+        </Text>
       </View>
-    )
-};
+    );
+  };
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
@@ -552,19 +574,33 @@ export function ShippingOrder() {
       <View style={styles.rowSpaceBetween}>
         <View style={{ flexDirection: 'row' }}>
           <Image
-            source={item.image}
+            source={parcel}
             style={[styles.pinIcon, { tintColor: COLORS.primary }]}
           />
           <Text style={[styles.timeText, { color: COLORS.primary }]}>
-            {item.delivery}
+            {item.delivery_type}
           </Text>
         </View>
         <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
       </View>
       <View style={styles.rowSpaceBetween}>
-        <Text style={styles.totalText}>{item.total}</Text>
+        <Text style={styles.totalText}>{item.count}</Text>
         {/* <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} /> */}
         <Text style={{ color: COLORS.primary }}>-</Text>
+      </View>
+    </View>
+  );
+  const renderDeliveryDummy = ({ item, index }) => (
+    <View style={styles.deliveryViewStyle}>
+      <View style={styles.rowSpaceBetween}>
+        <View style={{ flexDirection: 'row' }}>
+          <Image
+            source={parcel}
+            style={[styles.pinIcon, { tintColor: COLORS.primary }]}
+          />
+        </View>
+        <ActivityIndicator size="small" color={COLORS.indicator} />
+        <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
       </View>
     </View>
   );
@@ -987,7 +1023,9 @@ export function ShippingOrder() {
           renderProductList={renderProductList}
           singleorderCancelHandler={singleorderCancelHandler}
           singleOrderAccept={singleOrderAccept}
-          selectShipingHandler={() => (setPrintScreen(true), setSingleOrderView(false),setOtherState(true))}
+          selectShipingHandler={() => (
+            setPrintScreen(true), setSingleOrderView(false), setOtherState(true)
+          )}
         />
       );
     } else if (viewAllReviews && readyPickup === false) {
@@ -1212,13 +1250,24 @@ export function ShippingOrder() {
                   <Text style={styles.orderReviewText}>
                     {strings.deliveryOrders.deliveryOrders}
                   </Text>
-
-                  <FlatList
-                    horizontal
-                    data={deliveryOrders}
-                    renderItem={renderDeliveryOrders}
-                    showsHorizontalScrollIndicator={false}
-                  />
+                  {isDeliveringOrd ? (
+                    <FlatList
+                      horizontal
+                      data={deliveryOrders}
+                      extraData={deliveryOrders}
+                      renderItem={renderDeliveryDummy}
+                      keyExtractor={item => item.key}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  ) : (
+                    <FlatList
+                      horizontal
+                      data={deliveringOrder}
+                      extraData={deliveringOrder}
+                      renderItem={renderDeliveryOrders}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  )}
                 </View>
               </View>
             </View>
@@ -1227,7 +1276,6 @@ export function ShippingOrder() {
       );
     }
   };
-
 
   const showOrderStatusModal = () => {
     return (

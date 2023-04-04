@@ -1,5 +1,5 @@
 import { ShippingController } from '@/controllers';
-import { TYPES } from "@/Types/Types";
+import { TYPES } from "@/Types/ShippingOrderTypes";
 
 const getOrderCountRequest = () => ({
   type: TYPES.GET_ORDER_COUNT_REQUEST,
@@ -70,6 +70,23 @@ const acceptOrderError = error => ({
   payload: { error },
 });
 
+const deliveringOrdRequest = () => ({
+  type: TYPES.DELIVERING_ORDER_REQUEST,
+  payload: null,
+});
+const deliveringOrdSuccess = deliveryOrd => ({
+  type: TYPES.DELIVERING_ORDER_SUCCESS,
+  payload: { deliveryOrd },
+});
+const deliveringOrdError = error => ({
+  type: TYPES.DELIVERING_ORDER_ERROR,
+  payload: { error },
+});
+const deliveringOrdReset = () => ({
+  type: TYPES.DELIVERING_ORDER_RESET,
+  payload: null,
+});
+
 export const getOrderCount = (status) => async dispatch => {
   dispatch(getOrderCountRequest());
   try {
@@ -113,6 +130,19 @@ export const acceptOrder = (data) => async dispatch => {
   } catch (error) {
       dispatch(acceptOrderError(error.message));
   }
+};
+
+export const deliveringOrd = () => async dispatch => {
+  dispatch(deliveringOrdRequest());
+  try {
+      const res = await ShippingController.deliveringOrd();
+      dispatch(deliveringOrdSuccess(res?.payload?.shipping_type_Count));
+    } catch (error) {
+      if (error?.statusCode === 204){
+        dispatch(deliveringOrdReset());
+      }
+        dispatch(deliveringOrdError(error.message));
+    }
 };
 
 

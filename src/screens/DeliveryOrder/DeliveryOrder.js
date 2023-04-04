@@ -46,7 +46,7 @@ import {
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/Types';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
 const windowHeight = Dimensions.get('window').height;
 import CircularProgress from 'react-native-circular-progress-indicator';
 import moment from 'moment';
@@ -169,7 +169,7 @@ export function DeliveryOrder() {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getOrderCount(sellerID)),
+         dispatch(getOrderCount(sellerID)),
         dispatch(getReviewDefault(0, sellerID));
     }
     if (getDeliveryData?.orderList?.length > 0) {
@@ -279,7 +279,7 @@ export function DeliveryOrder() {
   };
 
   const orderAccType = item => {
-    if (length[item.key] === 0) {
+    if (length?.[item.key] === 0) {
       Toast.show({
         text2: strings.valiadtion.ordernotfound,
         position: 'bottom',

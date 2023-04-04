@@ -75,6 +75,7 @@ export { default as rightBack } from '@/assets/icons/ic_wallet/rightBack.png';
 export { default as transactionChart } from '@/assets/icons/ic_wallet/transactionChart.png';
 export { default as wallet2 } from '@/assets/icons/ic_wallet/wallet.png';
 export { default as delivery } from '@/assets/icons/ic_deliveryOrder/delivery.png';
+export { default as parcel } from '@/assets/icons/ic_deliveryOrder/parcel.png';
 export { default as userImage } from '@/assets/icons/ic_deliveryOrder/userImage.png';
 export { default as deliveryLine } from '@/assets/icons/ic_deliveryOrder/deliveryBlue.png';
 export { default as radio } from '@/assets/icons/ic_deliveryOrder/radio.png';

@@ -29,11 +29,14 @@ export class CustomersController {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&user_uid=${status}`;
+        console.log('endpoint',endpoint);
       HttpClient.get(endpoint)
         .then(response => {
+          console.log('response', response );
           resolve(response);
         })
         .catch(error => {
+          console.log('error', error);
           reject(error);
         });
     });

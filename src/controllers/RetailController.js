@@ -439,12 +439,14 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
       const body = {
         cart_id: data.cartid,
-        user_id : data. userId,
-        shipping : "Delivery"
+        user_id : data.userId,
+        shipping : "Pickup",
+        app_name : "Pos",
+        mode_of_payment : "cash"
       };
       HttpClient.post(endpoint, body)
         .then(response => {
-          if (response?.msg === 'Order placed successfully!') {
+          if (response?.msg === 'Order placed successfully!'){
             Toast.show({
               position: 'bottom',
               type: 'success_toast',

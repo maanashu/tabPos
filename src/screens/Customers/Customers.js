@@ -977,12 +977,12 @@ export function Customers() {
             <View style={{ marginTop: 100 }}>
               <ActivityIndicator size="large" color={COLORS.indicator} />
             </View>
-          ) : orderUserArray.length === 0 ? (
+          ) : orderUserArray?.length === 0 ? (
             <View style={{ marginTop: 80 }}>
               <Text style={styles.userNotFound}>Order not found</Text>
             </View>
           ) : (
-            orderUserArray.map((item, index) => (
+            orderUserArray?.map((item, index) => (
               <TouchableOpacity
                 key={index}
                 style={[styles.tableDataCon, { zIndex: -99 }]}

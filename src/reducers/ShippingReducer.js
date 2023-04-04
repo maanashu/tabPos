@@ -1,11 +1,12 @@
 
-import { TYPES } from '@/Types/Types';
+import { TYPES } from '@/Types/ShippingOrderTypes';
 
 const INITIALSTATE = {
   getOrderCount:{},
   orderList:[],
   getReviewDef:[],
   getorderList:{},
+  deliveryOrd:{}
   
   
   
@@ -39,6 +40,17 @@ export const shippingReducer = (state = {INITIALSTATE}, { payload, type }) => {
             ...state,
             getorderList: payload.getorderList.payload,
           };
+
+          case TYPES.DELIVERING_ORDER_SUCCESS:
+            return {
+              ...state,
+              deliveryOrd: payload.deliveryOrd,
+            };
+            case TYPES.DELIVERING_ORDER_RESET:
+              return {
+                ...state,
+                deliveryOrd:[],
+              };
 
     
         

@@ -1,6 +1,5 @@
 import { DeliveryController } from '@/controllers';
-import { TYPES } from "@/Types/Types";
-import { LogBox } from 'react-native';
+import { TYPES } from "@/Types/DeliveringOrderTypes";
 
 const getOrderCountRequest = () => ({
   type: TYPES.GET_ORDER_COUNT_REQUEST,

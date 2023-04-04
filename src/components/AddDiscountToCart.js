@@ -93,7 +93,7 @@ export function AddDiscountToCart({
               />
             </View>
           </View>
-          <Spacer space={SH(12)} />
+          <Spacer space={SH(12)} />                                
           <View
             style={
               percentageCheck

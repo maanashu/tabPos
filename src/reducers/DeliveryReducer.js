@@ -1,18 +1,14 @@
 
-import { TYPES } from '@/Types/Types';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
 
 const INITIALSTATE = {
   getOrderCount:{},
   orderList:[],
   getReviewDef:[],
   getorderList:{},
-  
-  
-  
 };
 
 export const deliveryReducer = (state = {INITIALSTATE}, { payload, type }) => {
-  // console.log('payload',payload);
   switch (type) {
     case TYPES.GET_ORDER_COUNT_SUCCESS:
       return {
