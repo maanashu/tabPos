@@ -8,15 +8,17 @@ import { deliveryReducer } from '@/reducers/DeliveryReducer';
 import { shippingReducer } from '@/reducers/ShippingReducer';
 import { analyticsReducer } from '@/reducers/AnalyticsReducer';
 import { customersReducer } from '@/reducers/CustomersReducer';
+import { walletReducer } from '@/reducers/WalletReducer';
 
 export const rootReducer = combineReducers({
   error: errorReducer,
   status: statusReducer,
   user: userReducer,
   auth: authReducer,
-  retail : retailReducer,
-  delivery : deliveryReducer,
-  shipping : shippingReducer,
-  analytics : analyticsReducer,
-  customers : customersReducer
+  retail: retailReducer,
+  delivery: deliveryReducer,
+  shipping: shippingReducer,
+  analytics: analyticsReducer,
+  customers: customersReducer,
+  wallet: walletReducer,
 });

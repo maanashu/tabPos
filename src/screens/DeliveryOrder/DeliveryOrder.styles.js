@@ -16,6 +16,11 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     height: windowHeight,
   },
+   rowCenter:{
+   flexDirection:'row',
+   alignItems:'center'
+
+  },
   headerMainView: {
     width: windowWidth,
     paddingHorizontal: SW(16),
@@ -213,6 +218,10 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     textAlignVertical: 'center',
     paddingLeft: 2,
+  },
+  timeText2:{
+   color:COLORS.primary,
+   width: Platform.OS === 'ios' ? SW(30) : SH(120),
   },
   conversionRow: {
     width: windowWidth / 2.4,

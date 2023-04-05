@@ -53,8 +53,6 @@ export const shippingReducer = (state = {INITIALSTATE}, { payload, type }) => {
               };
 
     
-        
-        
     default:
       return state;
   }

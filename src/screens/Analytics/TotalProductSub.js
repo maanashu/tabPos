@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { Text, TouchableOpacity, View, Image, FlatList } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { activeProduct, catPercent } from '@/assets';
@@ -9,10 +9,14 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 
 import { DaySelector, Spacer } from '@/components';
 
+
 export function TotalProductSub({
   inverntoryUnitViseHandler,
   tableAccCatHandler,
 }) {
+   const [selectTime,setSelectTime]  = useState()
+
+
   const categoryInventoryItem = ({ item }) => (
     <TouchableOpacity
       style={styles.categoryCon}
@@ -61,7 +65,9 @@ export function TotalProductSub({
               {strings.analytics.totalProducts}
             </Text>
             <View>
-              <DaySelector />
+              {/* <DaySelector 
+              setSelectTime={setSelectTime}
+              /> */}
             </View>
           </View>
           <Spacer space={SH(2)} />
@@ -181,8 +187,10 @@ export function TotalProductSub({
         <View style={[styles.totalProductDetailCon]}>
           <Spacer space={SH(10)} />
           <View style={styles.displayFlex}>
-            <View>
-              <DaySelector />
+            <View>  
+              {/* <DaySelector
+              setSelectTime={setSelectTime}
+              /> */}
             </View>
             <Text style={styles.trancationHeading}>
               {strings.analytics.totalInvetry}

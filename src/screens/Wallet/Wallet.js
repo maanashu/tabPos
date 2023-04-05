@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,13 +8,14 @@ import {
   TouchableOpacity,
   Platform,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Wallet/Wallet.styles';
 import { strings } from '@/localization';
 import {
-  aboutTransactionData,
-  tipsData,
+  // aboutTransactionData,
+  // tipsData,
   allTransactionData,
 } from '@/constants/flatListData';
 import {
@@ -31,6 +32,9 @@ import {
   maskRight,
   unionRight,
   Fonts,
+  jbrCoin,
+  cash,
+  card2,
 } from '@/assets';
 import {
   DaySelector,
@@ -41,9 +45,22 @@ import {
 import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
-import { DetailShipping, OrderList } from '@/screens/Wallet';
+import { OrderList, DetailShipping } from './Components';
+import { useIsFocused } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getTotalTra } from '@/actions/WalletAction';
+import { getWallet } from '@/selectors/WalletSelector';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/WalletTypes';
 
 export function Wallet() {
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const getWalletData = useSelector(getWallet);
+  const sellerID = getAuth?.getProfile?.unique_uuid;
+  const getTotalTraData = getWalletData?.getTotalTra;
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
@@ -56,6 +73,61 @@ export function Wallet() {
   const [orderModel, setOrderModel] = useState(false);
   const [detailShipping, setDetailShipping] = useState(false);
   const [transcationTypeId, setTranscationTypeId] = useState('1');
+  const [selectTime, setSelectTime] = useState({ name: 'week' });
+  const [selectId, setSelectId] = useState(2);
+
+  const onPresFun1 = (value) => {
+   dispatch(getTotalTra(value, sellerID));
+  }
+  
+  const time = selectTime?.name;
+  const aboutTransactionData = [
+    {
+      aboutTransaction: 'JBR COIN',
+      price: getTotalTraData?.jbr ?? '0',
+      img: jbrCoin,
+      id: '1',
+    },
+    {
+      aboutTransaction: 'CASH',
+      price: getTotalTraData?.cash ?? '0',
+      img: cash,
+      id: '2',
+    },
+    {
+      aboutTransaction: 'CARD',
+      price: getTotalTraData?.card ?? '0',
+      img: card2,
+      id: '3',
+    },
+  ];
+  const tipsData = [
+    {
+      heading: 'Tips',
+      price: getTotalTraData?.tips ?? '0',
+      id: '1',
+    },
+    {
+      heading: 'Delivery Charge',
+      price: getTotalTraData?.delivery_charge ?? '0',
+      id: '2',
+    },
+    {
+      heading: 'Shipping Charge',
+      price: getTotalTraData?.shipping_charge ?? '0',
+      id: '3',
+    },
+  ];
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getTotalTra(time, sellerID));
+    }
+  }, [isFocused]);
+
+  const isTotalTraLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_TOTAL_TRA], state)
+  );
 
   const weeklyTraRemoveHandler = () => {
     setWeeklyTrasaction(false);
@@ -121,16 +193,38 @@ export function Wallet() {
         <Text style={styles.jbrCoinheading}>{item.aboutTransaction}</Text>
         <Image source={rightBack} style={styles.arrowStyle} />
       </View>
-      <Text style={styles.jbrCoinPrice}>{item.price}</Text>
+      <Text style={styles.jbrCoinPrice}>
+        {isTotalTraLoad ? null : '$'}
+        {isTotalTraLoad ? (
+          <ActivityIndicator
+            size="small"
+            color={COLORS.primary}
+            style={styles.indicatorstyle}
+          />
+        ) : (
+          item.price
+        )}
+      </Text>
     </TouchableOpacity>
   );
   const tipsItem = ({ item }) => (
-    <View style={styles.jbrCoinCon}>
+    <View style={[styles.jbrCoinCon, styles.jbrCoinCon2]}>
       <View style={styles.displayFlex}>
         <Text style={styles.jbrCoinheading}>{item.heading}</Text>
         <Image source={rightBack} style={styles.arrowStyle} />
       </View>
-      <Text style={styles.jbrCoinPrice}>{item.price}</Text>
+      <Text style={styles.jbrCoinPrice}>
+        {isTotalTraLoad ? null : '$'}
+        {isTotalTraLoad ? (
+          <ActivityIndicator
+            size="small"
+            color={COLORS.primary}
+            style={styles.indicatorstyle}
+          />
+        ) : (
+          item.price
+        )}
+      </Text>
     </View>
   );
 
@@ -198,7 +292,12 @@ export function Wallet() {
                 </Text>
               </Text>
               <View>
-                <DaySelector />
+                <DaySelector
+                   onPresFun={onPresFun1}
+                   selectId={selectId}
+                   setSelectId={setSelectId}
+                   setSelectTime={setSelectTime}
+                />
               </View>
             </View>
           </View>
@@ -361,18 +460,25 @@ export function Wallet() {
                   {strings.wallet.totalTransections}
                 </Text>
                 <View>
-                  <DaySelector />
+                  <DaySelector
+                    onPresFun={onPresFun1}
+                    selectId={selectId}
+                    setSelectId={setSelectId}
+                    setSelectTime={setSelectTime}
+                  />
                 </View>
               </View>
               <Spacer space={SH(5)} />
               <Text style={styles.transationPrice}>
                 {strings.wallet.transationPrice}
+                {getTotalTraData?.total ?? '0'}
               </Text>
               <Spacer space={SH(10)} />
               <View>
                 <FlatList
                   showsHorizontalScrollIndicator={false}
                   data={aboutTransactionData}
+                  extraData={aboutTransactionData}
                   renderItem={aboutTransactionItem}
                   keyExtractor={item => item.id}
                   horizontal

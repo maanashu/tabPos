@@ -535,7 +535,7 @@ export const styles = StyleSheet.create({
   },
   nodata: {
     fontFamily: Fonts.MaisonBold,
-    fontSize: SF(22),
+    fontSize: SF(18),
     color: COLORS.primary,
     alignSelf: 'center',
     marginVertical: moderateScale(30),

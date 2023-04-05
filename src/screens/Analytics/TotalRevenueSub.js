@@ -9,6 +9,7 @@ import {totalOrderData } from '@/constants/flatListData';
 import { DaySelector, Spacer } from '@/components';
 
 export function TotalRevenueSub({totalOrderViseHandler, totalRevenueHandler}) {
+  const [selectTime,setSelectTime]  = useState()
 
   const totalOrderItem = ({ item }) => (
     <TouchableOpacity
@@ -36,8 +37,10 @@ export function TotalRevenueSub({totalOrderViseHandler, totalRevenueHandler}) {
           <Text style={styles.trancationHeading}>
             {strings.analytics.totalRevenue}
           </Text>
-          <View>
-             <DaySelector/>
+          <View> 
+             {/* <DaySelector
+             setSelectTime={setSelectTime}
+             /> */}
           </View>
         </View>
         <Spacer space={SH(2)} />
@@ -65,7 +68,9 @@ export function TotalRevenueSub({totalOrderViseHandler, totalRevenueHandler}) {
         <Spacer space={SH(10)} />
         <View style={styles.displayFlex}>
           <View>
-            <DaySelector/>
+            {/* <DaySelector
+            setSelectTime={setSelectTime}
+            /> */}
           </View>
           <Text style={styles.trancationHeading}>
             {strings.analytics.totalOrder}

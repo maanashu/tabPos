@@ -6,6 +6,8 @@ const INITIALSTATE = {
   orderList:[],
   getReviewDef:[],
   getorderList:{},
+  deliveryOrd:{}
+  
 };
 
 export const deliveryReducer = (state = {INITIALSTATE}, { payload, type }) => {
@@ -35,9 +37,21 @@ export const deliveryReducer = (state = {INITIALSTATE}, { payload, type }) => {
             ...state,
             getorderList: payload.getorderList.payload,
           };
+          case TYPES.DELIVERY_ORDER_SUCCESS:
+            return {
+              ...state,
+              deliveryOrd: payload.deliveryOrd,
+            };
+            case TYPES.DELIVERY_ORDER_RESET:
+              return {
+                ...state,
+                deliveryOrd:[],
+              };
 
     
         
+        // case TYPES.CLEAR_STORE :
+        // return INITIALSTATE
         
     default:
       return state;

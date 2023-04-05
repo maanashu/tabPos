@@ -244,7 +244,7 @@ export const en = {
     monthly: 'Monthly',
     quaterly: 'Quaterly',
     yearly: 'Yearly',
-    transationPrice: '$8,426,590',
+    transationPrice: '$',
     transectionsPrice: '$8,458,041',
     paginationCount: '1-20 of 10,000',
     orderNo: 'Order# ',

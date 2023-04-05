@@ -91,6 +91,7 @@ export function Customers() {
   const [orderDetail, setOrderDetail] = useState('');
   const [selectedValue, setSelectedValue] = useState(+5);
   const orderStatus = orderDetail?.status;
+  const [selectTime,setSelectTime] = useState()
 
   // const revenueGraphObject =
 
@@ -1140,7 +1141,9 @@ export function Customers() {
                   {strings.customers.totalCustomer}
                 </Text>
                 <View>
-                  <DaySelector />
+                  {/* <DaySelector
+                  setSelectTime={setSelectTime}
+                  /> */}
                 </View>
               </View>
               <Spacer space={SH(5)} />

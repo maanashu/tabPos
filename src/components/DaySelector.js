@@ -7,29 +7,34 @@ import { Fonts } from '@/assets';
 const selectData =[
   {
     id:1,
-    name:'Today'
+    name:'Today',
+    value : 'today'
   },
   {
     id:2,
-    name:'Weekly'
+    name:'Weekly',
+    value : 'week'
   },
   {
     id:3,
-    name:'Monthly'
+    name:'Monthly',
+    value : 'month'
   },
   {
     id:4,
-    name:'Quaterly'
+    name:'Quaterly',
+    value : 'quarter'
   },
   {
     id:5,
-    name:'Yearly'
+    name:'Yearly',
+    value : 'year'
   },
 ]
 
-export function DaySelector(){
+export function DaySelector({setSelectTime, selectId, setSelectId, onPresFun}){
 
-  const [selectId, setSelectId] = useState(2);
+
 
   const ItemSelect = ({item, onPress,backgroundColor,color}) => (
     <TouchableOpacity style={[styles.selectItemConatiner, backgroundColor]} onPress={onPress}>
@@ -44,7 +49,7 @@ export function DaySelector(){
     return (
       <ItemSelect
         item={item}
-        onPress={() => setSelectId(item.id)}
+        onPress={() => (setSelectId(item.id), setSelectTime(item), onPresFun(item.value))}
         backgroundColor={{ backgroundColor }}
         color={{ color }}
       />

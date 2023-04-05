@@ -27,6 +27,7 @@ import {
   deliveryLine,
   radio,
   userImage,
+  parcel,
 } from '@/assets';
 import { styles } from '@/screens/DeliveryOrder/DeliveryOrder.styles';
 import { strings } from '@/localization';
@@ -42,6 +43,7 @@ import {
   getOrders,
   getReviewDefault,
   getOrdersSuccess,
+  deliveryOrd,
 } from '@/actions/DeliveryAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
@@ -63,6 +65,7 @@ export function DeliveryOrder() {
   const [orderCount, setOrderCount] = useState(
     getDeliveryData?.orderList ?? []
   );
+  const deliveringOrder = getDeliveryData?.deliveryOrd;
   const orderArray = getDeliveryData?.orderList?.data ?? [];
   const [viewAllReviews, setViewAllReviews] = useState(false);
   const [orderAccepted, setOrderAccepted] = useState(false);
@@ -170,7 +173,8 @@ export function DeliveryOrder() {
   useEffect(() => {
     if (isFocused) {
          dispatch(getOrderCount(sellerID)),
-        dispatch(getReviewDefault(0, sellerID));
+         dispatch(getReviewDefault(0, sellerID));
+         dispatch(deliveryOrd())
     }
     if (getDeliveryData?.orderList?.length > 0) {
       setOrderCount(getDeliveryData?.orderList);
@@ -228,6 +232,9 @@ export function DeliveryOrder() {
   );
   const isPosOrderDefLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_REVIEW_DEF], state)
+  );
+  const isDeliveringOrder = useSelector(state =>
+    isLoadingSelector([TYPES.DELIVERY_ORDER], state)
   );
 
   const customHeader = () => {
@@ -440,7 +447,7 @@ export function DeliveryOrder() {
           <Text style={styles.timeText}>
             {item?.preffered_delivery_start_time
               ? item?.preffered_delivery_start_time
-              : '00.00'}{' '}
+              : '00.00'}{' '}     
             -{' '}
             {item?.preffered_delivery_end_time
               ? item?.preffered_delivery_end_time
@@ -448,7 +455,6 @@ export function DeliveryOrder() {
           </Text>
         </View>
       </View>
-
       <View style={styles.rightIconStyle}>
         <Image source={rightIcon} style={styles.pinIcon} />
       </View>
@@ -535,21 +541,35 @@ export function DeliveryOrder() {
   const renderDeliveryOrders = ({ item, index }) => (
     <View style={styles.deliveryViewStyle}>
       <View style={styles.rowSpaceBetween}>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={styles.rowCenter}>
           <Image
-            source={item.image}
+            source={parcel}
             style={[styles.pinIcon, { tintColor: COLORS.primary }]}
           />
-          <Text style={[styles.timeText, { color: COLORS.primary }]}>
-            {item.delivery}
+          <Text numberOfLines={1} style={[styles.timeText, styles.timeText2]}>
+            {item.delivery_type}
           </Text>
         </View>
         <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
       </View>
       <View style={styles.rowSpaceBetween}>
-        <Text style={styles.totalText}>{item.total}</Text>
-        {/* <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} /> */}
+        <Text style={styles.totalText}>{item.count}</Text>
         <Text style={{ color: COLORS.primary }}>-</Text>
+      </View>
+    </View>
+  );
+
+  const renderDeliveryOrdersDummy = ({ item, index }) => (
+    <View style={styles.deliveryViewStyle}>
+      <View style={styles.rowSpaceBetween}>
+        <View style={styles.rowCenter}>
+          <Image
+            source={parcel}
+            style={[styles.pinIcon, { tintColor: COLORS.primary }]}
+          />
+        </View>
+        <ActivityIndicator size="small" color={COLORS.primary}/>
+        <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
       </View>
     </View>
   );
@@ -1320,13 +1340,35 @@ export function DeliveryOrder() {
                   <Text style={styles.orderReviewText}>
                     {strings.deliveryOrders.deliveryOrders}
                   </Text>
-
-                  <FlatList
+                  {
+                    isDeliveringOrder
+                    ?
+                    <FlatList
                     horizontal
                     data={deliveryOrders}
-                    renderItem={renderDeliveryOrders}
+                    extraData={deliveryOrders}
+                    renderItem={renderDeliveryOrdersDummy}
                     showsHorizontalScrollIndicator={false}
                   />
+                  :
+                  deliveringOrder?.length === 0 
+                  ?
+                  <View>
+                  <Text style={[styles.nodata, {marginVertical: moderateScale(15)}]}>No data found</Text>
+                   </View>
+                    :
+                  <FlatList
+                  horizontal
+                  data={deliveringOrder}
+                  extraData={deliveringOrder}
+                  renderItem={renderDeliveryOrders}
+                  showsHorizontalScrollIndicator={false}
+                /> 
+
+                  }
+                 
+
+                 
                 </View>
               </View>
             </View>

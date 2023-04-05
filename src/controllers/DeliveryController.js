@@ -79,5 +79,20 @@ export class DeliveryController {
           reject(error);
         });
     });
+  };
+
+
+  static async deliveryOrd(status, sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.getOrders +`?shipping_type=Delivery`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   }
 }

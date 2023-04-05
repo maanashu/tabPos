@@ -145,6 +145,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(10),
     width: windowWidth * 0.28,
+    height:windowHeight * 0.17
+  },
+  jbrCoinCon2:{
+    height:windowHeight * 0.12
   },
   jbrCoinStyle: {
     width: SW(12),
@@ -946,4 +950,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: moderateScale(20),
   },
+  indicatorstyle:{
+  // borderWidth:1,
+  paddingVertical:5
+  }, 
 });

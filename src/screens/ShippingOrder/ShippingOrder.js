@@ -182,7 +182,7 @@ export function ShippingOrder() {
     if (isFocused) {
       dispatch(getOrderCount(sellerID)),
         dispatch(getReviewDefault(0, sellerID));
-      dispatch(deliveringOrd());
+       dispatch(deliveringOrd());
     }
     if (getDeliveryData?.orderList?.length > 0) {
       setOrderCount(getDeliveryData?.orderList);
@@ -1260,10 +1260,18 @@ export function ShippingOrder() {
                       showsHorizontalScrollIndicator={false}
                     />
                   ) : (
+                    deliveringOrder?.length === 0 
+                    ?
+                    <View>
+                    <Text style={[styles.nodata, {marginVertical: moderateScale(15)}]}>No data found</Text>
+                     </View>
+                      :
+
                     <FlatList
                       horizontal
                       data={deliveringOrder}
                       extraData={deliveringOrder}
+                      keyExtractor={item => item.id}
                       renderItem={renderDeliveryOrders}
                       showsHorizontalScrollIndicator={false}
                     />
