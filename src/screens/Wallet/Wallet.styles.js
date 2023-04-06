@@ -454,6 +454,7 @@ export const styles = StyleSheet.create({
     width: SW(11),
     height: SW(11),
     resizeMode: 'contain',
+    borderRadius:50
   },
   leftBackStyle: {
     width: SW(8),
@@ -546,6 +547,7 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(15),
     resizeMode: 'contain',
+    borderRadius:50
   },
   walletIdButtonCon: {
     borderTopWidth: 2,
@@ -589,7 +591,7 @@ export const styles = StyleSheet.create({
   },
   smalldarkText: {
     fontSize: SF(14),
-    fontFamily: Fonts.MaisonBold,
+    fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
   },
   smallLightText: {
@@ -686,11 +688,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   angelaPic: {
-    Width: SH(50),
-    height: SH(50),
+    width: SW(15),
+    height: SW(15),
     resizeMode: 'contain',
-    marginRight: -20,
-    marginLeft: -35,
+    borderRadius: 50,
+    marginRight: 10,
   },
   buyer: {
     color: COLORS.dark_grey,
@@ -805,7 +807,12 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.38,
     borderRadius: 10,
     backgroundColor: COLORS.textInputBackground,
-    color: COLORS.black,
+    paddingVertical:verticalScale(4)
+   
+    
+  },
+  textInputNote:{
+     color: COLORS.black,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     textAlignVertical: 'top',
@@ -942,6 +949,7 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
+    borderRadius:50
   },
   tableDataCon: {
     height: SH(55),
@@ -954,4 +962,223 @@ export const styles = StyleSheet.create({
   // borderWidth:1,
   paddingVertical:5
   }, 
+
+  // order shipping css start
+  onlinedeliveryCon: {
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+    paddingVertical: verticalScale(5),
+  },
+  leftBackStyle: {
+    width: SW(9),
+    height: SW(9),
+    resizeMode: 'contain',
+  },
+  orderNoStyle: {
+    fontSize: SF(20),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(7),
+  },
+  completedButton: {
+    width: SW(30),
+    height: SH(30),
+    borderRadius: 3,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.bluish_green,
+  },
+  completedText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+    textAlign: 'center',
+    color: COLORS.white,
+  },
+
+  trackingNoBody: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    width: windowWidth * 0.92,
+    alignSelf: 'center',
+    height: windowHeight * 0.82,
+    paddingHorizontal: moderateScale(10),
+  },
+  mapContainer: {
+    width: windowWidth * 0.44,
+    borderRadius: 10,
+  },
+  mapConatinerHeight: {
+    height: windowHeight * 0.79,
+  },
+  costoContainer: {
+    borderWidth: 1,
+    width: windowWidth * 0.44,
+    height: SH(120),
+    borderRadius: 10,
+    borderColor: COLORS.solidGrey,
+  },
+  costoName: {
+    fontSize: SF(16),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonBold,
+  },
+  costoAdd: {
+    fontSize: SF(14),
+    color: COLORS.darkGray,
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(5),
+  },
+  costoHr: {
+    borderWidth: 0.4,
+    borderColor: COLORS.solidGrey,
+    width: windowWidth * 0.34,
+    marginVertical: verticalScale(7),
+  },
+  costoPayCon: {
+    borderEndWidth: 1,
+    borderColor: COLORS.solidGrey,
+    width: SW(45),
+    justifyContent: 'center',
+  },
+  ticketImage: {
+    width: SW(4),
+    height: SW(4),
+    resizeMode: 'contain',
+  },
+  ciagrtext: {
+    fontSize: SF(16),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(4),
+  },
+  ticketImage: {
+    width: SW(4),
+    height: SW(4),
+    resizeMode: 'contain',
+  },
+  detailText: {
+    color: COLORS.primary,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(10),
+  },
+  dropRight: {
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+  },
+  trackingAngela: {
+    width: SW(17),
+    height: SW(17),
+    resizeMode: 'contain',
+    borderRadius: 50,
+    marginHorizontal: 10,
+  },
+  Phonelight: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+  },
+  orderStatus: {
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+    fontFamily: Fonts.SemiBold,
+  },
+  orderStatus: {
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+    fontFamily: Fonts.SemiBold,
+  },
+  costoHr: {
+    borderWidth: 0.4,
+    borderColor: COLORS.solidGrey,
+    width: windowWidth * 0.34,
+    marginVertical: verticalScale(7),
+  },
+  greyRadioCon: {
+    flexDirection: 'row',
+    paddingVertical: verticalScale(2),
+  },
+  greyRadioArr: {
+    width: SW(7),
+    height: SW(11),
+    resizeMode: 'contain',
+    // marginVertical:verticalScale(1)
+  },
+  greyRadioBody: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+  },
+  verifyTextLight: {
+    color: COLORS.gerySkies,
+    fontSize: SF(8),
+    fontFamily: Fonts.SemiBold,
+  },
+  verifyTextDark: {
+    color: COLORS.solid_grey,
+    fontSize: SF(8),
+    fontFamily: Fonts.SemiBold,
+  },
+  waitMinuteLight: {
+    color: COLORS.gerySkies,
+    fontSize: SF(10),
+    fontFamily: Fonts.Regular,
+  },
+  carriarCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    paddingHorizontal: moderateScale(10),
+    height: SH(85),
+    bottom: 0,
+  },
+  verifyTextLight: {
+    color: COLORS.gerySkies,
+    fontSize: SF(8),
+    fontFamily: Fonts.SemiBold,
+  },
+  verifyTextDark: {
+    color: COLORS.solid_grey,
+    fontSize: SF(8),
+    fontFamily: Fonts.SemiBold,
+  },
+  tracking2Angela: {
+    width: SH(36),
+    height: SH(36),
+    resizeMode: 'contain',
+  },
+  gredoName: {
+    color: COLORS.black,
+    fontSize: SF(13),
+    fontFamily: Fonts.SemiBold,
+    paddingHorizontal: moderateScale(5),
+  },
+  contactButton: {
+    height: SH(36),
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 24,
+    justifyContent: 'center',
+  },
+  contactStyle: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+  },
+  contactText: {
+    color: COLORS.solid_grey,
+    fontSize: SF(10),
+    fontFamily: Fonts.SemiBold,
+    paddingLeft: moderateScale(5),
+  },
+  mapContainer2: {
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  map: {
+    width: windowWidth * 0.44,
+    height: windowHeight * 0.79,
+    borderRadius: 20,
+  },
+ 
 });

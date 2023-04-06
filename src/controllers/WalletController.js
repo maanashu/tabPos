@@ -19,6 +19,21 @@ export class WalletController {
           reject(error);
         });
     });
+  };
+
+  static async getTotakTraDetail(time, sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.getTotakTraDetail +`?seller_id=${sellerID}&filter=${time}`;
+        HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   }
 
 

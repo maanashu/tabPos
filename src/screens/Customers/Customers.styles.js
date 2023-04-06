@@ -342,20 +342,10 @@ export const styles = StyleSheet.create({
     paddingVertical: SH(10),
     justifyContent: 'center',
   },
-  completedButton: {
-    width: SW(30),
-    height: SH(30),
-    borderRadius: 3,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.bluish_green,
-  },
-  completedText: {
-    fontFamily: Fonts.Regular,
-    fontSize: SF(12),
-    textAlign: 'center',
-    color: COLORS.white,
-  },
+
+  
+
+  
 
   // user profile css start
   useHeaderCon: {

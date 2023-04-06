@@ -45,14 +45,15 @@ import {
 import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
-import { OrderList, DetailShipping } from './Components';
+import { OrderList, DetailShipping, TrackingModule } from './Components';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { getTotalTra } from '@/actions/WalletAction';
+import { getTotakTraDetail, getTotalTra } from '@/actions/WalletAction';
 import { getWallet } from '@/selectors/WalletSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/WalletTypes';
+import moment from 'moment';
 
 export function Wallet() {
   const isFocused = useIsFocused();
@@ -61,6 +62,7 @@ export function Wallet() {
   const getWalletData = useSelector(getWallet);
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getTotalTraData = getWalletData?.getTotalTra;
+  const getTotalTraDetail = getWalletData?.getTotakTraDetail;
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
@@ -74,13 +76,21 @@ export function Wallet() {
   const [detailShipping, setDetailShipping] = useState(false);
   const [transcationTypeId, setTranscationTypeId] = useState('1');
   const [selectTime, setSelectTime] = useState({ name: 'week' });
+  const [selectTime2, setSelectTime2] = useState({ name: 'week' });
   const [selectId, setSelectId] = useState(2);
+  const [selectId2, setSelectId2] = useState(2);
+  const [orderData, setOrderData] =  useState();
+  const [tracking,setTracking] = useState(false)
 
-  const onPresFun1 = (value) => {
-   dispatch(getTotalTra(value, sellerID));
-  }
-  
+  const onPresFun1 = value => {
+    dispatch(getTotalTra(value, sellerID));
+  };
+  const onPresFun2 = value => {
+    dispatch(getTotakTraDetail(value, sellerID));
+  };
+
   const time = selectTime?.name;
+  const time2 = selectTime2?.name;
   const aboutTransactionData = [
     {
       aboutTransaction: 'JBR COIN',
@@ -128,6 +138,40 @@ export function Wallet() {
   const isTotalTraLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_TOTAL_TRA], state)
   );
+  const isTotalTradetail = useSelector(state =>
+    isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state)
+  );
+  const statusFun = (status) => {
+    switch(status) {
+       case 0:
+        return 'Review';
+        break;
+        case 1:
+        return 'Accepted';
+        break;
+        case 2:
+        return 'Prepare';
+        break;
+        case 3:
+        return 'Ready Pickup';
+        break;
+        case 4:
+        return 'Assign';
+        break;
+        case 5:
+        return 'Pickup';
+        break;
+        case 6:
+        return 'Delivered';
+        break;
+        case 7:
+        return 'Cancelled';
+        break;
+        case 8:
+        return 'Rejected';
+        break;
+    }
+  }
 
   const weeklyTraRemoveHandler = () => {
     setWeeklyTrasaction(false);
@@ -185,7 +229,9 @@ export function Wallet() {
   const aboutTransactionItem = ({ item }) => (
     <TouchableOpacity
       style={styles.jbrCoinCon}
-      onPress={() => setWeeklyTrasaction(true)}
+      onPress={() => (
+        setWeeklyTrasaction(true), dispatch(getTotakTraDetail(time2, sellerID))
+      )}
     >
       <Image source={item.img} style={styles.jbrCoinStyle} />
       <Spacer space={SH(10)} />
@@ -265,10 +311,24 @@ export function Wallet() {
   };
 
   const changeView = () => {
-    if (detailShipping) {
+    if (tracking) {
+      return(
+        <TrackingModule
+          trackignBackHandler={() => (setTracking(false), setDetailShipping(true))}
+          OrderHeaderStatus={statusFun(orderData?.status)}
+          orderData={orderData}
+          orderStatus= {orderData?.status}
+        />
+      )
+    }
+     else if (detailShipping) {
       return (
         <DetailShipping
           shippingDeliverRemoveHandler={shippingDeliverRemoveHandler}
+          orderHeadStatus={statusFun(orderData?.status)}
+          orderData={orderData}
+          trackinghandler={() => (setDetailShipping(false), setTracking(true))}
+
         />
       );
     } else if (orderModel) {
@@ -276,6 +336,10 @@ export function Wallet() {
         <OrderList
           orderModelBackHandler={orderModelBackHandler}
           checkOutHandler={checkOutHandler}
+          listOfItemArray = {orderData?.order_details}
+          orderHeadStatus={statusFun(orderData?.status)}
+          orderData={orderData}
+
         />
       );
     } else if (weeklyTransaction) {
@@ -289,14 +353,15 @@ export function Wallet() {
                 {strings.wallet.totalTransections}
                 <Text style={styles.totalTranStyle}>
                   {strings.wallet.transationPrice}
+                  {getTotalTraData?.total ?? '0'}
                 </Text>
               </Text>
               <View>
                 <DaySelector
-                   onPresFun={onPresFun1}
-                   selectId={selectId}
-                   setSelectId={setSelectId}
-                   setSelectTime={setSelectTime}
+                  onPresFun={onPresFun2}
+                  selectId={selectId2}
+                  setSelectId={setSelectId2}
+                  setSelectTime={setSelectTime2}
                 />
               </View>
             </View>
@@ -416,34 +481,65 @@ export function Wallet() {
                   </View>
                 </View>
               </View>
-              <View style={styles.tableDataCon}>
-                <View style={styles.displayFlex}>
-                  <View style={styles.tableHeaderLeft}>
-                    <Text style={styles.tableTextDataFirst}>1</Text>
-                    <View style={{ flexDirection: 'column', marginLeft: 30 }}>
-                      <Text style={styles.tableTextData}>Jun 21, 2022</Text>
-                      <Text
-                        style={[
-                          styles.tableTextData,
-                          { color: COLORS.gerySkies },
-                        ]}
-                      >
-                        13: 21
+
+              {
+                isTotalTradetail
+                ?
+               ( <View style={{ marginTop: 100 }}>
+                <ActivityIndicator size="large" color={COLORS.indicator} />
+              </View>)
+               :
+               isTotalTradetail?.lenght === 0 ? (
+                <View style={{ marginTop: 80 }}>
+                <Text style={styles.userNotFound}>Order not found</Text>
+              </View>
+               )
+              :
+              getTotalTraDetail.map((item, index) => (
+                <TouchableOpacity style={styles.tableDataCon} key={index} onPress={()=> (setOrderModel(!orderModel), setOrderData(item))}>
+                  <View style={styles.displayFlex}>
+                    <View style={styles.tableHeaderLeft}>
+                      <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
+                      <View style={{ flexDirection: 'column', marginLeft: 30 }}>
+                        <Text style={styles.tableTextData}>
+                          {item.created_at
+                            ? moment(item.created_at).format('ll')
+                            : 'date not found'}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.tableTextData,
+                            { color: COLORS.gerySkies },
+                          ]}
+                        >
+                          {item.created_at
+                            ? moment(item.created_at).format('h : mm')
+                            : 'date not found'}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.tableHeaderRight}>
+                      <Text style={[styles.tableTextData, {fontSize : SF(12)}]}>
+                        {item.transaction_id ?? null}
                       </Text>
+                      <Text style={styles.tableTextData}>Sales</Text>
+                      <Text style={styles.tableTextData}>
+                        {item.mode_of_payment ?? null}
+                      </Text>
+                      <Text style={styles.tableTextData}>
+                        ${item.payable_amount ?? '0'}
+                      </Text>
+                      <Text style={styles.tableTextData}>{'$0'}</Text>
+                      <View>
+                        <Text style={styles.tableTextDataCom}>{statusFun(item.status)}</Text>
+                      </View>
                     </View>
                   </View>
-                  <View style={styles.tableHeaderRight}>
-                    <Text style={styles.tableTextData}>2565916565..</Text>
-                    <Text style={styles.tableTextData}>Sales</Text>
-                    <Text style={styles.tableTextData}>JBR </Text>
-                    <Text style={styles.tableTextData}>$2,561.00</Text>
-                    <Text style={styles.tableTextData}>JBR </Text>
-                    <TouchableOpacity onPress={orderModelHandler}>
-                      <Text style={styles.tableTextDataCom}>Completed</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
+                </TouchableOpacity>
+              ))
+
+              }
+             
             </Table>
           </View>
         </View>

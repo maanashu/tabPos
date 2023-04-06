@@ -40,7 +40,8 @@ export const ApiOrderInventory = {
     getOrderUser:'orders',
     getCustomers:'orders/pos/statistics/customers',
     getTips:'tips/',
-    getTotalTra:'orders/wallet/transaction/analysis'
+    getTotalTra:'orders/wallet/transaction/analysis',
+    getTotakTraDetail:'orders'
 
 };
 
