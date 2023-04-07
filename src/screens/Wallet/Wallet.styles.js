@@ -145,10 +145,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(10),
     width: windowWidth * 0.28,
-    height:windowHeight * 0.17
+    height: windowHeight * 0.17,
   },
-  jbrCoinCon2:{
-    height:windowHeight * 0.12
+  jbrCoinCon2: {
+    height: windowHeight * 0.12,
   },
   jbrCoinStyle: {
     width: SW(12),
@@ -454,7 +454,7 @@ export const styles = StyleSheet.create({
     width: SW(11),
     height: SW(11),
     resizeMode: 'contain',
-    borderRadius:50
+    borderRadius: 50,
   },
   leftBackStyle: {
     width: SW(8),
@@ -547,7 +547,7 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(15),
     resizeMode: 'contain',
-    borderRadius:50
+    borderRadius: 50,
   },
   walletIdButtonCon: {
     borderTopWidth: 2,
@@ -807,12 +807,10 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.38,
     borderRadius: 10,
     backgroundColor: COLORS.textInputBackground,
-    paddingVertical:verticalScale(4)
-   
-    
+    paddingVertical: verticalScale(4),
   },
-  textInputNote:{
-     color: COLORS.black,
+  textInputNote: {
+    color: COLORS.black,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     textAlignVertical: 'top',
@@ -949,7 +947,7 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
-    borderRadius:50
+    borderRadius: 50,
   },
   tableDataCon: {
     height: SH(55),
@@ -958,10 +956,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: moderateScale(20),
   },
-  indicatorstyle:{
-  // borderWidth:1,
-  paddingVertical:5
-  }, 
+  indicatorstyle: {
+    // borderWidth:1,
+    paddingVertical: 5,
+  },
 
   // order shipping css start
   onlinedeliveryCon: {
@@ -1180,5 +1178,30 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.79,
     borderRadius: 20,
   },
- 
+  tableArrow: {
+    width: SW(5),
+    height: SH(7),
+    resizeMode: 'contain',
+  },
+  tableDropDownCon: {
+    // borderWidth: 1,
+    width: windowWidth * 0.12,
+    height: SH(120),
+    position: 'absolute',
+    top: 30,
+    backgroundColor: COLORS.white,
+    zIndex: 99,
+    borderRadius: 10,
+    ...ShadowStyles.shadow
+  },
+  userNotFound: {
+    color: COLORS.primary,
+    fontFamily: Fonts.MaisonRegular,
+    fontSize: SF(20),
+    alignSelf: 'center',
+  },
+  tableBodyCon:{
+    borderBottomWidth:1,
+    paddingHorizontal:moderateScale(10)
+  }
 });

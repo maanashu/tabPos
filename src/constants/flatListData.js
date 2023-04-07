@@ -270,21 +270,25 @@ export const allTransactionData = [
     transaction: 'All',
     count: '(190)',
     id: '1',
+    type:'all'
   },
   {
     transaction: 'JBR',
     count: '(23)',
     id: '2',
+    type:'jbr'
   },
   {
     transaction: 'Cash',
     count: '(19)',
     id: '3',
+    type:'cash'
   },
   {
     transaction: 'Card',
     count: '(65)',
     id: '4',
+    type:'card'
   },
 ];
 export const TransactionTableHeading = [

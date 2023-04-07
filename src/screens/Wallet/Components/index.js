@@ -5,7 +5,6 @@ import {
   View,
   Image,
   Dimensions,
-  TextInput,
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
@@ -14,10 +13,7 @@ import {
   checkArrow,
   crossButton,
   deliverCheck,
-  jbrCustomer,
   leftBack,
-  menu,
-  orderCigrate,
   track,
   Fonts,
   willis,
@@ -38,7 +34,6 @@ import { strings } from '@/localization';
 import { styles } from '@/screens/Wallet/Wallet.styles';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 const windowHeight = Dimensions.get('window').height;
-import { jbritemList } from '@/constants/flatListData';
 import { Table } from 'react-native-table-component';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
