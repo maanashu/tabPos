@@ -1102,7 +1102,6 @@ export const styles = StyleSheet.create({
     width: SW(7),
     height: SW(11),
     resizeMode: 'contain',
-    // marginVertical:verticalScale(1)
   },
   greyRadioBody: {
     flexDirection: 'column',
@@ -1184,7 +1183,6 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   tableDropDownCon: {
-    // borderWidth: 1,
     width: windowWidth * 0.12,
     height: SH(120),
     position: 'absolute',
@@ -1203,5 +1201,8 @@ export const styles = StyleSheet.create({
   tableBodyCon:{
     borderBottomWidth:1,
     paddingHorizontal:moderateScale(10)
+  },
+  tableHeight:{
+    height:windowHeight * 0.53
   }
 });

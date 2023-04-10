@@ -7,7 +7,9 @@ export class CustomersController {
   static async getUserOrder(sellerID, selectedValue) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getUserOrder + `?seller_id=${sellerID}&limit=${selectedValue}`;
+        ORDER_URL +
+        ApiOrderInventory.getUserOrder +
+        `?seller_id=${sellerID}&limit=${selectedValue}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -22,17 +24,16 @@ export class CustomersController {
           reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
-  };
-
+  }
 
   static async getOrderUser(status, sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&user_uid=${status}`;
-        console.log('endpoint',endpoint);
+        ORDER_URL +
+        ApiOrderInventory.getOrderUser +
+        `?seller_id=${sellerID}&user_uid=${status}`;
       HttpClient.get(endpoint)
         .then(response => {
-          console.log('response', response );
           resolve(response);
         })
         .catch(error => {
@@ -40,7 +41,7 @@ export class CustomersController {
           reject(error);
         });
     });
-  };
+  }
 
   static async getCustomers(sellerID) {
     return new Promise((resolve, reject) => {
@@ -60,11 +61,5 @@ export class CustomersController {
           reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
-  };
-
-
-
- 
-
-  
+  }
 }

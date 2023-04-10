@@ -267,29 +267,21 @@ export const tipsData = [
 ];
 export const allTransactionData = [
   {
-    transaction: 'All',
-    count: '(190)',
-    id: '1',
-    type:'all'
-  },
-  {
-    transaction: 'JBR',
-    count: '(23)',
-    id: '2',
-    type:'jbr'
-  },
-  {
-    transaction: 'Cash',
-    count: '(19)',
-    id: '3',
-    type:'cash'
-  },
-  {
-    transaction: 'Card',
-    count: '(65)',
-    id: '4',
-    type:'card'
-  },
+    count: 18,
+    mode_of_payment: "all"
+},
+{
+    count: 0,
+    mode_of_payment: "jbr"
+},
+{
+    count: 13,
+    mode_of_payment: "card"
+},
+{
+    count: 1,
+    mode_of_payment: "cash"
+}
 ];
 export const TransactionTableHeading = [
   '#',

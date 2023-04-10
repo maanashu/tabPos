@@ -9,6 +9,7 @@ import {
   Platform,
   Dimensions,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Wallet/Wallet.styles';
@@ -56,6 +57,8 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/WalletTypes';
 import moment from 'moment';
 
+const windowHeight = Dimensions.get('window').height;
+
 export function Wallet() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -63,8 +66,7 @@ export function Wallet() {
   const getWalletData = useSelector(getWallet);
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getTotalTraData = getWalletData?.getTotalTra;
-  const getTotalTraDetail = getWalletData?.getTotakTraDetail?.data;
-  // console.log('getTotalTraDetail',getTotalTraDetail);
+  const getTotalTraDetail = getWalletData?.getTotakTraDetail;
   const transactionTypeArray = getWalletData?.getTotakTraDetail?.transaction_type_count;
   // console.log('transactionTypeArray',transactionTypeArray);
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
@@ -78,7 +80,7 @@ export function Wallet() {
   ]);
   const [orderModel, setOrderModel] = useState(false);
   const [detailShipping, setDetailShipping] = useState(false);
-  const [transcationTypeId, setTranscationTypeId] = useState(1);
+  const [transcationTypeId, setTranscationTypeId] = useState("all");
   const [selectTime, setSelectTime] = useState({ name: 'week' });
   const [selectTime2, setSelectTime2] = useState({ name: 'week' });
   const [selectId, setSelectId] = useState(2);
@@ -87,18 +89,17 @@ export function Wallet() {
   const [tracking, setTracking] = useState(false);
 const [tranAdd, setTranAdd] =  useState('');
 const defaultType = 'all';
-const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
+const [transaction,setTransaction] = useState({  mode_of_payment: "all"});
+const transactionType = transaction?.mode_of_payment
 
   const onPresFun1 = value => {
     dispatch(getTotalTra(value, sellerID));
   };
   const onPresFun2 = value => {
-    dispatch(getTotakTraDetail(value, sellerID,defaultType));
+    dispatch(getTotakTraDetail(value, sellerID,transactionType));
   };
   const onPresFun3 = mode_of_payment => {
-    console.log('mode_of_payment', mode_of_payment);
-    const time3 = mode_of_payment;
-    dispatch(getTotakTraDetail(time2, sellerID, time3 ))
+    dispatch(getTotakTraDetail(time2, sellerID, mode_of_payment ))
     
     
   };
@@ -255,7 +256,7 @@ const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
     <TouchableOpacity
       style={styles.jbrCoinCon}
       onPress={() => (
-        setWeeklyTrasaction(true), dispatch(getTotakTraDetail(time2, sellerID, time3 ))
+        setWeeklyTrasaction(true), dispatch(getTotakTraDetail(time2, sellerID, transactionType ))
       )}
     >
       <Image source={item.img} style={styles.jbrCoinStyle} />
@@ -272,9 +273,10 @@ const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
             color={COLORS.primary}
             style={styles.indicatorstyle}
           />
-        ) : (
+        ) : 
           item.price
-        )}
+        
+        }
       </Text>
     </TouchableOpacity>
   );
@@ -327,7 +329,7 @@ const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
     return (
       <TransactionSelectItem
         item={item}
-        onPress={() => {setTranscationTypeId(item.mode_of_payment), setTransaction(item)}}
+        onPress={() => {setTranscationTypeId(item.mode_of_payment), setTransaction(item), onPresFun3(item.mode_of_payment)}}
         borderColor={borderColor}
         color={color}
         fontFamily={fontFamily}
@@ -368,7 +370,7 @@ const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
       );
     } else if (weeklyTransaction) {
       return (
-        <View>
+        <View style={{height:windowHeight * 0.95 }}>
           {customHeader()}
           {/* <ScrollView> */}
           <View style={styles.walletTranCon}>
@@ -377,7 +379,7 @@ const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
                 {strings.wallet.totalTransections}
                 <Text style={styles.totalTranStyle}>
                   {strings.wallet.transationPrice}
-                  {getTotalTraData?.total ?? '0'}
+                  {getTotalTraData?.total?.toFixed(2) ?? '0'}
                 </Text>
               </Text>
               <View>
@@ -393,10 +395,10 @@ const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
           <Spacer space={SH(10)} />
           <View style={[styles.allTypeCon]}>
             <FlatList
-              data={transactionTypeArray}
-              extraData={transcationTypeId}
+              data={allTransactionData}
+              extraData={allTransactionData}
               renderItem={allTransactionItem}
-              // keyExtractor={item => item.id}
+              keyExtractor={item => item.mode_of_payment}
               horizontal
               // allTransactionData
             />
@@ -515,7 +517,9 @@ const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
                 </View>
               </View>
 
-              {isTotalTradetail ? (
+             <View style={styles.tableHeight}>
+            <ScrollView>
+            {isTotalTradetail ? (
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
@@ -558,7 +562,7 @@ const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
                         </View>
                       </View>
                       <View style={styles.tableHeaderRight}>
-                        <Text
+                        <Text numberOfLines={1}
                           style={[styles.tableTextData, { fontSize: SF(12) }]}
                         >
                           {item.transaction_id ?? null}
@@ -581,8 +585,14 @@ const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
                   </TouchableOpacity>
                 ))
               )}
+            </ScrollView>
+             </View>
             </Table>
           </View>
+        
+        
+          <Spacer space={SH(100)} />
+        
         </View>
       );
     } else {
@@ -608,7 +618,7 @@ const [transaction,setTransaction] = useState({ mode_of_payment: 'all' });
               <Spacer space={SH(5)} />
               <Text style={styles.transationPrice}>
                 {strings.wallet.transationPrice}
-                {getTotalTraData?.total ?? '0'}
+                {getTotalTraData?.total?.toFixed(2) ?? '0'}
               </Text>
               <Spacer space={SH(10)} />
               <View>

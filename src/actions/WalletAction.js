@@ -49,11 +49,11 @@ export const getTotalTra = (time, sellerID) => async dispatch => {
   }
 };
 
-export const getTotakTraDetail = (time, sellerID,time3) => async dispatch => {
+export const getTotakTraDetail = (time, sellerID,transactionType) => async dispatch => {
   dispatch(getTotakTraDetailRequest());
   try {
-      const res = await WalletController.getTotakTraDetail(time, sellerID, time3);
-      dispatch(getTotakTraDetailSuccess(res?.payload));
+      const res = await WalletController.getTotakTraDetail(time, sellerID, transactionType);
+      dispatch(getTotakTraDetailSuccess(res?.payload?.data));
   } catch (error) {
     if (error?.statusCode === 204){
       dispatch(getTotakTraDetailReset());

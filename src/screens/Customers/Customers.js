@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
-  Dimensions,
   Platform,
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
@@ -22,7 +21,6 @@ import {
   notifications,
   search_light,
   leftBack,
-  customersGraph,
   location,
   crossButton,
   ticket,
@@ -33,10 +31,6 @@ import {
   willis,
   deliverCheck,
   track,
-  blankRadio,
-  movingArrow,
-  fillRadio,
-  movingArrowBlue,
   angela2,
   contact,
   userImage,
@@ -68,8 +62,6 @@ import { TYPES } from '@/Types/CustomersTypes';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import { useNetInfo } from '@react-native-community/netinfo';
-const windowWidth = Dimensions.get('window') * 0.98;
 
 export function Customers() {
   const isFocused = useIsFocused();
@@ -77,6 +69,12 @@ export function Customers() {
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
   const getCustomerStatitics = getCustomerData?.getCustomers;
+  // console.log('getCustomerStatitics',getCustomerStatitics);2,6564
+  // const values = Object.values.(getCustomerStatitics);
+  // const totalCustomer = values.reduce((accumulator, value) => {
+  //   return accumulator + value;
+  // }, 0);
+  const totalCustomer = '2,6564';
   const getAnalyticsData = useSelector(getAnalytics);
   const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
   const userOrderArray = getCustomerData?.getUserOrder;
@@ -89,14 +87,14 @@ export function Customers() {
   const [tracking, setTracking] = useState(false);
   const [userStore, setUserStore] = useState('');
   const [orderDetail, setOrderDetail] = useState('');
-  const [selectedValue, setSelectedValue] = useState(+5);
+  const [selectedValue, setSelectedValue] = useState(5);
   const orderStatus = orderDetail?.status;
-  const [selectTime,setSelectTime] = useState()
+  const [selectTime,setSelectTime] = useState();
 
-  // const revenueGraphObject =
 
   const selected = value => (
-    setSelectedValue(value), dispatch(getUserOrder(sellerID, selectedValue))
+    console.log(value),
+    setSelectedValue(value), dispatch(getUserOrder(sellerID, value))
   );
 
   const newCustomerData = [
@@ -146,6 +144,37 @@ export function Customers() {
     setUserProfile(!userProfile);
     setUserStore(item);
     dispatch(getOrderUser(item?.user_id, sellerID));
+  };
+  const statusFun = status => {
+    switch (status) {
+      case 0:
+        return 'Review';
+        break;
+      case 1:
+        return 'Accepted';
+        break;
+      case 2:
+        return 'Prepare';
+        break;
+      case 3:
+        return 'Ready Pickup';
+        break;
+      case 4:
+        return 'Assign';
+        break;
+      case 5:
+        return 'Pickup';
+        break;
+      case 6:
+        return 'Delivered';
+        break;
+      case 7:
+        return 'Cancelled';
+        break;
+      case 8:
+        return 'Rejected';
+        break;
+    }
   };
 
   const newCustomerItem = ({ item }) => (
@@ -271,7 +300,7 @@ export function Customers() {
                 </Text>
                 <View style={styles.completedButton}>
                   <Text style={styles.completedText}>
-                    {strings.customers.completed}
+                 { statusFun(orderDetail?.status)}
                   </Text>
                 </View>
               </View>
@@ -625,7 +654,7 @@ export function Customers() {
                   {orderDetail?.id}
                 </Text>
                 <View style={styles.completedButton}>
-                  <Text style={styles.completedText}>Completed</Text>
+                  <Text style={styles.completedText}>{statusFun(orderDetail?.status)}</Text>
                 </View>
               </View>
               <TouchableOpacity
@@ -683,27 +712,28 @@ export function Customers() {
                   <Text style={styles.invoiceId}>
                     {strings.wallet.invoiceIdLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
-                      {strings.wallet.invoiceId}
+                      {orderDetail?.invoice?.invoice_id ?? null}
                     </Text>
                   </Text>
                   <Spacer space={SH(3)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.createDateLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
-                      {strings.wallet.createDate}
+                     {orderDetail?.invoice?.created_date ?? null}
                     </Text>
                   </Text>
                   <Spacer space={SH(3)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.dueDateLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
-                      {strings.wallet.createDate}
+                    {orderDetail?.invoice?.due_date ?? null}
                     </Text>
                   </Text>
                   <Spacer space={SH(3)} />
                   <Text style={styles.deliveryDate}>
-                    {strings.wallet.deliveryDate}{' '}
-                    <Text>{strings.wallet.createDate}</Text>
+                    {strings.wallet.deliveryDate}
+                    <Text>
+                    {orderDetail?.invoice?.delivery_date ?? null}</Text>
                   </Text>
                   <View style={styles.pointConOrder}>
                     <Text style={styles.pointTextOrder}>
@@ -962,7 +992,7 @@ export function Customers() {
       );
     } else if (userProfile) {
       return (
-        <View>
+        <View style={{flex:1}}>
           {customUserHeader()}
           <UserProfile
             userName={userStore?.user_details?.firstname}
@@ -974,7 +1004,9 @@ export function Customers() {
               setUserProfile(false), setUserDetail(true)
             )}
           />
-          {isOrderUserLoading ? (
+          <View style={{flex:1}}>
+         <ScrollView contentContainerStyle={{flexGrow:1}}>
+         {isOrderUserLoading ? (
             <View style={{ marginTop: 100 }}>
               <ActivityIndicator size="large" color={COLORS.indicator} />
             </View>
@@ -1031,14 +1063,18 @@ export function Customers() {
               </TouchableOpacity>
             ))
           )}
+         </ScrollView>
+          </View>
         </View>
       );
     } else if (weeklyUser) {
       return (
-        <View>
+        <View style={{flex:1}}>
           {customHeader()}
           <Users selectedNo={selected} />
-          {isSearchProLoading ? (
+         <View style={{flex:1}}>
+         <ScrollView contentContainerStyle={{flexGrow:1}}>
+         {isSearchProLoading ? (
             <View style={{ marginTop: 100 }}>
               <ActivityIndicator size="large" color={COLORS.indicator} />
             </View>
@@ -1108,6 +1144,8 @@ export function Customers() {
               </TouchableOpacity>
             ))
           )}
+         </ScrollView>
+         </View>
         </View>
       );
     } else {
@@ -1146,9 +1184,11 @@ export function Customers() {
                   /> */}
                 </View>
               </View>
+
+
               <Spacer space={SH(5)} />
               <Text style={styles.totalCustomer}>
-                {strings.customers.customerCount}
+               {totalCustomer ?? '0'}
               </Text>
               {/* <Spacer space={SH(10)} />
               <Image source={customersGraph} style={styles.customersGraph} />

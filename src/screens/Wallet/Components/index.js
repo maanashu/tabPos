@@ -270,6 +270,8 @@ export function DetailShipping({
   trackinghandler,
 }) {
   const sellerProfile = orderData?.seller_details;
+  const invoiceData = orderData?.invoice;
+  console.log('orderData', orderData);
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <Spacer space={SH(7)} />
@@ -330,27 +332,27 @@ export function DetailShipping({
               <Text style={styles.invoiceId}>
                 {strings.wallet.invoiceIdLabel}{' '}
                 <Text style={{ color: COLORS.solid_grey }}>
-                  {strings.wallet.invoiceId}
+                {invoiceData?.invoice_id ?? null}
                 </Text>
               </Text>
               <Spacer space={SH(4)} />
               <Text style={styles.invoiceId}>
-                {strings.wallet.createDateLabel}{' '}
+                {strings.wallet.createDateLabel}
                 <Text style={{ color: COLORS.solid_grey }}>
-                  {strings.wallet.createDate}
+                  {invoiceData?.created_date ?? null}
                 </Text>
               </Text>
               <Spacer space={SH(4)} />
               <Text style={styles.invoiceId}>
                 {strings.wallet.dueDateLabel}{' '}
                 <Text style={{ color: COLORS.solid_grey }}>
-                  {strings.wallet.createDate}
+                 {invoiceData?.due_date ?? null}
                 </Text>
               </Text>
               <Spacer space={SH(4)} />
               <Text style={styles.deliveryDate}>
                 {strings.wallet.deliveryDate}{' '}
-                <Text>{strings.wallet.createDate}</Text>
+                <Text>{invoiceData?.delivery_date ?? null}</Text>
               </Text>
               <View style={styles.pointCon}>
                 <Text style={styles.pointText}>{strings.wallet.point}</Text>

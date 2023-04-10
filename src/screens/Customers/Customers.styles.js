@@ -1032,7 +1032,7 @@ export const styles = StyleSheet.create({
   tableHeaderRight: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth * 0.48,
+    width: windowWidth * 0.47,
   },
   tableTextHea: {
     color: COLORS.dark_grey,
@@ -1045,7 +1045,7 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    width: windowWidth * 0.1,
+    width: windowWidth * 0.09,
   },
   tableTextDataRes: {
     color: COLORS.solid_grey,

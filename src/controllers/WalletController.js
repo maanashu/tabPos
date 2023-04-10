@@ -21,12 +21,13 @@ export class WalletController {
     });
   };
 
-  static async getTotakTraDetail(time, sellerID,time3) {
+  static async getTotakTraDetail(time, sellerID,transactionType) {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
-        ApiOrderInventory.getTotakTraDetail +`?seller_id=${sellerID}&filter=${time}&transaction_type=${time3}`;
-      //  return
+        ApiOrderInventory.getTotakTraDetail +`?seller_id=${sellerID}&filter=${time}&transaction_type=${transactionType}`;
+        console.log('endpoint', endpoint);
+        
         HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
