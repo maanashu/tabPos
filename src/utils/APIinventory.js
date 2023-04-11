@@ -15,7 +15,8 @@ export const ApiProductInventory = {
     getCategory:'categories',
     getSubCategory:'categories',
     getBrand:'brands',
-    getProduct:'products'
+    getProduct:'products',
+    getTotalProDetail:'supplies/seller-product/statistics'
 };
 
 // export const ApiSupportInventory = {

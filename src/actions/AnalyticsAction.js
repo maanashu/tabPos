@@ -53,6 +53,19 @@ const getTotalRevenueGraphError = error => ({
   payload: { error },
 });
 
+const getTotalProDetailRequest = () => ({
+  type: TYPES.GET_TOTALPRO_DETAIL_REQUEST,
+  payload: null,
+});
+const getTotalProDetailSuccess = getTotalProDetail => ({
+  type: TYPES.GET_TOTALPRO_DETAIL_SUCCESS,
+  payload: { getTotalProDetail },
+});
+const getTotalProDetailError = error => ({
+  type: TYPES.GET_TOTALPRO_DETAIL_ERROR,
+  payload: { error },
+});
+
 
 
 export const totalProGraph = (sellerID) => async dispatch => {
@@ -91,6 +104,16 @@ export const totalRevenueGraph = (sellerID) => async dispatch => {
       dispatch(getTotalRevenueGraphSuccess(res));
   } catch (error) {
       dispatch(getTotalRevenueGraphError(error.message));
+  }
+};
+
+export const getTotalProDetail = (sellerID,productTime ) => async dispatch => {
+  dispatch(getTotalProDetailRequest());
+  try {
+      const res = await AnalyticsController.getTotalProDetail(sellerID,productTime );
+      dispatch(getTotalProDetailSuccess(res?.payload));
+  } catch (error) {
+      dispatch(getTotalProDetailError(error.message));
   }
 };
 

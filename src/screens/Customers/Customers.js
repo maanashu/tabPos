@@ -16,6 +16,7 @@ import {
   newCustomerData,
   newCustomerDataLoader,
 } from '@/constants/flatListData';
+import {getCustomerDummy} from '@/constants/staticData'
 import { strings } from '@/localization';
 import {
   notifications,
@@ -63,18 +64,17 @@ import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
+
 export function Customers() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
   const getCustomerStatitics = getCustomerData?.getCustomers;
-  // console.log('getCustomerStatitics',getCustomerStatitics);2,6564
-  // const values = Object.values.(getCustomerStatitics);
-  // const totalCustomer = values.reduce((accumulator, value) => {
-  //   return accumulator + value;
-  // }, 0);
-  const totalCustomer = '2,6564';
+  const values = getCustomerStatitics === undefined ? Object.values(getCustomerDummy) : Object.values(getCustomerStatitics);
+  const totalCustomer = values?.reduce((accumulator, value) => {
+    return accumulator + value;
+  }, 0);
   const getAnalyticsData = useSelector(getAnalytics);
   const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
   const userOrderArray = getCustomerData?.getUserOrder;
@@ -93,7 +93,6 @@ export function Customers() {
 
 
   const selected = value => (
-    console.log(value),
     setSelectedValue(value), dispatch(getUserOrder(sellerID, value))
   );
 
@@ -1072,7 +1071,7 @@ export function Customers() {
         <View style={{flex:1}}>
           {customHeader()}
           <Users selectedNo={selected} />
-         <View style={{flex:1}}>
+         <View style={{flex:1, zIndex:-9}}>
          <ScrollView contentContainerStyle={{flexGrow:1}}>
          {isSearchProLoading ? (
             <View style={{ marginTop: 100 }}>

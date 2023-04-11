@@ -312,3 +312,5 @@ export const selectShippingList = [
   },
  
 ];
+
+export const getCustomerDummy = {"new_customers": 0, "online_customers": 0, "returning_customers": 0, "shipping_customers": 0}

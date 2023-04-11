@@ -4,31 +4,13 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class WalletController {
-
-
   static async getTotalTra(time, sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
-        ApiOrderInventory.getTotalTra +`?seller_id=${sellerID}&filter=${time}`;
-        HttpClient.get(endpoint)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  };
-
-  static async getTotakTraDetail(time, sellerID,transactionType) {
-    return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getTotakTraDetail +`?seller_id=${sellerID}&filter=${time}&transaction_type=${transactionType}`;
-        console.log('endpoint', endpoint);
-        
-        HttpClient.get(endpoint)
+        ApiOrderInventory.getTotalTra +
+        `?seller_id=${sellerID}&filter=${time}`;
+      HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
@@ -38,7 +20,21 @@ export class WalletController {
     });
   }
 
-
+  static async getTotakTraDetail(time, sellerID, transactionType) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.getTotakTraDetail +
+        `?seller_id=${sellerID}&filter=${time}&transaction_type=${transactionType}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 
   // static async acceptOrder(data) {
   //   return new Promise((resolve, reject) => {
@@ -64,5 +60,4 @@ export class WalletController {
   //       });
   //   });
   // };
-
 }

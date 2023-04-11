@@ -271,7 +271,7 @@ export function DetailShipping({
 }) {
   const sellerProfile = orderData?.seller_details;
   const invoiceData = orderData?.invoice;
-  console.log('orderData', orderData);
+  
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <Spacer space={SH(7)} />

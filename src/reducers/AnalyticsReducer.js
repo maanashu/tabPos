@@ -5,7 +5,8 @@ const INITIALSTATE = {
   getTotalGraph:{},
   getOrderGraph:{},
   getInventeryGraph:{},
-  getRevenueGraph:{}
+  getRevenueGraph:{},
+  getTotalProDetail:{}
  
   
   
@@ -33,6 +34,11 @@ export const analyticsReducer = (state = {INITIALSTATE}, { payload, type }) => {
             return {
               ...state,
               getRevenueGraph: payload.getRevenueGraph.payload,
+            };
+            case TYPES.GET_TOTALPRO_DETAIL_SUCCESS:
+            return {
+              ...state,
+              getTotalProDetail: payload.getTotalProDetail,
             };
     
 

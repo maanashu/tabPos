@@ -1,5 +1,12 @@
-import { useState } from 'react';
-import { Text, TouchableOpacity, View, Image, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { activeProduct, catPercent } from '@/assets';
 import { strings } from '@/localization';
@@ -8,14 +15,70 @@ import { categoryData, inverntrycategoryData } from '@/constants/flatListData';
 import CircularProgress from 'react-native-circular-progress-indicator';
 
 import { DaySelector, Spacer } from '@/components';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+import { getTotalProDetail } from '@/actions/AnalyticsAction';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function TotalProductSub({
   inverntoryUnitViseHandler,
   tableAccCatHandler,
+  sellerID,
 }) {
-   const [selectTime,setSelectTime]  = useState()
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const [productSelectId, setProductSelectId] = useState(2);
+  const [selectProTime, setSelectProTime] = useState({ name: 'week' });
+  const productTime = selectProTime?.name;
+  const getAnalyticsData = useSelector(getAnalytics);
+  const data = {
+    totalProduct: getAnalyticsData?.getTotalProDetail?.total_products ?? '0',
+    newAdd: getAnalyticsData?.getTotalProDetail?.new_added_products ?? '0',
+    discounted:
+      getAnalyticsData?.getTotalProDetail?.discontinued_products ?? '0',
+    totalActive:
+      getAnalyticsData?.getTotalProDetail?.total_active_products ?? '0',
+  };
 
+  const productMulti = data?.newAdd * 100;
+  const productScale = productMulti / data?.totalActive;
+  const [backTime, setBackTime] = useState();
+
+  const storeData = async value => {
+    try {
+      await AsyncStorage.setItem('abc', value);
+    } catch (e) {
+      // saving error
+    }
+  };
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('abc');
+      if (value !== null) {
+        setBackTime(value);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  const productOnPress = value => {
+    dispatch(getTotalProDetail(sellerID, value));
+    storeData(value);
+  };
+  const productDetLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_TOTALPRO_DETAIL], state)
+  );
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getTotalProDetail(sellerID, productTime));
+      getData();
+    }
+  }, [isFocused]);
 
   const categoryInventoryItem = ({ item }) => (
     <TouchableOpacity
@@ -65,20 +128,30 @@ export function TotalProductSub({
               {strings.analytics.totalProducts}
             </Text>
             <View>
-              {/* <DaySelector 
-              setSelectTime={setSelectTime}
-              /> */}
+              <DaySelector
+                onPresFun={productOnPress}
+                setSelectTime={setSelectProTime}
+                selectId={productSelectId}
+                setSelectId={setProductSelectId}
+              />
             </View>
           </View>
+          {/* productDetLoad */}
           <Spacer space={SH(2)} />
-          <Text
-            style={[
-              styles.darkBlackText,
-              { fontSize: SF(34), color: COLORS.primary },
-            ]}
-          >
-            {strings.analytics.totalProductsCount}
-          </Text>
+          <View style={{ height: SH(60), justifyContent: 'center' }}>
+            <Text
+              style={[
+                styles.darkBlackText,
+                { fontSize: SF(34), color: COLORS.primary },
+              ]}
+            >
+              {productDetLoad ? (
+                <ActivityIndicator color={COLORS.primary} />
+              ) : (
+                data.totalProduct
+              )}
+            </Text>
+          </View>
           {/* <Spacer space={SH(5)} /> */}
           <View style={styles.productGraphcon}>
             <View style={styles.displayFlex}>
@@ -90,13 +163,21 @@ export function TotalProductSub({
                       {strings.analytics.productDetails}
                     </Text>
                     <Spacer space={SH(10)} />
-                    <View style={styles.displayFlex}>
-                      <Text style={styles.newAddText}>{strings.TotalProSub.newAdd}</Text>
-                      <Text style={styles.newAddTextBold}>25</Text>
+                    <View style={[styles.displayFlex, { height: SH(25) }]}>
+                      <Text style={styles.newAddText}>
+                        {strings.TotalProSub.newAdd}
+                      </Text>
+                      <Text style={styles.newAddTextBold}>
+                        {productDetLoad ? (
+                          <ActivityIndicator color={COLORS.primary} />
+                        ) : (
+                          data.newAdd
+                        )}
+                      </Text>
                     </View>
                     <View style={styles.addedhr}></View>
                     <Spacer space={SH(10)} />
-                    <View style={styles.displayFlex}>
+                    <View style={[styles.displayFlex, { height: SH(25) }]}>
                       <Text
                         style={[styles.newAddText, { color: COLORS.primary }]}
                       >
@@ -108,12 +189,16 @@ export function TotalProductSub({
                           { color: COLORS.primary },
                         ]}
                       >
-                        95
+                        {productDetLoad ? (
+                          <ActivityIndicator color={COLORS.primary} />
+                        ) : (
+                          data.discounted
+                        )}
                       </Text>
                     </View>
                     <View style={styles.addedhr}></View>
                     <Spacer space={SH(10)} />
-                    <View style={styles.displayFlex}>
+                    <View style={[styles.displayFlex, { height: SH(25) }]}>
                       <Text
                         style={[
                           styles.newAddText,
@@ -128,7 +213,11 @@ export function TotalProductSub({
                           { color: COLORS.solid_grey },
                         ]}
                       >
-                        311
+                        {productDetLoad ? (
+                          <ActivityIndicator color={COLORS.primary} />
+                        ) : (
+                          data.totalActive
+                        )}
                       </Text>
                     </View>
                   </View>
@@ -142,7 +231,7 @@ export function TotalProductSub({
                       style={styles.activeProduct}
                     /> */}
                     <CircularProgress
-                      value={50}
+                      value={productScale ? productScale : 0.0}
                       radius={55}
                       activeStrokeWidth={18}
                       inActiveStrokeWidth={18}
@@ -177,6 +266,7 @@ export function TotalProductSub({
                     keyExtractor={item => item.id}
                     numColumns={2}
                     contentContainerStyle={styles.contentContainer}
+                    columnWrapperStyle={{ justifyContent: 'space-between' }}
                   />
                 </View>
               </View>
@@ -187,7 +277,7 @@ export function TotalProductSub({
         <View style={[styles.totalProductDetailCon]}>
           <Spacer space={SH(10)} />
           <View style={styles.displayFlex}>
-            <View>  
+            <View>
               {/* <DaySelector
               setSelectTime={setSelectTime}
               /> */}
@@ -225,6 +315,7 @@ export function TotalProductSub({
                     renderItem={categoryInventoryItem}
                     //   keyExtractor={item => item.id}
                     numColumns={2}
+                    columnWrapperStyle={{ justifyContent: 'space-between' }}
                   />
                 </View>
               </View>
@@ -237,7 +328,9 @@ export function TotalProductSub({
                     </Text>
                     <Spacer space={SH(10)} />
                     <View style={styles.displayFlex}>
-                      <Text style={styles.newAddText}>{strings.TotalProSub.lowStock}</Text>
+                      <Text style={styles.newAddText}>
+                        {strings.TotalProSub.lowStock}
+                      </Text>
                       <Text style={styles.newAddTextBold}>25</Text>
                     </View>
                     <View style={styles.addedhr}></View>
@@ -246,7 +339,7 @@ export function TotalProductSub({
                       <Text
                         style={[styles.newAddText, { color: COLORS.primary }]}
                       >
-                       {strings.TotalProSub.itemAdjust}
+                        {strings.TotalProSub.itemAdjust}
                       </Text>
                       <Text
                         style={[

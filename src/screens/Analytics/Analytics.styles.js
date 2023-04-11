@@ -123,7 +123,6 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     justifyContent: 'space-between',
-    // flex: 1,
   },
   backButtonCon: {
     backgroundColor: COLORS.textInputBackground,
@@ -246,9 +245,8 @@ export const styles = StyleSheet.create({
     fontSize: SF(15),
   },
   categoryCon: {
-    // width: SH(170),
+    width:windowWidth * 0.18,
     height: SH(84),
-    // borderWidth: 1,
     borderRadius: 15,
     flexDirection: 'row',
     alignItems: 'center',
@@ -256,7 +254,7 @@ export const styles = StyleSheet.create({
     marginVertical: moderateScale(5),
   },
   categoryChildCon: {
-    width: SH(115),
+    width:windowWidth * 0.10,
     height: SH(84),
     borderBottomLeftRadius: 15,
     borderTopLeftRadius: 15,
@@ -266,7 +264,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   categoryChildPercent: {
-    width: SH(80),
+    width:windowWidth * 0.08,
     height: SH(84),
     borderBottomEndRadius: 15,
     borderTopEndRadius: 15,
@@ -1650,7 +1648,7 @@ export const styles = StyleSheet.create({
     // justifyContent:'center',
   },
   homeMainContainer: {
-    paddingHorizontal: moderateScale(2),
+    paddingHorizontal: moderateScale(5),
     paddingBottom: Platform.OS === 'ios' ? 30 : 60,
     width: Platform.OS === 'android' ? windowWidth * 0.94 : windowWidth * 0.92,
     height: windowHeight,

@@ -407,7 +407,7 @@ export const en = {
   analytics: {
     header: 'Analytics',
     totalProducts: 'Total Products',
-    totalProductsCount: '20,590',
+    // totalProductsCount: '20,590',
     productDetails: 'Product details',
     totalActiveProduct: 'Total active Products ',
     totalInvetry: 'Total Inventory  Cost',

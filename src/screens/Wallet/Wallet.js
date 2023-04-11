@@ -68,7 +68,6 @@ export function Wallet() {
   const getTotalTraData = getWalletData?.getTotalTra;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail;
   const transactionTypeArray = getWalletData?.getTotakTraDetail?.transaction_type_count;
-  // console.log('transactionTypeArray',transactionTypeArray);
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
@@ -100,8 +99,6 @@ const transactionType = transaction?.mode_of_payment
   };
   const onPresFun3 = mode_of_payment => {
     dispatch(getTotakTraDetail(time2, sellerID, mode_of_payment ))
-    
-    
   };
 
   const time = selectTime?.name;
@@ -189,16 +186,7 @@ const transactionType = transaction?.mode_of_payment
     }
   };
 
-  const dfghj = () => {
-      return (
-        <View style={styles.tableDropDownCon}>
-          <View style={styles.tableBodyCon}>
-          <Text>all</Text>
-          </View>
-        </View>
-      )
-  };
-
+ 
   const weeklyTraRemoveHandler = () => {
     setWeeklyTrasaction(false);
   };
