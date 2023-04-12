@@ -112,7 +112,7 @@ export function VerifyPhone() {
           </View>
           <View style={{ flex: 1 }} />
           <Button
-          pending={isLoading}
+             pending={isLoading}
             onPress={verifyPhoneHandler}
             title={strings.verifyPhone.button}
             textStyle={phoneNumber ? styles.selectedText : styles.buttonText}

@@ -263,6 +263,14 @@ export const styles = StyleSheet.create({
     paddingTop: SH(20),
     paddingBottom: SH(15),
   },
+  paymentBodyCon:{
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.solidGrey,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical:verticalScale(7),
+    paddingHorizontal:moderateScale(12)
+  },
   buttonStyle: {
     width: windowWidth - 110,
     height: SH(90),
@@ -426,20 +434,24 @@ export const styles = StyleSheet.create({
     zIndex: Platform.OS === 'ios' ? 100 : 0,
   },
   containerStyle: {
-    width: SW(45),
-    height: SH(35),
+    flexGrow:1, 
     justifyContent: 'center',
-    borderWidth: 1,
     borderRadius: 7,
     borderColor: COLORS.solidGrey,
+    backgroundColor: COLORS.textInputBackground,
+    height: SH(60),
+    borderRadius: 5,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(24),
+    color: COLORS.solid_grey,
   },
   dropDownContainerStyle: {
-    borderWidth: 1,
     borderColor: COLORS.solidGrey,
+    height:SW(70),
     borderRadius: 7,
-    ...ShadowStyles.shadow,
+    ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    top: Platform.OS === 'android' ? 30 : 15,
+    top: Platform.OS === 'android' ? 50 : 15,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   listItemLabelStyle: {
@@ -550,5 +562,22 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: windowWidth * 0.65,
+  },
+  paymentBodyText:{
+    fontFamily: Fonts.Regular,
+    fontSize: SF(10),
+    color: COLORS.dark_grey,
+  },
+  scrolCon:{
+    // borderWidth:1,
+    height:windowHeight * 0.28
+  },
+  loader:{
+    position:'absolute',
+    alignSelf:'center',
+    top:0,
+    bottom:0,
+    left:0,
+    right:0
   }
 });

@@ -4,6 +4,7 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import { moderateScale } from 'react-native-size-matters';
 import {
    allien,
+  dropdown2,
   roundCalender,
 } from '@/assets';
 import { strings } from '@/localization';
@@ -11,6 +12,8 @@ import { styles } from '@/screens/Management/Management.styles';
 import { Spacer, TableDropdown } from '@/components';
 import { Table } from 'react-native-table-component';
 const windowWidth = Dimensions.get('window').width;
+import DropDownPicker from 'react-native-dropdown-picker';
+import {transactionDataList} from '@/constants/staticData'
 
 export function SessionHistoryTable({ tableTouchHandler }) {
   return (
@@ -323,4 +326,40 @@ export function SummaryHistory({ historyHeader }) {
         </ScrollView>
       </View>
     );
-  }
+  };
+
+export function TransactionDropDown({selected}){
+  const [cityModalOpen, setCityModelOpen] = useState(false);
+  const [cityModalValue, setCityModalValue] = useState(null);
+  const [cityItems, setCityItems] = useState(transactionDataList);
+   return(
+    <DropDownPicker
+    dropDownDirection="TOP"
+   ArrowUpIconComponent={({ style }) => (
+     <Image source={dropdown2} style={styles.dropDownIcon} />
+   )}
+   ArrowDownIconComponent={({ style }) => (
+     <Image source={dropdown2} style={styles.dropDownIcon} />
+   )}
+   style={styles.dropdown}
+   containerStyle={[
+     styles.containerStyle,
+     { zIndex: Platform.OS === 'ios' ? 100 : 2 },
+   ]}
+   listMode="SCROLLVIEW"
+   dropDownContainerStyle={styles.dropDownContainerStyle}
+   open={cityModalOpen}
+   value={cityModalValue}
+   items={cityItems}
+   setOpen={setCityModelOpen}
+   setValue={setCityModalValue}
+   setItems={setCityItems}
+   placeholder= {strings.management.transactionType}
+   placeholderStyle={{ color: '#A7A7A7' }}
+   scrollViewProps={{
+      nestedScrollEnabled: true
+   }}
+   onSelectItem={(item) =>  selected(item.value)}
+ />
+   )
+}

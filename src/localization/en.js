@@ -277,7 +277,7 @@ export const en = {
   management: {
     cashTracking: 'Cash Tracking',
     cashDrawer: 'Cash Drawer',
-    drawerID: 'Drawer ID: 1',
+    drawerID: 'Drawer ID:',
     drawerID2: 'Drawer ID: 2',
     session: 'Start tracking session',
     sessionHistory: 'Session history',
@@ -288,7 +288,7 @@ export const en = {
     save: 'Save',
     viewSession: 'View session',
     date: 'Today Friday Auguest 26, 2022   | 11.04 AM',
-    usd: 'USD $0.00',
+    usd: 'USD $',
     expected: 'Expected cash balance',
     addCash: 'Add Cash',
     removeCash: 'Remove Cash',
@@ -334,6 +334,7 @@ export const en = {
     amountCounted: 'Amount counted',
     selectAmountDra: 'Select amount to leave in drawer',
     otherAmountusd: 'Other amount (USD)',
+    transactionType:'Transaction type'
   },
   customers: {
     sales: 'Sales',

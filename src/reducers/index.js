@@ -9,6 +9,7 @@ import { shippingReducer } from '@/reducers/ShippingReducer';
 import { analyticsReducer } from '@/reducers/AnalyticsReducer';
 import { customersReducer } from '@/reducers/CustomersReducer';
 import { walletReducer } from '@/reducers/WalletReducer';
+import { cashTrackingReducer } from '@/reducers/CashTrackingReducer';
 
 export const rootReducer = combineReducers({
   error: errorReducer,
@@ -20,5 +21,6 @@ export const rootReducer = combineReducers({
   shipping: shippingReducer,
   analytics: analyticsReducer,
   customers: customersReducer,
-  wallet: walletReducer,
+   wallet: walletReducer,
+  cashTracking : cashTrackingReducer
 });

@@ -5,4 +5,5 @@ export { DeliveryController } from '@/controllers/DeliveryController';
 export { ShippingController } from '@/controllers/ShippingController';
 export { AnalyticsController } from '@/controllers/AnalyticsController';
 export { CustomersController } from '@/controllers/CustomersController';
-export { WalletController } from '@/controllers/WalletController'
+export { WalletController } from '@/controllers/WalletController';
+export { CashTrackingController } from '@/controllers/CashTrackingController'

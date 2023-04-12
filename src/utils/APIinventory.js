@@ -8,7 +8,9 @@ export const ApiUserInventory = {
     verifyPhone:'user_phones/',
     login: 'users/login/',
     getProfile:'users/',
-    sendInvitation:'users/send_invitation'
+    sendInvitation:'users/send_invitation',
+    getDrawerSession:'drawer_management/drawer-session',
+    trackSessionSave:'drawer_management'
 };
 
 export const ApiProductInventory = {
