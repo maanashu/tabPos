@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import {
   crossButton,
@@ -32,6 +40,7 @@ import { getCashTracking } from '@/selectors/CashTrackingSelector';
 import moment from 'moment';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CashtrackingTypes';
+import { digits } from '@/utils/validators';
 
 export function Management() {
   const isFocused = useIsFocused();
@@ -56,15 +65,22 @@ export function Management() {
   const [amountCount, setAmountCount] = useState();
   const [trackNotes, setTrackNotes] = useState('');
   const [dropdownSelect, setDropdownSelect] = useState();
-  const  cashInArray =  drawerActivity?.filter(item => item.mode_of_cash === "cash_in");
-  const cashCount = cashInArray?.map((item ) => item.amount);
+  const [addCashDropDown, setAddCashDropDown] = useState();
+  const cashInArray = drawerActivity?.filter(
+    item => item.mode_of_cash === 'cash_in'
+  );
+  const cashCount = cashInArray?.map(item => item.amount);
   const cashSum = cashCount?.reduce((partialSum, a) => partialSum + a, 0);
-
-  const  cashOutArray =  drawerActivity?.filter(item => item.mode_of_cash === "cash_out");
-  const cashOutCount = cashOutArray?.map((item ) => item.amount);
+  const cashOutArray = drawerActivity?.filter(
+    item => item.mode_of_cash === 'cash_out'
+  );
+  const cashOutCount = cashOutArray?.map(item => item.amount);
   const cashOutSum = cashOutCount?.reduce((partialSum, a) => partialSum + a, 0);
-
   const onchangeValue = value => setDropdownSelect(value);
+  const addCashValue = value => setAddCashDropDown(value);
+  const [differentState, setdifferentState] = useState(false);
+
+  const [addCashInput, setAddCashInput] = useState();
 
   const SessionData = {
     id: drawerData?.getDrawerSession?.id,
@@ -74,19 +90,15 @@ export function Management() {
   const drawerSessLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_DRAWER_SESSION], state)
   );
-
+  const createActivityLoad = useSelector(state =>
+    isLoadingSelector([TYPES.TRACK_SESSION_SAVE], state)
+  );
 
   useEffect(() => {
     dispatch(getDrawerSession());
   }, []);
 
-  useEffect(() => {
-  const  cashInArray =  drawerActivity?.filter(item => item.mode_of_cash === "cash_in")
- 
-      
-  }, []);
-
-  const endTrackingSesHandler = () => {
+  const startTrackingSesHandler = () => {
     if (!amountCount) {
       alert('Please Enter Amount');
     } else if (!trackNotes) {
@@ -107,10 +119,46 @@ export function Management() {
       clearInput();
     }
   };
+  const addCashHandler = () => {
+    if (!addCashInput) {
+      alert('Please Enter Amount');
+    }else if (addCashInput && digits.test(addCashInput) === false) {
+      alert('Please enter valid amount');
+    }else if (addCashInput <= 0 ) {
+      alert('Please enter valid amount');
+    } else if (!trackNotes) {
+      alert('Please Enter Notes');
+    } else if (!addCashDropDown) {
+      alert('Please Select Transaction type');
+    } else {
+      const data = differentState
+        ? {
+            drawerId: SessionData?.id,
+            amount: addCashInput,
+            notes: trackNotes,
+            transactionType: addCashDropDown,
+            modeOfcash: 'cash_in',
+          }
+        : {
+            drawerId: SessionData?.id,
+            amount: addCashInput,
+            notes: trackNotes,
+            transactionType: addCashDropDown,
+            modeOfcash: 'cash_out',
+          };
+      dispatch(trackSessionSave(data));
+      setAddCash(false);
+      clearInput();
+    }
+  };
 
   const clearInput = () => {
     setAmountCount('');
     setTrackNotes('');
+    setAddCashInput('');
+    setAddCashDropDown();
+    setDropdownSelect();
+    setdifferentState(false);
   };
 
   const tableTouchHandler = () => {
@@ -238,7 +286,7 @@ export function Management() {
             // onPress={() => {
             //   setTrackingSession(false), setSaveSession('save');
             // }}
-            onPress={endTrackingSesHandler}
+            onPress={startTrackingSesHandler}
           />
           <Spacer space={SH(40)} />
         </View>
@@ -266,7 +314,7 @@ export function Management() {
 
             <TouchableOpacity
               onPress={() => {
-                setAddCash(false);
+                setAddCash(false), setdifferentState(false);
               }}
               style={{ width: SW(10) }}
             >
@@ -274,7 +322,7 @@ export function Management() {
             </TouchableOpacity>
           </View>
 
-          <Spacer space={SH(50)} />
+          <Spacer space={SH(20)} />
           <View style={styles.countCashView}>
             <Text style={styles.countCashText}>
               {removeCash
@@ -282,7 +330,7 @@ export function Management() {
                 : strings.management.amountAdded}
             </Text>
 
-            <Spacer space={SH(40)} />
+            <Spacer space={SH(20)} />
             <View>
               <Text style={styles.amountCountedText}>
                 {strings.management.cashAmount}
@@ -291,10 +339,13 @@ export function Management() {
                 placeholder={strings.management.amount}
                 style={styles.inputStyle}
                 placeholderTextColor={COLORS.solid_grey}
+                keyboardType="number-pad"
+                value={addCashInput}
+                onChangeText={setAddCashInput}
               />
             </View>
 
-            <Spacer space={SH(40)} />
+            <Spacer space={SH(20)} />
             <View>
               <Text style={styles.amountCountedText}>
                 {strings.management.note}
@@ -303,19 +354,31 @@ export function Management() {
                 placeholder={strings.management.note}
                 style={styles.noteInputStyle}
                 placeholderTextColor={COLORS.gerySkies}
+                value={trackNotes}
+                onChangeText={setTrackNotes}
               />
+            </View>
+            <Spacer space={SH(20)} />
+            <View>
+              <Text style={styles.amountCountedText}>
+                {strings.management.transactionType}
+              </Text>
+              <View style={{ flex: 1 }}>
+                <TransactionDropDown selected={addCashValue} />
+              </View>
             </View>
           </View>
 
-          <Spacer space={SH(90)} />
+          {/* <Spacer space={SH(90)} /> */}
           <View style={{ flex: 1 }} />
           <Button
             title={strings.management.confirm}
             textStyle={styles.buttonText}
             style={styles.saveButton}
-            onPress={() => {
-              setAddCash(false);
-            }}
+            // onPress={() => {
+            //   setAddCash(false);
+            // }}
+            onPress={addCashHandler}
           />
           <Spacer space={SH(40)} />
         </View>
@@ -724,12 +787,12 @@ export function Management() {
 
             <Spacer space={SH(10)} />
             <View>
-             <View >
-             <Text style={styles.usdText}>
-                {strings.management.usd}
-                {SessionData?.cashBalance}
-              </Text>
-             </View>
+              <View>
+                <Text style={styles.usdText}>
+                  {strings.management.usd}
+                  {SessionData?.cashBalance}
+                </Text>
+              </View>
               <Text
                 style={[
                   styles.cashDrawerText,
@@ -742,9 +805,12 @@ export function Management() {
 
             <Spacer space={SH(25)} />
             <View style={[styles.buttonView, { flexDirection: 'row' }]}>
-              <TouchableOpacity activeOpacity={0.5}
+              <TouchableOpacity
+                activeOpacity={0.5}
                 onPress={() => {
-                  setAddCash(true), setRemoveCash(false);
+                  setAddCash(true),
+                    setRemoveCash(false),
+                    setdifferentState(true);
                 }}
                 style={styles.addCashView}
               >
@@ -752,7 +818,8 @@ export function Management() {
                   {strings.management.addCash}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.5}
+              <TouchableOpacity
+                activeOpacity={0.5}
                 onPress={() => {
                   setAddCash(true), setRemoveCash(true);
                 }}
@@ -776,63 +843,76 @@ export function Management() {
             </View>
 
             <View style={styles.scrolCon}>
-            <ScrollView>
-            <View style={styles.paymentOptionsView}>
-              <Text
-                style={[styles.cashDrawerText, { fontFamily: Fonts.Medium }]}
-              >
-                {strings.management.totalCashIn}
-              </Text>
-              <Text style={styles.cashDrawerText}>
-                {strings.management.usd}{cashSum ?? '0'}
-              </Text>
-            </View>
-            {cashInArray?.map((item, index) => (
-              <View style={styles.paymentBodyCon} key={index}>
-                <Text style={styles.paymentBodyText}>
-                 {item.transaction_type}
-                </Text>
-                <Text style={styles.paymentBodyText}>
-                {strings.management.usd}{item.amount}
-                </Text>
-              </View>
-            ))}
+              <ScrollView>
+                <View style={styles.paymentOptionsView}>
+                  <Text
+                    style={[
+                      styles.cashDrawerText,
+                      { fontFamily: Fonts.Medium },
+                    ]}
+                  >
+                    {strings.management.totalCashIn}
+                  </Text>
+                  <Text style={styles.cashDrawerText}>
+                    {strings.management.usd}
+                    {cashSum ?? '0'}
+                  </Text>
+                </View>
+                {cashInArray?.map((item, index) => (
+                  <View style={styles.paymentBodyCon} key={index}>
+                    <Text style={styles.paymentBodyText}>
+                      {item.transaction_type}
+                    </Text>
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {item.amount}
+                    </Text>
+                  </View>
+                ))}
 
-            <View style={styles.paymentOptionsView}>
-              <Text
-                style={[styles.cashDrawerText, { fontFamily: Fonts.Medium }]}
-              >
-                {strings.management.totalCashOut}
-              </Text>
-              <Text style={styles.cashDrawerText}>
-                {strings.management.usd}{cashOutSum ?? '0'}
-              </Text>
-            </View>
-            {cashOutArray?.map((item, index) => (
-              <View style={styles.paymentBodyCon} key={index}>
-                <Text style={styles.paymentBodyText}>
-                 {item.transaction_type}
-                </Text>
-                <Text style={styles.paymentBodyText}>
-                {strings.management.usd}{item.amount}
-                </Text>
-              </View>
-            ))}
+                <View style={styles.paymentOptionsView}>
+                  <Text
+                    style={[
+                      styles.cashDrawerText,
+                      { fontFamily: Fonts.Medium },
+                    ]}
+                  >
+                    {strings.management.totalCashOut}
+                  </Text>
+                  <Text style={styles.cashDrawerText}>
+                    {strings.management.usd}
+                    {cashOutSum ?? '0'}
+                  </Text>
+                </View>
+                {cashOutArray?.map((item, index) => (
+                  <View style={styles.paymentBodyCon} key={index}>
+                    <Text style={styles.paymentBodyText}>
+                      {item.transaction_type}
+                    </Text>
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {item.amount}
+                    </Text>
+                  </View>
+                ))}
 
-            <View style={[styles.paymentOptionsView, { borderBottomWidth: 0 }]}>
-              <Text style={styles.cashDrawerText}>
-                {strings.management.netPayment}
-              </Text>
-              <Text style={styles.cashDrawerText}>
-                {strings.management.usd}{SessionData?.cashBalance}
-              </Text>
-            </View>
-            </ScrollView>
+                <View
+                  style={[styles.paymentOptionsView, { borderBottomWidth: 0 }]}
+                >
+                  <Text style={styles.cashDrawerText}>
+                    {strings.management.netPayment}
+                  </Text>
+                  <Text style={styles.cashDrawerText}>
+                    {strings.management.usd}
+                    {SessionData?.cashBalance}
+                  </Text>
+                </View>
+              </ScrollView>
             </View>
           </View>
 
           {/* <Spacer space={SH(40)} /> */}
-          <View style={{flex:1}}/>
+          <View style={{ flex: 1 }} />
           <Button
             onPress={() => {
               setEndSession(true);
@@ -849,48 +929,47 @@ export function Management() {
         <View>
           {drawerActivity?.length === 0 ? (
             <View style={styles.cashDrawerView}>
-            <View>
-              <Text style={styles.cashDrawerText}>
-                {strings.management.cashDrawer}
-              </Text>
-              <Text style={styles.drawerIdText}>
-                {strings.management.drawerID} {SessionData?.id}
-              </Text>
+              <View>
+                <Text style={styles.cashDrawerText}>
+                  {strings.management.cashDrawer}
+                </Text>
+                <Text style={styles.drawerIdText}>
+                  {strings.management.drawerID} {SessionData?.id}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  setTrackingSession(!trackingSession);
+                }}
+                style={styles.trackingButtonView}
+              >
+                <Text style={styles.trackingButtonText}>
+                  {strings.management.session.toUpperCase()}
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                setTrackingSession(!trackingSession);
-              }}
-              style={styles.trackingButtonView}
-            >
-              <Text style={styles.trackingButtonText}>
-                {strings.management.session.toUpperCase()}
-              </Text>
-            </TouchableOpacity>
-          </View>
-           
           ) : (
             <View style={styles.cashDrawerView}>
-            <View>
-              <Text style={styles.cashDrawerText}>
-                {strings.management.cashDrawer}
-              </Text>
-              <Text style={styles.drawerIdText}>
-                {strings.management.drawerID} {SessionData?.id}
-              </Text>
+              <View>
+                <Text style={styles.cashDrawerText}>
+                  {strings.management.cashDrawer}
+                </Text>
+                <Text style={styles.drawerIdText}>
+                  {strings.management.drawerID} {SessionData?.id}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  setViewSession(true);
+                  dispatch(getDrawerSession());
+                }}
+                style={styles.viewSessionButtonView}
+              >
+                <Text style={styles.viewSessionButtonText}>
+                  {strings.management.viewSession.toUpperCase()}
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                setViewSession(true);
-                dispatch(getDrawerSession());
-              }}
-              style={styles.viewSessionButtonView}
-            >
-              <Text style={styles.viewSessionButtonText}>
-                {strings.management.viewSession.toUpperCase()}
-              </Text>
-            </TouchableOpacity>
-          </View>
           )}
           {newTrackingSession ? (
             <View>
@@ -942,17 +1021,16 @@ export function Management() {
         {trackinSessionModal()}
         {addCashModal()}
         {endSessionModal()}
-
-      
       </View>
-      {
-          drawerSessLoad ?
-            <View style={[styles.loader,{backgroundColor: "rgba(0,0,0, 0.3)"} ]}>
-            <ActivityIndicator color={COLORS.primary} size='large' style={styles.loader}/>
-            </View>
-            :
-            null
-        }
+      {drawerSessLoad || createActivityLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
     </ScreenWrapper>
   );
 }

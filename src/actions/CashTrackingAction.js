@@ -44,7 +44,7 @@ export const trackSessionSave = (data) => async dispatch => {
   try {
       const res = await CashTrackingController.trackSessionSave(data);
       dispatch(trackSessionSaveSuccess(res));
-      dispatch(getDrawerSessionSuccess(res?.payload));
+       dispatch(getDrawerSession())
   } catch (error) {
       dispatch(trackSessionSaveError(error.message));
   }

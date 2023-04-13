@@ -393,7 +393,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
     paddingHorizontal: moderateScale(12),
   },
-  datePickerCon: {
+  datePickerContainer: {
     height: SH(63),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
@@ -447,11 +447,10 @@ export const styles = StyleSheet.create({
   },
   dropDownContainerStyle: {
     borderColor: COLORS.solidGrey,
-    height:SW(70),
     borderRadius: 7,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    top: Platform.OS === 'android' ? 50 : 15,
+    // top: Platform.OS === 'android' ? 50 : 15,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   listItemLabelStyle: {
@@ -579,5 +578,28 @@ export const styles = StyleSheet.create({
     bottom:0,
     left:0,
     right:0
-  }
+  },
+  datePickerCon: {
+    borderWidth: 1,
+    height: SH(38),
+    width: SW(45),
+    borderRadius: 7,
+    borderColor: COLORS.solidGrey,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(7),
+  },
+  calendarStyle: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+  },
+  txtInput: {
+    flex: 1,
+    justifyContent: 'center',
+    fontSize: SF(11),
+    top: 2,
+    color: COLORS.solid_grey,
+  },
 });
