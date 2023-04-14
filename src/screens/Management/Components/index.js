@@ -21,8 +21,10 @@ import { transactionDataList } from '@/constants/staticData';
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import { ActivityIndicator } from 'react-native';
+const windowHeight = Dimensions.get('window').height;
 
-export function SessionHistoryTable({ tableTouchHandler }) {
+export function SessionHistoryTable({ tableTouchHandler, tableDataArray, sessionHistoryLoad, oneItemSend }) {
   const [date, setDate] = useState(new Date());
   const [dateformat, setDateformat] = useState('');
   const [show, setShow] = useState(false);
@@ -50,7 +52,7 @@ export function SessionHistoryTable({ tableTouchHandler }) {
     }
   };
   return (
-    <View>
+    <View style={{flex:1}}>
       <Text style={styles.sessionHistory}>
         {strings.management.sessionHistory}
       </Text>
@@ -112,21 +114,33 @@ export function SessionHistoryTable({ tableTouchHandler }) {
               </View>
             </View>
           </View>
-          <TouchableOpacity
+          <View  style={{height:windowHeight * 0.67}}>
+          <ScrollView > 
+          {
+            sessionHistoryLoad
+            ?
+            <View style={{ marginTop: 100 }}>
+            <ActivityIndicator size="large" color={COLORS.indicator} />
+          </View>
+          :
+          
+            tableDataArray?.map((item, index) => (
+             <TouchableOpacity
             style={styles.tableDataCon}
-            onPress={tableTouchHandler}
+            onPress={() => (tableTouchHandler(), oneItemSend(item))}
+            key={index}
           >
             <View style={styles.displayFlex}>
               <View style={{ flexDirection: 'row', width: windowWidth * 0.25 }}>
                 <Text style={[styles.usertableRowText, { textAlign: 'left' }]}>
-                  1
+                  {index + 1}
                 </Text>
                 <View style={{ paddingHorizontal: moderateScale(10) }}>
-                  <Text style={styles.usertableRowText}>Jun 21, 2022</Text>
+                  <Text style={styles.usertableRowText}>{moment(item.created_at).format('LL') ?? ''}</Text>
                   <Text
                     style={[styles.usertableRowText, { textAlign: 'left' }]}
                   >
-                    2:28 PM
+                  { moment(item.created_at).format('h : mm A')}
                   </Text>
                 </View>
               </View>
@@ -154,12 +168,28 @@ export function SessionHistoryTable({ tableTouchHandler }) {
               </View>
             </View>
           </TouchableOpacity>
+            ))
+          
+
+          }
+         
+          </ScrollView>
+          </View>
+         
+          
         </Table>
       </View>
     </View>
   );
 }
-export function SummaryHistory({ historyHeader }) {
+export function SummaryHistory({ historyHeader,sessionHistoryArray }) {
+  const finalCashInArray = sessionHistoryArray?.drawer_activites.filter(item => item.mode_of_cash === "cash_in");
+  const sessionCashCount = finalCashInArray?.map(item => item.amount);
+  const sessionCashSum = sessionCashCount?.reduce((partialSum, a) => partialSum + a, 0);
+  const finalCashOutArray = sessionHistoryArray?.drawer_activites.filter(item => item.mode_of_cash === "cash_out");
+  const sessionCashOutCount = finalCashOutArray?.map(item => item.amount);
+  const sessionCashOutSum = sessionCashOutCount?.reduce((partialSum, a) => partialSum + a, 0);
+
   return (
     <View style={historyHeader ? styles.bodyContainer : styles.bodyContainer2}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -171,60 +201,47 @@ export function SummaryHistory({ historyHeader }) {
               {strings.management.totalCashIn}
             </Text>
             <Text style={styles.sectionListHeader}>
-              {strings.management.usd}
+              {strings.management.usd}{sessionCashSum ?? '0'}
             </Text>
           </View>
-          <View style={styles.totalCashData}>
-            <Text style={styles.sectionListData}>
-              {strings.management.sale}
-            </Text>
-            <Text style={styles.sectionListData}>{strings.management.usd}</Text>
-          </View>
-          <View style={styles.totalCashData}>
-            <Text style={styles.sectionListData}>
-              {strings.management.manual}
-            </Text>
-            <Text style={styles.sectionListData}>{strings.management.usd}</Text>
-          </View>
-
+        {
+         finalCashInArray?.map((item, index) => (
+          <View style={styles.totalCashData} key={index}>
+          <Text style={styles.sectionListData}>
+            {strings.management.sale}{item.transaction_type}
+          </Text>
+          <Text style={styles.sectionListData}>{strings.management.usd}{item.amount}</Text>
+        </View>
+         ))
+        }
+         
+       
           <View style={styles.totalCashHeader}>
             <Text style={styles.sectionListHeader}>
               {strings.management.totalCashOut}
             </Text>
             <Text style={styles.sectionListHeader}>
-              {strings.management.usd}
+              {strings.management.usd}{sessionCashOutSum ?? '0'}
             </Text>
           </View>
-          <View style={styles.totalCashData}>
+          {
+            finalCashOutArray?.map((item, index) => (
+            <View style={styles.totalCashData} key={index}>
             <Text style={styles.sectionListData}>
-              {strings.management.deliveryCharge}
+              {item.transaction_type}
             </Text>
-            <Text style={styles.sectionListData}>{strings.management.usd}</Text>
+            <Text style={styles.sectionListData}>{strings.management.usd}{item.amount}</Text>
           </View>
-          <View style={styles.totalCashData}>
-            <Text style={styles.sectionListData}>
-              {strings.management.shippingCharge}
-            </Text>
-            <Text style={styles.sectionListData}>{strings.management.usd}</Text>
-          </View>
-          <View style={styles.totalCashData}>
-            <Text style={styles.sectionListData}>
-              {strings.management.refund}
-            </Text>
-            <Text style={styles.sectionListData}>{strings.management.usd}</Text>
-          </View>
-          <View style={styles.totalCashData}>
-            <Text style={styles.sectionListData}>
-              {strings.management.manual}
-            </Text>
-            <Text style={styles.sectionListData}>{strings.management.usd}</Text>
-          </View>
+            ))
+          }
+         
+         
           <View style={styles.netPaymentHeader}>
             <Text style={styles.sectionListHeader}>
               {strings.management.netPayment}
             </Text>
             <Text style={styles.sectionListHeader}>
-              {strings.management.totalCash}
+              {strings.management.totalCash}{sessionHistoryArray?.cash_balance}
             </Text>
           </View>
           <Spacer space={SH(60)} />

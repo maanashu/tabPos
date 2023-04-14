@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Alert,
   Keyboard,
+  BackHandler,
 } from 'react-native';
 import {
   Spacer,
@@ -264,6 +265,7 @@ export function Retails() {
       setSerPro(serPro - 1);
     }
   };
+ 
 
   useEffect(() => {
     if (productData?.qty) {

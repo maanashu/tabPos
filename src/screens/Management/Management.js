@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import {
   getDrawerSession,
+  getSessionHistory,
   trackSessionSave,
 } from '@/actions/CashTrackingAction';
 import { getCashTracking } from '@/selectors/CashTrackingSelector';
@@ -47,6 +48,7 @@ export function Management() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const drawerData = useSelector(getCashTracking);
+  const sessionHistoryArray = drawerData?.getSessionHistory;
   const drawerActivity = drawerData?.getDrawerSession?.drawer_activites;
   const [addCash, setAddCash] = useState(false);
   const [cashSummary, setCashSummary] = useState('');
@@ -79,8 +81,9 @@ export function Management() {
   const onchangeValue = value => setDropdownSelect(value);
   const addCashValue = value => setAddCashDropDown(value);
   const [differentState, setdifferentState] = useState(false);
-
   const [addCashInput, setAddCashInput] = useState();
+  const [mergedDataa, setMergedData] = useState();
+  const [userHistory, setUserHistory] = useState();
 
   const SessionData = {
     id: drawerData?.getDrawerSession?.id,
@@ -93,6 +96,22 @@ export function Management() {
   const createActivityLoad = useSelector(state =>
     isLoadingSelector([TYPES.TRACK_SESSION_SAVE], state)
   );
+  const sessionHistoryLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_SESSION_HISTORY], state)
+  );
+
+  const mergeArrays = arrays => {
+    return [].concat.apply([], arrays);
+  };
+
+  let myMappedData = drawerData?.getSessionHistory?.map(data => {
+    return data?.drawer_activites;
+  });
+  let myLetVariable = myMappedData;
+  useEffect(() => {
+    const mergedArray = mergeArrays(myLetVariable);
+    setMergedData(mergedArray);
+  }, []);
 
   useEffect(() => {
     dispatch(getDrawerSession());
@@ -101,6 +120,10 @@ export function Management() {
   const startTrackingSesHandler = () => {
     if (!amountCount) {
       alert('Please Enter Amount');
+    } else if (amountCount && digits.test(amountCount) === false) {
+      alert('Please enter valid amount');
+    } else if (amountCount <= 0) {
+      alert('Please enter valid amount');
     } else if (!trackNotes) {
       alert('Please Enter Notes');
     } else if (!dropdownSelect) {
@@ -122,9 +145,9 @@ export function Management() {
   const addCashHandler = () => {
     if (!addCashInput) {
       alert('Please Enter Amount');
-    }else if (addCashInput && digits.test(addCashInput) === false) {
+    } else if (addCashInput && digits.test(addCashInput) === false) {
       alert('Please enter valid amount');
-    }else if (addCashInput <= 0 ) {
+    } else if (addCashInput <= 0) {
       alert('Please enter valid amount');
     } else if (!trackNotes) {
       alert('Please Enter Notes');
@@ -684,7 +707,14 @@ export function Management() {
 
   const contentFunction = props => {
     if (sessionHistory) {
-      return <SessionHistoryTable tableTouchHandler={tableTouchHandler} />;
+      return (
+        <SessionHistoryTable
+          tableTouchHandler={tableTouchHandler}
+          tableDataArray={sessionHistoryArray}
+          sessionHistoryLoad={sessionHistoryLoad}
+          oneItemSend={setUserHistory}
+        />
+      );
     } else if (summaryHistory) {
       return (
         <View>
@@ -735,7 +765,7 @@ export function Management() {
                     <Text
                       style={[styles.summaryText, { color: COLORS.primary }]}
                     >
-                      {strings.management.date}
+                    {moment(userHistory?.created_at).format('LL')}
                     </Text>
                   </Text>
                 )}
@@ -748,6 +778,8 @@ export function Management() {
 
           <SummaryHistory
             historyHeader={historyHeader}
+            sessionHistoryArray={userHistory}
+
             // emailButtonHandler={emailButtonHandler}
           />
 
@@ -1001,7 +1033,9 @@ export function Management() {
           <Spacer space={SH(30)} />
           <TouchableOpacity
             style={styles.sessionHistoryView}
-            onPress={() => setSessionHistory(true)}
+            onPress={() => (
+              setSessionHistory(true), dispatch(getSessionHistory())
+            )}
           >
             <Text style={styles.sessionHistoryText}>
               {strings.management.sessionHistory}

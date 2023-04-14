@@ -10,7 +10,8 @@ export const ApiUserInventory = {
     getProfile:'users/',
     sendInvitation:'users/send_invitation',
     getDrawerSession:'drawer_management/drawer-session',
-    trackSessionSave:'drawer_management'
+    trackSessionSave:'drawer_management',
+    getSessionHistory:'drawer_management/drawer-session/history'
 };
 
 export const ApiProductInventory = {

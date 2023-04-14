@@ -28,6 +28,20 @@ const trackSessionSaveError = error => ({
 });
 
 
+const getSessionHistoryRequest = () => ({
+  type: TYPES.GET_SESSION_HISTORY_REQUEST,
+  payload: null,
+});
+const getSessionHistorySuccess = getSessionHistory => ({
+  type: TYPES.GET_SESSION_HISTORY_SUCCESS,
+  payload: { getSessionHistory },
+});
+const getSessionHistoryError = error => ({
+  type: TYPES.GET_SESSION_HISTORY_ERROR,
+  payload: { error },
+});
+
+
 
 
 export const getDrawerSession = () => async dispatch => {
@@ -47,6 +61,16 @@ export const trackSessionSave = (data) => async dispatch => {
        dispatch(getDrawerSession())
   } catch (error) {
       dispatch(trackSessionSaveError(error.message));
+  }
+};
+
+export const getSessionHistory = () => async dispatch => {
+  dispatch(getSessionHistoryRequest());
+  try {
+      const res = await CashTrackingController.getSessionHistory();
+      dispatch(getSessionHistorySuccess(res?.payload));
+  } catch (error) {
+      dispatch(getSessionHistoryError(error.message));
   }
 };
 

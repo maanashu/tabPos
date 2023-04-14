@@ -66,10 +66,8 @@ export function VerifyPhone() {
     <KeyboardAwareScrollView
       contentContainerStyle={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-    >
+      showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-
       <StatusBar barStyle = "dark-content"  backgroundColor = "#fff" />
         <Spacer space={SH(100)} />
         <View style={styles.verifyContainer}>
@@ -96,9 +94,7 @@ export function VerifyPhone() {
               withCallingCode
             />
             <Image source={dropdown} style={styles.dropDownIcon} />
-
             <Text style={styles.countryCodeText}>{countryCode}</Text>
-
             <TextInput
               maxLength={15}
               returnKeyType="done"

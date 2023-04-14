@@ -320,7 +320,7 @@ export const styles = StyleSheet.create({
   allCashText: {
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(24),
+    fontSize: SF(20),
   },
   totalCashHeader: {
     borderBottomWidth: 1,
@@ -335,18 +335,18 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: verticalScale(6),
+    paddingVertical: verticalScale(5),
     paddingHorizontal: moderateScale(10),
   },
   sectionListHeader: {
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(20),
+    fontSize: SF(17),
   },
   sectionListData: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(16),
+    fontSize: SF(12),
   },
   netPaymentHeader: {
     flexDirection: 'row',
@@ -357,7 +357,7 @@ export const styles = StyleSheet.create({
   cashActivity: {
     color: COLORS.darkGray,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(24),
+    fontSize: SF(20),
   },
   cashActivityCon: {
     borderBottomWidth: 1,
@@ -368,17 +368,17 @@ export const styles = StyleSheet.create({
   cashActivityDarkText: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(20),
+    fontSize: SF(16),
   },
   cashActivityLightText: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SF(16),
+    fontSize: SF(12),
   },
   cashActivityRedText: {
     color: COLORS.orange,
     fontFamily: Fonts.Regular,
-    fontSize: SF(16),
+    fontSize: SF(12),
   },
   senEmailButton: {
     alignSelf: 'center',

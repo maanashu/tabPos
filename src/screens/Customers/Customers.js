@@ -1035,6 +1035,7 @@ export function Customers() {
                         ? moment(item.date).format('LL')
                         : 'date not found'}
                     </Text>
+                    
                     <Text style={styles.tableTextData}>Maimi</Text>
                     <Text style={styles.tableTextData}>DHL</Text>
                     <Text style={styles.tableTextData}>
