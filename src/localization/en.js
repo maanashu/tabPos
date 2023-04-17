@@ -325,7 +325,7 @@ export const en = {
     shippingCharge: 'Shipping Charge',
     refund: 'Refund',
     manual: 'Manual',
-    removeusd: '-USD $25.10',
+    removeusd: '-USD $',
     sessionHistory: 'Session history',
     cashSummary: 'Cash summary',
     amountexpect: 'Amount expected',

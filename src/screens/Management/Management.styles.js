@@ -514,8 +514,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(20),
   },
   allienpic: {
-    width: SH(24),
-    height: SH(24),
+    width: SW(10),
+    height: SW(10),
+    borderRadius:50,
     resizeMode: 'contain',
   },
 
@@ -601,5 +602,36 @@ export const styles = StyleSheet.create({
     fontSize: SF(11),
     top: 2,
     color: COLORS.solid_grey,
+  },
+  selectAmountCon:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: SW(45),
+    height: SH(50),
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 5,
+    marginRight:moderateScale(8)
+  },
+  selectAmountText: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(15),
+    color:COLORS.solid_grey
+  },
+  selectAmountText2: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+    fontSize: SF(15),
+  },
+  selectAmountCon2:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: SW(45),
+    height: SH(50),
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    borderRadius: 5,
+    marginRight:moderateScale(8)
   },
 });

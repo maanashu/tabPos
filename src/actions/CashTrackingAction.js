@@ -1,5 +1,6 @@
 import { CashTrackingController } from '@/controllers';
 import { TYPES } from "@/Types/CashtrackingTypes";
+import { LogBox } from 'react-native';
 
 const getDrawerSessionRequest = () => ({
   type: TYPES.GET_DRAWER_SESSION_REQUEST,
@@ -42,6 +43,20 @@ const getSessionHistoryError = error => ({
 });
 
 
+const endTrackingSessionRequest = () => ({
+  type: TYPES.END_TRACKING_REQUEST,
+  payload: null,
+});
+const endTrackingSessionSuccess = getSessionHistory => ({
+  type: TYPES.END_TRACKING_SUCCESS,
+  payload: { getSessionHistory },
+});
+const endTrackingSessionError = error => ({
+  type: TYPES.END_TRACKING_ERROR,
+  payload: { error },
+});
+
+
 
 
 export const getDrawerSession = () => async dispatch => {
@@ -57,7 +72,7 @@ export const trackSessionSave = (data) => async dispatch => {
   dispatch(trackSessionSaveRequest());
   try {
       const res = await CashTrackingController.trackSessionSave(data);
-      dispatch(trackSessionSaveSuccess(res));
+       dispatch(trackSessionSaveSuccess(res));
        dispatch(getDrawerSession())
   } catch (error) {
       dispatch(trackSessionSaveError(error.message));
@@ -73,7 +88,15 @@ export const getSessionHistory = () => async dispatch => {
       dispatch(getSessionHistoryError(error.message));
   }
 };
-
+export const endTrackingSession = (data) => async dispatch => {
+  dispatch(endTrackingSessionRequest());
+  try {
+      const res = await CashTrackingController.endTrackingSession(data);
+       return dispatch(endTrackingSessionSuccess(res));
+  } catch (error) {
+      dispatch(endTrackingSessionError(error.message));
+  }
+};
 
 
 

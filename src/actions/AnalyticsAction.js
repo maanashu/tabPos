@@ -120,6 +120,3 @@ export const getTotalProDetail = (sellerID,productTime ) => async dispatch => {
 
 
 
-
-
-

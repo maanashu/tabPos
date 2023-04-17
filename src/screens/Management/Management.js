@@ -33,6 +33,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import {
+  endTrackingSession,
   getDrawerSession,
   getSessionHistory,
   trackSessionSave,
@@ -57,7 +58,7 @@ export function Management() {
   const [endSession, setEndSession] = useState(false);
   const [viewSession, setViewSession] = useState(false);
   const [summaryHistory, setSummaryHistory] = useState(false);
-  const [selectAmount, setSelectAmount] = useState('first');
+  const [selectAmount, setSelectAmount] = useState('0');
   const [trackingSession, setTrackingSession] = useState(false);
   const [newTrackingSession, setNewTrackingSession] = useState(false);
   const [sessionHistory, setSessionHistory] = useState(false);
@@ -84,12 +85,20 @@ export function Management() {
   const [addCashInput, setAddCashInput] = useState();
   const [mergedDataa, setMergedData] = useState();
   const [userHistory, setUserHistory] = useState();
-
   const SessionData = {
     id: drawerData?.getDrawerSession?.id,
     cashBalance: drawerData?.getDrawerSession?.cash_balance ?? '0',
     createDate: drawerData?.getDrawerSession?.created_at,
   };
+
+  const [countFirst, setCountFirst] = useState('');
+  const [countThird, setCountThird] = useState();
+  
+  const [selectFirst, setSelectFirst] =  useState(false);
+  const [selectSecond, setSelectSecond] =  useState(false);
+
+  const [endBalance, setEndBalance] = useState();
+  
   const drawerSessLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_DRAWER_SESSION], state)
   );
@@ -124,16 +133,12 @@ export function Management() {
       alert('Please enter valid amount');
     } else if (amountCount <= 0) {
       alert('Please enter valid amount');
-    } else if (!trackNotes) {
-      alert('Please Enter Notes');
-    } else if (!dropdownSelect) {
-      alert('Please Select Transaction type');
-    } else {
+    }else {
       const data = {
         drawerId: SessionData?.id,
         amount: amountCount,
         notes: trackNotes,
-        transactionType: dropdownSelect,
+        transactionType: 'start_tracking_session',
         modeOfcash: 'cash_in',
       };
       dispatch(trackSessionSave(data));
@@ -149,9 +154,7 @@ export function Management() {
       alert('Please enter valid amount');
     } else if (addCashInput <= 0) {
       alert('Please enter valid amount');
-    } else if (!trackNotes) {
-      alert('Please Enter Notes');
-    } else if (!addCashDropDown) {
+    }  else if (!addCashDropDown) {
       alert('Please Select Transaction type');
     } else {
       const data = differentState
@@ -174,6 +177,53 @@ export function Management() {
       clearInput();
     }
   };
+
+  const countCashFirst = () => {
+     if (countFirst && digits.test(countFirst) === false) {
+      alert('Please enter valid amount');
+    } else if (countFirst <= 0) {
+      alert('Please enter valid amount');
+    } else {
+      setEndSession(false), setCashSummary(true)
+    }
+  };
+
+  const firstClickHandler = () => {
+      setSelectFirst(!selectFirst)
+  };
+
+  const secondClickHandler = () => {
+    setSelectSecond(!selectSecond)
+    
+  };
+
+  const endTrackingHandler = async () => {
+     const data =
+       countThird
+       ?
+       {
+        amount : parseFloat(countThird) ,
+          drawerId: SessionData?.id,
+        transactionType: 'end_tracking_session',
+        modeOfcash: 'cash_out',
+      }
+      :
+     
+     {
+       amount : selectAmount === undefined || selectAmount === '' ? 0 : selectAmount ,
+       drawerId: SessionData?.id,
+       transactionType: 'end_tracking_session',
+       modeOfcash: 'cash_out',
+     }
+    const res =  await dispatch(endTrackingSession(data))
+    console.log('-------------', res);
+    // if(res?.payload?.getSessionHistory?.payload?.transaction_type === "end_tracking_session"){
+    //   setEndBalance(res?.payload?.getSessionHistory?.payload)
+    // }
+      setEndBalance(res?.payload?.getSessionHistory?.payload)
+     setEndSelectAmount(false),
+     setRemoveUsd(true)
+  }
 
   const clearInput = () => {
     setAmountCount('');
@@ -255,13 +305,13 @@ export function Management() {
             </TouchableOpacity>
           </View>
 
-          <Spacer space={SH(20)} />
+          <Spacer space={SH(40)} />
           <View style={styles.countCashView}>
             <Text style={styles.countCashText}>
               {strings.management.countCash}
             </Text>
 
-            <Spacer space={SH(20)} />
+            <Spacer space={SH(40)} />
             <View>
               <Text style={styles.amountCountedText}>
                 {strings.management.amountCounted}
@@ -276,7 +326,7 @@ export function Management() {
               />
             </View>
 
-            <Spacer space={SH(20)} />
+            <Spacer space={SH(40)} />
             <View>
               <Text style={styles.amountCountedText}>
                 {strings.management.note}
@@ -290,25 +340,20 @@ export function Management() {
               />
             </View>
             <Spacer space={SH(20)} />
-            <View>
+            {/* <View>
               <Text style={styles.amountCountedText}>
                 {strings.management.transactionType}
               </Text>
               <View style={{ flex: 1 }}>
                 <TransactionDropDown selected={onchangeValue} />
               </View>
-            </View>
+            </View> */}
           </View>
-
-          {/* <Spacer space={SH(90)} /> */}
           <View style={{ flex: 1 }} />
           <Button
             title={strings.management.save}
             textStyle={styles.buttonText}
             style={styles.saveButton}
-            // onPress={() => {
-            //   setTrackingSession(false), setSaveSession('save');
-            // }}
             onPress={startTrackingSesHandler}
           />
           <Spacer space={SH(40)} />
@@ -448,6 +493,9 @@ export function Management() {
                   style={styles.inputStyle}
                   placeholder={strings.management.amount}
                   placeholderTextColor={COLORS.solid_grey}
+                  value={countFirst}
+                  onChangeText={setCountFirst}
+                  keyboardType='number-pad'
                 />
               </View>
               <Spacer space={SH(60)} />
@@ -457,7 +505,8 @@ export function Management() {
               style={styles.saveButton}
               textStyle={styles.buttonText}
               title={strings.management.next}
-              onPress={() => (setEndSession(false), setCashSummary(true))}
+              // onPress={() => (setEndSession(false), setCashSummary(true))}
+              onPress={countCashFirst}
             />
           </View>
         </View>
@@ -496,14 +545,14 @@ export function Management() {
                 <Text style={styles.amountExpect}>
                   {strings.management.amountexpect}
                 </Text>
-                <Text style={styles.amountExpect}>{'USD $5,240.00'}</Text>
+                <Text style={styles.amountExpect}>{'USD $'}{SessionData?.cashBalance}</Text>
               </View>
               <Spacer space={SH(25)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
                 <Text style={styles.amountExpect}>
                   {strings.management.amountCounted}
                 </Text>
-                <Text style={styles.amountExpect}>{'USD $5,200.00'}</Text>
+                <Text style={styles.amountExpect}>{'USD $'}{countFirst}</Text>
               </View>
 
               <Spacer space={SH(25)} />
@@ -511,7 +560,7 @@ export function Management() {
                 <Text style={styles.amountExpect}>
                   {strings.management.discrepancy}
                 </Text>
-                <Text style={styles.amountExpect}>{'-USD $40.00'}</Text>
+                <Text style={styles.amountExpect}>{'-USD $'}{SessionData?.cashBalance - countFirst }</Text>
               </View>
             </View>
             <View style={{ flex: 1 }} />
@@ -556,10 +605,23 @@ export function Management() {
                 {strings.management.selectAmountDra}
               </Text>
               <Spacer space={SH(20)} />
+              {/* <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={selectFirst ? styles.selectAmountCon : styles.selectAmountCon2}  onPress={firstClickHandler}>
+                <Text
+                    style={selectFirst ?  styles.selectAmountText : styles.selectAmountText2
+                    }>{'$'}{countThird}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={selectSecond ? styles.selectAmountCon : styles.selectAmountCon2}  onPress={secondClickHandler}>
+                <Text
+                   style={selectSecond ?  styles.selectAmountText : styles.selectAmountText2}>{'$'}{SessionData?.cashBalance}
+                  </Text>
+                </TouchableOpacity>
+              </View> */}
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                   onPress={() => {
-                    setSelectAmount('first');
+                    setSelectAmount('0');
                   }}
                   style={{
                     alignItems: 'center',
@@ -568,7 +630,7 @@ export function Management() {
                     height: SH(50),
                     borderWidth: 1,
                     borderColor:
-                      selectAmount === 'first'
+                      selectAmount === '0'
                         ? COLORS.primary
                         : COLORS.solidGrey,
                     borderRadius: 5,
@@ -579,19 +641,19 @@ export function Management() {
                       styles.cashDrawerText,
                       {
                         color:
-                          selectAmount === 'first'
+                          selectAmount === '0'
                             ? COLORS.primary
                             : COLORS.solid_grey,
                       },
                     ]}
                   >
-                    {'$0.00'}
+                    {'$'}{'0'}
                   </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   onPress={() => {
-                    setSelectAmount('second');
+                    setSelectAmount(SessionData?.cashBalance);
                   }}
                   style={{
                     left: 10,
@@ -601,7 +663,7 @@ export function Management() {
                     height: SH(50),
                     borderWidth: 1,
                     borderColor:
-                      selectAmount === 'second'
+                      selectAmount === SessionData?.cashBalance
                         ? COLORS.primary
                         : COLORS.solidGrey,
                     borderRadius: 5,
@@ -618,7 +680,7 @@ export function Management() {
                       },
                     ]}
                   >
-                    {'$5,200.00'}
+                    {'$'}{SessionData?.cashBalance}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -632,6 +694,10 @@ export function Management() {
                   style={styles.inputStyle}
                   placeholder={strings.management.amount}
                   placeholderTextColor={COLORS.solid_grey}
+                  value={countThird}
+                  onChangeText={setCountThird}
+                  keyboardType='numeric'
+                  // editable={false}
                 />
               </View>
             </View>
@@ -641,7 +707,8 @@ export function Management() {
               style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
-              onPress={() => (setEndSelectAmount(false), setRemoveUsd(true))}
+              // onPress={() => (setEndSelectAmount(false), setRemoveUsd(true))}
+              onPress={endTrackingHandler}
             />
           </View>
         </View>
@@ -656,8 +723,11 @@ export function Management() {
               </Text>
             </View>
             <TouchableOpacity
+              // onPress={() => {
+              //   setRemoveUsd(false), setEndSelectAmount(true);
+              // }}
               onPress={() => {
-                setRemoveUsd(false), setEndSelectAmount(true);
+                setRemoveUsd(false)
               }}
               style={{ width: SW(10) }}
             >
@@ -668,11 +738,11 @@ export function Management() {
             <Spacer space={SH(60)} />
             <View>
               <Text style={styles.removerDarkText}>
-                {'Remove USD $5,200.00 from drawer'}
+                Remove USD $ {SessionData?.cashBalance} from drawer
               </Text>
               <Spacer space={SH(21)} />
               <Text style={styles.removerDarkTextRegular}>
-                {'Amount left in drawer: USD $0.00'}
+                Amount left in drawer: USD ${endBalance?.amount} 
               </Text>
             </View>
             <View style={{ flex: 1 }} />
@@ -959,7 +1029,7 @@ export function Management() {
     } else {
       return (
         <View>
-          {drawerActivity?.length === 0 ? (
+          { drawerActivity?.length === 0  ? (
             <View style={styles.cashDrawerView}>
               <View>
                 <Text style={styles.cashDrawerText}>

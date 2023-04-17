@@ -10,7 +10,13 @@ import {
 } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { moderateScale } from 'react-native-size-matters';
-import { allien, calendar1, dropdown2, roundCalender } from '@/assets';
+import {
+  allien,
+  calendar1,
+  dropdown2,
+  roundCalender,
+  userImage,
+} from '@/assets';
 import { strings } from '@/localization';
 import { styles } from '@/screens/Management/Management.styles';
 import { Spacer, TableDropdown } from '@/components';
@@ -24,7 +30,12 @@ import moment from 'moment';
 import { ActivityIndicator } from 'react-native';
 const windowHeight = Dimensions.get('window').height;
 
-export function SessionHistoryTable({ tableTouchHandler, tableDataArray, sessionHistoryLoad, oneItemSend }) {
+export function SessionHistoryTable({
+  tableTouchHandler,
+  tableDataArray,
+  sessionHistoryLoad,
+  oneItemSend,
+}) {
   const [date, setDate] = useState(new Date());
   const [dateformat, setDateformat] = useState('');
   const [show, setShow] = useState(false);
@@ -52,7 +63,7 @@ export function SessionHistoryTable({ tableTouchHandler, tableDataArray, session
     }
   };
   return (
-    <View style={{flex:1}}>
+    <View style={{ flex: 1 }}>
       <Text style={styles.sessionHistory}>
         {strings.management.sessionHistory}
       </Text>
@@ -114,81 +125,164 @@ export function SessionHistoryTable({ tableTouchHandler, tableDataArray, session
               </View>
             </View>
           </View>
-          <View  style={{height:windowHeight * 0.67}}>
-          <ScrollView > 
-          {
-            sessionHistoryLoad
-            ?
-            <View style={{ marginTop: 100 }}>
-            <ActivityIndicator size="large" color={COLORS.indicator} />
-          </View>
-          :
-          
-            tableDataArray?.map((item, index) => (
-             <TouchableOpacity
-            style={styles.tableDataCon}
-            onPress={() => (tableTouchHandler(), oneItemSend(item))}
-            key={index}
-          >
-            <View style={styles.displayFlex}>
-              <View style={{ flexDirection: 'row', width: windowWidth * 0.25 }}>
-                <Text style={[styles.usertableRowText, { textAlign: 'left' }]}>
-                  {index + 1}
-                </Text>
-                <View style={{ paddingHorizontal: moderateScale(10) }}>
-                  <Text style={styles.usertableRowText}>{moment(item.created_at).format('LL') ?? ''}</Text>
-                  <Text
-                    style={[styles.usertableRowText, { textAlign: 'left' }]}
-                  >
-                  { moment(item.created_at).format('h : mm A')}
-                  </Text>
+          <View style={{ height: windowHeight * 0.67 }}>
+            <ScrollView>
+              {sessionHistoryLoad ? (
+                <View style={{ marginTop: 100 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
-              </View>
-              <View style={styles.dateTimeAlign}>
-                <View style={styles.flexAlign}>
-                  <Image source={allien} style={styles.allienpic} />
-                  <Text
-                    style={[
-                      styles.usertableRowText,
-                      { paddingHorizontal: moderateScale(3) },
-                    ]}
+              ) : (
+                tableDataArray?.map((item, index) => (
+                  <TouchableOpacity
+                    style={styles.tableDataCon}
+                    onPress={() => (tableTouchHandler(), oneItemSend(item))}
+                    key={index}
                   >
-                    Allein
-                  </Text>
-                </View>
-                <Text style={styles.usertableRowText}>$0.00</Text>
-                <Text style={styles.usertableRowText}>$6,590.00</Text>
-                <Text style={styles.usertableRowText}>$1,350.00</Text>
-                <Text style={styles.usertableRowText}>$5,200.00</Text>
-                <Text
-                  style={[styles.usertableRowText, { color: COLORS.orange }]}
-                >
-                  -$40.00
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-            ))
-          
-
-          }
-         
-          </ScrollView>
+                    <View style={styles.displayFlex}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          width: windowWidth * 0.25,
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.usertableRowText,
+                            { textAlign: 'left' },
+                          ]}
+                        >
+                          {index + 1}
+                        </Text>
+                        <View style={{ paddingHorizontal: moderateScale(10) }}>
+                          <Text style={styles.usertableRowText}>
+                            {moment(item.created_at).format('LL') ?? ''}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.usertableRowText,
+                              { textAlign: 'left' },
+                            ]}
+                          >
+                            {moment(item.created_at).format('h : mm A')}
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={styles.dateTimeAlign}>
+                        <View style={styles.flexAlign}>
+                          <Image
+                            source={{
+                              uri: item.seller_details?.user_profiles
+                                ?.profile_photo,
+                            }}
+                            style={styles.allienpic}
+                          />
+                          <Text
+                            style={[
+                              styles.usertableRowText,
+                              { paddingHorizontal: moderateScale(3) },
+                            ]}
+                          >
+                            {item.seller_details?.user_profiles?.firstname}
+                          </Text>
+                        </View>
+                        <Text style={styles.usertableRowText}>
+                          ${item.start_tracking_session}
+                        </Text>
+                        <Text style={styles.usertableRowText}>
+                          ${item.add_cash}
+                        </Text>
+                        <Text style={styles.usertableRowText}>
+                          ${item.removed_cash}
+                        </Text>
+                        <Text style={styles.usertableRowText}>
+                          ${item.counted_cash}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.usertableRowText,
+                            { color: COLORS.orange },
+                          ]}
+                        >
+                          -${item.end_tracking_session}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ))
+              )}
+            </ScrollView>
           </View>
-         
-          
         </Table>
       </View>
     </View>
   );
 }
-export function SummaryHistory({ historyHeader,sessionHistoryArray }) {
-  const finalCashInArray = sessionHistoryArray?.drawer_activites.filter(item => item.mode_of_cash === "cash_in");
+export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
+  const finalCashInArray = sessionHistoryArray?.drawer_activites.filter(
+    item => item.mode_of_cash === 'cash_in'
+  );
   const sessionCashCount = finalCashInArray?.map(item => item.amount);
-  const sessionCashSum = sessionCashCount?.reduce((partialSum, a) => partialSum + a, 0);
-  const finalCashOutArray = sessionHistoryArray?.drawer_activites.filter(item => item.mode_of_cash === "cash_out");
+  const sessionCashSum = sessionCashCount?.reduce(
+    (partialSum, a) => partialSum + a,
+    0
+  );
+  const finalCashOutArray = sessionHistoryArray?.drawer_activites.filter(
+    item => item.mode_of_cash === 'cash_out'
+  );
   const sessionCashOutCount = finalCashOutArray?.map(item => item.amount);
-  const sessionCashOutSum = sessionCashOutCount?.reduce((partialSum, a) => partialSum + a, 0);
+  const sessionCashOutSum = sessionCashOutCount?.reduce(
+    (partialSum, a) => partialSum + a,
+    0
+  );
+
+
+  const correctWay = transaction_type => {
+    if (transaction_type === 'start_tracking_session') {
+      return 'Start tracking session';
+    } else if (transaction_type === 'manual_cash_in') {
+      return 'Manual Cash In';
+    } else if (transaction_type === 'manual_cash_out') {
+      return 'Manual cash out';
+    } else if (transaction_type === 'counted_cash') {
+      return 'Counted Cash';
+    } else if (transaction_type === 'counted_cash') {
+      return 'Counted Cash';
+    } else if (transaction_type === 'delivery_charge') {
+      return 'Delivery charge';
+    } else if (transaction_type === 'shipping_charge') {
+      return 'Shipping charge';
+    } else if (transaction_type === 'sales') {
+      return 'Sales';
+    } else if (transaction_type === 'refund') {
+      return 'Refund';
+    } else if (transaction_type === 'end_tracking_session') {
+      return 'End trasking session';
+    }
+
+    // switch (transaction_type) {
+    //   // case manual_cash_in:
+    //   //   return 'Manual Cash in';
+    //   //   break;
+    //     case manual_cash_out:
+    //       return 'Manual Cash out';
+    //       break;
+    //       case counted_cash:
+    //         return 'Counted Cash';
+    //         break;
+    //         case delivery_charge:
+    //           return 'Delivery charge';
+    //           break;
+    //           case shipping_charge:
+    //             return 'Shipping charge';
+    //             break;
+    //             case sales:
+    //               return 'Sales';
+    //               break;
+    //               case refund:
+    //                 return 'Refund';
+    //                 break;
+    // }
+  };
 
   return (
     <View style={historyHeader ? styles.bodyContainer : styles.bodyContainer2}>
@@ -201,47 +295,51 @@ export function SummaryHistory({ historyHeader,sessionHistoryArray }) {
               {strings.management.totalCashIn}
             </Text>
             <Text style={styles.sectionListHeader}>
-              {strings.management.usd}{sessionCashSum ?? '0'}
+              {strings.management.usd}
+              {sessionCashSum ?? '0'}
             </Text>
           </View>
-        {
-         finalCashInArray?.map((item, index) => (
-          <View style={styles.totalCashData} key={index}>
-          <Text style={styles.sectionListData}>
-            {strings.management.sale}{item.transaction_type}
-          </Text>
-          <Text style={styles.sectionListData}>{strings.management.usd}{item.amount}</Text>
-        </View>
-         ))
-        }
-         
-       
+          {finalCashInArray?.map((item, index) => (
+            <View style={styles.totalCashData} key={index}>
+              <Text style={styles.sectionListData}>
+                {strings.management.sale}
+                {correctWay(item.transaction_type)}
+              </Text>
+              <Text style={styles.sectionListData}>
+                {strings.management.usd}
+                {item.amount}
+              </Text>
+            </View>
+          ))}
+
           <View style={styles.totalCashHeader}>
             <Text style={styles.sectionListHeader}>
               {strings.management.totalCashOut}
             </Text>
             <Text style={styles.sectionListHeader}>
-              {strings.management.usd}{sessionCashOutSum ?? '0'}
+              {strings.management.usd}
+              {sessionCashOutSum ?? '0'}
             </Text>
           </View>
-          {
-            finalCashOutArray?.map((item, index) => (
+          {finalCashOutArray?.map((item, index) => (
             <View style={styles.totalCashData} key={index}>
-            <Text style={styles.sectionListData}>
-              {item.transaction_type}
-            </Text>
-            <Text style={styles.sectionListData}>{strings.management.usd}{item.amount}</Text>
-          </View>
-            ))
-          }
-         
-         
+              <Text style={styles.sectionListData}>
+                {correctWay(item.transaction_type)}
+              </Text>
+              <Text style={styles.sectionListData}>
+                {strings.management.usd}
+                {item.amount}
+              </Text>
+            </View>
+          ))}
+
           <View style={styles.netPaymentHeader}>
             <Text style={styles.sectionListHeader}>
               {strings.management.netPayment}
             </Text>
             <Text style={styles.sectionListHeader}>
-              {strings.management.totalCash}{sessionHistoryArray?.cash_balance}
+              {strings.management.totalCash}
+              {sessionHistoryArray?.cash_balance}
             </Text>
           </View>
           <Spacer space={SH(60)} />
@@ -249,7 +347,55 @@ export function SummaryHistory({ historyHeader,sessionHistoryArray }) {
             {strings.management.cashActivity}
           </Text>
           <Spacer space={SH(20)} />
-          <View style={styles.cashActivityCon}>
+          {sessionHistoryArray?.drawer_activites?.map((item, index) => (
+            <View style={styles.cashActivityCon} key={index}>
+              <View style={styles.displayFlex}>
+                <Text style={styles.cashActivityDarkText}>
+                  {correctWay(item.transaction_type)}
+                </Text>
+                <Text style={styles.cashActivityDarkText}>
+                  -{strings.management.usd}
+                  {item.amount}
+                </Text>
+              </View>
+              {item.discrepency_amount === null ? null : (
+                <View style={styles.displayFlex}>
+                  <Text style={styles.cashActivityRedText}>
+                    {strings.management.discrepancy}
+                  </Text>
+                  <Text style={styles.cashActivityRedText}>
+                    {strings.management.removeusd}
+                    {item.discrepency_amount}
+                  </Text>
+                </View>
+              )}
+              <Spacer space={SH(4)} />
+              <View style={styles.displayFlex}>
+                <Text style={styles.cashActivityLightText}>
+                  {
+                    sessionHistoryArray?.seller_details?.user_profiles
+                      ?.firstname
+                  }
+                </Text>
+                <Text style={styles.cashActivityLightText}>
+                  {moment(item.created_at).format(
+                    'dddd, MMMM Do YYYY | h:mm a'
+                  )}
+                </Text>
+              </View>
+              <Spacer space={SH(4)} />
+              {item.note === null ? null : (
+                <View style={styles.displayFlex}>
+                  <Text style={styles.cashActivityLightText}>
+                    Note : {item.note}
+                  </Text>
+                  <Text style={styles.cashActivityLightText}>{null}</Text>
+                </View>
+              )}
+            </View>
+          ))}
+
+          {/* <View style={styles.cashActivityCon}>
             <View style={styles.displayFlex}>
               <Text style={styles.cashActivityDarkText}>
                 {strings.management.endTrackingSession}
@@ -382,7 +528,7 @@ export function SummaryHistory({ historyHeader,sessionHistoryArray }) {
                 {strings.management.dateTime}
               </Text>
             </View>
-          </View>
+          </View> */}
           <Spacer space={SH(50)} />
         </View>
       </ScrollView>
