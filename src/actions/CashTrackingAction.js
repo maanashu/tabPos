@@ -56,6 +56,19 @@ const endTrackingSessionError = error => ({
   payload: { error },
 });
 
+const getDrawerSessionByIdRequest = () => ({
+  type: TYPES.GET_SESSION_BYID_REQUEST,
+  payload: null,
+});
+const getDrawerSessionByIdSuccess = getDrawerSessionById => ({
+  type: TYPES.GET_SESSION_BYID_SUCCESS,
+  payload: { getDrawerSessionById },
+});
+const getDrawerSessionByIdError = error => ({
+  type: TYPES.GET_SESSION_BYID_ERROR,
+  payload: { error },
+});
+
 
 
 
@@ -93,8 +106,20 @@ export const endTrackingSession = (data) => async dispatch => {
   try {
       const res = await CashTrackingController.endTrackingSession(data);
        return dispatch(endTrackingSessionSuccess(res));
+     
   } catch (error) {
       dispatch(endTrackingSessionError(error.message));
+  }
+};
+
+export const getDrawerSessionById = (status) => async dispatch => {
+  dispatch(getDrawerSessionByIdRequest());
+  try {
+      const res = await CashTrackingController.getDrawerSessionById(status);
+      dispatch(getDrawerSessionByIdSuccess(res?.payload?.data));
+      console.log('res', res);
+  } catch (error) {
+      dispatch(getDrawerSessionByIdError(error.message));
   }
 };
 

@@ -131,7 +131,29 @@ export class CashTrackingController {
             text2: error.msg,
             visibilityTime: 2000,
           });
+          console.log('222222222',error.msg )
           reject(error.msg);
+        });
+    });
+  };
+
+  static async getDrawerSessionById(status) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+      USER_URL + ApiUserInventory.getSessionHistory + `?drawer_id=${status}`;
+      console.log('endpoint', endpoint);
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
   };

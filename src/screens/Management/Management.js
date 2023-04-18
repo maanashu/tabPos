@@ -35,6 +35,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import {
   endTrackingSession,
   getDrawerSession,
+  getDrawerSessionById,
   getSessionHistory,
   trackSessionSave,
 } from '@/actions/CashTrackingAction';
@@ -43,6 +44,10 @@ import moment from 'moment';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CashtrackingTypes';
 import { digits } from '@/utils/validators';
+import { log } from 'react-native-reanimated';
+import { FlatList } from 'react-native';
+
+
 
 export function Management() {
   const isFocused = useIsFocused();
@@ -51,6 +56,8 @@ export function Management() {
   const drawerData = useSelector(getCashTracking);
   const sessionHistoryArray = drawerData?.getSessionHistory;
   const drawerActivity = drawerData?.getDrawerSession?.drawer_activites;
+  const historyById = drawerData?.getDrawerSessionById?.[0];
+  console.log('historyById',historyById);
   const [addCash, setAddCash] = useState(false);
   const [cashSummary, setCashSummary] = useState('');
   const [saveSession, setSaveSession] = useState('');
@@ -90,14 +97,59 @@ export function Management() {
     cashBalance: drawerData?.getDrawerSession?.cash_balance ?? '0',
     createDate: drawerData?.getDrawerSession?.created_at,
   };
+ 
 
-  const [countFirst, setCountFirst] = useState('');
+  const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
+  console.log('countThird', countThird);
+  const discrepancy = SessionData?.cashBalance -  countFirst;
   
   const [selectFirst, setSelectFirst] =  useState(false);
   const [selectSecond, setSelectSecond] =  useState(false);
 
   const [endBalance, setEndBalance] = useState();
+  console.log('endBalance', endBalance);
+  const[leaveId,setLeaveId] = useState(1);
+  // console.log('endBalance', endBalance);
+  const [leaveDatas,setLeaveData] =  useState('0');
+  console.log('leaveDatas',leaveDatas);
+
+
+  const leaveData = [
+    {
+      id :1,
+      "title":0
+    },
+    {
+     id :2,
+     "title":SessionData?.cashBalance
+   }
+ ];
+
+ const Item = ({item, onPress, borderColor, color}) => (
+<TouchableOpacity
+onPress={onPress}
+style={[styles.selectAmountCon, {borderColor}]}>
+<Text
+  style={[styles.cashDrawerText, {color}]}>
+  ${item.title}
+</Text>
+</TouchableOpacity>
+);
+
+ const leaveDataItem = ({item}) => {
+  const borderColor = item.id === leaveId ? COLORS.primary : COLORS.solidGrey;
+  const color = item.id === leaveId ? COLORS.primary : COLORS.solid_grey
+
+  return (
+    <Item
+      item={item}
+      onPress={() => (setLeaveId(item.id), setLeaveData(item?.title)) }
+      borderColor={borderColor}
+      color={color}
+    />
+  );
+};
   
   const drawerSessLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_DRAWER_SESSION], state)
@@ -108,19 +160,11 @@ export function Management() {
   const sessionHistoryLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_SESSION_HISTORY], state)
   );
+  const oneHistoryLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_SESSION_BYID], state)
+  );
 
-  const mergeArrays = arrays => {
-    return [].concat.apply([], arrays);
-  };
 
-  let myMappedData = drawerData?.getSessionHistory?.map(data => {
-    return data?.drawer_activites;
-  });
-  let myLetVariable = myMappedData;
-  useEffect(() => {
-    const mergedArray = mergeArrays(myLetVariable);
-    setMergedData(mergedArray);
-  }, []);
 
   useEffect(() => {
     dispatch(getDrawerSession());
@@ -198,28 +242,29 @@ export function Management() {
   };
 
   const endTrackingHandler = async () => {
-     const data =
-       countThird
-       ?
-       {
-        amount : parseFloat(countThird) ,
-          drawerId: SessionData?.id,
-        transactionType: 'end_tracking_session',
+    const data =
+     countThird
+     ?
+    {
+      amount : parseInt(countThird),
+      drawerId: SessionData?.id,
+         transactionType: 'end_tracking_session',
         modeOfcash: 'cash_out',
-      }
-      :
-     
-     {
-       amount : selectAmount === undefined || selectAmount === '' ? 0 : selectAmount ,
-       drawerId: SessionData?.id,
+    }
+    :
+    {
+      amount : leaveDatas,
+      drawerId: SessionData?.id,
        transactionType: 'end_tracking_session',
-       modeOfcash: 'cash_out',
-     }
+          modeOfcash: 'cash_out',
+    }
+
+    console.log('data', data);
     const res =  await dispatch(endTrackingSession(data))
-    console.log('-------------', res);
-    // if(res?.payload?.getSessionHistory?.payload?.transaction_type === "end_tracking_session"){
-    //   setEndBalance(res?.payload?.getSessionHistory?.payload)
-    // }
+    if (res){
+      dispatch(getDrawerSession())
+      // setLeaveData('')
+    }
       setEndBalance(res?.payload?.getSessionHistory?.payload)
      setEndSelectAmount(false),
      setRemoveUsd(true)
@@ -251,6 +296,7 @@ export function Management() {
         {sessionHistory || viewSession ? (
           <TouchableOpacity
             style={styles.backButtonCon}
+
             onPress={() => {
               viewSession ? setViewSession(false) : setSessionHistory(false);
             }}
@@ -556,11 +602,11 @@ export function Management() {
               </View>
 
               <Spacer space={SH(25)} />
-              <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
-                <Text style={styles.amountExpect}>
+              <View style={[styles.displayFlex, { alignItems: 'flex-start'}]}>
+                <Text style={[styles.amountExpect ,{color: discrepancy < 0 ?  COLORS.red : COLORS.dark_grey }]}>
                   {strings.management.discrepancy}
                 </Text>
-                <Text style={styles.amountExpect}>{'-USD $'}{SessionData?.cashBalance - countFirst }</Text>
+                <Text style={[styles.amountExpect ,{ color: discrepancy < 0 ?  COLORS.red : COLORS.dark_grey }]}>{'USD $'}{discrepancy}</Text>
               </View>
             </View>
             <View style={{ flex: 1 }} />
@@ -569,7 +615,8 @@ export function Management() {
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
               onPress={() => {
-                setCashSummary(false), setEndSelectAmount(true);
+                setCashSummary(false), setEndSelectAmount(true)
+                 setCountThird('')
               }}
             />
           </View>
@@ -605,20 +652,16 @@ export function Management() {
                 {strings.management.selectAmountDra}
               </Text>
               <Spacer space={SH(20)} />
+
+              <FlatList
+                data={leaveData}
+                extraData={leaveData}
+                renderItem={leaveDataItem}
+                keyExtractor={item => item.id}
+                horizontal
+              />
+             
               {/* <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={selectFirst ? styles.selectAmountCon : styles.selectAmountCon2}  onPress={firstClickHandler}>
-                <Text
-                    style={selectFirst ?  styles.selectAmountText : styles.selectAmountText2
-                    }>{'$'}{countThird}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={selectSecond ? styles.selectAmountCon : styles.selectAmountCon2}  onPress={secondClickHandler}>
-                <Text
-                   style={selectSecond ?  styles.selectAmountText : styles.selectAmountText2}>{'$'}{SessionData?.cashBalance}
-                  </Text>
-                </TouchableOpacity>
-              </View> */}
-              <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                   onPress={() => {
                     setSelectAmount('0');
@@ -683,7 +726,7 @@ export function Management() {
                     {'$'}{SessionData?.cashBalance}
                   </Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
 
               <Spacer space={SH(20)} />
               <View>
@@ -727,7 +770,7 @@ export function Management() {
               //   setRemoveUsd(false), setEndSelectAmount(true);
               // }}
               onPress={() => {
-                setRemoveUsd(false)
+                setRemoveUsd(false), setViewSession(false), dispatch(getDrawerSession())
               }}
               style={{ width: SW(10) }}
             >
@@ -751,7 +794,8 @@ export function Management() {
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={'Done'}
               onPress={() => {
-                setRemoveUsd(false),
+                 dispatch(getDrawerSessionById(endBalance?.drawer_id))
+                  setRemoveUsd(false),
                   setEndSession(false),
                   setCashSummary(''),
                   setSummaryHistory(true),
@@ -794,8 +838,8 @@ export function Management() {
                 <TouchableOpacity
                   style={styles.backButtonCon}
                   onPress={() => {
-                    setSummaryHistory(false), setViewSession(true);
-                    setHistoryHeader(false);
+                    setSummaryHistory(false), setViewSession(false);
+                    setHistoryHeader(false); dispatch(getDrawerSession()) 
                   }}
                 >
                   <Image source={backArrow} style={styles.backButtonArrow} />
@@ -848,7 +892,8 @@ export function Management() {
 
           <SummaryHistory
             historyHeader={historyHeader}
-            sessionHistoryArray={userHistory}
+            // sessionHistoryArray={userHistory}
+            sessionHistoryArray ={historyHeader === true ? historyById : userHistory}
 
             // emailButtonHandler={emailButtonHandler}
           />
@@ -1017,7 +1062,7 @@ export function Management() {
           <View style={{ flex: 1 }} />
           <Button
             onPress={() => {
-              setEndSession(true);
+              setEndSession(true), setCountFirst('');
             }}
             style={styles.buttonStyle}
             textStyle={[styles.cashDrawerText, { color: COLORS.red }]}
@@ -1126,7 +1171,7 @@ export function Management() {
         {addCashModal()}
         {endSessionModal()}
       </View>
-      {drawerSessLoad || createActivityLoad ? (
+      {drawerSessLoad || createActivityLoad || oneHistoryLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator
             color={COLORS.primary}

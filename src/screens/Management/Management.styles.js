@@ -78,7 +78,7 @@ export const styles = StyleSheet.create({
   },
   cashDrawerText: {
     fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
+    // color: COLORS.solid_grey,
     fontSize: SF(15),
   },
   drawerIdText: {

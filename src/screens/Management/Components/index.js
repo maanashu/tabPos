@@ -132,7 +132,7 @@ export function SessionHistoryTable({
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
               ) : (
-                tableDataArray?.map((item, index) => (
+                tableDataArray?.data?.map((item, index) => (
                   <TouchableOpacity
                     style={styles.tableDataCon}
                     onPress={() => (tableTouchHandler(), oneItemSend(item))}
@@ -256,7 +256,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     } else if (transaction_type === 'refund') {
       return 'Refund';
     } else if (transaction_type === 'end_tracking_session') {
-      return 'End trasking session';
+      return 'End tracking session';
     }
 
     // switch (transaction_type) {

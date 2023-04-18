@@ -916,7 +916,7 @@ export function Retails() {
     </TouchableOpacity>
   );
 
-  const categoryItem = ({ item }) => {
+  const categoryItem = ({ item }) => { 
     const backgroundColor =
       item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
     const borderColor = item.id === selectedId ? COLORS.primary : COLORS.white;

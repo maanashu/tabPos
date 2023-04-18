@@ -41,6 +41,7 @@ export function TotalProductSub({
       getAnalyticsData?.getTotalProDetail?.discontinued_products ?? '0',
     totalActive:
       getAnalyticsData?.getTotalProDetail?.total_active_products ?? '0',
+      categoryArray :getAnalyticsData?.getTotalProDetail?.result
   };
 
   const productMulti = data?.newAdd * 100;
