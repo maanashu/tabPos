@@ -20,6 +20,11 @@ export const cashTrackingReducer = (state = {INITIALSTATE}, { payload, type }) =
           ...state,
           getSessionHistory: payload.getSessionHistory,
         };
+        case TYPES.GET_SESSION_HISTORY_RESET:
+          return {
+            ...state,
+            getSessionHistory: [],
+          };
 
         case TYPES.GET_SESSION_BYID_SUCCESS:
           return {

@@ -28,6 +28,9 @@ import { transactionDataList } from '@/constants/staticData';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import { ActivityIndicator } from 'react-native';
+import { DarkTheme } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { getSessionHistory } from '@/actions/CashTrackingAction';
 const windowHeight = Dimensions.get('window').height;
 
 export function SessionHistoryTable({
@@ -36,32 +39,42 @@ export function SessionHistoryTable({
   sessionHistoryLoad,
   oneItemSend,
 }) {
+  const dispatch = useDispatch();
   const [date, setDate] = useState(new Date());
   const [dateformat, setDateformat] = useState('');
   const [show, setShow] = useState(false);
+
   const onChangeDate = selectedDate => {
     const currentDate = moment().format('MM/DD/YYYY');
     const selected = moment(selectedDate).format('MM/DD/YYYY');
-    if (currentDate === selected) {
-      setShow(false);
-      const fullDate = new Date(moment(selectedDate).subtract(21, 'years'));
-      const changedDate = moment(fullDate).format('MM / DD / YYYY');
-      const newDateFormat = moment(fullDate).format('YYYY-MM-DD');
-      setDateformat(newDateFormat);
-      setDate(changedDate);
-    } else {
-      setShow(false);
-      const month = selectedDate.getMonth() + 1;
-      const selectedMonth = month < 10 ? '0' + month : month;
-      const day = selectedDate.getDate();
-      const selectedDay = day < 10 ? '0' + day : day;
-      const year = selectedDate.getFullYear();
-      const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
-      const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
-      setDateformat(newDateFormat);
-      setDate(fullDate);
-    }
+    //  else if (dateformat){
+    //   dispatch(getSessionHistory(dateformat))
+    // }
+    setShow(false);
+    const month = selectedDate.getMonth() + 1;
+    const selectedMonth = month < 10 ? '0' + month : month;
+    const day = selectedDate.getDate();
+    const selectedDay = day < 10 ? '0' + day : day;
+    const year = selectedDate.getFullYear();
+    const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
+    const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
+    setDateformat(newDateFormat);
+    setDate(fullDate);
   };
+  const onCancelFun = () => {
+    setShow(false);
+    setDateformat('');
+    setDate(new Date());
+    console.log('-----------', dateformat);
+    // if(dateformat){
+    //   dispatch(getSessionHistory(dateformat))
+    // }else{
+    //   dispatch(getSessionHistory())
+    // }
+  };
+
+  const tableDataArrayReverse = tableDataArray?.data?.reverse();
+
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.sessionHistory}>
@@ -90,8 +103,8 @@ export function SessionHistoryTable({
             mode={'date'}
             isVisible={show}
             onConfirm={onChangeDate}
-            onCancel={() => setShow(false)}
-            maximumDate={new Date(moment().subtract(21, 'years'))}
+            onCancel={() => onCancelFun()}
+            maximumDate={new Date()}
           />
           <View style={{ marginHorizontal: moderateScale(10) }}>
             <TableDropdown placeholder="Staff" />
@@ -132,7 +145,7 @@ export function SessionHistoryTable({
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
               ) : (
-                tableDataArray?.data?.map((item, index) => (
+                tableDataArrayReverse?.map((item, index) => (
                   <TouchableOpacity
                     style={styles.tableDataCon}
                     onPress={() => (tableTouchHandler(), oneItemSend(item))}
@@ -187,23 +200,36 @@ export function SessionHistoryTable({
                         </View>
                         <Text style={styles.usertableRowText}>
                           ${item.start_tracking_session}
+                          {'.00'}
                         </Text>
                         <Text style={styles.usertableRowText}>
                           ${item.add_cash}
+                          {'.00'}
                         </Text>
                         <Text style={styles.usertableRowText}>
                           ${item.removed_cash}
+                          {'.00'}
                         </Text>
                         <Text style={styles.usertableRowText}>
                           ${item.counted_cash}
+                          {'.00'}
                         </Text>
                         <Text
                           style={[
                             styles.usertableRowText,
-                            { color: COLORS.orange },
+                            {
+                              color:
+                                item.end_tracking_session < 0
+                                  ? COLORS.orange
+                                  : COLORS.solid_grey,
+                            },
                           ]}
                         >
-                          -${item.end_tracking_session}
+                          {item.end_tracking_session < 0 ? '-' : null} $
+                          {item.end_tracking_session < 0
+                            ? Math.abs(item.end_tracking_session)
+                            : item.end_tracking_session}
+                          {'.00'}
                         </Text>
                       </View>
                     </View>
@@ -235,6 +261,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     0
   );
 
+  const reverseArray = sessionHistoryArray?.drawer_activites.reverse();
 
   const correctWay = transaction_type => {
     if (transaction_type === 'start_tracking_session') {
@@ -297,6 +324,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             <Text style={styles.sectionListHeader}>
               {strings.management.usd}
               {sessionCashSum ?? '0'}
+              {'.00'}
             </Text>
           </View>
           {finalCashInArray?.map((item, index) => (
@@ -308,6 +336,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
               <Text style={styles.sectionListData}>
                 {strings.management.usd}
                 {item.amount}
+                {'.00'}
               </Text>
             </View>
           ))}
@@ -319,6 +348,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             <Text style={styles.sectionListHeader}>
               {strings.management.usd}
               {sessionCashOutSum ?? '0'}
+              {'.00'}
             </Text>
           </View>
           {finalCashOutArray?.map((item, index) => (
@@ -329,6 +359,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
               <Text style={styles.sectionListData}>
                 {strings.management.usd}
                 {item.amount}
+                {'.00'}
               </Text>
             </View>
           ))}
@@ -340,6 +371,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             <Text style={styles.sectionListHeader}>
               {strings.management.totalCash}
               {sessionHistoryArray?.cash_balance}
+              {'.00'}
             </Text>
           </View>
           <Spacer space={SH(60)} />
@@ -347,15 +379,16 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             {strings.management.cashActivity}
           </Text>
           <Spacer space={SH(20)} />
-          {sessionHistoryArray?.drawer_activites?.map((item, index) => (
+          {reverseArray?.map((item, index) => (
             <View style={styles.cashActivityCon} key={index}>
               <View style={styles.displayFlex}>
                 <Text style={styles.cashActivityDarkText}>
                   {correctWay(item.transaction_type)}
                 </Text>
                 <Text style={styles.cashActivityDarkText}>
-                  -{strings.management.usd}
+                  {strings.management.usd}
                   {item.amount}
+                  {'.00'}
                 </Text>
               </View>
               {item.discrepency_amount === null ? null : (
@@ -366,6 +399,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                   <Text style={styles.cashActivityRedText}>
                     {strings.management.removeusd}
                     {item.discrepency_amount}
+                    {'.00'}
                   </Text>
                 </View>
               )}
@@ -379,7 +413,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 </Text>
                 <Text style={styles.cashActivityLightText}>
                   {moment(item.created_at).format(
-                    'dddd, MMMM Do YYYY | h:mm a'
+                    'dddd, MMMM Do YYYY | h:mm A'
                   )}
                 </Text>
               </View>

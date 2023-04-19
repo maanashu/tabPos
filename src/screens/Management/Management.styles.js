@@ -514,8 +514,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(20),
   },
   allienpic: {
-    width: SW(10),
-    height: SW(10),
+    width: SW(6),
+    height: SW(6),
     borderRadius:50,
     resizeMode: 'contain',
   },

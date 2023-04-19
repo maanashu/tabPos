@@ -44,20 +44,16 @@ import moment from 'moment';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CashtrackingTypes';
 import { digits } from '@/utils/validators';
-import { log } from 'react-native-reanimated';
 import { FlatList } from 'react-native';
-
-
 
 export function Management() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const drawerData = useSelector(getCashTracking);
-  const sessionHistoryArray = drawerData?.getSessionHistory;
+  const sessionHistoryArray = drawerData?.getSessionHistory ?? [];
   const drawerActivity = drawerData?.getDrawerSession?.drawer_activites;
   const historyById = drawerData?.getDrawerSessionById?.[0];
-  console.log('historyById',historyById);
   const [addCash, setAddCash] = useState(false);
   const [cashSummary, setCashSummary] = useState('');
   const [saveSession, setSaveSession] = useState('');
@@ -97,60 +93,61 @@ export function Management() {
     cashBalance: drawerData?.getDrawerSession?.cash_balance ?? '0',
     createDate: drawerData?.getDrawerSession?.created_at,
   };
- 
 
   const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
-  console.log('countThird', countThird);
-  const discrepancy = SessionData?.cashBalance -  countFirst;
-  
-  const [selectFirst, setSelectFirst] =  useState(false);
-  const [selectSecond, setSelectSecond] =  useState(false);
+
+  const discrepancy = SessionData?.cashBalance - countFirst;
 
   const [endBalance, setEndBalance] = useState();
-  console.log('endBalance', endBalance);
-  const[leaveId,setLeaveId] = useState(1);
-  // console.log('endBalance', endBalance);
-  const [leaveDatas,setLeaveData] =  useState('0');
-  console.log('leaveDatas',leaveDatas);
 
+  const [leaveId, setLeaveId] = useState(1);
+
+  const [leaveDatas, setLeaveData] = useState('0');
+  const [clickAmount, setClickAmount] = useState();
+
+  const setLeavFun = countThird => {
+    if (countThird) {
+      setLeaveId(null);
+    } else {
+      setLeaveId(1);
+    }
+  };
 
   const leaveData = [
     {
-      id :1,
-      "title":0
+      id: 1,
+      title: 0,
     },
     {
-     id :2,
-     "title":SessionData?.cashBalance
-   }
- ];
+      id: 2,
+      title: SessionData?.cashBalance,
+    },
+  ];
 
- const Item = ({item, onPress, borderColor, color}) => (
-<TouchableOpacity
-onPress={onPress}
-style={[styles.selectAmountCon, {borderColor}]}>
-<Text
-  style={[styles.cashDrawerText, {color}]}>
-  ${item.title}
-</Text>
-</TouchableOpacity>
-);
-
- const leaveDataItem = ({item}) => {
-  const borderColor = item.id === leaveId ? COLORS.primary : COLORS.solidGrey;
-  const color = item.id === leaveId ? COLORS.primary : COLORS.solid_grey
-
-  return (
-    <Item
-      item={item}
-      onPress={() => (setLeaveId(item.id), setLeaveData(item?.title)) }
-      borderColor={borderColor}
-      color={color}
-    />
+  const Item = ({ item, onPress, borderColor, color }) => (
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.selectAmountCon, { borderColor }]}
+    >
+      <Text style={[styles.cashDrawerText, { color }]}>${item.title}</Text>
+    </TouchableOpacity>
   );
-};
-  
+
+  const leaveDataItem = ({ item }) => {
+    const borderColor = item.id === leaveId ? COLORS.primary : COLORS.solidGrey;
+    const color = item.id === leaveId ? COLORS.primary : COLORS.solid_grey;
+
+    return (
+      <Item
+        item={item}
+        onPress={() => (setLeaveId(item.id), setLeaveData(item?.title))}
+        borderColor={borderColor}
+        color={color}
+      />
+    );
+  };
+
   const drawerSessLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_DRAWER_SESSION], state)
   );
@@ -163,21 +160,22 @@ style={[styles.selectAmountCon, {borderColor}]}>
   const oneHistoryLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_SESSION_BYID], state)
   );
-
-
+  const addRemoveLoad = useSelector(state =>
+    isLoadingSelector([TYPES.TRACK_SESSION_SAVE], state)
+  );
 
   useEffect(() => {
     dispatch(getDrawerSession());
   }, []);
 
-  const startTrackingSesHandler = () => {
+  const startTrackingSesHandler = async () => {
     if (!amountCount) {
       alert('Please Enter Amount');
     } else if (amountCount && digits.test(amountCount) === false) {
       alert('Please enter valid amount');
     } else if (amountCount <= 0) {
       alert('Please enter valid amount');
-    }else {
+    } else {
       const data = {
         drawerId: SessionData?.id,
         amount: amountCount,
@@ -185,20 +183,23 @@ style={[styles.selectAmountCon, {borderColor}]}>
         transactionType: 'start_tracking_session',
         modeOfcash: 'cash_in',
       };
-      dispatch(trackSessionSave(data));
-      setTrackingSession(false);
-      setSaveSession('save');
-      clearInput();
+      const res = await dispatch(trackSessionSave(data));
+      if (res) {
+        dispatch(getDrawerSession());
+        setTrackingSession(false);
+        setSaveSession('save');
+        clearInput();
+      }
     }
   };
-  const addCashHandler = () => {
+  const addCashHandler = async () => {
     if (!addCashInput) {
       alert('Please Enter Amount');
     } else if (addCashInput && digits.test(addCashInput) === false) {
       alert('Please enter valid amount');
     } else if (addCashInput <= 0) {
       alert('Please enter valid amount');
-    }  else if (!addCashDropDown) {
+    } else if (!addCashDropDown) {
       alert('Please Select Transaction type');
     } else {
       const data = differentState
@@ -216,59 +217,49 @@ style={[styles.selectAmountCon, {borderColor}]}>
             transactionType: addCashDropDown,
             modeOfcash: 'cash_out',
           };
-      dispatch(trackSessionSave(data));
-      setAddCash(false);
-      clearInput();
+      const res = await dispatch(trackSessionSave(data));
+      if (res) {
+        dispatch(getDrawerSession());
+        setAddCash(false);
+        clearInput();
+      }
     }
   };
 
   const countCashFirst = () => {
-     if (countFirst && digits.test(countFirst) === false) {
+    if (countFirst && digits.test(countFirst) === false) {
       alert('Please enter valid amount');
     } else if (countFirst <= 0) {
       alert('Please enter valid amount');
     } else {
-      setEndSession(false), setCashSummary(true)
+      setEndSession(false), setCashSummary(true);
     }
-  };
-
-  const firstClickHandler = () => {
-      setSelectFirst(!selectFirst)
-  };
-
-  const secondClickHandler = () => {
-    setSelectSecond(!selectSecond)
-    
   };
 
   const endTrackingHandler = async () => {
-    const data =
-     countThird
-     ?
-    {
-      amount : parseInt(countThird),
-      drawerId: SessionData?.id,
-         transactionType: 'end_tracking_session',
-        modeOfcash: 'cash_out',
-    }
-    :
-    {
-      amount : leaveDatas,
-      drawerId: SessionData?.id,
-       transactionType: 'end_tracking_session',
+    const data = countThird
+      ? {
+          amount: parseInt(countThird),
+          drawerId: SessionData?.id,
+          transactionType: 'end_tracking_session',
           modeOfcash: 'cash_out',
-    }
+        }
+      : {
+          amount: leaveDatas,
+          drawerId: SessionData?.id,
+          transactionType: 'end_tracking_session',
+          modeOfcash: 'cash_out',
+        };
 
-    console.log('data', data);
-    const res =  await dispatch(endTrackingSession(data))
-    if (res){
-      dispatch(getDrawerSession())
+    const res = await dispatch(endTrackingSession(data));
+    setClickAmount(data?.amount);
+    if (res) {
+      dispatch(getDrawerSession());
       // setLeaveData('')
+      setEndBalance(res?.payload?.getSessionHistory?.payload);
+      setEndSelectAmount(false), setRemoveUsd(true);
     }
-      setEndBalance(res?.payload?.getSessionHistory?.payload)
-     setEndSelectAmount(false),
-     setRemoveUsd(true)
-  }
+  };
 
   const clearInput = () => {
     setAmountCount('');
@@ -283,11 +274,12 @@ style={[styles.selectAmountCon, {borderColor}]}>
     setSessionHistory(false), setSummaryHistory(true);
   };
   const emailButtonHandler = () => {
-    setSummaryHistory(false),
-      setViewSession(false),
-      contentFunction(),
-      setNewTrackingSession(true);
-    setHistoryHeader(false);
+    alert('coming soon');
+    // setSummaryHistory(false),
+    //   setViewSession(false),
+    //   contentFunction(),
+    //   setNewTrackingSession(true);
+    // setHistoryHeader(false);
   };
 
   const customHeader = () => {
@@ -296,7 +288,6 @@ style={[styles.selectAmountCon, {borderColor}]}>
         {sessionHistory || viewSession ? (
           <TouchableOpacity
             style={styles.backButtonCon}
-
             onPress={() => {
               viewSession ? setViewSession(false) : setSessionHistory(false);
             }}
@@ -541,7 +532,7 @@ style={[styles.selectAmountCon, {borderColor}]}>
                   placeholderTextColor={COLORS.solid_grey}
                   value={countFirst}
                   onChangeText={setCountFirst}
-                  keyboardType='number-pad'
+                  keyboardType="number-pad"
                 />
               </View>
               <Spacer space={SH(60)} />
@@ -591,22 +582,41 @@ style={[styles.selectAmountCon, {borderColor}]}>
                 <Text style={styles.amountExpect}>
                   {strings.management.amountexpect}
                 </Text>
-                <Text style={styles.amountExpect}>{'USD $'}{SessionData?.cashBalance}</Text>
+                <Text style={styles.amountExpect}>
+                  {'USD $'}
+                  {SessionData?.cashBalance}
+                </Text>
               </View>
               <Spacer space={SH(25)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
                 <Text style={styles.amountExpect}>
                   {strings.management.amountCounted}
                 </Text>
-                <Text style={styles.amountExpect}>{'USD $'}{countFirst}</Text>
+                <Text style={styles.amountExpect}>
+                  {'USD $'}
+                  {countFirst}
+                </Text>
               </View>
 
               <Spacer space={SH(25)} />
-              <View style={[styles.displayFlex, { alignItems: 'flex-start'}]}>
-                <Text style={[styles.amountExpect ,{color: discrepancy < 0 ?  COLORS.red : COLORS.dark_grey }]}>
+              <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
+                <Text
+                  style={[
+                    styles.amountExpect,
+                    { color: discrepancy < 0 ? COLORS.red : COLORS.dark_grey },
+                  ]}
+                >
                   {strings.management.discrepancy}
                 </Text>
-                <Text style={[styles.amountExpect ,{ color: discrepancy < 0 ?  COLORS.red : COLORS.dark_grey }]}>{'USD $'}{discrepancy}</Text>
+                <Text
+                  style={[
+                    styles.amountExpect,
+                    { color: discrepancy < 0 ? COLORS.red : COLORS.dark_grey },
+                  ]}
+                >
+                  {discrepancy < 0 ? '-' : null} {'USD'} $
+                  {discrepancy < 0 ? Math.abs(discrepancy) : discrepancy}
+                </Text>
               </View>
             </View>
             <View style={{ flex: 1 }} />
@@ -615,8 +625,8 @@ style={[styles.selectAmountCon, {borderColor}]}>
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
               onPress={() => {
-                setCashSummary(false), setEndSelectAmount(true)
-                 setCountThird('')
+                setCashSummary(false), setEndSelectAmount(true);
+                setCountThird(''), setLeaveId(1), setLeaveData('0');
               }}
             />
           </View>
@@ -660,74 +670,6 @@ style={[styles.selectAmountCon, {borderColor}]}>
                 keyExtractor={item => item.id}
                 horizontal
               />
-             
-              {/* <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelectAmount('0');
-                  }}
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: SW(45),
-                    height: SH(50),
-                    borderWidth: 1,
-                    borderColor:
-                      selectAmount === '0'
-                        ? COLORS.primary
-                        : COLORS.solidGrey,
-                    borderRadius: 5,
-                  }}
-                >
-                  <Text
-                    style={[
-                      styles.cashDrawerText,
-                      {
-                        color:
-                          selectAmount === '0'
-                            ? COLORS.primary
-                            : COLORS.solid_grey,
-                      },
-                    ]}
-                  >
-                    {'$'}{'0'}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelectAmount(SessionData?.cashBalance);
-                  }}
-                  style={{
-                    left: 10,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: SW(45),
-                    height: SH(50),
-                    borderWidth: 1,
-                    borderColor:
-                      selectAmount === SessionData?.cashBalance
-                        ? COLORS.primary
-                        : COLORS.solidGrey,
-                    borderRadius: 5,
-                  }}
-                >
-                  <Text
-                    style={[
-                      styles.cashDrawerText,
-                      {
-                        color:
-                          selectAmount === 'second'
-                            ? COLORS.primary
-                            : COLORS.solid_grey,
-                      },
-                    ]}
-                  >
-                    {'$'}{SessionData?.cashBalance}
-                  </Text>
-                </TouchableOpacity>
-              </View> */}
-
               <Spacer space={SH(20)} />
               <View>
                 <Text style={styles.amountCountedText}>
@@ -738,9 +680,10 @@ style={[styles.selectAmountCon, {borderColor}]}>
                   placeholder={strings.management.amount}
                   placeholderTextColor={COLORS.solid_grey}
                   value={countThird}
-                  onChangeText={setCountThird}
-                  keyboardType='numeric'
-                  // editable={false}
+                  onChangeText={countThird => (
+                    setCountThird(countThird), setLeavFun(countThird)
+                  )}
+                  keyboardType="numeric"
                 />
               </View>
             </View>
@@ -770,7 +713,9 @@ style={[styles.selectAmountCon, {borderColor}]}>
               //   setRemoveUsd(false), setEndSelectAmount(true);
               // }}
               onPress={() => {
-                setRemoveUsd(false), setViewSession(false), dispatch(getDrawerSession())
+                setRemoveUsd(false),
+                  setViewSession(false),
+                  dispatch(getDrawerSession());
               }}
               style={{ width: SW(10) }}
             >
@@ -781,11 +726,11 @@ style={[styles.selectAmountCon, {borderColor}]}>
             <Spacer space={SH(60)} />
             <View>
               <Text style={styles.removerDarkText}>
-                Remove USD $ {SessionData?.cashBalance} from drawer
+                Remove USD $ {clickAmount ?? '0'} from drawer
               </Text>
               <Spacer space={SH(21)} />
               <Text style={styles.removerDarkTextRegular}>
-                Amount left in drawer: USD ${endBalance?.amount} 
+                Amount left in drawer: USD ${endBalance?.amount}
               </Text>
             </View>
             <View style={{ flex: 1 }} />
@@ -794,8 +739,8 @@ style={[styles.selectAmountCon, {borderColor}]}>
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={'Done'}
               onPress={() => {
-                 dispatch(getDrawerSessionById(endBalance?.drawer_id))
-                  setRemoveUsd(false),
+                dispatch(getDrawerSessionById(endBalance?.drawer_id));
+                setRemoveUsd(false),
                   setEndSession(false),
                   setCashSummary(''),
                   setSummaryHistory(true),
@@ -839,7 +784,8 @@ style={[styles.selectAmountCon, {borderColor}]}>
                   style={styles.backButtonCon}
                   onPress={() => {
                     setSummaryHistory(false), setViewSession(false);
-                    setHistoryHeader(false); dispatch(getDrawerSession()) 
+                    setHistoryHeader(false);
+                    dispatch(getDrawerSession());
                   }}
                 >
                   <Image source={backArrow} style={styles.backButtonArrow} />
@@ -870,7 +816,7 @@ style={[styles.selectAmountCon, {borderColor}]}>
                     <Text
                       style={[styles.summaryText, { color: COLORS.primary }]}
                     >
-                      {strings.management.date}
+                      {moment(historyById?.created_at).format('LL')}
                     </Text>
                   </Text>
                 ) : (
@@ -879,7 +825,7 @@ style={[styles.selectAmountCon, {borderColor}]}>
                     <Text
                       style={[styles.summaryText, { color: COLORS.primary }]}
                     >
-                    {moment(userHistory?.created_at).format('LL')}
+                      {moment(userHistory?.created_at).format('LL')}
                     </Text>
                   </Text>
                 )}
@@ -893,7 +839,9 @@ style={[styles.selectAmountCon, {borderColor}]}>
           <SummaryHistory
             historyHeader={historyHeader}
             // sessionHistoryArray={userHistory}
-            sessionHistoryArray ={historyHeader === true ? historyById : userHistory}
+            sessionHistoryArray={
+              historyHeader === true ? historyById : userHistory
+            }
 
             // emailButtonHandler={emailButtonHandler}
           />
@@ -1074,7 +1022,7 @@ style={[styles.selectAmountCon, {borderColor}]}>
     } else {
       return (
         <View>
-          { drawerActivity?.length === 0  ? (
+          {drawerActivity?.length === 0 ? (
             <View style={styles.cashDrawerView}>
               <View>
                 <Text style={styles.cashDrawerText}>

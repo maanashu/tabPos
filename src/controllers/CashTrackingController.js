@@ -77,20 +77,32 @@ export class CashTrackingController {
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
-            text2: error.msg,
-            visibilityTime: 2000,
-          });
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   text2: error.msg,
+          //   visibilityTime: 2000,
+          // });
+          alert(error.msg)
           reject(error.msg);
         });
     });
   };
-  static async getSessionHistory() {
+  static async getSessionHistory(dateformat) {
+    const urlAccDate = (dateformat) => {
+       if(dateformat){
+         return(
+          USER_URL + ApiUserInventory.getSessionHistory + `?filter_date=${dateformat}`
+         )
+       }else {
+        return(
+          USER_URL + ApiUserInventory.getSessionHistory
+        )
+       }
+    }
     return new Promise((resolve, reject) => {
-      const endpoint =
-      USER_URL + ApiUserInventory.getSessionHistory;
+      const endpoint = urlAccDate(dateformat);
+     
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -118,7 +130,6 @@ export class CashTrackingController {
         transaction_type: data.transactionType,
         mode_of_cash :data.modeOfcash
       }
-      console.log('body',body);
       HttpClient.post(endpoint, body)
         .then(response => {
           
@@ -131,7 +142,7 @@ export class CashTrackingController {
             text2: error.msg,
             visibilityTime: 2000,
           });
-          console.log('222222222',error.msg )
+          alert(error.msg)
           reject(error.msg);
         });
     });
@@ -141,7 +152,6 @@ export class CashTrackingController {
     return new Promise((resolve, reject) => {
       const endpoint =
       USER_URL + ApiUserInventory.getSessionHistory + `?drawer_id=${status}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
