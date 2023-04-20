@@ -51,7 +51,7 @@ export function Management() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const drawerData = useSelector(getCashTracking);
-  const sessionHistoryArray = drawerData?.getSessionHistory ?? [];
+  const [sessionHistoryArray, setSessionHistoryArray] = useState(drawerData?.getSessionHistory ?? []);
   const drawerActivity = drawerData?.getDrawerSession?.drawer_activites;
   const historyById = drawerData?.getDrawerSessionById?.[0];
   const [addCash, setAddCash] = useState(false);
@@ -166,7 +166,10 @@ export function Management() {
 
   useEffect(() => {
     dispatch(getDrawerSession());
-  }, []);
+    if(drawerData?.getSessionHistory){
+      setSessionHistoryArray(drawerData?.getSessionHistory)
+    }
+  }, [drawerData?.getSessionHistory]);
 
   const startTrackingSesHandler = async () => {
     if (!amountCount) {
@@ -772,6 +775,7 @@ export function Management() {
           tableDataArray={sessionHistoryArray}
           sessionHistoryLoad={sessionHistoryLoad}
           oneItemSend={setUserHistory}
+          setSessionHistoryArray={setSessionHistoryArray}
         />
       );
     } else if (summaryHistory) {

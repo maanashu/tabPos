@@ -38,6 +38,7 @@ export function SessionHistoryTable({
   tableDataArray,
   sessionHistoryLoad,
   oneItemSend,
+  setSessionHistoryArray
 }) {
   const dispatch = useDispatch();
   const [date, setDate] = useState(new Date());
@@ -45,11 +46,9 @@ export function SessionHistoryTable({
   const [show, setShow] = useState(false);
 
   const onChangeDate = selectedDate => {
+    setSessionHistoryArray([])
     const currentDate = moment().format('MM/DD/YYYY');
     const selected = moment(selectedDate).format('MM/DD/YYYY');
-    //  else if (dateformat){
-    //   dispatch(getSessionHistory(dateformat))
-    // }
     setShow(false);
     const month = selectedDate.getMonth() + 1;
     const selectedMonth = month < 10 ? '0' + month : month;
@@ -60,20 +59,19 @@ export function SessionHistoryTable({
     const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
     setDateformat(newDateFormat);
     setDate(fullDate);
+    if(newDateFormat){
+      dispatch(getSessionHistory(newDateFormat))
+    }
   };
   const onCancelFun = () => {
     setShow(false);
     setDateformat('');
     setDate(new Date());
-    console.log('-----------', dateformat);
-    // if(dateformat){
-    //   dispatch(getSessionHistory(dateformat))
-    // }else{
-    //   dispatch(getSessionHistory())
-    // }
+    dispatch(getSessionHistory())
+   
   };
 
-  const tableDataArrayReverse = tableDataArray?.data?.reverse();
+  const tableDataArrayReverse = tableDataArray?.reverse();
 
   return (
     <View style={{ flex: 1 }}>
@@ -144,7 +142,14 @@ export function SessionHistoryTable({
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
-              ) : (
+              ) :
+              tableDataArrayReverse?.length === 0
+              ?
+              <View style={{ marginTop: 80 }}>
+              <Text style={styles.userNotFound}>History not found</Text>
+              </View>
+              :
+                (
                 tableDataArrayReverse?.map((item, index) => (
                   <TouchableOpacity
                     style={styles.tableDataCon}

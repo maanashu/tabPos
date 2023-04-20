@@ -30,6 +30,9 @@ export function CategoryProductDetail({
   sku,
   productName,
   productDes,
+  barCode,
+  unitWeight,
+  unitType
 }) {
   return (
     <View style={styles.productModCon2}>
@@ -101,12 +104,13 @@ export function CategoryProductDetail({
               </Text>
               <Spacer space={SH(5)} />
               <Text
+              numberOfLines={1}
                 style={[
                   styles.detailHeader,
                   { fontSize: SF(20), fontFamily: Fonts.SemiBold },
                 ]}
               >
-                0
+                {unitType}
               </Text>
               <Spacer space={SH(8)} />
             </View>
@@ -122,7 +126,7 @@ export function CategoryProductDetail({
                   { fontSize: SF(20), fontFamily: Fonts.SemiBold },
                 ]}
               >
-                0
+                {unitWeight}
               </Text>
               <Spacer space={SH(8)} />
             </View>
@@ -156,7 +160,7 @@ export function CategoryProductDetail({
                   { fontSize: SF(20), fontFamily: Fonts.SemiBold },
                 ]}
               >
-                0
+                {barCode}
               </Text>
               <Spacer space={SH(8)} />
             </View>

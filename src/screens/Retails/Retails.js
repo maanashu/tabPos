@@ -95,6 +95,7 @@ export function Retails() {
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.getProfile?.unique_uuid;
+  console.log('sellerID', sellerID);
   const array = getRetailData?.categories;
   const walletData = getRetailData?.getWallet;
   const subCategoriesArray = getRetailData?.subCategories ?? [];
@@ -125,6 +126,7 @@ export function Retails() {
   const [cityModalOpen, setCityModelOpen] = useState(false);
   const [cityModalValue, setCityModalValue] = useState(null);
   const [productArray, setProductArray] = useState(products ?? []);
+
   const [serProductArrayj, setSerProductArrayj] = useState(
     serProductArray ?? []
   );
@@ -154,10 +156,13 @@ export function Retails() {
   const [searchProDetail, setSearchProDetail] = useState(false);
   const [searchProViewDetail, setSearchProViewDetail] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+
   const [subSelectedId, setSubSelectedId] = useState(null);
+
   const [brandSelectedId, setBrandSelectedId] = useState(null);
 
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
+  console.log('addRemoveSelectedId', addRemoveSelectedId);
   const [searchSelectedId, setSearchSelectedId] = useState(null);
   const [tipSelectId, setTipsSelected] = useState();
   const [amountSelectId, setAmountSelectId] = useState();
@@ -182,6 +187,7 @@ export function Retails() {
   const [value, setValue] = useState('');
   const cartIDdiscount = JSON.stringify(cartID2);
   const bunndleProArray = getRetailData?.productbunList ?? [];
+
   const [data, setData] = useState(serProductArray ?? []);
   const [refresh, setRefresh] = useState('');
   const [itemIndex, setItemIndex] = useState();
@@ -192,6 +198,11 @@ export function Retails() {
   const [productModal, setProductModal] = useState(false);
   const [productViewDetail, setProductViewDetail] = useState(false);
   const [productData, setProductData] = useState();
+  const bunndleProArray2 = productData?.supplies[0]?.supply_prices;
+  const bunndleProFinal = bunndleProArray2?.filter(
+    item => item.price_type === 'quantity_base'
+  );
+
   const [openScanner, setOpenScanner] = useState(false);
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
@@ -208,10 +219,10 @@ export function Retails() {
   const recevAmount = amountPer / 100;
   const recevAmountDec = recevAmount;
   const finalReceviedAmount = getCartAmount?.total_amount + recevAmountDec;
-  const [tipsData, setTipsData] = useState(); 
+  const [tipsData, setTipsData] = useState();
   const [amountCheck, setAmountCheck] = useState(false);
   const [percentageCheck, setPercentageCheck] = useState(false);
-    const [discountCheck, setDiscountCheck] = useState(false);
+  const [discountCheck, setDiscountCheck] = useState(false);
   const tipData = [
     {
       percentage: getTips?.first_tips ?? 0,
@@ -265,7 +276,6 @@ export function Retails() {
       setSerPro(serPro - 1);
     }
   };
- 
 
   useEffect(() => {
     if (productData?.qty) {
@@ -545,14 +555,16 @@ export function Retails() {
     setPosSearch(false);
     setSearchProViewDetail(false);
   };
-  const addToCartCatPro = (id, service_id) => {
+  const addToCartCatPro = productData => {
     const data = {
       seller_id: sellerID,
-      product_id: id,
-      service_id: service_id,
+      product_id: productData?.id,
+      service_id: productData?.service_id,
       qty: serPro,
-      bundleId: addRemoveSelectedId,
+      supplyId : productData?.supplies[0]?.id,
+      supplyPriceid : productData?.supplies[0]?.supply_prices[0]?.id
     };
+    console.log('data', data);
     dispatch(addTocart(data));
     setProductModal(false);
   };
@@ -595,14 +607,14 @@ export function Retails() {
   };
 
   const saveDiscountHandler1 = () => {
-    if(amountCheck){
-     setAmountCheck(false)
-    }else if(percentageCheck) {
-     setPercentageCheck(false)
-    }else if (discountCheck){
-     setDiscountCheck(false)
+    if (amountCheck) {
+      setAmountCheck(false);
+    } else if (percentageCheck) {
+      setPercentageCheck(false);
+    } else if (discountCheck) {
+      setDiscountCheck(false);
     }
-   }
+  };
 
   const saveDiscountHandler = () => {
     if (!cartIDdiscount) {
@@ -656,13 +668,13 @@ export function Retails() {
     setDiscountCode('');
     setValue('');
     setDescriptionDis('');
-      if(amountCheck){
-      setAmountCheck(false)
-     }else if(percentageCheck) {
-      setPercentageCheck(false)
-     }else if (discountCheck){
-      setDiscountCheck(false)
-     }
+    if (amountCheck) {
+      setAmountCheck(false);
+    } else if (percentageCheck) {
+      setPercentageCheck(false);
+    } else if (discountCheck) {
+      setDiscountCheck(false);
+    }
   };
 
   const ProductHandler = (item, id) => {
@@ -717,7 +729,7 @@ export function Retails() {
   };
   const amountRemoveHandler = () => {
     setAmountPopup(false);
-    setCityModelOpen(false)
+    setCityModelOpen(false);
   };
   const moreActionHandler = () => {
     if (totalCart === '0') {
@@ -916,7 +928,7 @@ export function Retails() {
     </TouchableOpacity>
   );
 
-  const categoryItem = ({ item }) => { 
+  const categoryItem = ({ item }) => {
     const backgroundColor =
       item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
     const borderColor = item.id === selectedId ? COLORS.primary : COLORS.white;
@@ -1049,7 +1061,7 @@ export function Retails() {
     <ProductCard
       productName={item.name}
       productImage={{ uri: item.image }}
-      productPrice={item.price}
+      productPrice={item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
       ProductBrandName={item.brand.name}
       cartMinusOnPress={() => cartMinusOnPress(item.id, index)}
       cartPlusOnPress={() => cartPlusOnPress(item.id, index)}
@@ -1071,7 +1083,8 @@ export function Retails() {
       >
         <Text style={styles.buypackText}>
           Buy Pack{' '}
-          <Text style={{ fontFamily: Fonts.SemiBold }}>{item?.qty}</Text> for
+          <Text style={{ fontFamily: Fonts.SemiBold }}>{item?.min_qty}</Text>{' '}
+          for
         </Text>
         <View style={styles.displayFlex}>
           <Text
@@ -1080,7 +1093,7 @@ export function Retails() {
               { paddingHorizontal: moderateScale(15) },
             ]}
           >
-            {item?.price}
+            {item?.selling_price}
           </Text>
           <TouchableOpacity
             style={[styles.bundleAddCon, backgroundColor]}
@@ -1463,7 +1476,7 @@ export function Retails() {
               style={styles.crossButtonPosition}
             >
               <View style={styles.crossBtnCon}>
-              <Image source={crossButton} style={styles.crossButton} />
+                <Image source={crossButton} style={styles.crossButton} />
               </View>
             </TouchableOpacity>
           </View>
@@ -1524,7 +1537,7 @@ export function Retails() {
               style={styles.crossButtonPosition}
             >
               <View style={styles.crossBtnCon}>
-              <Image source={crossButton} style={styles.crossButton} />
+                <Image source={crossButton} style={styles.crossButton} />
               </View>
             </TouchableOpacity>
           </View>
@@ -2075,18 +2088,18 @@ export function Retails() {
                 {/* <Text style={styles.headerText}>
                   Amount: <Text style={{lineHeight:10}}>$</Text>{cartTotalAmount}
                 </Text> */}
-                <View style={{flexDirection:'row'}}>
-                   <Text style={styles.headerText}>Amount:</Text>
-                   <Text style={styles.headerTextDollar}> $</Text>
-                   <Text style={styles.headerText}>{cartTotalAmount}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.headerText}>Amount:</Text>
+                  <Text style={styles.headerTextDollar}> $</Text>
+                  <Text style={styles.headerText}>{cartTotalAmount}</Text>
                 </View>
                 <TouchableOpacity
                   onPress={amountRemoveHandler}
                   style={styles.crossButtonPosition}
                 >
-                 <View style={styles.crossBtnCon}>
-                 <Image source={crossButton} style={styles.crossButton} />
-                 </View>
+                  <View style={styles.crossBtnCon}>
+                    <Image source={crossButton} style={styles.crossButton} />
+                  </View>
                 </TouchableOpacity>
               </View>
               <Spacer space={SH(20)} />
@@ -2217,7 +2230,10 @@ export function Retails() {
                 <Text style={styles.moreActText}>
                   {strings.retail.moreAction}
                 </Text>
-                <TouchableOpacity onPress={moreActionCloseHandler} style={styles.crossBtnCon}>
+                <TouchableOpacity
+                  onPress={moreActionCloseHandler}
+                  style={styles.crossBtnCon}
+                >
                   <Image source={crossButton} style={styles.crossButtonStyle} />
                 </TouchableOpacity>
               </View>
@@ -2269,7 +2285,7 @@ export function Retails() {
               </View>
 
               <Spacer space={SH(30)} />
-             
+
               <AddDiscountToCart
                 amountDis={amountDis}
                 setAmountDis={setAmountDis}
@@ -2568,7 +2584,12 @@ export function Retails() {
                 <CategoryProductDetail
                   qty={serPro}
                   sku={productData?.sku}
-                  productPrice={productData?.price}
+                  barCode={productData?.barcode}
+                  unitType={productData?.type}
+                  unitWeight={productData?.weight}
+                  productPrice={
+                    productData?.supplies[0]?.supply_prices[0]?.selling_price
+                  }
                   proudctImage={{ uri: productData?.image }}
                   productDes={productData?.description}
                   productName={productData?.name}
@@ -2659,7 +2680,11 @@ export function Retails() {
                     <View style={styles.priceContainer}>
                       <Text style={styles.price}>{strings.retail.price}</Text>
                       <Text style={[styles.price, { fontSize: SF(18) }]}>
-                        ${productData?.price}
+                        $
+                        {
+                          productData?.supplies[0]?.supply_prices[0]
+                            ?.selling_price
+                        }
                       </Text>
                     </View>
                     <Spacer space={SH(25)} />
@@ -2686,7 +2711,7 @@ export function Retails() {
                       </Text>
                       <Spacer space={SH(10)} />
 
-                      <View>
+                      <View style={{ height: SH(200) }}>
                         {isBundleLoading ? (
                           <View style={{ marginTop: 10 }}>
                             <ActivityIndicator
@@ -2696,10 +2721,10 @@ export function Retails() {
                           </View>
                         ) : (
                           <FlatList
-                            data={bunndleProArray}
+                            data={bunndleProFinal}
                             renderItem={renderBundleItem}
                             keyExtractor={item => item.id}
-                            extraData={bunndleProArray}
+                            extraData={bunndleProFinal}
                             ListEmptyComponent={renderEmptyContainer}
                           />
                         )}
@@ -2710,12 +2735,7 @@ export function Retails() {
                     <View style={{ flex: 1 }} />
                     <TouchableOpacity
                       style={styles.addcartButtonStyle}
-                      onPress={() =>
-                        addToCartCatPro(
-                          productData?.id,
-                          productData?.service_id
-                        )
-                      }
+                      onPress={() => addToCartCatPro(productData)}
                     >
                       <Text style={styles.addToCartText}>
                         {strings.posSale.addToCart}

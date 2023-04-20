@@ -1,7 +1,13 @@
-export const USER_URL = 'https://stgapiuserservice.jobr.com/api/v1/';
+// export const USER_URL = 'https://stgapiuserservice.jobr.com/api/v1/';
 // export const SUPPORT_URL = 'https://apisupport.jobr.com/api/v1/';
-export const ORDER_URL = 'https://stgdapiorder.jobr.com:8024/api/v1/';
-export const PRODUCT_URL = 'https://stgapiproductmgmt.jobr.com/api/v1/';
+// export const ORDER_URL = 'https://stgdapiorder.jobr.com:8024/api/v1/';
+// export const PRODUCT_URL = 'https://stgapiproductmgmt.jobr.com/api/v1/';
+// export const WALLET_URL = 'https://stgbewalletmanagement.jobr.com/api/v1/'
+
+export const USER_URL = 'https://apiuserservice.jobr.com/api/v1/';
+// export const SUPPORT_URL = 'https://apisupport.jobr.com/api/v1/';
+export const ORDER_URL = 'https://apiorder.jobr.com:8004/api/v1/';
+export const PRODUCT_URL = 'https://apiproductmgmt.jobr.com/api/v1/';
 export const WALLET_URL = 'https://stgbewalletmanagement.jobr.com/api/v1/'
 
 export const ApiUserInventory = {
@@ -28,6 +34,7 @@ export const ApiProductInventory = {
 // }
 
 export const ApiOrderInventory = {
+    addTocart:'poscarts',
     getAllCart:'poscarts/user',
     clearAllCart:'poscarts',
     addNotes:'poscarts',

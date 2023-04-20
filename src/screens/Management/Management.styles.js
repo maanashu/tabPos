@@ -634,4 +634,10 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight:moderateScale(8)
   },
+  userNotFound: {
+    color: COLORS.primary,
+    fontFamily: Fonts.MaisonRegular,
+    fontSize: SF(20),
+    alignSelf: 'center',
+  },
 });

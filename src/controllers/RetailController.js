@@ -95,19 +95,19 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getProduct +
-          `?page=1&limit=10&seller_id=${sellerID}&category_ids=${selectedId}`
+          `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       } else if (selectedId && subSelectedId && sellerID && !brandSelectedId) {
         return (
           PRODUCT_URL +
           ApiProductInventory.getProduct +
-          `?page=1&limit=10&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+          `?app_name=pos&delivery_options=3&page=1&limit=10&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       } else if (selectedId && subSelectedId && brandSelectedId && sellerID) {
         return (
           PRODUCT_URL +
           ApiProductInventory.getProduct +
-          `?page=1&limit=10&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+          `?app_name=pos&delivery_options=3&page=1&limit=10&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       }
     };
@@ -118,6 +118,7 @@ export class RetailController {
         brandSelectedId,
         sellerID
       );
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -139,19 +140,19 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `?page=1&limit=10&seller_id=${sellerID}`;
+        `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${sellerID}`;
 
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            text2: 'def product error',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'def product error',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
@@ -247,24 +248,21 @@ export class RetailController {
 
   static async addTocart(data) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.clearAllCart;
-      const body = data.bundleId
-        ? {
-            seller_id: data.seller_id,
-            product_id: data.product_id,
-            service_id: data.service_id,
-            qty: data.qty ? data.qty : 0,
-            bundle_id: data.bundleId,
-          }
-        : {
-            seller_id: data.seller_id,
-            product_id: data.product_id,
-            service_id: data.service_id,
-            qty: data.qty,
-          };
+      const endpoint = ORDER_URL + ApiOrderInventory.addTocart;
+      const supplyID = data.supplyId.toString();
+      const supplyPriceID =  data.supplyPriceid.toString()
+      console.log('supplyID',supplyID);
+      const body = {
+        seller_id: data.seller_id,
+        service_id: data.service_id,
+        product_id: data.product_id,
+        qty: data.qty,
+        supply_id: supplyID,
+        supply_price_id: supplyPriceID,
+      };
       HttpClient.post(endpoint, body)
         .then(response => {
-          if (response?.status_code === 201) {
+          if (response?.msg === "PosCart created successfully") {
             Toast.show({
               position: 'bottom',
               type: 'success_toast',
@@ -389,7 +387,9 @@ export class RetailController {
   static async getUserDetail(customerPhoneNo) {
     return new Promise((resolve, reject) => {
       const endpoint =
-      WALLET_URL + ApiWalletInventory.getUserDetail + `?page=1&limit=10&search=${customerPhoneNo}`;
+        WALLET_URL +
+        ApiWalletInventory.getUserDetail +
+        `?page=1&limit=10&search=${customerPhoneNo}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -418,7 +418,7 @@ export class RetailController {
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.status_code === 200) {
-            alert('successfully send invitation on your email')
+            alert('successfully send invitation on your email');
           }
           resolve(response);
         })
@@ -439,14 +439,14 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
       const body = {
         cart_id: data.cartid,
-        user_id : data.userId,
-        shipping : "Pickup",
-        app_name : "Pos",
-        mode_of_payment : "cash"
+        user_id: data.userId,
+        shipping: 'Pickup',
+        app_name: 'Pos',
+        mode_of_payment: 'cash',
       };
       HttpClient.post(endpoint, body)
         .then(response => {
-          if (response?.msg === 'Order placed successfully!'){
+          if (response?.msg === 'Order placed successfully!') {
             Toast.show({
               position: 'bottom',
               type: 'success_toast',
@@ -480,39 +480,41 @@ export class RetailController {
           reject(error);
         });
     });
-  };
+  }
 
   static async walletGetByPhone(walletIdInp) {
     return new Promise((resolve, reject) => {
       const endpoint =
-      WALLET_URL + ApiWalletInventory.walletGetByPhone + `?search=${walletIdInp}`;
+        WALLET_URL +
+        ApiWalletInventory.walletGetByPhone +
+        `?search=${walletIdInp}`;
       HttpClient.get(endpoint)
-      .then(response => {
-         if(response?.msg === "api wallets found"){
-          alert('Wallet found successfully')
-         }
-        resolve(response);
-      })
-      .catch(error => {
-        if(error?.error === "emptyContent"){
-           alert('Wallet not found')
-        }
-        reject(error);
-      });
+        .then(response => {
+          if (response?.msg === 'api wallets found') {
+            alert('Wallet found successfully');
+          }
+          resolve(response);
+        })
+        .catch(error => {
+          if (error?.error === 'emptyContent') {
+            alert('Wallet not found');
+          }
+          reject(error);
+        });
     });
   }
 
   static async requestMoney(data) {
     return new Promise((resolve, reject) => {
-      const endpoint =  WALLET_URL + ApiWalletInventory.requestMoney;
+      const endpoint = WALLET_URL + ApiWalletInventory.requestMoney;
       const body = {
-        amount:data.amount,
-        reciever_address:data.wallletAdd
+        amount: data.amount,
+        reciever_address: data.wallletAdd,
       };
       HttpClient.post(endpoint, body)
         .then(response => {
-          if (response?.msg === "Payment request sent success!") {
-            alert('Payment request sent successfully!')
+          if (response?.msg === 'Payment request sent success!') {
+            alert('Payment request sent successfully!');
           }
           resolve(response);
         })
@@ -523,23 +525,22 @@ export class RetailController {
           //   text2: error.msg,
           //   visibilityTime: 2000,
           // });
-          alert(error)
+          alert(error);
           reject(error.msg);
         });
     });
-  };
+  }
 
   static async getTips(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-      ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;
       HttpClient.get(endpoint)
-      .then(response => {
-        resolve(response);
-      })
-      .catch(error => {
-        reject(error);
-      });
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
   }
 

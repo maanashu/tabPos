@@ -88,11 +88,11 @@ export class CashTrackingController {
         });
     });
   };
-  static async getSessionHistory(dateformat) {
-    const urlAccDate = (dateformat) => {
-       if(dateformat){
+  static async getSessionHistory(newDateFormat) {
+    const urlAccDate = (newDateFormat) => {
+       if(newDateFormat){
          return(
-          USER_URL + ApiUserInventory.getSessionHistory + `?filter_date=${dateformat}`
+          USER_URL + ApiUserInventory.getSessionHistory + `?filter_date=${newDateFormat}`
          )
        }else {
         return(
@@ -101,20 +101,21 @@ export class CashTrackingController {
        }
     }
     return new Promise((resolve, reject) => {
-      const endpoint = urlAccDate(dateformat);
-     
+      const endpoint = urlAccDate(newDateFormat);
+       console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
+         
           Toast.show({
-            text2: error.msg,
+            text2: 'History not found',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   };
