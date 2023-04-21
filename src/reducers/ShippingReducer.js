@@ -13,7 +13,6 @@ const INITIALSTATE = {
 };
 
 export const shippingReducer = (state = {INITIALSTATE}, { payload, type }) => {
-  // console.log('payload',payload);
   switch (type) {
     case TYPES.GET_ORDER_COUNT_SUCCESS:
       return {

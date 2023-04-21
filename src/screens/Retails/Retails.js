@@ -95,7 +95,6 @@ export function Retails() {
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.getProfile?.unique_uuid;
-  console.log('sellerID', sellerID);
   const array = getRetailData?.categories;
   const walletData = getRetailData?.getWallet;
   const subCategoriesArray = getRetailData?.subCategories ?? [];
@@ -105,6 +104,7 @@ export function Retails() {
   const serProductArray = getRetailData?.SeaProductList;
   const allCartArray = getRetailData?.getAllCart?.poscart_products;
   const cartProductServiceId = getRetailData?.getAllCart?.service_id;
+
   const cartUpperdat = getRetailData?.getAllCart;
   const cartID2 = getRetailData?.getAllCart?.id;
   const getCartAmount = getRetailData?.getAllCart?.amount;
@@ -126,7 +126,6 @@ export function Retails() {
   const [cityModalOpen, setCityModelOpen] = useState(false);
   const [cityModalValue, setCityModalValue] = useState(null);
   const [productArray, setProductArray] = useState(products ?? []);
-
   const [serProductArrayj, setSerProductArrayj] = useState(
     serProductArray ?? []
   );
@@ -162,7 +161,6 @@ export function Retails() {
   const [brandSelectedId, setBrandSelectedId] = useState(null);
 
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
-  console.log('addRemoveSelectedId', addRemoveSelectedId);
   const [searchSelectedId, setSearchSelectedId] = useState(null);
   const [tipSelectId, setTipsSelected] = useState();
   const [amountSelectId, setAmountSelectId] = useState();
@@ -181,7 +179,7 @@ export function Retails() {
   const [cartData, setCartData] = useState();
 
   const cartId = cartData?.cart_id;
-  const productId = cartData?.product_id;
+  const productId = cartData?.id;
   const cartTotalAmount = getCartAmount?.total_amount;
   const [notes, setNotes] = useState('');
   const [value, setValue] = useState('');
@@ -223,6 +221,9 @@ export function Retails() {
   const [amountCheck, setAmountCheck] = useState(false);
   const [percentageCheck, setPercentageCheck] = useState(false);
   const [discountCheck, setDiscountCheck] = useState(false);
+  const [handlerTrue, setHandlerTrue] = useState(false);
+  const [modeOfPay, setModeOfPay] =  useState("");
+
   const tipData = [
     {
       percentage: getTips?.first_tips ?? 0,
@@ -487,6 +488,9 @@ export function Retails() {
   const isGetCartLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ALL_CART], state)
   );
+  const isAddCartLoading = useSelector(state =>
+    isLoadingSelector([TYPES.ADDCART], state)
+  );
   const isBundleLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_BUNDLEOFFER], state)
   );
@@ -507,6 +511,9 @@ export function Retails() {
   );
   const userDetalLoader = useSelector(state =>
     isLoadingSelector([TYPES.GET_USERDETAIL], state)
+  );
+  const clearOneCartLoader = useSelector(state =>
+    isLoadingSelector([TYPES.GET_CLEAR_ONE_CART], state)
   );
 
   const clearCartHandler = () => {
@@ -542,18 +549,30 @@ export function Retails() {
     setAmountPopup(false);
   };
 
-  const addToCartHandler = (id, service_id, serProductCount2, proCount) => {
+  const addToCartHandler = (item, serProductCount2) => {
     setAddRemoveSelectedId(null);
-    const data = {
-      seller_id: sellerID,
-      product_id: id,
-      service_id: service_id,
-      qty: proCount ? proCount : serProductCount2,
-      bundleId: addRemoveSelectedId,
-    };
+    const data = handlerTrue
+      ? {
+          seller_id: sellerID,
+          product_id: selectedData?.id,
+          qty: proCount === undefined ? 0 : proCount,
+          service_id: selectedData.service_id,
+          supplyId: selectedData?.supplies?.[0]?.id,
+          supplyPriceid: selectedData?.supplies?.[0]?.supply_prices[0]?.id,
+        }
+      : {
+          seller_id: sellerID,
+          product_id: item.id,
+          qty: proCount === undefined ? 0 : proCount,
+          service_id: item.service_id,
+          supplyId: item?.supplies?.[0]?.id,
+          supplyPriceid: item?.supplies?.[0]?.supply_prices[0]?.id,
+        };
+
     dispatch(addTocart(data));
     setPosSearch(false);
     setSearchProViewDetail(false);
+    setHandlerTrue(false);
   };
   const addToCartCatPro = productData => {
     const data = {
@@ -561,10 +580,9 @@ export function Retails() {
       product_id: productData?.id,
       service_id: productData?.service_id,
       qty: serPro,
-      supplyId : productData?.supplies[0]?.id,
-      supplyPriceid : productData?.supplies[0]?.supply_prices[0]?.id
+      supplyId: productData?.supplies?.[0]?.id,
+      supplyPriceid: productData?.supplies?.[0]?.supply_prices[0]?.id,
     };
-    console.log('data', data);
     dispatch(addTocart(data));
     setProductModal(false);
   };
@@ -572,10 +590,11 @@ export function Retails() {
   const updateToCart = ({ cartProductServiceId, count }) => {
     const data = {
       seller_id: sellerID,
-      product_id: productId,
-      service_id: cartProductServiceId,
+      product_id: cartData?.product_id,
+      service_id: parseInt(cartProductServiceId),
       qty: count,
-      bundleId: addRemoveSelectedId,
+      supplyId: cartData?.supply_id,
+      supplyPriceid: cartData?.supply_price_id,
     };
     dispatch(addTocart(data));
     setAmountPopup(false);
@@ -695,13 +714,15 @@ export function Retails() {
       const data = {
         cartid: cartIDdiscount,
         userId: customer?.user_id,
+        modeOfPayment : modeOfPay
+       
       };
       dispatch(createOrder(data));
       setListofItem(false);
       setCheckoutCon(false);
       setCustomerPhoneNo(''),
-        setSendInventer(false),
-        dispatch(getUserDetailSuccess([]));
+      setSendInventer(false),
+      dispatch(getUserDetailSuccess([]));
     }
   };
 
@@ -784,17 +805,20 @@ export function Retails() {
     setCashChoose(false);
     setCardChoose(false);
     dispatch(getWalletId(sellerID));
+    setModeOfPay("jbr")
   };
   const cashChooseHandler = () => {
     setCashChoose(true);
     setJbrCoin(false);
     setCardChoose(false);
     setCustCash(!custCash);
+    setModeOfPay("cash")
   };
   const cardChooseHandler = () => {
     setCardChoose(!cardChoose);
     setCashChoose(false);
     setJbrCoin(false);
+    setModeOfPay("card")
   };
   const cusCashPaidHandler = () => {
     setCutsomerTotalAmount(false);
@@ -1156,10 +1180,12 @@ export function Retails() {
           </View>
         </View>
         <View style={{ alignItems: 'flex-end' }}>
-          <Text style={styles.marbolorRedStyle}>${item.price}</Text>
+          <Text style={styles.marbolorRedStyle}>
+            ${item.supplies[0]?.supply_prices[0]?.selling_price}
+          </Text>
           <Spacer space={SH(5)} />
           <TouchableOpacity
-            onPress={() => viewDetailHandler(item)}
+            onPress={() => (viewDetailHandler(item), setHandlerTrue(true))}
             style={styles.viewDetailCon}
           >
             <Text style={[styles.stockStyle, { color: COLORS.primary }]}>
@@ -1213,7 +1239,7 @@ export function Retails() {
           <View style={styles.priceContainer}>
             <Text style={styles.price}>{strings.retail.price}</Text>
             <Text style={[styles.price, { fontSize: SF(18) }]}>
-              ${item.price}
+              ${item.supplies[0]?.supply_prices[0]?.selling_price}
             </Text>
           </View>
           <Spacer space={SH(25)} />
@@ -1244,24 +1270,17 @@ export function Retails() {
                 </View>
               ) : (
                 <FlatList
-                  data={bunndleProArray}
+                  data={bunndleProFinal}
                   renderItem={renderBundleItem}
                   keyExtractor={item => item.id}
-                  extraData={bunndleProArray}
+                  extraData={bunndleProFinal}
                   ListEmptyComponent={renderEmptyContainer}
                 />
               )}
             </View>
             <TouchableOpacity
               style={styles.addcartButtonStyle}
-              onPress={() =>
-                addToCartHandler(
-                  item.id,
-                  item?.service_id,
-                  serProductCount2,
-                  proCount
-                )
-              }
+              onPress={() => addToCartHandler(item, serProductCount2)}
             >
               <Text style={styles.addToCartText}>
                 {strings.posSale.addToCart}
@@ -1666,14 +1685,15 @@ export function Retails() {
         </View>
       </View>
       <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
-        {item.is_bundle ? (
+        {item.supply?.supply_prices?.price_type === 'quantity_base' ? (
           <TouchableOpacity style={styles.bundleButtonCon}>
             <Text style={styles.updatePriceButton}>Bundle</Text>
           </TouchableOpacity>
         ) : null}
-
         <Text style={styles.rate}>{null}</Text>
-        <Text style={styles.rate}>${item.product_details.price}</Text>
+        <Text style={styles.rate}>
+          ${item.product_details?.supply?.supply_prices?.selling_price}
+        </Text>
         {/* <TouchableOpacity
         onPress={updatePriceHandler}
         style={styles.updatePriceButtonCon}
@@ -1987,7 +2007,9 @@ export function Retails() {
                     </View>
                   </View>
                   <Spacer space={SH(30)} />
-                  {isGetCartLoading ? (
+                  {isGetCartLoading ||
+                  isAddCartLoading ||
+                  clearOneCartLoader ? (
                     <View style={{ marginTop: 50 }}>
                       <ActivityIndicator
                         size="large"
@@ -2148,7 +2170,11 @@ export function Retails() {
                 <View style={styles.priceContainer}>
                   <Text style={styles.price}>{strings.retail.price}</Text>
                   <Text style={[styles.price, { fontSize: SF(18) }]}>
-                    ${cartData?.product_details?.price}
+                    $
+                    {
+                      cartData?.product_details?.supply?.supply_prices
+                        ?.selling_price
+                    }
                   </Text>
                 </View>
                 <Spacer space={SH(20)} />
@@ -2176,10 +2202,10 @@ export function Retails() {
                     </Text>
                     <Spacer space={SH(10)} />
                     <FlatList
-                      data={bunndleProArray}
+                      data={bunndleProFinal}
                       renderItem={renderBundleItem}
                       keyExtractor={item => item.id}
-                      extraData={bunndleProArray}
+                      extraData={bunndleProFinal}
                     />
                   </View>
                 ) : null}
@@ -2190,7 +2216,7 @@ export function Retails() {
                     style={styles.removeButtonCon}
                   >
                     <Text style={styles.removeButton}>
-                      {strings.retail.removecart} {cartData?.service_id}
+                      {strings.retail.removecart}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -2491,27 +2517,30 @@ export function Retails() {
             {searchProViewDetail ? (
               <CategoryProductDetail
                 backArrowhandler={() => (
-                  setSearchProViewDetail(false), setPosSearch(true)
+                  setSearchProViewDetail(false),
+                  setPosSearch(true),
+                  setHandlerTrue(false)
                 )}
                 productName={selectedData?.name}
                 proudctImage={{ uri: selectedData?.image }}
                 productDes={selectedData?.description}
-                productPrice={selectedData?.price}
-                sku={selectedData?.sku ? selectedData?.sku : '0'}
-                plusBtn={() => setProCount(proCount + 1)}
+                productPrice={
+                  selectedData?.supplies[0]?.supply_prices[0]?.selling_price
+                }
+                sku={selectedData?.sku}
+                barCode={selectedData?.barcode}
+                unitType={selectedData?.type}
+                unitWeight={selectedData?.weight}
+                plusBtn={() =>
+                  setProCount(proCount === undefined ? 0 : proCount + 1)
+                }
                 minusBtn={() => {
                   if (proCount > 0) {
                     setProCount(proCount - 1);
                   }
                 }}
-                qty={proCount}
-                addToCartCat={() =>
-                  addToCartHandler(
-                    selectedData?.service_id,
-                    selectedData?.id,
-                    proCount
-                  )
-                }
+                qty={proCount === undefined ? 0 : proCount}
+                addToCartCat={() => addToCartHandler()}
               />
             ) : (
               <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -2546,7 +2575,7 @@ export function Retails() {
                       />
                     </TouchableOpacity>
                   </View>
-                  <View>
+                  <View style={styles.searchingProductCon}>
                     {isSearchProLoading ? (
                       <View style={{ marginTop: 100 }}>
                         <ActivityIndicator
@@ -2595,11 +2624,12 @@ export function Retails() {
                   productName={productData?.name}
                   addToCartCat={() => (
                     setProductViewDetail(false),
-                    addToCartCatPro(
-                      productData?.service_id,
-                      productData?.qty,
-                      productData?.id
-                    )
+                    // addToCartCatPro(
+                    //   productData?.service_id,
+                    //   productData?.qty,
+                    //   productData?.id
+                    // )
+                    addToCartCatPro(productData)
                   )}
                   backArrowhandler={() => setProductViewDetail(false)}
                   plusBtn={serProPlus}

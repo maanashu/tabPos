@@ -61,8 +61,6 @@ const toastConfig = {
 };
 
 const unsubscribe = NetInfo.addEventListener(state => {
-  // console.log("Connection type", state.type);
-  // console.log("Is connected?", state.isConnected);
   if(state.isConnected  === false){
     Toast.show({
       text2: 'Go offline',

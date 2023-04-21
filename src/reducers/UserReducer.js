@@ -13,7 +13,6 @@ const INITIALSTATE = {
 };
 
 export const userReducer = (state = {INITIALSTATE}, { payload, type }) => {
-  // console.log('--------------------payload', payload)
   switch (type) {
     // case TYPES.LOGIN_SUCCESS:
     //   return { ...state, ...payload.user };

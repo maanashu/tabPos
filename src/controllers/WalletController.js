@@ -25,7 +25,7 @@ export class WalletController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getTotakTraDetail +
-        `?seller_id=${sellerID}&filter=${time}&transaction_type=${transactionType}`;
+        `?seller_id=${sellerID}&filter_by=${time}&transaction_type=${transactionType}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

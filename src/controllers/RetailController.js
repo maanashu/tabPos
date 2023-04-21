@@ -118,7 +118,6 @@ export class RetailController {
         brandSelectedId,
         sellerID
       );
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -163,7 +162,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `?page=1&limit=10&search=${search}&seller_id=${sellerID}`;
+        `?app_name=pos&delivery_options=3&search=${search}&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then(response => {
           if (response.status === 204) {
@@ -251,7 +250,6 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.addTocart;
       const supplyID = data.supplyId.toString();
       const supplyPriceID =  data.supplyPriceid.toString()
-      console.log('supplyID',supplyID);
       const body = {
         seller_id: data.seller_id,
         service_id: data.service_id,
@@ -440,10 +438,11 @@ export class RetailController {
       const body = {
         cart_id: data.cartid,
         user_id: data.userId,
-        shipping: 'Pickup',
-        app_name: 'Pos',
-        mode_of_payment: 'cash',
+        // shipping: 'Pickup',
+        // app_name: 'Pos',
+        mode_of_payment: data.modeOfPayment,
       };
+     
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.msg === 'Order placed successfully!') {
@@ -472,6 +471,7 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint =
         WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
+     
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

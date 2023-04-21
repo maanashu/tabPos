@@ -1651,7 +1651,6 @@ export function Analytics(props) {
   );
 
   const tableHeaderAccCat = accCatTable => {
-    //  console.log(accCatTable)
     if (accCatTable === 'Category') {
       return (
         <Text style={styles.categoryHeader}>
@@ -1679,7 +1678,6 @@ export function Analytics(props) {
     }
   };
   const tableHeaderChange = accCatTable => {
-    //  console.log(accCatTable)
     if (accCatTable === 'Category') {
       return (
         <Text style={styles.categoryHeader}>

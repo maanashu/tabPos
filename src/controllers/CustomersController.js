@@ -37,7 +37,6 @@ export class CustomersController {
           resolve(response);
         })
         .catch(error => {
-          console.log('error', error);
           reject(error);
         });
     });
@@ -47,7 +46,7 @@ export class CustomersController {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL + ApiOrderInventory.getCustomers + `?seller_id=${sellerID}`;
-        console.log('endpoint',endpoint);
+
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

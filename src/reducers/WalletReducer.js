@@ -6,7 +6,6 @@ const INITIALSTATE = {
 };
 
 export const walletReducer = (state = { INITIALSTATE }, { payload, type }) => {
-  // console.log('------------',payload);
   switch (type) {
     case TYPES.GET_TOTAL_TRA_SUCCESS:
       return {

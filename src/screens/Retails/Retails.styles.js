@@ -1624,5 +1624,8 @@ export const styles = StyleSheet.create({
     width:SW(25),
     // borderWidth:1,
     alignItems:'flex-end'
+  },
+  searchingProductCon:{
+    height:windowHeight * 0.7
   }
 });

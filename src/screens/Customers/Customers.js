@@ -99,25 +99,25 @@ export function Customers() {
   const newCustomerData = [
     {
       customertype: 'New Customers',
-      count: getCustomerStatitics?.new_customers,
+      count: getCustomerStatitics?.new_customers ?? 0,
       img: newCustomer,
       id: '1'
     },
     {
       customertype: 'Returning Customers',
-      count: getCustomerStatitics?.returning_customers,
+      count: getCustomerStatitics?.returning_customers ?? 0,
       img: returnCustomer,
       id: '2'
     },
     {
       customertype: 'Online Customers',
-      count: getCustomerStatitics?.online_customers,
+      count: getCustomerStatitics?.online_customers ?? 0,
       img: onlineCutomer,
       id: '3',
     },
     {
       customertype: 'Shipping Customers',
-      count: getCustomerStatitics?.shipping_customers,
+      count: getCustomerStatitics?.shipping_customers ?? 0,
       img: onlineCutomer,
       id: '4',
     },

@@ -12,7 +12,6 @@ const INITIALSTATE = {
 };
 
 export const customersReducer = (state = {INITIALSTATE}, { payload, type }) => {
-  // console.log('payload',payload);
   switch (type) {
     case TYPES.GET_USER_ORDER_SUCCESS:
       return {
