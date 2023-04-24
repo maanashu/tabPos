@@ -83,9 +83,7 @@ export class ShippingController {
 
   static async deliveringOrd() {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getOrders +`&delivery_option=4`;
+      const endpoint = ORDER_URL + ApiOrderInventory.getOrders +`&delivery_option=4`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

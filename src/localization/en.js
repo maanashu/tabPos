@@ -519,4 +519,11 @@ export const en = {
   successMessages: {
     loginSuccess: 'Login succesfully',
   },
+  reward:{
+    totalReward:'Total Rewards',
+    jobrCountLabel:'JOBR',
+    jobrCountCount:'6,700',
+    first:'1',
+    st:'st'
+  }
 };

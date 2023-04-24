@@ -471,7 +471,6 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint =
         WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
-     
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

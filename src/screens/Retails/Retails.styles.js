@@ -249,10 +249,10 @@ export const styles = StyleSheet.create({
 
   rightSideContainer: {
     backgroundColor: COLORS.white,
-    height: windowHeight,
+    height: windowHeight * 0.96,
     width: windowWidth * 0.31,
-    position: 'absolute',
 
+    position: 'absolute',
     right: 0,
     top: 0,
     borderColor: COLORS.black,
@@ -392,6 +392,9 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
   },
   bottomContainer: {
+    position:"absolute",
+    bottom:0,
+    left:20,
     borderTopWidth: 1,
     height: SH(300),
     borderColor: COLORS.row_grey,
@@ -1627,5 +1630,8 @@ export const styles = StyleSheet.create({
   },
   searchingProductCon:{
     height:windowHeight * 0.7
+  },
+  cartArrayCon:{
+    height:windowHeight * 0.50
   }
 });

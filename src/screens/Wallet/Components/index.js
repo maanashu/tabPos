@@ -385,9 +385,9 @@ export function DetailShipping({
                     <View style={styles.tableDataCon} key={index}>
                       <View style={styles.displayFlex}>
                         <View style={styles.tableHeaderLeft}>
-                          <Text style={styles.tableTextDataFirst}>1</Text>
+                          <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
                           <View
-                            style={{ flexDirection: 'row', marginLeft: 30 }}
+                            style={{ flexDirection: 'row', marginLeft: 30}}
                           >
                             <Image
                               source={{ uri: item.product_image }}
@@ -396,7 +396,7 @@ export function DetailShipping({
                             <View
                               style={{ flexDirection: 'column', marginLeft: 8 }}
                             >
-                              <Text style={styles.tableTextData}>
+                              <Text style={styles.tableTextData} numberOfLines={1}>
                                 {item.product_name}
                               </Text>
                               <Text

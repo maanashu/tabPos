@@ -29,7 +29,11 @@ export const COLORS = {
   indicator:'#0000ff',
   marshmallow:'#6C63F0',
   lightGreen:"#1CD3FF",
-  lineGrey:' #D8D8D8'
+  lineGrey:' #D8D8D8',
+  lightBlue:'#84A0FD',
+  blueLight:'#4C76FE',
+  light_green:'#A3B0DB',
+  primaryDark:'#072A59'
 
 };
 

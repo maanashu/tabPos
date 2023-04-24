@@ -18,14 +18,41 @@ export class WalletController {
           reject(error);
         });
     });
-  }
+  };
+
+ 
 
   static async getTotakTraDetail(time, sellerID, transactionType) {
+    const endpointAccTra = (time, sellerID, transactionType) => {
+         if(transactionType === 'all'){
+          return(
+            ORDER_URL + ApiOrderInventory.getTotakTraDetail +
+           `?seller_id=${sellerID}&filter_by=${time}`
+          )
+         }else{
+          return(
+            ORDER_URL+  ApiOrderInventory.getTotakTraDetail +
+            `?seller_id=${sellerID}&filter_by=${time}&transaction_type=${transactionType}`
+          )
+         }
+    };
+    return new Promise((resolve, reject) => {
+      const endpoint = endpointAccTra(time, sellerID, transactionType);
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  };
+
+  static async getTotalTraType() {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
-        ApiOrderInventory.getTotakTraDetail +
-        `?seller_id=${sellerID}&filter_by=${time}&transaction_type=${transactionType}`;
+        ApiOrderInventory.getTotalTraType ;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

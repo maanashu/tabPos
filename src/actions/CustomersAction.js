@@ -72,7 +72,7 @@ export const getCustomer = (sellerID) => async dispatch => {
   dispatch(getCustomersRequest());
   try {
       const res = await CustomersController.getCustomers(sellerID);
-      dispatch(getCustomersSuccess(res));
+      dispatch(getCustomersSuccess(res?.payload));
     } catch (error) {
       dispatch(getCustomersError(error.message));
   }

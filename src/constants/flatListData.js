@@ -7,8 +7,6 @@ import {
   onlineCutomer,
 } from '@/assets';
 
-
-
 export const jbritemList = [
   {
     name: 'JFR Maduro',
@@ -67,7 +65,7 @@ export const CategoryData = [
     id: '3',
   },
 ];
-export const  CategoryDataHorizontal = [
+export const CategoryDataHorizontal = [
   {
     name: 'Tobacco',
     id: '1',
@@ -88,9 +86,9 @@ export const  CategoryDataHorizontal = [
     name: 'Vape',
     id: '5',
   },
-] ;
+];
 
-export const userData =[
+export const userData = [
   {
     percentage: '10%',
     id: '1',
@@ -105,7 +103,7 @@ export const userData =[
   },
 ];
 
-export const tipDataDummy =[
+export const tipDataDummy = [
   {
     percentage: '10%',
     id: '1',
@@ -228,61 +226,8 @@ export const productUnitData = [
     id: '6',
   },
 ];
-export const aboutTransactionData = [
-  {
-    aboutTransaction: 'JBR COIN',
-    price: '$8,426,590',
-    img: jbrCoin,
-    id: '1',
-  },
-  {
-    aboutTransaction: 'CASH',
-    price: '$8,426,590',
-    img: cash,
-    id: '2',
-  },
-  {
-    aboutTransaction: 'CARD',
-    price: '$8,426,590',
-    img: card2,
-    id: '3',
-  },
-];
-export const tipsData = [
-  {
-    heading: 'Tips',
-    price: '$390',
-    id: '1',
-  },
-  {
-    heading: 'Delivery Charge',
-    price: '$390',
-    id: '2',
-  },
-  {
-    heading: 'Shipping Charge',
-    price: '$1,496',
-    id: '3',
-  },
-];
-export const allTransactionData = [
-  {
-    count: 18,
-    mode_of_payment: "all"
-},
-{
-    count: 0,
-    mode_of_payment: "jbr"
-},
-{
-    count: 13,
-    mode_of_payment: "card"
-},
-{
-    count: 1,
-    mode_of_payment: "cash"
-}
-];
+
+
 export const TransactionTableHeading = [
   '#',
   'Date',
@@ -350,12 +295,12 @@ export const ProfileTableData = [
 ];
 export const cartData = [
   {
-    id:1,
-    name:'ghjkl'
+    id: 1,
+    name: 'ghjkl',
   },
   {
-    id:2,
-    name:'ghjkl'
+    id: 2,
+    name: 'ghjkl',
   },
 ];
 
@@ -412,7 +357,6 @@ export const newCustomerDataLoader = [
     img: onlineCutomer,
     id: '4',
   },
-
 ];
 
 export const notificationData = [
@@ -445,7 +389,7 @@ export const totalProductData = [
     headerType: 'Total Inventory  Cost',
     range: '$8,426,590',
     id: '2',
-  }, 
+  },
   {
     headerType: 'Total Revenue',
     range: '$6,920,590',
@@ -456,159 +400,157 @@ export const totalProductData = [
     range: '$7,426,590',
     id: '3',
   },
- 
 ];
-export const categoryData =[
+export const categoryData = [
   {
     categoryCount: '8',
-    category:'Category',
-    percentage:'1.2%',
+    category: 'Category',
+    percentage: '1.2%',
     id: '1',
   },
   {
     categoryCount: '70',
-    category:'Subcategory',
-    percentage:'1.2%',
+    category: 'Subcategory',
+    percentage: '1.2%',
     id: '2',
   },
   {
     categoryCount: '290',
-    category:'Brand',
-    percentage:'1.2%',
+    category: 'Brand',
+    percentage: '1.2%',
     id: '3',
   },
   {
     categoryCount: '2,906',
-    category:'Product',
-    percentage:'1.2%',
+    category: 'Product',
+    percentage: '1.2%',
     id: '4',
-  }
+  },
 ];
-export const inverntrycategoryData =[
+export const inverntrycategoryData = [
   {
     categoryCount: '906',
-    category:'Unit In',
-    percentage:'1.2%',
+    category: 'Unit In',
+    percentage: '1.2%',
     id: '1',
   },
   {
     categoryCount: '284',
-    category:'Unit Out',
-    percentage:'1.2%',
+    category: 'Unit Out',
+    percentage: '1.2%',
     id: '2',
   },
   {
     categoryCount: '14',
-    category:'Unit Return',
-    percentage:'1.2%',
+    category: 'Unit Return',
+    percentage: '1.2%',
     id: '3',
   },
   {
     categoryCount: '608',
-    category:'Stock on Hand',
-    percentage:'1.2%',
+    category: 'Stock on Hand',
+    percentage: '1.2%',
     id: '4',
-  }
+  },
 ];
-export const totalOrderData =[
+export const totalOrderData = [
   {
     categoryCount: '906',
-    category:'Total Order',
-    percentage:'1.2%',
+    category: 'Total Order',
+    percentage: '1.2%',
     id: '1',
   },
   {
     categoryCount: '284',
-    category:'Store Order',
-    percentage:'1.2%',
+    category: 'Store Order',
+    percentage: '1.2%',
     id: '2',
   },
   {
     categoryCount: '14',
-    category:'Online Order',
-    percentage:'1.2%',
+    category: 'Online Order',
+    percentage: '1.2%',
     id: '3',
   },
   {
     categoryCount: '608',
-    category:'Shipping Order',
-    percentage:'1.2%',
+    category: 'Shipping Order',
+    percentage: '1.2%',
     id: '4',
-  }
+  },
 ];
-export const  productDetailData = [
- 
+export const productDetailData = [
   {
     heading: 'Cost Price',
-    price:'$86.50',
+    price: '$86.50',
     id: '1',
   },
   {
     heading: 'Unit Type',
-    price:'Catron',
+    price: 'Catron',
     id: '2',
   },
   {
     heading: 'Barcode',
-    price:'$125694226955',
+    price: '$125694226955',
     id: '3',
   },
   {
     heading: 'Unit Weight',
-    price:'430 g',
+    price: '430 g',
     id: '4',
   },
   {
     heading: 'Stock on Hand ',
-    price:'430',
+    price: '430',
     id: '5',
   },
   {
     heading: 'Rating',
-    price:'4.30',
+    price: '4.30',
     id: '5',
   },
 ];
 export const stockHandData = [
   {
     heading: 'Number of Orders',
-    price:'$90',
+    price: '$90',
     id: '1',
   },
   {
     heading: 'Store Orders',
-    price:'$86.50',
+    price: '$86.50',
     id: '2',
   },
   {
     heading: 'Delivery Orders',
-    price:'Catron',
+    price: 'Catron',
     id: '3',
   },
   {
     heading: 'Shipping Orders',
-    price:'125694226955',
+    price: '125694226955',
     id: '4',
   },
   {
     heading: 'Total Sales',
-    price:'50',
+    price: '50',
     id: '5',
   },
- 
+
   {
     heading: 'Total Cost',
-    price:'430 g',
+    price: '430 g',
     id: '6',
   },
   {
     heading: 'Total Profit ',
-    price:'430',
+    price: '430',
     id: '7',
   },
   {
     heading: 'Total Return',
-    price:'4.30',
+    price: '4.30',
     id: '8',
   },
 ];
@@ -634,4 +576,3 @@ export const allRevenueTypeData = [
     id: '4',
   },
 ];
-

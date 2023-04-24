@@ -109,7 +109,6 @@ export const getReviewDefault = (status, sellerID) => async dispatch => {
   }
 };
 
-
 export const getOrders = (status, sellerID) => async dispatch => {
   dispatch(getOrdersRequest());
   try {

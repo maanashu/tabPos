@@ -15,11 +15,6 @@ import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Wallet/Wallet.styles';
 import { strings } from '@/localization';
 import {
-  // aboutTransactionData,
-  // tipsData,
-  allTransactionData,
-} from '@/constants/flatListData';
-import {
   notifications,
   search_light,
   wallet2,
@@ -51,7 +46,11 @@ import { OrderList, DetailShipping, TrackingModule } from './Components';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { getTotakTraDetail, getTotalTra } from '@/actions/WalletAction';
+import {
+  getTotakTraDetail,
+  getTotalTra,
+  getTotalTraType,
+} from '@/actions/WalletAction';
 import { getWallet } from '@/selectors/WalletSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/WalletTypes';
@@ -67,7 +66,7 @@ export function Wallet() {
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getTotalTraData = getWalletData?.getTotalTra;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail;
-  const transactionTypeArray = getWalletData?.getTotakTraDetail?.transaction_type_count;
+  const transactionTypeArray = getWalletData?.getTotalTraType;
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
@@ -79,30 +78,29 @@ export function Wallet() {
   ]);
   const [orderModel, setOrderModel] = useState(false);
   const [detailShipping, setDetailShipping] = useState(false);
-  const [transcationTypeId, setTranscationTypeId] = useState("all");
+  const [transcationTypeId, setTranscationTypeId] = useState('all');
   const [selectTime, setSelectTime] = useState({ name: 'week' });
   const [selectTime2, setSelectTime2] = useState({ name: 'week' });
   const [selectId, setSelectId] = useState(2);
   const [selectId2, setSelectId2] = useState(2);
   const [orderData, setOrderData] = useState();
   const [tracking, setTracking] = useState(false);
-const [tranAdd, setTranAdd] =  useState('');
-const defaultType = 'all';
-const [transaction,setTransaction] = useState({  mode_of_payment: "all"});
-const transactionType = transaction?.mode_of_payment
+  const [tranAdd, setTranAdd] = useState('');
+  const [transaction, setTransaction] = useState({ mode_of_payment: 'all' });
+  const transactionType = transaction?.mode_of_payment;
 
   const onPresFun1 = value => {
     dispatch(getTotalTra(value, sellerID));
   };
   const onPresFun2 = value => {
-    dispatch(getTotakTraDetail(value, sellerID,transactionType));
+    dispatch(getTotakTraDetail(value, sellerID, transactionType));
   };
   const onPresFun3 = mode_of_payment => {
-    dispatch(getTotakTraDetail(time2, sellerID, mode_of_payment ))
+    dispatch(getTotakTraDetail(time2, sellerID, mode_of_payment));
   };
 
   const time = selectTime?.name;
-  const time2 = selectTime2?.name;
+  const time2 = selectTime2?.value;
   const time3 = transaction?.mode_of_payment;
   const aboutTransactionData = [
     {
@@ -154,6 +152,9 @@ const transactionType = transaction?.mode_of_payment
   const isTotalTradetail = useSelector(state =>
     isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state)
   );
+  const isTotalTraType = useSelector(state =>
+    isLoadingSelector([TYPES.GET_TOTAL_TRA_TYPE], state)
+  );
   const statusFun = status => {
     switch (status) {
       case 0:
@@ -186,7 +187,6 @@ const transactionType = transaction?.mode_of_payment
     }
   };
 
- 
   const weeklyTraRemoveHandler = () => {
     setWeeklyTrasaction(false);
   };
@@ -244,7 +244,9 @@ const transactionType = transaction?.mode_of_payment
     <TouchableOpacity
       style={styles.jbrCoinCon}
       onPress={() => (
-        setWeeklyTrasaction(true), dispatch(getTotakTraDetail(time2, sellerID, transactionType ))
+        setWeeklyTrasaction(true),
+        dispatch(getTotakTraDetail('week', sellerID, transactionType)),
+        dispatch(getTotalTraType())
       )}
     >
       <Image source={item.img} style={styles.jbrCoinStyle} />
@@ -261,10 +263,9 @@ const transactionType = transaction?.mode_of_payment
             color={COLORS.primary}
             style={styles.indicatorstyle}
           />
-        ) : 
+        ) : (
           item.price
-        
-        }
+        )}
       </Text>
     </TouchableOpacity>
   );
@@ -298,26 +299,39 @@ const transactionType = transaction?.mode_of_payment
   }) => (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.allJbrCon,  {borderColor} ]}
+      style={[styles.allJbrCon, { borderColor }]}
     >
-      <Text style={[styles.allJbrText, { color, fontFamily }]}>
-        {item.mode_of_payment} ({item.count})
-      </Text>
+      {isTotalTraType ? (
+        <ActivityIndicator size="small" color={COLORS.primary} />
+      ) : (
+        <Text style={[styles.allJbrText, { color, fontFamily }]}>
+          {item.mode_of_payment} ({item.count})
+        </Text>
+      )}
     </TouchableOpacity>
   );
 
   const allTransactionItem = ({ item }) => {
     const borderColor =
-      item.mode_of_payment === transcationTypeId ? COLORS.primary : COLORS.solidGrey;
+      item.mode_of_payment === transcationTypeId
+        ? COLORS.primary
+        : COLORS.solidGrey;
     const color =
-      item.mode_of_payment === transcationTypeId ? COLORS.primary : COLORS.dark_grey;
+      item.mode_of_payment === transcationTypeId
+        ? COLORS.primary
+        : COLORS.dark_grey;
     const fontFamily =
-      item.mode_of_payment === transcationTypeId ? Fonts.SemiBold : Fonts.Regular;
-      // onPresFun3(item.mode_of_payment)
+      item.mode_of_payment === transcationTypeId
+        ? Fonts.SemiBold
+        : Fonts.Regular;
     return (
       <TransactionSelectItem
         item={item}
-        onPress={() => {setTranscationTypeId(item.mode_of_payment), setTransaction(item), onPresFun3(item.mode_of_payment)}}
+        onPress={() => {
+          setTranscationTypeId(item.mode_of_payment),
+            setTransaction(item),
+            onPresFun3(item.mode_of_payment);
+        }}
         borderColor={borderColor}
         color={color}
         fontFamily={fontFamily}
@@ -358,7 +372,7 @@ const transactionType = transaction?.mode_of_payment
       );
     } else if (weeklyTransaction) {
       return (
-        <View style={{height:windowHeight * 0.95 }}>
+        <View style={{ height: windowHeight * 0.95 }}>
           {customHeader()}
           {/* <ScrollView> */}
           <View style={styles.walletTranCon}>
@@ -383,12 +397,11 @@ const transactionType = transaction?.mode_of_payment
           <Spacer space={SH(10)} />
           <View style={[styles.allTypeCon]}>
             <FlatList
-              data={allTransactionData}
-              extraData={allTransactionData}
+              data={transactionTypeArray}
+              extraData={transactionTypeArray}
               renderItem={allTransactionItem}
               keyExtractor={item => item.mode_of_payment}
               horizontal
-              // allTransactionData
             />
           </View>
           {/* </ScrollView> */}
@@ -486,16 +499,16 @@ const transactionType = transaction?.mode_of_payment
                   </View>
                   <View style={styles.tableHeaderRight}>
                     <Text style={styles.tableTextHea}>Transection Id</Text>
-                   
+
                     <View style={styles.flexAlign}>
                       <Text style={styles.tableTextHea}>Transection type</Text>
-                       <Image source={tableArrow} style={styles.tableArrow} />
+                      <Image source={tableArrow} style={styles.tableArrow} />
                     </View>
                     <View style={styles.flexAlign}>
                       <Text style={styles.tableTextHea}>Mode of payment</Text>
-                       <Image source={tableArrow} style={styles.tableArrow} />
+                      <Image source={tableArrow} style={styles.tableArrow} />
                     </View>
-                    
+
                     <Text style={styles.tableTextHea}>Cash In</Text>
                     <Text style={styles.tableTextHea}>Cash Out</Text>
                     <Text style={[styles.tableTextHea, { marginRight: -2 }]}>
@@ -505,82 +518,92 @@ const transactionType = transaction?.mode_of_payment
                 </View>
               </View>
 
-             <View style={styles.tableHeight}>
-            <ScrollView>
-            {isTotalTradetail ? (
-                <View style={{ marginTop: 100 }}>
-                  <ActivityIndicator size="large" color={COLORS.indicator} />
-                </View>
-              ) : getTotalTraDetail?.length === 0  ? (
-                <View style={{ marginTop: 80 }}>
-                  <Text style={styles.userNotFound}>Order not found</Text>
-                </View>
-              ) : (
-                getTotalTraDetail?.map((item, index) => (
-                  <TouchableOpacity
-                    style={[styles.tableDataCon, { zIndex: -9 }]}
-                    key={index}
-                    onPress={() => (
-                      setOrderModel(!orderModel), setOrderData(item)
-                    )}
-                  >
-                    <View style={styles.displayFlex}>
-                      <View style={styles.tableHeaderLeft}>
-                        <Text style={styles.tableTextDataFirst}>
-                          {index + 1}
-                        </Text>
-                        <View
-                          style={{ flexDirection: 'column', marginLeft: 30 }}
-                        >
-                          <Text style={styles.tableTextData}>
-                            {item.created_at
-                              ? moment(item.created_at).format('ll')
-                              : 'date not found'}
-                          </Text>
-                          <Text
-                            style={[
-                              styles.tableTextData,
-                              { color: COLORS.gerySkies },
-                            ]}
-                          >
-                            {item.created_at
-                              ? moment(item.created_at).format('h : mm')
-                              : 'date not found'}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.tableHeaderRight}>
-                        <Text numberOfLines={1}
-                          style={[styles.tableTextData, { fontSize: SF(12) }]}
-                        >
-                          {item.transaction_id ?? null}
-                        </Text>
-                        <Text style={styles.tableTextData}>{item.mode_of_payment ?? null}</Text>
-                        <Text style={styles.tableTextData}>
-                          {item.mode_of_payment ?? null}
-                        </Text>
-                        <Text style={styles.tableTextData}>
-                          ${item.payable_amount ?? '0'}
-                        </Text>
-                        <Text style={styles.tableTextData}>{'$0'}</Text>
-                        <View>
-                          <Text style={styles.tableTextDataCom}>
-                            {statusFun(item.status)}
-                          </Text>
-                        </View>
-                      </View>
+              <View style={styles.tableHeight}>
+                <ScrollView>
+                  {isTotalTradetail ? (
+                    <View style={{ marginTop: 100 }}>
+                      <ActivityIndicator
+                        size="large"
+                        color={COLORS.indicator}
+                      />
                     </View>
-                  </TouchableOpacity>
-                ))
-              )}
-            </ScrollView>
-             </View>
+                  ) : getTotalTraDetail?.length === 0 ? (
+                    <View style={{ marginTop: 80 }}>
+                      <Text style={styles.userNotFound}>Order not found</Text>
+                    </View>
+                  ) : (
+                    getTotalTraDetail?.map((item, index) => (
+                      <TouchableOpacity
+                        style={[styles.tableDataCon, { zIndex: -9 }]}
+                        key={index}
+                        onPress={() => (
+                          setOrderModel(!orderModel), setOrderData(item)
+                        )}
+                      >
+                        <View style={styles.displayFlex}>
+                          <View style={styles.tableHeaderLeft}>
+                            <Text style={styles.tableTextDataFirst}>
+                              {index + 1}
+                            </Text>
+                            <View
+                              style={{
+                                flexDirection: 'column',
+                                marginLeft: 30,
+                              }}
+                            >
+                              <Text style={styles.tableTextData}>
+                                {item.created_at
+                                  ? moment(item.created_at).format('ll')
+                                  : 'date not found'}
+                              </Text>
+                              <Text
+                                style={[
+                                  styles.tableTextData,
+                                  { color: COLORS.gerySkies },
+                                ]}
+                              >
+                                {item.created_at
+                                  ? moment(item.created_at).format('h : mm')
+                                  : 'date not found'}
+                              </Text>
+                            </View>
+                          </View>
+                          <View style={styles.tableHeaderRight}>
+                            <Text
+                              numberOfLines={1}
+                              style={[
+                                styles.tableTextData,
+                                { fontSize: SF(12) },
+                              ]}
+                            >
+                              {item.transaction_id ?? null}
+                            </Text>
+                            <Text style={styles.tableTextData}>
+                              {item.mode_of_payment ?? null}
+                            </Text>
+                            <Text style={styles.tableTextData}>
+                              {item.mode_of_payment ?? null}
+                            </Text>
+                            <Text style={styles.tableTextData}>
+                              ${item.payable_amount ?? '0'}
+                            </Text>
+                            <Text style={styles.tableTextData}>{'$0'}</Text>
+                            <View>
+                              <Text style={styles.tableTextDataCom}>
+                                {statusFun(item.status)}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    ))
+                  )}
+                </ScrollView>
+              </View>
             </Table>
           </View>
-        
-        
+
           <Spacer space={SH(100)} />
-        
         </View>
       );
     } else {

@@ -99,25 +99,25 @@ export function Customers() {
   const newCustomerData = [
     {
       customertype: 'New Customers',
-      count: getCustomerStatitics?.new_customers ?? 0,
+      count: getCustomerStatitics?.new_customers_count ?? 0,
       img: newCustomer,
       id: '1'
     },
     {
       customertype: 'Returning Customers',
-      count: getCustomerStatitics?.returning_customers ?? 0,
+      count: getCustomerStatitics?.returning_customers_count ?? 0,
       img: returnCustomer,
       id: '2'
     },
     {
       customertype: 'Online Customers',
-      count: getCustomerStatitics?.online_customers ?? 0,
+      count: getCustomerStatitics?.online_customers_count ?? 0,
       img: onlineCutomer,
       id: '3',
     },
     {
       customertype: 'Shipping Customers',
-      count: getCustomerStatitics?.shipping_customers ?? 0,
+      count: getCustomerStatitics?.shipping_customers_count ?? 0,
       img: onlineCutomer,
       id: '4',
     },
@@ -786,13 +786,13 @@ export function Customers() {
                                     style={styles.orderCigrate}
                                   />
                                 ) : null}
-                                <View
+                                <View 
                                   style={{
                                     flexDirection: 'column',
                                     marginLeft: 8,
                                   }}
                                 >
-                                  <Text style={styles.tableTextData}>
+                                  <Text style={styles.tableTextData} numberOfLines={1}>
                                     {item.product_name}
                                   </Text>
                                   <Text
@@ -1166,6 +1166,7 @@ export function Customers() {
                 ) : (
                   <FlatList
                     data={newCustomerData}
+                    extraData={newCustomerData}
                     renderItem={newCustomerItem}
                     keyExtractor={item => item.id}
                     horizontal

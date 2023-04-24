@@ -12,13 +12,19 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
   },
+  displayflex: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
     alignSelf: 'center',
     width: windowWidth * 0.92,
     height: windowHeight * 0.84,
-    // paddingHorizontal: moderateScale(12),
+    paddingHorizontal: moderateScale(12),
+    paddingVertical: verticalScale(7),
   },
   headerMainView: {
     width: windowWidth,
@@ -96,5 +102,94 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
     fontSize: SF(15),
   },
-  
+  totalRewardText: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.black,
+    fontSize: SF(18),
+  },
+  jobrCountLabel: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+    fontSize: SF(35),
+  },
+  rewardGraph: {
+    width: windowWidth * 0.55,
+    height: windowHeight * 0.38,
+    resizeMode: 'contain',
+  },
+  rewardCon: {
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.4,
+    borderRadius: 15,
+    paddingHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(8),
+  },
+  thirdRewardCon: {
+    width: windowWidth * 0.09,
+    height: windowHeight * 0.20,
+    borderRadius: 10,
+    alignSelf: 'flex-end',
+    margin: 2,
+    backgroundColor:COLORS.lightBlue
+  },
+  firstRewardCon: {
+    width: windowWidth * 0.09,
+    height: windowHeight * 0.25,
+    borderRadius: 10,
+    alignSelf: 'flex-end',
+    margin: 2,
+    backgroundColor:COLORS.primary,
+    opacity:0.9,
+    padding:10,
+    alignItems:'center'
+  },
+  secondRewardCon: {
+    width: windowWidth * 0.09,
+    height: windowHeight * 0.23,
+    borderRadius: 10,
+    alignSelf: 'flex-end',
+    margin: 2,
+    backgroundColor:COLORS.blueLight
+  },
+  rewaurdMainCon: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 10,
+  },
+  rewardFlower:{
+     height:SH(100),
+     width:SW(70),
+     resizeMode:'contain',
+     alignSelf:"center"
+    },
+    rewardUserFirst:{
+      height:SW(22),
+      width:SW(22),
+      resizeMode:'contain'
+    } ,
+    userImageBorder:{
+      borderWidth:10,
+      width:SW(20),
+      height:SW(20),
+      borderRadius:50,
+      justifyContent:'center',
+      alignItems:'center',
+      alignSelf:'center',
+      borderColor:COLORS.light_green
+    },
+    firstText:{
+      fontFamily: Fonts.SemiBold,
+       color: COLORS.white,
+    fontSize: SF(26),
+    },
+    rewardConPrice:{
+      width: windowWidth * 0.07,
+      height:windowHeight * 0.06,
+      // borderWidth:1,
+      borderRadius:5,
+      backgroundColor: COLORS.primary,
+      
+    }
 });

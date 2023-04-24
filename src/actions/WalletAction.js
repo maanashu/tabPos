@@ -36,6 +36,24 @@ const getTotakTraDetailReset = () => ({
   payload: null,
 });
 
+const getTotalTraTypeRequest = () => ({
+  type: TYPES.GET_TOTAL_TRA_TYPE_REQUEST,
+  payload: null,
+});
+const getTotalTraTypeSuccess = getTotalTraType => ({
+  type: TYPES.GET_TOTAL_TRA_TYPE_SUCCESS,
+  payload: { getTotalTraType },
+});
+const getTotalTraTypeError = error => ({
+  type: TYPES.GET_TOTAL_TRA_TYPE_ERROR,
+  payload: { error },
+});
+const getTotalTraTypeReset = () => ({
+  type: TYPES.GET_TOTAL_TRA_TYPE_RESET,
+  payload: null,
+});
+
+
 export const getTotalTra = (time, sellerID) => async dispatch => {
   dispatch(getTotalTraRequest());
   try {
@@ -59,6 +77,18 @@ export const getTotakTraDetail = (time, sellerID,transactionType) => async dispa
       dispatch(getTotakTraDetailReset());
     }
       dispatch(getTotakTraDetailError(error.message));
+  }
+};
+export const getTotalTraType = () => async dispatch => {
+  dispatch(getTotalTraTypeRequest());
+  try {
+      const res = await WalletController.getTotalTraType();
+      dispatch(getTotalTraTypeSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204){
+      dispatch(getTotalTraTypeReset());
+    }
+      dispatch(getTotalTraTypeError(error.message));
   }
 };
 

@@ -1944,7 +1944,7 @@ export function Retails() {
           {/* start right side view */}
           {sideContainer ? (
             <View style={[styles.rightSideContainer]}>
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(10)} />
               {checkoutCon ? (
                 <View style={{ paddingHorizontal: moderateScale(10) }}>
                   <View style={styles.displayFlex}>
@@ -2006,7 +2006,8 @@ export function Retails() {
                       </TouchableOpacity>
                     </View>
                   </View>
-                  <Spacer space={SH(30)} />
+                 <View style={styles.cartArrayCon}>
+                 <Spacer space={SH(10)} />
                   {isGetCartLoading ||
                   isAddCartLoading ||
                   clearOneCartLoader ? (
@@ -2024,7 +2025,8 @@ export function Retails() {
                       keyExtractor={item => item.id}
                       ListEmptyComponent={renderEmptyContainer}
                     />
-                  )}
+                    )}
+                  </View>
                 </View>
               )}
 

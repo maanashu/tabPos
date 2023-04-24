@@ -82,7 +82,7 @@ export class DeliveryController {
   };
 
 
-  static async deliveryOrd(status, sellerID) {
+  static async deliveryOrd() {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL + ApiOrderInventory.getOrders +`?delivery_option=1`;

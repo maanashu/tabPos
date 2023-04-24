@@ -31,7 +31,7 @@ export const customersReducer = (state = {INITIALSTATE}, { payload, type }) => {
           case TYPES.GET_CUSTOMERS_SUCCESS:
             return {
               ...state,
-              getCustomers: payload.getCustomers.payload,
+              getCustomers: payload.getCustomers,
             };
    
     

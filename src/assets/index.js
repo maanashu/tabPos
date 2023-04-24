@@ -153,6 +153,8 @@ export { default as shop_light } from '@/assets/icons/ic_customers/shop_light.pn
 export { default as greyRadioArr } from '@/assets/icons/ic_customers/greyRadioArr.png';
 export { default as radioArrBlue } from '@/assets/icons/ic_customers/radioArrBlue.png';
 export { default as cusBarClr } from '@/assets/icons/ic_customers/cusBarClr.png';
+export { default as rewardGraph } from '@/assets/icons/ic_reward/rewardGraph.png';
+export { default as rewardFlower } from '@/assets/icons/ic_reward/rewardFlower.png';
 // export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
 
 /* Fonts */
