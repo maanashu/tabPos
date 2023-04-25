@@ -15,6 +15,7 @@ import {
   ShippingOrder,
   LoginIntial,
   Reward,
+  Setting
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
@@ -81,6 +82,11 @@ export function HomeNavigator() {
       <Drawer.Screen
         component={Reward}
         name={NAVIGATION.reward}
+        options={{ headerShown: false }}
+      />
+       <Drawer.Screen
+        component={Setting}
+        name={NAVIGATION.setting}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

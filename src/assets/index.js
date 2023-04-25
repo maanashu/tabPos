@@ -155,7 +155,20 @@ export { default as radioArrBlue } from '@/assets/icons/ic_customers/radioArrBlu
 export { default as cusBarClr } from '@/assets/icons/ic_customers/cusBarClr.png';
 export { default as rewardGraph } from '@/assets/icons/ic_reward/rewardGraph.png';
 export { default as rewardFlower } from '@/assets/icons/ic_reward/rewardFlower.png';
-// export { default as analytics } from '@/assets/icons/ic_analytics/analytics.png';
+export { default as tableProfile } from '@/assets/icons/ic_reward/tableProfile.png';
+export { default as security } from '@/assets/icons/ic_setting/security.png';
+export { default as device } from '@/assets/icons/ic_setting/device.png';
+export { default as bell } from '@/assets/icons/ic_setting/bell.png';
+export { default as pinLight } from '@/assets/icons/ic_setting/pinLight.png';
+export { default as plan } from '@/assets/icons/ic_setting/plan.png';
+export { default as invoiceSett } from '@/assets/icons/ic_setting/invoice.png';
+export { default as tax } from '@/assets/icons/ic_setting/tax.png';
+export { default as walletSett } from '@/assets/icons/ic_setting/wallet.png';
+export { default as shipping } from '@/assets/icons/ic_setting/shipping.png';
+export { default as langu } from '@/assets/icons/ic_setting/langu.png';
+export { default as work } from '@/assets/icons/ic_setting/work.png';
+export { default as policy } from '@/assets/icons/ic_setting/policy.png';
+export { default as right_light } from '@/assets/icons/ic_setting/right_light.png';
 
 /* Fonts */
 export const Fonts = {

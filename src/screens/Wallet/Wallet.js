@@ -88,7 +88,9 @@ export function Wallet() {
   const [tranAdd, setTranAdd] = useState('');
   const [transaction, setTransaction] = useState({ mode_of_payment: 'all' });
   const transactionType = transaction?.mode_of_payment;
-
+  const time = selectTime?.name;
+  const time2 = selectTime2?.value;
+  const time3 = transaction?.mode_of_payment;
   const onPresFun1 = value => {
     dispatch(getTotalTra(value, sellerID));
   };
@@ -99,9 +101,7 @@ export function Wallet() {
     dispatch(getTotakTraDetail(time2, sellerID, mode_of_payment));
   };
 
-  const time = selectTime?.name;
-  const time2 = selectTime2?.value;
-  const time3 = transaction?.mode_of_payment;
+ 
   const aboutTransactionData = [
     {
       aboutTransaction: 'JBR COIN',
@@ -328,7 +328,7 @@ export function Wallet() {
       <TransactionSelectItem
         item={item}
         onPress={() => {
-          setTranscationTypeId(item.mode_of_payment),
+             setTranscationTypeId(item.mode_of_payment),
             setTransaction(item),
             onPresFun3(item.mode_of_payment);
         }}

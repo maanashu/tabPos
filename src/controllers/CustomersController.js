@@ -46,8 +46,6 @@ export class CustomersController {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL + ApiOrderInventory.getCustomers + `?seller_id=${sellerID}`;
-        console.log('endpoint',endpoint);
-
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

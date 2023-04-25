@@ -27,12 +27,12 @@ export class WalletController {
          if(transactionType === 'all'){
           return(
             ORDER_URL + ApiOrderInventory.getTotakTraDetail +
-           `?seller_id=${sellerID}&filter_by=${time}`
+           `?seller_id=${sellerID}&filter_by=${time === undefined ? 'week' : time}`
           )
          }else{
           return(
             ORDER_URL+  ApiOrderInventory.getTotakTraDetail +
-            `?seller_id=${sellerID}&filter_by=${time}&transaction_type=${transactionType}`
+            `?seller_id=${sellerID}&filter_by=${time === undefined ? 'week' : time}&transaction_type=${transactionType}`
           )
          }
     };

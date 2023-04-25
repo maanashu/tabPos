@@ -576,3 +576,13 @@ export const allRevenueTypeData = [
     id: '4',
   },
 ];
+export const settingLabelData = [
+  {
+    id:1,
+    name:'security'
+  },
+  {
+    id:2,
+    name:'policy'
+  }
+]

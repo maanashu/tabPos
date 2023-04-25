@@ -15,5 +15,6 @@ export const NAVIGATION = {
   calender: 'Calender',
   analytics: 'Analytics',
   verifySucess: 'VerifySucess',
-  reward: 'Reward'
+  reward: 'Reward',
+  setting:'Setting'
 };

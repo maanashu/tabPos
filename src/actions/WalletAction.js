@@ -1,7 +1,6 @@
 import { WalletController } from '@/controllers';
 import { TYPES } from "@/Types/WalletTypes";
 
-
 const getTotalTraRequest = () => ({
   type: TYPES.GET_TOTAL_TRA_REQUEST,
   payload: null,
@@ -66,7 +65,6 @@ export const getTotalTra = (time, sellerID) => async dispatch => {
       dispatch(getTotalTraError(error.message));
   }
 };
-
 export const getTotakTraDetail = (time, sellerID,transactionType) => async dispatch => {
   dispatch(getTotakTraDetailRequest());
   try {

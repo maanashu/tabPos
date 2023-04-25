@@ -524,6 +524,15 @@ export const en = {
     jobrCountLabel:'JOBR',
     jobrCountCount:'6,700',
     first:'1',
-    st:'st'
+    st:'st',
+    second:'2',
+    nd:'nd',
+    third:'3',
+    rd:'rd',
+    viewAll:'View all',
+    rewards:'Rewards'
+  },
+  settings:{
+    security:'Security'
   }
 };

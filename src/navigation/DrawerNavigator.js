@@ -207,9 +207,11 @@ export function DrawerNavigator(props) {
       />
 
       <DrawerItem
-        onPress={() => {
-          alert('coming soon');
-        }}
+         activeBackgroundColor="transparent"
+         focused={active === 'setting' ? true : false}
+         onPress={() => {
+           setActive('setting'), navigate(NAVIGATION.setting);
+         }}
         label=""
         icon={({ focused, color, size }) => (
           <Image source={settings} style={styles.iconStyle} />
