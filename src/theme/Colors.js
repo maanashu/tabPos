@@ -33,7 +33,8 @@ export const COLORS = {
   lightBlue:'#84A0FD',
   blueLight:'#4C76FE',
   light_green:'#A3B0DB',
-  primaryDark:'#072A59'
+  primaryDark:'#072A59',
+  light_sky:'#F4F9FF'
 
 };
 

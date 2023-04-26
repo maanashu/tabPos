@@ -5,6 +5,18 @@ import {
   newCustomer,
   returnCustomer,
   onlineCutomer,
+  security,
+  device,
+  bell,
+  pinLight,
+  plan,
+  invoiceSett,
+  tax,
+  walletSett,
+  shipping,
+  langu,
+  work,
+  policy,
 } from '@/assets';
 
 export const jbritemList = [
@@ -579,10 +591,74 @@ export const allRevenueTypeData = [
 export const settingLabelData = [
   {
     id:1,
-    name:'security'
+    name:'security',
+    subhead:'Not updated',
+    image : security
   },
   {
     id:2,
-    name:'policy'
-  }
+    name:'Devices',
+    subhead:'Not connected',
+    image : device
+  },
+  {
+    id:3,
+    name:'Notifications',
+    subhead:'Not updated',
+    image : bell
+  },
+  {
+    id:4,
+    name:'Locations',
+    subhead:'1 Locations',
+    image : pinLight
+  },
+  {
+    id:5,
+    name:'Plans',
+    subhead:'Expire on April 2024',
+    image : plan
+  },
+  {
+    id:6,
+    name:'Invoice',
+    subhead:'Defaults',
+    image : invoiceSett
+  },
+  {
+    id:7,
+    name:'Taxes',
+    subhead:'Not updated ',
+    image : tax
+  },
+  {
+    id:8,
+    name:'Wallet',
+    subhead:'Not connected',
+    image : walletSett
+  },
+  {
+    id:9,
+    name:'Shipping & Pickups',
+    subhead:'Defaults',
+    image : shipping
+  },
+  {
+    id:10,
+    name:'Language',
+    subhead:'Defaults',
+    image : langu
+  },
+  {
+    id:11,
+    name:'Legal',
+    subhead:'Defaults',
+    image : work
+  },
+  {
+    id:12,
+    name:'Policies',
+    subhead:'Defaults',
+    image : policy
+  },
 ]

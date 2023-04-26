@@ -533,6 +533,17 @@ export const en = {
     rewards:'Rewards'
   },
   settings:{
-    security:'Security'
+    security:'Security',
+    twoStepVerifiCon:'2-step verification',
+    securitysubhead:'An extra layer to boost your team members account security. A verification code will be required in addition to password each time you sign in.',
+    memeberEnable:'Team members must enable their own verification methods.',
+    teamMemeber:'2-step verification for team members',
+    enableSecurity:"Enable Two-Steps Security",
+    firstDownloader:'First, download Google Authenticator from the ',
+    googleAuth: 'Google authenticator',
+    instead:'Instead of waiting for text messages, get verification codes from an authenticator app. It works even if your phone is offline.',
+    doLater:'I will do it later',
+    next:'Next',
+    qrCode:'Scan QR Code to active  google authenticator'
   }
 };

@@ -161,6 +161,7 @@ export function Retails() {
   const [brandSelectedId, setBrandSelectedId] = useState(null);
 
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
+  console.log('addRemoveSelectedId',addRemoveSelectedId);
   const [searchSelectedId, setSearchSelectedId] = useState(null);
   const [tipSelectId, setTipsSelected] = useState();
   const [amountSelectId, setAmountSelectId] = useState();
@@ -529,6 +530,7 @@ export function Retails() {
         {
           text: 'No',
           style: 'cancel',
+          
         },
         {
           text: 'YES',
@@ -566,13 +568,14 @@ export function Retails() {
           qty: proCount === undefined ? 0 : proCount,
           service_id: item.service_id,
           supplyId: item?.supplies?.[0]?.id,
-          supplyPriceid: item?.supplies?.[0]?.supply_prices[0]?.id,
+          supplyPriceid: addRemoveSelectedId === null ?  item?.supplies?.[0]?.supply_prices[0]?.id : addRemoveSelectedId ,
         };
 
     dispatch(addTocart(data));
     setPosSearch(false);
     setSearchProViewDetail(false);
     setHandlerTrue(false);
+    setAddRemoveSelectedId(null)
   };
   const addToCartCatPro = productData => {
     const data = {
@@ -1685,7 +1688,7 @@ export function Retails() {
         </View>
       </View>
       <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
-        {item.supply?.supply_prices?.price_type === 'quantity_base' ? (
+        {item.product_details?.supply?.supply_prices?.price_type === 'quantity_base' ? (
           <TouchableOpacity style={styles.bundleButtonCon}>
             <Text style={styles.updatePriceButton}>Bundle</Text>
           </TouchableOpacity>

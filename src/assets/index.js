@@ -169,6 +169,12 @@ export { default as langu } from '@/assets/icons/ic_setting/langu.png';
 export { default as work } from '@/assets/icons/ic_setting/work.png';
 export { default as policy } from '@/assets/icons/ic_setting/policy.png';
 export { default as right_light } from '@/assets/icons/ic_setting/right_light.png';
+export { default as securityLogo } from '@/assets/icons/ic_setting/securityLogo.png';
+export { default as teamMember } from '@/assets/icons/ic_setting/teamMember.png';
+export { default as toggleSecurity } from '@/assets/icons/ic_setting/toggle.png';
+export { default as googleAuth } from '@/assets/icons/ic_setting/googleAuth.png';
+export { default as checkboxSec } from '@/assets/icons/ic_setting/checkbox.png';
+export { default as scurityScan } from '@/assets/icons/ic_setting/scurityScan.png';
 
 /* Fonts */
 export const Fonts = {
