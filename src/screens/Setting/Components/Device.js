@@ -44,7 +44,9 @@ export function Device() {
                   onPress={() => setDropTrue(false)}
                 >
                   <Image source={item.image} style={styles.dropScan} />
-                  <Text style={styles.dropDownText}>{item.title}</Text>
+                  <Text style={styles.dropDownText} numberOfLines={1}>
+                    {item.title}
+                  </Text>
                 </TouchableOpacity>
               ))}
               <Spacer space={SH(10)} />
@@ -53,7 +55,7 @@ export function Device() {
         </View>
       </View>
       <Spacer space={SH(30)} />
-      <View style={styles.securityMainCon}>
+      <View style={[styles.securityMainCon, { zIndex: -9 }]}>
         <View style={styles.securityBodyCon}>
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={deviceLogo} style={styles.securityLogo} />

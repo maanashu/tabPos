@@ -1,4 +1,9 @@
-import { StyleSheet, Dimensions, ViewPagerAndroidBase } from 'react-native';
+import {
+  StyleSheet,
+  Dimensions,
+  ViewPagerAndroidBase,
+  Platform,
+} from 'react-native';
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
@@ -38,7 +43,7 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 0.5,
     borderColor: COLORS.solidGrey,
-    height: SW(15),
+    height: Platform.OS === 'android' ? SW(15) : SW(18),
     paddingHorizontal: moderateScale(10),
     justifyContent: 'center',
   },
@@ -109,10 +114,9 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(4),
-    
   },
-  twoStepMemberCon2:{
-    width:windowWidth * 0.38
+  twoStepMemberCon2: {
+    width: windowWidth * 0.38,
   },
   teamMember: {
     width: SW(14),
@@ -133,84 +137,83 @@ export const styles = StyleSheet.create({
     marginLeft: moderateScale(8),
   },
   modalMainView: {
-    width:windowWidth * 0.50,
-    height:windowHeight * 0.80,
-    borderRadius:10,
+    width: windowWidth * 0.5,
+    height: windowHeight * 0.8,
+    borderRadius: 10,
     borderWidth: 1,
     alignSelf: 'center',
     position: 'absolute',
-    backgroundColor:COLORS.white
+    backgroundColor: COLORS.white,
   },
-  blueToothModalHeight:{
-    height:windowHeight * 0.65,
+  blueToothModalHeight: {
+    height: windowHeight * 0.65,
   },
-  modalHeaderCon:{
-     borderBottomWidth:1,
-     borderColor:COLORS.solidGrey,
-     height:SH(80),
-     paddingHorizontal:moderateScale(10),
-     justifyContent:'center'
+  modalHeaderCon: {
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+    height: SH(80),
+    paddingHorizontal: moderateScale(10),
+    justifyContent: 'center',
   },
   crossButton: {
     width: SW(9),
     height: SW(9),
     resizeMode: 'contain',
   },
-  crossButtonCon:{
+  crossButtonCon: {
     width: SW(13),
     height: SW(13),
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  modalDataCon:{
-    width:windowWidth * 0.38,
-    alignSelf:'center',
-    flex:1,
+  modalDataCon: {
+    width: windowWidth * 0.38,
+    alignSelf: 'center',
+    flex: 1,
   },
-  primaryClr:{
-    color:COLORS.primary
+  primaryClr: {
+    color: COLORS.primary,
   },
-  firstDownloader:{
+  firstDownloader: {
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
   },
-  googleAuthCon:{
-    borderWidth:1,
-    borderColor:COLORS.solidGrey,
-    borderRadius:10,
-    height:SW(40),
-    justifyContent:'center',
-    paddingHorizontal:moderateScale(10)
+  googleAuthCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    height: SW(40),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(10),
   },
-  googleAuthConSel:{
-    borderWidth:1,
-    borderColor:COLORS.bluish_green,
-    backgroundColor:COLORS.light_sky,
-    borderRadius:10,
-    height:SW(40),
-    justifyContent:'center',
-    paddingHorizontal:moderateScale(10)
+  googleAuthConSel: {
+    borderWidth: 1,
+    borderColor: COLORS.bluish_green,
+    backgroundColor: COLORS.light_sky,
+    borderRadius: 10,
+    height: SW(40),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(10),
   },
   googleAuth: {
     width: SW(15),
     height: SW(15),
     resizeMode: 'contain',
   },
-  googleAuthText:{
+  googleAuthText: {
     fontSize: SF(22),
     fontFamily: Fonts.MaisonBold,
     color: COLORS.black,
   },
-  checkboxSec:{
+  checkboxSec: {
     width: SW(7),
     height: SW(7),
     resizeMode: 'contain',
   },
-  fontLeft:{
-    fontSize:SF(14),
+  fontLeft: {
+    fontSize: SF(14),
     marginLeft: moderateScale(8),
-
   },
   checkoutButton: {
     flexDirection: 'row',
@@ -232,124 +235,121 @@ export const styles = StyleSheet.create({
     height: SW(3),
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(6),
-    tintColor:COLORS.darkGray
+    tintColor: COLORS.darkGray,
   },
-  buttonSetting:{
-     alignItems:'center',
+  buttonSetting: {
+    alignItems: 'center',
   },
-  scanCodeCon:{
-    width:windowWidth* 0.25,
-    alignSelf:'center',
-    height:SW(15),
-    borderRadius:5,
-    backgroundColor:COLORS.textInputBackground,
-    justifyContent:'center',
-    alignItems:'center'
+  scanCodeCon: {
+    width: windowWidth * 0.25,
+    alignSelf: 'center',
+    height: SW(15),
+    borderRadius: 5,
+    backgroundColor: COLORS.textInputBackground,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  scurityScan:{
+  scurityScan: {
     width: SW(65),
     height: SW(65),
     resizeMode: 'contain',
-    alignSelf:'center'
+    alignSelf: 'center',
   },
 
   // setting security css end
 
-
   // setting device css start
-  addNewButtonCon:{
-    backgroundColor:COLORS.primary,
-    width:SW(38),
-    height:SW(10),
-    borderRadius:6,
-    flexDirection:'row',
-    justifyContent:'center',
-    alignItems:'center'
+  addNewButtonCon: {
+    backgroundColor: COLORS.primary,
+    width: SW(38),
+    height: SW(10),
+    borderRadius: 6,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
   },
-  addIcon:{
+  addIcon: {
     width: SW(6),
     height: SW(6),
     resizeMode: 'contain',
   },
-  addNew:{
+  addNew: {
     color: COLORS.white,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    marginLeft:5
+    marginLeft: 5,
   },
-  scanner:{
+  scanner: {
     width: SW(140),
     height: SW(30),
     resizeMode: 'contain',
   },
-  codeAppear:{
+  codeAppear: {
     color: COLORS.dark_grey,
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
-    alignSelf:'center'
+    alignSelf: 'center',
   },
-  codeContainer:{
+  codeContainer: {
     width: SW(100),
     height: SW(22),
-    backgroundColor:COLORS.textInputBackground,
-    borderRadius:5,
-    alignSelf:'center'
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 5,
+    alignSelf: 'center',
   },
-  doneButtons:{
+  doneButtons: {
     width: SW(100),
     height: SW(14),
-    backgroundColor:COLORS.gerySkies,
-    borderRadius:3,
-    alignSelf:'center',
+    backgroundColor: COLORS.gerySkies,
+    borderRadius: 3,
+    alignSelf: 'center',
   },
-  doneSelectText:{
+  doneSelectText: {
     color: COLORS.white,
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
-    alignSelf:'center'
+    alignSelf: 'center',
   },
-  searchForDevice:{
+  searchForDevice: {
     color: COLORS.solid_grey,
-    fontSize: SF(18 ),
+    fontSize: SF(18),
     fontFamily: Fonts.MaisonRegular,
   },
-  blueToothIcon:{
+  blueToothIcon: {
     width: SW(45),
     height: SW(45),
     resizeMode: 'contain',
   },
-  foundOneDev:{
+  foundOneDev: {
     color: COLORS.solid_grey,
     fontSize: SF(14),
     fontFamily: Fonts.SemiBold,
-    alignSelf:"flex-start"
+    alignSelf: 'flex-start',
   },
-  dropdownCon:{
-    position:"absolute",
-    top:45, 
-    right:0,
-    width:SW(60),
-    height:SW(60),
-    backgroundColor:COLORS.white,
-    borderRadius:10,
+  dropdownCon: {
+    position: 'absolute',
+    top: 45,
+    right: 0,
+    width: SW(60),
+    height: SW(60),
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
     ...ShadowStyles.shadow,
   },
-  dropDownText:{
+  dropDownText: {
     color: COLORS.solid_grey,
     fontSize: SF(13),
     fontFamily: Fonts.Regular,
-    marginLeft:3
+    marginLeft: 3,
   },
-  dropScan:{
+  dropScan: {
     width: SW(7),
     height: SW(7),
     resizeMode: 'contain',
   },
-  dropPressArea:{
-    paddingVertical:verticalScale(6),
-    paddingLeft: moderateScale(9)
-  }
-
-
-
+  dropPressArea: {
+    paddingVertical: verticalScale(6),
+    paddingHorizontal: moderateScale(9),
+  },
 });

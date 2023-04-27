@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
-import {
-  Spacer,
-} from '@/components';
+import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import {
@@ -30,10 +23,9 @@ export function Security() {
 
   return (
     <View>
-       <View style={[styles.flexRow, {height:SW(12)}]}>
-      <Text style={styles.HeaderLabelText}>{strings.settings.security}</Text>
-
-       </View>
+      <View style={[styles.flexRow, { height: SW(12) }]}>
+        <Text style={styles.HeaderLabelText}>{strings.settings.security}</Text>
+      </View>
       <Spacer space={SH(30)} />
       <View style={styles.securityMainCon}>
         <View style={styles.securityBodyCon}>
@@ -142,7 +134,10 @@ export function Security() {
                     </Text>
                     <Spacer space={SH(5)} />
                     <Text
-                      style={[styles.firstDownloader, { fontSize: SF(11) }]}
+                      style={[
+                        styles.firstDownloader,
+                        { fontSize: SF(11), width: SW(120) },
+                      ]}
                     >
                       {strings.settings.instead}
                     </Text>
