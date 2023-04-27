@@ -16,7 +16,7 @@ import {
 } from '@/assets';
 import { deviceDropDownArray } from '@/constants/flatListData';
 
-export function Device() {
+export function Notification() {
   const [twoStepModal, setTwoStepModal] = useState(false);
   const [dropTrue, setDropTrue] = useState(false);
   const [blueToothModal, setBlueToothModal] = useState(false);

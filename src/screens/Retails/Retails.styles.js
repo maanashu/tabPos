@@ -394,7 +394,7 @@ export const styles = StyleSheet.create({
   bottomContainer: {
     position:"absolute",
     bottom:0,
-    left:20,
+    // left:20,
     borderTopWidth: 1,
     height: SH(300),
     borderColor: COLORS.row_grey,
@@ -1213,11 +1213,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: verticalScale(9),
   },
-  checkoutText: {
-    color: COLORS.white,
-    fontSize: SF(16),
-    fontFamily: Fonts.SemiBold,
-  },
+
   checkArrow: {
     width: SW(10),
     height: SW(4),

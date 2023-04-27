@@ -161,7 +161,7 @@ export function Retails() {
   const [brandSelectedId, setBrandSelectedId] = useState(null);
 
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
-  console.log('addRemoveSelectedId',addRemoveSelectedId);
+  console.log('addRemoveSelectedId', addRemoveSelectedId);
   const [searchSelectedId, setSearchSelectedId] = useState(null);
   const [tipSelectId, setTipsSelected] = useState();
   const [amountSelectId, setAmountSelectId] = useState();
@@ -223,7 +223,7 @@ export function Retails() {
   const [percentageCheck, setPercentageCheck] = useState(false);
   const [discountCheck, setDiscountCheck] = useState(false);
   const [handlerTrue, setHandlerTrue] = useState(false);
-  const [modeOfPay, setModeOfPay] =  useState("");
+  const [modeOfPay, setModeOfPay] = useState('');
 
   const tipData = [
     {
@@ -530,7 +530,6 @@ export function Retails() {
         {
           text: 'No',
           style: 'cancel',
-          
         },
         {
           text: 'YES',
@@ -568,14 +567,17 @@ export function Retails() {
           qty: proCount === undefined ? 0 : proCount,
           service_id: item.service_id,
           supplyId: item?.supplies?.[0]?.id,
-          supplyPriceid: addRemoveSelectedId === null ?  item?.supplies?.[0]?.supply_prices[0]?.id : addRemoveSelectedId ,
+          supplyPriceid:
+            addRemoveSelectedId === null
+              ? item?.supplies?.[0]?.supply_prices[0]?.id
+              : addRemoveSelectedId,
         };
 
     dispatch(addTocart(data));
     setPosSearch(false);
     setSearchProViewDetail(false);
     setHandlerTrue(false);
-    setAddRemoveSelectedId(null)
+    setAddRemoveSelectedId(null);
   };
   const addToCartCatPro = productData => {
     const data = {
@@ -717,15 +719,14 @@ export function Retails() {
       const data = {
         cartid: cartIDdiscount,
         userId: customer?.user_id,
-        modeOfPayment : modeOfPay
-       
+        modeOfPayment: modeOfPay,
       };
       dispatch(createOrder(data));
       setListofItem(false);
       setCheckoutCon(false);
       setCustomerPhoneNo(''),
-      setSendInventer(false),
-      dispatch(getUserDetailSuccess([]));
+        setSendInventer(false),
+        dispatch(getUserDetailSuccess([]));
     }
   };
 
@@ -808,20 +809,20 @@ export function Retails() {
     setCashChoose(false);
     setCardChoose(false);
     dispatch(getWalletId(sellerID));
-    setModeOfPay("jbr")
+    setModeOfPay('jbr');
   };
   const cashChooseHandler = () => {
     setCashChoose(true);
     setJbrCoin(false);
     setCardChoose(false);
     setCustCash(!custCash);
-    setModeOfPay("cash")
+    setModeOfPay('cash');
   };
   const cardChooseHandler = () => {
     setCardChoose(!cardChoose);
     setCashChoose(false);
     setJbrCoin(false);
-    setModeOfPay("card")
+    setModeOfPay('card');
   };
   const cusCashPaidHandler = () => {
     setCutsomerTotalAmount(false);
@@ -1688,7 +1689,8 @@ export function Retails() {
         </View>
       </View>
       <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
-        {item.product_details?.supply?.supply_prices?.price_type === 'quantity_base' ? (
+        {item.product_details?.supply?.supply_prices?.price_type ===
+        'quantity_base' ? (
           <TouchableOpacity style={styles.bundleButtonCon}>
             <Text style={styles.updatePriceButton}>Bundle</Text>
           </TouchableOpacity>
@@ -2009,25 +2011,25 @@ export function Retails() {
                       </TouchableOpacity>
                     </View>
                   </View>
-                 <View style={styles.cartArrayCon}>
-                 <Spacer space={SH(10)} />
-                  {isGetCartLoading ||
-                  isAddCartLoading ||
-                  clearOneCartLoader ? (
-                    <View style={{ marginTop: 50 }}>
-                      <ActivityIndicator
-                        size="large"
-                        color={COLORS.indicator}
+                  <View style={styles.cartArrayCon}>
+                    <Spacer space={SH(10)} />
+                    {isGetCartLoading ||
+                    isAddCartLoading ||
+                    clearOneCartLoader ? (
+                      <View style={{ marginTop: 50 }}>
+                        <ActivityIndicator
+                          size="large"
+                          color={COLORS.indicator}
+                        />
+                      </View>
+                    ) : (
+                      <FlatList
+                        data={allCartArray}
+                        extraData={allCartArray}
+                        renderItem={cartListItem}
+                        keyExtractor={item => item.id}
+                        ListEmptyComponent={renderEmptyContainer}
                       />
-                    </View>
-                  ) : (
-                    <FlatList
-                      data={allCartArray}
-                      extraData={allCartArray}
-                      renderItem={cartListItem}
-                      keyExtractor={item => item.id}
-                      ListEmptyComponent={renderEmptyContainer}
-                    />
                     )}
                   </View>
                 </View>

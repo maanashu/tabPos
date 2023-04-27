@@ -24,7 +24,9 @@ export { default as users } from '@/assets/icons/ic_navigator/users.png';
 export { default as blueusers } from '@/assets/icons/ic_navigator/blueusers.png';
 export { default as bluetray } from '@/assets/icons/ic_navigator/bluetray.png';
 export { default as reward } from '@/assets/icons/ic_navigator/reward.png';
+export { default as blueReward } from '@/assets/icons/ic_navigator/blueReward.png';
 export { default as settings } from '@/assets/icons/ic_navigator/settings.png';
+export { default as blueSetting } from '@/assets/icons/ic_navigator/blueSetting.png';
 export { default as power } from '@/assets/icons/ic_navigator/power.png';
 export { default as menu } from '@/assets/icons/ic_retail/menu.png';
 export { default as search_light } from '@/assets/icons/ic_retail/Search_light.png';
@@ -175,6 +177,11 @@ export { default as toggleSecurity } from '@/assets/icons/ic_setting/toggle.png'
 export { default as googleAuth } from '@/assets/icons/ic_setting/googleAuth.png';
 export { default as checkboxSec } from '@/assets/icons/ic_setting/checkbox.png';
 export { default as scurityScan } from '@/assets/icons/ic_setting/scurityScan.png';
+export { default as deviceLogo } from '@/assets/icons/ic_setting/deviceLogo.png';
+export { default as trackCamera } from '@/assets/icons/ic_setting/trackCamera.png';
+export { default as addIcon } from '@/assets/icons/ic_setting/addIcon.png';
+export { default as blueToothIcon } from '@/assets/icons/ic_setting/blueToothIcon.png';
+export { default as dropScan } from '@/assets/icons/ic_setting/dropScan.png';
 
 /* Fonts */
 export const Fonts = {

@@ -26,6 +26,8 @@ import {
   power,
   bluetray,
   blueCalender,
+  blueReward,
+  blueSetting,
 } from '@/assets';
 import { useDispatch } from 'react-redux';
 import { logoutFunction } from '@/actions/AuthActions';
@@ -202,7 +204,7 @@ export function DrawerNavigator(props) {
         }}
         label=""
         icon={({ focused, color, size }) => (
-          <Image source={reward} style={styles.iconStyle} />
+          <Image source={focused ? blueReward : reward} style={focused ? styles.iconStyle2 : styles.iconStyle} />
         )}
       />
 
@@ -214,7 +216,7 @@ export function DrawerNavigator(props) {
          }}
         label=""
         icon={({ focused, color, size }) => (
-          <Image source={settings} style={styles.iconStyle} />
+          <Image source={focused ? blueSetting :  settings} style={focused ? styles.iconStyle2 : styles.iconStyle} />
         )}
       />
 
@@ -249,6 +251,12 @@ const styles = StyleSheet.create({
   iconStyle: {
     width: Platform.OS === 'android' ? SW(9) : SW(10),
     height: Platform.OS === 'android' ? SW(9) : SW(10),
+    resizeMode: 'contain',
+  },
+  iconStyle2: {
+    width: Platform.OS === 'android' ? SW(7) : SW(10),
+    height: Platform.OS === 'android' ? SW(7) : SW(10),
+    marginLeft:3,
     resizeMode: 'contain',
   },
   iconStyle1: {

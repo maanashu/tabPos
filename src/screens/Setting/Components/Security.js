@@ -1,62 +1,27 @@
 import React, { useState } from 'react';
 import {
-  DaySelector,
-  ScreenWrapper,
   Spacer,
-  TableDropdown,
 } from '@/components';
 import { strings } from '@/localization';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import {
-  StyleSheet,
   View,
   Text,
-  Dimensions,
-  FlatList,
   TouchableOpacity,
   Image,
-  TextInput,
-  ScrollView,
 } from 'react-native';
-import { moderateScale } from 'react-native-size-matters';
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import {
-  Union,
-  backArrow,
-  calendar1,
   checkArrow,
   checkboxSec,
   crossButton,
-  dropdown2,
   googleAuth,
-  location,
-  mask,
-  maskRight,
-  notifications,
-  reward,
-  rewardFlower,
-  rewardGraph,
-  right_light,
   scurityScan,
-  search_light,
-  security,
   securityLogo,
-  tableProfile,
   teamMember,
   toggleSecurity,
-  unionRight,
-  userImage,
-  wallet2,
 } from '@/assets';
-import LinearGradient from 'react-native-linear-gradient';
-import { Table } from 'react-native-table-component';
-import DropDownPicker from 'react-native-dropdown-picker';
-import moment from 'moment';
-
-const windowWidth = Dimensions.get('window').width;
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { settingLabelData } from '@/constants/flatListData';
 
 export function Security() {
   const [twoStepModal, setTwoStepModal] = useState(false);
@@ -65,8 +30,11 @@ export function Security() {
 
   return (
     <View>
+       <View style={[styles.flexRow, {height:SW(12)}]}>
       <Text style={styles.HeaderLabelText}>{strings.settings.security}</Text>
-      <Spacer space={SH(20)} />
+
+       </View>
+      <Spacer space={SH(30)} />
       <View style={styles.securityMainCon}>
         <View style={styles.securityBodyCon}>
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>

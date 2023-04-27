@@ -17,6 +17,7 @@ import {
   langu,
   work,
   policy,
+  dropScan,
 } from '@/assets';
 
 export const jbritemList = [
@@ -661,4 +662,27 @@ export const settingLabelData = [
     subhead:'Defaults',
     image : policy
   },
+];
+
+export const deviceDropDownArray = [
+  {
+    id : 1,
+    title:'Add Barcode Scanner',
+    image:dropScan
+  },
+  {
+    id : 2,
+    title:'Card Reader',
+    image:dropScan
+  },
+  {
+    id : 3,
+    title:'Cash drawers',
+    image:dropScan
+  },
+  {
+    id : 4,
+    title:'Receipt printers',
+    image:dropScan
+  }
 ]

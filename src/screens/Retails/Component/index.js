@@ -390,8 +390,8 @@ export function ListOfItem({listOfItemCloseHandler,walletId, customerProfileImag
                   <Image source={crossButton} style={styles.crossButtonStyle} />
                 </TouchableOpacity>
               </View>
-              <View>
-                <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={{height : windowHeight * 0.94}}>
+                {/* <ScrollView showsVerticalScrollIndicator={false}> */}
                   <Spacer space={SH(20)} />
                   <Text style={styles.paymenttdone}>
                     {strings.posSale.paymenttdone}
@@ -510,7 +510,7 @@ export function ListOfItem({listOfItemCloseHandler,walletId, customerProfileImag
                       <Image source={checkArrow} style={styles.checkArrow} />
                     </TouchableOpacity>
                   </View>
-                </ScrollView>
+                {/* </ScrollView> */}
               </View>
               {/* </View> */}
             </View>

@@ -109,10 +109,19 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(4),
+    
+  },
+  twoStepMemberCon2:{
+    width:windowWidth * 0.38
   },
   teamMember: {
     width: SW(14),
     height: SW(14),
+    resizeMode: 'contain',
+  },
+  teamMember2: {
+    width: SW(10),
+    height: SW(10),
     resizeMode: 'contain',
   },
   toggleSecurity: {
@@ -131,6 +140,9 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     backgroundColor:COLORS.white
+  },
+  blueToothModalHeight:{
+    height:windowHeight * 0.65,
   },
   modalHeaderCon:{
      borderBottomWidth:1,
@@ -153,7 +165,7 @@ export const styles = StyleSheet.create({
   modalDataCon:{
     width:windowWidth * 0.38,
     alignSelf:'center',
-    flex:1
+    flex:1,
   },
   primaryClr:{
     color:COLORS.primary
@@ -239,6 +251,105 @@ export const styles = StyleSheet.create({
     height: SW(65),
     resizeMode: 'contain',
     alignSelf:'center'
+  },
+
+  // setting security css end
+
+
+  // setting device css start
+  addNewButtonCon:{
+    backgroundColor:COLORS.primary,
+    width:SW(38),
+    height:SW(10),
+    borderRadius:6,
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  addIcon:{
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+  },
+  addNew:{
+    color: COLORS.white,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    marginLeft:5
+  },
+  scanner:{
+    width: SW(140),
+    height: SW(30),
+    resizeMode: 'contain',
+  },
+  codeAppear:{
+    color: COLORS.dark_grey,
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+    alignSelf:'center'
+  },
+  codeContainer:{
+    width: SW(100),
+    height: SW(22),
+    backgroundColor:COLORS.textInputBackground,
+    borderRadius:5,
+    alignSelf:'center'
+  },
+  doneButtons:{
+    width: SW(100),
+    height: SW(14),
+    backgroundColor:COLORS.gerySkies,
+    borderRadius:3,
+    alignSelf:'center',
+  },
+  doneSelectText:{
+    color: COLORS.white,
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+    alignSelf:'center'
+  },
+  searchForDevice:{
+    color: COLORS.solid_grey,
+    fontSize: SF(18 ),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  blueToothIcon:{
+    width: SW(45),
+    height: SW(45),
+    resizeMode: 'contain',
+  },
+  foundOneDev:{
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.SemiBold,
+    alignSelf:"flex-start"
+  },
+  dropdownCon:{
+    position:"absolute",
+    top:45, 
+    right:0,
+    width:SW(60),
+    height:SW(60),
+    backgroundColor:COLORS.white,
+    borderRadius:10,
+    ...ShadowStyles.shadow,
+  },
+  dropDownText:{
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    fontFamily: Fonts.Regular,
+    marginLeft:3
+  },
+  dropScan:{
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+  },
+  dropPressArea:{
+    paddingVertical:verticalScale(6),
+    paddingLeft: moderateScale(9)
   }
+
+
 
 });

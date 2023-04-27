@@ -544,6 +544,21 @@ export const en = {
     instead:'Instead of waiting for text messages, get verification codes from an authenticator app. It works even if your phone is offline.',
     doLater:'I will do it later',
     next:'Next',
-    qrCode:'Scan QR Code to active  google authenticator'
+    qrCode:'Scan QR Code to active  google authenticator',
+    device:'Devices',
+    configure:'Configure Settings on Your Device',
+    manageDevice:'All you need to manage Basic Point of Sale is a device nickname and location to allow team members to accept payments.',
+    barScan:'Barcode Scanner ',
+    oneBlueTToth:'1 bluetooth device active',
+    addNew:'Add New',
+    addbarcode:'Add Barcode Scanner',
+    pluginFirst:'1.  Plugin USB/C Port to  POS Monitor',
+    pluginSecond:'2. Scan Barcode Below',
+    codeAppear:'Codes will appear here ',
+    done:'Done',
+    addBlueToothHead:'Add Bluetooth Barcode Scanner',
+    searchForDevice:'Searching for the devices....',
+    foundOneDev:'Found 1 device'
+
   }
 };
