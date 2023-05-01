@@ -1,4 +1,3 @@
-import { strings } from '@/localization';
 import {
   USER_URL,
   PRODUCT_URL,
@@ -9,8 +8,9 @@ import {
   ApiWalletInventory,
   WALLET_URL,
 } from '@/utils/APIinventory';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { strings } from '@/localization';
 import { HttpClient } from './HttpClient';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export class RetailController {
   static async getCategory(sellerID) {

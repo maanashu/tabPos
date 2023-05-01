@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Spacer } from '@/components';
-import { strings } from '@/localization';
-import { SF, SH, SW } from '@/theme';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { styles } from '@/screens/Setting/Setting.styles';
+
 import Modal from 'react-native-modal';
+
 import {
   addIcon,
   blueToothIcon,
@@ -14,7 +12,12 @@ import {
   toggleSecurity,
   trackCamera,
 } from '@/assets';
+import { SF, SH, SW } from '@/theme';
+import { strings } from '@/localization';
+import { Button, Spacer } from '@/components';
 import { deviceDropDownArray } from '@/constants/flatListData';
+
+import { styles } from '@/screens/Setting/Setting.styles';
 
 export function Device() {
   const [twoStepModal, setTwoStepModal] = useState(false);
@@ -176,9 +179,7 @@ export function Device() {
               <View style={styles.codeContainer}></View>
               <Spacer space={SH(20)} />
               <Button
-                onPress={() => {
-                  setBlueToothModal(true);
-                }}
+                onPress={() => setBlueToothModal(true)}
                 title={strings.settings.done}
                 textStyle={styles.doneSelectText}
                 style={styles.doneButtons}

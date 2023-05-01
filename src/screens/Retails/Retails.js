@@ -11,7 +11,6 @@ import {
   KeyboardAvoidingView,
   Alert,
   Keyboard,
-  BackHandler,
 } from 'react-native';
 import {
   Spacer,
@@ -41,7 +40,6 @@ import {
   addDiscountPic,
   notess,
   checkArrow,
-  loader,
   backArrow2,
   backArrow,
   userImage,
@@ -76,7 +74,6 @@ import {
   getWalletId,
   walletGetByPhone,
   requestMoney,
-  getTips,
   getTip,
 } from '@/actions/RetailAction';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -86,9 +83,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { CategoryProductDetail, ChangeDue, ListOfItem } from './Component';
 import { CameraScreen } from 'react-native-camera-kit';
-import { emailReg, mobileReg } from '@/utils/validators';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ScrollView } from 'react-native-gesture-handler';
+import { emailReg } from '@/utils/validators';
 
 export function Retails() {
   const dispatch = useDispatch();
@@ -111,7 +106,6 @@ export function Retails() {
   const getTotalCart = getRetailData?.getAllCart?.poscart_products?.length;
   const totalCart = getTotalCart ? getTotalCart : '0';
   const walletUser = getRetailData?.walletGetByPhone?.[0];
-  const walletUserStep = walletUser?.step;
   const [checkoutCon, setCheckoutCon] = useState(false);
   const [amount, setAmount] = useState('');
   const [categoryModal, setCategoryModal] = useState(false);
@@ -146,7 +140,7 @@ export function Retails() {
   const [custPayment, setCustPayment] = useState(false);
   const [walletId, setWalletId] = useState(walletData?.wallet_address);
   const [listOfItem, setListofItem] = useState(false);
-  const [custCash, setCustCash] = useState(false);
+  const [custCash, setCustCash] = useState(false);  
   const [customerPhoneNo, setCustomerPhoneNo] = useState('');
   const [cutsomerTotalAmount, setCutsomerTotalAmount] = useState(false);
 
@@ -155,13 +149,9 @@ export function Retails() {
   const [searchProDetail, setSearchProDetail] = useState(false);
   const [searchProViewDetail, setSearchProViewDetail] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-
   const [subSelectedId, setSubSelectedId] = useState(null);
-
   const [brandSelectedId, setBrandSelectedId] = useState(null);
-
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
-  console.log('addRemoveSelectedId', addRemoveSelectedId);
   const [searchSelectedId, setSearchSelectedId] = useState(null);
   const [tipSelectId, setTipsSelected] = useState();
   const [amountSelectId, setAmountSelectId] = useState();
@@ -176,7 +166,6 @@ export function Retails() {
   const [search, setSearch] = useState('');
   const [selectedData, setSelectedData] = useState();
   const [storeData, setStoreData] = useState();
-  const BundleproductId = storeData?.id;
   const [cartData, setCartData] = useState();
 
   const cartId = cartData?.cart_id;
@@ -185,7 +174,6 @@ export function Retails() {
   const [notes, setNotes] = useState('');
   const [value, setValue] = useState('');
   const cartIDdiscount = JSON.stringify(cartID2);
-  const bunndleProArray = getRetailData?.productbunList ?? [];
 
   const [data, setData] = useState(serProductArray ?? []);
   const [refresh, setRefresh] = useState('');
@@ -318,14 +306,14 @@ export function Retails() {
     );
   }, [getRetailData?.SeaProductList]);
 
-  const handleIncrease = (id, index) => {
+  const handleIncrease = (id) => {
     setItemIndex(id);
     const array = serProductArrayj;
     array[id].qty = array[id].qty + 1;
     setSerProductArrayj(array);
     setRefresh(Math.random());
   };
-  const handleDecrease = (id, index) => {
+  const handleDecrease = (id) => {
     const array = serProductArrayj;
     array[id].qty = array[id].qty > 0 ? array[id].qty - 1 : array[id].qty;
     setData(array);
@@ -501,9 +489,6 @@ export function Retails() {
   const isSendInvitationLoading = useSelector(state =>
     isLoadingSelector([TYPES.SEND_INVITATION], state)
   );
-  const wallerUserLoader = useSelector(state =>
-    isLoadingSelector([TYPES.GET_WALLET_PHONE], state)
-  );
   const sendRequestLoader = useSelector(state =>
     isLoadingSelector([TYPES.REQUEST_MONEY], state)
   );
@@ -550,7 +535,7 @@ export function Retails() {
     setAmountPopup(false);
   };
 
-  const addToCartHandler = (item, serProductCount2) => {
+  const addToCartHandler = (item) => {
     setAddRemoveSelectedId(null);
     const data = handlerTrue
       ? {
@@ -630,15 +615,6 @@ export function Retails() {
     }
   };
 
-  const saveDiscountHandler1 = () => {
-    if (amountCheck) {
-      setAmountCheck(false);
-    } else if (percentageCheck) {
-      setPercentageCheck(false);
-    } else if (discountCheck) {
-      setDiscountCheck(false);
-    }
-  };
 
   const saveDiscountHandler = () => {
     if (!cartIDdiscount) {
@@ -748,10 +724,6 @@ export function Retails() {
     setAmountPopup(!amountPopup);
     setBundleOffer(false);
   };
-  const bundleHandler = () => {
-    setAmountPopup(!amountPopup);
-    setBundleOffer(true);
-  };
   const amountRemoveHandler = () => {
     setAmountPopup(false);
     setCityModelOpen(false);
@@ -784,9 +756,6 @@ export function Retails() {
     setAddNotes(false);
     setRightMoreAction(true);
   };
-  const updatePriceHandler = () => {
-    setUpdatePrice(!updatePrice);
-  };
   const updatePriceRemoveHandler = () => {
     setUpdatePrice(false);
   };
@@ -817,6 +786,7 @@ export function Retails() {
     setCardChoose(false);
     setCustCash(!custCash);
     setModeOfPay('cash');
+    setSendInventer(true);
   };
   const cardChooseHandler = () => {
     setCardChoose(!cardChoose);
@@ -898,7 +868,7 @@ export function Retails() {
     );
   };
 
-  const tipDataDummyItem = ({ item }) => (
+  const tipDataDummyItem = () => (
     <View style={styles.tipChildCon}>
       <ActivityIndicator size="small" color={COLORS.black} />
     </View>
@@ -1215,10 +1185,10 @@ export function Retails() {
             </View>
             <View>
               <DropDownPicker
-                ArrowUpIconComponent={({ style }) => (
+                ArrowUpIconComponent={() => (
                   <Image source={dropdown2} style={styles.dropDownIcon} />
                 )}
-                ArrowDownIconComponent={({ style }) => (
+                ArrowDownIconComponent={() => (
                   <Image source={dropdown2} style={styles.dropDownIcon} />
                 )}
                 style={styles.dropdown}
@@ -1479,7 +1449,7 @@ export function Retails() {
             )}
           </View>
         </View>
-      );
+      );                                      
     }
   };
 
@@ -2150,10 +2120,10 @@ export function Retails() {
 
                   <View>
                     <DropDownPicker
-                      ArrowUpIconComponent={({ style }) => (
+                      ArrowUpIconComponent={() => (
                         <Image source={dropdown2} style={styles.dropDownIcon} />
                       )}
-                      ArrowDownIconComponent={({ style }) => (
+                      ArrowDownIconComponent={() => (
                         <Image source={dropdown2} style={styles.dropDownIcon} />
                       )}
                       style={styles.dropdown}
@@ -2684,13 +2654,13 @@ export function Retails() {
 
                       <View>
                         <DropDownPicker
-                          ArrowUpIconComponent={({ style }) => (
+                          ArrowUpIconComponent={() => (
                             <Image
                               source={dropdown2}
                               style={styles.dropDownIcon}
                             />
                           )}
-                          ArrowDownIconComponent={({ style }) => (
+                          ArrowDownIconComponent={() => (
                             <Image
                               source={dropdown2}
                               style={styles.dropDownIcon}

@@ -79,11 +79,11 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
-    height: windowHeight * 0.33,
+    // height: windowHeight * 0.33,
     padding: 15,
   },
   securityBodyCon: {
-    flex: 1,
+    // flex: 1,
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
@@ -114,6 +114,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(4),
+    marginVertical: verticalScale(3),
   },
   twoStepMemberCon2: {
     width: windowWidth * 0.38,
@@ -352,4 +353,103 @@ export const styles = StyleSheet.create({
     paddingVertical: verticalScale(6),
     paddingHorizontal: moderateScale(9),
   },
+  yourPlan: {
+    color: COLORS.solid_grey,
+    fontSize: SF(18),
+    fontFamily: Fonts.MaisonBold,
+  },
+  changePlan: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    marginLeft: verticalScale(3),
+  },
+  basic: {
+    color: COLORS.bluish_green,
+    fontSize: SF(32),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  everyThingNeed: {
+    color: COLORS.dark_grey,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+  },
+  changePlanText: {
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.SemiBold,
+  },
+  radioFillPlan: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    marginHorizontal: moderateScale(4),
+  },
+  checkmark: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+    marginHorizontal: moderateScale(4),
+  },
+  billingDateCon: {
+    borderTopWidth: 1,
+    borderColor: COLORS.solidGrey,
+    paddingVertical: verticalScale(4),
+  },
+  visa: {
+    width: SW(12),
+    height: SW(8),
+    resizeMode: 'contain',
+    marginRight: moderateScale(5),
+  },
+  planModalcon: {
+    width: windowWidth * 0.85,
+    height: windowHeight * 0.88,
+    borderRadius: 10,
+    borderWidth: 1,
+    alignSelf: 'center',
+    position: 'absolute',
+    backgroundColor: COLORS.white,
+  },
+
+  planFit: {
+    color: COLORS.primary,
+    fontSize: SF(26),
+    fontFamily: Fonts.MaisonRegular,
+  },
+
+  planModalSunhead: {
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    alignSelf: 'center',
+  },
+  annualBillingCon:{
+    backgroundColor:COLORS.textInputBackground,
+    width:SW(35),
+    height:SW(10),
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:5,
+    marginHorizontal:moderateScale(4)
+  },
+  monthlyBil:{
+    color: COLORS.darkGray,
+    fontSize: SF(11),
+    fontFamily: Fonts.Regular,
+  },
+  basicContainer:{
+    //  borderWidth:1,
+     flex:1,
+     width:windowWidth * 0.25,
+     borderRadius:10,
+     ...ShadowStyles.shadow2,
+     backgroundColor:COLORS.white,
+     padding:12
+  },
+  basic:{
+    color: COLORS.bluish_green,
+    fontSize: SF(20),
+    fontFamily: Fonts.MaisonRegular,
+  }
 });

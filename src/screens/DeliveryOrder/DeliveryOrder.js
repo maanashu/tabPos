@@ -267,7 +267,7 @@ export function DeliveryOrder() {
             style={[styles.truckStyle, { right: 10 }]}
           />
           <View style={styles.searchView}>
-            <Image source={search_light} style={styles.searchImage} />
+            <Image source={search_light} style={styles.searchImage}/>
             <TextInput
               placeholder={strings.deliveryOrders.search}
               style={styles.textInputStyle}

@@ -174,9 +174,7 @@ export function Notification() {
               <View style={styles.codeContainer}></View>
               <Spacer space={SH(20)} />
               <Button
-                onPress={() => {
-                  setBlueToothModal(true);
-                }}
+                onPress={() =>  setBlueToothModal(true)}
                 title={strings.settings.done}
                 textStyle={styles.doneSelectText}
                 style={styles.doneButtons}

@@ -48,7 +48,7 @@ import moment from 'moment';
 const windowWidth = Dimensions.get('window').width;
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { settingLabelData } from '@/constants/flatListData';
-import { Device, Notification, Security } from '@/screens/Setting/Components'
+import { Device, Location, Notification, Plans, Security } from '@/screens/Setting/Components'
 
 export function Setting() {
   const [selectedId, setSelectedId] = useState(1);
@@ -68,8 +68,8 @@ export function Setting() {
     [1]: <Security/>,
     [2]: <Device/>,
     [3]: <Notification/>,
-    [4]:<View><Text>LOCATION</Text></View>,
-    [5]:<View><Text>PLANS</Text></View>,
+    [4]: <Location/>,
+    [5]: <Plans/>,
     [6]:<View><Text>INVOICE</Text></View>,
     [7]:<View><Text>TAX</Text></View>,
     [8]:<View><Text>WALLET</Text></View>,

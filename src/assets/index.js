@@ -182,6 +182,12 @@ export { default as trackCamera } from '@/assets/icons/ic_setting/trackCamera.pn
 export { default as addIcon } from '@/assets/icons/ic_setting/addIcon.png';
 export { default as blueToothIcon } from '@/assets/icons/ic_setting/blueToothIcon.png';
 export { default as dropScan } from '@/assets/icons/ic_setting/dropScan.png';
+export { default as businessTrad } from '@/assets/icons/ic_setting/businessTrad.png';
+export { default as store } from '@/assets/icons/ic_setting/store.png';
+export { default as changePlan } from '@/assets/icons/ic_setting/changePlan.png';
+export { default as radioFillPlan } from '@/assets/icons/ic_setting/radioFillPlan.png';
+export { default as checkmark } from '@/assets/icons/ic_setting/checkmark.png';
+export { default as visa } from '@/assets/icons/ic_setting/visa.png';
 
 /* Fonts */
 export const Fonts = {

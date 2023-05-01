@@ -351,7 +351,7 @@ export function Management() {
               {strings.management.countCash}
             </Text>
 
-            <Spacer space={SH(40)} />
+            <Spacer space={SH(40)}/>
             <View>
               <Text style={styles.amountCountedText}>
                 {strings.management.amountCounted}
@@ -736,7 +736,7 @@ export function Management() {
                 Amount left in drawer: USD ${endBalance?.amount}
               </Text>
             </View>
-            <View style={{ flex: 1 }} />
+            <View style={{ flex: 1 }}/>
             <Button
               style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}

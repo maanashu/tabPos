@@ -1,14 +1,17 @@
-import { useTheme } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View } from 'react-native';
+
+import { useTheme } from '@react-navigation/native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
+import { ShadowStyles } from '@/theme';
+import { strings } from '@/localization';
 import { login, TYPES } from '@/actions/UserActions';
 import { Button, ErrorView, TextField } from '@/components';
-import { strings } from '@/localization';
-import { styles } from '@/screens/Login/Login.styles';
 import { errorsSelector } from '@/selectors/ErrorSelectors';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { ShadowStyles } from '@/theme';
+
+import { styles } from '@/screens/Login/Login.styles';
 
 export function Login() {
   const { colors } = useTheme();
@@ -25,9 +28,7 @@ export function Login() {
     shallowEqual
   );
 
-  const handleSubmit = () => {
-    dispatch(login(username, password));
-  };
+  const handleSubmit = () => dispatch(login(username, password));
 
   return (
     <View style={styles.container}>
@@ -66,6 +67,3 @@ export function Login() {
     </View>
   );
 }
-
-
-    

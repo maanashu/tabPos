@@ -686,3 +686,42 @@ export const deviceDropDownArray = [
     image:dropScan
   }
 ]
+
+export const PLANFEATUREDATA = [
+  {
+    id:1,
+    title:'Online store'
+  },
+  {
+    id:2,
+    title:'Shareable product pages'
+  },
+  {
+    id:3,
+    title:'Unlimited products'
+  },
+  {
+    id:4,
+    title:'24/7 support'
+  },
+  {
+    id:5,
+    title:'Abandoned cart recovery'
+  },
+  {
+    id:6,
+    title:'Advanced report builder'
+  },
+];
+
+export const ANNUALDATA = [
+  {
+    id :1 ,
+    title:'Monthly Billing'
+  },
+  {
+    id :2 ,
+    title:'Annually Billing'
+  }
+
+]

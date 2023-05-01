@@ -558,7 +558,22 @@ export const en = {
     done:'Done',
     addBlueToothHead:'Add Bluetooth Barcode Scanner',
     searchForDevice:'Searching for the devices....',
-    foundOneDev:'Found 1 device'
-
+    foundOneDev:'Found 1 device',
+    location:'Locations',
+    businessLocation:'Business locations',
+    locationsubhead:'An extra layer to boost your team members account security. A verification code will be required in addition to password each time you sign in.',
+    plans:'Plans',
+    yourPlan:'Your Plan',
+    basic:'Basic',
+    everyThingNeed:'Everything you need to create a store, ship products, and process payments',
+    chnagePlan:'Change Plan',
+    includePlan:'Your Plan includes app',
+    planFeat:'Plan Features',
+    paymentMethod:'Payment method',
+    planFit:'Plan that fits your scale',
+    simpleTra:'Simple, Transparent pricing that grows with you',
+    monthlyBil:'Monthly Billing',
+    annualBil:'Annually Billing',
+    basicSubHead:'Everything you need to create a store, ship products, and process payments'
   }
 };
