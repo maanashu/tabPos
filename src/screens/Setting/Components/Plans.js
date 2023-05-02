@@ -7,27 +7,20 @@ import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import {
   Fonts,
-  businessTrad,
   changePlan,
   checkArrow,
-  checkboxSec,
   checkmark,
   crossButton,
-  googleAuth,
   radioFillPlan,
-  scurityScan,
-  securityLogo,
-  store,
-  teamMember,
-  toggleSecurity,
   visa,
 } from '@/assets';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
-import { ANNUALDATA, PLANFEATUREDATA } from '@/constants/flatListData';
-
+import {
+  ANNUALDATA,
+  PLANFEATUREDATA,
+  basicData,
+} from '@/constants/flatListData';
 export function Plans() {
-  const [twoStepModal, setTwoStepModal] = useState(false);
-  const [googleAuthStart, setGoogleAuthStart] = useState(false);
   const [planModal, setPlanModal] = useState(false);
   const [selectedId, setSelectedId] = useState(1);
 
@@ -44,15 +37,73 @@ export function Plans() {
       </Text>
     </View>
   );
+  const basicItem = ({ item }) => (
+    <View style={styles.basicContainer}>
+      <Text style={styles.basic}>{item.heading}</Text>
+      <Text style={styles.everyThingNeed}>{strings.settings.basicSubHead}</Text>
+      <Spacer space={SH(10)} />
+      <Text style={styles.basicPrice}>$15.00</Text>
+      <Text style={styles.everyThingNeed}>Per Month</Text>
+      <Spacer space={SH(10)} />
+      <Text style={styles.changePlanText}>{strings.settings.includePlan}</Text>
+      <View style={styles.dispalyRow}>
+        <Image source={radioFillPlan} style={styles.radioFillPlan} />
+        <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
+          JOBR Wallet
+        </Text>
+      </View>
+      <View style={styles.dispalyRow}>
+        <Image source={radioFillPlan} style={styles.radioFillPlan} />
+        <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
+          JOBR Wallet
+        </Text>
+      </View>
+      <View style={styles.dispalyRow}>
+        <Image source={radioFillPlan} style={styles.radioFillPlan} />
+        <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
+          JOBR Wallet
+        </Text>
+      </View>
+      <View style={styles.dispalyRow}>
+        <Image source={radioFillPlan} style={styles.radioFillPlan} />
+        <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
+          JOBR Wallet
+        </Text>
+      </View>
+      <Spacer space={SH(10)} />
+      <TouchableOpacity
+        style={[styles.checkoutButton, styles.checkoutButtonSec]}
+      >
+        <Text style={[styles.checkoutText, { color: COLORS.white }]}>
+          {strings.settings.getStart}
+        </Text>
+        <Image
+          source={checkArrow}
+          style={[styles.checkArrow, { tintColor: COLORS.white }]}
+        />
+      </TouchableOpacity>
+      <Spacer space={SH(10)} />
+      <FlatList
+        data={PLANFEATUREDATA}
+        extraData={PLANFEATUREDATA}
+        renderItem={planFeatureItem}
+        keyExtractor={item => item.id}
+      />
+    </View>
+  );
 
   const Item = ({ item, onPress, backgroundColor, color }) => (
-    <TouchableOpacity style={[styles.annualBillingCon, {backgroundColor}]} onPress={onPress}>
-      <Text style={[styles.monthlyBil, {color}]}>{item.title}</Text>
+    <TouchableOpacity
+      style={[styles.annualBillingCon, { backgroundColor }]}
+      onPress={onPress}
+    >
+      <Text style={[styles.monthlyBil, { color }]}>{item.title}</Text>
     </TouchableOpacity>
   );
 
   const annualItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ?  COLORS.primary : COLORS.textInputBackground;
+    const backgroundColor =
+      item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
     const color = item.id === selectedId ? COLORS.white : COLORS.darkGray;
 
     return (
@@ -67,10 +118,10 @@ export function Plans() {
 
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(12) }]}>
+      <View style={[styles.flexRow, { height: SW(8) }]}>
         <Text style={styles.HeaderLabelText}>{strings.settings.plans}</Text>
       </View>
-      <Spacer space={SH(30)} />
+      <Spacer space={SH(20)} />
       <View style={styles.securityMainCon}>
         <Text style={styles.yourPlan}>{strings.settings.yourPlan}</Text>
         <Spacer space={SH(15)} />
@@ -109,7 +160,6 @@ export function Plans() {
             JOBR Wallet
           </Text>
         </View>
-
         <Spacer space={SH(20)} />
         <Text style={styles.changePlanText}>{strings.settings.planFeat}</Text>
         <FlatList
@@ -145,25 +195,24 @@ export function Plans() {
 
       <Modal animationType="fade" transparent={true} isVisible={planModal}>
         <View style={styles.planModalcon}>
-          <Spacer space={SH(20)} />
+          <Spacer space={SH(10)} />
           <View
             style={[styles.flexRow, { paddingHorizontal: moderateScale(20) }]}
           >
             <Text>{null}</Text>
             <Text style={styles.planFit}>{strings.settings.planFit}</Text>
-            
+
             <TouchableOpacity
-                  style={styles.crossButtonCon}
-                  onPress={() => setPlanModal(false)}
-                >
-                  <Image source={crossButton} style={styles.crossButton} />
-                </TouchableOpacity>
+              style={styles.crossButtonCon}
+              onPress={() => setPlanModal(false)}
+            >
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
           </View>
-          <Spacer space={SH(5)} />
           <Text style={styles.planModalSunhead}>
             {strings.settings.simpleTra}
           </Text>
-          <Spacer space={SH(20)} />
+          <Spacer space={SH(10)} />
           <View style={{ alignItems: 'center' }}>
             <FlatList
               data={ANNUALDATA}
@@ -174,11 +223,16 @@ export function Plans() {
             />
           </View>
           <Spacer space={SH(20)} />
-          {/* <View style={[styles.basicContainer, {marginLeft:30}]}>
-             <Text style={styles.basic}>Basic</Text>
-             <Text style={styles.everyThingNeed}>{strings.settings.basicSubHead}</Text>
-          </View> */}
-          <Spacer space={SH(25)} />
+
+        
+            <FlatList
+              data={basicData}
+              extraData={basicData}
+              renderItem={basicItem}
+              keyExtractor={item => item.id}
+              horizontal
+            />
+          {/* <Spacer space={SH(25)} /> */}
         </View>
       </Modal>
     </View>

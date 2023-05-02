@@ -82,6 +82,9 @@ export const styles = StyleSheet.create({
     // height: windowHeight * 0.33,
     padding: 15,
   },
+  securityMainCon2: {
+    height: windowHeight * 0.82,
+  },
   securityBodyCon: {
     // flex: 1,
     borderWidth: 1,
@@ -225,6 +228,10 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 5,
     paddingVertical: verticalScale(5),
+  },
+  checkoutButtonSec: {
+    backgroundColor: COLORS.bluish_green,
+    width: SW(82),
   },
   checkoutText: {
     color: COLORS.darkGray,
@@ -424,32 +431,192 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     alignSelf: 'center',
   },
-  annualBillingCon:{
-    backgroundColor:COLORS.textInputBackground,
-    width:SW(35),
-    height:SW(10),
-    justifyContent:'center',
-    alignItems:'center',
-    borderRadius:5,
-    marginHorizontal:moderateScale(4)
+  annualBillingCon: {
+    backgroundColor: COLORS.textInputBackground,
+    width: SW(35),
+    height: SW(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginHorizontal: moderateScale(4),
   },
-  monthlyBil:{
+  monthlyBil: {
     color: COLORS.darkGray,
     fontSize: SF(11),
     fontFamily: Fonts.Regular,
   },
-  basicContainer:{
-    //  borderWidth:1,
-     flex:1,
-     width:windowWidth * 0.25,
-     borderRadius:10,
-     ...ShadowStyles.shadow2,
-     backgroundColor:COLORS.white,
-     padding:12
+  basicContainer: {
+    // borderWidth:1,
+    width: windowWidth * 0.25,
+    borderRadius: 10,
+    ...ShadowStyles.shadow,
+    backgroundColor: COLORS.white,
+    padding: 12,
+    marginHorizontal: moderateScale(14),
+    marginBottom: 15,
   },
-  basic:{
+  basic: {
     color: COLORS.bluish_green,
     fontSize: SF(20),
     fontFamily: Fonts.MaisonRegular,
+  },
+  basicPrice: {
+    color: COLORS.dark_grey,
+    fontSize: SF(20),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  windowWid: {
+    width: windowWidth * 0.84,
+    borderWidth: 1,
+    // paddingHorizontal:moderateScale(5)
+  },
+  templateCon: {
+    width: windowWidth * 0.25,
+    height: windowHeight * 0.5,
+    borderRadius: 10,
+    ...ShadowStyles.shadow2,
+    backgroundColor: COLORS.white,
+    padding: 12,
+    //  marginBottom:10
+  },
+  publishDate: {
+    fontSize: SF(11),
+    fontFamily: Fonts.Regular,
+    color: COLORS.darkGray,
+  },
+  invoiceFrame: {
+    width: SW(100),
+    height: SW(70),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  emailS: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+  },
+  emailStint: {
+    tintColor: COLORS.white,
+  },
+  emailSCon: {
+    width: SW(10),
+    height: SW(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 3,
+    backgroundColor: COLORS.primary,
+    marginHorizontal: moderateScale(3),
+  },
+  activateCon: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+
+
+  // Taxes css start
+  submitButtons: {
+    backgroundColor: COLORS.primary,
+    width: SW(30),  
+    height: SH(45),
+    alignItems: 'center',
+    justifyContent: 'center',   
+    borderRadius: 5,
+  },
+  selectedText: {
+    color: COLORS.white,
+    textAlign: 'center',
+    fontSize: SF(16),
+    fontFamily:Fonts.Regular
+  },
+  countryModCon:{
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.55,
+    borderRadius: 15,
+    borderWidth: 1,
+    alignSelf: 'center',
+    position: 'absolute',
+    backgroundColor: COLORS.white,
+  },
+  countryModHeader:{
+    backgroundColor:COLORS.textInputBackground,
+    height: windowHeight * 0.09,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    justifyContent:'center',
+    paddingHorizontal:moderateScale(20)
+  },
+  selectHead:{
+    fontSize: SF(18),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+  },
+  cntryCrossButton: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    tintColor:COLORS.solid_grey
+  },
+  countryModBody:{
+    width: windowWidth * 0.33,
+    height: windowHeight * 0.45,
+    borderRadius: 15,
+    // borderWidth: 1,
+    alignSelf: 'center',
+  },
+  countryNameCon:{
+    borderWidth:1,
+    borderColor:COLORS.solidGrey,
+    height:SW(17),
+    borderRadius:5,
+    paddingLeft:moderateScale(10),
+    justifyContent:'center',
+    marginBottom:5
+  },
+  blankCircle:{
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+  },
+  blankSquare:{
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+    marginRight:10
+  },
+  usaFlag:{
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+    marginHorizontal:moderateScale(10)
+  },
+  cancelbuttonCon:{
+    width:SW(28),
+    height:SW(12),
+    backgroundColor:COLORS.washGrey,
+    borderRadius:5,
+    justifyContent:'center',
+    alignItems:'center',
+    marginRight:20
+  },
+  nextbuttonCon:{
+    backgroundColor:COLORS.primary,
+  },
+  cancel:{
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.dark_grey,
+  },
+  next:{
+    color: COLORS.white,
+  },
+  stateRow:{
+    flexDirection:'row',
+    alignItems:'center',
+    height:SW(12)
   }
+
+
+
+  // Taxes css end
 });

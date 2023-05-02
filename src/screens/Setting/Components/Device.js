@@ -26,7 +26,7 @@ export function Device() {
 
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(12) }]}>
+      <View style={[styles.flexRow, { height: SW(8) }]}>
         <Text style={styles.HeaderLabelText}>{strings.settings.device}</Text>
         <View style={{ zIndex: 99 }}>
           <TouchableOpacity
@@ -57,7 +57,7 @@ export function Device() {
           ) : null}
         </View>
       </View>
-      <Spacer space={SH(30)} />
+      <Spacer space={SH(20)} />
       <View style={[styles.securityMainCon, { zIndex: -9 }]}>
         <View style={styles.securityBodyCon}>
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>

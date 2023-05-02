@@ -724,4 +724,53 @@ export const ANNUALDATA = [
     title:'Annually Billing'
   }
 
+];
+
+export const basicData = [
+  {
+    id :1 ,
+    heading:'Basic'
+  },
+  {
+    id :2 ,
+    heading:'Standard'
+  },
+  {
+    id :3 ,
+    heading:'Standard'
+  },
+  
+];
+
+export const COUNTRYDATA =  [
+  {
+    id :1 ,
+    name:'United States of America'
+  },
+  {
+    id :2 ,
+    name:'Canada'
+  },
+  {
+    id :3 ,
+    name:'Mexico'
+  },
+];
+export const STATEDATA =  [
+  {
+    id :1 ,
+    name:'Florida'
+  },
+  {
+    id :2 ,
+    name:'Georgia '
+  },
+  {
+    id :3 ,
+    name:'Georgia '
+  },
+  {
+    id :4 ,
+    name:'Georgia '
+  },
 ]

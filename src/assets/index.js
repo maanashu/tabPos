@@ -188,6 +188,17 @@ export { default as changePlan } from '@/assets/icons/ic_setting/changePlan.png'
 export { default as radioFillPlan } from '@/assets/icons/ic_setting/radioFillPlan.png';
 export { default as checkmark } from '@/assets/icons/ic_setting/checkmark.png';
 export { default as visa } from '@/assets/icons/ic_setting/visa.png';
+export { default as invoice2 } from '@/assets/icons/ic_setting/invoice2.png';
+export { default as printInvoice } from '@/assets/icons/ic_setting/printInvoice.png';
+export { default as emailInvoice } from '@/assets/icons/ic_setting/emailInvoice.png';
+export { default as smsInvoice } from '@/assets/icons/ic_setting/smsInvoice.png';
+export { default as invoiceFrame } from '@/assets/icons/ic_setting/invoiceFrame.png';
+export { default as emailS } from '@/assets/icons/ic_setting/emailS.png';
+export { default as smsS } from '@/assets/icons/ic_setting/smsS.png';
+export { default as printS } from '@/assets/icons/ic_setting/printS.png';
+export { default as usaFlag } from '@/assets/icons/ic_setting/usaFlag.png';
+export { default as blankCircle } from '@/assets/icons/ic_setting/blankCircle.png';
+export { default as squareBlank } from '@/assets/icons/ic_setting/squareBlank.png';
 
 /* Fonts */
 export const Fonts = {

@@ -25,10 +25,10 @@ export function Location() {
 
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(12) }]}>
+      <View style={[styles.flexRow, { height: SW(8) }]}>
         <Text style={styles.HeaderLabelText}>{strings.settings.location}</Text>
       </View>
-      <Spacer space={SH(30)} />
+      <Spacer space={SH(20)} />
       <View style={styles.securityMainCon}>
         <View style={styles.securityBodyCon}>
            {/* <View style={{borderWidth:1, padding:20}}> */}
