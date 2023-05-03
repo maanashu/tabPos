@@ -120,7 +120,8 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(3),
   },
   twoStepMemberConTax: {
-   marginLeft:moderateScale(35)
+    marginLeft:
+      Platform.OS === 'android' ? moderateScale(35) : moderateScale(20),
   },
   twoStepMemberCon2: {
     width: windowWidth * 0.38,
@@ -522,23 +523,22 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-
   // Taxes css start
   submitButtons: {
     backgroundColor: COLORS.primary,
-    width: SW(30),  
+    width: SW(30),
     height: SH(45),
     alignItems: 'center',
-    justifyContent: 'center',   
+    justifyContent: 'center',
     borderRadius: 5,
   },
   selectedText: {
     color: COLORS.white,
     textAlign: 'center',
     fontSize: SF(16),
-    fontFamily:Fonts.Regular
+    fontFamily: Fonts.Regular,
   },
-  countryModCon:{
+  countryModCon: {
     width: windowWidth * 0.4,
     height: windowHeight * 0.55,
     borderRadius: 15,
@@ -546,16 +546,16 @@ export const styles = StyleSheet.create({
     // position: 'absolute',
     backgroundColor: COLORS.white,
   },
-  countryModHeader:{
-    backgroundColor:COLORS.textInputBackground,
+  countryModHeader: {
+    backgroundColor: COLORS.textInputBackground,
     height: windowHeight * 0.09,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    justifyContent:'center',
-    paddingLeft:moderateScale(20),
-    paddingRight:moderateScale(10)
+    justifyContent: 'center',
+    paddingLeft: moderateScale(20),
+    paddingRight: moderateScale(10),
   },
-  selectHead:{
+  selectHead: {
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
     color: COLORS.solid_grey,
@@ -564,221 +564,217 @@ export const styles = StyleSheet.create({
     width: SW(7),
     height: SW(7),
     resizeMode: 'contain',
-    tintColor:COLORS.solid_grey
+    tintColor: COLORS.solid_grey,
   },
-  countryModBody:{
-    flex:1, 
+  countryModBody: {
+    flex: 1,
     width: windowWidth * 0.33,
     height: windowHeight * 0.45,
     borderRadius: 15,
     alignSelf: 'center',
   },
-  countryNameCon:{
-    borderWidth:1,
-    borderColor:COLORS.solidGrey,
-    height:SW(17),
-    borderRadius:5,
-    paddingLeft:moderateScale(10),
-    justifyContent:'center',
-    marginBottom:5
+  countryNameCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    height: SW(17),
+    borderRadius: 5,
+    paddingLeft: moderateScale(10),
+    justifyContent: 'center',
+    marginBottom: 5,
   },
-  blankCircle:{
+  blankCircle: {
     width: SW(7),
     height: SW(7),
     resizeMode: 'contain',
   },
-  blankSquare:{
+  blankSquare: {
     width: SW(5),
     height: SW(5),
     resizeMode: 'contain',
-    marginRight:10
+    marginRight: 10,
   },
-  usaFlag:{
+  usaFlag: {
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
-    marginHorizontal:moderateScale(10)
+    marginHorizontal: moderateScale(10),
   },
-  cancelbuttonCon:{
-    width:SW(28),
-    height:SW(12),
-    backgroundColor:COLORS.washGrey,
-    borderRadius:5,
-    justifyContent:'center',
-    alignItems:'center',
-    marginRight:20
+  cancelbuttonCon: {
+    width: SW(28),
+    height: SW(12),
+    backgroundColor: COLORS.washGrey,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20,
   },
-  nextbuttonCon:{
-    backgroundColor:COLORS.primary,
+  nextbuttonCon: {
+    backgroundColor: COLORS.primary,
   },
-  cancel:{
+  cancel: {
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
   },
-  next:{
+  next: {
     color: COLORS.white,
   },
-  stateRow:{
-    flexDirection:'row',
-    alignItems:'center',
-    height:SW(12)
+  stateRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: SW(12),
   },
-  taxPayerModCon:{
-    height: windowHeight * 0.80,
+  taxPayerModCon: {
+    height: windowHeight * 0.8,
   },
-  name:{
-    fontSize: SF(16 ),
+  name: {
+    fontSize: SF(16),
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
-    paddingVertical:verticalScale(2)
+    paddingVertical: verticalScale(2),
   },
-  nameInput:{
-    backgroundColor:COLORS.textInputBackground,
-    paddingLeft:moderateScale(10),
-    borderRadius:5,
-    fontFamily:Fonts.Italic,
-    fontSize:SF(13)
-
+  nameInput: {
+    backgroundColor: COLORS.textInputBackground,
+    paddingLeft: moderateScale(10),
+    borderRadius: 5,
+    fontFamily: Fonts.Italic,
+    fontSize: SF(13),
+    height: SW(15),
   },
-  namePlaceholder:{
-    color:COLORS.gerySkies,
+  namePlaceholder: {
+    color: COLORS.gerySkies,
   },
-  height:{
+  height: {
     // height:windowHeight * 0.80
   },
-  taxnameCon:{
-    borderWidth:1,
-    borderRadius:5,
-    borderColor:COLORS.solidGrey,
-    paddingLeft:10,
-    paddingVertical:verticalScale(5)
+  taxnameCon: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+    paddingLeft: 10,
+    paddingVertical: verticalScale(5),
   },
   taxMainCon: {
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
     padding: 15,
     ...ShadowStyles.shadow2,
-    backgroundColor:COLORS.white
+    backgroundColor: COLORS.white,
   },
-  charlieName:{
+  charlieName: {
     fontSize: SF(14),
     fontFamily: Fonts.Medium,
     color: COLORS.solid_grey,
-    paddingVertical:verticalScale(1)
+    paddingVertical: verticalScale(1),
   },
-  verifiedBtnCon:{
-     borderWidth:1,
-     width:SW(42),
-     height:SW(12),
-     borderRadius:5,
-     borderColor:COLORS.bluish_green,
-     justifyContent:'center',
-     alignItems:'center'
-
+  verifiedBtnCon: {
+    borderWidth: 1,
+    width: SW(42),
+    height: SW(12),
+    borderRadius: 5,
+    borderColor: COLORS.bluish_green,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  taxVerified:{
+  taxVerified: {
     width: SW(8),
     height: SW(8),
     resizeMode: 'contain',
-    marginHorizontal:moderateScale(3)
+    marginHorizontal: moderateScale(3),
   },
-  financialReport:{
+  financialReport: {
     fontSize: SF(16),
     fontFamily: Fonts.Medium,
     color: COLORS.primary,
   },
-  financialReportCon:{
-    borderWidth:1,
-    height:SW(45),
-    borderRadius:8,
-    borderColor:COLORS.solidGrey,
-    paddingHorizontal:moderateScale(10),
-    paddingVertical:verticalScale(7)
+  financialReportCon: {
+    borderWidth: 1,
+    height: SW(50),
+    borderRadius: 8,
+    borderColor: COLORS.solidGrey,
+    paddingHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(7),
   },
-  checkoutMore:{
+  checkoutMore: {
     fontSize: SF(14),
     fontFamily: Fonts.MediumItalic,
     color: COLORS.solid_grey,
   },
-  craeteTax:{
+  craeteTax: {
     fontSize: SF(14),
     fontFamily: Fonts.SemiBold,
     color: COLORS.primary,
   },
-  addState:{
+  addState: {
     fontFamily: Fonts.MaisonRegular,
   },
-  addStatebtn:{
+  addStatebtn: {
     width: SW(5),
     height: SW(5),
-    marginLeft:10
+    marginLeft: 10,
   },
-  createTaxModCon:{
-    width: windowWidth * 0.60,
-    height: windowHeight * 0.70,
+  createTaxModCon: {
+    width: windowWidth * 0.6,
+    height: windowHeight * 0.7,
     borderRadius: 10,
     alignSelf: 'center',
-    position:'absolute',
+    position: 'absolute',
     backgroundColor: COLORS.white,
   },
-  createtaxModHeader:{
+  createtaxModHeader: {
     height: windowHeight * 0.08,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    borderBottomWidth:1,
-    borderColor:COLORS.solidGrey,
-    justifyContent:'center',
-    paddingLeft:moderateScale(20),
-    paddingRight:moderateScale(10)
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    paddingLeft: moderateScale(20),
+    paddingRight: moderateScale(10),
   },
-  createTaxModBody:{
-    flex:1, 
-    width: windowWidth * 0.50,
+  createTaxModBody: {
+    flex: 1,
+    width: windowWidth * 0.5,
     height: windowHeight * 0.45,
     borderRadius: 15,
     alignSelf: 'center',
   },
-  details:{
+  details: {
     fontSize: SF(16),
     fontFamily: Fonts.MaisonBold,
     color: COLORS.black,
   },
-  saleInputMain:{
-    backgroundColor:COLORS.textInputBackground,
-    height:SW(13),
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
-    paddingLeft:moderateScale(10),
-    borderRadius:5,
-    marginVertical:verticalScale(2)
+  saleInputMain: {
+    backgroundColor: COLORS.textInputBackground,
+    height: SW(13),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: moderateScale(10),
+    borderRadius: 5,
+    marginVertical: verticalScale(2),
   },
-  taxName:{
+  taxName: {
     fontSize: SF(14),
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
   },
-  taxInput:{
-    borderWidth:1,
-    height:SW(13),
-    borderColor:COLORS.solidGrey,
-    backgroundColor:COLORS.white,
-    width:windowWidth * 0.30,
-    paddingHorizontal:moderateScale(10),
-    borderBottomRightRadius:5,
-    borderTopRightRadius:5,
-    fontFamily:Fonts.MediumItalic,
-    fontSize:SF(13)
-
-
+  taxInput: {
+    borderWidth: 1,
+    height: SW(13),
+    borderColor: COLORS.solidGrey,
+    backgroundColor: COLORS.white,
+    width: windowWidth * 0.3,
+    paddingHorizontal: moderateScale(10),
+    borderBottomRightRadius: 5,
+    borderTopRightRadius: 5,
+    fontFamily: Fonts.MediumItalic,
+    fontSize: SF(13),
   },
   saveButtons: {
     backgroundColor: COLORS.primary,
-    width: windowWidth * 0.50,
+    width: windowWidth * 0.5,
     height: SH(50),
     borderRadius: 5,
-    
   },
   // Taxes css end
 });

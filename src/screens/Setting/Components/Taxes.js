@@ -328,7 +328,7 @@ export function Taxes() {
                   </View>
                 </View>
               </View>
-            <Spacer space={SH(20)} />
+              <Spacer space={SH(20)} />
               <View style={[styles.twoStepMemberConTax]}>
                 <View style={styles.flexRow}>
                   <View
@@ -343,7 +343,7 @@ export function Taxes() {
                       <Text
                         style={[styles.securitysubhead, { fontSize: SF(12) }]}
                       >
-                      Florida's general state sales tax rate is 6%
+                        Florida's general state sales tax rate is 6%
                       </Text>
                       <Spacer space={SH(10)} />
                       <View style={styles.dispalyRow}>
@@ -429,7 +429,7 @@ export function Taxes() {
               {strings.settings.taxCalculation}
             </Text>
             <Spacer space={SH(8)} />
-            <View style={[styles.twoStepMemberCon]}>
+            <View style={styles.twoStepMemberCon}>
               <View style={styles.flexRow}>
                 <View style={styles.dispalyRow}>
                   <Image source={squareBlank} style={styles.blankSquare} />
@@ -439,6 +439,7 @@ export function Taxes() {
                     </Text>
                     <Spacer space={SH(3)} />
                     <Text
+                      numberOfLines={1}
                       style={[styles.securitysubhead, { fontSize: SF(11) }]}
                     >
                       {strings.settings.includetaxSubhead}
@@ -451,7 +452,10 @@ export function Taxes() {
             <View style={[styles.twoStepMemberCon]}>
               <View style={styles.flexRow}>
                 <View style={styles.dispalyRow}>
-                  <Image source={toggleSecurity} style={styles.toggleSecurity} />
+                  <Image
+                    source={toggleSecurity}
+                    style={styles.toggleSecurity}
+                  />
                   <View style={styles.marginLeft}>
                     <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                       {strings.settings.addRule}
@@ -469,12 +473,10 @@ export function Taxes() {
             <Spacer space={SH(10)} />
 
             <Button
-                    title={strings.settings.save}
-                    textStyle={styles.selectedText}
-                    style={styles.saveButtons}
-                  />
-
-
+              title={strings.settings.save}
+              textStyle={styles.selectedText}
+              style={styles.saveButtons}
+            />
           </View>
         </View>
       );
