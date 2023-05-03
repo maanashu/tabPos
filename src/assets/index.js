@@ -199,6 +199,10 @@ export { default as printS } from '@/assets/icons/ic_setting/printS.png';
 export { default as usaFlag } from '@/assets/icons/ic_setting/usaFlag.png';
 export { default as blankCircle } from '@/assets/icons/ic_setting/blankCircle.png';
 export { default as squareBlank } from '@/assets/icons/ic_setting/squareBlank.png';
+export { default as taxVerified } from '@/assets/icons/ic_setting/taxVerified.png';
+export { default as taxmap } from '@/assets/icons/ic_setting/map.png';
+export { default as taxpencil } from '@/assets/icons/ic_setting/pencil.png';
+export { default as addState } from '@/assets/icons/ic_setting/addState.png';
 
 /* Fonts */
 export const Fonts = {
