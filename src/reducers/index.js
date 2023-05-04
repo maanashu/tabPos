@@ -10,6 +10,7 @@ import { analyticsReducer } from '@/reducers/AnalyticsReducer';
 import { customersReducer } from '@/reducers/CustomersReducer';
 import { walletReducer } from '@/reducers/WalletReducer';
 import { cashTrackingReducer } from '@/reducers/CashTrackingReducer';
+import { RewardReducer } from '@/reducers/RewardReducer';
 
 export const rootReducer = combineReducers({
   error: errorReducer,
@@ -21,6 +22,7 @@ export const rootReducer = combineReducers({
   shipping: shippingReducer,
   analytics: analyticsReducer,
   customers: customersReducer,
-   wallet: walletReducer,
-  cashTracking : cashTrackingReducer
+  wallet: walletReducer,
+  cashTracking: cashTrackingReducer,
+  reward: RewardReducer,
 });

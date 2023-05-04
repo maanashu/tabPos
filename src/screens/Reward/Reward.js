@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   DaySelector,
   ScreenWrapper,
@@ -46,8 +45,16 @@ import moment from 'moment';
 
 const windowWidth = Dimensions.get('window').width;
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRewardGraph, getRewardedUsersList } from '@/actions/RewardAction';
+import { useIsFocused } from '@react-navigation/native';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 export function Reward() {
+  const dispatch = useDispatch();
+  const isFocus = useIsFocused();
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.getProfile?.unique_uuid;
   const [rewardList, setRewardList] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
@@ -61,6 +68,15 @@ export function Reward() {
   const [dateformat, setDateformat] = useState('');
 
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    //API is Implemented and commented for now, Will manipulate data later
+    if (isFocus) {
+      // console.log(sellerID);
+      // dispatch(getRewardGraph(sellerID));
+      // dispatch(getRewardedUsersList());
+    }
+  }, [isFocus]);
 
   const onChangeDate = selectedDate => {
     const currentDate = moment().format('MM/DD/YYYY');
