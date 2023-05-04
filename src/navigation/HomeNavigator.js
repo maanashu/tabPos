@@ -15,7 +15,8 @@ import {
   ShippingOrder,
   LoginIntial,
   Reward,
-  Setting
+  Setting,
+  DashBoard
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
@@ -26,7 +27,7 @@ const Drawer = createDrawerNavigator();
 export function HomeNavigator() {
   return (
     <Drawer.Navigator
-      initialRouteName="Retails"
+      initialRouteName="DashBoard"
       defaultStatus="open"
       screenOptions={{
         drawerStyle: {
@@ -39,6 +40,11 @@ export function HomeNavigator() {
       }}
       drawerContent={props => <DrawerNavigator {...props} />}
     >
+      <Drawer.Screen
+        component={DashBoard}
+        name={NAVIGATION.dashBoard}
+        options={{ headerShown: false }}
+      />
       <Drawer.Screen
         component={Retails}
         name={NAVIGATION.retails}

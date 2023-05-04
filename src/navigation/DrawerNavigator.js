@@ -44,7 +44,7 @@ const windowHeight = Dimensions.get('window').height;
 
 export function DrawerNavigator(props) {
   const dispatch = useDispatch();
-  const [active, setActive] = useState('retail');
+  const [active, setActive] = useState('dashBoard');
 
   const logoutHandler = () => {
     Alert.alert('Logout', 'Are you sure you want to logout ?', [
@@ -81,9 +81,17 @@ export function DrawerNavigator(props) {
       {...props}
     >
       <DrawerItem
+        activeBackgroundColor="transparent"
+        focused={active === 'dashBoard' ? true : false}
+        onPress={() => {
+          setActive('dashBoard'), navigate(NAVIGATION.dashBoard);
+        }}
         label=""
         icon={({ focused, color, size }) => (
-          <Image source={logo_icon} style={styles.iconStyle1} />
+          <Image
+            source={focused ? logo_icon : logo_icon}
+            style={styles.iconStyle}
+          />
         )}
       />
 

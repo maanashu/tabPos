@@ -16,5 +16,6 @@ export const NAVIGATION = {
   analytics: 'Analytics',
   verifySucess: 'VerifySucess',
   reward: 'Reward',
-  setting:'Setting'
+  setting:'Setting',
+  dashBoard:'DashBoard'
 };

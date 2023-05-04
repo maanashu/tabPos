@@ -19,5 +19,6 @@ export { Calender } from '@/screens/Calender/Calender';
 export { Analytics } from '@/screens/Analytics/Analytics';
 export { Reward } from '@/screens/Reward/Reward';
 export { Setting } from '@/screens/Setting/Setting';
+export { DashBoard } from '@/screens/DashBoard/DashBoard';
 
   

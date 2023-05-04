@@ -295,12 +295,12 @@ export function DeliveryOrder() {
       });
     } else {
       dispatch(getOrders(item.key, sellerID));
-      setViewAllReviews(true),
+        setViewAllReviews(true),
         setHeadingType(item.status),
         setDataType(item.status);
     }
   };
-
+  
   const orderStatusReach = () => {
     return (
       <View>

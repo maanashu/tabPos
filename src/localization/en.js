@@ -623,6 +623,21 @@ export const en = {
     includetaxSubhead:'If tax is included, the tax will appear in your reports, but your customers will not see the tax on their receipt.',
     notApplied:'Specify when this tax should not be applied.',
     addRule:'Add exemption rule',
-    save:'Save'
+    save:'Save',
+    taxexmption:'Tax exemption name',
+    exempttax:'Exempt tax',
+    amount:'Amount'
+  },
+  dashboard:{
+    todaySale:"Today's Sales",
+    cashSaleAmount:'Cash sales amount',
+    cardSaleAmount:'Card sales amount',
+    jobrCoinSaleAmount:'JOBR Coin sales amount',
+    cashDrawer:'Cash Drawer',
+    openBal:'Opening Balance',
+    closeBal:'Closing Balance',
+    logTime:'log in Time',
+    session:'Session',
+    lockScreen:'Lock screen'
   }
 };

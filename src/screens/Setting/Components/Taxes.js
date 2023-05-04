@@ -25,12 +25,12 @@ import {
   taxmap,
   taxpencil,
   teamMember,
+  toggleSecBlue,
   toggleSecurity,
   usaFlag,
 } from '@/assets';
 import { COUNTRYDATA, STATEDATA } from '@/constants/flatListData';
 import { moderateScale } from 'react-native-size-matters';
-import { retailReducer } from '@/reducers/RetailReducer';
 
 export function Taxes() {
   const [countryModel, setCountryModel] = useState(false);
@@ -42,6 +42,8 @@ export function Taxes() {
   const [stateTax, setStateTax] = useState(false);
   const [createTaxBtn, setCreateTaxBtn] = useState(false);
   const [createTaxModal, setCreateTaxModal] = useState(false);
+  const [addExmption, setAddExmption] = useState(false);
+  const [addStateBtn,setAddStateBtn] = useState(false)
 
   const Item = ({ item, onPress, tintColor }) => (
     <TouchableOpacity
@@ -382,7 +384,7 @@ export function Taxes() {
   const createTaxFun = () => {
     if (createTaxModal) {
       return (
-        <View style={styles.createTaxModCon}>
+        <View style={[styles.createTaxModCon, addExmption ? styles.createTaxModHeight : null ]}>
           <View style={styles.createtaxModHeader}>
             <View style={styles.flexRow}>
               <Text style={styles.selectHead}>
@@ -447,15 +449,19 @@ export function Taxes() {
                   </View>
                 </View>
               </View>
+
+              
             </View>
             <Spacer space={SH(5)} />
             <View style={[styles.twoStepMemberCon]}>
               <View style={styles.flexRow}>
                 <View style={styles.dispalyRow}>
+                  <TouchableOpacity onPress={() => setAddExmption(!addExmption)}>
                   <Image
-                    source={toggleSecurity}
+                    source={addExmption ? toggleSecBlue   :  toggleSecurity}
                     style={styles.toggleSecurity}
                   />
+                  </TouchableOpacity>
                   <View style={styles.marginLeft}>
                     <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                       {strings.settings.addRule}
@@ -469,10 +475,61 @@ export function Taxes() {
                   </View>
                 </View>
               </View>
+            <Spacer space={SH(5)} />
+            {
+              addExmption
+              ?
+              (
+                <View style={styles.taxFormCon}>
+                <View style={styles.taxExmptionCon}>
+                 <Text style={styles.taxEmption}>{strings.settings.taxexmption}</Text>
+                 <TextInput
+                 placeholder="Tax name"
+                 style={styles.taxImptionInput}
+                 placeholderStyle={styles.namePlaceholder}
+               />
+
+                </View>
+                <View style={styles.taxExmptionCon}>
+                 <Text style={styles.taxEmption}>{strings.settings.location}</Text>
+                 <TextInput
+                 placeholder="Select location"
+                 style={styles.taxImptionInput}
+                 placeholderStyle={styles.namePlaceholder}
+               />
+
+                </View>
+                <View style={styles.taxExmptionCon}>
+                 <Text style={styles.taxEmption}>{strings.settings.exempttax}</Text>
+                 <TextInput
+                 placeholder="Select Exempt tax option"
+                 style={styles.taxImptionInput}
+                 placeholderStyle={styles.namePlaceholder}
+               />
+                </View>
+                <View style={styles.taxExmptionCon}>
+                 <Text style={styles.taxEmption}>{strings.settings.amount}</Text>
+                 <TextInput
+                 placeholder="$00.00"
+                 style={styles.taxImptionInput}
+                 placeholderStyle={styles.namePlaceholder}
+               />
+
+                </View>
+                
+
+             </View> 
+              )
+              :
+              null
+              
+            }
+             
             </View>
             <Spacer space={SH(10)} />
 
             <Button
+             onPress={() => (setAddStateBtn(true),setCreateTaxModal(false))}
               title={strings.settings.save}
               textStyle={styles.selectedText}
               style={styles.saveButtons}
@@ -546,7 +603,7 @@ export function Taxes() {
                         style={[styles.toggleSecurity, { marginRight: 10 }]}
                       />
                     </View>
-                    <Spacer space={SH(15)} />
+                    <Spacer space={SH(7)} />
                     <TouchableOpacity
                       style={[
                         styles.twoStepMemberCon,
@@ -582,22 +639,31 @@ export function Taxes() {
                       </View>
                     </TouchableOpacity>
                     <Spacer space={SH(5)} />
-                    <View
-                      style={[
-                        styles.verifiedBtnCon,
-                        { borderColor: COLORS.primary, alignSelf: 'flex-end' },
-                      ]}
-                    >
-                      <View style={styles.dispalyRow}>
-                        <Text style={[styles.craeteTax, styles.addState]}>
-                          {strings.settings.addState}
-                        </Text>
-                        <Image
-                          source={addState}
-                          style={[styles.taxVerified, styles.addStatebtn]}
-                        />
+                    {
+                      addStateBtn
+                      ?
+                      (
+                        <View
+                        style={[
+                          styles.verifiedBtnCon,
+                          { borderColor: COLORS.primary, alignSelf: 'flex-end' },
+                        ]}
+                      >
+                        <View style={styles.dispalyRow}>
+                          <Text style={[styles.craeteTax, styles.addState]}>
+                            {strings.settings.addState}
+                          </Text>
+                          <Image
+                            source={addState}
+                            style={[styles.taxVerified, styles.addStatebtn]}
+                          />
+                        </View>
                       </View>
-                    </View>
+                      )
+                      :
+                      null
+                    }
+                   
                   </View>
                   <Spacer space={SH(7)} />
                   {createTaxBtn ? (

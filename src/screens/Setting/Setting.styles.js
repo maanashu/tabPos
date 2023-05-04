@@ -651,7 +651,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     paddingVertical: verticalScale(5),
   },
   taxMainCon: {
@@ -670,15 +670,15 @@ export const styles = StyleSheet.create({
   verifiedBtnCon: {
     borderWidth: 1,
     width: SW(42),
-    height: SW(12),
+    height: SW(10),
     borderRadius: 5,
     borderColor: COLORS.bluish_green,
     justifyContent: 'center',
     alignItems: 'center',
   },
   taxVerified: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(7),
+    height: SW(7),
     resizeMode: 'contain',
     marginHorizontal: moderateScale(3),
   },
@@ -720,6 +720,9 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     backgroundColor: COLORS.white,
+  },
+  createTaxModHeight: {
+    height: windowHeight * 0.93,
   },
   createtaxModHeader: {
     height: windowHeight * 0.08,
@@ -776,5 +779,37 @@ export const styles = StyleSheet.create({
     height: SH(50),
     borderRadius: 5,
   },
+  taxFormCon:{
+    borderWidth:1,
+    borderRadius:5,
+    height:SW(55),
+    width:windowWidth * 0.41,
+    alignSelf:'center',
+    paddingHorizontal:moderateScale(15),
+    borderColor:COLORS.solidGrey
+
+  },
+  taxExmptionCon:{
+    borderBottomWidth:1,
+    borderColor:COLORS.solidGrey,
+    height:SW(12),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: moderateScale(5),
+  },
+  taxEmption:{
+    fontSize: SF(12),
+    fontFamily: Fonts.Medium,
+    color: COLORS.solid_grey,
+  },
+  taxImptionInput:{
+    width:windowWidth * 0.18,
+    fontSize: SF(12),
+    fontFamily: Fonts.Italic,
+    color:COLORS.gerySkies
+    
+
+  }
   // Taxes css end
 });

@@ -1214,12 +1214,6 @@ export const styles = StyleSheet.create({
     paddingVertical: verticalScale(9),
   },
 
-  checkArrow: {
-    width: SW(10),
-    height: SW(4),
-    resizeMode: 'contain',
-    paddingHorizontal: moderateScale(6),
-  },
 
   // payment with jbr wallet css end
   // customer cash  modal css start
