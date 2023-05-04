@@ -140,7 +140,7 @@ export function Retails() {
   const [custPayment, setCustPayment] = useState(false);
   const [walletId, setWalletId] = useState(walletData?.wallet_address);
   const [listOfItem, setListofItem] = useState(false);
-  const [custCash, setCustCash] = useState(false);  
+  const [custCash, setCustCash] = useState(false);
   const [customerPhoneNo, setCustomerPhoneNo] = useState('');
   const [cutsomerTotalAmount, setCutsomerTotalAmount] = useState(false);
 
@@ -306,14 +306,14 @@ export function Retails() {
     );
   }, [getRetailData?.SeaProductList]);
 
-  const handleIncrease = (id) => {
+  const handleIncrease = id => {
     setItemIndex(id);
     const array = serProductArrayj;
     array[id].qty = array[id].qty + 1;
     setSerProductArrayj(array);
     setRefresh(Math.random());
   };
-  const handleDecrease = (id) => {
+  const handleDecrease = id => {
     const array = serProductArrayj;
     array[id].qty = array[id].qty > 0 ? array[id].qty - 1 : array[id].qty;
     setData(array);
@@ -535,7 +535,7 @@ export function Retails() {
     setAmountPopup(false);
   };
 
-  const addToCartHandler = (item) => {
+  const addToCartHandler = item => {
     setAddRemoveSelectedId(null);
     const data = handlerTrue
       ? {
@@ -614,7 +614,6 @@ export function Retails() {
       clearInput();
     }
   };
-
 
   const saveDiscountHandler = () => {
     if (!cartIDdiscount) {
@@ -1449,7 +1448,7 @@ export function Retails() {
             )}
           </View>
         </View>
-      );                                      
+      );
     }
   };
 

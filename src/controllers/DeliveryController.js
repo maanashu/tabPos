@@ -7,8 +7,10 @@ export class DeliveryController {
   static async getOrderCount(status) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${status}&delivery_option=1`;
-        console.log('endpoint',endpoint);
+        ORDER_URL +
+        ApiOrderInventory.getOrderCount +
+        `?seller_id=${status}&delivery_option=1`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -46,8 +48,8 @@ export class DeliveryController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerID}`;
-        console.log('endpointendpoint',endpoint);
+        `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
+      console.log('endpointendpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -65,8 +67,8 @@ export class DeliveryController {
       const body = {
         status: data.status,
       };
-      console.log('endpoint-------',endpoint);
-      console.log('body',body);
+      console.log('endpoint-------', endpoint);
+      console.log('body', body);
       HttpClient.put(endpoint, body)
         .then(response => {
           if (response?.msg === 'Order status updated successfully!') {
@@ -83,13 +85,12 @@ export class DeliveryController {
           reject(error);
         });
     });
-  };
-
+  }
 
   static async deliveryOrd() {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrders +`?delivery_option=1`;
+        ORDER_URL + ApiOrderInventory.getOrders + `?delivery_option=1`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

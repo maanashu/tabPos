@@ -81,7 +81,7 @@ export function VerifyPhone() {
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <View style={styles.verifyContainer}>
-          <Spacer space={SH(40)} />
+          <Spacer space={SH(25)} />
           <View></View>
           <Text style={styles.header}>{strings.verifyPhone.heading}</Text>
           <Spacer space={SH(6)} />

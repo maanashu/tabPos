@@ -207,6 +207,9 @@ export { default as cross } from '@/assets/ic_auth/cross_white.png';
 export { default as deleteBack } from '@/assets/ic_auth/delete_back.png';
 export { default as toggleSecBlue } from '@/assets/icons/ic_setting/toggleSecBlue.png';
 export { default as cashProfile } from '@/assets/icons/ic_dashboard/cashProfile.png';
+export { default as sellingBucket } from '@/assets/icons/ic_dashboard/sellingBucket.png';
+export { default as sellingArrow } from '@/assets/icons/ic_dashboard/sellingArrow.png';
+export { default as productBasket } from '@/assets/icons/ic_dashboard/productBasket.png';
 
 /* Fonts */
 export const Fonts = {

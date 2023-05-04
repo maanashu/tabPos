@@ -82,7 +82,7 @@ export function Passcode() {
     >
       <View style={styles.container}>
         <View style={styles.verifyContainer}>
-          <Spacer space={SH(40)} />
+          <Spacer space={SH(25)} />
           <Text style={styles.subHeading}>{strings.passcode.heading}</Text>
           <Spacer space={SH(40)} />
           <CodeField

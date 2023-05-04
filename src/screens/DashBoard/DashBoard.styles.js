@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
   // home Screen css start
   homeScreenCon: {
     flex: 1,
-    borderWidth: 1,
   },
   cashProfileCon: {
     width: windowWidth * 0.3,
@@ -109,5 +108,75 @@ export const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 100,
     borderColor: COLORS.solidGrey,
+  },
+  rightOrderCon: {
+    width: windowWidth * 0.64,
+    height: windowHeight * 0.95,
+    paddingHorizontal: moderateScale(15),
+    paddingVertical: verticalScale(5),
+  },
+  inputWraper: {
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 7,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: windowWidth * 0.61,
+    height: Platform.OS === 'android' ? SH(55) : SH(45),
+    justifyContent: 'space-between',
+    marginHorizontal: moderateScale(10),
+    alignSelf: 'center',
+  },
+  searchStyle: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    marginHorizontal: moderateScale(5),
+  },
+  searchInput: {
+    borderRadius: 7,
+    width: windowWidth * 0.4,
+    fontFamily: Fonts.Italic,
+  },
+  scnStyle: {
+    width: SW(16),
+    height: SW(17),
+    resizeMode: 'contain',
+  },
+  storeCardCon: {
+    width: SW(110),
+    height: SW(65),
+    borderRadius: 15,
+    backgroundColor: COLORS.dark_grey,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sellingBucket: {
+    width: SW(16),
+    height: SW(16),
+    resizeMode: 'contain',
+  },
+  sellingArrow: {
+    width: SW(10),
+    height: SW(5),
+    resizeMode: 'contain',
+  },
+  startSelling: {
+    color: COLORS.white,
+    fontSize: SF(22),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  scanSer: {
+    color: COLORS.solid_green,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+  },
+  arrowBtnCon: {
+    width: SW(90),
+    height: SW(14),
+    borderWidth: 1,
+    borderColor: COLORS.solid_green,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

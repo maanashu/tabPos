@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   },
   verifyContainer: {
     width: windowWidth * 0.4,
-    height: windowHeight * 0.8,
+    height: windowHeight * 0.82,
     // borderWidth: 1,
     borderColor: 'grey',
     alignSelf: 'center',
