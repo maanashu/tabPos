@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, Dimensions, Alert, View, Platform } from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  Dimensions,
+  Alert,
+  View,
+  Platform,
+  SafeAreaView,
+} from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { COLORS, SF, SW } from '@/theme';
 import { navigate } from '@/navigation/NavigationRef';
@@ -68,9 +76,10 @@ export function DrawerNavigator(props) {
         right: 10,
         // borderWidth: 1,
         width: SW(25),
-        height: Platform.OS === 'android' ?  windowHeight * 0.95 : windowHeight,
+        height: Platform.OS === 'android' ? windowHeight * 0.95 : windowHeight,
       }}
-      {...props}>
+      {...props}
+    >
       <DrawerItem
         label=""
         icon={({ focused, color, size }) => (
@@ -97,8 +106,7 @@ export function DrawerNavigator(props) {
         activeBackgroundColor="transparent"
         focused={active === 'delivery' ? true : false}
         onPress={() => {
-          setActive('delivery'),
-           navigate(NAVIGATION.deliveryOrder);
+          setActive('delivery'), navigate(NAVIGATION.deliveryOrder);
         }}
         label=""
         icon={({ focused, color, size }) => (
@@ -204,19 +212,25 @@ export function DrawerNavigator(props) {
         }}
         label=""
         icon={({ focused, color, size }) => (
-          <Image source={focused ? blueReward : reward} style={focused ? styles.iconStyle2 : styles.iconStyle} />
+          <Image
+            source={focused ? blueReward : reward}
+            style={focused ? styles.iconStyle2 : styles.iconStyle}
+          />
         )}
       />
 
       <DrawerItem
-         activeBackgroundColor="transparent"
-         focused={active === 'setting' ? true : false}
-         onPress={() => {
-           setActive('setting'), navigate(NAVIGATION.setting);
-         }}
+        activeBackgroundColor="transparent"
+        focused={active === 'setting' ? true : false}
+        onPress={() => {
+          setActive('setting'), navigate(NAVIGATION.setting);
+        }}
         label=""
         icon={({ focused, color, size }) => (
-          <Image source={focused ? blueSetting :  settings} style={focused ? styles.iconStyle2 : styles.iconStyle} />
+          <Image
+            source={focused ? blueSetting : settings}
+            style={focused ? styles.iconStyle2 : styles.iconStyle}
+          />
         )}
       />
 
@@ -256,7 +270,7 @@ const styles = StyleSheet.create({
   iconStyle2: {
     width: Platform.OS === 'android' ? SW(7) : SW(10),
     height: Platform.OS === 'android' ? SW(7) : SW(10),
-    marginLeft:3,
+    marginLeft: 3,
     resizeMode: 'contain',
   },
   iconStyle1: {
