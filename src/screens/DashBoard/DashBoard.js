@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  DaySelector,
-  ScreenWrapper,
-  Spacer,
-  TableDropdown,
-} from '@/components';
+import { ScreenWrapper, Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import {
@@ -18,14 +13,16 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import { moderateScale } from 'react-native-size-matters';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
-import { cashProfile, checkArrow } from '@/assets';
-import LinearGradient from 'react-native-linear-gradient';
-import { Table } from 'react-native-table-component';
-import DropDownPicker from 'react-native-dropdown-picker';
-import moment from 'moment';
-
+import {
+  cashProfile,
+  checkArrow,
+  scn,
+  search_light,
+  sellingArrow,
+  sellingBucket,
+} from '@/assets';
+import { STARTSELLING } from '@/constants/flatListData';
 const windowWidth = Dimensions.get('window').width;
 
 export function DashBoard() {
@@ -35,13 +32,13 @@ export function DashBoard() {
         <View style={styles.displayRow}>
           <View style={styles.cashProfileCon}>
             {/* <Spacer space={SH(20)} /> */}
-             {/* <View style={styles.cashProfilecon}> */}
-             <Image source={cashProfile} style={styles.cashProfile} />
-             {/* </View> */}
+            {/* <View style={styles.cashProfilecon}> */}
+            <Image source={cashProfile} style={styles.cashProfile} />
+            {/* </View> */}
             <Text style={styles.cashierName}>Rebecca R. Russell</Text>
             <Text style={styles.posCashier}>POS Cashier</Text>
             <Text style={styles.cashLabel}>ID : 3579EN</Text>
-              <Spacer space={SH(12)} />
+            <Spacer space={SH(12)} />
 
             <View style={styles.todaySaleCon}>
               <Text style={styles.todaySale}>
@@ -119,9 +116,46 @@ export function DashBoard() {
 
             <Spacer space={SH(20)} />
           </View>
-          <View>
+          <View style={styles.rightOrderCon}>
+            <View style={styles.inputWraper}>
+              <View style={styles.displayRow}>
+                <View>
+                  <Image source={search_light} style={styles.searchStyle} />
+                </View>
+                <TextInput
+                  placeholder={strings.retail.searchProduct}
+                  style={styles.searchInput}
+                  // value={search}
+                  // onChangeText={search => (
+                  //   setSearch(search), onChangeFun(search)
+                  // )}
+                />
+              </View>
+              <TouchableOpacity>
+                <Image source={scn} style={styles.scnStyle} />
+              </TouchableOpacity>
+            </View>
+            <Spacer space={SH(20)} />
+            <View style={styles.displayflex}>
+              {STARTSELLING.map((item, index) => (
+                <View style={styles.storeCardCon} key={index}>
+                  <Image source={item.image} style={styles.sellingBucket} />
+                  <Spacer space={SH(8)} />
+                  <Text style={styles.startSelling}>{item.heading}</Text>
+                  <Spacer space={SH(4)} />
+                  <Text style={styles.scanSer}>{item.subHeading}</Text>
+                  <Spacer space={SH(12)} />
+                  <View style={styles.arrowBtnCon}>
+                    <Image source={sellingArrow} style={styles.sellingArrow} />
+                  </View>
+                </View>
+              ))}
+            </View>
 
-            
+            <Spacer space={SH(100)} />
+            <View>
+              <Text style={{ alignSelf: 'center' }}>In progress</Text>
+            </View>
           </View>
         </View>
       </View>

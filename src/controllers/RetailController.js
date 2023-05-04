@@ -249,7 +249,7 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.addTocart;
       const supplyID = data.supplyId.toString();
-      const supplyPriceID =  data.supplyPriceid.toString()
+      const supplyPriceID = data.supplyPriceid.toString();
       const body = {
         seller_id: data.seller_id,
         service_id: data.service_id,
@@ -260,7 +260,7 @@ export class RetailController {
       };
       HttpClient.post(endpoint, body)
         .then(response => {
-          if (response?.msg === "PosCart created successfully") {
+          if (response?.msg === 'PosCart created successfully') {
             Toast.show({
               position: 'bottom',
               type: 'success_toast',
@@ -442,7 +442,7 @@ export class RetailController {
         // app_name: 'Pos',
         mode_of_payment: data.modeOfPayment,
       };
-     
+
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.msg === 'Order placed successfully!') {

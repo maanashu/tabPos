@@ -18,6 +18,8 @@ import {
   work,
   policy,
   dropScan,
+  sellingBucket,
+  productBasket,
 } from '@/assets';
 
 export const jbritemList = [
@@ -239,7 +241,6 @@ export const productUnitData = [
     id: '6',
   },
 ];
-
 
 export const TransactionTableHeading = [
   '#',
@@ -591,186 +592,199 @@ export const allRevenueTypeData = [
 ];
 export const settingLabelData = [
   {
-    id:1,
-    name:'security',
-    subhead:'Not updated',
-    image : security
+    id: 1,
+    name: 'security',
+    subhead: 'Not updated',
+    image: security,
   },
   {
-    id:2,
-    name:'Devices',
-    subhead:'Not connected',
-    image : device
+    id: 2,
+    name: 'Devices',
+    subhead: 'Not connected',
+    image: device,
   },
   {
-    id:3,
-    name:'Notifications',
-    subhead:'Not updated',
-    image : bell
+    id: 3,
+    name: 'Notifications',
+    subhead: 'Not updated',
+    image: bell,
   },
   {
-    id:4,
-    name:'Locations',
-    subhead:'1 Locations',
-    image : pinLight
+    id: 4,
+    name: 'Locations',
+    subhead: '1 Locations',
+    image: pinLight,
   },
   {
-    id:5,
-    name:'Plans',
-    subhead:'Expire on April 2024',
-    image : plan
+    id: 5,
+    name: 'Plans',
+    subhead: 'Expire on April 2024',
+    image: plan,
   },
   {
-    id:6,
-    name:'Invoice',
-    subhead:'Defaults',
-    image : invoiceSett
+    id: 6,
+    name: 'Invoice',
+    subhead: 'Defaults',
+    image: invoiceSett,
   },
   {
-    id:7,
-    name:'Taxes',
-    subhead:'Not updated ',
-    image : tax
+    id: 7,
+    name: 'Taxes',
+    subhead: 'Not updated ',
+    image: tax,
   },
   {
-    id:8,
-    name:'Wallet',
-    subhead:'Not connected',
-    image : walletSett
+    id: 8,
+    name: 'Wallet',
+    subhead: 'Not connected',
+    image: walletSett,
   },
   {
-    id:9,
-    name:'Shipping & Pickups',
-    subhead:'Defaults',
-    image : shipping
+    id: 9,
+    name: 'Shipping & Pickups',
+    subhead: 'Defaults',
+    image: shipping,
   },
   {
-    id:10,
-    name:'Language',
-    subhead:'Defaults',
-    image : langu
+    id: 10,
+    name: 'Language',
+    subhead: 'Defaults',
+    image: langu,
   },
   {
-    id:11,
-    name:'Legal',
-    subhead:'Defaults',
-    image : work
+    id: 11,
+    name: 'Legal',
+    subhead: 'Defaults',
+    image: work,
   },
   {
-    id:12,
-    name:'Policies',
-    subhead:'Defaults',
-    image : policy
+    id: 12,
+    name: 'Policies',
+    subhead: 'Defaults',
+    image: policy,
   },
 ];
 
 export const deviceDropDownArray = [
   {
-    id : 1,
-    title:'Add Barcode Scanner',
-    image:dropScan
+    id: 1,
+    title: 'Add Barcode Scanner',
+    image: dropScan,
   },
   {
-    id : 2,
-    title:'Card Reader',
-    image:dropScan
+    id: 2,
+    title: 'Card Reader',
+    image: dropScan,
   },
   {
-    id : 3,
-    title:'Cash drawers',
-    image:dropScan
+    id: 3,
+    title: 'Cash drawers',
+    image: dropScan,
   },
   {
-    id : 4,
-    title:'Receipt printers',
-    image:dropScan
-  }
-]
+    id: 4,
+    title: 'Receipt printers',
+    image: dropScan,
+  },
+];
 
 export const PLANFEATUREDATA = [
   {
-    id:1,
-    title:'Online store'
+    id: 1,
+    title: 'Online store',
   },
   {
-    id:2,
-    title:'Shareable product pages'
+    id: 2,
+    title: 'Shareable product pages',
   },
   {
-    id:3,
-    title:'Unlimited products'
+    id: 3,
+    title: 'Unlimited products',
   },
   {
-    id:4,
-    title:'24/7 support'
+    id: 4,
+    title: '24/7 support',
   },
   {
-    id:5,
-    title:'Abandoned cart recovery'
+    id: 5,
+    title: 'Abandoned cart recovery',
   },
   {
-    id:6,
-    title:'Advanced report builder'
+    id: 6,
+    title: 'Advanced report builder',
   },
 ];
 
 export const ANNUALDATA = [
   {
-    id :1 ,
-    title:'Monthly Billing'
+    id: 1,
+    title: 'Monthly Billing',
   },
   {
-    id :2 ,
-    title:'Annually Billing'
-  }
-
+    id: 2,
+    title: 'Annually Billing',
+  },
 ];
 
 export const basicData = [
   {
-    id :1 ,
-    heading:'Basic'
+    id: 1,
+    heading: 'Basic',
   },
   {
-    id :2 ,
-    heading:'Standard'
+    id: 2,
+    heading: 'Standard',
   },
   {
-    id :3 ,
-    heading:'Standard'
+    id: 3,
+    heading: 'Standard',
   },
-  
 ];
 
-export const COUNTRYDATA =  [
+export const COUNTRYDATA = [
   {
-    id :1 ,
-    name:'United States of America'
+    id: 1,
+    name: 'United States of America',
   },
   {
-    id :2 ,
-    name:'Canada'
+    id: 2,
+    name: 'Canada',
   },
   {
-    id :3 ,
-    name:'Mexico'
+    id: 3,
+    name: 'Mexico',
   },
 ];
-export const STATEDATA =  [
+export const STATEDATA = [
   {
-    id :1 ,
-    name:'Florida'
+    id: 1,
+    name: 'Florida',
   },
   {
-    id :2 ,
-    name:'Georgia '
+    id: 2,
+    name: 'Georgia ',
   },
   {
-    id :3 ,
-    name:'Georgia '
+    id: 3,
+    name: 'Georgia ',
   },
   {
-    id :4 ,
-    name:'Georgia '
+    id: 4,
+    name: 'Georgia ',
   },
-]
+];
+
+export const STARTSELLING = [
+  {
+    id: 1,
+    heading: 'START SELLING',
+    subHeading: 'Scan/Search',
+    image: sellingBucket,
+  },
+  {
+    id: 2,
+    heading: 'PRODUCTS/STORE',
+    subHeading: '290 Products listed',
+    image: productBasket,
+  },
+];
