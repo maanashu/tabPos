@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Spacer, Button } from '@/components';
+import { Spacer } from '@/components';
 import { SH } from '@/theme';
 import { styles } from '@/screens/Auth/Passcode/Passcode.styles';
 import { strings } from '@/localization';

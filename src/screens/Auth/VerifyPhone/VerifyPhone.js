@@ -1,27 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Image,
-  StatusBar,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-import { Spacer, Button } from '@/components';
-import { COLORS, SH } from '@/theme';
-import { Fonts, cross, deleteBack, dropdown } from '@/assets';
+import { View, Text, TextInput, Image, StatusBar } from 'react-native';
+import { Spacer } from '@/components';
+import { SH } from '@/theme';
+import { dropdown } from '@/assets';
 import { styles } from './VerifyPhone.styles';
 import { strings } from '@/localization';
 import CountryPicker from 'react-native-country-picker-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { digits, mobileReg } from '@/utils/validators';
+import { digits } from '@/utils/validators';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { verifyPhone } from '@/actions/AuthActions';
 import { TYPES } from '@/Types/Types';
-import { KeyPadButton } from '@/components/KeyPadButton';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 
 export function VerifyPhone() {
