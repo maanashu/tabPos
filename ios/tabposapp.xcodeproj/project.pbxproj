@@ -15,14 +15,14 @@
 		1D91A5C2B3A340C48EE41714 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5086FA5317FD47309E01633E /* Montserrat-Bold.ttf */; };
 		485D432670A6489085BE23D4 /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D098B3E9DD854BF29E4FEE5C /* Montserrat-MediumItalic.ttf */; };
 		4E5861FDE0F44DCBAF4B1EEC /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C51AEED5BEE640A086BDA7C4 /* Montserrat-Regular.ttf */; };
-		704172F605AB50D7517B59B4 /* libPods-tabposapp-tabposappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 53A1097876C1BB1FF5E92238 /* libPods-tabposapp-tabposappTests.a */; };
+		6C81AA25D698AC1FF162BC8C /* libPods-tabposapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF31AD65ED5D8F2E628C1C0 /* libPods-tabposapp.a */; };
 		8B362915CBF4462BBC3ACDC4 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D832F2C52A7449E8B8557F36 /* Montserrat-SemiBold.ttf */; };
 		9AA45A1F723747E491CF5140 /* Montserrat-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F34163D3E7614C4B9C5518A6 /* Montserrat-Italic.ttf */; };
 		A2263E08294A044F003CEA47 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2263E07294A044F003CEA47 /* BootSplash.storyboard */; };
 		A2D38CD128E5ABEF004141A8 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = A2D38CD028E5ABEF004141A8 /* fonts */; };
 		A592F8871F9144A883C1A278 /* Maison Mono Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 328414CFAB54414FB17BA4A2 /* Maison Mono Regular.ttf */; };
+		B91386CB36955C91F1547943 /* libPods-tabposapp-tabposappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 918CDA1AA87BC0FC1AAE6F18 /* libPods-tabposapp-tabposappTests.a */; };
 		BA8E5A9AFD124195A865628C /* MaisonMonoTRIAL-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C584E8A42E44464BFE17C3E /* MaisonMonoTRIAL-Bold.otf */; };
-		D304D4E676DF76C0EBCBB1AF /* libPods-tabposapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D4068318B4AD511F4B3025 /* libPods-tabposapp.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,30 +36,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00D4068318B4AD511F4B3025 /* libPods-tabposapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tabposapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356EE1AD99517003FC87E /* tabposappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tabposappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* tabposappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tabposappTests.m; sourceTree = "<group>"; };
+		08C33414A62DC364293515E1 /* Pods-tabposapp-tabposappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp-tabposappTests.debug.xcconfig"; path = "Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* tabposapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tabposapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = tabposapp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = tabposapp/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = tabposapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = tabposapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = tabposapp/main.m; sourceTree = "<group>"; };
+		15E56C9F2C89CA5608D7C687 /* Pods-tabposapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp.debug.xcconfig"; path = "Target Support Files/Pods-tabposapp/Pods-tabposapp.debug.xcconfig"; sourceTree = "<group>"; };
 		328414CFAB54414FB17BA4A2 /* Maison Mono Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Maison Mono Regular.ttf"; path = "../src/assets/fonts/Maison Mono Regular.ttf"; sourceTree = "<group>"; };
 		3C584E8A42E44464BFE17C3E /* MaisonMonoTRIAL-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "MaisonMonoTRIAL-Bold.otf"; path = "../src/assets/fonts/MaisonMonoTRIAL-Bold.otf"; sourceTree = "<group>"; };
-		455C7FC6813CE550320CCF9B /* Pods-tabposapp-tabposappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp-tabposappTests.release.xcconfig"; path = "Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests.release.xcconfig"; sourceTree = "<group>"; };
 		5086FA5317FD47309E01633E /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../src/assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
-		53A1097876C1BB1FF5E92238 /* libPods-tabposapp-tabposappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tabposapp-tabposappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AB59C7EACE7497F94BEE465 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../src/assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
+		6AF073EFDC6558046D660E9F /* Pods-tabposapp-tabposappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp-tabposappTests.release.xcconfig"; path = "Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests.release.xcconfig"; sourceTree = "<group>"; };
+		6EA137D6F171924212096042 /* Pods-tabposapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp.release.xcconfig"; path = "Target Support Files/Pods-tabposapp/Pods-tabposapp.release.xcconfig"; sourceTree = "<group>"; };
+		7EF31AD65ED5D8F2E628C1C0 /* libPods-tabposapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tabposapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		918CDA1AA87BC0FC1AAE6F18 /* libPods-tabposapp-tabposappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tabposapp-tabposappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2263E07294A044F003CEA47 /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BootSplash.storyboard; sourceTree = "<group>"; };
 		A2D38CD028E5ABEF004141A8 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
-		B729D2F5B1CFDC0D2308A522 /* Pods-tabposapp-tabposappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp-tabposappTests.debug.xcconfig"; path = "Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests.debug.xcconfig"; sourceTree = "<group>"; };
-		BFAA9F1C7BDA3A4C2DAC6FF0 /* Pods-tabposapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp.release.xcconfig"; path = "Target Support Files/Pods-tabposapp/Pods-tabposapp.release.xcconfig"; sourceTree = "<group>"; };
 		C51AEED5BEE640A086BDA7C4 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../src/assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		D098B3E9DD854BF29E4FEE5C /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-MediumItalic.ttf"; path = "../src/assets/fonts/Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
 		D832F2C52A7449E8B8557F36 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../src/assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
-		D8A4D35B80C377C8A1B15DA5 /* Pods-tabposapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp.debug.xcconfig"; path = "Target Support Files/Pods-tabposapp/Pods-tabposapp.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F34163D3E7614C4B9C5518A6 /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Italic.ttf"; path = "../src/assets/fonts/Montserrat-Italic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				704172F605AB50D7517B59B4 /* libPods-tabposapp-tabposappTests.a in Frameworks */,
+				B91386CB36955C91F1547943 /* libPods-tabposapp-tabposappTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,7 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D304D4E676DF76C0EBCBB1AF /* libPods-tabposapp.a in Frameworks */,
+				6C81AA25D698AC1FF162BC8C /* libPods-tabposapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,8 +118,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				00D4068318B4AD511F4B3025 /* libPods-tabposapp.a */,
-				53A1097876C1BB1FF5E92238 /* libPods-tabposapp-tabposappTests.a */,
+				7EF31AD65ED5D8F2E628C1C0 /* libPods-tabposapp.a */,
+				918CDA1AA87BC0FC1AAE6F18 /* libPods-tabposapp-tabposappTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -160,10 +160,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D8A4D35B80C377C8A1B15DA5 /* Pods-tabposapp.debug.xcconfig */,
-				BFAA9F1C7BDA3A4C2DAC6FF0 /* Pods-tabposapp.release.xcconfig */,
-				B729D2F5B1CFDC0D2308A522 /* Pods-tabposapp-tabposappTests.debug.xcconfig */,
-				455C7FC6813CE550320CCF9B /* Pods-tabposapp-tabposappTests.release.xcconfig */,
+				15E56C9F2C89CA5608D7C687 /* Pods-tabposapp.debug.xcconfig */,
+				6EA137D6F171924212096042 /* Pods-tabposapp.release.xcconfig */,
+				08C33414A62DC364293515E1 /* Pods-tabposapp-tabposappTests.debug.xcconfig */,
+				6AF073EFDC6558046D660E9F /* Pods-tabposapp-tabposappTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -190,12 +190,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "tabposappTests" */;
 			buildPhases = (
-				1A7DC3C6F30D007352A6D420 /* [CP] Check Pods Manifest.lock */,
+				18997F7FAC6C884911530024 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				76A8392C2F47A509C9335AE3 /* [CP] Embed Pods Frameworks */,
-				DD541BCD3B400E4ABADB489A /* [CP] Copy Pods Resources */,
+				B97315F62138DA8E8E4E47EB /* [CP] Embed Pods Frameworks */,
+				329BA22468BFBCC3ABE178CC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -211,14 +211,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "tabposapp" */;
 			buildPhases = (
-				793F601D60B44F057FEFE90D /* [CP] Check Pods Manifest.lock */,
+				AA9DDAEB8AB6E6A7A85A48C6 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				9DD0A140161A882571B0F368 /* [CP] Embed Pods Frameworks */,
-				F7D5192131AA568AB36C8934 /* [CP] Copy Pods Resources */,
+				A51EA953CA8B0F22BEE0BD24 /* [CP] Embed Pods Frameworks */,
+				2AEF3CB001D9CF46D32B897F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -310,7 +310,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		1A7DC3C6F30D007352A6D420 /* [CP] Check Pods Manifest.lock */ = {
+		18997F7FAC6C884911530024 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -332,24 +332,58 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		76A8392C2F47A509C9335AE3 /* [CP] Embed Pods Frameworks */ = {
+		2AEF3CB001D9CF46D32B897F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		793F601D60B44F057FEFE90D /* [CP] Check Pods Manifest.lock */ = {
+		329BA22468BFBCC3ABE178CC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A51EA953CA8B0F22BEE0BD24 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AA9DDAEB8AB6E6A7A85A48C6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -371,55 +405,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9DD0A140161A882571B0F368 /* [CP] Embed Pods Frameworks */ = {
+		B97315F62138DA8E8E4E47EB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DD541BCD3B400E4ABADB489A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F7D5192131AA568AB36C8934 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tabposapp/Pods-tabposapp-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -474,7 +474,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B729D2F5B1CFDC0D2308A522 /* Pods-tabposapp-tabposappTests.debug.xcconfig */;
+			baseConfigurationReference = 08C33414A62DC364293515E1 /* Pods-tabposapp-tabposappTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -501,7 +501,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 455C7FC6813CE550320CCF9B /* Pods-tabposapp-tabposappTests.release.xcconfig */;
+			baseConfigurationReference = 6AF073EFDC6558046D660E9F /* Pods-tabposapp-tabposappTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -525,7 +525,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8A4D35B80C377C8A1B15DA5 /* Pods-tabposapp.debug.xcconfig */;
+			baseConfigurationReference = 15E56C9F2C89CA5608D7C687 /* Pods-tabposapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -556,7 +556,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BFAA9F1C7BDA3A4C2DAC6FF0 /* Pods-tabposapp.release.xcconfig */;
+			baseConfigurationReference = 6EA137D6F171924212096042 /* Pods-tabposapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

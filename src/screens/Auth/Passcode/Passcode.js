@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import { Spacer, Button } from '@/components';
 import { SH } from '@/theme';
 import { styles } from '@/screens/Auth/Passcode/Passcode.styles';
@@ -18,6 +18,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { login } from '@/actions/AuthActions';
 import { TYPES } from '@/Types/Types';
+import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 const CELL_COUNT = 4;
 
 export function Passcode() {
@@ -36,91 +37,85 @@ export function Passcode() {
     isLoadingSelector([TYPES.LOGIN], state)
   );
 
- 
-
-  const passcodeHandler = async () =>{
-    if(!value){
+  const passcodeHandler = async () => {
+    if (!value) {
       Toast.show({
         position: 'bottom',
         type: 'error_toast',
         text2: strings.valiadtion.enterPassCode,
-        visibilityTime: 2000
+        visibilityTime: 2000,
       });
       return;
-    }else if (value && value.length < 4){
+    } else if (value && value.length < 4) {
       Toast.show({
         position: 'bottom',
         type: 'error_toast',
         text2: strings.valiadtion.validPasscode,
-        visibilityTime: 2000
+        visibilityTime: 2000,
       });
       return;
-    }else if ( value && digits.test(value) === false ){
+    } else if (value && digits.test(value) === false) {
       Toast.show({
         position: 'bottom',
         type: 'error_toast',
         text2: strings.valiadtion.validPasscode,
-        visibilityTime: 2000
+        visibilityTime: 2000,
       });
       return;
-    }else {
-      const data ={
-        phone_no : phone_no,
-        country_code : country_code,
-        pin: value
+    } else {
+      const data = {
+        phone_no: phone_no,
+        country_code: country_code,
+        pin: value,
+      };
+      const res = await dispatch(login(data));
+      if (res?.type === 'LOGIN_ERROR') {
+        setValue('');
       }
-       const res = await dispatch(login(data)) 
-         if(res?.type === "LOGIN_ERROR" ){
-          setValue('')
-         }
-       
     }
-  }
+  };
   return (
     <KeyboardAwareScrollView
-    contentContainerStyle={{ flexGrow: 1 }}
-    keyboardShouldPersistTaps="handled"
-    showsVerticalScrollIndicator={false}>
-    <View style={styles.container}>
-      <Spacer space={SH(100)} />
-      <View style={styles.verifyContainer}>
-        <Spacer space={SH(40)} />
-        <Text style={styles.subHeading}>{strings.passcode.heading}</Text>
-        <Spacer space={SH(40)} />
-        <CodeField
-          ref={ref}
-          {...prop}
-          value={value}
-          onChangeText={setValue}
-          cellCount={CELL_COUNT}
-          rootStyle={[styles.alignSelfCenter]}
-          keyboardType="number-pad"
-          textContentType="oneTimeCode"
-          renderCell={({ index, symbol, isFocused }) => (
-            <View
-              onLayout={getCellOnLayoutHandler(index)}
-              key={index}
-              style={styles.cellRoot}
-            >
-              <Text style={styles.cellText}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            </View>
-          )}
-        />
-      
-        <View style={{flex:1}}/>
-        <Button
-          pending={isLoading}
-        onPress={passcodeHandler}
-          title={strings.verifyPhone.button}
-          textStyle={value ? styles.selectedText :  styles.buttonText}
-          style={value ? styles.submitButton : styles.button}
-        />
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={styles.container}>
+        <View style={styles.verifyContainer}>
           <Spacer space={SH(40)} />
-      </View>
+          <Text style={styles.subHeading}>{strings.passcode.heading}</Text>
+          <Spacer space={SH(40)} />
+          <CodeField
+            ref={ref}
+            {...prop}
+            value={value}
+            onChangeText={setValue}
+            cellCount={CELL_COUNT}
+            rootStyle={[styles.alignSelfCenter]}
+            showSoftInputOnFocus={false}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            renderCell={({ index, symbol, isFocused }) => (
+              <View
+                onLayout={getCellOnLayoutHandler(index)}
+                key={index}
+                style={styles.cellRoot}
+              >
+                <Text style={styles.cellText}>
+                  {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+              </View>
+            )}
+          />
 
-    </View>
+          <VirtualKeyBoard
+            enteredValue={value}
+            setEnteredValue={setValue}
+            isButtonLoading={isLoading}
+            onPressContinueButton={passcodeHandler}
+          />
+        </View>
+      </View>
     </KeyboardAwareScrollView>
   );
 }

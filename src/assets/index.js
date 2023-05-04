@@ -203,6 +203,8 @@ export { default as taxVerified } from '@/assets/icons/ic_setting/taxVerified.pn
 export { default as taxmap } from '@/assets/icons/ic_setting/map.png';
 export { default as taxpencil } from '@/assets/icons/ic_setting/pencil.png';
 export { default as addState } from '@/assets/icons/ic_setting/addState.png';
+export { default as cross } from '@/assets/ic_auth/cross_white.png';
+export { default as deleteBack } from '@/assets/ic_auth/delete_back.png';
 
 /* Fonts */
 export const Fonts = {

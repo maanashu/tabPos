@@ -1,4 +1,4 @@
-import { StyleSheet,Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
 const windowWidth = Dimensions.get('window').width;
@@ -9,31 +9,32 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: COLORS.white,
   },
   text: {
     color: COLORS.black,
   },
   verifyContainer: {
-    width: windowWidth * 0.40,
-    height: windowHeight * 0.70,
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.8,
     // borderWidth: 1,
-    borderColor:'grey',
+    borderColor: 'grey',
     alignSelf: 'center',
-    borderRadius:15,
-    alignItems:'center',
-    backgroundColor:'#fff',
-    ...ShadowStyles.shadow2
+    borderRadius: 15,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    ...ShadowStyles.shadow2,
   },
-  header:{
-    fontSize:SF(24),
-    color:COLORS.dark_grey,
-    fontFamily:Fonts.Regular
+  header: {
+    fontSize: SF(24),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
   },
-  subHeading:{
-    fontSize:SF(24),
-    color:COLORS.solid_grey,
-    fontFamily:Fonts.Regular
+  subHeading: {
+    fontSize: SF(24),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
   },
   alignSelfCenter: {
     alignSelf: 'center',
@@ -54,59 +55,59 @@ export const styles = StyleSheet.create({
     fontSize: scale(12),
     color: COLORS.black,
   },
- 
-  selectedText:{
-    color:COLORS.white,
-    paddingVertical:verticalScale(10)
+
+  selectedText: {
+    color: COLORS.white,
+    paddingVertical: verticalScale(10),
   },
-  buttonText:{
-   color:COLORS.darkGray,
-   paddingVertical:verticalScale(10)
+  buttonText: {
+    color: COLORS.darkGray,
+    paddingVertical: verticalScale(10),
   },
-  submitButton:{
-     backgroundColor:COLORS.primary,
-     width: windowWidth * 0.35,
-  },
-  button:{
-    backgroundColor:COLORS.textInputBackground,
+  submitButton: {
+    backgroundColor: COLORS.primary,
     width: windowWidth * 0.35,
   },
-  popupContainer:{
-    width: windowWidth * 0.40,
-    height: windowHeight * 0.50,
-    borderRadius:30,
-    backgroundColor:COLORS.white,
+  button: {
+    backgroundColor: COLORS.textInputBackground,
+    width: windowWidth * 0.35,
+  },
+  popupContainer: {
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.5,
+    borderRadius: 30,
+    backgroundColor: COLORS.white,
     ...ShadowStyles.shadow,
-    alignSelf:'center',
-    position:'absolute',
+    alignSelf: 'center',
+    position: 'absolute',
   },
-  verifyIcon:{ 
-    alignSelf:'center',
-    width:SW(160),
-    height:SH(160),
-    resizeMode:'contain'
+  verifyIcon: {
+    alignSelf: 'center',
+    width: SW(160),
+    height: SH(160),
+    resizeMode: 'contain',
   },
-  crossButton:{
-    width:SW(24),
-    height:SH(24),
-    resizeMode:'contain',
+  crossButton: {
+    width: SW(24),
+    height: SH(24),
+    resizeMode: 'contain',
     // position:'absolute',
     // top:10,
     // right:10
   },
-  position:{
-     position:'absolute',
-    top:20,
-    right:1
+  position: {
+    position: 'absolute',
+    top: 20,
+    right: 1,
   },
-  success:{
-    color:COLORS.primary,
-    alignSelf:'center'
+  success: {
+    color: COLORS.primary,
+    alignSelf: 'center',
   },
-  loginBack:{
-    fontSize:SF(14),
-    color:COLORS.solid_grey,
-    fontFamily:Fonts.Regular,
-    alignSelf:'center'
+  loginBack: {
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    alignSelf: 'center',
   },
 });
