@@ -650,5 +650,6 @@ export const en = {
     lockScreen: 'Lock screen',
     startSelling: 'START SELLING',
     scanSer: 'Scan/Search',
+    deliveries: 'Deliveries',
   },
 };

@@ -1,10 +1,9 @@
 import { TYPES } from '@/Types/Types';
 
 const INITIALSTATE = {
-  phoneData:{},
-  user:{},
-  getProfile:{}
- 
+  phoneData: {},
+  user: {},
+  getProfile: {},
 };
 
 export const authReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -19,12 +18,12 @@ export const authReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         getProfile: payload.getProfile.payload,
       };
-      case TYPES.LOGIN_SUCCESS:
-        return {
-          ...state,
-          user: payload.user.payload,
-        };
-     
+    case TYPES.LOGIN_SUCCESS:
+      return {
+        ...state,
+        user: payload.user.payload,
+      };
+
     case TYPES.CLEAR_STORE:
       return INITIALSTATE;
     default:
