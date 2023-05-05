@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
   Image,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  SectionList,
-  ViewComponent,
   FlatList,
   Dimensions,
 } from 'react-native';
@@ -18,44 +15,40 @@ import {
   Phone_light,
   search_light,
   location,
-  backArrow,
   watchLogo,
   charlene,
   roundCalender,
   email,
-  schdule,
   leftlight,
   rightlight,
-  greenCalender,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
-import { Button, Spacer } from '@/components';
+import { Spacer } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { moderateScale } from 'react-native-size-matters';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { goBack } from '@/navigation/NavigationRef';
 import Modal from 'react-native-modal';
 import { Calendar } from 'react-native-big-calendar';
 
 const windowWidth = Dimensions.get('window').width;
-import {
-  sessionHistoryTableHeading,
-  sessionHistoryTableData,
-  notificationData,
-} from '@/constants/flatListData';
+const windowHeight = Dimensions.get('window').height;
+import { notificationData } from '@/constants/flatListData';
+import { CALENDAR_MODES } from '@/constants/enums';
+import moment from 'moment';
 
 export function Calender(props) {
+  // Create a new Date object from the date string
+  let dateObj = '2023-05-05T12:00:00';
   const events = [
     {
       title: 'Meeting',
-      start: new Date(2020, 1, 11, 10, 0),
-      end: new Date(2020, 1, 11, 10, 30),
+      start: new Date(2023, 4, 5, 13, 55, 0, 0),
+      end: new Date(2023, 4, 5, 15, 55, 0, 0),
     },
     {
       title: 'Coffee break',
-      start: new Date(2020, 1, 11, 15, 45),
-      end: new Date(2020, 1, 11, 16, 30),
+      start: new Date(2023, 4, 10, 15, 45),
+      end: new Date(2023, 6, 14, 16, 30),
     },
   ];
 
@@ -64,20 +57,46 @@ export function Calender(props) {
   const [month, setMonth] = useState(false);
   const [day, setDay] = useState(false);
 
+  const [calendarDate, setCalendarDate] = useState(moment());
+  const [calendarMode, setCalendarMode] = useState(CALENDAR_MODES.WEEK);
+
+  const nextMonth = () =>
+    setCalendarDate(calendarDate.clone().add(1, calendarMode));
+  const prevMonth = () =>
+    setCalendarDate(calendarDate.clone().subtract(1, calendarMode));
+
   const weekHandler = () => {
+    setCalendarMode(CALENDAR_MODES.WEEK);
     setWeek(!week);
     setMonth(false);
     setDay(false);
   };
   const monthHandler = () => {
+    setCalendarMode(CALENDAR_MODES.MONTH);
     setMonth(!month);
     setWeek(false);
     setDay(false);
   };
   const dayHandler = () => {
+    setCalendarMode(CALENDAR_MODES.DAY);
     setDay(!day);
     setMonth(false);
     setWeek(false);
+  };
+
+  const getFormattedHeaderDate = () => {
+    if (
+      calendarMode === CALENDAR_MODES.MONTH ||
+      calendarMode === CALENDAR_MODES.WEEK
+    ) {
+      return calendarDate.format('MMM YYYY');
+    } else if (calendarMode === CALENDAR_MODES.DAY) {
+      return calendarDate.format('DD MMM YYYY');
+    }
+  };
+
+  const getStartEndFormattedDate = date => {
+    return `${moment(date).format('hh:mm A')}`;
   };
 
   const notificationItem = ({ item }) => (
@@ -242,11 +261,15 @@ export function Calender(props) {
             <View style={styles.displayFlex}>
               <View style={styles.monthlySchduel}>
                 <View style={styles.displayFlex}>
-                  <Image source={leftlight} style={styles.leftLight} />
+                  <TouchableOpacity onPress={prevMonth}>
+                    <Image source={leftlight} style={styles.leftLight} />
+                  </TouchableOpacity>
                   <Text style={styles.monthlySchduleDate}>
-                    Oct 23 - Oct 29, 2022
+                    {`${getFormattedHeaderDate()}`}
                   </Text>
-                  <Image source={rightlight} style={styles.leftLight} />
+                  <TouchableOpacity onPress={nextMonth}>
+                    <Image source={rightlight} style={styles.leftLight} />
+                  </TouchableOpacity>
                 </View>
               </View>
               <View style={styles.flexAlign}>
@@ -288,17 +311,28 @@ export function Calender(props) {
               <Text>{null}</Text>
             </View>
           </View>
-          {/* <Image source={schdule} style={styles.schdule}/> */}
-          {/* <Text
-            style={{
-              alignSelf: 'center',
-              marginTop: 100,
-              color: COLORS.primary,
-            }}
-          >
-            Coming soon
-          </Text> */}
-          <Calendar events={events} height={600} />
+
+          <Calendar
+            ampm
+            swipeEnabled={false}
+            mode={calendarMode}
+            events={events}
+            height={windowHeight * 0.2}
+            date={calendarDate}
+            renderEvent={(event, touchableOpacityProps) => (
+              <TouchableOpacity
+                style={[...touchableOpacityProps.style, styles.eventContainer]}
+              >
+                <Text style={styles.eventTitle}>{event.title}</Text>
+                <Text style={styles.startEndDate}>
+                  {getStartEndFormattedDate(event.start)}
+                </Text>
+                <Text style={styles.startEndDate}>
+                  {getStartEndFormattedDate(event.end)}
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
         </View>
         <View style={styles.notificationCon}>
           <View>

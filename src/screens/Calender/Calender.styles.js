@@ -21,9 +21,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  calenderContainer:{
-  width:windowWidth * 0.94,
-  height:windowHeight
+  calenderContainer: {
+    width: windowWidth * 0.94,
+    height: windowHeight,
   },
   headerMainView: {
     width: windowWidth,
@@ -75,7 +75,7 @@ export const styles = StyleSheet.create({
     height: windowHeight,
   },
   notificationCon: {
-    width: windowWidth * 0.30,
+    width: windowWidth * 0.3,
     height: windowHeight,
   },
   approveButtonCon: {
@@ -273,11 +273,32 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     paddingHorizontal: moderateScale(5),
   },
-  headerBody:{
+  headerBody: {
     width: SW(170),
-    flexDirection:'row', 
-    justifyContent:'space-between',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-     paddingHorizontal:moderateScale(10)
-  }
+    paddingHorizontal: moderateScale(10),
+  },
+  startEndDate: {
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+    fontSize: SH(12),
+  },
+  eventContainer: {
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    borderLeftColor: 'green',
+    borderLeftWidth: 10,
+    borderStyle: 'solid',
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  eventTitle: {
+    color: COLORS.primary,
+    fontFamily: Fonts.Bold,
+    fontSize: SH(12),
+  },
 });
