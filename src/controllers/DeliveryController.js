@@ -49,7 +49,6 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
-      console.log('endpointendpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
