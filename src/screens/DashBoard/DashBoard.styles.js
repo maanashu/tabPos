@@ -14,16 +14,20 @@ export const styles = StyleSheet.create({
   },
   displayflex: {
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'space-between',
   },
   displayRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  displayflex2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   // home Screen css start
   homeScreenCon: {
-    flex: 1,
+    // flex: 1,
   },
   cashProfileCon: {
     width: windowWidth * 0.3,
@@ -66,7 +70,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   paddingV: {
-    paddingVertical: verticalScale(2),
+    paddingVertical: verticalScale(2.5),
   },
   profileHrRow: {
     borderWidth: 1,
@@ -178,5 +182,152 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  homeTableCon: {
+    // borderWidth: 1,
+    height: windowHeight * 0.48,
+    backgroundColor: COLORS.white,
+    ...ShadowStyles.shadow2,
+    borderRadius: 10,
+    paddingHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(5),
+  },
+  deliveries: {
+    color: COLORS.black,
+    fontSize: SF(20),
+    fontFamily: Fonts.SemiBold,
+  },
+  tableScrollCon: {
+    borderWidth: 1,
+    height: SH(60),
+  },
+  reviewRenderView: {
+    borderWidth: 1,
+    flexDirection: 'row',
+    marginVertical: SW(2),
+    borderColor: COLORS.orderStatusBackground,
+    borderRadius: 2,
+    paddingVertical: 6,
+    paddingLeft: SW(5),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  nameText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+  },
+  timeText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(11),
+    color: COLORS.dark_grey,
+    textAlignVertical: 'center',
+    paddingLeft: 2,
+  },
+  timeView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 1,
+  },
+  pinIcon: {
+    width: SW(5),
+    height: SW(8),
+    resizeMode: 'contain',
+  },
+  rightIconStyle: {
+    width: SW(35),
+    justifyContent: 'center',
+  },
+  hashNumber: {
+    fontFamily: Fonts.Medium,
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+  },
+  nameTextBold: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    color: COLORS.dark_grey,
+  },
+  timeSec: {
+    color: COLORS.primary,
+    paddingRight: moderateScale(10),
+  },
+
+  // home Screen css end
+
+  // home Screen css start
+  backgroundColorSCreen: {
+    backgroundColor: COLORS.textInputBackground,
+    paddingHorizontal: moderateScale(22),
+  },
+
+  searchScreenHeader: {
+    height: SH(60),
+    justifyContent: 'center',
+  },
+  crossBg: {
+    width: SW(20),
+    height: SW(8),
+    resizeMode: 'contain',
+  },
+  cashLabelBold: {
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.Medium,
+  },
+  itemLIistCon: {
+    width: windowWidth * 0.57,
+    height: windowHeight * 0.88,
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    paddingHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(5),
+  },
+
+  rightSideCon: {
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.85,
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    paddingHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(5),
+  },
+  inputWraper2: {
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 7,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: windowWidth * 0.55,
+    height: Platform.OS === 'android' ? SH(55) : SH(45),
+    justifyContent: 'space-between',
+    marginHorizontal: moderateScale(10),
+    alignSelf: 'center',
+  },
+  blueListHeader: {
+    backgroundColor: COLORS.primary,
+    height: SH(40),
+    borderRadius: 5,
+    justifyContent: 'center',
+    // alignContent: 'center',
+  },
+
+  tableListSide: {
+    width: windowWidth * 0.25,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  tableListSide2: {
+    width: windowWidth * 0.29,
+  },
+  listLeft: {
+    justifyContent: 'flex-start',
+  },
+  cashLabelWhite: {
+    color: COLORS.white,
+    fontSize: SF(14),
+    fontFamily: Fonts.Medium,
+  },
+  cashLabelWhiteHash: {
+    paddingHorizontal: moderateScale(15),
   },
 });

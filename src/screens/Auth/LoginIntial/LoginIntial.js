@@ -23,13 +23,14 @@ export function LoginIntial() {
   const dispatch = useDispatch();
   const getData = useSelector(getAuthData);
   const userData = getData?.user?.user_profiles?.profile_photo;
-  const id = getData?.user?.user_profiles?.id;
+  const id = getData?.user?.id;
   const profileData = getData?.user?.user_profiles?.profile_photo;
+  console.log('profileData', profileData);
   const userProfile = getData?.getProfile;
-  const firstName = getData?.getProfile?.user_profiles?.firstname;
-  const lastName = getData?.getProfile?.user_profiles?.lastname;
-  const userId = getData?.getProfile?.user_profiles?.id;
-  const fullName = firstName + ' ' + lastName;                                                                                                                                                                                                                                                                              
+  const firstName = getData?.user?.user_profiles?.firstname;
+  const lastName = getData?.user?.user_profiles?.lastname;
+  const userId = getData?.user?.id;
+  const fullName = firstName + ' ' + lastName;
 
   const [dt, setDt] = useState(new Date().toLocaleString());
   const [hr, setHr] = useState(new Date().toLocaleString());
@@ -100,14 +101,14 @@ export function LoginIntial() {
     //     visibilityTime: 1500,
     //   });
     // }else
-     if (getData?.getProfile?.wallet_step <= 1 || null){
+    if (getData?.getProfile?.wallet_step <= 1 || null) {
       Toast.show({
         text2: 'Please First complete Wallet Steps',
         position: 'bottom',
         type: 'error_toast',
         visibilityTime: 1500,
       });
-    }else {
+    } else {
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -115,7 +116,6 @@ export function LoginIntial() {
         })
       );
     }
-   
   };
 
   useEffect(() => {
@@ -137,10 +137,12 @@ export function LoginIntial() {
           {isLoading ? (
             <View style={{ marginTop: 70 }}>
               <ActivityIndicator size="large" color="#0000ff" />
-              <Spacer space={SH(10)}/>
-              <Text style={{color:"#0000ff", fontSize:SF(18)}}>Loading Data...</Text>
+              <Spacer space={SH(10)} />
+              <Text style={{ color: '#0000ff', fontSize: SF(18) }}>
+                Loading Data...
+              </Text>
             </View>
-            ) : (
+          ) : (
             <View style={{ alignItems: 'center' }}>
               <Spacer space={SH(40)} />
               <Text style={styles.header}>{strings.loginIntial.heading}</Text>
@@ -175,7 +177,7 @@ export function LoginIntial() {
               />
               <Spacer space={SH(20)} />
             </View>
-          )} 
+          )}
         </View>
       </View>
     </View>

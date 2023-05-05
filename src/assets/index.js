@@ -210,6 +210,7 @@ export { default as cashProfile } from '@/assets/icons/ic_dashboard/cashProfile.
 export { default as sellingBucket } from '@/assets/icons/ic_dashboard/sellingBucket.png';
 export { default as sellingArrow } from '@/assets/icons/ic_dashboard/sellingArrow.png';
 export { default as productBasket } from '@/assets/icons/ic_dashboard/productBasket.png';
+export { default as crossBg } from '@/assets/icons/ic_dashboard/crossBg.png';
 
 /* Fonts */
 export const Fonts = {

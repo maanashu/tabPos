@@ -10,7 +10,6 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrderCount +
         `?seller_id=${status}&delivery_option=1`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -66,8 +65,6 @@ export class DeliveryController {
       const body = {
         status: data.status,
       };
-      console.log('endpoint-------', endpoint);
-      console.log('body', body);
       HttpClient.put(endpoint, body)
         .then(response => {
           if (response?.msg === 'Order status updated successfully!') {
