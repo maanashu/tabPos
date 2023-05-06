@@ -38,7 +38,6 @@ import moment from 'moment';
 
 export function Calender(props) {
   // Create a new Date object from the date string
-  let dateObj = '2023-05-05T12:00:00';
   const events = [
     {
       title: 'Meeting',
@@ -47,7 +46,7 @@ export function Calender(props) {
     },
     {
       title: 'Coffee break',
-      start: new Date(2023, 4, 10, 15, 45),
+      start: new Date(2023, 4, 13, 15, 45),
       end: new Date(2023, 6, 14, 16, 30),
     },
   ];
@@ -325,7 +324,7 @@ export function Calender(props) {
               >
                 <Text style={styles.eventTitle}>{event.title}</Text>
                 <Text style={styles.startEndDate}>
-                  {getStartEndFormattedDate(event.start)}
+                  {`${moment(event.start).format('hh:mm A')}`}
                 </Text>
                 <Text style={styles.startEndDate}>
                   {getStartEndFormattedDate(event.end)}
