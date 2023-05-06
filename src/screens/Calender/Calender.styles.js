@@ -92,9 +92,10 @@ export const styles = StyleSheet.create({
     height: SH(32),
     justifyContent: 'center',
     alignItems: 'center',
-    width: SH(110),
-    marginHorizontal: moderateScale(10),
+    width: SH(50),
+    marginLeft: moderateScale(10),
   },
+
   approveText: {
     color: COLORS.white,
     fontSize: SF(12),
@@ -104,6 +105,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
     fontSize: SF(15),
+    width: windowWidth * 0.25,
+    overflow: 'hidden',
   },
   timeLabel: {
     fontFamily: Fonts.Regular,
@@ -193,6 +196,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
     fontSize: SF(14),
+    marginRight: moderateScale(10),
   },
   upcomingCon: {
     borderRadius: 3,
@@ -300,5 +304,28 @@ export const styles = StyleSheet.create({
     color: COLORS.primary,
     fontFamily: Fonts.Bold,
     fontSize: SH(12),
+  },
+  iImageCon: {
+    backgroundColor: COLORS.dark_grey,
+    borderRadius: 100,
+    height: SW(8),
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: SW(8),
+  },
+  iImage: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+    tintColor: COLORS.white,
+  },
+  serviceTextCon: {
+    flexDirection: 'row',
+    width: windowWidth * 0.45,
+  },
+  requestTextName: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.black,
+    width: windowWidth * 0.5,
   },
 });

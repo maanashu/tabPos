@@ -54,6 +54,7 @@ export const ApiOrderInventory = {
   getTotalTra: 'orders/wallet/transaction/analysis',
   getTotakTraDetail: 'orders',
   getTotalTraType: 'orders/pos/transaction-count',
+  getAppointment: 'appointments',
 };
 
 export const ApiWalletInventory = {

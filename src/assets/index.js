@@ -99,6 +99,7 @@ export { default as newCustomer } from '@/assets/icons/ic_customers/newCustomer.
 export { default as returnCustomer } from '@/assets/icons/ic_customers/returnCustomer.png';
 export { default as onlineCutomer } from '@/assets/icons/ic_customers/onlineCutomer.png';
 export { default as customersGraph } from '@/assets/icons/ic_customers/customersGraph.png';
+export { default as iImage } from '@/assets/icons/ic_customers/iImage.png';
 export { default as loving } from '@/assets/icons/ic_customers/loving.png';
 export { default as Phone_light } from '@/assets/icons/ic_customers/Phone_light.png';
 export { default as email } from '@/assets/icons/ic_customers/email.png';
@@ -211,6 +212,10 @@ export { default as sellingBucket } from '@/assets/icons/ic_dashboard/sellingBuc
 export { default as sellingArrow } from '@/assets/icons/ic_dashboard/sellingArrow.png';
 export { default as productBasket } from '@/assets/icons/ic_dashboard/productBasket.png';
 export { default as crossBg } from '@/assets/icons/ic_dashboard/crossBg.png';
+export { default as cloth } from '@/assets/icons/ic_dashboard/cloth.png';
+export { default as keyboard } from '@/assets/icons/ic_dashboard/keyboard.png';
+export { default as pause } from '@/assets/icons/ic_dashboard/pause.png';
+export { default as eraser } from '@/assets/icons/ic_dashboard/eraser.png';
 
 /* Fonts */
 export const Fonts = {

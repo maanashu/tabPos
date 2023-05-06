@@ -255,7 +255,7 @@ export const styles = StyleSheet.create({
 
   // home Screen css end
 
-  // home Screen css start
+  // search screen css start
   backgroundColorSCreen: {
     backgroundColor: COLORS.textInputBackground,
     paddingHorizontal: moderateScale(22),
@@ -329,5 +329,73 @@ export const styles = StyleSheet.create({
   },
   cashLabelWhiteHash: {
     paddingHorizontal: moderateScale(15),
+  },
+  categoryArrayCon: {
+    width: windowWidth * 0.13,
+    height: SW(18),
+    borderRadius: 10,
+    backgroundColor: COLORS.textInputBackground,
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(10),
+  },
+  listed: {
+    color: COLORS.darkGray,
+    fontSize: SF(11),
+    fontFamily: Fonts.Regular,
+  },
+  categories: {
+    color: COLORS.black,
+    fontSize: SF(16),
+    fontFamily: Fonts.MaisonBold,
+  },
+  catProArrayCon: {
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: COLORS.solidGrey,
+    width: windowWidth * 0.13,
+    height: SW(34),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(10),
+    marginTop: verticalScale(5),
+    marginRight: moderateScale(7),
+  },
+  cloth: {
+    width: SW(14),
+    height: SW(14),
+    resizeMode: 'contain',
+  },
+  keyboard: {
+    width: SW(12),
+    height: SW(12),
+    resizeMode: 'contain',
+  },
+  holdCartCon: {
+    width: windowWidth * 0.11,
+    height: SW(12),
+    borderRadius: 5,
+    backgroundColor: COLORS.marshmallow,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pause: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+  },
+  holdCart: {
+    color: COLORS.white,
+    fontSize: SF(13),
+    fontFamily: Fonts.Bold,
+    paddingHorizontal: moderateScale(3),
+  },
+  dark_greyBg: {
+    backgroundColor: COLORS.dark_grey,
+  },
+  nameAddCon: {
+    borderWidth: 1,
+    height: windowHeight * 0.35,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 5,
   },
 });

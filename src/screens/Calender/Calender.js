@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,8 @@ import {
   email,
   leftlight,
   rightlight,
+  iImage,
+  userImage,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
@@ -35,8 +37,25 @@ const windowHeight = Dimensions.get('window').height;
 import { notificationData } from '@/constants/flatListData';
 import { CALENDAR_MODES } from '@/constants/enums';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAppointment } from '@/actions/CalenderAction';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getCalender } from '@/selectors/CalenderSelector';
+import { ActivityIndicator } from 'react-native';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/CalenderTypes';
 
 export function Calender(props) {
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const getCalenderData = useSelector(getCalender);
+  const getAppointmentList = getCalenderData?.getAppointment;
+  const [storeItem, setStoreItem] = useState();
+
+  useEffect(() => {
+    dispatch(getAppointment());
+  }, []);
+
   // Create a new Date object from the date string
   let dateObj = '2023-05-05T12:00:00';
   const events = [
@@ -94,6 +113,9 @@ export function Calender(props) {
       return calendarDate.format('DD MMM YYYY');
     }
   };
+  const isRequestLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_APPOINTMENTS], state)
+  );
 
   const getStartEndFormattedDate = date => {
     return `${moment(date).format('hh:mm A')}`;
@@ -101,19 +123,36 @@ export function Calender(props) {
 
   const notificationItem = ({ item }) => (
     <View style={styles.notificationchildCon}>
-      <Text style={styles.requestFor}>
-        {strings.calender.requestFor}{' '}
-        <Text style={{ fontFamily: Fonts.SemiBold, color: COLORS.black }}>
-          {item.notificationType}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Text style={styles.requestFor} numberOfLines={1}>
+          {strings.calender.requestFor}{' '}
+          <Text style={styles.requestTextName}>
+            {item.appointment_details?.[0]?.product_name}{' '}
+            {item.appointment_details?.length >= 2 ? 'and more' : null}
+          </Text>
         </Text>
-      </Text>
+        <TouchableOpacity
+          style={styles.iImageCon}
+          onPress={() => (setSchduleDetail(true), setStoreItem(item))}
+        >
+          <Image source={iImage} style={styles.iImage} />
+        </TouchableOpacity>
+      </View>
       <Spacer space={SH(3)} />
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image source={watchLogo} style={styles.watch} />
         <Text style={styles.timeLabel}>
           {strings.calender.timeLabel}{' '}
           <Text style={{ fontFamily: Fonts.SemiBold }}>
-            {item.notificationTime}
+            {item.start_time}
+            {'-'}
+            {item.end_time}
           </Text>
         </Text>
       </View>
@@ -123,20 +162,17 @@ export function Calender(props) {
         <Text style={styles.timeLabel}>
           {strings.calender.dateLabel}{' '}
           <Text style={{ fontFamily: Fonts.SemiBold }}>
-            {item.notificationDate}
+            {moment(item.date).format('dddd')}, {moment(item.date).format('ll')}
           </Text>
         </Text>
       </View>
       <Spacer space={SH(15)} />
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity
-          style={styles.approveButtonCon}
-          onPress={() => setSchduleDetail(!schduleDetail)}
-        >
-          <Text style={styles.approveText}>{strings.calender.accept}</Text>
+        <TouchableOpacity style={styles.approveButtonCon}>
+          <Text style={styles.approveText}>{strings.calender.approve}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.noButtonCon}>
-          <Text style={styles.approveText}>{strings.calender.decline}</Text>
+          <Text style={styles.approveText}>{strings.calender.no}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -165,9 +201,18 @@ export function Calender(props) {
           <View style={{ paddingHorizontal: moderateScale(15) }}>
             <Spacer space={SH(30)} />
             <View style={styles.flexAlign}>
-              <Image source={charlene} style={styles.charlene} />
+              <Image
+                source={
+                  storeItem?.user_details?.profile_photo
+                    ? { uri: storeItem?.user_details?.profile_photo }
+                    : userImage
+                }
+                style={styles.charlene}
+              />
               <View style={{ paddingHorizontal: moderateScale(10) }}>
-                <Text style={styles.charleneName}>{strings.calender.name}</Text>
+                <Text style={styles.charleneName}>
+                  {storeItem?.user_details?.username}
+                </Text>
                 <View style={styles.flexAlign}>
                   <Image source={location} style={styles.location} />
                   <Text style={styles.address}>{strings.calender.addr}</Text>
@@ -175,12 +220,14 @@ export function Calender(props) {
                 <View style={styles.flexAlign}>
                   <Image source={Phone_light} style={styles.location} />
                   <Text style={styles.address}>
-                    {strings.calender.mobileNo}
+                    {storeItem?.user_details?.phone_number}
                   </Text>
                 </View>
                 <View style={styles.flexAlign}>
                   <Image source={email} style={styles.location} />
-                  <Text style={styles.address}>{strings.calender.email}</Text>
+                  <Text style={styles.address}>
+                    {storeItem?.user_details?.email}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -190,11 +237,18 @@ export function Calender(props) {
             </Text>
             <Spacer space={SH(15)} />
             <View>
-              <Text style={styles.service}>{strings.calender.service}</Text>
+              <Text style={styles.service}>service</Text>
               <Spacer space={SH(8)} />
-              <Text style={styles.serviceType}>{strings.calender.service}</Text>
+              <View style={styles.serviceTextCon}>
+                {storeItem?.appointment_details?.map((item, index) => (
+                  <Text style={styles.serviceType} key={index}>
+                    {item.product_name}
+                    {storeItem?.appointment_details?.length >= 2 ? ',' : null}
+                  </Text>
+                ))}
+              </View>
             </View>
-            <Spacer space={SH(30)} />
+            <Spacer space={SH(15)} />
             <View>
               <View style={styles.displayFlex}>
                 <Text style={styles.service}>{strings.calender.apt}</Text>
@@ -212,14 +266,18 @@ export function Calender(props) {
               <Text style={styles.service}>{strings.calender.conform}</Text>
               <Spacer space={SH(8)} />
               <Text style={styles.serviceType}>
-                {strings.calender.conformDate}
+                {moment(storeItem?.date).format('ll')}{' '}
+                {moment(storeItem?.date).format('LT')}
               </Text>
             </View>
             <Spacer space={SH(30)} />
             <View>
               <Text style={styles.service}>{strings.calender.paidAmount}</Text>
               <Spacer space={SH(8)} />
-              <Text style={styles.serviceType}>{strings.calender.jbr}</Text>
+              <Text style={styles.serviceType}>
+                {storeItem?.mode_of_payment.toUpperCase()}{' '}
+                {storeItem?.payable_amount}
+              </Text>
             </View>
             <Spacer space={SH(50)} />
           </View>
@@ -335,13 +393,20 @@ export function Calender(props) {
           />
         </View>
         <View style={styles.notificationCon}>
-          <View>
+          {/* <View> */}
+          {isRequestLoading ? (
+            <View style={{ marginTop: 50 }}>
+              <ActivityIndicator size="large" color={COLORS.indicator} />
+            </View>
+          ) : (
             <FlatList
-              data={notificationData}
+              data={getAppointmentList}
+              extraData={getAppointmentList}
               renderItem={notificationItem}
               keyExtractor={item => item.id}
             />
-          </View>
+          )}
+          {/* </View> */}
         </View>
       </View>
       {schduleDetailModal()}

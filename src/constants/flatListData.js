@@ -20,6 +20,7 @@ import {
   dropScan,
   sellingBucket,
   productBasket,
+  cloth,
 } from '@/assets';
 
 export const jbritemList = [
@@ -808,5 +809,55 @@ export const homeTableData = [
   },
   {
     id: 6,
+  },
+];
+export const categoryRowData = [
+  {
+    id: 1,
+    name: 'Categories',
+  },
+  {
+    id: 2,
+    name: 'Subcategories',
+  },
+  {
+    id: 3,
+    name: 'Brands',
+  },
+  {
+    id: 4,
+    name: 'Products',
+  },
+];
+export const categoryProRowData = [
+  {
+    id: 1,
+    name: 'Baby Boy',
+    image: cloth,
+  },
+  {
+    id: 2,
+    name: 'Baby Girl',
+    image: cloth,
+  },
+  {
+    id: 3,
+    name: 'Boys',
+    image: cloth,
+  },
+  {
+    id: 4,
+    name: 'Girls',
+    image: cloth,
+  },
+  {
+    id: 5,
+    name: 'Men',
+    image: cloth,
+  },
+  {
+    id: 6,
+    name: 'Women',
+    image: cloth,
   },
 ];

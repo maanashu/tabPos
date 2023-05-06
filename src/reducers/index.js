@@ -11,6 +11,7 @@ import { customersReducer } from '@/reducers/CustomersReducer';
 import { walletReducer } from '@/reducers/WalletReducer';
 import { cashTrackingReducer } from '@/reducers/CashTrackingReducer';
 import { RewardReducer } from '@/reducers/RewardReducer';
+import { calenderReducer } from '@/reducers/CalenderReducer';
 
 export const rootReducer = combineReducers({
   error: errorReducer,
@@ -25,4 +26,5 @@ export const rootReducer = combineReducers({
   wallet: walletReducer,
   cashTracking: cashTrackingReducer,
   reward: RewardReducer,
+  calender: calenderReducer,
 });
