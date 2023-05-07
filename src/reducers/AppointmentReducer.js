@@ -4,7 +4,7 @@ const INITIALSTATE = {
   getAppointment: [],
 };
 
-export const calenderReducer = (
+export const appointmentReducer = (
   state = { INITIALSTATE },
   { payload, type }
 ) => {

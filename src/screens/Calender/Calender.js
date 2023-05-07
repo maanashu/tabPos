@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -16,7 +16,6 @@ import {
   search_light,
   location,
   watchLogo,
-  charlene,
   roundCalender,
   email,
   leftlight,
@@ -34,13 +33,12 @@ import { Calendar } from 'react-native-big-calendar';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-import { notificationData } from '@/constants/flatListData';
 import { CALENDAR_MODES } from '@/constants/enums';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAppointment } from '@/actions/CalenderAction';
+import { getAppointment } from '@/actions/AppointmentAction';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { getCalender } from '@/selectors/CalenderSelector';
+import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CalenderTypes';
@@ -48,27 +46,36 @@ import { TYPES } from '@/Types/CalenderTypes';
 export function Calender(props) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
-  const getCalenderData = useSelector(getCalender);
+  const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
   const [storeItem, setStoreItem] = useState();
+  const [extractedAppointment, setExtractedAppointment] = useState([]);
 
   useEffect(() => {
     dispatch(getAppointment());
   }, []);
 
-  // Create a new Date object from the date string
-  const events = [
-    {
-      title: 'Meeting',
-      start: new Date(2023, 4, 5, 13, 55, 0, 0),
-      end: new Date(2023, 4, 5, 15, 55, 0, 0),
-    },
-    {
-      title: 'Coffee break',
-      start: new Date(2023, 4, 13, 15, 45),
-      end: new Date(2023, 6, 14, 16, 30),
-    },
-  ];
+  useEffect(() => {
+    let extractedAppointmentEvents = [];
+    if (getAppointmentList) {
+      getAppointmentList.map(booking => {
+        const startDateTime = new Date(booking.start_date_time * 1000);
+        const endDateTime = new Date(booking.end_date_time * 1000);
+
+        extractedAppointmentEvents = [
+          ...extractedAppointmentEvents,
+          {
+            title:
+              getAppointmentList[0].appointment_details[0].product_name ??
+              'NULL',
+            start: startDateTime,
+            end: endDateTime,
+          },
+        ];
+      });
+      setExtractedAppointment(extractedAppointmentEvents);
+    }
+  }, [getAppointmentList]);
 
   const [schduleDetail, setSchduleDetail] = useState(false);
   const [week, setWeek] = useState(true);
@@ -373,7 +380,7 @@ export function Calender(props) {
             ampm
             swipeEnabled={false}
             mode={calendarMode}
-            events={events}
+            events={extractedAppointment}
             height={windowHeight * 0.2}
             date={calendarDate}
             renderEvent={(event, touchableOpacityProps) => (

@@ -287,7 +287,7 @@ export const styles = StyleSheet.create({
   startEndDate: {
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
-    fontSize: SH(12),
+    fontSize: SH(11),
   },
   eventContainer: {
     backgroundColor: 'white',
@@ -303,7 +303,7 @@ export const styles = StyleSheet.create({
   eventTitle: {
     color: COLORS.primary,
     fontFamily: Fonts.Bold,
-    fontSize: SH(12),
+    fontSize: SH(11),
   },
   iImageCon: {
     backgroundColor: COLORS.dark_grey,
