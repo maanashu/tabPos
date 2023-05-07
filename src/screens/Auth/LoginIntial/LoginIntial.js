@@ -25,7 +25,6 @@ export function LoginIntial() {
   const userData = getData?.user?.user_profiles?.profile_photo;
   const id = getData?.user?.id;
   const profileData = getData?.user?.user_profiles?.profile_photo;
-  console.log('profileData', profileData);
   const userProfile = getData?.getProfile;
   const firstName = getData?.user?.user_profiles?.firstname;
   const lastName = getData?.user?.user_profiles?.lastname;
