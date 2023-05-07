@@ -41,7 +41,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/CalenderTypes';
+import { TYPES } from '@/Types/AppointmentTypes';
 
 export function Calender(props) {
   const dispatch = useDispatch();

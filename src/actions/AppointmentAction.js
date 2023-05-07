@@ -1,5 +1,5 @@
 import { AppointmentController } from '@/controllers';
-import { TYPES } from '@/Types/CalenderTypes';
+import { TYPES } from '@/Types/AppointmentTypes';
 
 const getAppointmentRequest = () => ({
   type: TYPES.GET_APPOINTMENTS_REQUEST,

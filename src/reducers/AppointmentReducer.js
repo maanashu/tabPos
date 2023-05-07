@@ -1,4 +1,4 @@
-import { TYPES } from '@/Types/CalenderTypes';
+import { TYPES } from '@/Types/AppointmentTypes';
 
 const INITIALSTATE = {
   getAppointment: [],
