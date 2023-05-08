@@ -1784,9 +1784,10 @@ export function Retails() {
                     />
                   </View>
                   <TouchableOpacity
-                    onPress={() => (
-                      setCategoryModal(false), setOpenScanner(true)
-                    )}
+                    onPress={() => {
+                      setCategoryModal(false);
+                      setOpenScanner(true);
+                    }}
                   >
                     <Image source={scn} style={styles.scnStyle} />
                   </TouchableOpacity>
