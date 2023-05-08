@@ -21,7 +21,9 @@ import {
   sellingBucket,
   productBasket,
   cloth,
+  onlineMan,
 } from '@/assets';
+import { COLORS } from '@/theme';
 
 export const jbritemList = [
   {
@@ -634,36 +636,36 @@ export const settingLabelData = [
     subhead: 'Not updated ',
     image: tax,
   },
-  {
-    id: 8,
-    name: 'Wallet',
-    subhead: 'Not connected',
-    image: walletSett,
-  },
-  {
-    id: 9,
-    name: 'Shipping & Pickups',
-    subhead: 'Defaults',
-    image: shipping,
-  },
-  {
-    id: 10,
-    name: 'Language',
-    subhead: 'Defaults',
-    image: langu,
-  },
-  {
-    id: 11,
-    name: 'Legal',
-    subhead: 'Defaults',
-    image: work,
-  },
-  {
-    id: 12,
-    name: 'Policies',
-    subhead: 'Defaults',
-    image: policy,
-  },
+  // {
+  //   id: 8,
+  //   name: 'Wallet',
+  //   subhead: 'Not connected',
+  //   image: walletSett,
+  // },
+  // {
+  //   id: 9,
+  //   name: 'Shipping & Pickups',
+  //   subhead: 'Defaults',
+  //   image: shipping,
+  // },
+  // {
+  //   id: 10,
+  //   name: 'Language',
+  //   subhead: 'Defaults',
+  //   image: langu,
+  // },
+  // {
+  //   id: 11,
+  //   name: 'Legal',
+  //   subhead: 'Defaults',
+  //   image: work,
+  // },
+  // {
+  //   id: 12,
+  //   name: 'Policies',
+  //   subhead: 'Defaults',
+  //   image: policy,
+  // },
 ];
 
 export const deviceDropDownArray = [
@@ -784,9 +786,9 @@ export const STARTSELLING = [
   },
   {
     id: 2,
-    heading: 'PRODUCTS/STORE',
-    subHeading: '290 Products listed',
-    image: productBasket,
+    heading: 'ONLINE ORDERS ',
+    subHeading: '30 Orders',
+    image: onlineMan,
   },
 ];
 
@@ -860,4 +862,104 @@ export const categoryProRowData = [
     name: 'Women',
     image: cloth,
   },
+];
+export const polGraphDummyData = [
+  {
+    value: 44,
+    spacing: 2,
+    label: 'Saturday',
+    labelWidth: 60,
+    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11 },
+    frontColor: COLORS.primary,
+  },
+  {
+    value: 56,
+    spacing: 2,
+    frontColor: COLORS.bluish_green,
+  },
+  { value: 66, frontColor: COLORS.lightGreen },
+  {
+    value: 22,
+    spacing: 2,
+    label: 'Sunday',
+    labelWidth: 60,
+    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11 },
+    frontColor: COLORS.primary,
+  },
+  {
+    value: 55,
+    spacing: 2,
+    frontColor: COLORS.bluish_green,
+  },
+  { value: 88, frontColor: COLORS.lightGreen },
+  {
+    value: 99,
+    spacing: 2,
+    label: 'Monday',
+    labelWidth: 60,
+    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11 },
+    frontColor: COLORS.primary,
+  },
+  {
+    value: 22,
+    spacing: 2,
+    frontColor: COLORS.bluish_green,
+  },
+  { value: 55, frontColor: COLORS.lightGreen },
+  {
+    value: 44,
+    spacing: 2,
+    label: 'Tuesday',
+    labelWidth: 60,
+    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11 },
+    frontColor: COLORS.primary,
+  },
+  {
+    value: 44,
+    spacing: 2,
+    frontColor: COLORS.bluish_green,
+  },
+  { value: 22, frontColor: COLORS.lightGreen },
+  {
+    value: 10,
+    spacing: 2,
+    label: 'Wednesday',
+    labelWidth: 60,
+    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11 },
+    frontColor: COLORS.primary,
+  },
+  {
+    value: 10,
+    spacing: 2,
+    frontColor: COLORS.bluish_green,
+  },
+  { value: 20, frontColor: COLORS.lightGreen },
+  {
+    value: 30,
+    spacing: 2,
+    label: 'Thursday',
+    labelWidth: 60,
+    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11 },
+    frontColor: COLORS.primary,
+  },
+  {
+    value: 11,
+    spacing: 2,
+    frontColor: COLORS.bluish_green,
+  },
+  { value: 67, frontColor: COLORS.lightGreen },
+  {
+    value: 10,
+    spacing: 2,
+    label: 'Friday',
+    labelWidth: 60,
+    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11 },
+    frontColor: COLORS.primary,
+  },
+  {
+    value: 40,
+    spacing: 2,
+    frontColor: COLORS.bluish_green,
+  },
+  { value: 20, frontColor: COLORS.lightGreen },
 ];

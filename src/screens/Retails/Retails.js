@@ -575,6 +575,7 @@ export function Retails() {
     };
     dispatch(addTocart(data));
     setProductModal(false);
+    setSerPro(0);
   };
 
   const updateToCart = ({ cartProductServiceId, count }) => {

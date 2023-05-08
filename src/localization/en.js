@@ -648,8 +648,9 @@ export const en = {
     lockScreen: 'Lock screen',
     startSelling: 'START SELLING',
     scanSer: 'Scan/Search',
-    deliveries: 'Deliveries',
+    deliveries: 'Order Deliveries',
     holdCart: 'Hold Cart',
     clearcart: 'Clear cart',
+    ok: 'OK',
   },
 };

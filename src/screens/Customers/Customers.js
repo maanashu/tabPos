@@ -16,7 +16,7 @@ import {
   newCustomerData,
   newCustomerDataLoader,
 } from '@/constants/flatListData';
-import {getCustomerDummy} from '@/constants/staticData'
+import { getCustomerDummy } from '@/constants/staticData';
 import { strings } from '@/localization';
 import {
   notifications,
@@ -43,10 +43,15 @@ import {
   greyRadioArr,
   radioArrBlue,
   cusBarClr,
+  customersGraph,
 } from '@/assets';
 import { BarChartCom, DaySelector, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
-import {UserProfile, UserDetails, Users} from '@/screens/Customers/Components';
+import {
+  UserProfile,
+  UserDetails,
+  Users,
+} from '@/screens/Customers/Components';
 import { Table } from 'react-native-table-component';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -64,14 +69,16 @@ import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
-
 export function Customers() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
   const getCustomerStatitics = getCustomerData?.getCustomers;
-  const values = getCustomerStatitics === undefined ? Object.values(getCustomerDummy) : Object.values(getCustomerStatitics);
+  const values =
+    getCustomerStatitics === undefined
+      ? Object.values(getCustomerDummy)
+      : Object.values(getCustomerStatitics);
   const totalCustomer = values?.reduce((accumulator, value) => {
     return accumulator + value;
   }, 0);
@@ -89,8 +96,7 @@ export function Customers() {
   const [orderDetail, setOrderDetail] = useState('');
   const [selectedValue, setSelectedValue] = useState(5);
   const orderStatus = orderDetail?.status;
-  const [selectTime,setSelectTime] = useState();
-
+  const [selectTime, setSelectTime] = useState();
 
   const selected = value => (
     setSelectedValue(value), dispatch(getUserOrder(sellerID, value))
@@ -101,13 +107,13 @@ export function Customers() {
       customertype: 'New Customers',
       count: getCustomerStatitics?.new_customers_count ?? 0,
       img: newCustomer,
-      id: '1'
+      id: '1',
     },
     {
       customertype: 'Returning Customers',
       count: getCustomerStatitics?.returning_customers_count ?? 0,
       img: returnCustomer,
-      id: '2'
+      id: '2',
     },
     {
       customertype: 'Online Customers',
@@ -258,7 +264,7 @@ export function Customers() {
       <View style={styles.useHeaderCon}>
         <Spacer space={SH(10)} />
         <View style={styles.displayFlex}>
-          <View style={styles.flexAlign}>                                                       
+          <View style={styles.flexAlign}>
             <TouchableOpacity
               onPress={() => (setUserProfile(false), setWeeklyUser(true))}
             >
@@ -299,7 +305,7 @@ export function Customers() {
                 </Text>
                 <View style={styles.completedButton}>
                   <Text style={styles.completedText}>
-                 { statusFun(orderDetail?.status)}
+                    {statusFun(orderDetail?.status)}
                   </Text>
                 </View>
               </View>
@@ -590,8 +596,10 @@ export function Customers() {
                     provider={PROVIDER_GOOGLE}
                     showCompass
                     region={{
-                      latitude: orderDetail?.seller_details?.seller_location?.[0],
-                      longitude: orderDetail?.seller_details?.seller_location?.[1],
+                      latitude:
+                        orderDetail?.seller_details?.seller_location?.[0],
+                      longitude:
+                        orderDetail?.seller_details?.seller_location?.[1],
                       latitudeDelta: 0.09,
                       longitudeDelta: 0.09,
                     }}
@@ -599,10 +607,12 @@ export function Customers() {
                   >
                     <Marker
                       coordinate={{
-                        latitude: orderDetail?.seller_details?.seller_location?.[0]
+                        latitude: orderDetail?.seller_details
+                          ?.seller_location?.[0]
                           ? orderDetail?.seller_details?.seller_location?.[0]
                           : 0,
-                        longitude: orderDetail?.seller_details?.seller_location?.[1]
+                        longitude: orderDetail?.seller_details
+                          ?.seller_location?.[1]
                           ? orderDetail?.seller_details?.seller_location?.[1]
                           : 0,
                       }}
@@ -618,11 +628,9 @@ export function Customers() {
                           ? orderDetail?.coordinates?.[1]
                           : 0,
                       }}
-                      
                       image={blueLocation}
                       style={{ width: 8, height: 8 }}
-                    >
-                    </Marker>
+                    ></Marker>
                   </MapView>
                 </View>
               </View>
@@ -653,7 +661,9 @@ export function Customers() {
                   {orderDetail?.id}
                 </Text>
                 <View style={styles.completedButton}>
-                  <Text style={styles.completedText}>{statusFun(orderDetail?.status)}</Text>
+                  <Text style={styles.completedText}>
+                    {statusFun(orderDetail?.status)}
+                  </Text>
                 </View>
               </View>
               <TouchableOpacity
@@ -718,21 +728,20 @@ export function Customers() {
                   <Text style={styles.invoiceId}>
                     {strings.wallet.createDateLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
-                     {orderDetail?.invoice?.created_date ?? null}
+                      {orderDetail?.invoice?.created_date ?? null}
                     </Text>
                   </Text>
                   <Spacer space={SH(3)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.dueDateLabel}
                     <Text style={{ color: COLORS.solid_grey }}>
-                    {orderDetail?.invoice?.due_date ?? null}
+                      {orderDetail?.invoice?.due_date ?? null}
                     </Text>
                   </Text>
                   <Spacer space={SH(3)} />
                   <Text style={styles.deliveryDate}>
                     {strings.wallet.deliveryDate}
-                    <Text>
-                    {orderDetail?.invoice?.delivery_date ?? null}</Text>
+                    <Text>{orderDetail?.invoice?.delivery_date ?? null}</Text>
                   </Text>
                   <View style={styles.pointConOrder}>
                     <Text style={styles.pointTextOrder}>
@@ -786,13 +795,16 @@ export function Customers() {
                                     style={styles.orderCigrate}
                                   />
                                 ) : null}
-                                <View 
+                                <View
                                   style={{
                                     flexDirection: 'column',
                                     marginLeft: 8,
                                   }}
                                 >
-                                  <Text style={styles.tableTextData} numberOfLines={1}>
+                                  <Text
+                                    style={styles.tableTextData}
+                                    numberOfLines={1}
+                                  >
                                     {item.product_name}
                                   </Text>
                                   <Text
@@ -991,7 +1003,7 @@ export function Customers() {
       );
     } else if (userProfile) {
       return (
-        <View style={{flex:1}}>
+        <View style={{ flex: 1 }}>
           {customUserHeader()}
           <UserProfile
             userName={userStore?.user_details?.firstname}
@@ -1003,149 +1015,161 @@ export function Customers() {
               setUserProfile(false), setUserDetail(true)
             )}
           />
-          <View style={{flex:1}}>
-         <ScrollView contentContainerStyle={{flexGrow:1}}>
-         {isOrderUserLoading ? (
-            <View style={{ marginTop: 100 }}>
-              <ActivityIndicator size="large" color={COLORS.indicator} />
-            </View>
-          ) : orderUserArray?.length === 0 ? (
-            <View style={{ marginTop: 80 }}>
-              <Text style={styles.userNotFound}>Order not found</Text>
-            </View>
-          ) : (
-            orderUserArray?.map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.tableDataCon, { zIndex: -99 }]}
-                onPress={() => (
-                  setOrderModal(true),
-                  setUserProfile(false),
-                  setOrderDetail(item)
-                )}
-              >
-                <View style={styles.displayFlex}>
-                  <View style={styles.tableHeaderLeftPro}>
-                    <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
-                  </View>
-                  <View style={styles.tableHeaderRightPro}>
-                    <Text style={styles.tableTextData}>{item.id}</Text>
-                    <Text style={styles.tableTextData}>
-                      {item.date
-                        ? moment(item.date).format('LL')
-                        : 'date not found'}
-                    </Text>
-                    
-                    <Text style={styles.tableTextData}>Maimi</Text>
-                    <Text style={styles.tableTextData}>DHL</Text>
-                    <Text style={styles.tableTextData}>
-                      {item.total_items} times
-                    </Text>
-                    <Text style={styles.tableTextData}>
-                      ${item.payable_amount}
-                    </Text>
-                    <View
-                      style={[
-                        styles.saleTypeView,
-                        {
-                          backgroundColor:
-                            item.shipping === 'Delivery' ||
-                            item.shipping === 'Shipping'
-                              ? COLORS.marshmallow
-                              : COLORS.lightGreen,
-                        },
-                      ]}
-                    >
-                      <Text style={styles.saleTypeText}>{item.shipping}</Text>
-                    </View>
-                  </View>
+          <View style={{ flex: 1 }}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+              {isOrderUserLoading ? (
+                <View style={{ marginTop: 100 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
-              </TouchableOpacity>
-            ))
-          )}
-         </ScrollView>
+              ) : orderUserArray?.length === 0 ? (
+                <View style={{ marginTop: 80 }}>
+                  <Text style={styles.userNotFound}>Order not found</Text>
+                </View>
+              ) : (
+                orderUserArray?.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[styles.tableDataCon, { zIndex: -99 }]}
+                    onPress={() => (
+                      setOrderModal(true),
+                      setUserProfile(false),
+                      setOrderDetail(item)
+                    )}
+                  >
+                    <View style={styles.displayFlex}>
+                      <View style={styles.tableHeaderLeftPro}>
+                        <Text style={styles.tableTextDataFirst}>
+                          {index + 1}
+                        </Text>
+                      </View>
+                      <View style={styles.tableHeaderRightPro}>
+                        <Text style={styles.tableTextData}>{item.id}</Text>
+                        <Text style={styles.tableTextData}>
+                          {item.date
+                            ? moment(item.date).format('LL')
+                            : 'date not found'}
+                        </Text>
+
+                        <Text style={styles.tableTextData}>Maimi</Text>
+                        <Text style={styles.tableTextData}>DHL</Text>
+                        <Text style={styles.tableTextData}>
+                          {item.total_items} times
+                        </Text>
+                        <Text style={styles.tableTextData}>
+                          ${item.payable_amount}
+                        </Text>
+                        <View
+                          style={[
+                            styles.saleTypeView,
+                            {
+                              backgroundColor:
+                                item.shipping === 'Delivery' ||
+                                item.shipping === 'Shipping'
+                                  ? COLORS.marshmallow
+                                  : COLORS.lightGreen,
+                            },
+                          ]}
+                        >
+                          <Text style={styles.saleTypeText}>
+                            {item.shipping}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ))
+              )}
+            </ScrollView>
           </View>
         </View>
       );
     } else if (weeklyUser) {
       return (
-        <View style={{flex:1}}>
+        <View style={{ flex: 1 }}>
           {customHeader()}
           <Users selectedNo={selected} />
-         <View style={{flex:1, zIndex:-9}}>
-         <ScrollView contentContainerStyle={{flexGrow:1}}>
-         {isSearchProLoading ? (
-            <View style={{ marginTop: 100 }}>
-              <ActivityIndicator size="large" color={COLORS.indicator} />
-            </View>
-          ) : userOrderArray?.length === 0 ? (
-            <View style={{ marginTop: 80 }}>
-              <Text style={styles.userNotFound}>User not found</Text>
-            </View>
-          ) : (
-            userOrderArray?.map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.tableDataCon, { zIndex: -99 }]}
-                activeOpacity={0.7}
-                onPress={() => userClickHandler({ item, sellerID })}
-              >
-                <View style={styles.displayFlex}>
-                  <View style={styles.tableHeaderLeft}>
-                    <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
-                    <View style={[styles.flexAlign, { marginLeft: 25 }]}>
-                      <Image
-                        source={
-                          item?.user_details?.profile_photo
-                            ? { uri: item?.user_details?.profile_photo }
-                            : userImage
-                        }
-                        style={styles.lovingStyleData}
-                      />
-                      <View style={{ flexDirection: 'column', marginLeft: 10 }}>
-                        <Text style={styles.tableTextDataName}>
-                          {item?.user_details?.firstname}
+          <View style={{ flex: 1, zIndex: -9 }}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+              {isSearchProLoading ? (
+                <View style={{ marginTop: 100 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : userOrderArray?.length === 0 ? (
+                <View style={{ marginTop: 80 }}>
+                  <Text style={styles.userNotFound}>User not found</Text>
+                </View>
+              ) : (
+                userOrderArray?.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[styles.tableDataCon, { zIndex: -99 }]}
+                    activeOpacity={0.7}
+                    onPress={() => userClickHandler({ item, sellerID })}
+                  >
+                    <View style={styles.displayFlex}>
+                      <View style={styles.tableHeaderLeft}>
+                        <Text style={styles.tableTextDataFirst}>
+                          {index + 1}
                         </Text>
-                        {item?.user_details ? (
-                          <Text
-                            style={[
-                              styles.tableTextDataAdd,
-                              { color: COLORS.gerySkies },
-                            ]}
-                            numberOfLines={1}
-                          >
-                            {
-                              item?.user_details?.current_address
-                                ?.street_address
+                        <View style={[styles.flexAlign, { marginLeft: 25 }]}>
+                          <Image
+                            source={
+                              item?.user_details?.profile_photo
+                                ? { uri: item?.user_details?.profile_photo }
+                                : userImage
                             }
-                            ,{item?.user_details?.current_address?.city},
-                            {item?.user_details?.current_address?.state},
-                            {item?.user_details?.current_address?.country},
-                            {item?.user_details?.current_address?.postal_code},
-                          </Text>
-                        ) : (
-                          <Text></Text>
-                        )}
+                            style={styles.lovingStyleData}
+                          />
+                          <View
+                            style={{ flexDirection: 'column', marginLeft: 10 }}
+                          >
+                            <Text style={styles.tableTextDataName}>
+                              {item?.user_details?.firstname}
+                            </Text>
+                            {item?.user_details ? (
+                              <Text
+                                style={[
+                                  styles.tableTextDataAdd,
+                                  { color: COLORS.gerySkies },
+                                ]}
+                                numberOfLines={1}
+                              >
+                                {
+                                  item?.user_details?.current_address
+                                    ?.street_address
+                                }
+                                ,{item?.user_details?.current_address?.city},
+                                {item?.user_details?.current_address?.state},
+                                {item?.user_details?.current_address?.country},
+                                {
+                                  item?.user_details?.current_address
+                                    ?.postal_code
+                                }
+                                ,
+                              </Text>
+                            ) : (
+                              <Text></Text>
+                            )}
+                          </View>
+                        </View>
+                      </View>
+                      <View style={styles.tableHeaderRight}>
+                        <Text style={styles.tableTextData}>
+                          {item?.total_orders}
+                        </Text>
+                        <Text style={styles.tableTextData}>
+                          {item?.total_products}
+                        </Text>
+                        <Text style={styles.tableTextData}>
+                          {item?.life_time_spent?.toFixed(2)}
+                        </Text>
                       </View>
                     </View>
-                  </View>
-                  <View style={styles.tableHeaderRight}>
-                    <Text style={styles.tableTextData}>
-                      {item?.total_orders}
-                    </Text>
-                    <Text style={styles.tableTextData}>
-                      {item?.total_products}
-                    </Text>
-                    <Text style={styles.tableTextData}>
-                      {item?.life_time_spent?.toFixed(2)}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            ))
-          )}
-         </ScrollView>
-         </View>
+                  </TouchableOpacity>
+                ))
+              )}
+            </ScrollView>
+          </View>
         </View>
       );
     } else {
@@ -1186,24 +1210,20 @@ export function Customers() {
                 </View>
               </View>
 
-
               <Spacer space={SH(5)} />
-              <Text style={styles.totalCustomer}>
-               {totalCustomer ?? '0'}
-              </Text>
-              {/* <Spacer space={SH(10)} />
-              <Image source={customersGraph} style={styles.customersGraph} />
-              <Spacer space={SH(200)} /> */}
-              <View style={{marginTop:30}}>
-                <Image source={cusBarClr} style={styles.cusBarClr}/>
-              <BarChartCom
-               barWid={Platform.OS === 'android' ?  SH(1250) : SH(930)}
-               barHei={300}
-               barSpacing={Platform.OS === 'android' ?  94 : 60}
-               barW={20}
-               labelTextSty= {{color: COLORS.gerySkies, fontSize:11}}
-               revenueData = {revenueGraphObject}
-               />
+              <Text style={styles.totalCustomer}>{totalCustomer ?? '0'}</Text>
+
+              <View style={{ marginTop: 30 }}>
+                {/* <Image source={cusBarClr} style={styles.cusBarClr} /> */}
+                {/* <BarChartCom
+                  barWid={Platform.OS === 'android' ? SH(1250) : SH(930)}
+                  barHei={300}
+                  barSpacing={Platform.OS === 'android' ? 94 : 60}
+                  barW={20}
+                  labelTextSty={{ color: COLORS.gerySkies, fontSize: 11 }}
+                  revenueData={revenueGraphObject}
+                /> */}
+                <Image source={customersGraph} style={styles.customersGraph} />
               </View>
             </View>
           </View>
