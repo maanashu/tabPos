@@ -59,8 +59,9 @@ export function Calender(props) {
     let extractedAppointmentEvents = [];
     if (getAppointmentList) {
       getAppointmentList.map(booking => {
-        const startDateTime = new Date(booking.start_date_time * 1000);
-        const endDateTime = new Date(booking.end_date_time * 1000);
+        console.log(booking.start_date_time);
+        const startDateTime = new Date(booking.start_date_time);
+        const endDateTime = new Date(booking.end_date_time);
 
         extractedAppointmentEvents = [
           ...extractedAppointmentEvents,
@@ -389,7 +390,7 @@ export function Calender(props) {
               >
                 <Text style={styles.eventTitle}>{event.title}</Text>
                 <Text style={styles.startEndDate}>
-                  {`${moment(event.start).format('hh:mm A')}`}
+                  {getStartEndFormattedDate(event.start)}
                 </Text>
                 <Text style={styles.startEndDate}>
                   {getStartEndFormattedDate(event.end)}
