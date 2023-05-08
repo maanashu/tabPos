@@ -696,7 +696,13 @@ export function Retails() {
         userId: customer?.user_id,
         modeOfPayment: modeOfPay,
       };
-      dispatch(createOrder(data));
+
+      const callback = response => {
+        if (response) {
+          rightConCloseHandler();
+        }
+      };
+      dispatch(createOrder(data, callback));
       setListofItem(false);
       setCheckoutCon(false);
       setCustomerPhoneNo(''),
