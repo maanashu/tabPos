@@ -217,7 +217,7 @@ export function Analytics(props) {
   const tableAccCatHandler = item => {
     if (item.category === 'Category') {
       {
-          setProductCat(true),
+        setProductCat(true),
           setProductDetail(false),
           setAccCatTable('Category');
       }
@@ -5589,7 +5589,9 @@ export function Analytics(props) {
     } else {
       return (
         <View style={styles.homeMainContainer}>
-          <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+          >
             <HomeGraph
               header="Total Products"
               subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '0'}
@@ -5610,7 +5612,9 @@ export function Analytics(props) {
               productLoader={totalInventoryLoading}
             />
           </View>
-          <View style={{ flexDirection: 'row',justifyContent:'space-between'  }}>
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+          >
             {/* <HomeGraph
               header="Total Revenue"
               subHeader= {getAnalyticsData?.getRevenueGraph?.totalResult.toFixed(2) ?? '$0'}

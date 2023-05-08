@@ -216,6 +216,10 @@ export { default as cloth } from '@/assets/icons/ic_dashboard/cloth.png';
 export { default as keyboard } from '@/assets/icons/ic_dashboard/keyboard.png';
 export { default as pause } from '@/assets/icons/ic_dashboard/pause.png';
 export { default as eraser } from '@/assets/icons/ic_dashboard/eraser.png';
+export { default as lockLight } from '@/assets/icons/ic_dashboard/lockLight.png';
+export { default as onlineMan } from '@/assets/icons/ic_dashboard/onlineMan.png';
+export { default as terryProfile } from '@/assets/icons/ic_dashboard/profile.png';
+export { default as ok } from '@/assets/icons/ic_dashboard/ok.png';
 
 /* Fonts */
 export const Fonts = {

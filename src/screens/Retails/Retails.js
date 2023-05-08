@@ -90,7 +90,6 @@ export function Retails() {
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.getProfile?.unique_uuid;
-  console.log('sellerID', sellerID);
   const array = getRetailData?.categories;
   const walletData = getRetailData?.getWallet;
   const subCategoriesArray = getRetailData?.subCategories ?? [];
@@ -576,6 +575,7 @@ export function Retails() {
     };
     dispatch(addTocart(data));
     setProductModal(false);
+    setSerPro(0);
   };
 
   const updateToCart = ({ cartProductServiceId, count }) => {

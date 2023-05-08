@@ -163,8 +163,8 @@ export const styles = StyleSheet.create({
     fontSize: SF(34),
   },
   customersGraph: {
-    width: windowWidth * 0.9,
-    height: windowHeight * 0.4,
+    width: windowWidth * 0.99,
+    height: windowHeight * 0.5,
     resizeMode: 'contain',
   },
   orderTypeCon: {
@@ -343,10 +343,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  
-
-  
-
   // user profile css start
   useHeaderCon: {
     borderBottomWidth: 1,
@@ -435,7 +431,7 @@ export const styles = StyleSheet.create({
     height: SW(8),
     resizeMode: 'contain',
   },
-  toggleBtnCon:{
+  toggleBtnCon: {
     width: SW(11),
     height: SW(8),
   },
@@ -443,8 +439,8 @@ export const styles = StyleSheet.create({
     width: SW(8),
     height: SW(8),
     resizeMode: 'contain',
-    tintColor : COLORS.gerySkies,
-    transform:[{rotate:'180deg'}]
+    tintColor: COLORS.gerySkies,
+    transform: [{ rotate: '180deg' }],
   },
   pointText: {
     fontFamily: Fonts.SemiBold,
@@ -1052,12 +1048,12 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     width: windowWidth * 0.03,
-    borderWidth:1
+    borderWidth: 1,
   },
-  resImage:{
+  resImage: {
     width: windowWidth * 0.03,
-    height:SH(20),
-    resizeMode:'contain'
+    height: SH(20),
+    resizeMode: 'contain',
   },
   tableTextDataAdd: {
     color: COLORS.solid_grey,

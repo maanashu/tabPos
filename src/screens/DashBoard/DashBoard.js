@@ -18,6 +18,7 @@ import {
   cashProfile,
   checkArrow,
   clock,
+  lockLight,
   pay,
   pin,
   rightIcon,
@@ -28,10 +29,31 @@ import {
 } from '@/assets';
 import { STARTSELLING, homeTableData } from '@/constants/flatListData';
 import { SearchScreen } from './Components';
+import { logoutFunction } from '@/actions/AuthActions';
+import { Alert } from 'react-native';
+import { useDispatch } from 'react-redux';
 const windowWidth = Dimensions.get('window').width;
 
 export function DashBoard() {
+  const dispatch = useDispatch();
   const [searchScreen, setSearchScreen] = useState(false);
+
+  const logoutHandler = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout ?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          dispatch(logoutFunction());
+          // dispatch(logoutUserFunction());
+        },
+      },
+    ]);
+  };
   const tableListItem = () => (
     <TouchableOpacity style={[styles.reviewRenderView]}>
       <View style={{ width: SW(20) }}>
@@ -162,11 +184,16 @@ export function DashBoard() {
                 </View>
               </View>
               <View style={{ flex: 1 }} />
-              <TouchableOpacity style={styles.checkoutButton}>
-                {/* <Image source={checkArrow} style={styles.checkArrow} /> */}
-                <Text style={[styles.checkoutText]}>
-                  {strings.dashboard.lockScreen}
-                </Text>
+              <TouchableOpacity
+                style={styles.checkoutButton}
+                onPress={() => logoutHandler()}
+              >
+                <View style={styles.displayRow}>
+                  <Image source={lockLight} style={styles.lockLight} />
+                  <Text style={[styles.checkoutText]}>
+                    {strings.dashboard.lockScreen}
+                  </Text>
+                </View>
               </TouchableOpacity>
 
               <Spacer space={SH(10)} />

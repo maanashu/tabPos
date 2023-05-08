@@ -15,13 +15,19 @@ import {
 } from 'react-native';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
 import {
+  Phone_light,
+  addDiscountPic,
   cashProfile,
   checkArrow,
   clock,
   cloth,
   crossBg,
+  email,
   eraser,
   keyboard,
+  location,
+  lockLight,
+  ok,
   pause,
   pay,
   pin,
@@ -30,6 +36,7 @@ import {
   search_light,
   sellingArrow,
   sellingBucket,
+  terryProfile,
 } from '@/assets';
 import {
   STARTSELLING,
@@ -134,10 +141,6 @@ export function SearchScreen({ crossBgHandler }) {
               renderItem={categoryProListItem}
               keyExtractor={item => item.id}
               numColumns={4}
-              // contentContainerStyle={{
-              //   flex: 1,
-              //   justifyContent: 'space-between',
-              // }}
             />
           </>
         </View>
@@ -154,7 +157,69 @@ export function SearchScreen({ crossBgHandler }) {
             </View>
           </View>
           <Spacer space={SH(10)} />
-          <View style={styles.nameAddCon}></View>
+          <View style={styles.nameAddCon}>
+            <View style={styles.sideBarInputWraper}>
+              <View style={styles.displayRow}>
+                <View>
+                  <Image source={search_light} style={styles.sideSearchStyle} />
+                </View>
+                <TextInput
+                  placeholder="803-238-2630"
+                  style={styles.sideBarsearchInput}
+                  keyboardType="numeric"
+                  // value={search}
+                  // onChangeText={search => (
+                  //   setSearch(search), onChangeFun(search)
+                  // )}
+                  placeholderTextColor={COLORS.solid_grey}
+                />
+              </View>
+            </View>
+            <View style={styles.nameAddSingleCon}>
+              <View style={styles.displayRow}>
+                <Image source={terryProfile} style={styles.Phonelight} />
+                <Text style={styles.terryText}>Terry Moore</Text>
+              </View>
+            </View>
+            <View style={styles.nameAddSingleCon}>
+              <View style={styles.displayRow}>
+                <Image source={Phone_light} style={styles.Phonelight} />
+                <Text style={styles.terryText}>803-238-2630</Text>
+              </View>
+            </View>
+            <View style={styles.nameAddSingleCon}>
+              <View style={styles.displayRow}>
+                <Image source={email} style={styles.Phonelight} />
+                <Text style={styles.terryText}>
+                  mailto:harryrady@jourrapide.com
+                </Text>
+              </View>
+            </View>
+            <View style={styles.nameAddSingleCon}>
+              <View style={styles.displayRow}>
+                <Image source={location} style={styles.Phonelight} />
+                <Text style={styles.terryText}>
+                  4849 Owagner Lane Seattle, WA 98101
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity style={styles.okButtonCon}>
+              <Image source={ok} style={styles.lockLight} />
+              <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
+            </TouchableOpacity>
+          </View>
+          <Spacer space={SH(10)} />
+
+          <View style={styles.displayflex}>
+            <View style={styles.addDiscountCon}>
+              <Image source={addDiscountPic} style={styles.addDiscountPic} />
+              <Text style={styles.addDiscountText}>Add Discount</Text>
+            </View>
+            <View style={styles.addDiscountCon}>
+              <Image source={addDiscountPic} style={styles.addDiscountPic} />
+              <Text style={styles.addDiscountText}>Add Notes</Text>
+            </View>
+          </View>
         </View>
       </View>
     </View>
