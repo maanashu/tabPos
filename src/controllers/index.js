@@ -7,4 +7,4 @@ export { AnalyticsController } from '@/controllers/AnalyticsController';
 export { CustomersController } from '@/controllers/CustomersController';
 export { WalletController } from '@/controllers/WalletController';
 export { CashTrackingController } from '@/controllers/CashTrackingController';
-export { CalenderController } from '@/controllers/CalenderController';
+export { AppointmentController } from '@/controllers/AppointmentController';

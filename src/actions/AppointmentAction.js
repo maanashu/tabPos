@@ -1,6 +1,7 @@
-import { CalenderController } from '@/controllers';
-import { TYPES } from '@/Types/CalenderTypes';
+import { AppointmentController } from '@/controllers';
+import { TYPES } from '@/Types/AppointmentTypes';
 
+// get all appointments
 const getAppointmentRequest = () => ({
   type: TYPES.GET_APPOINTMENTS_REQUEST,
   payload: null,
@@ -21,7 +22,7 @@ const getAppointmentReset = () => ({
 export const getAppointment = () => async dispatch => {
   dispatch(getAppointmentRequest());
   try {
-    const res = await CalenderController.getAppointment();
+    const res = await AppointmentController.getAppointment();
     dispatch(getAppointmentSuccess(res?.payload?.data));
   } catch (error) {
     if (error?.statusCode === 204) {

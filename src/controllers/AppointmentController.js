@@ -1,9 +1,7 @@
-import { strings } from '@/localization';
 import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
-export class CalenderController {
+export class AppointmentController {
   static async getAppointment() {
     return new Promise((resolve, reject) => {
       const endpoint =

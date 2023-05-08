@@ -543,13 +543,14 @@ export const sendInvitation = data => async dispatch => {
   }
 };
 
-export const createOrder = data => async dispatch => {
+export const createOrder = (data, callback) => async dispatch => {
   dispatch(createOrderRequest());
   try {
     const res = await RetailController.createOrder(data);
     dispatch(createOrderSuccess(res));
     dispatch(clearAllCart());
     dispatch(getAllCart());
+    callback && callback(res);
   } catch (error) {
     dispatch(createOrderError(error.message));
   }

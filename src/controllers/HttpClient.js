@@ -2,7 +2,9 @@ import axios from 'axios';
 import { Config } from 'react-native-config';
 import { strings } from '@/localization';
 import { store } from '@/store';
+import * as RNLocalize from 'react-native-localize';
 
+const getTimeZone = RNLocalize.getTimeZone();
 const client = axios.create({
   // baseURL: Config.API_BASE_URL,
   // headers: {
@@ -11,11 +13,15 @@ const client = axios.create({
 });
 client.interceptors.request.use(function (config) {
   const register = store.getState().auth?.user?.token;
-
-  // console.log('tpoken----', register);
   const user = store.getState().user?.user?.token;
   const token = register ? register : user ? user : null;
-  config.headers.Authorization = token;
+
+  config.headers = {
+    ...config.headers,
+    timezone: getTimeZone,
+    Authorization: token,
+  };
+
   return config;
 });
 
