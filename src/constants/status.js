@@ -4,3 +4,10 @@ export const STATUS = {
   NOT_STARTED: 'NOT_STARTED',
   SUCCESS: 'SUCCESS',
 };
+
+export const APPOINTMENT_STATUS = {
+  REVIEWING: '0',
+  ACCEPTED_BY_SELLER: '1',
+  COMPLETED: '2',
+  REJECTED_BY_SELLER: '3',
+};

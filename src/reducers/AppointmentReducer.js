@@ -2,6 +2,7 @@ import { TYPES } from '@/Types/AppointmentTypes';
 
 const INITIALSTATE = {
   getAppointment: [],
+  appointmentStatus: null,
 };
 
 export const appointmentReducer = (
@@ -18,6 +19,16 @@ export const appointmentReducer = (
       return {
         ...state,
         getAppointment: [],
+      };
+    case TYPES.CHANGE_APPOINTMENT_STATUS_SUCCESS:
+      return {
+        ...state,
+        appointmentStatus: payload.status,
+      };
+    case TYPES.CHANGE_APPOINTMENT_STATUS_RESET:
+      return {
+        ...state,
+        appointmentStatus: null,
       };
 
     default:

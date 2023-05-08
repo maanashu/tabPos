@@ -36,12 +36,16 @@ const windowHeight = Dimensions.get('window').height;
 import { CALENDAR_MODES } from '@/constants/enums';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAppointment } from '@/actions/AppointmentAction';
+import {
+  changeAppointmentStatus,
+  getAppointment,
+} from '@/actions/AppointmentAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AppointmentTypes';
+import { APPOINTMENT_STATUS } from '@/constants/status';
 
 export function Calender(props) {
   const dispatch = useDispatch();
@@ -59,7 +63,6 @@ export function Calender(props) {
     let extractedAppointmentEvents = [];
     if (getAppointmentList) {
       getAppointmentList.map(booking => {
-        console.log(booking.start_date_time);
         const startDateTime = new Date(booking.start_date_time);
         const endDateTime = new Date(booking.end_date_time);
 
@@ -175,10 +178,36 @@ export function Calender(props) {
       </View>
       <Spacer space={SH(15)} />
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity style={styles.approveButtonCon}>
+        <TouchableOpacity
+          onPress={() => {
+            const appointmentID =
+              item.appointment_details[0]?.appointment_id ?? '';
+
+            dispatch(
+              changeAppointmentStatus(
+                appointmentID,
+                APPOINTMENT_STATUS.ACCEPTED_BY_SELLER
+              )
+            );
+          }}
+          style={styles.approveButtonCon}
+        >
           <Text style={styles.approveText}>{strings.calender.approve}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.noButtonCon}>
+        <TouchableOpacity
+          onPress={() => {
+            const appointmentID =
+              item.appointment_details[0]?.appointment_id ?? '';
+
+            dispatch(
+              changeAppointmentStatus(
+                appointmentID,
+                APPOINTMENT_STATUS.REJECTED_BY_SELLER
+              )
+            );
+          }}
+          style={styles.noButtonCon}
+        >
           <Text style={styles.approveText}>{strings.calender.no}</Text>
         </TouchableOpacity>
       </View>
