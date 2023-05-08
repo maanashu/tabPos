@@ -293,7 +293,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: COLORS.primary,
-    borderLeftColor: 'green',
+    borderLeftColor: COLORS.primary,
     borderLeftWidth: 10,
     borderStyle: 'solid',
     borderRadius: 6,
