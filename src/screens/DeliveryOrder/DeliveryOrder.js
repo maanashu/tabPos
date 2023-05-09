@@ -172,9 +172,9 @@ export function DeliveryOrder() {
 
   useEffect(() => {
     if (isFocused) {
-         dispatch(getOrderCount(sellerID)),
-         dispatch(getReviewDefault(0, sellerID));
-         dispatch(deliveryOrd())
+      dispatch(getOrderCount(sellerID)),
+        dispatch(getReviewDefault(0, sellerID));
+      dispatch(deliveryOrd());
     }
     if (getDeliveryData?.orderList?.length > 0) {
       setOrderCount(getDeliveryData?.orderList);
@@ -267,7 +267,7 @@ export function DeliveryOrder() {
             style={[styles.truckStyle, { right: 10 }]}
           />
           <View style={styles.searchView}>
-            <Image source={search_light} style={styles.searchImage}/>
+            <Image source={search_light} style={styles.searchImage} />
             <TextInput
               placeholder={strings.deliveryOrders.search}
               style={styles.textInputStyle}
@@ -295,12 +295,12 @@ export function DeliveryOrder() {
       });
     } else {
       dispatch(getOrders(item.key, sellerID));
-        setViewAllReviews(true),
+      setViewAllReviews(true),
         setHeadingType(item.status),
         setDataType(item.status);
     }
   };
-  
+
   const orderStatusReach = () => {
     return (
       <View>
@@ -447,7 +447,7 @@ export function DeliveryOrder() {
           <Text style={styles.timeText}>
             {item?.preffered_delivery_start_time
               ? item?.preffered_delivery_start_time
-              : '00.00'}{' '}     
+              : '00.00'}{' '}
             -{' '}
             {item?.preffered_delivery_end_time
               ? item?.preffered_delivery_end_time
@@ -568,7 +568,7 @@ export function DeliveryOrder() {
             style={[styles.pinIcon, { tintColor: COLORS.primary }]}
           />
         </View>
-        <ActivityIndicator size="small" color={COLORS.primary}/>
+        <ActivityIndicator size="small" color={COLORS.primary} />
         <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
       </View>
     </View>
@@ -964,7 +964,8 @@ export function DeliveryOrder() {
                 <View style={styles.timeView}>
                   <Image source={pin} style={styles.pinIcon} />
                   <Text style={styles.timeText}>
-                    {singleOrder?.distance ? singleOrder?.distance : '00.00'} miles
+                    {singleOrder?.distance ? singleOrder?.distance : '00.00'}{' '}
+                    miles
                   </Text>
                 </View>
               </View>
@@ -979,7 +980,8 @@ export function DeliveryOrder() {
                 <View style={styles.timeView}>
                   <Image source={pay} style={styles.pinIcon} />
                   <Text style={styles.timeText}>
-                    ${singleOrder?.payable_amount
+                    $
+                    {singleOrder?.payable_amount
                       ? singleOrder?.payable_amount
                       : '0'}
                   </Text>
@@ -1340,35 +1342,34 @@ export function DeliveryOrder() {
                   <Text style={styles.orderReviewText}>
                     {strings.deliveryOrders.deliveryOrders}
                   </Text>
-                  {
-                    isDeliveringOrder
-                    ?
+                  {isDeliveringOrder ? (
                     <FlatList
-                    horizontal
-                    data={deliveryOrders}
-                    extraData={deliveryOrders}
-                    renderItem={renderDeliveryOrdersDummy}
-                    showsHorizontalScrollIndicator={false}
-                  />
-                  :
-                  deliveringOrder?.length === 0 
-                  ?
-                  <View>
-                  <Text style={[styles.nodata, {marginVertical: moderateScale(15)}]}>No data found</Text>
-                   </View>
-                    :
-                  <FlatList
-                  horizontal
-                  data={deliveringOrder}
-                  extraData={deliveringOrder}
-                  renderItem={renderDeliveryOrders}
-                  showsHorizontalScrollIndicator={false}
-                /> 
-
-                  }
-                 
-
-                 
+                      horizontal
+                      data={deliveryOrders}
+                      extraData={deliveryOrders}
+                      renderItem={renderDeliveryOrdersDummy}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  ) : deliveringOrder?.length === 0 ? (
+                    <View>
+                      <Text
+                        style={[
+                          styles.nodata,
+                          { marginVertical: moderateScale(15) },
+                        ]}
+                      >
+                        No data found
+                      </Text>
+                    </View>
+                  ) : (
+                    <FlatList
+                      horizontal
+                      data={deliveringOrder}
+                      extraData={deliveringOrder}
+                      renderItem={renderDeliveryOrders}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  )}
                 </View>
               </View>
             </View>

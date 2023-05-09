@@ -22,6 +22,7 @@ import {
   rightlight,
   iImage,
   userImage,
+  ok,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
@@ -46,23 +47,38 @@ import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AppointmentTypes';
 import { APPOINTMENT_STATUS } from '@/constants/status';
+import { useIsFocused } from '@react-navigation/native';
 
 export function Calender(props) {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
   const [storeItem, setStoreItem] = useState();
   const [extractedAppointment, setExtractedAppointment] = useState([]);
+  const getAppointmentList2 = getAppointmentList?.filter(
+    item => item.status === 0 || item.status === 1 || item.status === 2
+  );
+
+  const data = {
+    zipcode: storeItem?.current_address?.zipcode,
+    street: storeItem?.current_address?.street_address,
+    city: storeItem?.current_address?.city,
+    state: storeItem?.current_address?.state,
+    country: storeItem?.current_address?.country,
+  };
 
   useEffect(() => {
-    dispatch(getAppointment());
-  }, []);
+    if (isFocused) {
+      dispatch(getAppointment());
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     let extractedAppointmentEvents = [];
     if (getAppointmentList) {
-      getAppointmentList.map(booking => {
+      getAppointmentList2.map(booking => {
         const startDateTime = new Date(booking.start_date_time);
         const endDateTime = new Date(booking.end_date_time);
 
@@ -130,6 +146,11 @@ export function Calender(props) {
   const getStartEndFormattedDate = date => {
     return `${moment(date).format('hh:mm A')}`;
   };
+  const renderEmptyProducts = () => {
+    <View>
+      <Text>rtyhjkl;rtyhjkl</Text>
+    </View>;
+  };
 
   const notificationItem = ({ item }) => (
     <View style={styles.notificationchildCon}>
@@ -178,22 +199,34 @@ export function Calender(props) {
       </View>
       <Spacer space={SH(15)} />
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity
-          onPress={() => {
-            const appointmentID =
-              item.appointment_details[0]?.appointment_id ?? '';
+        {item?.status === 1 ? (
+          <View style={styles.approveButtonCon}>
+            <View style={styles.flexAlign}>
+              <Text style={styles.approveText}>
+                {strings.calender.approved}
+              </Text>
+              <Image source={ok} style={styles.lockLight} />
+            </View>
+          </View>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              const appointmentID =
+                item.appointment_details[0]?.appointment_id ?? '';
 
-            dispatch(
-              changeAppointmentStatus(
-                appointmentID,
-                APPOINTMENT_STATUS.ACCEPTED_BY_SELLER
-              )
-            );
-          }}
-          style={styles.approveButtonCon}
-        >
-          <Text style={styles.approveText}>{strings.calender.approve}</Text>
-        </TouchableOpacity>
+              dispatch(
+                changeAppointmentStatus(
+                  appointmentID,
+                  APPOINTMENT_STATUS.ACCEPTED_BY_SELLER
+                )
+              );
+            }}
+            style={styles.approveButtonCon}
+          >
+            <Text style={styles.approveText}>{strings.calender.approve}</Text>
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity
           onPress={() => {
             const appointmentID =
@@ -208,7 +241,11 @@ export function Calender(props) {
           }}
           style={styles.noButtonCon}
         >
-          <Text style={styles.approveText}>{strings.calender.no}</Text>
+          {isRequestLoading ? (
+            <ActivityIndicator size="small" color={COLORS.white} />
+          ) : (
+            <Text style={styles.approveText}>{strings.calender.no}</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -247,12 +284,19 @@ export function Calender(props) {
               />
               <View style={{ paddingHorizontal: moderateScale(10) }}>
                 <Text style={styles.charleneName}>
-                  {storeItem?.user_details?.username}
+                  {storeItem?.user_details?.firstname}
+                  {storeItem?.user_details?.lastname}
                 </Text>
-                <View style={styles.flexAlign}>
-                  <Image source={location} style={styles.location} />
-                  <Text style={styles.address}>{strings.calender.addr}</Text>
-                </View>
+                {storeItem?.current_address === undefined ? null : (
+                  <View style={styles.flexAlign}>
+                    <Image source={location} style={styles.location} />
+                    <Text style={styles.address}>
+                      {data?.zipcode},{data?.street}, {data?.city},{data?.state}
+                      ,{data?.country}
+                    </Text>
+                  </View>
+                )}
+
                 <View style={styles.flexAlign}>
                   <Image source={Phone_light} style={styles.location} />
                   <Text style={styles.address}>
@@ -349,7 +393,7 @@ export function Calender(props) {
   return (
     <View style={styles.container}>
       {customHeader()}
-      <View style={[styles.displayFlex, styles.calenderContainer]}>
+      <View style={[styles.calenderContainer, { flexDirection: 'row' }]}>
         <View style={styles.calenderCon}>
           <View style={styles.calenderHeader}>
             <View style={styles.displayFlex}>
@@ -429,20 +473,23 @@ export function Calender(props) {
           />
         </View>
         <View style={styles.notificationCon}>
-          {/* <View> */}
           {isRequestLoading ? (
             <View style={{ marginTop: 50 }}>
               <ActivityIndicator size="large" color={COLORS.indicator} />
             </View>
+          ) : getAppointmentList2?.length === 0 ? (
+            <View>
+              <Text style={styles.requestNotFound}>Request not found</Text>
+            </View>
           ) : (
             <FlatList
-              data={getAppointmentList}
-              extraData={getAppointmentList}
+              data={getAppointmentList2}
+              extraData={getAppointmentList2}
               renderItem={notificationItem}
               keyExtractor={item => item.id}
+              ListEmptyComponent={renderEmptyProducts}
             />
           )}
-          {/* </View> */}
         </View>
       </View>
       {schduleDetailModal()}

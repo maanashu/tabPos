@@ -219,7 +219,7 @@ export const styles = StyleSheet.create({
   },
   homeTableCon: {
     // borderWidth: 1,
-    height: windowHeight * 0.48,
+    height: windowHeight * 0.5,
     backgroundColor: COLORS.white,
     ...ShadowStyles.shadow2,
     borderRadius: 10,
@@ -490,5 +490,12 @@ export const styles = StyleSheet.create({
     height: SW(5),
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(10),
+  },
+  requestNotFound: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.primary,
+    alignSelf: 'center',
+    marginTop: 50,
+    fontSize: SF(20),
   },
 });

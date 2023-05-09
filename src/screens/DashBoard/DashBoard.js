@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScreenWrapper, Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -12,6 +12,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
 import {
@@ -31,12 +32,35 @@ import { STARTSELLING, homeTableData } from '@/constants/flatListData';
 import { SearchScreen } from './Components';
 import { logoutFunction } from '@/actions/AuthActions';
 import { Alert } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrderDeliveries } from '@/actions/DashboardAction';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { useIsFocused } from '@react-navigation/native';
+import { getDashboard } from '@/selectors/DashboardSelector';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
+import { TYPES } from '@/Types/DashboardTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 const windowWidth = Dimensions.get('window').width;
 
 export function DashBoard() {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const getDelivery = useSelector(getDashboard);
+  const sellerID = getAuth?.getProfile?.unique_uuid;
+  const getDeliveryData = getDelivery?.getOrderDeliveries;
   const [searchScreen, setSearchScreen] = useState(false);
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getOrderDeliveries(sellerID));
+    }
+  }, [isFocused]);
+
+  const orderDelveriesLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER_DELIVERIES], state)
+  );
 
   const logoutHandler = () => {
     Alert.alert('Logout', 'Are you sure you want to logout ?', [
@@ -54,36 +78,52 @@ export function DashBoard() {
       },
     ]);
   };
-  const tableListItem = () => (
+
+  const startSellingHandler = id => {
+    if (id === 1) {
+      navigate(NAVIGATION.retails);
+    } else if (id === 2) {
+      navigate(NAVIGATION.deliveryOrder);
+    }
+  };
+
+  const tableListItem = ({ item }) => (
     <TouchableOpacity style={[styles.reviewRenderView]}>
       <View style={{ width: SW(20) }}>
-        <Text style={styles.hashNumber}>#7869YZ</Text>
+        <Text style={styles.hashNumber}>#{item.id}</Text>
       </View>
       <View style={{ width: SW(45) }}>
         <Text numberOfLines={1} style={styles.nameText}>
-          Rebecca R. Russell
+          {item?.user_details?.firstname ?? 'userName'}
         </Text>
         <View style={styles.timeView}>
           <Image source={pin} style={styles.pinIcon} />
-          <Text style={styles.timeText}>2.5 miles</Text>
+          <Text style={styles.timeText}>
+            {item?.distance ? item?.distance : '0miles'} miles
+          </Text>
         </View>
       </View>
 
       <View style={{ width: SW(25) }}>
-        <Text style={styles.nameText}>3 items</Text>
+        <Text style={styles.nameText}>{item?.order_details?.length} items</Text>
         <View style={styles.timeView}>
           <Image source={pay} style={styles.pinIcon} />
-          <Text style={styles.timeText}>$489.50</Text>
+          <Text style={styles.timeText}>
+            ${item.payable_amount ? item.payable_amount : '0'}
+          </Text>
         </View>
       </View>
 
       <View style={{ width: SW(50) }}>
         <Text style={[styles.nameText, styles.nameTextBold]}>
-          Express delivery
+          {item?.shipping ? item?.shipping : 'no delivery type'}
         </Text>
         <View style={styles.timeView}>
           <Image source={clock} style={styles.pinIcon} />
-          <Text style={styles.timeText}>2.00 PM - 3.00 PM</Text>
+          <Text style={styles.timeText}>
+            {item?.preffered_delivery_start_time} -{' '}
+            {item?.preffered_delivery_end_time}
+          </Text>
         </View>
       </View>
 
@@ -231,12 +271,15 @@ export function DashBoard() {
                     <Spacer space={SH(4)} />
                     <Text style={styles.scanSer}>{item.subHeading}</Text>
                     <Spacer space={SH(12)} />
-                    <View style={styles.arrowBtnCon}>
+                    <TouchableOpacity
+                      style={styles.arrowBtnCon}
+                      onPress={() => startSellingHandler(item.id)}
+                    >
                       <Image
                         source={sellingArrow}
                         style={styles.sellingArrow}
                       />
-                    </View>
+                    </TouchableOpacity>
                   </View>
                 ))}
               </View>
@@ -246,12 +289,22 @@ export function DashBoard() {
                 <Text style={styles.deliveries}>
                   {strings.dashboard.deliveries}
                 </Text>
-                <FlatList
-                  data={homeTableData}
-                  extraData={homeTableData}
-                  renderItem={tableListItem}
-                  keyExtractor={item => item.id}
-                />
+                {orderDelveriesLoading ? (
+                  <View style={{ marginTop: 50 }}>
+                    <ActivityIndicator size="large" color={COLORS.indicator} />
+                  </View>
+                ) : getDeliveryData?.length === 0 ? (
+                  <View>
+                    <Text style={styles.requestNotFound}>orders not found</Text>
+                  </View>
+                ) : (
+                  <FlatList
+                    data={getDeliveryData}
+                    extraData={getDeliveryData}
+                    renderItem={tableListItem}
+                    keyExtractor={item => item.id}
+                  />
+                )}
               </View>
             </View>
           </View>

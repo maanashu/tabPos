@@ -32,6 +32,7 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
+      console.log('--------------', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -48,6 +49,7 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
+      console.log('111111111', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

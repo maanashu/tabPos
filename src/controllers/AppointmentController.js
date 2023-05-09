@@ -4,8 +4,9 @@ import { HttpClient } from './HttpClient';
 export class AppointmentController {
   static async getAppointment() {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL + ApiOrderInventory.getAppointment + `?page=1&limit=10`;
+      // const endpoint =
+      //   ORDER_URL + ApiOrderInventory.getAppointment + `?page=1&limit=10`;
+      const endpoint = ORDER_URL + ApiOrderInventory.getAppointment;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -19,14 +20,11 @@ export class AppointmentController {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL + ApiOrderInventory.changeAppointment + `${appointmentId}`;
-      console.log(endpoint);
       const body = {
         status: `${status}`,
       };
-
       HttpClient.put(endpoint, body)
         .then(response => {
-          console.log(JSON.stringify(response));
           resolve(response);
         })
         .catch(error => {

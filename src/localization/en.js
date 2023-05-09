@@ -381,7 +381,7 @@ export const en = {
     time: '10.00 AM- 11.00 PM',
     dateLabel: 'Date:',
     date: 'Sunday, Oct 29, 2022',
-    approve: 'Approve',
+
     no: 'No',
     addr: '1189 Main Street, Seattle, WA 98161',
     email: 'richard@example.com',
@@ -399,6 +399,7 @@ export const en = {
     accept: 'Accept',
     decline: 'Decline',
     approve: 'Approve',
+    approved: 'Accepted',
     no: 'No',
   },
   analytics: {

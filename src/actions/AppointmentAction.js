@@ -60,6 +60,7 @@ export const changeAppointmentStatus =
         status
       );
       dispatch(changeAppointmentStatusSuccess(res?.payload));
+      dispatch(getAppointment());
       Toast.show({
         text2:
           status === APPOINTMENT_STATUS.ACCEPTED_BY_SELLER

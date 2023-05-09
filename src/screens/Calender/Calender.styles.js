@@ -76,7 +76,7 @@ export const styles = StyleSheet.create({
   },
   notificationCon: {
     width: windowWidth * 0.3,
-    height: windowHeight,
+    height: windowHeight * 0.87,
   },
   approveButtonCon: {
     backgroundColor: COLORS.primary,
@@ -165,6 +165,7 @@ export const styles = StyleSheet.create({
     width: SH(100),
     height: SH(100),
     resizeMode: 'contain',
+    borderRadius: 100,
   },
   address: {
     fontFamily: Fonts.Regular,
@@ -327,5 +328,18 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.black,
     width: windowWidth * 0.5,
+  },
+  lockLight: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+    paddingLeft: moderateScale(5),
+  },
+  requestNotFound: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.primary,
+    alignSelf: 'center',
+    marginTop: 50,
+    fontSize: SF(20),
   },
 });
