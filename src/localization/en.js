@@ -111,6 +111,9 @@ export const en = {
     placeHolderText: '815-288-0329',
     button: 'Continue',
   },
+  posUsersList: {
+    heading: 'To use the POS Login',
+  },
   verifyOtp: {
     heading: 'Verify your phone number',
     subHeading: 'Enter OTP code here',

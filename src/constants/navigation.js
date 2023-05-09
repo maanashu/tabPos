@@ -16,6 +16,7 @@ export const NAVIGATION = {
   analytics: 'Analytics',
   verifySucess: 'VerifySucess',
   reward: 'Reward',
-  setting:'Setting',
-  dashBoard:'DashBoard'
+  setting: 'Setting',
+  dashBoard: 'DashBoard',
+  posUsers: 'POSUsers',
 };

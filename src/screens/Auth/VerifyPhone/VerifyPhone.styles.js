@@ -54,15 +54,16 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   countryCodeText: {
-    paddingLeft: 15,
+    color: COLORS.black,
+    fontSize: SF(18),
+    fontFamily: Fonts.Regular,
   },
   textInputContainer: {
-    width: SW(250),
-    borderWidth: 0,
-    height: SH(50),
-    color: COLORS.darkGray,
+    backgroundColor: COLORS.input_bg,
+    paddingHorizontal: SW(10),
+    color: COLORS.black,
+    fontSize: SF(16),
     fontFamily: Fonts.Italic,
-    paddingLeft: 10,
   },
   selectedText: {
     color: COLORS.white,
