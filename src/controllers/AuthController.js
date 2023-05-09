@@ -112,7 +112,7 @@ export class AuthController {
               visibilityTime: 1500,
             });
             resolve(response);
-            navigate(NAVIGATION.loginIntial);
+            navigate(NAVIGATION.posUsers);
           } else {
             Toast.show({
               text2: response.msg,

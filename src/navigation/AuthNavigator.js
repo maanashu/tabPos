@@ -8,15 +8,14 @@ import {
   VerifyOtp,
   Passcode,
   VerifySucess,
-  Retails
+  Retails,
 } from '@/screens';
-import { HomeNavigator } from '@/navigation/HomeNavigator'
+import { HomeNavigator } from '@/navigation/HomeNavigator';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export function AuthNavigator(props) {
-
   return (
     <Stack.Navigator initialRouteName="VerifyPhone">
       <Stack.Screen
@@ -49,7 +48,6 @@ export function AuthNavigator(props) {
         name={NAVIGATION.retails}
         options={{ headerShown: false }}
       /> */}
-
     </Stack.Navigator>
   );
 }

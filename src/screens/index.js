@@ -7,6 +7,7 @@ export { VerifyOtp } from '@/screens/Auth/VerifyOtp/VerifyOtp';
 export { Passcode } from '@/screens/Auth/Passcode/Passcode';
 export { LoginIntial } from '@/screens/Auth/LoginIntial/LoginIntial';
 export { VerifySucess } from '@/screens/Auth/VerifySucess/VerifySucess';
+export { POSUsers } from '@/screens/Auth/POSUsers/POSUsers';
 
 // pos sales
 export { Retails } from '@/screens/Retails/Retails';
@@ -20,5 +21,3 @@ export { Analytics } from '@/screens/Analytics/Analytics';
 export { Reward } from '@/screens/Reward/Reward';
 export { Setting } from '@/screens/Setting/Setting';
 export { DashBoard } from '@/screens/DashBoard/DashBoard';
-
-  
