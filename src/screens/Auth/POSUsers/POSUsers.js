@@ -47,7 +47,14 @@ export function POSUsers({ navigation }) {
     },
   ];
   return (
-    <View style={{ flex: 1, marginHorizontal: 10, backgroundColor: '#FFFFFF' }}>
+    <View
+      style={{
+        flex: 1,
+        marginHorizontal: 10,
+        backgroundColor: '#FFFFFF',
+        borderWidth: 1,
+      }}
+    >
       <Text
         style={{
           color: COLORS.black,
@@ -70,7 +77,7 @@ export function POSUsers({ navigation }) {
               style={{
                 backgroundColor: COLORS.textInputBackground,
                 alignItems: 'center',
-                margin: SH(30),
+                margin: SH(25),
                 padding: SH(10),
                 width: SH(306),
                 height: SH(370),

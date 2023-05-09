@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
@@ -219,7 +219,7 @@ export const styles = StyleSheet.create({
   },
   homeTableCon: {
     // borderWidth: 1,
-    height: windowHeight * 0.5,
+    height: Platform.OS === 'ios' ? windowHeight * 0.6 : windowHeight * 0.5,
     backgroundColor: COLORS.white,
     ...ShadowStyles.shadow2,
     borderRadius: 10,
