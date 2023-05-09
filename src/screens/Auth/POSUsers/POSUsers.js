@@ -74,6 +74,7 @@ export function POSUsers({ navigation }) {
                 padding: SH(10),
                 width: SH(306),
                 height: SH(370),
+                borderRadius: 15,
               }}
             >
               <Image
@@ -126,12 +127,13 @@ export function POSUsers({ navigation }) {
                   padding: SH(10),
                   alignItems: 'center',
                   justifyContent: 'center',
+                  borderRadius: 5,
                 }}
                 onPress={() => navigation.navigate(NAVIGATION.loginIntial)}
               >
                 <Image
                   source={checkArrow}
-                  style={{ width: SH(45), height: SH(30) }}
+                  style={{ width: SH(30), height: SH(20) }}
                 />
               </TouchableOpacity>
             </View>
