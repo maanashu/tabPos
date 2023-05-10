@@ -587,4 +587,21 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.28,
     height: SH(60),
   },
+  // subcategories component
+
+  tabCont: {
+    borderRadius: moderateScale(20),
+    padding: SH(15),
+    flexDirection: 'row',
+    borderColor: 'black',
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    height: SH(50),
+  },
+  tabimg: {
+    height: 16,
+    width: 16,
+  },
 });

@@ -52,7 +52,6 @@ export function POSUsers({ navigation }) {
         flex: 1,
         marginHorizontal: 10,
         backgroundColor: '#FFFFFF',
-        borderWidth: 1,
       }}
     >
       <Text
