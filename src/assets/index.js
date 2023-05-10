@@ -220,7 +220,7 @@ export { default as lockLight } from '@/assets/icons/ic_dashboard/lockLight.png'
 export { default as onlineMan } from '@/assets/icons/ic_dashboard/onlineMan.png';
 export { default as terryProfile } from '@/assets/icons/ic_dashboard/profile.png';
 export { default as ok } from '@/assets/icons/ic_dashboard/ok.png';
-
+export { default as homeMenu } from '@/assets/icons/ic_dashboard/homeMenu.png';
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',
