@@ -779,37 +779,82 @@ export const styles = StyleSheet.create({
     height: SH(50),
     borderRadius: 5,
   },
-  taxFormCon:{
-    borderWidth:1,
-    borderRadius:5,
-    height:SW(55),
-    width:windowWidth * 0.41,
-    alignSelf:'center',
-    paddingHorizontal:moderateScale(15),
-    borderColor:COLORS.solidGrey
-
+  taxFormCon: {
+    borderWidth: 1,
+    borderRadius: 5,
+    height: SW(55),
+    width: windowWidth * 0.41,
+    alignSelf: 'center',
+    paddingHorizontal: moderateScale(15),
+    borderColor: COLORS.solidGrey,
   },
-  taxExmptionCon:{
-    borderBottomWidth:1,
-    borderColor:COLORS.solidGrey,
-    height:SW(12),
+  taxExmptionCon: {
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+    height: SW(12),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingLeft: moderateScale(5),
   },
-  taxEmption:{
+  taxEmption: {
     fontSize: SF(12),
     fontFamily: Fonts.Medium,
     color: COLORS.solid_grey,
   },
-  taxImptionInput:{
-    width:windowWidth * 0.18,
+  taxImptionInput: {
+    width: windowWidth * 0.18,
     fontSize: SF(12),
     fontFamily: Fonts.Italic,
-    color:COLORS.gerySkies
-    
-
-  }
+    color: COLORS.gerySkies,
+  },
   // Taxes css end
+
+  // wallet css start
+
+  viewStyle: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    // height: windowHeight * 0.33,
+    padding: 20,
+    marginVertical: SH(8),
+  },
+  walletTextStyle: {
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.dark_grey,
+    paddingLeft: SW(5),
+  },
+  silaTextStyle: {
+    fontSize: SF(25),
+    fontWeight: '800',
+    color: COLORS.primary,
+  },
+  silaButton: {
+    backgroundColor: COLORS.primary,
+    width: windowWidth * 0.15,
+    height: SH(50),
+    borderRadius: 5,
+  },
+
+  // Languages css style
+
+  addLanguage: {
+    fontSize: SF(24),
+  },
+  container1: {
+    backgroundColor: 'white',
+    borderRadius: SW(8),
+    width: windowWidth * 0.5,
+    alignSelf: 'center',
+  },
+  modalViewStyle: {
+    backgroundColor: '#F5F6F7',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: SW(8),
+    borderTopEndRadius: SW(8),
+    borderTopStartRadius: SW(8),
+  },
 });

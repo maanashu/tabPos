@@ -636,36 +636,36 @@ export const settingLabelData = [
     subhead: 'Not updated ',
     image: tax,
   },
-  // {
-  //   id: 8,
-  //   name: 'Wallet',
-  //   subhead: 'Not connected',
-  //   image: walletSett,
-  // },
-  // {
-  //   id: 9,
-  //   name: 'Shipping & Pickups',
-  //   subhead: 'Defaults',
-  //   image: shipping,
-  // },
-  // {
-  //   id: 10,
-  //   name: 'Language',
-  //   subhead: 'Defaults',
-  //   image: langu,
-  // },
-  // {
-  //   id: 11,
-  //   name: 'Legal',
-  //   subhead: 'Defaults',
-  //   image: work,
-  // },
-  // {
-  //   id: 12,
-  //   name: 'Policies',
-  //   subhead: 'Defaults',
-  //   image: policy,
-  // },
+  {
+    id: 8,
+    name: 'Wallet',
+    subhead: 'Not connected',
+    image: walletSett,
+  },
+  {
+    id: 9,
+    name: 'Shipping & Pickups',
+    subhead: 'Defaults',
+    image: shipping,
+  },
+  {
+    id: 10,
+    name: 'Language',
+    subhead: 'Defaults',
+    image: langu,
+  },
+  {
+    id: 11,
+    name: 'Legal',
+    subhead: 'Defaults',
+    image: work,
+  },
+  {
+    id: 12,
+    name: 'Policies',
+    subhead: 'Defaults',
+    image: policy,
+  },
 ];
 
 export const deviceDropDownArray = [
@@ -962,4 +962,10 @@ export const polGraphDummyData = [
     frontColor: COLORS.bluish_green,
   },
   { value: 20, frontColor: COLORS.lightGreen },
+];
+
+export const COUNTRYNAME = [
+  { id: 1, name: 'Spanish' },
+  { id: 2, name: 'Portuguese ' },
+  { id: 3, name: 'Arabic' },
 ];

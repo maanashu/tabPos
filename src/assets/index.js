@@ -204,6 +204,23 @@ export { default as taxVerified } from '@/assets/icons/ic_setting/taxVerified.pn
 export { default as taxmap } from '@/assets/icons/ic_setting/map.png';
 export { default as taxpencil } from '@/assets/icons/ic_setting/pencil.png';
 export { default as addState } from '@/assets/icons/ic_setting/addState.png';
+export { default as vector } from '@/assets/icons/ic_setting/Vector.png';
+export { default as group } from '@/assets/icons/ic_setting/Group.png';
+export { default as silaName } from '@/assets/icons/ic_setting/Sila.png';
+export { default as appIcon } from '@/assets/icons/ic_setting/AppIcon.png';
+export { default as localImage } from '@/assets/icons/ic_setting/LocalImage.png';
+export { default as toggleOn } from '@/assets/icons/ic_setting/toggle.png';
+export { default as jobrDelivery } from '@/assets/icons/ic_setting/JOBRDelivery.png';
+export { default as locationIcon } from '@/assets/icons/ic_setting/Location.png';
+export { default as languImage } from '@/assets/icons/ic_setting/langu.png';
+export { default as vectorOff } from '@/assets/icons/ic_setting/VectorOff.png';
+export { default as frame } from '@/assets/icons/ic_setting/Frame.png';
+export { default as addFrame } from '@/assets/icons/ic_setting/AddFrame.png';
+export { default as XImage } from '@/assets/icons/ic_setting/X.png';
+export { default as spain } from '@/assets/icons/ic_setting/spain.png';
+export { default as portugueseCountry } from '@/assets/icons/ic_setting/Location.png';
+export { default as frameBox } from '@/assets/icons/ic_setting/FrameBox.png';
+
 export { default as cross } from '@/assets/ic_auth/cross_white.png';
 export { default as deleteBack } from '@/assets/ic_auth/delete_back.png';
 export { default as toggleSecBlue } from '@/assets/icons/ic_setting/toggleSecBlue.png';
