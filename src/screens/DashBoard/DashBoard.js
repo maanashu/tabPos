@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScreenWrapper, Spacer } from '@/components';
+import { Button, ScreenWrapper, Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import {
@@ -14,11 +14,13 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
 import {
   cashProfile,
   checkArrow,
   clock,
+  crossButton,
   lockLight,
   pay,
   pin,
@@ -33,7 +35,11 @@ import { SearchScreen } from './Components';
 import { logoutFunction } from '@/actions/AuthActions';
 import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrderDeliveries } from '@/actions/DashboardAction';
+import {
+  getDrawerSession,
+  getDrawerSessionPost,
+  getOrderDeliveries,
+} from '@/actions/DashboardAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useIsFocused } from '@react-navigation/native';
 import { getDashboard } from '@/selectors/DashboardSelector';
@@ -41,6 +47,7 @@ import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import { TYPES } from '@/Types/DashboardTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { digits } from '@/utils/validators';
 const windowWidth = Dimensions.get('window').width;
 
 export function DashBoard() {
@@ -48,19 +55,61 @@ export function DashBoard() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getDelivery = useSelector(getDashboard);
+  const getSessionObj = getDelivery?.getSesssion;
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getDeliveryData = getDelivery?.getOrderDeliveries;
   const [searchScreen, setSearchScreen] = useState(false);
+  const [trackingSession, setTrackingSession] = useState(false);
+  const [amountCount, setAmountCount] = useState();
+  const [trackNotes, setTrackNotes] = useState('');
 
   useEffect(() => {
     if (isFocused) {
       dispatch(getOrderDeliveries(sellerID));
+      startTrackingFun();
     }
   }, [isFocused]);
+
+  const startTrackingFun = () => {
+    dispatch(getDrawerSession());
+    if (
+      Object.keys(getSessionObj === undefined ? {} : getSessionObj)?.length ===
+        0 ||
+      getSessionObj === undefined
+    ) {
+      setTrackingSession(true);
+    } else if (
+      Object.keys(getSessionObj === undefined ? {} : getSessionObj)?.length >= 1
+    ) {
+      setTrackingSession(false);
+      setAmountCount('');
+      setTrackNotes('');
+    }
+  };
+  const startTrackingSesHandler = async () => {
+    if (!amountCount) {
+      alert('Please Enter Amount');
+    } else if (amountCount && digits.test(amountCount) === false) {
+      alert('Please enter valid amount');
+    } else if (amountCount <= 0) {
+      alert('Please enter valid amount');
+    } else {
+      const data = {
+        amount: amountCount,
+        notes: trackNotes,
+      };
+      dispatch(getDrawerSessionPost(data));
+      setTrackingSession(false);
+    }
+  };
 
   const orderDelveriesLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_DELIVERIES], state)
   );
+  const getSessionLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_DRAWER_SESSION], state)
+  );
+  const isloading = () => {};
 
   const logoutHandler = () => {
     Alert.alert('Logout', 'Are you sure you want to logout ?', [
@@ -135,6 +184,75 @@ export function DashBoard() {
       </View>
     </TouchableOpacity>
   );
+
+  const trackinSessionModal = () => {
+    return (
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={trackingSession}
+      >
+        <View style={styles.modalMainView}>
+          <View style={styles.headerView}>
+            <View style={{ width: SW(140), alignItems: 'center' }}>
+              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
+                {strings.management.session}
+              </Text>
+            </View>
+
+            {/* <TouchableOpacity onPress={() => {}} style={{ width: SW(10) }}>
+            <Image source={crossButton} style={styles.crossIconStyle} />
+          </TouchableOpacity> */}
+          </View>
+
+          <Spacer space={SH(40)} />
+          <View style={styles.countCashView}>
+            <Text style={styles.countCashText}>
+              {strings.management.countCash}
+            </Text>
+
+            <Spacer space={SH(40)} />
+            <View>
+              <Text style={styles.amountCountedText}>
+                {strings.management.amountCounted}
+              </Text>
+              <TextInput
+                placeholder={strings.management.amount}
+                style={styles.inputStyle}
+                placeholderTextColor={COLORS.solid_grey}
+                keyboardType="number-pad"
+                value={amountCount}
+                onChangeText={setAmountCount}
+              />
+            </View>
+
+            <Spacer space={SH(40)} />
+            <View>
+              <Text style={styles.amountCountedText}>
+                {strings.management.note}
+              </Text>
+              <TextInput
+                placeholder={strings.management.note}
+                style={styles.noteInputStyle}
+                placeholderTextColor={COLORS.gerySkies}
+                value={trackNotes}
+                onChangeText={setTrackNotes}
+              />
+            </View>
+            <Spacer space={SH(20)} />
+          </View>
+          <View style={{ flex: 1 }} />
+          <Button
+            title={strings.management.save}
+            textStyle={styles.buttonText}
+            style={styles.saveButton}
+            onPress={startTrackingSesHandler}
+          />
+          <Spacer space={SH(40)} />
+        </View>
+      </Modal>
+    );
+  };
 
   const bodyView = () => {
     if (searchScreen) {
@@ -226,7 +344,8 @@ export function DashBoard() {
               <View style={{ flex: 1 }} />
               <TouchableOpacity
                 style={styles.checkoutButton}
-                onPress={() => logoutHandler()}
+                // onPress={() => logoutHandler()}
+                onPress={() => setTrackingSession(true)}
               >
                 <View style={styles.displayRow}>
                   <Image source={lockLight} style={styles.lockLight} />
@@ -315,7 +434,19 @@ export function DashBoard() {
 
   return (
     <ScreenWrapper>
-      <View style={styles.container}>{bodyView()}</View>
+      <View style={styles.container}>
+        {bodyView()}
+        {trackinSessionModal()}
+      </View>
+      {getSessionLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
     </ScreenWrapper>
   );
 }

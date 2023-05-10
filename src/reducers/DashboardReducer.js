@@ -2,6 +2,7 @@ import { TYPES } from '@/Types/DashboardTypes';
 
 const INITIALSTATE = {
   getOrderDeliveries: [],
+  getSesssion: {},
 };
 
 export const dashboardReducer = (
@@ -18,6 +19,17 @@ export const dashboardReducer = (
       return {
         ...state,
         getOrderDeliveries: [],
+      };
+
+    case TYPES.GET_DRAWER_SESSION_SUCCESS:
+      return {
+        ...state,
+        getSesssion: payload.getSesssion?.payload,
+      };
+    case TYPES.GET_DRAWER_SESSION_RESET:
+      return {
+        ...state,
+        getSesssion: {},
       };
 
     default:
