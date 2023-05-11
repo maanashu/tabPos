@@ -40,6 +40,7 @@ export const styles = StyleSheet.create({
     width: SW(55),
     height: SW(55),
     resizeMode: 'contain',
+    borderRadius: 100,
   },
   todaySaleCon: {
     borderWidth: 1,

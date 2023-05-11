@@ -10,12 +10,13 @@ import {
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 import { log } from 'react-native-reanimated';
+import { err } from 'react-native-svg/lib/typescript/xml';
 
 export class CashTrackingController {
   static async getDrawerSession() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
-      HttpClient.get(endpoint)
+      HttpClient.post(endpoint)
         .then(response => {
           resolve(response);
         })

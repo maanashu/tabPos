@@ -45,13 +45,17 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CashtrackingTypes';
 import { digits } from '@/utils/validators';
 import { FlatList } from 'react-native';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function Management() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const drawerData = useSelector(getCashTracking);
-  const [sessionHistoryArray, setSessionHistoryArray] = useState(drawerData?.getSessionHistory ?? []);
+  const [sessionHistoryArray, setSessionHistoryArray] = useState(
+    drawerData?.getSessionHistory ?? []
+  );
   const drawerActivity = drawerData?.getDrawerSession?.drawer_activites;
   const historyById = drawerData?.getDrawerSessionById?.[0];
   const [addCash, setAddCash] = useState(false);
@@ -90,7 +94,7 @@ export function Management() {
   const [userHistory, setUserHistory] = useState();
   const SessionData = {
     id: drawerData?.getDrawerSession?.id,
-    cashBalance: drawerData?.getDrawerSession?.cash_balance ?? '0',
+    cashBalance: drawerData?.getDrawerSession?.opening_balance ?? '0',
     createDate: drawerData?.getDrawerSession?.created_at,
   };
 
@@ -165,11 +169,13 @@ export function Management() {
   );
 
   useEffect(() => {
-    dispatch(getDrawerSession());
-    if(drawerData?.getSessionHistory){
-      setSessionHistoryArray(drawerData?.getSessionHistory)
+    if (isFocused) {
+      dispatch(getDrawerSession());
     }
-  }, [drawerData?.getSessionHistory]);
+    if (drawerData?.getSessionHistory) {
+      setSessionHistoryArray(drawerData?.getSessionHistory);
+    }
+  }, [drawerData?.getSessionHistory, isFocused]);
 
   const startTrackingSesHandler = async () => {
     if (!amountCount) {
@@ -257,7 +263,7 @@ export function Management() {
     const res = await dispatch(endTrackingSession(data));
     setClickAmount(data?.amount);
     if (res) {
-      dispatch(getDrawerSession());
+      // dispatch(getDrawerSession());
       // setLeaveData('')
       setEndBalance(res?.payload?.getSessionHistory?.payload);
       setEndSelectAmount(false), setRemoveUsd(true);
@@ -277,7 +283,11 @@ export function Management() {
     setSessionHistory(false), setSummaryHistory(true);
   };
   const emailButtonHandler = () => {
-    alert('coming soon');
+    navigate(NAVIGATION.dashBoard);
+    setSummaryHistory(false), setSummaryHistory(false), setViewSession(false);
+    setHistoryHeader(false);
+    setViewSession(false);
+    setHistoryHeader(false);
     // setSummaryHistory(false),
     //   setViewSession(false),
     //   contentFunction(),
@@ -351,7 +361,7 @@ export function Management() {
               {strings.management.countCash}
             </Text>
 
-            <Spacer space={SH(40)}/>
+            <Spacer space={SH(40)} />
             <View>
               <Text style={styles.amountCountedText}>
                 {strings.management.amountCounted}
@@ -717,8 +727,10 @@ export function Management() {
               // }}
               onPress={() => {
                 setRemoveUsd(false),
-                  setViewSession(false),
-                  dispatch(getDrawerSession());
+                  setSummaryHistory(true),
+                  setHistoryHeader(true);
+                // setViewSession(false),
+                // dispatch(getDrawerSession());
               }}
               style={{ width: SW(10) }}
             >
@@ -736,7 +748,7 @@ export function Management() {
                 Amount left in drawer: USD ${endBalance?.amount}
               </Text>
             </View>
-            <View style={{ flex: 1 }}/>
+            <View style={{ flex: 1 }} />
             <Button
               style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
@@ -789,7 +801,8 @@ export function Management() {
                   onPress={() => {
                     setSummaryHistory(false), setViewSession(false);
                     setHistoryHeader(false);
-                    dispatch(getDrawerSession());
+                    // dispatch(getDrawerSession());
+                    navigate(NAVIGATION.dashBoard);
                   }}
                 >
                   <Image source={backArrow} style={styles.backButtonArrow} />

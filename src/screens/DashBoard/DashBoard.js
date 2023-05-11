@@ -48,6 +48,7 @@ import { NAVIGATION } from '@/constants';
 import { TYPES } from '@/Types/DashboardTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { digits } from '@/utils/validators';
+import moment from 'moment';
 const windowWidth = Dimensions.get('window').width;
 
 export function DashBoard() {
@@ -63,12 +64,26 @@ export function DashBoard() {
   const [amountCount, setAmountCount] = useState();
   const [trackNotes, setTrackNotes] = useState('');
 
+  const profileObj = {
+    openingBalance: getSessionObj?.opening_balance,
+    closeBalance: getSessionObj?.cash_balance,
+    profile: getSessionObj?.seller_details?.user_profiles?.profile_photo,
+    name: getSessionObj?.seller_details?.user_profiles?.firstname,
+    id: getSessionObj?.id,
+  };
+
   useEffect(() => {
     if (isFocused) {
       dispatch(getOrderDeliveries(sellerID));
       startTrackingFun();
+      clearInput();
     }
   }, [isFocused]);
+
+  const clearInput = () => {
+    setAmountCount('');
+    setTrackNotes('');
+  };
 
   const startTrackingFun = () => {
     dispatch(getDrawerSession());
@@ -267,12 +282,22 @@ export function DashBoard() {
           <View style={styles.displayRow}>
             <View style={styles.cashProfileCon}>
               {/* <Spacer space={SH(20)} /> */}
-              {/* <View style={styles.cashProfilecon}> */}
-              <Image source={cashProfile} style={styles.cashProfile} />
-              {/* </View> */}
-              <Text style={styles.cashierName}>Rebecca R. Russell</Text>
+              <Spacer space={SH(12)} />
+              <View style={styles.cashProfilecon}>
+                <Image
+                  source={
+                    profileObj?.profile
+                      ? { uri: profileObj?.profile }
+                      : cashProfile
+                  }
+                  style={styles.cashProfile}
+                />
+              </View>
+              <Text style={styles.cashierName}>
+                {profileObj?.name ?? 'username'}
+              </Text>
               <Text style={styles.posCashier}>POS Cashier</Text>
-              <Text style={styles.cashLabel}>ID : 3579EN</Text>
+              <Text style={styles.cashLabel}>ID : {profileObj?.id ?? '0'}</Text>
               <Spacer space={SH(12)} />
 
               <View style={styles.todaySaleCon}>
@@ -310,13 +335,17 @@ export function DashBoard() {
                   <Text style={styles.cashLabel}>
                     {strings.dashboard.openBal}
                   </Text>
-                  <Text style={styles.cashAmount}>$400.50</Text>
+                  <Text style={styles.cashAmount}>
+                    ${profileObj?.openingBalance}
+                  </Text>
                 </View>
                 <View style={[styles.displayflex, styles.paddingV]}>
                   <Text style={styles.cashLabel}>
                     {strings.dashboard.closeBal}
                   </Text>
-                  <Text style={styles.cashAmount}>$400.50</Text>
+                  <Text style={styles.cashAmount}>
+                    ${profileObj?.closeBalance}
+                  </Text>
                 </View>
               </View>
               <Spacer space={SH(10)} />
@@ -325,8 +354,12 @@ export function DashBoard() {
 
               <View style={styles.sessionCon}>
                 <View style={[styles.displayflex, styles.paddingV]}>
-                  <Text style={styles.cashLabel}>Today 25 April, 2023</Text>
-                  <Text style={styles.cashLabel}>11:14:23 AM</Text>
+                  <Text style={styles.cashLabel}>
+                    {moment().format('dddd')}
+                    {', '}
+                    {moment().format('ll')}
+                  </Text>
+                  <Text style={styles.cashLabel}>{moment().format('LTS')}</Text>
                 </View>
                 <View style={[styles.displayflex, styles.paddingV]}>
                   <Text style={styles.cashLabel}>
