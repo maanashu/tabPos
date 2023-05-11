@@ -9,3 +9,4 @@ export { Taxes } from '@/screens/Setting/Components/Taxes';
 export { Wallet } from '@/screens/Setting/Components/Wallet';
 export { Shipping } from '@/screens/Setting/Components/Shipping';
 export { Languages } from '@/screens/Setting/Components/Languages';
+export { Legal } from '@/screens/Setting/Components/Legal';

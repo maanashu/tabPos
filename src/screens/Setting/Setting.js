@@ -59,6 +59,7 @@ import {
   Wallet,
   Shipping,
   Languages,
+  Legal,
 } from '@/screens/Setting/Components';
 
 export function Setting() {
@@ -84,11 +85,7 @@ export function Setting() {
     [8]: <Wallet />,
     [9]: <Shipping />,
     [10]: <Languages />,
-    [11]: (
-      <View>
-        <Text>LEGAL</Text>
-      </View>
-    ),
+    [11]: <Legal />,
     [12]: (
       <View>
         <Text>POLICIES</Text>

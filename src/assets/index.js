@@ -220,6 +220,7 @@ export { default as XImage } from '@/assets/icons/ic_setting/X.png';
 export { default as spain } from '@/assets/icons/ic_setting/spain.png';
 export { default as portugueseCountry } from '@/assets/icons/ic_setting/Location.png';
 export { default as frameBox } from '@/assets/icons/ic_setting/FrameBox.png';
+export { default as ellipse } from '@/assets/icons/ic_setting/Ellipse.png';
 
 export { default as cross } from '@/assets/ic_auth/cross_white.png';
 export { default as deleteBack } from '@/assets/ic_auth/delete_back.png';

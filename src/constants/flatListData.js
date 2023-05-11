@@ -969,3 +969,54 @@ export const COUNTRYNAME = [
   { id: 2, name: 'Portuguese ' },
   { id: 3, name: 'Arabic' },
 ];
+
+export const LEGALDATA = [
+  {
+    id: 1,
+    publishDate: 'Publish date:',
+    dateTime: 'Sep 27, 2023   10: 00 AM',
+    titleName: 'Refund policy',
+    title:
+      'These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, Webiste Name accessible at Website.com. ',
+    title1: ' These Terms will be applied fully and affect to your use of',
+    update: 'Last update date:',
+    Lastupdatedate: 'Sep 27, 2023   10: 00 AM',
+    active: 'Active',
+  },
+  {
+    id: 2,
+    publishDate: 'Publish date:',
+    dateTime: 'Sep 27, 2023   10: 00 AM',
+    titleName: 'Refund policy',
+    title:
+      'These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, Webiste Name accessible at Website.com. ',
+    title1: ' These Terms will be applied fully and affect to your use of',
+    update: 'Last update date:',
+    Lastupdatedate: 'Sep 27, 2023   10: 00 AM',
+    active: 'Active',
+  },
+  {
+    id: 3,
+    publishDate: 'Publish date:',
+    dateTime: 'Sep 27, 2023   10: 00 AM',
+    titleName: 'Refund policy',
+    title:
+      'These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, Webiste Name accessible at Website.com.',
+    title1: ' These Terms will be applied fully and affect to your use of',
+    update: 'Last update date:',
+    Lastupdatedate: 'Sep 27, 2023   10: 00 AM',
+    active: 'Active',
+  },
+  {
+    id: 4,
+    publishDate: 'Publish date:',
+    dateTime: 'Sep 27, 2023   10: 00 AM',
+    titleName: 'Refund policy',
+    title:
+      'These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, Webiste Name accessible at Website.com. ',
+    title1: ' These Terms will be applied fully and affect to your use of',
+    update: 'Last update date:',
+    Lastupdatedate: 'Sep 27, 2023   10: 00 AM',
+    active: 'Active',
+  },
+];

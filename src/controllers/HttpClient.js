@@ -20,6 +20,7 @@ client.interceptors.request.use(function (config) {
     ...config.headers,
     timezone: getTimeZone,
     Authorization: token,
+    'app-name': 'pos',
   };
 
   return config;
