@@ -636,36 +636,36 @@ export const settingLabelData = [
     subhead: 'Not updated ',
     image: tax,
   },
-  // {
-  //   id: 8,
-  //   name: 'Wallet',
-  //   subhead: 'Not connected',
-  //   image: walletSett,
-  // },
-  // {
-  //   id: 9,
-  //   name: 'Shipping & Pickups',
-  //   subhead: 'Defaults',
-  //   image: shipping,
-  // },
-  // {
-  //   id: 10,
-  //   name: 'Language',
-  //   subhead: 'Defaults',
-  //   image: langu,
-  // },
-  // {
-  //   id: 11,
-  //   name: 'Legal',
-  //   subhead: 'Defaults',
-  //   image: work,
-  // },
-  // {
-  //   id: 12,
-  //   name: 'Policies',
-  //   subhead: 'Defaults',
-  //   image: policy,
-  // },
+  {
+    id: 8,
+    name: 'Wallet',
+    subhead: 'Not connected',
+    image: walletSett,
+  },
+  {
+    id: 9,
+    name: 'Shipping & Pickups',
+    subhead: 'Defaults',
+    image: shipping,
+  },
+  {
+    id: 10,
+    name: 'Language',
+    subhead: 'Defaults',
+    image: langu,
+  },
+  {
+    id: 11,
+    name: 'Legal',
+    subhead: 'Defaults',
+    image: work,
+  },
+  {
+    id: 12,
+    name: 'Policies',
+    subhead: 'Defaults',
+    image: policy,
+  },
 ];
 
 export const deviceDropDownArray = [
@@ -962,4 +962,61 @@ export const polGraphDummyData = [
     frontColor: COLORS.bluish_green,
   },
   { value: 20, frontColor: COLORS.lightGreen },
+];
+
+export const COUNTRYNAME = [
+  { id: 1, name: 'Spanish' },
+  { id: 2, name: 'Portuguese ' },
+  { id: 3, name: 'Arabic' },
+];
+
+export const LEGALDATA = [
+  {
+    id: 1,
+    publishDate: 'Publish date:',
+    dateTime: 'Sep 27, 2023   10: 00 AM',
+    titleName: 'Refund policy',
+    title:
+      'These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, Webiste Name accessible at Website.com. ',
+    title1: ' These Terms will be applied fully and affect to your use of',
+    update: 'Last update date:',
+    Lastupdatedate: 'Sep 27, 2023   10: 00 AM',
+    active: 'Active',
+  },
+  {
+    id: 2,
+    publishDate: 'Publish date:',
+    dateTime: 'Sep 27, 2023   10: 00 AM',
+    titleName: 'Refund policy',
+    title:
+      'These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, Webiste Name accessible at Website.com. ',
+    title1: ' These Terms will be applied fully and affect to your use of',
+    update: 'Last update date:',
+    Lastupdatedate: 'Sep 27, 2023   10: 00 AM',
+    active: 'Active',
+  },
+  {
+    id: 3,
+    publishDate: 'Publish date:',
+    dateTime: 'Sep 27, 2023   10: 00 AM',
+    titleName: 'Refund policy',
+    title:
+      'These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, Webiste Name accessible at Website.com.',
+    title1: ' These Terms will be applied fully and affect to your use of',
+    update: 'Last update date:',
+    Lastupdatedate: 'Sep 27, 2023   10: 00 AM',
+    active: 'Active',
+  },
+  {
+    id: 4,
+    publishDate: 'Publish date:',
+    dateTime: 'Sep 27, 2023   10: 00 AM',
+    titleName: 'Refund policy',
+    title:
+      'These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, Webiste Name accessible at Website.com. ',
+    title1: ' These Terms will be applied fully and affect to your use of',
+    update: 'Last update date:',
+    Lastupdatedate: 'Sep 27, 2023   10: 00 AM',
+    active: 'Active',
+  },
 ];

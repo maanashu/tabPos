@@ -657,4 +657,51 @@ export const en = {
     clearcart: 'Clear cart',
     ok: 'OK',
   },
+  wallet: {
+    config: 'Wallet Config',
+    payJBR: 'Pay by JBR Coin',
+    system: 'System:Online Shop, POS',
+    dafaultPayment: 'Dafault Payment',
+    shopifyPayments:
+      'You need to proivde some additional information about your business to start receiving payouts from Shopify Payments',
+    payCash: 'Pay by Cash',
+    systemPOS: 'System:POS',
+    sila: 'Sila',
+    setupSila: 'Setup Sila',
+    cards: 'Cards,Bank tranfer and all',
+    silaProtection:
+      'Sila is a powerful processor that provides a sealess checkout experience, various payments options, and fraud protection.',
+    payBusinesses:
+      '.  Pay 2.9% + $0.30 per transaction. Custom rates are available for qualified businesses',
+    sellChanges:
+      ".  Sell subscription: collect your customers' card  details and charge automatically at a later time, with no additional fees for subscription charges",
+    alwaysPayments:
+      '.  Always feel secure with advanced fraud protection that automatically blocks high-risk payments',
+    byAccount:
+      'By enabling payments through Sila, you will be accepting Stripe Services Agreement. Please refer to the list of Prohibited Businesses before registering for and opening a Stripe account',
+    silaButton: 'Setup Sila',
+  },
+  shipping: {
+    shipping: 'Shipping & Pickups',
+    local: 'Local Pickup',
+    businessName: 'Business Name',
+    address: '1899 Rollins Road , Grand Island Nebraska 68801, United States',
+    jobrDelivery: 'JOBR Delivery',
+    localOff: 'Local Drop-off',
+  },
+
+  Languages: {
+    languages: 'Languages',
+    Publishedlanguages: 'Published languages',
+    active:
+      "Active in the markets they've been added to and visible to customers.",
+    englishUSE: 'English  (USE)',
+    englishUK: 'English (UK)',
+    default: 'Default',
+    addLanguage: 'Add language',
+    languagesName: 'Language (7)',
+    add: 'Add',
+    cancel: 'Cancel',
+    spanish: 'Spanish',
+  },
 };
