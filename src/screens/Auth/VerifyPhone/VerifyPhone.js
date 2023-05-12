@@ -35,17 +35,7 @@ export function VerifyPhone() {
 
   const verifyPhoneHandler = () => {
     if (phoneNumber && phoneNumber.length > 5 && digits.test(phoneNumber)) {
-      // dispatch(verifyPhone(phoneNumber, countryCode));
-      const data = {
-        phone_no: phoneNumber,
-        country_code: countryCode,
-        pin: '1907',
-      };
-      const res = dispatch(login(data));
-      if (res?.type === 'LOGIN_ERROR') {
-        // setValue('')
-        alert('Login failed');
-      }
+      dispatch(verifyPhone(phoneNumber, countryCode));
     } else if (phoneNumber && phoneNumber.length < 5) {
       Toast.show({
         position: 'bottom',

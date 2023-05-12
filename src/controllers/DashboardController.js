@@ -21,12 +21,21 @@ export class DashboardController {
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          if (error.statusCode === 204) {
+            Toast.show({
+              text2: 'No orders found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          } else {
+            Toast.show({
+              text2: error.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
           reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
