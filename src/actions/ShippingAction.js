@@ -1,5 +1,5 @@
 import { ShippingController } from '@/controllers';
-import { TYPES } from "@/Types/ShippingOrderTypes";
+import { TYPES } from '@/Types/ShippingOrderTypes';
 
 const getOrderCountRequest = () => ({
   type: TYPES.GET_ORDER_COUNT_REQUEST,
@@ -63,7 +63,7 @@ const acceptOrderRequest = () => ({
 });
 const acceptOrderSuccess = () => ({
   type: TYPES.ACCEPT_ORDER_SUCCESS,
-  payload: {  },
+  payload: {},
 });
 const acceptOrderError = error => ({
   type: TYPES.ACCEPT_ORDER_ERROR,
@@ -87,65 +87,59 @@ const deliveringOrdReset = () => ({
   payload: null,
 });
 
-export const getOrderCount = (status) => async dispatch => {
+export const getOrderCount = status => async dispatch => {
   dispatch(getOrderCountRequest());
   try {
-      const res = await ShippingController.getOrderCount(status);
-      dispatch(getOrderCountSuccess(res));
+    const res = await ShippingController.getOrderCount(status);
+    dispatch(getOrderCountSuccess(res));
   } catch (error) {
-      dispatch(getOrderCountError(error.message));
+    dispatch(getOrderCountError(error.message));
   }
 };
 export const getReviewDefault = (status, sellerID) => async dispatch => {
   dispatch(getReviewDefRequest());
   try {
-      const res = await ShippingController.getReviewDefault(status, sellerID);
-      dispatch(getReviewDefSuccess(res));
+    const res = await ShippingController.getReviewDefault(status, sellerID);
+    dispatch(getReviewDefSuccess(res));
   } catch (error) {
-    if (error?.statusCode === 204){
+    if (error?.statusCode === 204) {
       dispatch(getReviewDefReset());
     }
-      dispatch(getReviewDefError(error.message));
+    dispatch(getReviewDefError(error.message));
   }
 };
-
 
 export const getOrders = (status, sellerID) => async dispatch => {
   dispatch(getOrdersRequest());
   try {
-      const res = await ShippingController.getOrders(status, sellerID);
-      dispatch(getOrdersSuccess(res));
+    const res = await ShippingController.getOrders(status, sellerID);
+    return dispatch(getOrdersSuccess(res));
   } catch (error) {
-      dispatch(getOrdersError(error.message));
+    dispatch(getOrdersError(error.message));
   }
 };
 
-export const acceptOrder = (data) => async dispatch => {
+export const acceptOrder = data => async dispatch => {
   dispatch(acceptOrderRequest());
   try {
-      const res = await ShippingController.acceptOrder(data);
-      dispatch(acceptOrderSuccess(res));
-      dispatch(getOrderCount(data.sellerID));
-      dispatch(getReviewDefault(0, sellerID ));
+    const res = await ShippingController.acceptOrder(data);
+    dispatch(acceptOrderSuccess(res));
+    dispatch(getOrderCount(data.sellerID));
+    dispatch(getReviewDefault(0, sellerID));
   } catch (error) {
-      dispatch(acceptOrderError(error.message));
+    dispatch(acceptOrderError(error.message));
   }
 };
 
 export const deliveringOrd = () => async dispatch => {
   dispatch(deliveringOrdRequest());
   try {
-      const res = await ShippingController.deliveringOrd();
-      dispatch(deliveringOrdSuccess(res?.payload?.shipping_type_Count));
-    } catch (error) {
-      if (error?.statusCode === 204){
-        dispatch(deliveringOrdReset());
-      }
-        dispatch(deliveringOrdError(error.message));
+    const res = await ShippingController.deliveringOrd();
+    dispatch(deliveringOrdSuccess(res?.payload?.shipping_type_Count));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(deliveringOrdReset());
     }
+    dispatch(deliveringOrdError(error.message));
+  }
 };
-
-
-
-
-

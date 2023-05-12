@@ -182,7 +182,7 @@ export function ShippingOrder() {
     if (isFocused) {
       dispatch(getOrderCount(sellerID)),
         dispatch(getReviewDefault(0, sellerID));
-       dispatch(deliveringOrd());
+      dispatch(deliveringOrd());
     }
     if (getDeliveryData?.orderList?.length > 0) {
       setOrderCount(getDeliveryData?.orderList);
@@ -237,6 +237,9 @@ export function ShippingOrder() {
 
   const isPosOrderLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_COUNT], state)
+  );
+  const isPosViewOrder = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER], state)
   );
   const isPosOrderDefLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_REVIEW_DEF], state)
@@ -299,7 +302,7 @@ export function ShippingOrder() {
     setHeadingType('Orders to Review'), setDataType('Orders to Review');
   };
 
-  const orderAccType = item => {
+  const orderAccType = async item => {
     if (length[item.key] === 0) {
       Toast.show({
         text2: strings.valiadtion.ordernotfound,
@@ -308,10 +311,13 @@ export function ShippingOrder() {
         visibilityTime: 1500,
       });
     } else {
-      dispatch(getOrders(item.key, sellerID));
-      setViewAllReviews(true),
-        setHeadingType(item.status),
-        setDataType(item.status);
+      const res = await dispatch(getOrders(item.key, sellerID));
+      if (res) {
+        setViewAllReviews(true),
+          setHeadingType(item.status),
+          setDataType(item.status);
+      }
+      console.log('sdfghjkl,.', res);
     }
   };
 
@@ -499,9 +505,7 @@ export function ShippingOrder() {
       <OrderReviewItem
         item={item}
         index={index}
-        onPress={() => (
-          setSelectedId(item.id, index), setItem(item), orderIdFun(item)
-        )}
+        onPress={() => (setSelectedId(item.id, index), setItem(item))}
         backgroundColor={backgroundColor}
       />
     );
@@ -1120,7 +1124,7 @@ export function ShippingOrder() {
       return (
         <View style={styles.mainScreenContiner}>
           <View style={{ paddingVertical: moderateScale(5) }}>
-            {isPosOrderLoading ? (
+            {isPosOrderLoading || isPosViewOrder ? (
               <FlatList
                 scrollEnabled
                 data={loadingData}
@@ -1259,14 +1263,18 @@ export function ShippingOrder() {
                       keyExtractor={item => item.key}
                       showsHorizontalScrollIndicator={false}
                     />
-                  ) : (
-                    deliveringOrder?.length === 0 
-                    ?
+                  ) : deliveringOrder?.length === 0 ? (
                     <View>
-                    <Text style={[styles.nodata, {marginVertical: moderateScale(15)}]}>No data found</Text>
-                     </View>
-                      :
-
+                      <Text
+                        style={[
+                          styles.nodata,
+                          { marginVertical: moderateScale(15) },
+                        ]}
+                      >
+                        No data found
+                      </Text>
+                    </View>
+                  ) : (
                     <FlatList
                       horizontal
                       data={deliveringOrder}

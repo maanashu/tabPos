@@ -39,7 +39,7 @@ export function VerifyPhone() {
       const data = {
         phone_no: phoneNumber,
         country_code: countryCode,
-        pin: '1234',
+        pin: '1907',
       };
       const res = dispatch(login(data));
       if (res?.type === 'LOGIN_ERROR') {
