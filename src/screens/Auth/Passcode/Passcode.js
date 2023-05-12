@@ -21,6 +21,7 @@ import { TYPES } from '@/Types/Types';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import { NAVIGATION } from '@/constants';
 
 const CELL_COUNT = 4;
 
@@ -94,6 +95,9 @@ export function Passcode({ route }) {
         const res = await dispatch(login(data));
         if (res?.type === 'LOGIN_ERROR') {
           setValue('');
+        } else if (res?.type === 'LOGIN_SUCCESS') {
+          setValue('');
+          navigation.navigate(NAVIGATION.posUsers);
         }
       }
     }

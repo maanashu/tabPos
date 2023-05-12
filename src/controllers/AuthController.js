@@ -109,7 +109,6 @@ export class AuthController {
       console.log('body ===>>', body);
       HttpClient.post(endpoint, body)
         .then(response => {
-          console.log('response', response);
           if (response.status_code === 200) {
             Toast.show({
               type: 'success_toast',
@@ -118,8 +117,6 @@ export class AuthController {
               visibilityTime: 1500,
             });
             resolve(response);
-
-            //  navigate(NAVIGATION.posUsers);
           } else {
             Toast.show({
               text2: response.msg,
