@@ -72,7 +72,7 @@ export function Passcode({ route }) {
         let data = {
           merchant_id: getData?.getProfile?.unique_uuid,
           pos_user_id: posuser.id.toString(),
-          pos_security_pin: posuser.pos_security_pin,
+          pos_security_pin: value,
         };
 
         dispatch(

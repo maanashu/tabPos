@@ -241,7 +241,6 @@ export class AuthController {
               visibilityTime: 2000,
             });
             resolve(response);
-            navigate(NAVIGATION.login);
           }
         })
         .catch(error => {
