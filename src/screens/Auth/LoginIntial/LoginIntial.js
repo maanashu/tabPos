@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StatusBar } from 'react-native';
 import { Spacer, Button } from '@/components';
 import { SF, SH } from '@/theme';
-import { profilePic } from '@/assets';
+import { clay, profilePic } from '@/assets';
 import { styles } from '@/screens/Auth/LoginIntial/LoginIntial.styles';
 import { strings } from '@/localization';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,10 +18,15 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ActivityIndicator } from 'react-native-paper';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import moment from 'moment';
+import { NAVIGATION } from '@/constants';
 
-export function LoginIntial() {
+export function LoginIntial({ route }) {
   const dispatch = useDispatch();
   const getData = useSelector(getAuthData);
+
+  const { posuserdata } = route.params;
+  console.log('route params', posuserdata);
   const userData = getData?.user?.user_profiles?.profile_photo;
   const id = getData?.user?.id;
   const profileData = getData?.user?.user_profiles?.profile_photo;
@@ -108,12 +113,16 @@ export function LoginIntial() {
         visibilityTime: 1500,
       });
     } else {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'HOME' }],
-        })
-      );
+      navigation.navigate(NAVIGATION.passcode, {
+        posuser: posuserdata,
+        from: 'loginInitial',
+      });
+      // navigation.dispatch(
+      //   CommonActions.reset({
+      //     index: 0,
+      //     routes: [{ name: 'HOME' }],
+      //   })
+      // );
     }
   };
 
@@ -147,25 +156,35 @@ export function LoginIntial() {
               <Text style={styles.header}>{strings.loginIntial.heading}</Text>
               <Spacer space={SH(25)} />
               <Image
-                source={profileData ? { uri: profileData } : profilePic}
+                // source={profileData ? { uri: profileData } : profilePic}
+                source={clay}
                 style={styles.profilePic}
               />
               <Spacer space={SH(25)} />
-              <Text style={styles.darksmallText}>{fullName}</Text>
+              <Text style={styles.darksmallText}>
+                {posuserdata.user_profiles.firstname}
+              </Text>
               <Spacer space={SH(15)} />
               <Text style={styles.darksmallText}>
                 {strings.loginIntial.id}
-                {userId}
+                {posuserdata.id}
               </Text>
               <Spacer space={SH(15)} />
-              <Text style={styles.lightsmallText}>
-                {strings.loginIntial.date} {day} {dateMonthYear}
-              </Text>
-              <Spacer space={SH(8)} />
-              <Text style={styles.lightsmallText}>
-                {strings.loginIntial.time}
-                {hour12}:{dt} {formatAMPM(new Date())}
-              </Text>
+              {posuserdata.api_tokens.length > 0 && (
+                <>
+                  <Text style={styles.lightsmallText}>
+                    {moment(posuserdata.api_tokens[0].created_at).format(
+                      'dddd,DD MMM YYYY'
+                    )}
+                  </Text>
+                  <Spacer space={SH(8)} />
+                  <Text style={styles.lightsmallText}>
+                    {moment(posuserdata.api_tokens[0].created_at).format(
+                      'hh:mm a'
+                    )}
+                  </Text>
+                </>
+              )}
               <Spacer space={SH(8)} />
               <View style={{ flex: 1 }} />
               <Button

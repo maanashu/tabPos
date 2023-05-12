@@ -20,9 +20,13 @@ export class AuthController {
     };
     await HttpClient.post(endpoint, body)
       .then(response => {
+        console.log('response for verify', response);
         if (response.status_code === 200) {
           if (response?.payload?.is_phone_exits) {
-            navigate(NAVIGATION.passcode);
+            navigate(NAVIGATION.passcode, {
+              posuser: '',
+              from: 'verifyphone',
+            });
           } else {
             Toast.show({
               text2: strings.valiadtion.phoneNotExist,
@@ -102,7 +106,46 @@ export class AuthController {
         password: data.pin,
         role_slug: 'pos',
       };
+      console.log('body ===>>', body);
       HttpClient.post(endpoint, body)
+        .then(response => {
+          console.log('response', response);
+          if (response.status_code === 200) {
+            Toast.show({
+              type: 'success_toast',
+              text2: strings.successMessages.loginSuccess,
+              position: 'bottom',
+              visibilityTime: 1500,
+            });
+            resolve(response);
+
+            //  navigate(NAVIGATION.posUsers);
+          } else {
+            Toast.show({
+              text2: response.msg,
+              position: 'bottom',
+              type: 'success_toast',
+              visibilityTime: 1500,
+            });
+          }
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error.msg);
+        });
+    });
+  }
+
+  static async loginPosUser(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.loginPosuser;
+
+      HttpClient.post(endpoint, data)
         .then(response => {
           if (response.status_code === 200) {
             Toast.show({
@@ -112,7 +155,8 @@ export class AuthController {
               visibilityTime: 1500,
             });
             resolve(response);
-            navigate(NAVIGATION.posUsers);
+
+            //  navigate(NAVIGATION.posUsers);
           } else {
             Toast.show({
               text2: response.msg,
@@ -181,5 +225,32 @@ export class AuthController {
           visibilityTime: 2000,
         });
       });
+  }
+
+  static async getAllPosUsers() {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10`;
+
+      await HttpClient.get(endpoint)
+        .then(response => {
+          if (response?.status_code === 200) {
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: response?.msg,
+              visibilityTime: 2000,
+            });
+            resolve(response);
+          }
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+        });
+    });
   }
 }

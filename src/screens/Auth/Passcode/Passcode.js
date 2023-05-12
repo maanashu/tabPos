@@ -16,13 +16,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { digits } from '@/utils/validators';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { login } from '@/actions/AuthActions';
+import { login, loginPosUser } from '@/actions/AuthActions';
 import { TYPES } from '@/Types/Types';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
+
+import { CommonActions, useNavigation } from '@react-navigation/native';
+
 const CELL_COUNT = 4;
 
-export function Passcode() {
+export function Passcode({ route }) {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const getData = useSelector(getAuthData);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -32,6 +36,7 @@ export function Passcode() {
   });
   const phone_no = getData?.phoneData?.phoneNumber;
   const country_code = getData?.phoneData?.countryCode;
+  const { posuser, from } = route.params;
 
   const isLoading = useSelector(state =>
     isLoadingSelector([TYPES.LOGIN], state)
@@ -63,14 +68,33 @@ export function Passcode() {
       });
       return;
     } else {
-      const data = {
-        phone_no: phone_no,
-        country_code: country_code,
-        pin: value,
-      };
-      const res = await dispatch(login(data));
-      if (res?.type === 'LOGIN_ERROR') {
-        setValue('');
+      if (from === 'loginInitial') {
+        let data = {
+          merchant_id: getData?.getProfile?.unique_uuid,
+          pos_user_id: posuser.id.toString(),
+          pos_security_pin: value,
+        };
+
+        dispatch(
+          loginPosUser(data, res => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'HOME' }],
+              })
+            );
+          })
+        );
+      } else {
+        const data = {
+          phone_no: phone_no,
+          country_code: country_code,
+          pin: value,
+        };
+        const res = await dispatch(login(data));
+        if (res?.type === 'LOGIN_ERROR') {
+          setValue('');
+        }
       }
     }
   };

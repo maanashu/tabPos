@@ -83,6 +83,52 @@ export const CategoryData = [
     id: '3',
   },
 ];
+
+export const SubcategoryData = [
+  {
+    id: 1,
+    name: 'Accessories',
+    brands: '21 Brands',
+    products: 55,
+    Image: '',
+  },
+  {
+    id: 2,
+    name: 'Bottoms',
+    brands: '21 Brands',
+    products: 55,
+    Image: '',
+  },
+  {
+    id: 3,
+    name: 'Coats & Jackets',
+    brands: '21 Brands',
+    products: 55,
+    Image: '',
+  },
+  {
+    id: 4,
+    name: 'Coats & Jackets',
+    brands: '21 Brands',
+    products: 55,
+    Image: '',
+  },
+  {
+    id: 5,
+    name: 'Coats & Jackets',
+    brands: '21 Brands',
+    products: 55,
+    Image: '',
+  },
+  {
+    id: 6,
+    name: 'Accessories',
+    Brands: '21 Brands',
+    products: 55,
+    Image: '',
+  },
+];
+
 export const CategoryDataHorizontal = [
   {
     name: 'Tobacco',

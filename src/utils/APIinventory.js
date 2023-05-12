@@ -18,7 +18,8 @@ export const ApiUserInventory = {
   getDrawerSession: 'drawer_management/drawer-session',
   trackSessionSave: 'drawer_management',
   getSessionHistory: 'drawer_management/drawer-session/history',
-  // getDrawerSession:''
+  getPosUsers: 'users/merchant/pos-user',
+  loginPosuser: 'users/merchant/pos-user/login',
 };
 
 export const ApiProductInventory = {

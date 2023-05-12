@@ -1,51 +1,30 @@
+import { getAllPosUsers } from '@/actions/AuthActions';
 import { Fonts, checkArrow } from '@/assets';
 import { clay } from '@/assets';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { COLORS, SH } from '@/theme';
+import moment from 'moment';
 import { string } from 'prop-types';
 import React from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import { Image, ScrollView } from 'react-native';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 export function POSUsers({ navigation }) {
-  const userList = [
-    {
-      image: clay,
-      name: 'Mililcent C.Edward',
-      role: 'Admin/Manager',
-      date: 'Today Wednesday 11 Aug 2022',
-      time: 'Time 3:25 pm',
-    },
-    {
-      image: clay,
-      name: 'Mililcent C.Edward',
-      role: 'Admin/Manager',
-      date: 'Today Wednesday 11 Aug 2022',
-      time: 'Time 3:25 pm',
-    },
-    {
-      image: clay,
-      name: 'Mililcent C.Edward',
-      role: 'Admin/Manager',
-      date: 'Today Wednesday 11 Aug 2022',
-      time: 'Time 3:25 pm',
-    },
-    {
-      image: clay,
-      name: 'Mililcent C.Edward',
-      role: 'Admin/Manager',
-      date: 'Today Wednesday 11 Aug 2022',
-      time: 'Time 3:25 pm',
-    },
-    {
-      image: clay,
-      name: 'Mililcent C.Edward',
-      role: 'Admin/Manager',
-      date: 'Today Wednesday 11 Aug 2022',
-      time: 'Time 3:25 pm',
-    },
-  ];
+  const dispatch = useDispatch();
+  const [posusers, setposusers] = useState([]);
+
+  useEffect(() => {
+    dispatch(
+      getAllPosUsers(res => {
+        setposusers(res.users);
+      })
+    );
+  }, []);
+
   return (
     <View
       style={{
@@ -66,7 +45,7 @@ export function POSUsers({ navigation }) {
       </Text>
 
       <FlatList
-        data={userList}
+        data={posusers}
         scrollEnabled={true}
         contentContainerStyle={{ flexGrow: 1 }}
         style={{ height: '100%' }}
@@ -84,7 +63,7 @@ export function POSUsers({ navigation }) {
               }}
             >
               <Image
-                source={item.image}
+                source={clay}
                 style={{ width: SH(100), height: SH(100) }}
               />
               <Text
@@ -94,7 +73,7 @@ export function POSUsers({ navigation }) {
                   color: COLORS.black,
                 }}
               >
-                {item.name}
+                {item.user_profiles?.firstname}
               </Text>
               <Text
                 style={{
@@ -103,26 +82,33 @@ export function POSUsers({ navigation }) {
                   color: COLORS.primary,
                 }}
               >
-                {item.role}
+                {item.user_profiles?.pos_role}
               </Text>
-              <Text
-                style={{
-                  fontSize: SH(12),
-                  color: COLORS.solid_grey,
-                  fontFamily: Fonts.Regular,
-                }}
-              >
-                {item.date}
-              </Text>
-              <Text
-                style={{
-                  fontSize: SH(12),
-                  color: COLORS.solid_grey,
-                  fontFamily: Fonts.Regular,
-                }}
-              >
-                {item.time}
-              </Text>
+              {item.api_tokens.length > 0 && (
+                <>
+                  <Text
+                    style={{
+                      fontSize: SH(12),
+                      color: COLORS.solid_grey,
+                      fontFamily: Fonts.Regular,
+                      marginTop: SH(40),
+                    }}
+                  >
+                    {moment(item.api_tokens[0].created_at).format(
+                      'dddd,DD MMM YYYY'
+                    )}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: SH(12),
+                      color: COLORS.solid_grey,
+                      fontFamily: Fonts.Regular,
+                    }}
+                  >
+                    {moment(item.api_tokens[0].created_at).format('hh:mm a')}
+                  </Text>
+                </>
+              )}
               <View style={{ flex: 1 }} />
               <TouchableOpacity
                 style={{
@@ -135,7 +121,11 @@ export function POSUsers({ navigation }) {
                   justifyContent: 'center',
                   borderRadius: 5,
                 }}
-                onPress={() => navigation.navigate(NAVIGATION.loginIntial)}
+                onPress={() =>
+                  navigation.navigate(NAVIGATION.loginIntial, {
+                    posuserdata: item,
+                  })
+                }
               >
                 <Image
                   source={checkArrow}
