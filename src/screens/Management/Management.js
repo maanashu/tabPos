@@ -97,7 +97,6 @@ export function Management() {
     cashBalance: drawerData?.getDrawerSession?.cash_balance ?? '0',
     createDate: drawerData?.getDrawerSession?.created_at,
   };
-
   const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
 

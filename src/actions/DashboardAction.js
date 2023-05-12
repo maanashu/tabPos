@@ -22,7 +22,7 @@ const getDrawerSessionRequest = () => ({
   type: TYPES.GET_DRAWER_SESSION_REQUEST,
   payload: null,
 });
-const getDrawerSessionSuccess = getSesssion => ({
+export const getDrawerSessionSuccess = getSesssion => ({
   type: TYPES.GET_DRAWER_SESSION_SUCCESS,
   payload: { getSesssion },
 });

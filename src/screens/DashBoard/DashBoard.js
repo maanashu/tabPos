@@ -38,20 +38,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getDrawerSession,
   getDrawerSessionPost,
+  getDrawerSessionSuccess,
   getOrderDeliveries,
 } from '@/actions/DashboardAction';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { useIsFocused } from '@react-navigation/native';
+import { CommonActions, useIsFocused } from '@react-navigation/native';
 import { getDashboard } from '@/selectors/DashboardSelector';
-import { navigate } from '@/navigation/NavigationRef';
+import { navigate, navigationRef } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import { TYPES } from '@/Types/DashboardTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { digits } from '@/utils/validators';
 import moment from 'moment';
+import { endTrackingSession } from '@/actions/CashTrackingAction';
 const windowWidth = Dimensions.get('window').width;
 
-export function DashBoard() {
+export function DashBoard({ navigation }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -380,10 +382,28 @@ export function DashBoard() {
               <View style={{ flex: 1 }} />
               <TouchableOpacity
                 style={styles.checkoutButton}
-                // onPress={() => logoutHandler()}
-                onPress={() => {
-                  setTrackingSession(true);
-                  // navigate(NAVIGATION.management);
+                onPress={async () => {
+                  const data = {
+                    amount: parseInt(profileObj?.closeBalance),
+                    drawerId: profileObj?.id,
+                    transactionType: 'end_tracking_session',
+                    modeOfcash: 'cash_out',
+                  };
+                  const res = await dispatch(endTrackingSession(data));
+                  if (res?.type === 'END_TRACKING_SUCCESS') {
+                    dispatch(getDrawerSessionSuccess(null));
+
+                    if (navigation) {
+                      navigation.dispatch(
+                        CommonActions.reset({
+                          index: 0,
+                          routes: [{ name: NAVIGATION.posUsers }],
+                        })
+                      );
+                    }
+                  } else {
+                    alert('something went wrong');
+                  }
                 }}
               >
                 <View style={styles.displayRow}>
