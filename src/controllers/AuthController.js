@@ -20,6 +20,7 @@ export class AuthController {
     };
     await HttpClient.post(endpoint, body)
       .then(response => {
+        console.log('response for verify', response);
         if (response.status_code === 200) {
           if (response?.payload?.is_phone_exits) {
             navigate(NAVIGATION.passcode);
@@ -104,6 +105,7 @@ export class AuthController {
       };
       HttpClient.post(endpoint, body)
         .then(response => {
+          console.log('response', response);
           if (response.status_code === 200) {
             Toast.show({
               type: 'success_toast',
@@ -112,7 +114,8 @@ export class AuthController {
               visibilityTime: 1500,
             });
             resolve(response);
-            navigate(NAVIGATION.posUsers);
+            alert('navigate');
+            //  navigate(NAVIGATION.posUsers);
           } else {
             Toast.show({
               text2: response.msg,
@@ -162,6 +165,31 @@ export class AuthController {
       otp: data.otp,
     };
     await HttpClient.post(endpoint, body)
+      .then(response => {
+        if (response?.status_code === 200) {
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: response?.msg,
+            visibilityTime: 2000,
+          });
+          navigate(NAVIGATION.login);
+        }
+      })
+      .catch(error => {
+        Toast.show({
+          position: 'bottom',
+          type: 'error_toast',
+          text2: error.msg,
+          visibilityTime: 2000,
+        });
+      });
+  }
+
+  static async getAllPosUsers() {
+    const endpoint = `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10`;
+
+    await HttpClient.get(endpoint)
       .then(response => {
         if (response?.status_code === 200) {
           Toast.show({

@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
   },
   // home Screen css start
   homeScreenCon: {
-    // flex: 1,
+    flex: 1,
   },
   cashProfileCon: {
     width: windowWidth * 0.3,

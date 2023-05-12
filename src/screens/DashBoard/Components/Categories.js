@@ -15,12 +15,14 @@ import {
 } from 'react-native';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
 import {
+  Fonts,
   Phone_light,
   addDiscountPic,
   cashProfile,
   checkArrow,
   clock,
   cloth,
+  clothes,
   crossBg,
   email,
   eraser,
@@ -30,17 +32,13 @@ import {
   lockLight,
   ok,
   pause,
-  pay,
-  pin,
-  rightIcon,
   scn,
   search_light,
-  sellingArrow,
-  sellingBucket,
   terryProfile,
 } from '@/assets';
 import {
   STARTSELLING,
+  SubcategoryData,
   categoryProRowData,
   categoryRowData,
   homeTableData,
@@ -58,15 +56,8 @@ export function Categories({ crossBgHandler }) {
   const categoryProListItem = ({ item, index }) => (
     <View
       style={{
-        marginRight:
-          index === 0
-            ? SH(-10)
-            : index === categoryProRowData.length - 1
-            ? SH(10)
-            : SH(-15),
-
+        right: index === 1 ? SH(-20) : index === 0 ? SH(-0) : 0,
         borderRadius: 100 / 2,
-        zIndex: 100,
         backgroundColor: 'white',
       }}
     >
@@ -108,6 +99,79 @@ export function Categories({ crossBgHandler }) {
       </TouchableOpacity>
     </View>
   );
+
+  const subcategoryItem = ({ item }) => {
+    return (
+      <View
+        style={{
+          margin: 10,
+          flex: 1,
+          padding: 10,
+          backgroundColor: 'white',
+          borderColor: COLORS.solidGrey,
+          borderWidth: 1,
+          borderRadius: 10,
+        }}
+      >
+        <View style={{ flexDirection: 'row' }}>
+          <Image source={clothes} />
+          <View style={{ marginLeft: 10 }}>
+            <Text
+              style={{
+                fontSize: SH(16),
+                color: COLORS.black,
+                fontFamily: Fonts.MaisonBold,
+              }}
+            >
+              {item.name}
+            </Text>
+            <Text
+              style={{
+                fontSize: SH(14),
+                color: COLORS.black,
+                fontFamily: Fonts.SemiBold,
+              }}
+            >
+              {item.brands}
+            </Text>
+            <Text
+              style={{
+                fontSize: SH(16),
+                color: COLORS.black,
+                fontFamily: Fonts.MaisonRegular,
+              }}
+            >
+              {item.products} Products
+            </Text>
+          </View>
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+          {[1, 2, 3, 4, 5].map(i => (
+            <View
+              style={{
+                borderColor: COLORS.solidGrey,
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: SH(6),
+                width: SH(50),
+                height: SH(50),
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Image
+                source={clothes}
+                style={{
+                  width: 40,
+                  height: 40,
+                }}
+              />
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
   return (
     <View style={[styles.homeScreenCon, styles.backgroundColorSCreen]}>
       <View style={styles.searchScreenHeader}>
@@ -162,13 +226,27 @@ export function Categories({ crossBgHandler }) {
           ></View>
 
           <Spacer space={SH(10)} />
-          <View style={{}}>
+
+          <View>
             <FlatList
               data={categoryProRowData}
               extraData={categoryProRowData}
               renderItem={categoryProListItem}
               keyExtractor={item => item.id}
               horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
+            <Spacer space={SH(10)} />
+            <View style={{ backgroundColor: 'green' }}></View>
+
+            <FlatList
+              data={SubcategoryData}
+              extraData={SubcategoryData}
+              renderItem={subcategoryItem}
+              contentContainerStyle={{ flexGrow: 1, paddingBottom: 5 }}
+              scrollEnabled={true}
+              keyExtractor={item => item.id}
+              numColumns={2}
               showsHorizontalScrollIndicator={false}
             />
           </View>

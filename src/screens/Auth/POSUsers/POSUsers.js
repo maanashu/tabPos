@@ -1,3 +1,4 @@
+import { getAllPosUsers } from '@/actions/AuthActions';
 import { Fonts, checkArrow } from '@/assets';
 import { clay } from '@/assets';
 import { NAVIGATION } from '@/constants';
@@ -5,10 +6,13 @@ import { strings } from '@/localization';
 import { COLORS, SH } from '@/theme';
 import { string } from 'prop-types';
 import React from 'react';
+import { useEffect } from 'react';
 import { Image, ScrollView } from 'react-native';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 export function POSUsers({ navigation }) {
+  const dispatch = useDispatch();
   const userList = [
     {
       image: clay,
@@ -46,6 +50,11 @@ export function POSUsers({ navigation }) {
       time: 'Time 3:25 pm',
     },
   ];
+
+  useEffect(() => {
+    dispatch(getAllPosUsers());
+  }, []);
+
   return (
     <View
       style={{

@@ -64,6 +64,21 @@ const registerSuccess = register => ({
   payload: { register },
 });
 
+const getAllPosUsersRequest = () => ({
+  type: TYPES.GET_ALL_POS_USERS_REQUEST,
+  payload: null,
+});
+
+const getAllPosUsersError = error => ({
+  type: TYPES.GET_ALL_POS_USERS_ERROR,
+  payload: { error },
+});
+
+const getAllPosUsersSuccess = data => ({
+  type: TYPES.GET_ALL_POS_USERS_SUCCESS,
+  payload: { data },
+});
+
 const clearStore = () => ({
   type: TYPES.CLEAR_STORE,
   payload: null,
@@ -106,6 +121,17 @@ export const register = (data, params) => async dispatch => {
     dispatch(registerSuccess(res));
   } catch (error) {
     dispatch(registerError(error.message));
+  }
+};
+
+export const getAllPosUsers = () => async dispatch => {
+  dispatch(getAllPosUsersRequest());
+  try {
+    const res = await AuthController.getAllPosUsers();
+    console.log('response users', res);
+    dispatch(getAllPosUsersSuccess());
+  } catch (error) {
+    dispatch(getAllPosUsersError(error.message));
   }
 };
 

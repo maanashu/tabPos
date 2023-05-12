@@ -73,11 +73,7 @@ export function SearchScreen({ crossBgHandler }) {
 
   const bodyView = () => {
     if (openCategories) {
-      return (
-        <View>
-          <Categories crossBgHandler={() => setSearchScreen(false)} />
-        </View>
-      );
+      return <Categories crossBgHandler={() => SetOpenCategories(false)} />;
     } else {
       return (
         <View style={[styles.homeScreenCon, styles.backgroundColorSCreen]}>
