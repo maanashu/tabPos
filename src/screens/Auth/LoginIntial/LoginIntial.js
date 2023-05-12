@@ -156,8 +156,11 @@ export function LoginIntial({ route }) {
               <Text style={styles.header}>{strings.loginIntial.heading}</Text>
               <Spacer space={SH(25)} />
               <Image
-                // source={profileData ? { uri: profileData } : profilePic}
-                source={clay}
+                source={
+                  posuserdata?.user_profiles?.profile_photo
+                    ? { uri: posuserdata?.user_profiles?.profile_photo }
+                    : clay
+                }
                 style={styles.profilePic}
               />
               <Spacer space={SH(25)} />

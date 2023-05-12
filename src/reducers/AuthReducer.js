@@ -23,6 +23,11 @@ export const authReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         user: payload.user.payload,
       };
+    case TYPES.LOGIN_POS_USER_SUCCESS:
+      return {
+        ...state,
+        posUserData: payload.user.payload,
+      };
 
     case TYPES.CLEAR_STORE:
       return INITIALSTATE;

@@ -58,14 +58,30 @@ export function POSUsers({ navigation }) {
                 margin: SH(25),
                 padding: SH(10),
                 width: SH(306),
-                height: SH(370),
+                height: SH(300),
                 borderRadius: 15,
               }}
             >
-              <Image
-                source={clay}
-                style={{ width: SH(100), height: SH(100) }}
-              />
+              {item.user_profiles?.profile_photo ? (
+                <Image
+                  source={{ uri: item.user_profiles?.profile_photo }}
+                  style={{
+                    width: SH(100),
+                    height: SH(100),
+                    borderRadius: SH(50),
+                  }}
+                />
+              ) : (
+                <Image
+                  source={clay}
+                  style={{
+                    width: SH(100),
+                    height: SH(100),
+                    borderRadius: SH(50),
+                  }}
+                />
+              )}
+
               <Text
                 style={{
                   fontSize: SH(16),
@@ -91,7 +107,7 @@ export function POSUsers({ navigation }) {
                       fontSize: SH(12),
                       color: COLORS.solid_grey,
                       fontFamily: Fonts.Regular,
-                      marginTop: SH(40),
+                      marginTop: SH(20),
                     }}
                   >
                     {moment(item.api_tokens[0].created_at).format(
@@ -112,7 +128,7 @@ export function POSUsers({ navigation }) {
               <View style={{ flex: 1 }} />
               <TouchableOpacity
                 style={{
-                  bottom: SH(15),
+                  bottom: SH(25),
                   backgroundColor: COLORS.primary,
                   width: SH(84),
                   height: SH(44),

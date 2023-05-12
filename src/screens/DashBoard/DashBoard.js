@@ -57,6 +57,7 @@ export function DashBoard() {
   const getAuth = useSelector(getAuthData);
   const getDelivery = useSelector(getDashboard);
   const getSessionObj = getDelivery?.getSesssion;
+  const getPOSAuth = getAuth?.posUserData;
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getDeliveryData = getDelivery?.getOrderDeliveries;
   const [searchScreen, setSearchScreen] = useState(false);
@@ -286,18 +287,20 @@ export function DashBoard() {
               <View style={styles.cashProfilecon}>
                 <Image
                   source={
-                    profileObj?.profile
-                      ? { uri: profileObj?.profile }
+                    getPOSAuth?.user_profiles?.profile_photo
+                      ? { uri: getPOSAuth?.user_profiles?.profile_photo }
                       : cashProfile
                   }
                   style={styles.cashProfile}
                 />
               </View>
               <Text style={styles.cashierName}>
-                {profileObj?.name ?? 'username'}
+                {getPOSAuth?.user_profiles?.firstname ?? 'username'}
               </Text>
               <Text style={styles.posCashier}>POS Cashier</Text>
-              <Text style={styles.cashLabel}>ID : {profileObj?.id ?? '0'}</Text>
+              <Text style={styles.cashLabel}>
+                ID : {getPOSAuth?.user_profiles?.user_id ?? '0'}
+              </Text>
               <Spacer space={SH(12)} />
 
               <View style={styles.todaySaleCon}>
@@ -378,7 +381,10 @@ export function DashBoard() {
               <TouchableOpacity
                 style={styles.checkoutButton}
                 // onPress={() => logoutHandler()}
-                onPress={() => setTrackingSession(true)}
+                onPress={() => {
+                  setTrackingSession(true);
+                  // navigate(NAVIGATION.management);
+                }}
               >
                 <View style={styles.displayRow}>
                   <Image source={lockLight} style={styles.lockLight} />
