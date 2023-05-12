@@ -94,7 +94,7 @@ export function Management() {
   const [userHistory, setUserHistory] = useState();
   const SessionData = {
     id: drawerData?.getDrawerSession?.id,
-    cashBalance: drawerData?.getDrawerSession?.opening_balance ?? '0',
+    cashBalance: drawerData?.getDrawerSession?.cash_balance ?? '0',
     createDate: drawerData?.getDrawerSession?.created_at,
   };
 
