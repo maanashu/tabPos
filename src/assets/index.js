@@ -211,7 +211,7 @@ export { default as appIcon } from '@/assets/icons/ic_setting/AppIcon.png';
 export { default as localImage } from '@/assets/icons/ic_setting/LocalImage.png';
 export { default as toggleOn } from '@/assets/icons/ic_setting/toggle.png';
 export { default as jobrDelivery } from '@/assets/icons/ic_setting/JOBRDelivery.png';
-export { default as locationIcon } from '@/assets/icons/ic_setting/Location.png';
+export { default as locationIcon } from '@/assets/icons/ic_setting/locationIcon.png';
 export { default as languImage } from '@/assets/icons/ic_setting/langu.png';
 export { default as vectorOff } from '@/assets/icons/ic_setting/VectorOff.png';
 export { default as frame } from '@/assets/icons/ic_setting/Frame.png';

@@ -5,11 +5,11 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import { ellipse } from '@/assets';
-import { LEGALDATA } from '@/constants/flatListData';
+import { LEGALDATA, policyLabelData } from '@/constants/flatListData';
 import Modal from 'react-native-modal';
 import { moderateVerticalScale } from 'react-native-size-matters';
 
-export function Legal() {
+export function Policies() {
   const [countryId, setCountryId] = useState(null);
   const [legalModal, setLegalModal] = useState(false);
 
@@ -67,11 +67,11 @@ export function Legal() {
   };
   return (
     <View>
-      <Text style={styles.HeaderLabelText}>Legal</Text>
+      <Text style={styles.HeaderLabelText}>Policies</Text>
       <Spacer space={SH(20)} />
       <FlatList
         numColumns={3}
-        data={LEGALDATA}
+        data={policyLabelData}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         extraData={LEGALDATA}
@@ -81,7 +81,7 @@ export function Legal() {
           <View style={{ paddingHorizontal: moderateVerticalScale(12) }}>
             <Spacer space={SH(10)} />
             <Text style={styles.refundPolicy}>
-              {strings.settings.refundPolicy}
+              Terms and Conditions for Company Name
             </Text>
             <Spacer space={SH(10)} />
             <Text style={[styles.refundPolicy, { fontSize: SF(13) }]}>

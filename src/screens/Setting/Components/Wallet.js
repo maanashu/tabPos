@@ -83,11 +83,11 @@ export function Wallet() {
               {strings.wallet.systemPOS}
             </Text>
             <Text style={styles.securitysubhead}>{strings.wallet.cards}</Text>
-            <Spacer space={SH(10)} />
+            <Spacer space={SH(5)} />
             <Text style={styles.securitysubhead}>
               {strings.wallet.silaProtection}
             </Text>
-            <Spacer space={SH(10)} />
+            <Spacer space={SH(5)} />
             <Text style={styles.walletTextStyle}>
               {strings.wallet.payBusinesses}
             </Text>
@@ -97,13 +97,13 @@ export function Wallet() {
             <Text style={styles.walletTextStyle}>
               {strings.wallet.alwaysPayments}
             </Text>
-            <Spacer space={SH(10)} />
+            <Spacer space={SH(8)} />
             <Text style={styles.securitysubhead}>
               {strings.wallet.byAccount}
             </Text>
-            <Spacer space={SH(10)} />
+            <Spacer space={SH(8)} />
             <Image source={appIcon} />
-            <Spacer space={SH(10)} />
+            <Spacer space={SH(8)} />
             <Button
               title={strings.wallet.silaButton}
               textStyle={styles.selectedText}

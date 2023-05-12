@@ -638,6 +638,8 @@ export const en = {
     taxexmption: 'Tax exemption name',
     exempttax: 'Exempt tax',
     amount: 'Amount',
+    refundPolicy: 'Refund policy',
+    intro: 'Introduction',
   },
   dashboard: {
     todaySale: "Today's Sales",

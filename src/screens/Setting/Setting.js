@@ -60,6 +60,7 @@ import {
   Shipping,
   Languages,
   Legal,
+  Policies,
 } from '@/screens/Setting/Components';
 
 export function Setting() {
@@ -86,11 +87,7 @@ export function Setting() {
     [9]: <Shipping />,
     [10]: <Languages />,
     [11]: <Legal />,
-    [12]: (
-      <View>
-        <Text>POLICIES</Text>
-      </View>
-    ),
+    [12]: <Policies />,
   };
 
   const Item = ({
