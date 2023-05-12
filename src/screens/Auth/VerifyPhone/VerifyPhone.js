@@ -11,7 +11,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { digits } from '@/utils/validators';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { verifyPhone } from '@/actions/AuthActions';
+import { login, verifyPhone } from '@/actions/AuthActions';
 import { TYPES } from '@/Types/Types';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 
@@ -35,7 +35,17 @@ export function VerifyPhone() {
 
   const verifyPhoneHandler = () => {
     if (phoneNumber && phoneNumber.length > 5 && digits.test(phoneNumber)) {
-      dispatch(verifyPhone(phoneNumber, countryCode));
+      // dispatch(verifyPhone(phoneNumber, countryCode));
+      const data = {
+        phone_no: phoneNumber,
+        country_code: countryCode,
+        pin: '1234',
+      };
+      const res = dispatch(login(data));
+      if (res?.type === 'LOGIN_ERROR') {
+        // setValue('')
+        alert('Login failed');
+      }
     } else if (phoneNumber && phoneNumber.length < 5) {
       Toast.show({
         position: 'bottom',

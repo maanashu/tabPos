@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NAVIGATION } from '@/constants';
-import { LoginIntial, POSUsers, Profile } from '@/screens';
+import { LoginIntial, POSUsers, Passcode, Profile } from '@/screens';
 import { HomeNavigator } from './HomeNavigator';
 
 const Stack = createNativeStackNavigator();
@@ -17,6 +17,11 @@ export function InitialNav() {
       <Stack.Screen
         component={LoginIntial}
         name={NAVIGATION.loginIntial}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={Passcode}
+        name={NAVIGATION.passcode}
         options={{ headerShown: false }}
       />
       <Stack.Screen

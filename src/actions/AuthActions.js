@@ -36,6 +36,19 @@ const loginSuccess = user => ({
   payload: { user },
 });
 
+const loginPosUserRequest = () => ({
+  type: TYPES.LOGIN_POS_USER_REQUEST,
+  payload: null,
+});
+const loginPosUserError = error => ({
+  type: TYPES.LOGIN_POS_USER_ERROR,
+  payload: { error },
+});
+const loginPosUserSuccess = user => ({
+  type: TYPES.LOGIN_POS_USER_SUCCESS,
+  payload: { user },
+});
+
 const getProfileRequest = () => ({
   type: TYPES.GET_PROFILE_REQUEST,
   payload: null,
@@ -104,6 +117,17 @@ export const login = data => async dispatch => {
     return dispatch(loginError(error));
   }
 };
+
+export const loginPosUser = (data, callback) => async dispatch => {
+  dispatch(loginPosUserRequest());
+  try {
+    const res = await AuthController.loginPosUser(data);
+    dispatch(loginPosUserSuccess(res));
+    callback && callback(res);
+  } catch (error) {
+    return dispatch(loginPosUserError(error));
+  }
+};
 export const getProfile = id => async dispatch => {
   dispatch(getProfileRequest());
   try {
@@ -124,12 +148,13 @@ export const register = (data, params) => async dispatch => {
   }
 };
 
-export const getAllPosUsers = () => async dispatch => {
+export const getAllPosUsers = callback => async dispatch => {
   dispatch(getAllPosUsersRequest());
   try {
     const res = await AuthController.getAllPosUsers();
     console.log('response users', res);
     dispatch(getAllPosUsersSuccess());
+    callback && callback(res.payload);
   } catch (error) {
     dispatch(getAllPosUsersError(error.message));
   }
