@@ -38,7 +38,7 @@ export function SessionHistoryTable({
   tableDataArray,
   sessionHistoryLoad,
   oneItemSend,
-  setSessionHistoryArray
+  setSessionHistoryArray,
 }) {
   const dispatch = useDispatch();
   const [date, setDate] = useState(new Date());
@@ -46,7 +46,7 @@ export function SessionHistoryTable({
   const [show, setShow] = useState(false);
 
   const onChangeDate = selectedDate => {
-    setSessionHistoryArray([])
+    setSessionHistoryArray([]);
     const currentDate = moment().format('MM/DD/YYYY');
     const selected = moment(selectedDate).format('MM/DD/YYYY');
     setShow(false);
@@ -59,16 +59,15 @@ export function SessionHistoryTable({
     const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
     setDateformat(newDateFormat);
     setDate(fullDate);
-    if(newDateFormat){
-      dispatch(getSessionHistory(newDateFormat))
+    if (newDateFormat) {
+      dispatch(getSessionHistory(newDateFormat));
     }
   };
   const onCancelFun = () => {
     setShow(false);
     setDateformat('');
     setDate(new Date());
-    dispatch(getSessionHistory())
-   
+    dispatch(getSessionHistory());
   };
 
   const tableDataArrayReverse = tableDataArray?.reverse();
@@ -142,14 +141,11 @@ export function SessionHistoryTable({
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
-              ) :
-              tableDataArrayReverse?.length === 0
-              ?
-              <View style={{ marginTop: 80 }}>
-              <Text style={styles.userNotFound}>History not found</Text>
-              </View>
-              :
-                (
+              ) : tableDataArrayReverse?.length === 0 ? (
+                <View style={{ marginTop: 80 }}>
+                  <Text style={styles.userNotFound}>History not found</Text>
+                </View>
+              ) : (
                 tableDataArrayReverse?.map((item, index) => (
                   <TouchableOpacity
                     style={styles.tableDataCon}
@@ -579,9 +575,12 @@ export function TransactionDropDown({ selected }) {
   const [cityModalOpen, setCityModelOpen] = useState(false);
   const [cityModalValue, setCityModalValue] = useState(null);
   const [cityItems, setCityItems] = useState(transactionDataList);
+  console.log('cityModalOpen', cityModalOpen);
+  console.log('cityModalValue', cityModalValue);
+  console.log('cityItems', cityItems);
   return (
     <DropDownPicker
-      dropDownDirection="TOP"
+      dropDownDirection="BOTTOM"
       ArrowUpIconComponent={({ style }) => (
         <Image source={dropdown2} style={styles.dropDownIcon} />
       )}
@@ -594,9 +593,9 @@ export function TransactionDropDown({ selected }) {
         { zIndex: Platform.OS === 'ios' ? 100 : 2 },
       ]}
       listMode="SCROLLVIEW"
-      scrollViewProps={{
-        nestedScrollEnabled: true,
-      }}
+      // scrollViewProps={{
+      //   nestedScrollEnabled: true,
+      // }}
       dropDownContainerStyle={styles.dropDownContainerStyle}
       open={cityModalOpen}
       value={cityModalValue}

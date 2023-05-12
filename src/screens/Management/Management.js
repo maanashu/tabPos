@@ -481,7 +481,7 @@ export function Management() {
               <Text style={styles.amountCountedText}>
                 {strings.management.transactionType}
               </Text>
-              <View style={{ flex: 1 }}>
+              <View style={styles.addCashDrop}>
                 <TransactionDropDown selected={addCashValue} />
               </View>
             </View>

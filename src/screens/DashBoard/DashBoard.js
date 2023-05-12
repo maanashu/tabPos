@@ -393,7 +393,7 @@ export function DashBoard() {
             <View style={styles.rightOrderCon}>
               <TouchableOpacity
                 style={styles.inputWraper}
-                onPress={() => setSearchScreen(true)}
+                // onPress={() => setSearchScreen(true)}
               >
                 <View style={styles.displayRow}>
                   <View>

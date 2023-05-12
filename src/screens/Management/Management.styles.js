@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
@@ -263,13 +263,13 @@ export const styles = StyleSheet.create({
     paddingTop: SH(20),
     paddingBottom: SH(15),
   },
-  paymentBodyCon:{
+  paymentBodyCon: {
     borderBottomWidth: 1,
     borderBottomColor: COLORS.solidGrey,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical:verticalScale(7),
-    paddingHorizontal:moderateScale(12)
+    paddingVertical: verticalScale(7),
+    paddingHorizontal: moderateScale(12),
   },
   buttonStyle: {
     width: windowWidth - 110,
@@ -434,7 +434,7 @@ export const styles = StyleSheet.create({
     zIndex: Platform.OS === 'ios' ? 100 : 0,
   },
   containerStyle: {
-    flexGrow:1, 
+    flexGrow: 1,
     justifyContent: 'center',
     borderRadius: 7,
     borderColor: COLORS.solidGrey,
@@ -516,7 +516,7 @@ export const styles = StyleSheet.create({
   allienpic: {
     width: SW(6),
     height: SW(6),
-    borderRadius:50,
+    borderRadius: 50,
     resizeMode: 'contain',
   },
 
@@ -558,27 +558,27 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.65,
     paddingRight: 50,
   },
-  dateHeadAlign:{
+  dateHeadAlign: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: windowWidth * 0.65,
   },
-  paymentBodyText:{
+  paymentBodyText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(10),
     color: COLORS.dark_grey,
   },
-  scrolCon:{
+  scrolCon: {
     // borderWidth:1,
-    height:windowHeight * 0.28
+    height: windowHeight * 0.28,
   },
-  loader:{
-    position:'absolute',
-    alignSelf:'center',
-    top:0,
-    bottom:0,
-    left:0,
-    right:0
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   datePickerCon: {
     borderWidth: 1,
@@ -603,7 +603,7 @@ export const styles = StyleSheet.create({
     top: 2,
     color: COLORS.solid_grey,
   },
-  selectAmountCon:{
+  selectAmountCon: {
     alignItems: 'center',
     justifyContent: 'center',
     width: SW(45),
@@ -611,20 +611,20 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 5,
-    marginRight:moderateScale(8)
+    marginRight: moderateScale(8),
   },
   selectAmountText: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
     fontSize: SF(15),
-    color:COLORS.solid_grey
+    color: COLORS.solid_grey,
   },
   selectAmountText2: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.primary,
     fontSize: SF(15),
   },
-  selectAmountCon2:{
+  selectAmountCon2: {
     alignItems: 'center',
     justifyContent: 'center',
     width: SW(45),
@@ -632,12 +632,15 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.primary,
     borderRadius: 5,
-    marginRight:moderateScale(8)
+    marginRight: moderateScale(8),
   },
   userNotFound: {
     color: COLORS.primary,
     fontFamily: Fonts.MaisonRegular,
     fontSize: SF(20),
     alignSelf: 'center',
+  },
+  addCashDrop: {
+    flex: Platform.OS === 'android' ? 1 : 0,
   },
 });
