@@ -1066,7 +1066,7 @@ export function Retails() {
       productName={item.name}
       productImage={{ uri: item.image }}
       productPrice={item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-      ProductBrandName={item.brand.name}
+      ProductBrandName={item.brand?.name}
       cartMinusOnPress={() => cartMinusOnPress(item.id, index)}
       cartPlusOnPress={() => cartPlusOnPress(item.id, index)}
       productCount={item}
