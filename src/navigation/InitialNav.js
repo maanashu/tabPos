@@ -1,7 +1,14 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NAVIGATION } from '@/constants';
-import { LoginIntial, POSUsers, Passcode, Profile } from '@/screens';
+import {
+  Cart,
+  LoginIntial,
+  POSUsers,
+  Passcode,
+  Products,
+  Profile,
+} from '@/screens';
 import { HomeNavigator } from './HomeNavigator';
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +34,11 @@ export function InitialNav() {
       <Stack.Screen
         component={HomeNavigator}
         name={'HOME'}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={Products}
+        name={NAVIGATION.products}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

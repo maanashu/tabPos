@@ -19,4 +19,5 @@ export const NAVIGATION = {
   setting: 'Setting',
   dashBoard: 'DashBoard',
   posUsers: 'POSUsers',
+  products: 'Products',
 };
