@@ -352,7 +352,7 @@ export const styles = StyleSheet.create({
     right: 0,
     backgroundColor: COLORS.white,
     width: windowWidth * 0.46,
-    height: windowHeight * 0.30,
+    height: windowHeight * 0.3,
     // ...ShadowStyles.shadow,
     padding: 10,
     justifyContent: 'center',
@@ -597,6 +597,7 @@ export const styles = StyleSheet.create({
     width: SH(36),
     height: SH(36),
     resizeMode: 'contain',
+    borderRadius: 100,
   },
   printButtonCon: {
     height: SH(64),
@@ -621,5 +622,13 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: moderateScale(10),
+  },
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });

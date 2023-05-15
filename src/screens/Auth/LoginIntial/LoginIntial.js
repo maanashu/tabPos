@@ -26,7 +26,6 @@ export function LoginIntial({ route }) {
   const getData = useSelector(getAuthData);
 
   const { posuserdata } = route.params;
-  console.log('route params', posuserdata);
   const userData = getData?.user?.user_profiles?.profile_photo;
   const id = getData?.user?.id;
   const profileData = getData?.user?.user_profiles?.profile_photo;

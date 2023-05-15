@@ -51,6 +51,8 @@ import {
   getOrderCount,
   getOrders,
   getReviewDefault,
+  getShippingService,
+  shipServiceUpdate,
 } from '@/actions/ShippingAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getShipping } from '@/selectors/ShippingSelector';
@@ -68,6 +70,7 @@ export function ShippingOrder() {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getDeliveryData = useSelector(getShipping);
+  const shippingServiceData = getDeliveryData?.getShippingService;
   const orderHeadCount = getDeliveryData?.getOrderCount;
   const deliveringOrder = getDeliveryData?.deliveryOrd;
   const [orderCount, setOrderCount] = useState(
@@ -99,6 +102,7 @@ export function ShippingOrder() {
   const [singleOrderView, setSingleOrderView] = useState(false);
   const [printScreen, setPrintScreen] = useState(false);
   const [otherState, setOtherState] = useState(false);
+  const [selectedShipId, setSelectedShipId] = useState();
 
   const reviewArray = [
     {
@@ -125,21 +129,22 @@ export function ShippingOrder() {
       count: orderHeadCount?.[3].count,
       image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
     },
+
     {
       key: '4',
-      status: 'Assign to Driver',
+      status: 'Pickup',
       count: orderHeadCount?.[4].count,
       image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
     },
     {
       key: '5',
-      status: 'Pickup',
+      status: 'Delivered',
       count: orderHeadCount?.[5].count,
       image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
     },
     {
       key: '6',
-      status: 'Delivered',
+      status: 'Pickup by Customer',
       count: orderHeadCount?.[6].count,
       image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
     },
@@ -235,6 +240,27 @@ export function ShippingOrder() {
     setSingleOrderView(false);
   };
 
+  const selectAndConHandler = async () => {
+    if (selectedShipId === undefined || selectedShipId === null) {
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        text2: 'Please Select Service Type',
+        visibilityTime: 2000,
+      });
+    } else {
+      const data = {
+        orderID: itemss?.id,
+        shippingServiceTypeId: selectedShipId,
+      };
+
+      const res = await dispatch(shipServiceUpdate(data));
+      if (res) {
+        setPrintScreen(false), setViewAllReviews(true), setSelectedShipId(null);
+      }
+    }
+  };
+
   const isPosOrderLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_COUNT], state)
   );
@@ -246,6 +272,9 @@ export function ShippingOrder() {
   );
   const isDeliveringOrd = useSelector(state =>
     isLoadingSelector([TYPES.DELIVERING_ORDER], state)
+  );
+  const shipServiceUpdateLoad = useSelector(state =>
+    isLoadingSelector([TYPES.SHIP_SERVICEUPDATE], state)
   );
 
   const customHeader = () => {
@@ -317,7 +346,6 @@ export function ShippingOrder() {
           setHeadingType(item.status),
           setDataType(item.status);
       }
-      console.log('sdfghjkl,.', res);
     }
   };
 
@@ -354,15 +382,15 @@ export function ShippingOrder() {
       {
         orderAccType(item);
       }
-    } else if (item.status === 'Assign to Driver') {
-      {
-        orderAccType(item);
-      }
     } else if (item.status === 'Pickup') {
       {
         orderAccType(item);
       }
     } else if (item.status === 'Delivered') {
+      {
+        orderAccType(item);
+      }
+    } else if (item.status === 'Pickup by Customer') {
       {
         orderAccType(item);
       }
@@ -987,8 +1015,6 @@ export function ShippingOrder() {
     if (printScreen) {
       return (
         <PrintScreenUI
-          orderId={orderId}
-          orderDate={orderDate}
           userProfile={
             userProfile?.profile_photo
               ? { uri: userProfile?.profile_photo }
@@ -1003,10 +1029,13 @@ export function ShippingOrder() {
           renderProductList={renderProductList}
           itemss={itemss}
           custProLength={custProLength}
-          selectShippingList={selectShippingList}
-          selectAndConHandler={() => (
-            setPrintScreen(false), setViewAllReviews(true)
-          )}
+          selectShippingList={shippingServiceData}
+          // selectAndConHandler={() => (
+          //   setPrintScreen(false), setViewAllReviews(true)
+          // )}
+          selectAndConHandler={selectAndConHandler}
+          setSelectedShipId={setSelectedShipId}
+          selectedShipId={selectedShipId}
         />
       );
     } else if (singleOrderView) {
@@ -1061,14 +1090,20 @@ export function ShippingOrder() {
             <View style={styles.reviewHeadingView}>
               <Text style={styles.orderReviewText}>
                 {strings.deliveryOrders.orderId}
-                {orderId}
+                {itemss?.id}
               </Text>
-              <Text style={styles.orderReviewText}>{orderDate}</Text>
+              <Text style={styles.orderReviewText}>
+                {moment(itemss?.created_at).format('LL')}
+              </Text>
             </View>
 
             <TouchableOpacity
               style={styles.profileDetailView}
-              onPress={() => (setPrintScreen(true), setViewAllReviews(false))}
+              onPress={() => (
+                setPrintScreen(true),
+                setViewAllReviews(false),
+                dispatch(getShippingService())
+              )}
             >
               <View style={{ flexDirection: 'row' }}>
                 <Image
@@ -1471,6 +1506,15 @@ export function ShippingOrder() {
 
         {changeView()}
       </View>
+      {shipServiceUpdateLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
     </ScreenWrapper>
   );
 }

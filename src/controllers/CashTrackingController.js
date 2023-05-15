@@ -18,9 +18,11 @@ export class CashTrackingController {
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
       HttpClient.post(endpoint)
         .then(response => {
+          console.log('123', response);
           resolve(response);
         })
         .catch(error => {
+          console.log('123', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',

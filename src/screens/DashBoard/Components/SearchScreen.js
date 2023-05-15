@@ -249,6 +249,7 @@ export function SearchScreen({ crossBgHandler }) {
                   <Text style={styles.addDiscountText}>Add Notes</Text>
                 </View>
               </View>
+              {/* <View></View> */}
             </View>
           </View>
         </View>

@@ -81,7 +81,7 @@ export const getDrawerSession = () => async dispatch => {
   dispatch(getDrawerSessionRequest());
   try {
     const res = await DashboardController.getDrawerSession();
-    dispatch(getDrawerSessionSuccess(res));
+    return dispatch(getDrawerSessionSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getDrawerSessionReset());

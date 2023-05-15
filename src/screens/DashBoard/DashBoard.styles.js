@@ -10,7 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.textInputBackground,
   },
   displayflex: {
     flexDirection: 'row',
@@ -292,7 +292,7 @@ export const styles = StyleSheet.create({
 
   // search screen css start
   backgroundColorSCreen: {
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.black,
     paddingHorizontal: moderateScale(22),
   },
 
@@ -320,6 +320,7 @@ export const styles = StyleSheet.create({
   },
 
   rightSideCon: {
+    borderWidth: 1,
     width: windowWidth * 0.3,
     height: windowHeight * 0.85,
     backgroundColor: COLORS.white,
@@ -507,6 +508,12 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
+
+  // totalItemCon: {
+  //   borderTopWidth: 1,
+  //   borderBottomWidth: 1,
+  //   borderColor: COLORS.solidGrey,
+  // },
 
   // start tracking modal css start
   modalMainView: {

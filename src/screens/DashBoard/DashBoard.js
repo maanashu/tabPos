@@ -59,6 +59,11 @@ export function DashBoard({ navigation }) {
   const getAuth = useSelector(getAuthData);
   const getDelivery = useSelector(getDashboard);
   const getSessionObj = getDelivery?.getSesssion;
+  // console.log(
+  //   'getSessionObj',
+  //   Object.keys(getSessionObj === getSessionObj ? {} : getSessionObj)?.length
+  // );
+  console.log('getSessionObj', getSessionObj);
   const getPOSAuth = getAuth?.posUserData;
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getDeliveryData = getDelivery?.getOrderDeliveries;
@@ -79,6 +84,7 @@ export function DashBoard({ navigation }) {
     if (isFocused) {
       dispatch(getOrderDeliveries(sellerID));
       startTrackingFun();
+
       clearInput();
     }
   }, [isFocused]);
@@ -90,6 +96,8 @@ export function DashBoard({ navigation }) {
 
   const startTrackingFun = () => {
     dispatch(getDrawerSession());
+    // console.log('-------------', res);
+    // if (res) {
     if (
       Object.keys(getSessionObj === undefined ? {} : getSessionObj)?.length ===
         0 ||
@@ -103,6 +111,7 @@ export function DashBoard({ navigation }) {
       setAmountCount('');
       setTrackNotes('');
     }
+    // }
   };
   const startTrackingSesHandler = async () => {
     if (!amountCount) {
@@ -127,7 +136,6 @@ export function DashBoard({ navigation }) {
   const getSessionLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_DRAWER_SESSION], state)
   );
-  const isloading = () => {};
 
   const logoutHandler = () => {
     Alert.alert('Logout', 'Are you sure you want to logout ?', [
@@ -435,7 +443,7 @@ export function DashBoard({ navigation }) {
                     // )}
                   />
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => setSearchScreen(true)}>
                   <Image source={scn} style={styles.scnStyle} />
                 </TouchableOpacity>
               </TouchableOpacity>

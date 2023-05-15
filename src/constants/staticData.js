@@ -291,37 +291,19 @@ export const productList = [
   },
 ];
 
-export const selectShippingList = [
-  {
-    id: '1',
-    heading : 'Priority Mailing services',
-    subHeading:'1-3 days shipping',
-    price:'$10.50'
-  },
-  {
-    id: '2',
-    heading : 'Priority Mailing services',
-    subHeading:'1-3 days shipping',
-    price:'$10.50'
-  },
-  {
-    id: '3',
-    heading : 'Priority Mailing services',
-    subHeading:'1-3 days shipping',
-    price:'$10.50'
-  },
- 
-];
-
-export const getCustomerDummy = {"new_customers": 0, "online_customers": 0, "returning_customers": 0, "shipping_customers": 0};
+export const getCustomerDummy = {
+  new_customers: 0,
+  online_customers: 0,
+  returning_customers: 0,
+  shipping_customers: 0,
+};
 
 export const transactionDataList = [
-    { label: 'Manual cash in', value: 'manual_cash_in' },
-    { label: 'Maunal cash out', value: 'manual_cash_out' },
-    { label: 'Counted cash', value: 'counted_cash' },
-    { label: 'Delivery charge', value: 'delivery_charge' },
-    { label: 'Shipping charge', value: 'shipping_charge' },
-    { label: 'Sales', value: 'sales' },
-    { label: 'Refund', value: 'refund' },
-  
-]
+  { label: 'Manual cash in', value: 'manual_cash_in' },
+  { label: 'Maunal cash out', value: 'manual_cash_out' },
+  { label: 'Counted cash', value: 'counted_cash' },
+  { label: 'Delivery charge', value: 'delivery_charge' },
+  { label: 'Shipping charge', value: 'shipping_charge' },
+  { label: 'Sales', value: 'sales' },
+  { label: 'Refund', value: 'refund' },
+];

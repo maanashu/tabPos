@@ -58,6 +58,7 @@ export const ApiOrderInventory = {
   getTotalTraType: 'orders/pos/transaction-count',
   getAppointment: 'appointments',
   changeAppointment: 'appointments/status/',
+  getShippingService: 'shipping_service',
 };
 
 export const ApiWalletInventory = {

@@ -36,6 +36,7 @@ import {
   endTrackingSession,
   getDrawerSession,
   getDrawerSessionById,
+  getDrawerSessions,
   getSessionHistory,
   trackSessionSave,
 } from '@/actions/CashTrackingAction';
@@ -169,7 +170,7 @@ export function Management() {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getDrawerSession());
+      dispatch(getDrawerSessions());
     }
     if (drawerData?.getSessionHistory) {
       setSessionHistoryArray(drawerData?.getSessionHistory);

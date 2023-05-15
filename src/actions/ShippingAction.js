@@ -87,6 +87,35 @@ const deliveringOrdReset = () => ({
   payload: null,
 });
 
+const getShippingServiceRequest = () => ({
+  type: TYPES.GET_SHIPSERVICE_REQUEST,
+  payload: null,
+});
+const getShippingServiceSuccess = getShippingService => ({
+  type: TYPES.GET_SHIPSERVICE_SUCCESS,
+  payload: { getShippingService },
+});
+const getShippingServiceError = error => ({
+  type: TYPES.GET_SHIPSERVICE_ERROR,
+  payload: { error },
+});
+const getShippingServiceReset = () => ({
+  type: TYPES.GET_SHIPSERVICE_RESET,
+  payload: null,
+});
+
+const shipServiceUpdateRequest = () => ({
+  type: TYPES.SHIP_SERVICEUPDATE_REQUEST,
+  payload: null,
+});
+const shipServiceUpdateSuccess = () => ({
+  type: TYPES.SHIP_SERVICEUPDATE_SUCCESS,
+  payload: null,
+});
+const shipServiceUpdateError = error => ({
+  type: TYPES.SHIP_SERVICEUPDATE_ERROR,
+  payload: { error },
+});
 export const getOrderCount = status => async dispatch => {
   dispatch(getOrderCountRequest());
   try {
@@ -141,5 +170,28 @@ export const deliveringOrd = () => async dispatch => {
       dispatch(deliveringOrdReset());
     }
     dispatch(deliveringOrdError(error.message));
+  }
+};
+
+export const getShippingService = () => async dispatch => {
+  dispatch(getShippingServiceRequest());
+  try {
+    const res = await ShippingController.getShippingService();
+    dispatch(getShippingServiceSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getShippingServiceReset());
+    }
+    dispatch(getShippingServiceError(error.message));
+  }
+};
+
+export const shipServiceUpdate = data => async dispatch => {
+  dispatch(shipServiceUpdateRequest());
+  try {
+    const res = await ShippingController.shipServiceUpdate(data);
+    return dispatch(shipServiceUpdateSuccess(res));
+  } catch (error) {
+    dispatch(shipServiceUpdateError(error.message));
   }
 };

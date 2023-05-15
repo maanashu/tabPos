@@ -71,7 +71,7 @@ const getDrawerSessionByIdError = error => ({
   payload: { error },
 });
 
-export const getDrawerSession = () => async dispatch => {
+export const getDrawerSessions = () => async dispatch => {
   dispatch(getDrawerSessionRequest());
   try {
     const res = await CashTrackingController.getDrawerSession();
