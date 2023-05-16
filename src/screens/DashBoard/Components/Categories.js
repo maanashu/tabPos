@@ -43,6 +43,8 @@ import {
   categoryRowData,
   homeTableData,
 } from '@/constants/flatListData';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 const windowWidth = Dimensions.get('window').width;
 
 export function Categories({ crossBgHandler }) {
@@ -56,7 +58,6 @@ export function Categories({ crossBgHandler }) {
   const categoryProListItem = ({ item, index }) => (
     <View
       style={{
-        right: index === 1 ? SH(-20) : index === 0 ? SH(-0) : 0,
         borderRadius: 100 / 2,
         backgroundColor: 'white',
       }}
@@ -102,7 +103,7 @@ export function Categories({ crossBgHandler }) {
 
   const subcategoryItem = ({ item }) => {
     return (
-      <View
+      <TouchableOpacity
         style={{
           margin: 10,
           flex: 1,
@@ -112,6 +113,7 @@ export function Categories({ crossBgHandler }) {
           borderWidth: 1,
           borderRadius: 10,
         }}
+        onPress={() => navigate(NAVIGATION.products)}
       >
         <View style={{ flexDirection: 'row' }}>
           <Image source={clothes} />
@@ -169,7 +171,7 @@ export function Categories({ crossBgHandler }) {
             </View>
           ))}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (

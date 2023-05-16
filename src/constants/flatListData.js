@@ -22,6 +22,7 @@ import {
   productBasket,
   cloth,
   onlineMan,
+  clay,
 } from '@/assets';
 import { COLORS } from '@/theme';
 
@@ -907,6 +908,40 @@ export const categoryProRowData = [
     id: 6,
     name: 'Women',
     image: cloth,
+  },
+];
+export const productsData = [
+  {
+    id: 1,
+    image: clay,
+    name: 'Jacket_Nord',
+    stocks: '206 in stock',
+    type: 'Men',
+    price: '$7.59',
+  },
+  {
+    id: 2,
+    image: clay,
+    name: 'Jacket_Nord',
+    stocks: '206 in stock',
+    type: 'Men',
+    price: '$7.59',
+  },
+  {
+    id: 3,
+    image: clay,
+    name: 'Jacket_Nord',
+    stocks: '206 in stock',
+    type: 'Men',
+    price: '$7.59',
+  },
+  {
+    id: 4,
+    image: clay,
+    name: 'Jacket_Nord',
+    stocks: '206 in stock',
+    type: 'Men',
+    price: '$7.59',
   },
 ];
 export const polGraphDummyData = [
