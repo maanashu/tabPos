@@ -129,6 +129,7 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.95,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(5),
+    backgroundColor: COLORS.white,
   },
   inputWraper: {
     backgroundColor: COLORS.textInputBackground,
@@ -292,7 +293,7 @@ export const styles = StyleSheet.create({
 
   // search screen css start
   backgroundColorSCreen: {
-    backgroundColor: COLORS.black,
+    backgroundColor: COLORS.solidGrey,
     paddingHorizontal: moderateScale(22),
   },
 
@@ -320,7 +321,6 @@ export const styles = StyleSheet.create({
   },
 
   rightSideCon: {
-    borderWidth: 1,
     width: windowWidth * 0.3,
     height: windowHeight * 0.85,
     backgroundColor: COLORS.white,

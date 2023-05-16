@@ -62,7 +62,6 @@ export function DashBoard({ navigation }) {
   const getPOSAuth = getAuth?.posUserData;
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getDeliveryData = getDelivery?.getOrderDeliveries;
-  console.log('getDeliveryData', getDeliveryData);
   const [searchScreen, setSearchScreen] = useState(false);
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
