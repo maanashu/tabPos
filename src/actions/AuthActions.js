@@ -152,7 +152,6 @@ export const getAllPosUsers = callback => async dispatch => {
   dispatch(getAllPosUsersRequest());
   try {
     const res = await AuthController.getAllPosUsers();
-    console.log('response users', res);
     dispatch(getAllPosUsersSuccess());
     callback && callback(res.payload);
   } catch (error) {

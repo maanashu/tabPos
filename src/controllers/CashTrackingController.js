@@ -69,8 +69,11 @@ export class CashTrackingController {
             transaction_type: data.transactionType,
             mode_of_cash: data.modeOfcash,
           };
+      console.log('body', body);
+      console.log('endpoint', endpoint);
       HttpClient.post(endpoint, body)
         .then(response => {
+          console.log('response', response);
           if (response?.msg === 'Create drawer activity.') {
             Toast.show({
               position: 'bottom',
@@ -82,6 +85,7 @@ export class CashTrackingController {
           resolve(response);
         })
         .catch(error => {
+          console.log('error', error);
           // Toast.show({
           //   position: 'bottom',
           //   type: 'error_toast',

@@ -226,9 +226,10 @@ export function Management() {
             transactionType: addCashDropDown,
             modeOfcash: 'cash_out',
           };
+      console.log('data', data);
       const res = await dispatch(trackSessionSave(data));
       if (res) {
-        dispatch(getDrawerSession());
+        dispatch(getDrawerSessions());
         setAddCash(false);
         clearInput();
       }
@@ -1073,7 +1074,7 @@ export function Management() {
               <TouchableOpacity
                 onPress={() => {
                   setViewSession(true);
-                  dispatch(getDrawerSession());
+                  dispatch(getDrawerSessions());
                 }}
                 style={styles.viewSessionButtonView}
               >

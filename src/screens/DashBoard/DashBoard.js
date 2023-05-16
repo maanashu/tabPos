@@ -59,14 +59,10 @@ export function DashBoard({ navigation }) {
   const getAuth = useSelector(getAuthData);
   const getDelivery = useSelector(getDashboard);
   const getSessionObj = getDelivery?.getSesssion;
-  // console.log(
-  //   'getSessionObj',
-  //   Object.keys(getSessionObj === getSessionObj ? {} : getSessionObj)?.length
-  // );
-  console.log('getSessionObj', getSessionObj);
   const getPOSAuth = getAuth?.posUserData;
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getDeliveryData = getDelivery?.getOrderDeliveries;
+  console.log('getDeliveryData', getDeliveryData);
   const [searchScreen, setSearchScreen] = useState(false);
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
@@ -79,6 +75,14 @@ export function DashBoard({ navigation }) {
     name: getSessionObj?.seller_details?.user_profiles?.firstname,
     id: getSessionObj?.id,
   };
+  // const [time, setTime] = useState(Date.now());
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => setTime(Date.now()), 1000);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (isFocused) {
@@ -94,24 +98,16 @@ export function DashBoard({ navigation }) {
     setTrackNotes('');
   };
 
-  const startTrackingFun = () => {
-    dispatch(getDrawerSession());
-    // console.log('-------------', res);
+  const startTrackingFun = async () => {
+    const res = await dispatch(getDrawerSession());
     // if (res) {
-    if (
-      Object.keys(getSessionObj === undefined ? {} : getSessionObj)?.length ===
-        0 ||
-      getSessionObj === undefined
-    ) {
-      setTrackingSession(true);
-    } else if (
-      Object.keys(getSessionObj === undefined ? {} : getSessionObj)?.length >= 1
-    ) {
+    if (res?.type === 'GET_DRAWER_SESSION_SUCCESS') {
       setTrackingSession(false);
       setAmountCount('');
       setTrackNotes('');
+    } else {
+      setTrackingSession(true);
     }
-    // }
   };
   const startTrackingSesHandler = async () => {
     if (!amountCount) {
@@ -479,9 +475,10 @@ export function DashBoard({ navigation }) {
                   <View style={{ marginTop: 50 }}>
                     <ActivityIndicator size="large" color={COLORS.indicator} />
                   </View>
-                ) : getDeliveryData?.length === 0 ? (
+                ) : getDeliveryData?.length === 0 ||
+                  getDeliveryData === undefined ? (
                   <View>
-                    <Text style={styles.requestNotFound}>orders not found</Text>
+                    <Text style={styles.requestNotFound}>Orders not found</Text>
                   </View>
                 ) : (
                   <FlatList

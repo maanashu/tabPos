@@ -575,9 +575,6 @@ export function TransactionDropDown({ selected }) {
   const [cityModalOpen, setCityModelOpen] = useState(false);
   const [cityModalValue, setCityModalValue] = useState(null);
   const [cityItems, setCityItems] = useState(transactionDataList);
-  console.log('cityModalOpen', cityModalOpen);
-  console.log('cityModalValue', cityModalValue);
-  console.log('cityItems', cityItems);
   return (
     <DropDownPicker
       dropDownDirection="BOTTOM"
