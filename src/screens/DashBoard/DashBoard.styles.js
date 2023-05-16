@@ -148,8 +148,9 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     alignItems: 'center',
     height: Platform.OS === 'android' ? SH(40) : SH(45),
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     marginTop: 5,
+    paddingLeft: moderateScale(10),
   },
   searchStyle: {
     width: SW(7),
@@ -294,7 +295,8 @@ export const styles = StyleSheet.create({
   // search screen css start
   backgroundColorSCreen: {
     backgroundColor: COLORS.solidGrey,
-    paddingHorizontal: moderateScale(22),
+    paddingHorizontal:
+      Platform.OS === 'android' ? moderateScale(22) : moderateScale(12),
   },
 
   searchScreenHeader: {
@@ -388,7 +390,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: COLORS.solidGrey,
-    width: windowWidth * 0.13,
+    width: windowWidth * 0.125,
     height: SW(34),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(10),
@@ -407,7 +409,7 @@ export const styles = StyleSheet.create({
   },
   holdCartCon: {
     width: windowWidth * 0.11,
-    height: Platform.OS === 'android' ? SH(40) : SH(45),
+    height: SH(40),
     borderRadius: 5,
     backgroundColor: COLORS.marshmallow,
     flexDirection: 'row',
@@ -430,7 +432,7 @@ export const styles = StyleSheet.create({
   },
   nameAddCon: {
     borderWidth: 1,
-    height: windowHeight * 0.35,
+    height: windowHeight * 0.37,
     borderColor: COLORS.solidGrey,
     borderRadius: 5,
     paddingHorizontal: moderateScale(5),

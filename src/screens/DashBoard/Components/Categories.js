@@ -155,8 +155,8 @@ export function Categories({ crossBgHandler }) {
                 borderWidth: 1,
                 borderRadius: 10,
                 margin: SH(6),
-                width: SH(50),
-                height: SH(50),
+                width: SH(40),
+                height: SH(40),
                 alignItems: 'center',
                 justifyContent: 'center',
               }}

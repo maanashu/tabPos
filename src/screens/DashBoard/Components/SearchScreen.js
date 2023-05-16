@@ -51,7 +51,9 @@ export function SearchScreen({ crossBgHandler }) {
   const [openCategories, SetOpenCategories] = useState(false);
   const categoryListItem = ({ item }) => (
     <View style={styles.categoryArrayCon}>
-      <Text style={styles.categories}>{item.name}</Text>
+      <Text numberOfLines={1} style={styles.categories}>
+        {item.name}
+      </Text>
       <Spacer space={SH(2)} />
       <Text style={styles.listed}>13 listed</Text>
     </View>
@@ -221,9 +223,7 @@ export function SearchScreen({ crossBgHandler }) {
                 <View style={styles.nameAddSingleCon}>
                   <View style={styles.displayRow}>
                     <Image source={location} style={styles.Phonelight} />
-                    <Text style={styles.terryText}>
-                      4849 Owagner Lane Seattle, WA 98101
-                    </Text>
+                    <Text style={styles.terryText}>4849 Owagner Lane</Text>
                   </View>
                 </View>
                 <TouchableOpacity style={styles.okButtonCon}>
@@ -256,9 +256,5 @@ export function SearchScreen({ crossBgHandler }) {
       );
     }
   };
-  return (
-    <ScreenWrapper>
-      <View style={styles.container}>{bodyView()}</View>
-    </ScreenWrapper>
-  );
+  return <View>{bodyView()}</View>;
 }
