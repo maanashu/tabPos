@@ -17,6 +17,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
 import { styles } from '@/screens/Reward/Reward.styles';
@@ -42,18 +43,28 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Table } from 'react-native-table-component';
 import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
-
 const windowWidth = Dimensions.get('window').width;
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRewardGraph, getRewardedUsersList } from '@/actions/RewardAction';
+import {
+  getRewardGraph,
+  getRewardUser,
+  getRewardedUsersList,
+} from '@/actions/RewardAction';
 import { useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { getReward } from '@/selectors/RewardSelectors';
+import { TYPES } from '@/Types/RewardTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function Reward() {
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
   const getAuth = useSelector(getAuthData);
+  const getRewardData = useSelector(getReward);
+  const getPositionData = getRewardData?.rewardedUsersData;
+  const userTableData = getRewardData;
+  const tableArray = getRewardData?.getRewardUser;
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const [rewardList, setRewardList] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
@@ -67,14 +78,25 @@ export function Reward() {
   const [date, setDate] = useState(new Date());
   const [dateformat, setDateformat] = useState('');
 
+  const [selectTime, setSelectTime] = useState({ value: 'week' });
+  const dayType = selectTime?.value;
+  const [selectId, setSelectId] = useState(2);
   const [show, setShow] = useState(false);
 
+  const tableData = {
+    totalReward: userTableData?.total_redeem_rewards,
+    tableDataArray: userTableData?.data,
+  };
+
+  const onPresFun2 = value => {
+    dispatch(getRewardUser(value, sellerID));
+  };
+
   useEffect(() => {
-    //API is Implemented and commented for now, Will manipulate data later
     if (isFocus) {
-      // console.log(sellerID);
       // dispatch(getRewardGraph(sellerID));
-      // dispatch(getRewardedUsersList());
+      dispatch(getRewardedUsersList());
+      dispatch(getRewardUser('week', sellerID));
     }
   }, [isFocus]);
 
@@ -99,6 +121,22 @@ export function Reward() {
       const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
       setDateformat(newDateFormat);
       setDate(fullDate);
+    }
+  };
+
+  const isUserLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_REWARD_USER], state)
+  );
+  const viewHandler = () => {
+    if (tableData?.tableDataArray?.length === 0) {
+      Toast.show({
+        text2: 'User not found',
+        position: 'bottom',
+        type: 'success_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      setRewardList(true);
     }
   };
 
@@ -146,9 +184,18 @@ export function Reward() {
           <View style={[styles.displayflex, styles.paddingVerHor]}>
             <Text style={styles.totalRewardText2}>
               {strings.reward.totalReward}:{' '}
-              <Text style={{ color: COLORS.primary }}>{'$8,458,041'}</Text>
+              <Text style={{ color: COLORS.primary }}>
+                ${tableData?.totalReward ?? '0'}
+              </Text>
             </Text>
-            <View>{/* <DaySelector /> */}</View>
+            <View>
+              <DaySelector
+                onPresFun={onPresFun2}
+                selectId={selectId}
+                setSelectId={setSelectId}
+                setSelectTime={setSelectTime}
+              />
+            </View>
           </View>
           <View style={styles.orderTypeCon}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -266,76 +313,89 @@ export function Reward() {
               </View>
               <View>
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                  <View style={styles.tableDataDataCon}>
-                    <View style={styles.displayflex}>
-                      <View
-                        style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
-                      >
-                        <Text style={[styles.text1, styles.text2]}>1</Text>
-                        <View style={styles.tableProfileData}>
-                          <View style={styles.rowCenter}>
-                            <Image
-                              source={tableProfile}
-                              style={styles.tableProfile}
-                            />
-                            <View style={{ marginLeft: 4 }}>
-                              <Text style={styles.username}>Karam Manab</Text>
+                  {isUserLoad || tableArray === undefined ? (
+                    <View style={{ marginTop: 50 }}>
+                      <ActivityIndicator
+                        size="large"
+                        color={COLORS.primary}
+                        style={styles.indicatorstyle}
+                      />
+                    </View>
+                  ) : tableArray?.length === 0 ? (
+                    <View>
+                      <Text style={styles.requestNotFound}>User not found</Text>
+                    </View>
+                  ) : (
+                    tableArray?.map((item, index) => (
+                      <View style={styles.tableDataDataCon} key={index}>
+                        <View style={styles.displayflex}>
+                          <View
+                            style={[
+                              styles.rowCenter,
+                              { width: windowWidth * 0.2 },
+                            ]}
+                          >
+                            <Text style={[styles.text1, styles.text2]}>
+                              {index + 1}
+                            </Text>
+                            <View style={styles.tableProfileData}>
                               <View style={styles.rowCenter}>
                                 <Image
-                                  source={location}
-                                  style={styles.Phonelight}
+                                  source={
+                                    item?.user_details?.profile_photo
+                                      ? {
+                                          uri: item?.user_details
+                                            ?.profile_photo,
+                                        }
+                                      : userImage
+                                  }
+                                  style={styles.tableProfile}
                                 />
-                                <Text style={styles.userAddress}>
-                                  Florida, USA
-                                </Text>
+                                <View style={{ marginLeft: 4 }}>
+                                  <Text style={styles.username}>
+                                    {item?.user_details?.firstname}
+                                    {item?.user_details?.lastname}
+                                  </Text>
+                                  <View style={styles.rowCenter}>
+                                    <Image
+                                      source={location}
+                                      style={styles.Phonelight}
+                                    />
+                                    <Text style={styles.userAddress}>
+                                      {
+                                        item?.user_details?.current_address
+                                          ?.state
+                                      }
+                                      {', '}
+                                      {
+                                        item?.user_details?.current_address
+                                          ?.country
+                                      }
+                                    </Text>
+                                  </View>
+                                </View>
                               </View>
                             </View>
                           </View>
-                        </View>
-                      </View>
-                      <View style={styles.dateHeadAlign}>
-                        <Text style={styles.DataText}>$4,568</Text>
-                        <Text style={styles.DataText}>$45</Text>
-                        <Text style={styles.DataText}>Active</Text>
-                        <Text style={[styles.DataText]}>--</Text>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={styles.tableDataDataCon}>
-                    <View style={styles.displayflex}>
-                      <View
-                        style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
-                      >
-                        <Text style={[styles.text1, styles.text2]}>2</Text>
-                        <View style={styles.tableProfileData}>
-                          <View style={styles.rowCenter}>
-                            <Image
-                              source={tableProfile}
-                              style={styles.tableProfile}
-                            />
-                            <View style={{ marginLeft: 4 }}>
-                              <Text style={styles.username}>Karam Manab</Text>
-                              <View style={styles.rowCenter}>
-                                <Image
-                                  source={location}
-                                  style={styles.Phonelight}
-                                />
-                                <Text style={styles.userAddress}>
-                                  Florida, USA
-                                </Text>
-                              </View>
-                            </View>
+                          <View style={styles.dateHeadAlign}>
+                            <Text style={styles.DataText}>
+                              ${item.total_spent_jbr_coin ?? '0.00'}
+                            </Text>
+                            <Text style={styles.DataText}>
+                              ${item.redeem_coin ?? '0.00'}
+                            </Text>
+                            <Text style={styles.DataText}>
+                              {item.status === true ? 'Active' : 'Inactive'}
+                            </Text>
+                            <Text style={[styles.DataText]}>
+                              {' '}
+                              {moment(item.updated_at).format('L')}
+                            </Text>
                           </View>
                         </View>
                       </View>
-                      <View style={styles.dateHeadAlign}>
-                        <Text style={styles.DataText}>$4,568</Text>
-                        <Text style={styles.DataText}>$45</Text>
-                        <Text style={styles.DataText}>Active</Text>
-                        <Text style={[styles.DataText]}>--</Text>
-                      </View>
-                    </View>
-                  </View>
+                    ))
+                  )}
                 </ScrollView>
               </View>
             </Table>
@@ -351,10 +411,17 @@ export function Reward() {
             <Text style={styles.totalRewardText}>
               {strings.reward.totalReward}
             </Text>
-            <View>{/* <DaySelector/> */}</View>
+            <View>
+              <DaySelector
+                onPresFun={onPresFun2}
+                selectId={selectId}
+                setSelectId={setSelectId}
+                setSelectTime={setSelectTime}
+              />
+            </View>
           </View>
           <Text style={styles.jobrCountLabel}>
-            {strings.reward.jobrCountLabel} {strings.reward.jobrCountCount}
+            {strings.reward.jobrCountLabel} {tableData?.totalReward ?? '0'}
           </Text>
           <Spacer space={SH(5)} />
           <View style={styles.displayflex}>
@@ -372,7 +439,14 @@ export function Reward() {
                       styles.userImageBorderThird,
                     ]}
                   >
-                    <Image source={userImage} style={styles.rewardUserThird} />
+                    <Image
+                      source={
+                        getPositionData?.[2]
+                          ? { uri: getPositionData?.[2]?.user_profile }
+                          : userImage
+                      }
+                      style={styles.rewardUserThird}
+                    />
                   </View>
                   <Spacer space={SH(3)} />
                   <Text style={styles.firstText}>
@@ -386,15 +460,24 @@ export function Reward() {
                       { backgroundColor: COLORS.lightBlue },
                     ]}
                   >
-                    <View style={styles.displayflex}>
+                    <View style={styles.displayRow}>
                       <Image source={reward} style={styles.reward} />
-                      <Text style={styles.rewardPrice}>$120.0</Text>
+                      <Text style={styles.rewardPrice}>
+                        ${getPositionData?.[2]?.reward_point ?? '0.00'}
+                      </Text>
                     </View>
                   </View>
                 </View>
                 <View style={styles.firstRewardCon}>
                   <View style={styles.userImageBorder}>
-                    <Image source={userImage} style={styles.rewardUserFirst} />
+                    <Image
+                      source={
+                        getPositionData?.[0]
+                          ? { uri: getPositionData?.[0]?.user_profile }
+                          : userImage
+                      }
+                      style={styles.rewardUserFirst}
+                    />
                   </View>
                   <Spacer space={SH(10)} />
                   <Text style={styles.firstText}>
@@ -403,9 +486,11 @@ export function Reward() {
                   </Text>
                   <Spacer space={SH(5)} />
                   <View style={styles.rewardConPrice}>
-                    <View style={styles.displayflex}>
+                    <View style={styles.displayRow}>
                       <Image source={reward} style={styles.reward} />
-                      <Text style={styles.rewardPrice}>$120.0</Text>
+                      <Text style={styles.rewardPrice}>
+                        ${getPositionData?.[0]?.reward_point ?? '0.00'}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -416,7 +501,14 @@ export function Reward() {
                       styles.userImageBorderSecond,
                     ]}
                   >
-                    <Image source={userImage} style={styles.rewardUserSecond} />
+                    <Image
+                      source={
+                        getPositionData?.[1]
+                          ? { uri: getPositionData?.[1]?.user_profile }
+                          : userImage
+                      }
+                      style={styles.rewardUserSecond}
+                    />
                   </View>
                   <Spacer space={SH(6)} />
                   <Text style={styles.firstText}>
@@ -430,9 +522,11 @@ export function Reward() {
                       { backgroundColor: COLORS.blueLight },
                     ]}
                   >
-                    <View style={styles.displayflex}>
+                    <View style={styles.displayRow}>
                       <Image source={reward} style={styles.reward} />
-                      <Text style={styles.rewardPrice}>$120.0</Text>
+                      <Text style={styles.rewardPrice}>
+                        ${getPositionData?.[1]?.reward_point ?? '0.00'}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -440,10 +534,7 @@ export function Reward() {
             </LinearGradient>
           </View>
           <Spacer space={SH(10)} />
-          <TouchableOpacity
-            style={styles.viewButtonCon}
-            onPress={() => setRewardList(true)}
-          >
+          <TouchableOpacity style={styles.viewButtonCon} onPress={viewHandler}>
             <Text style={styles.viewAll}>{strings.reward.viewAll}</Text>
           </TouchableOpacity>
           <Spacer space={SH(7)} />
@@ -467,105 +558,80 @@ export function Reward() {
                   </View>
                 </View>
               </View>
-              <View style={styles.tableDataDataCon}>
-                <View style={styles.displayflex}>
-                  <View
-                    style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
-                  >
-                    <Text style={[styles.text1, styles.text2]}>1</Text>
-                    <View style={styles.tableProfileData}>
-                      <View style={styles.rowCenter}>
-                        <Image
-                          source={tableProfile}
-                          style={styles.tableProfile}
-                        />
-                        <View style={{ marginLeft: 4 }}>
-                          <Text style={styles.username}>Karam Manab</Text>
+
+              {isUserLoad || tableArray === undefined ? (
+                <View style={{ marginTop: 50 }}>
+                  <ActivityIndicator
+                    size="large"
+                    color={COLORS.primary}
+                    style={styles.indicatorstyle}
+                  />
+                </View>
+              ) : tableArray?.length === 0 ? (
+                <View>
+                  <Text style={styles.requestNotFound}>User not found</Text>
+                </View>
+              ) : (
+                tableArray?.slice(0, 4).map((item, index) => (
+                  <View style={styles.tableDataDataCon} key={index}>
+                    <View style={styles.displayflex}>
+                      <View
+                        style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
+                      >
+                        <Text style={[styles.text1, styles.text2]}>
+                          {index + 1}
+                        </Text>
+                        <View style={styles.tableProfileData}>
                           <View style={styles.rowCenter}>
                             <Image
-                              source={location}
-                              style={styles.Phonelight}
+                              source={
+                                item?.user_details?.profile_photo
+                                  ? {
+                                      uri: item?.user_details?.profile_photo,
+                                    }
+                                  : userImage
+                              }
+                              style={styles.tableProfile}
                             />
-                            <Text style={styles.userAddress}>Florida, USA</Text>
+                            <View style={{ marginLeft: 4 }}>
+                              <Text style={styles.username}>
+                                {item?.user_details?.firstname}
+                                {item?.user_details?.lastname}
+                              </Text>
+                              <View style={styles.rowCenter}>
+                                <Image
+                                  source={location}
+                                  style={styles.Phonelight}
+                                />
+                                <Text style={styles.userAddress}>
+                                  {item?.user_details?.current_address?.state}
+                                  {', '}
+                                  {item?.user_details?.current_address?.country}
+                                </Text>
+                              </View>
+                            </View>
                           </View>
                         </View>
                       </View>
-                    </View>
-                  </View>
-                  <View style={styles.dateHeadAlign}>
-                    <Text style={styles.DataText}>$4,5682</Text>
-                    <Text style={styles.DataText}>$45</Text>
-                    <Text style={styles.DataText}>Active</Text>
-                    <Text style={[styles.DataText]}>--</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.tableDataDataCon}>
-                <View style={styles.displayflex}>
-                  <View
-                    style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
-                  >
-                    <Text style={[styles.text1, styles.text2]}>2</Text>
-                    <View style={styles.tableProfileData}>
-                      <View style={styles.rowCenter}>
-                        <Image
-                          source={tableProfile}
-                          style={styles.tableProfile}
-                        />
-                        <View style={{ marginLeft: 4 }}>
-                          <Text style={styles.username}>Karam Manab</Text>
-                          <View style={styles.rowCenter}>
-                            <Image
-                              source={location}
-                              style={styles.Phonelight}
-                            />
-                            <Text style={styles.userAddress}>Florida, USA</Text>
-                          </View>
-                        </View>
+                      <View style={styles.dateHeadAlign}>
+                        <Text style={styles.DataText}>
+                          ${item?.total_spent_jbr_coin ?? '0.00'}
+                        </Text>
+                        <Text style={styles.DataText}>
+                          {' '}
+                          ${item?.redeem_coin ?? '0.00'}
+                        </Text>
+                        <Text style={styles.DataText}>
+                          {item.status === true ? 'Active' : 'Inactive'}
+                        </Text>
+                        <Text style={[styles.DataText]}>
+                          {moment(item.updated_at).format('L')}
+                        </Text>
                       </View>
                     </View>
                   </View>
-                  <View style={styles.dateHeadAlign}>
-                    <Text style={styles.DataText}>$4,568</Text>
-                    <Text style={styles.DataText}>$45</Text>
-                    <Text style={styles.DataText}>Active</Text>
-                    <Text style={[styles.DataText]}>--</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.tableDataDataCon}>
-                <View style={styles.displayflex}>
-                  <View
-                    style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
-                  >
-                    <Text style={[styles.text1, styles.text2]}>3</Text>
-                    <View style={styles.tableProfileData}>
-                      <View style={styles.rowCenter}>
-                        <Image
-                          source={tableProfile}
-                          style={styles.tableProfile}
-                        />
-                        <View style={{ marginLeft: 4 }}>
-                          <Text style={styles.username}>Karam Manab</Text>
-                          <View style={styles.rowCenter}>
-                            <Image
-                              source={location}
-                              style={styles.Phonelight}
-                            />
-                            <Text style={styles.userAddress}>Florida, USA</Text>
-                          </View>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={styles.dateHeadAlign}>
-                    <Text style={styles.DataText}>$4,568</Text>
-                    <Text style={styles.DataText}>$45</Text>
-                    <Text style={styles.DataText}>Active</Text>
-                    <Text style={[styles.DataText]}>--</Text>
-                  </View>
-                </View>
-              </View>
+                ))
+              )}
             </Table>
           </View>
         </View>

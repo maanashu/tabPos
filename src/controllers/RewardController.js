@@ -28,10 +28,8 @@ export class RewardController {
   static async getRewardedUsersAPI() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiRewards.getRewardedUsers;
-
       HttpClient.get(endpoint)
         .then(response => {
-          alert(JSON.stringify(response));
           resolve(response);
         })
         .catch(error => {
@@ -41,7 +39,29 @@ export class RewardController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
+        });
+    });
+  }
+
+  static async getRewardUser(value, sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        USER_URL +
+        ApiRewards.getRewardUser +
+        `?seller_id=${sellerID}&filter=${value}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: 'rewarded user list error',
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
         });
     });
   }

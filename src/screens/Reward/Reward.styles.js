@@ -17,6 +17,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  displayRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
@@ -177,18 +181,18 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   rewardUserFirst: {
-    height: SW(22),
-    width: SW(22),
+    height: SW(15),
+    width: SW(15),
     resizeMode: 'contain',
   },
   rewardUserSecond: {
-    height: SW(18),
-    width: SW(18),
+    height: SW(14),
+    width: SW(14),
     resizeMode: 'contain',
   },
   rewardUserThird: {
-    height: SW(16),
-    width: SW(16),
+    height: SW(12),
+    width: SW(12),
     resizeMode: 'contain',
   },
   userImageBorder: {
@@ -229,6 +233,7 @@ export const styles = StyleSheet.create({
     height: SW(8),
     resizeMode: 'contain',
     tintColor: COLORS.solid_green,
+    marginRight: 10,
   },
   rewardPrice: {
     fontFamily: Fonts.SemiBold,
@@ -266,8 +271,8 @@ export const styles = StyleSheet.create({
   tableDataHeaderCon2: {
     height: SH(50),
     borderTopWidth: 1,
-    borderColor:COLORS.solidGrey,
-    backgroundColor:COLORS.textInputBackground
+    borderColor: COLORS.solidGrey,
+    backgroundColor: COLORS.textInputBackground,
   },
   text1: {
     fontFamily: Fonts.MaisonBold,
@@ -462,5 +467,12 @@ export const styles = StyleSheet.create({
   paddingVerHor: {
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(8),
+  },
+  requestNotFound: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.primary,
+    alignSelf: 'center',
+    marginTop: 50,
+    fontSize: SF(20),
   },
 });

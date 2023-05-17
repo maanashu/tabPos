@@ -71,4 +71,5 @@ export const ApiWalletInventory = {
 export const ApiRewards = {
   getRewardGraph: `rewards/pos/graph`,
   getRewardedUsers: `rewards/pos/rewarded-people`,
+  getRewardUser: 'rewards/pos/users/statistics',
 };

@@ -1,17 +1,20 @@
-import { getAllPosUsers } from '@/actions/AuthActions';
-import { Fonts, checkArrow } from '@/assets';
+import { getAllPosUsers, logoutFunction } from '@/actions/AuthActions';
+import { Fonts, checkArrow, powerAuth, userImage } from '@/assets';
 import { clay } from '@/assets';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
-import { COLORS, SH } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import moment from 'moment';
-import { string } from 'prop-types';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Image, ScrollView } from 'react-native';
+import { Alert, Image } from 'react-native';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { styles } from './POSUsers.styles';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
+import { ActivityIndicator } from 'react-native';
 
 export function POSUsers({ navigation }) {
   const dispatch = useDispatch();
@@ -25,134 +28,99 @@ export function POSUsers({ navigation }) {
     );
   }, []);
 
+  const getPosUserLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ALL_POS_USERS], state)
+  );
+  const logoutHandler = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout ?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          dispatch(logoutFunction());
+        },
+      },
+    ]);
+  };
+
   return (
-    <View
-      style={{
-        flex: 1,
-        marginHorizontal: 10,
-        backgroundColor: '#FFFFFF',
-      }}
-    >
-      <Text
-        style={{
-          color: COLORS.black,
-          fontSize: SH(16),
-          fontFamily: Fonts.Bold,
-          margin: SH(20),
-        }}
-      >
-        {strings.posUsersList.heading}
-      </Text>
+    <View style={styles.container}>
+      <View style={styles.flexRow}>
+        <Text style={styles.posLoginHeader}>
+          {strings.posUsersList.heading}
+        </Text>
+        <TouchableOpacity
+          style={styles.logoutCon}
+          onPress={() => logoutHandler()}
+        >
+          <Image source={powerAuth} style={styles.powerAuth} />
+          <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
+        </TouchableOpacity>
+      </View>
 
-      <FlatList
-        data={posusers}
-        scrollEnabled={true}
-        contentContainerStyle={{ flexGrow: 1 }}
-        style={{ height: '100%' }}
-        renderItem={({ item }) => {
-          return (
-            <View
-              style={{
-                backgroundColor: COLORS.textInputBackground,
-                alignItems: 'center',
-                margin: SH(25),
-                padding: SH(10),
-                width: SH(306),
-                height: SH(300),
-                borderRadius: 15,
-              }}
-            >
-              {item.user_profiles?.profile_photo ? (
+      {getPosUserLoading ? (
+        <View style={{ marginTop: 50 }}>
+          <ActivityIndicator size="large" color={COLORS.indicator} />
+        </View>
+      ) : posusers?.length === 0 ? (
+        <View style={{ marginTop: 100 }}>
+          <Text style={styles.posUserNot}>Pos user not found</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={posusers}
+          extraData={posusers}
+          scrollEnabled={true}
+          contentContainerStyle={{ flexGrow: 1 }}
+          style={{ height: '100%' }}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.posUserCon}>
                 <Image
-                  source={{ uri: item.user_profiles?.profile_photo }}
-                  style={{
-                    width: SH(100),
-                    height: SH(100),
-                    borderRadius: SH(50),
-                  }}
+                  source={
+                    item.user_profiles?.profile_photo
+                      ? { uri: item.user_profiles?.profile_photo }
+                      : userImage
+                  }
+                  style={styles.profileImage}
                 />
-              ) : (
-                <Image
-                  source={clay}
-                  style={{
-                    width: SH(100),
-                    height: SH(100),
-                    borderRadius: SH(50),
-                  }}
-                />
-              )}
-
-              <Text
-                style={{
-                  fontSize: SH(16),
-                  fontFamily: Fonts.SemiBold,
-                  color: COLORS.black,
-                }}
-              >
-                {item.user_profiles?.firstname}
-              </Text>
-              <Text
-                style={{
-                  fontSize: SH(14),
-                  fontFamily: Fonts.SemiBold,
-                  color: COLORS.primary,
-                }}
-              >
-                {item.user_profiles?.pos_role}
-              </Text>
-              {item.api_tokens.length > 0 && (
-                <>
-                  <Text
-                    style={{
-                      fontSize: SH(12),
-                      color: COLORS.solid_grey,
-                      fontFamily: Fonts.Regular,
-                      marginTop: SH(20),
-                    }}
-                  >
-                    {moment(item.api_tokens[0].created_at).format(
-                      'dddd,DD MMM YYYY'
-                    )}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: SH(12),
-                      color: COLORS.solid_grey,
-                      fontFamily: Fonts.Regular,
-                    }}
-                  >
-                    {moment(item.api_tokens[0].created_at).format('hh:mm a')}
-                  </Text>
-                </>
-              )}
-              <View style={{ flex: 1 }} />
-              <TouchableOpacity
-                style={{
-                  bottom: SH(25),
-                  backgroundColor: COLORS.primary,
-                  width: SH(84),
-                  height: SH(44),
-                  padding: SH(10),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 5,
-                }}
-                onPress={() =>
-                  navigation.navigate(NAVIGATION.loginIntial, {
-                    posuserdata: item,
-                  })
-                }
-              >
-                <Image
-                  source={checkArrow}
-                  style={{ width: SH(30), height: SH(20) }}
-                />
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-        numColumns={4}
-      />
+                <Text style={styles.firstName}>
+                  {item.user_profiles?.firstname}
+                </Text>
+                <Text style={styles.role}>{item.user_profiles?.pos_role}</Text>
+                {item.api_tokens.length > 0 && (
+                  <>
+                    <Text style={[styles.dateTime, { marginTop: SH(20) }]}>
+                      {moment(item.api_tokens[0].created_at).format(
+                        'dddd,DD MMM YYYY'
+                      )}
+                    </Text>
+                    <Text style={styles.dateTime}>
+                      {moment(item.api_tokens[0].created_at).format('hh:mm a')}
+                    </Text>
+                  </>
+                )}
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity
+                  style={styles.arrowButonCon}
+                  onPress={() =>
+                    navigation.navigate(NAVIGATION.loginIntial, {
+                      posuserdata: item,
+                    })
+                  }
+                >
+                  <Image source={checkArrow} style={styles.arrowImage} />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+          numColumns={4}
+        />
+      )}
     </View>
   );
 }

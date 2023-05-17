@@ -10,7 +10,7 @@ import { analyticsReducer } from '@/reducers/AnalyticsReducer';
 import { customersReducer } from '@/reducers/CustomersReducer';
 import { walletReducer } from '@/reducers/WalletReducer';
 import { cashTrackingReducer } from '@/reducers/CashTrackingReducer';
-import { RewardReducer } from '@/reducers/RewardReducer';
+import { rewardReducer } from '@/reducers/RewardReducer';
 import { appointmentReducer } from '@/reducers/AppointmentReducer';
 import { dashboardReducer } from '@/reducers/DashboardReducer';
 
@@ -26,7 +26,7 @@ export const rootReducer = combineReducers({
   customers: customersReducer,
   wallet: walletReducer,
   cashTracking: cashTrackingReducer,
-  reward: RewardReducer,
+  reward: rewardReducer,
   appointment: appointmentReducer,
   dashboard: dashboardReducer,
 });

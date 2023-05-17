@@ -113,6 +113,7 @@ export const en = {
   },
   posUsersList: {
     heading: 'To use the POS Login',
+    logOut: 'Log Out',
   },
   verifyOtp: {
     heading: 'Verify your phone number',
@@ -524,7 +525,6 @@ export const en = {
   reward: {
     totalReward: 'Total Rewards',
     jobrCountLabel: 'JOBR',
-    jobrCountCount: '6,700',
     first: '1',
     st: 'st',
     second: '2',

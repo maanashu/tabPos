@@ -33,6 +33,32 @@ const getRewardedUsersError = error => ({
   payload: { error },
 });
 
+const getClearAllCartReset = () => ({
+  type: TYPES.GET_REWARDED_USERS_RESET,
+  payload: null,
+});
+
+// Get Reward user
+const getRewardUserRequest = () => ({
+  type: TYPES.GET_REWARD_USER_REQUEST,
+  payload: null,
+});
+
+const getRewardUserSuccess = getRewardUser => ({
+  type: TYPES.GET_REWARD_USER_SUCCESS,
+  payload: { getRewardUser },
+});
+
+const getRewardUserError = error => ({
+  type: TYPES.GET_REWARD_USER_ERROR,
+  payload: { error },
+});
+
+const getRewardUserReset = () => ({
+  type: TYPES.GET_REWARD_USER_RESET,
+  payload: null,
+});
+
 export const getRewardGraph = sellerID => async dispatch => {
   dispatch(getRewardGraphRequest());
   try {
@@ -49,6 +75,22 @@ export const getRewardedUsersList = () => async dispatch => {
     const res = await RewardController.getRewardedUsersAPI();
     dispatch(getRewardedUsersSuccess(res?.payload));
   } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getClearAllCartReset());
+    }
     dispatch(getRewardedUsersError(error.message));
+  }
+};
+
+export const getRewardUser = (value, sellerID) => async dispatch => {
+  dispatch(getRewardUserRequest());
+  try {
+    const res = await RewardController.getRewardUser(value, sellerID);
+    dispatch(getRewardUserSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getRewardUserReset());
+    }
+    dispatch(getRewardUserError(error.message));
   }
 };
