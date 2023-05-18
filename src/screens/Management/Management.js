@@ -226,7 +226,6 @@ export function Management() {
             transactionType: addCashDropDown,
             modeOfcash: 'cash_out',
           };
-      console.log('data', data);
       const res = await dispatch(trackSessionSave(data));
       if (res) {
         dispatch(getDrawerSessions());

@@ -16,8 +16,11 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ActivityIndicator } from 'react-native';
 import { ScreenWrapper } from '@/components';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { navigate } from '@/navigation/NavigationRef';
 
 export function POSUsers({ navigation }) {
+  const getNav = useNavigation();
   const dispatch = useDispatch();
   const [posusers, setposusers] = useState([]);
 
@@ -43,6 +46,7 @@ export function POSUsers({ navigation }) {
         text: 'OK',
         onPress: () => {
           dispatch(logoutFunction());
+          navigate(NAVIGATION.verifyPhone);
         },
       },
     ]);
@@ -55,13 +59,13 @@ export function POSUsers({ navigation }) {
           <Text style={styles.posLoginHeader}>
             {strings.posUsersList.heading}
           </Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.logoutCon}
             onPress={() => logoutHandler()}
           >
             <Image source={powerAuth} style={styles.powerAuth} />
             <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {getPosUserLoading ? (

@@ -1195,6 +1195,7 @@ export function Customers() {
                     keyExtractor={item => item.id}
                     horizontal
                     contentContainerStyle={styles.contentContainerStyle}
+                    scrollEnabled={false}
                   />
                 )}
               </View>

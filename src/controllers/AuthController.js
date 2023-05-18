@@ -20,7 +20,6 @@ export class AuthController {
     };
     await HttpClient.post(endpoint, body)
       .then(response => {
-        console.log('response for verify', response);
         if (response.status_code === 200) {
           if (response?.payload?.is_phone_exits) {
             navigate(NAVIGATION.passcode, {
@@ -106,7 +105,6 @@ export class AuthController {
         password: data.pin,
         role_slug: 'pos',
       };
-      console.log('body ===>>', body);
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response.status_code === 200) {

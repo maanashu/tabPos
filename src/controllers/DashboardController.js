@@ -134,7 +134,6 @@ export class DashboardController {
         ORDER_URL +
         ApiOrderInventory.getTotalSale +
         `?seller_id=${sellerID}&filter=today`;
-      console.log(endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

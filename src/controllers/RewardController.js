@@ -50,7 +50,6 @@ export class RewardController {
         USER_URL +
         ApiRewards.getRewardUser +
         `?seller_id=${sellerID}&filter=${value}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

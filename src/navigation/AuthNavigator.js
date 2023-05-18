@@ -17,12 +17,7 @@ const Drawer = createDrawerNavigator();
 
 export function AuthNavigator(props) {
   return (
-    <Stack.Navigator initialRouteName="VerifyPhone">
-      <Stack.Screen
-        component={Login}
-        name={NAVIGATION.login}
-        options={{ headerShown: false }}
-      />
+    <Stack.Navigator initialRouteName={NAVIGATION.verifyPhone}>
       <Stack.Screen
         component={VerifyPhone}
         name={NAVIGATION.verifyPhone}

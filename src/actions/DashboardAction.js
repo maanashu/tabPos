@@ -139,7 +139,6 @@ export const startstarckingSession = resData => async dispatch => {
 };
 
 export const getTotalSaleAction = sellerID => async dispatch => {
-  console.log('dfghjkl');
   dispatch(getTotalSaleRequest());
   try {
     const res = await DashboardController.getTotalSale(sellerID);

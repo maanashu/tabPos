@@ -163,7 +163,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(34),
   },
   customersGraph: {
-    width: windowWidth * 0.99,
+    width: windowWidth * 0.9,
     height: windowHeight * 0.5,
     resizeMode: 'contain',
   },

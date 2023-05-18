@@ -16,6 +16,7 @@ import { TYPES } from '@/Types/Types';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 
 export function VerifyPhone() {
+  console.log('verifyPhone screen');
   const dispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [flag, setFlag] = useState('US');

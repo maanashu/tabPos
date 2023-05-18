@@ -101,7 +101,6 @@ export function Wallet() {
     dispatch(getTotakTraDetail(time2, sellerID, mode_of_payment));
   };
 
- 
   const aboutTransactionData = [
     {
       aboutTransaction: 'JBR COIN',
@@ -328,7 +327,7 @@ export function Wallet() {
       <TransactionSelectItem
         item={item}
         onPress={() => {
-             setTranscationTypeId(item.mode_of_payment),
+          setTranscationTypeId(item.mode_of_payment),
             setTransaction(item),
             onPresFun3(item.mode_of_payment);
         }}
@@ -641,6 +640,7 @@ export function Wallet() {
                   keyExtractor={item => item.id}
                   horizontal
                   contentContainerStyle={styles.contentContainer}
+                  scrollEnabled={false}
                 />
               </View>
               <Spacer space={SH(17)} />
@@ -652,6 +652,7 @@ export function Wallet() {
                   keyExtractor={item => item.id}
                   horizontal
                   contentContainerStyle={styles.contentContainer}
+                  scrollEnabled={false}
                 />
               </View>
 
