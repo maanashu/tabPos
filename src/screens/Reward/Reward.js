@@ -63,8 +63,9 @@ export function Reward() {
   const getAuth = useSelector(getAuthData);
   const getRewardData = useSelector(getReward);
   const getPositionData = getRewardData?.rewardedUsersData;
-  const userTableData = getRewardData;
-  const tableArray = getRewardData?.getRewardUser;
+  const totalReward = getRewardData?.getRewardUser?.total_redeem_rewards;
+
+  const tableArray = getRewardData?.getRewardUser?.data;
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const [rewardList, setRewardList] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
@@ -82,11 +83,6 @@ export function Reward() {
   const dayType = selectTime?.value;
   const [selectId, setSelectId] = useState(2);
   const [show, setShow] = useState(false);
-
-  const tableData = {
-    totalReward: userTableData?.total_redeem_rewards,
-    tableDataArray: userTableData?.data,
-  };
 
   const onPresFun2 = value => {
     dispatch(getRewardUser(value, sellerID));
@@ -128,7 +124,7 @@ export function Reward() {
     isLoadingSelector([TYPES.GET_REWARD_USER], state)
   );
   const viewHandler = () => {
-    if (tableData?.tableDataArray?.length === 0) {
+    if (tableArray?.length === 0) {
       Toast.show({
         text2: 'User not found',
         position: 'bottom',
@@ -185,7 +181,7 @@ export function Reward() {
             <Text style={styles.totalRewardText2}>
               {strings.reward.totalReward}:{' '}
               <Text style={{ color: COLORS.primary }}>
-                ${tableData?.totalReward ?? '0'}
+                ${totalReward ?? '0'}
               </Text>
             </Text>
             <View>
@@ -312,7 +308,7 @@ export function Reward() {
                 </View>
               </View>
               <View>
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                {/* <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                   {isUserLoad || tableArray === undefined ? (
                     <View style={{ marginTop: 50 }}>
                       <ActivityIndicator
@@ -396,7 +392,42 @@ export function Reward() {
                       </View>
                     ))
                   )}
-                </ScrollView>
+                </ScrollView> */}
+                <View style={styles.tableDataDataCon}>
+                  <View style={styles.displayflex}>
+                    <View
+                      style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
+                    >
+                      <Text style={[styles.text1, styles.text2]}>1</Text>
+                      <View style={styles.tableProfileData}>
+                        <View style={styles.rowCenter}>
+                          <Image
+                            source={userImage}
+                            style={styles.tableProfile}
+                          />
+                          <View style={{ marginLeft: 4 }}>
+                            <Text style={styles.username}>soab khan</Text>
+                            <View style={styles.rowCenter}>
+                              <Image
+                                source={location}
+                                style={styles.Phonelight}
+                              />
+                              <Text style={styles.userAddress}>
+                                State, country
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                    <View style={styles.dateHeadAlign}>
+                      <Text style={styles.DataText}>$1</Text>
+                      <Text style={styles.DataText}>0</Text>
+                      <Text style={styles.DataText}>Active</Text>
+                      <Text style={[styles.DataText]}>1</Text>
+                    </View>
+                  </View>
+                </View>
               </View>
             </Table>
           </View>
@@ -421,7 +452,7 @@ export function Reward() {
             </View>
           </View>
           <Text style={styles.jobrCountLabel}>
-            {strings.reward.jobrCountLabel} {tableData?.totalReward ?? '0'}
+            {strings.reward.jobrCountLabel} {totalReward ?? '0'}
           </Text>
           <Spacer space={SH(5)} />
           <View style={styles.displayflex}>
@@ -559,7 +590,7 @@ export function Reward() {
                 </View>
               </View>
 
-              {isUserLoad || tableArray === undefined ? (
+              {/* {isUserLoad || tableArray === undefined ? (
                 <View style={{ marginTop: 50 }}>
                   <ActivityIndicator
                     size="large"
@@ -567,7 +598,7 @@ export function Reward() {
                     style={styles.indicatorstyle}
                   />
                 </View>
-              ) : tableArray?.length === 0 ? (
+              ) : tableArray?.length === 0 || tableArray === undefined ? (
                 <View>
                   <Text style={styles.requestNotFound}>User not found</Text>
                 </View>
@@ -631,7 +662,40 @@ export function Reward() {
                     </View>
                   </View>
                 ))
-              )}
+              )} */}
+
+              <View style={styles.tableDataDataCon}>
+                <View style={styles.displayflex}>
+                  <View
+                    style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
+                  >
+                    <Text style={[styles.text1, styles.text2]}>1</Text>
+                    <View style={styles.tableProfileData}>
+                      <View style={styles.rowCenter}>
+                        <Image source={userImage} style={styles.tableProfile} />
+                        <View style={{ marginLeft: 4 }}>
+                          <Text style={styles.username}>soab khan</Text>
+                          <View style={styles.rowCenter}>
+                            <Image
+                              source={location}
+                              style={styles.Phonelight}
+                            />
+                            <Text style={styles.userAddress}>
+                              State, country
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.dateHeadAlign}>
+                    <Text style={styles.DataText}>$1</Text>
+                    <Text style={styles.DataText}>0</Text>
+                    <Text style={styles.DataText}>Active</Text>
+                    <Text style={[styles.DataText]}>1</Text>
+                  </View>
+                </View>
+              </View>
             </Table>
           </View>
         </View>

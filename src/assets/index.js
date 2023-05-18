@@ -240,6 +240,8 @@ export { default as onlineMan } from '@/assets/icons/ic_dashboard/onlineMan.png'
 export { default as terryProfile } from '@/assets/icons/ic_dashboard/profile.png';
 export { default as ok } from '@/assets/icons/ic_dashboard/ok.png';
 export { default as homeMenu } from '@/assets/icons/ic_dashboard/homeMenu.png';
+export { default as columbiaMen } from '@/assets/icons/ic_dashboard/columbiaMen.png';
+export { default as borderCross } from '@/assets/icons/ic_dashboard/borderCross.png';
 export { default as clothes } from '@/assets/images/clothes.png';
 
 /* Fonts */

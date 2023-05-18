@@ -27,11 +27,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headingCon: {
-    borderWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.22,
     height: windowHeight * 0.96,
     justifyContent: 'center',
+    backgroundColor: COLORS.textInputBackground,
   },
   DataCon: {
     width: windowWidth * 0.73,

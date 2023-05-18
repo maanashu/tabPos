@@ -65,12 +65,28 @@ const startstarckingSessionError = error => ({
   payload: { error },
 });
 
+const getTotalSaleRequest = () => ({
+  type: TYPES.GET_TOTAL_SALE_REQUEST,
+  payload: null,
+});
+const getTotalSaleSuccess = getTotalSale => ({
+  type: TYPES.GET_TOTAL_SALE_SUCCESS,
+  payload: { getTotalSale },
+});
+const getTotalSaleError = error => ({
+  type: TYPES.GET_TOTAL_SALE_ERROR,
+  payload: { error },
+});
+const getTotalSaleReset = () => ({
+  type: TYPES.GET_TOTAL_SALE_RESET,
+  payload: null,
+});
+
 export const getOrderDeliveries = sellerID => async dispatch => {
   dispatch(getOrderDeliveriesRequest());
   try {
     const res = await DashboardController.getOrderDeliveries(sellerID);
     dispatch(getOrderDeliveriesSuccess(res?.payload?.data));
-    console.log(res);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getOrderDeliveriesReset());
@@ -119,5 +135,19 @@ export const startstarckingSession = resData => async dispatch => {
     dispatch(getDrawerSession());
   } catch (error) {
     dispatch(startstarckingSessionError(error.message));
+  }
+};
+
+export const getTotalSaleAction = sellerID => async dispatch => {
+  console.log('dfghjkl');
+  dispatch(getTotalSaleRequest());
+  try {
+    const res = await DashboardController.getTotalSale(sellerID);
+    dispatch(getTotalSaleSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getTotalSaleReset());
+    }
+    dispatch(getTotalSaleError(error.message));
   }
 };

@@ -40,6 +40,8 @@ import {
   getDrawerSessionPost,
   getDrawerSessionSuccess,
   getOrderDeliveries,
+  getTotalSale,
+  getTotalSaleAction,
 } from '@/actions/DashboardAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { CommonActions, useIsFocused } from '@react-navigation/native';
@@ -60,6 +62,7 @@ export function DashBoard({ navigation }) {
   const getDelivery = useSelector(getDashboard);
   const getSessionObj = getDelivery?.getSesssion;
   const getPOSAuth = getAuth?.posUserData;
+  const TotalSale = getDelivery?.getTotalSale;
   const sellerID = getAuth?.getProfile?.unique_uuid;
   const getDeliveryData = getDelivery?.getOrderDeliveries;
   const [searchScreen, setSearchScreen] = useState(false);
@@ -87,8 +90,8 @@ export function DashBoard({ navigation }) {
     if (isFocused) {
       dispatch(getOrderDeliveries(sellerID));
       startTrackingFun();
-
       clearInput();
+      // dispatch(getTotalSaleAction(sellerID));
     }
   }, [isFocused]);
 
@@ -317,22 +320,27 @@ export function DashBoard({ navigation }) {
                   <Text style={styles.cashLabel}>
                     {strings.dashboard.cashSaleAmount}
                   </Text>
-                  <Text style={styles.cashAmount}>$400.50</Text>
+                  <Text style={styles.cashAmount}>
+                    ${TotalSale?.[3]?.total_sale_amount ?? '0.00'}
+                  </Text>
                 </View>
                 <View style={[styles.displayflex, styles.paddingV]}>
                   <Text style={styles.cashLabel}>
                     {strings.dashboard.cardSaleAmount}
                   </Text>
-                  <Text style={styles.cashAmount}>$400.50</Text>
+                  <Text style={styles.cashAmount}>
+                    ${TotalSale?.[2]?.total_sale_amount ?? '0.00'}
+                  </Text>
                 </View>
                 <View style={[styles.displayflex, styles.paddingV]}>
                   <Text style={styles.cashLabel}>
                     {strings.dashboard.jobrCoinSaleAmount}
                   </Text>
-                  <Text style={styles.cashAmount}>JOBR 400.50</Text>
+                  <Text style={styles.cashAmount}>
+                    JOBR {TotalSale?.[1]?.total_sale_amount ?? '0.00'}
+                  </Text>
                 </View>
               </View>
-
               <Spacer space={SH(10)} />
               <View style={styles.todaySaleCon}>
                 <Text style={styles.todaySale}>
@@ -411,7 +419,7 @@ export function DashBoard({ navigation }) {
               >
                 <View style={styles.displayRow}>
                   <Image source={lockLight} style={styles.lockLight} />
-                  <Text style={[styles.checkoutText]}>
+                  <Text style={[styles.checkoutText1]}>
                     {strings.dashboard.lockScreen}
                   </Text>
                 </View>

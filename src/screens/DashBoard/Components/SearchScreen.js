@@ -17,20 +17,24 @@ import { styles } from '@/screens/DashBoard/DashBoard.styles';
 import {
   Phone_light,
   addDiscountPic,
+  borderCross,
   cashProfile,
   checkArrow,
   clock,
   cloth,
+  columbiaMen,
   crossBg,
   email,
   eraser,
   keyboard,
   location,
   lockLight,
+  minus,
   ok,
   pause,
   pay,
   pin,
+  plus,
   rightIcon,
   scn,
   search_light,
@@ -49,6 +53,8 @@ const windowWidth = Dimensions.get('window').width;
 
 export function SearchScreen({ crossBgHandler }) {
   const [openCategories, SetOpenCategories] = useState(false);
+  const [productList, setProductList] = useState(false);
+  const [categoryList, setCategoryList] = useState(true);
   const categoryListItem = ({ item }) => (
     <View style={styles.categoryArrayCon}>
       <Text numberOfLines={1} style={styles.categories}>
@@ -61,9 +67,10 @@ export function SearchScreen({ crossBgHandler }) {
   const categoryProListItem = ({ item }) => (
     <TouchableOpacity
       style={styles.catProArrayCon}
-      onPress={() => {
-        SetOpenCategories(true);
-      }}
+      // onPress={() => {
+      //   SetOpenCategories(true);
+      // }}
+      onPress={() => (setCategoryList(false), setProductList(true))}
     >
       <Image source={item.image} style={styles.cloth} />
       <Spacer space={SH(5)} />
@@ -72,6 +79,93 @@ export function SearchScreen({ crossBgHandler }) {
       <Text style={styles.listed}>24 listed</Text>
     </TouchableOpacity>
   );
+
+  const dataChangeFun = () => {
+    if (productList) {
+      return (
+        <View>
+          <View style={styles.blueListHeader}>
+            <View style={styles.displayflex}>
+              <View style={[styles.tableListSide, styles.listLeft]}>
+                <Text
+                  style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}
+                >
+                  #
+                </Text>
+                <Text style={styles.cashLabelWhite}>Item</Text>
+              </View>
+              <View style={[styles.tableListSide, styles.tableListSide2]}>
+                <Text style={styles.cashLabelWhite}>Unit Price</Text>
+                <Text style={styles.cashLabelWhite}>Quantity</Text>
+                <Text style={styles.cashLabelWhite}>Line Total</Text>
+                <Text style={{ color: COLORS.primary }}>1</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.blueListData}>
+            <View style={styles.displayflex}>
+              <View style={[styles.tableListSide, styles.listLeft]}>
+                <Text
+                  style={[styles.blueListDataText, styles.cashLabelWhiteHash]}
+                >
+                  1
+                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image source={columbiaMen} style={styles.columbiaMen} />
+                  <View style={{ marginLeft: 10 }}>
+                    <Text style={styles.blueListDataText}>
+                      Columbia Men's Rain Jacket
+                    </Text>
+                    <Text style={styles.sukNumber}>SUK: 5689076</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={[styles.tableListSide, styles.tableListSide2]}>
+                <Text style={styles.blueListDataText}>$80.99</Text>
+                <View style={styles.listCountCon}>
+                  <Image source={minus} style={styles.minus} />
+                  <Text>1</Text>
+                  <Image source={plus} style={styles.minus} />
+                </View>
+                <Text style={styles.blueListDataText}>$80.99</Text>
+                <Image source={borderCross} style={styles.borderCross} />
+              </View>
+            </View>
+          </View>
+        </View>
+      );
+    } else if (categoryList)
+      return (
+        <View>
+          <View>
+            <FlatList
+              data={categoryRowData}
+              extraData={categoryRowData}
+              renderItem={categoryListItem}
+              keyExtractor={item => item.id}
+              horizontal
+              contentContainerStyle={{
+                flex: 1,
+                justifyContent: 'space-between',
+              }}
+            />
+          </View>
+          <Spacer space={SH(10)} />
+          <View
+            style={{ borderWidth: 1, borderColor: COLORS.solidGrey }}
+          ></View>
+          <>
+            <FlatList
+              data={categoryProRowData}
+              extraData={categoryProRowData}
+              renderItem={categoryProListItem}
+              keyExtractor={item => item.id}
+              numColumns={4}
+            />
+          </>
+        </View>
+      );
+  };
 
   const bodyView = () => {
     if (openCategories) {
@@ -115,54 +209,18 @@ export function SearchScreen({ crossBgHandler }) {
                 </TouchableOpacity>
               </View>
               <Spacer space={SH(10)} />
-              {/* <View style={styles.blueListHeader}>
-            <View style={styles.displayflex}>
-              <View style={[styles.tableListSide, styles.listLeft]}>
-                <Text
-                  style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}
-                >
-                  #
-                </Text>
-                <Text style={styles.cashLabelWhite}>Item</Text>
-              </View>
-              <View style={[styles.tableListSide, styles.tableListSide2]}>
-                <Text style={styles.cashLabelWhite}>Unit Price</Text>
-                <Text style={styles.cashLabelWhite}>Quantity</Text>
-                <Text style={styles.cashLabelWhite}>Line Total</Text>
-                <Text>{null}</Text>
-              </View>
-            </View>
-          </View> */}
-              <View>
-                <FlatList
-                  data={categoryRowData}
-                  extraData={categoryRowData}
-                  renderItem={categoryListItem}
-                  keyExtractor={item => item.id}
-                  horizontal
-                  contentContainerStyle={{
-                    flex: 1,
-                    justifyContent: 'space-between',
-                  }}
-                />
-              </View>
-              <Spacer space={SH(10)} />
-              <View
-                style={{ borderWidth: 1, borderColor: COLORS.solidGrey }}
-              ></View>
 
-              {/* <Spacer space={SH(10)} /> */}
-              <>
-                <FlatList
-                  data={categoryProRowData}
-                  extraData={categoryProRowData}
-                  renderItem={categoryProListItem}
-                  keyExtractor={item => item.id}
-                  numColumns={4}
-                />
-              </>
+              {dataChangeFun()}
             </View>
-            <View style={[styles.itemLIistCon, styles.rightSideCon]}>
+
+            <View
+              pointerEvents="auto"
+              style={[
+                styles.itemLIistCon,
+                styles.rightSideCon,
+                // { opacity: 0.1 },
+              ]}
+            >
               <View style={styles.displayflex}>
                 <Image source={keyboard} style={styles.keyboard} />
                 <View style={styles.holdCartCon}>
@@ -249,7 +307,49 @@ export function SearchScreen({ crossBgHandler }) {
                   <Text style={styles.addDiscountText}>Add Notes</Text>
                 </View>
               </View>
-              {/* <View></View> */}
+              <Spacer space={SH(10)} />
+              <View style={styles.totalItemCon}>
+                <Text style={styles.totalItem}>
+                  {strings.dashboard.totalItem}
+                  {' 10'}
+                </Text>
+              </View>
+              <Spacer space={SH(5)} />
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Sub Total</Text>
+                <Text style={styles.subTotalDollar}>$4.00</Text>
+              </View>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Total VAT</Text>
+                <Text style={styles.subTotalDollar}>$4.00</Text>
+              </View>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Total Taxes</Text>
+                <Text style={styles.subTotalDollar}>$4.00</Text>
+              </View>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Discount</Text>
+                <Text style={styles.subTotalDollar}>$4.00</Text>
+              </View>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderStyle: 'dashed',
+                  borderColor: COLORS.solidGrey,
+                }}
+              />
+              <Spacer space={SH(5)} />
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.itemValue}>Item value</Text>
+                <Text style={styles.subTotalDollar}>$4.00</Text>
+              </View>
+              <View style={{ flex: 1 }} />
+              <TouchableOpacity style={styles.checkoutButtonSideBar}>
+                <Text style={styles.checkoutText}>
+                  {strings.retail.checkOut}
+                </Text>
+                <Image source={checkArrow} style={styles.checkArrow} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>

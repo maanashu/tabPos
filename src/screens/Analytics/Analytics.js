@@ -79,6 +79,7 @@ import {
   TableDropdown,
   ChartKit,
   BarChartCom,
+  ScreenWrapper,
 } from '@/components';
 import { styles } from '@/screens/Analytics/Analytics.styles';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
@@ -5674,21 +5675,23 @@ export function Analytics(props) {
   };
 
   return (
-    <View style={styles.container}>
-      {orderList || revenueOrderBuyer || orderTracking
-        ? null
-        : totalReveueDetail
-        ? totalRevnueCustomHeader()
-        : customHeader()}
+    <ScreenWrapper>
+      <View style={styles.container}>
+        {orderList || revenueOrderBuyer || orderTracking
+          ? null
+          : totalReveueDetail
+          ? totalRevnueCustomHeader()
+          : customHeader()}
 
-      {totalProductFunction()}
-      {productDetailModal()}
-      {invoiceModal()}
-      {productOrderModal()}
-      {stockHandProductModal()}
+        {totalProductFunction()}
+        {productDetailModal()}
+        {invoiceModal()}
+        {productOrderModal()}
+        {stockHandProductModal()}
 
-      {/* {totalRevnueCustomHeader()} */}
-      {/* {totalRevenueFuntion()} */}
-    </View>
+        {/* {totalRevnueCustomHeader()} */}
+        {/* {totalRevenueFuntion()} */}
+      </View>
+    </ScreenWrapper>
   );
 }

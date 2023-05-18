@@ -86,7 +86,7 @@ export const getRewardUser = (value, sellerID) => async dispatch => {
   dispatch(getRewardUserRequest());
   try {
     const res = await RewardController.getRewardUser(value, sellerID);
-    dispatch(getRewardUserSuccess(res?.payload?.data));
+    dispatch(getRewardUserSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getRewardUserReset());

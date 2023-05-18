@@ -59,6 +59,7 @@ export const ApiOrderInventory = {
   getAppointment: 'appointments',
   changeAppointment: 'appointments/status/',
   getShippingService: 'shipping_service',
+  getTotalSale: 'orders/pos/transaction-count',
 };
 
 export const ApiWalletInventory = {

@@ -15,6 +15,7 @@ import { styles } from './POSUsers.styles';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ActivityIndicator } from 'react-native';
+import { ScreenWrapper } from '@/components';
 
 export function POSUsers({ navigation }) {
   const dispatch = useDispatch();
@@ -48,79 +49,85 @@ export function POSUsers({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.flexRow}>
-        <Text style={styles.posLoginHeader}>
-          {strings.posUsersList.heading}
-        </Text>
-        <TouchableOpacity
-          style={styles.logoutCon}
-          onPress={() => logoutHandler()}
-        >
-          <Image source={powerAuth} style={styles.powerAuth} />
-          <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
-        </TouchableOpacity>
-      </View>
+    <ScreenWrapper>
+      <View style={styles.container}>
+        <View style={styles.flexRow}>
+          <Text style={styles.posLoginHeader}>
+            {strings.posUsersList.heading}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutCon}
+            onPress={() => logoutHandler()}
+          >
+            <Image source={powerAuth} style={styles.powerAuth} />
+            <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
+          </TouchableOpacity>
+        </View>
 
-      {getPosUserLoading ? (
-        <View style={{ marginTop: 50 }}>
-          <ActivityIndicator size="large" color={COLORS.indicator} />
-        </View>
-      ) : posusers?.length === 0 ? (
-        <View style={{ marginTop: 100 }}>
-          <Text style={styles.posUserNot}>Pos user not found</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={posusers}
-          extraData={posusers}
-          scrollEnabled={true}
-          contentContainerStyle={{ flexGrow: 1 }}
-          style={{ height: '100%' }}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.posUserCon}>
-                <Image
-                  source={
-                    item.user_profiles?.profile_photo
-                      ? { uri: item.user_profiles?.profile_photo }
-                      : userImage
-                  }
-                  style={styles.profileImage}
-                />
-                <Text style={styles.firstName}>
-                  {item.user_profiles?.firstname}
-                </Text>
-                <Text style={styles.role}>{item.user_profiles?.pos_role}</Text>
-                {item.api_tokens.length > 0 && (
-                  <>
-                    <Text style={[styles.dateTime, { marginTop: SH(20) }]}>
-                      {moment(item.api_tokens[0].created_at).format(
-                        'dddd,DD MMM YYYY'
-                      )}
-                    </Text>
-                    <Text style={styles.dateTime}>
-                      {moment(item.api_tokens[0].created_at).format('hh:mm a')}
-                    </Text>
-                  </>
-                )}
-                <View style={{ flex: 1 }} />
-                <TouchableOpacity
-                  style={styles.arrowButonCon}
-                  onPress={() =>
-                    navigation.navigate(NAVIGATION.loginIntial, {
-                      posuserdata: item,
-                    })
-                  }
-                >
-                  <Image source={checkArrow} style={styles.arrowImage} />
-                </TouchableOpacity>
-              </View>
-            );
-          }}
-          numColumns={4}
-        />
-      )}
-    </View>
+        {getPosUserLoading ? (
+          <View style={{ marginTop: 50 }}>
+            <ActivityIndicator size="large" color={COLORS.indicator} />
+          </View>
+        ) : posusers?.length === 0 ? (
+          <View style={{ marginTop: 100 }}>
+            <Text style={styles.posUserNot}>Pos user not found</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={posusers}
+            extraData={posusers}
+            scrollEnabled={true}
+            contentContainerStyle={{ flexGrow: 1 }}
+            style={{ height: '100%' }}
+            renderItem={({ item }) => {
+              return (
+                <View style={styles.posUserCon}>
+                  <Image
+                    source={
+                      item.user_profiles?.profile_photo
+                        ? { uri: item.user_profiles?.profile_photo }
+                        : userImage
+                    }
+                    style={styles.profileImage}
+                  />
+                  <Text style={styles.firstName}>
+                    {item.user_profiles?.firstname}
+                  </Text>
+                  <Text style={styles.role}>
+                    {item.user_profiles?.pos_role}
+                  </Text>
+                  {item.api_tokens.length > 0 && (
+                    <>
+                      <Text style={[styles.dateTime, { marginTop: SH(20) }]}>
+                        {moment(item.api_tokens[0].created_at).format(
+                          'dddd,DD MMM YYYY'
+                        )}
+                      </Text>
+                      <Text style={styles.dateTime}>
+                        {moment(item.api_tokens[0].created_at).format(
+                          'hh:mm a'
+                        )}
+                      </Text>
+                    </>
+                  )}
+                  <View style={{ flex: 1 }} />
+                  <TouchableOpacity
+                    style={styles.arrowButonCon}
+                    onPress={() =>
+                      navigation.navigate(NAVIGATION.loginIntial, {
+                        posuserdata: item,
+                      })
+                    }
+                  >
+                    <Image source={checkArrow} style={styles.arrowImage} />
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+            numColumns={4}
+          />
+        )}
+      </View>
+    </ScreenWrapper>
   );
 }

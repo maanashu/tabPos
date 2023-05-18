@@ -50,17 +50,18 @@ export class RewardController {
         USER_URL +
         ApiRewards.getRewardUser +
         `?seller_id=${sellerID}&filter=${value}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            text2: 'rewarded user list error',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'rewarded user list error',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });

@@ -3,6 +3,7 @@ import { TYPES } from '@/Types/DashboardTypes';
 const INITIALSTATE = {
   getOrderDeliveries: [],
   getSesssion: {},
+  getTotalSale: [],
 };
 
 export const dashboardReducer = (
@@ -30,6 +31,17 @@ export const dashboardReducer = (
       return {
         ...state,
         getSesssion: {},
+      };
+
+    case TYPES.GET_TOTAL_SALE_SUCCESS:
+      return {
+        ...state,
+        getTotalSale: payload.getTotalSale,
+      };
+    case TYPES.GET_TOTAL_SALE_RESET:
+      return {
+        ...state,
+        getTotalSale: [],
       };
 
     default:

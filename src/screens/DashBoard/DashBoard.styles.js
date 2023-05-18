@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: verticalScale(9),
   },
-  checkoutText: {
+  checkoutText1: {
     color: COLORS.dark_grey,
     fontSize: SF(16),
     fontFamily: Fonts.Regular,
@@ -324,7 +324,7 @@ export const styles = StyleSheet.create({
 
   rightSideCon: {
     width: windowWidth * 0.3,
-    height: windowHeight * 0.85,
+    height: windowHeight * 0.87,
     backgroundColor: COLORS.white,
     borderRadius: 10,
     paddingHorizontal: moderateScale(10),
@@ -348,6 +348,41 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     // alignContent: 'center',
   },
+  blueListData: {
+    borderWidth: 1,
+    height: SH(48),
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    marginVertical: verticalScale(2),
+    // alignContent: 'center',
+  },
+  blueListDataText: {
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    fontFamily: Fonts.Regular,
+  },
+  listCountCon: {
+    borderWidth: 1,
+    width: SW(30),
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    paddingVertical: verticalScale(1),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(4),
+    alignItems: 'center',
+  },
+  sukNumber: {
+    color: COLORS.darkGray,
+    fontSize: SF(11),
+    fontFamily: Fonts.Regular,
+  },
+  borderCross: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+  },
 
   tableListSide: {
     width: windowWidth * 0.25,
@@ -356,9 +391,11 @@ export const styles = StyleSheet.create({
   },
   tableListSide2: {
     width: windowWidth * 0.29,
+    paddingRight: 20,
   },
   listLeft: {
     justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   cashLabelWhite: {
     color: COLORS.white,
@@ -432,7 +469,8 @@ export const styles = StyleSheet.create({
   },
   nameAddCon: {
     borderWidth: 1,
-    height: windowHeight * 0.37,
+    height:
+      Platform.OS === 'android' ? windowHeight * 0.35 : windowHeight * 0.37,
     borderColor: COLORS.solidGrey,
     borderRadius: 5,
     paddingHorizontal: moderateScale(5),
@@ -613,5 +651,66 @@ export const styles = StyleSheet.create({
   tabimg: {
     height: 16,
     width: 16,
+  },
+  totalItemCon: {
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
+  totalItem: {
+    fontSize: SF(16),
+    color: COLORS.primary,
+    fontFamily: Fonts.MaisonBold,
+    paddingVertical: verticalScale(4),
+  },
+  subTotal: {
+    fontSize: SF(14),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.MaisonBold,
+  },
+  subTotalDollar: {
+    fontSize: SF(14),
+    color: COLORS.black,
+    fontFamily: Fonts.Regular,
+  },
+
+  paddVertical: {
+    paddingVertical: verticalScale(3),
+  },
+  itemValue: {
+    fontSize: SF(16),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonBold,
+  },
+  checkoutButtonSideBar: {
+    width: windowWidth * 0.28,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.primary,
+    alignSelf: 'center',
+    borderRadius: 5,
+    paddingVertical: verticalScale(5),
+  },
+  checkoutText: {
+    color: COLORS.white,
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+  },
+  checkArrow: {
+    width: SW(10),
+    height: SW(4),
+    resizeMode: 'contain',
+    paddingHorizontal: moderateScale(6),
+  },
+  columbiaMen: {
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+  },
+  minus: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
   },
 });
