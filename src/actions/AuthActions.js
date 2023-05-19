@@ -87,9 +87,13 @@ const getAllPosUsersError = error => ({
   payload: { error },
 });
 
-const getAllPosUsersSuccess = data => ({
+const getAllPosUsersSuccess = getAllPosUsers => ({
   type: TYPES.GET_ALL_POS_USERS_SUCCESS,
-  payload: { data },
+  payload: { getAllPosUsers },
+});
+const getAllPosUsersReset = () => ({
+  type: TYPES.GET_ALL_POS_USERS_RESET,
+  payload: null,
 });
 
 const clearStore = () => ({
@@ -148,13 +152,16 @@ export const register = (data, params) => async dispatch => {
   }
 };
 
-export const getAllPosUsers = callback => async dispatch => {
+export const getAllPosUsers = () => async dispatch => {
   dispatch(getAllPosUsersRequest());
   try {
     const res = await AuthController.getAllPosUsers();
-    dispatch(getAllPosUsersSuccess());
-    callback && callback(res.payload);
+    dispatch(getAllPosUsersSuccess(res?.payload?.users));
+    // callback && callback(res.payload);
   } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getAllPosUsersReset());
+    }
     dispatch(getAllPosUsersError(error.message));
   }
 };

@@ -39,6 +39,7 @@ export function AuthNavigator(props) {
         name={NAVIGATION.verifySucess}
         options={{ headerShown: false }}
       />
+
       {/* <Stack.Screen
         component={HomeNavigator}
         name={NAVIGATION.retails}

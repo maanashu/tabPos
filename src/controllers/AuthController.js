@@ -225,7 +225,6 @@ export class AuthController {
   static async getAllPosUsers() {
     return new Promise(async (resolve, reject) => {
       const endpoint = `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10`;
-
       await HttpClient.get(endpoint)
         .then(response => {
           if (response?.status_code === 200) {
@@ -239,13 +238,7 @@ export class AuthController {
           }
         })
         .catch(error => {
-          console.log('error', error);
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
-            text2: error.msg,
-            visibilityTime: 2000,
-          });
+          reject(error);
         });
     });
   }

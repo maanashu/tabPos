@@ -4,6 +4,7 @@ const INITIALSTATE = {
   phoneData: {},
   user: {},
   getProfile: {},
+  getAllPosUsers: [],
 };
 
 export const authReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -27,6 +28,18 @@ export const authReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         posUserData: payload.user.payload,
+      };
+
+    case TYPES.GET_ALL_POS_USERS_SUCCESS:
+      return {
+        ...state,
+        getAllPosUsers: payload.getAllPosUsers,
+      };
+
+    case TYPES.GET_ALL_POS_USERS_RESET:
+      return {
+        ...state,
+        getAllPosUsers: [],
       };
 
     case TYPES.CLEAR_STORE:

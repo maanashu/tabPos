@@ -18,6 +18,7 @@ import { ActivityIndicator } from 'react-native';
 import { ScreenWrapper } from '@/components';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { navigate } from '@/navigation/NavigationRef';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 export function POSUsers({ navigation }) {
   const getNav = useNavigation();
@@ -25,12 +26,21 @@ export function POSUsers({ navigation }) {
   const [posusers, setposusers] = useState([]);
   console.log('posusers', posusers?.length);
 
+  const getAuth = useSelector(getAuthData);
+
+  const posUserArray = getAuth?.getAllPosUsers;
+  console.log('posUserArray', posUserArray);
+
+  // useEffect(() => {
+  //   dispatch(
+  //     getAllPosUsers(res => {
+  //       setposusers(res.users);
+  //     })
+  //   );
+  // }, []);
+
   useEffect(() => {
-    dispatch(
-      getAllPosUsers(res => {
-        setposusers(res.users);
-      })
-    );
+    dispatch(getAllPosUsers());
   }, []);
 
   const getPosUserLoading = useSelector(state =>
@@ -74,14 +84,14 @@ export function POSUsers({ navigation }) {
           <View style={{ marginTop: 50 }}>
             <ActivityIndicator size="large" color={COLORS.indicator} />
           </View>
-        ) : posusers?.length === 0 ? (
+        ) : posUserArray?.length === 0 ? (
           <View style={{ marginTop: 100 }}>
             <Text style={styles.posUserNot}>Pos user not found</Text>
           </View>
         ) : (
           <FlatList
-            data={posusers}
-            extraData={posusers}
+            data={posUserArray}
+            extraData={posUserArray}
             scrollEnabled={true}
             contentContainerStyle={{ flexGrow: 1 }}
             style={{ height: '100%' }}
