@@ -9,6 +9,7 @@ import {
   Passcode,
   VerifySucess,
   Retails,
+  POSUsers,
 } from '@/screens';
 import { HomeNavigator } from '@/navigation/HomeNavigator';
 

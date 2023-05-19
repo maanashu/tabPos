@@ -23,6 +23,7 @@ export function POSUsers({ navigation }) {
   const getNav = useNavigation();
   const dispatch = useDispatch();
   const [posusers, setposusers] = useState([]);
+  console.log('posusers', posusers?.length);
 
   useEffect(() => {
     dispatch(
@@ -35,6 +36,7 @@ export function POSUsers({ navigation }) {
   const getPosUserLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ALL_POS_USERS], state)
   );
+
   const logoutHandler = () => {
     Alert.alert('Logout', 'Are you sure you want to logout ?', [
       {
@@ -46,7 +48,6 @@ export function POSUsers({ navigation }) {
         text: 'OK',
         onPress: () => {
           dispatch(logoutFunction());
-          navigate(NAVIGATION.verifyPhone);
         },
       },
     ]);
@@ -59,20 +60,22 @@ export function POSUsers({ navigation }) {
           <Text style={styles.posLoginHeader}>
             {strings.posUsersList.heading}
           </Text>
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={styles.logoutCon}
-            onPress={() => logoutHandler()}
+            // onPress={() => logoutHandler()}
+            onPress={() => navigate(NAVIGATION.verifyPhone)}
           >
             <Image source={powerAuth} style={styles.powerAuth} />
             <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
 
-        {getPosUserLoading ? (
+        {/* {getPosUserLoading ? (
           <View style={{ marginTop: 50 }}>
             <ActivityIndicator size="large" color={COLORS.indicator} />
           </View>
-        ) : posusers?.length === 0 ? (
+        ) : */}
+        {posusers?.length === 0 ? (
           <View style={{ marginTop: 100 }}>
             <Text style={styles.posUserNot}>Pos user not found</Text>
           </View>
