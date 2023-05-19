@@ -294,7 +294,7 @@ export const styles = StyleSheet.create({
 
   // search screen css start
   backgroundColorSCreen: {
-    backgroundColor: COLORS.solidGrey,
+    backgroundColor: COLORS.textInputBackground,
     paddingHorizontal:
       Platform.OS === 'android' ? moderateScale(22) : moderateScale(12),
   },
@@ -641,8 +641,6 @@ export const styles = StyleSheet.create({
     borderRadius: moderateScale(20),
     padding: SH(15),
     flexDirection: 'row',
-    borderColor: 'black',
-    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -712,5 +710,60 @@ export const styles = StyleSheet.create({
     width: SW(5),
     height: SW(5),
     resizeMode: 'contain',
+  },
+
+  // your session end con css start
+  yourSessionendCon: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.7,
+    position: 'absolute',
+    alignSelf: 'center',
+  },
+  yourSessionendHeader: {
+    height: SH(70),
+    flexDirection: 'row',
+    paddingHorizontal: moderateScale(3),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  yourSession: {
+    color: COLORS.solid_grey,
+    fontSize: SF(23),
+    fontFamily: Fonts.MaisonBold,
+  },
+  yourSessionBodyCon: {
+    flex: 1,
+    width: windowWidth * 0.3,
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  posClose: {
+    color: COLORS.solid_grey,
+    fontSize: SF(16),
+    fontFamily: Fonts.Regular,
+  },
+  sessionEndBar: {
+    width: SW(60),
+    height: SW(60),
+    resizeMode: 'contain',
+  },
+  expandOneHourButton: {
+    backgroundColor: COLORS.dark_grey,
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.07,
+  },
+  expandTwoHourButton: {
+    backgroundColor: COLORS.solid_grey,
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.07,
+  },
+  expandOneHourText: {
+    color: COLORS.white,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(16),
   },
 });

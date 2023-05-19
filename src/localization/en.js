@@ -618,6 +618,9 @@ export const en = {
     clearcart: 'Clear cart',
     ok: 'OK',
     totalItem: 'Total Items:',
+    yourSessionEnd: 'Your Session Ends',
+    expandOneHour: 'Expand 1 hour',
+    expandTwoHour: 'Expand 2 hour',
   },
   wallet: {
     config: 'Wallet Config',

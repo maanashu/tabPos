@@ -17,11 +17,21 @@ import {
 import Modal from 'react-native-modal';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
 import {
+  Fonts,
+  Phone_light,
+  addDiscountPic,
   cashProfile,
   checkArrow,
   clock,
+  crossBg,
   crossButton,
+  email,
+  eraser,
+  keyboard,
+  location,
   lockLight,
+  ok,
+  pause,
   pay,
   pin,
   rightIcon,
@@ -29,9 +39,18 @@ import {
   search_light,
   sellingArrow,
   sellingBucket,
+  sessionEndBar,
+  terryProfile,
 } from '@/assets';
 import { STARTSELLING, homeTableData } from '@/constants/flatListData';
-import { SearchScreen } from './Components';
+import {
+  CartProductList,
+  Categories,
+  CategoryList,
+  Numpad,
+  Products,
+  SearchScreen,
+} from './Components';
 import { logoutFunction } from '@/actions/AuthActions';
 import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,7 +72,9 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { digits } from '@/utils/validators';
 import moment from 'moment';
 import { endTrackingSession } from '@/actions/CashTrackingAction';
+import { moderateScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export function DashBoard({ navigation }) {
   const isFocused = useIsFocused();
@@ -69,6 +90,9 @@ export function DashBoard({ navigation }) {
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
   const [trackNotes, setTrackNotes] = useState('');
+  const [productdetailModal, setProductdetailModal] = useState(false);
+  const [selected, setSelected] = useState('categoryList');
+  const [yourSessionEndModal, setYourSessionEndModal] = useState(false);
 
   const profileObj = {
     openingBalance: getSessionObj?.opening_balance,
@@ -278,11 +302,204 @@ export function DashBoard({ navigation }) {
     );
   };
 
+  const backHandler = () => {
+    if (selected === 'numpad') {
+      setSelected('cartproductList');
+    } else if (selected === 'cartproductList') {
+      setSelected('categoryList');
+    } else if (selected === 'categories') {
+      setSelected('categoryList');
+    } else if (selected === 'products') {
+      setSelected('categories');
+    } else {
+      setSearchScreen(false);
+    }
+  };
+
+  const renderView = {
+    ['categoryList']: (
+      <CategoryList
+        listedHandler={() => setSelected('cartproductList')}
+        categoryhandler={() => setSelected('categories')}
+      />
+    ),
+    ['cartproductList']: (
+      <CartProductList cartproductListHandler={() => setSelected('numpad')} />
+    ),
+    ['categories']: (
+      <Categories subCategoryHandler={() => setSelected('products')} />
+    ),
+    ['products']: (
+      <Products productClickHandler={() => setProductdetailModal(true)} />
+    ),
+    ['numpad']: <Numpad />,
+  };
+
+  const screenChangeView = () => {
+    return renderView[selected];
+  };
+
   const bodyView = () => {
     if (searchScreen) {
       return (
-        <View>
-          <SearchScreen crossBgHandler={() => setSearchScreen(false)} />
+        <View style={[styles.homeScreenCon, styles.backgroundColorSCreen]}>
+          <View style={styles.searchScreenHeader}>
+            <View style={styles.displayflex}>
+              <Text style={styles.cashLabelBold}>Wed 26 Apr , 2023</Text>
+              <Text style={styles.cashLabelBold}>Walk-In</Text>
+              <Text style={styles.cashLabelBold}>Invoice No. # 3467589</Text>
+              <Text style={styles.cashLabelBold}>POS No. #Front-CC01</Text>
+              <TouchableOpacity onPress={backHandler}>
+                <Image source={crossBg} style={styles.crossBg} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.displayflex2}>
+            <View style={styles.itemLIistCon}>{screenChangeView()}</View>
+
+            <View
+              pointerEvents="auto"
+              style={[
+                styles.itemLIistCon,
+                styles.rightSideCon,
+                // { opacity: 0.1 },
+              ]}
+            >
+              <View style={styles.displayflex}>
+                <Image source={keyboard} style={styles.keyboard} />
+                <TouchableOpacity
+                  style={styles.holdCartCon}
+                  onPress={() => setProductdetailModal(true)}
+                >
+                  <Image source={pause} style={styles.pause} />
+
+                  <Text style={styles.holdCart}>
+                    {strings.dashboard.holdCart}
+                  </Text>
+                </TouchableOpacity>
+                <View style={[styles.holdCartCon, styles.dark_greyBg]}>
+                  <Image source={eraser} style={styles.pause} />
+                  <Text style={styles.holdCart}>
+                    {strings.dashboard.clearcart}
+                  </Text>
+                </View>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles.nameAddCon}>
+                <View style={styles.sideBarInputWraper}>
+                  <View style={styles.displayRow}>
+                    <View>
+                      <Image
+                        source={search_light}
+                        style={styles.sideSearchStyle}
+                      />
+                    </View>
+                    <TextInput
+                      placeholder="803-238-2630"
+                      style={styles.sideBarsearchInput}
+                      keyboardType="numeric"
+                      // value={search}
+                      // onChangeText={search => (
+                      //   setSearch(search), onChangeFun(search)
+                      // )}
+                      placeholderTextColor={COLORS.solid_grey}
+                    />
+                  </View>
+                </View>
+                <View style={styles.nameAddSingleCon}>
+                  <View style={styles.displayRow}>
+                    <Image source={terryProfile} style={styles.Phonelight} />
+                    <Text style={styles.terryText}>Terry Moore</Text>
+                  </View>
+                </View>
+                <View style={styles.nameAddSingleCon}>
+                  <View style={styles.displayRow}>
+                    <Image source={Phone_light} style={styles.Phonelight} />
+                    <Text style={styles.terryText}>803-238-2630</Text>
+                  </View>
+                </View>
+                <View style={styles.nameAddSingleCon}>
+                  <View style={styles.displayRow}>
+                    <Image source={email} style={styles.Phonelight} />
+                    <Text style={styles.terryText}>
+                      mailto:harryrady@jourrapide.com
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.nameAddSingleCon}>
+                  <View style={styles.displayRow}>
+                    <Image source={location} style={styles.Phonelight} />
+                    <Text style={styles.terryText}>4849 Owagner Lane</Text>
+                  </View>
+                </View>
+                <TouchableOpacity style={styles.okButtonCon}>
+                  <Image source={ok} style={styles.lockLight} />
+                  <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
+                </TouchableOpacity>
+              </View>
+              <Spacer space={SH(10)} />
+
+              <View style={styles.displayflex}>
+                <View style={styles.addDiscountCon}>
+                  <Image
+                    source={addDiscountPic}
+                    style={styles.addDiscountPic}
+                  />
+                  <Text style={styles.addDiscountText}>Add Discount</Text>
+                </View>
+                <View style={styles.addDiscountCon}>
+                  <Image
+                    source={addDiscountPic}
+                    style={styles.addDiscountPic}
+                  />
+                  <Text style={styles.addDiscountText}>Add Notes</Text>
+                </View>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles.totalItemCon}>
+                <Text style={styles.totalItem}>
+                  {strings.dashboard.totalItem}
+                  {' 10'}
+                </Text>
+              </View>
+              <Spacer space={SH(5)} />
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Sub Total</Text>
+                <Text style={styles.subTotalDollar}>$4.00</Text>
+              </View>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Total VAT</Text>
+                <Text style={styles.subTotalDollar}>$4.00</Text>
+              </View>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Total Taxes</Text>
+                <Text style={styles.subTotalDollar}>$4.00</Text>
+              </View>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Discount</Text>
+                <Text style={styles.subTotalDollar}>$4.00</Text>
+              </View>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderStyle: 'dashed',
+                  borderColor: COLORS.solidGrey,
+                }}
+              />
+              <Spacer space={SH(5)} />
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.itemValue}>Item value</Text>
+                <Text style={styles.subTotalDollar}>$4.00</Text>
+              </View>
+              <View style={{ flex: 1 }} />
+              <TouchableOpacity style={styles.checkoutButtonSideBar}>
+                <Text style={styles.checkoutText}>
+                  {strings.retail.checkOut}
+                </Text>
+                <Image source={checkArrow} style={styles.checkArrow} />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       );
     } else {
@@ -312,9 +529,25 @@ export function DashBoard({ navigation }) {
               <Spacer space={SH(12)} />
 
               <View style={styles.todaySaleCon}>
-                <Text style={styles.todaySale}>
-                  {strings.dashboard.todaySale}
-                </Text>
+                <View style={styles.displayflex}>
+                  <Text style={styles.todaySale}>
+                    {strings.dashboard.todaySale}
+                  </Text>
+                  <TouchableOpacity
+                    style={{
+                      width: SW(30),
+                      height: SW(8),
+                      backgroundColor: COLORS.primary,
+                      color: COLORS.white,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 3,
+                    }}
+                    onPress={() => setYourSessionEndModal(true)}
+                  >
+                    <Text style={{ color: COLORS.white }}>Your Session</Text>
+                  </TouchableOpacity>
+                </View>
                 <Spacer space={SH(4)} />
                 <View style={[styles.displayflex, styles.paddingV]}>
                   <Text style={styles.cashLabel}>
@@ -518,6 +751,364 @@ export function DashBoard({ navigation }) {
           />
         </View>
       ) : null}
+      <Modal
+        animationType="fade"
+        isVisible={productdetailModal}
+        transparent={false}
+        backdropOpacity={0.9}
+      >
+        <View
+          style={{
+            backgroundColor: 'white',
+            borderRadius: 10,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 5,
+            width: windowWidth * 0.5,
+            height: windowHeight * 0.9,
+            position: 'absolute',
+            alignSelf: 'center',
+          }}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              height: SH(70),
+              paddingHorizontal: moderateScale(15),
+              borderBottomWidth: 1,
+              borderColor: COLORS.solidGrey,
+            }}
+          >
+            <TouchableOpacity onPress={() => setProductdetailModal(false)}>
+              <Image source={crossButton} style={styles.crossBg} />
+            </TouchableOpacity>
+            <View style={{ flexDirection: 'row' }}>
+              <View
+                style={{
+                  backgroundColor: '#F5F6F7',
+                  width: SH(140),
+                  height: SH(48),
+                  padding: SH(10),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text
+                  style={{
+                    color: COLORS.black,
+                    fontSize: SH(16),
+                    fontFamily: Fonts.SemiBold,
+                  }}
+                >
+                  Back To Cart
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  width: SH(140),
+                  height: SH(48),
+                  padding: SH(10),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderColor: COLORS.primary,
+                  borderWidth: 1,
+                  marginLeft: SH(10),
+                }}
+              >
+                <Text
+                  style={{
+                    color: COLORS.primary,
+                    fontSize: SH(16),
+                    fontFamily: Fonts.SemiBold,
+                  }}
+                >
+                  Continue
+                </Text>
+              </View>
+              <View
+                style={{
+                  backgroundColor: COLORS.primary,
+                  width: SH(140),
+                  height: SH(48),
+                  padding: SH(10),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginLeft: SH(10),
+                  borderRadius: 3,
+                }}
+              >
+                <Text
+                  style={{
+                    color: COLORS.white,
+                    fontSize: SH(16),
+                    fontFamily: Fonts.SemiBold,
+                  }}
+                >
+                  Add to Cart
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          <View
+            style={{
+              width: windowWidth * 0.42,
+              alignSelf: 'center',
+            }}
+          >
+            <View style={{ marginTop: SH(10) }}>
+              <Text
+                style={{
+                  color: COLORS.black,
+                  fontSize: SH(22),
+                  fontFamily: Fonts.Bold,
+                }}
+              >
+                Columbia Men's Rain Jacket{' '}
+              </Text>
+              <Text
+                style={{
+                  color: COLORS.dark_grey,
+                  fontSize: SH(18),
+                  fontFamily: Fonts.Medium,
+                }}
+              >
+                Color:Grey
+              </Text>
+              <Text
+                style={{
+                  color: COLORS.dark_grey,
+                  fontSize: SH(18),
+                  fontFamily: Fonts.Medium,
+                }}
+              >
+                Size:X
+              </Text>
+            </View>
+            <View style={{ alignItems: 'center' }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  padding: 10,
+                  marginVertical: SH(20),
+                }}
+              >
+                <View
+                  style={{
+                    borderColor: '#D8D8D8',
+                    borderWidth: 1,
+                    width: SH(200),
+                    height: SH(70),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text style={{ fontSize: SH(28), fontFamily: Fonts.Bold }}>
+                    -
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    borderColor: '#D8D8D8',
+                    borderWidth: 1,
+                    width: SH(200),
+                    height: SH(70),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text style={{ fontSize: SH(28), fontFamily: Fonts.Bold }}>
+                    1
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    borderColor: '#D8D8D8',
+                    borderWidth: 1,
+                    width: SH(200),
+                    height: SH(70),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text style={{ fontSize: SH(28), fontFamily: Fonts.Bold }}>
+                    +
+                  </Text>
+                </View>
+              </View>
+
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View
+                  style={{
+                    height: SH(2),
+                    width: SH(235),
+                    backgroundColor: '#D8D8D8',
+                  }}
+                />
+                <Text
+                  style={{
+                    marginHorizontal: SH(10),
+                    fontSize: SH(18),
+                    fontFamily: Fonts.Regular,
+                    color: COLORS.gerySkies,
+                  }}
+                >
+                  COLORS
+                </Text>
+                <View
+                  style={{
+                    height: SH(2),
+                    width: SH(235),
+                    backgroundColor: '#D8D8D8',
+                  }}
+                />
+              </View>
+
+              <FlatList
+                data={[1, 2, 3, 4, 5]}
+                renderItem={({ item }) => {
+                  return (
+                    <View
+                      style={{
+                        width: SH(142),
+                        height: SH(70),
+                        borderRadius: SH(10),
+                        borderColor: '#E1E3E4',
+                        borderWidth: 1,
+                        margin: SH(5),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Text
+                        style={{
+                          marginHorizontal: SH(10),
+                          fontSize: SH(20),
+                          fontFamily: Fonts.Regular,
+                          color: COLORS.gerySkies,
+                        }}
+                      >
+                        Green
+                      </Text>
+                    </View>
+                  );
+                }}
+                numColumns={4}
+              />
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View
+                  style={{
+                    height: SH(2),
+                    width: SH(235),
+                    backgroundColor: '#D8D8D8',
+                  }}
+                />
+                <Text
+                  style={{
+                    marginHorizontal: SH(10),
+                    fontSize: SH(18),
+                    fontFamily: Fonts.Regular,
+                    color: COLORS.gerySkies,
+                  }}
+                >
+                  SIZE
+                </Text>
+                <View
+                  style={{
+                    height: SH(2),
+                    width: SH(235),
+                    backgroundColor: '#D8D8D8',
+                  }}
+                />
+              </View>
+              <FlatList
+                data={[1, 2, 3, 4, 5, 6, 7, 8]}
+                renderItem={({ item }) => {
+                  return (
+                    <View
+                      style={{
+                        width: SH(142),
+                        height: SH(70),
+                        borderRadius: SH(10),
+                        borderColor: '#E1E3E4',
+                        borderWidth: 1,
+                        margin: SH(5),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginVertical: SH(10),
+                      }}
+                    >
+                      <Text
+                        style={{
+                          marginHorizontal: SH(10),
+                          fontSize: SH(20),
+                          fontFamily: Fonts.Regular,
+                          color: COLORS.gerySkies,
+                        }}
+                      >
+                        XL
+                      </Text>
+                    </View>
+                  );
+                }}
+                numColumns={4}
+              />
+            </View>
+          </View>
+        </View>
+        {/* </View> */}
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={yourSessionEndModal}
+      >
+        <View style={styles.yourSessionendCon}>
+          <View style={styles.yourSessionendHeader}>
+            <Text>{null}</Text>
+            <Text style={styles.yourSession}>
+              {strings.dashboard.yourSessionEnd}
+            </Text>
+            <TouchableOpacity onPress={() => setYourSessionEndModal(false)}>
+              <Image source={crossButton} style={styles.crossBg} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.yourSessionBodyCon}>
+            <Spacer space={SH(20)} />
+            <Text style={styles.posClose}>POS will Close</Text>
+            <Spacer space={SH(10)} />
+            <Image source={sessionEndBar} style={styles.sessionEndBar} />
+            <Spacer space={SH(10)} />
+            <Text style={styles.yourSession}>
+              {strings.dashboard.yourSessionEnd}
+            </Text>
+            <Spacer space={SH(20)} />
+
+            <Button
+              title={strings.dashboard.expandOneHour}
+              textStyle={styles.expandOneHourText}
+              style={styles.expandOneHourButton}
+            />
+            <Spacer space={SH(10)} />
+            <Button
+              title={strings.dashboard.expandTwoHour}
+              textStyle={styles.expandOneHourText}
+              style={[styles.expandOneHourButton, styles.expandTwoHourButton]}
+            />
+          </View>
+        </View>
+      </Modal>
     </ScreenWrapper>
   );
 }

@@ -114,20 +114,20 @@ export const SubcategoryData = [
     products: 55,
     Image: '',
   },
-  {
-    id: 5,
-    name: 'Coats & Jackets',
-    brands: '21 Brands',
-    products: 55,
-    Image: '',
-  },
-  {
-    id: 6,
-    name: 'Accessories',
-    Brands: '21 Brands',
-    products: 55,
-    Image: '',
-  },
+  // {
+  //   id: 5,
+  //   name: 'Coats & Jackets',
+  //   brands: '21 Brands',
+  //   products: 55,
+  //   Image: '',
+  // },
+  // {
+  //   id: 6,
+  //   name: 'Accessories',
+  //   Brands: '21 Brands',
+  //   products: 55,
+  //   Image: '',
+  // },
 ];
 
 export const CategoryDataHorizontal = [

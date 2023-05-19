@@ -70,12 +70,11 @@ export function POSUsers({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* {getPosUserLoading ? (
+        {getPosUserLoading ? (
           <View style={{ marginTop: 50 }}>
             <ActivityIndicator size="large" color={COLORS.indicator} />
           </View>
-        ) : */}
-        {posusers?.length === 0 ? (
+        ) : posusers?.length === 0 ? (
           <View style={{ marginTop: 100 }}>
             <Text style={styles.posUserNot}>Pos user not found</Text>
           </View>

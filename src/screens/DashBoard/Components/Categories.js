@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { ScreenWrapper, Spacer } from '@/components';
+import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import {
-  StyleSheet,
   View,
   Text,
   Dimensions,
@@ -11,43 +10,17 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  ScrollView,
 } from 'react-native';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
+import { Fonts, clothes, homeMenu, scn, search_light } from '@/assets';
 import {
-  Fonts,
-  Phone_light,
-  addDiscountPic,
-  cashProfile,
-  checkArrow,
-  clock,
-  cloth,
-  clothes,
-  crossBg,
-  email,
-  eraser,
-  homeMenu,
-  keyboard,
-  location,
-  lockLight,
-  ok,
-  pause,
-  scn,
-  search_light,
-  terryProfile,
-} from '@/assets';
-import {
-  STARTSELLING,
   SubcategoryData,
   categoryProRowData,
   categoryRowData,
   homeTableData,
 } from '@/constants/flatListData';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
-const windowWidth = Dimensions.get('window').width;
 
-export function Categories({ crossBgHandler }) {
+export function Categories({ subCategoryHandler }) {
   const categoryListItem = ({ item }) => (
     <View style={styles.categoryArrayCon}>
       <Text style={styles.categories}>{item.name}</Text>
@@ -60,6 +33,8 @@ export function Categories({ crossBgHandler }) {
       style={{
         borderRadius: 100 / 2,
         backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: COLORS.solidGrey,
       }}
     >
       <TouchableOpacity
@@ -113,7 +88,7 @@ export function Categories({ crossBgHandler }) {
           borderWidth: 1,
           borderRadius: 10,
         }}
-        onPress={() => navigate(NAVIGATION.products)}
+        onPress={subCategoryHandler}
       >
         <View style={{ flexDirection: 'row' }}>
           <Image source={clothes} />
@@ -160,6 +135,7 @@ export function Categories({ crossBgHandler }) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
+              key={i}
             >
               <Image
                 source={clothes}
@@ -175,161 +151,67 @@ export function Categories({ crossBgHandler }) {
     );
   };
   return (
-    <View style={[styles.homeScreenCon, styles.backgroundColorSCreen]}>
-      <View style={styles.searchScreenHeader}>
-        <View style={styles.displayflex}>
-          <Text style={styles.cashLabelBold}>Wed 26 Apr , 2023</Text>
-          <Text style={styles.cashLabelBold}>Walk-In</Text>
-          <Text style={styles.cashLabelBold}>Invoice No. # 3467589</Text>
-          <Text style={styles.cashLabelBold}>POS No. #Front-CC01</Text>
-          <TouchableOpacity onPress={crossBgHandler}>
-            <Image source={crossBg} style={styles.crossBg} />
-          </TouchableOpacity>
+    <View>
+      <View style={styles.inputWraper2}>
+        <View style={styles.displayRow}>
+          <View>
+            <Image source={search_light} style={styles.searchStyle} />
+          </View>
+          <TextInput
+            placeholder={strings.retail.searchProduct}
+            style={styles.searchInput}
+            // value={search}
+            // onChangeText={search => (
+            //   setSearch(search), onChangeFun(search)
+            // )}
+          />
         </View>
+        <TouchableOpacity>
+          <Image source={scn} style={styles.scnStyle} />
+        </TouchableOpacity>
       </View>
-      <View style={styles.displayflex2}>
-        <View style={styles.itemLIistCon}>
-          <View style={styles.inputWraper2}>
-            <View style={styles.displayRow}>
-              <View>
-                <Image source={search_light} style={styles.searchStyle} />
-              </View>
-              <TextInput
-                placeholder={strings.retail.searchProduct}
-                style={styles.searchInput}
-                // value={search}
-                // onChangeText={search => (
-                //   setSearch(search), onChangeFun(search)
-                // )}
-              />
-            </View>
-            <TouchableOpacity>
-              <Image source={scn} style={styles.scnStyle} />
-            </TouchableOpacity>
-          </View>
-          <Spacer space={SH(10)} />
+      <Spacer space={SH(10)} />
 
-          <View>
-            <FlatList
-              data={categoryRowData}
-              extraData={categoryRowData}
-              renderItem={categoryListItem}
-              keyExtractor={item => item.id}
-              horizontal
-              contentContainerStyle={{
-                flex: 1,
-                justifyContent: 'space-between',
-              }}
-            />
-          </View>
-          <Spacer space={SH(10)} />
-          <View
-            style={{ borderWidth: 1, borderColor: COLORS.solidGrey }}
-          ></View>
+      <View>
+        <FlatList
+          data={categoryRowData}
+          extraData={categoryRowData}
+          renderItem={categoryListItem}
+          keyExtractor={item => item.id}
+          horizontal
+          contentContainerStyle={{
+            flex: 1,
+            justifyContent: 'space-between',
+          }}
+        />
+      </View>
+      <Spacer space={SH(10)} />
+      <View style={{ borderWidth: 1, borderColor: COLORS.solidGrey }}></View>
 
-          <Spacer space={SH(10)} />
+      <Spacer space={SH(10)} />
 
-          <View>
-            <FlatList
-              data={categoryProRowData}
-              extraData={categoryProRowData}
-              renderItem={categoryProListItem}
-              keyExtractor={item => item.id}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            />
-            <Spacer space={SH(10)} />
-            <View style={{ backgroundColor: 'green' }}></View>
+      <View>
+        <FlatList
+          data={categoryProRowData}
+          extraData={categoryProRowData}
+          renderItem={categoryProListItem}
+          keyExtractor={item => item.id}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+        <Spacer space={SH(10)} />
+        <View style={{ backgroundColor: 'green' }}></View>
 
-            <FlatList
-              data={SubcategoryData}
-              extraData={SubcategoryData}
-              renderItem={subcategoryItem}
-              contentContainerStyle={{ flexGrow: 1, paddingBottom: 5 }}
-              scrollEnabled={true}
-              keyExtractor={item => item.id}
-              numColumns={2}
-              showsHorizontalScrollIndicator={false}
-            />
-          </View>
-        </View>
-        <View style={[styles.itemLIistCon, styles.rightSideCon]}>
-          <View style={styles.displayflex}>
-            <Image source={keyboard} style={styles.keyboard} />
-            <View style={styles.holdCartCon}>
-              <Image source={pause} style={styles.pause} />
-              <Text style={styles.holdCart}>{strings.dashboard.holdCart}</Text>
-            </View>
-            <View style={[styles.holdCartCon, styles.dark_greyBg]}>
-              <Image source={eraser} style={styles.pause} />
-              <Text style={styles.holdCart}>{strings.dashboard.clearcart}</Text>
-            </View>
-          </View>
-          <Spacer space={SH(10)} />
-          <View style={styles.nameAddCon}>
-            <View style={styles.sideBarInputWraper}>
-              <View style={styles.displayRow}>
-                <View>
-                  <Image source={search_light} style={styles.sideSearchStyle} />
-                </View>
-                <TextInput
-                  placeholder="803-238-2630"
-                  style={styles.sideBarsearchInput}
-                  keyboardType="numeric"
-                  // value={search}
-                  // onChangeText={search => (
-                  //   setSearch(search), onChangeFun(search)
-                  // )}
-                  placeholderTextColor={COLORS.solid_grey}
-                />
-              </View>
-            </View>
-            <View style={styles.nameAddSingleCon}>
-              <View style={styles.displayRow}>
-                <Image source={terryProfile} style={styles.Phonelight} />
-                <Text style={styles.terryText}>Terry Moore</Text>
-              </View>
-            </View>
-            <View style={styles.nameAddSingleCon}>
-              <View style={styles.displayRow}>
-                <Image source={Phone_light} style={styles.Phonelight} />
-                <Text style={styles.terryText}>803-238-2630</Text>
-              </View>
-            </View>
-            <View style={styles.nameAddSingleCon}>
-              <View style={styles.displayRow}>
-                <Image source={email} style={styles.Phonelight} />
-                <Text style={styles.terryText}>
-                  mailto:harryrady@jourrapide.com
-                </Text>
-              </View>
-            </View>
-            <View style={styles.nameAddSingleCon}>
-              <View style={styles.displayRow}>
-                <Image source={location} style={styles.Phonelight} />
-                <Text style={styles.terryText}>
-                  4849 Owagner Lane Seattle, WA 98101
-                </Text>
-              </View>
-            </View>
-            <TouchableOpacity style={styles.okButtonCon}>
-              <Image source={ok} style={styles.lockLight} />
-              <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
-            </TouchableOpacity>
-          </View>
-          <Spacer space={SH(10)} />
-
-          <View style={styles.displayflex}>
-            <View style={styles.addDiscountCon}>
-              <Image source={addDiscountPic} style={styles.addDiscountPic} />
-              <Text style={styles.addDiscountText}>Add Discount</Text>
-            </View>
-            <View style={styles.addDiscountCon}>
-              <Image source={addDiscountPic} style={styles.addDiscountPic} />
-              <Text style={styles.addDiscountText}>Add Notes</Text>
-            </View>
-          </View>
-        </View>
+        <FlatList
+          data={SubcategoryData}
+          extraData={SubcategoryData}
+          renderItem={subcategoryItem}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 5 }}
+          scrollEnabled={true}
+          keyExtractor={item => item.id}
+          numColumns={2}
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
     </View>
   );
