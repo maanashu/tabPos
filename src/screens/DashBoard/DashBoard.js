@@ -20,16 +20,19 @@ import {
   Fonts,
   Phone_light,
   addDiscountPic,
+  backArrow,
   cashProfile,
   checkArrow,
   clock,
   crossBg,
   crossButton,
+  deliveryScooter,
   email,
   eraser,
   keyboard,
   location,
   lockLight,
+  notifications,
   ok,
   pause,
   pay,
@@ -41,6 +44,7 @@ import {
   sellingBucket,
   sessionEndBar,
   terryProfile,
+  userImage,
 } from '@/assets';
 import { STARTSELLING, homeTableData } from '@/constants/flatListData';
 import {
@@ -49,6 +53,8 @@ import {
   CategoryList,
   Numpad,
   Products,
+  ReadyPickupDetails,
+  ReadyToPickup,
   SearchScreen,
 } from './Components';
 import { logoutFunction } from '@/actions/AuthActions';
@@ -93,6 +99,8 @@ export function DashBoard({ navigation }) {
   const [productdetailModal, setProductdetailModal] = useState(false);
   const [selected, setSelected] = useState('categoryList');
   const [yourSessionEndModal, setYourSessionEndModal] = useState(false);
+  const [readyPickup, setReadyPickup] = useState(false);
+  const [pickupDetails, setPickupDetails] = useState(false);
 
   const profileObj = {
     openingBalance: getSessionObj?.opening_balance,
@@ -185,7 +193,10 @@ export function DashBoard({ navigation }) {
   };
 
   const tableListItem = ({ item }) => (
-    <TouchableOpacity style={[styles.reviewRenderView]}>
+    <TouchableOpacity
+      style={[styles.reviewRenderView]}
+      onPress={() => alert('dfghjk')}
+    >
       <View style={{ width: SW(20) }}>
         <Text style={styles.hashNumber}>#{item.id}</Text>
       </View>
@@ -340,7 +351,26 @@ export function DashBoard({ navigation }) {
   };
 
   const bodyView = () => {
-    if (searchScreen) {
+    if (pickupDetails) {
+      return (
+        <View>
+          <ReadyPickupDetails
+            backHandler={() => (setPickupDetails(false), setReadyPickup(true))}
+          />
+        </View>
+      );
+    } else if (readyPickup) {
+      return (
+        <View>
+          <ReadyToPickup
+            backHandler={() => setReadyPickup(false)}
+            pickupDetailHandler={() => (
+              setReadyPickup(false), setPickupDetails(true)
+            )}
+          />
+        </View>
+      );
+    } else if (searchScreen) {
       return (
         <View style={[styles.homeScreenCon, styles.backgroundColorSCreen]}>
           <View style={styles.searchScreenHeader}>
@@ -708,10 +738,12 @@ export function DashBoard({ navigation }) {
               <Spacer space={SH(20)} />
 
               <View style={styles.homeTableCon}>
-                <Text style={styles.deliveries}>
-                  {strings.dashboard.deliveries}
-                </Text>
-                {orderDelveriesLoading ? (
+                <View>
+                  <Text style={styles.deliveries}>
+                    {strings.dashboard.deliveries}
+                  </Text>
+                </View>
+                {/* {orderDelveriesLoading ? (
                   <View style={{ marginTop: 50 }}>
                     <ActivityIndicator size="large" color={COLORS.indicator} />
                   </View>
@@ -727,7 +759,53 @@ export function DashBoard({ navigation }) {
                     renderItem={tableListItem}
                     keyExtractor={item => item.id}
                   />
-                )}
+                )} */}
+                <TouchableOpacity
+                  style={styles.reviewRenderView}
+                  onPress={() => setReadyPickup(true)}
+                >
+                  <View style={{ width: SW(20) }}>
+                    <Text style={styles.hashNumber}>#22</Text>
+                  </View>
+                  <View style={{ width: SW(45) }}>
+                    <Text numberOfLines={1} style={styles.nameText}>
+                      {'userName'}
+                    </Text>
+                    <View style={styles.timeView}>
+                      <Image source={pin} style={styles.pinIcon} />
+                      <Text style={styles.timeText}>{'0miles'} miles</Text>
+                    </View>
+                  </View>
+
+                  <View style={{ width: SW(25) }}>
+                    <Text style={styles.nameText}>items</Text>
+                    <View style={styles.timeView}>
+                      <Image source={pay} style={styles.pinIcon} />
+                      <Text style={styles.timeText}>${'0'}</Text>
+                    </View>
+                  </View>
+
+                  <View style={{ width: SW(50) }}>
+                    <Text style={[styles.nameText, styles.nameTextBold]}>
+                      {'no delivery type'}
+                    </Text>
+                    <View style={styles.timeView}>
+                      <Image source={clock} style={styles.pinIcon} />
+                      <Text style={styles.timeText}>
+                        {'0.00'} - {'0.00'}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.rightIconStyle1}>
+                    <View style={styles.timeView}>
+                      <Text style={[styles.nameTextBold, styles.timeSec]}>
+                        00:03:56
+                      </Text>
+                      <Image source={rightIcon} style={styles.pinIcon} />
+                    </View>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
           </View>

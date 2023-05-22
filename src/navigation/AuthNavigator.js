@@ -10,6 +10,7 @@ import {
   VerifySucess,
   Retails,
   POSUsers,
+  LoginIntial,
 } from '@/screens';
 import { HomeNavigator } from '@/navigation/HomeNavigator';
 
@@ -39,6 +40,17 @@ export function AuthNavigator(props) {
         name={NAVIGATION.verifySucess}
         options={{ headerShown: false }}
       />
+
+      {/* <Stack.Screen
+        component={POSUsers}
+        name={NAVIGATION.posUsers}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={LoginIntial}
+        name={NAVIGATION.loginIntial}
+        options={{ headerShown: false }}
+      /> */}
 
       {/* <Stack.Screen
         component={HomeNavigator}

@@ -157,7 +157,6 @@ export const getAllPosUsers = () => async dispatch => {
   try {
     const res = await AuthController.getAllPosUsers();
     dispatch(getAllPosUsersSuccess(res?.payload?.users));
-    // callback && callback(res.payload);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllPosUsersReset());
@@ -168,4 +167,5 @@ export const getAllPosUsers = () => async dispatch => {
 
 export const logoutFunction = () => async dispatch => {
   dispatch(clearStore());
+  navigate(NAVIGATION.verifyPhone);
 };

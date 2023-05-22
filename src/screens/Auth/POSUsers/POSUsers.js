@@ -1,6 +1,5 @@
 import { getAllPosUsers, logoutFunction } from '@/actions/AuthActions';
 import { Fonts, checkArrow, powerAuth, userImage } from '@/assets';
-import { clay } from '@/assets';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
@@ -24,20 +23,10 @@ export function POSUsers({ navigation }) {
   const getNav = useNavigation();
   const dispatch = useDispatch();
   const [posusers, setposusers] = useState([]);
-  console.log('posusers', posusers?.length);
 
   const getAuth = useSelector(getAuthData);
 
   const posUserArray = getAuth?.getAllPosUsers;
-  console.log('posUserArray', posUserArray);
-
-  // useEffect(() => {
-  //   dispatch(
-  //     getAllPosUsers(res => {
-  //       setposusers(res.users);
-  //     })
-  //   );
-  // }, []);
 
   useEffect(() => {
     dispatch(getAllPosUsers());
@@ -58,6 +47,7 @@ export function POSUsers({ navigation }) {
         text: 'OK',
         onPress: () => {
           dispatch(logoutFunction());
+          // navigate(NAVIGATION.verifyPhone);
         },
       },
     ]);
@@ -72,8 +62,8 @@ export function POSUsers({ navigation }) {
           </Text>
           <TouchableOpacity
             style={styles.logoutCon}
-            // onPress={() => logoutHandler()}
-            onPress={() => navigate(NAVIGATION.verifyPhone)}
+            onPress={() => logoutHandler()}
+            // onPress={() => navigate(NAVIGATION.verifyPhone)}
           >
             <Image source={powerAuth} style={styles.powerAuth} />
             <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
