@@ -615,13 +615,13 @@ export const styles = StyleSheet.create({
   noteInputStyle: {
     marginTop: 4,
     width: SW(130),
-    height: SH(60),
+    // height: SH(60),
     borderRadius: 5,
     fontFamily: Fonts.Italic,
     fontSize: SF(13),
     color: COLORS.solid_grey,
     paddingLeft: SW(5),
-    paddingVertical: SH(5),
+    paddingVertical: SH(4),
     backgroundColor: COLORS.textInputBackground,
   },
   buttonText: {

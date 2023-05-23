@@ -80,6 +80,7 @@ import moment from 'moment';
 import { endTrackingSession } from '@/actions/CashTrackingAction';
 import { moderateScale } from 'react-native-size-matters';
 import { getUser } from '@/selectors/UserSelectors';
+import { logoutUserFunction } from '@/actions/UserActions';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -94,7 +95,6 @@ export function DashBoard({ navigation }) {
   const TotalSale = getDelivery?.getTotalSale;
   const sellerID = getAuth?.merchantLoginData?.uuid;
   const getDeliveryData = getDelivery?.getOrderDeliveries;
-  console.log('sellerID', sellerID);
   const [searchScreen, setSearchScreen] = useState(false);
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
@@ -104,6 +104,16 @@ export function DashBoard({ navigation }) {
   const [yourSessionEndModal, setYourSessionEndModal] = useState(false);
   const [readyPickup, setReadyPickup] = useState(false);
   const [pickupDetails, setPickupDetails] = useState(false);
+
+  const [currentTime, setCurrentTime] = useState(moment().format('HH:mm:ss'));
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCurrentTime(moment().format('HH:mm:ss'));
+  //   }, 1000);
+
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const profileObj = {
     openingBalance: getSessionObj?.opening_balance,
@@ -299,6 +309,8 @@ export function DashBoard({ navigation }) {
                 placeholderTextColor={COLORS.gerySkies}
                 value={trackNotes}
                 onChangeText={setTrackNotes}
+                multiline={true}
+                numberOfLines={3}
               />
             </View>
             <Spacer space={SH(20)} />
@@ -647,7 +659,11 @@ export function DashBoard({ navigation }) {
                   <Text style={styles.cashLabel}>
                     {strings.dashboard.logTime}
                   </Text>
-                  <Text style={styles.cashAmount}>11:14:23 AM</Text>
+                  <Text style={styles.cashAmount}>
+                    {moment(getPosUser?.user_profiles?.updated_at).format(
+                      'LTS'
+                    )}
+                  </Text>
                 </View>
                 <View style={[styles.displayflex, styles.paddingV]}>
                   <Text style={styles.cashLabel}>
@@ -669,15 +685,15 @@ export function DashBoard({ navigation }) {
                   const res = await dispatch(endTrackingSession(data));
                   if (res?.type === 'END_TRACKING_SUCCESS') {
                     dispatch(getDrawerSessionSuccess(null));
-
-                    if (navigation) {
-                      navigation.dispatch(
-                        CommonActions.reset({
-                          index: 0,
-                          routes: [{ name: NAVIGATION.posUsers }],
-                        })
-                      );
-                    }
+                    dispatch(logoutUserFunction());
+                    // if (navigation) {
+                    //   navigation.dispatch(
+                    //     CommonActions.reset({
+                    //       index: 0,
+                    //       routes: [{ name: NAVIGATION.posUsers }],
+                    //     })
+                    //   );
+                    // }
                   } else {
                     alert('something went wrong');
                   }
