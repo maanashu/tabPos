@@ -24,17 +24,7 @@ import { NAVIGATION } from '@/constants';
 export function LoginIntial({ route }) {
   const dispatch = useDispatch();
   const getData = useSelector(getAuthData);
-
   const { posuserdata } = route.params;
-  const userData = getData?.user?.user_profiles?.profile_photo;
-  const id = getData?.user?.id;
-  const profileData = getData?.user?.user_profiles?.profile_photo;
-  const userProfile = getData?.getProfile;
-  const firstName = getData?.user?.user_profiles?.firstname;
-  const lastName = getData?.user?.user_profiles?.lastname;
-  const userId = getData?.user?.id;
-  const fullName = firstName + ' ' + lastName;
-
   const [dt, setDt] = useState(new Date().toLocaleString());
   const [hr, setHr] = useState(new Date().toLocaleString());
   const focus = useIsFocused();
@@ -96,14 +86,6 @@ export function LoginIntial({ route }) {
   const hour12 = hr % 12 || 12;
 
   const loginIntialHandler = () => {
-    // if(getData?.getProfile?.is_wallet === false ){
-    //   Toast.show({
-    //     text2: 'Please First Create Wallet',
-    //     position: 'bottom',
-    //     type: 'error_toast',
-    //     visibilityTime: 1500,
-    //   });
-    // }else
     if (getData?.getProfile?.wallet_step <= 1 || null) {
       Toast.show({
         text2: 'Please First complete Wallet Steps',
@@ -112,24 +94,12 @@ export function LoginIntial({ route }) {
         visibilityTime: 1500,
       });
     } else {
-      navigation.navigate(NAVIGATION.passcode, {
+      navigation.navigate(NAVIGATION.posUserPasscode, {
         posuser: posuserdata,
         from: 'loginInitial',
       });
-      // navigation.dispatch(
-      //   CommonActions.reset({
-      //     index: 0,
-      //     routes: [{ name: 'HOME' }],
-      //   })
-      // );
     }
   };
-
-  useEffect(() => {
-    if (focus) {
-      dispatch(getProfile(id));
-    }
-  }, [focus]);
 
   const isLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_PROFILE], state)

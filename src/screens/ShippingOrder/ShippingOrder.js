@@ -68,7 +68,7 @@ export function ShippingOrder() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
-  const sellerID = getAuth?.getProfile?.unique_uuid;
+  const sellerID = getAuth?.merchantLoginData?.uuid;
   const getDeliveryData = useSelector(getShipping);
   const shippingServiceData = getDeliveryData?.getShippingService;
   const orderHeadCount = getDeliveryData?.getOrderCount;

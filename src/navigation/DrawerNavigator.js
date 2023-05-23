@@ -39,6 +39,7 @@ import {
 } from '@/assets';
 import { useDispatch } from 'react-redux';
 import { logoutFunction } from '@/actions/AuthActions';
+import { logoutUserFunction } from '@/actions/UserActions';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -56,8 +57,7 @@ export function DrawerNavigator(props) {
       {
         text: 'OK',
         onPress: () => {
-          dispatch(logoutFunction());
-          // dispatch(logoutUserFunction());
+          dispatch(logoutUserFunction());
         },
       },
     ]);

@@ -59,7 +59,7 @@ export function DeliveryOrder() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
-  const sellerID = getAuth?.getProfile?.unique_uuid;
+  const sellerID = getAuth?.merchantLoginData?.uuid;
   const getDeliveryData = useSelector(getDelivery);
   const orderHeadCount = getDeliveryData?.getOrderCount;
   const [orderCount, setOrderCount] = useState(

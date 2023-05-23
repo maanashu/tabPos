@@ -89,7 +89,7 @@ export function Retails() {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
-  const sellerID = getAuth?.getProfile?.unique_uuid;
+  const sellerID = getAuth?.merchantLoginData?.uuid;
   const array = getRetailData?.categories;
   const walletData = getRetailData?.getWallet;
   const subCategoriesArray = getRetailData?.subCategories ?? [];

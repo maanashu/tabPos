@@ -12,43 +12,37 @@ import {
   POSUsers,
   LoginIntial,
   MerchantPasscode,
+  PosUserPasscode,
 } from '@/screens';
 import { HomeNavigator } from '@/navigation/HomeNavigator';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
-export function AuthNavigator(props) {
+export function UserNavigator(props) {
   return (
-    <Stack.Navigator initialRouteName="VerifyPhone">
+    <Stack.Navigator initialRouteName="posUsers">
       <Stack.Screen
-        component={VerifyPhone}
-        name={NAVIGATION.verifyPhone}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        component={MerchantPasscode}
-        name={NAVIGATION.merchantPasscode}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        component={VerifyOtp}
-        name={NAVIGATION.verifyOtp}
-        options={{ headerShown: false }}
-      />
-
-      <Stack.Screen
-        component={VerifySucess}
-        name={NAVIGATION.verifySucess}
-        options={{ headerShown: false }}
-      />
-
-      {/* <Stack.Screen
         component={POSUsers}
         name={NAVIGATION.posUsers}
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        component={LoginIntial}
+        name={NAVIGATION.loginIntial}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={PosUserPasscode}
+        name={NAVIGATION.posUserPasscode}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={HomeNavigator}
+        name={'HOME'}
+        options={{ headerShown: false }}
+      />
+      {/* <Stack.Screen
         component={LoginIntial}
         name={NAVIGATION.loginIntial}
         options={{ headerShown: false }}

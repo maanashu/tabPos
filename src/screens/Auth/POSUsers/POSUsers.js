@@ -14,14 +14,17 @@ import { styles } from './POSUsers.styles';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ActivityIndicator } from 'react-native';
-import { ScreenWrapper } from '@/components';
-import { StackActions, useNavigation } from '@react-navigation/native';
-import { navigate } from '@/navigation/NavigationRef';
+import { ScreenWrapper, Spacer } from '@/components';
+import {
+  StackActions,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 
 export function POSUsers({ navigation }) {
-  const getNav = useNavigation();
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
   const [posusers, setposusers] = useState([]);
 
   const getAuth = useSelector(getAuthData);
@@ -29,8 +32,10 @@ export function POSUsers({ navigation }) {
   const posUserArray = getAuth?.getAllPosUsers;
 
   useEffect(() => {
-    dispatch(getAllPosUsers());
-  }, []);
+    if (isFocused) {
+      dispatch(getAllPosUsers());
+    }
+  }, [isFocused]);
 
   const getPosUserLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ALL_POS_USERS], state)
@@ -47,7 +52,6 @@ export function POSUsers({ navigation }) {
         text: 'OK',
         onPress: () => {
           dispatch(logoutFunction());
-          // navigate(NAVIGATION.verifyPhone);
         },
       },
     ]);
@@ -63,7 +67,6 @@ export function POSUsers({ navigation }) {
           <TouchableOpacity
             style={styles.logoutCon}
             onPress={() => logoutHandler()}
-            // onPress={() => navigate(NAVIGATION.verifyPhone)}
           >
             <Image source={powerAuth} style={styles.powerAuth} />
             <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
@@ -88,6 +91,7 @@ export function POSUsers({ navigation }) {
             renderItem={({ item }) => {
               return (
                 <View style={styles.posUserCon}>
+                  <Spacer space={SH(10)} />
                   <Image
                     source={
                       item.user_profiles?.profile_photo

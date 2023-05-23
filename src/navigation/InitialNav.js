@@ -4,6 +4,7 @@ import { NAVIGATION } from '@/constants';
 import {
   Cart,
   LoginIntial,
+  MerchantPasscode,
   POSUsers,
   Passcode,
   Products,
@@ -16,7 +17,7 @@ const Stack = createNativeStackNavigator();
 export function InitialNav() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
         component={POSUsers}
         name={NAVIGATION.posUsers}
         options={{ headerShown: false }}
@@ -27,18 +28,13 @@ export function InitialNav() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        component={Passcode}
-        name={NAVIGATION.passcode}
+        component={MerchantPasscode}
+        name={NAVIGATION.merchantPasscode}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         component={HomeNavigator}
         name={'HOME'}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        component={Products}
-        name={NAVIGATION.products}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

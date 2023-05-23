@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
-import { verticalScale } from 'react-native-size-matters';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -57,13 +57,14 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: SF(18),
     fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(8),
   },
   textInputContainer: {
     backgroundColor: COLORS.input_bg,
-    paddingHorizontal: SW(10),
     color: COLORS.black,
     fontSize: SF(16),
     fontFamily: Fonts.Italic,
+    width: windowWidth * 0.2,
   },
   selectedText: {
     color: COLORS.white,

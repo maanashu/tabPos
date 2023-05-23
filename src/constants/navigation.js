@@ -4,7 +4,7 @@ export const NAVIGATION = {
   profile: 'Profile',
   verifyPhone: 'VerifyPhone',
   verifyOtp: 'VerifyOtp',
-  passcode: 'Passcode',
+  merchantPasscode: 'MerchantPasscode',
   loginIntial: 'LoginIntial',
   retails: 'Retails',
   deliveryOrder: 'DeliveryOrder',
@@ -20,4 +20,5 @@ export const NAVIGATION = {
   dashBoard: 'DashBoard',
   posUsers: 'POSUsers',
   products: 'Products',
+  posUserPasscode: 'PosUserPasscode',
 };

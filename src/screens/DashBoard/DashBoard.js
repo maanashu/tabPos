@@ -79,6 +79,7 @@ import { digits } from '@/utils/validators';
 import moment from 'moment';
 import { endTrackingSession } from '@/actions/CashTrackingAction';
 import { moderateScale } from 'react-native-size-matters';
+import { getUser } from '@/selectors/UserSelectors';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -86,12 +87,14 @@ export function DashBoard({ navigation }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
+  const getUserData = useSelector(getUser);
   const getDelivery = useSelector(getDashboard);
   const getSessionObj = getDelivery?.getSesssion;
-  const getPOSAuth = getAuth?.posUserData;
+  const getPosUser = getUserData?.posLoginData;
   const TotalSale = getDelivery?.getTotalSale;
-  const sellerID = getAuth?.getProfile?.unique_uuid;
+  const sellerID = getAuth?.merchantLoginData?.uuid;
   const getDeliveryData = getDelivery?.getOrderDeliveries;
+  console.log('sellerID', sellerID);
   const [searchScreen, setSearchScreen] = useState(false);
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
@@ -542,19 +545,19 @@ export function DashBoard({ navigation }) {
               <View style={styles.cashProfilecon}>
                 <Image
                   source={
-                    getPOSAuth?.user_profiles?.profile_photo
-                      ? { uri: getPOSAuth?.user_profiles?.profile_photo }
+                    getPosUser?.user_profiles?.profile_photo
+                      ? { uri: getPosUser?.user_profiles?.profile_photo }
                       : cashProfile
                   }
                   style={styles.cashProfile}
                 />
               </View>
               <Text style={styles.cashierName}>
-                {getPOSAuth?.user_profiles?.firstname ?? 'username'}
+                {getPosUser?.user_profiles?.firstname ?? 'username'}
               </Text>
               <Text style={styles.posCashier}>POS Cashier</Text>
               <Text style={styles.cashLabel}>
-                ID : {getPOSAuth?.user_profiles?.user_id ?? '0'}
+                ID : {getPosUser?.user_profiles?.user_id ?? '0'}
               </Text>
               <Spacer space={SH(12)} />
 

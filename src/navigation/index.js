@@ -4,6 +4,7 @@ import { useColorScheme } from 'react-native';
 import { useSelector } from 'react-redux';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import { AuthNavigator } from '@/navigation/AuthNavigator';
+import { UserNavigator } from '@/navigation/UserNavigator';
 import { HomeNavigator } from '@/navigation/HomeNavigator';
 import { getUser } from '@/selectors/UserSelectors';
 import { navigationRef } from './NavigationRef';
@@ -16,12 +17,20 @@ import { InitialNav } from './InitialNav';
 const Drawer = createDrawerNavigator();
 
 export function RootNavigator() {
-  const user = useSelector(getAuthData);
-  const userToken = user?.user?.token;
+  const auth = useSelector(getAuthData);
+  const posUser = useSelector(getUser);
+  const merchantToken = auth?.merchantLoginData?.token;
+  const posUserToken = posUser?.posLoginData?.token;
   const scheme = useColorScheme();
   return (
     <NavigationContainer ref={navigationRef}>
-      {userToken ? <InitialNav /> : <AuthNavigator />}
+      {merchantToken && !posUserToken ? (
+        <UserNavigator />
+      ) : merchantToken && posUserToken ? (
+        <HomeNavigator />
+      ) : (
+        <AuthNavigator />
+      )}
     </NavigationContainer>
   );
 }

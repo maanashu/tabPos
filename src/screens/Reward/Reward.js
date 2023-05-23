@@ -66,7 +66,7 @@ export function Reward() {
   const totalReward = getRewardData?.getRewardUser?.total_redeem_rewards;
 
   const tableArray = getRewardData?.getRewardUser?.data;
-  const sellerID = getAuth?.getProfile?.unique_uuid;
+  const sellerID = getAuth?.merchantLoginData?.uuid;
   const [rewardList, setRewardList] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);

@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     margin: SH(25),
     padding: SH(10),
     width: SH(306),
-    height: SH(300),
+    height: SH(320),
     borderRadius: 15,
   },
   posLoginHeader: {

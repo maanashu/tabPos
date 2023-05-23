@@ -23,17 +23,17 @@ const verifyPhoneSuccess = otp => ({
   payload: { otp },
 });
 
-const loginRequest = () => ({
-  type: TYPES.LOGIN_REQUEST,
+const merchantLoginRequest = () => ({
+  type: TYPES.MERCHANT_LOGIN_REQUEST,
   payload: null,
 });
-const loginError = error => ({
-  type: TYPES.LOGIN_ERROR,
+const merchantLoginError = error => ({
+  type: TYPES.MERCHANT_LOGIN_ERROR,
   payload: { error },
 });
-const loginSuccess = user => ({
-  type: TYPES.LOGIN_SUCCESS,
-  payload: { user },
+const merchantLoginSuccess = merchantLoginData => ({
+  type: TYPES.MERCHANT_LOGIN_SUCCESS,
+  payload: { merchantLoginData },
 });
 
 const loginPosUserRequest = () => ({
@@ -97,7 +97,7 @@ const getAllPosUsersReset = () => ({
 });
 
 const clearStore = () => ({
-  type: TYPES.CLEAR_STORE,
+  type: TYPES.MERCHAT_CLEAR_STORE,
   payload: null,
 });
 
@@ -112,26 +112,16 @@ export const verifyPhone = (phoneNumber, countryCode) => async dispatch => {
   }
 };
 
-export const login = data => async dispatch => {
-  dispatch(loginRequest());
+export const merchantLogin = data => async dispatch => {
+  dispatch(merchantLoginRequest());
   try {
-    const res = await AuthController.login(data);
-    return dispatch(loginSuccess(res));
+    const res = await AuthController.merchantLogin(data);
+    return dispatch(merchantLoginSuccess(res?.payload));
   } catch (error) {
-    return dispatch(loginError(error));
+    return dispatch(merchantLoginError(error));
   }
 };
 
-export const loginPosUser = (data, callback) => async dispatch => {
-  dispatch(loginPosUserRequest());
-  try {
-    const res = await AuthController.loginPosUser(data);
-    dispatch(loginPosUserSuccess(res));
-    callback && callback(res);
-  } catch (error) {
-    return dispatch(loginPosUserError(error));
-  }
-};
 export const getProfile = id => async dispatch => {
   dispatch(getProfileRequest());
   try {
@@ -167,5 +157,4 @@ export const getAllPosUsers = () => async dispatch => {
 
 export const logoutFunction = () => async dispatch => {
   dispatch(clearStore());
-  navigate(NAVIGATION.verifyPhone);
 };

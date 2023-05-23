@@ -4,10 +4,11 @@ export { Login } from '@/screens/Login/Login';
 export { Profile } from '@/screens/Profile/Profile';
 export { VerifyPhone } from '@/screens/Auth/VerifyPhone/VerifyPhone';
 export { VerifyOtp } from '@/screens/Auth/VerifyOtp/VerifyOtp';
-export { Passcode } from '@/screens/Auth/Passcode/Passcode';
+export { MerchantPasscode } from '@/screens/Auth/MerchantPasscode/MerchantPasscode';
 export { LoginIntial } from '@/screens/Auth/LoginIntial/LoginIntial';
 export { VerifySucess } from '@/screens/Auth/VerifySucess/VerifySucess';
 export { POSUsers } from '@/screens/Auth/POSUsers/POSUsers';
+export { PosUserPasscode } from '@/screens/Auth/PosUserPasscode/PosUserPasscode';
 
 // pos sales
 export { Retails } from '@/screens/Retails/Retails';

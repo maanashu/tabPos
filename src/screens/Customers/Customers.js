@@ -86,7 +86,7 @@ export function Customers() {
   const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
   const userOrderArray = getCustomerData?.getUserOrder;
   const orderUserArray = getCustomerData?.getOrderUser;
-  const sellerID = getAuth?.getProfile?.unique_uuid;
+  const sellerID = getAuth?.merchantLoginData?.uuid;
   const [weeklyUser, setWeeklyUser] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
   const [userDetail, setUserDetail] = useState(false);

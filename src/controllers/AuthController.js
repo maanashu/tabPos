@@ -22,7 +22,7 @@ export class AuthController {
       .then(response => {
         if (response.status_code === 200) {
           if (response?.payload?.is_phone_exits) {
-            navigate(NAVIGATION.passcode, {
+            navigate(NAVIGATION.merchantPasscode, {
               posuser: '',
               from: 'verifyphone',
             });
@@ -96,7 +96,7 @@ export class AuthController {
       });
   }
 
-  static async login(data) {
+  static async merchantLogin(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.login;
       const body = {
