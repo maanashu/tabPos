@@ -65,6 +65,12 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
   },
+  saleAmountLable: {
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    width: windowWidth * 0.13,
+  },
   cashAmount: {
     color: COLORS.solid_grey,
     fontSize: SF(14),

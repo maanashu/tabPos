@@ -15,19 +15,20 @@ export class DashboardController {
         ORDER_URL +
         ApiOrderInventory.getOrderUser +
         `?seller_id=${sellerID}&delivery_option=1`;
+
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
-          {
-            Toast.show({
-              text2: error.msg,
-              position: 'bottom',
-              type: 'error_toast',
-              visibilityTime: 1500,
-            });
-          }
+          // {
+          //   Toast.show({
+          //     text2: error.msg,
+          //     position: 'bottom',
+          //     type: 'error_toast',
+          //     visibilityTime: 1500,
+          //   });
+          // }
           reject(error);
         });
     });
@@ -127,6 +128,27 @@ export class DashboardController {
         ORDER_URL +
         ApiOrderInventory.getTotalSale +
         `?seller_id=${sellerID}&filter=today`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          {
+            Toast.show({
+              text2: error.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
+          reject(error);
+        });
+    });
+  }
+
+  static async posLoginDetail() {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.posLoginDetail;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

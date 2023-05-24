@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   },
   verifyContainer: {
     width: windowWidth * 0.35,
-    height: windowHeight * 0.55,
+    height: windowHeight * 0.65,
     // borderWidth: 1,
     borderColor: 'grey',
     alignSelf: 'center',
@@ -48,8 +48,8 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   profilePic: {
-    width: SH(100),
-    height: SH(100),
+    width: SH(110),
+    height: SH(110),
     borderRadius: 100,
     resizeMode: 'contain',
   },
@@ -62,5 +62,10 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
+  },
+  cross: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
   },
 });

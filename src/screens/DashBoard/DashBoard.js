@@ -67,6 +67,7 @@ import {
   getOrderDeliveries,
   getTotalSale,
   getTotalSaleAction,
+  posLoginDetail,
 } from '@/actions/DashboardAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { CommonActions, useIsFocused } from '@react-navigation/native';
@@ -89,12 +90,14 @@ export function DashBoard({ navigation }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
-  const getDelivery = useSelector(getDashboard);
-  const getSessionObj = getDelivery?.getSesssion;
+  const getDashboardData = useSelector(getDashboard);
+  const getLoginDeatil = getDashboardData?.posLoginDetail;
+  const getSessionObj = getDashboardData?.getSesssion;
   const getPosUser = getUserData?.posLoginData;
-  const TotalSale = getDelivery?.getTotalSale;
+
+  const TotalSale = getDashboardData?.getTotalSale;
   const sellerID = getAuth?.merchantLoginData?.uuid;
-  const getDeliveryData = getDelivery?.getOrderDeliveries;
+  const getDeliveryData = getDashboardData?.getOrderDeliveries;
   const [searchScreen, setSearchScreen] = useState(false);
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
@@ -107,13 +110,13 @@ export function DashBoard({ navigation }) {
 
   const [currentTime, setCurrentTime] = useState(moment().format('HH:mm:ss'));
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setCurrentTime(moment().format('HH:mm:ss'));
-  //   }, 1000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(moment().format('HH:mm:ss'));
+    }, 1000);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, []);
 
   const profileObj = {
     openingBalance: getSessionObj?.opening_balance,
@@ -122,14 +125,6 @@ export function DashBoard({ navigation }) {
     name: getSessionObj?.seller_details?.user_profiles?.firstname,
     id: getSessionObj?.id,
   };
-  // const [time, setTime] = useState(Date.now());
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => setTime(Date.now()), 1000);
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
 
   useEffect(() => {
     if (isFocused) {
@@ -137,6 +132,7 @@ export function DashBoard({ navigation }) {
       startTrackingFun();
       clearInput();
       // dispatch(getTotalSaleAction(sellerID));
+      dispatch(posLoginDetail());
     }
   }, [isFocused]);
 
@@ -578,7 +574,7 @@ export function DashBoard({ navigation }) {
                   <Text style={styles.todaySale}>
                     {strings.dashboard.todaySale}
                   </Text>
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     style={{
                       width: SW(30),
                       height: SW(8),
@@ -591,7 +587,7 @@ export function DashBoard({ navigation }) {
                     onPress={() => setYourSessionEndModal(true)}
                   >
                     <Text style={{ color: COLORS.white }}>Your Session</Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
                 <Spacer space={SH(4)} />
                 <View style={[styles.displayflex, styles.paddingV]}>
@@ -611,7 +607,7 @@ export function DashBoard({ navigation }) {
                   </Text>
                 </View>
                 <View style={[styles.displayflex, styles.paddingV]}>
-                  <Text style={styles.cashLabel}>
+                  <Text style={styles.saleAmountLable} numberOfLines={1}>
                     {strings.dashboard.jobrCoinSaleAmount}
                   </Text>
                   <Text style={styles.cashAmount}>
@@ -660,9 +656,7 @@ export function DashBoard({ navigation }) {
                     {strings.dashboard.logTime}
                   </Text>
                   <Text style={styles.cashAmount}>
-                    {moment(getPosUser?.user_profiles?.updated_at).format(
-                      'LTS'
-                    )}
+                    {moment(getLoginDeatil?.updated_at).format('LTS')}
                   </Text>
                 </View>
                 <View style={[styles.displayflex, styles.paddingV]}>
@@ -792,7 +786,7 @@ export function DashBoard({ navigation }) {
                     </Text>
                     <View style={styles.timeView}>
                       <Image source={pin} style={styles.pinIcon} />
-                      <Text style={styles.timeText}>{'0miles'} miles</Text>
+                      <Text style={styles.timeText}>{'0miles'}</Text>
                     </View>
                   </View>
 
@@ -806,7 +800,7 @@ export function DashBoard({ navigation }) {
 
                   <View style={{ width: SW(50) }}>
                     <Text style={[styles.nameText, styles.nameTextBold]}>
-                      {'no delivery type'}
+                      {'Express delivery'}
                     </Text>
                     <View style={styles.timeView}>
                       <Image source={clock} style={styles.pinIcon} />

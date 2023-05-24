@@ -13,6 +13,7 @@ export const WALLET_URL = 'https://apiwallet.jobr.com/api/v1/';
 export const ApiUserInventory = {
   verifyPhone: 'user_phones/',
   login: 'users/login/',
+  merchantLogin: 'users/merchant/login',
   getProfile: 'users/',
   sendInvitation: 'users/send_invitation',
   getDrawerSession: 'drawer_management/drawer-session',
@@ -20,6 +21,7 @@ export const ApiUserInventory = {
   getSessionHistory: 'drawer_management/drawer-session/history',
   getPosUsers: 'users/merchant/pos-user',
   loginPosuser: 'users/merchant/pos-user/login',
+  posLoginDetail: 'users/pos/login-details',
 };
 
 export const ApiProductInventory = {

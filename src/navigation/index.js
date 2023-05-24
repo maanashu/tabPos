@@ -21,6 +21,7 @@ export function RootNavigator() {
   const posUser = useSelector(getUser);
   const merchantToken = auth?.merchantLoginData?.token;
   const posUserToken = posUser?.posLoginData?.token;
+  console.log('posUserToken', posUserToken);
   const scheme = useColorScheme();
   return (
     <NavigationContainer ref={navigationRef}>

@@ -4,6 +4,7 @@ const INITIALSTATE = {
   getOrderDeliveries: [],
   getSesssion: {},
   getTotalSale: [],
+  posLoginDetail: {},
 };
 
 export const dashboardReducer = (
@@ -42,6 +43,17 @@ export const dashboardReducer = (
       return {
         ...state,
         getTotalSale: [],
+      };
+
+    case TYPES.POS_LOGIN_DETAIL_SUCCESS:
+      return {
+        ...state,
+        posLoginDetail: payload.posLoginDetail,
+      };
+    case TYPES.POS_LOGIN_DETAIL_RESET:
+      return {
+        ...state,
+        posLoginDetail: {},
       };
 
     default:

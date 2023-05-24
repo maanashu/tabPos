@@ -37,14 +37,19 @@ import {
   blueReward,
   blueSetting,
 } from '@/assets';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutFunction } from '@/actions/AuthActions';
 import { logoutUserFunction } from '@/actions/UserActions';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getUser } from '@/selectors/UserSelectors';
 
 const windowHeight = Dimensions.get('window').height;
 
 export function DrawerNavigator(props) {
   const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const getUserData = useSelector(getUser);
+
   const [active, setActive] = useState('dashBoard');
 
   const logoutHandler = () => {
@@ -58,6 +63,7 @@ export function DrawerNavigator(props) {
         text: 'OK',
         onPress: () => {
           dispatch(logoutUserFunction());
+          dispatch(logoutFunction());
         },
       },
     ]);
@@ -241,25 +247,27 @@ export function DrawerNavigator(props) {
           />
         )}
       />
-
-      <View
-        style={{
-          backgroundColor: COLORS.textInputBackground,
-          position: 'absolute',
-          left: 0,
-          bottom: 0,
-        }}
-      >
-        <DrawerItem
-          onPress={() => {
-            logoutHandler();
+      {getUserData?.posLoginData?.id !=
+      getAuth?.merchantLoginData?.id ? null : (
+        <View
+          style={{
+            backgroundColor: COLORS.textInputBackground,
+            position: 'absolute',
+            left: 0,
+            bottom: 0,
           }}
-          label=""
-          icon={({ focused, color, size }) => (
-            <Image source={power} style={styles.iconStyle} />
-          )}
-        />
-      </View>
+        >
+          <DrawerItem
+            onPress={() => {
+              logoutHandler();
+            }}
+            label=""
+            icon={({ focused, color, size }) => (
+              <Image source={power} style={styles.iconStyle} />
+            )}
+          />
+        </View>
+      )}
     </DrawerContentScrollView>
   );
 }

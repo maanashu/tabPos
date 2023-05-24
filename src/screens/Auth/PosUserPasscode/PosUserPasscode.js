@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Spacer } from '@/components';
 import { SH } from '@/theme';
 import { styles } from '@/screens/Auth/PosUserPasscode/PosUserPasscode.styles';
@@ -21,6 +21,10 @@ import { TYPES } from '@/Types/Types';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import { goBack } from '@/navigation/NavigationRef';
+import { crossButton } from '@/assets';
+import { Image } from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
 
 const CELL_COUNT = 4;
 
@@ -67,7 +71,7 @@ export function PosUserPasscode({ route }) {
       return;
     } else {
       let data = {
-        merchant_id: getData?.merchantLoginData?.uuid,
+        merchant_id: getData?.merchantLoginData?.uniqe_id,
         pos_user_id: posuser.id.toString(),
         pos_security_pin: value,
       };
@@ -94,9 +98,15 @@ export function PosUserPasscode({ route }) {
     >
       <View style={styles.container}>
         <View style={styles.verifyContainer}>
-          <Spacer space={SH(25)} />
+          <Spacer space={SH(20)} />
+          <TouchableOpacity
+            style={{ alignSelf: 'flex-end', paddingRight: moderateScale(10) }}
+            onPress={() => goBack()}
+          >
+            <Image source={crossButton} style={styles.cross} />
+          </TouchableOpacity>
           <Text style={styles.subHeading}>{strings.passcode.heading}</Text>
-          <Spacer space={SH(40)} />
+          <Spacer space={SH(25)} />
           <CodeField
             ref={ref}
             {...prop}

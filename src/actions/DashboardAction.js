@@ -82,12 +82,28 @@ const getTotalSaleReset = () => ({
   payload: null,
 });
 
+const posLoginDetailRequest = () => ({
+  type: TYPES.POS_LOGIN_DETAIL_REQUEST,
+  payload: null,
+});
+const posLoginDetailSuccess = posLoginDetail => ({
+  type: TYPES.POS_LOGIN_DETAIL_SUCCESS,
+  payload: { posLoginDetail },
+});
+const posLoginDetailError = error => ({
+  type: TYPES.POS_LOGIN_DETAIL_ERROR,
+  payload: { error },
+});
+const posLoginDetailReset = () => ({
+  type: TYPES.POS_LOGIN_DETAIL_RESET,
+  payload: null,
+});
+
 export const getOrderDeliveries = sellerID => async dispatch => {
   dispatch(getOrderDeliveriesRequest());
   try {
     const res = await DashboardController.getOrderDeliveries(sellerID);
     dispatch(getOrderDeliveriesSuccess(res?.payload?.data));
-    console.log('---------------------', res);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getOrderDeliveriesReset());
@@ -149,5 +165,18 @@ export const getTotalSaleAction = sellerID => async dispatch => {
       dispatch(getTotalSaleReset());
     }
     dispatch(getTotalSaleError(error.message));
+  }
+};
+
+export const posLoginDetail = () => async dispatch => {
+  dispatch(posLoginDetailRequest());
+  try {
+    const res = await DashboardController.posLoginDetail();
+    dispatch(posLoginDetailSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(posLoginDetailReset());
+    }
+    dispatch(posLoginDetailError(error.message));
   }
 };

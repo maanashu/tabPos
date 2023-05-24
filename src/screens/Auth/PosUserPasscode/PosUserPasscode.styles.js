@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   },
   verifyContainer: {
     width: windowWidth * 0.4,
-    height: windowHeight * 0.8,
+    height: windowHeight * 0.85,
     // borderWidth: 1,
     borderColor: 'grey',
     alignSelf: 'center',
@@ -33,20 +33,20 @@ export const styles = StyleSheet.create({
   },
   subHeading: {
     fontSize: SF(24),
-    color: COLORS.solid_grey,
-    fontFamily: Fonts.Regular,
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.MaisonBold,
   },
   alignSelfCenter: {
     alignSelf: 'center',
   },
   cellRoot: {
     backgroundColor: COLORS.white,
-    height: moderateScale(35),
-    width: moderateScale(35),
+    height: moderateScale(37),
+    width: moderateScale(37),
     borderRadius: moderateScale(50),
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 7,
+    borderWidth: 2,
     borderColor: COLORS.solidGrey,
     marginHorizontal: moderateScale(10),
   },
@@ -109,5 +109,10 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     alignSelf: 'center',
+  },
+  cross: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
   },
 });

@@ -26,9 +26,7 @@ export function POSUsers({ navigation }) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [posusers, setposusers] = useState([]);
-
   const getAuth = useSelector(getAuthData);
-
   const posUserArray = getAuth?.getAllPosUsers;
 
   useEffect(() => {
@@ -109,12 +107,12 @@ export function POSUsers({ navigation }) {
                   {item.api_tokens.length > 0 && (
                     <>
                       <Text style={[styles.dateTime, { marginTop: SH(20) }]}>
-                        {moment(item.api_tokens[0].created_at).format(
+                        {moment(item.api_tokens[0].updated_at).format(
                           'dddd,DD MMM YYYY'
                         )}
                       </Text>
                       <Text style={styles.dateTime}>
-                        {moment(item.api_tokens[0].created_at).format(
+                        {moment(item.api_tokens[0].updated_at).format(
                           'hh:mm a'
                         )}
                       </Text>

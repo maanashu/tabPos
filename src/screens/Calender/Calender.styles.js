@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
   },
   calenderCon: {
     width: windowWidth * 0.64,
-    height: windowHeight,
+    height: windowHeight * 0.84,
   },
   notificationCon: {
     width: windowWidth * 0.3,

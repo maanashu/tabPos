@@ -98,12 +98,12 @@ export class AuthController {
 
   static async merchantLogin(data) {
     return new Promise((resolve, reject) => {
-      const endpoint = USER_URL + ApiUserInventory.login;
+      const endpoint = USER_URL + ApiUserInventory.merchantLogin;
       const body = {
+        type: 'phone',
         phone_code: data.country_code,
         phone_number: data.phone_no,
-        password: data.pin,
-        role_slug: 'pos',
+        security_pin: data.pin,
       };
       HttpClient.post(endpoint, body)
         .then(response => {
