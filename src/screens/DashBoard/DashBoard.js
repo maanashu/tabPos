@@ -605,7 +605,7 @@ export function DashBoard({ navigation }) {
               <Text style={styles.cashLabel}>
                 ID : {getPosUser?.user_profiles?.user_id ?? '0'}
               </Text>
-              <Spacer space={SH(12)} />
+              <Spacer space={SH(18)} />
 
               <View style={styles.todaySaleCon}>
                 <View style={styles.displayflex}>
@@ -653,7 +653,7 @@ export function DashBoard({ navigation }) {
                   </Text>
                 </View>
               </View>
-              <Spacer space={SH(10)} />
+              <Spacer space={SH(18)} />
               <View style={styles.todaySaleCon}>
                 <Text style={styles.todaySale}>
                   {strings.dashboard.cashDrawer}
@@ -676,9 +676,9 @@ export function DashBoard({ navigation }) {
                   </Text>
                 </View>
               </View>
-              <Spacer space={SH(10)} />
+              <Spacer space={SH(18)} />
               <View style={styles.profileHrRow}></View>
-              <Spacer space={SH(10)} />
+              <Spacer space={SH(18)} />
 
               <View style={styles.sessionCon}>
                 <View style={[styles.displayflex, styles.paddingV]}>
