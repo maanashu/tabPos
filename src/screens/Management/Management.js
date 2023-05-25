@@ -48,6 +48,7 @@ import { digits } from '@/utils/validators';
 import { FlatList } from 'react-native';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import { logoutUserFunction } from '@/actions/UserActions';
 
 export function Management() {
   const isFocused = useIsFocused();
@@ -283,7 +284,8 @@ export function Management() {
     setSessionHistory(false), setSummaryHistory(true);
   };
   const emailButtonHandler = () => {
-    navigate(NAVIGATION.dashBoard);
+    dispatch(logoutUserFunction());
+    // navigate(NAVIGATION.dashBoard);
     setSummaryHistory(false), setSummaryHistory(false), setViewSession(false);
     setHistoryHeader(false);
     setViewSession(false);
@@ -802,7 +804,8 @@ export function Management() {
                     setSummaryHistory(false), setViewSession(false);
                     setHistoryHeader(false);
                     // dispatch(getDrawerSession());
-                    navigate(NAVIGATION.dashBoard);
+                    // navigate(NAVIGATION.dashBoard);
+                    dispatch(logoutUserFunction());
                   }}
                 >
                   <Image source={backArrow} style={styles.backButtonArrow} />

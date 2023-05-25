@@ -1061,4 +1061,9 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     color: COLORS.solid_grey,
   },
+  crossButonBorder: {
+    width: SW(12),
+    height: SW(10),
+    justifyContent: 'center',
+  },
 });

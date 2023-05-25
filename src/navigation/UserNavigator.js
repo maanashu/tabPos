@@ -43,12 +43,6 @@ export function UserNavigator(props) {
         options={{ headerShown: false }}
       />
       {/* <Stack.Screen
-        component={LoginIntial}
-        name={NAVIGATION.loginIntial}
-        options={{ headerShown: false }}
-      /> */}
-
-      {/* <Stack.Screen
         component={HomeNavigator}
         name={NAVIGATION.retails}
         options={{ headerShown: false }}

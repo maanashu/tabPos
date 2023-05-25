@@ -129,7 +129,7 @@ export class AuthController {
             text2: error.msg,
             position: 'bottom',
             type: 'error_toast',
-            visibilityTime: 1500,
+            visibilityTime: 2500,
           });
           reject(error.msg);
         });

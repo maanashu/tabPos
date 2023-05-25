@@ -16,6 +16,8 @@ export class DashboardController {
         ApiOrderInventory.getOrderUser +
         `?seller_id=${sellerID}&delivery_option=1`;
 
+      console.log('endpoint', endpoint);
+
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

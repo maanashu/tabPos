@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
     height: SH(32),
     justifyContent: 'center',
     alignItems: 'center',
-    width: SH(50),
+    width: SH(110),
     marginLeft: moderateScale(10),
   },
 

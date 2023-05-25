@@ -70,7 +70,7 @@ import {
   posLoginDetail,
 } from '@/actions/DashboardAction';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { CommonActions, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { navigate, navigationRef } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
@@ -82,6 +82,7 @@ import { endTrackingSession } from '@/actions/CashTrackingAction';
 import { moderateScale } from 'react-native-size-matters';
 import { getUser } from '@/selectors/UserSelectors';
 import { logoutUserFunction } from '@/actions/UserActions';
+import { KeyboardAvoidingView } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -96,8 +97,9 @@ export function DashBoard({ navigation }) {
   const getPosUser = getUserData?.posLoginData;
 
   const TotalSale = getDashboardData?.getTotalSale;
-  const sellerID = getAuth?.merchantLoginData?.uuid;
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getDeliveryData = getDashboardData?.getOrderDeliveries;
+  const getDeliveryData2 = getDeliveryData?.filter(item => item.status <= 3);
   const [searchScreen, setSearchScreen] = useState(false);
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
@@ -110,6 +112,17 @@ export function DashBoard({ navigation }) {
 
   const [currentTime, setCurrentTime] = useState(moment().format('HH:mm:ss'));
 
+  var aaa = new Date();
+  const newDate = aaa.getTime();
+
+  var bbb = new Date(getLoginDeatil?.updated_at);
+  const sessionDate = bbb.getTime();
+
+  var presenth = new Date(newDate).getHours();
+  var presentm = new Date(newDate).getMinutes();
+
+  var loginh = new Date(sessionDate).getHours();
+  var loginm = new Date(sessionDate).getMinutes();
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(moment().format('HH:mm:ss'));
@@ -230,10 +243,9 @@ export function DashBoard({ navigation }) {
           </Text>
         </View>
       </View>
-
       <View style={{ width: SW(50) }}>
         <Text style={[styles.nameText, styles.nameTextBold]}>
-          {item?.shipping ? item?.shipping : 'no delivery type'}
+          {item?.delivery_details?.title}
         </Text>
         <View style={styles.timeView}>
           <Image source={clock} style={styles.pinIcon} />
@@ -243,8 +255,7 @@ export function DashBoard({ navigation }) {
           </Text>
         </View>
       </View>
-
-      <View style={styles.rightIconStyle}>
+      <View style={styles.rightIconStyle1}>
         <View style={styles.timeView}>
           <Text style={[styles.nameTextBold, styles.timeSec]}>00:03:56</Text>
           <Image source={rightIcon} style={styles.pinIcon} />
@@ -260,66 +271,89 @@ export function DashBoard({ navigation }) {
         transparent={true}
         isVisible={trackingSession}
       >
-        <View style={styles.modalMainView}>
-          <View style={styles.headerView}>
-            <View style={{ width: SW(140), alignItems: 'center' }}>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.session}
-              </Text>
-            </View>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 100}
+          // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
+        >
+          <ScrollView>
+            <View style={styles.modalMainView}>
+              <View style={styles.headerView}>
+                <View style={{ width: SW(140), alignItems: 'center' }}>
+                  <Text
+                    style={[styles.trackingButtonText, { fontSize: SF(16) }]}
+                  >
+                    {strings.management.session}
+                  </Text>
+                </View>
 
-            {/* <TouchableOpacity onPress={() => {}} style={{ width: SW(10) }}>
-            <Image source={crossButton} style={styles.crossIconStyle} />
-          </TouchableOpacity> */}
-          </View>
+                <TouchableOpacity
+                  onPress={() => dispatch(logoutUserFunction())}
+                  style={styles.crossButonBorder}
+                >
+                  <Image source={crossButton} style={styles.crossIconStyle} />
+                </TouchableOpacity>
+              </View>
 
-          <Spacer space={SH(40)} />
-          <View style={styles.countCashView}>
-            <Text style={styles.countCashText}>
-              {strings.management.countCash}
-            </Text>
+              <Spacer space={SH(40)} />
+              <View style={styles.countCashView}>
+                <Text style={styles.countCashText}>
+                  {strings.management.countCash}
+                </Text>
 
-            <Spacer space={SH(40)} />
-            <View>
-              <Text style={styles.amountCountedText}>
-                {strings.management.amountCounted}
-              </Text>
-              <TextInput
-                placeholder={strings.management.amount}
-                style={styles.inputStyle}
-                placeholderTextColor={COLORS.solid_grey}
-                keyboardType="number-pad"
-                value={amountCount}
-                onChangeText={setAmountCount}
+                <Spacer space={SH(40)} />
+                <View>
+                  <Text style={styles.amountCountedText}>
+                    {strings.management.amountCounted}
+                  </Text>
+                  <TextInput
+                    placeholder={strings.management.amount}
+                    style={styles.inputStyle}
+                    placeholderTextColor={COLORS.solid_grey}
+                    keyboardType="number-pad"
+                    value={amountCount}
+                    onChangeText={setAmountCount}
+                  />
+                </View>
+
+                <Spacer space={SH(40)} />
+                <View>
+                  <Text style={styles.amountCountedText}>
+                    {strings.management.note}
+                  </Text>
+                  <TextInput
+                    placeholder={strings.management.note}
+                    style={styles.noteInputStyle}
+                    placeholderTextColor={COLORS.gerySkies}
+                    value={trackNotes}
+                    onChangeText={setTrackNotes}
+                    multiline={true}
+                    numberOfLines={3}
+                  />
+                </View>
+                <Spacer space={SH(20)} />
+              </View>
+              <View style={{ flex: 1 }} />
+              <Button
+                title={strings.management.save}
+                textStyle={[
+                  styles.buttonText,
+                  { color: amountCount ? COLORS.white : COLORS.darkGray },
+                ]}
+                style={[
+                  styles.saveButton,
+                  {
+                    backgroundColor: amountCount
+                      ? COLORS.primary
+                      : COLORS.textInputBackground,
+                  },
+                ]}
+                onPress={startTrackingSesHandler}
               />
+              <Spacer space={SH(40)} />
             </View>
-
-            <Spacer space={SH(40)} />
-            <View>
-              <Text style={styles.amountCountedText}>
-                {strings.management.note}
-              </Text>
-              <TextInput
-                placeholder={strings.management.note}
-                style={styles.noteInputStyle}
-                placeholderTextColor={COLORS.gerySkies}
-                value={trackNotes}
-                onChangeText={setTrackNotes}
-                multiline={true}
-                numberOfLines={3}
-              />
-            </View>
-            <Spacer space={SH(20)} />
-          </View>
-          <View style={{ flex: 1 }} />
-          <Button
-            title={strings.management.save}
-            textStyle={styles.buttonText}
-            style={styles.saveButton}
-            onPress={startTrackingSesHandler}
-          />
-          <Spacer space={SH(40)} />
-        </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </Modal>
     );
   };
@@ -563,7 +597,11 @@ export function DashBoard({ navigation }) {
               <Text style={styles.cashierName}>
                 {getPosUser?.user_profiles?.firstname ?? 'username'}
               </Text>
-              <Text style={styles.posCashier}>POS Cashier</Text>
+              <Text style={styles.posCashier}>
+                {getPosUser?.user_profiles?.pos_role === null
+                  ? 'Merchant'
+                  : getPosUser?.user_profiles?.pos_role}
+              </Text>
               <Text style={styles.cashLabel}>
                 ID : {getPosUser?.user_profiles?.user_id ?? '0'}
               </Text>
@@ -663,7 +701,9 @@ export function DashBoard({ navigation }) {
                   <Text style={styles.cashLabel}>
                     {strings.dashboard.session}
                   </Text>
-                  <Text style={styles.cashAmount}>1h 3m</Text>
+                  <Text style={styles.cashAmount}>
+                    {presenth - loginh}h {presentm - loginm}m
+                  </Text>
                 </View>
               </View>
               <View style={{ flex: 1 }} />
@@ -756,24 +796,24 @@ export function DashBoard({ navigation }) {
                     {strings.dashboard.deliveries}
                   </Text>
                 </View>
-                {/* {orderDelveriesLoading ? (
+                {orderDelveriesLoading ? (
                   <View style={{ marginTop: 50 }}>
                     <ActivityIndicator size="large" color={COLORS.indicator} />
                   </View>
-                ) : getDeliveryData?.length === 0 ||
-                  getDeliveryData === undefined ? (
+                ) : getDeliveryData2?.length === 0 ||
+                  getDeliveryData2 === undefined ? (
                   <View>
                     <Text style={styles.requestNotFound}>Orders not found</Text>
                   </View>
                 ) : (
                   <FlatList
-                    data={getDeliveryData}
-                    extraData={getDeliveryData}
+                    data={getDeliveryData2}
+                    extraData={getDeliveryData2}
                     renderItem={tableListItem}
                     keyExtractor={item => item.id}
                   />
-                )} */}
-                <TouchableOpacity
+                )}
+                {/* <TouchableOpacity
                   style={styles.reviewRenderView}
                   onPress={() => setReadyPickup(true)}
                 >
@@ -818,7 +858,7 @@ export function DashBoard({ navigation }) {
                       <Image source={rightIcon} style={styles.pinIcon} />
                     </View>
                   </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
           </View>

@@ -364,6 +364,7 @@ export const en = {
     approve: 'Approve',
     approved: 'Accepted',
     no: 'No',
+    cancel: 'Cancel',
   },
   analytics: {
     header: 'Analytics',

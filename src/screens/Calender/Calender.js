@@ -244,7 +244,7 @@ export function Calender(props) {
           {isRequestLoading ? (
             <ActivityIndicator size="small" color={COLORS.white} />
           ) : (
-            <Text style={styles.approveText}>{strings.calender.no}</Text>
+            <Text style={styles.approveText}>{strings.calender.cancel}</Text>
           )}
         </TouchableOpacity>
       </View>

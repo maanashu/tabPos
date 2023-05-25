@@ -63,7 +63,7 @@ export function Wallet() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getWalletData = useSelector(getWallet);
-  const sellerID = getAuth?.merchantLoginData?.uuid;
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getTotalTraData = getWalletData?.getTotalTra;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail;
   const transactionTypeArray = getWalletData?.getTotalTraType;

@@ -68,4 +68,9 @@ export const styles = StyleSheet.create({
     height: SW(10),
     resizeMode: 'contain',
   },
+  role: {
+    fontSize: SH(14),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+  },
 });

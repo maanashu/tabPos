@@ -28,6 +28,7 @@ export function POSUsers({ navigation }) {
   const [posusers, setposusers] = useState([]);
   const getAuth = useSelector(getAuthData);
   const posUserArray = getAuth?.getAllPosUsers;
+  const posUserArrayReverse = posUserArray?.reverse();
 
   useEffect(() => {
     if (isFocused) {
@@ -75,14 +76,14 @@ export function POSUsers({ navigation }) {
           <View style={{ marginTop: 50 }}>
             <ActivityIndicator size="large" color={COLORS.indicator} />
           </View>
-        ) : posUserArray?.length === 0 ? (
+        ) : posUserArrayReverse?.length === 0 ? (
           <View style={{ marginTop: 100 }}>
             <Text style={styles.posUserNot}>Pos user not found</Text>
           </View>
         ) : (
           <FlatList
-            data={posUserArray}
-            extraData={posUserArray}
+            data={posUserArrayReverse}
+            extraData={posUserArrayReverse}
             scrollEnabled={true}
             contentContainerStyle={{ flexGrow: 1 }}
             style={{ height: '100%' }}
@@ -102,7 +103,9 @@ export function POSUsers({ navigation }) {
                     {item.user_profiles?.firstname}
                   </Text>
                   <Text style={styles.role}>
-                    {item.user_profiles?.pos_role}
+                    {item.user_profiles?.pos_role === null
+                      ? 'Merchant'
+                      : item.user_profiles?.pos_role}
                   </Text>
                   {item.api_tokens.length > 0 && (
                     <>

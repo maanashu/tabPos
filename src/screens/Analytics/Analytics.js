@@ -121,7 +121,7 @@ export function Analytics(props) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
-  const sellerID = getAuth?.merchantLoginData?.uuid;
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getAnalyticsData = useSelector(getAnalytics);
   const productGraphObject2 = getAnalyticsData?.getTotalGraph;
   const orderGraphObject = getAnalyticsData?.getOrderGraph;

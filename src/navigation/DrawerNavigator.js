@@ -42,6 +42,12 @@ import { logoutFunction } from '@/actions/AuthActions';
 import { logoutUserFunction } from '@/actions/UserActions';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
+import { getDashboard } from '@/selectors/DashboardSelector';
+import { endTrackingSession } from '@/actions/CashTrackingAction';
+import {
+  getDrawerSession,
+  getDrawerSessionSuccess,
+} from '@/actions/DashboardAction';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -49,6 +55,35 @@ export function DrawerNavigator(props) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
+
+  const getDashboardData = useSelector(getDashboard);
+  const getSessionObj = getDashboardData?.getSesssion;
+
+  const profileObj = {
+    openingBalance: getSessionObj?.opening_balance,
+    closeBalance: getSessionObj?.cash_balance,
+    profile: getSessionObj?.seller_details?.user_profiles?.profile_photo,
+    name: getSessionObj?.seller_details?.user_profiles?.firstname,
+    id: getSessionObj?.id,
+  };
+
+  const merchantEndSesion = async () => {
+    const data = {
+      amount: parseInt(profileObj?.closeBalance),
+      drawerId: profileObj?.id,
+      transactionType: 'end_tracking_session',
+      modeOfcash: 'cash_out',
+    };
+
+    console.log('data', data);
+    const res = await dispatch(endTrackingSession(data));
+    if (res?.type === 'END_TRACKING_SUCCESS') {
+      dispatch(getDrawerSessionSuccess(null));
+      logoutHandler();
+    } else {
+      alert('something went wrong');
+    }
+  };
 
   const [active, setActive] = useState('dashBoard');
 
@@ -258,9 +293,10 @@ export function DrawerNavigator(props) {
           }}
         >
           <DrawerItem
-            onPress={() => {
-              logoutHandler();
-            }}
+            // onPress={() => {
+            //   logoutHandler();
+            // }}
+            onPress={() => merchantEndSesion()}
             label=""
             icon={({ focused, color, size }) => (
               <Image source={power} style={styles.iconStyle} />
