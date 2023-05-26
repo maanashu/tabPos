@@ -5,3 +5,4 @@ export { Products } from '@/screens/DashBoard/Components/Products';
 export { Numpad } from '@/screens/DashBoard/Components/Numpad';
 export { ReadyToPickup } from '@/screens/DashBoard/Components/ReadyToPickup';
 export { ReadyPickupDetails } from '@/screens/DashBoard/Components/ReadyPickupDetails';
+export { PosSearchListModal } from '@/screens/DashBoard/Components/PosSearchListModal';

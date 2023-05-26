@@ -44,6 +44,8 @@ import {
   getReviewDefault,
   getOrdersSuccess,
   deliveryOrd,
+  deliverygraph,
+  deliOrder,
 } from '@/actions/DeliveryAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
@@ -61,6 +63,9 @@ export function DeliveryOrder() {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getDeliveryData = useSelector(getDelivery);
+  const deliOrderArray = getDeliveryData?.deliveringOrder;
+  console.log('deliOrderArray', deliOrderArray);
+  const deliveryGraph = getDeliveryData?.deliverygraph;
   const orderHeadCount = getDeliveryData?.getOrderCount;
   const [orderCount, setOrderCount] = useState(
     getDeliveryData?.orderList ?? []
@@ -119,19 +124,19 @@ export function DeliveryOrder() {
     },
     {
       key: '4',
-      status: 'Assign to Driver',
+      status: 'Pickup',
       count: orderHeadCount?.[4].count,
       image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
     },
     {
       key: '5',
-      status: 'Pickup',
+      status: 'Delivered',
       count: orderHeadCount?.[5].count,
       image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
     },
     {
       key: '6',
-      status: 'Delivered',
+      status: 'Pickup by Customer',
       count: orderHeadCount?.[6].count,
       image: require('@/assets/icons/ic_deliveryOrder/driver.png'),
     },
@@ -175,6 +180,8 @@ export function DeliveryOrder() {
       dispatch(getOrderCount(sellerID)),
         dispatch(getReviewDefault(0, sellerID));
       dispatch(deliveryOrd());
+      dispatch(deliverygraph(sellerID));
+      dispatch(deliOrder(sellerID));
     }
     if (getDeliveryData?.orderList?.length > 0) {
       setOrderCount(getDeliveryData?.orderList);
@@ -230,11 +237,14 @@ export function DeliveryOrder() {
   const isPosOrderLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_COUNT], state)
   );
+  const isViewPosLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER], state)
+  );
   const isPosOrderDefLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_REVIEW_DEF], state)
   );
   const isDeliveringOrder = useSelector(state =>
-    isLoadingSelector([TYPES.DELIVERY_ORDER], state)
+    isLoadingSelector([TYPES.DELIVERING_ORDER], state)
   );
 
   const customHeader = () => {
@@ -285,7 +295,7 @@ export function DeliveryOrder() {
     setHeadingType('Orders to Review'), setDataType('Orders to Review');
   };
 
-  const orderAccType = item => {
+  const orderAccType = async item => {
     if (length?.[item.key] === 0) {
       Toast.show({
         text2: strings.valiadtion.ordernotfound,
@@ -294,10 +304,12 @@ export function DeliveryOrder() {
         visibilityTime: 1500,
       });
     } else {
-      dispatch(getOrders(item.key, sellerID));
-      setViewAllReviews(true),
-        setHeadingType(item.status),
-        setDataType(item.status);
+      const res = await dispatch(getOrders(item.key, sellerID));
+      if (res) {
+        setViewAllReviews(true),
+          setHeadingType(item.status),
+          setDataType(item.status);
+      }
     }
   };
 
@@ -352,15 +364,15 @@ export function DeliveryOrder() {
       {
         orderAccType(item);
       }
-    } else if (item.status === 'Assign to Driver') {
-      {
-        orderAccType(item);
-      }
     } else if (item.status === 'Pickup') {
       {
         orderAccType(item);
       }
     } else if (item.status === 'Delivered') {
+      {
+        orderAccType(item);
+      }
+    } else if (item.status === 'Pickup by Customer') {
       {
         orderAccType(item);
       }
@@ -547,7 +559,7 @@ export function DeliveryOrder() {
             style={[styles.pinIcon, { tintColor: COLORS.primary }]}
           />
           <Text numberOfLines={1} style={[styles.timeText, styles.timeText2]}>
-            {item.delivery_type}
+            {item.delivery_type_title}
           </Text>
         </View>
         <Image source={rightIcon} style={[styles.pinIcon, { left: 5 }]} />
@@ -1211,7 +1223,7 @@ export function DeliveryOrder() {
       return (
         <View style={styles.mainScreenContiner}>
           <View style={{ paddingVertical: moderateScale(5) }}>
-            {isPosOrderLoading ? (
+            {isPosOrderLoading || isViewPosLoading ? (
               <FlatList
                 scrollEnabled
                 data={loadingData}
@@ -1242,7 +1254,7 @@ export function DeliveryOrder() {
 
                   <Spacer space={SH(10)} />
                   <View style={styles.chartView}>
-                    <ChartKit />
+                    <ChartKit productGraphObject={deliveryGraph} />
                   </View>
                   <Spacer space={SH(20)} />
                 </View>
@@ -1345,12 +1357,12 @@ export function DeliveryOrder() {
                   {isDeliveringOrder ? (
                     <FlatList
                       horizontal
-                      data={deliveryOrders}
-                      extraData={deliveryOrders}
+                      data={[1, 2, 3]}
+                      extraData={[1, 2, 3]}
                       renderItem={renderDeliveryOrdersDummy}
                       showsHorizontalScrollIndicator={false}
                     />
-                  ) : deliveringOrder?.length === 0 ? (
+                  ) : deliOrderArray?.length === 0 ? (
                     <View>
                       <Text
                         style={[
@@ -1364,12 +1376,41 @@ export function DeliveryOrder() {
                   ) : (
                     <FlatList
                       horizontal
-                      data={deliveringOrder}
-                      extraData={deliveringOrder}
+                      data={deliOrderArray}
+                      extraData={deliOrderArray}
                       renderItem={renderDeliveryOrders}
                       showsHorizontalScrollIndicator={false}
                     />
                   )}
+
+                  {/* {isDeliveringOrder ? (
+                    <FlatList
+                      horizontal
+                      data={deliveryOrders}
+                      extraData={deliveryOrders}
+                      renderItem={renderDeliveryOrdersDummy}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  ) : deliOrderArray?.length === 0 ? (
+                    <View>
+                      <Text
+                        style={[
+                          styles.nodata,
+                          { marginVertical: moderateScale(15) },
+                        ]}
+                      >
+                        No data found
+                      </Text>
+                    </View>
+                  ) : (
+                    <FlatList
+                      horizontal
+                      data={deliOrderArray}
+                      extraData={deliOrderArray}
+                      renderItem={renderDeliveryOrders}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  )} */}
                 </View>
               </View>
             </View>
@@ -1554,7 +1595,6 @@ export function DeliveryOrder() {
     <ScreenWrapper>
       <View style={styles.container}>
         {customHeader()}
-
         {changeView()}
       </View>
     </ScreenWrapper>

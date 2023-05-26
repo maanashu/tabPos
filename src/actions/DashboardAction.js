@@ -99,6 +99,23 @@ const posLoginDetailReset = () => ({
   payload: null,
 });
 
+const searchProductListRequest = () => ({
+  type: TYPES.SEARCH_PRODUCT_LIST_REQUEST,
+  payload: null,
+});
+const searchProductListSuccess = searchProductList => ({
+  type: TYPES.SEARCH_PRODUCT_LIST_SUCCESS,
+  payload: { searchProductList },
+});
+const searchProductListError = error => ({
+  type: TYPES.SEARCH_PRODUCT_LIST_ERROR,
+  payload: { error },
+});
+const searchProductListReset = () => ({
+  type: TYPES.SEARCH_PRODUCT_LIST_RESET,
+  payload: null,
+});
+
 export const getOrderDeliveries = sellerID => async dispatch => {
   dispatch(getOrderDeliveriesRequest());
   try {
@@ -178,5 +195,18 @@ export const posLoginDetail = () => async dispatch => {
       dispatch(posLoginDetailReset());
     }
     dispatch(posLoginDetailError(error.message));
+  }
+};
+
+export const searchProductList = (search, sellerID) => async dispatch => {
+  dispatch(searchProductListRequest());
+  try {
+    const res = await DashboardController.searchProductList(search, sellerID);
+    dispatch(searchProductListSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(searchProductListReset());
+    }
+    dispatch(searchProductListError(error.message));
   }
 };

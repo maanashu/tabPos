@@ -4,6 +4,8 @@ import {
   ApiOrderInventory,
   ApiUserInventory,
   USER_URL,
+  ApiProductInventory,
+  PRODUCT_URL,
 } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
@@ -15,8 +17,6 @@ export class DashboardController {
         ORDER_URL +
         ApiOrderInventory.getOrderUser +
         `?seller_id=${sellerID}&delivery_option=1`;
-
-      console.log('endpoint', endpoint);
 
       HttpClient.get(endpoint)
         .then(response => {
@@ -164,6 +164,22 @@ export class DashboardController {
               visibilityTime: 1500,
             });
           }
+          reject(error);
+        });
+    });
+  }
+
+  static async searchProductList(search, sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.searchProductList +
+        `?app_name=pos&delivery_options=3&search=${search}&seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
           reject(error);
         });
     });

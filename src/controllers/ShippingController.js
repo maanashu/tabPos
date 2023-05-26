@@ -146,4 +146,26 @@ export class ShippingController {
         });
     });
   }
+
+  static async shippingGraph(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.shippingGraph +
+        `?seller_id=${sellerID}&filter=week`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  }
 }

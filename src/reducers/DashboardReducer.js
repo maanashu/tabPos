@@ -5,6 +5,7 @@ const INITIALSTATE = {
   getSesssion: {},
   getTotalSale: [],
   posLoginDetail: {},
+  searchProductList: [],
 };
 
 export const dashboardReducer = (
@@ -54,6 +55,17 @@ export const dashboardReducer = (
       return {
         ...state,
         posLoginDetail: {},
+      };
+
+    case TYPES.SEARCH_PRODUCT_LIST_SUCCESS:
+      return {
+        ...state,
+        searchProductList: payload.searchProductList,
+      };
+    case TYPES.SEARCH_PRODUCT_LIST_RESET:
+      return {
+        ...state,
+        searchProductList: [],
       };
 
     default:

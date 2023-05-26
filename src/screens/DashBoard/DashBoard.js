@@ -21,6 +21,7 @@ import {
   Phone_light,
   addDiscountPic,
   backArrow,
+  backArrow2,
   cashProfile,
   checkArrow,
   clock,
@@ -32,11 +33,14 @@ import {
   keyboard,
   location,
   lockLight,
+  marboloPack,
+  minus,
   notifications,
   ok,
   pause,
   pay,
   pin,
+  plus,
   rightIcon,
   scn,
   search_light,
@@ -52,6 +56,7 @@ import {
   Categories,
   CategoryList,
   Numpad,
+  PosSearchListModal,
   Products,
   ReadyPickupDetails,
   ReadyToPickup,
@@ -68,6 +73,7 @@ import {
   getTotalSale,
   getTotalSaleAction,
   posLoginDetail,
+  searchProductList,
 } from '@/actions/DashboardAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useIsFocused } from '@react-navigation/native';
@@ -83,8 +89,21 @@ import { moderateScale } from 'react-native-size-matters';
 import { getUser } from '@/selectors/UserSelectors';
 import { logoutUserFunction } from '@/actions/UserActions';
 import { KeyboardAvoidingView } from 'react-native';
+import { getSearchProduct } from '@/actions/RetailAction';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+const listData = [
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+];
 
 export function DashBoard({ navigation }) {
   const isFocused = useIsFocused();
@@ -92,6 +111,7 @@ export function DashBoard({ navigation }) {
   const getAuth = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
   const getDashboardData = useSelector(getDashboard);
+  const getProductListArray = getDashboardData?.searchProductList;
   const getLoginDeatil = getDashboardData?.posLoginDetail;
   const getSessionObj = getDashboardData?.getSesssion;
   const getPosUser = getUserData?.posLoginData;
@@ -112,6 +132,11 @@ export function DashBoard({ navigation }) {
 
   const [currentTime, setCurrentTime] = useState(moment().format('HH:mm:ss'));
 
+  const [searchModal, setSearchModal] = useState(false);
+  const [searchProViewdetail, setSearchProViewdetail] = useState(false);
+  const [selectionId, setSelectionId] = useState();
+  const [search, setSearch] = useState();
+
   var aaa = new Date();
   const newDate = aaa.getTime();
 
@@ -123,13 +148,13 @@ export function DashBoard({ navigation }) {
 
   var loginh = new Date(sessionDate).getHours();
   var loginm = new Date(sessionDate).getMinutes();
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(moment().format('HH:mm:ss'));
-    }, 1000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCurrentTime(moment().format('HH:mm:ss'));
+  //   }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const profileObj = {
     openingBalance: getSessionObj?.opening_balance,
@@ -395,6 +420,15 @@ export function DashBoard({ navigation }) {
     return renderView[selected];
   };
 
+  const onChangeFun = search => {
+    if (search.length > 3) {
+      dispatch(searchProductList(search, sellerID));
+      setSearchModal(true);
+    } else if (search.length < 3) {
+      setSearchModal(false);
+    }
+  };
+
   const bodyView = () => {
     if (pickupDetails) {
       return (
@@ -605,7 +639,7 @@ export function DashBoard({ navigation }) {
               <Text style={styles.cashLabel}>
                 ID : {getPosUser?.user_profiles?.user_id ?? '0'}
               </Text>
-              <Spacer space={SH(18)} />
+              <Spacer space={SH(10)} />
 
               <View style={styles.todaySaleCon}>
                 <View style={styles.displayflex}>
@@ -653,7 +687,7 @@ export function DashBoard({ navigation }) {
                   </Text>
                 </View>
               </View>
-              <Spacer space={SH(18)} />
+              <Spacer space={SH(10)} />
               <View style={styles.todaySaleCon}>
                 <Text style={styles.todaySale}>
                   {strings.dashboard.cashDrawer}
@@ -676,9 +710,9 @@ export function DashBoard({ navigation }) {
                   </Text>
                 </View>
               </View>
-              <Spacer space={SH(18)} />
+              <Spacer space={SH(10)} />
               <View style={styles.profileHrRow}></View>
-              <Spacer space={SH(18)} />
+              <Spacer space={SH(10)} />
 
               <View style={styles.sessionCon}>
                 <View style={[styles.displayflex, styles.paddingV]}>
@@ -744,7 +778,7 @@ export function DashBoard({ navigation }) {
               <Spacer space={SH(10)} />
             </View>
             <View style={styles.rightOrderCon}>
-              <TouchableOpacity
+              <View
                 style={styles.inputWraper}
                 // onPress={() => setSearchScreen(true)}
               >
@@ -755,17 +789,17 @@ export function DashBoard({ navigation }) {
                   <TextInput
                     placeholder={strings.retail.searchProduct}
                     style={styles.searchInput}
-                    editable={false}
-                    // value={search}
-                    // onChangeText={search => (
-                    //   setSearch(search), onChangeFun(search)
-                    // )}
+                    // editable={false}
+                    value={search}
+                    onChangeText={search => (
+                      setSearch(search), onChangeFun(search)
+                    )}
                   />
                 </View>
                 <TouchableOpacity onPress={() => setSearchScreen(true)}>
                   <Image source={scn} style={styles.scnStyle} />
                 </TouchableOpacity>
-              </TouchableOpacity>
+              </View>
               <Spacer space={SH(20)} />
               <View style={styles.displayflex}>
                 {STARTSELLING.map((item, index) => (
@@ -1240,6 +1274,25 @@ export function DashBoard({ navigation }) {
           </View>
         </View>
       </Modal>
+
+      {/* Search List modal start*/}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={searchModal}
+        avoidKeyboard={false}
+      >
+        <KeyboardAvoidingView style={{ flex: 1 }}>
+          <PosSearchListModal
+            listFalseHandler={() => (setSearchModal(false), setSearch(''))}
+            getProductListArray={getProductListArray}
+            search={search}
+            setSearch={setSearch}
+            onChangeFun={onChangeFun}
+          />
+        </KeyboardAvoidingView>
+      </Modal>
+      {/* Search List modal end*/}
     </ScreenWrapper>
   );
 }

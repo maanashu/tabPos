@@ -116,6 +116,20 @@ const shipServiceUpdateError = error => ({
   type: TYPES.SHIP_SERVICEUPDATE_ERROR,
   payload: { error },
 });
+
+const shippingGraphRequest = () => ({
+  type: TYPES.SHIPPING_GRAPH_REQUEST,
+  payload: null,
+});
+const shippingGraphSuccess = shippingGraph => ({
+  type: TYPES.SHIPPING_GRAPH_SUCCESS,
+  payload: { shippingGraph },
+});
+const shippingGraphError = error => ({
+  type: TYPES.SHIPPING_GRAPH_ERROR,
+  payload: { error },
+});
+
 export const getOrderCount = status => async dispatch => {
   dispatch(getOrderCountRequest());
   try {
@@ -193,5 +207,15 @@ export const shipServiceUpdate = data => async dispatch => {
     return dispatch(shipServiceUpdateSuccess(res));
   } catch (error) {
     dispatch(shipServiceUpdateError(error.message));
+  }
+};
+
+export const shippingGraph = sellerID => async dispatch => {
+  dispatch(shippingGraphRequest());
+  try {
+    const res = await ShippingController.shippingGraph(sellerID);
+    dispatch(shippingGraphSuccess(res?.payload));
+  } catch (error) {
+    dispatch(shippingGraphError(error.message));
   }
 };

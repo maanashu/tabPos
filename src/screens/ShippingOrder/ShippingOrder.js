@@ -48,11 +48,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   acceptOrder,
   deliveringOrd,
+  deliverygraph,
   getOrderCount,
   getOrders,
   getReviewDefault,
   getShippingService,
   shipServiceUpdate,
+  shippingGraph,
 } from '@/actions/ShippingAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getShipping } from '@/selectors/ShippingSelector';
@@ -70,6 +72,7 @@ export function ShippingOrder() {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getDeliveryData = useSelector(getShipping);
+  const homeGraph = getDeliveryData?.shippingGraph;
   const shippingServiceData = getDeliveryData?.getShippingService;
   const orderHeadCount = getDeliveryData?.getOrderCount;
   const deliveringOrder = getDeliveryData?.deliveryOrd;
@@ -188,6 +191,7 @@ export function ShippingOrder() {
       dispatch(getOrderCount(sellerID)),
         dispatch(getReviewDefault(0, sellerID));
       dispatch(deliveringOrd());
+      dispatch(shippingGraph(sellerID));
     }
     if (getDeliveryData?.orderList?.length > 0) {
       setOrderCount(getDeliveryData?.orderList);
@@ -1189,7 +1193,7 @@ export function ShippingOrder() {
                   </Text>
                   <Spacer space={SH(10)} />
                   <View style={styles.chartView}>
-                    <ChartKit />
+                    <ChartKit productGraphObject={homeGraph} />
                   </View>
                   <Spacer space={SH(20)} />
                 </View>

@@ -75,7 +75,6 @@ export function DrawerNavigator(props) {
       modeOfcash: 'cash_out',
     };
 
-    console.log('data', data);
     const res = await dispatch(endTrackingSession(data));
     if (res?.type === 'END_TRACKING_SUCCESS') {
       dispatch(getDrawerSessionSuccess(null));

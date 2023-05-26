@@ -1,5 +1,5 @@
 import { DeliveryController } from '@/controllers';
-import { TYPES } from "@/Types/DeliveringOrderTypes";
+import { TYPES } from '@/Types/DeliveringOrderTypes';
 
 const getOrderCountRequest = () => ({
   type: TYPES.GET_ORDER_COUNT_REQUEST,
@@ -63,7 +63,7 @@ const acceptOrderRequest = () => ({
 });
 const acceptOrderSuccess = () => ({
   type: TYPES.ACCEPT_ORDER_SUCCESS,
-  payload: {  },
+  payload: {},
 });
 const acceptOrderError = error => ({
   type: TYPES.ACCEPT_ORDER_ERROR,
@@ -87,64 +87,112 @@ const deliveryOrdReset = () => ({
   payload: null,
 });
 
-export const getOrderCount = (status) => async dispatch => {
+const deliverygraphRequest = () => ({
+  type: TYPES.DELIVERY_GRAPH_REQUEST,
+  payload: null,
+});
+const deliverygraphSuccess = deliverygraph => ({
+  type: TYPES.DELIVERY_GRAPH_SUCCESS,
+  payload: { deliverygraph },
+});
+const deliverygraphError = error => ({
+  type: TYPES.DELIVERY_GRAPH_ERROR,
+  payload: { error },
+});
+
+const deliveringOrderRequest = () => ({
+  type: TYPES.DELIVERING_ORDER_REQUEST,
+  payload: null,
+});
+const deliveringOrderSuccess = deliveringOrder => ({
+  type: TYPES.DELIVERING_ORDER_SUCCESS,
+  payload: { deliveringOrder },
+});
+const deliveringOrderError = error => ({
+  type: TYPES.DELIVERING_ORDER_ERROR,
+  payload: { error },
+});
+const deliveringOrderReset = () => ({
+  type: TYPES.DELIVERING_ORDER_RESET,
+  payload: null,
+});
+
+export const getOrderCount = status => async dispatch => {
   dispatch(getOrderCountRequest());
   try {
-      const res = await DeliveryController.getOrderCount(status);
-      dispatch(getOrderCountSuccess(res));
+    const res = await DeliveryController.getOrderCount(status);
+    dispatch(getOrderCountSuccess(res));
   } catch (error) {
-      dispatch(getOrderCountError(error.message));
+    dispatch(getOrderCountError(error.message));
   }
 };
 export const getReviewDefault = (status, sellerID) => async dispatch => {
   dispatch(getReviewDefRequest());
   try {
-      const res = await DeliveryController.getReviewDefault(status, sellerID);
-      dispatch(getReviewDefSuccess(res));
+    const res = await DeliveryController.getReviewDefault(status, sellerID);
+    dispatch(getReviewDefSuccess(res));
   } catch (error) {
-    if (error?.statusCode === 204){
+    if (error?.statusCode === 204) {
       dispatch(getReviewDefReset());
     }
-      dispatch(getReviewDefError(error.message));
+    dispatch(getReviewDefError(error.message));
   }
 };
 
 export const getOrders = (status, sellerID) => async dispatch => {
   dispatch(getOrdersRequest());
   try {
-      const res = await DeliveryController.getOrders(status, sellerID);
-      dispatch(getOrdersSuccess(res));
+    const res = await DeliveryController.getOrders(status, sellerID);
+    return dispatch(getOrdersSuccess(res));
   } catch (error) {
-      dispatch(getOrdersError(error.message));
+    dispatch(getOrdersError(error.message));
   }
 };
 
-export const acceptOrder = (data) => async dispatch => {
+export const acceptOrder = data => async dispatch => {
   dispatch(acceptOrderRequest());
   try {
-      const res = await DeliveryController.acceptOrder(data);
-      dispatch(acceptOrderSuccess(res));
-      dispatch(getOrderCount(data.sellerID));
-      dispatch(getReviewDefault(0, sellerID ));
+    const res = await DeliveryController.acceptOrder(data);
+    dispatch(acceptOrderSuccess(res));
+    dispatch(getOrderCount(data.sellerID));
+    dispatch(getReviewDefault(0, sellerID));
   } catch (error) {
-      dispatch(acceptOrderError(error.message));
+    dispatch(acceptOrderError(error.message));
   }
 };
 
 export const deliveryOrd = () => async dispatch => {
   dispatch(deliveryOrdRequest());
   try {
-      const res = await DeliveryController.deliveryOrd();
-      dispatch(deliveryOrdSuccess(res?.payload?.shipping_type_Count));
+    const res = await DeliveryController.deliveryOrd();
+    dispatch(deliveryOrdSuccess(res?.payload?.shipping_type_Count));
   } catch (error) {
-    if (error?.statusCode === 204){
+    if (error?.statusCode === 204) {
       dispatch(deliveryOrdReset());
     }
-      dispatch(deliveryOrdError(error.message));
+    dispatch(deliveryOrdError(error.message));
   }
 };
 
+export const deliverygraph = sellerID => async dispatch => {
+  dispatch(deliverygraphRequest());
+  try {
+    const res = await DeliveryController.deliverygraph(sellerID);
+    dispatch(deliverygraphSuccess(res?.payload));
+  } catch (error) {
+    dispatch(deliverygraphError(error.message));
+  }
+};
 
-
-
-
+export const deliOrder = sellerID => async dispatch => {
+  dispatch(deliveringOrderRequest());
+  try {
+    const res = await DeliveryController.deliveringOrder(sellerID);
+    dispatch(deliveringOrderSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(deliveringOrderReset());
+    }
+    dispatch(deliveringOrderError(error.message));
+  }
+};

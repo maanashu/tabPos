@@ -7,6 +7,7 @@ const INITIALSTATE = {
   getorderList: {},
   deliveryOrd: {},
   getShippingService: [],
+  shippingGraph: {},
 };
 
 export const shippingReducer = (
@@ -60,6 +61,12 @@ export const shippingReducer = (
       return {
         ...state,
         getShippingService: [],
+      };
+
+    case TYPES.SHIPPING_GRAPH_SUCCESS:
+      return {
+        ...state,
+        shippingGraph: payload.shippingGraph,
       };
 
     default:
