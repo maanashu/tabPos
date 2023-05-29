@@ -6,6 +6,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import { strings } from '@/localization';
+import moment from 'moment';
 
 const HandleUnhandledTouches = () => {
   Keyboard.dismiss();
@@ -47,7 +48,8 @@ const NormalAlert = ({
 };
 
 const ValidateEmail = param => {
-  const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+  const emailRegex =
+    /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   const paramTrim = param?.trim();
   if (paramTrim) {
     if (emailRegex.test(paramTrim)) {
@@ -122,6 +124,30 @@ const getCurrentLocation = () => {
     setLongitude(loc.coords.longitude);
   });
 };
+
+const getLoginSessionTime = userLoginTime => {
+  // Get the current time
+  const currentTime = moment();
+
+  // Specify the login time (12:53:27 PM)
+  const loginTime = moment(userLoginTime, 'h:mm:ss A');
+
+  // Calculate the time difference in minutes
+  const sessionTimeInMinutes = currentTime.diff(loginTime, 'minutes');
+
+  // Convert minutes to hours and minutes
+  const sessionHours = Math.floor(sessionTimeInMinutes / 60);
+  const sessionMinutes = sessionTimeInMinutes % 60;
+
+  // Format the time as "hh:mm"
+  const sessionTimeFormatted = moment({
+    hours: sessionHours,
+    minutes: sessionMinutes,
+  }).format('HH[h]:mm[m]');
+
+  return sessionTimeFormatted;
+};
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -132,4 +158,5 @@ export {
   // OpenGallery,
   ValidateEmail,
   ValidateName,
+  getLoginSessionTime,
 };

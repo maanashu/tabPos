@@ -91,6 +91,7 @@ import { logoutUserFunction } from '@/actions/UserActions';
 import { KeyboardAvoidingView } from 'react-native';
 import { getSearchProduct } from '@/actions/RetailAction';
 import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
+import { getLoginSessionTime } from '@/utils/GlobalMethods';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -739,7 +740,9 @@ export function DashBoard({ navigation }) {
                     {strings.dashboard.session}
                   </Text>
                   <Text style={styles.cashAmount}>
-                    {presenth - loginh}h {presentm - loginm}m
+                    {getLoginSessionTime(
+                      moment(getLoginDeatil?.updated_at).format('LTS')
+                    )}
                   </Text>
                 </View>
               </View>
