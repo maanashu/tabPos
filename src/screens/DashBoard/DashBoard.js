@@ -147,11 +147,6 @@ export function DashBoard({ navigation }) {
   var bbb = new Date(getLoginDeatil?.updated_at);
   const sessionDate = bbb.getTime();
 
-  var presenth = new Date(newDate).getHours();
-  var presentm = new Date(newDate).getMinutes();
-
-  var loginh = new Date(sessionDate).getHours();
-  var loginm = new Date(sessionDate).getMinutes();
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     setCurrentTime(moment().format('HH:mm:ss'));

@@ -1361,4 +1361,28 @@ export const styles = StyleSheet.create({
   detailHeader2: { color: COLORS.dark_grey, fontFamily: Fonts.MaisonRegular },
 
   // searching product Detail css end
+
+  bundleOfferCon: {
+    backgroundColor: COLORS.blue_shade,
+    height: SH(42),
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginVertical: verticalScale(2),
+  },
+  buypackText: {
+    color: COLORS.primary,
+    fontSize: SF(16),
+    fontFamily: Fonts.Regular,
+  },
+  bundleAddCon: {
+    borderRadius: 3,
+    width: SW(20),
+    alignItems: 'center',
+  },
+  bundleAddText: {
+    color: COLORS.white,
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    paddingVertical: verticalScale(3),
+  },
 });
