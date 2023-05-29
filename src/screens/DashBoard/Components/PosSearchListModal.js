@@ -16,29 +16,13 @@ import { styles } from '@/screens/DashBoard/DashBoard.styles';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { backArrow2, crossButton, minus, plus } from '@/assets';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/DashboardTypes';
-const listData = [
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-];
-
-const pickupData = [
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-];
+import { useIsFocused } from '@react-navigation/native';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getUser } from '@/selectors/UserSelectors';
+import { addTocart } from '@/actions/RetailAction';
 
 export function PosSearchListModal({
   listFalseHandler,
@@ -50,12 +34,51 @@ export function PosSearchListModal({
   onMinusBtn,
   onPlusBtn,
 }) {
-  const [searchModal, setSearchModal] = useState(false);
-  const [searchProViewdetail, setSearchProViewdetail] = useState(false);
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const getUserData = useSelector(getUser);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [selectionId, setSelectionId] = useState();
+  const [selectedQuantities, setSelectedQuantities] = useState({});
+
+  const handleQuantitySelection = (item, action) => {
+    setSelectedQuantities(prevQuantities => {
+      const currentQuantity = prevQuantities[item.id] || 0;
+
+      let updatedQuantity;
+      if (action === 'add') {
+        updatedQuantity = currentQuantity + 1;
+      } else if (action === 'subtract') {
+        updatedQuantity = Math.max(currentQuantity - 1, 0);
+      } else {
+        updatedQuantity = currentQuantity;
+      }
+
+      return {
+        ...prevQuantities,
+        [item.id]: updatedQuantity,
+      };
+    });
+  };
+
+  const addToCart = item => {
+    const data = {
+      seller_id: sellerID,
+      product_id: item.id,
+      qty: selectedQuantities[item.id] || 0,
+      service_id: item.service_id,
+      supplyId: item?.supplies?.[0]?.id,
+      supplyPriceid: item?.supplies?.[0]?.supply_prices[0]?.id,
+    };
+    dispatch(addTocart(data));
+  };
 
   const isSearchProLoading = useSelector(state =>
     isLoadingSelector([TYPES.SEARCH_PRODUCT_LIST], state)
+  );
+  const addToCartLoad = useSelector(state =>
+    isLoadingSelector([TYPES.ADDCART], state)
   );
 
   const searchFunction = id => {
@@ -87,7 +110,10 @@ export function PosSearchListModal({
           <View style={styles.locStock}>
             <Text style={styles.marbolorRedStyle}>{item.name}</Text>
             <Spacer space={SH(5)} />
-            <Text style={styles.stockStyle}>{strings.posSale.stock}</Text>
+            <Text style={styles.stockStyle}>
+              {item.supplies[0]?.rest_quantity}
+              {strings.posSale.stock}
+            </Text>
             <Text style={styles.searchItalicText}>
               {strings.posSale.location}
             </Text>
@@ -113,6 +139,7 @@ export function PosSearchListModal({
           <Spacer space={SH(25)} />
           <Text style={styles.availablestockHeading}>
             {strings.posSale.availableStock}
+            {item.supplies[0]?.rest_quantity}
           </Text>
           <Spacer space={SH(15)} />
           <View style={styles.amountjfrContainer}>
@@ -136,11 +163,17 @@ export function PosSearchListModal({
           <View
             style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
           >
-            <TouchableOpacity onPress={onMinusBtn}>
+            <TouchableOpacity
+              onPress={() => handleQuantitySelection(item, 'subtract')}
+            >
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
-            <Text style={[styles.price, { fontSize: SF(24) }]}>0</Text>
-            <TouchableOpacity onPress={onPlusBtn}>
+            <Text style={[styles.price, { fontSize: SF(24) }]}>
+              {selectedQuantities[item.id] || 0}
+            </Text>
+            <TouchableOpacity
+              onPress={() => handleQuantitySelection(item, 'add')}
+            >
               <Image source={plus} style={styles.plusBtn2} />
             </TouchableOpacity>
           </View>
@@ -166,14 +199,26 @@ export function PosSearchListModal({
               {/* )} */}
             </View>
             <View style={{ flex: 1 }} />
-            <TouchableOpacity
-              style={styles.addcartButtonStyle}
-              onPress={() => alert('inProgress')}
-            >
-              <Text style={styles.addToCartText}>
-                {strings.posSale.addToCart}
-              </Text>
-            </TouchableOpacity>
+            {addToCartLoad ? (
+              <View style={styles.addcartButtonStyle}>
+                <Text style={styles.addToCartText}>
+                  {strings.posSale.addToCart}
+                </Text>
+                <View style={{ marginLeft: 5 }}>
+                  <ActivityIndicator size="small" color={COLORS.white} />
+                </View>
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={styles.addcartButtonStyle}
+                onPress={() => addToCart(item)}
+              >
+                <Text style={styles.addToCartText}>
+                  {strings.posSale.addToCart}
+                </Text>
+              </TouchableOpacity>
+            )}
+
             <Spacer space={SH(35)} />
           </View>
         </View>

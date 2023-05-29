@@ -261,6 +261,7 @@ export class RetailController {
       };
       HttpClient.post(endpoint, body)
         .then(response => {
+          alert('PosCart created successfully');
           if (response?.msg === 'PosCart created successfully') {
             Toast.show({
               position: 'bottom',
@@ -272,6 +273,7 @@ export class RetailController {
           resolve(response);
         })
         .catch(error => {
+          alert('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

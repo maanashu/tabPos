@@ -5,51 +5,41 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import {
   View,
   Text,
-  Dimensions,
-  FlatList,
   TouchableOpacity,
   Image,
-  TextInput,
   ActivityIndicator,
 } from 'react-native';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import {
-  Fonts,
-  backArrow,
-  backArrow2,
-  crossButton,
-  minus,
-  plus,
-  userImage,
-} from '@/assets';
-
-import { useSelector } from 'react-redux';
+import { Fonts, backArrow, minus, plus } from '@/assets';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getUser } from '@/selectors/UserSelectors';
+import { addTocart } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/DashboardTypes';
-const listData = [
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-];
-
-const pickupData = [
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-];
+import { TYPES } from '@/Types/Types';
 
 export function PosSearchDetailModal({ backArrowhandler, productData }) {
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const getUserData = useSelector(getUser);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   console.log('productData', productData);
+
+  const addToCart = () => {
+    const data = {
+      seller_id: sellerID,
+      product_id: productData?.id,
+      qty: 0,
+      service_id: productData.service_id,
+      supplyId: productData?.supplies?.[0]?.id,
+      supplyPriceid: productData?.supplies?.[0]?.supply_prices[0]?.id,
+    };
+    console.log('data', data);
+    dispatch(addTocart(data));
+  };
+  const addToCartLoad = useSelector(state =>
+    isLoadingSelector([TYPES.ADDCART], state)
+  );
   return (
     <View style={styles.productModCon2}>
       <TouchableOpacity
@@ -98,22 +88,25 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
             </TouchableOpacity>
           </View>
           <Spacer space={SH(20)} />
-          <TouchableOpacity
-            style={styles.descriptionAddCon}
-            // onPress={addToCartCat}
-            // onPress={() => (
-            //   setProductViewDetail(false),
-            //   addToCartCatPro(
-            //     productData?.category?.service_id,
-            //     productData?.qty,
-            //     productData?.id
-            //   )
-            // )}
-          >
-            <Text style={styles.desAddCartText}>
-              {strings.posSale.addToCart}
-            </Text>
-          </TouchableOpacity>
+          {addToCartLoad ? (
+            <View style={styles.descriptionAddCon}>
+              <Text style={styles.desAddCartText}>
+                {strings.posSale.addToCart}
+              </Text>
+              <View style={{ marginLeft: 8 }}>
+                <ActivityIndicator size="small" color={COLORS.white} />
+              </View>
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={styles.descriptionAddCon}
+              onPress={() => addToCart()}
+            >
+              <Text style={styles.desAddCartText}>
+                {strings.posSale.addToCart}
+              </Text>
+            </TouchableOpacity>
+          )}
           <Spacer space={SH(38)} />
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.unitTypeCon}>
@@ -195,7 +188,7 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
                   { fontSize: SF(20), fontFamily: Fonts.SemiBold },
                 ]}
               >
-                0
+                {productData?.supplies?.[0]?.rest_quantity}
               </Text>
               <Spacer space={SH(8)} />
             </View>
@@ -211,7 +204,7 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
                   { fontSize: SF(20), fontFamily: Fonts.SemiBold },
                 ]}
               >
-                0
+                {productData?.supplies?.[0]?.rest_quantity}
               </Text>
               <Spacer space={SH(8)} />
             </View>

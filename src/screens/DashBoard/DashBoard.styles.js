@@ -1236,6 +1236,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
+    flexDirection: 'row',
   },
   addToCartText: {
     color: COLORS.white,
@@ -1339,6 +1340,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   desAddCartText: {
     color: COLORS.white,
