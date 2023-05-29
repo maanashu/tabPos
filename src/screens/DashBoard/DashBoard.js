@@ -90,6 +90,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import { logoutUserFunction } from '@/actions/UserActions';
 import { KeyboardAvoidingView } from 'react-native';
 import { getSearchProduct } from '@/actions/RetailAction';
+import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -133,9 +134,11 @@ export function DashBoard({ navigation }) {
   const [currentTime, setCurrentTime] = useState(moment().format('HH:mm:ss'));
 
   const [searchModal, setSearchModal] = useState(false);
+  const [searchModalDetail, setSearchModalDetail] = useState(false);
   const [searchProViewdetail, setSearchProViewdetail] = useState(false);
   const [selectionId, setSelectionId] = useState();
   const [search, setSearch] = useState();
+  const [productDet, setproductDet] = useState();
 
   var aaa = new Date();
   const newDate = aaa.getTime();
@@ -791,9 +794,10 @@ export function DashBoard({ navigation }) {
                     style={styles.searchInput}
                     // editable={false}
                     value={search}
-                    onChangeText={search => (
-                      setSearch(search), onChangeFun(search)
-                    )}
+                    onChangeText={search => {
+                      setSearch(search);
+                      onChangeFun(search);
+                    }}
                   />
                 </View>
                 <TouchableOpacity onPress={() => setSearchScreen(true)}>
@@ -1279,18 +1283,33 @@ export function DashBoard({ navigation }) {
       <Modal
         animationType="fade"
         transparent={true}
-        isVisible={searchModal}
+        isVisible={searchModal || searchModalDetail}
         avoidKeyboard={false}
       >
-        <KeyboardAvoidingView style={{ flex: 1 }}>
-          <PosSearchListModal
-            listFalseHandler={() => (setSearchModal(false), setSearch(''))}
-            getProductListArray={getProductListArray}
-            search={search}
-            setSearch={setSearch}
-            onChangeFun={onChangeFun}
+        {searchModalDetail ? (
+          <PosSearchDetailModal
+            backArrowhandler={() => (
+              setSearchModal(true), setSearchModalDetail(false)
+            )}
+            productData={productDet}
           />
-        </KeyboardAvoidingView>
+        ) : (
+          <KeyboardAvoidingView style={{ flex: 1 }}>
+            <PosSearchListModal
+              listFalseHandler={() => (setSearchModal(false), setSearch(''))}
+              getProductListArray={getProductListArray}
+              search={search}
+              setSearch={setSearch}
+              onChangeFun={onChangeFun}
+              viewDetailHandler={item => (
+                setSearchModal(false),
+                setSearchModalDetail(true),
+                setproductDet(item)
+              )}
+              // item={}
+            />
+          </KeyboardAvoidingView>
+        )}
       </Modal>
       {/* Search List modal end*/}
     </ScreenWrapper>

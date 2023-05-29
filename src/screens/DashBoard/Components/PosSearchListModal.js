@@ -14,50 +14,11 @@ import {
 } from 'react-native';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import {
-  Fonts,
-  Phone_light,
-  addDiscountPic,
-  backArrow,
-  backArrow2,
-  cashProfile,
-  checkArrow,
-  clock,
-  crossBg,
-  crossButton,
-  deliveryScooter,
-  email,
-  eraser,
-  keyboard,
-  location,
-  lockLight,
-  marboloPack,
-  minus,
-  notifications,
-  ok,
-  pause,
-  pay,
-  pin,
-  plus,
-  rightIcon,
-  scn,
-  search_light,
-  sellingArrow,
-  sellingBucket,
-  sessionEndBar,
-  terryProfile,
-  userImage,
-} from '@/assets';
-import {
-  SubcategoryData,
-  categoryProRowData,
-  categoryRowData,
-  homeTableData,
-} from '@/constants/flatListData';
+import { backArrow2, crossButton, minus, plus } from '@/assets';
+
 import { useSelector } from 'react-redux';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/DashboardTypes';
-const windowHeight = Dimensions.get('window').height;
 const listData = [
   {
     id: 1,
@@ -85,6 +46,9 @@ export function PosSearchListModal({
   search,
   setSearch,
   onChangeFun,
+  viewDetailHandler,
+  onMinusBtn,
+  onPlusBtn,
 }) {
   const [searchModal, setSearchModal] = useState(false);
   const [searchProViewdetail, setSearchProViewdetail] = useState(false);
@@ -135,7 +99,7 @@ export function PosSearchListModal({
           </Text>
           <Spacer space={SH(5)} />
           <TouchableOpacity
-            // onPress={() => (viewDetailHandler(item), setHandlerTrue(true))}
+            onPress={() => viewDetailHandler(item)}
             style={styles.viewDetailCon}
           >
             <Text style={[styles.stockStyle, { color: COLORS.primary }]}>
@@ -172,11 +136,11 @@ export function PosSearchListModal({
           <View
             style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onMinusBtn}>
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
-            <Text style={[styles.price, { fontSize: SF(24) }]}>2</Text>
-            <TouchableOpacity>
+            <Text style={[styles.price, { fontSize: SF(24) }]}>0</Text>
+            <TouchableOpacity onPress={onPlusBtn}>
               <Image source={plus} style={styles.plusBtn2} />
             </TouchableOpacity>
           </View>

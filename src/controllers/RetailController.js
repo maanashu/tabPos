@@ -19,6 +19,7 @@ export class RetailController {
         PRODUCT_URL +
         ApiProductInventory.getCategory +
         `?page=1&limit=20&seller_id=${sellerID}&main_category=true`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

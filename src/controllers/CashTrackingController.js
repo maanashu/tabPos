@@ -1,16 +1,7 @@
 import { strings } from '@/localization';
-import {
-  ORDER_URL,
-  ApiOrderInventory,
-  ApiProductInventory,
-  PRODUCT_URL,
-  USER_URL,
-  ApiUserInventory,
-} from '@/utils/APIinventory';
+import { USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
-import { log } from 'react-native-reanimated';
-import { err } from 'react-native-svg/lib/typescript/xml';
 
 export class CashTrackingController {
   static async getDrawerSession() {
@@ -120,7 +111,6 @@ export class CashTrackingController {
         });
     });
   }
-
   static async endTrackingSession(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.trackSessionSave;
@@ -147,7 +137,6 @@ export class CashTrackingController {
         });
     });
   }
-
   static async getDrawerSessionById(status) {
     return new Promise((resolve, reject) => {
       const endpoint =

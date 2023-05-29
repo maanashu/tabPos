@@ -1258,4 +1258,105 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   // searching list Modal css end
+
+  // searching product Detail css start
+  productModCon2: {
+    backgroundColor: COLORS.white,
+    width: windowWidth * 0.7,
+    height: windowHeight * 0.7,
+    borderRadius: 15,
+    paddingHorizontal: moderateScale(15),
+    paddingVertical: verticalScale(8),
+  },
+
+  backButtonCon: {
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 3,
+    width: windowWidth * 0.07,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+
+  backButtonArrow: {
+    width: SW(12),
+    height: SW(8),
+    resizeMode: 'contain',
+    tintColor: COLORS.dark_grey,
+  },
+  backTextStyle: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+    paddingVertical: verticalScale(5),
+  },
+  productDetailHeader: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonRegular,
+    fontSize: SF(32),
+  },
+  detailImageCon: {
+    width: windowWidth * 0.25,
+  },
+  marboloPackStyle: {
+    width: SW(92),
+    height: SW(60),
+    resizeMode: 'contain',
+  },
+  productDescrptionCon: {
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: COLORS.solidGrey,
+    borderRadius: 5,
+    paddingHorizontal: moderateScale(5),
+  },
+  detailHeader: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(18),
+  },
+  productDes: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(13),
+  },
+  detailPriceCon: {
+    width: windowWidth * 0.4,
+  },
+  priceContainer: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 5,
+    height: SH(46),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(10),
+    zIndex: -99,
+  },
+  descriptionAddCon: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  desAddCartText: {
+    color: COLORS.white,
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+    paddingVertical: verticalScale(6),
+  },
+  unitTypeCon: {
+    width: windowWidth * 0.12,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: COLORS.solidGrey,
+    borderRadius: 5,
+    paddingHorizontal: moderateScale(5),
+    marginHorizontal: moderateScale(5),
+    marginVertical: verticalScale(2),
+  },
+  detailHeader2: { color: COLORS.dark_grey, fontFamily: Fonts.MaisonRegular },
+
+  // searching product Detail css end
 });
