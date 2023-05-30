@@ -64,7 +64,6 @@ export function DeliveryOrder() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getDeliveryData = useSelector(getDelivery);
   const deliOrderArray = getDeliveryData?.deliveringOrder;
-  console.log('deliOrderArray', deliOrderArray);
   const deliveryGraph = getDeliveryData?.deliverygraph;
   const orderHeadCount = getDeliveryData?.getOrderCount;
   const [orderCount, setOrderCount] = useState(

@@ -600,6 +600,7 @@ export const en = {
     amount: 'Amount',
     refundPolicy: 'Refund policy',
     intro: 'Introduction',
+    notification: 'Notifications',
   },
   dashboard: {
     todaySale: "Today's Sales",

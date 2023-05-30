@@ -29,7 +29,7 @@ export const ApiProductInventory = {
   getSubCategory: 'categories',
   getBrand: 'brands',
   getProduct: 'products',
-  getTotalProDetail: 'supplies/seller-product/statistics',
+  getTotalProDetail: 'supplies/pos/seller-product/statistics',
   searchProductList: 'products',
 };
 

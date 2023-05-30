@@ -697,19 +697,31 @@ export const settingLabelData = [
   },
   {
     id: 10,
+    name: 'Staffs',
+    subhead: '3',
+    image: shipping,
+  },
+  {
+    id: 11,
     name: 'Language',
     subhead: 'Defaults',
     image: langu,
   },
   {
-    id: 11,
+    id: 12,
     name: 'Legal',
     subhead: 'Defaults',
     image: work,
   },
   {
-    id: 12,
+    id: 13,
     name: 'Policies',
+    subhead: 'Defaults',
+    image: policy,
+  },
+  {
+    id: 14,
+    name: 'Device Details',
     subhead: 'Defaults',
     image: policy,
   },

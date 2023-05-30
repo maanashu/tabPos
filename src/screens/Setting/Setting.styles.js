@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 0.5,
     borderColor: COLORS.solidGrey,
-    height: Platform.OS === 'android' ? SW(15) : SW(18),
+    height: Platform.OS === 'android' ? SW(13) : SW(15),
     paddingHorizontal: moderateScale(10),
     justifyContent: 'center',
   },
@@ -55,18 +55,18 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   security: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(7),
+    height: SW(7),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
   },
   securityText: {
-    fontSize: SF(14),
+    fontSize: SF(12),
     fontFamily: Fonts.SemiBold,
     color: COLORS.black,
   },
   notUpdated: {
-    fontSize: SF(11),
+    fontSize: SF(10),
     fontFamily: Fonts.Regular,
     color: COLORS.darkGray,
   },
@@ -956,5 +956,25 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Medium,
     fontSize: SF(16),
     color: COLORS.white,
+  },
+
+  // notification section css start
+  notificationMainCon: {
+    height: windowHeight * 0.82,
+  },
+  appNotification: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+  },
+  notificationName: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+  },
+  horizontalRow: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    marginVertical: verticalScale(3),
   },
 });

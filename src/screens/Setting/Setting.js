@@ -43,9 +43,19 @@ export function Setting() {
     [7]: <Taxes />,
     [8]: <Wallet />,
     [9]: <Shipping />,
-    [10]: <Languages />,
-    [11]: <Legal />,
-    [12]: <Policies />,
+    [10]: (
+      <View>
+        <Text>Staffs</Text>
+      </View>
+    ),
+    [11]: <Languages />,
+    [12]: <Legal />,
+    [13]: <Policies />,
+    [14]: (
+      <View>
+        <Text>Device Detail</Text>
+      </View>
+    ),
   };
 
   const Item = ({
@@ -71,7 +81,7 @@ export function Setting() {
               {item.name}
             </Text>
             <Text style={[styles.notUpdated, { color: tintAndColor }]}>
-              Not updated
+              {item.subhead}
             </Text>
           </View>
         </View>

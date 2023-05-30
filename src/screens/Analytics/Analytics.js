@@ -215,24 +215,25 @@ export function Analytics(props) {
       setTotalRevenueDetail(true);
     }
   };
+
   const tableAccCatHandler = item => {
-    if (item.category === 'Category') {
+    if (item.title === 'Category') {
       {
         setProductCat(true),
           setProductDetail(false),
           setAccCatTable('Category');
       }
-    } else if (item.category === 'Subcategory') {
+    } else if (item.title === 'Sub Category') {
       {
         setProductCat(true),
           setProductDetail(false),
-          setAccCatTable('Subcategory');
+          setAccCatTable('Sub Category');
       }
-    } else if (item.category === 'Brand') {
+    } else if (item.title === 'Brand') {
       {
         setProductCat(true), setProductDetail(false), setAccCatTable('Brand');
       }
-    } else if (item.category === 'Product') {
+    } else if (item.title === 'Product') {
       {
         setProductCat(true),
           setProductDetail(false),

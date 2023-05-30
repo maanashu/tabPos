@@ -23,7 +23,6 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
   const getAuth = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  console.log('productData', productData);
 
   const addToCart = () => {
     const data = {

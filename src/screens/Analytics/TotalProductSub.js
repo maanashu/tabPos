@@ -41,7 +41,9 @@ export function TotalProductSub({
       getAnalyticsData?.getTotalProDetail?.discontinued_products ?? '0',
     totalActive:
       getAnalyticsData?.getTotalProDetail?.total_active_products ?? '0',
-      categoryArray :getAnalyticsData?.getTotalProDetail?.result
+    categoryArray: getAnalyticsData?.getTotalProDetail?.result,
+
+    CatSubBrandArray: getAnalyticsData?.getTotalProDetail?.result,
   };
 
   const productMulti = data?.newAdd * 100;
@@ -81,6 +83,10 @@ export function TotalProductSub({
     }
   }, [isFocused]);
 
+  const catSubBrandLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_REVENUE_GRAPH], state)
+  );
+
   const categoryInventoryItem = ({ item }) => (
     <TouchableOpacity
       style={styles.categoryCon}
@@ -107,14 +113,22 @@ export function TotalProductSub({
       onPress={() => tableAccCatHandler(item)}
     >
       <View style={styles.categoryChildCon}>
-        <Text style={styles.categoryCount}>{item.categoryCount}</Text>
+        {productDetLoad ? (
+          <ActivityIndicator
+            size="small"
+            style={{ alignItems: 'flex-start' }}
+            color={COLORS.black}
+          />
+        ) : (
+          <Text style={styles.categoryCount}>{item.count}</Text>
+        )}
         <Text numberOfLines={1} style={styles.categoryText}>
-          {item.category}
+          {item.title}
         </Text>
       </View>
       <View style={styles.categoryChildPercent}>
         <Image source={catPercent} style={styles.catPercent} />
-        <Text style={styles.percentText}>{item.percentage}</Text>
+        <Text style={styles.percentText}>{item.percentage}%</Text>
       </View>
     </TouchableOpacity>
   );
@@ -262,9 +276,10 @@ export function TotalProductSub({
                 <View>
                   <FlatList
                     scrollEnabled={false}
-                    data={categoryData}
+                    data={data?.CatSubBrandArray}
+                    extraData={data?.CatSubBrandArray}
                     renderItem={categoryItem}
-                    keyExtractor={item => item.id}
+                    // keyExtractor={item => item.id}
                     numColumns={2}
                     contentContainerStyle={styles.contentContainer}
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
