@@ -103,6 +103,7 @@ export class AnalyticsController {
         PRODUCT_URL +
         ApiProductInventory.getTotalProDetail +
         `?seller_id=${sellerID}&filter=${productTime}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -115,6 +116,50 @@ export class AnalyticsController {
             visibilityTime: 1500,
           });
           reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  }
+
+  static async catSubBrandData(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.catSubBrandData +
+        `?seller_id=${data?.sellerID}&filter=${data?.time}&type=${data?.type}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+  static async getProductList(catId) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.getProductList +
+        `?category_id=${catId}`;
+      console.log('endpoint', endpoint);
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
         });
     });
   }

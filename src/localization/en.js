@@ -428,6 +428,7 @@ export const en = {
     storeOrder: 'Store Order',
     deliveryOrder: 'Delivery Order',
     shipingOrder: 'Shipping Order',
+    noProduct: 'No product found',
   },
 
   TotalProSub: {

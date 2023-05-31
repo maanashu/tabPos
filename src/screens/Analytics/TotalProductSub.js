@@ -31,8 +31,8 @@ export function TotalProductSub({
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [productSelectId, setProductSelectId] = useState(2);
-  const [selectProTime, setSelectProTime] = useState({ name: 'week' });
-  const productTime = selectProTime?.name;
+  const [selectProTime, setSelectProTime] = useState({ value: 'week' });
+  const productTime = selectProTime?.value;
   const getAnalyticsData = useSelector(getAnalytics);
   const data = {
     totalProduct: getAnalyticsData?.getTotalProDetail?.total_products ?? '0',
@@ -110,7 +110,7 @@ export function TotalProductSub({
   const categoryItem = ({ item }) => (
     <TouchableOpacity
       style={styles.categoryCon}
-      onPress={() => tableAccCatHandler(item)}
+      onPress={() => tableAccCatHandler(item, productTime)}
     >
       <View style={styles.categoryChildCon}>
         {productDetLoad ? (

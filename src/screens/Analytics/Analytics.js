@@ -108,6 +108,8 @@ import { HomeGraph } from './Components';
 import { createDispatchHook, useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import {
+  catSubBrandData,
+  getProductList,
   totalInvernteryGraph,
   totalOrderGraph,
   totalProGraph,
@@ -116,6 +118,7 @@ import {
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useIsFocused } from '@react-navigation/native';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export function Analytics(props) {
   const isFocused = useIsFocused();
@@ -123,6 +126,9 @@ export function Analytics(props) {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getAnalyticsData = useSelector(getAnalytics);
+  const getTotalProductArray = getAnalyticsData?.getProductList;
+
+  const catSubBrandArray = getAnalyticsData?.catSubBrandData;
   const productGraphObject2 = getAnalyticsData?.getTotalGraph;
   const orderGraphObject = getAnalyticsData?.getOrderGraph;
   const inventeryGraphObject = getAnalyticsData?.getInventeryGraph;
@@ -150,6 +156,7 @@ export function Analytics(props) {
   const [editButton, setEditButton] = useState(false);
   const [reOrder, setReOrder] = useState(false);
   const [sellingPrice, setSellingPrice] = useState(false);
+  const [onlyProduct, setOnlyProduct] = useState(false);
 
   const [invoiceModel, setInvoiceModal] = useState(false);
   const [inventoryProductTable, setInverntoryProductTable] = useState(false);
@@ -170,6 +177,7 @@ export function Analytics(props) {
   const totalRevenueHandler = () => {
     setRevenueTable(true), setRevenueTableHeading('');
   };
+  const [categoryName, setCategoryName] = useState();
 
   useEffect(() => {
     if (isFocused) {
@@ -192,8 +200,17 @@ export function Analytics(props) {
     isLoadingSelector([TYPES.GET_REVENUE_GRAPH], state)
   );
 
-  const tobacoTableHandler = () => {
+  const catSubBrandArrayLoad = useSelector(state =>
+    isLoadingSelector([TYPES.CAT_SUB_BRAND], state)
+  );
+  const totalProuductArrayLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_PRODUCT_LIST], state)
+  );
+
+  const tobacoTableHandler = catId => {
     setDetailtable(true);
+
+    dispatch(getProductList(catId));
   };
   const marboloDetailHandler = () => {
     setProductDetailModel(true);
@@ -216,29 +233,67 @@ export function Analytics(props) {
     }
   };
 
-  const tableAccCatHandler = item => {
-    if (item.title === 'Category') {
+  const tableAccCatHandler = (item, productTime) => {
+    if (item.count === 0) {
+      Toast.show({
+        text2: 'No data found',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (item.title === 'Category') {
       {
-        setProductCat(true),
-          setProductDetail(false),
-          setAccCatTable('Category');
+        setProductCat(true);
+        setProductDetail(false);
+        setAccCatTable('Category');
+        setOnlyProduct(false);
+        const data = {
+          sellerID: sellerID,
+          time: productTime,
+          type: 'category',
+        };
+        dispatch(catSubBrandData(data));
       }
     } else if (item.title === 'Sub Category') {
       {
-        setProductCat(true),
-          setProductDetail(false),
-          setAccCatTable('Sub Category');
+        setProductCat(true);
+        setProductDetail(false);
+        setAccCatTable('Sub Category');
+        setOnlyProduct(false);
+        const data = {
+          sellerID: sellerID,
+          time: productTime,
+          type: 'sub_category',
+        };
+        dispatch(catSubBrandData(data));
       }
     } else if (item.title === 'Brand') {
       {
-        setProductCat(true), setProductDetail(false), setAccCatTable('Brand');
+        setProductCat(true);
+        setProductDetail(false);
+        setAccCatTable('Brand');
+        setOnlyProduct(false);
+        const data = {
+          sellerID: sellerID,
+          time: productTime,
+          type: 'brand',
+        };
+        dispatch(catSubBrandData(data));
       }
     } else if (item.title === 'Product') {
       {
-        setProductCat(true),
-          setProductDetail(false),
-          setAccCatTable('Product'),
-          setDetailtable(true);
+        setProductCat(true);
+        setProductDetail(false);
+        setAccCatTable('Product');
+        setDetailtable(true);
+        setOnlyProduct(true);
+
+        const data = {
+          sellerID: sellerID,
+          time: productTime,
+          type: 'product',
+        };
+        dispatch(catSubBrandData(data));
       }
     }
   };
@@ -1656,25 +1711,25 @@ export function Analytics(props) {
     if (accCatTable === 'Category') {
       return (
         <Text style={styles.categoryHeader}>
-          Category:<Text> 4</Text>
+          Category:<Text> {catSubBrandArray?.length ?? '0'}</Text>
         </Text>
       );
-    } else if (accCatTable === 'Subcategory') {
+    } else if (accCatTable === 'Sub Category') {
       return (
         <Text style={styles.categoryHeader}>
-          Sub-Category:<Text> 7</Text>
+          Sub-Category:<Text> {catSubBrandArray?.length ?? '0'}</Text>
         </Text>
       );
     } else if (accCatTable === 'Brand') {
       return (
         <Text style={styles.categoryHeader}>
-          Brand:<Text> 7</Text>
+          Brand:<Text> {catSubBrandArray?.length ?? '0'}</Text>
         </Text>
       );
     } else if (accCatTable === 'Product') {
       return (
         <Text style={styles.categoryHeader}>
-          Total Products:<Text> 20,560</Text>
+          Total Products:<Text> {catSubBrandArray?.length ?? '0'}</Text>
         </Text>
       );
     }
@@ -1683,25 +1738,25 @@ export function Analytics(props) {
     if (accCatTable === 'Category') {
       return (
         <Text style={styles.categoryHeader}>
-          tobaco<Text> 19</Text>
+          {categoryName} : <Text> {getTotalProductArray?.length ?? '0'}</Text>
         </Text>
       );
-    } else if (accCatTable === 'Subcategory') {
+    } else if (accCatTable === 'Sub Category') {
       return (
         <Text style={styles.categoryHeader}>
-          Cigar<Text> 2</Text>
+          {categoryName} : <Text> {getTotalProductArray?.length ?? '0'}</Text>
         </Text>
       );
     } else if (accCatTable === 'Brand') {
       return (
         <Text style={styles.categoryHeader}>
-          Marlboro<Text> 20</Text>
+          {categoryName} : <Text> {getTotalProductArray?.length ?? '0'}</Text>
         </Text>
       );
     } else if (accCatTable === 'Product') {
       return (
         <Text style={styles.categoryHeader}>
-          Total Products:<Text> 20,560</Text>
+          Total Products :<Text> {catSubBrandArray?.length ?? '0'}</Text>
         </Text>
       );
     }
@@ -1745,102 +1800,95 @@ export function Analytics(props) {
                 </View>
               </View>
             </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                    onPress={tobacoTableHandler}
-                  >
-                    <Image source={tobaco} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Tobacco
+            <View style={{ height: windowHeight * 0.56 }}>
+              <ScrollView>
+                {catSubBrandArrayLoad ? (
+                  <View style={{ marginTop: 50 }}>
+                    <ActivityIndicator size="large" color={COLORS.primary} />
+                  </View>
+                ) : catSubBrandArray?.length === 0 ? (
+                  <View style={styles.noProductView}>
+                    <Text style={styles.noProductText}>
+                      {strings.analytics.noProduct}
                     </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                    4
-                  </Text>
-                  <Text style={styles.usertableRowText}>15</Text>
-                  <Text style={styles.usertableRowText}>19</Text>
-                  <Text style={styles.usertableRowText}>2,369</Text>
-                  <Text style={styles.usertableRowText}>$26,590</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                    onPress={tobacoTableHandler}
-                  >
-                    <Image source={hokka} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
+                  </View>
+                ) : (
+                  catSubBrandArray?.map((item, index) => (
+                    <TouchableOpacity
+                      style={styles.tableDataCon}
+                      key={index}
+                      onPress={() => {
+                        tobacoTableHandler(item.category_id);
+                        setCategoryName(item.category_name);
+                      }}
                     >
-                      Tobacco
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                    4
-                  </Text>
-                  <Text style={styles.usertableRowText}>15</Text>
-                  <Text style={styles.usertableRowText}>19</Text>
-                  <Text style={styles.usertableRowText}>2,369</Text>
-                  <Text style={styles.usertableRowText}>$26,590</Text>
-                </View>
-              </View>
+                      <View style={styles.displayFlex}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            width: windowWidth * 0.25,
+                          }}
+                        >
+                          <Text style={styles.usertableRowText}>
+                            {index + 1}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              paddingHorizontal: moderateScale(10),
+                            }}
+                          >
+                            <Image source={tobaco} style={styles.allienpic} />
+                            <Text
+                              style={[
+                                styles.usertableRowText,
+                                { paddingHorizontal: moderateScale(3) },
+                              ]}
+                            >
+                              {item.category_name}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: windowWidth * 0.65,
+                            paddingHorizontal: Platform.OS === 'ios' ? 40 : 30,
+                          }}
+                        >
+                          <Text
+                            style={[
+                              styles.usertableRowText,
+                              { paddingLeft: 10 },
+                            ]}
+                          >
+                            {item.sub_category_listed}
+                          </Text>
+                          <Text style={styles.usertableRowText}>
+                            {item.brand}
+                          </Text>
+                          <Text style={styles.usertableRowText}>
+                            {item.product_listed}
+                          </Text>
+                          <Text style={styles.usertableRowText}>
+                            {item.total_product_sold}
+                          </Text>
+                          <Text style={styles.usertableRowText}>
+                            ${item.total_sales}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                )}
+              </ScrollView>
             </View>
           </Table>
         </View>
       );
-    } else if (accCatTable === 'Subcategory') {
+    } else if (accCatTable === 'Sub Category') {
       return (
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
           <Table>
@@ -1878,97 +1926,90 @@ export function Analytics(props) {
                 </View>
               </View>
             </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                    onPress={tobacoTableHandler}
-                  >
-                    <Image source={ciger} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Cigars
+            <View style={{ height: windowHeight * 0.56 }}>
+              <ScrollView>
+                {catSubBrandArrayLoad ? (
+                  <View style={{ marginTop: 50 }}>
+                    <ActivityIndicator size="large" color={COLORS.primary} />
+                  </View>
+                ) : catSubBrandArray?.length === 0 ? (
+                  <View style={styles.noProductView}>
+                    <Text style={styles.noProductText}>
+                      {strings.analytics.noProduct}
                     </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                    Tobacco
-                  </Text>
-                  <Text style={styles.usertableRowText}>15</Text>
-                  <Text style={styles.usertableRowText}>19</Text>
-                  <Text style={styles.usertableRowText}>2,369</Text>
-                  <Text style={styles.usertableRowText}>$26,590</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                    onPress={tobacoTableHandler}
-                  >
-                    <Image source={cigrate} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
+                  </View>
+                ) : (
+                  catSubBrandArray?.map((item, index) => (
+                    <TouchableOpacity
+                      style={styles.tableDataCon}
+                      key={index}
+                      onPress={() => {
+                        tobacoTableHandler(item.sub_category_id);
+                        setCategoryName(item.sub_category_name);
+                      }}
                     >
-                      Cigarettes
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                    Tobacco
-                  </Text>
-                  <Text style={styles.usertableRowText}>15</Text>
-                  <Text style={styles.usertableRowText}>19</Text>
-                  <Text style={styles.usertableRowText}>2,369</Text>
-                  <Text style={styles.usertableRowText}>$26,590</Text>
-                </View>
-              </View>
+                      <View style={styles.displayFlex}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            width: windowWidth * 0.25,
+                          }}
+                        >
+                          <Text style={styles.usertableRowText}>
+                            {index + 1}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              paddingHorizontal: moderateScale(10),
+                            }}
+                          >
+                            <Image source={ciger} style={styles.allienpic} />
+                            <Text
+                              style={[
+                                styles.usertableRowText,
+                                { paddingHorizontal: moderateScale(3) },
+                              ]}
+                            >
+                              {item.sub_category_name}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: windowWidth * 0.65,
+                            paddingRight: Platform.OS === 'ios' ? 40 : 0,
+                          }}
+                        >
+                          <Text
+                            style={[
+                              styles.usertableRowText,
+                              { paddingLeft: 10 },
+                            ]}
+                          >
+                            {item.category_name}
+                          </Text>
+                          <Text style={styles.usertableRowText}>
+                            {item.brand}
+                          </Text>
+                          <Text style={styles.usertableRowText}>
+                            {item.product_listed}
+                          </Text>
+                          <Text style={styles.usertableRowText}>
+                            {item.total_product_sold}
+                          </Text>
+                          <Text style={styles.usertableRowText}>
+                            {item.total_sales}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                )}
+              </ScrollView>
             </View>
           </Table>
         </View>
@@ -2011,97 +2052,88 @@ export function Analytics(props) {
                 </View>
               </View>
             </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                    onPress={tobacoTableHandler}
-                  >
-                    <Image source={gameLeaf} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Game Leaf
+            <View style={{ height: windowHeight * 0.56 }}>
+              <ScrollView>
+                {catSubBrandArrayLoad ? (
+                  <View style={{ marginTop: 50 }}>
+                    <ActivityIndicator size="large" color={COLORS.primary} />
+                  </View>
+                ) : catSubBrandArray?.length === 0 ? (
+                  <View style={styles.noProductView}>
+                    <Text style={styles.noProductText}>
+                      {strings.analytics.noProduct}
                     </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                    Tobacco
-                  </Text>
-                  <Text style={styles.usertableRowText}>Cigars</Text>
-                  <Text style={styles.usertableRowText}>19</Text>
-                  <Text style={styles.usertableRowText}>2,369</Text>
-                  <Text style={styles.usertableRowText}>$26,590</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                    onPress={tobacoTableHandler}
-                  >
-                    <Image source={swisher} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
+                  </View>
+                ) : (
+                  catSubBrandArray?.map((item, index) => (
+                    <TouchableOpacity
+                      style={styles.tableDataCon}
+                      key={index}
+                      onPress={() => {
+                        tobacoTableHandler(item.brand_id);
+                        setCategoryName(item.brand_name);
+                      }}
                     >
-                      Swisher Sweet
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                    Tobacco
-                  </Text>
-                  <Text style={styles.usertableRowText}>Cigars</Text>
-                  <Text style={styles.usertableRowText}>19</Text>
-                  <Text style={styles.usertableRowText}>2,369</Text>
-                  <Text style={styles.usertableRowText}>$26,590</Text>
-                </View>
-              </View>
+                      <View style={styles.displayFlex}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            width: windowWidth * 0.25,
+                          }}
+                        >
+                          <Text style={styles.usertableRowText}>
+                            {index + 1}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              paddingHorizontal: moderateScale(10),
+                            }}
+                          >
+                            <Image source={gameLeaf} style={styles.allienpic} />
+                            <Text
+                              style={[
+                                styles.usertableRowText,
+                                { paddingHorizontal: moderateScale(3) },
+                              ]}
+                            >
+                              {item.brand_name}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: windowWidth * 0.65,
+                            paddingRight: Platform.OS === 'ios' ? 40 : 40,
+                          }}
+                        >
+                          <Text
+                            style={[
+                              styles.usertableRowText,
+                              { paddingLeft: 10 },
+                            ]}
+                          >
+                            {item.category_name}
+                          </Text>
+                          <Text style={styles.usertableRowText}></Text>
+                          <Text style={styles.usertableRowText}>
+                            {item.product_listed}
+                          </Text>
+                          <Text style={styles.usertableRowText}>
+                            {item.total_product_sold}
+                          </Text>
+                          <Text style={styles.usertableRowText}>
+                            ${item.total_sales}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                )}
+              </ScrollView>
             </View>
           </Table>
         </View>
@@ -2118,7 +2150,8 @@ export function Analytics(props) {
                 <View
                   style={{
                     flexDirection: 'row',
-                    width: windowWidth * 0.25,
+                    alignItems: 'center',
+                    width: windowWidth * 0.2,
                   }}
                 >
                   <Text style={styles.text}>#</Text>
@@ -2135,131 +2168,206 @@ export function Analytics(props) {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
+                    width: windowWidth * 0.7,
+                    paddingRight: 30,
                   }}
                 >
-                  <Text style={styles.text}>Barcode</Text>
-                  <Text style={styles.text}>Category</Text>
-                  <Text style={styles.text}>Sub-Category</Text>
-                  <Text style={styles.text}>Brand</Text>
-                  <Text style={styles.text}>Stock</Text>
-                  <Text style={styles.text}>Total Product Sold</Text>
-                  <Text style={styles.text}>Total Sales</Text>
+                  <Text style={styles.productHeaderWidth}>Barcode</Text>
+                  <Text style={styles.productHeaderWidth}>Category</Text>
+                  <Text style={styles.productHeaderWidth}>Sub-Category</Text>
+                  <Text style={styles.productHeaderWidth}>Brand</Text>
+                  <Text style={styles.productHeaderWidth}>Stock</Text>
+                  <Text style={styles.productHeaderWidth} numberOfLines={1}>
+                    Total Product Sold
+                  </Text>
+                  <Text style={styles.productHeaderWidth}>Total Sales</Text>
                 </View>
               </View>
             </View>
-            <TouchableOpacity
-              style={[
-                styles.tableDataCon,
-                { backgroundColor: COLORS.blue_shade },
-              ]}
-              onPress={marboloDetailHandler}
-            >
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                  >
-                    <Image source={aroma} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Aromas de San Andrés
+            {/* getTotalProductArray */}
+            <View style={{ height: windowHeight * 0.56 }}>
+              <ScrollView>
+                {totalProuductArrayLoad ? (
+                  <View style={{ marginTop: 50 }}>
+                    <ActivityIndicator size="large" color={COLORS.primary} />
+                  </View>
+                ) : getTotalProductArray?.length === 0 ? (
+                  <View style={styles.noProductView}>
+                    <Text style={styles.noProductText}>
+                      {strings.analytics.noProduct}
                     </Text>
                   </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: 30,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    Big Cigar
-                  </Text>
-                  <Text style={[styles.usertableRowText]}>Black Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>396</Text>
-                  <Text style={styles.usertableRowText}>1,365</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    $10,365
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                    onPress={marboloDetailHandler}
-                  >
-                    <Image source={aroma} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
+                ) : (
+                  getTotalProductArray?.map((item, index) => (
+                    // <TouchableOpacity
+                    //   style={[
+                    //     styles.tableDataCon,
+                    //     { backgroundColor: COLORS.blue_shade },
+                    //   ]}
+                    //   onPress={marboloDetailHandler}
+                    // >
+                    //   <View style={styles.displayFlex}>
+                    //     <View
+                    //       style={{
+                    //         flexDirection: 'row',
+                    //         alignItems: 'center',
+                    //         width: windowWidth * 0.25,
+                    //       }}
+                    //     >
+                    //       <Text style={styles.usertableRowText}>1</Text>
+                    //       <View
+                    //         style={{
+                    //           flexDirection: 'row',
+                    //           alignItems: 'center',
+                    //           paddingHorizontal: moderateScale(10),
+                    //         }}
+                    //       >
+                    //         <Image source={aroma} style={styles.allienpic} />
+                    //         <Text
+                    //           style={[
+                    //             styles.usertableRowText,
+                    //             { paddingHorizontal: moderateScale(3) },
+                    //           ]}
+                    //         >
+                    //           Aromas de San Andrés
+                    //         </Text>
+                    //       </View>
+                    //     </View>
+                    //     <View
+                    //       style={{
+                    //         flexDirection: 'row',
+                    //         justifyContent: 'space-between',
+                    //         width: windowWidth * 0.65,
+                    //         paddingRight: 30,
+                    //       }}
+                    //     >
+                    //       <Text style={[styles.usertableRowText]}>
+                    //         125698740
+                    //       </Text>
+                    //       <Text
+                    //         style={[
+                    //           styles.usertableRowText,
+                    //           { paddingRight: 15 },
+                    //         ]}
+                    //       >
+                    //         Big Cigar
+                    //       </Text>
+                    //       <Text style={[styles.usertableRowText]}>
+                    //         Black Cigar
+                    //       </Text>
+                    //       <Text style={[styles.usertableRowText]}>Cigar</Text>
+                    //       <Text style={[styles.usertableRowText]}>396</Text>
+                    //       <Text style={styles.usertableRowText}>1,365</Text>
+                    //       <Text
+                    //         style={[
+                    //           styles.usertableRowText,
+                    //           { paddingRight: 15 },
+                    //         ]}
+                    //       >
+                    //         $10,365
+                    //       </Text>
+                    //     </View>
+                    //   </View>
+                    // </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.tableDataCon]}
+                      onPress={marboloDetailHandler}
+                      key={index}
                     >
-                      Aromas de San Andrés
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: 30,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    Big Cigar
-                  </Text>
-                  <Text style={[styles.usertableRowText]}>Black Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>396</Text>
-                  <Text style={styles.usertableRowText}>1,365</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    $10,365
-                  </Text>
-                </View>
-              </View>
+                      <View style={styles.displayFlex}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: windowWidth * 0.2,
+                          }}
+                        >
+                          <Text style={styles.usertableRowText}>
+                            {index + 1}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              paddingHorizontal: moderateScale(10),
+                            }}
+                          >
+                            <Image
+                              source={{ uri: item.image }}
+                              style={styles.allienpic}
+                            />
+                            <Text
+                              numberOfLines={1}
+                              style={[
+                                styles.usertableRowText,
+                                { paddingHorizontal: moderateScale(3) },
+                              ]}
+                            >
+                              {item.name}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: windowWidth * 0.7,
+                            paddingRight: 30,
+                          }}
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.barcode}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.category?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.sub_category?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.brand?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.stock}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.total_product_sold}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            ${item.total_sales}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                )}
+              </ScrollView>
             </View>
           </Table>
         </View>
       );
-    } else if (accCatTable === 'Subcategory') {
+    } else if (accCatTable === 'Sub Category') {
       return (
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
           <Table>
@@ -2268,7 +2376,8 @@ export function Analytics(props) {
                 <View
                   style={{
                     flexDirection: 'row',
-                    width: windowWidth * 0.25,
+                    alignItems: 'center',
+                    width: windowWidth * 0.2,
                   }}
                 >
                   <Text style={styles.text}>#</Text>
@@ -2285,126 +2394,130 @@ export function Analytics(props) {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
+                    width: windowWidth * 0.7,
+                    paddingRight: 30,
                   }}
                 >
-                  <Text style={styles.text}>Barcode</Text>
-                  <Text style={styles.text}>Category</Text>
-                  <Text style={styles.text}>Sub-Category</Text>
-                  <Text style={styles.text}>Brand</Text>
-                  <Text style={styles.text}>Stock</Text>
-                  <Text style={styles.text}>Total Product Sold</Text>
-                  <Text style={styles.text}>Total Sales</Text>
+                  <Text style={styles.productHeaderWidth}>Barcode</Text>
+                  <Text style={styles.productHeaderWidth}>Category</Text>
+                  <Text style={styles.productHeaderWidth}>Sub-Category</Text>
+                  <Text style={styles.productHeaderWidth}>Brand</Text>
+                  <Text style={styles.productHeaderWidth}>Stock</Text>
+                  <Text style={styles.productHeaderWidth} numberOfLines={1}>
+                    Total Product Sold
+                  </Text>
+                  <Text style={styles.productHeaderWidth}>Total Sales</Text>
                 </View>
               </View>
             </View>
-            <TouchableOpacity
-              style={[
-                styles.tableDataCon,
-                { backgroundColor: COLORS.blue_shade },
-              ]}
-              onPress={marboloDetailHandler}
-            >
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                  >
-                    <Image source={aroma} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Aromas
+            <View style={{ height: windowHeight * 0.56 }}>
+              <ScrollView>
+                {totalProuductArrayLoad ? (
+                  <View style={{ marginTop: 50 }}>
+                    <ActivityIndicator size="large" color={COLORS.primary} />
+                  </View>
+                ) : getTotalProductArray?.length === 0 ? (
+                  <View style={styles.noProductView}>
+                    <Text style={styles.noProductText}>
+                      {strings.analytics.noProduct}
                     </Text>
                   </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: 30,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    Big Cigar
-                  </Text>
-                  <Text style={[styles.usertableRowText]}>Black Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>396</Text>
-                  <Text style={styles.usertableRowText}>1,365</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    $10,365
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                    onPress={marboloDetailHandler}
-                  >
-                    <Image source={aroma} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
+                ) : (
+                  getTotalProductArray?.map((item, index) => (
+                    <TouchableOpacity
+                      style={[styles.tableDataCon]}
+                      onPress={marboloDetailHandler}
+                      key={index}
                     >
-                      Aromas de San Andrés
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: 30,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    Big Cigar
-                  </Text>
-                  <Text style={[styles.usertableRowText]}>Black Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>396</Text>
-                  <Text style={styles.usertableRowText}>1,365</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    $10,365
-                  </Text>
-                </View>
-              </View>
+                      <View style={styles.displayFlex}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: windowWidth * 0.2,
+                          }}
+                        >
+                          <Text style={styles.usertableRowText}>
+                            {index + 1}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              paddingHorizontal: moderateScale(10),
+                            }}
+                          >
+                            <Image
+                              source={{ uri: item.image }}
+                              style={styles.allienpic}
+                            />
+                            <Text
+                              numberOfLines={1}
+                              style={[
+                                styles.usertableRowText,
+                                { paddingHorizontal: moderateScale(3) },
+                              ]}
+                            >
+                              {item.name}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: windowWidth * 0.7,
+                            paddingRight: 30,
+                          }}
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.barcode}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.category?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.sub_category?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.brand?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.stock}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.total_product_sold}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            ${item.total_sales}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                )}
+              </ScrollView>
             </View>
           </Table>
         </View>
@@ -2418,7 +2531,8 @@ export function Analytics(props) {
                 <View
                   style={{
                     flexDirection: 'row',
-                    width: windowWidth * 0.25,
+                    alignItems: 'center',
+                    width: windowWidth * 0.2,
                   }}
                 >
                   <Text style={styles.text}>#</Text>
@@ -2435,126 +2549,130 @@ export function Analytics(props) {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
+                    width: windowWidth * 0.7,
+                    paddingRight: 30,
                   }}
                 >
-                  <Text style={styles.text}>Barcode</Text>
-                  <Text style={styles.text}>Category</Text>
-                  <Text style={styles.text}>Sub-Category</Text>
-                  <Text style={styles.text}>Brand</Text>
-                  <Text style={styles.text}>Stock</Text>
-                  <Text style={styles.text}>Total Product Sold</Text>
-                  <Text style={styles.text}>Total Sales</Text>
+                  <Text style={styles.productHeaderWidth}>Barcode</Text>
+                  <Text style={styles.productHeaderWidth}>Category</Text>
+                  <Text style={styles.productHeaderWidth}>Sub-Category</Text>
+                  <Text style={styles.productHeaderWidth}>Brand</Text>
+                  <Text style={styles.productHeaderWidth}>Stock</Text>
+                  <Text style={styles.productHeaderWidth} numberOfLines={1}>
+                    Total Product Sold
+                  </Text>
+                  <Text style={styles.productHeaderWidth}>Total Sales</Text>
                 </View>
               </View>
             </View>
-            <TouchableOpacity
-              style={[
-                styles.tableDataCon,
-                { backgroundColor: COLORS.blue_shade },
-              ]}
-              onPress={marboloDetailHandler}
-            >
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                  >
-                    <Image source={aroma} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Aromas brand
+            <View style={{ height: windowHeight * 0.56 }}>
+              <ScrollView>
+                {totalProuductArrayLoad ? (
+                  <View style={{ marginTop: 50 }}>
+                    <ActivityIndicator size="large" color={COLORS.primary} />
+                  </View>
+                ) : getTotalProductArray?.length === 0 ? (
+                  <View style={styles.noProductView}>
+                    <Text style={styles.noProductText}>
+                      {strings.analytics.noProduct}
                     </Text>
                   </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: 30,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    Big Cigar
-                  </Text>
-                  <Text style={[styles.usertableRowText]}>Black Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>396</Text>
-                  <Text style={styles.usertableRowText}>1,365</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    $10,365
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                    onPress={marboloDetailHandler}
-                  >
-                    <Image source={aroma} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
+                ) : (
+                  getTotalProductArray?.map((item, index) => (
+                    <TouchableOpacity
+                      style={[styles.tableDataCon]}
+                      onPress={marboloDetailHandler}
+                      key={index}
                     >
-                      Aromas de San Andrés
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: 30,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    Big Cigar
-                  </Text>
-                  <Text style={[styles.usertableRowText]}>Black Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>396</Text>
-                  <Text style={styles.usertableRowText}>1,365</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    $10,365
-                  </Text>
-                </View>
-              </View>
+                      <View style={styles.displayFlex}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: windowWidth * 0.2,
+                          }}
+                        >
+                          <Text style={styles.usertableRowText}>
+                            {index + 1}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              paddingHorizontal: moderateScale(10),
+                            }}
+                          >
+                            <Image
+                              source={{ uri: item.image }}
+                              style={styles.allienpic}
+                            />
+                            <Text
+                              numberOfLines={1}
+                              style={[
+                                styles.usertableRowText,
+                                { paddingHorizontal: moderateScale(3) },
+                              ]}
+                            >
+                              {item.name}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: windowWidth * 0.7,
+                            paddingRight: 30,
+                          }}
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.barcode}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.category?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.sub_category?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.brand?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.stock}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.total_product_sold}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            ${item.total_sales}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                )}
+              </ScrollView>
             </View>
           </Table>
         </View>
@@ -2568,7 +2686,8 @@ export function Analytics(props) {
                 <View
                   style={{
                     flexDirection: 'row',
-                    width: windowWidth * 0.25,
+                    alignItems: 'center',
+                    width: windowWidth * 0.2,
                   }}
                 >
                   <Text style={styles.text}>#</Text>
@@ -2585,126 +2704,130 @@ export function Analytics(props) {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: Platform.OS === 'ios' ? 40 : 0,
+                    width: windowWidth * 0.7,
+                    paddingRight: 30,
                   }}
                 >
-                  <Text style={styles.text}>Barcode</Text>
-                  <Text style={styles.text}>Category</Text>
-                  <Text style={styles.text}>Sub-Category</Text>
-                  <Text style={styles.text}>Brand</Text>
-                  <Text style={styles.text}>Stock</Text>
-                  <Text style={styles.text}>Total Product Sold</Text>
-                  <Text style={styles.text}>Total Sales</Text>
+                  <Text style={styles.productHeaderWidth}>Barcode</Text>
+                  <Text style={styles.productHeaderWidth}>Category</Text>
+                  <Text style={styles.productHeaderWidth}>Sub-Category</Text>
+                  <Text style={styles.productHeaderWidth}>Brand</Text>
+                  <Text style={styles.productHeaderWidth}>Stock</Text>
+                  <Text style={styles.productHeaderWidth} numberOfLines={1}>
+                    Total Product Sold
+                  </Text>
+                  <Text style={styles.productHeaderWidth}>Total Sales</Text>
                 </View>
               </View>
             </View>
-            <TouchableOpacity
-              style={[
-                styles.tableDataCon,
-                { backgroundColor: COLORS.blue_shade },
-              ]}
-              onPress={marboloDetailHandler}
-            >
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                  >
-                    <Image source={aroma} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Aromas product
+            <View style={{ height: windowHeight * 0.56 }}>
+              <ScrollView>
+                {catSubBrandArrayLoad ? (
+                  <View style={{ marginTop: 50 }}>
+                    <ActivityIndicator size="large" color={COLORS.primary} />
+                  </View>
+                ) : catSubBrandArray?.length === 0 ? (
+                  <View style={styles.noProductView}>
+                    <Text style={styles.noProductText}>
+                      {strings.analytics.noProduct}
                     </Text>
                   </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: 30,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    Big Cigar
-                  </Text>
-                  <Text style={[styles.usertableRowText]}>Black Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>396</Text>
-                  <Text style={styles.usertableRowText}>1,365</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    $10,365
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10),
-                    }}
-                    onPress={marboloDetailHandler}
-                  >
-                    <Image source={aroma} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
+                ) : (
+                  catSubBrandArray?.map((item, index) => (
+                    <TouchableOpacity
+                      style={[styles.tableDataCon]}
+                      onPress={marboloDetailHandler}
+                      key={index}
                     >
-                      Aromas de San Andrés
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
-                    paddingRight: 30,
-                  }}
-                >
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    Big Cigar
-                  </Text>
-                  <Text style={[styles.usertableRowText]}>Black Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>Cigar</Text>
-                  <Text style={[styles.usertableRowText]}>396</Text>
-                  <Text style={styles.usertableRowText}>1,365</Text>
-                  <Text style={[styles.usertableRowText, { paddingRight: 15 }]}>
-                    $10,365
-                  </Text>
-                </View>
-              </View>
+                      <View style={styles.displayFlex}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: windowWidth * 0.2,
+                          }}
+                        >
+                          <Text style={styles.usertableRowText}>
+                            {index + 1}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              paddingHorizontal: moderateScale(10),
+                            }}
+                          >
+                            <Image
+                              source={{ uri: item.image }}
+                              style={styles.allienpic}
+                            />
+                            <Text
+                              numberOfLines={1}
+                              style={[
+                                styles.usertableRowText,
+                                { paddingHorizontal: moderateScale(3) },
+                              ]}
+                            >
+                              {item.name}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: windowWidth * 0.7,
+                            paddingRight: 30,
+                          }}
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.barcode}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.category?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.sub_category?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.brand?.name}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.stock}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            {item.total_product_sold}
+                          </Text>
+                          <Text
+                            numberOfLines={1}
+                            style={styles.productDataWidth}
+                          >
+                            ${item.total_sales}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                )}
+              </ScrollView>
             </View>
           </Table>
         </View>
@@ -3266,6 +3389,28 @@ export function Analytics(props) {
       );
     }
   };
+
+  const backFun = () => {
+    if (onlyProduct === true) {
+      setProductDetail(true);
+      setProductCat(false);
+      setOnlyProduct(false);
+      setDetailtable(false);
+    } else if (detailTable === true) {
+      setProductCat(true);
+      setDetailtable(false);
+    } else if (productCat === true) {
+      setProductCat(false);
+      setProductDetail(true);
+    } else if (productDetail === true) {
+      setProductDetail(false);
+    } else if (detailTable === true && productCat === true) {
+      setProductCat(false);
+      setDetailtable(false);
+      setProductDetail(true);
+    }
+  };
+
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -3273,10 +3418,11 @@ export function Analytics(props) {
           <TouchableOpacity
             style={styles.backButtonCon}
             onPress={() => {
-              productDetail ? setProductDetail(false) : setProductCat(false),
-                setProductDetail(productDetail ? false : true);
-              setDetailtable(false);
+              // productDetail ? setProductDetail(false) : setProductCat(false),
+              // setProductDetail(productDetail ? false : true);
+              // setDetailtable(false);
               setInverntoryProductTable(false);
+              backFun();
             }}
           >
             <Image source={backArrow} style={styles.backButtonArrow} />
@@ -5478,7 +5624,7 @@ export function Analytics(props) {
     }
     if (productCat) {
       return (
-        <View>
+        <View style={{ flex: 1 }}>
           {detailTable
             ? tableHeaderChange(accCatTable)
             : tableHeaderAccCat(accCatTable)}

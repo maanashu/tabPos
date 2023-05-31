@@ -31,6 +31,8 @@ export const ApiProductInventory = {
   getProduct: 'products',
   getTotalProDetail: 'supplies/pos/seller-product/statistics',
   searchProductList: 'products',
+  catSubBrandData: 'products/pos/data-list/statistics',
+  getProductList: 'products/pos/product-list',
 };
 
 // export const ApiSupportInventory = {

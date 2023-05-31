@@ -245,7 +245,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(15),
   },
   categoryCon: {
-    width:windowWidth * 0.18,
+    width: windowWidth * 0.18,
     height: SH(84),
     borderRadius: 15,
     flexDirection: 'row',
@@ -254,7 +254,7 @@ export const styles = StyleSheet.create({
     marginVertical: moderateScale(5),
   },
   categoryChildCon: {
-    width:windowWidth * 0.10,
+    width: windowWidth * 0.1,
     height: SH(84),
     borderBottomLeftRadius: 15,
     borderTopLeftRadius: 15,
@@ -264,7 +264,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   categoryChildPercent: {
-    width:windowWidth * 0.08,
+    width: windowWidth * 0.08,
     height: SH(84),
     borderBottomEndRadius: 15,
     borderTopEndRadius: 15,
@@ -1657,4 +1657,30 @@ export const styles = StyleSheet.create({
   // tracking number css
 
   // TOTAL RENEVUE CSS END
+  productHeaderWidth: {
+    width: windowWidth * 0.1,
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    letterSpacing: -1,
+    textAlign: 'center',
+  },
+
+  productDataWidth: {
+    width: windowWidth * 0.1,
+    textAlign: 'center',
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+  },
+
+  noProductView: {
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  noProductText: {
+    color: COLORS.primary,
+    fontSize: SF(25),
+    fontFamily: Fonts.MaisonRegular,
+  },
 });
