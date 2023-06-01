@@ -110,6 +110,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import {
   catSubBrandData,
   getProductList,
+  getProductModal,
   totalInvernteryGraph,
   totalOrderGraph,
   totalProGraph,
@@ -126,8 +127,8 @@ export function Analytics(props) {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getAnalyticsData = useSelector(getAnalytics);
+  const totalProductModalData = getAnalyticsData?.getProductModal;
   const getTotalProductArray = getAnalyticsData?.getProductList;
-
   const catSubBrandArray = getAnalyticsData?.catSubBrandData;
   const productGraphObject2 = getAnalyticsData?.getTotalGraph;
   const orderGraphObject = getAnalyticsData?.getOrderGraph;
@@ -178,6 +179,38 @@ export function Analytics(props) {
     setRevenueTable(true), setRevenueTableHeading('');
   };
   const [categoryName, setCategoryName] = useState();
+  const productDetailData = [
+    {
+      heading: 'Cost Price',
+      price: totalProductModalData?.cost_price,
+      id: '1',
+    },
+    {
+      heading: 'Unit Type',
+      price: totalProductModalData?.unit_type,
+      id: '2',
+    },
+    {
+      heading: 'Barcode',
+      price: totalProductModalData?.barcode,
+      id: '3',
+    },
+    {
+      heading: 'Unit Weight',
+      price: totalProductModalData?.unit_weight,
+      id: '4',
+    },
+    {
+      heading: 'Stock on Hand ',
+      price: totalProductModalData?.stock_on_hand,
+      id: '5',
+    },
+    {
+      heading: 'Rating',
+      price: totalProductModalData?.product_rating?.rating,
+      id: '5',
+    },
+  ];
 
   useEffect(() => {
     if (isFocused) {
@@ -206,14 +239,19 @@ export function Analytics(props) {
   const totalProuductArrayLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_PRODUCT_LIST], state)
   );
+  const productModalLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_PRODUCT_MODAL], state)
+  );
 
   const tobacoTableHandler = catId => {
     setDetailtable(true);
-
     dispatch(getProductList(catId));
   };
-  const marboloDetailHandler = () => {
-    setProductDetailModel(true);
+  const productModalHandler = async productId => {
+    const res = await dispatch(getProductModal(productId));
+    if (res?.type === 'GET_PRODUCT_MODAL_SUCCESS') {
+      setProductDetailModel(true);
+    }
   };
   const sellingPriceHandler = index => {
     const newArray = [...sellPriceArray];
@@ -1657,7 +1695,7 @@ export function Analytics(props) {
         {item.heading}
       </Text>
       <Spacer space={SH(8)} />
-      <Text style={styles.sellingCount}>{item.price}</Text>
+      <Text style={styles.sellingCount}>{item.price ?? '----'}</Text>
     </View>
   );
   const stockHandItem = ({ item }) => (
@@ -2199,79 +2237,9 @@ export function Analytics(props) {
                   </View>
                 ) : (
                   getTotalProductArray?.map((item, index) => (
-                    // <TouchableOpacity
-                    //   style={[
-                    //     styles.tableDataCon,
-                    //     { backgroundColor: COLORS.blue_shade },
-                    //   ]}
-                    //   onPress={marboloDetailHandler}
-                    // >
-                    //   <View style={styles.displayFlex}>
-                    //     <View
-                    //       style={{
-                    //         flexDirection: 'row',
-                    //         alignItems: 'center',
-                    //         width: windowWidth * 0.25,
-                    //       }}
-                    //     >
-                    //       <Text style={styles.usertableRowText}>1</Text>
-                    //       <View
-                    //         style={{
-                    //           flexDirection: 'row',
-                    //           alignItems: 'center',
-                    //           paddingHorizontal: moderateScale(10),
-                    //         }}
-                    //       >
-                    //         <Image source={aroma} style={styles.allienpic} />
-                    //         <Text
-                    //           style={[
-                    //             styles.usertableRowText,
-                    //             { paddingHorizontal: moderateScale(3) },
-                    //           ]}
-                    //         >
-                    //           Aromas de San Andrés
-                    //         </Text>
-                    //       </View>
-                    //     </View>
-                    //     <View
-                    //       style={{
-                    //         flexDirection: 'row',
-                    //         justifyContent: 'space-between',
-                    //         width: windowWidth * 0.65,
-                    //         paddingRight: 30,
-                    //       }}
-                    //     >
-                    //       <Text style={[styles.usertableRowText]}>
-                    //         125698740
-                    //       </Text>
-                    //       <Text
-                    //         style={[
-                    //           styles.usertableRowText,
-                    //           { paddingRight: 15 },
-                    //         ]}
-                    //       >
-                    //         Big Cigar
-                    //       </Text>
-                    //       <Text style={[styles.usertableRowText]}>
-                    //         Black Cigar
-                    //       </Text>
-                    //       <Text style={[styles.usertableRowText]}>Cigar</Text>
-                    //       <Text style={[styles.usertableRowText]}>396</Text>
-                    //       <Text style={styles.usertableRowText}>1,365</Text>
-                    //       <Text
-                    //         style={[
-                    //           styles.usertableRowText,
-                    //           { paddingRight: 15 },
-                    //         ]}
-                    //       >
-                    //         $10,365
-                    //       </Text>
-                    //     </View>
-                    //   </View>
-                    // </TouchableOpacity>
                     <TouchableOpacity
                       style={[styles.tableDataCon]}
-                      onPress={marboloDetailHandler}
+                      onPress={() => productModalHandler(item.id)}
                       key={index}
                     >
                       <View style={styles.displayFlex}>
@@ -2426,7 +2394,7 @@ export function Analytics(props) {
                   getTotalProductArray?.map((item, index) => (
                     <TouchableOpacity
                       style={[styles.tableDataCon]}
-                      onPress={marboloDetailHandler}
+                      onPress={() => productModalHandler(item.id)}
                       key={index}
                     >
                       <View style={styles.displayFlex}>
@@ -2581,7 +2549,7 @@ export function Analytics(props) {
                   getTotalProductArray?.map((item, index) => (
                     <TouchableOpacity
                       style={[styles.tableDataCon]}
-                      onPress={marboloDetailHandler}
+                      onPress={() => productModalHandler(item.id)}
                       key={index}
                     >
                       <View style={styles.displayFlex}>
@@ -2736,7 +2704,7 @@ export function Analytics(props) {
                   catSubBrandArray?.map((item, index) => (
                     <TouchableOpacity
                       style={[styles.tableDataCon]}
-                      onPress={marboloDetailHandler}
+                      onPress={() => productModalHandler(item.id)}
                       key={index}
                     >
                       <View style={styles.displayFlex}>
@@ -3523,7 +3491,10 @@ export function Analytics(props) {
           <Text style={styles.marboloText}>{strings.analytics.marboloRed}</Text>
           <Spacer space={SH(30)} />
           <View style={styles.displayFlex}>
-            <Image source={marboloRed2} style={styles.marboloRed} />
+            <Image
+              source={{ uri: totalProductModalData?.image?.[0]?.url }}
+              style={styles.marboloRed}
+            />
             <View style={styles.descriptionCon}>
               <Spacer space={SH(20)} />
               <Text style={[styles.marboloText, { fontSize: SF(18) }]}>
@@ -3531,7 +3502,7 @@ export function Analytics(props) {
               </Text>
               <Spacer space={SH(10)} />
               <Text style={styles.description}>
-                {strings.analytics.description}
+                {totalProductModalData?.details}
               </Text>
             </View>
           </View>
@@ -3560,7 +3531,9 @@ export function Analytics(props) {
                       keyboardType="numeric"
                     />
                   ) : (
-                    <Text style={styles.sellingCount}>$90</Text>
+                    <Text style={styles.sellingCount}>
+                      ${totalProductModalData?.selling_price}
+                    </Text>
                   )}
                 </View>
                 <Spacer space={SH(20)} />
@@ -3586,7 +3559,9 @@ export function Analytics(props) {
                       keyboardType="numeric"
                     />
                   ) : (
-                    <Text style={styles.sellingCount}>50</Text>
+                    <Text style={styles.sellingCount}>
+                      {totalProductModalData?.re_order}
+                    </Text>
                   )}
                 </View>
               </View>
@@ -5839,6 +5814,15 @@ export function Analytics(props) {
         {/* {totalRevnueCustomHeader()} */}
         {/* {totalRevenueFuntion()} */}
       </View>
+      {productModalLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
     </ScreenWrapper>
   );
 }

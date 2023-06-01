@@ -33,6 +33,7 @@ export const ApiProductInventory = {
   searchProductList: 'products',
   catSubBrandData: 'products/pos/data-list/statistics',
   getProductList: 'products/pos/product-list',
+  getProductModal: 'products/pos/',
 };
 
 // export const ApiSupportInventory = {

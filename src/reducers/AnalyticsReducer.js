@@ -8,6 +8,7 @@ const INITIALSTATE = {
   getTotalProDetail: {},
   catSubBrandData: [],
   getProductList: [],
+  getProductModal: {},
 };
 
 export const analyticsReducer = (
@@ -61,6 +62,16 @@ export const analyticsReducer = (
       return {
         ...state,
         getProductList: [],
+      };
+    case TYPES.GET_PRODUCT_MODAL_SUCCESS:
+      return {
+        ...state,
+        getProductModal: payload.getProductModal,
+      };
+    case TYPES.GET_PRODUCT_MODAL_RESET:
+      return {
+        ...state,
+        getProductModal: {},
       };
 
     default:

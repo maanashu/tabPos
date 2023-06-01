@@ -116,7 +116,7 @@ export function DrawerNavigator(props) {
         right: 10,
         // borderWidth: 1,
         width: SW(25),
-        height: Platform.OS === 'android' ? windowHeight * 0.95 : windowHeight,
+        height: Platform.OS === 'android' ? windowHeight * 0.9 : windowHeight,
       }}
       {...props}
     >
@@ -281,6 +281,22 @@ export function DrawerNavigator(props) {
           />
         )}
       />
+
+      <DrawerItem
+        activeBackgroundColor="transparent"
+        focused={active === 'posRetail' ? true : false}
+        onPress={() => {
+          setActive('posRetail'), navigate(NAVIGATION.posRetail);
+        }}
+        label=""
+        icon={({ focused, color, size }) => (
+          <Image
+            source={focused ? retail : greyRetail}
+            style={styles.iconStyle}
+          />
+        )}
+      />
+
       {getUserData?.posLoginData?.id !=
       getAuth?.merchantLoginData?.id ? null : (
         <View

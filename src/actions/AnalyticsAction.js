@@ -100,6 +100,22 @@ const getProductListReset = () => ({
   payload: null,
 });
 
+const getProductModalRequest = () => ({
+  type: TYPES.GET_PRODUCT_MODAL_REQUEST,
+  payload: null,
+});
+const getProductModalSuccess = getProductModal => ({
+  type: TYPES.GET_PRODUCT_MODAL_SUCCESS,
+  payload: { getProductModal },
+});
+const getProductModalError = error => ({
+  type: TYPES.GET_PRODUCT_MODAL_ERROR,
+  payload: { error },
+});
+const getProductModalReset = () => ({
+  type: TYPES.GET_PRODUCT_MODAL_RESET,
+  payload: null,
+});
 export const totalProGraph = sellerID => async dispatch => {
   dispatch(getTotalProGraphRequest());
   try {
@@ -175,5 +191,18 @@ export const getProductList = catId => async dispatch => {
       dispatch(getProductListReset());
     }
     dispatch(getProductListError(error.message));
+  }
+};
+
+export const getProductModal = productId => async dispatch => {
+  dispatch(getProductModalRequest());
+  try {
+    const res = await AnalyticsController.getProductModal(productId);
+    return dispatch(getProductModalSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getProductModalReset());
+    }
+    dispatch(getProductModalError(error.message));
   }
 };

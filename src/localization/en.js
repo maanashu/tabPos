@@ -380,8 +380,6 @@ export const en = {
     edit: 'Edit',
     marboloRed: 'Marlboro Red-Pack',
     detail: 'Details',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam elementum, ligula quis ultricies iaculis, odio augue venenatis eros, interdum suscipit ipsum turpis nec velit. Vivamus cursus, dui vitae auctor finibus, felis ex malesuada nunc, eget fringilla ante dui in diam. Integer non dapibus nulla.',
     save: 'Save',
     invoiveId: 'Invoice id: 12154NBG',
     print: 'Print',

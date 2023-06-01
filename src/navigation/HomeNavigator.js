@@ -16,7 +16,8 @@ import {
   LoginIntial,
   Reward,
   Setting,
-  DashBoard
+  DashBoard,
+  PosRetail,
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
@@ -90,9 +91,14 @@ export function HomeNavigator() {
         name={NAVIGATION.reward}
         options={{ headerShown: false }}
       />
-       <Drawer.Screen
+      <Drawer.Screen
         component={Setting}
         name={NAVIGATION.setting}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        component={PosRetail}
+        name={NAVIGATION.posRetail}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

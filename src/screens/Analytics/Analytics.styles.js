@@ -1683,4 +1683,12 @@ export const styles = StyleSheet.create({
     fontSize: SF(25),
     fontFamily: Fonts.MaisonRegular,
   },
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
 });

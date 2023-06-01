@@ -21,4 +21,5 @@ export const NAVIGATION = {
   posUsers: 'POSUsers',
   products: 'Products',
   posUserPasscode: 'PosUserPasscode',
+  posRetail: 'PosRetail',
 };
