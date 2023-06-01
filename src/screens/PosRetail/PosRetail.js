@@ -15,12 +15,22 @@ import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import { crossBg } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
-import { CartAmountTips, MainScreen } from './Components';
+import {
+  CartAmountPayBy,
+  CartAmountTips,
+  MainScreen,
+  PayByCard,
+  PayByCash,
+  PayByJBRCoins,
+} from './Components';
 
 export function PosRetail() {
   const bodyView = () => {
     // return <MainScreen />;
-    return <CartAmountTips />;
+    // return <CartAmountTips />;
+    // return <CartAmountPayBy />;
+    // return <PayByCash />;
+    return <PayByJBRCoins />;
   };
 
   return (

@@ -244,6 +244,10 @@ export { default as columbiaMen } from '@/assets/icons/ic_dashboard/columbiaMen.
 export { default as borderCross } from '@/assets/icons/ic_dashboard/borderCross.png';
 export { default as sessionEndBar } from '@/assets/icons/ic_dashboard/sessionEndBar.png';
 export { default as clothes } from '@/assets/images/clothes.png';
+export { default as cardPayment } from '@/assets/icons/ic_retail/card-payment.png';
+export { default as qrCodeIcon } from '@/assets/icons/ic_retail/qr-code.png';
+export { default as moneyIcon } from '@/assets/icons/ic_retail/moneyIcon.png';
+export { default as QR } from '@/assets/icons/ic_retail/QR.png';
 
 /* Fonts */
 export const Fonts = {
