@@ -47,7 +47,7 @@ import { BrandModal } from './BrandModal';
 import { catTypeData } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
 
-export function MainScreen({ checkOutHandler, headercrossHandler }) {
+export function CartScreen({ checkOutHandler, crossHandler }) {
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
@@ -128,21 +128,11 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
   return (
     <View>
       <View style={styles.homeScreenCon}>
-        <CustomHeader crossHandler={headercrossHandler} />
+        <CustomHeader crossHandler={crossHandler} />
 
         <View style={styles.displayflex2}>
           <View style={styles.itemLIistCon}>
-            <View>
-              <FlatList
-                data={catTypeData}
-                extraData={catTypeData}
-                renderItem={catTypeRenderItem}
-                keyExtractor={item => item.id}
-                horizontal
-                contentContainerStyle={styles.contentContainer}
-              />
-            </View>
-            <Spacer space={SH(15)} />
+            <Spacer space={SH(3)} />
             <View style={styles.displayflex}>
               <Text style={styles.allProduct}>
                 All Products <Text style={styles.allProductCount}>(1280)</Text>
@@ -165,23 +155,6 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
                     placeholderTextColor={COLORS.gerySkies}
                   />
                 </View>
-              </View>
-            </View>
-            <Spacer space={SH(15)} />
-            <View style={styles.productBodyCon}>
-              <View>
-                <FlatList
-                  data={[1, 2, 3, 4, 5, 6]}
-                  renderItem={renderItem}
-                  keyExtractor={item => item}
-                  extraData={selectedId}
-                  // numColumns={6}
-                  horizontal
-                  contentContainerStyle={{
-                    flexGrow: 1,
-                    justifyContent: 'space-between',
-                  }}
-                />
               </View>
             </View>
           </View>
@@ -328,27 +301,14 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
               style={styles.checkoutButtonSideBar}
               onPress={checkOutHandler}
             >
-              <Text style={styles.checkoutText}>{strings.retail.checkOut}</Text>
+              <Text style={styles.checkoutText}>
+                {strings.posRetail.payNow}
+              </Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>
           </View>
         </View>
       </View>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        isVisible={categoryModal || subCategoryModal || brandModal}
-      >
-        <View>
-          {categoryModal ? (
-            <CategoryModal crossHandler={() => setCategoryModal(false)} />
-          ) : subCategoryModal ? (
-            <SubCatModal crossHandler={() => setSubCategoryModal(false)} />
-          ) : (
-            <BrandModal crossHandler={() => setBrandModal(false)} />
-          )}
-        </View>
-      </Modal>
     </View>
   );
 }

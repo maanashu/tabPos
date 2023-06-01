@@ -244,6 +244,8 @@ export { default as columbiaMen } from '@/assets/icons/ic_dashboard/columbiaMen.
 export { default as borderCross } from '@/assets/icons/ic_dashboard/borderCross.png';
 export { default as sessionEndBar } from '@/assets/icons/ic_dashboard/sessionEndBar.png';
 export { default as clothes } from '@/assets/images/clothes.png';
+export { default as categoryMenu } from '@/assets/icons/ic_posRetail/categoryMenu.png';
+export { default as categoryshoes } from '@/assets/icons/ic_posRetail/categoryshoes.png';
 
 /* Fonts */
 export const Fonts = {

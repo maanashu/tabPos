@@ -116,7 +116,7 @@ export function DrawerNavigator(props) {
         right: 10,
         // borderWidth: 1,
         width: SW(25),
-        height: Platform.OS === 'android' ? windowHeight * 0.9 : windowHeight,
+        height: Platform.OS === 'android' ? windowHeight * 0.95 : windowHeight,
       }}
       {...props}
     >
