@@ -36,4 +36,5 @@ export const COLORS = {
   primaryDark: '#072A59',
   light_sky: '#F4F9FF',
   transparentGreen: '#F1FFF8',
+  transparentBlue: '#F2F8FF',
 };

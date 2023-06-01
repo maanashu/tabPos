@@ -30,8 +30,8 @@ export function Button({ style, textStyle, title, pending, disable, ...rest }) {
       </Text>
     </TouchableOpacity>
   ) : (
-    <TouchableHighlight
-      activeOpacity={0.9}
+    <TouchableOpacity
+      activeOpacity={0.5}
       underlayColor="#0E86D4"
       style={[
         styles.button,
@@ -44,7 +44,7 @@ export function Button({ style, textStyle, title, pending, disable, ...rest }) {
       <Text style={[{ color: COLORS.darkGray }, TextStyles.label, textStyle]}>
         {title}
       </Text>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 }
 
