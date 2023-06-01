@@ -6,9 +6,9 @@ import { COLORS } from '@/theme';
 import { Image } from 'react-native';
 import { leftBack } from '@/assets';
 
-const BackButton = ({ style, title, titleStyle }) => {
+const BackButton = ({ style, title, titleStyle, onPress = () => {} }) => {
   return (
-    <TouchableOpacity style={[styles.container, style]}>
+    <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <Image source={leftBack} style={styles.backIcon} />
       <Text style={[styles.backTitle, titleStyle]}>{title}</Text>
     </TouchableOpacity>

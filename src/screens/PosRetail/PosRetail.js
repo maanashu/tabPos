@@ -15,26 +15,69 @@ import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import { crossBg } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
-import { CartScreen, CustomHeader, MainScreen } from './Components';
+import {
+  CartAmountPayBy,
+  CartAmountTips,
+  CartScreen,
+  CustomHeader,
+  MainScreen,
+  PayByCard,
+  PayByCash,
+  PayByJBRCoins,
+} from './Components';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function PosRetail() {
-  const [cartScreen, setCartScreen] = useState(false);
-  const bodyView = () => {
-    if (cartScreen) {
-      return <CartScreen crossHandler={() => setCartScreen(false)} />;
-    } else {
-      return (
-        <MainScreen
-          headercrossHandler={() => alert('abc')}
-          checkOutHandler={() => setCartScreen(true)}
-        />
-      );
-    }
+  const [selectedScreen, setselectedScreen] = useState('MainScreen');
+
+  const renderScreen = {
+    ['MainScreen']: (
+      <MainScreen
+        headercrossHandler={() => alert('abc')}
+        checkOutHandler={() => setselectedScreen('CartScreen')}
+      />
+    ),
+    ['CartScreen']: (
+      <CartScreen
+        crossHandler={() => setselectedScreen('MainScreen')}
+        onPressPayNow={() => setselectedScreen('CartAmountTips')}
+      />
+    ),
+    ['CartAmountTips']: (
+      <CartAmountTips
+        onPressBack={() => setselectedScreen('CartScreen')}
+        onPressContinue={() => setselectedScreen('CartAmountPayBy')}
+      />
+    ),
+    ['CartAmountPayBy']: (
+      <CartAmountPayBy
+        onPressBack={() => setselectedScreen('CartAmountTips')}
+        onPressPaymentMethod={item => {
+          if (item.index === 0) {
+            setselectedScreen('PayByCard');
+          } else if (item.index === 1) {
+            setselectedScreen('PayByJBRCoins');
+          } else if (item.index === 2) {
+            setselectedScreen('PayByCash');
+          }
+        }}
+      />
+    ),
+    ['PayByCard']: (
+      <PayByCard onPressBack={() => setselectedScreen('CartAmountPayBy')} />
+    ),
+    ['PayByCash']: (
+      <PayByCash onPressBack={() => setselectedScreen('CartAmountPayBy')} />
+    ),
+    ['PayByJBRCoins']: (
+      <PayByJBRCoins onPressBack={() => setselectedScreen('CartAmountPayBy')} />
+    ),
   };
 
-  return (
-    <ScreenWrapper>
-      <View style={styles.container}>{bodyView()}</View>
-    </ScreenWrapper>
-  );
+  const screenChangeView = () => {
+    return renderScreen[selectedScreen];
+  };
+
+  return <ScreenWrapper>{screenChangeView()}</ScreenWrapper>;
 }

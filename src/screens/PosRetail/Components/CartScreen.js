@@ -47,7 +47,7 @@ import { BrandModal } from './BrandModal';
 import { catTypeData } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
 
-export function CartScreen({ checkOutHandler, crossHandler }) {
+export function CartScreen({ onPressPayNow, crossHandler }) {
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
@@ -299,7 +299,7 @@ export function CartScreen({ checkOutHandler, crossHandler }) {
             <View style={{ flex: 1 }} />
             <TouchableOpacity
               style={styles.checkoutButtonSideBar}
-              onPress={checkOutHandler}
+              onPress={onPressPayNow}
             >
               <Text style={styles.checkoutText}>
                 {strings.posRetail.payNow}

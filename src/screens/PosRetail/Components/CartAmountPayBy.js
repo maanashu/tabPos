@@ -27,7 +27,7 @@ const DATA = [
   { title: 'Cash', icon: moneyIcon },
 ];
 
-export const CartAmountPayBy = () => {
+export const CartAmountPayBy = ({ onPressBack, onPressPaymentMethod }) => {
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View style={styles._topContainer}>
@@ -54,7 +54,7 @@ export const CartAmountPayBy = () => {
         </TouchableOpacity>
       </View>
       <View style={styles._centerContainer}>
-        <BackButton title={'Back'} />
+        <BackButton title={'Back'} onPress={onPressBack} />
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
           <View style={{ flexDirection: 'row' }}>
@@ -69,7 +69,13 @@ export const CartAmountPayBy = () => {
           }}
         >
           {DATA.map((item, index) => (
-            <TouchableOpacity key={index} style={styles._payBYBoxContainer}>
+            <TouchableOpacity
+              onPress={() =>
+                onPressPaymentMethod({ method: item.title, index: index })
+              }
+              key={index}
+              style={styles._payBYBoxContainer}
+            >
               <Text style={styles._payByTitle}>Pay By</Text>
               <Text style={styles._payByMethod}>{item.title}</Text>
               <Text style={styles._payByAmount}>JBR 38,275</Text>

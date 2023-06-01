@@ -13,8 +13,9 @@ import { Button } from '@/components';
 import BackButton from '../../../components/BackButton';
 import { crossButton } from '@/assets';
 import moment from 'moment';
+import { goBack } from '@/navigation/NavigationRef';
 
-export const CartAmountTips = () => {
+export const CartAmountTips = ({ onPressBack, onPressContinue }) => {
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View style={styles._topContainer}>
@@ -41,7 +42,7 @@ export const CartAmountTips = () => {
         </TouchableOpacity>
       </View>
       <View style={styles._centerContainer}>
-        <BackButton title={'Back'} />
+        <BackButton title={'Back'} onPress={onPressBack} />
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Text style={styles._totalAmountTitle}>Total Cart Amount:</Text>
           <View style={{ flexDirection: 'row' }}>
@@ -75,6 +76,7 @@ export const CartAmountTips = () => {
               </View>
             </View>
             <Button
+              onPress={onPressContinue}
               title={'Continue'}
               style={{ height: ms(40), width: '98%', marginTop: ms(10) }}
             />

@@ -15,7 +15,7 @@ import BackButton from '@/components/BackButton';
 import { styles } from '../../PosRetail.styles';
 import { COLORS } from '@/theme';
 
-export const PayByCard = () => {
+export const PayByCard = ({ onPressBack }) => {
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View
@@ -28,6 +28,7 @@ export const PayByCard = () => {
         ]}
       >
         <BackButton
+          onPress={onPressBack}
           title={'Back'}
           style={{ top: ms(5), left: ms(0), backgroundColor: 'transparent' }}
         />

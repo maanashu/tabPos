@@ -22,4 +22,5 @@ export const NAVIGATION = {
   products: 'Products',
   posUserPasscode: 'PosUserPasscode',
   posRetail: 'PosRetail',
+  CartAmountTips: 'CartAmountTips',
 };

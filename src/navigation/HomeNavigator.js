@@ -21,6 +21,7 @@ import {
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
+import { CartAmountTips } from '@/screens/PosRetail/Components';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -99,6 +100,11 @@ export function HomeNavigator() {
       <Drawer.Screen
         component={PosRetail}
         name={NAVIGATION.posRetail}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        component={CartAmountTips}
+        name={NAVIGATION.CartAmountTips}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>
