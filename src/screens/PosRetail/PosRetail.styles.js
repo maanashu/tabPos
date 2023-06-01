@@ -1,6 +1,5 @@
 import { Fonts } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { moderateScale, ms } from 'react-native-size-matters';
 import { Dimensions, StyleSheet } from 'react-native';
 import { moderateScale, verticalScale, ms } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
