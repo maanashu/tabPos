@@ -709,4 +709,10 @@ export const en = {
     cancel: 'Cancel',
     spanish: 'Spanish',
   },
+  posRetail: {
+    categories: 'Categories',
+    subCategories: 'Sub Categories',
+    brand: 'Brands',
+    payNow: 'Pay Now ',
+  },
 };

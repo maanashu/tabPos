@@ -248,6 +248,8 @@ export { default as cardPayment } from '@/assets/icons/ic_retail/card-payment.pn
 export { default as qrCodeIcon } from '@/assets/icons/ic_retail/qr-code.png';
 export { default as moneyIcon } from '@/assets/icons/ic_retail/moneyIcon.png';
 export { default as QR } from '@/assets/icons/ic_retail/QR.png';
+export { default as categoryMenu } from '@/assets/icons/ic_posRetail/categoryMenu.png';
+export { default as categoryshoes } from '@/assets/icons/ic_posRetail/categoryshoes.png';
 
 /* Fonts */
 export const Fonts = {

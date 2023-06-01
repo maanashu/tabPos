@@ -15,22 +15,21 @@ import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import { crossBg } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
-import {
-  CartAmountPayBy,
-  CartAmountTips,
-  MainScreen,
-  PayByCard,
-  PayByCash,
-  PayByJBRCoins,
-} from './Components';
+import { CartScreen, CustomHeader, MainScreen } from './Components';
 
 export function PosRetail() {
+  const [cartScreen, setCartScreen] = useState(false);
   const bodyView = () => {
-    // return <MainScreen />;
-    // return <CartAmountTips />;
-    // return <CartAmountPayBy />;
-    // return <PayByCash />;
-    return <PayByJBRCoins />;
+    if (cartScreen) {
+      return <CartScreen crossHandler={() => setCartScreen(false)} />;
+    } else {
+      return (
+        <MainScreen
+          headercrossHandler={() => alert('abc')}
+          checkOutHandler={() => setCartScreen(true)}
+        />
+      );
+    }
   };
 
   return (

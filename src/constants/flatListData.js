@@ -1128,3 +1128,17 @@ export const policyLabelData = [
     active: 'Active',
   },
 ];
+export const catTypeData = [
+  {
+    id: 1,
+    name: 'Choose category',
+  },
+  {
+    id: 2,
+    name: 'Choose Sub categories ',
+  },
+  {
+    id: 3,
+    name: 'Choose Brand',
+  },
+];
