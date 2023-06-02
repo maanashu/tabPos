@@ -22,6 +22,7 @@ export class RetailController {
       console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
+          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
@@ -140,8 +141,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${sellerID}`;
-
+        `?app_name=pos&delivery_options=3&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

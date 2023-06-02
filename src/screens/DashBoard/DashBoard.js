@@ -120,7 +120,6 @@ export function DashBoard({ navigation }) {
 
   const TotalSale = getDashboardData?.getTotalSale;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  console.log('sellerID', sellerID);
   const getDeliveryData = getDashboardData?.getOrderDeliveries;
   const getDeliveryData2 = getDeliveryData?.filter(item => item.status <= 3);
   const [searchScreen, setSearchScreen] = useState(false);

@@ -15,6 +15,10 @@ const getCategoryError = error => ({
   type: TYPES.GET_CATEGORY_ERROR,
   payload: { error },
 });
+const getCategoryReset = () => ({
+  type: TYPES.GET_CATEGORY_RESET,
+  payload: null,
+});
 
 const getSubCategoryRequest = () => ({
   type: TYPES.GET_SUB_CATEGORY_REQUEST,
@@ -77,22 +81,22 @@ const getProductReset = () => ({
 });
 
 const getProductDefRequest = () => ({
-  type: TYPES.GET_PRODUCTDEF_REQUEST,
+  type: TYPES.GET_PRODUCT_DEF_REQUEST,
   payload: null,
 });
 
-const getProductDefSuccess = productList => ({
-  type: TYPES.GET_PRODUCTDEF_SUCCESS,
-  payload: { productList },
+const getProductDefSuccess = getProductDefault => ({
+  type: TYPES.GET_PRODUCT_DEF_SUCCESS,
+  payload: { getProductDefault },
 });
 
 const getProductDefError = error => ({
-  type: TYPES.GET_PRODUCTDEF_ERROR,
+  type: TYPES.GET_PRODUCT_DEF_ERROR,
   payload: { error },
 });
 
 const getProductDefReset = () => ({
-  type: TYPES.GET_PRODUCTDEF_RESET,
+  type: TYPES.GET_PRODUCT_DEF_RESET,
   payload: null,
 });
 
@@ -364,8 +368,11 @@ export const getCategory = sellerID => async dispatch => {
   dispatch(getCategoryRequest());
   try {
     const res = await RetailController.getCategory(sellerID);
-    dispatch(getCategorySuccess(res));
+    dispatch(getCategorySuccess(res?.payload?.data));
   } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getCategoryReset());
+    }
     dispatch(getCategoryError(error.message));
   }
 };
@@ -419,7 +426,8 @@ export const getProductDefault = sellerID => async dispatch => {
   dispatch(getProductDefRequest());
   try {
     const res = await RetailController.getProductDefault(sellerID);
-    dispatch(getProductDefSuccess(res));
+    dispatch(getProductDefSuccess(res?.payload?.data));
+    // console.log(res?.payload?.data);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getProductDefReset());

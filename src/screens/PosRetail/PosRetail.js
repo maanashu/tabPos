@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { ScreenWrapper } from '@/components';
 
@@ -14,16 +14,33 @@ import {
   PayByCash,
   PayByJBRCoins,
 } from './Components';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getCategory, getProductDefault } from '@/actions/RetailAction';
 
 export function PosRetail() {
+  const dispatch = useDispatch();
+  const getRetailData = useSelector(getRetail);
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const defaultArrayproduct = getRetailData?.getProductDefault;
+  const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
+
+  useEffect(() => {
+    dispatch(getProductDefault(sellerID));
+    dispatch(getCategory(sellerID));
+  }, []);
 
   const renderScreen = {
     ['MainScreen']: (
       <MainScreen
         headercrossHandler={() => alert('abc')}
         checkOutHandler={() => setselectedScreen('CartScreen')}
+        productArray={defaultArrayproduct}
+        categoryArray={categoryArray}
       />
     ),
     ['CartScreen']: (

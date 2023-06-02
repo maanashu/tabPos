@@ -331,6 +331,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(3),
     paddingBottom: verticalScale(5),
     marginTop: verticalScale(5),
+    marginLeft: 6,
   },
   categoryshoes: {
     width: windowWidth * 0.09,
@@ -1121,5 +1122,15 @@ export const styles = StyleSheet.create({
     fontSize: ms(7),
     color: COLORS.darkGray,
     fontWeight: 'normal',
+  },
+  noProductText: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: verticalScale(50),
+  },
+  emptyListText: {
+    fontSize: SF(16),
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
   },
 });

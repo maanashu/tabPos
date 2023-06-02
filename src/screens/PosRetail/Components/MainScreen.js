@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dimensions, FlatList, Text, View } from 'react-native';
 
-import { COLORS, SH } from '@/theme';
+import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer, TextField } from '@/components';
 
@@ -33,8 +33,17 @@ import { CustomHeader } from './CustomHeader';
 import { moderateScale } from 'react-native-size-matters';
 import { AddCartModal } from './AddCartModal';
 import { AddCartDetailModal } from './AddCartDetailModal';
+import { ActivityIndicator } from 'react-native';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { useSelector } from 'react-redux';
+import { TYPES } from '@/Types/Types';
 
-export function MainScreen({ checkOutHandler, headercrossHandler }) {
+export function MainScreen({
+  checkOutHandler,
+  headercrossHandler,
+  productArray,
+  categoryArray,
+}) {
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
@@ -42,6 +51,10 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
+
+  const isProductLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_PRODUCT_DEF], state)
+  );
 
   const catTypeFun = id => {
     id === 1
@@ -98,7 +111,7 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
       style={styles.productCon}
       onPress={() => setAddCartModal(true)}
     >
-      <Image source={categoryshoes} style={styles.categoryshoes} />
+      <Image source={{ uri: item.image }} style={styles.categoryshoes} />
       <Spacer space={SH(10)} />
       <Text numberOfLines={1} style={styles.productDes}>
         Made well colored cozy
@@ -108,11 +121,11 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
       </Text>
       <Spacer space={SH(6)} />
       <Text numberOfLines={1} style={styles.productSubHead}>
-        Baby Boy
+        {item.sub_category?.name}
       </Text>
       <Spacer space={SH(6)} />
       <Text numberOfLines={1} style={styles.productPrice}>
-        $5.65
+        ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
       </Text>
     </TouchableOpacity>
   );
@@ -159,21 +172,34 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
                 </View>
               </View>
             </View>
+
             <Spacer space={SH(15)} />
             <View style={styles.productBodyCon}>
               <View>
-                <FlatList
-                  data={[1, 2, 3, 4, 5, 6]}
-                  renderItem={renderItem}
-                  keyExtractor={item => item}
-                  extraData={selectedId}
-                  // numColumns={6}
-                  horizontal
-                  contentContainerStyle={{
-                    flexGrow: 1,
-                    justifyContent: 'space-between',
-                  }}
-                />
+                {isProductLoading ? (
+                  <View style={{ marginTop: 100 }}>
+                    <ActivityIndicator size="large" color={COLORS.indicator} />
+                  </View>
+                ) : productArray?.length === 0 ? (
+                  <View style={styles.noProductText}>
+                    <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                      {strings.valiadtion.noProduct}
+                    </Text>
+                  </View>
+                ) : (
+                  <FlatList
+                    data={productArray}
+                    renderItem={renderItem}
+                    keyExtractor={item => item}
+                    extraData={productArray}
+                    numColumns={6}
+                    // horizontal
+                    contentContainerStyle={{
+                      flexGrow: 1,
+                      justifyContent: 'space-between',
+                    }}
+                  />
+                )}
               </View>
             </View>
           </View>
@@ -333,7 +359,10 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
       >
         <View>
           {categoryModal ? (
-            <CategoryModal crossHandler={() => setCategoryModal(false)} />
+            <CategoryModal
+              crossHandler={() => setCategoryModal(false)}
+              categoryArray={categoryArray}
+            />
           ) : subCategoryModal ? (
             <SubCatModal crossHandler={() => setSubCategoryModal(false)} />
           ) : (
