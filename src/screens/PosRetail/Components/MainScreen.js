@@ -1,21 +1,9 @@
 import React, { useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { Dimensions, FlatList, Text, View } from 'react-native';
 
-import { useTheme } from '@react-navigation/native';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-
-import { COLORS, SH, ShadowStyles, SW } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
-import { login, TYPES } from '@/actions/UserActions';
-import {
-  Button,
-  ErrorView,
-  ScreenWrapper,
-  Spacer,
-  TextField,
-} from '@/components';
-import { errorsSelector } from '@/selectors/ErrorSelectors';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { Spacer, TextField } from '@/components';
 
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import {
@@ -23,14 +11,10 @@ import {
   categoryMenu,
   categoryshoes,
   checkArrow,
-  cloth,
-  crossBg,
-  crossButton,
   email,
-  eraser,
-  Fonts,
   keyboard,
   location,
+  notess,
   ok,
   pause,
   Phone_light,
@@ -46,6 +30,9 @@ import { SubCatModal } from './SubCatModal';
 import { BrandModal } from './BrandModal';
 import { catTypeData } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
+import { moderateScale } from 'react-native-size-matters';
+import { AddCartModal } from './AddCartModal';
+import { AddCartDetailModal } from './AddCartDetailModal';
 
 export function MainScreen({ checkOutHandler, headercrossHandler }) {
   const [selectedId, setSelectedId] = useState();
@@ -53,6 +40,8 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
   const [subCategoryModal, setSubCategoryModal] = useState(false);
   const [brandModal, setBrandModal] = useState(false);
   const [catTypeId, setCatTypeId] = useState();
+  const [addCartModal, setAddCartModal] = useState(false);
+  const [addCartDetailModal, setAddCartDetailModal] = useState(false);
 
   const catTypeFun = id => {
     id === 1
@@ -105,7 +94,10 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
   };
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity style={styles.productCon}>
+    <TouchableOpacity
+      style={styles.productCon}
+      onPress={() => setAddCartModal(true)}
+    >
       <Image source={categoryshoes} style={styles.categoryshoes} />
       <Spacer space={SH(10)} />
       <Text numberOfLines={1} style={styles.productDes}>
@@ -279,7 +271,7 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
                 <Text style={styles.addDiscountText}>Add Discount</Text>
               </View>
               <View style={styles.addDiscountCon}>
-                <Image source={addDiscountPic} style={styles.addDiscountPic} />
+                <Image source={notess} style={styles.addDiscountPic} />
                 <Text style={styles.addDiscountText}>Add Notes</Text>
               </View>
             </View>
@@ -348,6 +340,23 @@ export function MainScreen({ checkOutHandler, headercrossHandler }) {
             <BrandModal crossHandler={() => setBrandModal(false)} />
           )}
         </View>
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={addCartModal || addCartDetailModal}
+      >
+        {addCartDetailModal ? (
+          <AddCartDetailModal
+            crossHandler={() => setAddCartDetailModal(false)}
+          />
+        ) : (
+          <AddCartModal
+            crossHandler={() => setAddCartModal(false)}
+            detailHandler={() => setAddCartDetailModal(true)}
+          />
+        )}
       </Modal>
     </View>
   );

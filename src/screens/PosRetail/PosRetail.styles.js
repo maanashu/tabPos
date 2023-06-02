@@ -1,5 +1,6 @@
 import { Fonts } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
+import { height, width } from '@/theme/ScalerDimensions';
 import { Dimensions, StyleSheet } from 'react-native';
 import { moderateScale, verticalScale, ms } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
@@ -593,4 +594,400 @@ export const styles = StyleSheet.create({
   },
 
   // categoryModal css end
+
+  // addto cart modal css start
+  addCartCon: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    width: windowWidth * 0.5,
+    height: windowHeight * 0.9,
+    position: 'absolute',
+    alignSelf: 'center',
+  },
+
+  addCartConHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: SH(70),
+    paddingHorizontal: moderateScale(15),
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
+  backTocartCon: {
+    backgroundColor: '#F5F6F7',
+    width: SH(130),
+    height: SH(44),
+    padding: SH(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 3,
+  },
+  backTocartText: {
+    color: COLORS.black,
+    fontSize: SH(13),
+    fontFamily: Fonts.SemiBold,
+  },
+  continueBtnCon: {
+    width: SH(120),
+    height: SH(44),
+    padding: SH(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.primary,
+    borderWidth: 1,
+    marginLeft: SH(10),
+    borderRadius: 3,
+  },
+  addToCartCon: {
+    backgroundColor: COLORS.primary,
+    width: SH(120),
+    height: SH(44),
+    padding: SH(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: SH(10),
+    borderRadius: 3,
+  },
+  addTocartText: {
+    color: COLORS.white,
+    fontSize: SH(13),
+    fontFamily: Fonts.SemiBold,
+  },
+  colimbiaText: {
+    color: COLORS.black,
+    fontSize: SH(20),
+    fontFamily: Fonts.Bold,
+  },
+  sizeAndColor: {
+    color: COLORS.dark_grey,
+    fontSize: SH(16),
+    fontFamily: Fonts.Medium,
+  },
+  counterCon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    marginVertical: SH(20),
+  },
+  minusBtnCon: {
+    borderColor: '#D8D8D8',
+    borderWidth: 1,
+    width: windowWidth * 0.14,
+    height: SH(60),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  counterText: {
+    fontSize: SH(28),
+    fontFamily: Fonts.Bold,
+    color: COLORS.black,
+  },
+  colorText: {
+    marginHorizontal: SH(10),
+    fontSize: SH(18),
+    fontFamily: Fonts.Regular,
+    color: COLORS.gerySkies,
+  },
+  colorRow: {
+    height: SH(2),
+    // width: SH(235),
+    width: windowWidth * 0.17,
+    backgroundColor: '#D8D8D8',
+  },
+  selectColorItem: {
+    width: SH(142),
+    height: SH(60),
+    borderRadius: 5,
+    borderColor: '#E1E3E4',
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginHorizontal: moderateScale(3),
+  },
+  colorSelectText: {
+    fontSize: SF(18),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
+  },
+  detailBtnCon: {
+    color: COLORS.primary,
+    fontSize: SH(13),
+    fontFamily: Fonts.SemiBold,
+  },
+
+  // addto cart modal css end
+
+  // addto cart detail modal css start
+  addCartDetailConHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: SH(70),
+  },
+  addCartDetailCon: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    width: windowWidth * 0.6,
+    height: windowHeight * 0.92,
+    position: 'absolute',
+    alignSelf: 'center',
+    paddingHorizontal: moderateScale(13),
+  },
+  jacketName: {
+    color: COLORS.solid_grey,
+    fontSize: SH(18),
+    fontFamily: Fonts.SemiBold,
+  },
+  addCartDetailBody: {
+    height: windowHeight * 0.82,
+  },
+  clothProfileCon: {
+    height: windowHeight * 0.08,
+    flexDirection: 'row',
+  },
+  clothProfileDes: {
+    color: COLORS.darkGray,
+    fontSize: SH(11),
+    fontFamily: Fonts.Regular,
+  },
+  clothProfileSubHead: {
+    color: COLORS.darkGray,
+    fontSize: SH(11),
+    fontFamily: Fonts.Italic,
+  },
+  profileCloth: {
+    width: SW(16),
+    height: SW(16),
+    resizeMode: 'contain',
+  },
+  profileClothDes: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+  },
+  priceCon: {
+    height: windowHeight * 0.07,
+    backgroundColor: COLORS.washGrey,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(10),
+    alignItems: 'center',
+  },
+  skuCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 7,
+    paddingHorizontal: moderateScale(7),
+  },
+  skuConBody: {
+    height: windowHeight * 0.06,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderColor: COLORS.solidGrey,
+  },
+  reOrderBody: {
+    height: windowHeight * 0.05,
+    borderTopWidth: 1,
+    borderBottomWidth: 0,
+  },
+  sku: {
+    color: COLORS.solid_grey,
+    fontSize: SH(14),
+    fontFamily: Fonts.Regular,
+  },
+  inStoreBody: {
+    height: windowHeight * 0.06,
+    borderWidth: 1,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderColor: COLORS.solidGrey,
+    paddingHorizontal: moderateScale(15),
+  },
+  inStoreText: {
+    color: COLORS.solid_grey,
+    fontSize: SH(14),
+    fontFamily: Fonts.MaisonBold,
+  },
+  toggleSecBlue: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+  },
+  ScrollableMainCon: {
+    width: windowWidth * 0.48,
+    alignSelf: 'center',
+
+    height: windowHeight * 0.5,
+  },
+  selectColorCon: {
+    flexDirection: 'row',
+  },
+  colorArea: {
+    width: SW(6),
+    height: SW(6),
+    backgroundColor: COLORS.bluish_green,
+    borderRadius: 5,
+    marginRight: 3,
+  },
+  scrollableBodyCon: {
+    width: windowWidth * 0.48,
+    alignSelf: 'center',
+    height: windowHeight * 0.45,
+    flexDirection: 'row',
+  },
+  colorSelectArea: {
+    height: windowHeight * 0.45,
+    width: windowWidth * 0.09,
+    alignItems: 'center',
+    borderEndWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
+  quantitySelectArea: {
+    height: windowHeight * 0.45,
+    width: windowWidth * 0.25,
+    paddingHorizontal: moderateScale(10),
+  },
+  RemindSelectArea: {
+    height: windowHeight * 0.45,
+    width: windowWidth * 0.14,
+  },
+  imageView: {
+    borderWidth: 2,
+    borderRadius: 5,
+    width: SW(25),
+    height: SW(25),
+    marginVertical: verticalScale(3),
+  },
+  scrollImage: {
+    width: SW(23),
+    height: SW(23),
+    resizeMode: 'contain',
+  },
+  sizeSelectItemCon: {
+    height: SW(11),
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(10),
+
+    marginTop: 7,
+  },
+  adminItemCon: {
+    height: SW(11),
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(10),
+
+    marginTop: 7,
+  },
+  bell: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    marginHorizontal: moderateScale(4),
+  },
+  sizeSelectItemCona: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 5,
+    paddingHorizontal: moderateScale(10),
+  },
+
+  // addto cart detail modal css start
+
+  blueListHeader: {
+    backgroundColor: COLORS.primary,
+    height: SH(40),
+    borderRadius: 5,
+    justifyContent: 'center',
+    // alignContent: 'center',
+  },
+
+  tableListSide: {
+    width: windowWidth * 0.25,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  listLeft: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  cashLabelWhite: {
+    color: COLORS.white,
+    fontSize: SF(14),
+    fontFamily: Fonts.Medium,
+  },
+  cashLabelWhiteHash: {
+    paddingHorizontal: moderateScale(15),
+  },
+  tableListSide: {
+    width: windowWidth * 0.25,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  tableListSide2: {
+    width: windowWidth * 0.29,
+    paddingRight: 20,
+    alignItems: 'center',
+  },
+  blueListData: {
+    borderWidth: 1,
+    height: SH(48),
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    marginVertical: verticalScale(2),
+    // alignContent: 'center',
+  },
+  blueListDataText: {
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    fontFamily: Fonts.Regular,
+  },
+  columbiaMen: {
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+  },
+  minus: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+  },
+  sukNumber: {
+    color: COLORS.darkGray,
+    fontSize: SF(11),
+    fontFamily: Fonts.Regular,
+  },
+  listCountCon: {
+    borderWidth: 1,
+    width: SW(30),
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    // paddingVertical: verticalScale(1),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(4),
+    alignItems: 'center',
+  },
+  borderCross: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+  },
 });

@@ -1,20 +1,8 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
-
-import { useTheme } from '@react-navigation/native';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-
-import { ShadowStyles } from '@/theme';
-import { strings } from '@/localization';
-import { login, TYPES } from '@/actions/UserActions';
-import { Button, ErrorView, ScreenWrapper, TextField } from '@/components';
-import { errorsSelector } from '@/selectors/ErrorSelectors';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { ScreenWrapper } from '@/components';
 
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
-import { crossBg } from '@/assets';
-import { TouchableOpacity } from 'react-native';
-import { Image } from 'react-native';
 import {
   CartAmountPayBy,
   CartAmountTips,
@@ -25,8 +13,6 @@ import {
   PayByCash,
   PayByJBRCoins,
 } from './Components';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
 
 export function PosRetail() {
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
@@ -79,5 +65,9 @@ export function PosRetail() {
     return renderScreen[selectedScreen];
   };
 
-  return <ScreenWrapper>{screenChangeView()}</ScreenWrapper>;
+  return (
+    <ScreenWrapper>
+      <View style={styles.container}>{screenChangeView()}</View>
+    </ScreenWrapper>
+  );
 }

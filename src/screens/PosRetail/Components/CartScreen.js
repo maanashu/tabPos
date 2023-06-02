@@ -1,29 +1,19 @@
 import React, { useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
-import { useTheme } from '@react-navigation/native';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-
-import { COLORS, SH, ShadowStyles, SW } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
-import { login, TYPES } from '@/actions/UserActions';
-import {
-  Button,
-  ErrorView,
-  ScreenWrapper,
-  Spacer,
-  TextField,
-} from '@/components';
-import { errorsSelector } from '@/selectors/ErrorSelectors';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import {
   addDiscountPic,
+  borderCross,
   categoryMenu,
   categoryshoes,
   checkArrow,
   cloth,
+  columbiaMen,
   crossBg,
   crossButton,
   email,
@@ -31,9 +21,11 @@ import {
   Fonts,
   keyboard,
   location,
+  minus,
   ok,
   pause,
   Phone_light,
+  plus,
   search_light,
   terryProfile,
 } from '@/assets';
@@ -157,6 +149,56 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
                 </View>
               </View>
             </View>
+            <Spacer space={SH(10)} />
+            <View style={styles.blueListHeader}>
+              <View style={styles.displayflex}>
+                <View style={[styles.tableListSide, styles.listLeft]}>
+                  <Text
+                    style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}
+                  >
+                    #
+                  </Text>
+                  <Text style={styles.cashLabelWhite}>Item</Text>
+                </View>
+                <View style={[styles.tableListSide, styles.tableListSide2]}>
+                  <Text style={styles.cashLabelWhite}>Unit Price</Text>
+                  <Text style={styles.cashLabelWhite}>Quantity</Text>
+                  <Text style={styles.cashLabelWhite}>Line Total</Text>
+                  <Text style={{ color: COLORS.primary }}>1</Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.blueListData}>
+              <View style={styles.displayflex}>
+                <View style={[styles.tableListSide, styles.listLeft]}>
+                  <Text
+                    style={[styles.blueListDataText, styles.cashLabelWhiteHash]}
+                  >
+                    1
+                  </Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={columbiaMen} style={styles.columbiaMen} />
+                    <View style={{ marginLeft: 10 }}>
+                      <Text style={styles.blueListDataText}>
+                        Columbia Men's Rain Jacket
+                      </Text>
+                      <Text style={styles.sukNumber}>SUK: 5689076</Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={[styles.tableListSide, styles.tableListSide2]}>
+                  <Text style={styles.blueListDataText}>$80.99</Text>
+                  <View style={styles.listCountCon}>
+                    <Image source={minus} style={styles.minus} />
+                    <Text>1</Text>
+                    <Image source={plus} style={styles.minus} />
+                  </View>
+                  <Text style={styles.blueListDataText}>$80.99</Text>
+                  <Image source={borderCross} style={styles.borderCross} />
+                </View>
+              </View>
+            </View>
+            <Spacer space={SH(7)} />
           </View>
           <View
             //   pointerEvents="auto"

@@ -1,15 +1,9 @@
-import React, { useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
-
-import { COLORS, SH } from '@/theme';
-import { strings } from '@/localization';
-import { Spacer } from '@/components';
-
+import React from 'react';
+import { Text, View } from 'react-native';
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import { cloth, crossButton, search_light } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 
 export function CustomHeader({ crossHandler }) {
   return (
