@@ -16,7 +16,7 @@ import {
 } from './Components';
 
 export function PosRetail() {
-  const [selectedScreen, setselectedScreen] = useState('FinalPaymentScreen');
+  const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
 
   const renderScreen = {
