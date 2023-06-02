@@ -1120,6 +1120,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: ms(7),
     color: COLORS.darkGray,
-    fontWeight: 'auto',
+    fontWeight: 'normal',
   },
 });
