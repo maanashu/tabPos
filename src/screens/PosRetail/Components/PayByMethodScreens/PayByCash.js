@@ -15,7 +15,7 @@ import BackButton from '@/components/BackButton';
 import { styles } from '../../PosRetail.styles';
 import { COLORS } from '@/theme';
 
-export const PayByCash = ({ onPressBack }) => {
+export const PayByCash = ({ onPressBack, onPressContinue }) => {
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View
@@ -70,6 +70,7 @@ export const PayByCash = ({ onPressBack }) => {
               </View>
             </View>
             <Button
+              onPress={onPressContinue}
               title={'Continue'}
               style={{ height: ms(40), width: '98%', marginTop: ms(10) }}
             />

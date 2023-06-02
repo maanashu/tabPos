@@ -8,6 +8,7 @@ import {
   CartAmountTips,
   CartScreen,
   CustomHeader,
+  FinalPaymentScreen,
   MainScreen,
   PayByCard,
   PayByCash,
@@ -15,7 +16,8 @@ import {
 } from './Components';
 
 export function PosRetail() {
-  const [selectedScreen, setselectedScreen] = useState('MainScreen');
+  const [selectedScreen, setselectedScreen] = useState('FinalPaymentScreen');
+  const [paymentMethod, setpaymentMethod] = useState('Cash');
 
   const renderScreen = {
     ['MainScreen']: (
@@ -51,13 +53,43 @@ export function PosRetail() {
       />
     ),
     ['PayByCard']: (
-      <PayByCard onPressBack={() => setselectedScreen('CartAmountPayBy')} />
+      <PayByCard
+        onPressBack={() => {
+          setselectedScreen('CartAmountPayBy');
+        }}
+        onPressContinue={() => {
+          setpaymentMethod('Card');
+          setselectedScreen('FinalPaymentScreen');
+        }}
+      />
     ),
     ['PayByCash']: (
-      <PayByCash onPressBack={() => setselectedScreen('CartAmountPayBy')} />
+      <PayByCash
+        onPressBack={() => {
+          setselectedScreen('CartAmountPayBy');
+        }}
+        onPressContinue={() => {
+          setpaymentMethod('Cash');
+          setselectedScreen('FinalPaymentScreen');
+        }}
+      />
     ),
     ['PayByJBRCoins']: (
-      <PayByJBRCoins onPressBack={() => setselectedScreen('CartAmountPayBy')} />
+      <PayByJBRCoins
+        onPressBack={() => {
+          setselectedScreen('CartAmountPayBy');
+        }}
+        onPressContinue={() => {
+          setpaymentMethod('JBRCoins');
+          setselectedScreen('FinalPaymentScreen');
+        }}
+      />
+    ),
+    ['FinalPaymentScreen']: (
+      <FinalPaymentScreen
+        onPressBack={() => setselectedScreen('CartAmountPayBy')}
+        paymentMethod={paymentMethod}
+      />
     ),
   };
 

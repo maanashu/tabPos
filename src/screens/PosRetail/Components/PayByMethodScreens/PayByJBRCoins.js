@@ -15,7 +15,7 @@ import BackButton from '@/components/BackButton';
 import { styles } from '../../PosRetail.styles';
 import { COLORS } from '@/theme';
 
-export const PayByJBRCoins = ({ onPressBack }) => {
+export const PayByJBRCoins = ({ onPressBack, onPressContinue }) => {
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View
@@ -69,7 +69,10 @@ export const PayByJBRCoins = ({ onPressBack }) => {
                   keyboardType="number-pad"
                   style={styles._inputContainer}
                 />
-                <TouchableOpacity style={styles._sendRequest}>
+                <TouchableOpacity
+                  onPress={onPressContinue}
+                  style={styles._sendRequest}
+                >
                   <Text
                     style={[styles._tipText, { color: COLORS.solid_green }]}
                   >

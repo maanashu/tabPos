@@ -15,7 +15,7 @@ import BackButton from '@/components/BackButton';
 import { styles } from '../../PosRetail.styles';
 import { COLORS } from '@/theme';
 
-export const PayByCard = ({ onPressBack }) => {
+export const PayByCard = ({ onPressBack, onPressContinue }) => {
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View
@@ -41,10 +41,13 @@ export const PayByCard = ({ onPressBack }) => {
             <Text style={styles._amount}>382.75</Text>
           </View>
         </View>
-        <View style={styles._bottomCardView}>
+        <TouchableOpacity
+          onPress={onPressContinue}
+          style={styles._bottomCardView}
+        >
           <Image source={cardPayment} style={styles._cardIconView} />
           <Text style={styles._cardSubtitle}>Insert or Tap your card here</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
