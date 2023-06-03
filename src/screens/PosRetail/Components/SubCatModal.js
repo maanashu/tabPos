@@ -10,9 +10,14 @@ import { cloth, crossButton, search_light } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { useSelector } from 'react-redux';
 
-export function SubCatModal({ crossHandler }) {
+export function SubCatModal({ crossHandler, onSelectSubCategory }) {
   const [selectedId, setSelectedId] = useState();
+
+  const getRetailData = useSelector(getRetail);
+  const subCatgories = getRetailData?.subCategories;
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
@@ -29,10 +34,15 @@ export function SubCatModal({ crossHandler }) {
   };
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity style={styles.catProArrayCon}>
-      <Image source={cloth} style={styles.cloth} />
+    <TouchableOpacity
+      onPress={() => {
+        onSelectSubCategory(item);
+      }}
+      style={styles.catProArrayCon}
+    >
+      <Image source={{ uri: item.image }} style={styles.cloth} />
       <Spacer space={SH(5)} />
-      <Text style={styles.categories}>Baby Girl</Text>
+      <Text style={styles.categories}>{item.name}</Text>
       <Spacer space={SH(3)} />
       <Text style={styles.listed}>24 listed</Text>
     </TouchableOpacity>
@@ -63,10 +73,10 @@ export function SubCatModal({ crossHandler }) {
       <Spacer space={SH(15)} />
       <View style={styles.categoryflatlistHeight}>
         <FlatList
-          data={[1, 2, 3, 4, 5]}
+          data={subCatgories}
           renderItem={renderItem}
           keyExtractor={item => item.id}
-          extraData={[1, 2, 3, 4, 5]}
+          extraData={subCatgories}
           numColumns={4}
         />
         <Spacer space={SH(5)} />

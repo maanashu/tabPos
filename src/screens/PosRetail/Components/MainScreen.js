@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 
 import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
-import { Spacer, TextField } from '@/components';
+import { Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import {
   addDiscountPic,
   categoryMenu,
-  categoryshoes,
   checkArrow,
   email,
   keyboard,
   location,
   notess,
   ok,
-  pause,
   Phone_light,
   search_light,
   terryProfile,
@@ -30,15 +28,15 @@ import { SubCatModal } from './SubCatModal';
 import { BrandModal } from './BrandModal';
 import { catTypeData } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
-import { moderateScale } from 'react-native-size-matters';
 import { AddCartModal } from './AddCartModal';
 import { AddCartDetailModal } from './AddCartDetailModal';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { TYPES } from '@/Types/Types';
-import { getProduct } from '@/actions/RetailAction';
+import { getBrand, getProduct, getSubCategory } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
+import { useIsFocused } from '@react-navigation/native';
 
 export function MainScreen({
   checkOutHandler,
@@ -60,27 +58,51 @@ export function MainScreen({
 
   const [showProductsFrom, setshowProductsFrom] = useState();
 
-  const [filterMenuTitle, setfilterMenuTitle] = useState(catTypeData);
+  const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
+
+  const [filterMenuTitle, setfilterMenuTitle] = useState(filterMenuData);
+
+  const [isFilterDataSeclectedOfIndex, setisFilterDataSeclectedOfIndex] =
+    useState();
+
+  const [selectedCatID, setselectedCatID] = useState(null);
+  const [selectedSubCatID, setselectedSubCatID] = useState(null);
+  const [selectedBrandID, setselectedBrandID] = useState(null);
 
   const dispatch = useDispatch();
+  const isFocus = useIsFocused();
 
   const isProductLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_PRODUCT_DEF, TYPES.GET_PRODUCT], state)
   );
+
+  const originalFilterData = [
+    {
+      id: 1,
+      name: 'Choose category',
+    },
+    {
+      id: 2,
+      name: 'Choose Sub categories ',
+    },
+    {
+      id: 3,
+      name: 'Choose Brand',
+    },
+  ];
+
+  useEffect(() => {
+    setfilterMenuTitle(originalFilterData);
+    setTimeout(() => {
+      setshowProductsFrom(productArray);
+    }, 1000);
+  }, [isFocus]);
 
   useEffect(() => {
     if (products) {
       setshowProductsFrom(products);
     }
   }, [products]);
-
-  const catTypeFun = id => {
-    id === 1
-      ? setCategoryModal(true)
-      : id === 2
-      ? setSubCategoryModal(true)
-      : setBrandModal(true);
-  };
 
   //  categoryType -----start
   const catTypeRenderItem = ({ item }) => {
@@ -91,7 +113,19 @@ export function MainScreen({
       <CatTypeItem
         item={item}
         onPress={() => {
-          setCatTypeId(item.id), catTypeFun(item.id);
+          if (item.id === 1) {
+            setCatTypeId(item.id);
+            setCategoryModal(true);
+            //  catTypeFun(item.id);
+          } else if (item.id === 2 && isFilterDataSeclectedOfIndex === 0) {
+            setCatTypeId(item.id);
+            dispatch(getSubCategory(sellerID, selectedCatID));
+            setSubCategoryModal(true);
+          } else if (item.id === 3 && isFilterDataSeclectedOfIndex === 1) {
+            setCatTypeId(item.id);
+            dispatch(getBrand(sellerID, selectedSubCatID));
+            setBrandModal(true);
+          }
         }}
         backgroundColor={backgroundColor}
         textColor={color}
@@ -389,7 +423,10 @@ export function MainScreen({
               categoryArray={categoryArray}
               onSelectCategory={selectedCat => {
                 dispatch(getProduct(selectedCat.id, null, null, sellerID));
-                setCategoryModal(false);
+
+                setselectedCatID(selectedCat.id);
+
+                setisFilterDataSeclectedOfIndex(0); // Enable Selection of subcategory if any category is selected
 
                 setfilterMenuTitle(prevData => {
                   const newData = [...prevData];
@@ -397,12 +434,55 @@ export function MainScreen({
                   newData[0].isSelected = true;
                   return newData;
                 });
+
+                setCategoryModal(false);
               }}
             />
           ) : subCategoryModal ? (
-            <SubCatModal crossHandler={() => setSubCategoryModal(false)} />
+            <SubCatModal
+              crossHandler={() => setSubCategoryModal(false)}
+              onSelectSubCategory={selectedSubCat => {
+                dispatch(
+                  getProduct(selectedCatID, selectedSubCat.id, null, sellerID)
+                );
+                setselectedSubCatID(selectedSubCat.id);
+                setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
+
+                setfilterMenuTitle(prevData => {
+                  const newData = [...prevData];
+                  newData[1].name = selectedSubCat.name;
+                  newData[1].isSelected = true;
+                  return newData;
+                });
+
+                setSubCategoryModal(false);
+              }}
+            />
           ) : (
-            <BrandModal crossHandler={() => setBrandModal(false)} />
+            <BrandModal
+              crossHandler={() => setBrandModal(false)}
+              onSelectbrands={selectedBrand => {
+                dispatch(
+                  getProduct(
+                    selectedCatID,
+                    selectedSubCatID,
+                    selectedBrand.id,
+                    sellerID
+                  )
+                );
+                setselectedBrandID(selectedBrand.id);
+                setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
+
+                setfilterMenuTitle(prevData => {
+                  const newData = [...prevData];
+                  newData[2].name = selectedBrand.name;
+                  newData[2].isSelected = true;
+                  return newData;
+                });
+
+                setBrandModal(false);
+              }}
+            />
           )}
         </View>
       </Modal>

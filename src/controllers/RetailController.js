@@ -42,7 +42,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getSubCategory +
-        `?page=1&limit=20&category_id=${selectedId}&seller_id=${sellerID}&main_category=true`;
+        `?page=1&limit=20&category_id=${selectedId}&seller_id=${sellerID}&main_category=false`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
