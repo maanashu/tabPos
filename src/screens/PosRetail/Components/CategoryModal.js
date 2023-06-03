@@ -11,7 +11,11 @@ import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-export function CategoryModal({ crossHandler, categoryArray }) {
+export function CategoryModal({
+  crossHandler,
+  categoryArray,
+  onSelectCategory,
+}) {
   const [selectedId, setSelectedId] = useState();
 
   console.log('----------------', categoryArray);
@@ -21,17 +25,18 @@ export function CategoryModal({ crossHandler, categoryArray }) {
     const color = item.id === selectedId ? 'white' : 'black';
 
     return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
+      <Item item={item} backgroundColor={backgroundColor} textColor={color} />
     );
   };
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity style={styles.catProArrayCon}>
+    <TouchableOpacity
+      onPress={() => {
+        setSelectedId(item.id);
+        onSelectCategory(item);
+      }}
+      style={styles.catProArrayCon}
+    >
       <Image source={{ uri: item.image }} style={styles.cloth} />
       <Spacer space={SH(5)} />
       <Text style={styles.categories}>{item.name}</Text>

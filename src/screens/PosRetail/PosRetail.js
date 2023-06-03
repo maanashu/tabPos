@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getCategory, getProductDefault } from '@/actions/RetailAction';
+import { useIsFocused } from '@react-navigation/native';
 
 export function PosRetail() {
   const dispatch = useDispatch();
@@ -29,10 +30,12 @@ export function PosRetail() {
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
 
+  const isFocus = useIsFocused();
+
   useEffect(() => {
     dispatch(getProductDefault(sellerID));
     dispatch(getCategory(sellerID));
-  }, []);
+  }, [isFocus]);
 
   const renderScreen = {
     ['MainScreen']: (
@@ -41,6 +44,7 @@ export function PosRetail() {
         checkOutHandler={() => setselectedScreen('CartScreen')}
         productArray={defaultArrayproduct}
         categoryArray={categoryArray}
+        sellerID={sellerID}
       />
     ),
     ['CartScreen']: (

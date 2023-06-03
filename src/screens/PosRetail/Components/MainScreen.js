@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Text, View } from 'react-native';
 
 import { COLORS, SF, SH } from '@/theme';
@@ -35,14 +35,17 @@ import { AddCartModal } from './AddCartModal';
 import { AddCartDetailModal } from './AddCartDetailModal';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TYPES } from '@/Types/Types';
+import { getProduct } from '@/actions/RetailAction';
+import { getRetail } from '@/selectors/RetailSelectors';
 
 export function MainScreen({
   checkOutHandler,
   headercrossHandler,
   productArray,
   categoryArray,
+  sellerID,
 }) {
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
@@ -52,9 +55,24 @@ export function MainScreen({
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
 
+  const getRetailData = useSelector(getRetail);
+  const products = getRetailData?.products;
+
+  const [showProductsFrom, setshowProductsFrom] = useState();
+
+  const [filterMenuTitle, setfilterMenuTitle] = useState(catTypeData);
+
+  const dispatch = useDispatch();
+
   const isProductLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_PRODUCT_DEF], state)
+    isLoadingSelector([TYPES.GET_PRODUCT_DEF, TYPES.GET_PRODUCT], state)
   );
+
+  useEffect(() => {
+    if (products) {
+      setshowProductsFrom(products);
+    }
+  }, [products]);
 
   const catTypeFun = id => {
     id === 1
@@ -87,7 +105,13 @@ export function MainScreen({
       //   onPress={() => setCategoryModal(true)}
     >
       <Text style={styles.chooseCat}>{item.name}</Text>
-      <Image source={categoryMenu} style={styles.categoryMenu} />
+      <Image
+        source={categoryMenu}
+        style={[
+          styles.categoryMenu,
+          { tintColor: item.isSelected && COLORS.solid_green },
+        ]}
+      />
     </TouchableOpacity>
   );
   //  categoryType -----end
@@ -114,7 +138,7 @@ export function MainScreen({
       <Image source={{ uri: item.image }} style={styles.categoryshoes} />
       <Spacer space={SH(10)} />
       <Text numberOfLines={1} style={styles.productDes}>
-        Made well colored cozy
+        {item.name}
       </Text>
       <Text numberOfLines={1} style={styles.productDes}>
         short cardigan
@@ -125,7 +149,8 @@ export function MainScreen({
       </Text>
       <Spacer space={SH(6)} />
       <Text numberOfLines={1} style={styles.productPrice}>
-        ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+        {`$${item?.price}`}
+        {/* ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price} */}
       </Text>
     </TouchableOpacity>
   );
@@ -139,8 +164,8 @@ export function MainScreen({
           <View style={styles.itemLIistCon}>
             <View>
               <FlatList
-                data={catTypeData}
-                extraData={catTypeData}
+                data={filterMenuTitle}
+                extraData={filterMenuTitle}
                 renderItem={catTypeRenderItem}
                 keyExtractor={item => item.id}
                 horizontal
@@ -188,10 +213,10 @@ export function MainScreen({
                   </View>
                 ) : (
                   <FlatList
-                    data={productArray}
+                    data={showProductsFrom || productArray}
                     renderItem={renderItem}
-                    keyExtractor={item => item}
-                    extraData={productArray}
+                    keyExtractor={(item, index) => index}
+                    extraData={showProductsFrom}
                     numColumns={6}
                     // horizontal
                     contentContainerStyle={{
@@ -362,6 +387,17 @@ export function MainScreen({
             <CategoryModal
               crossHandler={() => setCategoryModal(false)}
               categoryArray={categoryArray}
+              onSelectCategory={selectedCat => {
+                dispatch(getProduct(selectedCat.id, null, null, sellerID));
+                setCategoryModal(false);
+
+                setfilterMenuTitle(prevData => {
+                  const newData = [...prevData];
+                  newData[0].name = selectedCat.name;
+                  newData[0].isSelected = true;
+                  return newData;
+                });
+              }}
             />
           ) : subCategoryModal ? (
             <SubCatModal crossHandler={() => setSubCategoryModal(false)} />

@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
   },
   cashLabelBold: {
     color: COLORS.solid_grey,
-    fontSize: SF(14),
+    fontSize: SF(12),
     fontFamily: Fonts.Medium,
   },
   crossBg: {
