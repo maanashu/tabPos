@@ -7,7 +7,7 @@ import { styles } from '@/screens/Auth/LoginIntial/LoginIntial.styles';
 import { strings } from '@/localization';
 import { useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
-
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import { NAVIGATION } from '@/constants';
