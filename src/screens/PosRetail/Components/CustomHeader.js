@@ -4,13 +4,23 @@ import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import { cloth, crossButton, search_light } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
+import moment from 'moment';
 
 export function CustomHeader({ crossHandler }) {
   return (
     <View style={styles.searchScreenHeader}>
       <View style={styles.displayflex}>
-        <Text style={styles.cashLabelBold}>Wed 26 Apr , 2023</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={styles.cashLabelBold}>
+            {moment().format('ddd DD MMM, YYYY')}
+          </Text>
+          <View style={styles._border} />
+          <Text style={styles.cashLabelBold}>{moment().format('hh:mm A')}</Text>
+          <View style={styles._border} />
+        </View>
+
         <Text style={styles.cashLabelBold}>Walk-In</Text>
+        <View style={styles._border} />
         <Text style={styles.cashLabelBold}>Invoice No. # 3467589</Text>
         <Text style={styles.cashLabelBold}>POS No. #Front-CC01</Text>
         <TouchableOpacity onPress={crossHandler}>
