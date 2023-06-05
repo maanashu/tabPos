@@ -24,7 +24,7 @@ export const PayByJBRCoins = ({ onPressBack, onPressContinue, tipAmount }) => {
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
-    return totalPayment;
+    return totalPayment.toFixed();
   };
 
   return (

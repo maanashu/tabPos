@@ -34,7 +34,7 @@ export const FinalPaymentScreen = ({
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
-    return totalPayment;
+    return totalPayment.toFixed(2);
   };
 
   return (

@@ -40,14 +40,14 @@ export const CartAmountPayBy = ({
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
-    return totalPayment;
+    return totalPayment.toFixed(2);
   };
 
   const totalAmountByPaymentMethod = index => {
     if (index === 0) {
       return `$${totalPayAmount()}`;
     } else if (index === 1) {
-      return `JBR ${totalPayAmount() * 100}`;
+      return `JBR ${(totalPayAmount() * 100).toFixed(2)}`;
     } else {
       return `$${totalPayAmount()}`;
     }
