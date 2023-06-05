@@ -10,14 +10,17 @@ const AddedCartItemsCard = ({ item, index }) => {
       <View style={styles.subContainer}>
         <Text style={styles.count}>{index + 1}</Text>
         <View style={{ marginLeft: ms(10) }}>
-          <Text style={styles.itemName}>Primark</Text>
+          <Text style={styles.itemName}>{item?.product_details?.name}</Text>
           <View style={styles.belowSubContainer}>
-            <Text style={styles.colorsTitle}>Colors : Gray</Text>
-            <Text style={styles.sizeTitle}>Size : XXL</Text>
+            {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
+            <Text style={styles.sizeTitle}>Size : XXL</Text> */}
+            <Text style={styles.colorsTitle}>QTY : {item?.qty}</Text>
           </View>
         </View>
       </View>
-      <Text style={styles.priceTitle}>$6.56</Text>
+      <Text style={styles.priceTitle}>
+        ${item?.product_details?.supply?.supply_prices?.selling_price ?? '0.00'}
+      </Text>
     </View>
   );
 };

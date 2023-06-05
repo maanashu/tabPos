@@ -14,8 +14,19 @@ import moment from 'moment';
 import BackButton from '@/components/BackButton';
 import { styles } from '../../PosRetail.styles';
 import { COLORS } from '@/theme';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { useSelector } from 'react-redux';
 
-export const PayByJBRCoins = ({ onPressBack, onPressContinue }) => {
+export const PayByJBRCoins = ({ onPressBack, onPressContinue, tipAmount }) => {
+  const getRetailData = useSelector(getRetail);
+  const cartData = getRetailData?.getAllCart;
+
+  const totalPayAmount = () => {
+    const cartAmount = cartData?.amount?.total_amount ?? '0.00';
+    const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
+    return totalPayment;
+  };
+
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View
@@ -44,8 +55,8 @@ export const PayByJBRCoins = ({ onPressBack, onPressContinue }) => {
             Scan to Pay
           </Text>
           <View style={{ alignItems: 'center' }}>
-            <Text style={styles._amount}>JBR 38,275</Text>
-            <Text style={styles._usdText}>USD $382.75</Text>
+            <Text style={styles._amount}>JBR {totalPayAmount() * 100}</Text>
+            <Text style={styles._usdText}>USD ${totalPayAmount()}</Text>
           </View>
         </View>
         <View style={{ width: '60%' }}>

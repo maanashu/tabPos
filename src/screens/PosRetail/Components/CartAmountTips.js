@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   Image,
   SafeAreaView,
   Text,
@@ -6,16 +7,49 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ms } from 'react-native-size-matters';
 import { styles } from '../PosRetail.styles';
 import { Button } from '@/components';
 import BackButton from '../../../components/BackButton';
 import { crossButton } from '@/assets';
 import moment from 'moment';
-import { goBack } from '@/navigation/NavigationRef';
+import { getTip } from '@/actions/RetailAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { COLORS } from '@/theme';
 
-export const CartAmountTips = ({ onPressBack, onPressContinue }) => {
+export const CartAmountTips = ({
+  onPressBack,
+  onPressContinue,
+  sellerID,
+  onPressNoTips,
+}) => {
+  const disptach = useDispatch();
+
+  const getRetailData = useSelector(getRetail);
+  const cartData = getRetailData?.getAllCart;
+  const getTips = getRetailData?.getTips;
+
+  const tipsArr = [
+    getTips?.first_tips ?? 0,
+    getTips?.second_tips ?? 0,
+    getTips?.third_tips ?? 0,
+  ];
+
+  const [selectedTipIndex, setselectedTipIndex] = useState(null);
+  const [selectedTipAmount, setselectedTipAmount] = useState(0.0);
+  const [enteredTipAmount, setEnteredTipAmount] = useState('');
+
+  function calculatePercentageValue(value, percentage) {
+    const percentageValue = (percentage / 100) * parseFloat(value);
+    return percentageValue.toFixed(2) ?? 0.0;
+  }
+
+  useEffect(() => {
+    disptach(getTip(sellerID));
+  }, []);
+
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View style={styles._topContainer}>
@@ -47,18 +81,58 @@ export const CartAmountTips = ({ onPressBack, onPressContinue }) => {
           <Text style={styles._totalAmountTitle}>Total Cart Amount:</Text>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles._dollarSymbol}>$</Text>
-            <Text style={styles._amount}>382.75</Text>
+            <Text style={styles._amount}>
+              {' '}
+              {cartData?.amount?.total_amount ?? '0.00'}
+            </Text>
           </View>
         </View>
         <View style={styles._bottomContainer}>
-          <View style={{ margin: ms(10), alignItems: 'center' }}>
+          <View
+            style={{
+              margin: ms(10),
+              alignItems: 'center',
+              minWidth: Dimensions.get('window').width * 0.5,
+            }}
+          >
             <Text style={styles._selectTips}>Select Tips</Text>
 
-            <View style={{ flexDirection: 'row', marginTop: ms(10) }}>
-              {[1, 2, 3].map((item, index) => (
-                <TouchableOpacity key={index} style={styles._boxView}>
-                  <Text style={styles._usdText}>USD 68.90</Text>
-                  <Text style={styles._tipsPercent}>18%</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: ms(10),
+              }}
+            >
+              {tipsArr.map((item, index) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    const tipAmount = calculatePercentageValue(
+                      cartData?.amount?.total_amount,
+                      item
+                    );
+                    setselectedTipAmount(tipAmount);
+                    setselectedTipIndex(index);
+                  }}
+                  key={index}
+                  style={[
+                    styles._boxView,
+                    {
+                      borderWidth: 1,
+                      borderColor:
+                        selectedTipIndex === index
+                          ? COLORS.blueLight
+                          : COLORS.transparentBlue,
+                    },
+                  ]}
+                >
+                  <Text style={styles._usdText}>
+                    USD{' '}
+                    {calculatePercentageValue(
+                      cartData?.amount?.total_amount,
+                      item
+                    )}
+                  </Text>
+                  <Text style={styles._tipsPercent}>{item}%</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -69,14 +143,28 @@ export const CartAmountTips = ({ onPressBack, onPressContinue }) => {
                   placeholder="Other amount"
                   keyboardType="number-pad"
                   style={styles._inputContainer}
+                  onChangeText={value => {
+                    setselectedTipAmount(0.0);
+                    setselectedTipIndex(null);
+                    setEnteredTipAmount(value);
+                  }}
                 />
-                <TouchableOpacity style={styles._tipsButton}>
+                <TouchableOpacity
+                  onPress={onPressNoTips}
+                  style={styles._tipsButton}
+                >
                   <Text style={styles._tipText}>No Tips</Text>
                 </TouchableOpacity>
               </View>
             </View>
             <Button
-              onPress={onPressContinue}
+              onPress={() => {
+                if (enteredTipAmount != '') {
+                  onPressContinue(enteredTipAmount);
+                } else {
+                  onPressContinue(selectedTipAmount);
+                }
+              }}
               title={'Continue'}
               style={{ height: ms(40), width: '98%', marginTop: ms(10) }}
             />

@@ -20,6 +20,8 @@ import {
 } from '@/assets';
 import moment from 'moment';
 import { COLORS } from '@/theme';
+import { useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
 
 const DATA = [
   { title: 'Card', icon: cardPayment },
@@ -27,7 +29,30 @@ const DATA = [
   { title: 'Cash', icon: moneyIcon },
 ];
 
-export const CartAmountPayBy = ({ onPressBack, onPressPaymentMethod }) => {
+export const CartAmountPayBy = ({
+  onPressBack,
+  onPressPaymentMethod,
+  tipAmount = 0.0,
+}) => {
+  const getRetailData = useSelector(getRetail);
+  const cartData = getRetailData?.getAllCart;
+
+  const totalPayAmount = () => {
+    const cartAmount = cartData?.amount?.total_amount ?? '0.00';
+    const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
+    return totalPayment;
+  };
+
+  const totalAmountByPaymentMethod = index => {
+    if (index === 0) {
+      return `$${totalPayAmount()}`;
+    } else if (index === 1) {
+      return `JBR ${totalPayAmount() * 100}`;
+    } else {
+      return `$${totalPayAmount()}`;
+    }
+  };
+
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View style={styles._topContainer}>
@@ -59,7 +84,7 @@ export const CartAmountPayBy = ({ onPressBack, onPressPaymentMethod }) => {
           <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles._dollarSymbol}>$</Text>
-            <Text style={styles._amount}>382.75</Text>
+            <Text style={styles._amount}>{totalPayAmount()}</Text>
           </View>
         </View>
         <View
@@ -78,7 +103,9 @@ export const CartAmountPayBy = ({ onPressBack, onPressPaymentMethod }) => {
             >
               <Text style={styles._payByTitle}>Pay By</Text>
               <Text style={styles._payByMethod}>{item.title}</Text>
-              <Text style={styles._payByAmount}>JBR 38,275</Text>
+              <Text style={styles._payByAmount}>
+                {totalAmountByPaymentMethod(index)}
+              </Text>
               <Image source={item.icon} style={styles._payByIcon} />
             </TouchableOpacity>
           ))}

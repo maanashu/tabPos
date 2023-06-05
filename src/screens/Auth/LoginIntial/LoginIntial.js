@@ -19,19 +19,23 @@ export function LoginIntial({ route }) {
   const navigation = useNavigation();
 
   const loginIntialHandler = () => {
-    if (getData?.merchantLoginData?.user_profile?.wallet_steps >= 5) {
-      navigation.navigate(NAVIGATION.posUserPasscode, {
-        posuser: posuserdata,
-        from: 'loginInitial',
-      });
-    } else {
-      Toast.show({
-        text2: 'Please First complete Wallet Steps',
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
-    }
+    navigation.navigate(NAVIGATION.posUserPasscode, {
+      posuser: posuserdata,
+      from: 'loginInitial',
+    });
+    // if (getData?.merchantLoginData?.user_profile?.wallet_steps >= 5) {
+    //   navigation.navigate(NAVIGATION.posUserPasscode, {
+    //     posuser: posuserdata,
+    //     from: 'loginInitial',
+    //   });
+    // } else {
+    //   Toast.show({
+    //     text2: 'Please First complete Wallet Steps',
+    //     position: 'bottom',
+    //     type: 'error_toast',
+    //     visibilityTime: 1500,
+    //   });
+    // }
   };
 
   return (

@@ -17,8 +17,26 @@ import moment from 'moment';
 import { goBack } from '@/navigation/NavigationRef';
 import { COLORS } from '@/theme';
 import AddedCartItemsCard from '../../../components/AddedCartItemsCard';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { useSelector } from 'react-redux';
 
-export const FinalPaymentScreen = ({ onPressBack, paymentMethod }) => {
+export const FinalPaymentScreen = ({
+  onPressBack,
+  paymentMethod,
+  tipAmount,
+  cartData,
+}) => {
+  // const getRetailData = useSelector(getRetail);
+  // const cartData = getRetailData?.getAllCart;
+  const cartProducts = cartData?.poscart_products;
+  console.log('cart products: ', JSON.stringify(cartData));
+
+  const totalPayAmount = () => {
+    const cartAmount = cartData?.amount?.total_amount ?? '0.00';
+    const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
+    return totalPayment;
+  };
+
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View
@@ -50,12 +68,12 @@ export const FinalPaymentScreen = ({ onPressBack, paymentMethod }) => {
                     ? '$'
                     : 'JBR'}
                 </Text>
-                <Text style={styles._amount}>382.75</Text>
+                <Text style={styles._amount}>{totalPayAmount()}</Text>
               </View>
               {paymentMethod === 'Cash' && (
                 <>
                   <View style={styles._cashRemainView} />
-                  <Text style={styles._cashRemainText}>Change Due: $0.40</Text>
+                  <Text style={styles._cashRemainText}>Change Due: $0.00</Text>
                 </>
               )}
             </View>
@@ -95,7 +113,7 @@ export const FinalPaymentScreen = ({ onPressBack, paymentMethod }) => {
 
             <View style={styles._flatListContainer}>
               <FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8]}
+                data={cartProducts}
                 style={{ width: '100%' }}
                 renderItem={({ item, index }) => (
                   <AddedCartItemsCard item={item} index={index} />
@@ -105,17 +123,24 @@ export const FinalPaymentScreen = ({ onPressBack, paymentMethod }) => {
 
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Sub-Total</Text>
-              <Text style={styles._subTotalPrice}>$7,363.20</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.products_price}
+              </Text>
             </View>
-            <View style={styles._horizontalLine} />
+            {/* <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Discount ( MIDApril100)</Text>
-              <Text style={styles._subTotalPrice}>$7,363.20</Text>
-            </View>
+              <Text style={styles._subTotalPrice}>$0.00</Text>
+            </View> */}
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Shipping Charge</Text>
-              <Text style={styles._subTotalPrice}>$7,363.20</Text>
+              <Text style={styles._subTotalPrice}>$0.00</Text>
+            </View>
+            <View style={styles._horizontalLine} />
+            <View style={styles._subTotalContainer}>
+              <Text style={styles._substotalTile}>Tips</Text>
+              <Text style={styles._subTotalPrice}>${tipAmount}</Text>
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
@@ -133,7 +158,7 @@ export const FinalPaymentScreen = ({ onPressBack, paymentMethod }) => {
                   { fontSize: ms(6), fontFamily: Fonts.SemiBold },
                 ]}
               >
-                $7,363.20
+                ${totalPayAmount()}
               </Text>
             </View>
             <View style={styles._horizontalLine} />

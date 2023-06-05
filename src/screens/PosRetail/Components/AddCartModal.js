@@ -45,6 +45,10 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   const [colorName, setColorName] = useState();
   const [sizeName, setSizeName] = useState();
   const addToCartHandler = () => {
+    if (count === 0) {
+      alert('Please add quantity to cart');
+      return;
+    }
     const data = {
       seller_id: sellerID,
       service_id: productDetail?.product_detail?.service_id,

@@ -35,8 +35,12 @@ export function PosRetail() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
+
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
+  const [tipAmount, setTipAmount] = useState(0.0);
+
+  const [savedTempCartData, setSavedTempCartData] = useState(null);
 
   const isFocus = useIsFocused();
 
@@ -71,18 +75,26 @@ export function PosRetail() {
     ['CartScreen']: (
       <CartScreen
         crossHandler={() => setselectedScreen('MainScreen')}
-        onPressPayNow={() => setselectedScreen('CartAmountTips')}
+        onPressPayNow={() => {
+          setselectedScreen('CartAmountTips');
+        }}
       />
     ),
     ['CartAmountTips']: (
       <CartAmountTips
         onPressBack={() => setselectedScreen('CartScreen')}
-        onPressContinue={() => setselectedScreen('CartAmountPayBy')}
+        onPressContinue={tip => {
+          setTipAmount(tip);
+          setselectedScreen('CartAmountPayBy');
+        }}
+        sellerID={sellerID}
+        onPressNoTips={() => setselectedScreen('CartAmountPayBy')}
       />
     ),
     ['CartAmountPayBy']: (
       <CartAmountPayBy
         onPressBack={() => setselectedScreen('CartAmountTips')}
+        tipAmount={tipAmount}
         onPressPaymentMethod={item => {
           if (item.index === 0) {
             setselectedScreen('PayByCard');
@@ -96,41 +108,47 @@ export function PosRetail() {
     ),
     ['PayByCard']: (
       <PayByCard
+        tipAmount={tipAmount}
         onPressBack={() => {
           setselectedScreen('CartAmountPayBy');
         }}
-        onPressContinue={() => {
-          setpaymentMethod('Card');
-          setselectedScreen('FinalPaymentScreen');
-        }}
+        // onPressContinue={() => {
+        //   setpaymentMethod('Card');
+        //   setselectedScreen('FinalPaymentScreen');
+        // }}
       />
     ),
     ['PayByCash']: (
       <PayByCash
+        tipAmount={tipAmount}
         onPressBack={() => {
           setselectedScreen('CartAmountPayBy');
         }}
-        onPressContinue={() => {
+        onPressContinue={cartData => {
           setpaymentMethod('Cash');
+          setSavedTempCartData(cartData?.getAllCart);
           setselectedScreen('FinalPaymentScreen');
         }}
       />
     ),
     ['PayByJBRCoins']: (
       <PayByJBRCoins
+        tipAmount={tipAmount}
         onPressBack={() => {
           setselectedScreen('CartAmountPayBy');
         }}
-        onPressContinue={() => {
-          setpaymentMethod('JBRCoins');
-          setselectedScreen('FinalPaymentScreen');
-        }}
+        // onPressContinue={() => {
+        //   setpaymentMethod('JBRCoins');
+        //   setselectedScreen('FinalPaymentScreen');
+        // }}
       />
     ),
     ['FinalPaymentScreen']: (
       <FinalPaymentScreen
-        onPressBack={() => setselectedScreen('CartAmountPayBy')}
+        tipAmount={tipAmount}
+        onPressBack={() => setselectedScreen('MainScreen')}
         paymentMethod={paymentMethod}
+        cartData={savedTempCartData}
       />
     ),
   };

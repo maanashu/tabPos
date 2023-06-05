@@ -14,8 +14,42 @@ import moment from 'moment';
 import BackButton from '@/components/BackButton';
 import { styles } from '../../PosRetail.styles';
 import { COLORS } from '@/theme';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { createOrder } from '@/actions/RetailAction';
 
-export const PayByCash = ({ onPressBack, onPressContinue }) => {
+export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
+  const dispatch = useDispatch();
+  const getRetailData = useSelector(getRetail);
+  const cartData = getRetailData?.getAllCart;
+
+  const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
+  const customer = getuserDetailByNo?.[0];
+
+  const saveCartData = { ...getRetailData };
+
+  const totalPayAmount = () => {
+    const cartAmount = cartData?.amount?.total_amount ?? '0.00';
+    const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
+    return totalPayment;
+  };
+
+  const createOrderHandler = () => {
+    const data = {
+      cartid: getRetailData?.getAllCart?.id,
+      userId: customer?.user_id,
+      tips: tipAmount,
+      modeOfPayment: 'cash',
+    };
+
+    const callback = response => {
+      if (response) {
+        onPressContinue(saveCartData);
+      }
+    };
+    dispatch(createOrder(data, callback));
+  };
+
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View
@@ -38,7 +72,7 @@ export const PayByCash = ({ onPressBack, onPressContinue }) => {
           <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles._dollarSymbol}>$</Text>
-            <Text style={styles._amount}>382.75</Text>
+            <Text style={styles._amount}>{totalPayAmount()}</Text>
           </View>
         </View>
         <View style={styles._bottomContainer}>
@@ -54,7 +88,7 @@ export const PayByCash = ({ onPressBack, onPressContinue }) => {
                   <Text style={styles._usdText}>USD</Text>
                   <Text style={[styles._usdText, { color: COLORS.primary }]}>
                     {' '}
-                    $390.00
+                    ${totalPayAmount()}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -70,7 +104,10 @@ export const PayByCash = ({ onPressBack, onPressContinue }) => {
               </View>
             </View>
             <Button
-              onPress={onPressContinue}
+              onPress={() => {
+                // onPressContinue
+                createOrderHandler();
+              }}
               title={'Continue'}
               style={{ height: ms(40), width: '98%', marginTop: ms(10) }}
             />
