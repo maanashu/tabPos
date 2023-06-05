@@ -102,6 +102,7 @@ export function MainScreen({
 
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
+    setisFilterDataSeclectedOfIndex(null);
     setTimeout(() => {
       setshowProductsFrom(productArray);
     }, 1000);
@@ -133,8 +134,10 @@ export function MainScreen({
           if (item.id === 1) {
             setCatTypeId(item.id);
             setCategoryModal(true);
-            //  catTypeFun(item.id);
-          } else if (item.id === 2 && isFilterDataSeclectedOfIndex === 0) {
+          } else if (
+            (item.id === 2 && isFilterDataSeclectedOfIndex === 0) ||
+            item.isSelected === true
+          ) {
             setCatTypeId(item.id);
             dispatch(getSubCategory(sellerID, selectedCatID));
             setSubCategoryModal(true);
@@ -447,8 +450,19 @@ export function MainScreen({
 
                 setfilterMenuTitle(prevData => {
                   const newData = [...prevData];
+
+                  // Set Category
                   newData[0].name = selectedCat.name;
                   newData[0].isSelected = true;
+
+                  // Reset SubCategory selections
+                  newData[1].isSelected = false;
+                  newData[1].name = originalFilterData[1].name;
+
+                  // Reset Brand selections
+                  newData[2].isSelected = false;
+                  newData[2].name = originalFilterData[2].name;
+
                   return newData;
                 });
 
@@ -467,8 +481,15 @@ export function MainScreen({
 
                 setfilterMenuTitle(prevData => {
                   const newData = [...prevData];
+
+                  // Set SubCategory
                   newData[1].name = selectedSubCat.name;
                   newData[1].isSelected = true;
+
+                  // Reset Brand selections
+                  newData[2].isSelected = false;
+                  newData[2].name = originalFilterData[2].name;
+
                   return newData;
                 });
 
