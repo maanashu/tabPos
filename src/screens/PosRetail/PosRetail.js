@@ -33,7 +33,6 @@ export function PosRetail() {
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  console.log('sellerID', sellerID);
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
@@ -47,8 +46,16 @@ export function PosRetail() {
     dispatch(getAllCart());
   }, [isFocus]);
 
-  const isProductLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_ONE_PRODUCT], state)
+  const isLoading = useSelector(state =>
+    isLoadingSelector(
+      [
+        TYPES.GET_ONE_PRODUCT,
+        TYPES.ADDCART,
+        TYPES.GET_CLEAR_ALL_CART,
+        TYPES.GET_ALL_CART,
+      ],
+      state
+    )
   );
 
   const renderScreen = {
@@ -135,7 +142,7 @@ export function PosRetail() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>{screenChangeView()}</View>
-      {isProductLoading ? (
+      {isLoading ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator
             color={COLORS.primary}

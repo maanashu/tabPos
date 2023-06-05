@@ -4,6 +4,7 @@ import { Dimensions, FlatList, Text, View } from 'react-native';
 import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
+import { tinycolor } from 'tinycolor2';
 
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import { Fonts, cloth, crossButton, search_light } from '@/assets';
@@ -11,8 +12,9 @@ import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { moderateScale } from 'react-native-size-matters';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
+import { addTocart } from '@/actions/RetailAction';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const dummyData = [
@@ -24,17 +26,46 @@ const dummyData = [
   { id: 6 },
 ];
 
-export function AddCartModal({ crossHandler, detailHandler }) {
+export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
+  const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct;
-  const sizeArray =
-    productDetail?.product_detail?.supplies?.[0]?.attributes?.[0]?.values;
+  const sizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
+  const colorSizeArray =
+    productDetail?.product_detail?.supplies?.[0]?.attributes;
+
+  const finalSizeArray = colorSizeArray?.filter(item => item.name === 'Size');
+  const finalColorArray = colorSizeArray?.filter(item => item.name === 'Color');
   const coloredArray =
     productDetail?.product_detail?.supplies?.[0]?.attributes?.[1]?.values;
-
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
   const [count, setCount] = useState(0);
+  const [colors, setColors] = useState();
+  const [colorName, setColorName] = useState();
+  const [sizeName, setSizeName] = useState();
+  const addToCartHandler = () => {
+    const data = {
+      seller_id: sellerID,
+      service_id: productDetail?.product_detail?.service_id,
+      product_id: productDetail?.product_detail?.id,
+      qty: count,
+      supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+      supplyPriceID:
+        productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+    };
+    dispatch(addTocart(data));
+    crossHandler();
+  };
+
+  // const getColorName = colorCode => {
+  //   console.log('colorCode', colorCode);
+  //   const color = tinycolor(colorCode);
+  //   let colorName = color.toName();
+  //   colorName = colorName.charAt(0).toUpperCase() + colorName.slice(1);
+  //   setColors(colorName);
+  //   return colorName;
+  // };
   // color select list start
   const coloredRenderItem = ({ item }) => {
     const backgroundColor =
@@ -46,7 +77,11 @@ export function AddCartModal({ crossHandler, detailHandler }) {
     return (
       <ColorItem
         item={item}
-        onPress={() => setColorId(item.id)}
+        onPress={() => {
+          setColorId(colorId === item.id ? null : item.id);
+          // getColorName(item.name);
+          setColorName(item.name);
+        }}
         backgroundColor={backgroundColor}
         textColor={color}
         borderColor={borderClr}
@@ -81,7 +116,10 @@ export function AddCartModal({ crossHandler, detailHandler }) {
     return (
       <SizeItem
         item={item}
-        onPress={() => setSizeId(item.id)}
+        onPress={() => {
+          setSizeId(sizeId === item.id ? null : item.id);
+          setSizeName(item.name);
+        }}
         backgroundColor={backgroundColor}
         textColor={color}
         borderColor={borderClr}
@@ -122,9 +160,12 @@ export function AddCartModal({ crossHandler, detailHandler }) {
           >
             <Text style={styles.detailBtnCon}>Details</Text>
           </TouchableOpacity>
-          <View style={styles.addToCartCon}>
+          <TouchableOpacity
+            style={styles.addToCartCon}
+            onPress={addToCartHandler}
+          >
             <Text style={styles.addTocartText}>Add to Cart</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -139,12 +180,26 @@ export function AddCartModal({ crossHandler, detailHandler }) {
             <Text style={styles.colimbiaText}>
               {productDetail?.product_detail?.name}
             </Text>
-            <Text style={styles.colimbiaText}>Cotton Pants</Text>
-            <Text style={styles.sizeAndColor}>Color:Grey</Text>
-            <Text style={styles.sizeAndColor}>Size:X</Text>
+            <Text style={styles.colimbiaText}>
+              {productDetail?.product_detail?.category?.name}
+            </Text>
+            {colorId === null ? (
+              <Text>{null}</Text>
+            ) : (
+              <Text style={styles.sizeAndColor}>Color: {colorName}</Text>
+            )}
+            {sizeId === null ? (
+              <Text>{null}</Text>
+            ) : (
+              <Text style={styles.sizeAndColor}>Size: {sizeName}</Text>
+            )}
           </View>
           <Text style={styles.colimbiaText}>
-            ${productDetail?.product_detail?.price}
+            $
+            {
+              productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]
+                ?.selling_price
+            }
           </Text>
         </View>
         <View style={{ alignItems: 'center' }}>
@@ -166,7 +221,7 @@ export function AddCartModal({ crossHandler, detailHandler }) {
             </TouchableOpacity>
           </View>
 
-          {coloredArray?.length >= 1 ? (
+          {finalColorArray?.[0]?.values?.length >= 1 ? (
             <View style={styles.displayRow}>
               <View style={styles.colorRow} />
               <Text style={styles.colorText}>COLORS</Text>
@@ -175,14 +230,14 @@ export function AddCartModal({ crossHandler, detailHandler }) {
           ) : null}
 
           <FlatList
-            data={coloredArray}
+            data={finalColorArray?.[0]?.values}
             renderItem={coloredRenderItem}
             keyExtractor={item => item.id}
-            extraData={coloredArray}
+            extraData={finalColorArray?.[0]?.values}
             numColumns={4}
           />
           <Spacer space={SH(15)} />
-          {sizeArray?.length >= 1 ? (
+          {finalSizeArray[0]?.values?.length >= 1 ? (
             <View style={styles.displayRow}>
               <View style={styles.colorRow} />
               <Text style={styles.colorText}>SIZE</Text>
@@ -192,10 +247,10 @@ export function AddCartModal({ crossHandler, detailHandler }) {
 
           <Spacer space={SH(15)} />
           <FlatList
-            data={sizeArray}
+            data={finalSizeArray[0]?.values}
             renderItem={sizeRenderItem}
             keyExtractor={item => item.id}
-            extraData={sizeArray}
+            extraData={finalSizeArray[0]?.values}
             numColumns={4}
           />
         </View>

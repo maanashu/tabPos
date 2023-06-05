@@ -103,7 +103,6 @@ export class AnalyticsController {
         PRODUCT_URL +
         ApiProductInventory.getTotalProDetail +
         `?seller_id=${sellerID}&filter=${productTime}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -147,7 +146,6 @@ export class AnalyticsController {
         PRODUCT_URL +
         ApiProductInventory.getProductList +
         `?category_id=${catId}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

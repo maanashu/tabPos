@@ -21,7 +21,6 @@ const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 export function AddCartDetailModal({ crossHandler }) {
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
-  console.log('productDetail', productDetail);
   const [clothColorId, setClothColorId] = useState();
   const [clothSizeId, setClothSizeId] = useState();
   const [remindId, setRemindId] = useState();

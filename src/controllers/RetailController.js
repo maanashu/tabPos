@@ -19,7 +19,6 @@ export class RetailController {
         PRODUCT_URL +
         ApiProductInventory.getCategory +
         `?page=1&limit=20&seller_id=${sellerID}&main_category=true`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -141,7 +140,6 @@ export class RetailController {
         PRODUCT_URL +
         ApiProductInventory.getProduct +
         `?app_name=pos&delivery_options=3&seller_id=${sellerID}&limit=10&page=1`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -186,10 +184,8 @@ export class RetailController {
   static async getAllCart() {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
-          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
@@ -251,8 +247,8 @@ export class RetailController {
   static async addTocart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.addTocart;
-      const supplyID = data.supplyId.toString();
-      const supplyPriceID = data.supplyPriceid.toString();
+      let supplyID = data.supplyId.toString();
+      let supplyPriceID = data.supplyPriceID.toString();
       const body = {
         seller_id: data.seller_id,
         service_id: data.service_id,
@@ -261,11 +257,8 @@ export class RetailController {
         supply_id: supplyID,
         supply_price_id: supplyPriceID,
       };
-      console.log('endpoint', endpoint);
-      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then(response => {
-          alert('PosCart created successfully');
           if (response?.msg === 'PosCart created successfully') {
             Toast.show({
               position: 'bottom',
@@ -556,7 +549,6 @@ export class RetailController {
         PRODUCT_URL +
         ApiProductInventory.getProduct +
         `/${productId}?app_name=pos&seller_id=${sellerID}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

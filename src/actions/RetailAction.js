@@ -442,7 +442,6 @@ export const getProductDefault = sellerID => async dispatch => {
   try {
     const res = await RetailController.getProductDefault(sellerID);
     dispatch(getProductDefSuccess(res?.payload?.data));
-    // console.log(res?.payload?.data);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getProductDefReset());

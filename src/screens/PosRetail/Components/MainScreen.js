@@ -35,6 +35,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { TYPES } from '@/Types/Types';
 import {
+  clearAllCart,
   getAllCart,
   getBrand,
   getOneProduct,
@@ -62,6 +63,7 @@ export function MainScreen({
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
+  console.log('cartData', cartData?.poscart_products?.length);
 
   const [showProductsFrom, setshowProductsFrom] = useState();
 
@@ -119,7 +121,6 @@ export function MainScreen({
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
     }
-    console.log(res);
   };
 
   //  categoryType -----start
@@ -301,12 +302,15 @@ export function MainScreen({
                   {strings.dashboard.holdCart}
                 </Text>
               </TouchableOpacity>
-              <View style={[styles.holdCartCon, styles.dark_greyBg]}>
+              <TouchableOpacity
+                style={[styles.holdCartCon, styles.dark_greyBg]}
+                onPress={() => dispatch(clearAllCart())}
+              >
                 {/* <Image source={eraser} style={styles.pause} /> */}
                 <Text style={styles.holdCart}>
                   {strings.dashboard.clearcart}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <Spacer space={SH(10)} />
             <View style={styles.nameAddCon}>
@@ -383,27 +387,31 @@ export function MainScreen({
             <Spacer space={SH(10)} />
             <View style={styles.totalItemCon}>
               <Text style={styles.totalItem}>
-                {strings.dashboard.totalItem}
-                {' 10'}
+                {strings.dashboard.totalItem}{' '}
+                {cartData?.poscart_products?.length}
               </Text>
             </View>
             <Spacer space={SH(5)} />
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.subTotal}>Sub Total</Text>
-              <Text style={styles.subTotalDollar}>$4.00</Text>
+              <Text style={styles.subTotalDollar}>
+                ${cartData?.amount?.products_price ?? '0.00'}
+              </Text>
             </View>
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.subTotal}>Total VAT</Text>
-              <Text style={styles.subTotalDollar}>$4.00</Text>
+              <Text style={styles.subTotalDollar}>$0.00</Text>
             </View>
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.subTotal}>Total Taxes</Text>
-              <Text style={styles.subTotalDollar}>$4.00</Text>
+              <Text style={styles.subTotalDollar}>
+                ${cartData?.amount?.tax ?? '0.00'}
+              </Text>
             </View>
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.subTotal}>Discount</Text>
               <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                ($4.00)
+                ${cartData?.amount?.discount ?? '0.00'}
               </Text>
             </View>
             <View
@@ -417,7 +425,7 @@ export function MainScreen({
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.itemValue}>Item value</Text>
               <Text style={[styles.subTotalDollar, styles.itemValueBold]}>
-                $4.00
+                ${cartData?.amount?.total_amount ?? '0.00'}
               </Text>
             </View>
             <View style={{ flex: 1 }} />
@@ -538,6 +546,7 @@ export function MainScreen({
           <AddCartModal
             crossHandler={() => setAddCartModal(false)}
             detailHandler={() => setAddCartDetailModal(true)}
+            sellerID={sellerID}
           />
         )}
       </Modal>

@@ -19,7 +19,6 @@ import { COLORS } from '@/theme';
 import AddedCartItemsCard from '../../../components/AddedCartItemsCard';
 
 export const FinalPaymentScreen = ({ onPressBack, paymentMethod }) => {
-  console.log(paymentMethod);
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View

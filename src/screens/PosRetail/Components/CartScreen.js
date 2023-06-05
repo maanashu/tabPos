@@ -38,13 +38,24 @@ import { SubCatModal } from './SubCatModal';
 import { BrandModal } from './BrandModal';
 import { catTypeData } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { clearAllCart } from '@/actions/RetailAction';
 
 export function CartScreen({ onPressPayNow, crossHandler }) {
+  const dispatch = useDispatch();
+  const getRetailData = useSelector(getRetail);
+  const cartData = getRetailData?.getAllCart;
+  console.log('cartData', cartData?.poscart_products);
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
   const [brandModal, setBrandModal] = useState(false);
   const [catTypeId, setCatTypeId] = useState();
+  const clearCartHandler = () => {
+    dispatch(clearAllCart());
+    crossHandler();
+  };
 
   const catTypeFun = id => {
     id === 1
@@ -168,43 +179,64 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
                 </View>
               </View>
             </View>
-            <View style={styles.blueListData}>
-              <View style={styles.displayflex}>
-                <View style={[styles.tableListSide, styles.listLeft]}>
-                  <Text
-                    style={[styles.blueListDataText, styles.cashLabelWhiteHash]}
-                  >
-                    1
-                  </Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={columbiaMen} style={styles.columbiaMen} />
-                    <View style={{ marginLeft: 10 }}>
-                      <Text style={styles.blueListDataText}>
-                        Columbia Men's Rain Jacket
-                      </Text>
-                      <Text style={styles.sukNumber}>SUK: 5689076</Text>
+            {cartData?.poscart_products?.map(
+              (item, index) => (
+                console.log('item', item),
+                (
+                  <View style={styles.blueListData} key={index}>
+                    <View style={styles.displayflex}>
+                      <View style={[styles.tableListSide, styles.listLeft]}>
+                        <Text
+                          style={[
+                            styles.blueListDataText,
+                            styles.cashLabelWhiteHash,
+                          ]}
+                        >
+                          1
+                        </Text>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}
+                        >
+                          <Image
+                            source={{ uri: item.product_details?.image }}
+                            style={styles.columbiaMen}
+                          />
+                          <View style={{ marginLeft: 10 }}>
+                            <Text style={styles.blueListDataText}>
+                              Columbia Men's Rain Jacket
+                            </Text>
+                            <Text style={styles.sukNumber}>SUK: 5689076</Text>
+                          </View>
+                        </View>
+                      </View>
+                      <View
+                        style={[styles.tableListSide, styles.tableListSide2]}
+                      >
+                        <Text style={styles.blueListDataText}>$80.99</Text>
+                        <View style={styles.listCountCon}>
+                          <Image source={minus} style={styles.minus} />
+                          <Text>1</Text>
+                          <Image source={plus} style={styles.minus} />
+                        </View>
+                        <Text style={styles.blueListDataText}>$80.99</Text>
+                        <Image
+                          source={borderCross}
+                          style={styles.borderCross}
+                        />
+                      </View>
                     </View>
                   </View>
-                </View>
-                <View style={[styles.tableListSide, styles.tableListSide2]}>
-                  <Text style={styles.blueListDataText}>$80.99</Text>
-                  <View style={styles.listCountCon}>
-                    <Image source={minus} style={styles.minus} />
-                    <Text>1</Text>
-                    <Image source={plus} style={styles.minus} />
-                  </View>
-                  <Text style={styles.blueListDataText}>$80.99</Text>
-                  <Image source={borderCross} style={styles.borderCross} />
-                </View>
-              </View>
-            </View>
+                )
+              )
+            )}
+
             <Spacer space={SH(7)} />
           </View>
           <View
-            //   pointerEvents="auto"
+            pointerEvents={cartData?.length === 0 ? 'none' : 'auto'}
             style={[
               styles.rightSideCon,
-              //  { opacity: 0.1 }
+              { opacity: cartData?.length === 0 ? 0.1 : 1 },
             ]}
           >
             <View style={styles.displayflex}>
@@ -219,12 +251,15 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
                   {strings.dashboard.holdCart}
                 </Text>
               </TouchableOpacity>
-              <View style={[styles.holdCartCon, styles.dark_greyBg]}>
+              <TouchableOpacity
+                style={[styles.holdCartCon, styles.dark_greyBg]}
+                onPress={clearCartHandler}
+              >
                 {/* <Image source={eraser} style={styles.pause} /> */}
                 <Text style={styles.holdCart}>
                   {strings.dashboard.clearcart}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <Spacer space={SH(10)} />
             <View style={styles.nameAddCon}>
@@ -301,27 +336,32 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
             <Spacer space={SH(10)} />
             <View style={styles.totalItemCon}>
               <Text style={styles.totalItem}>
-                {strings.dashboard.totalItem}
-                {' 10'}
+                {strings.dashboard.totalItem}{' '}
+                {cartData?.poscart_products?.length}
               </Text>
             </View>
             <Spacer space={SH(5)} />
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.subTotal}>Sub Total</Text>
-              <Text style={styles.subTotalDollar}>$4.00</Text>
+              <Text style={styles.subTotalDollar}>
+                ${cartData?.amount?.products_price ?? '0.00'}
+              </Text>
             </View>
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.subTotal}>Total VAT</Text>
-              <Text style={styles.subTotalDollar}>$4.00</Text>
+              <Text style={styles.subTotalDollar}>$0.00</Text>
             </View>
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.subTotal}>Total Taxes</Text>
-              <Text style={styles.subTotalDollar}>$4.00</Text>
+              <Text style={styles.subTotalDollar}>
+                {' '}
+                ${cartData?.amount?.tax ?? '0.00'}
+              </Text>
             </View>
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.subTotal}>Discount</Text>
               <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                ($4.00)
+                ${cartData?.amount?.discount ?? '0.00'}
               </Text>
             </View>
             <View
@@ -335,7 +375,7 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.itemValue}>Item value</Text>
               <Text style={[styles.subTotalDollar, styles.itemValueBold]}>
-                $4.00
+                ${cartData?.amount?.total_amount ?? '0.00'}
               </Text>
             </View>
             <View style={{ flex: 1 }} />

@@ -47,7 +47,6 @@ export function PosSearchListModal({
     item => item.price_type === 'quantity_base'
   );
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
-  console.log('addRemoveSelectedId', addRemoveSelectedId);
   const [bundleData, setBundleData] = useState();
 
   const handleQuantitySelection = (item, action) => {

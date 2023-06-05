@@ -33,7 +33,6 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
       supplyId: productData?.supplies?.[0]?.id,
       supplyPriceid: productData?.supplies?.[0]?.supply_prices[0]?.id,
     };
-    console.log('data', data);
     dispatch(addTocart(data));
   };
   const addToCartLoad = useSelector(state =>
