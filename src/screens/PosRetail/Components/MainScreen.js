@@ -34,7 +34,13 @@ import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { TYPES } from '@/Types/Types';
-import { getBrand, getProduct, getSubCategory } from '@/actions/RetailAction';
+import {
+  getAllCart,
+  getBrand,
+  getOneProduct,
+  getProduct,
+  getSubCategory,
+} from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -55,6 +61,7 @@ export function MainScreen({
 
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
+  const cartData = getRetailData?.getAllCart;
 
   const [showProductsFrom, setshowProductsFrom] = useState();
 
@@ -71,6 +78,8 @@ export function MainScreen({
 
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
+
+  const [productDetail, setProductDetail] = useState();
 
   const isProductLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_PRODUCT_DEF, TYPES.GET_PRODUCT], state)
@@ -103,6 +112,14 @@ export function MainScreen({
       setshowProductsFrom(products);
     }
   }, [products]);
+
+  const productFun = async productId => {
+    const res = await dispatch(getOneProduct(sellerID, productId));
+    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+      setAddCartModal(true);
+    }
+    console.log(res);
+  };
 
   //  categoryType -----start
   const catTypeRenderItem = ({ item }) => {
@@ -167,7 +184,7 @@ export function MainScreen({
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity
       style={styles.productCon}
-      onPress={() => setAddCartModal(true)}
+      onPress={() => productFun(item.id)}
     >
       <Image source={{ uri: item.image }} style={styles.categoryshoes} />
       <Spacer space={SH(10)} />
@@ -183,8 +200,8 @@ export function MainScreen({
       </Text>
       <Spacer space={SH(6)} />
       <Text numberOfLines={1} style={styles.productPrice}>
-        {`$${item?.price}`}
-        {/* ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price} */}
+        {/* {`$${item?.price}`} */}$
+        {item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
       </Text>
     </TouchableOpacity>
   );
@@ -234,7 +251,7 @@ export function MainScreen({
 
             <Spacer space={SH(15)} />
             <View style={styles.productBodyCon}>
-              <View>
+              <View style={styles.productListHeight}>
                 {isProductLoading ? (
                   <View style={{ marginTop: 100 }}>
                     <ActivityIndicator size="large" color={COLORS.indicator} />
@@ -253,20 +270,20 @@ export function MainScreen({
                     extraData={showProductsFrom}
                     numColumns={6}
                     // horizontal
-                    contentContainerStyle={{
-                      flexGrow: 1,
-                      justifyContent: 'space-between',
-                    }}
+                    // contentContainerStyle={{
+                    //   flexGrow: 1,
+                    //   justifyContent: 'space-between',
+                    // }}
                   />
                 )}
               </View>
             </View>
           </View>
           <View
-            //   pointerEvents="auto"
+            pointerEvents={cartData?.length === 0 ? 'none' : 'auto'}
             style={[
               styles.rightSideCon,
-              //  { opacity: 0.1 }
+              { opacity: cartData?.length === 0 ? 0.1 : 1 },
             ]}
           >
             <View style={styles.displayflex}>

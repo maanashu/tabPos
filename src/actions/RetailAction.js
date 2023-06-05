@@ -364,6 +364,21 @@ const getTipsReset = () => ({
   payload: null,
 });
 
+const getOneProductRequest = () => ({
+  type: TYPES.GET_ONE_PRODUCT_REQUEST,
+  payload: null,
+});
+
+const getOneProductSuccess = getOneProduct => ({
+  type: TYPES.GET_ONE_PRODUCT_SUCCESS,
+  payload: { getOneProduct },
+});
+
+const getOneProductError = error => ({
+  type: TYPES.GET_ONE_PRODUCT_ERROR,
+  payload: { error },
+});
+
 export const getCategory = sellerID => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -449,7 +464,7 @@ export const getSearchProduct = (search, sellerID) => async dispatch => {
 export const getAllCart = () => async dispatch => {
   dispatch(getAllCartRequest());
   try {
-    const res = await RetailController.getAllCartCategory();
+    const res = await RetailController.getAllCart();
     dispatch(getAllCartSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -618,6 +633,16 @@ export const logout = () => async dispatch => {
     await RetailController.logout();
   } finally {
     dispatch(clearStore());
+  }
+};
+
+export const getOneProduct = (sellerID, productId) => async dispatch => {
+  dispatch(getOneProductRequest());
+  try {
+    const res = await RetailController.getOneProduct(sellerID, productId);
+    return dispatch(getOneProductSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getOneProductError(error.message));
   }
 };
 

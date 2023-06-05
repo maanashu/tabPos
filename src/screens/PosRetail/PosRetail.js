@@ -17,14 +17,23 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { getCategory, getProductDefault } from '@/actions/RetailAction';
+import {
+  getAllCart,
+  getCategory,
+  getProductDefault,
+} from '@/actions/RetailAction';
 import { useIsFocused } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native';
+import { COLORS } from '@/theme';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 export function PosRetail() {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  console.log('sellerID', sellerID);
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
@@ -35,7 +44,12 @@ export function PosRetail() {
   useEffect(() => {
     dispatch(getProductDefault(sellerID));
     dispatch(getCategory(sellerID));
+    dispatch(getAllCart());
   }, [isFocus]);
+
+  const isProductLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ONE_PRODUCT], state)
+  );
 
   const renderScreen = {
     ['MainScreen']: (
@@ -121,6 +135,15 @@ export function PosRetail() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>{screenChangeView()}</View>
+      {isProductLoading ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
     </ScreenWrapper>
   );
 }

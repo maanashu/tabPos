@@ -318,7 +318,7 @@ export const styles = StyleSheet.create({
   },
   productBodyCon: {
     backgroundColor: COLORS.textInputBackground,
-    flex: 1,
+    // flex: 1,
     borderRadius: 10,
     // paddingTop: verticalScale(5),
     paddingHorizontal: moderateScale(8),
@@ -660,6 +660,9 @@ export const styles = StyleSheet.create({
     fontSize: SH(20),
     fontFamily: Fonts.Bold,
   },
+  detailLeftDetail: {
+    width: windowWidth * 0.35,
+  },
   sizeAndColor: {
     color: COLORS.dark_grey,
     fontSize: SH(16),
@@ -824,8 +827,9 @@ export const styles = StyleSheet.create({
   ScrollableMainCon: {
     width: windowWidth * 0.48,
     alignSelf: 'center',
+    // borderWidth: 1,
 
-    height: windowHeight * 0.5,
+    // height: windowHeight * 0.5,
   },
   selectColorCon: {
     flexDirection: 'row',
@@ -840,23 +844,23 @@ export const styles = StyleSheet.create({
   scrollableBodyCon: {
     width: windowWidth * 0.48,
     alignSelf: 'center',
-    height: windowHeight * 0.45,
+    // height: windowHeight * 0.45,
     flexDirection: 'row',
   },
   colorSelectArea: {
-    height: windowHeight * 0.45,
+    // height: windowHeight * 0.45,
     width: windowWidth * 0.09,
     alignItems: 'center',
     borderEndWidth: 1,
     borderColor: COLORS.solidGrey,
   },
   quantitySelectArea: {
-    height: windowHeight * 0.45,
+    // height: windowHeight * 0.45,
     width: windowWidth * 0.25,
     paddingHorizontal: moderateScale(10),
   },
   RemindSelectArea: {
-    height: windowHeight * 0.45,
+    // height: windowHeight * 0.45,
     width: windowWidth * 0.14,
   },
   imageView: {
@@ -1132,5 +1136,17 @@ export const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
+  },
+  productListHeight: {
+    // borderWidth: 1,
+    height: windowHeight * 0.7,
+  },
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });

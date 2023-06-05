@@ -22,7 +22,6 @@ export class RetailController {
       console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
-          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
@@ -141,7 +140,8 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `?app_name=pos&delivery_options=3&seller_id=${sellerID}`;
+        `?app_name=pos&delivery_options=3&seller_id=${sellerID}&limit=10&page=1`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -183,11 +183,13 @@ export class RetailController {
     });
   }
 
-  static async getAllCartCategory() {
+  static async getAllCart() {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
+          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
@@ -544,6 +546,29 @@ export class RetailController {
         })
         .catch(error => {
           reject(error);
+        });
+    });
+  }
+
+  static async getOneProduct(sellerID, productId) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.getProduct +
+        `/${productId}?app_name=pos&seller_id=${sellerID}`;
+      console.log('endpoint', endpoint);
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
         });
     });
   }

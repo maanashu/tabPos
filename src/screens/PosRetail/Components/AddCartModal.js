@@ -11,6 +11,8 @@ import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { moderateScale } from 'react-native-size-matters';
+import { useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const dummyData = [
@@ -23,8 +25,16 @@ const dummyData = [
 ];
 
 export function AddCartModal({ crossHandler, detailHandler }) {
+  const getRetailData = useSelector(getRetail);
+  const productDetail = getRetailData?.getOneProduct;
+  const sizeArray =
+    productDetail?.product_detail?.supplies?.[0]?.attributes?.[0]?.values;
+  const coloredArray =
+    productDetail?.product_detail?.supplies?.[0]?.attributes?.[1]?.values;
+
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
+  const [count, setCount] = useState(0);
   // color select list start
   const coloredRenderItem = ({ item }) => {
     const backgroundColor =
@@ -54,7 +64,9 @@ export function AddCartModal({ crossHandler, detailHandler }) {
       style={[styles.selectColorItem, { backgroundColor, borderColor }]}
       onPress={onPress}
     >
-      <Text style={[styles.colorSelectText, { color: textColor }]}>Green</Text>
+      <Text style={[styles.colorSelectText, { color: textColor }]}>
+        {item.name}
+      </Text>
     </TouchableOpacity>
   );
   // color select list end
@@ -87,7 +99,9 @@ export function AddCartModal({ crossHandler, detailHandler }) {
       style={[styles.selectColorItem, { backgroundColor, borderColor }]}
       onPress={onPress}
     >
-      <Text style={[styles.colorSelectText, { color: textColor }]}>Xl</Text>
+      <Text style={[styles.colorSelectText, { color: textColor }]}>
+        {item.name}
+      </Text>
     </TouchableOpacity>
   );
   // Size select list end
@@ -120,50 +134,68 @@ export function AddCartModal({ crossHandler, detailHandler }) {
           alignSelf: 'center',
         }}
       >
-        <View style={{ marginTop: SH(10) }}>
-          <Text style={styles.colimbiaText}>Columbia Men's Rain Jacket </Text>
-          <Text style={styles.colimbiaText}>Cotton Pants</Text>
-          <Text style={styles.sizeAndColor}>Color:Grey</Text>
-          <Text style={styles.sizeAndColor}>Size:X</Text>
+        <View style={[styles.displayflex, { marginTop: SH(10) }]}>
+          <View style={styles.detailLeftDetail}>
+            <Text style={styles.colimbiaText}>
+              {productDetail?.product_detail?.name}
+            </Text>
+            <Text style={styles.colimbiaText}>Cotton Pants</Text>
+            <Text style={styles.sizeAndColor}>Color:Grey</Text>
+            <Text style={styles.sizeAndColor}>Size:X</Text>
+          </View>
+          <Text style={styles.colimbiaText}>
+            ${productDetail?.product_detail?.price}
+          </Text>
         </View>
         <View style={{ alignItems: 'center' }}>
           <View style={styles.counterCon}>
-            <View style={styles.minusBtnCon}>
+            <TouchableOpacity
+              style={styles.minusBtnCon}
+              onPress={() => (count > 0 ? setCount(count - 1) : null)}
+            >
               <Text style={styles.counterText}>-</Text>
-            </View>
+            </TouchableOpacity>
             <View style={styles.minusBtnCon}>
-              <Text style={styles.counterText}>1</Text>
+              <Text style={styles.counterText}>{count}</Text>
             </View>
-            <View style={styles.minusBtnCon}>
+            <TouchableOpacity
+              style={styles.minusBtnCon}
+              onPress={() => setCount(count + 1)}
+            >
               <Text style={styles.counterText}>+</Text>
-            </View>
+            </TouchableOpacity>
           </View>
 
-          <View style={styles.displayRow}>
-            <View style={styles.colorRow} />
-            <Text style={styles.colorText}>COLORS</Text>
-            <View style={styles.colorRow} />
-          </View>
+          {coloredArray?.length >= 1 ? (
+            <View style={styles.displayRow}>
+              <View style={styles.colorRow} />
+              <Text style={styles.colorText}>COLORS</Text>
+              <View style={styles.colorRow} />
+            </View>
+          ) : null}
 
           <FlatList
-            data={dummyData}
+            data={coloredArray}
             renderItem={coloredRenderItem}
             keyExtractor={item => item.id}
-            extraData={[1, 2, 3, 4, 5]}
+            extraData={coloredArray}
             numColumns={4}
           />
           <Spacer space={SH(15)} />
-          <View style={styles.displayRow}>
-            <View style={styles.colorRow} />
-            <Text style={styles.colorText}>SIZE</Text>
-            <View style={styles.colorRow} />
-          </View>
+          {sizeArray?.length >= 1 ? (
+            <View style={styles.displayRow}>
+              <View style={styles.colorRow} />
+              <Text style={styles.colorText}>SIZE</Text>
+              <View style={styles.colorRow} />
+            </View>
+          ) : null}
+
           <Spacer space={SH(15)} />
           <FlatList
-            data={dummyData}
+            data={sizeArray}
             renderItem={sizeRenderItem}
             keyExtractor={item => item.id}
-            extraData={dummyData}
+            extraData={sizeArray}
             numColumns={4}
           />
         </View>

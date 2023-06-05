@@ -13,10 +13,10 @@ const INITIALSTATE = {
   walletGetByPhone: [],
   getTips: {},
   getProductDefault: [],
+  getOneProduct: {},
 };
 
 export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
-  // console.log('payload', payload);
   switch (type) {
     case TYPES.GET_CATEGORY_SUCCESS:
       return {
@@ -145,6 +145,12 @@ export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         getProductDefault: [],
+      };
+
+    case TYPES.GET_ONE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        getOneProduct: payload?.getOneProduct,
       };
 
     case TYPES.CLEAR_STORE:

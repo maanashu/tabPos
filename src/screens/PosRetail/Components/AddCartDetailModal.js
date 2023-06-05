@@ -14,19 +14,14 @@ import {
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-const dummyData = [
-  { id: 1 },
-  { id: 2 },
-  { id: 3 },
-  { id: 4 },
-  { id: 5 },
-  { id: 6 },
-  { id: 7 },
-  { id: 8 },
-  { id: 9 },
-];
+import { useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
+const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
 export function AddCartDetailModal({ crossHandler }) {
+  const getRetailData = useSelector(getRetail);
+  const productDetail = getRetailData?.getOneProduct?.product_detail;
+  console.log('productDetail', productDetail);
   const [clothColorId, setClothColorId] = useState();
   const [clothSizeId, setClothSizeId] = useState();
   const [remindId, setRemindId] = useState();
@@ -141,7 +136,7 @@ export function AddCartDetailModal({ crossHandler }) {
   return (
     <View style={styles.addCartDetailCon}>
       <View style={styles.addCartDetailConHeader}>
-        <Text style={styles.jacketName}>Jacket-Nord</Text>
+        <Text style={styles.jacketName}>{productDetail?.name}</Text>
         <TouchableOpacity onPress={crossHandler}>
           <Image source={crossButton} style={styles.crossBg} />
         </TouchableOpacity>
@@ -149,16 +144,20 @@ export function AddCartDetailModal({ crossHandler }) {
       <View style={styles.addCartDetailBody}>
         <ScrollView>
           <View style={styles.clothProfileCon}>
-            <Image source={cloth} style={styles.profileCloth} />
+            <Image
+              source={{ uri: productDetail?.image }}
+              style={styles.profileCloth}
+            />
             <View style={styles.profileClothDes}>
               <Text style={[styles.jacketName, { fontSize: SF(15) }]}>
-                Jacket-Nord
+                {productDetail?.name}
               </Text>
-              <Text style={styles.clothProfileSubHead}>Men Coats & Jacket</Text>
+              <Text style={styles.clothProfileSubHead}>
+                {productDetail?.category?.name} {'>'}{' '}
+                {productDetail?.category?.name}
+              </Text>
               <Text numberOfLines={1} style={styles.clothProfileDes}>
-                A hoody jacket, also known as a hoodie or a hooded sweatshirt,
-                is a type of casual garment that is designed for comfort and
-                warmth.
+                {productDetail?.description}
               </Text>
             </View>
           </View>
@@ -167,29 +166,31 @@ export function AddCartDetailModal({ crossHandler }) {
             <Text style={[styles.jacketName, { fontFamily: Fonts.Regular }]}>
               Price
             </Text>
-            <Text style={styles.jacketName}>$82.75</Text>
+            <Text style={styles.jacketName}>
+              ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+            </Text>
           </View>
           <Spacer space={SH(20)} />
           <View style={styles.skuCon}>
             <View style={styles.skuConBody}>
               <Text style={styles.sku}>SKU</Text>
-              <Text style={styles.sku}>7044085C</Text>
+              <Text style={styles.sku}>{productDetail?.sku}</Text>
             </View>
             <View style={styles.skuConBody}>
               <Text style={styles.sku}>Barcode</Text>
-              <Text style={styles.sku}>C4598BI236</Text>
+              <Text style={styles.sku}>{productDetail?.barcode}</Text>
             </View>
             <View style={styles.skuConBody}>
               <Text style={styles.sku}>Unit Type</Text>
-              <Text style={styles.sku}>Piece </Text>
+              <Text style={styles.sku}>{productDetail?.type} </Text>
             </View>
             <View style={styles.skuConBody}>
               <Text style={styles.sku}>Unit Weight</Text>
-              <Text style={styles.sku}>NA </Text>
+              <Text style={styles.sku}>{productDetail?.weight_unit} </Text>
             </View>
             <View style={[styles.skuConBody, { borderColor: COLORS.white }]}>
               <Text style={styles.sku}>Other locations</Text>
-              <Text style={styles.sku}>NA </Text>
+              <Text style={styles.sku}>{'NA'}</Text>
             </View>
           </View>
           {/* Stock on hand section start */}
@@ -214,8 +215,8 @@ export function AddCartDetailModal({ crossHandler }) {
                     renderItem={clothColorrenderItem}
                     keyExtractor={item => item.id}
                     extraData={dummyData}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    nestedScrollEnabled
+                    // contentContainerStyle={{ flexGrow: 1 }}
+                    // nestedScrollEnabled
                     showsVerticalScrollIndicator={false}
                   />
                 </View>
@@ -238,8 +239,8 @@ export function AddCartDetailModal({ crossHandler }) {
                     renderItem={sizerenderItem}
                     keyExtractor={item => item.id}
                     extraData={dummyData}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    nestedScrollEnabled
+                    // contentContainerStyle={{ flexGrow: 1 }}
+                    // nestedScrollEnabled
                     showsVerticalScrollIndicator={false}
                   />
                 </View>
@@ -251,8 +252,8 @@ export function AddCartDetailModal({ crossHandler }) {
                     renderItem={remindrenderItem}
                     keyExtractor={item => item.id}
                     extraData={dummyData}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    nestedScrollEnabled
+                    // contentContainerStyle={{ flexGrow: 1 }}
+                    // nestedScrollEnabled
                     showsVerticalScrollIndicator={false}
                   />
                 </View>
