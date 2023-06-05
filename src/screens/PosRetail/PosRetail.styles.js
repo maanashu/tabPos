@@ -402,6 +402,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 5,
     paddingLeft: moderateScale(22),
+    backgroundColor: COLORS.white,
   },
   sideSearchStyle: {
     width: SW(7),

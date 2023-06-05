@@ -388,6 +388,7 @@ export class RetailController {
         WALLET_URL +
         ApiWalletInventory.getUserDetail +
         `?page=1&limit=10&search=${customerPhoneNo}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

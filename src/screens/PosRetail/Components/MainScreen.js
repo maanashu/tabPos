@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, Keyboard, Text, View } from 'react-native';
 
 import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
@@ -41,6 +41,8 @@ import {
   getOneProduct,
   getProduct,
   getSubCategory,
+  getUserDetail,
+  getUserDetailSuccess,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useIsFocused } from '@react-navigation/native';
@@ -63,7 +65,7 @@ export function MainScreen({
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
-  console.log('cartData', cartData?.poscart_products?.length);
+  const [customerPhoneNo, setCustomerPhoneNo] = useState();
 
   const [showProductsFrom, setshowProductsFrom] = useState();
 
@@ -77,6 +79,7 @@ export function MainScreen({
   const [selectedCatID, setselectedCatID] = useState(null);
   const [selectedSubCatID, setselectedSubCatID] = useState(null);
   const [selectedBrandID, setselectedBrandID] = useState(null);
+  const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
 
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -85,6 +88,9 @@ export function MainScreen({
 
   const isProductLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_PRODUCT_DEF, TYPES.GET_PRODUCT], state)
+  );
+  const userDetalLoader = useSelector(state =>
+    isLoadingSelector([TYPES.GET_USERDETAIL], state)
   );
 
   const originalFilterData = [
@@ -101,8 +107,17 @@ export function MainScreen({
       name: 'Choose Brand',
     },
   ];
+  const phoneNumberSearchFun = customerPhoneNo => {
+    if (customerPhoneNo?.length > 9) {
+      dispatch(getUserDetail(customerPhoneNo));
+      Keyboard.dismiss();
+    } else if (customerPhoneNo?.length < 10) {
+      dispatch(getUserDetailSuccess([]));
+    }
+  };
 
   useEffect(() => {
+    dispatch(getUserDetailSuccess([]));
     setfilterMenuTitle(originalFilterData);
     setisFilterDataSeclectedOfIndex(null);
     setTimeout(() => {
@@ -120,6 +135,151 @@ export function MainScreen({
     const res = await dispatch(getOneProduct(sellerID, productId));
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
+    }
+  };
+
+  const changeView = () => {
+    if (getuserDetailByNo?.length > 0) {
+      return (
+        <View>
+          <View style={styles.nameAddSingleCon}>
+            <View style={styles.displayRow}>
+              <Image source={terryProfile} style={styles.Phonelight} />
+              <Text style={styles.terryText}>
+                {getuserDetailByNo?.[0]?.first_name}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.nameAddSingleCon}>
+            <View style={styles.displayRow}>
+              <Image source={Phone_light} style={styles.Phonelight} />
+              <Text style={styles.terryText}>
+                {getuserDetailByNo?.[0]?.phone_number}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.nameAddSingleCon}>
+            <View style={styles.displayRow}>
+              <Image source={email} style={styles.Phonelight} />
+              <Text style={styles.terryText}>
+                {getuserDetailByNo?.[0]?.email}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.nameAddSingleCon}>
+            <View style={styles.displayRow}>
+              <Image source={location} style={styles.Phonelight} />
+              <Text style={styles.terryText} numberOfLines={1}>
+                {getuserDetailByNo?.[0]?.city},{getuserDetailByNo?.[0]?.address}
+                ,{getuserDetailByNo?.[0]?.state} {getuserDetailByNo?.[0]?.zip}
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.okButtonCon}>
+            <Image source={ok} style={styles.lockLight} />
+            <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (
+      getuserDetailByNo?.length === 0 &&
+      // sendInventer &&
+      customerPhoneNo?.length > 9
+    ) {
+      return (
+        <View>
+          <View
+            style={[
+              styles.sideBarInputWraper,
+              { backgroundColor: COLORS.textInputBackground },
+            ]}
+          >
+            <View style={styles.displayRow}>
+              <View>
+                <Image source={terryProfile} style={styles.sideSearchStyle} />
+              </View>
+              <TextInput
+                placeholder="Name"
+                style={styles.sideBarsearchInput}
+                // value={search}
+                // onChangeText={search => (
+                //   setSearch(search), onChangeFun(search)
+                // )}
+                placeholderTextColor={COLORS.gerySkies}
+              />
+            </View>
+          </View>
+          <View
+            style={[
+              styles.sideBarInputWraper,
+              { backgroundColor: COLORS.textInputBackground },
+            ]}
+          >
+            <View style={styles.displayRow}>
+              <View>
+                <Image source={Phone_light} style={styles.sideSearchStyle} />
+              </View>
+              <TextInput
+                placeholder="Phone Number"
+                style={styles.sideBarsearchInput}
+                keyboardType="numeric"
+                // value={search}
+                // onChangeText={search => (
+                //   setSearch(search), onChangeFun(search)
+                // )}
+                placeholderTextColor={COLORS.gerySkies}
+              />
+            </View>
+          </View>
+          <View
+            style={[
+              styles.sideBarInputWraper,
+              { backgroundColor: COLORS.textInputBackground },
+            ]}
+          >
+            <View style={styles.displayRow}>
+              <View>
+                <Image source={email} style={styles.sideSearchStyle} />
+              </View>
+              <TextInput
+                placeholder="Email Address"
+                style={styles.sideBarsearchInput}
+                // value={search}
+                // onChangeText={search => (
+                //   setSearch(search), onChangeFun(search)
+                // )}
+                placeholderTextColor={COLORS.gerySkies}
+              />
+            </View>
+          </View>
+          <View
+            style={[
+              styles.sideBarInputWraper,
+              { backgroundColor: COLORS.textInputBackground },
+            ]}
+          >
+            <View style={styles.displayRow}>
+              <View>
+                <Image source={location} style={styles.sideSearchStyle} />
+              </View>
+              <TextInput
+                placeholder="Address"
+                style={styles.sideBarsearchInput}
+                // value={search}
+                // onChangeText={search => (
+                //   setSearch(search), onChangeFun(search)
+                // )}
+                placeholderTextColor={COLORS.gerySkies}
+              />
+            </View>
+          </View>
+          <TouchableOpacity
+            style={[styles.okButtonCon, { backgroundColor: COLORS.dark_grey }]}
+          >
+            <Text style={[styles.okText]}>Add Customer</Text>
+          </TouchableOpacity>
+        </View>
+      );
     }
   };
 
@@ -326,15 +486,24 @@ export function MainScreen({
                     placeholder="803-238-2630"
                     style={styles.sideBarsearchInput}
                     keyboardType="numeric"
-                    // value={search}
-                    // onChangeText={search => (
-                    //   setSearch(search), onChangeFun(search)
-                    // )}
+                    value={customerPhoneNo}
+                    onChangeText={customerPhoneNo => {
+                      setCustomerPhoneNo(customerPhoneNo);
+                      phoneNumberSearchFun(customerPhoneNo);
+                    }}
                     placeholderTextColor={COLORS.solid_grey}
+                    maxLength={10}
                   />
                 </View>
               </View>
-              <View style={styles.nameAddSingleCon}>
+              {userDetalLoader ? (
+                <View style={{ marginTop: 40, alignSelf: 'center' }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : (
+                changeView()
+              )}
+              {/* <View style={styles.nameAddSingleCon}>
                 <View style={styles.displayRow}>
                   <Image source={terryProfile} style={styles.Phonelight} />
                   <Text style={styles.terryText}>Terry Moore</Text>
@@ -363,7 +532,7 @@ export function MainScreen({
               <TouchableOpacity style={styles.okButtonCon}>
                 <Image source={ok} style={styles.lockLight} />
                 <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <Spacer space={SH(10)} />
             <View
@@ -431,7 +600,7 @@ export function MainScreen({
             <View style={{ flex: 1 }} />
             <TouchableOpacity
               style={styles.checkoutButtonSideBar}
-              onPress={checkOutHandler}
+              onPress={() => checkOutHandler()}
             >
               <Text style={styles.checkoutText}>{strings.retail.checkOut}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />

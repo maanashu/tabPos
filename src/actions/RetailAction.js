@@ -254,6 +254,11 @@ const getUserDetailError = error => ({
   payload: { error },
 });
 
+const getUserDetailReset = () => ({
+  type: TYPES.GET_USERDETAIL_RESET,
+  payload: null,
+});
+
 const sendInvitationRequest = () => ({
   type: TYPES.SEND_INVITATION_REQUEST,
   payload: null,
@@ -551,6 +556,9 @@ export const getUserDetail = customerPhoneNo => async dispatch => {
     const res = await RetailController.getUserDetail(customerPhoneNo);
     dispatch(getUserDetailSuccess(res));
   } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getUserDetailReset());
+    }
     dispatch(getUserDetailError(error.message));
   }
 };
