@@ -305,6 +305,7 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.41,
     height: SH(45),
     marginRight: 8,
+    justifyContent: 'center',
   },
   allProduct: {
     color: COLORS.solid_grey,
