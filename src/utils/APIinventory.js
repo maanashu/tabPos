@@ -34,6 +34,7 @@ export const ApiProductInventory = {
   catSubBrandData: 'products/pos/data-list/statistics',
   getProductList: 'products/pos/product-list',
   getProductModal: 'products/pos/',
+  checkSuppliedVariant: 'supply_variants/by-attribute-value-ids',
 };
 
 // export const ApiSupportInventory = {

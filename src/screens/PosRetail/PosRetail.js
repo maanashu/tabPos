@@ -57,6 +57,8 @@ export function PosRetail() {
         TYPES.ADDCART,
         TYPES.GET_CLEAR_ALL_CART,
         TYPES.GET_ALL_CART,
+        TYPES.GET_WALLET_PHONE,
+        TYPES.GET_CLEAR_ONE_CART,
       ],
       state
     )

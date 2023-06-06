@@ -2450,7 +2450,6 @@ export function Retails() {
                     onChangeText={walletIdInp => (
                       setWalletIdInp(walletIdInp), walletIdInpFun(walletIdInp)
                     )}
-                    // onChangeText={setWalletIdInp}
                     value={walletIdInp}
                     placeholder="Wallet Id"
                     keyboardType="numeric"

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FlatList, Keyboard, Text, View } from 'react-native';
 
-import { COLORS, SH } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
@@ -42,6 +42,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import {
   clearAllCart,
+  clearOneCart,
   getUserDetail,
   getUserDetailSuccess,
 } from '@/actions/RetailAction';
@@ -76,6 +77,13 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
     } else if (customerPhoneNo?.length < 10) {
       dispatch(getUserDetailSuccess([]));
     }
+  };
+  const removeOneCartHandler = productId => {
+    const data = {
+      cartId: cartData?.id,
+      productId: productId,
+    };
+    dispatch(clearOneCart(data));
   };
 
   const changeView = () => {
@@ -400,7 +408,17 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
                       {item.product_details?.supply?.supply_prices
                         ?.selling_price * item?.qty}
                     </Text>
-                    <Image source={borderCross} style={styles.borderCross} />
+                    <TouchableOpacity
+                      style={{
+                        width: SW(8),
+                        height: SH(40),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                      onPress={() => removeOneCartHandler(item.id)}
+                    >
+                      <Image source={borderCross} style={styles.borderCross} />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>

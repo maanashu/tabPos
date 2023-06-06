@@ -135,11 +135,25 @@ export function DrawerNavigator(props) {
         )}
       />
 
-      <DrawerItem
+      {/* <DrawerItem
         activeBackgroundColor="transparent"
         focused={active === 'retail' ? true : false}
         onPress={() => {
           setActive('retail'), navigate(NAVIGATION.retails);
+        }}
+        label=""
+        icon={({ focused, color, size }) => (
+          <Image
+            source={focused ? retail : greyRetail}
+            style={styles.iconStyle}
+          />
+        )}
+      /> */}
+      <DrawerItem
+        activeBackgroundColor="transparent"
+        focused={active === 'posRetail' ? true : false}
+        onPress={() => {
+          setActive('posRetail'), navigate(NAVIGATION.posRetail);
         }}
         label=""
         icon={({ focused, color, size }) => (
@@ -282,7 +296,7 @@ export function DrawerNavigator(props) {
         )}
       />
 
-      <DrawerItem
+      {/* <DrawerItem
         activeBackgroundColor="transparent"
         focused={active === 'posRetail' ? true : false}
         onPress={() => {
@@ -295,7 +309,7 @@ export function DrawerNavigator(props) {
             style={styles.iconStyle}
           />
         )}
-      />
+      /> */}
 
       {getUserData?.posLoginData?.id !=
       getAuth?.merchantLoginData?.id ? null : (

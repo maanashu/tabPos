@@ -14,6 +14,7 @@ const INITIALSTATE = {
   getTips: {},
   getProductDefault: [],
   getOneProduct: {},
+  checkSuppliedVariant: [],
 };
 
 export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -122,7 +123,7 @@ export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
     case TYPES.GET_WALLET_PHONE_SUCCESS:
       return {
         ...state,
-        walletGetByPhone: payload?.walletGetByPhone?.payload?.data,
+        walletGetByPhone: payload?.walletGetByPhone,
       };
     case TYPES.GET_WALLET_PHONE_RESET:
       return {
@@ -156,6 +157,17 @@ export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         getOneProduct: payload?.getOneProduct,
+      };
+
+    case TYPES.CHECK_SUPPLIES_VARIANT_SUCCESS:
+      return {
+        ...state,
+        checkSuppliedVariant: payload?.checkSuppliedVariant,
+      };
+    case TYPES.CHECK_SUPPLIES_VARIANT_RESET:
+      return {
+        ...state,
+        checkSuppliedVariant: [],
       };
 
     case TYPES.CLEAR_STORE:

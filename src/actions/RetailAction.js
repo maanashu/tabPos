@@ -341,7 +341,7 @@ const requestMoneyRequest = () => ({
 
 const requestMoneySuccess = () => ({
   type: TYPES.REQUEST_MONEY_SUCCESS,
-  payload: {},
+  payload: null,
 });
 
 const requestMoneyError = error => ({
@@ -381,6 +381,26 @@ const getOneProductSuccess = getOneProduct => ({
 
 const getOneProductError = error => ({
   type: TYPES.GET_ONE_PRODUCT_ERROR,
+  payload: { error },
+});
+
+const checkSuppliedVariantRequest = () => ({
+  type: TYPES.CHECK_SUPPLIES_VARIANT_REQUEST,
+  payload: null,
+});
+
+const checkSuppliedVariantSuccess = checkSuppliedVariant => ({
+  type: TYPES.CHECK_SUPPLIES_VARIANT_SUCCESS,
+  payload: checkSuppliedVariant,
+});
+
+const checkSuppliedVariantReset = () => ({
+  type: TYPES.CHECK_SUPPLIES_VARIANT_RESET,
+  payload: null,
+});
+
+const checkSuppliedVariantError = error => ({
+  type: TYPES.CHECK_SUPPLIES_VARIANT_ERROR,
   payload: { error },
 });
 
@@ -603,7 +623,7 @@ export const walletGetByPhone = walletIdInp => async dispatch => {
   dispatch(walletGetByPhoneRequest());
   try {
     const res = await RetailController.walletGetByPhone(walletIdInp);
-    dispatch(walletGetByPhoneSuccess(res));
+    dispatch(walletGetByPhoneSuccess(res?.payload?.data));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(walletGetByPhoneReset());
@@ -650,6 +670,19 @@ export const getOneProduct = (sellerID, productId) => async dispatch => {
     return dispatch(getOneProductSuccess(res?.payload));
   } catch (error) {
     dispatch(getOneProductError(error.message));
+  }
+};
+
+export const checkSuppliedVariant = data => async dispatch => {
+  dispatch(checkSuppliedVariantRequest());
+  try {
+    const res = await RetailController.checkSuppliedVariant(data);
+    dispatch(checkSuppliedVariantSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(checkSuppliedVariantReset());
+    }
+    dispatch(checkSuppliedVariantError(error.message));
   }
 };
 

@@ -11,6 +11,8 @@ import {
 import { strings } from '@/localization';
 import { HttpClient } from './HttpClient';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { store } from '@/store';
+import axios from 'axios';
 
 export class RetailController {
   static async getCategory(sellerID) {
@@ -139,7 +141,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `?app_name=pos&delivery_options=3&seller_id=${sellerID}&limit=10&page=1`;
+        `?app_name=pos&delivery_options=3&seller_id=${sellerID}&page=1&limit=10`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -388,7 +390,6 @@ export class RetailController {
         WALLET_URL +
         ApiWalletInventory.getUserDetail +
         `?page=1&limit=10&search=${customerPhoneNo}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -491,13 +492,23 @@ export class RetailController {
       HttpClient.get(endpoint)
         .then(response => {
           if (response?.msg === 'api wallets found') {
-            alert('Wallet found successfully');
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: 'Wallet found successfully',
+              visibilityTime: 2000,
+            });
           }
           resolve(response);
         })
         .catch(error => {
           if (error?.error === 'emptyContent') {
-            alert('Wallet not found');
+            Toast.show({
+              position: 'bottom',
+              type: 'error_toast',
+              text2: 'Wallet not found',
+              visibilityTime: 2000,
+            });
           }
           reject(error);
         });
@@ -505,30 +516,69 @@ export class RetailController {
   }
 
   static async requestMoney(data) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      const token = store.getState().auth?.merchantLoginData?.token;
       const endpoint = WALLET_URL + ApiWalletInventory.requestMoney;
       const body = {
         amount: data.amount,
         reciever_address: data.wallletAdd,
       };
-      HttpClient.post(endpoint, body)
-        .then(response => {
-          if (response?.msg === 'Payment request sent success!') {
-            alert('Payment request sent successfully!');
+      await axios({
+        url: endpoint,
+        method: 'POST',
+        data: body,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'app-name': 'pos',
+          Authorization: token,
+        },
+      })
+        .then(resp => {
+          if (resp?.data?.msg === 'Payment request sent success!') {
+            Toast.show({
+              text2: 'Request send successfully',
+              position: 'bottom',
+              type: 'success_toast',
+              visibilityTime: 2000,
+            });
           }
-          resolve(response);
+          resolve(resp?.data);
         })
         .catch(error => {
-          // Toast.show({
-          //   position: 'bottom',
-          //   type: 'error_toast',
-          //   text2: error.msg,
-          //   visibilityTime: 2000,
-          // });
-          alert(error);
-          reject(error.msg);
+          reject(error);
         });
     });
+    // return new Promise((resolve, reject) => {
+    //   const endpoint = WALLET_URL + ApiWalletInventory.requestMoney;
+    //   const body = {
+    //     amount: data.amount,
+    //     reciever_address: data.wallletAdd,
+    //   };
+    //   console.log('endpoint', endpoint);
+    //   console.log('body', body);
+    //   HttpClient.post(endpoint, body)
+    //     .then(response => {
+    //       if (response.msg === 'Payment request sent success!') {
+    //         Toast.show({
+    //           text2: response.msg,
+    //           position: 'bottom',
+    //           type: 'success_toast',
+    //           visibilityTime: 2000,
+    //         });
+    //       }
+    //       resolve(response);
+    //     })
+    //     .catch(error => {
+    //       Toast.show({
+    //         text2: error.msg,
+    //         position: 'bottom',
+    //         type: 'error_toast',
+    //         visibilityTime: 2000,
+    //       });
+    //       reject(new Error(error.msg));
+    //     });
+    // });
   }
 
   static async getTips(sellerID) {
@@ -550,6 +600,28 @@ export class RetailController {
         PRODUCT_URL +
         ApiProductInventory.getProduct +
         `/${productId}?app_name=pos&seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
+        });
+    });
+  }
+
+  static async checkSuppliedVariant(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.checkSuppliedVariant +
+        `?attribute_value_ids=${data.sizeId},${data.colorId}&supply_id=${data.supplyId}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

@@ -1,12 +1,13 @@
 import {
   Image,
+  Keyboard,
   SafeAreaView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ms } from 'react-native-size-matters';
 import { Button } from '@/components';
 import { Fonts, QR, cardPayment, crossButton } from '@/assets';
@@ -15,16 +16,52 @@ import BackButton from '@/components/BackButton';
 import { styles } from '../../PosRetail.styles';
 import { COLORS } from '@/theme';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthData } from '@/selectors/AuthSelector';
+import {
+  getWalletId,
+  requestMoney,
+  walletGetByPhone,
+} from '@/actions/RetailAction';
 
 export const PayByJBRCoins = ({ onPressBack, onPressContinue, tipAmount }) => {
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getRetailData = useSelector(getRetail);
+  const getWalletQr = getRetailData?.getWallet?.qr_code;
   const cartData = getRetailData?.getAllCart;
+  const walletUser = getRetailData?.walletGetByPhone?.[0];
+  const getCartAmount = getRetailData?.getAllCart?.amount;
+  // console.log('walletUser', walletUser);
+
+  const [walletIdInp, setWalletIdInp] = useState();
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
     return totalPayment.toFixed();
+  };
+
+  useEffect(() => {
+    dispatch(getWalletId(sellerID));
+  }, []);
+
+  const walletIdInpFun = walletIdInp => {
+    if (walletIdInp?.length > 9) {
+      dispatch(walletGetByPhone(walletIdInp));
+      Keyboard.dismiss();
+    }
+  };
+  const sendRequestFun = () => {
+    const data = {
+      amount: getCartAmount?.total_amount,
+      wallletAdd: walletUser?.wallet_address,
+    };
+    console.log('-----------', data);
+
+    dispatch(requestMoney(data));
+    setWalletIdInp('');
   };
 
   return (
@@ -62,7 +99,10 @@ export const PayByJBRCoins = ({ onPressBack, onPressContinue, tipAmount }) => {
         <View style={{ width: '60%' }}>
           <View style={{ margin: ms(10), alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', marginTop: ms(10) }}>
-              <Image source={QR} style={{ height: ms(100), width: ms(100) }} />
+              <Image
+                source={{ uri: getWalletQr }}
+                style={{ height: ms(110), width: ms(110) }}
+              />
             </View>
 
             <View style={styles._inputMain}>
@@ -79,10 +119,28 @@ export const PayByJBRCoins = ({ onPressBack, onPressContinue, tipAmount }) => {
                   placeholder="Enter wallet address"
                   keyboardType="number-pad"
                   style={styles._inputContainer}
+                  onChangeText={walletIdInp => (
+                    setWalletIdInp(walletIdInp), walletIdInpFun(walletIdInp)
+                  )}
+                  value={walletIdInp}
                 />
                 <TouchableOpacity
-                  onPress={onPressContinue}
-                  style={styles._sendRequest}
+                  // onPress={onPressContinue}
+                  disabled={
+                    walletUser?.step >= 2 && walletIdInp?.length > 9
+                      ? false
+                      : true
+                  }
+                  style={[
+                    styles._sendRequest,
+                    {
+                      opacity:
+                        walletUser?.step >= 2 && walletIdInp?.length > 9
+                          ? 1
+                          : 0.7,
+                    },
+                  ]}
+                  onPress={() => sendRequestFun()}
                 >
                   <Text
                     style={[styles._tipText, { color: COLORS.solid_green }]}

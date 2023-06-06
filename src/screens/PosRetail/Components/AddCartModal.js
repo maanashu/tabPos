@@ -14,7 +14,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { moderateScale } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { addTocart } from '@/actions/RetailAction';
+import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const dummyData = [
@@ -30,6 +30,7 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct;
+
   const sizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const colorSizeArray =
     productDetail?.product_detail?.supplies?.[0]?.attributes;
@@ -44,11 +45,27 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   const [colors, setColors] = useState();
   const [colorName, setColorName] = useState();
   const [sizeName, setSizeName] = useState();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [string, setString] = useState();
   const addToCartHandler = () => {
     if (count === 0) {
       alert('Please add quantity to cart');
       return;
     }
+    //  else if (finalColorArray?.length >= 1 && colorId === null) {
+    //   alert('Please select the color');
+    // } else if (finalSizeArray?.length >= 1 && sizeId === null) {
+    //   alert('Please select the Size');
+    // } else {
+    //   const data = {
+    //     colorId: colorId,
+    //     sizeId: sizeId,
+    //     supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+    //   };
+    //   console.log('data', data);
+    //   dispatch(checkSuppliedVariant(data));
+    // }
+
     const data = {
       seller_id: sellerID,
       service_id: productDetail?.product_detail?.service_id,
@@ -62,6 +79,10 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
     crossHandler();
   };
 
+  // useEffect(() => {
+  //   setString(selectedItems.join(','));
+  // }, [selectedItems]);
+
   // const getColorName = colorCode => {
   //   console.log('colorCode', colorCode);
   //   const color = tinycolor(colorCode);
@@ -71,7 +92,7 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   //   return colorName;
   // };
   // color select list start
-  const coloredRenderItem = ({ item }) => {
+  const coloredRenderItem = ({ item, index }) => {
     const backgroundColor =
       item.id === colorId ? COLORS.blue_shade : 'transparent';
     const color = item.id === colorId ? COLORS.primary : COLORS.black;
@@ -84,7 +105,10 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
         onPress={() => {
           setColorId(colorId === item.id ? null : item.id);
           // getColorName(item.name);
-          setColorName(item.name);
+          // setColorName(item.name);
+          // const newSelectedItems = [...selectedItems];
+          // newSelectedItems[index] = item.id;
+          // setSelectedItems(newSelectedItems);
         }}
         backgroundColor={backgroundColor}
         textColor={color}
@@ -111,7 +135,7 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   // color select list end
 
   // Size select list start
-  const sizeRenderItem = ({ item }) => {
+  const sizeRenderItem = ({ item, index }) => {
     const backgroundColor =
       item.id === sizeId ? COLORS.blue_shade : 'transparent';
     const color = item.id === sizeId ? COLORS.primary : COLORS.black;
@@ -122,7 +146,10 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
         item={item}
         onPress={() => {
           setSizeId(sizeId === item.id ? null : item.id);
-          setSizeName(item.name);
+          // setSizeName(item.name);
+          // const newSelectedItems = [...selectedItems];
+          // newSelectedItems[index] = item.id;
+          // setSelectedItems(newSelectedItems);
         }}
         backgroundColor={backgroundColor}
         textColor={color}
