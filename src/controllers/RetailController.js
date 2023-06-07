@@ -581,6 +581,39 @@ export class RetailController {
     // });
   }
 
+  static async requestCheck(data) {
+    return new Promise(async (resolve, reject) => {
+      const token = store.getState().auth?.merchantLoginData?.token;
+      const endpoint =
+        WALLET_URL + ApiWalletInventory.requestCheck + `${data.requestId}`;
+      console.log('endpoint', endpoint);
+      await axios({
+        url: endpoint,
+        method: 'GET',
+        // data: body,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'app-name': 'pos',
+          Authorization: token,
+        },
+      })
+        .then(resp => {
+          resolve(resp?.data);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error?.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 2000,
+          });
+          console.log('iiiiiiiiiiiiiiiiiiiiii', error);
+          reject(error);
+        });
+    });
+  }
+
   static async getTips(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;

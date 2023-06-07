@@ -339,9 +339,9 @@ const requestMoneyRequest = () => ({
   payload: null,
 });
 
-const requestMoneySuccess = () => ({
+const requestMoneySuccess = requestMoney => ({
   type: TYPES.REQUEST_MONEY_SUCCESS,
-  payload: null,
+  payload: requestMoney,
 });
 
 const requestMoneyError = error => ({
@@ -401,6 +401,21 @@ const checkSuppliedVariantReset = () => ({
 
 const checkSuppliedVariantError = error => ({
   type: TYPES.CHECK_SUPPLIES_VARIANT_ERROR,
+  payload: { error },
+});
+
+const requestCheckRequest = () => ({
+  type: TYPES.REQUEST_CHECK_REQUEST,
+  payload: null,
+});
+
+const requestCheckSuccess = requestCheck => ({
+  type: TYPES.REQUEST_CHECK_SUCCESS,
+  payload: requestCheck,
+});
+
+const requestCheckError = error => ({
+  type: TYPES.REQUEST_CHECK_ERROR,
   payload: { error },
 });
 
@@ -636,7 +651,7 @@ export const requestMoney = data => async dispatch => {
   dispatch(requestMoneyRequest());
   try {
     const res = await RetailController.requestMoney(data);
-    dispatch(requestMoneySuccess(res));
+    return dispatch(requestMoneySuccess(res?.payload));
   } catch (error) {
     dispatch(requestMoneyError(error.message));
   }
@@ -683,6 +698,16 @@ export const checkSuppliedVariant = data => async dispatch => {
       dispatch(checkSuppliedVariantReset());
     }
     dispatch(checkSuppliedVariantError(error.message));
+  }
+};
+
+export const requestCheck = data => async dispatch => {
+  dispatch(requestCheckRequest());
+  try {
+    const res = await RetailController.requestCheck(data);
+    return dispatch(requestCheckSuccess(res?.payload?.status));
+  } catch (error) {
+    dispatch(requestCheckError(error.message));
   }
 };
 

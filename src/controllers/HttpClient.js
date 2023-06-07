@@ -13,7 +13,7 @@ const client = axios.create({
 });
 client.interceptors.request.use(function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
-  // console.log('register', register);
+  console.log('register', register);
   const user = store.getState().user?.posLoginData?.token;
   // console.log('user, user', user);
   const token = user || register || null;

@@ -76,6 +76,7 @@ export const ApiWalletInventory = {
   getUserDetail: 'wallets/other',
   walletGetByPhone: 'wallets/other',
   requestMoney: 'transactions/request-money',
+  requestCheck: 'transactions/',
 };
 
 export const ApiRewards = {

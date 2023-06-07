@@ -21,6 +21,21 @@ const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 export function AddCartDetailModal({ crossHandler }) {
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
+
+  let deliveryOption =
+    getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options.split(
+      ','
+    );
+  let deliveryOptionImage = deliveryOption.find(item => {
+    return item === '1';
+  });
+  let inStoreImage = deliveryOption.find(item => {
+    return item === '3';
+  });
+  let shippingImage = deliveryOption.find(item => {
+    return item === '4';
+  });
+  console.log('inStoreImage', inStoreImage);
   const [clothColorId, setClothColorId] = useState();
   const [clothSizeId, setClothSizeId] = useState();
   const [remindId, setRemindId] = useState();
@@ -279,17 +294,26 @@ export function AddCartDetailModal({ crossHandler }) {
             <Spacer space={SH(10)} />
             <View style={styles.inStoreBody}>
               <Text style={styles.inStoreText}>In store</Text>
-              <Image source={toggleSecBlue} style={styles.toggleSecBlue} />
+              <Image
+                source={inStoreImage === '3' ? toggleSecBlue : vectorOff}
+                style={styles.toggleSecBlue}
+              />
             </View>
             <Spacer space={SH(8)} />
             <View style={styles.inStoreBody}>
               <Text style={styles.inStoreText}>Online - delivery</Text>
-              <Image source={vectorOff} style={styles.toggleSecBlue} />
+              <Image
+                source={deliveryOptionImage === '1' ? toggleSecBlue : vectorOff}
+                style={styles.toggleSecBlue}
+              />
             </View>
             <Spacer space={SH(8)} />
             <View style={styles.inStoreBody}>
               <Text style={styles.inStoreText}>Online - Shipping</Text>
-              <Image source={vectorOff} style={styles.toggleSecBlue} />
+              <Image
+                source={shippingImage === '4' ? toggleSecBlue : vectorOff}
+                style={styles.toggleSecBlue}
+              />
             </View>
             <Spacer space={SH(8)} />
           </View>

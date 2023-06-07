@@ -15,9 +15,12 @@ const INITIALSTATE = {
   getProductDefault: [],
   getOneProduct: {},
   checkSuppliedVariant: [],
+  requestMoney: {},
+  requestCheck: {},
 };
 
 export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
+  // console.log('payload', payload);
   switch (type) {
     case TYPES.GET_CATEGORY_SUCCESS:
       return {
@@ -168,6 +171,17 @@ export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         checkSuppliedVariant: [],
+      };
+
+    case TYPES.REQUEST_MONEY_SUCCESS:
+      return {
+        ...state,
+        requestMoney: payload?.requestMoney,
+      };
+    case TYPES.REQUEST_CHECK_SUCCESS:
+      return {
+        ...state,
+        requestCheck: payload,
       };
 
     case TYPES.CLEAR_STORE:
