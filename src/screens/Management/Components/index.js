@@ -593,7 +593,10 @@ export function TransactionDropDown({ selected }) {
       // scrollViewProps={{
       //   nestedScrollEnabled: true,
       // }}
-      dropDownContainerStyle={styles.dropDownContainerStyle}
+      dropDownContainerStyle={[
+        styles.dropDownContainerStyle,
+        { zIndex: Platform.OS === 'ios' ? 999 : 2, borderWidth: 1 },
+      ]}
       open={cityModalOpen}
       value={cityModalValue}
       items={cityItems}

@@ -64,7 +64,6 @@ export function MainScreen({
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
-  console.log('productArray', productArray?.length);
 
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
@@ -457,7 +456,10 @@ export function MainScreen({
             <Spacer space={SH(15)} />
             <View style={styles.displayflex}>
               <Text style={styles.allProduct}>
-                All Products <Text style={styles.allProductCount}>(1280)</Text>
+                All Products{' '}
+                <Text style={styles.allProductCount}>
+                  ({productArray?.length})
+                </Text>
               </Text>
               <View style={styles.barcodeInputWraper}>
                 <View style={styles.displayRow}>

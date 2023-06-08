@@ -208,6 +208,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     width: windowWidth * 0.28,
     height: SH(60),
+    zIndex: -999,
   },
   sessionMainView: {
     width: windowWidth - 110,
@@ -451,7 +452,7 @@ export const styles = StyleSheet.create({
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
     // top: Platform.OS === 'android' ? 50 : 15,
-    zIndex: Platform.OS === 'ios' ? 100 : 1,
+    zIndex: Platform.OS === 'ios' ? 999 : 1,
   },
   listItemLabelStyle: {
     fontSize: SF(12),
