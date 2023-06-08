@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import moment from 'moment';
 
-export function CustomHeader({ crossHandler }) {
+export function CustomHeader({ crossHandler, iconShow }) {
   return (
     <View style={styles.searchScreenHeader}>
       <View style={styles.displayflex}>
@@ -23,9 +23,11 @@ export function CustomHeader({ crossHandler }) {
         <View style={styles._border} />
         <Text style={styles.cashLabelBold}>Invoice No. # 3467589</Text>
         <Text style={styles.cashLabelBold}>POS No. #Front-CC01</Text>
-        <TouchableOpacity onPress={crossHandler}>
-          <Image source={crossButton} style={styles.crossBg} />
-        </TouchableOpacity>
+        {iconShow ? (
+          <TouchableOpacity onPress={crossHandler}>
+            <Image source={crossButton} style={styles.crossBg} />
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );

@@ -43,9 +43,12 @@ import {
   getSubCategory,
   getUserDetail,
   getUserDetailSuccess,
+  sendInvitation,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useIsFocused } from '@react-navigation/native';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { emailReg } from '@/utils/validators';
 
 export function MainScreen({
   checkOutHandler,
@@ -61,6 +64,7 @@ export function MainScreen({
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
+  console.log('productArray', productArray?.length);
 
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
@@ -81,8 +85,14 @@ export function MainScreen({
   const [selectedBrandID, setselectedBrandID] = useState(null);
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
 
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userAdd, setUserAdd] = useState('');
+
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
+
+  const [okk, setOkk] = useState(false);
 
   const [productDetail, setProductDetail] = useState();
 
@@ -109,6 +119,7 @@ export function MainScreen({
   ];
   const phoneNumberSearchFun = customerPhoneNo => {
     if (customerPhoneNo?.length > 9) {
+      // checkOutHandler();
       dispatch(getUserDetail(customerPhoneNo));
       Keyboard.dismiss();
     } else if (customerPhoneNo?.length < 10) {
@@ -136,6 +147,52 @@ export function MainScreen({
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
     }
+  };
+
+  const addCustomerHandler = () => {
+    if (!userName) {
+      Toast.show({
+        position: 'top',
+        type: 'error_toast',
+        text2: 'Please enter user Name',
+        visibilityTime: 2000,
+      });
+    } else if (!userEmail) {
+      Toast.show({
+        position: 'top',
+        type: 'error_toast',
+        text2: 'Please enter user Email',
+        visibilityTime: 2000,
+      });
+    } else if (userEmail && emailReg.test(userEmail) === false) {
+      Toast.show({
+        position: 'top',
+        type: 'error_toast',
+        text2: 'Please enter valid Email',
+        visibilityTime: 2000,
+      });
+    } else if (!userAdd) {
+      Toast.show({
+        position: 'top',
+        type: 'error_toast',
+        text2: 'Please enter user Address',
+        visibilityTime: 2000,
+      });
+    } else {
+      const data = {
+        userPhoneNo: customerPhoneNo,
+        userFirstname: userName,
+        userEmailAdd: userEmail,
+      };
+      dispatch(sendInvitation(data));
+      userInputClear();
+    }
+  };
+  const userInputClear = () => {
+    setUserEmail('');
+    setUserName('');
+    setCustomerPhoneNo('');
+    setUserAdd('');
   };
 
   const changeView = () => {
@@ -175,10 +232,27 @@ export function MainScreen({
               </Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.okButtonCon}>
-            <Image source={ok} style={styles.lockLight} />
-            <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
-          </TouchableOpacity>
+          {okk ? (
+            <TouchableOpacity
+              style={styles.okButtonCon}
+              // onPress={() => setStoreUser(getuserDetailByNo?.[0])}
+              onPress={() => {
+                dispatch(getUserDetailSuccess([]));
+                setOkk(false);
+              }}
+            >
+              <Text style={[styles.okText]}>Cancel Customer</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.okButtonCon}
+              // onPress={() => setStoreUser(getuserDetailByNo?.[0])}
+              onPress={() => setOkk(!okk)}
+            >
+              <Image source={ok} style={styles.lockLight} />
+              <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
+            </TouchableOpacity>
+          )}
         </View>
       );
     } else if (
@@ -201,36 +275,32 @@ export function MainScreen({
               <TextInput
                 placeholder="Name"
                 style={styles.sideBarsearchInput}
-                // value={search}
-                // onChangeText={search => (
-                //   setSearch(search), onChangeFun(search)
-                // )}
+                value={userName}
+                onChangeText={setUserName}
                 placeholderTextColor={COLORS.gerySkies}
               />
             </View>
           </View>
-          <View
-            style={[
-              styles.sideBarInputWraper,
-              { backgroundColor: COLORS.textInputBackground },
-            ]}
-          >
-            <View style={styles.displayRow}>
-              <View>
-                <Image source={Phone_light} style={styles.sideSearchStyle} />
-              </View>
-              <TextInput
-                placeholder="Phone Number"
-                style={styles.sideBarsearchInput}
-                keyboardType="numeric"
-                // value={search}
-                // onChangeText={search => (
-                //   setSearch(search), onChangeFun(search)
-                // )}
-                placeholderTextColor={COLORS.gerySkies}
-              />
+          {/* <View
+          style={[
+            styles.sideBarInputWraper,
+            { backgroundColor: COLORS.textInputBackground },
+          ]}
+        >
+          <View style={styles.displayRow}>
+            <View>
+              <Image source={Phone_light} style={styles.sideSearchStyle} />
             </View>
+            <TextInput
+              placeholder="Phone Number"
+              style={styles.sideBarsearchInput}
+              keyboardType="numeric"
+              value={userPhoneNo}
+              onChangeText={setUserPhoneNo}
+              placeholderTextColor={COLORS.gerySkies}
+            />
           </View>
+        </View> */}
           <View
             style={[
               styles.sideBarInputWraper,
@@ -244,10 +314,8 @@ export function MainScreen({
               <TextInput
                 placeholder="Email Address"
                 style={styles.sideBarsearchInput}
-                // value={search}
-                // onChangeText={search => (
-                //   setSearch(search), onChangeFun(search)
-                // )}
+                value={userEmail}
+                onChangeText={setUserEmail}
                 placeholderTextColor={COLORS.gerySkies}
               />
             </View>
@@ -265,15 +333,14 @@ export function MainScreen({
               <TextInput
                 placeholder="Address"
                 style={styles.sideBarsearchInput}
-                // value={search}
-                // onChangeText={search => (
-                //   setSearch(search), onChangeFun(search)
-                // )}
+                value={userAdd}
+                onChangeText={setUserAdd}
                 placeholderTextColor={COLORS.gerySkies}
               />
             </View>
           </View>
           <TouchableOpacity
+            onPress={addCustomerHandler}
             style={[styles.okButtonCon, { backgroundColor: COLORS.dark_grey }]}
           >
             <Text style={[styles.okText]}>Add Customer</Text>
@@ -373,7 +440,7 @@ export function MainScreen({
   return (
     <View>
       <View style={styles.homeScreenCon}>
-        <CustomHeader crossHandler={headercrossHandler} />
+        <CustomHeader iconShow={false} crossHandler={headercrossHandler} />
 
         <View style={styles.displayflex2}>
           <View style={styles.itemLIistCon}>

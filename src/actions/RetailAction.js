@@ -339,7 +339,7 @@ const requestMoneyRequest = () => ({
   payload: null,
 });
 
-const requestMoneySuccess = requestMoney => ({
+export const requestMoneySuccess = requestMoney => ({
   type: TYPES.REQUEST_MONEY_SUCCESS,
   payload: requestMoney,
 });
@@ -409,7 +409,7 @@ const requestCheckRequest = () => ({
   payload: null,
 });
 
-const requestCheckSuccess = requestCheck => ({
+export const requestCheckSuccess = requestCheck => ({
   type: TYPES.REQUEST_CHECK_SUCCESS,
   payload: requestCheck,
 });
@@ -651,6 +651,7 @@ export const requestMoney = data => async dispatch => {
   dispatch(requestMoneyRequest());
   try {
     const res = await RetailController.requestMoney(data);
+    console.log('res', res?.payload);
     return dispatch(requestMoneySuccess(res?.payload));
   } catch (error) {
     dispatch(requestMoneyError(error.message));

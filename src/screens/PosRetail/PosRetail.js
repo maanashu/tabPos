@@ -59,6 +59,8 @@ export function PosRetail() {
         TYPES.GET_ALL_CART,
         TYPES.GET_WALLET_PHONE,
         TYPES.GET_CLEAR_ONE_CART,
+        TYPES.REQUEST_MONEY,
+        TYPES.CREATE_ORDER,
       ],
       state
     )
@@ -139,10 +141,11 @@ export function PosRetail() {
         onPressBack={() => {
           setselectedScreen('CartAmountPayBy');
         }}
-        // onPressContinue={() => {
-        //   setpaymentMethod('JBRCoins');
-        //   setselectedScreen('FinalPaymentScreen');
-        // }}
+        onPressContinue={cartData => {
+          setpaymentMethod('JBRCoins');
+          setSavedTempCartData(cartData?.getAllCart);
+          setselectedScreen('FinalPaymentScreen');
+        }}
       />
     ),
     ['FinalPaymentScreen']: (

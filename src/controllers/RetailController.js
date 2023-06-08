@@ -411,14 +411,19 @@ export class RetailController {
       const endpoint = USER_URL + ApiUserInventory.sendInvitation;
       const body = {
         firstName: data.userFirstname,
-        lastName: data.userLastName,
+        // lastName: data.userLastName,
         email: data.userEmailAdd,
         phone: data.userPhoneNo,
       };
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.status_code === 200) {
-            alert('successfully send invitation on your email');
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: 'successfully send invitation on your email',
+              visibilityTime: 2000,
+            });
           }
           resolve(response);
         })
@@ -602,13 +607,6 @@ export class RetailController {
           resolve(resp?.data);
         })
         .catch(error => {
-          Toast.show({
-            text2: error?.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 2000,
-          });
-          console.log('iiiiiiiiiiiiiiiiiiiiii', error);
           reject(error);
         });
     });

@@ -45,11 +45,13 @@ import {
   clearOneCart,
   getUserDetail,
   getUserDetailSuccess,
+  sendInvitation,
 } from '@/actions/RetailAction';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { emailReg } from '@/utils/validators';
 
 export function CartScreen({ onPressPayNow, crossHandler }) {
   const dispatch = useDispatch();
@@ -63,6 +65,65 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const [storeUser, setStoreUser] = useState();
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
+
+  const [userName, setUserName] = useState('');
+  const [userPhoneNo, setUserPhoneNo] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userAdd, setUserAdd] = useState('');
+
+  const [itemCart, setItemCart] = useState();
+
+  const [count, setCount] = useState(itemCart?.qty ?? '0');
+  console.log('-----------', count);
+  console.log('itemCart', itemCart?.qty);
+
+  const [okk, setOkk] = useState(false);
+  const addCustomerHandler = () => {
+    if (!userName) {
+      Toast.show({
+        position: 'top',
+        type: 'error_toast',
+        text2: 'Please enter user Name',
+        visibilityTime: 2000,
+      });
+    } else if (!userEmail) {
+      Toast.show({
+        position: 'top',
+        type: 'error_toast',
+        text2: 'Please enter user Email',
+        visibilityTime: 2000,
+      });
+    } else if (userEmail && emailReg.test(userEmail) === false) {
+      Toast.show({
+        position: 'top',
+        type: 'error_toast',
+        text2: 'Please enter valid Email',
+        visibilityTime: 2000,
+      });
+    } else if (!userAdd) {
+      Toast.show({
+        position: 'top',
+        type: 'error_toast',
+        text2: 'Please enter user Address',
+        visibilityTime: 2000,
+      });
+    } else {
+      const data = {
+        userPhoneNo: customerPhoneNo,
+        userFirstname: userName,
+        userEmailAdd: userEmail,
+      };
+      dispatch(sendInvitation(data));
+      userInputClear();
+    }
+  };
+  const userInputClear = () => {
+    setUserEmail('');
+    setUserName('');
+    setCustomerPhoneNo('');
+    setUserAdd('');
+  };
+
   const clearCartHandler = () => {
     dispatch(clearAllCart());
     crossHandler();
@@ -123,13 +184,27 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
               </Text>
             </View>
           </View>
-          {/* <TouchableOpacity
-            style={styles.okButtonCon}
-            onPress={() => setStoreUser(getuserDetailByNo?.[0])}
-          >
-            <Image source={ok} style={styles.lockLight} />
-            <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
-          </TouchableOpacity> */}
+          {okk ? (
+            <TouchableOpacity
+              style={styles.okButtonCon}
+              // onPress={() => setStoreUser(getuserDetailByNo?.[0])}
+              onPress={() => {
+                dispatch(getUserDetailSuccess([]));
+                setOkk(false);
+              }}
+            >
+              <Text style={[styles.okText]}>Cancel Customer</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.okButtonCon}
+              // onPress={() => setStoreUser(getuserDetailByNo?.[0])}
+              onPress={() => setOkk(!okk)}
+            >
+              <Image source={ok} style={styles.lockLight} />
+              <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
+            </TouchableOpacity>
+          )}
         </View>
       );
     } else if (
@@ -152,15 +227,13 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
               <TextInput
                 placeholder="Name"
                 style={styles.sideBarsearchInput}
-                // value={search}
-                // onChangeText={search => (
-                //   setSearch(search), onChangeFun(search)
-                // )}
+                value={userName}
+                onChangeText={setUserName}
                 placeholderTextColor={COLORS.gerySkies}
               />
             </View>
           </View>
-          <View
+          {/* <View
             style={[
               styles.sideBarInputWraper,
               { backgroundColor: COLORS.textInputBackground },
@@ -174,14 +247,12 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
                 placeholder="Phone Number"
                 style={styles.sideBarsearchInput}
                 keyboardType="numeric"
-                // value={search}
-                // onChangeText={search => (
-                //   setSearch(search), onChangeFun(search)
-                // )}
+                value={userPhoneNo}
+                onChangeText={setUserPhoneNo}
                 placeholderTextColor={COLORS.gerySkies}
               />
             </View>
-          </View>
+          </View> */}
           <View
             style={[
               styles.sideBarInputWraper,
@@ -195,10 +266,8 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
               <TextInput
                 placeholder="Email Address"
                 style={styles.sideBarsearchInput}
-                // value={search}
-                // onChangeText={search => (
-                //   setSearch(search), onChangeFun(search)
-                // )}
+                value={userEmail}
+                onChangeText={setUserEmail}
                 placeholderTextColor={COLORS.gerySkies}
               />
             </View>
@@ -216,15 +285,14 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
               <TextInput
                 placeholder="Address"
                 style={styles.sideBarsearchInput}
-                // value={search}
-                // onChangeText={search => (
-                //   setSearch(search), onChangeFun(search)
-                // )}
+                value={userAdd}
+                onChangeText={setUserAdd}
                 placeholderTextColor={COLORS.gerySkies}
               />
             </View>
           </View>
           <TouchableOpacity
+            onPress={addCustomerHandler}
             style={[styles.okButtonCon, { backgroundColor: COLORS.dark_grey }]}
           >
             <Text style={[styles.okText]}>Add Customer</Text>
@@ -305,10 +373,21 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
     </TouchableOpacity>
   );
 
+  const addQuantity = qty => {
+    console.log('addQuantity', qty);
+    setCount(count + 1);
+  };
+
+  const minusQuantity = qty => {
+    console.log('minusQuantity', qty);
+    setCount(count - 1);
+  };
+
   return (
     <View>
       <View style={styles.homeScreenCon}>
         <CustomHeader
+          iconShow
           crossHandler={() => {
             crossHandler();
             dispatch(getUserDetailSuccess([]));
@@ -399,9 +478,31 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
                       }
                     </Text>
                     <View style={styles.listCountCon}>
-                      <Image source={minus} style={styles.minus} />
-                      <Text>{item?.qty}</Text>
-                      <Image source={plus} style={styles.minus} />
+                      <TouchableOpacity
+                        style={{
+                          width: SW(10),
+                          alignItems: 'center',
+                        }}
+                        // onPress={() => {
+                        //   addQuantity(item.qty);
+                        //   setItemCart(item);
+                        // }}
+                      >
+                        <Image source={minus} style={styles.minus} />
+                      </TouchableOpacity>
+                      <Text>{item.qty}</Text>
+                      <TouchableOpacity
+                        style={{
+                          width: SW(10),
+                          alignItems: 'center',
+                        }}
+                        // onPress={() => {
+                        //   minusQuantity(item.qty);
+                        //   setItemCart(item);
+                        // }}
+                      >
+                        <Image source={plus} style={styles.minus} />
+                      </TouchableOpacity>
                     </View>
                     <Text style={styles.blueListDataText}>
                       $
@@ -551,7 +652,7 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
               </Text>
             </View>
             <View style={{ flex: 1 }} />
-            {getuserDetailByNo?.length === 0 ? (
+            {getuserDetailByNo?.length === 0 || !okk ? (
               <TouchableOpacity
                 style={styles.checkoutButtonSideBar}
                 onPress={() =>

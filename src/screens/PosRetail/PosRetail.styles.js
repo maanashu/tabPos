@@ -406,8 +406,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   sideSearchStyle: {
-    width: SW(7),
-    height: SW(7),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
     marginLeft: moderateScale(10),
     marginRight: moderateScale(5),
@@ -1006,7 +1006,7 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
     fontFamily: Fonts.Regular,
     fontSize: ms(5.5),
-    marginTop: ms(7),
+    marginTop: ms(5),
   },
   _subTotalPrice: {
     color: COLORS.solid_grey,
@@ -1017,7 +1017,7 @@ export const styles = StyleSheet.create({
   _horizontalLine: {
     height: ms(1),
     width: '90%',
-    marginTop: ms(5),
+    marginTop: ms(4),
     backgroundColor: COLORS.textInputBackground,
   },
 
@@ -1040,7 +1040,7 @@ export const styles = StyleSheet.create({
   _commonPayTitle: {
     alignSelf: 'flex-start',
     marginLeft: ms(15),
-    marginTop: ms(4),
+    marginTop: ms(3),
     fontSize: ms(7),
     color: COLORS.black,
     fontFamily: Fonts.Regular,
@@ -1076,21 +1076,21 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(7),
-    marginTop: ms(10),
+    marginTop: ms(5),
   },
   _kAddress: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
     fontSize: ms(6),
-    marginTop: ms(10),
+    marginTop: ms(5),
   },
   _kNumber: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
     fontSize: ms(6),
-    marginTop: ms(5),
+    marginTop: ms(3),
   },
-  _flatListContainer: { height: ms(100), width: '100%', marginTop: ms(7) },
+  _flatListContainer: { height: ms(100), width: '100%', marginTop: ms(5) },
   _barCode: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(10),
@@ -1099,7 +1099,7 @@ export const styles = StyleSheet.create({
   _barCodeImage: { height: ms(25), width: '70%', marginTop: ms(5) },
   _thankyou: {
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(13),
+    fontSize: ms(11),
     color: COLORS.dark_grey,
     marginTop: ms(10),
   },
