@@ -33,6 +33,7 @@ export function PosRetail() {
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  console.log('sellerID', sellerID);
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
 
@@ -54,7 +55,7 @@ export function PosRetail() {
     isLoadingSelector(
       [
         TYPES.GET_ONE_PRODUCT,
-        TYPES.ADDCART,
+        // TYPES.ADDCART,
         TYPES.GET_CLEAR_ALL_CART,
         TYPES.GET_ALL_CART,
         TYPES.GET_WALLET_PHONE,

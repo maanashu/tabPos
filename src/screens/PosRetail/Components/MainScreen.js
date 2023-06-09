@@ -457,7 +457,10 @@ export function MainScreen({
             <Spacer space={SH(15)} />
             <View style={styles.displayflex}>
               <Text style={styles.allProduct}>
-                All Products <Text style={styles.allProductCount}>(1280)</Text>
+                All Products{' '}
+                <Text style={styles.allProductCount}>
+                  ({productArray?.length})
+                </Text>
               </Text>
               <View style={styles.barcodeInputWraper}>
                 <View style={styles.displayRow}>

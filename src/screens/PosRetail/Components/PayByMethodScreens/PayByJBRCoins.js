@@ -33,9 +33,9 @@ import {
   requestCheckSuccess,
   createOrder,
   requestMoneySuccess,
+  clearCheck,
 } from '@/actions/RetailAction';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { log } from 'react-native-reanimated';
 
 export const PayByJBRCoins = ({
   onPressBack,
@@ -43,7 +43,6 @@ export const PayByJBRCoins = ({
   tipAmount,
   screen,
 }) => {
-  console.log('-------------------------screen', screen);
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -55,7 +54,6 @@ export const PayByJBRCoins = ({
   const walletUser = getRetailData?.walletGetByPhone?.[0];
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const requestStatus = getRetailData?.requestCheck;
-  console.log('requestStatus', requestStatus);
   const [checkStatus, setCheckStatus] = useState(false);
   const [requestId, setRequestId] = useState();
   const sendAmount = getCartAmount?.total_amount;
@@ -63,7 +61,6 @@ export const PayByJBRCoins = ({
   const saveCartData = { ...getRetailData };
   const [request, setRequest] = useState(false);
   const [abc, setAbc] = useState(false);
-  console.log('checkStatus', checkStatus);
 
   const backFalse = () => {
     setAbc(false);
@@ -73,8 +70,6 @@ export const PayByJBRCoins = ({
     dispatch(requestMoneySuccess());
   };
 
-  // console.log('walletUser', walletUser);
-  const status = 'hiii';
   const requestCheckData = getRetailData;
   const [walletIdInp, setWalletIdInp] = useState();
 
@@ -90,25 +85,20 @@ export const PayByJBRCoins = ({
       tips: tipAmount,
       modeOfPayment: 'jbr',
     };
-    console.log('data', data);
 
     const callback = response => {
       if (response) {
         onPressContinue(saveCartData);
       }
     };
-    // setCheckStatus(false);
     dispatch(createOrder(data, callback));
+    dispatch(clearCheck());
   };
 
   useEffect(() => {
     dispatch(getWalletId(sellerID));
     dispatch(requestCheckSuccess());
     backFalse();
-    setAbc(false);
-    setRequest(false);
-    setCheckStatus(false);
-    dispatch(requestMoneySuccess());
   }, []);
 
   const walletIdInpFun = walletIdInp => {
@@ -147,7 +137,6 @@ export const PayByJBRCoins = ({
       wallletAdd: walletUser?.wallet_address,
     };
     const res = await dispatch(requestMoney(data));
-    console.log('---------res', res);
     if (res?.type === 'REQUEST_MONEY_SUCCESS') {
       setWalletIdInp('');
       setRequestId(res?.payload?._id);
@@ -155,7 +144,6 @@ export const PayByJBRCoins = ({
         requestId: res?.payload?._id,
       };
       const response = await dispatch(requestCheck(data));
-      console.log('-------------------------', response);
       if (response?.type === 'REQUEST_CHECK_SUCCESS') {
         setAbc(true);
         setRequest(true);

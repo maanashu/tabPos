@@ -261,14 +261,14 @@ export class RetailController {
       };
       HttpClient.post(endpoint, body)
         .then(response => {
-          if (response?.msg === 'PosCart created successfully') {
-            Toast.show({
-              position: 'bottom',
-              type: 'success_toast',
-              text2: response?.msg,
-              visibilityTime: 2000,
-            });
-          }
+          // if (response?.msg === 'PosCart created successfully') {
+          //   Toast.show({
+          //     position: 'bottom',
+          //     type: 'success_toast',
+          //     text2: response?.msg,
+          //     visibilityTime: 2000,
+          //   });
+          // }
           resolve(response);
         })
         .catch(error => {
@@ -591,7 +591,6 @@ export class RetailController {
       const token = store.getState().auth?.merchantLoginData?.token;
       const endpoint =
         WALLET_URL + ApiWalletInventory.requestCheck + `${data.requestId}`;
-      console.log('endpoint', endpoint);
       await axios({
         url: endpoint,
         method: 'GET',

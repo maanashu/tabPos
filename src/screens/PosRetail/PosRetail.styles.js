@@ -984,6 +984,7 @@ export const styles = StyleSheet.create({
   listCountCon: {
     borderWidth: 1,
     width: SW(30),
+    height: SH(30),
     borderRadius: 3,
     borderColor: COLORS.solidGrey,
     // paddingVertical: verticalScale(1),

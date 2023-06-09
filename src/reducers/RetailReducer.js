@@ -20,8 +20,12 @@ const INITIALSTATE = {
 };
 
 export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
-  // console.log('payload', payload);
   switch (type) {
+    case TYPES.CLEAR_CHECK_STORE:
+      return {
+        ...state,
+        requestCheck: {},
+      };
     case TYPES.GET_CATEGORY_SUCCESS:
       return {
         ...state,

@@ -451,7 +451,7 @@ export function DeliveryOrder() {
 
       <View style={{ width: SW(60) }}>
         <Text style={[styles.nameText, { color: COLORS.primary }]}>
-          {item?.shipping ? item?.shipping : 'no delivery type'}
+          {item?.delivery_details?.title}
         </Text>
         <View style={styles.timeView}>
           <Image source={clock} style={styles.pinIcon} />
@@ -518,7 +518,7 @@ export function DeliveryOrder() {
 
       <View style={{ width: SW(60) }}>
         <Text style={[styles.nameText, { color: COLORS.primary }]}>
-          {item?.shipping}
+          {item?.delivery_details?.title}
         </Text>
         <View style={styles.timeView}>
           <Image source={clock} style={styles.pinIcon} />
@@ -1001,9 +1001,7 @@ export function DeliveryOrder() {
 
               <View style={{ width: SW(60) }}>
                 <Text style={[styles.nameText, { color: COLORS.primary }]}>
-                  {singleOrder?.shipping
-                    ? singleOrder?.shipping
-                    : 'no delivery type'}
+                  {singleOrder?.delivery_details?.title}
                 </Text>
                 <View style={styles.timeView}>
                   <Image source={clock} style={styles.pinIcon} />
@@ -1070,9 +1068,7 @@ export function DeliveryOrder() {
                       { color: COLORS.primary, fontFamily: Fonts.SemiBold },
                     ]}
                   >
-                    {singleOrder?.shipping
-                      ? singleOrder?.shipping
-                      : 'no delivery type'}
+                    {singleOrder?.delivery_details?.title}
                   </Text>
                   <Text style={styles.timeText}>
                     {strings.deliveryOrders.time}
@@ -1203,7 +1199,7 @@ export function DeliveryOrder() {
                       { color: COLORS.primary, fontFamily: Fonts.SemiBold },
                     ]}
                   >
-                    {itemss?.shipping ? itemss?.shipping : 'no delivery type'}
+                    {itemss?.delivery_details?.title}
                   </Text>
                   <Text style={styles.timeText}>
                     {strings.deliveryOrders.time}

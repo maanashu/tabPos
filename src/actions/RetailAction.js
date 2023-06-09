@@ -419,6 +419,11 @@ const requestCheckError = error => ({
   payload: { error },
 });
 
+const clearCheckStore = () => ({
+  type: TYPES.CLEAR_CHECK_STORE,
+  payload: null,
+});
+
 export const getCategory = sellerID => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -651,7 +656,6 @@ export const requestMoney = data => async dispatch => {
   dispatch(requestMoneyRequest());
   try {
     const res = await RetailController.requestMoney(data);
-    console.log('res', res?.payload);
     return dispatch(requestMoneySuccess(res?.payload));
   } catch (error) {
     dispatch(requestMoneyError(error.message));
@@ -710,6 +714,10 @@ export const requestCheck = data => async dispatch => {
   } catch (error) {
     dispatch(requestCheckError(error.message));
   }
+};
+
+export const clearCheck = () => async dispatch => {
+  dispatch(clearCheckStore());
 };
 
 export const retailclearstore = () => async dispatch => {
