@@ -499,7 +499,10 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler }) {
                           />
                           <View style={{ marginLeft: 10 }}>
                             <Text
-                              style={styles.blueListDataText}
+                              style={[
+                                styles.blueListDataText,
+                                { width: SW(80) },
+                              ]}
                               numberOfLines={1}
                             >
                               {data.product_details?.name}

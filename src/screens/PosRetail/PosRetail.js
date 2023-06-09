@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { ScreenWrapper, Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
@@ -212,36 +218,44 @@ export function PosRetail() {
       ) : null}
 
       <Modal animationType="fade" transparent={true} isVisible={addNotes}>
-        <View style={[styles.addNotesCon, styles.addNotesCon2]}>
-          <View
-            style={[
-              styles.addCartDetailConHeader,
-              styles.addCartDetailConHeader2,
-            ]}
-          >
-            <Text style={styles.jacketName}>Add Notes</Text>
-            <TouchableOpacity onPress={() => setAddNotes(false)}>
-              <Image source={crossButton} style={styles.crossBg} />
-            </TouchableOpacity>
-          </View>
-          <Spacer space={SH(15)} />
-          {/* <Text style={styles.addNotes}>Add notes</Text>
+        <KeyboardAvoidingView
+        // style={{ flex: 1 }}
+        // behavior={Platform.OS === 'ios' ? 'padding' : 100}
+        // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
+        >
+          <ScrollView>
+            <View style={[styles.addNotesCon, styles.addNotesCon2]}>
+              <View
+                style={[
+                  styles.addCartDetailConHeader,
+                  styles.addCartDetailConHeader2,
+                ]}
+              >
+                <Text style={styles.jacketName}>Add Notes</Text>
+                <TouchableOpacity onPress={() => setAddNotes(false)}>
+                  <Image source={crossButton} style={styles.crossBg} />
+                </TouchableOpacity>
+              </View>
+              <Spacer space={SH(15)} />
+              {/* <Text style={styles.addNotes}>Add notes</Text>
           <Spacer space={SH(6)} /> */}
-          <TextInput
-            style={styles.addNotesInput}
-            onChangeText={setNotes}
-            value={notes}
-            placeholder="Add Notes"
-            multiline={true}
-          />
-          <Spacer space={SH(15)} />
-          <TouchableOpacity
-            style={[styles.holdCartCon, styles.addNotesBtn]}
-            onPress={() => saveNotesHandler()}
-          >
-            <Text style={styles.holdCart}>Add Notes</Text>
-          </TouchableOpacity>
-        </View>
+              <TextInput
+                style={styles.addNotesInput}
+                onChangeText={setNotes}
+                value={notes}
+                placeholder="Add Notes"
+                multiline={true}
+              />
+              <Spacer space={SH(15)} />
+              <TouchableOpacity
+                style={[styles.holdCartCon, styles.addNotesBtn]}
+                onPress={() => saveNotesHandler()}
+              >
+                <Text style={styles.holdCart}>Add Notes</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </Modal>
     </ScreenWrapper>
   );

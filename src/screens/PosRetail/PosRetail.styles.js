@@ -476,17 +476,18 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: moderateScale(3),
   },
   addDiscountText: {
     color: COLORS.dark_grey,
-    fontSize: SF(13),
+    fontSize: SF(12),
     fontFamily: Fonts.MaisonRegular,
   },
   addDiscountPic: {
     width: SW(5),
     height: SW(5),
     resizeMode: 'contain',
-    paddingHorizontal: moderateScale(10),
+    paddingHorizontal: moderateScale(7),
   },
   totalItemCon: {
     borderTopWidth: 1,
@@ -967,7 +968,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
-    marginVertical: verticalScale(2),
+    marginVertical: verticalScale(4),
     // alignContent: 'center',
   },
   blueListDataText: {
@@ -1166,8 +1167,9 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     width: windowWidth * 0.35,
     height: windowHeight * 0.45,
-    position: 'absolute',
+    // position: 'absolute',
     alignSelf: 'center',
+    justifyContent: 'center',
     paddingHorizontal: moderateScale(13),
   },
   addNotesCon2: {
