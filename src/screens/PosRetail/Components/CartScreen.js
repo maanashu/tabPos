@@ -22,6 +22,7 @@ import {
   keyboard,
   location,
   minus,
+  notess,
   ok,
   pause,
   Phone_light,
@@ -54,7 +55,7 @@ import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 
-export function CartScreen({ onPressPayNow, crossHandler }) {
+export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
@@ -611,99 +612,107 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
               </TouchableOpacity>
             </View>
             <Spacer space={SH(10)} />
-            <View style={styles.nameAddCon}>
-              <View style={styles.sideBarInputWraper}>
-                <View style={styles.displayRow}>
-                  <View>
-                    <Image
-                      source={search_light}
-                      style={styles.sideSearchStyle}
+            <View>
+              <View style={styles.nameAddCon}>
+                <View style={styles.sideBarInputWraper}>
+                  <View style={styles.displayRow}>
+                    <View>
+                      <Image
+                        source={search_light}
+                        style={styles.sideSearchStyle}
+                      />
+                    </View>
+                    <TextInput
+                      placeholder="803-238-2630"
+                      style={styles.sideBarsearchInput}
+                      keyboardType="numeric"
+                      value={customerPhoneNo}
+                      onChangeText={customerPhoneNo => {
+                        setCustomerPhoneNo(customerPhoneNo);
+                        phoneNumberSearchFun(customerPhoneNo);
+                      }}
+                      placeholderTextColor={COLORS.solid_grey}
                     />
                   </View>
-                  <TextInput
-                    placeholder="803-238-2630"
-                    style={styles.sideBarsearchInput}
-                    keyboardType="numeric"
-                    value={customerPhoneNo}
-                    onChangeText={customerPhoneNo => {
-                      setCustomerPhoneNo(customerPhoneNo);
-                      phoneNumberSearchFun(customerPhoneNo);
-                    }}
-                    placeholderTextColor={COLORS.solid_grey}
+                </View>
+                {userDetalLoader ? (
+                  <View style={{ marginTop: 40, alignSelf: 'center' }}>
+                    <ActivityIndicator size="large" color={COLORS.indicator} />
+                  </View>
+                ) : (
+                  changeView()
+                )}
+              </View>
+              <Spacer space={SH(10)} />
+              <View
+                style={{
+                  borderWidth: 1,
+                  //   borderStyle: 'dashed',
+                  borderColor: COLORS.solidGrey,
+                }}
+              />
+              <Spacer space={SH(10)} />
+              <View style={styles.displayflex}>
+                <View style={styles.addDiscountCon}>
+                  <Image
+                    source={addDiscountPic}
+                    style={styles.addDiscountPic}
                   />
+                  <Text style={styles.addDiscountText}>Add Discount</Text>
                 </View>
+                <TouchableOpacity
+                  style={styles.addDiscountCon}
+                  onPress={addNotesHandler}
+                >
+                  <Image source={notess} style={styles.addDiscountPic} />
+                  <Text style={styles.addDiscountText}>Add Notes</Text>
+                </TouchableOpacity>
               </View>
-              {userDetalLoader ? (
-                <View style={{ marginTop: 40, alignSelf: 'center' }}>
-                  <ActivityIndicator size="large" color={COLORS.indicator} />
-                </View>
-              ) : (
-                changeView()
-              )}
-            </View>
-            <Spacer space={SH(10)} />
-            <View
-              style={{
-                borderWidth: 1,
-                //   borderStyle: 'dashed',
-                borderColor: COLORS.solidGrey,
-              }}
-            />
-            <Spacer space={SH(10)} />
-            <View style={styles.displayflex}>
-              <View style={styles.addDiscountCon}>
-                <Image source={addDiscountPic} style={styles.addDiscountPic} />
-                <Text style={styles.addDiscountText}>Add Discount</Text>
+              <Spacer space={SH(10)} />
+              <View style={styles.totalItemCon}>
+                <Text style={styles.totalItem}>
+                  {strings.dashboard.totalItem}{' '}
+                  {cartData?.poscart_products?.length}
+                </Text>
               </View>
-              <View style={styles.addDiscountCon}>
-                <Image source={addDiscountPic} style={styles.addDiscountPic} />
-                <Text style={styles.addDiscountText}>Add Notes</Text>
+              <Spacer space={SH(5)} />
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Sub Total</Text>
+                <Text style={styles.subTotalDollar}>
+                  ${cartData?.amount?.products_price ?? '0.00'}
+                </Text>
               </View>
-            </View>
-            <Spacer space={SH(10)} />
-            <View style={styles.totalItemCon}>
-              <Text style={styles.totalItem}>
-                {strings.dashboard.totalItem}{' '}
-                {cartData?.poscart_products?.length}
-              </Text>
-            </View>
-            <Spacer space={SH(5)} />
-            <View style={[styles.displayflex2, styles.paddVertical]}>
-              <Text style={styles.subTotal}>Sub Total</Text>
-              <Text style={styles.subTotalDollar}>
-                ${cartData?.amount?.products_price ?? '0.00'}
-              </Text>
-            </View>
-            <View style={[styles.displayflex2, styles.paddVertical]}>
-              <Text style={styles.subTotal}>Total VAT</Text>
-              <Text style={styles.subTotalDollar}>$0.00</Text>
-            </View>
-            <View style={[styles.displayflex2, styles.paddVertical]}>
-              <Text style={styles.subTotal}>Total Taxes</Text>
-              <Text style={styles.subTotalDollar}>
-                {' '}
-                ${cartData?.amount?.tax ?? '0.00'}
-              </Text>
-            </View>
-            <View style={[styles.displayflex2, styles.paddVertical]}>
-              <Text style={styles.subTotal}>Discount</Text>
-              <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                ${cartData?.amount?.discount ?? '0.00'}
-              </Text>
-            </View>
-            <View
-              style={{
-                borderWidth: 1,
-                borderStyle: 'dashed',
-                borderColor: COLORS.solidGrey,
-              }}
-            />
-            <Spacer space={SH(5)} />
-            <View style={[styles.displayflex2, styles.paddVertical]}>
-              <Text style={styles.itemValue}>Item value</Text>
-              <Text style={[styles.subTotalDollar, styles.itemValueBold]}>
-                ${cartData?.amount?.total_amount ?? '0.00'}
-              </Text>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Total VAT</Text>
+                <Text style={styles.subTotalDollar}>$0.00</Text>
+              </View>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Total Taxes</Text>
+                <Text style={styles.subTotalDollar}>
+                  {' '}
+                  ${cartData?.amount?.tax ?? '0.00'}
+                </Text>
+              </View>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.subTotal}>Discount</Text>
+                <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
+                  ${cartData?.amount?.discount ?? '0.00'}
+                </Text>
+              </View>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderStyle: 'dashed',
+                  borderColor: COLORS.solidGrey,
+                }}
+              />
+              <Spacer space={SH(5)} />
+              <View style={[styles.displayflex2, styles.paddVertical]}>
+                <Text style={styles.itemValue}>Item value</Text>
+                <Text style={[styles.subTotalDollar, styles.itemValueBold]}>
+                  ${cartData?.amount?.total_amount ?? '0.00'}
+                </Text>
+              </View>
             </View>
             <View style={{ flex: 1 }} />
             {getuserDetailByNo?.length === 0 || !okk ? (

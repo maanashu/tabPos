@@ -56,6 +56,7 @@ export function MainScreen({
   productArray,
   categoryArray,
   sellerID,
+  addNotesHandler,
 }) {
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
@@ -617,10 +618,13 @@ export function MainScreen({
                 <Image source={addDiscountPic} style={styles.addDiscountPic} />
                 <Text style={styles.addDiscountText}>Add Discount</Text>
               </View>
-              <View style={styles.addDiscountCon}>
+              <TouchableOpacity
+                style={styles.addDiscountCon}
+                onPress={addNotesHandler}
+              >
                 <Image source={notess} style={styles.addDiscountPic} />
                 <Text style={styles.addDiscountText}>Add Notes</Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <Spacer space={SH(10)} />
             <View style={styles.totalItemCon}>

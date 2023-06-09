@@ -292,21 +292,14 @@ export class RetailController {
       };
       HttpClient.put(endpoint, body)
         .then(response => {
-          if (response?.status_code === 200) {
-            Toast.show({
-              type: 'success_toast',
-              text2: strings.successMessages.loginSuccess,
-              position: 'bottom',
-              visibilityTime: 1500,
-            });
-            resolve(response);
-          } else {
+          if (response?.msg === 'PosCart updated!') {
             Toast.show({
               text2: 'Notes add succesfully',
               position: 'bottom',
               type: 'success_toast',
               visibilityTime: 1500,
             });
+            resolve(response);
           }
         })
         .catch(error => {

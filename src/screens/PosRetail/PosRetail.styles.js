@@ -386,6 +386,10 @@ export const styles = StyleSheet.create({
   dark_greyBg: {
     backgroundColor: COLORS.dark_grey,
   },
+  addNotesBtn: {
+    backgroundColor: COLORS.primary,
+    alignSelf: 'flex-end',
+  },
   nameAddCon: {
     borderWidth: 1,
     height:
@@ -731,6 +735,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: SH(70),
+  },
+  addCartDetailConHeader2: {
+    height: SH(55),
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
   },
   addCartDetailCon: {
     backgroundColor: 'white',
@@ -1151,5 +1160,31 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  addNotesCon: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    width: windowWidth * 0.35,
+    height: windowHeight * 0.45,
+    position: 'absolute',
+    alignSelf: 'center',
+    paddingHorizontal: moderateScale(13),
+  },
+  addNotesCon2: {
+    paddingHorizontal: moderateScale(8),
+  },
+  addNotesInput: {
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 5,
+    height: windowHeight * 0.27,
+    textAlignVertical: 'top',
+    borderColor: COLORS.solidGrey,
+    borderWidth: 1,
+    paddingHorizontal: moderateScale(10),
+  },
+  addNotes: {
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Medium,
   },
 });

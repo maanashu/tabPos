@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { ScreenWrapper } from '@/components';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { ScreenWrapper, Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import {
@@ -17,33 +17,65 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
+import Modal from 'react-native-modal';
 import {
+  addNotescart,
   getAllCart,
   getCategory,
   getProductDefault,
 } from '@/actions/RetailAction';
 import { useIsFocused } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native';
-import { COLORS } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
+import { crossButton } from '@/assets';
+import { Image } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
+import { strings } from '@/localization';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export function PosRetail() {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+  const cartID2 = getRetailData?.getAllCart?.id;
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  console.log('sellerID', sellerID);
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
 
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   const [tipAmount, setTipAmount] = useState(0.0);
+  const [addNotes, setAddNotes] = useState(false);
+  const [notes, setNotes] = useState('');
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
 
   const isFocus = useIsFocused();
+
+  const addNotesHandler = () => {
+    setAddNotes(true);
+  };
+
+  const saveNotesHandler = () => {
+    if (!notes) {
+      Toast.show({
+        text2: strings.posSale.pleaseAddNotes,
+        position: 'top',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      const data = {
+        cartId: cartID2,
+        notes: notes,
+      };
+      dispatch(addNotescart(data));
+      setNotes('');
+      setAddNotes(false);
+    }
+  };
 
   useEffect(() => {
     dispatch(getProductDefault(sellerID));
@@ -62,6 +94,7 @@ export function PosRetail() {
         TYPES.GET_CLEAR_ONE_CART,
         TYPES.REQUEST_MONEY,
         TYPES.CREATE_ORDER,
+        TYPES.ADDNOTES,
       ],
       state
     )
@@ -75,6 +108,7 @@ export function PosRetail() {
         productArray={defaultArrayproduct}
         categoryArray={categoryArray}
         sellerID={sellerID}
+        addNotesHandler={addNotesHandler}
       />
     ),
     ['CartScreen']: (
@@ -83,6 +117,7 @@ export function PosRetail() {
         onPressPayNow={() => {
           setselectedScreen('CartAmountTips');
         }}
+        addNotesHandler={addNotesHandler}
       />
     ),
     ['CartAmountTips']: (
@@ -175,6 +210,39 @@ export function PosRetail() {
           />
         </View>
       ) : null}
+
+      <Modal animationType="fade" transparent={true} isVisible={addNotes}>
+        <View style={[styles.addNotesCon, styles.addNotesCon2]}>
+          <View
+            style={[
+              styles.addCartDetailConHeader,
+              styles.addCartDetailConHeader2,
+            ]}
+          >
+            <Text style={styles.jacketName}>Add Notes</Text>
+            <TouchableOpacity onPress={() => setAddNotes(false)}>
+              <Image source={crossButton} style={styles.crossBg} />
+            </TouchableOpacity>
+          </View>
+          <Spacer space={SH(15)} />
+          {/* <Text style={styles.addNotes}>Add notes</Text>
+          <Spacer space={SH(6)} /> */}
+          <TextInput
+            style={styles.addNotesInput}
+            onChangeText={setNotes}
+            value={notes}
+            placeholder="Add Notes"
+            multiline={true}
+          />
+          <Spacer space={SH(15)} />
+          <TouchableOpacity
+            style={[styles.holdCartCon, styles.addNotesBtn]}
+            onPress={() => saveNotesHandler()}
+          >
+            <Text style={styles.holdCart}>Add Notes</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </ScreenWrapper>
   );
 }

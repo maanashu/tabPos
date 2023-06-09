@@ -17,3 +17,4 @@ export { CustomHeader } from '@/screens/PosRetail/Components/CustomHeader';
 export { CartScreen } from '@/screens/PosRetail/Components/CartScreen';
 export { AddCartModal } from '@/screens/PosRetail/Components/AddCartModal';
 export { AddCartDetailModal } from '@/screens/PosRetail/Components/AddCartDetailModal';
+export { SideCartDet } from '@/screens/PosRetail/Components/SideCartDet';
