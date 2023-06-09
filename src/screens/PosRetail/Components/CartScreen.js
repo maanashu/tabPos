@@ -209,7 +209,10 @@ export function CartScreen({ onPressPayNow, crossHandler }) {
           <View style={styles.nameAddSingleCon}>
             <View style={styles.displayRow}>
               <Image source={location} style={styles.Phonelight} />
-              <Text style={styles.terryText} numberOfLines={1}>
+              <Text
+                style={[styles.terryText, { width: SW(70) }]}
+                numberOfLines={1}
+              >
                 {getuserDetailByNo?.[0]?.city},{getuserDetailByNo?.[0]?.address}
                 ,{getuserDetailByNo?.[0]?.state} {getuserDetailByNo?.[0]?.zip}
               </Text>

@@ -64,7 +64,6 @@ export function MainScreen({
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
-  console.log('productArray', productArray?.length);
 
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
