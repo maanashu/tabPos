@@ -412,10 +412,11 @@ export function MainScreen({
     );
   };
 
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  const Item = ({ item }) => (
     <TouchableOpacity
       style={styles.productCon}
       onPress={() => productFun(item.id)}
+      activeOpacity={0.7}
     >
       <Image source={{ uri: item.image }} style={styles.categoryshoes} />
       <Spacer space={SH(10)} />
@@ -459,7 +460,7 @@ export function MainScreen({
               <Text style={styles.allProduct}>
                 All Products{' '}
                 <Text style={styles.allProductCount}>
-                  ({productArray?.length})
+                  ({productArray?.length ?? '0'})
                 </Text>
               </Text>
               <View style={styles.barcodeInputWraper}>

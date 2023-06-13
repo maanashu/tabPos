@@ -1189,4 +1189,20 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontFamily: Fonts.Medium,
   },
+  backProScreen: {
+    backgroundColor: COLORS.washGrey,
+    width: SW(65),
+    borderRadius: 5,
+    height: SH(45),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  arrowStyle: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+    tintColor: COLORS.solid_grey,
+    transform: [{ rotate: '180deg' }],
+  },
 });

@@ -714,5 +714,13 @@ export const en = {
     subCategories: 'Sub Categories',
     brand: 'Brands',
     payNow: 'Pay Now ',
+    backProdscreen: 'Back to Product Screen',
+  },
+  Staff: {
+    Staff: 'Staff',
+    staffList: 'Staff List',
+    staffDes:
+      "Active in the markets they've been added to and visible to customers.",
+    addStaff: 'Add Staff',
   },
 };

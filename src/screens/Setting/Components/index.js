@@ -11,3 +11,4 @@ export { Shipping } from '@/screens/Setting/Components/Shipping';
 export { Languages } from '@/screens/Setting/Components/Languages';
 export { Legal } from '@/screens/Setting/Components/Legal';
 export { Policies } from '@/screens/Setting/Components/Policies';
+export { Staff } from '@/screens/Setting/Components/Staff';

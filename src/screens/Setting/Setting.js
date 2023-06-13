@@ -19,6 +19,7 @@ import {
   Languages,
   Legal,
   Policies,
+  Staff,
 } from '@/screens/Setting/Components';
 
 export function Setting() {
@@ -43,11 +44,7 @@ export function Setting() {
     [7]: <Taxes />,
     [8]: <Wallet />,
     [9]: <Shipping />,
-    [10]: (
-      <View>
-        <Text>Staffs</Text>
-      </View>
-    ),
+    [10]: <Staff />,
     [11]: <Languages />,
     [12]: <Legal />,
     [13]: <Policies />,

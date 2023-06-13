@@ -23,6 +23,7 @@ import {
   cloth,
   onlineMan,
   clay,
+  staffIcon,
 } from '@/assets';
 import { COLORS } from '@/theme';
 
@@ -699,7 +700,7 @@ export const settingLabelData = [
     id: 10,
     name: 'Staffs',
     subhead: '3',
-    image: shipping,
+    image: staffIcon,
   },
   {
     id: 11,

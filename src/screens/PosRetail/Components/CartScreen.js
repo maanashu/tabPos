@@ -27,6 +27,7 @@ import {
   pause,
   Phone_light,
   plus,
+  rightBack,
   search_light,
   terryProfile,
 } from '@/assets';
@@ -431,9 +432,18 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler }) {
           <View style={styles.itemLIistCon}>
             <Spacer space={SH(3)} />
             <View style={styles.displayflex}>
-              <Text style={styles.allProduct}>
-                All Products <Text style={styles.allProductCount}>(1280)</Text>
-              </Text>
+              <TouchableOpacity
+                style={styles.backProScreen}
+                onPress={() => {
+                  crossHandler();
+                  dispatch(getUserDetailSuccess([]));
+                }}
+              >
+                <Image source={rightBack} style={styles.arrowStyle} />
+                <Text style={[styles.holdCart, { color: COLORS.dark_grey }]}>
+                  {strings.posRetail.backProdscreen}
+                </Text>
+              </TouchableOpacity>
               <View style={styles.barcodeInputWraper}>
                 <View style={styles.displayRow}>
                   <View>
