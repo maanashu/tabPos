@@ -3,25 +3,32 @@ import { Config } from 'react-native-config';
 import { strings } from '@/localization';
 import { store } from '@/store';
 import * as RNLocalize from 'react-native-localize';
+import { API_URLS_USING_POS_USER_ACCESS_TOKEN } from '@/utils/APIinventory';
 
 const getTimeZone = RNLocalize.getTimeZone();
-const client = axios.create({
-  // baseURL: Config.API_BASE_URL,
-  // headers: {
-  //   'Content-Type': 'application/json',
-  // },
-});
+
+const client = axios.create({});
+
 client.interceptors.request.use(function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
-  console.log('register', register);
   const user = store.getState().user?.posLoginData?.token;
-  // console.log('user, user', user);
-  const token = user || register || null;
+
+  /**
+   * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
+   * @returns Token for api call
+   */
+  const getToken = () => {
+    if (API_URLS_USING_POS_USER_ACCESS_TOKEN.includes(config.url)) {
+      return user;
+    } else {
+      return register;
+    }
+  };
 
   config.headers = {
     ...config.headers,
     timezone: getTimeZone,
-    Authorization: token,
+    Authorization: getToken(),
     'app-name': 'pos',
   };
 

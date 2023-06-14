@@ -85,3 +85,10 @@ export const ApiRewards = {
   getRewardedUsers: `rewards/pos/rewarded-people`,
   getRewardUser: 'rewards/pos/users/statistics',
 };
+
+// Add URLS which is required to send POS USER token
+export const API_URLS_USING_POS_USER_ACCESS_TOKEN = [
+  USER_URL + ApiUserInventory.getSessionHistory,
+  USER_URL + ApiUserInventory.getDrawerSession,
+  USER_URL + ApiUserInventory.trackSessionSave,
+];
