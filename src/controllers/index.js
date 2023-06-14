@@ -9,3 +9,4 @@ export { WalletController } from '@/controllers/WalletController';
 export { CashTrackingController } from '@/controllers/CashTrackingController';
 export { AppointmentController } from '@/controllers/AppointmentController';
 export { DashboardController } from '@/controllers/DashboardController';
+export { SettingController } from '@/controllers/SettingController';

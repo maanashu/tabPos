@@ -22,6 +22,7 @@ export const ApiUserInventory = {
   getPosUsers: 'users/merchant/pos-user',
   loginPosuser: 'users/merchant/pos-user/login',
   posLoginDetail: 'users/pos/login-details',
+  getSetting: 'user_settings',
 };
 
 export const ApiProductInventory = {

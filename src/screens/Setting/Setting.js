@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScreenWrapper } from '@/components';
 import { COLORS, SF, SH } from '@/theme';
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
@@ -21,8 +21,11 @@ import {
   Policies,
   Staff,
 } from '@/screens/Setting/Components';
+import { getSetting } from '@/actions/SettingAction';
+import { useDispatch } from 'react-redux';
 
 export function Setting() {
+  const dispatch = useDispatch();
   const [selectedId, setSelectedId] = useState(1);
   const [security, setSecurity] = useState(false);
   const [device, setDevice] = useState(false);
@@ -33,6 +36,10 @@ export function Setting() {
       setDevice(true), setSecurity(false);
     }
   };
+
+  useEffect(() => {
+    dispatch(getSetting());
+  }, []);
 
   const renderView = {
     [1]: <Security />,
