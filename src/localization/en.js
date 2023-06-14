@@ -626,12 +626,12 @@ export const en = {
   wallet: {
     config: 'Wallet Config',
     payJBR: 'Pay by JBR Coin',
-    system: 'System:Online Shop, POS',
+    system: 'System: Online Shop, POS',
     dafaultPayment: 'Dafault Payment',
     shopifyPayments:
       'You need to proivde some additional information about your business to start receiving payouts from Shopify Payments',
     payCash: 'Pay by Cash',
-    systemPOS: 'System:POS',
+    systemPOS: 'System: POS',
     sila: 'Sila',
     setupSila: 'Setup Sila',
     cards: 'Cards,Bank tranfer and all',

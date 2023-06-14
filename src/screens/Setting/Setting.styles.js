@@ -1200,4 +1200,31 @@ export const styles = StyleSheet.create({
     borderLeftWidth: 3,
     borderColor: COLORS.primary,
   },
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  vectorIconCon: {
+    width: SW(12),
+    height: SW(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  walletConfigMain: {
+    // borderWidth: 1,
+    paddingHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(10),
+    borderRadius: 10,
+    ...ShadowStyles.shadow2,
+    backgroundColor: COLORS.white,
+  },
+  systemPos: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+  },
 });

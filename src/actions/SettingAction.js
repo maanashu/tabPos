@@ -18,13 +18,37 @@ const getShippingServiceReset = () => ({
   payload: null,
 });
 
-export const getSetting = () => async dispatch => {
+const upadteApiRequest = () => ({
+  type: TYPES.UPDATE_API_REQUEST,
+  payload: null,
+});
+const upadteApiSuccess = getSetting => ({
+  type: TYPES.UPDATE_API_SUCCESS,
+  payload: { getSetting },
+});
+const upadteApiError = error => ({
+  type: TYPES.UPDATE_API_ERROR,
+  payload: { error },
+});
+
+export const getSettings = () => async dispatch => {
   dispatch(getSettingRequest());
   try {
     const res = await SettingController.getSetting();
-    console.log('res', res);
-    dispatch(getSettingSuccess(res));
+    dispatch(getSettingSuccess(res?.payload));
+    console.log('getSettingsres?.payload', res?.payload);
   } catch (error) {
     dispatch(getSettingError(error.message));
+  }
+};
+
+export const upadteApi = data => async dispatch => {
+  dispatch(upadteApiRequest());
+  try {
+    const res = await SettingController.upadteApi(data);
+    dispatch(upadteApiSuccess(res));
+    dispatch(getSettings());
+  } catch (error) {
+    dispatch(upadteApiError(error.message));
   }
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -14,12 +14,39 @@ import {
   securityLogo,
   teamMember,
   toggleSecurity,
+  vector,
+  vectorOff,
 } from '@/assets';
+import { getSetting } from '@/selectors/SettingSelector';
+import { useDispatch, useSelector } from 'react-redux';
+import { upadteApi } from '@/actions/SettingAction';
 
 export function Security() {
+  const dispatch = useDispatch();
+  const getSettingData = useSelector(getSetting);
+  const googleAuthenticator =
+    getSettingData?.getSetting?.google_authenticator_status;
   const [twoStepModal, setTwoStepModal] = useState(false);
   const [googleAuthStart, setGoogleAuthStart] = useState(false);
   const [googleAuthScan, setGoogleAuthScan] = useState(false);
+
+  const [googleAuthicator, setGoogleAuthicator] = useState(googleAuthenticator);
+
+  const googleAuthHandler = () => {
+    const data = {
+      google_authenticator_status: googleAuthicator ? false : true,
+      app_name: 'pos',
+    };
+    dispatch(upadteApi(data));
+  };
+
+  useEffect(() => {
+    if (getSettingData?.getSetting) {
+      setGoogleAuthicator(
+        getSettingData?.getSetting?.google_authenticator_status
+      );
+    }
+  }, [getSettingData?.getSetting]);
 
   return (
     <View>
@@ -58,10 +85,15 @@ export function Security() {
                       </Text>
                     </View>
                   </View>
-                  <Image
-                    source={toggleSecurity}
-                    style={styles.toggleSecurity}
-                  />
+                  <TouchableOpacity
+                    style={styles.vectorIconCon}
+                    onPress={googleAuthHandler}
+                  >
+                    <Image
+                      source={googleAuthicator ? vector : vectorOff}
+                      style={styles.toggleSecurity}
+                    />
+                  </TouchableOpacity>
                 </View>
               </TouchableOpacity>
             </View>

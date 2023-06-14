@@ -225,6 +225,8 @@ export { default as ellipse } from '@/assets/icons/ic_setting/Ellipse.png';
 export { default as staffIcon } from '@/assets/icons/ic_setting/staffIcon.png';
 export { default as staffImage } from '@/assets/icons/ic_setting/staffImage.png';
 export { default as shieldPerson } from '@/assets/icons/ic_setting/shieldPerson.png';
+export { default as walletConfigCash } from '@/assets/icons/ic_setting/walletConfigCash.png';
+export { default as walletConfigCard } from '@/assets/icons/ic_setting/walletConfigCard.png';
 
 export { default as cross } from '@/assets/ic_auth/cross_white.png';
 export { default as deleteBack } from '@/assets/ic_auth/delete_back.png';

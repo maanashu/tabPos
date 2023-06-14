@@ -21,11 +21,16 @@ import {
   Policies,
   Staff,
 } from '@/screens/Setting/Components';
-import { getSetting } from '@/actions/SettingAction';
-import { useDispatch } from 'react-redux';
+import { getSettings } from '@/actions/SettingAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSetting } from '@/selectors/SettingSelector';
+import { ActivityIndicator } from 'react-native';
+import { TYPES } from '@/Types/SettingTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function Setting() {
   const dispatch = useDispatch();
+  const getSettingData = useSelector(getSetting);
   const [selectedId, setSelectedId] = useState(1);
   const [security, setSecurity] = useState(false);
   const [device, setDevice] = useState(false);
@@ -38,8 +43,11 @@ export function Setting() {
   };
 
   useEffect(() => {
-    dispatch(getSetting());
+    dispatch(getSettings());
   }, []);
+  const isLoad = useSelector(state =>
+    isLoadingSelector([TYPES.UPDATE_API, TYPES.GET_SETTING], state)
+  );
 
   const renderView = {
     [1]: <Security />,
@@ -174,6 +182,15 @@ export function Setting() {
           <View style={styles.DataCon}>{bodyView()}</View>
         </View>
       </View>
+      {isLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
     </ScreenWrapper>
   );
 }
