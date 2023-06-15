@@ -16,7 +16,7 @@ export class SettingController {
       console.log('endpoint1111111111111111', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
-          console.log(';response', error);
+          console.log(';response', response);
           resolve(response);
         })
         .catch(error => {
