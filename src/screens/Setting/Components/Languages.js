@@ -8,14 +8,31 @@ import Modal from 'react-native-modal';
 import { COUNTRYNAME } from '@/constants/flatListData';
 import {
   addFrame,
+  addIcon,
   frame,
   frameBox,
   languImage,
+  locationIcon,
   spain,
   vector,
   vectorOff,
   XImage,
 } from '@/assets';
+
+const addLanguage = [
+  {
+    id: 1,
+    langauge: 'Spanish',
+    image:
+      'https://png.pngtree.com/png-vector/20210710/ourmid/pngtree-india-flags-png-image_3580807.jpg',
+  },
+  {
+    id: 2,
+    langauge: 'Portuguese ',
+    image:
+      'https://png.pngtree.com/png-vector/20210710/ourmid/pngtree-india-flags-png-image_3580807.jpg',
+  },
+];
 
 export function Languages() {
   const [ShowModal, setShowModal] = useState(false);
@@ -49,12 +66,51 @@ export function Languages() {
     );
   };
 
+  const languageRenderItem = ({ item }) => (
+    <View style={styles.twoStepMemberCon}>
+      <View style={styles.flexRow}>
+        <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
+          <View style={styles.flagCon}>
+            <Image
+              source={{ uri: item.image }}
+              style={[styles.toggleSecurity, { margin: 3 }]}
+            />
+          </View>
+
+          <View style={styles.twoStepVerifiCon}>
+            <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+              {item.langauge}
+            </Text>
+            <Text
+              style={[styles.securitysubhead, { fontSize: SF(12) }]}
+              numberOfLines={1}
+            >
+              Deafult
+            </Text>
+          </View>
+          <TouchableOpacity>
+            <Image source={vectorOff} style={styles.toggleSecurity} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+
   return (
     <View>
       <View style={[styles.flexRow, { height: SW(8) }]}>
         <Text style={styles.HeaderLabelText}>
           {strings.Languages.languages}
         </Text>
+        <View style={{ zIndex: 99 }}>
+          <TouchableOpacity
+            style={styles.addNewButtonCon}
+            onPress={() => setShowModal(true)}
+          >
+            <Image source={addIcon} style={styles.addIcon} />
+            <Text style={styles.addNew}>{strings.settings.addlanguage}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <Spacer space={SH(20)} />
       <View style={styles.securityMainCon}>
@@ -69,47 +125,12 @@ export function Languages() {
               {strings.Languages.active}
             </Text>
             <Spacer space={SH(18)} />
-            <View style={styles.twoStepMemberCon}>
-              <View style={styles.flexRow}>
-                <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-                  <Image source={frame} style={styles.securityLogo} />
-
-                  <View style={styles.twoStepVerifiCon}>
-                    <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-                      {strings.Languages.englishUSE}
-                    </Text>
-                    <Spacer space={SH(10)} />
-                    <Text
-                      style={[styles.securitysubhead, { fontSize: SF(12) }]}
-                    >
-                      {strings.Languages.default}
-                    </Text>
-                  </View>
-                  <TouchableOpacity onPress={() => setShowModal(true)}>
-                    <Image source={vector} style={styles.toggleSecurity} />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-            <View style={styles.twoStepMemberCon}>
-              <View style={styles.flexRow}>
-                <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-                  <Image source={addFrame} style={styles.securityLogo} />
-                  <View style={styles.twoStepVerifiCon}>
-                    <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-                      {strings.Languages.englishUK}
-                    </Text>
-                    <Spacer space={SH(10)} />
-                    <Text
-                      style={[styles.securitysubhead, { fontSize: SF(12) }]}
-                    >
-                      {strings.Languages.default}
-                    </Text>
-                  </View>
-                  <Image source={vectorOff} style={styles.toggleSecurity} />
-                </View>
-              </View>
-            </View>
+            <FlatList
+              data={addLanguage}
+              extraData={addLanguage}
+              renderItem={languageRenderItem}
+              keyExtractor={item => item.id}
+            />
           </View>
         </View>
       </View>
@@ -117,7 +138,7 @@ export function Languages() {
       <Modal animationType="slide" transparent={true} isVisible={ShowModal}>
         <View style={styles.container1}>
           <View style={styles.modalViewStyle}>
-            <Text style={styles.addLanguage}>
+            <Text style={[styles.twoStepText, { fontSize: SF(22) }]}>
               {strings.Languages.addLanguage}
             </Text>
             <TouchableOpacity onPress={() => setShowModal(false)}>
@@ -131,15 +152,18 @@ export function Languages() {
             </Text>
             <Spacer space={SH(15)} />
 
-            <FlatList
-              data={COUNTRYNAME}
-              renderItem={renderItem}
-              keyExtractor={item => item.id}
-              extraData={COUNTRYNAME}
-            />
-
-            <Spacer space={SH(60)} />
-            <View style={{ flexDirection: 'row' }}>
+            <View style={styles.countrySelectCon}>
+              <FlatList
+                data={COUNTRYNAME}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                extraData={COUNTRYNAME}
+              />
+            </View>
+            <Spacer space={SH(30)} />
+            <View
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+            >
               <Button
                 title={strings.Languages.cancel}
                 textStyle={styles.cancel}
@@ -147,8 +171,8 @@ export function Languages() {
               />
               <Button
                 title={strings.Languages.add}
-                textStyle={styles.selectedText}
-                style={[styles.submitButtons, { height: SH(35) }]}
+                textStyle={[styles.cancel, { color: COLORS.white }]}
+                style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
               />
             </View>
           </View>

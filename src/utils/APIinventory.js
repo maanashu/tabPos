@@ -24,6 +24,7 @@ export const ApiUserInventory = {
   posLoginDetail: 'users/pos/login-details',
   getSetting: 'user_settings',
   getShippingPickup: 'seller_addresses',
+  getUserAddress: 'user_locations/user',
 };
 
 export const ApiProductInventory = {

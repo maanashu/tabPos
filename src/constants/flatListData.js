@@ -1062,6 +1062,8 @@ export const COUNTRYNAME = [
   { id: 1, name: 'Spanish' },
   { id: 2, name: 'Portuguese ' },
   { id: 3, name: 'Arabic' },
+  { id: 4, name: 'Arabic' },
+  { id: 5, name: 'Arabic' },
 ];
 
 export const LEGALDATA = [

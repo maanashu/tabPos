@@ -3,6 +3,7 @@ import { TYPES } from '@/Types/SettingTypes';
 const INITIALSTATE = {
   getSetting: {},
   getShippingPickup: [],
+  getUserAddress: [],
 };
 
 export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -18,6 +19,16 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
         getShippingPickup: payload.getShippingPickup,
       };
 
+    case TYPES.GET_USER_ADD_SUCCESS:
+      return {
+        ...state,
+        getUserAddress: payload.getUserAddress,
+      };
+    case TYPES.GET_USER_ADD_RESET:
+      return {
+        ...state,
+        getUserAddress: [],
+      };
     default:
       return state;
   }

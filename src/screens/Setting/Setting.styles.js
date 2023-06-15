@@ -143,6 +143,11 @@ export const styles = StyleSheet.create({
     height: SW(8),
     resizeMode: 'contain',
   },
+  toggleSecurityLarge: {
+    width: SW(11),
+    height: SW(11),
+    resizeMode: 'contain',
+  },
   marginLeft: {
     marginLeft: moderateScale(8),
   },
@@ -275,13 +280,14 @@ export const styles = StyleSheet.create({
   // setting device css start
   addNewButtonCon: {
     backgroundColor: COLORS.primary,
-    width: SW(38),
+    // width: SW(38),
     height: SW(10),
     borderRadius: 6,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 999,
+    paddingHorizontal: moderateScale(5),
   },
   addIcon: {
     width: SW(6),
@@ -578,15 +584,15 @@ export const styles = StyleSheet.create({
   countryNameCon: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    height: SW(17),
+    height: SW(14),
     borderRadius: 5,
     paddingLeft: moderateScale(10),
     justifyContent: 'center',
     marginBottom: 5,
   },
   blankCircle: {
-    width: SW(7),
-    height: SW(7),
+    width: SW(8),
+    height: SW(8),
     resizeMode: 'contain',
   },
   blankSquare: {
@@ -849,6 +855,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 15,
     width: windowWidth * 0.45,
+    height: windowHeight * 0.6,
     alignSelf: 'center',
     position: 'absolute',
   },
@@ -856,7 +863,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#F5F6F7',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: SW(8),
+    padding: SW(6),
     borderTopEndRadius: SW(8),
     borderTopStartRadius: SW(8),
   },
@@ -1229,5 +1236,13 @@ export const styles = StyleSheet.create({
   },
   shippingBodyCon: {
     height: windowHeight * 0.83,
+  },
+  flagCon: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+  },
+  countrySelectCon: {
+    height: windowHeight * 0.3,
   },
 });
