@@ -23,6 +23,7 @@ export const ApiUserInventory = {
   loginPosuser: 'users/merchant/pos-user/login',
   posLoginDetail: 'users/pos/login-details',
   getSetting: 'user_settings',
+  getShippingPickup: 'seller_addresses',
 };
 
 export const ApiProductInventory = {

@@ -21,15 +21,17 @@ import {
   Policies,
   Staff,
 } from '@/screens/Setting/Components';
-import { getSettings } from '@/actions/SettingAction';
+import { getSettings, getShippingPickup } from '@/actions/SettingAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
 import { ActivityIndicator } from 'react-native';
 import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { useIsFocused } from '@react-navigation/native';
 
 export function Setting() {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
   const getSettingData = useSelector(getSetting);
   const [selectedId, setSelectedId] = useState(1);
   const [security, setSecurity] = useState(false);
@@ -43,8 +45,11 @@ export function Setting() {
   };
 
   useEffect(() => {
-    dispatch(getSettings());
-  }, []);
+    if (isFocused) {
+      dispatch(getSettings());
+      // dispatch(getShippingPickup());
+    }
+  }, [isFocused]);
   const isLoad = useSelector(state =>
     isLoadingSelector([TYPES.UPDATE_API, TYPES.GET_SETTING], state)
   );

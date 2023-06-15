@@ -2,6 +2,7 @@ import { TYPES } from '@/Types/SettingTypes';
 
 const INITIALSTATE = {
   getSetting: {},
+  getShippingPickup: [],
 };
 
 export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -10,6 +11,11 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         getSetting: payload.getSetting,
+      };
+    case TYPES.GET_SHIPPICK_SUCCESS:
+      return {
+        ...state,
+        getShippingPickup: payload.getShippingPickup,
       };
 
     default:

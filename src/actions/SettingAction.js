@@ -31,6 +31,19 @@ const upadteApiError = error => ({
   payload: { error },
 });
 
+const getShippingPickupRequest = () => ({
+  type: TYPES.GET_SHIPPICK_REQUEST,
+  payload: null,
+});
+const getShippingPickupSuccess = getShippingPickup => ({
+  type: TYPES.GET_SHIPPICK_SUCCESS,
+  payload: { getShippingPickup },
+});
+const getShippingPickupError = error => ({
+  type: TYPES.GET_SHIPPICK_ERROR,
+  payload: { error },
+});
+
 export const getSettings = () => async dispatch => {
   dispatch(getSettingRequest());
   try {
@@ -50,5 +63,15 @@ export const upadteApi = data => async dispatch => {
     dispatch(getSettings());
   } catch (error) {
     dispatch(upadteApiError(error.message));
+  }
+};
+
+export const getShippingPickup = () => async dispatch => {
+  dispatch(getShippingPickupRequest());
+  try {
+    const res = await SettingController.getShippingPickup();
+    dispatch(getShippingPickupSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getShippingPickupError(error.message));
   }
 };

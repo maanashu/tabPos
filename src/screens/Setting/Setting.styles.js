@@ -1227,4 +1227,7 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontSize: SF(14),
   },
+  shippingBodyCon: {
+    height: windowHeight * 0.83,
+  },
 });
