@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>318453714270-tiovhv736p0g5o7mjv0ccre2gl16ndrn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.318453714270-tiovhv736p0g5o7mjv0ccre2gl16ndrn</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCYnhW_2kHbvmlwOrfa7MNc2dO0a0Yowaw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>318453714270</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.jobrlls.jobrpos</string>
+	<key>PROJECT_ID</key>
+	<string>jobrapp</string>
+	<key>STORAGE_BUCKET</key>
+	<string>jobrapp.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:318453714270:ios:826eac57cd6aceb9cb13cf</string>
+</dict>
+</plist>

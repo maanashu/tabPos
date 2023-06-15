@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "318453714270",
+    "project_id": "jobrapp",
+    "storage_bucket": "jobrapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318453714270:android:aa6fc76b0ede0b70cb13cf",
+        "android_client_info": {
+          "package_name": "com.jobr.business"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318453714270-7ggq1hfm3ascv7u1ggf8d0bgtsuo4uk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbA8bhYoJ7NuK9XoTtIW-zdamgIz4F1Wg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318453714270-7ggq1hfm3ascv7u1ggf8d0bgtsuo4uk1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "318453714270-2pn6op4a0gcn9h215o8ku0943rvj3ddu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.jobrWallet"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318453714270:android:95bd3652f17b76dfcb13cf",
+        "android_client_info": {
+          "package_name": "com.jobr.tabposapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318453714270-7ggq1hfm3ascv7u1ggf8d0bgtsuo4uk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbA8bhYoJ7NuK9XoTtIW-zdamgIz4F1Wg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318453714270-7ggq1hfm3ascv7u1ggf8d0bgtsuo4uk1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "318453714270-2pn6op4a0gcn9h215o8ku0943rvj3ddu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.jobrWallet"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318453714270:android:c07aa1db3641af93cb13cf",
+        "android_client_info": {
+          "package_name": "com.jobrWallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318453714270-7ggq1hfm3ascv7u1ggf8d0bgtsuo4uk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbA8bhYoJ7NuK9XoTtIW-zdamgIz4F1Wg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318453714270-7ggq1hfm3ascv7u1ggf8d0bgtsuo4uk1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "318453714270-2pn6op4a0gcn9h215o8ku0943rvj3ddu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.jobrWallet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
