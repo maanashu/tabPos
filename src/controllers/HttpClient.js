@@ -1,17 +1,18 @@
 import axios from 'axios';
-import { Config } from 'react-native-config';
 import { strings } from '@/localization';
 import { store } from '@/store';
 import * as RNLocalize from 'react-native-localize';
 import { API_URLS_USING_POS_USER_ACCESS_TOKEN } from '@/utils/APIinventory';
+import { getDeviceToken } from '@/utils/Notifications';
 
 const getTimeZone = RNLocalize.getTimeZone();
 
 const client = axios.create({});
 
-client.interceptors.request.use(function (config) {
+client.interceptors.request.use(async function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
   const user = store.getState().user?.posLoginData?.token;
+  const fcmToken = await getDeviceToken();
   console.log('user', user);
   console.log('register', register);
 
@@ -33,6 +34,11 @@ client.interceptors.request.use(function (config) {
     Authorization: getToken(),
     'app-name': 'pos',
   };
+
+  if (fcmToken) {
+    config.headers['fcm-token'] = fcmToken;
+  }
+
   return config;
 });
 
