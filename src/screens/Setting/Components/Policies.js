@@ -1,65 +1,80 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
-import { ellipse } from '@/assets';
+import { activeCircle, ellipse } from '@/assets';
 import { LEGALDATA, policyLabelData } from '@/constants/flatListData';
 import Modal from 'react-native-modal';
 import { moderateVerticalScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
+import { getSettings } from '@/actions/SettingAction';
 
 export function Policies() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getSettingData = useSelector(getSetting);
-
-  const legalArray = getSettingData?.getSetting?.legal;
-  console.log('legalArray', legalArray);
+  const policiesArray = getSettingData?.getSetting?.policies;
   const [countryId, setCountryId] = useState(null);
   const [legalModal, setLegalModal] = useState(false);
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getSettings());
+    }
+  }, [isFocused]);
 
   const Item = ({ item, onPress, tintColor }) => (
     <TouchableOpacity
       style={styles.legalViewStyle}
-      onPress={() => setLegalModal(true)}
+      onPress={() => {
+        setLegalModal(true), setData(item);
+      }}
     >
       <View style={styles.dateViewStyle}>
         <View>
           <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
-            {item.publishDate}
+            Publish date:
           </Text>
           <Text style={[styles.securitysubhead, { fontSize: SF(10) }]}>
-            {item.dateTime}
+            {item.date}
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.activebuttonStyle}>
-          {/* <Image
-            source={ellipse}
-            style={[styles.circlImageStyle, { tintColor }]}
-          /> */}
-          <Text style={styles.activeTextStyle}>{item.active}</Text>
-        </TouchableOpacity>
+        {item.status ? (
+          <View style={styles.activebuttonStyle}>
+            <Image source={activeCircle} style={[styles.circlImageStyle]} />
+            <Text style={styles.activeTextStyle}>Active</Text>
+          </View>
+        ) : (
+          <View style={[styles.activebuttonStyle, styles.redActiveButton]}>
+            <Image
+              source={activeCircle}
+              style={[styles.circlImageStyle, styles.circlImageRed]}
+            />
+            <Text style={[styles.activeTextStyle, styles.activeTextrRed]}>
+              Inactive
+            </Text>
+          </View>
+        )}
       </View>
       <Spacer space={SH(5)} />
       <View style={{ alignItems: 'center' }}>
         <View style={styles.legalView}>
           <Text style={[styles.selectHead, { fontSize: SF(14) }]}>
-            {item.titleName}
+            {item.title}
           </Text>
           <Spacer space={SH(3)} />
-          <Text style={styles.securitysubhead}>{item.title}</Text>
-          <Spacer space={SH(1)} />
-          <Text style={styles.securitysubhead}>{item.title1}</Text>
+          <Text style={styles.securitysubhead}>{item.intro}</Text>
         </View>
       </View>
       <Spacer space={SH(5)} />
-      <Text style={styles.updateTextStyle}>{item.update}</Text>
-      <Text style={styles.updateTextStyle}>{item.Lastupdatedate}</Text>
+      <Text style={styles.updateTextStyle}>Last update date:</Text>
+      <Text style={styles.updateTextStyle}>{item.date}</Text>
     </TouchableOpacity>
   );
 
@@ -80,37 +95,39 @@ export function Policies() {
       <Spacer space={SH(20)} />
       <FlatList
         numColumns={3}
-        data={policyLabelData}
+        data={policiesArray}
+        extraData={policiesArray}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        extraData={LEGALDATA}
       />
       <Modal animationType="slide" transparent={true} isVisible={legalModal}>
         <View style={styles.legalModalCon}>
           <View style={{ paddingHorizontal: moderateVerticalScale(12) }}>
             <Spacer space={SH(10)} />
-            <Text style={styles.refundPolicy}>
-              Terms and Conditions for Company Name
-            </Text>
+            <Text style={styles.refundPolicy}>{data?.title}</Text>
             <Spacer space={SH(10)} />
             <Text style={[styles.refundPolicy, { fontSize: SF(13) }]}>
-              {strings.settings.intro}
+              {strings.settings.introduction}
             </Text>
             <Spacer space={SH(5)} />
             <Text style={[styles.refundPolicyRegular, { fontSize: SF(13) }]}>
-              These Website Standard Terms and Conditions written on this
-              webpage shall manage your use of our website, Webiste Name
-              accessible at Website.com. These Terms will be applied fully and
-              affect to your use of this Website. By using this Website, you
-              agreed to accept all terms and conditions written in here. You
-              must not use this Website if you disagree with any of these
-              Website Standard Terms and Conditions. Minors or people below 18
-              years old are not allowed to use this Website. Intellectual
-              Property Rights Other than the content you own, under these Terms,
-              Company Name and/or its licensors own all the intellectual
-              property rights and materials contained in this Website. You are
-              granted limited license only for purposes of viewing the material
-              contained on this Website.
+              {data?.intro}
+            </Text>
+            <Spacer space={SH(10)} />
+            <Text style={[styles.refundPolicy, { fontSize: SF(13) }]}>
+              Intellectual Property Rights
+            </Text>
+            <Spacer space={SH(5)} />
+            <Text style={[styles.refundPolicyRegular, { fontSize: SF(13) }]}>
+              {data?.property_rights}
+            </Text>
+            <Spacer space={SH(10)} />
+            <Text style={[styles.refundPolicy, { fontSize: SF(13) }]}>
+              Restrictions
+            </Text>
+            <Spacer space={SH(5)} />
+            <Text style={[styles.refundPolicyRegular, { fontSize: SF(13) }]}>
+              {data?.restrictions}
             </Text>
           </View>
           <View style={{ flex: 1 }} />

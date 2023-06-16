@@ -29,10 +29,10 @@ export function Location() {
           <Image source={store} style={styles.teamMember} />
           <View style={styles.marginLeft}>
             <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-              Wear House
+              {item.address_type}
             </Text>
             <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
-              2598 West Street, Holland, MI 49424
+              {item.custom_address}
             </Text>
           </View>
         </View>

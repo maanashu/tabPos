@@ -4,6 +4,8 @@ const INITIALSTATE = {
   getSetting: {},
   getShippingPickup: [],
   getUserAddress: [],
+  getCountries: [],
+  getState: [],
 };
 
 export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -28,6 +30,28 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         getUserAddress: [],
+      };
+
+    case TYPES.GET_COUNTRIES_SUCCESS:
+      return {
+        ...state,
+        getCountries: payload.getCountries,
+      };
+    case TYPES.GET_COUNTRIES_RESET:
+      return {
+        ...state,
+        getCountries: [],
+      };
+
+    case TYPES.GET_STATE_SUCCESS:
+      return {
+        ...state,
+        getState: payload.getState,
+      };
+    case TYPES.GET_STATE_RESET:
+      return {
+        ...state,
+        getState: [],
       };
     default:
       return state;

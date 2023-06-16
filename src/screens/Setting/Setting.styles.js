@@ -1255,4 +1255,14 @@ export const styles = StyleSheet.create({
   countrySelectCon: {
     height: windowHeight * 0.3,
   },
+  noProductText: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: verticalScale(50),
+  },
+  emptyListText: {
+    fontSize: SF(12),
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+  },
 });

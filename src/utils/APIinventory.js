@@ -25,6 +25,8 @@ export const ApiUserInventory = {
   getSetting: 'user_settings',
   getShippingPickup: 'seller_addresses',
   getUserAddress: 'user_locations/user',
+  getCountries: 'countries',
+  getState: 'states',
 };
 
 export const ApiProductInventory = {

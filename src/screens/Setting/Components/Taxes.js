@@ -11,6 +11,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
@@ -31,8 +32,23 @@ import {
 } from '@/assets';
 import { COUNTRYDATA, STATEDATA } from '@/constants/flatListData';
 import { moderateScale } from 'react-native-size-matters';
+import { useIsFocused } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSetting } from '@/selectors/SettingSelector';
+import { getCountries, getState } from '@/actions/SettingAction';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/SettingTypes';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 export function Taxes() {
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const getSettingData = useSelector(getSetting);
+  const getAuth = useSelector(getAuthData);
+  const merchantprofile = getAuth?.merchantLoginData?.user_profile;
+  console.log('merchantprofile', merchantprofile);
+  const countryArray = getSettingData?.getCountries;
+  const stateArray = getSettingData?.getState;
   const [countryModel, setCountryModel] = useState(false);
   const [stateModel, setStateModel] = useState(false);
   const [taxPayerModel, setTaxPayerModel] = useState(false);
@@ -43,7 +59,30 @@ export function Taxes() {
   const [createTaxBtn, setCreateTaxBtn] = useState(false);
   const [createTaxModal, setCreateTaxModal] = useState(false);
   const [addExmption, setAddExmption] = useState(false);
-  const [addStateBtn,setAddStateBtn] = useState(false)
+  const [addStateBtn, setAddStateBtn] = useState(false);
+  const [countryItemSel, setCountryItemSel] = useState();
+
+  const countryNexthandler = () => {
+    if (countryId === null) {
+      alert('Please select country');
+    } else {
+      setCountryModel(false);
+      setStateModel(true);
+      dispatch(getState(countryId));
+    }
+  };
+  const stateNextHandler = () => {
+    if (stateId === null) {
+      alert('Please select State');
+    } else {
+      setTaxPayerModel(true);
+      setStateModel(false);
+    }
+  };
+
+  const isCountryLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_COUNTRIES, TYPES.GET_STATE], state)
+  );
 
   const Item = ({ item, onPress, tintColor }) => (
     <TouchableOpacity
@@ -70,14 +109,21 @@ export function Taxes() {
     return (
       <Item
         item={item}
-        onPress={() => setCountryId(item.id)}
+        onPress={() => {
+          setCountryId(item.id);
+          setCountryItemSel(item);
+        }}
         tintColor={tintColor}
       />
     );
   };
 
   const STATEITEM = ({ item, onPress, tintColor }) => (
-    <TouchableOpacity style={styles.stateRow} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.stateRow}
+      onPress={onPress}
+      activeOpacity={1}
+    >
       <Image source={squareBlank} style={[styles.blankSquare, { tintColor }]} />
       <Text style={styles.securitysubhead}>{item.name}</Text>
     </TouchableOpacity>
@@ -118,22 +164,39 @@ export function Taxes() {
               {strings.settings.country}
             </Text>
             <Spacer space={SH(15)} />
+            <View style={{ flex: 1 }}>
+              {isCountryLoading ? (
+                <View style={{ marginTop: 100 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : countryArray?.length === 0 ? (
+                <View style={styles.noProductText}>
+                  <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                    {strings.valiadtion.noProduct}
+                  </Text>
+                </View>
+              ) : (
+                <FlatList
+                  data={countryArray}
+                  extraData={countryArray}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.id}
+                />
+              )}
+            </View>
 
-            <FlatList
-              data={COUNTRYDATA}
-              renderItem={renderItem}
-              keyExtractor={item => item.id}
-              extraData={COUNTRYDATA}
-            />
             <Spacer space={SH(8)} />
 
-            <View style={styles.dispalyRow}>
-              <View style={styles.cancelbuttonCon}>
+            <View style={styles.flexRow}>
+              <TouchableOpacity
+                style={styles.cancelbuttonCon}
+                onPress={() => setCountryModel(false)}
+              >
                 <Text style={styles.cancel}>{strings.settings.cancel}</Text>
-              </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
-                onPress={() => (setCountryModel(false), setStateModel(true))}
+                onPress={countryNexthandler}
               >
                 <Text style={[styles.cancel, styles.next]}>
                   {strings.settings.next}
@@ -175,7 +238,7 @@ export function Taxes() {
                 ]}
               />
               <Text style={[styles.selectHead, { fontSize: SF(15) }]}>
-                United States of America
+                {countryItemSel?.name}
               </Text>
             </View>
             <Spacer space={SH(20)} />
@@ -183,23 +246,39 @@ export function Taxes() {
               {strings.settings.selectState}
             </Text>
             {/* <Spacer space={SH(15)} /> */}
-
-            <FlatList
-              data={STATEDATA}
-              extraData={STATEDATA}
-              renderItem={stateItem}
-              keyExtractor={item => item.id}
-            />
+            <View style={{ flex: 1 }}>
+              {isCountryLoading ? (
+                <View style={{ marginTop: 100 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : stateArray?.length === 0 ? (
+                <View style={styles.noProductText}>
+                  <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                    {strings.valiadtion.noProduct}
+                  </Text>
+                </View>
+              ) : (
+                <FlatList
+                  data={stateArray}
+                  extraData={stateArray}
+                  renderItem={stateItem}
+                  keyExtractor={item => item.id}
+                />
+              )}
+            </View>
 
             <Spacer space={SH(8)} />
 
-            <View style={styles.dispalyRow}>
-              <View style={styles.cancelbuttonCon}>
+            <View style={styles.flexRow}>
+              <TouchableOpacity
+                style={styles.cancelbuttonCon}
+                onPress={() => (setCountryModel(true), setStateModel(false))}
+              >
                 <Text style={styles.cancel}>{strings.settings.cancel}</Text>
-              </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
-                onPress={() => (setTaxPayerModel(true), setStateModel(false))}
+                onPress={stateNextHandler}
               >
                 <Text style={[styles.cancel, styles.next]}>
                   {strings.settings.next}
@@ -384,7 +463,12 @@ export function Taxes() {
   const createTaxFun = () => {
     if (createTaxModal) {
       return (
-        <View style={[styles.createTaxModCon, addExmption ? styles.createTaxModHeight : null ]}>
+        <View
+          style={[
+            styles.createTaxModCon,
+            addExmption ? styles.createTaxModHeight : null,
+          ]}
+        >
           <View style={styles.createtaxModHeader}>
             <View style={styles.flexRow}>
               <Text style={styles.selectHead}>
@@ -449,18 +533,18 @@ export function Taxes() {
                   </View>
                 </View>
               </View>
-
-              
             </View>
             <Spacer space={SH(5)} />
             <View style={[styles.twoStepMemberCon]}>
               <View style={styles.flexRow}>
                 <View style={styles.dispalyRow}>
-                  <TouchableOpacity onPress={() => setAddExmption(!addExmption)}>
-                  <Image
-                    source={addExmption ? toggleSecBlue   :  toggleSecurity}
-                    style={styles.toggleSecurity}
-                  />
+                  <TouchableOpacity
+                    onPress={() => setAddExmption(!addExmption)}
+                  >
+                    <Image
+                      source={addExmption ? toggleSecBlue : toggleSecurity}
+                      style={styles.toggleSecurity}
+                    />
                   </TouchableOpacity>
                   <View style={styles.marginLeft}>
                     <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
@@ -475,61 +559,56 @@ export function Taxes() {
                   </View>
                 </View>
               </View>
-            <Spacer space={SH(5)} />
-            {
-              addExmption
-              ?
-              (
+              <Spacer space={SH(5)} />
+              {addExmption ? (
                 <View style={styles.taxFormCon}>
-                <View style={styles.taxExmptionCon}>
-                 <Text style={styles.taxEmption}>{strings.settings.taxexmption}</Text>
-                 <TextInput
-                 placeholder="Tax name"
-                 style={styles.taxImptionInput}
-                 placeholderStyle={styles.namePlaceholder}
-               />
-
+                  <View style={styles.taxExmptionCon}>
+                    <Text style={styles.taxEmption}>
+                      {strings.settings.taxexmption}
+                    </Text>
+                    <TextInput
+                      placeholder="Tax name"
+                      style={styles.taxImptionInput}
+                      placeholderStyle={styles.namePlaceholder}
+                    />
+                  </View>
+                  <View style={styles.taxExmptionCon}>
+                    <Text style={styles.taxEmption}>
+                      {strings.settings.location}
+                    </Text>
+                    <TextInput
+                      placeholder="Select location"
+                      style={styles.taxImptionInput}
+                      placeholderStyle={styles.namePlaceholder}
+                    />
+                  </View>
+                  <View style={styles.taxExmptionCon}>
+                    <Text style={styles.taxEmption}>
+                      {strings.settings.exempttax}
+                    </Text>
+                    <TextInput
+                      placeholder="Select Exempt tax option"
+                      style={styles.taxImptionInput}
+                      placeholderStyle={styles.namePlaceholder}
+                    />
+                  </View>
+                  <View style={styles.taxExmptionCon}>
+                    <Text style={styles.taxEmption}>
+                      {strings.settings.amount}
+                    </Text>
+                    <TextInput
+                      placeholder="$00.00"
+                      style={styles.taxImptionInput}
+                      placeholderStyle={styles.namePlaceholder}
+                    />
+                  </View>
                 </View>
-                <View style={styles.taxExmptionCon}>
-                 <Text style={styles.taxEmption}>{strings.settings.location}</Text>
-                 <TextInput
-                 placeholder="Select location"
-                 style={styles.taxImptionInput}
-                 placeholderStyle={styles.namePlaceholder}
-               />
-
-                </View>
-                <View style={styles.taxExmptionCon}>
-                 <Text style={styles.taxEmption}>{strings.settings.exempttax}</Text>
-                 <TextInput
-                 placeholder="Select Exempt tax option"
-                 style={styles.taxImptionInput}
-                 placeholderStyle={styles.namePlaceholder}
-               />
-                </View>
-                <View style={styles.taxExmptionCon}>
-                 <Text style={styles.taxEmption}>{strings.settings.amount}</Text>
-                 <TextInput
-                 placeholder="$00.00"
-                 style={styles.taxImptionInput}
-                 placeholderStyle={styles.namePlaceholder}
-               />
-
-                </View>
-                
-
-             </View> 
-              )
-              :
-              null
-              
-            }
-             
+              ) : null}
             </View>
             <Spacer space={SH(10)} />
 
             <Button
-             onPress={() => (setAddStateBtn(true),setCreateTaxModal(false))}
+              onPress={() => (setAddStateBtn(true), setCreateTaxModal(false))}
               title={strings.settings.save}
               textStyle={styles.selectedText}
               style={styles.saveButtons}
@@ -639,14 +718,14 @@ export function Taxes() {
                       </View>
                     </TouchableOpacity>
                     <Spacer space={SH(5)} />
-                    {
-                      addStateBtn
-                      ?
-                      (
-                        <View
+                    {addStateBtn ? (
+                      <View
                         style={[
                           styles.verifiedBtnCon,
-                          { borderColor: COLORS.primary, alignSelf: 'flex-end' },
+                          {
+                            borderColor: COLORS.primary,
+                            alignSelf: 'flex-end',
+                          },
                         ]}
                       >
                         <View style={styles.dispalyRow}>
@@ -659,11 +738,7 @@ export function Taxes() {
                           />
                         </View>
                       </View>
-                      )
-                      :
-                      null
-                    }
-                   
+                    ) : null}
                   </View>
                   <Spacer space={SH(7)} />
                   {createTaxBtn ? (
@@ -707,7 +782,9 @@ export function Taxes() {
                   </Text>
                   <Spacer space={SH(20)} />
                   <Button
-                    onPress={() => setCountryModel(true)}
+                    onPress={() => {
+                      setCountryModel(true), dispatch(getCountries());
+                    }}
                     title={strings.settings.active}
                     textStyle={styles.selectedText}
                     style={styles.submitButtons}

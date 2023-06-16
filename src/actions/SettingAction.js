@@ -74,6 +74,40 @@ const getUserAddressReset = () => ({
   payload: null,
 });
 
+const getCountriesRequest = () => ({
+  type: TYPES.GET_COUNTRIES_REQUEST,
+  payload: null,
+});
+const getCountriesSuccess = getCountries => ({
+  type: TYPES.GET_COUNTRIES_SUCCESS,
+  payload: { getCountries },
+});
+const getCountriesError = error => ({
+  type: TYPES.GET_COUNTRIES_ERROR,
+  payload: { error },
+});
+const getCountriesReset = () => ({
+  type: TYPES.GET_COUNTRIES_RESET,
+  payload: null,
+});
+
+const getStateRequest = () => ({
+  type: TYPES.GET_STATE_REQUEST,
+  payload: null,
+});
+const getStateSuccess = getState => ({
+  type: TYPES.GET_STATE_SUCCESS,
+  payload: { getState },
+});
+const getStateError = error => ({
+  type: TYPES.GET_STATE_ERROR,
+  payload: { error },
+});
+const getStateReset = () => ({
+  type: TYPES.GET_STATE_RESET,
+  payload: null,
+});
+
 export const getSettings = () => async dispatch => {
   dispatch(getSettingRequest());
   try {
@@ -126,5 +160,30 @@ export const getUserAddress = () => async dispatch => {
       dispatch(getUserAddressReset());
     }
     dispatch(getUserAddressError(error.message));
+  }
+};
+
+export const getCountries = () => async dispatch => {
+  dispatch(getCountriesRequest());
+  try {
+    const res = await SettingController.getCountries();
+    dispatch(getCountriesSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getCountriesReset());
+    }
+    dispatch(getCountriesError(error.message));
+  }
+};
+export const getState = id => async dispatch => {
+  dispatch(getStateRequest());
+  try {
+    const res = await SettingController.getState(id);
+    dispatch(getStateSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getStateReset());
+    }
+    dispatch(getStateError(error.message));
   }
 };
