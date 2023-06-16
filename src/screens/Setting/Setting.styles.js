@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   DataCon: {
-    width: windowWidth * 0.73,
+    width: Platform.OS === 'android' ? windowWidth * 0.73 : windowWidth * 0.71,
     height: windowHeight * 0.96,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(18),
@@ -429,7 +429,8 @@ export const styles = StyleSheet.create({
   },
   planModalcon: {
     width: windowWidth * 0.85,
-    height: windowHeight * 0.88,
+    height:
+      Platform.OS === 'android' ? windowHeight * 0.88 : windowHeight * 0.8,
     borderRadius: 10,
     borderWidth: 1,
     alignSelf: 'center',
@@ -931,6 +932,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   redActiveButton: {
+    width: SW(27),
     borderColor: COLORS.red,
   },
   legalModalCon: {
