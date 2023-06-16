@@ -44,12 +44,41 @@ const getShippingPickupError = error => ({
   payload: { error },
 });
 
+const addressUpdateByIdRequest = () => ({
+  type: TYPES.ADDRESS_UPDATE_REQUEST,
+  payload: null,
+});
+const addressUpdateByIdSuccess = () => ({
+  type: TYPES.ADDRESS_UPDATE_SUCCESS,
+  payload: null,
+});
+const addressUpdateByIdError = error => ({
+  type: TYPES.ADDRESS_UPDATE_ERROR,
+  payload: { error },
+});
+
+const getUserAddressRequest = () => ({
+  type: TYPES.GET_USER_ADD_REQUEST,
+  payload: null,
+});
+const getUserAddressSuccess = getUserAddress => ({
+  type: TYPES.GET_USER_ADD_SUCCESS,
+  payload: { getUserAddress },
+});
+const getUserAddressError = error => ({
+  type: TYPES.GET_USER_ADD_ERROR,
+  payload: { error },
+});
+const getUserAddressReset = () => ({
+  type: TYPES.GET_USER_ADD_RESET,
+  payload: null,
+});
+
 export const getSettings = () => async dispatch => {
   dispatch(getSettingRequest());
   try {
     const res = await SettingController.getSetting();
     dispatch(getSettingSuccess(res?.payload));
-    console.log('getSettingsres?.payload', res?.payload);
   } catch (error) {
     dispatch(getSettingError(error.message));
   }
@@ -73,5 +102,29 @@ export const getShippingPickup = () => async dispatch => {
     dispatch(getShippingPickupSuccess(res?.payload));
   } catch (error) {
     dispatch(getShippingPickupError(error.message));
+  }
+};
+
+export const addressUpdateById = body => async dispatch => {
+  dispatch(addressUpdateByIdRequest());
+  try {
+    const res = await SettingController.addressUpdateById(body);
+    dispatch(addressUpdateByIdSuccess(res));
+    dispatch(getShippingPickup());
+  } catch (error) {
+    dispatch(addressUpdateByIdError(error.message));
+  }
+};
+
+export const getUserAddress = () => async dispatch => {
+  dispatch(getUserAddressRequest());
+  try {
+    const res = await SettingController.getUserAddress();
+    dispatch(getUserAddressSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getUserAddressReset());
+    }
+    dispatch(getUserAddressError(error.message));
   }
 };

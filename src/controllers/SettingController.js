@@ -13,14 +13,11 @@ export class SettingController {
   static async getSetting() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getSetting + `?app_name=pos`;
-      console.log('endpoint1111111111111111', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
-          console.log(';response', response);
           resolve(response);
         })
         .catch(error => {
-          console.log('error', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -35,8 +32,6 @@ export class SettingController {
     return new Promise(async (resolve, reject) => {
       const token = store.getState().auth?.merchantLoginData?.token;
       const endpoint = USER_URL + ApiUserInventory.getSetting;
-      console.log('endpoint', endpoint);
-      console.log('data', data);
       await axios({
         url: endpoint,
         method: 'PATCH',
@@ -49,7 +44,6 @@ export class SettingController {
         },
       })
         .then(resp => {
-          console.log('resp?.data', resp?.data);
           resolve(resp?.data);
         })
         .catch(error => {
@@ -63,11 +57,47 @@ export class SettingController {
       const endpoint = USER_URL + ApiUserInventory.getShippingPickup;
       HttpClient.get(endpoint)
         .then(response => {
-          console.log('response----', error);
           resolve(response);
         })
         .catch(error => {
-          console.log('error----', error);
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async addressUpdateById(body) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getShippingPickup;
+      HttpClient.put(endpoint, body)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getUserAddress() {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getUserAddress;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',

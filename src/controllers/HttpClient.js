@@ -8,7 +8,6 @@ import { API_URLS_USING_POS_USER_ACCESS_TOKEN } from '@/utils/APIinventory';
 const getTimeZone = RNLocalize.getTimeZone();
 
 const client = axios.create({});
-console.log('client', client);
 
 client.interceptors.request.use(function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
@@ -27,7 +26,6 @@ client.interceptors.request.use(function (config) {
       return register;
     }
   };
-  console.log('getToken', getToken());
 
   config.headers = {
     ...config.headers,
@@ -35,7 +33,6 @@ client.interceptors.request.use(function (config) {
     Authorization: getToken(),
     'app-name': 'pos',
   };
-  console.log('config', config.headers);
   return config;
 });
 

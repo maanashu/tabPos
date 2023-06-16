@@ -21,7 +21,7 @@ import {
   Policies,
   Staff,
 } from '@/screens/Setting/Components';
-import { getSettings, getShippingPickup } from '@/actions/SettingAction';
+import { getSettings } from '@/actions/SettingAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
 import { ActivityIndicator } from 'react-native';
@@ -51,7 +51,16 @@ export function Setting() {
     }
   }, [isFocused]);
   const isLoad = useSelector(state =>
-    isLoadingSelector([TYPES.UPDATE_API, TYPES.GET_SETTING], state)
+    isLoadingSelector(
+      [
+        TYPES.UPDATE_API,
+        TYPES.GET_SETTING,
+        TYPES.GET_SHIPPICK,
+        TYPES.ADDRESS_UPDATE,
+        TYPES.GET_USER_ADD,
+      ],
+      state
+    )
   );
 
   const renderView = {
@@ -133,42 +142,6 @@ export function Setting() {
   const bodyView = () => {
     return renderView[selectedId];
   };
-
-  // const customHeader = () => {
-  //   return (
-  //     <View style={styles.headerMainView}>
-  //       {rewardList ? (
-  //         <TouchableOpacity
-  //           style={styles.backButtonCon}
-  //           onPress={() => setRewardList(false)}
-  //         >
-  //           <Image source={backArrow} style={styles.backButtonArrow} />
-  //           <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
-  //         </TouchableOpacity>
-  //       ) : (
-  //         <View style={styles.deliveryView}>
-  //           <Image source={reward} style={styles.truckStyle} />
-  //           <Text style={styles.deliveryText}>{strings.reward.rewards}</Text>
-  //         </View>
-  //       )}
-
-  //       <View style={styles.deliveryView}>
-  //         <Image
-  //           source={notifications}
-  //           style={[styles.truckStyle, { right: 20 }]}
-  //         />
-  //         <View style={styles.searchView}>
-  //           <Image source={search_light} style={styles.searchImage} />
-  //           <TextInput
-  //             placeholder={strings.deliveryOrders.search}
-  //             style={styles.textInputStyles}
-  //             placeholderTextColor={COLORS.darkGray}
-  //           />
-  //         </View>
-  //       </View>
-  //     </View>
-  //   );
-  // };
 
   return (
     <ScreenWrapper>
