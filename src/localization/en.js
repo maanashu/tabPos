@@ -598,7 +598,7 @@ export const en = {
     exempttax: 'Exempt tax',
     amount: 'Amount',
     refundPolicy: 'Refund policy',
-    intro: 'Introduction',
+    introduction: 'Introduction',
     notification: 'Notifications',
     addlanguage: 'Add Language',
   },

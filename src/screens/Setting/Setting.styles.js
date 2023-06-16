@@ -876,9 +876,10 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: moderateScale(10),
     paddingHorizontal: moderateScale(5),
-    justifyContent: 'center',
+    // justifyContent: 'center',
     marginBottom: 5,
     width: SW(80),
+    height: windowHeight * 0.4,
     marginTop: SW(4),
     marginLeft: SW(4),
   },
@@ -889,18 +890,24 @@ export const styles = StyleSheet.create({
     padding: moderateScale(10),
     marginBottom: 5,
     width: SW(70),
+    height: windowHeight * 0.25,
   },
   circlImageStyle: {
-    width: SW(5),
-    height: SW(5),
+    width: SW(3),
+    height: SW(3),
     resizeMode: 'contain',
   },
+  circlImageRed: {
+    tintColor: COLORS.red,
+  },
   activeTextStyle: {
-    fontSize: SF(18),
+    fontSize: SF(11),
     fontFamily: Fonts.MaisonBold,
-    fontSize: SF(12),
     color: COLORS.green,
     marginLeft: SW(2),
+  },
+  activeTextrRed: {
+    color: COLORS.red,
   },
   updateTextStyle: {
     fontSize: SF(12),
@@ -914,7 +921,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: SW(2),
   },
   activebuttonStyle: {
-    width: SW(20),
+    width: SW(24),
     height: SW(8),
     borderWidth: 1,
     borderColor: COLORS.green,
@@ -922,6 +929,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  redActiveButton: {
+    borderColor: COLORS.red,
   },
   legalModalCon: {
     backgroundColor: 'white',
@@ -1217,7 +1227,7 @@ export const styles = StyleSheet.create({
   },
   vectorIconCon: {
     width: SW(12),
-    height: SW(12),
+    height: SW(9),
     justifyContent: 'center',
     alignItems: 'center',
   },

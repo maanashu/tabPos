@@ -57,6 +57,7 @@ export function Setting() {
         TYPES.GET_SETTING,
         TYPES.GET_SHIPPICK,
         TYPES.ADDRESS_UPDATE,
+        TYPES.GET_USER_ADD,
       ],
       state
     )

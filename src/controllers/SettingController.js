@@ -32,8 +32,6 @@ export class SettingController {
     return new Promise(async (resolve, reject) => {
       const token = store.getState().auth?.merchantLoginData?.token;
       const endpoint = USER_URL + ApiUserInventory.getSetting;
-      console.log('endpoint', endpoint);
-      console.log('data', data);
       await axios({
         url: endpoint,
         method: 'PATCH',
@@ -46,7 +44,6 @@ export class SettingController {
         },
       })
         .then(resp => {
-          console.log('resp?.data', resp?.data);
           resolve(resp?.data);
         })
         .catch(error => {

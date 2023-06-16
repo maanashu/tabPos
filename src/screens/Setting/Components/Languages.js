@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -18,6 +18,10 @@ import {
   vectorOff,
   XImage,
 } from '@/assets';
+import { useIsFocused } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSetting } from '@/selectors/SettingSelector';
+import { upadteApi } from '@/actions/SettingAction';
 
 const addLanguage = [
   {
@@ -35,8 +39,39 @@ const addLanguage = [
 ];
 
 export function Languages() {
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const getSettingData = useSelector(getSetting);
+  const languageArray = getSettingData?.getSetting?.language;
   const [ShowModal, setShowModal] = useState(false);
   const [countryId, setCountryId] = useState(null);
+  const [dataArray, setDataArray] = useState();
+
+  const languageUpdate = item => {
+    const updatedArray = dataArray.map(dataItem => {
+      if (dataItem === item) {
+        const updateItem = {
+          ...dataItem,
+          status: !dataItem?.status,
+        };
+
+        return updateItem;
+      }
+      return dataItem;
+    });
+
+    setDataArray(updatedArray);
+    const data = {
+      language: updatedArray,
+      app_name: 'pos',
+    };
+    dispatch(upadteApi(data));
+  };
+  useEffect(() => {
+    if (getSettingData?.getSetting) {
+      setDataArray(getSettingData?.getSetting?.language);
+    }
+  }, [getSettingData?.getSetting]);
 
   const Item = ({ item, onPress, tintColor }) => (
     <TouchableOpacity
@@ -76,10 +111,9 @@ export function Languages() {
               style={[styles.toggleSecurity, { margin: 3 }]}
             />
           </View>
-
           <View style={styles.twoStepVerifiCon}>
             <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-              {item.langauge}
+              {item.name}
             </Text>
             <Text
               style={[styles.securitysubhead, { fontSize: SF(12) }]}
@@ -88,8 +122,14 @@ export function Languages() {
               Deafult
             </Text>
           </View>
-          <TouchableOpacity>
-            <Image source={vectorOff} style={styles.toggleSecurity} />
+          <TouchableOpacity
+            style={styles.vectorIconCon}
+            onPress={() => languageUpdate(item)}
+          >
+            <Image
+              source={item.status ? vector : vectorOff}
+              style={styles.toggleSecurity}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -126,8 +166,8 @@ export function Languages() {
             </Text>
             <Spacer space={SH(18)} />
             <FlatList
-              data={addLanguage}
-              extraData={addLanguage}
+              data={languageArray}
+              extraData={languageArray}
               renderItem={languageRenderItem}
               keyExtractor={item => item.id}
             />

@@ -8,8 +8,17 @@ import { ellipse } from '@/assets';
 import { LEGALDATA, policyLabelData } from '@/constants/flatListData';
 import Modal from 'react-native-modal';
 import { moderateVerticalScale } from 'react-native-size-matters';
+import { useIsFocused } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSetting } from '@/selectors/SettingSelector';
 
 export function Policies() {
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const getSettingData = useSelector(getSetting);
+
+  const legalArray = getSettingData?.getSetting?.legal;
+  console.log('legalArray', legalArray);
   const [countryId, setCountryId] = useState(null);
   const [legalModal, setLegalModal] = useState(false);
 
