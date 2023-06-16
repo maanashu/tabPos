@@ -195,7 +195,7 @@ export function Plans() {
 
       <Modal animationType="fade" transparent={true} isVisible={planModal}>
         <View style={styles.planModalcon}>
-          <Spacer space={SH(10)} />
+          <Spacer space={SH(20)} />
           <View
             style={[styles.flexRow, { paddingHorizontal: moderateScale(20) }]}
           >
@@ -224,14 +224,13 @@ export function Plans() {
           </View>
           <Spacer space={SH(20)} />
 
-        
-            <FlatList
-              data={basicData}
-              extraData={basicData}
-              renderItem={basicItem}
-              keyExtractor={item => item.id}
-              horizontal
-            />
+          <FlatList
+            data={basicData}
+            extraData={basicData}
+            renderItem={basicItem}
+            keyExtractor={item => item.id}
+            horizontal
+          />
           {/* <Spacer space={SH(25)} /> */}
         </View>
       </Modal>

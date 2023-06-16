@@ -108,4 +108,41 @@ export class SettingController {
         });
     });
   }
+  static async getCountries() {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getCountries;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+  static async getState(id) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        USER_URL + ApiUserInventory.getState + `?country_id=${id}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
 }
