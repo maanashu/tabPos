@@ -18,8 +18,14 @@ import { Button, Spacer } from '@/components';
 import { deviceDropDownArray } from '@/constants/flatListData';
 
 import { styles } from '@/screens/Setting/Setting.styles';
+import { useIsFocused } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { getSetting } from '@/selectors/SettingSelector';
 
 export function Device() {
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const getSettingData = useSelector(getSetting);
   const [twoStepModal, setTwoStepModal] = useState(false);
   const [dropTrue, setDropTrue] = useState(false);
   const [blueToothModal, setBlueToothModal] = useState(false);

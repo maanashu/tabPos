@@ -46,7 +46,6 @@ export function Taxes() {
   const getSettingData = useSelector(getSetting);
   const getAuth = useSelector(getAuthData);
   const merchantprofile = getAuth?.merchantLoginData?.user_profile;
-  console.log('merchantprofile', merchantprofile);
   const countryArray = getSettingData?.getCountries;
   const stateArray = getSettingData?.getState;
   const [countryModel, setCountryModel] = useState(false);

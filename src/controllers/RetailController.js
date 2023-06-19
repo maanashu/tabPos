@@ -249,18 +249,32 @@ export class RetailController {
   static async addTocart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.addTocart;
-      let supplyID = data.supplyId.toString();
-      let supplyPriceID = data.supplyPriceID.toString();
-      const body = {
-        seller_id: data.seller_id,
-        service_id: data.service_id,
-        product_id: data.product_id,
-        qty: data.qty,
-        supply_id: supplyID,
-        supply_price_id: supplyPriceID,
-      };
+      console.log('endpoint', endpoint);
+      // let supplyID = data.supplyId.toString();
+      // let supplyPriceID = data.supplyPriceID.toString();
+      // let variantId = data.supplyVariantId.toString();
+      const body = data?.supplyVariantId
+        ? {
+            seller_id: data.seller_id,
+            service_id: data.service_id,
+            product_id: data.product_id,
+            qty: data.qty,
+            supply_id: data.supplyId.toString(),
+            supply_price_id: data.supplyPriceID.toString(),
+            supply_variant_id: data.supplyVariantId.toString(),
+          }
+        : {
+            seller_id: data.seller_id,
+            service_id: data.service_id,
+            product_id: data.product_id,
+            qty: data.qty,
+            supply_id: data.supplyId.toString(),
+            supply_price_id: data.supplyPriceID.toString(),
+          };
+      console.log('---------------------------', body);
       HttpClient.post(endpoint, body)
         .then(response => {
+          console.log(response);
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -272,7 +286,7 @@ export class RetailController {
           resolve(response);
         })
         .catch(error => {
-          alert(error?.msg);
+          console.log(error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -331,24 +345,18 @@ export class RetailController {
       };
       HttpClient.put(endpoint, body)
         .then(response => {
-          if (response?.status_code === 200) {
-            Toast.show({
-              type: 'success_toast',
-              text2: strings.successMessages.loginSuccess,
-              position: 'bottom',
-              visibilityTime: 1500,
-            });
-            resolve(response);
-          } else {
+          if (response?.msg === 'PosCart updated!') {
             Toast.show({
               text2: 'Discount add succesfully',
               position: 'bottom',
               type: 'success_toast',
               visibilityTime: 1500,
             });
+            resolve(response);
           }
         })
         .catch(error => {
+          console.log('error', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -653,7 +661,7 @@ export class RetailController {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
-            text2: error.msg,
+            text2: 'No Combination, Select Other Variant ',
             visibilityTime: 2000,
           });
           reject(error.msg);

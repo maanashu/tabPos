@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { ScreenWrapper, Spacer } from '@/components';
+import { AddDiscountToCart, ScreenWrapper, Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import {
@@ -25,6 +25,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
 import Modal from 'react-native-modal';
 import {
+  addDiscountToCart,
   addNotescart,
   getAllCart,
   getCategory,
@@ -44,6 +45,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 export function PosRetail() {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+  const getCartAmount = getRetailData?.getAllCart?.amount;
   const cartID2 = getRetailData?.getAllCart?.id;
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -55,13 +57,87 @@ export function PosRetail() {
   const [tipAmount, setTipAmount] = useState(0.0);
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState('');
+  const [addDiscount, setAddDiscount] = useState(false);
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
+
+  const [amountDis, setAmountDis] = useState('');
+  const [percentDis, setPercentDis] = useState('');
+  const [discountCode, setDiscountCode] = useState('');
+  const [descriptionDis, setDescriptionDis] = useState('');
+  const [value, setValue] = useState('');
+  const [amountCheck, setAmountCheck] = useState(false);
+  const [percentageCheck, setPercentageCheck] = useState(false);
+  const [discountCheck, setDiscountCheck] = useState(false);
+
+  const clearInput = () => {
+    setNotes('');
+    setAmountDis('');
+    setPercentDis('');
+    setDiscountCode('');
+    setValue('');
+    setDescriptionDis('');
+    if (amountCheck) {
+      setAmountCheck(false);
+    } else if (percentageCheck) {
+      setPercentageCheck(false);
+    } else if (discountCheck) {
+      setDiscountCheck(false);
+    }
+  };
+  const saveDiscountHandler = () => {
+    if (!cartID2) {
+      Toast.show({
+        text2: strings.posSale.addItemCart,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (value === '') {
+      Toast.show({
+        text2: strings.posSale.discountType,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (!amountDis && !percentDis && !discountCode) {
+      Toast.show({
+        text2: strings.posSale.enterfield,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (!descriptionDis) {
+      Toast.show({
+        text2: strings.posSale.selectDisTitle,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      const data = {
+        amountDis: amountDis,
+        percentDis: percentDis,
+        discountCode: discountCode,
+        value: value,
+        cartId: cartID2,
+        orderAmount: getCartAmount?.total_amount,
+        // descriptionDis: descriptionDis,
+        // descriptionDis:'discount title'
+      };
+      dispatch(addDiscountToCart(data));
+      clearInput();
+      setAddDiscount(false);
+    }
+  };
 
   const isFocus = useIsFocused();
 
   const addNotesHandler = () => {
     setAddNotes(true);
+  };
+  const addDiscountHandler = () => {
+    setAddDiscount(true);
   };
 
   const saveNotesHandler = () => {
@@ -93,7 +169,7 @@ export function PosRetail() {
     isLoadingSelector(
       [
         TYPES.GET_ONE_PRODUCT,
-        // TYPES.ADDCART,
+        TYPES.ADDCART,
         TYPES.GET_CLEAR_ALL_CART,
         TYPES.GET_ALL_CART,
         TYPES.GET_WALLET_PHONE,
@@ -101,6 +177,8 @@ export function PosRetail() {
         TYPES.REQUEST_MONEY,
         TYPES.CREATE_ORDER,
         TYPES.ADDNOTES,
+        TYPES.ADD_DISCOUNT,
+        TYPES.CHECK_SUPPLIES_VARIANT,
       ],
       state
     )
@@ -115,6 +193,7 @@ export function PosRetail() {
         categoryArray={categoryArray}
         sellerID={sellerID}
         addNotesHandler={addNotesHandler}
+        addDiscountHandler={addDiscountHandler}
       />
     ),
     ['CartScreen']: (
@@ -124,6 +203,7 @@ export function PosRetail() {
           setselectedScreen('CartAmountTips');
         }}
         addNotesHandler={addNotesHandler}
+        addDiscountHandler={addDiscountHandler}
       />
     ),
     ['CartAmountTips']: (
@@ -217,43 +297,90 @@ export function PosRetail() {
         </View>
       ) : null}
 
-      <Modal animationType="fade" transparent={true} isVisible={addNotes}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={addNotes || addDiscount}
+      >
         <KeyboardAvoidingView
         // style={{ flex: 1 }}
         // behavior={Platform.OS === 'ios' ? 'padding' : 100}
         // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
         >
           <ScrollView>
-            <View style={[styles.addNotesCon, styles.addNotesCon2]}>
-              <View
-                style={[
-                  styles.addCartDetailConHeader,
-                  styles.addCartDetailConHeader2,
-                ]}
-              >
-                <Text style={styles.jacketName}>Add Notes</Text>
-                <TouchableOpacity onPress={() => setAddNotes(false)}>
-                  <Image source={crossButton} style={styles.crossBg} />
+            {addDiscount ? (
+              <View style={[styles.addNotesCon, styles.addDiscountConPop]}>
+                <View
+                  style={[
+                    styles.addCartDetailConHeader,
+                    styles.addCartDetailConHeader2,
+                  ]}
+                >
+                  <Text style={styles.jacketName}>Add Discount</Text>
+                  <TouchableOpacity onPress={() => setAddDiscount(false)}>
+                    <Image source={crossButton} style={styles.crossBg} />
+                  </TouchableOpacity>
+                </View>
+                <Spacer space={SH(15)} />
+                <AddDiscountToCart
+                  amountDis={amountDis}
+                  setAmountDis={setAmountDis}
+                  percentDis={percentDis}
+                  setPercentDis={setPercentDis}
+                  discountCode={discountCode}
+                  setDiscountCode={setDiscountCode}
+                  descriptionDis={descriptionDis}
+                  setDescriptionDis={setDescriptionDis}
+                  setValue={setValue}
+                  value={value}
+                  clearInput={clearInput}
+                  amountCheck={amountCheck}
+                  setAmountCheck={setAmountCheck}
+                  percentageCheck={percentageCheck}
+                  setPercentageCheck={setPercentageCheck}
+                  discountCheck={discountCheck}
+                  setDiscountCheck={setDiscountCheck}
+                />
+                <Spacer space={SH(10)} />
+                <TouchableOpacity
+                  style={[styles.holdCartCon, styles.addNotesBtn]}
+                  onPress={() => saveDiscountHandler()}
+                >
+                  <Text style={styles.holdCart}>Add Discount</Text>
                 </TouchableOpacity>
               </View>
-              <Spacer space={SH(15)} />
-              {/* <Text style={styles.addNotes}>Add notes</Text>
+            ) : (
+              <View style={[styles.addNotesCon, styles.addNotesCon2]}>
+                <View
+                  style={[
+                    styles.addCartDetailConHeader,
+                    styles.addCartDetailConHeader2,
+                  ]}
+                >
+                  <Text style={styles.jacketName}>Add Notes</Text>
+                  <TouchableOpacity onPress={() => setAddNotes(false)}>
+                    <Image source={crossButton} style={styles.crossBg} />
+                  </TouchableOpacity>
+                </View>
+                <Spacer space={SH(15)} />
+                {/* <Text style={styles.addNotes}>Add notes</Text>
           <Spacer space={SH(6)} /> */}
-              <TextInput
-                style={styles.addNotesInput}
-                onChangeText={setNotes}
-                value={notes}
-                placeholder="Add Notes"
-                multiline={true}
-              />
-              <Spacer space={SH(15)} />
-              <TouchableOpacity
-                style={[styles.holdCartCon, styles.addNotesBtn]}
-                onPress={() => saveNotesHandler()}
-              >
-                <Text style={styles.holdCart}>Add Notes</Text>
-              </TouchableOpacity>
-            </View>
+                <TextInput
+                  style={styles.addNotesInput}
+                  onChangeText={setNotes}
+                  value={notes}
+                  placeholder="Add Notes"
+                  multiline={true}
+                />
+                <Spacer space={SH(15)} />
+                <TouchableOpacity
+                  style={[styles.holdCartCon, styles.addNotesBtn]}
+                  onPress={() => saveNotesHandler()}
+                >
+                  <Text style={styles.holdCart}>Add Notes</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </ScrollView>
         </KeyboardAvoidingView>
       </Modal>

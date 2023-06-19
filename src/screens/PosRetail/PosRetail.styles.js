@@ -1175,6 +1175,9 @@ export const styles = StyleSheet.create({
   addNotesCon2: {
     paddingHorizontal: moderateScale(8),
   },
+  addDiscountConPop: {
+    height: windowHeight * 0.55,
+  },
   addNotesInput: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 5,

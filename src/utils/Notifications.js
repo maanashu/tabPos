@@ -16,7 +16,6 @@ const getDeviceToken = async () => {
   try {
     // await messaging().registerDeviceForRemoteMessages();
     const token = await messaging().getToken();
-    console.log('Device token:', token);
     return token;
   } catch (error) {
     console.log('Error getting device token:', error);

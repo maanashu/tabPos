@@ -56,7 +56,12 @@ import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 
-export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler }) {
+export function CartScreen({
+  onPressPayNow,
+  crossHandler,
+  addNotesHandler,
+  addDiscountHandler,
+}) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
@@ -666,13 +671,16 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler }) {
               />
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
-                <View style={styles.addDiscountCon}>
+                <TouchableOpacity
+                  style={styles.addDiscountCon}
+                  onPress={addDiscountHandler}
+                >
                   <Image
                     source={addDiscountPic}
                     style={styles.addDiscountPic}
                   />
                   <Text style={styles.addDiscountText}>Add Discount</Text>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.addDiscountCon}
                   onPress={addNotesHandler}

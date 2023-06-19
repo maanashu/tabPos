@@ -30,6 +30,10 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct;
+  console.log(
+    'productDetail',
+    productDetail?.product_detail?.supplies?.[0]?.attributes?.length
+  );
 
   const sizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const colorSizeArray =
@@ -47,36 +51,59 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   const [sizeName, setSizeName] = useState();
   const [selectedItems, setSelectedItems] = useState([]);
   const [string, setString] = useState();
-  const addToCartHandler = () => {
-    if (count === 0) {
-      alert('Please add quantity to cart');
-      return;
+  const addToCartHandler = async () => {
+    if (
+      productDetail?.product_detail?.supplies?.[0]?.attributes?.length === 0
+    ) {
+      if (count === 0) {
+        alert('Please add quantity to cart');
+        return;
+      } else {
+        const data = {
+          seller_id: sellerID,
+          service_id: productDetail?.product_detail?.service_id,
+          product_id: productDetail?.product_detail?.id,
+          qty: count,
+          supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+          supplyPriceID:
+            productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+        };
+        dispatch(addTocart(data));
+        crossHandler();
+      }
+    } else {
+      if (count === 0) {
+        alert('Please add quantity to cart');
+        return;
+      } else if (finalColorArray?.length >= 1 && colorId === null) {
+        alert('Please select the color');
+      } else if (finalSizeArray?.length >= 1 && sizeId === null) {
+        alert('Please select the Size');
+      } else {
+        const data = {
+          colorId: colorId,
+          sizeId: sizeId,
+          supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+        };
+        crossHandler();
+        const res = await dispatch(checkSuppliedVariant(data));
+        if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
+          const data = {
+            seller_id: sellerID,
+            service_id: productDetail?.product_detail?.service_id,
+            product_id: productDetail?.product_detail?.id,
+            qty: count,
+            supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+            supplyPriceID:
+              productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]
+                ?.id,
+            supplyVariantId: res?.payload?.attribute_variant_id,
+          };
+          dispatch(addTocart(data));
+          // crossHandler();
+        }
+      }
     }
-    //  else if (finalColorArray?.length >= 1 && colorId === null) {
-    //   alert('Please select the color');
-    // } else if (finalSizeArray?.length >= 1 && sizeId === null) {
-    //   alert('Please select the Size');
-    // } else {
-    //   const data = {
-    //     colorId: colorId,
-    //     sizeId: sizeId,
-    //     supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-    //   };
-    //   console.log('data', data);
-    //   dispatch(checkSuppliedVariant(data));
-    // }
-
-    const data = {
-      seller_id: sellerID,
-      service_id: productDetail?.product_detail?.service_id,
-      product_id: productDetail?.product_detail?.id,
-      qty: count,
-      supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-      supplyPriceID:
-        productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-    };
-    dispatch(addTocart(data));
-    crossHandler();
   };
 
   // useEffect(() => {

@@ -1,29 +1,10 @@
-import React, { useMemo, useState } from 'react';
-import { Button, Spacer } from '@/components';
+import React, { useState } from 'react';
+import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import { SH, SW } from '@/theme';
+import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
-import Modal from 'react-native-modal';
-import {
-  addIcon,
-  blueToothIcon,
-  crossButton,
-  deviceLogo,
-  scanner,
-  toggleSecurity,
-  trackCamera,
-  vector,
-  vectorOff,
-} from '@/assets';
-import { deviceDropDownArray } from '@/constants/flatListData';
+import { vector, vectorOff } from '@/assets';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import { upadteApi } from '@/actions/SettingAction';
 import { useDispatch, useSelector } from 'react-redux';

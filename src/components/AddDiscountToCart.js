@@ -11,6 +11,7 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import {
   moderateScale,
   moderateVerticalScale,
+  verticalScale,
 } from 'react-native-size-matters';
 import { checkbox, checkedCheckbox, Fonts } from '@/assets';
 import { Spacer } from './Spacer';
@@ -37,17 +38,12 @@ export function AddDiscountToCart({
   setDiscountCheck,
 }) {
   return (
-    // <KeyboardAwareScrollView
-    //   contentContainerStyle={{ flexGrow: 1}}
-    //   keyboardShouldPersistTaps="handled"
-    //   showsVerticalScrollIndicator={false}
-    // >
-    <View style={{flex:1}}>
+    <View>
       <View style={styles.adddiscountCon}>
-        <View style={{height:SH(350)}}>
-          <Spacer space={SH(12)} />
+        <View style={{ height: SH(290) }}>
+          {/* <Spacer space={SH(12)} />
           <Text style={styles.discountHeader}>{strings.posSale.discount}</Text>
-          <Spacer space={SH(12)} />
+          <Spacer space={SH(12)} /> */}
           <View
             style={
               amountCheck
@@ -93,7 +89,7 @@ export function AddDiscountToCart({
               />
             </View>
           </View>
-          <Spacer space={SH(12)} />                                
+          <Spacer space={SH(12)} />
           <View
             style={
               percentageCheck
@@ -212,21 +208,18 @@ export function AddDiscountToCart({
           <Spacer space={SH(12)} />
         </View>
 
-        <View style={styles.saveButtonCon}>
-        <TouchableOpacity
-          style={styles.saveNotesButton}
-          onPress={saveDiscountHandler}
-        >
-          <Text style={styles.saveNotesText}>
-            {strings.posSale.saveDiscount}
-          </Text>
-        </TouchableOpacity>
-     
+        {/* <View style={styles.saveButtonCon}>
+          <TouchableOpacity
+            style={styles.saveNotesButton}
+            onPress={saveDiscountHandler}
+          >
+            <Text style={styles.saveNotesText}>
+              {strings.posSale.saveDiscount}
+            </Text>
+          </TouchableOpacity>
+        </View> */}
+        {/* <Spacer space={SH(12)} /> */}
       </View>
-      <Spacer space={SH(12)} />
-      </View>
-
-    {/* </KeyboardAwareScrollView> */}
     </View>
   );
 }
@@ -236,6 +229,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 7,
     paddingHorizontal: moderateScale(8),
+    paddingVertical: verticalScale(5),
   },
   discountHeader: {
     fontSize: SF(24),
@@ -264,11 +258,12 @@ const styles = StyleSheet.create({
     width: SW(40),
     borderRadius: 3,
     borderColor: COLORS.solidGrey,
-    justifyContent: 'center',
     fontSize: SF(14),
     fontFamily: Fonts.SemiBold,
     paddingHorizontal: moderateScale(5),
     backgroundColor: COLORS.white,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   displayFlex: {
     flexDirection: 'row',
@@ -289,7 +284,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.darkGray,
     paddingHorizontal: moderateScale(5),
-    width: SW(40),
+    width: SW(50),
   },
   amountLabel2: {
     fontSize: SF(14),

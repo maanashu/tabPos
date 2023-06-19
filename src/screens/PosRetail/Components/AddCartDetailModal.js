@@ -21,6 +21,7 @@ const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 export function AddCartDetailModal({ crossHandler }) {
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
+  console.log('productDetail', productDetail);
 
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options.split(
@@ -35,7 +36,6 @@ export function AddCartDetailModal({ crossHandler }) {
   let shippingImage = deliveryOption.find(item => {
     return item === '4';
   });
-  console.log('inStoreImage', inStoreImage);
   const [clothColorId, setClothColorId] = useState();
   const [clothSizeId, setClothSizeId] = useState();
   const [remindId, setRemindId] = useState();

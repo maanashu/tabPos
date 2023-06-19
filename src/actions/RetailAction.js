@@ -697,7 +697,7 @@ export const checkSuppliedVariant = data => async dispatch => {
   dispatch(checkSuppliedVariantRequest());
   try {
     const res = await RetailController.checkSuppliedVariant(data);
-    dispatch(checkSuppliedVariantSuccess(res?.payload));
+    return dispatch(checkSuppliedVariantSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(checkSuppliedVariantReset());
