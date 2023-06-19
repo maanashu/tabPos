@@ -118,6 +118,7 @@ export function MerchantPasscode({ route }) {
           />
 
           <VirtualKeyBoard
+            maxCharLength={4}
             enteredValue={value}
             setEnteredValue={setValue}
             isButtonLoading={isLoading}
