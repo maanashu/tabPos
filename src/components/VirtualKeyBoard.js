@@ -8,6 +8,7 @@ import { COLORS, SH } from '@/theme';
 import { verticalScale } from 'react-native-size-matters';
 
 export const VirtualKeyBoard = ({
+  maxCharLength,
   enteredValue,
   setEnteredValue,
   isButtonLoading,
@@ -47,7 +48,14 @@ export const VirtualKeyBoard = ({
               } else if (value === 'deleteBack') {
                 setEnteredValue(prev => prev.slice(0, -1));
               } else {
-                setEnteredValue(prev => prev + value);
+                setEnteredValue(prev => {
+                  const newValue = prev + value;
+                  if (newValue.length > maxCharLength) {
+                    return newValue.slice(0, maxCharLength);
+                  } else {
+                    return newValue;
+                  }
+                });
               }
             }}
           />
