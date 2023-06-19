@@ -26,50 +26,33 @@ const getDeviceToken = async () => {
 
 // Handle incoming push notifications when the app is in the foreground
 const onMessageReceivedForeground = async message => {
-  console.log('Received notification in foreground:', message);
-  const channelId = await notifee.createChannel({
-    id: 'default',
-    name: 'Default Channel',
-  });
-  notifee.displayNotification({
-    title: 'Your order has been shipped',
-    body: `Your order was shipped at 69am!`,
+  await notifee.displayNotification({
+    title: message.notification.title,
+    body: message.notification.body,
     android: {
-      channelId,
+      channelId: 'default',
     },
   });
 };
 
 // Handle incoming push notifications when the app is in the background or closed
 const onMessageReceivedBackground = async message => {
-  console.log('Received notification in background:', message);
+  await notifee.displayNotification({
+    title: message.notification.title,
+    body: message.notification.body,
+    android: {
+      channelId: 'default',
+    },
+  });
 };
 
 // Configure Firebase Cloud Messaging
 const configureMessaging = async () => {
   await requestPermission();
 
-  messaging().onMessage(async remoteMessage => {
-    console.log('Received notification in foreground:', remoteMessage);
-    await notifee.displayNotification({
-      title: remoteMessage.notification.title,
-      body: 'notifee', //remoteMessage.notification.body,
-      android: {
-        channelId: 'default',
-      },
-    });
-  });
+  messaging().onMessage(onMessageReceivedForeground);
 
-  messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log('Received notification in background:', remoteMessage);
-    await notifee.displayNotification({
-      title: remoteMessage.notification.title,
-      body: 'notifee',
-      android: {
-        channelId: 'default',
-      },
-    });
-  });
+  messaging().setBackgroundMessageHandler(onMessageReceivedBackground);
 };
 
 export { configureMessaging, getDeviceToken };
