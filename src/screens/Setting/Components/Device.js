@@ -19,7 +19,7 @@ import { deviceDropDownArray } from '@/constants/flatListData';
 
 import { styles } from '@/screens/Setting/Setting.styles';
 import { useIsFocused } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
 
 export function Device() {

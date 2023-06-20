@@ -11,11 +11,15 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrderCount +
         `?seller_id=${status}&delivery_option=1`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
+          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
+          console.log('error', error);
+
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -33,6 +37,7 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

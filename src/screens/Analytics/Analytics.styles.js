@@ -449,6 +449,14 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     letterSpacing: -1,
   },
+  brandHeaderText: {
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    textAlign: 'center',
+    letterSpacing: -1,
+    width: windowWidth * 0.13,
+  },
   tableDataCon: {
     height: SH(55),
     borderBottomWidth: 1,
@@ -461,6 +469,13 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontSize: SF(12),
     // textAlign: 'center',
+  },
+  brandDataText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+    width: windowWidth * 0.13,
+    textAlign: 'center',
   },
   allienpic: {
     width: SH(42),

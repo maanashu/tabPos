@@ -151,12 +151,6 @@ export class AnalyticsController {
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
           reject(error);
         });
     });
@@ -166,8 +160,9 @@ export class AnalyticsController {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
-        ApiProductInventory.getProductModal +
-        `${productId}?app_name=pos`;
+        ApiProductInventory.searchProductList +
+        `/${productId}?app_name=pos`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

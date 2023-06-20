@@ -107,7 +107,6 @@ export class AuthController {
       };
       HttpClient.post(endpoint, body)
         .then(response => {
-          console.log('response', response);
           if (response.status_code === 200) {
             Toast.show({
               type: 'success_toast',

@@ -6,8 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  SectionList,
-  ViewComponent,
   FlatList,
   Dimensions,
   Platform,
@@ -17,31 +15,23 @@ import {
   crossButton,
   Fonts,
   notifications,
-  Phone_light,
   search_light,
   location,
   backArrow,
-  productMap,
   map,
   dropdown2,
   analytics,
   tobaco,
-  catPercent,
-  activeProduct,
   rightlight,
   Union,
   mask,
-  hokka,
   maskRight,
-  aroma,
   unionRight,
   pencil,
   marboloRed2,
   ciger,
-  cigrate,
   gameLeaf,
   recordTape,
-  swisher,
   leftBack,
   printIcon,
   willis,
@@ -59,7 +49,6 @@ import {
   dropdown,
   checkedCheckboxSquare,
   blankCheckBox,
-  asthonLogo,
   movingArrow,
   blankRadio,
   contact,
@@ -73,11 +62,8 @@ import {
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
 import {
-  Button,
-  DaySelector,
   Spacer,
   TableDropdown,
-  ChartKit,
   BarChartCom,
   ScreenWrapper,
 } from '@/components';
@@ -129,7 +115,7 @@ export function Analytics(props) {
   const getAnalyticsData = useSelector(getAnalytics);
   const totalProductModalData = getAnalyticsData?.getProductModal;
   const getTotalProductArray = getAnalyticsData?.getProductList;
-  const catSubBrandArray = getAnalyticsData?.catSubBrandData;
+  const catSubBrandArray = getAnalyticsData?.catSubBrandData?.data;
   const productGraphObject2 = getAnalyticsData?.getTotalGraph;
   const orderGraphObject = getAnalyticsData?.getOrderGraph;
   const inventeryGraphObject = getAnalyticsData?.getInventeryGraph;
@@ -182,27 +168,27 @@ export function Analytics(props) {
   const productDetailData = [
     {
       heading: 'Cost Price',
-      price: totalProductModalData?.cost_price,
+      price: totalProductModalData?.product_detail?.price,
       id: '1',
     },
     {
       heading: 'Unit Type',
-      price: totalProductModalData?.unit_type,
+      price: totalProductModalData?.product_detail?.type,
       id: '2',
     },
     {
       heading: 'Barcode',
-      price: totalProductModalData?.barcode,
+      price: totalProductModalData?.product_detail?.barcode,
       id: '3',
     },
     {
       heading: 'Unit Weight',
-      price: totalProductModalData?.unit_weight,
+      price: totalProductModalData?.product_detail?.weight_unit,
       id: '4',
     },
     {
       heading: 'Stock on Hand ',
-      price: totalProductModalData?.stock_on_hand,
+      price: totalProductModalData?.product_detail?.length,
       id: '5',
     },
     {
@@ -1826,15 +1812,17 @@ export function Analytics(props) {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
+                    width: windowWidth * 0.66,
                     paddingRight: Platform.OS === 'ios' ? 40 : 0,
                   }}
                 >
-                  <Text style={styles.text}>Sub-Category Listed</Text>
-                  <Text style={styles.text}>Brand Listed</Text>
-                  <Text style={styles.text}>Product Listed</Text>
-                  <Text style={styles.text}>Total Product Sold</Text>
-                  <Text style={styles.text}>Total Sales</Text>
+                  <Text style={styles.brandHeaderText}>
+                    Sub-Category Listed
+                  </Text>
+                  <Text style={styles.brandHeaderText}>Brand Listed</Text>
+                  <Text style={styles.brandHeaderText}>Product Listed</Text>
+                  <Text style={styles.brandHeaderText}>Total Product Sold</Text>
+                  <Text style={styles.brandHeaderText}>Total Sales</Text>
                 </View>
               </View>
             </View>
@@ -1892,28 +1880,26 @@ export function Analytics(props) {
                           style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            width: windowWidth * 0.65,
+                            width: windowWidth * 0.66,
                             paddingHorizontal: Platform.OS === 'ios' ? 40 : 30,
                           }}
                         >
                           <Text
-                            style={[
-                              styles.usertableRowText,
-                              { paddingLeft: 10 },
-                            ]}
+                            style={[styles.brandDataText]}
+                            numberOfLines={1}
                           >
                             {item.sub_category_listed}
                           </Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             {item.brand}
                           </Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             {item.product_listed}
                           </Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             {item.total_product_sold}
                           </Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             ${item.total_sales}
                           </Text>
                         </View>
@@ -1952,15 +1938,15 @@ export function Analytics(props) {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
+                    width: windowWidth * 0.66,
                     paddingRight: Platform.OS === 'ios' ? 40 : 0,
                   }}
                 >
-                  <Text style={styles.text}>Category</Text>
-                  <Text style={styles.text}>Brand Listed</Text>
-                  <Text style={styles.text}>Product Listed</Text>
-                  <Text style={styles.text}>Total Product Sold</Text>
-                  <Text style={styles.text}>Total Sales</Text>
+                  <Text style={styles.brandHeaderText}>Category</Text>
+                  <Text style={styles.brandHeaderText}>Brand Listed</Text>
+                  <Text style={styles.brandHeaderText}>Product Listed</Text>
+                  <Text style={styles.brandHeaderText}>Total Product Sold</Text>
+                  <Text style={styles.brandHeaderText}>Total Sales</Text>
                 </View>
               </View>
             </View>
@@ -2023,23 +2009,21 @@ export function Analytics(props) {
                           }}
                         >
                           <Text
-                            style={[
-                              styles.usertableRowText,
-                              { paddingLeft: 10 },
-                            ]}
+                            style={[styles.brandDataText]}
+                            numberOfLines={1}
                           >
                             {item.category_name}
                           </Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             {item.brand}
                           </Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             {item.product_listed}
                           </Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             {item.total_product_sold}
                           </Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             {item.total_sales}
                           </Text>
                         </View>
@@ -2078,15 +2062,15 @@ export function Analytics(props) {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    width: windowWidth * 0.65,
+                    width: windowWidth * 0.66,
                     paddingRight: Platform.OS === 'ios' ? 40 : 0,
                   }}
                 >
-                  <Text style={styles.text}>Category</Text>
-                  <Text style={styles.text}>Sub-Category</Text>
-                  <Text style={styles.text}>Product Listed</Text>
-                  <Text style={styles.text}>Total Product Sold</Text>
-                  <Text style={styles.text}>Total Sales</Text>
+                  <Text style={styles.brandHeaderText}>Category</Text>
+                  <Text style={styles.brandHeaderText}>Sub-Category</Text>
+                  <Text style={styles.brandHeaderText}>Product Listed</Text>
+                  <Text style={styles.brandHeaderText}>Total Product Sold</Text>
+                  <Text style={styles.brandHeaderText}>Total Sales</Text>
                 </View>
               </View>
             </View>
@@ -2144,26 +2128,27 @@ export function Analytics(props) {
                           style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            width: windowWidth * 0.65,
+                            width: windowWidth * 0.66,
                             paddingRight: Platform.OS === 'ios' ? 40 : 40,
                           }}
                         >
                           <Text
-                            style={[
-                              styles.usertableRowText,
-                              { paddingLeft: 10 },
-                            ]}
+                            style={[styles.brandDataText]}
+                            numberOfLines={1}
                           >
                             {item.category_name}
                           </Text>
-                          <Text style={styles.usertableRowText}></Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text
+                            style={styles.brandDataText}
+                            numberOfLines={1}
+                          ></Text>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             {item.product_listed}
                           </Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             {item.total_product_sold}
                           </Text>
-                          <Text style={styles.usertableRowText}>
+                          <Text style={styles.brandDataText} numberOfLines={1}>
                             ${item.total_sales}
                           </Text>
                         </View>
@@ -3488,11 +3473,13 @@ export function Analytics(props) {
             )}
           </View>
           <Spacer space={SH(30)} />
-          <Text style={styles.marboloText}>{strings.analytics.marboloRed}</Text>
+          <Text style={styles.marboloText} numberOfLines={1}>
+            {totalProductModalData?.product_detail?.name}
+          </Text>
           <Spacer space={SH(30)} />
           <View style={styles.displayFlex}>
             <Image
-              source={{ uri: totalProductModalData?.image?.[0]?.url }}
+              source={{ uri: totalProductModalData?.product_detail?.image }}
               style={styles.marboloRed}
             />
             <View style={styles.descriptionCon}>
@@ -3502,7 +3489,7 @@ export function Analytics(props) {
               </Text>
               <Spacer space={SH(10)} />
               <Text style={styles.description}>
-                {totalProductModalData?.details}
+                {totalProductModalData?.product_detail?.description}
               </Text>
             </View>
           </View>
@@ -3552,7 +3539,6 @@ export function Analytics(props) {
                       style={styles.sellingPriceInput}
                       value={reOrder}
                       onChangeText={setReOrder}
-                      on
                       placeholder="50"
                       placeholderStyle={{ fontSize: SF(50) }}
                       placeholderTextColor={COLORS.dark_grey}

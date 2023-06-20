@@ -111,7 +111,6 @@ export function CartScreen({
         service_id: cartItem?.service_id,
         qty: cartItem?.qty,
       };
-      console.log('data', data);
       dispatch(addTocart(data));
       // dispatch(createCartAction(withoutVariantObject));
     }

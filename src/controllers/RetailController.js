@@ -249,7 +249,6 @@ export class RetailController {
   static async addTocart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.addTocart;
-      console.log('endpoint', endpoint);
       // let supplyID = data.supplyId.toString();
       // let supplyPriceID = data.supplyPriceID.toString();
       // let variantId = data.supplyVariantId.toString();
@@ -271,10 +270,8 @@ export class RetailController {
             supply_id: data.supplyId.toString(),
             supply_price_id: data.supplyPriceID.toString(),
           };
-      console.log('---------------------------', body);
       HttpClient.post(endpoint, body)
         .then(response => {
-          console.log(response);
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -286,7 +283,6 @@ export class RetailController {
           resolve(response);
         })
         .catch(error => {
-          console.log(error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -356,7 +352,6 @@ export class RetailController {
           }
         })
         .catch(error => {
-          console.log('error', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',

@@ -387,7 +387,9 @@ export function MainScreen({
       onPress={onPress}
       //   onPress={() => setCategoryModal(true)}
     >
-      <Text style={styles.chooseCat}>{item.name}</Text>
+      <Text style={styles.chooseCat} numberOfLines={1}>
+        {item.name}
+      </Text>
       <Image
         source={categoryMenu}
         style={[

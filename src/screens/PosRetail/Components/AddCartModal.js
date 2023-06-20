@@ -30,10 +30,6 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct;
-  console.log(
-    'productDetail',
-    productDetail?.product_detail?.supplies?.[0]?.attributes?.length
-  );
 
   const sizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const colorSizeArray =
@@ -51,6 +47,13 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   const [sizeName, setSizeName] = useState();
   const [selectedItems, setSelectedItems] = useState([]);
   const [string, setString] = useState();
+
+  // const getcolorName = colorCode => {
+  //   console.log('colorCode', colorCode);
+  //   const color = tinycolor(colorCode);
+  //   let colorNamessss = color.toName();
+  //   return colorNamessss;
+  // };
   const addToCartHandler = async () => {
     if (
       productDetail?.product_detail?.supplies?.[0]?.attributes?.length === 0
@@ -131,11 +134,7 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
         item={item}
         onPress={() => {
           setColorId(colorId === item.id ? null : item.id);
-          // getColorName(item.name);
-          // setColorName(item.name);
-          // const newSelectedItems = [...selectedItems];
-          // newSelectedItems[index] = item.id;
-          // setSelectedItems(newSelectedItems);
+          setColorName(item.name);
         }}
         backgroundColor={backgroundColor}
         textColor={color}
@@ -155,6 +154,7 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
       onPress={onPress}
     >
       <Text style={[styles.colorSelectText, { color: textColor }]}>
+        {/* {getcolorName(item.name)} */}
         {item.name}
       </Text>
     </TouchableOpacity>
@@ -173,10 +173,7 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
         item={item}
         onPress={() => {
           setSizeId(sizeId === item.id ? null : item.id);
-          // setSizeName(item.name);
-          // const newSelectedItems = [...selectedItems];
-          // newSelectedItems[index] = item.id;
-          // setSelectedItems(newSelectedItems);
+          setSizeName(item.name);
         }}
         backgroundColor={backgroundColor}
         textColor={color}

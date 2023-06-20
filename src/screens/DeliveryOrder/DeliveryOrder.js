@@ -431,15 +431,15 @@ export function DeliveryOrder() {
         <View style={styles.timeView}>
           <Image source={pin} style={styles.pinIcon} />
           <Text style={styles.timeText}>
-            {item?.distance ? item?.distance : '0miles'} miles
+            {item?.distance ? item?.distance : '0miles'}
           </Text>
         </View>
       </View>
 
       <View style={{ width: SW(25) }}>
         <Text style={styles.nameText}>
-          {custProLength ? custProLength : '0'}
-          {custProLength > 1 ? 'items' : 'item'}
+          {item?.order_details?.length}
+          {item?.order_details?.length > 1 ? 'items' : 'item'}
         </Text>
         <View style={styles.timeView}>
           <Image source={pay} style={styles.pinIcon} />

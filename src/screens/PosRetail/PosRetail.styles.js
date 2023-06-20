@@ -291,6 +291,7 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: SF(13),
     fontFamily: Fonts.Medium,
+    width: windowWidth * 0.16,
   },
   contentContainer: {
     flex: 1,

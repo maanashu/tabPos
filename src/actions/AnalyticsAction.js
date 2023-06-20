@@ -185,7 +185,7 @@ export const getProductList = catId => async dispatch => {
   dispatch(getProductListRequest());
   try {
     const res = await AnalyticsController.getProductList(catId);
-    dispatch(getProductListSuccess(res?.payload));
+    dispatch(getProductListSuccess(res?.payload?.data));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getProductListReset());
