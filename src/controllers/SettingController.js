@@ -13,11 +13,14 @@ export class SettingController {
   static async getSetting() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getSetting + `?app_name=pos`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
+          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
+          console.log('error', error);
           if (error.statusCode !== 204) {
             Toast.show({
               text2: error.msg,

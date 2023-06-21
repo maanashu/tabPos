@@ -162,7 +162,6 @@ export class AnalyticsController {
         PRODUCT_URL +
         ApiProductInventory.searchProductList +
         `/${productId}?app_name=pos`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

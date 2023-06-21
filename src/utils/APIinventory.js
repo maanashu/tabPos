@@ -4,11 +4,15 @@
 // export const PRODUCT_URL = 'https://stgapiproductmgmt.jobr.com/api/v1/';
 // export const WALLET_URL = 'https://stgbewalletmanagement.jobr.com/api/v1/'
 
+import { store } from '@/store';
+
 export const USER_URL = 'https://apiuserservice.jobr.com/api/v1/';
 // export const SUPPORT_URL = 'https://apisupport.jobr.com/api/v1/';
 export const ORDER_URL = 'https://apiorder.jobr.com:8004/api/v1/';
 export const PRODUCT_URL = 'https://apiproductmgmt.jobr.com/api/v1/';
 export const WALLET_URL = 'https://apiwallet.jobr.com/api/v1/';
+
+export const posDrawerId = store.getState().cashTracking?.getDrawerSession?.id;
 
 export const ApiUserInventory = {
   verifyPhone: 'user_phones/',
@@ -27,6 +31,9 @@ export const ApiUserInventory = {
   getUserAddress: 'user_locations/user',
   getCountries: 'countries',
   getState: 'states',
+  getDrawerSessionById: 'drawer_management/drawer-session/history',
+  getDrawer: status =>
+    `drawer_management/drawer-session/history?drawer_id=${status}`,
 };
 
 export const ApiProductInventory = {
@@ -95,4 +102,7 @@ export const API_URLS_USING_POS_USER_ACCESS_TOKEN = [
   USER_URL + ApiUserInventory.getSessionHistory,
   USER_URL + ApiUserInventory.getDrawerSession,
   USER_URL + ApiUserInventory.trackSessionSave,
+  USER_URL + ApiUserInventory.posLoginDetail,
+  USER_URL +
+    `drawer_management/drawer-session/history?drawer_id=${posDrawerId}`,
 ];

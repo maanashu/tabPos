@@ -21,6 +21,10 @@ client.interceptors.request.use(async function (config) {
    * @returns Token for api call
    */
   const getToken = () => {
+    console.log(
+      'API_URLS_USING_POS_USER_ACCESS_TOKEN',
+      API_URLS_USING_POS_USER_ACCESS_TOKEN.includes(config.url)
+    );
     if (API_URLS_USING_POS_USER_ACCESS_TOKEN.includes(config.url)) {
       return user;
     } else {
@@ -34,6 +38,8 @@ client.interceptors.request.use(async function (config) {
     Authorization: getToken(),
     'app-name': 'pos',
   };
+
+  console.log('config.headers', config.headers);
 
   if (fcmToken) {
     config.headers['fcm-token'] = fcmToken;

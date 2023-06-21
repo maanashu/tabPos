@@ -139,8 +139,8 @@ export class CashTrackingController {
   }
   static async getDrawerSessionById(status) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        USER_URL + ApiUserInventory.getSessionHistory + `?drawer_id=${status}`;
+      // const endpoint = USER_URL + ApiUserInventory.getDrawerSessionById + `?drawer_id=${status}`;
+      const endpoint = USER_URL + ApiUserInventory.getDrawer(status);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -152,7 +152,7 @@ export class CashTrackingController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   }
