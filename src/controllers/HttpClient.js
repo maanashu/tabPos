@@ -20,26 +20,20 @@ client.interceptors.request.use(async function (config) {
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
    * @returns Token for api call
    */
-  const getToken = () => {
-    console.log(
-      'API_URLS_USING_POS_USER_ACCESS_TOKEN',
-      API_URLS_USING_POS_USER_ACCESS_TOKEN.includes(config.url)
-    );
+  const getRole = () => {
     if (API_URLS_USING_POS_USER_ACCESS_TOKEN.includes(config.url)) {
-      return user;
+      return { token: user, appName: 'pos' };
     } else {
-      return register;
+      return { token: register, appName: 'merchant' };
     }
   };
 
   config.headers = {
     ...config.headers,
     timezone: getTimeZone,
-    Authorization: getToken(),
-    'app-name': 'pos',
+    Authorization: getRole().token,
+    'app-name': getRole().appName,
   };
-
-  console.log('config.headers', config.headers);
 
   if (fcmToken) {
     config.headers['fcm-token'] = fcmToken;

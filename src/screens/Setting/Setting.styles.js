@@ -634,7 +634,7 @@ export const styles = StyleSheet.create({
     height: SW(12),
   },
   taxPayerModCon: {
-    height: windowHeight * 0.8,
+    height: windowHeight * 0.9,
   },
   name: {
     fontSize: SF(16),

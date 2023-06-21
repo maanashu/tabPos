@@ -158,7 +158,7 @@ export class DashboardController {
         .catch(error => {
           {
             Toast.show({
-              text2: error.msg,
+              text2: 'jjjjj',
               position: 'bottom',
               type: 'error_toast',
               visibilityTime: 1500,

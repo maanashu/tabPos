@@ -39,6 +39,7 @@ import { getCountries, getState } from '@/actions/SettingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SettingTypes';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export function Taxes() {
   const isFocused = useIsFocused();
@@ -291,83 +292,69 @@ export function Taxes() {
       );
     } else if (taxPayerModel) {
       return (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'android' ? undefined : 'position'}
-          // enabled
-        >
-          <ScrollView scrollEnabled={true}>
-            <View style={[styles.countryModCon, styles.taxPayerModCon]}>
-              <View style={styles.countryModHeader}>
-                <View style={styles.flexRow}>
-                  <Text style={styles.selectHead}>
-                    {strings.settings.taxPayerHeadl}
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.crossButtonCon}
-                    onPress={() => (
-                      setTaxPayerModel(false), setStateModel(true)
-                    )}
-                  >
-                    <Image
-                      source={crossButton}
-                      style={styles.cntryCrossButton}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={styles.countryModBody}>
-                <Spacer space={SH(7)} />
-                <Text style={styles.name}>{strings.settings.name}</Text>
-                <TextInput
-                  placeholder="Full Name or Business name"
-                  style={styles.nameInput}
-                  placeholderStyle={styles.namePlaceholder}
-                />
-                <Spacer space={SH(7)} />
-                <Text style={styles.name}>{strings.settings.ssn}</Text>
-                <TextInput
-                  placeholder={strings.settings.ssn}
-                  style={styles.nameInput}
-                  placeholderStyle={styles.namePlaceholder}
-                />
-                <Spacer space={SH(7)} />
-                <Text style={styles.name}>{strings.settings.streetAdd}</Text>
-                <TextInput
-                  placeholder={strings.settings.streetAdd}
-                  style={styles.nameInput}
-                  placeholderStyle={styles.namePlaceholder}
-                />
-                <Spacer space={SH(7)} />
-                <Text style={styles.name}>{strings.settings.appartement}</Text>
-                <TextInput
-                  placeholder={strings.settings.appartement}
-                  style={styles.nameInput}
-                  placeholderStyle={styles.namePlaceholder}
-                />
-                <Spacer space={SH(7)} />
-                {/* <View style={styles.dispalyRow}></View> */}
-                <Spacer space={SH(8)} />
-                <View style={{ flex: 1 }} />
-                <View style={styles.dispalyRow}>
-                  <View style={styles.cancelbuttonCon}>
-                    <Text style={styles.cancel}>{strings.settings.cancel}</Text>
-                  </View>
-                  <TouchableOpacity
-                    style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
-                    onPress={() => (
-                      setTaxPayerModel(false), setVerifiedArea(true)
-                    )}
-                  >
-                    <Text style={[styles.cancel, styles.next]}>
-                      {strings.settings.verify}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <Spacer space={SH(20)} />
-              </View>
+        <View style={[styles.countryModCon, styles.taxPayerModCon]}>
+          <View style={styles.countryModHeader}>
+            <View style={styles.flexRow}>
+              <Text style={styles.selectHead}>
+                {strings.settings.taxPayerHeadl}
+              </Text>
+              <TouchableOpacity
+                style={styles.crossButtonCon}
+                onPress={() => (setTaxPayerModel(false), setStateModel(true))}
+              >
+                <Image source={crossButton} style={styles.cntryCrossButton} />
+              </TouchableOpacity>
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+          </View>
+          <View style={styles.countryModBody}>
+            <Spacer space={SH(7)} />
+            <Text style={styles.name}>{strings.settings.name}</Text>
+            <TextInput
+              placeholder="Full Name or Business name"
+              style={styles.nameInput}
+              placeholderStyle={styles.namePlaceholder}
+            />
+            <Spacer space={SH(7)} />
+            <Text style={styles.name}>{strings.settings.ssn}</Text>
+            <TextInput
+              placeholder={strings.settings.ssn}
+              style={styles.nameInput}
+              placeholderStyle={styles.namePlaceholder}
+            />
+            <Spacer space={SH(7)} />
+            <Text style={styles.name}>{strings.settings.streetAdd}</Text>
+            <TextInput
+              placeholder={strings.settings.streetAdd}
+              style={styles.nameInput}
+              placeholderStyle={styles.namePlaceholder}
+            />
+            <Spacer space={SH(7)} />
+            <Text style={styles.name}>{strings.settings.appartement}</Text>
+            <TextInput
+              placeholder={strings.settings.appartement}
+              style={styles.nameInput}
+              placeholderStyle={styles.namePlaceholder}
+            />
+            <Spacer space={SH(7)} />
+            {/* <View style={styles.dispalyRow}></View> */}
+            <Spacer space={SH(8)} />
+            <View style={{ flex: 1 }} />
+            <View style={styles.dispalyRow}>
+              <View style={styles.cancelbuttonCon}>
+                <Text style={styles.cancel}>{strings.settings.cancel}</Text>
+              </View>
+              <TouchableOpacity
+                style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
+                onPress={() => (setTaxPayerModel(false), setVerifiedArea(true))}
+              >
+                <Text style={[styles.cancel, styles.next]}>
+                  {strings.settings.verify}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Spacer space={SH(20)} />
+          </View>
+        </View>
       );
     } else if (stateTax) {
       return (
