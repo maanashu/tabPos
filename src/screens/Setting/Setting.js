@@ -28,6 +28,7 @@ import { ActivityIndicator } from 'react-native';
 import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useIsFocused } from '@react-navigation/native';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 export function Setting() {
   const dispatch = useDispatch();
@@ -58,6 +59,9 @@ export function Setting() {
         TYPES.GET_SHIPPICK,
         TYPES.ADDRESS_UPDATE,
         TYPES.GET_USER_ADD,
+        TYPES.GET_ALL_POS_USERS,
+        TYPES.STAFF_DETAIL,
+        TYPES.GET_TAX,
       ],
       state
     )

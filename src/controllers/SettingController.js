@@ -147,4 +147,45 @@ export class SettingController {
         });
     });
   }
+
+  static async staffDetail() {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.staffDetail;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getTax(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        USER_URL +
+        ApiUserInventory.getTax +
+        `?seller_id=082accb0-faef-4cb9-91eb-6c3fe1ae8fad&is_tax_details=${data?.is_tax}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
 }

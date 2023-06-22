@@ -26,6 +26,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  countryStateWidth: {
+    width: windowWidth * 0.36,
+    justifyContent: 'space-between',
+  },
   headingCon: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
@@ -132,6 +136,7 @@ export const styles = StyleSheet.create({
     width: SW(12),
     height: SW(12),
     resizeMode: 'contain',
+    borderRadius: 100,
   },
   teamMember2: {
     width: SW(10),
@@ -577,7 +582,7 @@ export const styles = StyleSheet.create({
   },
   countryModBody: {
     flex: 1,
-    width: windowWidth * 0.33,
+    width: windowWidth * 0.36,
     height: windowHeight * 0.45,
     borderRadius: 15,
     alignSelf: 'center',
@@ -637,7 +642,7 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.9,
   },
   name: {
-    fontSize: SF(16),
+    fontSize: SF(14),
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
     paddingVertical: verticalScale(2),
@@ -648,10 +653,21 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     fontFamily: Fonts.Italic,
     fontSize: SF(13),
-    height: SW(15),
+    height: SW(13),
+    color: COLORS.solid_grey,
+  },
+  countryInput: {
+    backgroundColor: COLORS.textInputBackground,
+    paddingLeft: moderateScale(10),
+    borderRadius: 5,
+    fontFamily: Fonts.Italic,
+    fontSize: SF(13),
+    height: SW(13),
+    width: windowWidth * 0.17,
+    color: COLORS.solid_grey,
   },
   namePlaceholder: {
-    color: COLORS.gerySkies,
+    color: COLORS.black,
   },
   height: {
     // height:windowHeight * 0.80

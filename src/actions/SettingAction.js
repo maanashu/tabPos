@@ -108,6 +108,40 @@ const getStateReset = () => ({
   payload: null,
 });
 
+const staffDetailRequest = () => ({
+  type: TYPES.STAFF_DETAIL_REQUEST,
+  payload: null,
+});
+const staffDetailSuccess = staffDetail => ({
+  type: TYPES.STAFF_DETAIL_SUCCESS,
+  payload: { staffDetail },
+});
+const staffDetailError = error => ({
+  type: TYPES.STAFF_DETAIL_ERROR,
+  payload: { error },
+});
+const staffDetailReset = () => ({
+  type: TYPES.STAFF_DETAIL_RESET,
+  payload: null,
+});
+
+const getTaxRequest = () => ({
+  type: TYPES.GET_TAX_REQUEST,
+  payload: null,
+});
+const getTaxSuccess = getTax => ({
+  type: TYPES.GET_TAX_SUCCESS,
+  payload: { getTax },
+});
+const getTaxError = error => ({
+  type: TYPES.GET_TAX_ERROR,
+  payload: { error },
+});
+const getTaxReset = () => ({
+  type: TYPES.GET_TAX_RESET,
+  payload: null,
+});
+
 export const getSettings = () => async dispatch => {
   dispatch(getSettingRequest());
   try {
@@ -185,5 +219,30 @@ export const getState = id => async dispatch => {
       dispatch(getStateReset());
     }
     dispatch(getStateError(error.message));
+  }
+};
+
+export const getStaffDetail = () => async dispatch => {
+  dispatch(staffDetailRequest());
+  try {
+    const res = await SettingController.staffDetail();
+    return dispatch(staffDetailSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(staffDetailReset());
+    }
+    dispatch(staffDetailError(error.message));
+  }
+};
+export const getTax = data => async dispatch => {
+  dispatch(getTaxRequest());
+  try {
+    const res = await SettingController.getTax(data);
+    return dispatch(getTaxSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getTaxReset());
+    }
+    dispatch(getTaxError(error.message));
   }
 };

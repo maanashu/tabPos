@@ -210,6 +210,11 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     color: COLORS.solid_grey,
   },
+  nameTextSet: {
+    color: COLORS.primary,
+    fontFamily: Fonts.SemiBold,
+    width: SW(40),
+  },
   timeText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(11),

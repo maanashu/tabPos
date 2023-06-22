@@ -6,6 +6,7 @@ const INITIALSTATE = {
   getUserAddress: [],
   getCountries: [],
   getState: [],
+  staffDetail: [],
 };
 
 export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -52,6 +53,27 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         getState: [],
+      };
+
+    case TYPES.STAFF_DETAIL_SUCCESS:
+      return {
+        ...state,
+        staffDetail: payload.staffDetail,
+      };
+    case TYPES.STAFF_DETAIL_RESET:
+      return {
+        ...state,
+        staffDetail: [],
+      };
+    case TYPES.GET_TAX_SUCCESS:
+      return {
+        ...state,
+        getTax: payload.getTax,
+      };
+    case TYPES.GET_TAX_RESET:
+      return {
+        ...state,
+        getTax: [],
       };
     default:
       return state;

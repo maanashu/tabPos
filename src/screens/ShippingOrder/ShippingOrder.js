@@ -503,10 +503,16 @@ export function ShippingOrder() {
 
       <View style={{ width: SW(45) }}>
         <View style={styles.flexRowCenter}>
-          <Image source={deliveryScooter} style={styles.profileImage} />
+          <Image
+            source={{ uri: item?.shipping_details?.image }}
+            style={styles.profileImage}
+          />
           <View>
-            <Text style={[styles.nameText, { color: COLORS.primary }]}>
-              {item?.shipping ? item?.shipping : 'no delivery type'}
+            <Text
+              style={[styles.nameText, { color: COLORS.primary }]}
+              numberOfLines={1}
+            >
+              {item?.shipping_details?.title}
             </Text>
             <View style={styles.timeView}>
               <Image source={clock} style={styles.pinIcon} />
@@ -574,7 +580,7 @@ export function ShippingOrder() {
 
       <View style={{ width: SW(60) }}>
         <Text style={[styles.nameText, { color: COLORS.primary }]}>
-          {item?.shipping}
+          {item?.shipping_details?.title}
         </Text>
         <View style={styles.timeView}>
           <Image source={clock} style={styles.pinIcon} />
@@ -1049,13 +1055,13 @@ export function ShippingOrder() {
           distance={singleOrder?.distance}
           itemLength={singleOrder?.order_details?.length}
           payAmount={singleOrder?.payable_amount}
-          deliveryType={singleOrder?.shipping}
+          deliveryType={singleOrder?.shipping_details?.title}
           orderFirstTime={singleOrder?.preffered_delivery_start_time}
           orderSecondTime={singleOrder?.preffered_delivery_end_time}
           userProfile={singleOrder?.user_details?.profile_photo}
           userFirstName={singleOrder?.user_details?.firstname}
           userAddress={singleOrder?.address}
-          driverShipping={singleOrder?.shipping}
+          driverShipping={singleOrder?.shipping_details?.title}
           singleOrder={singleOrder}
           renderProductList={renderProductList}
           singleorderCancelHandler={singleorderCancelHandler}
@@ -1136,15 +1142,16 @@ export function ShippingOrder() {
               </View>
 
               <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
-                <Image source={deliveryScooter} style={styles.profileImage} />
+                <Image
+                  source={{ uri: itemss?.shipping_details?.image }}
+                  style={styles.profileImage}
+                />
                 <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
                   <Text
-                    style={[
-                      styles.nameText,
-                      { color: COLORS.primary, fontFamily: Fonts.SemiBold },
-                    ]}
+                    style={[styles.nameText, styles.nameTextSet]}
+                    numberOfLines={1}
                   >
-                    {itemss?.shipping ? itemss?.shipping : 'no delivery type'}
+                    {itemss?.shipping_details?.title}
                   </Text>
                   <Text style={styles.timeText}>
                     {strings.deliveryOrders.time}

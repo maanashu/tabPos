@@ -277,7 +277,7 @@ export function SingleOrderView({
 
           <View style={{ width: SW(60) }}>
             <Text style={[styles.nameText, { color: COLORS.primary }]}>
-              {deliveryType ? deliveryType : 'no shipping type'}
+              {deliveryType}
             </Text>
             <View style={styles.timeView}>
               <Image source={clock} style={styles.pinIcon} />
@@ -327,12 +327,10 @@ export function SingleOrderView({
             <Image source={deliveryScooter} style={styles.profileImage} />
             <View style={{ justifyContent: 'center', paddingLeft: 5 }}>
               <Text
-                style={[
-                  styles.nameText,
-                  { color: COLORS.primary, fontFamily: Fonts.SemiBold },
-                ]}
+                style={[styles.nameText, styles.nameTextSet]}
+                numberOfLines={1}
               >
-                {driverShipping ? driverShipping : 'no shipping type'}
+                {driverShipping}
               </Text>
               <Text style={styles.timeText}>{strings.deliveryOrders.time}</Text>
             </View>

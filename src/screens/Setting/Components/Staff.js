@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -24,16 +24,83 @@ import {
   rightBack,
   shieldPerson,
   staffImage,
+  userImage,
 } from '@/assets';
 import { Table } from 'react-native-table-component';
 import { Dimensions } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
+import { useIsFocused } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getAllPosUsers } from '@/actions/AuthActions';
+import { getStaffDetail } from '@/actions/SettingAction';
+import { getSetting } from '@/selectors/SettingSelector';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import moment from 'moment';
 const windowWidth = Dimensions.get('window').width;
 
 export function Staff() {
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const getAuth = useSelector(getAuthData);
+  const getSettingData = useSelector(getSetting);
+  const staffDetailData = getSettingData?.staffDetail;
+  const posUserArray = getAuth?.getAllPosUsers;
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [expandView, setExpandView] = useState(false);
+  const [data, setData] = useState();
+  const [Index, setIndex] = useState();
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getAllPosUsers());
+    }
+  }, [isFocused]);
+
+  const staffDetailhandler = async () => {
+    const res = await dispatch(getStaffDetail());
+    if (res?.type === 'STAFF_DETAIL_SUCCESS') {
+      setStaffDetail(true);
+    } else {
+      Toast.show({
+        text2: error.msg,
+        position: 'bottom',
+        type: 'Staff profil not found',
+        visibilityTime: 1500,
+      });
+    }
+  };
+
+  const userRenderItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.twoStepMemberCon}
+      // onPress={() => setStaffDetail(true)}
+      onPress={() => {
+        staffDetailhandler();
+        setData(item);
+      }}
+    >
+      <View style={styles.flexRow}>
+        <View style={styles.dispalyRow}>
+          <Image
+            source={{ uri: item.user_profiles?.profile_photo ?? userImage }}
+            style={styles.teamMember}
+          />
+          <View style={styles.marginLeft}>
+            <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+              {item.user_profiles?.firstname}
+            </Text>
+            <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
+              {item.user_profiles?.pos_role ?? 'Merchant'}
+            </Text>
+          </View>
+        </View>
+        <Image source={rightBack} style={styles.arrowStyle} />
+      </View>
+    </TouchableOpacity>
+  );
+
   const bodyView = () => {
     if (staffDetail) {
       return (
@@ -52,11 +119,13 @@ export function Staff() {
                 <View style={styles.profileBodycon}>
                   <View style={{ flexDirection: 'row' }}>
                     <Image
-                      source={columbiaMen}
+                      source={{ uri: data?.user_profiles?.profile_photo }}
                       style={styles.profileImageStaff}
                     />
                     <View style={styles.litMorecon}>
-                      <Text style={styles.staffName}>Lillie A. Moore</Text>
+                      <Text style={styles.staffName}>
+                        {data?.user_profiles?.firstname}
+                      </Text>
                       <View style={styles.dispalyRow}>
                         <Image
                           source={shieldPerson}
@@ -66,13 +135,13 @@ export function Staff() {
                       </View>
                       <View style={styles.dispalyRow}>
                         <Image source={Phone_light} style={styles.Phonelight} />
-                        <Text style={styles.terryText}>803-238-2630</Text>
+                        <Text style={styles.terryText}>
+                          {data?.user_profiles?.full_phone_number}
+                        </Text>
                       </View>
                       <View style={styles.dispalyRow}>
                         <Image source={email} style={styles.Phonelight} />
-                        <Text style={styles.terryText}>
-                          mailto:harryrady@jourrapide.com
-                        </Text>
+                        <Text style={styles.terryText}>{data?.email}</Text>
                       </View>
                       <View style={styles.dispalyRow}>
                         <Image source={location} style={styles.Phonelight} />
@@ -176,151 +245,162 @@ export function Staff() {
                     </View>
                   </View>
 
-                  <View>
-                    <TouchableOpacity
-                      style={styles.tableDataCon}
-                      onPress={() => setExpandView(!expandView)}
-                    >
-                      <View style={styles.flexRow}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            width: windowWidth * 0.16,
-                          }}
-                        >
-                          <Text
-                            style={[
-                              styles.text,
-                              styles.hourRateLigh,
-                              { textAlign: 'left' },
-                            ]}
-                            numberOfLines={1}
-                          >
-                            May 29, 2023 - Jun 4, 2023
-                          </Text>
-                        </View>
-                        <View style={styles.dateHeadAlign}>
-                          <Text
-                            style={[styles.text, styles.hourRateLigh]}
-                            numberOfLines={1}
-                          >
-                            44 h 20 m
-                          </Text>
-                          <Text
-                            style={[styles.text, styles.hourRateLigh]}
-                            numberOfLines={1}
-                          >
-                            JBR 70,500
-                          </Text>
-                          <Text
-                            style={[styles.text, styles.hourRateLigh]}
-                            numberOfLines={1}
-                          >
-                            Unpaid
-                          </Text>
-                          <TouchableOpacity
-                            onPress={() => setInvoiceModal(true)}
+                  {staffDetailData?.map((item, index) => (
+                    <View>
+                      <TouchableOpacity
+                        style={styles.tableDataCon}
+                        onPress={() => {
+                          setExpandView(true), setIndex(index);
+                        }}
+                        key={index}
+                      >
+                        <View style={styles.flexRow}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              width: windowWidth * 0.16,
+                            }}
                           >
                             <Text
                               style={[
                                 styles.text,
                                 styles.hourRateLigh,
-                                { color: COLORS.primary },
+                                { textAlign: 'left' },
                               ]}
                               numberOfLines={1}
                             >
-                              View Payment
+                              {moment(item.start_time).format('LL')} -{' '}
+                              {moment(item.end_time).format('LL')}
                             </Text>
-                          </TouchableOpacity>
-                          <View style={[styles.text, { alignItems: 'center' }]}>
-                            <Image
-                              source={rightBack}
-                              style={
-                                expandView
-                                  ? styles.arrowStyle2
-                                  : styles.arrowStyle
-                              }
-                            />
                           </View>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                    {expandView ? (
-                      <View style={styles.sideLeftSideBar}>
-                        <View
-                          style={[
-                            styles.tableDataCon,
-                            {
-                              backgroundColor: COLORS.textInputBackground,
-                              borderWidth: 1,
-                            },
-                          ]}
-                        >
-                          <View style={styles.flexRow}>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                width: windowWidth * 0.16,
-                              }}
+                          <View style={styles.dateHeadAlign}>
+                            <Text
+                              style={[styles.text, styles.hourRateLigh]}
+                              numberOfLines={1}
+                            >
+                              {item.duration}
+                            </Text>
+                            <Text
+                              style={[styles.text, styles.hourRateLigh]}
+                              numberOfLines={1}
+                            >
+                              JBR {item.amount}
+                            </Text>
+                            <Text
+                              style={[styles.text, styles.hourRateLigh]}
+                              numberOfLines={1}
+                            >
+                              {item.status === true ? 'paid' : 'Unpaid'}
+                            </Text>
+                            <TouchableOpacity
+                              onPress={() => setInvoiceModal(true)}
                             >
                               <Text
                                 style={[
                                   styles.text,
                                   styles.hourRateLigh,
-                                  { textAlign: 'left' },
+                                  { color: COLORS.primary },
                                 ]}
                                 numberOfLines={1}
                               >
-                                1 May, 2022
+                                View Payment
                               </Text>
+                            </TouchableOpacity>
+                            <View
+                              style={[styles.text, { alignItems: 'center' }]}
+                            >
+                              <Image
+                                source={rightBack}
+                                style={
+                                  expandView
+                                    ? styles.arrowStyle2
+                                    : styles.arrowStyle
+                                }
+                              />
                             </View>
-                            <View style={styles.dateHeadAlign}>
-                              <Text
-                                style={[styles.text, styles.hourRateLigh]}
-                                numberOfLines={1}
-                              >
-                                10:05:32 pm
-                              </Text>
-                              <Text
-                                style={[styles.text, styles.hourRateLigh]}
-                                numberOfLines={1}
-                              >
-                                05:12:32 pm
-                              </Text>
-                              <Text
-                                style={[styles.text, styles.hourRateLigh]}
-                                numberOfLines={1}
-                              >
-                                08h 07m 00s
-                              </Text>
-                              <TouchableOpacity
-                                onPress={() => setInvoiceModal(true)}
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                      {expandView && Index === index ? (
+                        <View style={styles.sideLeftSideBar}>
+                          <View
+                            style={[
+                              styles.tableDataCon,
+                              {
+                                backgroundColor: COLORS.textInputBackground,
+                                borderWidth: 1,
+                              },
+                            ]}
+                          >
+                            <View style={styles.flexRow}>
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  width: windowWidth * 0.16,
+                                }}
                               >
                                 <Text
                                   style={[
                                     styles.text,
                                     styles.hourRateLigh,
-                                    { color: COLORS.primary },
+                                    { textAlign: 'left' },
                                   ]}
                                   numberOfLines={1}
                                 >
-                                  {null}
+                                  1 May, 2022
                                 </Text>
-                              </TouchableOpacity>
-                              <View
-                                style={[styles.text, { alignItems: 'center' }]}
-                              >
-                                <Image
-                                  source={null}
-                                  style={styles.arrowStyle}
-                                />
+                              </View>
+                              <View style={styles.dateHeadAlign}>
+                                <Text
+                                  style={[styles.text, styles.hourRateLigh]}
+                                  numberOfLines={1}
+                                >
+                                  10:05:32 pm
+                                </Text>
+                                <Text
+                                  style={[styles.text, styles.hourRateLigh]}
+                                  numberOfLines={1}
+                                >
+                                  05:12:32 pm
+                                </Text>
+                                <Text
+                                  style={[styles.text, styles.hourRateLigh]}
+                                  numberOfLines={1}
+                                >
+                                  08h 07m 00s
+                                </Text>
+                                <TouchableOpacity
+                                  onPress={() => setInvoiceModal(true)}
+                                >
+                                  <Text
+                                    style={[
+                                      styles.text,
+                                      styles.hourRateLigh,
+                                      { color: COLORS.primary },
+                                    ]}
+                                    numberOfLines={1}
+                                  >
+                                    {null}
+                                  </Text>
+                                </TouchableOpacity>
+                                <View
+                                  style={[
+                                    styles.text,
+                                    { alignItems: 'center' },
+                                  ]}
+                                >
+                                  <Image
+                                    source={null}
+                                    style={styles.arrowStyle}
+                                  />
+                                </View>
                               </View>
                             </View>
                           </View>
                         </View>
-                      </View>
-                    ) : null}
-                  </View>
+                      ) : null}
+                    </View>
+                  ))}
                 </Table>
               </View>
             </ScrollView>
@@ -357,29 +437,13 @@ export function Staff() {
                   {strings.Staff.staffDes}
                 </Text>
                 <Spacer space={SH(18)} />
-                <TouchableOpacity
-                  style={styles.twoStepMemberCon}
-                  onPress={() => setStaffDetail(true)}
-                >
-                  <View style={styles.flexRow}>
-                    <View style={styles.dispalyRow}>
-                      <Image source={columbiaMen} style={styles.teamMember} />
-                      <View style={styles.marginLeft}>
-                        <Text
-                          style={[styles.twoStepText, { fontSize: SF(14) }]}
-                        >
-                          Brooke P. Burchfield
-                        </Text>
-                        <Text
-                          style={[styles.securitysubhead, { fontSize: SF(12) }]}
-                        >
-                          POS Staff
-                        </Text>
-                      </View>
-                    </View>
-                    <Image source={rightBack} style={styles.arrowStyle} />
-                  </View>
-                </TouchableOpacity>
+
+                <FlatList
+                  data={posUserArray}
+                  extraData={posUserArray}
+                  renderItem={userRenderItem}
+                  keyExtractor={item => item.id}
+                />
               </View>
             </View>
           </View>

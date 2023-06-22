@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -35,7 +35,7 @@ import { moderateScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
-import { getCountries, getState } from '@/actions/SettingAction';
+import { getCountries, getState, getTax } from '@/actions/SettingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SettingTypes';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -46,9 +46,11 @@ export function Taxes() {
   const dispatch = useDispatch();
   const getSettingData = useSelector(getSetting);
   const getAuth = useSelector(getAuthData);
-  const merchantprofile = getAuth?.merchantLoginData?.user_profile;
+  const merchantProfile = getAuth?.merchantLoginData?.user_profile;
   const countryArray = getSettingData?.getCountries;
   const stateArray = getSettingData?.getState;
+  const getTaxData = getSettingData?.getTax;
+  console.log('getTaxData');
   const [countryModel, setCountryModel] = useState(false);
   const [stateModel, setStateModel] = useState(false);
   const [taxPayerModel, setTaxPayerModel] = useState(false);
@@ -61,6 +63,49 @@ export function Taxes() {
   const [addExmption, setAddExmption] = useState(false);
   const [addStateBtn, setAddStateBtn] = useState(false);
   const [countryItemSel, setCountryItemSel] = useState();
+
+  const [name, setName] = useState(merchantProfile?.username);
+  const [ssn, setSsn] = useState(merchantProfile?.ssn_number);
+  const [streetAdd, setStreetAdd] = useState(
+    merchantProfile?.current_address?.street_address
+  );
+  const [appartment, setAppartment] = useState(
+    merchantProfile?.current_address?.address_type
+  );
+  const [country, setCountry] = useState(
+    merchantProfile?.current_address?.country
+  );
+  const [state, setState] = useState(merchantProfile?.current_address?.state);
+  const [city, setCity] = useState(merchantProfile?.current_address?.city);
+  const [zipCode, setZipCode] = useState(
+    merchantProfile?.current_address?.zipcode
+  );
+
+  useEffect(() => {
+    if (isFocused) {
+      const data = {
+        is_tax: false,
+      };
+      dispatch(getTax(data));
+    }
+  }, [isFocused]);
+
+  const taxPayerHandler = () => {
+    if (
+      !name ||
+      !ssn ||
+      !streetAdd ||
+      !appartment ||
+      !country ||
+      !state ||
+      !city ||
+      !zipCode
+    ) {
+      alert('Field not complete');
+    } else {
+      setTaxPayerModel(false), setVerifiedArea(true);
+    }
+  };
 
   const countryNexthandler = () => {
     if (countryId === null) {
@@ -313,6 +358,9 @@ export function Taxes() {
               placeholder="Full Name or Business name"
               style={styles.nameInput}
               placeholderStyle={styles.namePlaceholder}
+              value={name}
+              onChangeText={setName}
+              editable={false}
             />
             <Spacer space={SH(7)} />
             <Text style={styles.name}>{strings.settings.ssn}</Text>
@@ -320,6 +368,9 @@ export function Taxes() {
               placeholder={strings.settings.ssn}
               style={styles.nameInput}
               placeholderStyle={styles.namePlaceholder}
+              value={ssn}
+              onChangeText={setSsn}
+              editable={false}
             />
             <Spacer space={SH(7)} />
             <Text style={styles.name}>{strings.settings.streetAdd}</Text>
@@ -327,6 +378,9 @@ export function Taxes() {
               placeholder={strings.settings.streetAdd}
               style={styles.nameInput}
               placeholderStyle={styles.namePlaceholder}
+              value={streetAdd}
+              onChangeText={setStreetAdd}
+              editable={false}
             />
             <Spacer space={SH(7)} />
             <Text style={styles.name}>{strings.settings.appartement}</Text>
@@ -334,21 +388,76 @@ export function Taxes() {
               placeholder={strings.settings.appartement}
               style={styles.nameInput}
               placeholderStyle={styles.namePlaceholder}
+              value={appartment}
+              onChangeText={setAppartment}
+              editable={false}
             />
             <Spacer space={SH(7)} />
-            {/* <View style={styles.dispalyRow}></View> */}
+            <View style={[styles.dispalyRow, styles.countryStateWidth]}>
+              <View>
+                <Text style={styles.name}>{strings.settings.country}</Text>
+                <TextInput
+                  placeholder={strings.settings.appartement}
+                  style={styles.countryInput}
+                  placeholderStyle={styles.namePlaceholder}
+                  value={country}
+                  onChangeText={setCountry}
+                  editable={false}
+                />
+              </View>
+              <View>
+                <Text style={styles.name}>State</Text>
+                <TextInput
+                  placeholder={strings.settings.appartement}
+                  style={styles.countryInput}
+                  placeholderStyle={styles.namePlaceholder}
+                  value={state}
+                  onChangeText={setState}
+                  editable={false}
+                />
+              </View>
+            </View>
+            <Spacer space={SH(7)} />
+            <View style={[styles.dispalyRow, styles.countryStateWidth]}>
+              <View>
+                <Text style={styles.name}>City</Text>
+                <TextInput
+                  placeholder={strings.settings.appartement}
+                  style={styles.countryInput}
+                  placeholderStyle={styles.namePlaceholder}
+                  value={city}
+                  onChangeText={setCity}
+                  editable={false}
+                />
+              </View>
+              <View>
+                <Text style={styles.name}>Zip Code</Text>
+                <TextInput
+                  placeholder={strings.settings.appartement}
+                  style={styles.countryInput}
+                  placeholderStyle={styles.namePlaceholder}
+                  value={zipCode}
+                  onChangeText={setZipCode}
+                  editable={false}
+                />
+              </View>
+            </View>
+
             <Spacer space={SH(8)} />
             <View style={{ flex: 1 }} />
-            <View style={styles.dispalyRow}>
-              <View style={styles.cancelbuttonCon}>
+            <View style={styles.flexRow}>
+              <TouchableOpacity
+                style={styles.cancelbuttonCon}
+                onPress={() => (setTaxPayerModel(false), setStateModel(true))}
+              >
                 <Text style={styles.cancel}>{strings.settings.cancel}</Text>
-              </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
-                onPress={() => (setTaxPayerModel(false), setVerifiedArea(true))}
+                onPress={taxPayerHandler}
               >
                 <Text style={[styles.cancel, styles.next]}>
-                  {strings.settings.verify}
+                  {strings.management.save}
                 </Text>
               </TouchableOpacity>
             </View>

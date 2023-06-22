@@ -34,6 +34,8 @@ export const ApiUserInventory = {
   getDrawerSessionById: 'drawer_management/drawer-session/history',
   getDrawer: status =>
     `drawer_management/drawer-session/history?drawer_id=${status}`,
+  staffDetail: 'user_settings/staff/transactions',
+  getTax: 'tax',
 };
 
 export const ApiProductInventory = {
