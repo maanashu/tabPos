@@ -37,6 +37,7 @@ import { getStaffDetail } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import moment from 'moment';
+import { store } from '@/store';
 const windowWidth = Dimensions.get('window').width;
 
 export function Staff() {
@@ -46,11 +47,17 @@ export function Staff() {
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
   const posUserArray = getAuth?.getAllPosUsers;
+  // console.log('posUserArray', posUserArray);
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [expandView, setExpandView] = useState(false);
   const [data, setData] = useState();
   const [Index, setIndex] = useState();
+  const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
+  console.log(
+    'store.getState().user?.posLoginData?.user_profiles',
+    store.getState().user?.posLoginData?.id
+  );
 
   useEffect(() => {
     if (isFocused) {
@@ -415,13 +422,15 @@ export function Staff() {
               {strings.settings.device}
             </Text>
             <View style={{ zIndex: 99 }}>
-              <TouchableOpacity
-                style={styles.addNewButtonCon}
-                activeOpacity={0.3}
-              >
-                <Image source={addIcon} style={styles.addIcon} />
-                <Text style={styles.addNew}>{strings.Staff.addStaff}</Text>
-              </TouchableOpacity>
+              {posRole === null ? (
+                <TouchableOpacity
+                  style={styles.addNewButtonCon}
+                  activeOpacity={0.3}
+                >
+                  <Image source={addIcon} style={styles.addIcon} />
+                  <Text style={styles.addNew}>{strings.Staff.addStaff}</Text>
+                </TouchableOpacity>
+              ) : null}
             </View>
           </View>
           <Spacer space={SH(20)} />
