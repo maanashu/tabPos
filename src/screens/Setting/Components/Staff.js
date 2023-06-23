@@ -54,28 +54,40 @@ export function Staff() {
   const [data, setData] = useState();
   const [Index, setIndex] = useState();
   const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
-  console.log(
-    'store.getState().user?.posLoginData?.user_profiles',
-    store.getState().user?.posLoginData?.id
-  );
-
+  const posUserId = store.getState().user?.posLoginData?.id;
   useEffect(() => {
     if (isFocused) {
       dispatch(getAllPosUsers());
     }
   }, [isFocused]);
 
-  const staffDetailhandler = async () => {
-    const res = await dispatch(getStaffDetail());
-    if (res?.type === 'STAFF_DETAIL_SUCCESS') {
-      setStaffDetail(true);
+  const staffDetailhandler = async id => {
+    if (posRole === null) {
+      const res = await dispatch(getStaffDetail());
+      if (res?.type === 'STAFF_DETAIL_SUCCESS') {
+        setStaffDetail(true);
+      }
     } else {
-      Toast.show({
-        text2: error.msg,
-        position: 'bottom',
-        type: 'Staff profil not found',
-        visibilityTime: 1500,
-      });
+      if (posUserId === id) {
+        const res = await dispatch(getStaffDetail());
+        if (res?.type === 'STAFF_DETAIL_SUCCESS') {
+          setStaffDetail(true);
+        } else {
+          Toast.show({
+            text2: 'Staff profil not found',
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+        }
+      } else {
+        Toast.show({
+          text2: 'You Can Only See Your Profile',
+          position: 'bottom',
+          type: 'error_toast',
+          visibilityTime: 2000,
+        });
+      }
     }
   };
 
@@ -84,7 +96,7 @@ export function Staff() {
       style={styles.twoStepMemberCon}
       // onPress={() => setStaffDetail(true)}
       onPress={() => {
-        staffDetailhandler();
+        staffDetailhandler(item.id);
         setData(item);
       }}
     >
