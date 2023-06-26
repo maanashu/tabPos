@@ -7,6 +7,8 @@ const INITIALSTATE = {
   getCountries: [],
   getState: [],
   staffDetail: [],
+  getTax: [],
+  getTaxTrue: [],
 };
 
 export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -74,6 +76,17 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         getTax: [],
+      };
+
+    case TYPES.GET_TAX_TRUE_SUCCESS:
+      return {
+        ...state,
+        getTaxTrue: payload.getTaxTrue,
+      };
+    case TYPES.GET_TAX_TRUE_RESET:
+      return {
+        ...state,
+        getTaxTrue: [],
       };
     default:
       return state;

@@ -142,6 +142,23 @@ const getTaxReset = () => ({
   payload: null,
 });
 
+const getTaxTrueRequest = () => ({
+  type: TYPES.GET_TAX_TRUE_REQUEST,
+  payload: null,
+});
+const getTaxTrueSuccess = getTaxTrue => ({
+  type: TYPES.GET_TAX_TRUE_SUCCESS,
+  payload: { getTaxTrue },
+});
+const getTaxTrueError = error => ({
+  type: TYPES.GET_TAX_TRUE_ERROR,
+  payload: { error },
+});
+const getTaxTrueReset = () => ({
+  type: TYPES.GET_TAX_TRUE_RESET,
+  payload: null,
+});
+
 export const getSettings = () => async dispatch => {
   dispatch(getSettingRequest());
   try {
@@ -244,5 +261,18 @@ export const getTax = data => async dispatch => {
       dispatch(getTaxReset());
     }
     dispatch(getTaxError(error.message));
+  }
+};
+
+export const getTaxTrue = data => async dispatch => {
+  dispatch(getTaxTrueRequest());
+  try {
+    const res = await SettingController.getTaxTrue(data);
+    return dispatch(getTaxTrueSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getTaxTrueReset());
+    }
+    dispatch(getTaxTrueError(error.message));
   }
 };

@@ -31,14 +31,19 @@ import {
   toggleSecBlue,
   toggleSecurity,
   usaFlag,
+  vector,
   vectorOff,
 } from '@/assets';
-import { COUNTRYDATA, STATEDATA } from '@/constants/flatListData';
 import { moderateScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
-import { getCountries, getState, getTax } from '@/actions/SettingAction';
+import {
+  getCountries,
+  getState,
+  getTax,
+  getTaxTrue,
+} from '@/actions/SettingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SettingTypes';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -54,7 +59,7 @@ export function Taxes() {
   const countryArray = getSettingData?.getCountries;
   const stateArray = getSettingData?.getState;
   const getTaxData = getSettingData?.getTax;
-  console.log('getTaxData', getTaxData?.length);
+  const getTaxTable = getSettingData?.getTaxTrue;
   const [countryModel, setCountryModel] = useState(false);
   const [stateModel, setStateModel] = useState(false);
   const [taxPayerModel, setTaxPayerModel] = useState(false);
@@ -94,7 +99,14 @@ export function Taxes() {
       is_tax: false,
       sellerID: sellerID,
     };
-    dispatch(getTax(data));
+    const res = await dispatch(getTax(data));
+    if (res?.type === 'GET_TAX_SUCCESS') {
+      const data = {
+        is_tax: true,
+        sellerID: sellerID,
+      };
+      dispatch(getTaxTrue(data));
+    }
   };
 
   const taxPayerHandler = () => {
@@ -757,7 +769,7 @@ export function Taxes() {
     } else {
       return (
         <View>
-          <View style={[styles.taxMainCon, { borderWidth: 1 }]}>
+          <View style={[styles.taxMainCon]}>
             <View style={styles.securityBodyCon}>
               <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
                 <Image source={invoice2} style={styles.securityLogo} />
@@ -938,54 +950,62 @@ export function Taxes() {
             </View>
           </View>
           <Spacer space={SH(10)} />
-          <View style={styles.dispalyRow}>
+          <View style={[styles.dispalyRow, { zIndex: 999 }]}>
             <TableDropdown placeholder="Location" />
             <TableDropdown placeholder="Status" />
           </View>
           <Spacer space={SH(10)} />
 
-          <View style={styles.invoiceTableHeader}>
-            <View style={styles.headerBodyCon}>
-              <Text
-                style={[
-                  styles.invoiveheaderText,
-                  { marginHorizontal: moderateScale(10) },
-                ]}
-              >
-                #
-              </Text>
-              <Text style={styles.invoiveheaderText}>Tax Name</Text>
-            </View>
-            <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
-              <Text style={styles.invoiveheaderText}>Locations</Text>
-              <Text style={styles.invoiveheaderText}>Tax rate</Text>
-              <Text style={styles.invoiveheaderText}>status</Text>
-              <Image source={rightBack} style={styles.arrowStyle} />
-            </View>
-          </View>
-          <View>
-            <ScrollView>
-              <View
-                style={[styles.invoiceTableHeader, styles.invoiceTableData]}
-              >
-                <View style={styles.headerBodyCon}>
-                  <Text
-                    style={[
-                      styles.terryText,
-                      { marginHorizontal: moderateScale(10) },
-                    ]}
-                  >
-                    1
-                  </Text>
-                  <Text style={styles.terryText}>Sales</Text>
-                </View>
-                <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
-                  <Text style={styles.terryText}>Miami, florida</Text>
-                  <Text style={styles.terryText}>6%</Text>
-                  <Image source={vectorOff} style={styles.toggleSecurity} />
-                </View>
+          <View style={{ zIndex: -99 }}>
+            <View style={styles.invoiceTableHeader}>
+              <View style={styles.headerBodyCon}>
+                <Text
+                  style={[
+                    styles.invoiveheaderText,
+                    { marginHorizontal: moderateScale(10) },
+                  ]}
+                >
+                  #
+                </Text>
+                <Text style={styles.invoiveheaderText}>Tax Name</Text>
               </View>
-            </ScrollView>
+              <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
+                <Text style={styles.invoiveheaderText}>Locations</Text>
+                <Text style={styles.invoiveheaderText}>Tax rate</Text>
+                <Text style={styles.invoiveheaderText}>status</Text>
+                <Image source={rightBack} style={styles.arrowStyle} />
+              </View>
+            </View>
+            <View>
+              <ScrollView>
+                {getTaxTable?.map((item, index) => (
+                  <View
+                    style={[styles.invoiceTableHeader, styles.invoiceTableData]}
+                    key={index}
+                  >
+                    <View style={styles.headerBodyCon}>
+                      <Text
+                        style={[
+                          styles.terryText,
+                          { marginHorizontal: moderateScale(10) },
+                        ]}
+                      >
+                        {index + 1}
+                      </Text>
+                      <Text style={styles.terryText}>{item.tax_name}</Text>
+                    </View>
+                    <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
+                      <Text style={styles.terryText}>{item.location}</Text>
+                      <Text style={styles.terryText}>{item.tax_rate}%</Text>
+                      <Image
+                        source={item.status ? vector : vectorOff}
+                        style={styles.toggleSecurity}
+                      />
+                    </View>
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
           </View>
         </View>
       );

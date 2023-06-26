@@ -168,7 +168,6 @@ export class SettingController {
   }
 
   static async getTax(data) {
-    console.log(';hjkl');
     return new Promise((resolve, reject) => {
       const endpoint =
         USER_URL +
@@ -177,7 +176,6 @@ export class SettingController {
       console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
-          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
@@ -189,6 +187,22 @@ export class SettingController {
               visibilityTime: 1500,
             });
           }
+          reject(error);
+        });
+    });
+  }
+  static async getTaxTrue(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        USER_URL +
+        ApiUserInventory.getTax +
+        `?is_tax_details=${data.is_tax}&seller_id=${data.sellerID}`;
+      console.log('endpoint', endpoint);
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
           reject(error);
         });
     });
