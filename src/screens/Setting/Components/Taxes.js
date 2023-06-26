@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Spacer } from '@/components';
+import { Button, Spacer, TableDropdown } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import {
@@ -16,11 +16,13 @@ import {
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import {
+  Fonts,
   addState,
   blankCircle,
   changePlan,
   crossButton,
   invoice2,
+  rightBack,
   squareBlank,
   taxVerified,
   taxmap,
@@ -29,6 +31,7 @@ import {
   toggleSecBlue,
   toggleSecurity,
   usaFlag,
+  vectorOff,
 } from '@/assets';
 import { COUNTRYDATA, STATEDATA } from '@/constants/flatListData';
 import { moderateScale } from 'react-native-size-matters';
@@ -47,10 +50,11 @@ export function Taxes() {
   const getSettingData = useSelector(getSetting);
   const getAuth = useSelector(getAuthData);
   const merchantProfile = getAuth?.merchantLoginData?.user_profile;
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const countryArray = getSettingData?.getCountries;
   const stateArray = getSettingData?.getState;
   const getTaxData = getSettingData?.getTax;
-  console.log('getTaxData');
+  console.log('getTaxData', getTaxData?.length);
   const [countryModel, setCountryModel] = useState(false);
   const [stateModel, setStateModel] = useState(false);
   const [taxPayerModel, setTaxPayerModel] = useState(false);
@@ -82,13 +86,16 @@ export function Taxes() {
   );
 
   useEffect(() => {
-    if (isFocused) {
-      const data = {
-        is_tax: false,
-      };
-      dispatch(getTax(data));
-    }
-  }, [isFocused]);
+    taxGetfunction();
+  }, []);
+
+  const taxGetfunction = async () => {
+    const data = {
+      is_tax: false,
+      sellerID: sellerID,
+    };
+    dispatch(getTax(data));
+  };
 
   const taxPayerHandler = () => {
     if (
@@ -715,151 +722,7 @@ export function Taxes() {
   };
 
   const verifiedAreaFun = () => {
-    if (verifiedArea) {
-      return (
-        <View style={styles.taxMainCon}>
-          <View style={styles.securityBodyCon}>
-            <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={invoice2} style={styles.securityLogo} />
-              <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>
-                  {strings.settings.taxHead}
-                </Text>
-                <Spacer space={SH(10)} />
-                <View>
-                  <View style={styles.taxnameCon}>
-                    <Text style={styles.charlieName}>
-                      {strings.settings.name}:Charlie Saari
-                    </Text>
-                    <Text style={styles.charlieName}>
-                      {strings.settings.SSN}:136042056
-                    </Text>
-                    <Text style={styles.charlieName}>
-                      3755 Williams Mine Road, Newark, NJ 07102
-                    </Text>
-                    <Spacer space={SH(5)} />
-                    <View style={styles.verifiedBtnCon}>
-                      <View style={styles.dispalyRow}>
-                        <Image
-                          source={taxVerified}
-                          style={styles.taxVerified}
-                        />
-                        <Text style={styles.charlieName}>
-                          {strings.settings.verified}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                  <Spacer space={SH(7)} />
-                  <View style={styles.taxnameCon}>
-                    <View style={styles.flexRow}>
-                      <View style={styles.dispalyRow}>
-                        <Image source={teamMember} style={styles.teamMember} />
-                        <View style={styles.marginLeft}>
-                          <Text
-                            style={[styles.twoStepText, { fontSize: SF(14) }]}
-                          >
-                            {strings.settings.operatingCountry}
-                          </Text>
-                          <Spacer space={SH(3)} />
-                          <Text
-                            style={[
-                              styles.securitysubhead,
-                              { fontSize: SF(12) },
-                            ]}
-                          >
-                            United States of America
-                          </Text>
-                        </View>
-                      </View>
-                      <Image
-                        source={toggleSecurity}
-                        style={[styles.toggleSecurity, { marginRight: 10 }]}
-                      />
-                    </View>
-                    <Spacer space={SH(7)} />
-                    <TouchableOpacity
-                      style={[
-                        styles.twoStepMemberCon,
-                        styles.twoStepMemberConTax,
-                      ]}
-                      onPress={() => setStateTax(true)}
-                    >
-                      <View style={styles.flexRow}>
-                        <View style={styles.dispalyRow}>
-                          <Image source={taxmap} style={styles.teamMember} />
-                          <View style={styles.marginLeft}>
-                            <Text
-                              style={[styles.twoStepText, { fontSize: SF(14) }]}
-                            >
-                              {strings.settings.operatingCountry}
-                            </Text>
-                            <Spacer space={SH(3)} />
-                            <Text
-                              style={[
-                                styles.securitysubhead,
-                                { fontSize: SF(12) },
-                              ]}
-                            >
-                              1899 Rollins Road, Grand Island Nebraska 68801,
-                              United States
-                            </Text>
-                          </View>
-                        </View>
-                        <Image
-                          source={toggleSecurity}
-                          style={styles.toggleSecurity}
-                        />
-                      </View>
-                    </TouchableOpacity>
-                    <Spacer space={SH(5)} />
-                    {addStateBtn ? (
-                      <View
-                        style={[
-                          styles.verifiedBtnCon,
-                          {
-                            borderColor: COLORS.primary,
-                            alignSelf: 'flex-end',
-                          },
-                        ]}
-                      >
-                        <View style={styles.dispalyRow}>
-                          <Text style={[styles.craeteTax, styles.addState]}>
-                            {strings.settings.addState}
-                          </Text>
-                          <Image
-                            source={addState}
-                            style={[styles.taxVerified, styles.addStatebtn]}
-                          />
-                        </View>
-                      </View>
-                    ) : null}
-                  </View>
-                  <Spacer space={SH(7)} />
-                  {createTaxBtn ? (
-                    <TouchableOpacity
-                      style={[
-                        styles.verifiedBtnCon,
-                        { borderColor: COLORS.primary },
-                      ]}
-                      onPress={() => setCreateTaxModal(true)}
-                    >
-                      <View style={styles.dispalyRow}>
-                        <Image source={taxpencil} style={styles.taxVerified} />
-                        <Text style={styles.craeteTax}>
-                          {strings.settings.craeteTax}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  ) : null}
-                </View>
-              </View>
-            </View>
-            {/* </View> */}
-          </View>
-        </View>
-      );
-    } else {
+    if (getTaxData?.length === 0) {
       return (
         <View style={styles.securityMainCon}>
           <View style={styles.securityBodyCon}>
@@ -888,6 +751,241 @@ export function Taxes() {
               </View>
             </View>
             {/* </View> */}
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <View style={[styles.taxMainCon, { borderWidth: 1 }]}>
+            <View style={styles.securityBodyCon}>
+              <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
+                <Image source={invoice2} style={styles.securityLogo} />
+                <View style={styles.twoStepVerifiCon}>
+                  <Text style={styles.twoStepText}>
+                    {strings.settings.taxHead}
+                  </Text>
+                  <Spacer space={SH(5)} />
+                  <View>
+                    <View style={styles.taxnameCon}>
+                      <Text style={styles.charlieName}>
+                        {strings.settings.name}:Charlie Saari
+                      </Text>
+                      <Text style={styles.charlieName}>
+                        {strings.settings.SSN}:136042056
+                      </Text>
+                      <Text style={styles.charlieName}>
+                        3755 Williams Mine Road, Newark, NJ 07102
+                      </Text>
+                      <Spacer space={SH(5)} />
+                      <View style={styles.verifiedBtnCon}>
+                        <View style={styles.dispalyRow}>
+                          <Image
+                            source={taxVerified}
+                            style={styles.taxVerified}
+                          />
+                          <Text style={styles.charlieName}>
+                            {strings.settings.verified}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    <Spacer space={SH(7)} />
+                    <View style={styles.taxnameCon}>
+                      <View style={styles.flexRow}>
+                        <View style={styles.dispalyRow}>
+                          <Image
+                            source={teamMember}
+                            style={styles.teamMember}
+                          />
+                          <View style={styles.marginLeft}>
+                            <Text
+                              style={[styles.twoStepText, { fontSize: SF(14) }]}
+                            >
+                              {strings.settings.operatingCountry}
+                            </Text>
+                            <Spacer space={SH(3)} />
+                            <Text
+                              style={[
+                                styles.securitysubhead,
+                                { fontSize: SF(12) },
+                              ]}
+                            >
+                              United States of America
+                            </Text>
+                          </View>
+                        </View>
+                        <Image
+                          source={toggleSecurity}
+                          style={[styles.toggleSecurity, { marginRight: 10 }]}
+                        />
+                      </View>
+                      <Spacer space={SH(5)} />
+                      <TouchableOpacity
+                        style={[
+                          styles.twoStepMemberCon,
+                          styles.twoStepMemberConTax,
+                        ]}
+                        onPress={() => setStateTax(true)}
+                      >
+                        <View style={styles.flexRow}>
+                          <View style={styles.dispalyRow}>
+                            <Image source={taxmap} style={styles.teamMember} />
+                            <View style={styles.marginLeft}>
+                              <Text
+                                style={[
+                                  styles.twoStepText,
+                                  { fontSize: SF(14) },
+                                ]}
+                              >
+                                {strings.settings.operatingCountry}
+                              </Text>
+                              <Spacer space={SH(3)} />
+                              <Text
+                                style={[
+                                  styles.securitysubhead,
+                                  { fontSize: SF(12) },
+                                ]}
+                              >
+                                1899 Rollins Road, Grand Island Nebraska 68801,
+                                United States
+                              </Text>
+                            </View>
+                          </View>
+                          <Image
+                            source={toggleSecurity}
+                            style={styles.toggleSecurity}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                      <Spacer space={SH(5)} />
+                      {/* {addStateBtn ? (
+                      <View
+                        style={[
+                          styles.verifiedBtnCon,
+                          {
+                            borderColor: COLORS.primary,
+                            alignSelf: 'flex-end',
+                          },
+                        ]}
+                      >
+                        <View style={styles.dispalyRow}>
+                          <Text style={[styles.craeteTax, styles.addState]}>
+                            {strings.settings.addState}
+                          </Text>
+                          <Image
+                            source={addState}
+                            style={[styles.taxVerified, styles.addStatebtn]}
+                          />
+                        </View>
+                      </View>
+                    ) : null} */}
+                      <View
+                        style={[
+                          styles.verifiedBtnCon,
+                          {
+                            borderColor: COLORS.primary,
+                            alignSelf: 'flex-end',
+                          },
+                        ]}
+                      >
+                        <View style={styles.dispalyRow}>
+                          <Text style={[styles.craeteTax, styles.addState]}>
+                            {strings.settings.addState}
+                          </Text>
+                          <Image
+                            source={addState}
+                            style={[styles.taxVerified, styles.addStatebtn]}
+                          />
+                        </View>
+                      </View>
+                    </View>
+                    <Spacer space={SH(7)} />
+                    {/* {createTaxBtn ? (
+                    <TouchableOpacity
+                      style={[
+                        styles.verifiedBtnCon,
+                        { borderColor: COLORS.primary },
+                      ]}
+                      onPress={() => setCreateTaxModal(true)}
+                    >
+                      <View style={styles.dispalyRow}>
+                        <Image source={taxpencil} style={styles.taxVerified} />
+                        <Text style={styles.craeteTax}>
+                          {strings.settings.craeteTax}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ) : null} */}
+                    <TouchableOpacity
+                      style={[
+                        styles.verifiedBtnCon,
+                        { borderColor: COLORS.primary },
+                      ]}
+                      onPress={() => setCreateTaxModal(true)}
+                    >
+                      <View style={styles.dispalyRow}>
+                        <Image source={taxpencil} style={styles.taxVerified} />
+                        <Text style={styles.craeteTax}>
+                          {strings.settings.craeteTax}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+              {/* </View> */}
+            </View>
+          </View>
+          <Spacer space={SH(10)} />
+          <View style={styles.dispalyRow}>
+            <TableDropdown placeholder="Location" />
+            <TableDropdown placeholder="Status" />
+          </View>
+          <Spacer space={SH(10)} />
+
+          <View style={styles.invoiceTableHeader}>
+            <View style={styles.headerBodyCon}>
+              <Text
+                style={[
+                  styles.invoiveheaderText,
+                  { marginHorizontal: moderateScale(10) },
+                ]}
+              >
+                #
+              </Text>
+              <Text style={styles.invoiveheaderText}>Tax Name</Text>
+            </View>
+            <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
+              <Text style={styles.invoiveheaderText}>Locations</Text>
+              <Text style={styles.invoiveheaderText}>Tax rate</Text>
+              <Text style={styles.invoiveheaderText}>status</Text>
+              <Image source={rightBack} style={styles.arrowStyle} />
+            </View>
+          </View>
+          <View>
+            <ScrollView>
+              <View
+                style={[styles.invoiceTableHeader, styles.invoiceTableData]}
+              >
+                <View style={styles.headerBodyCon}>
+                  <Text
+                    style={[
+                      styles.terryText,
+                      { marginHorizontal: moderateScale(10) },
+                    ]}
+                  >
+                    1
+                  </Text>
+                  <Text style={styles.terryText}>Sales</Text>
+                </View>
+                <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
+                  <Text style={styles.terryText}>Miami, florida</Text>
+                  <Text style={styles.terryText}>6%</Text>
+                  <Image source={vectorOff} style={styles.toggleSecurity} />
+                </View>
+              </View>
+            </ScrollView>
           </View>
         </View>
       );

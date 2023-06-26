@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
-    padding: 25,
+    padding: 15,
   },
   securityLogo: {
     width: SW(16),
@@ -677,7 +677,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     paddingHorizontal: 10,
-    paddingVertical: verticalScale(5),
+    paddingVertical: verticalScale(3),
   },
   taxMainCon: {
     borderColor: COLORS.solidGrey,
@@ -687,7 +687,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   charlieName: {
-    fontSize: SF(14),
+    fontSize: SF(12),
     fontFamily: Fonts.Medium,
     color: COLORS.solid_grey,
     paddingVertical: verticalScale(1),
@@ -695,15 +695,15 @@ export const styles = StyleSheet.create({
   verifiedBtnCon: {
     borderWidth: 1,
     width: SW(42),
-    height: SW(10),
+    height: SW(9),
     borderRadius: 5,
     borderColor: COLORS.bluish_green,
     justifyContent: 'center',
     alignItems: 'center',
   },
   taxVerified: {
-    width: SW(7),
-    height: SW(7),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
     marginHorizontal: moderateScale(3),
   },

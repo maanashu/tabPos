@@ -168,22 +168,27 @@ export class SettingController {
   }
 
   static async getTax(data) {
+    console.log(';hjkl');
     return new Promise((resolve, reject) => {
       const endpoint =
         USER_URL +
         ApiUserInventory.getTax +
-        `?seller_id=082accb0-faef-4cb9-91eb-6c3fe1ae8fad&is_tax_details=${data?.is_tax}`;
+        `?is_tax_details=${data.is_tax}&seller_id=${data.sellerID}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
+          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          if (error?.error === 'emptyContent') {
+            Toast.show({
+              text2: 'tax not found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
           reject(error);
         });
     });
