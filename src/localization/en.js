@@ -601,6 +601,7 @@ export const en = {
     introduction: 'Introduction',
     notification: 'Notifications',
     addlanguage: 'Add Language',
+    businessName: 'Business Name',
   },
   dashboard: {
     todaySale: "Today's Sales",

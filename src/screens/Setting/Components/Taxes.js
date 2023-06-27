@@ -53,6 +53,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { store } from '@/store';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { log } from 'react-native-reanimated';
 
 export function Taxes() {
   const isFocused = useIsFocused();
@@ -404,7 +405,7 @@ export function Taxes() {
               </View>
               <View style={styles.countryModBody}>
                 <Spacer space={SH(7)} />
-                <Text style={styles.name}>{strings.settings.name}</Text>
+                <Text style={styles.name}>{strings.settings.businessName}</Text>
                 <TextInput
                   placeholder="Full Name or Business name"
                   style={styles.nameInput}
