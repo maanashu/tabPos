@@ -79,23 +79,26 @@ export const FinalPaymentScreen = ({
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                // justifyContent: 'space-around',
                 width: '70%',
                 position: 'absolute',
                 bottom: ms(20),
+                justifyContent: 'center',
               }}
             >
-              <Button
+              {/* <Button
                 title={'Print'}
                 style={styles._printButton}
                 textStyle={styles._printBtnText}
-              />
+              /> */}
               <Button
-                title={'Print & e-mail'}
+                onPress={() => alert('Coming soon')}
+                title={'e-mail'}
                 style={styles._printButton}
                 textStyle={styles._printBtnText}
               />
               <Button
+                onPress={() => alert('Coming soon')}
                 title={'e-receipt'}
                 style={styles._printButton}
                 textStyle={styles._printBtnText}

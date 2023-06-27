@@ -45,19 +45,17 @@ export function Wallet() {
     if (id === 1) {
       const data = {
         jbr_coin_status: jbrCoin ? false : true,
-        app_name: 'pos',
       };
+      console.log('data', data);
       dispatch(upadteApi(data));
     } else if (id === 2) {
       const data = {
         cash_status: cash ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     } else if (id === 3) {
       const data = {
         setup_sila_status: card ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     }

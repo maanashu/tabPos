@@ -35,7 +35,6 @@ export function Security() {
   const googleAuthHandler = () => {
     const data = {
       google_authenticator_status: googleAuthicator ? false : true,
-      app_name: 'pos',
     };
     dispatch(upadteApi(data));
   };

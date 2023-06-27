@@ -562,6 +562,7 @@ export const addNotescart = data => async dispatch => {
   try {
     const res = await RetailController.addNotes(data);
     dispatch(addNotesSuccess(res));
+    dispatch(getAllCart());
   } catch (error) {
     dispatch(addNotesError(error.message));
   }
@@ -572,6 +573,7 @@ export const addDiscountToCart = data => async dispatch => {
   try {
     const res = await RetailController.addDiscountToCart(data);
     dispatch(addDiscountSuccess(res));
+    dispatch(getAllCart());
   } catch (error) {
     dispatch(addDiscountError(error.message));
   }
@@ -656,6 +658,7 @@ export const requestMoney = data => async dispatch => {
   dispatch(requestMoneyRequest());
   try {
     const res = await RetailController.requestMoney(data);
+    console.log('res', res);
     return dispatch(requestMoneySuccess(res?.payload));
   } catch (error) {
     dispatch(requestMoneyError(error.message));

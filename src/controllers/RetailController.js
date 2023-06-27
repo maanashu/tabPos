@@ -341,6 +341,7 @@ export class RetailController {
       };
       HttpClient.put(endpoint, body)
         .then(response => {
+          console.log('response', response);
           if (response?.msg === 'PosCart updated!') {
             Toast.show({
               text2: 'Discount add succesfully',
@@ -524,19 +525,9 @@ export class RetailController {
         amount: data.amount,
         reciever_address: data.wallletAdd,
       };
-      await axios({
-        url: endpoint,
-        method: 'POST',
-        data: body,
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          'app-name': 'pos',
-          Authorization: token,
-        },
-      })
-        .then(resp => {
-          if (resp?.data?.msg === 'Payment request sent success!') {
+      HttpClient.post(endpoint, body)
+        .then(response => {
+          if (response?.msg === 'Payment request sent success!') {
             Toast.show({
               text2: 'Request send successfully',
               position: 'bottom',
@@ -544,62 +535,27 @@ export class RetailController {
               visibilityTime: 2000,
             });
           }
-          resolve(resp?.data);
+          resolve(response);
         })
         .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
           reject(error);
         });
     });
-    // return new Promise((resolve, reject) => {
-    //   const endpoint = WALLET_URL + ApiWalletInventory.requestMoney;
-    //   const body = {
-    //     amount: data.amount,
-    //     reciever_address: data.wallletAdd,
-    //   };
-    //   console.log('endpoint', endpoint);
-    //   console.log('body', body);
-    //   HttpClient.post(endpoint, body)
-    //     .then(response => {
-    //       if (response.msg === 'Payment request sent success!') {
-    //         Toast.show({
-    //           text2: response.msg,
-    //           position: 'bottom',
-    //           type: 'success_toast',
-    //           visibilityTime: 2000,
-    //         });
-    //       }
-    //       resolve(response);
-    //     })
-    //     .catch(error => {
-    //       Toast.show({
-    //         text2: error.msg,
-    //         position: 'bottom',
-    //         type: 'error_toast',
-    //         visibilityTime: 2000,
-    //       });
-    //       reject(new Error(error.msg));
-    //     });
-    // });
   }
 
   static async requestCheck(data) {
     return new Promise(async (resolve, reject) => {
-      const token = store.getState().auth?.merchantLoginData?.token;
       const endpoint =
         WALLET_URL + ApiWalletInventory.requestCheck + `${data.requestId}`;
-      await axios({
-        url: endpoint,
-        method: 'GET',
-        // data: body,
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          'app-name': 'pos',
-          Authorization: token,
-        },
-      })
-        .then(resp => {
-          resolve(resp?.data);
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);

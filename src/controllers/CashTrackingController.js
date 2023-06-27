@@ -7,13 +7,15 @@ export class CashTrackingController {
   static async getDrawerSession() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
+      console.log('endpoint', endpoint);
       HttpClient.post(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
+          console.log('error', error);
           Toast.show({
-            text2: error.msg,
+            text2: error.error,
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
@@ -121,18 +123,22 @@ export class CashTrackingController {
         transaction_type: data.transactionType,
         mode_of_cash: data.modeOfcash,
       };
+      console.log('body', body);
+      console.log('endpoint', endpoint);
+      // return;
       HttpClient.post(endpoint, body)
         .then(response => {
+          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
+          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
             text2: error.msg,
             visibilityTime: 2000,
           });
-          alert(error.msg);
           reject(error.msg);
         });
     });

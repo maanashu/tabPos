@@ -597,13 +597,13 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
   },
   blankCircle: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(7),
+    height: SW(7),
     resizeMode: 'contain',
   },
   blankSquare: {
-    width: SW(5),
-    height: SW(5),
+    width: SW(7),
+    height: SW(7),
     resizeMode: 'contain',
     marginRight: 10,
   },

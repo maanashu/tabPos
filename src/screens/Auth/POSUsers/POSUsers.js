@@ -111,7 +111,7 @@ export function POSUsers({ navigation }) {
                     <>
                       <Text style={[styles.dateTime, { marginTop: SH(20) }]}>
                         {moment(item.api_tokens[0].updated_at).format(
-                          'dddd,DD MMM YYYY'
+                          'dddd, DD MMM YYYY'
                         )}
                       </Text>
                       <Text style={styles.dateTime}>

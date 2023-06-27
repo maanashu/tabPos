@@ -76,6 +76,7 @@ export const PayByJBRCoins = ({
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
+    // const hundred = totalPayment * 100;
     return totalPayment.toFixed();
   };
   const createOrderHandler = () => {
@@ -187,7 +188,7 @@ export const PayByJBRCoins = ({
               {checkStatus ? 'Payment Done' : 'Scan to Pay'}
             </Text>
             <View style={{ alignItems: 'center' }}>
-              <Text style={styles._amount}>JBR {totalPayAmount()}</Text>
+              <Text style={styles._amount}>JBR {totalPayAmount() * 100}</Text>
               <Text style={styles._usdText}>USD ${totalPayAmount()}</Text>
             </View>
           </View>

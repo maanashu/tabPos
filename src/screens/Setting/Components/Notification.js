@@ -43,7 +43,6 @@ export function Notification() {
 
       const data = {
         [newArray[index].value]: newArray[index].isSelected,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
 

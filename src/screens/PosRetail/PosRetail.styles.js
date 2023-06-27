@@ -1134,6 +1134,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.lineGrey,
     borderWidth: 0.2,
     borderRadius: ms(1),
+    marginHorizontal: moderateScale(5),
   },
   _printBtnText: {
     fontFamily: Fonts.SemiBold,

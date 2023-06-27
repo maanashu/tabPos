@@ -78,7 +78,7 @@ export function LoginIntial({ route }) {
               <>
                 <Text style={styles.lightsmallText}>
                   {moment(posuserdata.api_tokens[0].updated_at).format(
-                    'dddd,DD MMM YYYY'
+                    'dddd, DD MMM YYYY'
                   )}
                 </Text>
                 <Spacer space={SH(8)} />

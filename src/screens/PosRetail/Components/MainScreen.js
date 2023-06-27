@@ -70,6 +70,7 @@ export function MainScreen({
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
+
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
 
   const [showProductsFrom, setshowProductsFrom] = useState();

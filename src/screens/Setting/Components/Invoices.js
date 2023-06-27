@@ -45,19 +45,16 @@ export function Invoices() {
     if (id === 1) {
       const data = {
         invoice_sms_send_status: sms ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     } else if (id === 2) {
       const data = {
         invoice_email_send_status: email ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     } else if (id === 3) {
       const data = {
         print_invoice_status: print ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     }

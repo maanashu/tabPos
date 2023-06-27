@@ -20,6 +20,9 @@ import {
   addState,
   blankCircle,
   changePlan,
+  checkboxSec,
+  checkboxSecBlue,
+  columbiaMen,
   crossButton,
   invoice2,
   rightBack,
@@ -48,6 +51,8 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SettingTypes';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { store } from '@/store';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export function Taxes() {
   const isFocused = useIsFocused();
@@ -64,7 +69,7 @@ export function Taxes() {
   const [stateModel, setStateModel] = useState(false);
   const [taxPayerModel, setTaxPayerModel] = useState(false);
   const [countryId, setCountryId] = useState(null);
-  const [stateId, setStateId] = useState(null);
+  const [stateId, setStateId] = useState([]);
   const [verifiedArea, setVerifiedArea] = useState(false);
   const [stateTax, setStateTax] = useState(false);
   const [createTaxBtn, setCreateTaxBtn] = useState(false);
@@ -89,6 +94,7 @@ export function Taxes() {
   const [zipCode, setZipCode] = useState(
     merchantProfile?.current_address?.zipcode
   );
+  const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
 
   useEffect(() => {
     taxGetfunction();
@@ -122,7 +128,9 @@ export function Taxes() {
     ) {
       alert('Field not complete');
     } else {
-      setTaxPayerModel(false), setVerifiedArea(true);
+      setTaxPayerModel(false);
+      //  setVerifiedArea(true);
+      alert('In progress');
     }
   };
 
@@ -148,7 +156,20 @@ export function Taxes() {
     isLoadingSelector([TYPES.GET_COUNTRIES, TYPES.GET_STATE], state)
   );
 
-  const Item = ({ item, onPress, tintColor }) => (
+  const activeBtnHandler = () => {
+    if (posRole === null) {
+      setCountryModel(true), dispatch(getCountries());
+    } else {
+      Toast.show({
+        text2: 'Only Merhant Can Create Tax',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    }
+  };
+
+  const Item = ({ item, onPress, tintColor, imageSource }) => (
     <TouchableOpacity
       style={styles.countryNameCon}
       onPress={onPress}
@@ -156,7 +177,7 @@ export function Taxes() {
     >
       <View style={styles.dispalyRow}>
         <Image
-          source={blankCircle}
+          source={imageSource}
           style={[styles.blankCircle, { tintColor }]}
         />
         <Image source={usaFlag} style={styles.usaFlag} />
@@ -169,6 +190,7 @@ export function Taxes() {
 
   const renderItem = ({ item }) => {
     const tintColor = item.id === countryId ? COLORS.primary : null;
+    const imageSource = item.id === countryId ? checkboxSecBlue : checkboxSec;
 
     return (
       <Item
@@ -178,29 +200,28 @@ export function Taxes() {
           setCountryItemSel(item);
         }}
         tintColor={tintColor}
+        imageSource={imageSource}
       />
     );
   };
 
-  const STATEITEM = ({ item, onPress, tintColor }) => (
-    <TouchableOpacity
-      style={styles.stateRow}
-      onPress={onPress}
-      activeOpacity={1}
-    >
-      <Image source={squareBlank} style={[styles.blankSquare, { tintColor }]} />
-      <Text style={styles.securitysubhead}>{item.name}</Text>
+  const STATEITEM = ({ item, onPress, color, image }) => (
+    <TouchableOpacity style={styles.stateRow} onPress={onPress}>
+      <Image source={image} style={styles.blankSquare} />
+      <Text style={[styles.securitysubhead, { color }]}>{item.name}</Text>
     </TouchableOpacity>
   );
 
   const stateItem = ({ item }) => {
-    const tintColor = item.id === stateId ? COLORS.primary : null;
+    const color = item.id === stateId ? COLORS.primary : null;
+    const image = item.id === stateId ? checkboxSecBlue : checkboxSec;
 
     return (
       <STATEITEM
         item={item}
         onPress={() => setStateId(item.id)}
-        tintColor={tintColor}
+        color={color}
+        image={image}
       />
     );
   };
@@ -356,133 +377,142 @@ export function Taxes() {
       );
     } else if (taxPayerModel) {
       return (
-        <View style={[styles.countryModCon, styles.taxPayerModCon]}>
-          <View style={styles.countryModHeader}>
-            <View style={styles.flexRow}>
-              <Text style={styles.selectHead}>
-                {strings.settings.taxPayerHeadl}
-              </Text>
-              <TouchableOpacity
-                style={styles.crossButtonCon}
-                onPress={() => (setTaxPayerModel(false), setStateModel(true))}
-              >
-                <Image source={crossButton} style={styles.cntryCrossButton} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.countryModBody}>
-            <Spacer space={SH(7)} />
-            <Text style={styles.name}>{strings.settings.name}</Text>
-            <TextInput
-              placeholder="Full Name or Business name"
-              style={styles.nameInput}
-              placeholderStyle={styles.namePlaceholder}
-              value={name}
-              onChangeText={setName}
-              editable={false}
-            />
-            <Spacer space={SH(7)} />
-            <Text style={styles.name}>{strings.settings.ssn}</Text>
-            <TextInput
-              placeholder={strings.settings.ssn}
-              style={styles.nameInput}
-              placeholderStyle={styles.namePlaceholder}
-              value={ssn}
-              onChangeText={setSsn}
-              editable={false}
-            />
-            <Spacer space={SH(7)} />
-            <Text style={styles.name}>{strings.settings.streetAdd}</Text>
-            <TextInput
-              placeholder={strings.settings.streetAdd}
-              style={styles.nameInput}
-              placeholderStyle={styles.namePlaceholder}
-              value={streetAdd}
-              onChangeText={setStreetAdd}
-              editable={false}
-            />
-            <Spacer space={SH(7)} />
-            <Text style={styles.name}>{strings.settings.appartement}</Text>
-            <TextInput
-              placeholder={strings.settings.appartement}
-              style={styles.nameInput}
-              placeholderStyle={styles.namePlaceholder}
-              value={appartment}
-              onChangeText={setAppartment}
-              editable={false}
-            />
-            <Spacer space={SH(7)} />
-            <View style={[styles.dispalyRow, styles.countryStateWidth]}>
-              <View>
-                <Text style={styles.name}>{strings.settings.country}</Text>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 100}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
+        >
+          <ScrollView>
+            <View style={[styles.countryModCon, styles.taxPayerModCon]}>
+              <View style={styles.countryModHeader}>
+                <View style={styles.flexRow}>
+                  <Text style={styles.selectHead}>
+                    {strings.settings.taxPayerHeadl}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.crossButtonCon}
+                    onPress={() => (
+                      setTaxPayerModel(false), setStateModel(true)
+                    )}
+                  >
+                    <Image
+                      source={crossButton}
+                      style={styles.cntryCrossButton}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.countryModBody}>
+                <Spacer space={SH(7)} />
+                <Text style={styles.name}>{strings.settings.name}</Text>
+                <TextInput
+                  placeholder="Full Name or Business name"
+                  style={styles.nameInput}
+                  placeholderStyle={styles.namePlaceholder}
+                  value={name}
+                  onChangeText={setName}
+                />
+                <Spacer space={SH(7)} />
+                <Text style={styles.name}>{strings.settings.ssn}</Text>
+                <TextInput
+                  placeholder={strings.settings.ssn}
+                  style={styles.nameInput}
+                  placeholderStyle={styles.namePlaceholder}
+                  value={ssn}
+                  onChangeText={setSsn}
+                  keyboardType="numeric"
+                />
+                <Spacer space={SH(7)} />
+                <Text style={styles.name}>{strings.settings.streetAdd}</Text>
+                <TextInput
+                  placeholder={strings.settings.streetAdd}
+                  style={styles.nameInput}
+                  placeholderStyle={styles.namePlaceholder}
+                  value={streetAdd}
+                  onChangeText={setStreetAdd}
+                />
+                <Spacer space={SH(7)} />
+                <Text style={styles.name}>{strings.settings.appartement}</Text>
                 <TextInput
                   placeholder={strings.settings.appartement}
-                  style={styles.countryInput}
+                  style={styles.nameInput}
                   placeholderStyle={styles.namePlaceholder}
-                  value={country}
-                  onChangeText={setCountry}
-                  editable={false}
+                  value={appartment}
+                  onChangeText={setAppartment}
                 />
-              </View>
-              <View>
-                <Text style={styles.name}>State</Text>
-                <TextInput
-                  placeholder={strings.settings.appartement}
-                  style={styles.countryInput}
-                  placeholderStyle={styles.namePlaceholder}
-                  value={state}
-                  onChangeText={setState}
-                  editable={false}
-                />
-              </View>
-            </View>
-            <Spacer space={SH(7)} />
-            <View style={[styles.dispalyRow, styles.countryStateWidth]}>
-              <View>
-                <Text style={styles.name}>City</Text>
-                <TextInput
-                  placeholder={strings.settings.appartement}
-                  style={styles.countryInput}
-                  placeholderStyle={styles.namePlaceholder}
-                  value={city}
-                  onChangeText={setCity}
-                  editable={false}
-                />
-              </View>
-              <View>
-                <Text style={styles.name}>Zip Code</Text>
-                <TextInput
-                  placeholder={strings.settings.appartement}
-                  style={styles.countryInput}
-                  placeholderStyle={styles.namePlaceholder}
-                  value={zipCode}
-                  onChangeText={setZipCode}
-                  editable={false}
-                />
-              </View>
-            </View>
+                <Spacer space={SH(7)} />
+                <View style={[styles.dispalyRow, styles.countryStateWidth]}>
+                  <View>
+                    <Text style={styles.name}>{strings.settings.country}</Text>
+                    <TextInput
+                      placeholder="country"
+                      style={styles.countryInput}
+                      placeholderStyle={styles.namePlaceholder}
+                      value={country}
+                      onChangeText={setCountry}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.name}>State</Text>
+                    <TextInput
+                      placeholder="state"
+                      style={styles.countryInput}
+                      placeholderStyle={styles.namePlaceholder}
+                      value={state}
+                      onChangeText={setState}
+                    />
+                  </View>
+                </View>
+                <Spacer space={SH(7)} />
+                <View style={[styles.dispalyRow, styles.countryStateWidth]}>
+                  <View>
+                    <Text style={styles.name}>City</Text>
+                    <TextInput
+                      placeholder="city"
+                      style={styles.countryInput}
+                      placeholderStyle={styles.namePlaceholder}
+                      value={city}
+                      onChangeText={setCity}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.name}>Zip Code</Text>
+                    <TextInput
+                      placeholder="zipCode"
+                      style={styles.countryInput}
+                      placeholderStyle={styles.namePlaceholder}
+                      value={zipCode}
+                      onChangeText={setZipCode}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                </View>
 
-            <Spacer space={SH(8)} />
-            <View style={{ flex: 1 }} />
-            <View style={styles.flexRow}>
-              <TouchableOpacity
-                style={styles.cancelbuttonCon}
-                onPress={() => (setTaxPayerModel(false), setStateModel(true))}
-              >
-                <Text style={styles.cancel}>{strings.settings.cancel}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
-                onPress={taxPayerHandler}
-              >
-                <Text style={[styles.cancel, styles.next]}>
-                  {strings.management.save}
-                </Text>
-              </TouchableOpacity>
+                <Spacer space={SH(8)} />
+                <View style={{ flex: 1 }} />
+                <View style={styles.flexRow}>
+                  <TouchableOpacity
+                    style={styles.cancelbuttonCon}
+                    onPress={() => (
+                      setTaxPayerModel(false), setStateModel(true)
+                    )}
+                  >
+                    <Text style={styles.cancel}>{strings.settings.cancel}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
+                    onPress={taxPayerHandler}
+                  >
+                    <Text style={[styles.cancel, styles.next]}>
+                      {strings.management.save}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <Spacer space={SH(20)} />
+              </View>
             </View>
-            <Spacer space={SH(20)} />
-          </View>
-        </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       );
     } else if (stateTax) {
       return (
@@ -752,9 +782,7 @@ export function Taxes() {
                   </Text>
                   <Spacer space={SH(20)} />
                   <Button
-                    onPress={() => {
-                      setCountryModel(true), dispatch(getCountries());
-                    }}
+                    onPress={activeBtnHandler}
                     title={strings.settings.active}
                     textStyle={styles.selectedText}
                     style={styles.submitButtons}
