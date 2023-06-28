@@ -36,6 +36,8 @@ export const ApiUserInventory = {
     `drawer_management/drawer-session/history?drawer_id=${status}`,
   staffDetail: 'user_settings/staff/transactions',
   getTax: 'tax',
+  getGoogleCode: 'users/2fa/qr-code',
+  verifyGoogleCode: 'users/2fa/verify',
 };
 
 export const ApiProductInventory = {

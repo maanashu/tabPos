@@ -7,7 +7,7 @@ import {
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
-import { verticalScale, moderateScale } from 'react-native-size-matters';
+import { verticalScale, moderateScale, scale } from 'react-native-size-matters';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -274,9 +274,16 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   scurityScan: {
-    width: SW(65),
-    height: SW(65),
+    width: SW(70),
+    height: SW(70),
     resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  scurityScanCon: {
+    width: SW(70),
+    height: SW(70),
+    justifyContent: 'center',
+    alignItems: 'center',
     alignSelf: 'center',
   },
 
@@ -1282,5 +1289,51 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
+  },
+
+  // passcode screen css start
+
+  verifyContainer: {
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.8,
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    alignSelf: 'center',
+    borderRadius: 15,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  flexWidth: {
+    width: windowWidth * 0.35,
+  },
+
+  subHeading: {
+    fontSize: SF(24),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+  },
+  alignSelfCenter: {
+    alignSelf: 'center',
+  },
+  cellRoot: {
+    backgroundColor: COLORS.white,
+    height: moderateScale(35),
+    width: moderateScale(35),
+    borderRadius: moderateScale(50),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: COLORS.solidGrey,
+    marginHorizontal: moderateScale(5),
+  },
+  cellText: {
+    fontFamily: Fonts.Medium,
+    fontSize: scale(12),
+    color: COLORS.black,
+  },
+  cross: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
   },
 });

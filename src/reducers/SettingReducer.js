@@ -9,6 +9,7 @@ const INITIALSTATE = {
   staffDetail: [],
   getTax: [],
   getTaxTrue: [],
+  getGoogleCode: {},
 };
 
 export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -87,6 +88,12 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         getTaxTrue: [],
+      };
+
+    case TYPES.GET_GOOGLE_CODE_SUCCESS:
+      return {
+        ...state,
+        getGoogleCode: payload.getGoogleCode,
       };
     default:
       return state;

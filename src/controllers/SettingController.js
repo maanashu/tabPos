@@ -168,7 +168,6 @@ export class SettingController {
         USER_URL +
         ApiUserInventory.getTax +
         `?is_tax_details=${data.is_tax}&seller_id=${data.sellerID}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -192,12 +191,84 @@ export class SettingController {
         USER_URL +
         ApiUserInventory.getTax +
         `?is_tax_details=${data.is_tax}&seller_id=${data.sellerID}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getGoogleCode() {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getGoogleCode;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async verifyGoogleCode(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.verifyGoogleCode;
+      HttpClient.post(endpoint, data)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          if (error?.msg === 'Invalid token code.') {
+            Toast.show({
+              text2: 'Token Code Expire',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
+
+          reject(error);
+        });
+    });
+  }
+
+  static async taxPayer(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getTax;
+      const body = {
+        seller_id: data?.sellerId,
+        name: data?.businessName,
+        ssn: data?.ssn,
+        country: data?.country,
+        state: data?.state,
+        city: data?.city,
+        zip_code: data?.zipCode,
+        business_name: data?.businessName,
+        street_address: data?.streetAdd,
+        apartment: data?.appartment,
+      };
+      HttpClient.post(endpoint, body)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error?.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+
           reject(error);
         });
     });

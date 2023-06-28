@@ -168,7 +168,7 @@ export function Invoices() {
             {/* </View> */}
           </View>
           <Spacer space={SH(20)} />
-          <View style={styles.securityBodyCon}>
+          {/* <View style={styles.securityBodyCon}>
             <Text style={styles.twoStepText}>
               {strings.settings.invoiceTemplate}
             </Text>
@@ -205,7 +205,7 @@ export function Invoices() {
                 </View>
               </View>
             </View>
-          </View>
+          </View> */}
         </ScrollView>
       </View>
     </View>

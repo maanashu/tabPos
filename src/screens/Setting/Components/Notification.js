@@ -17,7 +17,7 @@ export function Notification() {
   const [appNotificationArray, setAppNotificationArray] = useState([
     {
       key: '1',
-      name: 'Allow notifications',
+      name: 'Sms Notifications',
       value: 'notification_status',
       isSelected: getSettingData?.getSetting?.notification_status ?? false,
     },
@@ -28,12 +28,12 @@ export function Notification() {
       isSelected:
         getSettingData?.getSetting?.email_notification_status ?? false,
     },
-    {
-      key: '3',
-      name: 'Push notifications',
-      value: 'push_notification_status',
-      isSelected: getSettingData?.getSetting?.push_notification_status ?? false,
-    },
+    // {
+    //   key: '3',
+    //   name: 'Push notifications',
+    //   value: 'push_notification_status',
+    //   isSelected: getSettingData?.getSetting?.push_notification_status ?? false,
+    // },
   ]);
 
   const handleToggle = index => {

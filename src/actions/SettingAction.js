@@ -159,6 +159,45 @@ const getTaxTrueReset = () => ({
   payload: null,
 });
 
+const getGoogleCodeRequest = () => ({
+  type: TYPES.GET_GOOGLE_CODE_REQUEST,
+  payload: null,
+});
+const getGoogleCodeSuccess = getGoogleCode => ({
+  type: TYPES.GET_GOOGLE_CODE_SUCCESS,
+  payload: { getGoogleCode },
+});
+const getGoogleCodeError = error => ({
+  type: TYPES.GET_GOOGLE_CODE_ERROR,
+  payload: { error },
+});
+
+const verifyGoogleCodeRequest = () => ({
+  type: TYPES.VERIFY_GOOGLE_CODE_REQUEST,
+  payload: null,
+});
+const verifyGoogleCodeSuccess = getGoogleCode => ({
+  type: TYPES.VERIFY_GOOGLE_CODE_SUCCESS,
+  payload: { getGoogleCode },
+});
+const verifyGoogleCodeError = error => ({
+  type: TYPES.VERIFY_GOOGLE_CODE_ERROR,
+  payload: { error },
+});
+
+const taxPayerRequest = () => ({
+  type: TYPES.TAX_PAYER_REQUEST,
+  payload: null,
+});
+const taxPayerSuccess = taxPayer => ({
+  type: TYPES.TAX_PAYER_SUCCESS,
+  payload: { taxPayer },
+});
+const taxPayerError = error => ({
+  type: TYPES.TAX_PAYER_ERROR,
+  payload: { error },
+});
+
 export const getSettings = () => async dispatch => {
   dispatch(getSettingRequest());
   try {
@@ -274,5 +313,36 @@ export const getTaxTrue = data => async dispatch => {
       dispatch(getTaxTrueReset());
     }
     dispatch(getTaxTrueError(error.message));
+  }
+};
+
+export const getGoogleCode = () => async dispatch => {
+  dispatch(getGoogleCodeRequest());
+  try {
+    const res = await SettingController.getGoogleCode();
+    dispatch(getGoogleCodeSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getGoogleCodeError(error.message));
+  }
+};
+
+export const verifyGoogleCode = data => async dispatch => {
+  dispatch(verifyGoogleCodeRequest());
+  try {
+    const res = await SettingController.verifyGoogleCode(data);
+    return dispatch(verifyGoogleCodeSuccess(res));
+  } catch (error) {
+    dispatch(verifyGoogleCodeError(error.message));
+  }
+};
+
+export const taxPayer = data => async dispatch => {
+  dispatch(taxPayerRequest());
+  try {
+    const res = await SettingController.taxPayer(data);
+    console.log('res', res);
+    return dispatch(taxPayerSuccess(res));
+  } catch (error) {
+    dispatch(taxPayerError(error.message));
   }
 };

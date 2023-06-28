@@ -46,7 +46,6 @@ export function Wallet() {
       const data = {
         jbr_coin_status: jbrCoin ? false : true,
       };
-      console.log('data', data);
       dispatch(upadteApi(data));
     } else if (id === 2) {
       const data = {

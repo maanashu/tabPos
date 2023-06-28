@@ -46,6 +46,7 @@ import {
   getState,
   getTax,
   getTaxTrue,
+  taxPayer,
 } from '@/actions/SettingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SettingTypes';
@@ -78,8 +79,9 @@ export function Taxes() {
   const [addExmption, setAddExmption] = useState(false);
   const [addStateBtn, setAddStateBtn] = useState(false);
   const [countryItemSel, setCountryItemSel] = useState();
+  const [businessData, setBusinessData] = useState();
 
-  const [name, setName] = useState(merchantProfile?.username);
+  const [name, setName] = useState(merchantProfile?.organization_name);
   const [ssn, setSsn] = useState(merchantProfile?.ssn_number);
   const [streetAdd, setStreetAdd] = useState(
     merchantProfile?.current_address?.street_address
@@ -129,9 +131,21 @@ export function Taxes() {
     ) {
       alert('Field not complete');
     } else {
+      const data = {
+        sellerId: sellerID,
+        businessName: name,
+        ssn: ssn,
+        streetAdd: streetAdd,
+        appartment: appartment,
+        country: country,
+        state: state,
+        city: city,
+        zipCode: zipCode,
+      };
+      setBusinessData(data);
       setTaxPayerModel(false);
+      dispatch(taxPayer(data));
       //  setVerifiedArea(true);
-      alert('In progress');
     }
   };
 
@@ -810,10 +824,10 @@ export function Taxes() {
                   <View>
                     <View style={styles.taxnameCon}>
                       <Text style={styles.charlieName}>
-                        {strings.settings.name}:Charlie Saari
+                        {strings.settings.name}: {businessData?.name}
                       </Text>
                       <Text style={styles.charlieName}>
-                        {strings.settings.SSN}:136042056
+                        {strings.settings.SSN}: {businessData?.ssn}
                       </Text>
                       <Text style={styles.charlieName}>
                         3755 Williams Mine Road, Newark, NJ 07102
@@ -979,63 +993,72 @@ export function Taxes() {
             </View>
           </View>
           <Spacer space={SH(10)} />
-          <View style={[styles.dispalyRow, { zIndex: 999 }]}>
-            <TableDropdown placeholder="Location" />
-            <TableDropdown placeholder="Status" />
-          </View>
-          <Spacer space={SH(10)} />
-
-          <View style={{ zIndex: -99 }}>
-            <View style={styles.invoiceTableHeader}>
-              <View style={styles.headerBodyCon}>
-                <Text
-                  style={[
-                    styles.invoiveheaderText,
-                    { marginHorizontal: moderateScale(10) },
-                  ]}
-                >
-                  #
-                </Text>
-                <Text style={styles.invoiveheaderText}>Tax Name</Text>
-              </View>
-              <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
-                <Text style={styles.invoiveheaderText}>Locations</Text>
-                <Text style={styles.invoiveheaderText}>Tax rate</Text>
-                <Text style={styles.invoiveheaderText}>status</Text>
-                <Image source={rightBack} style={styles.arrowStyle} />
-              </View>
-            </View>
+          {getTaxTable?.length === 0 ? null : (
             <View>
-              <ScrollView>
-                {getTaxTable?.map((item, index) => (
-                  <View
-                    style={[styles.invoiceTableHeader, styles.invoiceTableData]}
-                    key={index}
-                  >
-                    <View style={styles.headerBodyCon}>
-                      <Text
-                        style={[
-                          styles.terryText,
-                          { marginHorizontal: moderateScale(10) },
-                        ]}
-                      >
-                        {index + 1}
-                      </Text>
-                      <Text style={styles.terryText}>{item.tax_name}</Text>
-                    </View>
-                    <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
-                      <Text style={styles.terryText}>{item.location}</Text>
-                      <Text style={styles.terryText}>{item.tax_rate}%</Text>
-                      <Image
-                        source={item.status ? vector : vectorOff}
-                        style={styles.toggleSecurity}
-                      />
-                    </View>
+              <View style={[styles.dispalyRow, { zIndex: 999 }]}>
+                <TableDropdown placeholder="Location" />
+                <TableDropdown placeholder="Status" />
+              </View>
+              <Spacer space={SH(10)} />
+
+              <View style={{ zIndex: -99 }}>
+                <View style={styles.invoiceTableHeader}>
+                  <View style={styles.headerBodyCon}>
+                    <Text
+                      style={[
+                        styles.invoiveheaderText,
+                        { marginHorizontal: moderateScale(10) },
+                      ]}
+                    >
+                      #
+                    </Text>
+                    <Text style={styles.invoiveheaderText}>Tax Name</Text>
                   </View>
-                ))}
-              </ScrollView>
+                  <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
+                    <Text style={styles.invoiveheaderText}>Locations</Text>
+                    <Text style={styles.invoiveheaderText}>Tax rate</Text>
+                    <Text style={styles.invoiveheaderText}>status</Text>
+                    <Image source={rightBack} style={styles.arrowStyle} />
+                  </View>
+                </View>
+                <View>
+                  <ScrollView>
+                    {getTaxTable?.map((item, index) => (
+                      <View
+                        style={[
+                          styles.invoiceTableHeader,
+                          styles.invoiceTableData,
+                        ]}
+                        key={index}
+                      >
+                        <View style={styles.headerBodyCon}>
+                          <Text
+                            style={[
+                              styles.terryText,
+                              { marginHorizontal: moderateScale(10) },
+                            ]}
+                          >
+                            {index + 1}
+                          </Text>
+                          <Text style={styles.terryText}>{item.tax_name}</Text>
+                        </View>
+                        <View
+                          style={[styles.headerBodyCon, styles.headerBodyCon2]}
+                        >
+                          <Text style={styles.terryText}>{item.location}</Text>
+                          <Text style={styles.terryText}>{item.tax_rate}%</Text>
+                          <Image
+                            source={item.status ? vector : vectorOff}
+                            style={styles.toggleSecurity}
+                          />
+                        </View>
+                      </View>
+                    ))}
+                  </ScrollView>
+                </View>
+              </View>
             </View>
-          </View>
+          )}
         </View>
       );
     }

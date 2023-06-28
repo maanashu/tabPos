@@ -658,7 +658,6 @@ export const requestMoney = data => async dispatch => {
   dispatch(requestMoneyRequest());
   try {
     const res = await RetailController.requestMoney(data);
-    console.log('res', res);
     return dispatch(requestMoneySuccess(res?.payload));
   } catch (error) {
     dispatch(requestMoneyError(error.message));

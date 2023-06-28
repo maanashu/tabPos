@@ -7,13 +7,11 @@ export class CashTrackingController {
   static async getDrawerSession() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
-      console.log('endpoint', endpoint);
       HttpClient.post(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
-          console.log('error', error);
           Toast.show({
             text2: error.error,
             position: 'bottom',
