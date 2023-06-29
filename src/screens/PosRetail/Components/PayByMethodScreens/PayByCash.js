@@ -46,7 +46,6 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
       modeOfPayment: 'cash',
     };
     console.log('data', data);
-    return;
     const callback = response => {
       if (response) {
         onPressContinue(saveCartData);
@@ -89,11 +88,11 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
     },
     {
       id: 2,
-      usd: totalPayAmount() + 10,
+      usd: totalPayAmount(),
     },
     {
       id: 3,
-      usd: totalPayAmount() + 20,
+      usd: totalPayAmount(),
     },
   ];
 
