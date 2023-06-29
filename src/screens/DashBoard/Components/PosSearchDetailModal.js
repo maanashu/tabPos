@@ -28,12 +28,13 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
     const data = {
       seller_id: sellerID,
       product_id: productData?.id,
-      qty: 0,
+      qty: 1,
       service_id: productData.service_id,
       supplyId: productData?.supplies?.[0]?.id,
-      supplyPriceid: productData?.supplies?.[0]?.supply_prices[0]?.id,
+      supplyPriceID: productData?.supplies?.[0]?.supply_prices[0]?.id,
     };
     dispatch(addTocart(data));
+    alert('Product Add to cart successfully');
   };
   const addToCartLoad = useSelector(state =>
     isLoadingSelector([TYPES.ADDCART], state)
@@ -49,7 +50,9 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
         <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
       </TouchableOpacity>
       <Spacer space={SH(20)} />
-      <Text style={styles.productDetailHeader}>{productData?.name}</Text>
+      <Text style={styles.productDetailHeader} numberOfLines={1}>
+        {productData?.name}
+      </Text>
       <Spacer space={SH(10)} />
       <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
         <View style={styles.detailImageCon}>
@@ -80,7 +83,7 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
             <TouchableOpacity>
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
-            <Text style={[styles.price, { fontSize: SF(24) }]}>0</Text>
+            <Text style={[styles.price, { fontSize: SF(24) }]}>1</Text>
             <TouchableOpacity>
               <Image source={plus} style={styles.plusBtn2} />
             </TouchableOpacity>

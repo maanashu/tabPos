@@ -92,6 +92,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: ms(5),
+    borderWidth: 1,
   },
   _usdText: {
     color: COLORS.solid_grey,

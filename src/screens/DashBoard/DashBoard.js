@@ -528,7 +528,7 @@ export function DashBoard({ navigation }) {
                   }}
                 />
               </View>
-              <TouchableOpacity onPress={() => setSearchScreen(true)}>
+              <TouchableOpacity onPress={() => alert('Coming soon')}>
                 <Image source={scn} style={styles.scnStyle} />
               </TouchableOpacity>
             </View>

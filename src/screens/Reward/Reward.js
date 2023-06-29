@@ -56,6 +56,8 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { getReward } from '@/selectors/RewardSelectors';
 import { TYPES } from '@/Types/RewardTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { BarChart } from 'react-native-chart-kit';
 
 export function Reward() {
   const dispatch = useDispatch();
@@ -65,7 +67,7 @@ export function Reward() {
   const getPositionData = getRewardData?.rewardedUsersData;
   const totalReward = getRewardData?.getRewardUser?.total_redeem_rewards;
 
-  const tableArray = getRewardData?.getRewardUser?.data;
+  const tableArray = getRewardData?.getRewardUser?.data ?? [];
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [rewardList, setRewardList] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
@@ -95,6 +97,10 @@ export function Reward() {
       dispatch(getRewardUser('week', sellerID));
     }
   }, [isFocus]);
+
+  const isLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_REWARDED_USERS, TYPES.GET_REWARD_USER], state)
+  );
 
   const onChangeDate = selectedDate => {
     const currentDate = moment().format('MM/DD/YYYY');
@@ -126,7 +132,7 @@ export function Reward() {
   const viewHandler = () => {
     if (tableArray?.length === 0) {
       Toast.show({
-        text2: 'User not found',
+        text2: 'Reward not found',
         position: 'bottom',
         type: 'success_toast',
         visibilityTime: 1500,
@@ -308,18 +314,12 @@ export function Reward() {
                 </View>
               </View>
               <View>
-                {/* <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                  {isUserLoad || tableArray === undefined ? (
-                    <View style={{ marginTop: 50 }}>
-                      <ActivityIndicator
-                        size="large"
-                        color={COLORS.primary}
-                        style={styles.indicatorstyle}
-                      />
-                    </View>
-                  ) : tableArray?.length === 0 ? (
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                  {tableArray?.length === 0 ? (
                     <View>
-                      <Text style={styles.requestNotFound}>User not found</Text>
+                      <Text style={styles.requestNotFound}>
+                        Reward not found
+                      </Text>
                     </View>
                   ) : (
                     tableArray?.map((item, index) => (
@@ -392,42 +392,7 @@ export function Reward() {
                       </View>
                     ))
                   )}
-                </ScrollView> */}
-                <View style={styles.tableDataDataCon}>
-                  <View style={styles.displayflex}>
-                    <View
-                      style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
-                    >
-                      <Text style={[styles.text1, styles.text2]}>1</Text>
-                      <View style={styles.tableProfileData}>
-                        <View style={styles.rowCenter}>
-                          <Image
-                            source={userImage}
-                            style={styles.tableProfile}
-                          />
-                          <View style={{ marginLeft: 4 }}>
-                            <Text style={styles.username}>soab khan</Text>
-                            <View style={styles.rowCenter}>
-                              <Image
-                                source={location}
-                                style={styles.Phonelight}
-                              />
-                              <Text style={styles.userAddress}>
-                                State, country
-                              </Text>
-                            </View>
-                          </View>
-                        </View>
-                      </View>
-                    </View>
-                    <View style={styles.dateHeadAlign}>
-                      <Text style={styles.DataText}>$1</Text>
-                      <Text style={styles.DataText}>0</Text>
-                      <Text style={styles.DataText}>Active</Text>
-                      <Text style={[styles.DataText]}>1</Text>
-                    </View>
-                  </View>
-                </View>
+                </ScrollView>
               </View>
             </Table>
           </View>
@@ -590,17 +555,9 @@ export function Reward() {
                 </View>
               </View>
 
-              {/* {isUserLoad || tableArray === undefined ? (
-                <View style={{ marginTop: 50 }}>
-                  <ActivityIndicator
-                    size="large"
-                    color={COLORS.primary}
-                    style={styles.indicatorstyle}
-                  />
-                </View>
-              ) : tableArray?.length === 0 || tableArray === undefined ? (
+              {tableArray?.length === 0 || tableArray === undefined ? (
                 <View>
-                  <Text style={styles.requestNotFound}>User not found</Text>
+                  <Text style={styles.requestNotFound}>Reward not found</Text>
                 </View>
               ) : (
                 tableArray?.slice(0, 4).map((item, index) => (
@@ -662,40 +619,7 @@ export function Reward() {
                     </View>
                   </View>
                 ))
-              )} */}
-
-              <View style={styles.tableDataDataCon}>
-                <View style={styles.displayflex}>
-                  <View
-                    style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
-                  >
-                    <Text style={[styles.text1, styles.text2]}>1</Text>
-                    <View style={styles.tableProfileData}>
-                      <View style={styles.rowCenter}>
-                        <Image source={userImage} style={styles.tableProfile} />
-                        <View style={{ marginLeft: 4 }}>
-                          <Text style={styles.username}>soab khan</Text>
-                          <View style={styles.rowCenter}>
-                            <Image
-                              source={location}
-                              style={styles.Phonelight}
-                            />
-                            <Text style={styles.userAddress}>
-                              State, country
-                            </Text>
-                          </View>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={styles.dateHeadAlign}>
-                    <Text style={styles.DataText}>$1</Text>
-                    <Text style={styles.DataText}>0</Text>
-                    <Text style={styles.DataText}>Active</Text>
-                    <Text style={[styles.DataText]}>1</Text>
-                  </View>
-                </View>
-              </View>
+              )}
             </Table>
           </View>
         </View>
@@ -706,6 +630,15 @@ export function Reward() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>{bodyView()}</View>
+      {isLoading ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
     </ScreenWrapper>
   );
 }

@@ -1,4 +1,5 @@
 import {
+  FlatList,
   Image,
   SafeAreaView,
   Text,
@@ -6,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { ms } from 'react-native-size-matters';
 import { Button } from '@/components';
 import { crossButton } from '@/assets';
@@ -22,11 +23,14 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
+  const [selectedId, setSelectedId] = useState(1);
+  const [cashRate, setCashRate] = useState();
 
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
 
   const saveCartData = { ...getRetailData };
+  const valueTen = 10;
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
@@ -41,7 +45,8 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
       tips: tipAmount,
       modeOfPayment: 'cash',
     };
-
+    console.log('data', data);
+    return;
     const callback = response => {
       if (response) {
         onPressContinue(saveCartData);
@@ -49,6 +54,48 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
     };
     dispatch(createOrder(data, callback));
   };
+  const renderItem = ({ item }) => {
+    const borderColor =
+      item.id === selectedId ? COLORS.primary : COLORS.transparentBlue;
+
+    return (
+      <Item
+        item={item}
+        onPress={() => {
+          setSelectedId(item.id), setCashRate(item.usd);
+        }}
+        borderColor={borderColor}
+      />
+    );
+  };
+
+  const Item = ({ item, onPress, borderColor, textColor }) => (
+    <TouchableOpacity
+      style={[styles._boxView, { flexDirection: 'row', borderColor }]}
+      onPress={onPress}
+    >
+      <Text style={styles._usdText}>USD</Text>
+      <Text style={[styles._usdText, { color: COLORS.primary }]}>
+        {' '}
+        ${item.usd}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  const selectCashArray = [
+    {
+      id: 1,
+      usd: totalPayAmount(),
+    },
+    {
+      id: 2,
+      usd: totalPayAmount() + 10,
+    },
+    {
+      id: 3,
+      usd: totalPayAmount() + 20,
+    },
+  ];
 
   return (
     <SafeAreaView style={styles._innerContainer}>
@@ -80,7 +127,7 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
             <Text style={styles._selectTips}>Received Amount</Text>
 
             <View style={{ flexDirection: 'row', marginTop: ms(10) }}>
-              {[1, 2, 3].map((item, index) => (
+              {/* {[1, 2, 3].map((item, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[styles._boxView, { flexDirection: 'row' }]}
@@ -91,7 +138,14 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
                     ${totalPayAmount()}
                   </Text>
                 </TouchableOpacity>
-              ))}
+              ))} */}
+              <FlatList
+                data={selectCashArray}
+                extraData={selectCashArray}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                horizontal
+              />
             </View>
 
             <View style={styles._inputMain}>

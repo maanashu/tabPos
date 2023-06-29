@@ -775,7 +775,6 @@ export function MainScreen({
                   newData[2].isSelected = true;
                   return newData;
                 });
-
                 setBrandModal(false);
               }}
             />

@@ -341,7 +341,6 @@ export class RetailController {
       };
       HttpClient.put(endpoint, body)
         .then(response => {
-          console.log('response', response);
           if (response?.msg === 'PosCart updated!') {
             Toast.show({
               text2: 'Discount add succesfully',
