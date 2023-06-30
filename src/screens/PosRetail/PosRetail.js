@@ -56,7 +56,7 @@ export function PosRetail() {
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   const [tipAmount, setTipAmount] = useState(0.0);
   const [addNotes, setAddNotes] = useState(false);
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
   const [addDiscount, setAddDiscount] = useState(false);
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
@@ -69,6 +69,10 @@ export function PosRetail() {
   const [amountCheck, setAmountCheck] = useState(false);
   const [percentageCheck, setPercentageCheck] = useState(false);
   const [discountCheck, setDiscountCheck] = useState(false);
+  const [cashPayDetail, setCashPayDetail] = useState();
+  useEffect(() => {
+    setNotes(getRetailData?.getAllCart?.notes);
+  }, [getRetailData?.getAllCart]);
 
   const clearInput = () => {
     setNotes('');
@@ -125,6 +129,7 @@ export function PosRetail() {
         // descriptionDis: descriptionDis,
         // descriptionDis:'discount title'
       };
+
       dispatch(addDiscountToCart(data));
       clearInput();
       setAddDiscount(false);
@@ -179,6 +184,7 @@ export function PosRetail() {
         TYPES.ADDNOTES,
         TYPES.ADD_DISCOUNT,
         TYPES.CHECK_SUPPLIES_VARIANT,
+        TYPES.GET_TIPS,
       ],
       state
     )
@@ -250,10 +256,11 @@ export function PosRetail() {
         onPressBack={() => {
           setselectedScreen('CartAmountPayBy');
         }}
-        onPressContinue={cartData => {
+        onPressContinue={(cartData, data) => {
           setpaymentMethod('Cash');
           setSavedTempCartData(cartData?.getAllCart);
           setselectedScreen('FinalPaymentScreen');
+          setCashPayDetail(data);
         }}
       />
     ),
@@ -263,10 +270,11 @@ export function PosRetail() {
         onPressBack={() => {
           setselectedScreen('CartAmountPayBy');
         }}
-        onPressContinue={cartData => {
+        onPressContinue={(cartData, data) => {
           setpaymentMethod('JBRCoins');
           setSavedTempCartData(cartData?.getAllCart);
           setselectedScreen('FinalPaymentScreen');
+          setCashPayDetail(data);
         }}
       />
     ),
@@ -276,6 +284,7 @@ export function PosRetail() {
         onPressBack={() => setselectedScreen('MainScreen')}
         paymentMethod={paymentMethod}
         cartData={savedTempCartData}
+        payDetail={cashPayDetail}
       />
     ),
   };

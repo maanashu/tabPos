@@ -183,7 +183,7 @@ export function DashBoard({ navigation }) {
 
   const startSellingHandler = id => {
     if (id === 1) {
-      navigate(NAVIGATION.retails);
+      navigate(NAVIGATION.posRetail);
     } else if (id === 2) {
       navigate(NAVIGATION.deliveryOrder);
     }

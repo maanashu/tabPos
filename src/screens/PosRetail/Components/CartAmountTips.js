@@ -18,6 +18,7 @@ import { getTip } from '@/actions/RetailAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { COLORS } from '@/theme';
+import { CustomHeader } from './CustomHeader';
 
 export const CartAmountTips = ({
   onPressBack,
@@ -30,6 +31,7 @@ export const CartAmountTips = ({
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   const getTips = getRetailData?.getTips;
+  console.log('getTips', getTips);
 
   const tipsArr = [
     getTips?.first_tips ?? 0,
@@ -52,7 +54,7 @@ export const CartAmountTips = ({
 
   return (
     <SafeAreaView style={styles._innerContainer}>
-      <View style={styles._topContainer}>
+      {/* <View style={styles._topContainer}>
         <Text style={styles._date}>{moment().format('ddd DD MMM, YYYY')}</Text>
         <View style={styles._border} />
         <Text style={styles._date}>{moment().format('hh:mm A')}</Text>
@@ -74,7 +76,8 @@ export const CartAmountTips = ({
             style={{ resizeMode: 'contain', height: ms(12), width: ms(12) }}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
+      <CustomHeader iconShow={true} crossHandler={onPressBack} />
       <View style={styles._centerContainer}>
         <BackButton title={'Back'} onPress={onPressBack} />
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>

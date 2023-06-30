@@ -443,8 +443,10 @@ export class RetailController {
         user_id: data.userId,
         // shipping: 'Pickup',
         // app_name: 'Pos',
+        tips: data.tips,
         mode_of_payment: data.modeOfPayment,
       };
+      console.log('body', body);
 
       HttpClient.post(endpoint, body)
         .then(response => {
@@ -565,11 +567,13 @@ export class RetailController {
   static async getTips(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
+          console.log('error', error);
           reject(error);
         });
     });

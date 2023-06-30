@@ -1,7 +1,7 @@
 import { Fonts } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { height, width } from '@/theme/ScalerDimensions';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { moderateScale, verticalScale, ms } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -49,8 +49,8 @@ export const styles = StyleSheet.create({
   },
   _centerContainer: {
     backgroundColor: COLORS.white,
-    marginTop: ms(30),
-    marginHorizontal: ms(26),
+    // marginTop: ms(20),
+    // marginHorizontal: ms(26),
     marginBottom: ms(10),
     borderRadius: ms(3),
     justifyContent: 'center',
@@ -108,6 +108,7 @@ export const styles = StyleSheet.create({
   _innerContainer: {
     backgroundColor: COLORS.textInputBackground,
     flex: 1,
+    paddingHorizontal: moderateScale(12),
   },
   _inputMain: {
     marginTop: ms(15),
@@ -1210,5 +1211,11 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.solid_grey,
     transform: [{ rotate: '180deg' }],
+  },
+  iconStyle: {
+    width: SW(9),
+    height: SW(6),
+    resizeMode: 'cover',
+    backgroundColor: COLORS.black,
   },
 });

@@ -48,7 +48,7 @@ export const PayByCard = ({
           style={{ top: ms(5), left: ms(0), backgroundColor: 'transparent' }}
         />
       </View>
-      <View style={styles._centerContainer}>
+      <View style={[styles._centerContainer, { marginTop: ms(30) }]}>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
           <View style={{ flexDirection: 'row' }}>

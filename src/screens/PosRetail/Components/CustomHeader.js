@@ -1,12 +1,16 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
-import { cloth, crossButton, search_light } from '@/assets';
+import { cloth, crossButton, logo_icon, search_light } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { getUser } from '@/selectors/UserSelectors';
 
 export function CustomHeader({ crossHandler, iconShow }) {
+  const getUserData = useSelector(getUser);
+  const getPosUser = getUserData?.posLoginData;
   return (
     <View style={styles.searchScreenHeader}>
       <View style={styles.displayflex}>
@@ -21,7 +25,14 @@ export function CustomHeader({ crossHandler, iconShow }) {
 
         <Text style={styles.cashLabelBold}>Walk-In</Text>
         <View style={styles._border} />
-        <Text style={styles.cashLabelBold}>Invoice No. # 3467589</Text>
+        <Text style={styles.cashLabelBold}>
+          {/* <Image source={logo_icon} style={styles.iconStyle} /> */}
+          {getPosUser?.user_profiles?.firstname ?? 'username'}(
+          {getPosUser?.user_profiles?.pos_role === null
+            ? 'Merchant'
+            : getPosUser?.user_profiles?.pos_role}
+          )
+        </Text>
         <Text style={styles.cashLabelBold}>POS No. #Front-CC01</Text>
         {iconShow ? (
           <TouchableOpacity onPress={crossHandler}>

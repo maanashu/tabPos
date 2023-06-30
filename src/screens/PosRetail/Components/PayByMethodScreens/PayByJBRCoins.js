@@ -83,13 +83,12 @@ export const PayByJBRCoins = ({
     const data = {
       cartid: getRetailData?.getAllCart?.id,
       userId: customer?.user_id,
-      tips: tipAmount,
+      tips: totalPayAmount() * 100,
       modeOfPayment: 'jbr',
     };
-
     const callback = response => {
       if (response) {
-        onPressContinue(saveCartData);
+        onPressContinue(saveCartData, data);
       }
     };
     dispatch(createOrder(data, callback));
@@ -177,7 +176,7 @@ export const PayByJBRCoins = ({
             style={{ top: ms(5), left: ms(0), backgroundColor: 'transparent' }}
           />
         </View>
-        <View style={styles._centerContainer}>
+        <View style={[styles._centerContainer, { marginTop: ms(30) }]}>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text
               style={[
