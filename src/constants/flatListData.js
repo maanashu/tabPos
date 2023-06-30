@@ -678,12 +678,12 @@ export const settingLabelData = [
     subhead: 'Defaults',
     image: invoiceSett,
   },
-  {
-    id: 7,
-    name: 'Taxes',
-    subhead: 'Not updated ',
-    image: tax,
-  },
+  // {
+  //   id: 7,
+  //   name: 'Taxes',
+  //   subhead: 'Not updated ',
+  //   image: tax,
+  // },
   {
     id: 8,
     name: 'Wallet',

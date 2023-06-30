@@ -51,7 +51,6 @@ export function Shipping() {
   };
 
   const renderItem = ({ item }) => {
-    console.log("Item",item);
     return (
       <View
         style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}
@@ -110,17 +109,18 @@ export function Shipping() {
               </View>
             ))}
           </View>
-          {item.address_type!==strings.shipping.shippingText&&
-          <TouchableOpacity
-            onPress={() => {
-              addressUpdate(item.id, item.is_active), defaultUpdate(item);
-            }}
-          >
-            <Image
-              source={item.is_active ? toggleOn : vectorOff}
-              style={styles.toggleSecurityLarge}
-            />
-          </TouchableOpacity>}
+          {item.address_type !== strings.shipping.shippingText && (
+            <TouchableOpacity
+              onPress={() => {
+                addressUpdate(item.id, item.is_active), defaultUpdate(item);
+              }}
+            >
+              <Image
+                source={item.is_active ? toggleOn : vectorOff}
+                style={styles.toggleSecurityLarge}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     );

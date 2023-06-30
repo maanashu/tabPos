@@ -58,8 +58,7 @@ export const FinalPaymentScreen = ({
           style={{ top: ms(5), left: ms(0), backgroundColor: 'transparent' }}
         />
       </View>
-
-      <View style={[styles._centerContainer, {}]}>
+      <View style={[styles._centerContainer, { marginTop: ms(30) }]}>
         <View style={styles._upperContainer}>
           <View style={styles._kUpperContainer}>
             <View style={styles._kContainer}>

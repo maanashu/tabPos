@@ -31,7 +31,6 @@ export const CartAmountTips = ({
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   const getTips = getRetailData?.getTips;
-  console.log('getTips', getTips);
 
   const tipsArr = [
     getTips?.first_tips ?? 0,
