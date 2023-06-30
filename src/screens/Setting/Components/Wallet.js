@@ -84,7 +84,7 @@ export function Wallet() {
               </Text>
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.vectorIconCon}
               onPress={() => jbrCoinOnPress(1)}
             >
@@ -92,7 +92,7 @@ export function Wallet() {
                 source={jbrCoin ? vector : vectorOff}
                 style={styles.toggleSecurity}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
 
@@ -130,7 +130,7 @@ export function Wallet() {
               <Text
                 style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}
               >
-                Pay by Card Contactless
+                Pay by Card 
               </Text>
               <Text style={styles.systemPos}>{strings.wallet.systemPOS}</Text>
               <Spacer space={SH(5)} />

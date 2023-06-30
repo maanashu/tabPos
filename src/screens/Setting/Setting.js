@@ -29,6 +29,7 @@ import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { strings } from '@/localization';
 
 export function Setting() {
   const dispatch = useDispatch();
@@ -125,6 +126,8 @@ export function Setting() {
   );
 
   const renderItem = ({ item }) => {
+
+    console.log("Itesdasdasdas",item);
     const backgroundColor =
       item.id === selectedId ? COLORS.blue_shade : '#transparent';
     const tintAndColor =
@@ -134,15 +137,18 @@ export function Setting() {
     const color = item.id === selectedId ? COLORS.primary : COLORS.black;
 
     return (
-      <Item
-        item={item}
-        onPress={() => (setSelectedId(item.id), onpressFun(item.id))}
-        backgroundColor={backgroundColor}
-        textColor={color}
-        tintAndColor={tintAndColor}
-        borderColor={borderColor}
-      />
-    );
+      
+      <>
+      {(item?.name == strings.legal.LegalText || item?.name == strings.Policies.PoliciesText ||item?.name == strings.deviceDetails.deviceDetailsText)?null: <Item
+         item={item}
+         onPress={() => (setSelectedId(item.id), onpressFun(item.id))}
+         backgroundColor={backgroundColor}
+         textColor={color}
+         tintAndColor={tintAndColor}
+         borderColor={borderColor}
+       />}
+      </>
+     );
   };
   const bodyView = () => {
     return renderView[selectedId];

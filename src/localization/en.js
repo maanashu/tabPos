@@ -695,6 +695,7 @@ export const en = {
     address: '1899 Rollins Road , Grand Island Nebraska 68801, United States',
     jobrDelivery: 'JOBR Delivery',
     localOff: 'Local Drop-off',
+    shippingText:"Shipping"
   },
 
   Languages: {
@@ -725,4 +726,13 @@ export const en = {
       "Active in the markets they've been added to and visible to customers.",
     addStaff: 'Add Staff',
   },
+  legal:{
+    LegalText:"Legal"
+  },
+  Policies:{
+    PoliciesText:"Policies"
+  },
+  deviceDetails:{
+    deviceDetailsText:"Device Details"
+  }
 };
