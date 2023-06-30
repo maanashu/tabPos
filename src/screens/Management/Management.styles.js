@@ -141,7 +141,7 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     alignSelf: 'center',
     justifyContent: 'center',
-    height: windowHeight - 200,
+    minHeight: windowHeight - 200,
     // borderWidth:10
   },
   headerView: {
@@ -163,7 +163,8 @@ export const styles = StyleSheet.create({
   },
   countCashView: {
     width: SW(130),
-    alignSelf: 'center',
+     alignSelf: 'center',
+    height:"70%"
   },
   countCashText: {
     fontFamily: Fonts.MaisonBold,

@@ -812,7 +812,7 @@ export function Taxes() {
     } else {
       return (
         <View>
-          <View style={[styles.taxMainCon]}>
+          {/* <View style={[styles.taxMainCon]}>
             <View style={styles.securityBodyCon}>
               <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
                 <Image source={invoice2} style={styles.securityLogo} />
@@ -914,7 +914,14 @@ export function Taxes() {
                         </View>
                       </TouchableOpacity>
                       <Spacer space={SH(5)} />
-                      {/* {addStateBtn ? (
+
+                      
+                      
+                      Earlier commented
+                      
+                      {addStateBtn ? (
+
+                      
                       <View
                         style={[
                           styles.verifiedBtnCon,
@@ -934,7 +941,7 @@ export function Taxes() {
                           />
                         </View>
                       </View>
-                    ) : null} */}
+                    ) : null} 
                       <View
                         style={[
                           styles.verifiedBtnCon,
@@ -956,7 +963,7 @@ export function Taxes() {
                       </View>
                     </View>
                     <Spacer space={SH(7)} />
-                    {/* {createTaxBtn ? (
+                    Earlier commented {createTaxBtn ? (
                     <TouchableOpacity
                       style={[
                         styles.verifiedBtnCon,
@@ -971,7 +978,7 @@ export function Taxes() {
                         </Text>
                       </View>
                     </TouchableOpacity>
-                  ) : null} */}
+                  ) : null} 
                     <TouchableOpacity
                       style={[
                         styles.verifiedBtnCon,
@@ -989,9 +996,9 @@ export function Taxes() {
                   </View>
                 </View>
               </View>
-              {/* </View> */}
+             
             </View>
-          </View>
+          </View> */}
           <Spacer space={SH(10)} />
           {getTaxTable?.length === 0 ? null : (
             <View>
