@@ -1,8 +1,9 @@
+import { COLORS } from '@/theme';
 import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
-export function ChartKit({ productGraphObject, arrayLength }) {
+export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
   return (
     <View>
       {productGraphObject === undefined ? (
@@ -106,8 +107,12 @@ export function ChartKit({ productGraphObject, arrayLength }) {
           chartConfig={{
             decimalPlaces: 0,
             backgroundColor: '#000',
-            backgroundGradientFrom: '#fff',
-            backgroundGradientTo: '#fff',
+            backgroundGradientFrom: chartStyle
+              ? COLORS.textInputBackground
+              : '#fff',
+            backgroundGradientTo: chartStyle
+              ? COLORS.textInputBackground
+              : '#fff',
             decimalPlaces: 2,
             color: () => `rgba(39, 90, 255, 1)`,
             labelColor: (opacity = 1) => `rgba(98, 98, 98, ${opacity})`,
