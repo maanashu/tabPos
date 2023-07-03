@@ -396,7 +396,7 @@ export function DashBoard({ navigation }) {
                   {strings.dashboard.cashSaleAmount}
                 </Text>
                 <Text style={styles.cashAmount}>
-                  ${TotalSale?.[3]?.total_sale_amount ?? '0.00'}
+                  ${(TotalSale?.[3]?.total_sale_amount).toFixed(2) ?? '0.00'}
                 </Text>
               </View>
               <View style={[styles.displayflex, styles.paddingV]}>
