@@ -84,7 +84,6 @@ export const CartAmountTips = ({
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles._dollarSymbol}>$</Text>
             <Text style={styles._amount}>
-              {' '}
               {cartData?.amount?.total_amount ?? '0.00'}
             </Text>
           </View>
@@ -141,16 +140,23 @@ export const CartAmountTips = ({
 
             <View style={styles._inputMain}>
               <View style={styles._inputSubView}>
-                <TextInput
-                  placeholder="Other amount"
-                  keyboardType="number-pad"
-                  style={styles._inputContainer}
-                  onChangeText={value => {
-                    setselectedTipAmount(0.0);
-                    setselectedTipIndex(null);
-                    setEnteredTipAmount(value);
-                  }}
-                />
+                <View style={styles.dollarInputCon}>
+                  {enteredTipAmount ? (
+                    <Text style={styles._dollarInput}>$</Text>
+                  ) : null}
+
+                  <TextInput
+                    placeholder="Other amount"
+                    keyboardType="number-pad"
+                    style={styles._inputContainer}
+                    onChangeText={value => {
+                      setselectedTipAmount(0.0);
+                      setselectedTipIndex(null);
+                      setEnteredTipAmount(value);
+                    }}
+                  />
+                </View>
+
                 <TouchableOpacity
                   onPress={onPressNoTips}
                   style={styles._tipsButton}
@@ -168,7 +174,16 @@ export const CartAmountTips = ({
                 }
               }}
               title={'Continue'}
-              style={{ height: ms(40), width: '98%', marginTop: ms(10) }}
+              textStyle={
+                enteredTipAmount || selectedTipIndex || selectedTipIndex === 0
+                  ? { color: COLORS.white }
+                  : ''
+              }
+              style={
+                enteredTipAmount || selectedTipIndex || selectedTipIndex === 0
+                  ? styles._blueButton
+                  : { height: ms(40), width: '98%', marginTop: ms(10) }
+              }
             />
           </View>
         </View>

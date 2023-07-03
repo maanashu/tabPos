@@ -176,7 +176,7 @@ export function AddDiscountToCart({
               </View>
               <TextInput
                 placeholder="CODE"
-                keyboardType="numeric"
+                // keyboardType="numeric"
                 style={[
                   styles.amountDiscountInput,
                   {

@@ -50,6 +50,7 @@ export const PayByJBRCoins = ({
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
   const getWalletQr = getRetailData?.getWallet?.qr_code;
+  console.log('getWalletQr', getWalletQr);
   const cartData = getRetailData?.getAllCart;
   const walletUser = getRetailData?.walletGetByPhone?.[0];
   const getCartAmount = getRetailData?.getAllCart?.amount;
@@ -264,7 +265,7 @@ export const PayByJBRCoins = ({
                       <TextInput
                         placeholder="Enter wallet address"
                         keyboardType="number-pad"
-                        style={styles._inputContainer}
+                        style={styles._inputCashContainer}
                         onChangeText={walletIdInp => (
                           setWalletIdInp(walletIdInp),
                           walletIdInpFun(walletIdInp)

@@ -40,6 +40,7 @@ import {
   getDrawerSessionPost,
   getDrawerSessionSuccess,
   getOrderDeliveries,
+  getTotalSaleAction,
   posLoginDetail,
   searchProductList,
 } from '@/actions/DashboardAction';
@@ -119,7 +120,7 @@ export function DashBoard({ navigation }) {
       dispatch(getOrderDeliveries(sellerID));
       startTrackingFun();
       clearInput();
-      // dispatch(getTotalSaleAction(sellerID));
+      dispatch(getTotalSaleAction(sellerID));
       dispatch(posLoginDetail());
     }
   }, [isFocused]);

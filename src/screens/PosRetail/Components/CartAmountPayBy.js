@@ -43,12 +43,13 @@ export const CartAmountPayBy = ({
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
     return totalPayment.toFixed(2);
   };
+  console.log('totalPayAmount', Math.round(totalPayAmount()) * 100);
 
   const totalAmountByPaymentMethod = index => {
     if (index === 0) {
       return `$${totalPayAmount()}`;
     } else if (index === 1) {
-      return `JBR ${(totalPayAmount() * 100).toFixed(2)}`;
+      return `JBR ${Math.round(totalPayAmount()) * 100}`;
     } else {
       return `$${totalPayAmount()}`;
     }

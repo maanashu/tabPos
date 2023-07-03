@@ -68,6 +68,12 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     marginTop: ms(2),
   },
+  _dollarInput: {
+    fontSize: ms(10),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
+    marginBottom: ms(1),
+  },
   _amount: {
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
@@ -119,11 +125,28 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   _inputContainer: {
+    height: ms(40),
+    borderRadius: ms(3),
+    flex: 1,
+  },
+  dollarInputCon: {
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(40),
     borderRadius: ms(3),
     paddingHorizontal: ms(10),
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  _inputCashContainer: {
+    height: ms(40),
+    borderRadius: ms(3),
+    borderWidth: 1,
+    paddingHorizontal: ms(10),
+    borderColor: COLORS.solidGrey,
     flex: 1,
   },
   _tipsButton: {
@@ -1213,9 +1236,17 @@ export const styles = StyleSheet.create({
     transform: [{ rotate: '180deg' }],
   },
   iconStyle: {
-    width: SW(9),
-    height: SW(6),
-    resizeMode: 'cover',
-    backgroundColor: COLORS.black,
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+    borderRadius: 100,
+    marginRight: ms(3),
+  },
+  _blueButton: {
+    backgroundColor: COLORS.primary,
+    height: ms(40),
+    width: '98%',
+    marginTop: ms(10),
+    color: COLORS.white,
   },
 });

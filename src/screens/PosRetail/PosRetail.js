@@ -60,18 +60,44 @@ export function PosRetail() {
   const [addDiscount, setAddDiscount] = useState(false);
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
+  const getCart = getRetailData?.getAllCart;
 
-  const [amountDis, setAmountDis] = useState('');
-  const [percentDis, setPercentDis] = useState('');
-  const [discountCode, setDiscountCode] = useState('');
-  const [descriptionDis, setDescriptionDis] = useState('');
+  const [amountDis, setAmountDis] = useState(
+    getCart?.discount_flag === 'amount' ? getCart?.discount_value : ''
+  );
+  const [percentDis, setPercentDis] = useState(
+    getCart?.discount_flag === 'percentage' ? getCart?.discount_value : ''
+  );
+  const [discountCode, setDiscountCode] = useState(
+    getCart?.discount_flag === 'code' ? getCart?.discount_value : ''
+  );
+  const [descriptionDis, setDescriptionDis] = useState(getCart?.discount_desc);
   const [value, setValue] = useState('');
-  const [amountCheck, setAmountCheck] = useState(false);
-  const [percentageCheck, setPercentageCheck] = useState(false);
-  const [discountCheck, setDiscountCheck] = useState(false);
+  const [amountCheck, setAmountCheck] = useState(
+    getCart?.discount_flag === 'amount' ? true : false
+  );
+  const [percentageCheck, setPercentageCheck] = useState(
+    getCart?.discount_flag === 'percentage' ? true : false
+  );
+  const [discountCheck, setDiscountCheck] = useState(
+    getCart?.discount_flag === 'code' ? true : false
+  );
   const [cashPayDetail, setCashPayDetail] = useState();
   useEffect(() => {
-    setNotes(getRetailData?.getAllCart?.notes);
+    setNotes(getCart?.notes);
+    setDescriptionDis(getCart?.discount_desc);
+    setPercentageCheck(getCart?.discount_flag === 'percentage' ? true : false);
+    setAmountCheck(getCart?.discount_flag === 'amount' ? true : false);
+    setDiscountCheck(getCart?.discount_flag === 'code' ? true : false);
+    setAmountDis(
+      getCart?.discount_flag === 'amount' ? getCart?.discount_value : ''
+    );
+    setPercentDis(
+      getCart?.discount_flag === 'percentage' ? getCart?.discount_value : ''
+    );
+    setDiscountCode(
+      getCart?.discount_flag === 'code' ? getCart?.discount_value : ''
+    );
   }, [getRetailData?.getAllCart]);
 
   const clearInput = () => {
@@ -126,9 +152,11 @@ export function PosRetail() {
         value: value,
         cartId: cartID2,
         orderAmount: getCartAmount?.total_amount,
-        // descriptionDis: descriptionDis,
+        descriptionDis: descriptionDis,
         // descriptionDis:'discount title'
       };
+      console.log('data', data);
+      // return;
 
       dispatch(addDiscountToCart(data));
       clearInput();

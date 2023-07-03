@@ -104,12 +104,12 @@ export const FinalPaymentScreen = ({
                 style={styles._printButton}
                 textStyle={styles._printBtnText}
               />
-              <Button
+              {/* <Button
                 onPress={() => alert('Coming soon')}
                 title={'e-receipt'}
                 style={styles._printButton}
                 textStyle={styles._printBtnText}
-              />
+              /> */}
             </View>
           </View>
 

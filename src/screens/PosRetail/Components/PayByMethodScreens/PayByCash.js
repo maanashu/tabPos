@@ -144,7 +144,7 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
                 <TextInput
                   placeholder="Other amount"
                   keyboardType="number-pad"
-                  style={styles._inputContainer}
+                  style={styles._inputCashContainer}
                   value={amount}
                   onChangeText={setAmount}
                 />

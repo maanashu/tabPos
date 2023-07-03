@@ -1,7 +1,13 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
-import { cloth, crossButton, logo_icon, search_light } from '@/assets';
+import {
+  cloth,
+  crossButton,
+  logo_icon,
+  search_light,
+  userImage,
+} from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import moment from 'moment';
@@ -25,14 +31,23 @@ export function CustomHeader({ crossHandler, iconShow }) {
 
         <Text style={styles.cashLabelBold}>Walk-In</Text>
         <View style={styles._border} />
-        <Text style={styles.cashLabelBold}>
-          {/* <Image source={logo_icon} style={styles.iconStyle} /> */}
-          {getPosUser?.user_profiles?.firstname ?? 'username'}(
-          {getPosUser?.user_profiles?.pos_role === null
-            ? 'Merchant'
-            : getPosUser?.user_profiles?.pos_role}
-          )
-        </Text>
+        <View style={styles.displayRow}>
+          <Image
+            source={
+              getPosUser?.user_profiles?.profile_photo
+                ? { uri: getPosUser?.user_profiles?.profile_photo }
+                : userImage
+            }
+            style={styles.iconStyle}
+          />
+          <Text style={styles.cashLabelBold}>
+            {getPosUser?.user_profiles?.firstname ?? 'username'}(
+            {getPosUser?.user_profiles?.pos_role === null
+              ? 'Merchant'
+              : getPosUser?.user_profiles?.pos_role}
+            )
+          </Text>
+        </View>
         <Text style={styles.cashLabelBold}>POS No. #Front-CC01</Text>
         {iconShow ? (
           <TouchableOpacity onPress={crossHandler}>

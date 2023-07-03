@@ -575,6 +575,7 @@ export const addDiscountToCart = data => async dispatch => {
     dispatch(addDiscountSuccess(res));
     dispatch(getAllCart());
   } catch (error) {
+    dispatch(getAllCart());
     dispatch(addDiscountError(error.message));
   }
 };

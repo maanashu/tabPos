@@ -12,7 +12,6 @@ import { strings } from '@/localization';
 import { HttpClient } from './HttpClient';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { store } from '@/store';
-import axios from 'axios';
 
 export class RetailController {
   static async getCategory(sellerID) {
@@ -338,7 +337,9 @@ export class RetailController {
         discount_value: discountInput,
         discount_flag: data.value,
         order_amount: orderAmountstrfy,
+        discount_desc: data.descriptionDis,
       };
+
       HttpClient.put(endpoint, body)
         .then(response => {
           if (response?.msg === 'PosCart updated!') {
@@ -476,8 +477,10 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint =
         WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
+          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
@@ -567,13 +570,11 @@ export class RetailController {
   static async getTips(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
-          console.log('error', error);
           reject(error);
         });
     });
