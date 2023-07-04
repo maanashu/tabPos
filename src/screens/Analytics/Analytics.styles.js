@@ -1016,7 +1016,7 @@ export const styles = StyleSheet.create({
 
   // TOTAL RENEVUE CSS START
   revenueGraph: {
-    width: SH(1254),
+    width: SW(335),
     height: SH(194),
     resizeMode: 'contain',
   },
@@ -1705,5 +1705,12 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  graphRevenue: {
+    backgroundColor: COLORS.textInputBackground,
+    height: windowHeight * 0.265,
+    paddingHorizontal: moderateScale(5),
+    width: Platform.OS === 'android' ? windowWidth * 0.42 : windowWidth * 0.42,
+    marginRight: SW(8),
   },
 });

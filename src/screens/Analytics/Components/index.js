@@ -22,7 +22,7 @@ export function HomeGraph({
   chartStyle,
 }) {
   return (
-    <View style={styles.totalProductCon}>
+    <View style={[styles.totalProductCon, chartStyle && styles.graphRevenue]}>
       <Spacer space={SH(20)} />
       {hideHeader ? (
         <></>

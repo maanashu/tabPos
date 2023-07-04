@@ -75,7 +75,7 @@ export function TotalRevenueSub({
           <View>
             <Image source={colorFrame} style={styles.colorFrame} />
             <Spacer space={SH(5)} />
-            <View style={{ marginLeft: SW(-35) }}>
+            <View>
               <Image source={revenueGraph} style={styles.revenueGraph} />
             </View>
           </View>
@@ -110,10 +110,10 @@ export function TotalRevenueSub({
           <View style={styles.productGraphcon}>
             <View style={styles.displayFlex}>
               <View
-                style={[
-                  styles.productCategorychildcon,
-                  { backgroundColor: 'transparent', height: SH(320) },
-                ]}
+              // style={[
+              //   styles.productCategorychildcon,
+              //   { backgroundColor: 'red', height: SH(320) },
+              // ]}
               >
                 <View>
                   <FlatList
