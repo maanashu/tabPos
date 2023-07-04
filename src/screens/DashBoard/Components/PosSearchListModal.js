@@ -19,6 +19,7 @@ import { Fonts, backArrow2, crossButton, minus, plus } from '@/assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/DashboardTypes';
+import { retailType } from '@/Types/Types';
 import { useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
@@ -129,22 +130,19 @@ export function PosSearchListModal({
   );
 
   const addToCart = item => {
-    if (addRemoveSelectedId === null && bunndleProFinal?.length >= 1) {
-      alert('Please First select bundle');
+    if (
+      selectedQuantities[item.id] === undefined ||
+      selectedQuantities[item.id] === 0
+    ) {
+      alert('Please Quantity Add');
     } else {
       const data = {
         seller_id: sellerID,
         product_id: item.id,
-        qty:
-          addRemoveSelectedId === null
-            ? selectedQuantities[item.id] || 0
-            : bundleData?.min_qty,
+        qty: selectedQuantities[item.id],
         service_id: item.service_id,
         supplyId: item?.supplies?.[0]?.id,
-        supplyPriceid:
-          addRemoveSelectedId === null
-            ? item?.supplies?.[0]?.supply_prices[0]?.id
-            : addRemoveSelectedId,
+        supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
       };
       dispatch(addTocart(data));
       setAddRemoveSelectedId(null);
@@ -185,7 +183,12 @@ export function PosSearchListModal({
             style={styles.marboloRedPackStyle}
           />
           <View style={styles.locStock}>
-            <Text style={styles.marbolorRedStyle}>{item.name}</Text>
+            <Text
+              style={[styles.marbolorRedStyle, { width: SW(145) }]}
+              numberOfLines={1}
+            >
+              {item.name}
+            </Text>
             <Spacer space={SH(5)} />
             <Text style={styles.stockStyle}>
               {item.supplies[0]?.rest_quantity}
@@ -225,7 +228,12 @@ export function PosSearchListModal({
                 source={{ uri: item.image }}
                 style={styles.marboloRedPackStyle}
               />
-              <Text style={styles.jfrmaduro}>{item.name}</Text>
+              <Text
+                style={[styles.jfrmaduro, { width: SW(100) }]}
+                numberOfLines={1}
+              >
+                {item.name}
+              </Text>
             </View>
           </View>
 
@@ -237,34 +245,28 @@ export function PosSearchListModal({
             </Text>
           </View>
           <Spacer space={SH(25)} />
-          {bunndleProFinal?.length >= 1 ? null : (
-            <>
-              <View
-                style={[
-                  styles.priceContainer,
-                  { backgroundColor: COLORS.white },
-                ]}
-              >
-                <TouchableOpacity
-                  onPress={() => handleQuantitySelection(item, 'subtract')}
-                >
-                  <Image source={minus} style={styles.plusBtn2} />
-                </TouchableOpacity>
-                <Text style={[styles.price, { fontSize: SF(24) }]}>
-                  {selectedQuantities[item.id] || 0}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => handleQuantitySelection(item, 'add')}
-                >
-                  <Image source={plus} style={styles.plusBtn2} />
-                </TouchableOpacity>
-              </View>
-              <Spacer space={SH(30)} />
-            </>
-          )}
+
+          <View
+            style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
+          >
+            <TouchableOpacity
+              onPress={() => handleQuantitySelection(item, 'subtract')}
+            >
+              <Image source={minus} style={styles.plusBtn2} />
+            </TouchableOpacity>
+            <Text style={[styles.price, { fontSize: SF(24) }]}>
+              {selectedQuantities[item.id] || 0}
+            </Text>
+            <TouchableOpacity
+              onPress={() => handleQuantitySelection(item, 'add')}
+            >
+              <Image source={plus} style={styles.plusBtn2} />
+            </TouchableOpacity>
+          </View>
+          <Spacer space={SH(30)} />
 
           <View>
-            {bunndleProFinal?.length === 0 ? null : (
+            {/* {bunndleProFinal?.length === 0 ? null : (
               <View>
                 <Text style={styles.bundleOfferText}>
                   {strings.retail.bundleOffer}
@@ -279,9 +281,7 @@ export function PosSearchListModal({
                   />
                 </View>
               </View>
-            )}
-
-            <Spacer space={SH(20)} />
+            )} */}
 
             <View style={{ flex: 1 }} />
             {addToCartLoad ? (
@@ -303,8 +303,6 @@ export function PosSearchListModal({
                 </Text>
               </TouchableOpacity>
             )}
-
-            <Spacer space={SH(35)} />
           </View>
         </View>
       ) : (

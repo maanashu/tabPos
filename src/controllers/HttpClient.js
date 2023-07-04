@@ -4,6 +4,10 @@ import { store } from '@/store';
 import * as RNLocalize from 'react-native-localize';
 import { API_URLS_USING_POS_USER_ACCESS_TOKEN } from '@/utils/APIinventory';
 import { getDeviceToken } from '@/utils/Notifications';
+import { Alert } from 'react-native';
+import { logoutUserFunction } from '@/actions/UserActions';
+import { logoutFunction } from '@/actions/AuthActions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const getTimeZone = RNLocalize.getTimeZone();
 
@@ -49,6 +53,19 @@ client.interceptors.response.use(
       : response.data,
   error => {
     if (error.response) {
+      if (error.response.data.msg === 'invalid_token') {
+        // Show an alert in React Native
+        Alert.alert('Invalid Token', 'Please login again.', [
+          {
+            text: 'Ok',
+            onPress: () => {
+              store.dispatch(logoutUserFunction());
+              store.dispatch(logoutFunction());
+            },
+            style: 'Ok',
+          },
+        ]);
+      }
       return Promise.reject(error.response.data);
     } else if (error.request) {
       return Promise.reject({ error: strings.common.connectionError });

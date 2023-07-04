@@ -7,7 +7,7 @@ import {
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
-import { verticalScale, moderateScale } from 'react-native-size-matters';
+import { verticalScale, moderateScale, scale } from 'react-native-size-matters';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
-    padding: 25,
+    padding: 15,
   },
   securityLogo: {
     width: SW(16),
@@ -274,9 +274,16 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   scurityScan: {
-    width: SW(65),
-    height: SW(65),
+    width: SW(70),
+    height: SW(70),
     resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  scurityScanCon: {
+    width: SW(70),
+    height: SW(70),
+    justifyContent: 'center',
+    alignItems: 'center',
     alignSelf: 'center',
   },
 
@@ -597,13 +604,13 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
   },
   blankCircle: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(7),
+    height: SW(7),
     resizeMode: 'contain',
   },
   blankSquare: {
-    width: SW(5),
-    height: SW(5),
+    width: SW(7),
+    height: SW(7),
     resizeMode: 'contain',
     marginRight: 10,
   },
@@ -677,7 +684,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     paddingHorizontal: 10,
-    paddingVertical: verticalScale(5),
+    paddingVertical: verticalScale(3),
   },
   taxMainCon: {
     borderColor: COLORS.solidGrey,
@@ -687,7 +694,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   charlieName: {
-    fontSize: SF(14),
+    fontSize: SF(12),
     fontFamily: Fonts.Medium,
     color: COLORS.solid_grey,
     paddingVertical: verticalScale(1),
@@ -695,15 +702,15 @@ export const styles = StyleSheet.create({
   verifiedBtnCon: {
     borderWidth: 1,
     width: SW(42),
-    height: SW(10),
+    height: SW(9),
     borderRadius: 5,
     borderColor: COLORS.bluish_green,
     justifyContent: 'center',
     alignItems: 'center',
   },
   taxVerified: {
-    width: SW(7),
-    height: SW(7),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
     marginHorizontal: moderateScale(3),
   },
@@ -1282,5 +1289,51 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
+  },
+
+  // passcode screen css start
+
+  verifyContainer: {
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.8,
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    alignSelf: 'center',
+    borderRadius: 15,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  flexWidth: {
+    width: windowWidth * 0.35,
+  },
+
+  subHeading: {
+    fontSize: SF(24),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+  },
+  alignSelfCenter: {
+    alignSelf: 'center',
+  },
+  cellRoot: {
+    backgroundColor: COLORS.white,
+    height: moderateScale(35),
+    width: moderateScale(35),
+    borderRadius: moderateScale(50),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: COLORS.solidGrey,
+    marginHorizontal: moderateScale(5),
+  },
+  cellText: {
+    fontFamily: Fonts.Medium,
+    fontSize: scale(12),
+    color: COLORS.black,
+  },
+  cross: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
   },
 });

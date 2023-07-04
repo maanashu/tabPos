@@ -21,6 +21,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export function POSUsers({ navigation }) {
   const dispatch = useDispatch();
@@ -29,7 +30,6 @@ export function POSUsers({ navigation }) {
   const getAuth = useSelector(getAuthData);
   const posUserArray = getAuth?.getAllPosUsers;
   const posUserArrayReverse = posUserArray?.reverse();
-
   useEffect(() => {
     if (isFocused) {
       dispatch(getAllPosUsers());
@@ -111,7 +111,7 @@ export function POSUsers({ navigation }) {
                     <>
                       <Text style={[styles.dateTime, { marginTop: SH(20) }]}>
                         {moment(item.api_tokens[0].updated_at).format(
-                          'dddd,DD MMM YYYY'
+                          'dddd, DD MMM YYYY'
                         )}
                       </Text>
                       <Text style={styles.dateTime}>
@@ -124,10 +124,21 @@ export function POSUsers({ navigation }) {
                   <View style={{ flex: 1 }} />
                   <TouchableOpacity
                     style={styles.arrowButonCon}
-                    onPress={() =>
-                      navigation.navigate(NAVIGATION.loginIntial, {
-                        posuserdata: item,
-                      })
+                    onPress={
+                      () =>
+                        // getAuth?.merchantLoginData?.user_profile?.wallet_steps >=
+                        // 4
+                        //   ?
+                        navigation.navigate(NAVIGATION.loginIntial, {
+                          posuserdata: item,
+                        })
+
+                      // : Toast.show({
+                      //     text2: 'Merchant wallet not exits',
+                      //     position: 'bottom',
+                      //     type: 'error_toast',
+                      //     visibilityTime: 1500,
+                      //   })
                     }
                   >
                     <Image source={checkArrow} style={styles.arrowImage} />

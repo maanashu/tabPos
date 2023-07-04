@@ -58,7 +58,7 @@ export function AddDiscountToCart({
                     setAmountCheck(!amountCheck),
                     setPercentageCheck(false),
                     setDiscountCheck(false),
-                    setValue('Amount'),
+                    setValue('amount'),
                     setPercentDis(''),
                     setDiscountCode('')
                   )}
@@ -104,7 +104,7 @@ export function AddDiscountToCart({
                     setPercentageCheck(!percentageCheck),
                     setAmountCheck(false),
                     setDiscountCheck(false),
-                    setValue('Percentage'),
+                    setValue('percentage'),
                     setDiscountCode(''),
                     setAmountDis('')
                   )}
@@ -157,7 +157,7 @@ export function AddDiscountToCart({
                     setAmountCheck(false),
                     setPercentDis(''),
                     setAmountDis(''),
-                    setValue('Code')
+                    setValue('code')
                   )}
                 >
                   <Image
@@ -176,7 +176,7 @@ export function AddDiscountToCart({
               </View>
               <TextInput
                 placeholder="CODE"
-                keyboardType="numeric"
+                // keyboardType="numeric"
                 style={[
                   styles.amountDiscountInput,
                   {

@@ -22,6 +22,7 @@ import moment from 'moment';
 import { COLORS } from '@/theme';
 import { useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
+import { CustomHeader } from './CustomHeader';
 
 const DATA = [
   { title: 'Card', icon: cardPayment },
@@ -42,12 +43,13 @@ export const CartAmountPayBy = ({
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
     return totalPayment.toFixed(2);
   };
+  console.log('totalPayAmount', Math.round(totalPayAmount()) * 100);
 
   const totalAmountByPaymentMethod = index => {
     if (index === 0) {
       return `$${totalPayAmount()}`;
     } else if (index === 1) {
-      return `JBR ${(totalPayAmount() * 100).toFixed(2)}`;
+      return `JBR ${Math.round(totalPayAmount()) * 100}`;
     } else {
       return `$${totalPayAmount()}`;
     }
@@ -55,7 +57,7 @@ export const CartAmountPayBy = ({
 
   return (
     <SafeAreaView style={styles._innerContainer}>
-      <View style={styles._topContainer}>
+      {/* <View style={styles._topContainer}>
         <Text style={styles._date}>{moment().format('ddd DD MMM, YYYY')}</Text>
         <View style={styles._border} />
         <Text style={styles._date}>{moment().format('hh:mm A')}</Text>
@@ -77,7 +79,8 @@ export const CartAmountPayBy = ({
             style={{ resizeMode: 'contain', height: ms(12), width: ms(12) }}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
+      <CustomHeader iconShow={true} crossHandler={onPressBack} />
       <View style={styles._centerContainer}>
         <BackButton title={'Back'} onPress={onPressBack} />
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>

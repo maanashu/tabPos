@@ -178,6 +178,7 @@ export { default as teamMember } from '@/assets/icons/ic_setting/teamMember.png'
 export { default as toggleSecurity } from '@/assets/icons/ic_setting/toggle.png';
 export { default as googleAuth } from '@/assets/icons/ic_setting/googleAuth.png';
 export { default as checkboxSec } from '@/assets/icons/ic_setting/checkbox.png';
+export { default as checkboxSecBlue } from '@/assets/icons/ic_setting/checkboxSecBlue.png';
 export { default as scurityScan } from '@/assets/icons/ic_setting/scurityScan.png';
 export { default as deviceLogo } from '@/assets/icons/ic_setting/deviceLogo.png';
 export { default as trackCamera } from '@/assets/icons/ic_setting/trackCamera.png';

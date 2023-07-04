@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Spacer } from '@/components';
+import { Button, Spacer, TableDropdown } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import {
@@ -16,11 +16,16 @@ import {
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import {
+  Fonts,
   addState,
   blankCircle,
   changePlan,
+  checkboxSec,
+  checkboxSecBlue,
+  columbiaMen,
   crossButton,
   invoice2,
+  rightBack,
   squareBlank,
   taxVerified,
   taxmap,
@@ -29,17 +34,27 @@ import {
   toggleSecBlue,
   toggleSecurity,
   usaFlag,
+  vector,
+  vectorOff,
 } from '@/assets';
-import { COUNTRYDATA, STATEDATA } from '@/constants/flatListData';
 import { moderateScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
-import { getCountries, getState, getTax } from '@/actions/SettingAction';
+import {
+  getCountries,
+  getState,
+  getTax,
+  getTaxTrue,
+  taxPayer,
+} from '@/actions/SettingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SettingTypes';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { store } from '@/store';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { log } from 'react-native-reanimated';
 
 export function Taxes() {
   const isFocused = useIsFocused();
@@ -47,15 +62,16 @@ export function Taxes() {
   const getSettingData = useSelector(getSetting);
   const getAuth = useSelector(getAuthData);
   const merchantProfile = getAuth?.merchantLoginData?.user_profile;
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const countryArray = getSettingData?.getCountries;
   const stateArray = getSettingData?.getState;
   const getTaxData = getSettingData?.getTax;
-  console.log('getTaxData');
+  const getTaxTable = getSettingData?.getTaxTrue;
   const [countryModel, setCountryModel] = useState(false);
   const [stateModel, setStateModel] = useState(false);
   const [taxPayerModel, setTaxPayerModel] = useState(false);
   const [countryId, setCountryId] = useState(null);
-  const [stateId, setStateId] = useState(null);
+  const [stateId, setStateId] = useState([]);
   const [verifiedArea, setVerifiedArea] = useState(false);
   const [stateTax, setStateTax] = useState(false);
   const [createTaxBtn, setCreateTaxBtn] = useState(false);
@@ -63,8 +79,9 @@ export function Taxes() {
   const [addExmption, setAddExmption] = useState(false);
   const [addStateBtn, setAddStateBtn] = useState(false);
   const [countryItemSel, setCountryItemSel] = useState();
+  const [businessData, setBusinessData] = useState();
 
-  const [name, setName] = useState(merchantProfile?.username);
+  const [name, setName] = useState(merchantProfile?.organization_name);
   const [ssn, setSsn] = useState(merchantProfile?.ssn_number);
   const [streetAdd, setStreetAdd] = useState(
     merchantProfile?.current_address?.street_address
@@ -80,15 +97,26 @@ export function Taxes() {
   const [zipCode, setZipCode] = useState(
     merchantProfile?.current_address?.zipcode
   );
+  const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
 
   useEffect(() => {
-    if (isFocused) {
+    taxGetfunction();
+  }, []);
+
+  const taxGetfunction = async () => {
+    const data = {
+      is_tax: false,
+      sellerID: sellerID,
+    };
+    const res = await dispatch(getTax(data));
+    if (res?.type === 'GET_TAX_SUCCESS') {
       const data = {
-        is_tax: false,
+        is_tax: true,
+        sellerID: sellerID,
       };
-      dispatch(getTax(data));
+      dispatch(getTaxTrue(data));
     }
-  }, [isFocused]);
+  };
 
   const taxPayerHandler = () => {
     if (
@@ -103,7 +131,21 @@ export function Taxes() {
     ) {
       alert('Field not complete');
     } else {
-      setTaxPayerModel(false), setVerifiedArea(true);
+      const data = {
+        sellerId: sellerID,
+        businessName: name,
+        ssn: ssn,
+        streetAdd: streetAdd,
+        appartment: appartment,
+        country: country,
+        state: state,
+        city: city,
+        zipCode: zipCode,
+      };
+      setBusinessData(data);
+      setTaxPayerModel(false);
+      dispatch(taxPayer(data));
+      //  setVerifiedArea(true);
     }
   };
 
@@ -129,7 +171,20 @@ export function Taxes() {
     isLoadingSelector([TYPES.GET_COUNTRIES, TYPES.GET_STATE], state)
   );
 
-  const Item = ({ item, onPress, tintColor }) => (
+  const activeBtnHandler = () => {
+    if (posRole === null) {
+      setCountryModel(true), dispatch(getCountries());
+    } else {
+      Toast.show({
+        text2: 'Only Merhant Can Create Tax',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    }
+  };
+
+  const Item = ({ item, onPress, tintColor, imageSource }) => (
     <TouchableOpacity
       style={styles.countryNameCon}
       onPress={onPress}
@@ -137,7 +192,7 @@ export function Taxes() {
     >
       <View style={styles.dispalyRow}>
         <Image
-          source={blankCircle}
+          source={imageSource}
           style={[styles.blankCircle, { tintColor }]}
         />
         <Image source={usaFlag} style={styles.usaFlag} />
@@ -150,6 +205,7 @@ export function Taxes() {
 
   const renderItem = ({ item }) => {
     const tintColor = item.id === countryId ? COLORS.primary : null;
+    const imageSource = item.id === countryId ? checkboxSecBlue : checkboxSec;
 
     return (
       <Item
@@ -159,29 +215,28 @@ export function Taxes() {
           setCountryItemSel(item);
         }}
         tintColor={tintColor}
+        imageSource={imageSource}
       />
     );
   };
 
-  const STATEITEM = ({ item, onPress, tintColor }) => (
-    <TouchableOpacity
-      style={styles.stateRow}
-      onPress={onPress}
-      activeOpacity={1}
-    >
-      <Image source={squareBlank} style={[styles.blankSquare, { tintColor }]} />
-      <Text style={styles.securitysubhead}>{item.name}</Text>
+  const STATEITEM = ({ item, onPress, color, image }) => (
+    <TouchableOpacity style={styles.stateRow} onPress={onPress}>
+      <Image source={image} style={styles.blankSquare} />
+      <Text style={[styles.securitysubhead, { color }]}>{item.name}</Text>
     </TouchableOpacity>
   );
 
   const stateItem = ({ item }) => {
-    const tintColor = item.id === stateId ? COLORS.primary : null;
+    const color = item.id === stateId ? COLORS.primary : null;
+    const image = item.id === stateId ? checkboxSecBlue : checkboxSec;
 
     return (
       <STATEITEM
         item={item}
         onPress={() => setStateId(item.id)}
-        tintColor={tintColor}
+        color={color}
+        image={image}
       />
     );
   };
@@ -337,133 +392,142 @@ export function Taxes() {
       );
     } else if (taxPayerModel) {
       return (
-        <View style={[styles.countryModCon, styles.taxPayerModCon]}>
-          <View style={styles.countryModHeader}>
-            <View style={styles.flexRow}>
-              <Text style={styles.selectHead}>
-                {strings.settings.taxPayerHeadl}
-              </Text>
-              <TouchableOpacity
-                style={styles.crossButtonCon}
-                onPress={() => (setTaxPayerModel(false), setStateModel(true))}
-              >
-                <Image source={crossButton} style={styles.cntryCrossButton} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.countryModBody}>
-            <Spacer space={SH(7)} />
-            <Text style={styles.name}>{strings.settings.name}</Text>
-            <TextInput
-              placeholder="Full Name or Business name"
-              style={styles.nameInput}
-              placeholderStyle={styles.namePlaceholder}
-              value={name}
-              onChangeText={setName}
-              editable={false}
-            />
-            <Spacer space={SH(7)} />
-            <Text style={styles.name}>{strings.settings.ssn}</Text>
-            <TextInput
-              placeholder={strings.settings.ssn}
-              style={styles.nameInput}
-              placeholderStyle={styles.namePlaceholder}
-              value={ssn}
-              onChangeText={setSsn}
-              editable={false}
-            />
-            <Spacer space={SH(7)} />
-            <Text style={styles.name}>{strings.settings.streetAdd}</Text>
-            <TextInput
-              placeholder={strings.settings.streetAdd}
-              style={styles.nameInput}
-              placeholderStyle={styles.namePlaceholder}
-              value={streetAdd}
-              onChangeText={setStreetAdd}
-              editable={false}
-            />
-            <Spacer space={SH(7)} />
-            <Text style={styles.name}>{strings.settings.appartement}</Text>
-            <TextInput
-              placeholder={strings.settings.appartement}
-              style={styles.nameInput}
-              placeholderStyle={styles.namePlaceholder}
-              value={appartment}
-              onChangeText={setAppartment}
-              editable={false}
-            />
-            <Spacer space={SH(7)} />
-            <View style={[styles.dispalyRow, styles.countryStateWidth]}>
-              <View>
-                <Text style={styles.name}>{strings.settings.country}</Text>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 100}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
+        >
+          <ScrollView>
+            <View style={[styles.countryModCon, styles.taxPayerModCon]}>
+              <View style={styles.countryModHeader}>
+                <View style={styles.flexRow}>
+                  <Text style={styles.selectHead}>
+                    {strings.settings.taxPayerHeadl}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.crossButtonCon}
+                    onPress={() => (
+                      setTaxPayerModel(false), setStateModel(true)
+                    )}
+                  >
+                    <Image
+                      source={crossButton}
+                      style={styles.cntryCrossButton}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.countryModBody}>
+                <Spacer space={SH(7)} />
+                <Text style={styles.name}>{strings.settings.businessName}</Text>
+                <TextInput
+                  placeholder="Full Name or Business name"
+                  style={styles.nameInput}
+                  placeholderStyle={styles.namePlaceholder}
+                  value={name}
+                  onChangeText={setName}
+                />
+                <Spacer space={SH(7)} />
+                <Text style={styles.name}>{strings.settings.ssn}</Text>
+                <TextInput
+                  placeholder={strings.settings.ssn}
+                  style={styles.nameInput}
+                  placeholderStyle={styles.namePlaceholder}
+                  value={ssn}
+                  onChangeText={setSsn}
+                  keyboardType="numeric"
+                />
+                <Spacer space={SH(7)} />
+                <Text style={styles.name}>{strings.settings.streetAdd}</Text>
+                <TextInput
+                  placeholder={strings.settings.streetAdd}
+                  style={styles.nameInput}
+                  placeholderStyle={styles.namePlaceholder}
+                  value={streetAdd}
+                  onChangeText={setStreetAdd}
+                />
+                <Spacer space={SH(7)} />
+                <Text style={styles.name}>{strings.settings.appartement}</Text>
                 <TextInput
                   placeholder={strings.settings.appartement}
-                  style={styles.countryInput}
+                  style={styles.nameInput}
                   placeholderStyle={styles.namePlaceholder}
-                  value={country}
-                  onChangeText={setCountry}
-                  editable={false}
+                  value={appartment}
+                  onChangeText={setAppartment}
                 />
-              </View>
-              <View>
-                <Text style={styles.name}>State</Text>
-                <TextInput
-                  placeholder={strings.settings.appartement}
-                  style={styles.countryInput}
-                  placeholderStyle={styles.namePlaceholder}
-                  value={state}
-                  onChangeText={setState}
-                  editable={false}
-                />
-              </View>
-            </View>
-            <Spacer space={SH(7)} />
-            <View style={[styles.dispalyRow, styles.countryStateWidth]}>
-              <View>
-                <Text style={styles.name}>City</Text>
-                <TextInput
-                  placeholder={strings.settings.appartement}
-                  style={styles.countryInput}
-                  placeholderStyle={styles.namePlaceholder}
-                  value={city}
-                  onChangeText={setCity}
-                  editable={false}
-                />
-              </View>
-              <View>
-                <Text style={styles.name}>Zip Code</Text>
-                <TextInput
-                  placeholder={strings.settings.appartement}
-                  style={styles.countryInput}
-                  placeholderStyle={styles.namePlaceholder}
-                  value={zipCode}
-                  onChangeText={setZipCode}
-                  editable={false}
-                />
-              </View>
-            </View>
+                <Spacer space={SH(7)} />
+                <View style={[styles.dispalyRow, styles.countryStateWidth]}>
+                  <View>
+                    <Text style={styles.name}>{strings.settings.country}</Text>
+                    <TextInput
+                      placeholder="country"
+                      style={styles.countryInput}
+                      placeholderStyle={styles.namePlaceholder}
+                      value={country}
+                      onChangeText={setCountry}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.name}>State</Text>
+                    <TextInput
+                      placeholder="state"
+                      style={styles.countryInput}
+                      placeholderStyle={styles.namePlaceholder}
+                      value={state}
+                      onChangeText={setState}
+                    />
+                  </View>
+                </View>
+                <Spacer space={SH(7)} />
+                <View style={[styles.dispalyRow, styles.countryStateWidth]}>
+                  <View>
+                    <Text style={styles.name}>City</Text>
+                    <TextInput
+                      placeholder="city"
+                      style={styles.countryInput}
+                      placeholderStyle={styles.namePlaceholder}
+                      value={city}
+                      onChangeText={setCity}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.name}>Zip Code</Text>
+                    <TextInput
+                      placeholder="zipCode"
+                      style={styles.countryInput}
+                      placeholderStyle={styles.namePlaceholder}
+                      value={zipCode}
+                      onChangeText={setZipCode}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                </View>
 
-            <Spacer space={SH(8)} />
-            <View style={{ flex: 1 }} />
-            <View style={styles.flexRow}>
-              <TouchableOpacity
-                style={styles.cancelbuttonCon}
-                onPress={() => (setTaxPayerModel(false), setStateModel(true))}
-              >
-                <Text style={styles.cancel}>{strings.settings.cancel}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
-                onPress={taxPayerHandler}
-              >
-                <Text style={[styles.cancel, styles.next]}>
-                  {strings.management.save}
-                </Text>
-              </TouchableOpacity>
+                <Spacer space={SH(8)} />
+                <View style={{ flex: 1 }} />
+                <View style={styles.flexRow}>
+                  <TouchableOpacity
+                    style={styles.cancelbuttonCon}
+                    onPress={() => (
+                      setTaxPayerModel(false), setStateModel(true)
+                    )}
+                  >
+                    <Text style={styles.cancel}>{strings.settings.cancel}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
+                    onPress={taxPayerHandler}
+                  >
+                    <Text style={[styles.cancel, styles.next]}>
+                      {strings.management.save}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <Spacer space={SH(20)} />
+              </View>
             </View>
-            <Spacer space={SH(20)} />
-          </View>
-        </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       );
     } else if (stateTax) {
       return (
@@ -715,10 +779,11 @@ export function Taxes() {
   };
 
   const verifiedAreaFun = () => {
-    if (verifiedArea) {
+    if (getTaxData?.length === 0) {
       return (
-        <View style={styles.taxMainCon}>
+        <View style={styles.securityMainCon}>
           <View style={styles.securityBodyCon}>
+            {/* <View style={{borderWidth:1, padding:20}}> */}
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={invoice2} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
@@ -727,67 +792,67 @@ export function Taxes() {
                 </Text>
                 <Spacer space={SH(10)} />
                 <View>
-                  <View style={styles.taxnameCon}>
-                    <Text style={styles.charlieName}>
-                      {strings.settings.name}:Charlie Saari
-                    </Text>
-                    <Text style={styles.charlieName}>
-                      {strings.settings.SSN}:136042056
-                    </Text>
-                    <Text style={styles.charlieName}>
-                      3755 Williams Mine Road, Newark, NJ 07102
-                    </Text>
-                    <Spacer space={SH(5)} />
-                    <View style={styles.verifiedBtnCon}>
-                      <View style={styles.dispalyRow}>
-                        <Image
-                          source={taxVerified}
-                          style={styles.taxVerified}
-                        />
-                        <Text style={styles.charlieName}>
-                          {strings.settings.verified}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                  <Spacer space={SH(7)} />
-                  <View style={styles.taxnameCon}>
-                    <View style={styles.flexRow}>
-                      <View style={styles.dispalyRow}>
-                        <Image source={teamMember} style={styles.teamMember} />
-                        <View style={styles.marginLeft}>
-                          <Text
-                            style={[styles.twoStepText, { fontSize: SF(14) }]}
-                          >
-                            {strings.settings.operatingCountry}
-                          </Text>
-                          <Spacer space={SH(3)} />
-                          <Text
-                            style={[
-                              styles.securitysubhead,
-                              { fontSize: SF(12) },
-                            ]}
-                          >
-                            United States of America
+                  <Text style={styles.securitysubhead}>
+                    {strings.settings.taxSubHead}
+                  </Text>
+                  <Spacer space={SH(20)} />
+                  <Button
+                    onPress={activeBtnHandler}
+                    title={strings.settings.active}
+                    textStyle={styles.selectedText}
+                    style={styles.submitButtons}
+                  />
+                </View>
+              </View>
+            </View>
+            {/* </View> */}
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          {/* <View style={[styles.taxMainCon]}>
+            <View style={styles.securityBodyCon}>
+              <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
+                <Image source={invoice2} style={styles.securityLogo} />
+                <View style={styles.twoStepVerifiCon}>
+                  <Text style={styles.twoStepText}>
+                    {strings.settings.taxHead}
+                  </Text>
+                  <Spacer space={SH(5)} />
+                  <View>
+                    <View style={styles.taxnameCon}>
+                      <Text style={styles.charlieName}>
+                        {strings.settings.name}: {businessData?.name}
+                      </Text>
+                      <Text style={styles.charlieName}>
+                        {strings.settings.SSN}: {businessData?.ssn}
+                      </Text>
+                      <Text style={styles.charlieName}>
+                        3755 Williams Mine Road, Newark, NJ 07102
+                      </Text>
+                      <Spacer space={SH(5)} />
+                      <View style={styles.verifiedBtnCon}>
+                        <View style={styles.dispalyRow}>
+                          <Image
+                            source={taxVerified}
+                            style={styles.taxVerified}
+                          />
+                          <Text style={styles.charlieName}>
+                            {strings.settings.verified}
                           </Text>
                         </View>
                       </View>
-                      <Image
-                        source={toggleSecurity}
-                        style={[styles.toggleSecurity, { marginRight: 10 }]}
-                      />
                     </View>
                     <Spacer space={SH(7)} />
-                    <TouchableOpacity
-                      style={[
-                        styles.twoStepMemberCon,
-                        styles.twoStepMemberConTax,
-                      ]}
-                      onPress={() => setStateTax(true)}
-                    >
+                    <View style={styles.taxnameCon}>
                       <View style={styles.flexRow}>
                         <View style={styles.dispalyRow}>
-                          <Image source={taxmap} style={styles.teamMember} />
+                          <Image
+                            source={teamMember}
+                            style={styles.teamMember}
+                          />
                           <View style={styles.marginLeft}>
                             <Text
                               style={[styles.twoStepText, { fontSize: SF(14) }]}
@@ -801,19 +866,62 @@ export function Taxes() {
                                 { fontSize: SF(12) },
                               ]}
                             >
-                              1899 Rollins Road, Grand Island Nebraska 68801,
-                              United States
+                              United States of America
                             </Text>
                           </View>
                         </View>
                         <Image
                           source={toggleSecurity}
-                          style={styles.toggleSecurity}
+                          style={[styles.toggleSecurity, { marginRight: 10 }]}
                         />
                       </View>
-                    </TouchableOpacity>
-                    <Spacer space={SH(5)} />
-                    {addStateBtn ? (
+                      <Spacer space={SH(5)} />
+                      <TouchableOpacity
+                        style={[
+                          styles.twoStepMemberCon,
+                          styles.twoStepMemberConTax,
+                        ]}
+                        onPress={() => setStateTax(true)}
+                      >
+                        <View style={styles.flexRow}>
+                          <View style={styles.dispalyRow}>
+                            <Image source={taxmap} style={styles.teamMember} />
+                            <View style={styles.marginLeft}>
+                              <Text
+                                style={[
+                                  styles.twoStepText,
+                                  { fontSize: SF(14) },
+                                ]}
+                              >
+                                {strings.settings.operatingCountry}
+                              </Text>
+                              <Spacer space={SH(3)} />
+                              <Text
+                                style={[
+                                  styles.securitysubhead,
+                                  { fontSize: SF(12) },
+                                ]}
+                              >
+                                1899 Rollins Road, Grand Island Nebraska 68801,
+                                United States
+                              </Text>
+                            </View>
+                          </View>
+                          <Image
+                            source={toggleSecurity}
+                            style={styles.toggleSecurity}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                      <Spacer space={SH(5)} />
+
+                      
+                      
+                      Earlier commented
+                      
+                      {addStateBtn ? (
+
+                      
                       <View
                         style={[
                           styles.verifiedBtnCon,
@@ -833,10 +941,29 @@ export function Taxes() {
                           />
                         </View>
                       </View>
-                    ) : null}
-                  </View>
-                  <Spacer space={SH(7)} />
-                  {createTaxBtn ? (
+                    ) : null} 
+                      <View
+                        style={[
+                          styles.verifiedBtnCon,
+                          {
+                            borderColor: COLORS.primary,
+                            alignSelf: 'flex-end',
+                          },
+                        ]}
+                      >
+                        <View style={styles.dispalyRow}>
+                          <Text style={[styles.craeteTax, styles.addState]}>
+                            {strings.settings.addState}
+                          </Text>
+                          <Image
+                            source={addState}
+                            style={[styles.taxVerified, styles.addStatebtn]}
+                          />
+                        </View>
+                      </View>
+                    </View>
+                    <Spacer space={SH(7)} />
+                    Earlier commented {createTaxBtn ? (
                     <TouchableOpacity
                       style={[
                         styles.verifiedBtnCon,
@@ -851,44 +978,94 @@ export function Taxes() {
                         </Text>
                       </View>
                     </TouchableOpacity>
-                  ) : null}
+                  ) : null} 
+                    <TouchableOpacity
+                      style={[
+                        styles.verifiedBtnCon,
+                        { borderColor: COLORS.primary },
+                      ]}
+                      onPress={() => setCreateTaxModal(true)}
+                    >
+                      <View style={styles.dispalyRow}>
+                        <Image source={taxpencil} style={styles.taxVerified} />
+                        <Text style={styles.craeteTax}>
+                          {strings.settings.craeteTax}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
+             
             </View>
-            {/* </View> */}
-          </View>
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.securityMainCon}>
-          <View style={styles.securityBodyCon}>
-            {/* <View style={{borderWidth:1, padding:20}}> */}
-            <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={invoice2} style={styles.securityLogo} />
-              <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>
-                  {strings.settings.taxHead}
-                </Text>
-                <Spacer space={SH(10)} />
+          </View> */}
+          <Spacer space={SH(10)} />
+          {getTaxTable?.length === 0 ? null : (
+            <View>
+              <View style={[styles.dispalyRow, { zIndex: 999 }]}>
+                <TableDropdown placeholder="Location" />
+                <TableDropdown placeholder="Status" />
+              </View>
+              <Spacer space={SH(10)} />
+
+              <View style={{ zIndex: -99 }}>
+                <View style={styles.invoiceTableHeader}>
+                  <View style={styles.headerBodyCon}>
+                    <Text
+                      style={[
+                        styles.invoiveheaderText,
+                        { marginHorizontal: moderateScale(10) },
+                      ]}
+                    >
+                      #
+                    </Text>
+                    <Text style={styles.invoiveheaderText}>Tax Name</Text>
+                  </View>
+                  <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
+                    <Text style={styles.invoiveheaderText}>Locations</Text>
+                    <Text style={styles.invoiveheaderText}>Tax rate</Text>
+                    <Text style={styles.invoiveheaderText}>status</Text>
+                    <Image source={rightBack} style={styles.arrowStyle} />
+                  </View>
+                </View>
                 <View>
-                  <Text style={styles.securitysubhead}>
-                    {strings.settings.taxSubHead}
-                  </Text>
-                  <Spacer space={SH(20)} />
-                  <Button
-                    onPress={() => {
-                      setCountryModel(true), dispatch(getCountries());
-                    }}
-                    title={strings.settings.active}
-                    textStyle={styles.selectedText}
-                    style={styles.submitButtons}
-                  />
+                  <ScrollView>
+                    {getTaxTable?.map((item, index) => (
+                      <View
+                        style={[
+                          styles.invoiceTableHeader,
+                          styles.invoiceTableData,
+                        ]}
+                        key={index}
+                      >
+                        <View style={styles.headerBodyCon}>
+                          <Text
+                            style={[
+                              styles.terryText,
+                              { marginHorizontal: moderateScale(10) },
+                            ]}
+                          >
+                            {index + 1}
+                          </Text>
+                          <Text style={styles.terryText}>{item.tax_name}</Text>
+                        </View>
+                        <View
+                          style={[styles.headerBodyCon, styles.headerBodyCon2]}
+                        >
+                          <Text style={styles.terryText}>{item.location}</Text>
+                          <Text style={styles.terryText}>{item.tax_rate}%</Text>
+                          <Image
+                            source={item.status ? vector : vectorOff}
+                            style={styles.toggleSecurity}
+                          />
+                        </View>
+                      </View>
+                    ))}
+                  </ScrollView>
                 </View>
               </View>
             </View>
-            {/* </View> */}
-          </View>
+          )}
         </View>
       );
     }

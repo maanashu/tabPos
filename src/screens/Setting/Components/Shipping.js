@@ -109,16 +109,18 @@ export function Shipping() {
               </View>
             ))}
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              addressUpdate(item.id, item.is_active), defaultUpdate(item);
-            }}
-          >
-            <Image
-              source={item.is_active ? toggleOn : vectorOff}
-              style={styles.toggleSecurityLarge}
-            />
-          </TouchableOpacity>
+          {item.address_type !== strings.shipping.shippingText && (
+            <TouchableOpacity
+              onPress={() => {
+                addressUpdate(item.id, item.is_active), defaultUpdate(item);
+              }}
+            >
+              <Image
+                source={item.is_active ? toggleOn : vectorOff}
+                style={styles.toggleSecurityLarge}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     );

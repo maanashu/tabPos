@@ -69,6 +69,7 @@ export function DeliveryOrder() {
   const [orderCount, setOrderCount] = useState(
     getDeliveryData?.orderList ?? []
   );
+  console.log(orderCount);
   const deliveringOrder = getDeliveryData?.deliveryOrd;
   const orderArray = getDeliveryData?.orderList?.data ?? [];
   const [viewAllReviews, setViewAllReviews] = useState(false);
@@ -1065,8 +1066,13 @@ export function DeliveryOrder() {
                   <Text
                     style={[
                       styles.nameText,
-                      { color: COLORS.primary, fontFamily: Fonts.SemiBold },
+                      {
+                        color: COLORS.primary,
+                        fontFamily: Fonts.SemiBold,
+                        width: SW(40),
+                      },
                     ]}
+                    numberOfLines={1}
                   >
                     {singleOrder?.delivery_details?.title}
                   </Text>
@@ -1196,8 +1202,13 @@ export function DeliveryOrder() {
                   <Text
                     style={[
                       styles.nameText,
-                      { color: COLORS.primary, fontFamily: Fonts.SemiBold },
+                      {
+                        color: COLORS.primary,
+                        fontFamily: Fonts.SemiBold,
+                        width: SW(40),
+                      },
                     ]}
+                    numberOfLines={1}
                   >
                     {itemss?.delivery_details?.title}
                   </Text>

@@ -479,7 +479,7 @@ export function Management() {
               />
             </View>
             <Spacer space={SH(20)} />
-            <View>
+            <View >
               <Text style={styles.amountCountedText}>
                 {strings.management.transactionType}
               </Text>

@@ -562,6 +562,7 @@ export const addNotescart = data => async dispatch => {
   try {
     const res = await RetailController.addNotes(data);
     dispatch(addNotesSuccess(res));
+    dispatch(getAllCart());
   } catch (error) {
     dispatch(addNotesError(error.message));
   }
@@ -572,7 +573,9 @@ export const addDiscountToCart = data => async dispatch => {
   try {
     const res = await RetailController.addDiscountToCart(data);
     dispatch(addDiscountSuccess(res));
+    dispatch(getAllCart());
   } catch (error) {
+    dispatch(getAllCart());
     dispatch(addDiscountError(error.message));
   }
 };

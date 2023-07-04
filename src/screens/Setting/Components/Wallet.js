@@ -45,19 +45,16 @@ export function Wallet() {
     if (id === 1) {
       const data = {
         jbr_coin_status: jbrCoin ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     } else if (id === 2) {
       const data = {
         cash_status: cash ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     } else if (id === 3) {
       const data = {
         setup_sila_status: card ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     }
@@ -87,7 +84,7 @@ export function Wallet() {
               </Text>
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.vectorIconCon}
               onPress={() => jbrCoinOnPress(1)}
             >
@@ -95,7 +92,7 @@ export function Wallet() {
                 source={jbrCoin ? vector : vectorOff}
                 style={styles.toggleSecurity}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
 
@@ -133,7 +130,7 @@ export function Wallet() {
               <Text
                 style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}
               >
-                Pay by Card Contactless
+                Pay by Card 
               </Text>
               <Text style={styles.systemPos}>{strings.wallet.systemPOS}</Text>
               <Spacer space={SH(5)} />

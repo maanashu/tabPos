@@ -54,7 +54,7 @@ export const en = {
     orderReview: 'Orders to review',
     viewAll: 'View all',
     orderConversion: 'Order conversion',
-    deliveryOrders: 'Delivering Orders',
+    deliveryOrders: 'Delivery Orders',
     back: 'Back',
     orderId: 'Order#',
     orderDate: 'August 30, 2022',
@@ -601,6 +601,7 @@ export const en = {
     introduction: 'Introduction',
     notification: 'Notifications',
     addlanguage: 'Add Language',
+    businessName: 'Business Name',
   },
   dashboard: {
     todaySale: "Today's Sales",
@@ -694,6 +695,7 @@ export const en = {
     address: '1899 Rollins Road , Grand Island Nebraska 68801, United States',
     jobrDelivery: 'JOBR Delivery',
     localOff: 'Local Drop-off',
+    shippingText: 'Shipping',
   },
 
   Languages: {
@@ -723,5 +725,14 @@ export const en = {
     staffDes:
       "Active in the markets they've been added to and visible to customers.",
     addStaff: 'Add Staff',
+  },
+  legal: {
+    LegalText: 'Legal',
+  },
+  Policies: {
+    PoliciesText: 'Policies',
+  },
+  deviceDetails: {
+    deviceDetailsText: 'Device Details',
   },
 };

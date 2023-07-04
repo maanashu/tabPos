@@ -18,6 +18,7 @@ import { getTip } from '@/actions/RetailAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { COLORS } from '@/theme';
+import { CustomHeader } from './CustomHeader';
 
 export const CartAmountTips = ({
   onPressBack,
@@ -52,7 +53,7 @@ export const CartAmountTips = ({
 
   return (
     <SafeAreaView style={styles._innerContainer}>
-      <View style={styles._topContainer}>
+      {/* <View style={styles._topContainer}>
         <Text style={styles._date}>{moment().format('ddd DD MMM, YYYY')}</Text>
         <View style={styles._border} />
         <Text style={styles._date}>{moment().format('hh:mm A')}</Text>
@@ -74,7 +75,8 @@ export const CartAmountTips = ({
             style={{ resizeMode: 'contain', height: ms(12), width: ms(12) }}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
+      <CustomHeader iconShow={true} crossHandler={onPressBack} />
       <View style={styles._centerContainer}>
         <BackButton title={'Back'} onPress={onPressBack} />
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -82,7 +84,6 @@ export const CartAmountTips = ({
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles._dollarSymbol}>$</Text>
             <Text style={styles._amount}>
-              {' '}
               {cartData?.amount?.total_amount ?? '0.00'}
             </Text>
           </View>
@@ -139,16 +140,23 @@ export const CartAmountTips = ({
 
             <View style={styles._inputMain}>
               <View style={styles._inputSubView}>
-                <TextInput
-                  placeholder="Other amount"
-                  keyboardType="number-pad"
-                  style={styles._inputContainer}
-                  onChangeText={value => {
-                    setselectedTipAmount(0.0);
-                    setselectedTipIndex(null);
-                    setEnteredTipAmount(value);
-                  }}
-                />
+                <View style={styles.dollarInputCon}>
+                  {enteredTipAmount ? (
+                    <Text style={styles._dollarInput}>$</Text>
+                  ) : null}
+
+                  <TextInput
+                    placeholder="Other amount"
+                    keyboardType="number-pad"
+                    style={styles._inputContainer}
+                    onChangeText={value => {
+                      setselectedTipAmount(0.0);
+                      setselectedTipIndex(null);
+                      setEnteredTipAmount(value);
+                    }}
+                  />
+                </View>
+
                 <TouchableOpacity
                   onPress={onPressNoTips}
                   style={styles._tipsButton}
@@ -166,7 +174,16 @@ export const CartAmountTips = ({
                 }
               }}
               title={'Continue'}
-              style={{ height: ms(40), width: '98%', marginTop: ms(10) }}
+              textStyle={
+                enteredTipAmount || selectedTipIndex || selectedTipIndex === 0
+                  ? { color: COLORS.white }
+                  : ''
+              }
+              style={
+                enteredTipAmount || selectedTipIndex || selectedTipIndex === 0
+                  ? styles._blueButton
+                  : { height: ms(40), width: '98%', marginTop: ms(10) }
+              }
             />
           </View>
         </View>

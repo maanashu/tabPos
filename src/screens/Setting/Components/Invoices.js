@@ -45,19 +45,16 @@ export function Invoices() {
     if (id === 1) {
       const data = {
         invoice_sms_send_status: sms ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     } else if (id === 2) {
       const data = {
         invoice_email_send_status: email ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     } else if (id === 3) {
       const data = {
         print_invoice_status: print ? false : true,
-        app_name: 'pos',
       };
       dispatch(upadteApi(data));
     }
@@ -171,7 +168,7 @@ export function Invoices() {
             {/* </View> */}
           </View>
           <Spacer space={SH(20)} />
-          <View style={styles.securityBodyCon}>
+          {/* <View style={styles.securityBodyCon}>
             <Text style={styles.twoStepText}>
               {strings.settings.invoiceTemplate}
             </Text>
@@ -208,7 +205,7 @@ export function Invoices() {
                 </View>
               </View>
             </View>
-          </View>
+          </View> */}
         </ScrollView>
       </View>
     </View>

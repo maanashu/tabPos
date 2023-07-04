@@ -125,6 +125,7 @@ export class AuthController {
           }
         })
         .catch(error => {
+          console.log('error', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',

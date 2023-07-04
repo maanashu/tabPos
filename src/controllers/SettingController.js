@@ -32,23 +32,18 @@ export class SettingController {
   }
   static async upadteApi(data) {
     return new Promise(async (resolve, reject) => {
-      const token = store.getState().auth?.merchantLoginData?.token;
       const endpoint = USER_URL + ApiUserInventory.getSetting;
-      await axios({
-        url: endpoint,
-        method: 'PATCH',
-        data: data,
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          'app-name': 'pos',
-          Authorization: token,
-        },
-      })
-        .then(resp => {
-          resolve(resp?.data);
+      HttpClient.patch(endpoint, data)
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
           reject(error);
         });
     });
@@ -76,6 +71,7 @@ export class SettingController {
   static async addressUpdateById(body) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getShippingPickup;
+      console.log('endpoint', endpoint);
       HttpClient.put(endpoint, body)
         .then(response => {
           resolve(response);
@@ -172,7 +168,43 @@ export class SettingController {
       const endpoint =
         USER_URL +
         ApiUserInventory.getTax +
-        `?seller_id=082accb0-faef-4cb9-91eb-6c3fe1ae8fad&is_tax_details=${data?.is_tax}`;
+        `?is_tax_details=${data.is_tax}&seller_id=${data.sellerID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          if (error?.error === 'emptyContent') {
+            Toast.show({
+              text2: 'tax not found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
+          reject(error);
+        });
+    });
+  }
+  static async getTaxTrue(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        USER_URL +
+        ApiUserInventory.getTax +
+        `?is_tax_details=${data.is_tax}&seller_id=${data.sellerID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getGoogleCode() {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getGoogleCode;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -184,6 +216,60 @@ export class SettingController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
+          reject(error);
+        });
+    });
+  }
+
+  static async verifyGoogleCode(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.verifyGoogleCode;
+      HttpClient.post(endpoint, data)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          if (error?.msg === 'Invalid token code.') {
+            Toast.show({
+              text2: 'Token Code Expire',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
+
+          reject(error);
+        });
+    });
+  }
+
+  static async taxPayer(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getTax;
+      const body = {
+        seller_id: data?.sellerId,
+        name: data?.businessName,
+        ssn: data?.ssn,
+        country: data?.country,
+        state: data?.state,
+        city: data?.city,
+        zip_code: data?.zipCode,
+        business_name: data?.businessName,
+        street_address: data?.streetAdd,
+        apartment: data?.appartment,
+      };
+      HttpClient.post(endpoint, body)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error?.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+
           reject(error);
         });
     });

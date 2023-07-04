@@ -266,7 +266,7 @@ export function DrawerNavigator(props) {
         )}
       />
 
-      <DrawerItem
+      {/* <DrawerItem
         activeBackgroundColor="transparent"
         focused={active === 'reward' ? true : false}
         onPress={() => {
@@ -279,7 +279,7 @@ export function DrawerNavigator(props) {
             style={focused ? styles.iconStyle2 : styles.iconStyle}
           />
         )}
-      />
+      /> */}
 
       <DrawerItem
         activeBackgroundColor="transparent"

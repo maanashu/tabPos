@@ -13,7 +13,7 @@ export class CashTrackingController {
         })
         .catch(error => {
           Toast.show({
-            text2: error.msg,
+            text2: error.error,
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
@@ -132,7 +132,6 @@ export class CashTrackingController {
             text2: error.msg,
             visibilityTime: 2000,
           });
-          alert(error.msg);
           reject(error.msg);
         });
     });

@@ -70,6 +70,7 @@ export function MainScreen({
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
+
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
 
   const [showProductsFrom, setshowProductsFrom] = useState();
@@ -506,7 +507,7 @@ export function MainScreen({
                     renderItem={renderItem}
                     keyExtractor={(item, index) => index}
                     extraData={showProductsFrom}
-                    numColumns={6}
+                    numColumns={5}
                     // horizontal
                     // contentContainerStyle={{
                     //   flexGrow: 1,
@@ -774,7 +775,6 @@ export function MainScreen({
                   newData[2].isSelected = true;
                   return newData;
                 });
-
                 setBrandModal(false);
               }}
             />

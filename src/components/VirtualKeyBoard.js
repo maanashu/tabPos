@@ -80,18 +80,18 @@ const windowWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: COLORS.primary,
-    width: windowWidth * 0.35,
+    width: windowWidth * 0.32,
   },
   button: {
     backgroundColor: COLORS.textInputBackground,
-    width: windowWidth * 0.35,
+    width: windowWidth * 0.32,
   },
   buttonText: {
     color: COLORS.darkGray,
-    paddingVertical: verticalScale(10),
+    paddingVertical: verticalScale(7),
   },
   selectedText: {
     color: COLORS.white,
-    paddingVertical: verticalScale(10),
+    paddingVertical: verticalScale(7),
   },
 });

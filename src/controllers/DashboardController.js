@@ -130,6 +130,7 @@ export class DashboardController {
         ORDER_URL +
         ApiOrderInventory.getTotalSale +
         `?seller_id=${sellerID}&filter=today`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -158,7 +159,7 @@ export class DashboardController {
         .catch(error => {
           {
             Toast.show({
-              text2: 'jjjjj',
+              text2: error?.msg,
               position: 'bottom',
               type: 'error_toast',
               visibilityTime: 1500,

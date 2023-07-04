@@ -303,7 +303,7 @@ export const styles = StyleSheet.create({
   tableDataDataCon: {
     height: SH(45),
     textAlign: 'center',
-    borderTopWidth: 1,
+    borderBottomWidth: 2,
     borderColor: COLORS.textInputBackground,
     // borderColor: 'transparent',
     paddingHorizontal: moderateScale(20),
@@ -474,5 +474,13 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 50,
     fontSize: SF(20),
+  },
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });

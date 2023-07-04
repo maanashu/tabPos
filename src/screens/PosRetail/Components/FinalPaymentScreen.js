@@ -25,16 +25,21 @@ export const FinalPaymentScreen = ({
   paymentMethod,
   tipAmount,
   cartData,
+  payDetail,
 }) => {
   // const getRetailData = useSelector(getRetail);
   // const cartData = getRetailData?.getAllCart;
   const cartProducts = cartData?.poscart_products;
+  console.log('payDetail', payDetail);
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
     return totalPayment.toFixed(2);
   };
+  const payAmount = totalPayAmount();
+  const ActualPayAmount = payDetail?.tips;
+  const changeDue = parseFloat(ActualPayAmount) - parseFloat(payAmount);
 
   return (
     <SafeAreaView style={styles._innerContainer}>
@@ -53,8 +58,7 @@ export const FinalPaymentScreen = ({
           style={{ top: ms(5), left: ms(0), backgroundColor: 'transparent' }}
         />
       </View>
-
-      <View style={[styles._centerContainer, {}]}>
+      <View style={[styles._centerContainer, { marginTop: ms(30) }]}>
         <View style={styles._upperContainer}>
           <View style={styles._kUpperContainer}>
             <View style={styles._kContainer}>
@@ -67,39 +71,45 @@ export const FinalPaymentScreen = ({
                     ? '$'
                     : 'JBR'}
                 </Text>
-                <Text style={styles._amount}>{totalPayAmount()}</Text>
+                {/* <Text style={styles._amount}>{totalPayAmount()}</Text> */}
+                <Text style={styles._amount}>{payDetail?.tips}</Text>
               </View>
               {paymentMethod === 'Cash' && (
                 <>
                   <View style={styles._cashRemainView} />
-                  <Text style={styles._cashRemainText}>Change Due: $0.00</Text>
+                  <Text style={styles._cashRemainText}>
+                    Change Due: ${changeDue.toFixed(2)}
+                  </Text>
                 </>
               )}
             </View>
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                // justifyContent: 'space-around',
                 width: '70%',
                 position: 'absolute',
                 bottom: ms(20),
+                justifyContent: 'center',
               }}
             >
-              <Button
+              {/* <Button
                 title={'Print'}
                 style={styles._printButton}
                 textStyle={styles._printBtnText}
-              />
+              /> */}
               <Button
-                title={'Print & e-mail'}
+                onPress={() => alert('Coming soon')}
+                title={'e-mail'}
                 style={styles._printButton}
                 textStyle={styles._printBtnText}
               />
-              <Button
+              {/* <Button
+                onPress={() => alert('Coming soon')}
                 title={'e-receipt'}
                 style={styles._printButton}
                 textStyle={styles._printBtnText}
-              />
+              /> */}
             </View>
           </View>
 
@@ -170,7 +180,9 @@ export const FinalPaymentScreen = ({
 
             <View style={styles._paymentTitleContainer}>
               <Text style={styles._payTitle}>Payment option: </Text>
-              <Text style={styles._paySubTitle}>Cash</Text>
+              <Text style={styles._paySubTitle}>
+                {payDetail?.modeOfPayment}
+              </Text>
             </View>
             <Text style={styles._commonPayTitle}>
               Wed 26 Apr , 2023 6:27 AM
