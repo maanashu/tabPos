@@ -351,8 +351,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(8),
   },
   productCon: {
-    width: windowWidth * 0.096,
-    height: windowHeight * 0.25,
+    width: windowWidth * 0.117,
+    height: windowHeight * 0.24,
     backgroundColor: COLORS.white,
     borderRadius: 5,
     paddingHorizontal: moderateScale(3),
@@ -361,8 +361,8 @@ export const styles = StyleSheet.create({
     marginLeft: 6,
   },
   categoryshoes: {
-    width: windowWidth * 0.09,
-    height: windowHeight * 0.12,
+    width: windowWidth * 0.117,
+    height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',
   },

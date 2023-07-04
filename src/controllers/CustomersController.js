@@ -10,6 +10,7 @@ export class CustomersController {
         ORDER_URL +
         ApiOrderInventory.getUserOrder +
         `?seller_id=${sellerID}&limit=${selectedValue}`;
+      console.log('------------', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
