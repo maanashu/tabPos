@@ -97,7 +97,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
     width: Platform.OS === 'android' ? windowWidth * 0.44 : windowWidth * 0.44,
-    height: windowHeight * 0.35,
+    height: windowHeight * 0.4,
     resizeMode: 'contain',
     ...ShadowStyles.shadow2,
     borderRadius: 10,
@@ -294,7 +294,7 @@ export const styles = StyleSheet.create({
     fontSize: Platform.OS === 'android' ? SF(20) : SF(20),
   },
   productCategorychildcon: {
-    height: SH(320),
+    height: SH(200),
     width: windowWidth * 0.45,
     backgroundColor: COLORS.white,
     borderRadius: 15,

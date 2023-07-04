@@ -116,6 +116,30 @@ const getProductModalReset = () => ({
   type: TYPES.GET_PRODUCT_MODAL_RESET,
   payload: null,
 });
+const getOrderstatisticsRequest = () => ({
+  type: TYPES.GET_ORDER_STATISTICS_REQUEST,
+  payload: null,
+});
+const getOrderstatisticsSuccess = getOrderstatistics => ({
+  type: TYPES.GET_ORDER_STATISTICS_SUCCESS,
+  payload: { getOrderstatistics },
+});
+const getOrderstatisticsError = error => ({
+  type: TYPES.GET_ORDER_STATISTICS_ERROR,
+  payload: { error },
+});
+const getOrderTypeListRequest = () => ({
+  type: TYPES.GET_ORDER_TYPE_LIST_REQUEST,
+  payload: null,
+});
+const getOrderTypeListSuccess = getOrderTypeList => ({
+  type: TYPES.GET_ORDER_TYPE_LIST_SUCCESS,
+  payload: { getOrderTypeList },
+});
+const getOrderTypeListError = error => ({
+  type: TYPES.GET_ORDER_TYPE_LIST_ERROR,
+  payload: { error },
+});
 export const totalProGraph = sellerID => async dispatch => {
   dispatch(getTotalProGraphRequest());
   try {
@@ -204,5 +228,28 @@ export const getProductModal = productId => async dispatch => {
       dispatch(getProductModalReset());
     }
     dispatch(getProductModalError(error.message));
+  }
+};
+
+export const getOrderstatistics = sellerID => async dispatch => {
+  dispatch(getOrderstatisticsRequest());
+  try {
+    const res = await AnalyticsController.getOrderstatistics(sellerID);
+    return dispatch(getOrderstatisticsSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getOrderstatisticsError(error.message));
+  }
+};
+
+export const getOrderTypeList = (sellerID, data) => async dispatch => {
+  dispatch(getOrderTypeListRequest());
+  try {
+    const res = await AnalyticsController.getOrderTypeList(sellerID, data);
+    console.log('action response', JSON.stringify(res.payload));
+    return dispatch(getOrderTypeListSuccess(res?.payload?.data));
+  } catch (error) {
+    console.log('errorrrr--', error);
+
+    dispatch(getOrderTypeListError(error?.message));
   }
 };

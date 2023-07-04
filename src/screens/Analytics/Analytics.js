@@ -95,6 +95,8 @@ import { createDispatchHook, useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import {
   catSubBrandData,
+  getOrderTypeList,
+  getOrderstatistics,
   getProductList,
   getProductModal,
   totalInvernteryGraph,
@@ -120,6 +122,7 @@ export function Analytics(props) {
   const orderGraphObject = getAnalyticsData?.getOrderGraph;
   const inventeryGraphObject = getAnalyticsData?.getInventeryGraph;
   const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
+  const getOrderListData = getAnalyticsData?.getOrderTypeList;
   const [value, setValue] = useState('Weekly');
   const [accCatTable, setAccCatTable] = useState('');
   const [revenueTableHeading, setRevenueTableHeading] = useState('');
@@ -165,6 +168,7 @@ export function Analytics(props) {
     setRevenueTable(true), setRevenueTableHeading('');
   };
   const [categoryName, setCategoryName] = useState();
+
   const productDetailData = [
     {
       heading: 'Cost Price',
@@ -204,6 +208,7 @@ export function Analytics(props) {
       dispatch(totalInvernteryGraph(sellerID));
       dispatch(totalRevenueGraph(sellerID));
       dispatch(totalOrderGraph(sellerID));
+      dispatch(getOrderstatistics(sellerID));
     }
   }, [isFocused]);
   const productGraphLoading = useSelector(state =>
@@ -347,18 +352,34 @@ export function Analytics(props) {
     }
   };
   const totalOrderViseHandler = item => {
-    if (item.category === 'Total Order') {
+    if (item.count === 0) {
+      Toast.show({
+        text2: 'No data found',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (item.title == 'Total Order') {
+      console.log('checkList', item);
       setRevenueTable(true);
       setRevenueTableHeading('Total Order');
-    } else if (item.category === 'Store Order') {
+      const data = { page: 1, limit: 10, type: 'total_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+    } else if (item.title == 'Store Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Store Order');
-    } else if (item.category === 'Online Order') {
+      const data = { page: 1, limit: 10, type: 'store_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+    } else if (item.title == 'Online Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Online Order');
-    } else if (item.category === 'Shipping Order') {
+      const data = { page: 1, limit: 10, type: 'delivery_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+    } else if (item.title == 'Shipping Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Shipping Order');
+      const data = { page: 1, limit: 10, type: 'shipping_order' };
+      dispatch(getOrderTypeList(sellerID, data));
     } else {
       setRevenueTableHeading('');
       setRevenueTable(true);
@@ -417,6 +438,258 @@ export function Analytics(props) {
       );
     }
   };
+
+  const getOrderListItem = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View>
+          <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+          <Text style={styles.revenueDataTextLight}>13: 21</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <Text style={styles.revenueDataText}>{item?.invoice?.invoice_id}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>Delivery</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>$23.50</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$2,561.00</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$2,561.00</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>JBR</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity
+          style={styles.completeBtnCon2}
+          onPress={() => {
+            setRevenueCompleteSideBar(true),
+              setRevenueTable(false),
+              setTablebackSetting(false),
+              setOrderList(true);
+          }}
+        >
+          <Text style={styles.completeText}>Completed</Text>
+        </TouchableOpacity>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
+
+  const getOrderListStore = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View>
+          <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+          <Text style={styles.revenueDataTextLight}>13: 21</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <Text style={styles.revenueDataText}>2565916565..</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>12</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>Delivery</Text>
+      </DataTable.Cell>
+      {/* <DataTable.Cell style={styles.dateTableSetting}>
+      <View style={styles.flexAlign}>
+        <Image source={clay} style={styles.clay} />
+        <Text style={styles.revenueDataText}>$23.50</Text>
+      </View>
+    </DataTable.Cell> */}
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>$23.50</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$2,561.00</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$2,561.00</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>JBR</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity
+          style={styles.completeBtnCon2}
+          onPress={() => {
+            setRevenueCompleteSideBar(true),
+              setRevenueTable(false),
+              setTablebackSetting(false),
+              setOrderList(true);
+          }}
+        >
+          <Text style={styles.completeText}>Completed</Text>
+        </TouchableOpacity>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
+
+  const getOrderListDelivery = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View>
+          <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+          <Text style={styles.revenueDataTextLight}>13: 21</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <Text style={styles.revenueDataText}>2565916565..</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>12</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>Delivery</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={deliverCheck} style={styles.codeLogo} />
+          <Text style={[styles.revenueDataText, { color: COLORS.primary }]}>
+            $23.50
+          </Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>$23.50</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$2,561.00</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$2,561.00</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>JBR</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity
+          style={styles.completeBtnCon2}
+          onPress={() => {
+            setRevenueTable(false),
+              setRevenueOrderBuyer(true),
+              setTablebackSetting(true);
+          }}
+        >
+          <Text style={styles.completeText}>Completed</Text>
+        </TouchableOpacity>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
+
+  const getOrderListShipping = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View>
+          <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
+          <Text style={styles.revenueDataTextLight}>13: 21</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <Text style={styles.revenueDataText}>2565916565..</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>12</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>Delivery</Text>
+      </DataTable.Cell>
+      {/* <DataTable.Cell style={styles.dateTableSetting}>
+      <View style={styles.flexAlign}>
+        <Image source={deliverCheck} style={styles.codeLogo} />
+        <Text style={[styles.revenueDataText, {color:COLORS.primary}]}>$23.50</Text>
+      </View>
+    </DataTable.Cell> */}
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>$23.50</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$2,561.00</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$2,561.00</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>JBR</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity
+          style={styles.completeBtnCon2}
+          onPress={() => {
+            setRevenueTable(false),
+              setRevenueOrderBuyer(true),
+              setTablebackSetting(true);
+          }}
+        >
+          <Text style={styles.completeText}>Completed</Text>
+        </TouchableOpacity>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
   const orderTableDataFun = revenueTableHeading => {
     if (revenueTableHeading === 'Total Order') {
       return (
@@ -563,68 +836,14 @@ export function Analytics(props) {
 
               <View style={{ height: SH(380), zIndex: -99 }}>
                 {/* <ScrollView> */}
-                <DataTable.Row>
-                  <DataTable.Cell style={styles.dateTableSettingFirst}>
-                    <Text style={styles.revenueDataText}>1</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View>
-                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <Text style={styles.revenueDataText}>2565916565..</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>
-                        Michael E. Clay
-                      </Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>12</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>Delivery</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>JBR</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <TouchableOpacity
-                      style={styles.completeBtnCon2}
-                      onPress={() => {
-                        setRevenueCompleteSideBar(true),
-                          setRevenueTable(false),
-                          setTablebackSetting(false),
-                          setOrderList(true);
-                      }}
-                    >
-                      <Text style={styles.completeText}>Completed</Text>
-                    </TouchableOpacity>
-                  </DataTable.Cell>
-                </DataTable.Row>
+                <View>
+                  <FlatList
+                    data={getOrderListData}
+                    renderItem={getOrderListItem}
+                    keyExtractor={item => item.id}
+                  />
+                </View>
+
                 {/* </ScrollView> */}
               </View>
             </DataTable>
@@ -776,7 +995,16 @@ export function Analytics(props) {
 
               <View style={{ height: SH(380), zIndex: -99 }}>
                 {/* <ScrollView> */}
-                <DataTable.Row>
+
+                <View>
+                  <FlatList
+                    data={getOrderListData}
+                    renderItem={getOrderListStore}
+                    keyExtractor={item => item.id}
+                  />
+                </View>
+
+                {/* <DataTable.Row>
                   <DataTable.Cell style={styles.dateTableSettingFirst}>
                     <Text style={styles.revenueDataText}>1</Text>
                   </DataTable.Cell>
@@ -809,35 +1037,36 @@ export function Analytics(props) {
                       <Text style={styles.revenueDataText}>$23.50</Text>
                     </View>
                   </DataTable.Cell> */}
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>JBR</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <TouchableOpacity
-                      style={styles.completeBtnCon2}
-                      onPress={() => {
-                        setRevenueCompleteSideBar(true),
-                          setRevenueTable(false),
-                          setTablebackSetting(false),
-                          setOrderList(true);
-                      }}
-                    >
-                      <Text style={styles.completeText}>Completed</Text>
-                    </TouchableOpacity>
-                  </DataTable.Cell>
-                </DataTable.Row>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <View style={styles.flexAlign}>
+                    <Image source={clay} style={styles.clay} />
+                    <Text style={styles.revenueDataText}>$23.50</Text>
+                  </View>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>$2,561.00</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>$2,561.00</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>JBR</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <TouchableOpacity
+                    style={styles.completeBtnCon2}
+                    onPress={() => {
+                      setRevenueCompleteSideBar(true),
+                        setRevenueTable(false),
+                        setTablebackSetting(false),
+                        setOrderList(true);
+                    }}
+                  >
+                    <Text style={styles.completeText}>Completed</Text>
+                  </TouchableOpacity>
+                </DataTable.Cell>
+                {/* </DataTable.Row> */}
+
                 {/* </ScrollView> */}
               </View>
             </DataTable>
@@ -989,7 +1218,16 @@ export function Analytics(props) {
 
               <View style={{ height: SH(380), zIndex: -99 }}>
                 {/* <ScrollView> */}
-                <DataTable.Row>
+
+                <View>
+                  <FlatList
+                    data={getOrderListData}
+                    renderItem={getOrderListDelivery}
+                    keyExtractor={item => item.id}
+                  />
+                </View>
+
+                {/* <DataTable.Row>
                   <DataTable.Cell style={styles.dateTableSettingFirst}>
                     <Text style={styles.revenueDataText}>1</Text>
                   </DataTable.Cell>
@@ -1117,7 +1355,7 @@ export function Analytics(props) {
                       <Text style={styles.completeText}>Canceled</Text>
                     </TouchableOpacity>
                   </DataTable.Cell>
-                </DataTable.Row>
+                </DataTable.Row> */}
                 {/* </ScrollView> */}
               </View>
             </DataTable>
@@ -1269,121 +1507,13 @@ export function Analytics(props) {
 
               <View style={{ height: SH(380), zIndex: -99 }}>
                 {/* <ScrollView> */}
-                <DataTable.Row>
-                  <DataTable.Cell style={styles.dateTableSettingFirst}>
-                    <Text style={styles.revenueDataText}>1</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View>
-                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <Text style={styles.revenueDataText}>2565916565..</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>
-                        Michael E. Clay
-                      </Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>12</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>Delivery</Text>
-                  </DataTable.Cell>
-                  {/* <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={deliverCheck} style={styles.codeLogo} />
-                      <Text style={[styles.revenueDataText, {color:COLORS.primary}]}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell> */}
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>JBR</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <TouchableOpacity
-                      style={styles.completeBtnCon2}
-                      onPress={() => {
-                        setRevenueTable(false),
-                          setRevenueOrderBuyer(true),
-                          setTablebackSetting(true);
-                      }}
-                    >
-                      <Text style={styles.completeText}>Completed</Text>
-                    </TouchableOpacity>
-                  </DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                  <DataTable.Cell style={styles.dateTableSettingFirst}>
-                    <Text style={styles.revenueDataText}>1</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View>
-                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <Text style={styles.revenueDataText}>2565916565..</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>
-                        Michael E. Clay
-                      </Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>12</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>Delivery</Text>
-                  </DataTable.Cell>
-                  {/* <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={null} style={styles.codeLogo} />
-                      <Text style={[styles.revenueDataText, {color:COLORS.primary}]}>{null}</Text>
-                    </View>
-                  </DataTable.Cell> */}
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>{null}</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>{null}</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <TouchableOpacity style={styles.cancelBtnCon2}>
-                      <Text style={styles.completeText}>Canceled</Text>
-                    </TouchableOpacity>
-                  </DataTable.Cell>
-                </DataTable.Row>
+                <View>
+                  <FlatList
+                    data={getOrderListData}
+                    renderItem={getOrderListShipping}
+                    keyExtractor={item => item.id}
+                  />
+                </View>
                 {/* </ScrollView> */}
               </View>
             </DataTable>
@@ -5766,6 +5896,7 @@ export function Analytics(props) {
                 </View>
               )}
             </View>
+
             <HomeGraph
               header="Total Orders"
               subHeader={

@@ -20,6 +20,8 @@ export function TotalRevenueSub({
   const [selectTime, setSelectTime] = useState();
   const getAnalyticsData = useSelector(getAnalytics);
   const orderGraphObject = getAnalyticsData?.getOrderGraph;
+  const Orderstatistics = getAnalyticsData?.getOrderstatistics;
+  console.log('selector', getAnalyticsData);
   const totalGraphLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_GRAPH], state)
   );
@@ -31,14 +33,14 @@ export function TotalRevenueSub({
       onPress={() => totalOrderViseHandler(item)}
     >
       <View style={styles.categoryChildCon}>
-        <Text style={styles.categoryCount}>{item.categoryCount}</Text>
+        <Text style={styles.categoryCount}>{item.count}</Text>
         <Text numberOfLines={1} style={styles.categoryText}>
-          {item.category}
+          {item.title}
         </Text>
       </View>
       <View style={styles.categoryChildPercent}>
         <Image source={catPercent} style={styles.catPercent} />
-        <Text style={styles.percentText}>{item.percentage}</Text>
+        <Text style={styles.percentText}>{item.percentage}%</Text>
       </View>
     </TouchableOpacity>
   );
@@ -110,12 +112,12 @@ export function TotalRevenueSub({
               <View
                 style={[
                   styles.productCategorychildcon,
-                  { backgroundColor: 'transparent' },
+                  { backgroundColor: 'transparent', height: SH(320) },
                 ]}
               >
                 <View>
                   <FlatList
-                    data={totalOrderData}
+                    data={Orderstatistics}
                     renderItem={totalOrderItem}
                     keyExtractor={item => item.id}
                     numColumns={2}
