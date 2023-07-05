@@ -9,14 +9,12 @@ import { getUser } from '@/selectors/UserSelectors';
 import { navigationRef } from './NavigationRef';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { getAuthData } from '@/selectors/AuthSelector';
-const Drawer = createDrawerNavigator();
 
 export function RootNavigator() {
   const auth = useSelector(getAuthData);
   const posUser = useSelector(getUser);
   const merchantToken = auth?.merchantLoginData?.token;
   const posUserToken = posUser?.posLoginData?.token;
-  const scheme = useColorScheme();
   return (
     <NavigationContainer ref={navigationRef}>
       {merchantToken && !posUserToken ? (

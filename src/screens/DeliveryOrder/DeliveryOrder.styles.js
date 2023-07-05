@@ -16,10 +16,9 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     height: windowHeight,
   },
-   rowCenter:{
-   flexDirection:'row',
-   alignItems:'center'
-
+  rowCenter: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   headerMainView: {
     width: windowWidth,
@@ -63,7 +62,7 @@ export const styles = StyleSheet.create({
   dropdown2Con: {
     width: SW(15),
     height: SH(30),
-    
+
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
@@ -219,9 +218,9 @@ export const styles = StyleSheet.create({
     textAlignVertical: 'center',
     paddingLeft: 2,
   },
-  timeText2:{
-   color:COLORS.primary,
-   width: Platform.OS === 'ios' ? SW(30) : SH(120),
+  timeText2: {
+    color: COLORS.primary,
+    width: Platform.OS === 'ios' ? SW(30) : SH(120),
   },
   conversionRow: {
     width: windowWidth / 2.4,
@@ -353,11 +352,12 @@ export const styles = StyleSheet.create({
     bottom: Platform.OS === 'android' ? 20 : 0,
     right: 0,
     backgroundColor: COLORS.white,
-    width: windowWidth * 0.46,
-    height: windowHeight * 0.30,
+    width: windowWidth * 0.47,
+    height: windowHeight * 0.3,
     // ...ShadowStyles.shadow,
     padding: 10,
     justifyContent: 'center',
+    // borderWidth: 1,
   },
   rowView: {
     flexDirection: 'row',
@@ -440,7 +440,7 @@ export const styles = StyleSheet.create({
   },
   itemSeparatorView: {
     backgroundColor: COLORS.solidGrey,
-    height: 2,
+    height: 1,
     width: '96%',
     marginVertical: verticalScale(3),
   },
@@ -521,7 +521,7 @@ export const styles = StyleSheet.create({
   },
   subtotalRow: {
     borderWidth: 1,
-    width: SH(300),
+    width: SW(100),
     alignSelf: 'flex-end',
     borderStyle: 'dashed',
     borderColor: COLORS.row_grey,

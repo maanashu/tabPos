@@ -124,18 +124,21 @@ export function POSUsers({ navigation }) {
                   <View style={{ flex: 1 }} />
                   <TouchableOpacity
                     style={styles.arrowButonCon}
-                    onPress={() =>
-                      getAuth?.merchantLoginData?.user_profile?.wallet_steps >=
-                      4
-                        ? navigation.navigate(NAVIGATION.loginIntial, {
-                            posuserdata: item,
-                          })
-                        : Toast.show({
-                            text2: 'Merchant wallet not exits',
-                            position: 'bottom',
-                            type: 'error_toast',
-                            visibilityTime: 1500,
-                          })
+                    onPress={
+                      () =>
+                        // getAuth?.merchantLoginData?.user_profile?.wallet_steps >=
+                        // 4
+                        //   ?
+                        navigation.navigate(NAVIGATION.loginIntial, {
+                          posuserdata: item,
+                        })
+
+                      // : Toast.show({
+                      //     text2: 'Merchant wallet not exits',
+                      //     position: 'bottom',
+                      //     type: 'error_toast',
+                      //     visibilityTime: 1500,
+                      //   })
                     }
                   >
                     <Image source={checkArrow} style={styles.arrowImage} />

@@ -72,7 +72,15 @@ export function PosRetail() {
     getCart?.discount_flag === 'code' ? getCart?.discount_value : ''
   );
   const [descriptionDis, setDescriptionDis] = useState(getCart?.discount_desc);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(
+    getCart?.discount_flag === 'amount'
+      ? 'amount'
+      : getCart?.discount_flag === 'percentage'
+      ? 'percentage'
+      : getCart?.discount_flag === 'code'
+      ? 'code'
+      : ''
+  );
   const [amountCheck, setAmountCheck] = useState(
     getCart?.discount_flag === 'amount' ? true : false
   );
@@ -97,6 +105,15 @@ export function PosRetail() {
     );
     setDiscountCode(
       getCart?.discount_flag === 'code' ? getCart?.discount_value : ''
+    );
+    setValue(
+      getCart?.discount_flag === 'amount'
+        ? 'amount'
+        : getCart?.discount_flag === 'percentage'
+        ? 'percentage'
+        : getCart?.discount_flag === 'code'
+        ? 'code'
+        : ''
     );
   }, [getRetailData?.getAllCart]);
 
@@ -155,9 +172,6 @@ export function PosRetail() {
         descriptionDis: descriptionDis,
         // descriptionDis:'discount title'
       };
-      console.log('data', data);
-      // return;
-
       dispatch(addDiscountToCart(data));
       clearInput();
       setAddDiscount(false);

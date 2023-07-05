@@ -507,7 +507,7 @@ export function MainScreen({
                     renderItem={renderItem}
                     keyExtractor={(item, index) => index}
                     extraData={showProductsFrom}
-                    numColumns={6}
+                    numColumns={5}
                     // horizontal
                     // contentContainerStyle={{
                     //   flexGrow: 1,

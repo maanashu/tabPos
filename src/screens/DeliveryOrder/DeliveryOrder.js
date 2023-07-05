@@ -10,7 +10,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import {
   deliveryTruck,
   notifications,
@@ -28,6 +28,7 @@ import {
   radio,
   userImage,
   parcel,
+  toastcross,
 } from '@/assets';
 import { styles } from '@/screens/DeliveryOrder/DeliveryOrder.styles';
 import { strings } from '@/localization';
@@ -37,6 +38,7 @@ import { Button, ChartKit, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale } from 'react-native-size-matters';
 import { BottomSheet } from '@/screens/DeliveryOrder/Components';
 import { useDispatch, useSelector } from 'react-redux';
+import MapViewDirections from 'react-native-maps-directions';
 import {
   acceptOrder,
   getOrderCount,
@@ -69,6 +71,7 @@ export function DeliveryOrder() {
   const [orderCount, setOrderCount] = useState(
     getDeliveryData?.orderList ?? []
   );
+  console.log(orderCount);
   const deliveringOrder = getDeliveryData?.deliveryOrd;
   const orderArray = getDeliveryData?.orderList?.data ?? [];
   const [viewAllReviews, setViewAllReviews] = useState(false);
@@ -174,6 +177,18 @@ export function DeliveryOrder() {
     },
   ];
 
+  const homeCoordinate = {
+    latitude: 30.704649,
+    longitude: 76.717873,
+  };
+  const storeCoordinates = {
+    latitude: 30.73827,
+    longitude: 76.765144,
+  };
+  const sellerCoordinates = {
+    latitude: 30.695202,
+    longitude: 76.854172,
+  };
   useEffect(() => {
     if (isFocused) {
       dispatch(getOrderCount(sellerID)),
@@ -820,13 +835,31 @@ export function DeliveryOrder() {
             provider={PROVIDER_GOOGLE}
             showCompass
             region={{
-              latitude: 27.2046,
-              longitude: 77.4977,
-              latitudeDelta: 0.0922,
+              latitude: 30.704649,
+              longitude: 76.717873,
+              latitudeDelta: 0.0992,
               longitudeDelta: 0.0421,
             }}
             style={styles.map}
-          ></MapView>
+          >
+            <Marker image={toastcross} coordinate={homeCoordinate} />
+
+            <Marker image={toastcross} coordinate={storeCoordinates} />
+            <Marker image={toastcross} coordinate={sellerCoordinates} />
+            {/* <MapViewDirections
+              origin={{
+                latitude: 30.704649,
+                longitude: 76.717873,
+              }}
+              destination={{
+                latitude: 30.741482,
+                longitude: 76.768066,
+              }}
+              apikey={PROVIDER_GOOGLE}
+              strokeWidth={3}
+              strokeColor={COLORS.primary}
+            /> */}
+          </MapView>
           <View>{showOrderStatusModal()}</View>
         </View>
       );
@@ -1065,8 +1098,13 @@ export function DeliveryOrder() {
                   <Text
                     style={[
                       styles.nameText,
-                      { color: COLORS.primary, fontFamily: Fonts.SemiBold },
+                      {
+                        color: COLORS.primary,
+                        fontFamily: Fonts.SemiBold,
+                        width: SW(40),
+                      },
                     ]}
+                    numberOfLines={1}
                   >
                     {singleOrder?.delivery_details?.title}
                   </Text>
@@ -1196,8 +1234,13 @@ export function DeliveryOrder() {
                   <Text
                     style={[
                       styles.nameText,
-                      { color: COLORS.primary, fontFamily: Fonts.SemiBold },
+                      {
+                        color: COLORS.primary,
+                        fontFamily: Fonts.SemiBold,
+                        width: SW(40),
+                      },
                     ]}
+                    numberOfLines={1}
                   >
                     {itemss?.delivery_details?.title}
                   </Text>
