@@ -1,11 +1,18 @@
-import calendarize from 'calendarize'
-import dayjs from 'dayjs'
-import * as React from 'react'
-import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import calendarize from 'calendarize';
+import dayjs from 'dayjs';
+import * as React from 'react';
+import {
+  Platform,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 
-import { u } from '../commonStyles'
-import { useNow } from '../hooks/useNow'
-import { usePanResponder } from '../hooks/usePanResponder'
+import { u } from '../commonStyles';
+import { useNow } from '../hooks/useNow';
+import { usePanResponder } from '../hooks/usePanResponder';
 import {
   CalendarCellStyle,
   CalendarCellTextStyle,
@@ -14,32 +21,32 @@ import {
   HorizontalDirection,
   ICalendarEventBase,
   WeekNum,
-} from '../interfaces'
-import { useTheme } from '../theme/ThemeContext'
-import { getWeeksWithAdjacentMonths } from '../utils/datetime'
-import { typedMemo } from '../utils/react'
-import { CalendarEventForMonthView } from './CalendarEventForMonthView'
+} from '../interfaces';
+import { useTheme } from '../theme/ThemeContext';
+import { getWeeksWithAdjacentMonths } from '../utils/datetime';
+import { typedMemo } from '../utils/react';
+import { CalendarEventForMonthView } from './CalendarEventForMonthView';
 
 interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
-  containerHeight: number
-  targetDate: dayjs.Dayjs
-  events: T[]
-  style: ViewStyle
-  eventCellStyle?: EventCellStyle<T>
-  calendarCellStyle?: CalendarCellStyle
-  calendarCellTextStyle?: CalendarCellTextStyle
-  hideNowIndicator?: boolean
-  showAdjacentMonths: boolean
-  onPressCell?: (date: Date) => void
-  onPressDateHeader?: (date: Date) => void
-  onPressEvent?: (event: T) => void
-  onSwipeHorizontal?: (d: HorizontalDirection) => void
-  renderEvent?: EventRenderer<T>
-  maxVisibleEventCount: number
-  weekStartsOn: WeekNum
-  eventMinHeightForMonthView: number
-  moreLabel: string
-  sortedMonthView: boolean
+  containerHeight: number;
+  targetDate: dayjs.Dayjs;
+  events: T[];
+  style: ViewStyle;
+  eventCellStyle?: EventCellStyle<T>;
+  calendarCellStyle?: CalendarCellStyle;
+  calendarCellTextStyle?: CalendarCellTextStyle;
+  hideNowIndicator?: boolean;
+  showAdjacentMonths: boolean;
+  onPressCell?: (date: Date) => void;
+  onPressDateHeader?: (date: Date) => void;
+  onPressEvent?: (event: T) => void;
+  onSwipeHorizontal?: (d: HorizontalDirection) => void;
+  renderEvent?: EventRenderer<T>;
+  maxVisibleEventCount: number;
+  weekStartsOn: WeekNum;
+  eventMinHeightForMonthView: number;
+  moreLabel: string;
+  sortedMonthView: boolean;
 }
 
 function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
@@ -63,57 +70,75 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
   moreLabel,
   sortedMonthView,
 }: CalendarBodyForMonthViewProps<T>) {
-  const { now } = useNow(!hideNowIndicator)
-  const [calendarWidth, setCalendarWidth] = React.useState<number>(0)
+  const { now } = useNow(!hideNowIndicator);
+  const [calendarWidth, setCalendarWidth] = React.useState<number>(0);
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
-  })
+  });
 
   const weeks = showAdjacentMonths
     ? getWeeksWithAdjacentMonths(targetDate, weekStartsOn)
-    : calendarize(targetDate.toDate(), weekStartsOn)
+    : calendarize(targetDate.toDate(), weekStartsOn);
 
-  const minCellHeight = containerHeight / 5 - 30
-  const theme = useTheme()
+  const minCellHeight = containerHeight / 5 - 30;
+  const theme = useTheme();
 
   const getCalendarCellStyle = React.useMemo(
-    () => (typeof calendarCellStyle === 'function' ? calendarCellStyle : () => calendarCellStyle),
-    [calendarCellStyle],
-  )
+    () =>
+      typeof calendarCellStyle === 'function'
+        ? calendarCellStyle
+        : () => calendarCellStyle,
+    [calendarCellStyle]
+  );
 
   const getCalendarCellTextStyle = React.useMemo(
     () =>
       typeof calendarCellTextStyle === 'function'
         ? calendarCellTextStyle
         : () => calendarCellTextStyle,
-    [calendarCellTextStyle],
-  )
+    [calendarCellTextStyle]
+  );
 
   const sortedEvents = React.useCallback(
     (day: dayjs.Dayjs) => {
       return sortedMonthView
         ? events
             .filter(({ start, end }) =>
-              day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
+              day.isBetween(
+                dayjs(start).startOf('day'),
+                dayjs(end).endOf('day'),
+                null,
+                '[)'
+              )
             )
             .sort((a, b) => {
               if (dayjs(a.start).isSame(b.start, 'day')) {
-                const aDuration = dayjs.duration(dayjs(a.end).diff(dayjs(a.start))).days()
-                const bDuration = dayjs.duration(dayjs(b.end).diff(dayjs(b.start))).days()
-                return bDuration - aDuration
+                const aDuration = dayjs
+                  .duration(dayjs(a.end).diff(dayjs(a.start)))
+                  .days();
+                const bDuration = dayjs
+                  .duration(dayjs(b.end).diff(dayjs(b.start)))
+                  .days();
+                return bDuration - aDuration;
               }
-              return a.start.getTime() - b.start.getTime()
+              return a.start.getTime() - b.start.getTime();
             })
         : events.filter(({ start, end }) =>
-            day.isBetween(dayjs(start).startOf('day'), dayjs(end).endOf('day'), null, '[)'),
-          )
+            day.isBetween(
+              dayjs(start).startOf('day'),
+              dayjs(end).endOf('day'),
+              null,
+              '[)'
+            )
+          );
     },
-    [events, sortedMonthView],
-  )
+    [events, sortedMonthView]
+  );
 
   return (
-    <View
+    <ScrollView
+      showsVerticalScrollIndicator={false}
       style={[
         {
           height: containerHeight,
@@ -143,12 +168,18 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
           ]}
         >
           {week
-            .map((d) =>
-              showAdjacentMonths ? targetDate.date(d) : d > 0 ? targetDate.date(d) : null,
+            .map(d =>
+              showAdjacentMonths
+                ? targetDate.date(d)
+                : d > 0
+                ? targetDate.date(d)
+                : null
             )
             .map((date, ii) => (
               <TouchableOpacity
-                onPress={() => date && onPressCell && onPressCell(date.toDate())}
+                onPress={() =>
+                  date && onPressCell && onPressCell(date.toDate())
+                }
                 style={[
                   i > 0 && u['border-t'],
                   theme.isRTL && ii > 0 && u['border-r'],
@@ -180,7 +211,8 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       theme.typography.sm,
                       {
                         color:
-                          date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
+                          date?.format('YYYY-MM-DD') ===
+                          now.format('YYYY-MM-DD')
                             ? theme.palette.primary.main
                             : date?.month() !== targetDate.month()
                             ? theme.palette.gray['500']
@@ -198,7 +230,8 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                   sortedEvents(date).reduce(
                     (elements, event, index, events) => [
                       ...elements,
-                      index > maxVisibleEventCount ? null : index === maxVisibleEventCount ? (
+                      index > maxVisibleEventCount ? null : index ===
+                        maxVisibleEventCount ? (
                         <Text
                           key={index}
                           style={[
@@ -208,7 +241,7 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                         >
                           {moreLabel.replace(
                             '{moreCount}',
-                            `${events.length - maxVisibleEventCount}`,
+                            `${events.length - maxVisibleEventCount}`
                           )}
                         </Text>
                       ) : (
@@ -222,19 +255,21 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                           dayOfTheWeek={ii}
                           calendarWidth={calendarWidth}
                           isRTL={theme.isRTL}
-                          eventMinHeightForMonthView={eventMinHeightForMonthView}
+                          eventMinHeightForMonthView={
+                            eventMinHeightForMonthView
+                          }
                           showAdjacentMonths={showAdjacentMonths}
                         />
                       ),
                     ],
-                    [] as (null | JSX.Element)[],
+                    [] as (null | JSX.Element)[]
                   )}
               </TouchableOpacity>
             ))}
         </View>
       ))}
-    </View>
-  )
+    </ScrollView>
+  );
 }
 
-export const CalendarBodyForMonthView = typedMemo(_CalendarBodyForMonthView)
+export const CalendarBodyForMonthView = typedMemo(_CalendarBodyForMonthView);
