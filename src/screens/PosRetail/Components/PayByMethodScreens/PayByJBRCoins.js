@@ -50,6 +50,7 @@ export const PayByJBRCoins = ({
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
   const getWalletQr = getRetailData?.getWallet?.qr_code;
+  console.log('getWalletQr', getWalletQr);
   const cartData = getRetailData?.getAllCart;
   const walletUser = getRetailData?.walletGetByPhone?.[0];
   const getCartAmount = getRetailData?.getAllCart?.amount;
@@ -83,13 +84,12 @@ export const PayByJBRCoins = ({
     const data = {
       cartid: getRetailData?.getAllCart?.id,
       userId: customer?.user_id,
-      tips: tipAmount,
+      tips: totalPayAmount() * 100,
       modeOfPayment: 'jbr',
     };
-
     const callback = response => {
       if (response) {
-        onPressContinue(saveCartData);
+        onPressContinue(saveCartData, data);
       }
     };
     dispatch(createOrder(data, callback));
@@ -177,7 +177,7 @@ export const PayByJBRCoins = ({
             style={{ top: ms(5), left: ms(0), backgroundColor: 'transparent' }}
           />
         </View>
-        <View style={styles._centerContainer}>
+        <View style={[styles._centerContainer, { marginTop: ms(30) }]}>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text
               style={[
@@ -265,7 +265,7 @@ export const PayByJBRCoins = ({
                       <TextInput
                         placeholder="Enter wallet address"
                         keyboardType="number-pad"
-                        style={styles._inputContainer}
+                        style={styles._inputCashContainer}
                         onChangeText={walletIdInp => (
                           setWalletIdInp(walletIdInp),
                           walletIdInpFun(walletIdInp)

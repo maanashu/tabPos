@@ -71,6 +71,7 @@ export class SettingController {
   static async addressUpdateById(body) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getShippingPickup;
+      console.log('endpoint', endpoint);
       HttpClient.put(endpoint, body)
         .then(response => {
           resolve(response);

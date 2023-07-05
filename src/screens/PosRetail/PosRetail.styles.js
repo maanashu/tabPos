@@ -1,7 +1,7 @@
 import { Fonts } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { height, width } from '@/theme/ScalerDimensions';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { moderateScale, verticalScale, ms } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -49,8 +49,8 @@ export const styles = StyleSheet.create({
   },
   _centerContainer: {
     backgroundColor: COLORS.white,
-    marginTop: ms(30),
-    marginHorizontal: ms(26),
+    // marginTop: ms(20),
+    // marginHorizontal: ms(26),
     marginBottom: ms(10),
     borderRadius: ms(3),
     justifyContent: 'center',
@@ -67,6 +67,12 @@ export const styles = StyleSheet.create({
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
     marginTop: ms(2),
+  },
+  _dollarInput: {
+    fontSize: ms(10),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
+    marginBottom: ms(1),
   },
   _amount: {
     color: COLORS.primary,
@@ -108,6 +114,7 @@ export const styles = StyleSheet.create({
   _innerContainer: {
     backgroundColor: COLORS.textInputBackground,
     flex: 1,
+    paddingHorizontal: moderateScale(12),
   },
   _inputMain: {
     marginTop: ms(15),
@@ -118,11 +125,28 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   _inputContainer: {
+    height: ms(40),
+    borderRadius: ms(3),
+    flex: 1,
+  },
+  dollarInputCon: {
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(40),
     borderRadius: ms(3),
     paddingHorizontal: ms(10),
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  _inputCashContainer: {
+    height: ms(40),
+    borderRadius: ms(3),
+    borderWidth: 1,
+    paddingHorizontal: ms(10),
+    borderColor: COLORS.solidGrey,
     flex: 1,
   },
   _tipsButton: {
@@ -327,8 +351,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(8),
   },
   productCon: {
-    width: windowWidth * 0.096,
-    height: windowHeight * 0.25,
+    width: windowWidth * 0.117,
+    height: windowHeight * 0.24,
     backgroundColor: COLORS.white,
     borderRadius: 5,
     paddingHorizontal: moderateScale(3),
@@ -337,8 +361,8 @@ export const styles = StyleSheet.create({
     marginLeft: 6,
   },
   categoryshoes: {
-    width: windowWidth * 0.09,
-    height: windowHeight * 0.12,
+    width: windowWidth * 0.117,
+    height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',
   },
@@ -1210,5 +1234,19 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.solid_grey,
     transform: [{ rotate: '180deg' }],
+  },
+  iconStyle: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+    borderRadius: 100,
+    marginRight: ms(3),
+  },
+  _blueButton: {
+    backgroundColor: COLORS.primary,
+    height: ms(40),
+    width: '98%',
+    marginTop: ms(10),
+    color: COLORS.white,
   },
 });

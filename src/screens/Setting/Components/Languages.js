@@ -142,7 +142,7 @@ export function Languages() {
         <Text style={styles.HeaderLabelText}>
           {strings.Languages.languages}
         </Text>
-        <View style={{ zIndex: 99 }}>
+        {/* <View style={{ zIndex: 99 }}>
           <TouchableOpacity
             style={styles.addNewButtonCon}
             onPress={() => setShowModal(true)}
@@ -150,7 +150,7 @@ export function Languages() {
             <Image source={addIcon} style={styles.addIcon} />
             <Text style={styles.addNew}>{strings.settings.addlanguage}</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
       <Spacer space={SH(20)} />
       <View style={styles.securityMainCon}>

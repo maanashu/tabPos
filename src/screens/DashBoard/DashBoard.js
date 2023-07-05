@@ -40,6 +40,7 @@ import {
   getDrawerSessionPost,
   getDrawerSessionSuccess,
   getOrderDeliveries,
+  getTotalSaleAction,
   posLoginDetail,
   searchProductList,
 } from '@/actions/DashboardAction';
@@ -72,6 +73,10 @@ export function DashBoard({ navigation }) {
   const getPosUser = getUserData?.posLoginData;
 
   const TotalSale = getDashboardData?.getTotalSale;
+
+  const todayCashAmount = TotalSale?.[3]?.total_sale_amount.toFixed(2);
+  const todayJbrAmount = TotalSale?.[1]?.total_sale_amount.toFixed(2);
+  const todayCardAmount = TotalSale?.[2]?.total_sale_amount.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getDeliveryData = getDashboardData?.getOrderDeliveries;
   const getDeliveryData2 = getDeliveryData?.filter(item => item.status <= 3);
@@ -119,7 +124,7 @@ export function DashBoard({ navigation }) {
       dispatch(getOrderDeliveries(sellerID));
       startTrackingFun();
       clearInput();
-      // dispatch(getTotalSaleAction(sellerID));
+      dispatch(getTotalSaleAction(sellerID));
       dispatch(posLoginDetail());
     }
   }, [isFocused]);
@@ -183,7 +188,7 @@ export function DashBoard({ navigation }) {
 
   const startSellingHandler = id => {
     if (id === 1) {
-      navigate(NAVIGATION.retails);
+      navigate(NAVIGATION.posRetail);
     } else if (id === 2) {
       navigate(NAVIGATION.deliveryOrder);
     }
@@ -395,7 +400,8 @@ export function DashBoard({ navigation }) {
                   {strings.dashboard.cashSaleAmount}
                 </Text>
                 <Text style={styles.cashAmount}>
-                  ${TotalSale?.[3]?.total_sale_amount ?? '0.00'}
+                  {/* ${TotalSale?.[3]?.total_sale_amount ?? '0.00'} */}$
+                  {todayCashAmount ?? '0.00'}
                 </Text>
               </View>
               <View style={[styles.displayflex, styles.paddingV]}>
@@ -403,7 +409,7 @@ export function DashBoard({ navigation }) {
                   {strings.dashboard.cardSaleAmount}
                 </Text>
                 <Text style={styles.cashAmount}>
-                  ${TotalSale?.[2]?.total_sale_amount ?? '0.00'}
+                  ${todayCardAmount ?? '0.00'}
                 </Text>
               </View>
               <View style={[styles.displayflex, styles.paddingV]}>
@@ -411,7 +417,7 @@ export function DashBoard({ navigation }) {
                   {strings.dashboard.jobrCoinSaleAmount}
                 </Text>
                 <Text style={styles.cashAmount}>
-                  JOBR {TotalSale?.[1]?.total_sale_amount ?? '0.00'}
+                  JOBR {todayJbrAmount ?? '0.00'}
                 </Text>
               </View>
             </View>
