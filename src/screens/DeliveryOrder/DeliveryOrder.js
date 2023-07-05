@@ -38,7 +38,6 @@ import { Button, ChartKit, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale } from 'react-native-size-matters';
 import { BottomSheet } from '@/screens/DeliveryOrder/Components';
 import { useDispatch, useSelector } from 'react-redux';
-import MapViewDirections from 'react-native-maps-directions';
 import {
   acceptOrder,
   getOrderCount,
@@ -841,25 +840,7 @@ export function DeliveryOrder() {
               longitudeDelta: 0.0421,
             }}
             style={styles.map}
-          >
-            <Marker image={toastcross} coordinate={homeCoordinate} />
-
-            <Marker image={toastcross} coordinate={storeCoordinates} />
-            <Marker image={toastcross} coordinate={sellerCoordinates} />
-            {/* <MapViewDirections
-              origin={{
-                latitude: 30.704649,
-                longitude: 76.717873,
-              }}
-              destination={{
-                latitude: 30.741482,
-                longitude: 76.768066,
-              }}
-              apikey={PROVIDER_GOOGLE}
-              strokeWidth={3}
-              strokeColor={COLORS.primary}
-            /> */}
-          </MapView>
+          ></MapView>
           <View>{showOrderStatusModal()}</View>
         </View>
       );

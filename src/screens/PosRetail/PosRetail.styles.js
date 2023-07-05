@@ -348,11 +348,11 @@ export const styles = StyleSheet.create({
     // flex: 1,
     borderRadius: 10,
     // paddingTop: verticalScale(5),
-    paddingHorizontal: moderateScale(8),
+    paddingHorizontal: moderateScale(4),
   },
   productCon: {
-    width: windowWidth * 0.117,
-    height: windowHeight * 0.24,
+    width: Platform.OS === 'ios' ? windowWidth * 0.115 : windowWidth * 0.117,
+    height: Platform.OS === 'ios' ? windowHeight * 0.22 : windowHeight * 0.24,
     backgroundColor: COLORS.white,
     borderRadius: 5,
     paddingHorizontal: moderateScale(3),
@@ -404,7 +404,7 @@ export const styles = StyleSheet.create({
   },
   holdCart: {
     color: COLORS.white,
-    fontSize: SF(13),
+    fontSize: SF(12),
     fontFamily: Fonts.Bold,
     paddingHorizontal: moderateScale(3),
   },
@@ -449,6 +449,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
     fontSize: SF(12),
     color: COLORS.solid_grey,
+    height: SH(40),
+    flex: 1,
   },
   nameAddSingleCon: {
     borderColor: COLORS.solidGrey,
@@ -556,7 +558,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     alignSelf: 'center',
     borderRadius: 5,
-    paddingVertical: verticalScale(5),
+    paddingVertical: verticalScale(7),
   },
   checkoutText: {
     color: COLORS.white,

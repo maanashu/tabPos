@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -62,6 +62,7 @@ import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 import { getLoginSessionTime } from '@/utils/GlobalMethods';
 
 export function DashBoard({ navigation }) {
+  const textInputRef = useRef(null);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -221,7 +222,7 @@ export function DashBoard({ navigation }) {
         </View>
       </View>
       <View style={{ width: SW(50) }}>
-        <Text style={[styles.nameText, styles.nameTextBold]}>
+        <Text style={[styles.nameText, styles.nameTextBold]} numberOfLines={1}>
           {item?.delivery_details?.title}
         </Text>
         <View style={styles.timeView}>
@@ -531,9 +532,10 @@ export function DashBoard({ navigation }) {
                     setSearch(search);
                     onChangeFun(search);
                   }}
+                  ref={textInputRef}
                 />
               </View>
-              <TouchableOpacity onPress={() => alert('Coming soon')}>
+              <TouchableOpacity onPress={() => textInputRef.current.focus()}>
                 <Image source={scn} style={styles.scnStyle} />
               </TouchableOpacity>
             </View>
