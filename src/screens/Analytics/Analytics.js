@@ -358,6 +358,7 @@ export function Analytics(props) {
       // setInventoryChangeTable(true);
     }
   };
+
   const totalOrderViseHandler = item => {
     if (item.count === 0) {
       Toast.show({
@@ -367,7 +368,6 @@ export function Analytics(props) {
         visibilityTime: 1500,
       });
     } else if (item.title == 'Total Order') {
-      console.log('checkList', item);
       setRevenueTable(true);
       setRevenueTableHeading('Total Order');
       const data = { page: 1, limit: 10, type: 'total_order' };
@@ -867,15 +867,27 @@ export function Analytics(props) {
               ) : (
                 <View style={{ height: SH(380), zIndex: -99 }}>
                   {/* <ScrollView> */}
-                  <View>
-                    <FlatList
-                      data={getOrderListData}
-                      renderItem={getOrderListItem}
-                      keyExtractor={item => item.id}
-                      showsHorizontalScrollIndicator={false}
-                    />
-                  </View>
-
+                  {getOrderListData?.length === 0 ? (
+                    <View style={styles.listLoader}>
+                      <Text
+                        style={{
+                          fontSize: SF(20),
+                          color: COLORS.darkGray,
+                        }}
+                      >
+                        {'No data found'}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View>
+                      <FlatList
+                        data={getOrderListData}
+                        renderItem={getOrderListItem}
+                        keyExtractor={item => item.id}
+                        showsHorizontalScrollIndicator={false}
+                      />
+                    </View>
+                  )}
                   {/* </ScrollView> */}
                 </View>
               )}
@@ -1037,15 +1049,27 @@ export function Analytics(props) {
                 <View style={{ height: SH(380), zIndex: -99 }}>
                   {/* <ScrollView> */}
 
-                  <View>
-                    <FlatList
-                      data={getOrderListData}
-                      renderItem={getOrderListStore}
-                      keyExtractor={item => item.id}
-                      showsHorizontalScrollIndicator={false}
-                    />
-                  </View>
-
+                  {getOrderListData?.length === 0 ? (
+                    <View style={styles.listLoader}>
+                      <Text
+                        style={{
+                          fontSize: SF(20),
+                          color: COLORS.darkGray,
+                        }}
+                      >
+                        {'No data found'}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View>
+                      <FlatList
+                        data={getOrderListData}
+                        renderItem={getOrderListStore}
+                        keyExtractor={item => item.id}
+                        showsHorizontalScrollIndicator={false}
+                      />
+                    </View>
+                  )}
                   {/* <DataTable.Row>
                   <DataTable.Cell style={styles.dateTableSettingFirst}>
                     <Text style={styles.revenueDataText}>1</Text>
@@ -1269,16 +1293,27 @@ export function Analytics(props) {
               ) : (
                 <View style={{ height: SH(380), zIndex: -99 }}>
                   {/* <ScrollView> */}
-
-                  <View>
-                    <FlatList
-                      data={getOrderListData}
-                      renderItem={getOrderListDelivery}
-                      keyExtractor={item => item.id}
-                      showsHorizontalScrollIndicator={false}
-                    />
-                  </View>
-
+                  {getOrderListData?.length === 0 ? (
+                    <View style={styles.listLoader}>
+                      <Text
+                        style={{
+                          fontSize: SF(20),
+                          color: COLORS.darkGray,
+                        }}
+                      >
+                        {'No data found'}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View>
+                      <FlatList
+                        data={getOrderListData}
+                        renderItem={getOrderListDelivery}
+                        keyExtractor={item => item.id}
+                        showsHorizontalScrollIndicator={false}
+                      />
+                    </View>
+                  )}
                   {/* <DataTable.Row>
                   <DataTable.Cell style={styles.dateTableSettingFirst}>
                     <Text style={styles.revenueDataText}>1</Text>
@@ -1568,14 +1603,27 @@ export function Analytics(props) {
               ) : (
                 <View style={{ height: SH(380), alignSelf: 'flex-start' }}>
                   {/* <ScrollView> */}
-                  <View>
-                    <FlatList
-                      data={getOrderListData}
-                      renderItem={getOrderListShipping}
-                      keyExtractor={item => item.id}
-                      showsHorizontalScrollIndicator={false}
-                    />
-                  </View>
+                  {getOrderListData?.length === 0 ? (
+                    <View style={styles.listLoader}>
+                      <Text
+                        style={{
+                          fontSize: SF(20),
+                          color: COLORS.darkGray,
+                        }}
+                      >
+                        {'No data found'}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View>
+                      <FlatList
+                        data={getOrderListData}
+                        renderItem={getOrderListShipping}
+                        keyExtractor={item => item.id}
+                        showsHorizontalScrollIndicator={false}
+                      />
+                    </View>
+                  )}
                   {/* </ScrollView> */}
                 </View>
               )}
@@ -1837,6 +1885,37 @@ export function Analytics(props) {
     </TouchableOpacity>
   );
 
+  const orderListTabChange = item => {
+    if (item.title == 'Total Order') {
+      setRevenueTable(true);
+      setRevenueTableHeading('Total Order');
+      const data = { page: 1, limit: 10, type: 'total_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else if (item.title == 'Store Order') {
+      setRevenueTable(true);
+      setRevenueTableHeading('Store Order');
+      const data = { page: 1, limit: 10, type: 'store_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else if (item.title == 'Online Order') {
+      setRevenueTable(true);
+      setRevenueTableHeading('Online Order');
+      const data = { page: 1, limit: 10, type: 'delivery_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else if (item.title == 'Shipping Order') {
+      setRevenueTable(true);
+      setRevenueTableHeading('Shipping Order');
+      const data = { page: 1, limit: 10, type: 'shipping_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else {
+      setRevenueTableHeading('');
+      setRevenueTable(true);
+    }
+  };
+
   const allTransactionItem = ({ item }) => {
     const borderColor =
       item.title === selectedId ? COLORS.primary : COLORS.solidGrey;
@@ -1847,7 +1926,7 @@ export function Analytics(props) {
     return (
       <TransactionTypeItem
         item={item}
-        onPress={() => setSelectedId(item.title)}
+        onPress={() => orderListTabChange(item)}
         borderColor={borderColor}
         color={color}
         fontFamily={fontFamily}

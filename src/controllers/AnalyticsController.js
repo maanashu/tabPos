@@ -211,18 +211,16 @@ export class AnalyticsController {
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
-          console.log('controller response', response);
         })
         .catch(error => {
-          console.log('error', error);
-          console.log('endpoint', endpoint);
-
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          if (error?.statusCode !== 204) {
+            Toast.show({
+              text2: error?.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
           reject(error);
         });
     });

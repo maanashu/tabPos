@@ -1055,6 +1055,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: moderateScale(4),
+    alignSelf: 'center',
   },
   allJbrConBluish: {
     borderColor: COLORS.primary,
@@ -1064,6 +1065,7 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontSize: SF(14),
     paddingHorizontal: moderateScale(7),
+    height: SH(20),
   },
   allJbrTextbluish: {
     fontFamily: Fonts.SemiBold,
@@ -1715,7 +1717,7 @@ export const styles = StyleSheet.create({
   },
   listLoader: {
     marginTop: SH(140),
-    marginLeft: SW(200),
+    marginLeft: SW(150),
     alignItems: 'flex-start',
   },
 });

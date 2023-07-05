@@ -86,6 +86,11 @@ export const analyticsReducer = (
         ...state,
         getOrderTypeList: payload?.getOrderTypeList,
       };
+    case TYPES.GET_ORDER_TYPE_LIST_RESET:
+      return {
+        ...state,
+        getOrderTypeList: [],
+      };
     default:
       return state;
   }
