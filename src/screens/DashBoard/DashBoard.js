@@ -292,7 +292,6 @@ export function DashBoard({ navigation }) {
                     onChangeText={setAmountCount}
                   />
                 </View>
-
                 <Spacer space={SH(40)} />
                 <View>
                   <Text style={styles.amountCountedText}>
