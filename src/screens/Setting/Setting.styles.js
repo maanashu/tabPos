@@ -1024,6 +1024,7 @@ export const styles = StyleSheet.create({
     height: SW(5),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
+    alignSelf:"flex-start"
   },
   arrowStyle2: {
     width: SW(5),
@@ -1127,8 +1128,11 @@ export const styles = StyleSheet.create({
   },
   hourRateLigh: {
     color: COLORS.dark_grey,
-    fontSize: SF(14),
+    fontSize: SF(12),
     fontFamily: Fonts.Medium,
+    textAlign:"center"
+ 
+    // width:"90%"
   },
   hourRateBodyCon: {
     flexDirection: 'column',
@@ -1158,14 +1162,14 @@ export const styles = StyleSheet.create({
   dateHeadAlign: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth * 0.52,
+    width: windowWidth * 0.56,
     alignItems: 'center',
   },
   text: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.dark_grey,
     fontSize: SF(14),
-    textAlign: 'left',
+    textAlign: 'center',
     width: windowWidth * 0.11,
   },
   tableDataCon: {
