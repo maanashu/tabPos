@@ -187,7 +187,7 @@ export function Customers() {
       style={styles.custometrCon}
       onPress={() => (
         setWeeklyUser(!weeklyUser),
-        dispatch(getUserOrder(sellerID, selectedValue))
+        dispatch(getUserOrder(sellerID,item?.customertype, selectedValue))
       )}
     >
       <View style={styles.flexAlign}>
