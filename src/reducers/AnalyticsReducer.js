@@ -79,7 +79,7 @@ export const analyticsReducer = (
     case TYPES.GET_ORDER_STATISTICS_SUCCESS:
       return {
         ...state,
-        getOrderstatistics: payload.getOrderstatistics.data,
+        getOrderstatistics: payload.getOrderstatistics,
       };
     case TYPES.GET_ORDER_TYPE_LIST_SUCCESS:
       return {

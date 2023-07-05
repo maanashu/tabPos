@@ -1713,4 +1713,9 @@ export const styles = StyleSheet.create({
     width: Platform.OS === 'android' ? windowWidth * 0.42 : windowWidth * 0.42,
     marginRight: SW(8),
   },
+  listLoader: {
+    marginTop: SH(140),
+    marginLeft: SW(200),
+    alignItems: 'flex-start',
+  },
 });

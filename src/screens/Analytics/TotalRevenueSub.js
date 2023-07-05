@@ -21,7 +21,6 @@ export function TotalRevenueSub({
   const getAnalyticsData = useSelector(getAnalytics);
   const orderGraphObject = getAnalyticsData?.getOrderGraph;
   const Orderstatistics = getAnalyticsData?.getOrderstatistics;
-  console.log('selector', getAnalyticsData);
   const totalGraphLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_GRAPH], state)
   );
@@ -117,7 +116,7 @@ export function TotalRevenueSub({
               >
                 <View>
                   <FlatList
-                    data={Orderstatistics}
+                    data={Orderstatistics?.data}
                     renderItem={totalOrderItem}
                     keyExtractor={item => item.id}
                     numColumns={2}
