@@ -245,11 +245,8 @@ export const getOrderTypeList = (sellerID, data) => async dispatch => {
   dispatch(getOrderTypeListRequest());
   try {
     const res = await AnalyticsController.getOrderTypeList(sellerID, data);
-    console.log('action response', JSON.stringify(res.payload));
     return dispatch(getOrderTypeListSuccess(res?.payload?.data));
   } catch (error) {
-    console.log('errorrrr--', error);
-
     dispatch(getOrderTypeListError(error?.message));
   }
 };

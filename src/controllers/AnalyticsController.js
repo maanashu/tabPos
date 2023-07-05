@@ -211,12 +211,8 @@ export class AnalyticsController {
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
-          console.log('controller response', response);
         })
         .catch(error => {
-          console.log('error', error);
-          console.log('endpoint', endpoint);
-
           Toast.show({
             text2: error.msg,
             position: 'bottom',

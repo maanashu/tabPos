@@ -269,9 +269,6 @@ export class RetailController {
             supply_id: data.supplyId.toString(),
             supply_price_id: data.supplyPriceID.toString(),
           };
-
-      console.log('endpoint', endpoint);
-      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then(response => {
           // if (response?.msg === 'PosCart created successfully') {

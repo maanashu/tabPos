@@ -70,7 +70,6 @@ export function DeliveryOrder() {
   const [orderCount, setOrderCount] = useState(
     getDeliveryData?.orderList ?? []
   );
-  console.log(orderCount);
   const deliveringOrder = getDeliveryData?.deliveryOrd;
   const orderArray = getDeliveryData?.orderList?.data ?? [];
   const [viewAllReviews, setViewAllReviews] = useState(false);

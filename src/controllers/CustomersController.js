@@ -4,28 +4,26 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class CustomersController {
-  static async getUserOrder(sellerID,type,selectedValue) {
+  static async getUserOrder(sellerID, type, selectedValue) {
     let originalString = type;
-    let convertedString = originalString.toLowerCase().replace(/\s+/g, "_");
+    let convertedString = originalString.toLowerCase().replace(/\s+/g, '_');
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getUserOrder +
         `?seller_id=${sellerID}&type=${convertedString}&page=${1}&limit=${selectedValue}`;
-      console.log('------------', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
-          console.log("asasas",response);
           resolve(response);
         })
         .catch(error => {
           error?.msg &&
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+            Toast.show({
+              text2: error.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
           reject(error);
           // reject(new Error((strings.valiadtion.error = error.msg)));
         });

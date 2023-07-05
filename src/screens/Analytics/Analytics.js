@@ -367,7 +367,6 @@ export function Analytics(props) {
         visibilityTime: 1500,
       });
     } else if (item.title == 'Total Order') {
-      console.log('checkList', item);
       setRevenueTable(true);
       setRevenueTableHeading('Total Order');
       const data = { page: 1, limit: 10, type: 'total_order' };

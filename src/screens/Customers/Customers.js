@@ -68,6 +68,7 @@ import { TYPES } from '@/Types/CustomersTypes';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export function Customers() {
   const isFocused = useIsFocused();
@@ -94,7 +95,7 @@ export function Customers() {
   const [tracking, setTracking] = useState(false);
   const [userStore, setUserStore] = useState('');
   const [orderDetail, setOrderDetail] = useState('');
-  const [selectedValue, setSelectedValue] = useState(5);
+  const [selectedValue, setSelectedValue] = useState(50);
   const orderStatus = orderDetail?.status;
   const [selectTime, setSelectTime] = useState();
 
@@ -185,10 +186,17 @@ export function Customers() {
   const newCustomerItem = ({ item }) => (
     <TouchableOpacity
       style={styles.custometrCon}
-      onPress={() => (
-        setWeeklyUser(!weeklyUser),
-        dispatch(getUserOrder(sellerID,item?.customertype, selectedValue))
-      )}
+      onPress={() =>
+        item.count === 0
+          ? Toast.show({
+              text2: 'Customer Not Found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            })
+          : (setWeeklyUser(!weeklyUser),
+            dispatch(getUserOrder(sellerID, item?.customertype, selectedValue)))
+      }
     >
       <View style={styles.flexAlign}>
         <Image source={item.img} style={styles.newCustomer} />
