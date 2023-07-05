@@ -148,6 +148,10 @@ const getLoginSessionTime = userLoginTime => {
   return sessionTimeFormatted;
 };
 
+const getStartEndFormattedDate = date => {
+  return `${moment(date).format('hh:mm A')}`;
+};
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -159,4 +163,5 @@ export {
   ValidateEmail,
   ValidateName,
   getLoginSessionTime,
+  getStartEndFormattedDate,
 };

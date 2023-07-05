@@ -28,9 +28,9 @@ import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
 import { Spacer, ScreenWrapper } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, ms } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
-import { Calendar } from 'react-native-big-calendar';
+import { Calendar } from '@/components/CustomCalendar';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -48,6 +48,9 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AppointmentTypes';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import { useIsFocused } from '@react-navigation/native';
+import { getStartEndFormattedDate } from '@/utils/GlobalMethods';
+import CustomEventCell from './Components/CustomEventCell';
+import CustomHoursCell from './Components/CustomHoursCell';
 
 export function Calender(props) {
   const isFocused = useIsFocused();
@@ -90,6 +93,7 @@ export function Calender(props) {
               'NULL',
             start: startDateTime,
             end: endDateTime,
+            completeData: getAppointmentList[0] ?? {},
           },
         ];
       });
@@ -143,12 +147,9 @@ export function Calender(props) {
     isLoadingSelector([TYPES.GET_APPOINTMENTS], state)
   );
 
-  const getStartEndFormattedDate = date => {
-    return `${moment(date).format('hh:mm A')}`;
-  };
   const renderEmptyProducts = () => {
     <View>
-      <Text>rtyhjkl;rtyhjkl</Text>
+      <Text>empty</Text>
     </View>;
   };
 
@@ -400,13 +401,19 @@ export function Calender(props) {
               <View style={styles.displayFlex}>
                 <View style={styles.monthlySchduel}>
                   <View style={styles.displayFlex}>
-                    <TouchableOpacity onPress={prevMonth}>
+                    <TouchableOpacity
+                      style={styles.arrowButtonStl}
+                      onPress={prevMonth}
+                    >
                       <Image source={leftlight} style={styles.leftLight} />
                     </TouchableOpacity>
                     <Text style={styles.monthlySchduleDate}>
                       {`${getFormattedHeaderDate()}`}
                     </Text>
-                    <TouchableOpacity onPress={nextMonth}>
+                    <TouchableOpacity
+                      style={styles.arrowButtonStl}
+                      onPress={nextMonth}
+                    >
                       <Image source={rightlight} style={styles.leftLight} />
                     </TouchableOpacity>
                   </View>
@@ -451,36 +458,37 @@ export function Calender(props) {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                <Text>{null}</Text>
               </View>
             </View>
 
-            <Calendar
-              ampm
-              swipeEnabled={false}
-              mode={calendarMode}
-              events={extractedAppointment}
-              height={windowHeight * 0.2}
-              date={calendarDate}
-              renderEvent={(event, touchableOpacityProps) => (
-                <TouchableOpacity
-                  style={[
-                    ...touchableOpacityProps.style,
-                    styles.eventContainer,
-                  ]}
-                >
-                  <Text style={styles.eventTitle}>{event.title}</Text>
-                  <Text style={styles.startEndDate}>
-                    {getStartEndFormattedDate(event.start)}
-                  </Text>
-                  <Text style={styles.startEndDate}>
-                    {getStartEndFormattedDate(event.end)}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            />
+            <View
+              style={{
+                flex: 1,
+                marginLeft: ms(10),
+                borderRightWidth: ms(10),
+                borderRightColor: COLORS.textInputBackground,
+              }}
+            >
+              <Calendar
+                ampm
+                swipeEnabled={false}
+                date={calendarDate}
+                mode={calendarMode}
+                events={extractedAppointment}
+                height={windowHeight * 0.91}
+                headerContainerStyle={{
+                  height:
+                    calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
+                  backgroundColor: COLORS.textInputBackground,
+                  paddingTop: ms(5),
+                }}
+                dayHeaderHighlightColor={COLORS.dayHighlight}
+                hourComponent={CustomHoursCell}
+                renderEvent={CustomEventCell}
+              />
+            </View>
           </View>
-          <View style={styles.notificationCon}>
+          {/* <View style={styles.notificationCon}>
             {isRequestLoading ? (
               <View style={{ marginTop: 50 }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
@@ -498,7 +506,7 @@ export function Calender(props) {
                 ListEmptyComponent={renderEmptyProducts}
               />
             )}
-          </View>
+          </View> */}
         </View>
         {schduleDetailModal()}
       </View>
