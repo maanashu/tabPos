@@ -1,28 +1,35 @@
-import dayjs from 'dayjs'
-import * as React from 'react'
-import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import dayjs from 'dayjs';
+import * as React from 'react';
+import {
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 
-import { eventCellCss, u } from '../commonStyles'
-import { ICalendarEventBase } from '../interfaces'
-import { useTheme } from '../theme/ThemeContext'
-import { isToday } from '../utils/datetime'
-import { objHasContent, stringHasContent } from '../utils/object'
-import { typedMemo } from '../utils/react'
+import { eventCellCss, u } from '../commonStyles';
+import { ICalendarEventBase } from '../interfaces';
+import { useTheme } from '../theme/ThemeContext';
+import { isToday } from '../utils/datetime';
+import { objHasContent, stringHasContent } from '../utils/object';
+import { typedMemo } from '../utils/react';
+import { Fonts } from '@/assets';
 
 export interface CalendarHeaderProps<T extends ICalendarEventBase> {
-  dateRange: dayjs.Dayjs[]
-  cellHeight: number
-  style: ViewStyle
-  allDayEvents: T[]
-  onPressDateHeader?: (date: Date) => void
-  onPressEvent?: (event: T) => void
-  activeDate?: Date
-  headerContentStyle?: ViewStyle
-  dayHeaderStyle?: ViewStyle
-  dayHeaderHighlightColor?: string
-  weekDayHeaderHighlightColor?: string
-  showAllDayEventCell?: boolean
-  hideHours?: Boolean
+  dateRange: dayjs.Dayjs[];
+  cellHeight: number;
+  style: ViewStyle;
+  allDayEvents: T[];
+  onPressDateHeader?: (date: Date) => void;
+  onPressEvent?: (event: T) => void;
+  activeDate?: Date;
+  headerContentStyle?: ViewStyle;
+  dayHeaderStyle?: ViewStyle;
+  dayHeaderHighlightColor?: string;
+  weekDayHeaderHighlightColor?: string;
+  showAllDayEventCell?: boolean;
+  hideHours?: Boolean;
 }
 
 function _CalendarHeader<T extends ICalendarEventBase>({
@@ -42,22 +49,22 @@ function _CalendarHeader<T extends ICalendarEventBase>({
 }: CalendarHeaderProps<T>) {
   const _onPressHeader = React.useCallback(
     (date: Date) => {
-      onPressDateHeader && onPressDateHeader(date)
+      onPressDateHeader && onPressDateHeader(date);
     },
-    [onPressDateHeader],
-  )
+    [onPressDateHeader]
+  );
 
   const _onPressEvent = React.useCallback(
     (event: T) => {
-      onPressEvent && onPressEvent(event)
+      onPressEvent && onPressEvent(event);
     },
-    [onPressEvent],
-  )
+    [onPressEvent]
+  );
 
-  const theme = useTheme()
+  const theme = useTheme();
 
-  const borderColor = { borderColor: theme.palette.gray['200'] }
-  const primaryBg = { backgroundColor: theme.palette.primary.main }
+  const borderColor = { borderColor: theme.palette.gray['200'] };
+  const primaryBg = { backgroundColor: theme.palette.primary.main };
 
   return (
     <View
@@ -69,8 +76,10 @@ function _CalendarHeader<T extends ICalendarEventBase>({
       ]}
     >
       {!hideHours && <View style={[u['z-10'], u['w-50'], borderColor]} />}
-      {dateRange.map((date) => {
-        const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date)
+      {dateRange.map(date => {
+        const shouldHighlight = activeDate
+          ? date.isSame(activeDate, 'date')
+          : isToday(date);
 
         return (
           <TouchableOpacity
@@ -82,14 +91,18 @@ function _CalendarHeader<T extends ICalendarEventBase>({
             <View
               style={[
                 { height: cellHeight },
-                objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
+                objHasContent(headerContentStyle)
+                  ? headerContentStyle
+                  : u['justify-between'],
               ]}
             >
               <Text
                 style={[
                   theme.typography.xs,
                   u['text-center'],
+
                   {
+                    fontFamily: Fonts.SemiBold,
                     color: shouldHighlight
                       ? stringHasContent(weekDayHeaderHighlightColor)
                         ? weekDayHeaderHighlightColor
@@ -106,11 +119,11 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                     ? dayHeaderStyle
                     : shouldHighlight
                     ? [
-                        primaryBg,
+                        // primaryBg,
                         u['h-36'],
                         u['w-36'],
                         u['pb-6'],
-                        u['rounded-full'],
+                        // u['rounded-full'],
                         u['items-center'],
                         u['justify-center'],
                         u['self-center'],
@@ -122,6 +135,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                 <Text
                   style={[
                     {
+                      fontFamily: Fonts.SemiBold,
                       color: shouldHighlight
                         ? stringHasContent(dayHeaderHighlightColor)
                           ? dayHeaderHighlightColor
@@ -149,8 +163,10 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                 ]}
               >
                 {allDayEvents.map((event, index) => {
-                  if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
-                    return null
+                  if (
+                    !dayjs(date).isBetween(event.start, event.end, 'day', '[]')
+                  ) {
+                    return null;
                   }
                   return (
                     <TouchableOpacity
@@ -160,6 +176,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                     >
                       <Text
                         style={{
+                          fontFamily: Fonts.SemiBold,
                           fontSize: theme.typography.sm.fontSize,
                           color: theme.palette.primary.contrastText,
                         }}
@@ -167,15 +184,15 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                         {event.title}
                       </Text>
                     </TouchableOpacity>
-                  )
+                  );
                 })}
               </View>
             ) : null}
           </TouchableOpacity>
-        )
+        );
       })}
     </View>
-  )
+  );
 }
 
-export const CalendarHeader = typedMemo(_CalendarHeader)
+export const CalendarHeader = typedMemo(_CalendarHeader);
