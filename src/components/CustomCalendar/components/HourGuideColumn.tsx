@@ -48,7 +48,7 @@ const _HourGuideColumn = ({
   return (
     <>
       {hourComponent ? (
-        <View style={{ height: cellHeight }}>
+        <View style={{ height: cellHeight + 12 }}>
           {hourComponent(formattedHour)}
         </View>
       ) : (

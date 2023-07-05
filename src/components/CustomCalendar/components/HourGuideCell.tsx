@@ -5,6 +5,7 @@ import { TouchableWithoutFeedback, View } from 'react-native';
 import { u } from '../commonStyles';
 import { CalendarCellStyle } from '../interfaces';
 import { useTheme } from '../theme/ThemeContext';
+import { COLORS } from '@/theme';
 
 interface HourGuideCellProps {
   cellHeight: number;
@@ -39,13 +40,32 @@ const _HourGuideCell = ({
     >
       <View
         style={[
-          u['border-l'],
-          u['border-b'],
+          // u['border-l'],
+          // u['border-b'],
           { borderColor: theme.palette.gray['200'] },
-          { height: cellHeight },
+          { height: cellHeight + 12 },
           { ...getCalendarCellStyle(date.toDate(), index) },
         ]}
-      />
+      >
+        {[1, 2, 3, 4].map(item => (
+          <View
+            key={item}
+            style={[
+              u['border-l'],
+              u['border-b'],
+              u['border-r'],
+              { borderColor: COLORS.textInputBackground },
+              {
+                height: cellHeight / 4,
+                marginHorizontal: 3,
+                marginTop: 3,
+                borderRadius: 2,
+              },
+              { ...getCalendarCellStyle(date.toDate(), index) },
+            ]}
+          />
+        ))}
+      </View>
     </TouchableWithoutFeedback>
   );
 };
