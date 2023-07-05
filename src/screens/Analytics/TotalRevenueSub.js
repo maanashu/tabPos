@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View, Image, FlatList } from 'react-native';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { catPercent, colorFrame, productMap, revenueGraph } from '@/assets';
 import { strings } from '@/localization';
 import { styles } from './Analytics.styles';
 import { totalOrderData } from '@/constants/flatListData';
 
 import { DaySelector, Spacer } from '@/components';
+import { HomeGraph } from './Components';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { useSelector } from 'react-redux';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/AnalyticsTypes';
 
 export function TotalRevenueSub({
   totalOrderViseHandler,
   totalRevenueHandler,
 }) {
   const [selectTime, setSelectTime] = useState();
+  const getAnalyticsData = useSelector(getAnalytics);
+  const orderGraphObject = getAnalyticsData?.getOrderGraph;
+  const Orderstatistics = getAnalyticsData?.getOrderstatistics;
+  const totalGraphLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER_GRAPH], state)
+  );
+  const graphHandler = item => {};
 
   const totalOrderItem = ({ item }) => (
     <TouchableOpacity
@@ -20,14 +32,14 @@ export function TotalRevenueSub({
       onPress={() => totalOrderViseHandler(item)}
     >
       <View style={styles.categoryChildCon}>
-        <Text style={styles.categoryCount}>{item.categoryCount}</Text>
+        <Text style={styles.categoryCount}>{item.count}</Text>
         <Text numberOfLines={1} style={styles.categoryText}>
-          {item.category}
+          {item.title}
         </Text>
       </View>
       <View style={styles.categoryChildPercent}>
         <Image source={catPercent} style={styles.catPercent} />
-        <Text style={styles.percentText}>{item.percentage}</Text>
+        <Text style={styles.percentText}>{item.percentage}%</Text>
       </View>
     </TouchableOpacity>
   );
@@ -55,14 +67,16 @@ export function TotalRevenueSub({
                 { fontSize: SF(34), color: COLORS.primary },
               ]}
             >
-              {strings.analytics.totalRevenueCount}
+              {getAnalyticsData?.getOrderGraph?.totalResult.toFixed(2) ?? 0}{' '}
             </Text>
           </TouchableOpacity>
           <Spacer space={SH(5)} />
           <View>
             <Image source={colorFrame} style={styles.colorFrame} />
             <Spacer space={SH(5)} />
-            <Image source={revenueGraph} style={styles.revenueGraph} />
+            <View>
+              <Image source={revenueGraph} style={styles.revenueGraph} />
+            </View>
           </View>
         </View>
         <Spacer space={SH(15)} />
@@ -89,20 +103,20 @@ export function TotalRevenueSub({
               },
             ]}
           >
-            $8,426,590
+            ${getAnalyticsData?.getOrderGraph?.totalResult.toFixed(2) ?? 0}
           </Text>
           <Spacer space={SH(5)} />
           <View style={styles.productGraphcon}>
             <View style={styles.displayFlex}>
               <View
-                style={[
-                  styles.productCategorychildcon,
-                  { backgroundColor: 'transparent' },
-                ]}
+              // style={[
+              //   styles.productCategorychildcon,
+              //   { backgroundColor: 'red', height: SH(320) },
+              // ]}
               >
                 <View>
                   <FlatList
-                    data={totalOrderData}
+                    data={Orderstatistics?.data}
                     renderItem={totalOrderItem}
                     keyExtractor={item => item.id}
                     numColumns={2}
@@ -111,7 +125,15 @@ export function TotalRevenueSub({
                 </View>
               </View>
               <View>
-                <Image source={productMap} style={styles.totalOrderMap} />
+                <HomeGraph
+                  productGraphObject={orderGraphObject}
+                  homeGraphHandler={() => graphHandler('Total Orders')}
+                  arrayLength={orderGraphObject?.datasets?.length}
+                  productLoader={totalGraphLoading}
+                  hideHeader
+                  chartStyle
+                />
+                {/* <Image source={productMap} style={styles.totalOrderMap} /> */}
               </View>
             </View>
           </View>
