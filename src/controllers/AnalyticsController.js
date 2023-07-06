@@ -213,6 +213,28 @@ export class AnalyticsController {
           resolve(response);
         })
         .catch(error => {
+          if (error?.statusCode !== 204) {
+            Toast.show({
+              text2: error?.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
+          reject(error);
+        });
+    });
+  }
+
+  static async getOrderData(orderID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.getOrderData + `/${orderID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',

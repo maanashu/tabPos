@@ -11,6 +11,7 @@ const INITIALSTATE = {
   getProductModal: {},
   getOrderstatistics: [],
   getOrderTypeList: [],
+  getOrderData: {},
 };
 
 export const analyticsReducer = (
@@ -85,6 +86,16 @@ export const analyticsReducer = (
       return {
         ...state,
         getOrderTypeList: payload?.getOrderTypeList,
+      };
+    case TYPES.GET_ORDER_TYPE_LIST_RESET:
+      return {
+        ...state,
+        getOrderTypeList: [],
+      };
+    case TYPES.GET_ORDER_DATA_SUCCESS:
+      return {
+        ...state,
+        getOrderData: payload?.getOrderData,
       };
     default:
       return state;
