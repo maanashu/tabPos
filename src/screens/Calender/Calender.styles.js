@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
-import { verticalScale, moderateScale } from 'react-native-size-matters';
+import { verticalScale, moderateScale, ms } from 'react-native-size-matters';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   displayFlex: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -23,14 +24,13 @@ export const styles = StyleSheet.create({
   },
   calenderContainer: {
     width: windowWidth * 0.94,
-    height: windowHeight,
   },
   headerMainView: {
     width: windowWidth,
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(18),
+    paddingTop: SH(13),
     flexDirection: 'row',
   },
   textInputStyle: {
@@ -58,8 +58,8 @@ export const styles = StyleSheet.create({
   searchView: {
     borderWidth: 1,
     width: SW(65),
-    height: SH(43),
-    borderRadius: 20,
+    height: SH(40),
+    borderRadius: SH(23),
     borderColor: COLORS.row_grey,
     flexDirection: 'row',
     alignItems: 'center',
@@ -71,12 +71,16 @@ export const styles = StyleSheet.create({
     left: 3,
   },
   calenderCon: {
-    width: windowWidth * 0.64,
-    height: windowHeight * 0.84,
+    width: windowWidth * 0.84,
+    height: windowHeight * 0.904,
   },
   notificationCon: {
     width: windowWidth * 0.3,
-    height: windowHeight * 0.87,
+    height: '90%',
+    position: 'absolute',
+    top: ms(40),
+    right: 110,
+    backgroundColor: COLORS.white,
   },
   approveButtonCon: {
     backgroundColor: COLORS.primary,
@@ -214,9 +218,9 @@ export const styles = StyleSheet.create({
   },
   calenderHeader: {
     height: SH(60),
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     justifyContent: 'center',
-    paddingHorizontal: moderateScale(8),
+    paddingLeft: moderateScale(5),
   },
   unChecked: {
     fontFamily: Fonts.Regular,
@@ -231,7 +235,7 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: moderateScale(5),
+    marginLeft: moderateScale(10),
   },
   unClickedButtonCon: {
     backgroundColor: COLORS.textInputBackground,
@@ -240,7 +244,7 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: moderateScale(5),
+    marginLeft: moderateScale(10),
   },
   checkedText: {
     fontFamily: Fonts.Regular,
@@ -254,13 +258,12 @@ export const styles = StyleSheet.create({
   },
   schdule: {
     height: SH(670),
-    // width: SH(650),
     width: windowWidth * 0.68,
     resizeMode: 'contain',
   },
   monthlySchduel: {
     height: SH(36),
-    width: SH(240),
+    // width: SH(240),
     backgroundColor: COLORS.white,
     borderRadius: 3,
     paddingHorizontal: moderateScale(5),
@@ -292,12 +295,12 @@ export const styles = StyleSheet.create({
   },
   eventContainer: {
     backgroundColor: 'white',
-    borderWidth: 1,
+    elevation: 0,
     borderColor: COLORS.primary,
     borderLeftColor: COLORS.primary,
-    borderLeftWidth: 10,
+    borderLeftWidth: ms(2),
     borderStyle: 'solid',
-    borderRadius: 6,
+    borderRadius: ms(1),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -341,5 +344,118 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 50,
     fontSize: SF(20),
+  },
+  arrowButtonStl: {
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: ms(2),
+    paddingHorizontal: ms(3),
+    paddingVertical: ms(2),
+  },
+  rightTabContainer: {
+    backgroundColor: COLORS.textInputBackground,
+    flex: 0.9,
+    margin: ms(7),
+    marginLeft: ms(10),
+    marginTop: ms(10),
+    height: '97.8%',
+    alignItems: 'center',
+  },
+  RequestEventBadgeText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(7),
+    color: COLORS.white,
+  },
+  requestEventBadgeContainer: {
+    height: ms(10),
+    width: ms(10),
+    borderRadius: ms(5),
+    backgroundColor: COLORS.yellowTweet,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+  },
+  requestCalendarIcon: { height: ms(20), width: ms(20), resizeMode: 'contain' },
+  requestCalendarContainer: {
+    backgroundColor: COLORS.white,
+    height: ms(35),
+    width: '80%',
+    marginTop: ms(5),
+    borderRadius: ms(3),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  badgeTextEmployee: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(4),
+    color: COLORS.black,
+  },
+  circularBadgeEmployee: {
+    position: 'absolute',
+    right: -6,
+    bottom: -5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: 'teal',
+    height: ms(10),
+    width: ms(10),
+    borderRadius: ms(5),
+  },
+  employeeImages: {
+    height: '100%',
+    width: '100%',
+    borderRadius: ms(8),
+    resizeMode: 'cover',
+  },
+  renderItemContainer: {
+    borderColor: COLORS.yellowTweet,
+    borderWidth: 2,
+    height: ms(19),
+    width: ms(19),
+    borderRadius: ms(9.5),
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: ms(5),
+  },
+  asigneesBadgeText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(6),
+    color: COLORS.dark_grey,
+  },
+  circularBadgeContainer: {
+    height: ms(10),
+    width: ms(10),
+    borderRadius: ms(5),
+    backgroundColor: COLORS.white,
+    borderWidth: 1.5,
+    borderColor: COLORS.dark_grey,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    right: -8,
+    bottom: -6,
+  },
+  asignessCalendarImage: {
+    height: ms(14),
+    width: ms(14),
+    resizeMode: 'contain',
+  },
+  alignmentCalendarContainer: { alignSelf: 'center', marginVertical: ms(10) },
+  calendarIconSettings: {
+    height: ms(20),
+    width: ms(20),
+    resizeMode: 'contain',
+  },
+  CalendarSettingsContainer: {
+    position: 'absolute',
+    height: ms(40),
+    width: '95%',
+    alignSelf: 'center',
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

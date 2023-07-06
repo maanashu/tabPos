@@ -172,6 +172,9 @@ const orderDeliveryTime = orderTime => {
 
   return orderTimeFormatted;
 };
+const getStartEndFormattedDate = date => {
+  return `${moment(date).format('hh:mm A')}`;
+};
 
 export {
   HandleUnhandledTouches,
@@ -185,4 +188,5 @@ export {
   ValidateName,
   getLoginSessionTime,
   orderDeliveryTime,
+  getStartEndFormattedDate,
 };

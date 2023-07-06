@@ -259,6 +259,9 @@ export { default as QR } from '@/assets/icons/ic_retail/QR.png';
 export { default as categoryMenu } from '@/assets/icons/ic_posRetail/categoryMenu.png';
 export { default as categoryshoes } from '@/assets/icons/ic_posRetail/categoryshoes.png';
 export { default as barcode } from '@/assets/icons/ic_posRetail/barcode.png';
+export { default as calendarIcon } from '@/assets/images/calendarIcon.png';
+export { default as todayCalendarIcon } from '@/assets/images/todayCalendar.png';
+export { default as calendarSettingsIcon } from '@/assets/images/settings.png';
 
 /* Fonts */
 export const Fonts = {

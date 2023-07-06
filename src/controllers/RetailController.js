@@ -527,6 +527,7 @@ export class RetailController {
         amount: data.amount,
         reciever_address: data.wallletAdd,
       };
+      console.log('---------------body', body);
       HttpClient.post(endpoint, body)
         .then(response => {
           if (response?.msg === 'Payment request sent success!') {

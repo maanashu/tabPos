@@ -9,28 +9,23 @@ import {
   Dimensions,
 } from 'react-native';
 import {
-  crossButton,
   Fonts,
   notifications,
-  Phone_light,
   search_light,
-  location,
   watchLogo,
   roundCalender,
-  email,
-  leftlight,
-  rightlight,
   iImage,
-  userImage,
   ok,
+  calendarIcon,
+  todayCalendarIcon,
+  calendarSettingsIcon,
 } from '@/assets';
 import { strings } from '@/localization';
-import { COLORS, SF, SW, SH } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { Spacer, ScreenWrapper } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
-import { moderateScale } from 'react-native-size-matters';
-import Modal from 'react-native-modal';
-import { Calendar } from 'react-native-big-calendar';
+import { ms } from 'react-native-size-matters';
+import { Calendar } from '@/components/CustomCalendar';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -48,6 +43,10 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AppointmentTypes';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import { useIsFocused } from '@react-navigation/native';
+import CustomEventCell from './Components/CustomEventCell';
+import CustomHoursCell from './Components/CustomHoursCell';
+import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
+import ScheduleDetailModal from './Components/ScheduleDetailModal';
 
 export function Calender(props) {
   const isFocused = useIsFocused();
@@ -57,6 +56,7 @@ export function Calender(props) {
   const getAppointmentList = getCalenderData?.getAppointment;
   const [storeItem, setStoreItem] = useState();
   const [extractedAppointment, setExtractedAppointment] = useState([]);
+  const [showRequestsView, setshowRequestsView] = useState(false);
   const getAppointmentList2 = getAppointmentList?.filter(
     item => item.status === 0 || item.status === 1 || item.status === 2
   );
@@ -90,6 +90,7 @@ export function Calender(props) {
               'NULL',
             start: startDateTime,
             end: endDateTime,
+            completeData: getAppointmentList[0] ?? {},
           },
         ];
       });
@@ -143,12 +144,9 @@ export function Calender(props) {
     isLoadingSelector([TYPES.GET_APPOINTMENTS], state)
   );
 
-  const getStartEndFormattedDate = date => {
-    return `${moment(date).format('hh:mm A')}`;
-  };
   const renderEmptyProducts = () => {
     <View>
-      <Text>rtyhjkl;rtyhjkl</Text>
+      <Text>empty</Text>
     </View>;
   };
 
@@ -253,116 +251,14 @@ export function Calender(props) {
 
   const schduleDetailModal = () => {
     return (
-      <Modal transparent isVisible={schduleDetail}>
-        <View style={styles.modalMainView}>
-          <View style={styles.headerView}>
-            <View style={styles.headerBody}>
-              <Text>{null}</Text>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.calender.scheduledetails}
-              </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setSchduleDetail(false);
-                }}
-                style={{ width: SW(2) }}
-              >
-                <Image source={crossButton} style={styles.crossIconStyle} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{ paddingHorizontal: moderateScale(15) }}>
-            <Spacer space={SH(30)} />
-            <View style={styles.flexAlign}>
-              <Image
-                source={
-                  storeItem?.user_details?.profile_photo
-                    ? { uri: storeItem?.user_details?.profile_photo }
-                    : userImage
-                }
-                style={styles.charlene}
-              />
-              <View style={{ paddingHorizontal: moderateScale(10) }}>
-                <Text style={styles.charleneName}>
-                  {storeItem?.user_details?.firstname}
-                  {storeItem?.user_details?.lastname}
-                </Text>
-                {storeItem?.current_address === undefined ? null : (
-                  <View style={styles.flexAlign}>
-                    <Image source={location} style={styles.location} />
-                    <Text style={styles.address}>
-                      {data?.zipcode},{data?.street}, {data?.city},{data?.state}
-                      ,{data?.country}
-                    </Text>
-                  </View>
-                )}
-
-                <View style={styles.flexAlign}>
-                  <Image source={Phone_light} style={styles.location} />
-                  <Text style={styles.address}>
-                    {storeItem?.user_details?.phone_number}
-                  </Text>
-                </View>
-                <View style={styles.flexAlign}>
-                  <Image source={email} style={styles.location} />
-                  <Text style={styles.address}>
-                    {storeItem?.user_details?.email}
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <Spacer space={SH(30)} />
-            <Text style={styles.appointment}>
-              {strings.calender.appointment}
-            </Text>
-            <Spacer space={SH(15)} />
-            <View>
-              <Text style={styles.service}>service</Text>
-              <Spacer space={SH(8)} />
-              <View style={styles.serviceTextCon}>
-                {storeItem?.appointment_details?.map((item, index) => (
-                  <Text style={styles.serviceType} key={index}>
-                    {item.product_name}
-                    {storeItem?.appointment_details?.length >= 2 ? ',' : null}
-                  </Text>
-                ))}
-              </View>
-            </View>
-            <Spacer space={SH(15)} />
-            <View>
-              <View style={styles.displayFlex}>
-                <Text style={styles.service}>{strings.calender.apt}</Text>
-                <View style={styles.upcomingCon}>
-                  <Text style={styles.upcomingText}>
-                    {strings.calender.upcoming}
-                  </Text>
-                </View>
-              </View>
-              <Spacer space={SH(8)} />
-              <Text style={styles.serviceType}>{strings.calender.aptDate}</Text>
-            </View>
-            <Spacer space={SH(30)} />
-            <View>
-              <Text style={styles.service}>{strings.calender.conform}</Text>
-              <Spacer space={SH(8)} />
-              <Text style={styles.serviceType}>
-                {moment(storeItem?.date).format('ll')}{' '}
-                {moment(storeItem?.date).format('LT')}
-              </Text>
-            </View>
-            <Spacer space={SH(30)} />
-            <View>
-              <Text style={styles.service}>{strings.calender.paidAmount}</Text>
-              <Spacer space={SH(8)} />
-              <Text style={styles.serviceType}>
-                {storeItem?.mode_of_payment.toUpperCase()}{' '}
-                {storeItem?.payable_amount}
-              </Text>
-            </View>
-            <Spacer space={SH(50)} />
-          </View>
-        </View>
-      </Modal>
+      <ScheduleDetailModal
+        {...{
+          schduleDetail,
+          setSchduleDetail,
+          storeItem,
+          data,
+        }}
+      />
     );
   };
   const customHeader = () => {
@@ -396,90 +292,111 @@ export function Calender(props) {
         {customHeader()}
         <View style={[styles.calenderContainer, { flexDirection: 'row' }]}>
           <View style={styles.calenderCon}>
-            <View style={styles.calenderHeader}>
-              <View style={styles.displayFlex}>
-                <View style={styles.monthlySchduel}>
-                  <View style={styles.displayFlex}>
-                    <TouchableOpacity onPress={prevMonth}>
-                      <Image source={leftlight} style={styles.leftLight} />
-                    </TouchableOpacity>
-                    <Text style={styles.monthlySchduleDate}>
-                      {`${getFormattedHeaderDate()}`}
-                    </Text>
-                    <TouchableOpacity onPress={nextMonth}>
-                      <Image source={rightlight} style={styles.leftLight} />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={styles.flexAlign}>
-                  <TouchableOpacity
-                    style={
-                      day ? styles.clickedButtonCon : styles.unClickedButtonCon
-                    }
-                    onPress={dayHandler}
-                  >
-                    <Text
-                      style={day ? styles.checkedText : styles.unCheckedText}
-                    >
-                      {strings.calender.day}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={
-                      week ? styles.clickedButtonCon : styles.unClickedButtonCon
-                    }
-                    onPress={weekHandler}
-                  >
-                    <Text
-                      style={week ? styles.checkedText : styles.unCheckedText}
-                    >
-                      {strings.calender.week}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={
-                      month
-                        ? styles.clickedButtonCon
-                        : styles.unClickedButtonCon
-                    }
-                    onPress={monthHandler}
-                  >
-                    <Text
-                      style={month ? styles.checkedText : styles.unCheckedText}
-                    >
-                      {strings.calender.month}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <Text>{null}</Text>
-              </View>
-            </View>
-
-            <Calendar
-              ampm
-              swipeEnabled={false}
-              mode={calendarMode}
-              events={extractedAppointment}
-              height={windowHeight * 0.2}
-              date={calendarDate}
-              renderEvent={(event, touchableOpacityProps) => (
-                <TouchableOpacity
-                  style={[
-                    ...touchableOpacityProps.style,
-                    styles.eventContainer,
-                  ]}
-                >
-                  <Text style={styles.eventTitle}>{event.title}</Text>
-                  <Text style={styles.startEndDate}>
-                    {getStartEndFormattedDate(event.start)}
-                  </Text>
-                  <Text style={styles.startEndDate}>
-                    {getStartEndFormattedDate(event.end)}
-                  </Text>
-                </TouchableOpacity>
-              )}
+            <CalendarHeaderWithOptions
+              {...{
+                prevMonth,
+                getFormattedHeaderDate,
+                nextMonth,
+                day,
+                dayHandler,
+                week,
+                weekHandler,
+                month,
+                monthHandler,
+              }}
             />
+
+            <View
+              style={{
+                flex: 1,
+                marginLeft: ms(10),
+                borderRightWidth: ms(10),
+                borderRightColor: COLORS.textInputBackground,
+              }}
+            >
+              <Calendar
+                ampm
+                swipeEnabled={false}
+                date={calendarDate}
+                mode={calendarMode}
+                events={extractedAppointment}
+                height={windowHeight * 0.91}
+                headerContainerStyle={{
+                  height:
+                    calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
+                  backgroundColor: COLORS.textInputBackground,
+                  paddingTop: ms(5),
+                }}
+                dayHeaderHighlightColor={COLORS.dayHighlight}
+                hourComponent={CustomHoursCell}
+                renderEvent={CustomEventCell}
+              />
+            </View>
           </View>
+          <View style={styles.rightTabContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                setshowRequestsView(!showRequestsView);
+              }}
+              style={styles.requestCalendarContainer}
+            >
+              <View>
+                <Image
+                  source={calendarIcon}
+                  style={styles.requestCalendarIcon}
+                />
+                <View style={styles.requestEventBadgeContainer}>
+                  <Text style={styles.RequestEventBadgeText}>
+                    {getAppointmentList2?.length ?? 0}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity style={styles.alignmentCalendarContainer}>
+                <Image
+                  source={todayCalendarIcon}
+                  style={styles.asignessCalendarImage}
+                />
+                <View style={styles.circularBadgeContainer}>
+                  <Text style={styles.asigneesBadgeText}>0</Text>
+                </View>
+              </TouchableOpacity>
+              <FlatList
+                data={[1, 2, 3, 4, 5]}
+                showsVerticalScrollIndicator={false}
+                style={{ marginBottom: ms(40) }}
+                keyExtractor={(_, index) => index.toString()}
+                renderItem={({ item, index }) => {
+                  return (
+                    <TouchableOpacity style={styles.renderItemContainer}>
+                      <Image
+                        source={{
+                          uri: `https://xsgames.co/randomusers/avatar.php?g=male`,
+                        }}
+                        style={styles.employeeImages}
+                      />
+
+                      <View style={styles.circularBadgeEmployee}>
+                        <Text style={styles.badgeTextEmployee}>{item}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+
+              <TouchableOpacity style={styles.CalendarSettingsContainer}>
+                <Image
+                  source={calendarSettingsIcon}
+                  style={styles.calendarIconSettings}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
+        {showRequestsView && (
           <View style={styles.notificationCon}>
             {isRequestLoading ? (
               <View style={{ marginTop: 50 }}>
@@ -499,7 +416,8 @@ export function Calender(props) {
               />
             )}
           </View>
-        </View>
+        )}
+
         {schduleDetailModal()}
       </View>
     </ScreenWrapper>
