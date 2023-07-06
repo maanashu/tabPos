@@ -95,6 +95,7 @@ import { createDispatchHook, useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import {
   catSubBrandData,
+  getOrderData,
   getOrderTypeList,
   getOrderstatistics,
   getProductList,
@@ -108,12 +109,14 @@ import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import moment from 'moment';
 
 export function Analytics(props) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const orderID = getAuth?.merchantLoginData?.id;
   const getAnalyticsData = useSelector(getAnalytics);
   const totalProductModalData = getAnalyticsData?.getProductModal;
   const getTotalProductArray = getAnalyticsData?.getProductList;
@@ -124,6 +127,7 @@ export function Analytics(props) {
   const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
   const getOrderListData = getAnalyticsData?.getOrderTypeList;
   const Orderstatistics = getAnalyticsData?.getOrderstatistics;
+  const OrderData = getAnalyticsData?.getOrderData;
   const [value, setValue] = useState('Weekly');
   const [accCatTable, setAccCatTable] = useState('');
   const [revenueTableHeading, setRevenueTableHeading] = useState('');
@@ -469,8 +473,12 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View>
-          <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-          <Text style={styles.revenueDataTextLight}>13: 21</Text>
+          <Text style={styles.revenueDataText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
+          <Text style={styles.revenueDataTextLight}>
+            {moment(item?.created_at).format('h:mm A')}
+          </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
@@ -491,20 +499,20 @@ export function Analytics(props) {
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
           <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
+          <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
           <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>$23.50</Text>
+          <Text style={styles.revenueDataText}>${item?.tips}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2,561.00</Text>
+        <Text style={styles.revenueDataText}>${item?.actual_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2,561.00</Text>
+        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>JBR</Text>
@@ -517,6 +525,7 @@ export function Analytics(props) {
               setRevenueTable(false),
               setTablebackSetting(false),
               setOrderList(true);
+            dispatch(getOrderData(item?.id));
           }}
         >
           <Text style={styles.completeText}>Completed</Text>
@@ -532,12 +541,16 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View>
-          <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-          <Text style={styles.revenueDataTextLight}>13: 21</Text>
+          <Text style={styles.revenueDataText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
+          <Text style={styles.revenueDataTextLight}>
+            {moment(item?.created_at).format('h:mm A')}
+          </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
-        <Text style={styles.revenueDataText}>2565916565..</Text>
+        <Text style={styles.revenueDataText}>{item?.invoice?.invoice_id}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexAlign}>
@@ -546,7 +559,7 @@ export function Analytics(props) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>12</Text>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>Delivery</Text>
@@ -560,14 +573,14 @@ export function Analytics(props) {
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
           <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>$23.50</Text>
+          <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2,561.00</Text>
+        <Text style={styles.revenueDataText}>${item?.actual_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2,561.00</Text>
+        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>JBR</Text>
@@ -595,12 +608,16 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View>
-          <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-          <Text style={styles.revenueDataTextLight}>13: 21</Text>
+          <Text style={styles.revenueDataText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
+          <Text style={styles.revenueDataTextLight}>
+            {moment(item?.created_at).format('h:mm A')}
+          </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
-        <Text style={styles.revenueDataText}>2565916565..</Text>
+        <Text style={styles.revenueDataText}>{item?.invoice?.invoice_id}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexAlign}>
@@ -609,7 +626,7 @@ export function Analytics(props) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>12</Text>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>Delivery</Text>
@@ -625,14 +642,14 @@ export function Analytics(props) {
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
           <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>$23.50</Text>
+          <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2,561.00</Text>
+        <Text style={styles.revenueDataText}>${item?.actual_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2,561.00</Text>
+        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>JBR</Text>
@@ -659,12 +676,16 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View>
-          <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-          <Text style={styles.revenueDataTextLight}>13: 21</Text>
+          <Text style={styles.revenueDataText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
+          <Text style={styles.revenueDataTextLight}>
+            {moment(item?.created_at).format('h:mm A')}
+          </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
-        <Text style={styles.revenueDataText}>2565916565..</Text>
+        <Text style={styles.revenueDataText}>{item?.invoice?.invoice_id}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexAlign}>
@@ -673,7 +694,7 @@ export function Analytics(props) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>12</Text>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>Delivery</Text>
@@ -687,14 +708,14 @@ export function Analytics(props) {
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
           <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>$23.50</Text>
+          <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2,561.00</Text>
+        <Text style={styles.revenueDataText}>${item?.actual_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2,561.00</Text>
+        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>JBR</Text>
@@ -1992,21 +2013,44 @@ export function Analytics(props) {
   );
   const renderJbrItem = ({ item }) => (
     <View style={[styles.jbrListCon]}>
-      <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
-        <View style={{ flexDirection: 'row', width: SW(60) }}>
-          <Image source={menu} style={styles.ashtonStyle} />
+      <View
+        style={[
+          styles.displayFlex,
+          { paddingVertical: verticalScale(5), justifyContent: 'flex-start' },
+        ]}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+          }}
+        >
+          <Image
+            source={{ uri: item?.product_image }}
+            style={styles.ashtonStyle}
+          />
           <View style={{ paddingHorizontal: moderateScale(10) }}>
-            <Text style={[styles.jfrText, { color: COLORS.black }]}>
-              {item.name}
+            <Text
+              style={[styles.jfrText, { color: COLORS.black }]}
+              numberOfLines={1}
+            >
+              {item.product_name}
             </Text>
             <Text style={styles.boxText}>Box</Text>
           </View>
         </View>
         <Text style={styles.onexstyle}>
           <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>
-          {strings.posSale.onex}
+          {item?.qty}
         </Text>
-        <Text style={[styles.jfrText, { color: COLORS.black }]}>
+        <Text
+          style={[
+            styles.jfrText,
+            {
+              color: COLORS.black,
+            },
+          ]}
+        >
           {item.price}
         </Text>
       </View>
@@ -5493,7 +5537,9 @@ export function Analytics(props) {
                   <Text style={styles.listOfItems}>
                     {strings.posSale.listOfItem}
                   </Text>
-                  <Text style={styles.walletItem}>4 Items</Text>
+                  <Text style={styles.walletItem}>
+                    {OrderData?.total_items} Items
+                  </Text>
                 </View>
                 <Text style={styles.rewardPointStyle}>
                   {strings.posSale.rewardpoint}
@@ -5503,7 +5549,7 @@ export function Analytics(props) {
 
               <View>
                 <FlatList
-                  data={jbritemList}
+                  data={OrderData?.order_details}
                   renderItem={renderJbrItem}
                   keyExtractor={item => item.id}
                 />
@@ -5519,7 +5565,7 @@ export function Analytics(props) {
           </View>
           {revenueCompleteSideBar ? (
             <View style={[styles.orderSideCon, { height: windowHeight }]}>
-              <View style={{ width: SH(420), alignSelf: 'center' }}>
+              <View style={{ width: SW(100), alignSelf: 'center' }}>
                 <Spacer space={SH(20)} />
                 <View style={styles.displayFlex}>
                   <Text style={styles.moreActText}>Payment Details</Text>
@@ -5532,15 +5578,16 @@ export function Analytics(props) {
                     />
                   </TouchableOpacity>
                 </View>
-                <Spacer space={SH(25)} />
+                <Spacer space={SH(15)} />
                 <View>
                   <ScrollView
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{ flexGrow: 1 }}
+                    scrollEnabled={false}
                   >
                     <View>
-                      <Spacer space={SH(20)} />
+                      <Spacer space={SH(10)} />
                       <Text style={styles.paymenttdone}>
                         {strings.posSale.paymenttdone}
                       </Text>
@@ -5549,14 +5596,16 @@ export function Analytics(props) {
                         <View style={styles.displayFlex}>
                           <View>
                             <Text style={styles.paymentTipsText}>
-                              Payable $254.60
+                              Payable {OrderData?.payable_amount}
                             </Text>
                             <Spacer space={SH(10)} />
                             <Text style={styles.paymentTipsText}>
-                              Tips $0.60
+                              Tips {OrderData?.tips}
                             </Text>
                           </View>
-                          <Text style={styles.paymentPay}>$254.60</Text>
+                          <Text style={styles.paymentPay}>
+                            ${OrderData?.payable_amount}
+                          </Text>
                         </View>
                       </View>
                       <Spacer space={SH(10)} />
@@ -5573,7 +5622,7 @@ export function Analytics(props) {
                         </Text>
                       </Text>
 
-                      <Spacer space={SH(25)} />
+                      <Spacer space={SH(20)} />
                       <View style={styles.customerAddreCons}>
                         <Spacer space={SH(15)} />
                         <Text style={styles.customer}>Customer</Text>
@@ -5586,33 +5635,40 @@ export function Analytics(props) {
                           }}
                         >
                           <Image
-                            source={jbrCustomer}
+                            source={{
+                              uri: OrderData?.user_details?.profile_photo,
+                            }}
                             style={styles.jbrCustomer}
                           />
                           <View style={{ paddingHorizontal: moderateScale(8) }}>
                             <Text
                               style={[styles.cusAddText, { fontSize: SF(20) }]}
                             >
-                              {strings.posSale.customerName}
+                              {OrderData?.user_details?.firstname}
                             </Text>
                             <Spacer space={SH(8)} />
                             <Text style={styles.cusAddText}>
-                              {strings.posSale.customerMobileNo}
+                              {OrderData?.user_details?.phone_number}
                             </Text>
                             <Spacer space={SH(5)} />
                             <Text style={styles.cusAddText}>
-                              {strings.posSale.customerEmail}
+                              {OrderData?.user_details?.email}
                             </Text>
                             <Spacer space={SH(8)} />
                             <Text style={styles.cusAddText}>
-                              {strings.posSale.customerAddr}
-                            </Text>
-                            <Text style={styles.cusAddText}>
-                              {strings.posSale.customerAddr2}
+                              {
+                                OrderData?.user_details?.current_address
+                                  ?.street_address
+                              }{' '}
+                              {OrderData?.user_details?.current_address?.city},{' '}
+                              {OrderData?.user_details?.current_address?.state}{' '}
+                              {
+                                OrderData?.user_details?.current_address
+                                  ?.zipcode
+                              }
                             </Text>
                           </View>
                         </View>
-                        <Spacer space={SH(20)} />
                         <View style={{ flex: 1 }}></View>
                         <View style={styles.walletIdCon}>
                           <Text style={styles.walletIdLabel}>
@@ -5624,22 +5680,28 @@ export function Analytics(props) {
                           </Text>
                         </View>
                       </View>
-                      <Spacer space={SH(35)} />
+                      <Spacer space={SH(20)} />
                       <View style={styles.bottomContainer}>
                         <Spacer space={SH(10)} />
                         <View style={styles.bottomSubCon}>
                           <Text style={styles.smalldarkText}>Sub Total</Text>
-                          <Text style={styles.smallLightText}>$4.00</Text>
+                          <Text style={styles.smallLightText}>
+                            ${OrderData?.actual_amount}
+                          </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.bottomSubCon}>
                           <Text style={styles.smallLightText}>Discount</Text>
-                          <Text style={styles.smallLightText}>-$2.00</Text>
+                          <Text style={styles.smallLightText}>
+                            -${OrderData?.discount}
+                          </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.bottomSubCon}>
                           <Text style={styles.smallLightText}>Tax</Text>
-                          <Text style={styles.smallLightText}>$4.00</Text>
+                          <Text style={styles.smallLightText}>
+                            ${OrderData?.tax}
+                          </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.hr}></View>
@@ -5653,12 +5715,14 @@ export function Analytics(props) {
                           <Text
                             style={[styles.smalldarkText, { fontSize: SF(20) }]}
                           >
-                            $254.60
+                            ${OrderData?.payable_amount}
                           </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.bottomSubCon}>
-                          <Text style={styles.smallLightText}>4 Items</Text>
+                          <Text style={styles.smallLightText}>
+                            {OrderData?.total_items} Items
+                          </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <TouchableOpacity

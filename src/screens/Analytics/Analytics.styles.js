@@ -813,7 +813,7 @@ export const styles = StyleSheet.create({
   },
   orderSideCon: {
     // borderWidth: 1,
-    width: SH(459),
+    width: SW(120),
     height: SH(665),
     position: 'absolute',
     top: 0,
@@ -874,6 +874,8 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
     fontSize: SF(18),
+    flex: 1,
+    marginLeft: SW(20),
   },
   onlyxstyle: {
     color: COLORS.dark_grey,
@@ -932,6 +934,7 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(15),
     resizeMode: 'contain',
+    borderRadius: SW(15),
   },
   cusAddText: {
     fontSize: SF(16),
@@ -939,7 +942,7 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
   },
   walletIdCon: {
-    height: SH(75),
+    height: SH(60),
     borderTopWidth: 1,
     borderColor: COLORS.washGrey,
     justifyContent: 'center',
@@ -1112,7 +1115,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: SF(12),
-    paddingHorizontal: moderateScale(3),
   },
   codeLogo: {
     width: SH(18),
@@ -1215,18 +1217,18 @@ export const styles = StyleSheet.create({
   },
   customerAddreCons: {
     borderWidth: 1,
-    height: SH(300),
+    height: SH(280),
     borderRadius: 5,
     borderColor: COLORS.washGrey,
   },
   numpadContainer2false: {
-    width: SH(880),
+    width: SW(230),
     height: windowHeight,
     backgroundColor: COLORS.white,
     paddingHorizontal: moderateScale(10),
   },
   numpadContainer2true: {
-    width: SH(1350),
+    flex: 1,
     height: windowHeight,
     backgroundColor: COLORS.white,
     paddingHorizontal: moderateScale(10),
