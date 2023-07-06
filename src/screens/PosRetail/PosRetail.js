@@ -47,6 +47,10 @@ export function PosRetail() {
   const getRetailData = useSelector(getRetail);
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const cartID2 = getRetailData?.getAllCart?.id;
+  const cartData = getRetailData?.getAllCart;
+  const finalAmountForDiscount =
+    cartData?.amount?.products_price.toFixed(2) -
+    cartData?.amount?.tax.toFixed(2);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const defaultArrayproduct = getRetailData?.getProductDefault;
@@ -133,7 +137,14 @@ export function PosRetail() {
     }
   };
   const saveDiscountHandler = () => {
-    if (!cartID2) {
+    if (amountDis || percentDis > finalAmountForDiscount) {
+      Toast.show({
+        text2: 'Please enter discount less then total amount',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (!cartID2) {
       Toast.show({
         text2: strings.posSale.addItemCart,
         position: 'bottom',

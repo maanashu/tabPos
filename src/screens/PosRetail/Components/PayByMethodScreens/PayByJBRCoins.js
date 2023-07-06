@@ -52,8 +52,13 @@ export const PayByJBRCoins = ({
   const getWalletQr = getRetailData?.getWallet?.qr_code;
   const cartData = getRetailData?.getAllCart;
   const walletUser = getRetailData?.walletGetByPhone?.[0];
+  console.log(
+    'getRetailData?.walletGetByPhone?.[0]',
+    getRetailData?.walletGetByPhone?.[0]
+  );
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const requestStatus = getRetailData?.requestCheck;
+  console.log('requestStatus', requestStatus);
   const [checkStatus, setCheckStatus] = useState(false);
   const [requestId, setRequestId] = useState();
   const sendAmount = getCartAmount?.total_amount;
@@ -136,7 +141,10 @@ export const PayByJBRCoins = ({
       amount: finalSendAmount,
       wallletAdd: walletUser?.wallet_address,
     };
+
+    console.log('data', data?.wallletAdd);
     const res = await dispatch(requestMoney(data));
+    console.log('--------------', res);
     if (res?.type === 'REQUEST_MONEY_SUCCESS') {
       setWalletIdInp('');
       setRequestId(res?.payload?._id);

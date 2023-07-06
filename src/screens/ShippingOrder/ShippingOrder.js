@@ -79,6 +79,7 @@ export function ShippingOrder() {
   const [orderCount, setOrderCount] = useState(
     getDeliveryData?.orderList ?? []
   );
+  console.log('orderCount', JSON.stringify(orderCount));
   const orderArray = getDeliveryData?.orderList?.data ?? [];
   const [viewAllReviews, setViewAllReviews] = useState(false);
   const [orderAccepted, setOrderAccepted] = useState(false);

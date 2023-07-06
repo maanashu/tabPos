@@ -148,6 +148,31 @@ const getLoginSessionTime = userLoginTime => {
   return sessionTimeFormatted;
 };
 
+const orderDeliveryTime = orderTime => {
+  // Get the current time
+  const currentTime = moment();
+
+  // Specify the login time (12:53:27 PM)
+  const orderCreateTime = moment(orderTime, 'h:mm:ss A');
+
+  // Calculate the time difference in minutes
+  const orderCreateTimeInMinutes = currentTime.diff(orderCreateTime, 'minutes');
+
+  // Convert minutes to hours and minutes
+  const ordersHours = Math.floor(orderCreateTimeInMinutes / 60);
+  const ordersMinutes = orderCreateTimeInMinutes % 60;
+  const ordersSecond = ordersMinutes * 60;
+
+  // Format the time as "hh:mm"
+  const orderTimeFormatted = moment({
+    hours: ordersHours,
+    minutes: ordersMinutes,
+    seconds: ordersSecond,
+  }).format('HH[h]:mm[m]');
+
+  return orderTimeFormatted;
+};
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -159,4 +184,5 @@ export {
   ValidateEmail,
   ValidateName,
   getLoginSessionTime,
+  orderDeliveryTime,
 };
