@@ -9,20 +9,16 @@ import {
   Dimensions,
 } from 'react-native';
 import {
-  Fonts,
   notifications,
   search_light,
-  watchLogo,
   roundCalender,
-  iImage,
-  ok,
   calendarIcon,
   todayCalendarIcon,
   calendarSettingsIcon,
 } from '@/assets';
 import { strings } from '@/localization';
-import { COLORS, SH } from '@/theme';
-import { Spacer, ScreenWrapper } from '@/components';
+import { COLORS } from '@/theme';
+import { ScreenWrapper } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import { Calendar } from '@/components/CustomCalendar';
@@ -32,21 +28,19 @@ const windowHeight = Dimensions.get('window').height;
 import { CALENDAR_MODES } from '@/constants/enums';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  changeAppointmentStatus,
-  getAppointment,
-} from '@/actions/AppointmentAction';
+import { getAppointment } from '@/actions/AppointmentAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AppointmentTypes';
-import { APPOINTMENT_STATUS } from '@/constants/status';
 import { useIsFocused } from '@react-navigation/native';
 import CustomEventCell from './Components/CustomEventCell';
 import CustomHoursCell from './Components/CustomHoursCell';
 import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
 import ScheduleDetailModal from './Components/ScheduleDetailModal';
+import EventItemCard from './Components/EventItemCard';
+import CalendarSettingModal from './CalendarSettingModal';
 
 export function Calender(props) {
   const isFocused = useIsFocused();
@@ -57,6 +51,8 @@ export function Calender(props) {
   const [storeItem, setStoreItem] = useState();
   const [extractedAppointment, setExtractedAppointment] = useState([]);
   const [showRequestsView, setshowRequestsView] = useState(false);
+  const [isCalendarSettingModalVisible, setisCalendarSettingModalVisible] =
+    useState(false);
   const getAppointmentList2 = getAppointmentList?.filter(
     item => item.status === 0 || item.status === 1 || item.status === 2
   );
@@ -144,110 +140,9 @@ export function Calender(props) {
     isLoadingSelector([TYPES.GET_APPOINTMENTS], state)
   );
 
-  const renderEmptyProducts = () => {
-    <View>
-      <Text>empty</Text>
-    </View>;
+  const eventItem = ({ item, index }) => {
+    return <EventItemCard item={item} index={index} />;
   };
-
-  const notificationItem = ({ item }) => (
-    <View style={styles.notificationchildCon}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Text style={styles.requestFor} numberOfLines={1}>
-          {strings.calender.requestFor}{' '}
-          <Text style={styles.requestTextName}>
-            {item.appointment_details?.[0]?.product_name}{' '}
-            {item.appointment_details?.length >= 2 ? 'and more' : null}
-          </Text>
-        </Text>
-        <TouchableOpacity
-          style={styles.iImageCon}
-          onPress={() => (setSchduleDetail(true), setStoreItem(item))}
-        >
-          <Image source={iImage} style={styles.iImage} />
-        </TouchableOpacity>
-      </View>
-      <Spacer space={SH(3)} />
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Image source={watchLogo} style={styles.watch} />
-        <Text style={styles.timeLabel}>
-          {strings.calender.timeLabel}{' '}
-          <Text style={{ fontFamily: Fonts.SemiBold }}>
-            {item.start_time}
-            {'-'}
-            {item.end_time}
-          </Text>
-        </Text>
-      </View>
-      <Spacer space={SH(3)} />
-      <View style={{ flexDirection: 'row' }}>
-        <Image source={roundCalender} style={styles.roundCalender} />
-        <Text style={styles.timeLabel}>
-          {strings.calender.dateLabel}{' '}
-          <Text style={{ fontFamily: Fonts.SemiBold }}>
-            {moment(item.date).format('dddd')}, {moment(item.date).format('ll')}
-          </Text>
-        </Text>
-      </View>
-      <Spacer space={SH(15)} />
-      <View style={{ flexDirection: 'row' }}>
-        {item?.status === 1 ? (
-          <View style={styles.approveButtonCon}>
-            <View style={styles.flexAlign}>
-              <Text style={styles.approveText}>
-                {strings.calender.approved}
-              </Text>
-              <Image source={ok} style={styles.lockLight} />
-            </View>
-          </View>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              const appointmentID =
-                item.appointment_details[0]?.appointment_id ?? '';
-
-              dispatch(
-                changeAppointmentStatus(
-                  appointmentID,
-                  APPOINTMENT_STATUS.ACCEPTED_BY_SELLER
-                )
-              );
-            }}
-            style={styles.approveButtonCon}
-          >
-            <Text style={styles.approveText}>{strings.calender.approve}</Text>
-          </TouchableOpacity>
-        )}
-
-        <TouchableOpacity
-          onPress={() => {
-            const appointmentID =
-              item.appointment_details[0]?.appointment_id ?? '';
-
-            dispatch(
-              changeAppointmentStatus(
-                appointmentID,
-                APPOINTMENT_STATUS.REJECTED_BY_SELLER
-              )
-            );
-          }}
-          style={styles.noButtonCon}
-        >
-          {isRequestLoading ? (
-            <ActivityIndicator size="small" color={COLORS.white} />
-          ) : (
-            <Text style={styles.approveText}>{strings.calender.cancel}</Text>
-          )}
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
 
   const schduleDetailModal = () => {
     return (
@@ -306,14 +201,7 @@ export function Calender(props) {
               }}
             />
 
-            <View
-              style={{
-                flex: 1,
-                marginLeft: ms(10),
-                borderRightWidth: ms(10),
-                borderRightColor: COLORS.textInputBackground,
-              }}
-            >
+            <View style={styles._calendarContainer}>
               <Calendar
                 ampm
                 swipeEnabled={false}
@@ -386,7 +274,10 @@ export function Calender(props) {
                 }}
               />
 
-              <TouchableOpacity style={styles.CalendarSettingsContainer}>
+              <TouchableOpacity
+                onPress={() => setisCalendarSettingModalVisible(true)}
+                style={styles.CalendarSettingsContainer}
+              >
                 <Image
                   source={calendarSettingsIcon}
                   style={styles.calendarIconSettings}
@@ -407,16 +298,24 @@ export function Calender(props) {
                 <Text style={styles.requestNotFound}>Request not found</Text>
               </View>
             ) : (
-              <FlatList
-                data={getAppointmentList2}
-                extraData={getAppointmentList2}
-                renderItem={notificationItem}
-                keyExtractor={item => item.id}
-                ListEmptyComponent={renderEmptyProducts}
-              />
+              <View style={{ marginBottom: ms(40) }}>
+                <Text style={styles._requestTitle}>
+                  {`Request (${getAppointmentList2?.length ?? 0})`}
+                </Text>
+                <FlatList
+                  data={getAppointmentList2}
+                  keyExtractor={(_, index) => index}
+                  renderItem={eventItem}
+                />
+              </View>
             )}
           </View>
         )}
+
+        <CalendarSettingModal
+          isVisible={isCalendarSettingModalVisible}
+          setIsVisible={setisCalendarSettingModalVisible}
+        />
 
         {schduleDetailModal()}
       </View>
