@@ -176,6 +176,17 @@ const getStartEndFormattedDate = date => {
   return `${moment(date).format('hh:mm A')}`;
 };
 
+function calculateDuration(start_time, end_time) {
+  const format = 'hh:mm A';
+  const start = moment(start_time, format);
+  const end = moment(end_time, format);
+  const duration = moment.duration(end.diff(start));
+  const hours = duration.hours();
+  const minutes = duration.minutes();
+
+  return `${hours} HR ${minutes} Min`;
+}
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -189,4 +200,5 @@ export {
   getLoginSessionTime,
   orderDeliveryTime,
   getStartEndFormattedDate,
+  calculateDuration,
 };

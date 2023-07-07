@@ -98,7 +98,6 @@ export function Customers() {
   const [orderDetail, setOrderDetail] = useState('');
   const [selectedValue, setSelectedValue] = useState(50);
   const orderStatus = orderDetail?.status;
-  console.log("ree-0-0-0sdsds",JSON.stringify(revenueGraphObject));
   const [selectTime, setSelectTime] = useState({ value: 'week' });
 
   const selected = value => (
@@ -1060,15 +1059,18 @@ export function Customers() {
                             : 'date not found'}
                         </Text>
 
-                        <Text style={styles.tableTextData}>{item?.seller_details?.current_address?.city}</Text>
-                        <Text style={styles.tableTextData}>{item?.shipping_detail?.title}</Text>
+                        <Text style={styles.tableTextData}>
+                          {item?.seller_details?.current_address?.city}
+                        </Text>
+                        <Text style={styles.tableTextData}>
+                          {item?.shipping_detail?.title}
+                        </Text>
                         <Text style={styles.tableTextData}>
                           {item?.total_items} times
                         </Text>
                         <Text style={styles.tableTextData}>
                           ${item?.payable_amount}
                         </Text>
-            
 
                         <View
                           style={[
@@ -1232,7 +1234,7 @@ export function Customers() {
               <Text style={styles.totalCustomer}>{totalCustomer ?? '0'}</Text>
 
               <View style={{ marginTop: 30 }}>
-                <Image source={cusBarClr} style={styles.cusBarClr} />
+                {/* <Image source={cusBarClr} style={styles.cusBarClr} /> */}
                 {/* <BarChartCom
                   barWid={Platform.OS === 'android' ? SH(1250) : SH(930)}
                   barHei={300}
@@ -1241,7 +1243,7 @@ export function Customers() {
                   labelTextSty={{ color: COLORS.gerySkies, fontSize: 11 }}
                   revenueData={revenueGraphObject}
                 /> */}
-                 <Image source={customersGraph} style={styles.customersGraph} />
+                <Image source={customersGraph} style={styles.customersGraph} />
               </View>
             </View>
           </View>
