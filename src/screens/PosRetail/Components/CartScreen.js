@@ -433,7 +433,7 @@ export function CartScreen({
         />
 
         <View style={styles.displayflex2}>
-          <View style={styles.itemLIistCon}>
+          <View style={[styles.itemLIistCon, { borderWidth: 1 }]}>
             <Spacer space={SH(3)} />
             <View style={styles.displayflex}>
               <TouchableOpacity

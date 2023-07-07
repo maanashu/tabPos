@@ -163,8 +163,8 @@ export const styles = StyleSheet.create({
   },
   countCashView: {
     width: SW(130),
-     alignSelf: 'center',
-    height:"70%"
+    alignSelf: 'center',
+    height: '70%',
   },
   countCashText: {
     fontFamily: Fonts.MaisonBold,
@@ -485,6 +485,22 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     textAlign: 'center',
   },
+  historyHeaderText: {
+    width: windowWidth * 0.112,
+    justifyContent: 'center',
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    textAlign: 'left',
+  },
+  historydataText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+    textAlign: 'left',
+    width: windowWidth * 0.112,
+    justifyContent: 'center',
+  },
   usertableRowStyle: {
     borderBottomWidth: 1,
     borderBottomColor: COLORS.solidGrey,
@@ -494,7 +510,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: SF(12),
-    textAlign: 'center',
+    // textAlign: 'center',
   },
   tableMainView: {
     zIndex: -10,
@@ -558,7 +574,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: windowWidth * 0.65,
-    paddingRight: 50,
   },
   dateHeadAlign: {
     flexDirection: 'row',

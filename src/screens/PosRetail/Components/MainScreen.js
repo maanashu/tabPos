@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Keyboard, Text, View } from 'react-native';
 
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import {
   addDiscountPic,
+  borderCross,
   categoryMenu,
   checkArrow,
   email,
   keyboard,
   location,
+  minus,
   notess,
   ok,
   Phone_light,
+  plus,
+  rightBack,
   search_light,
   terryProfile,
 } from '@/assets';
@@ -35,7 +39,12 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { TYPES } from '@/Types/Types';
 import {
+  addTocart,
+  cartScreenTrue,
   clearAllCart,
+  clearOneCart,
+  customerNumber,
+  customerTrue,
   getAllCart,
   getBrand,
   getOneProduct,
@@ -58,6 +67,7 @@ export function MainScreen({
   sellerID,
   addNotesHandler,
   addDiscountHandler,
+  onPressPayNow,
 }) {
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
@@ -70,6 +80,7 @@ export function MainScreen({
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
+  let arr = [getRetailData?.getAllCart];
 
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
 
@@ -94,7 +105,7 @@ export function MainScreen({
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
 
-  const [okk, setOkk] = useState(false);
+  const [okk, setOkk] = useState(getRetailData?.trueCustomer?.state || false);
 
   const [productDetail, setProductDetail] = useState();
 
@@ -103,6 +114,13 @@ export function MainScreen({
   );
   const userDetalLoader = useSelector(state =>
     isLoadingSelector([TYPES.GET_USERDETAIL], state)
+  );
+  const isLoading = useSelector(state =>
+    isLoadingSelector([TYPES.ADDCART], state)
+  );
+
+  const [showCart, setShowCart] = useState(
+    getRetailData?.trueCart?.state || false
   );
 
   const originalFilterData = [
@@ -130,7 +148,8 @@ export function MainScreen({
   };
 
   useEffect(() => {
-    dispatch(getUserDetailSuccess([]));
+    // dispatch(customerNumber({ number: '' }));
+    // dispatch(getUserDetailSuccess([]));
     setfilterMenuTitle(originalFilterData);
     setisFilterDataSeclectedOfIndex(null);
     setTimeout(() => {
@@ -149,6 +168,13 @@ export function MainScreen({
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
     }
+  };
+  const removeOneCartHandler = productId => {
+    const data = {
+      cartId: cartData?.id,
+      productId: productId,
+    };
+    dispatch(clearOneCart(data));
   };
 
   const addCustomerHandler = () => {
@@ -193,8 +219,34 @@ export function MainScreen({
   const userInputClear = () => {
     setUserEmail('');
     setUserName('');
-    setCustomerPhoneNo('');
+    // setCustomerPhoneNo('');
     setUserAdd('');
+  };
+
+  const updateQuantity = (cartId, productId, operation) => {
+    const updatedArr = [...arr];
+
+    const cartItem = updatedArr
+      .find(item => item.id === cartId)
+      ?.poscart_products.find(product => product.id === productId);
+
+    if (cartItem) {
+      if (operation === '+') {
+        cartItem.qty += 1;
+      } else if (operation === '-') {
+        cartItem.qty -= 1;
+      }
+      const data = {
+        seller_id: cartItem?.product_details?.supply?.seller_id,
+        supplyId: cartItem?.supply_id,
+        supplyPriceID: cartItem?.supply_price_id,
+        product_id: cartItem?.product_id,
+        service_id: cartItem?.service_id,
+        qty: cartItem?.qty,
+      };
+      dispatch(addTocart(data));
+      // dispatch(createCartAction(withoutVariantObject));
+    }
   };
 
   const changeView = () => {
@@ -249,7 +301,9 @@ export function MainScreen({
             <TouchableOpacity
               style={styles.okButtonCon}
               // onPress={() => setStoreUser(getuserDetailByNo?.[0])}
-              onPress={() => setOkk(!okk)}
+              onPress={() => {
+                setOkk(!okk), dispatch(customerTrue({ state: true }));
+              }}
             >
               <Image source={ok} style={styles.lockLight} />
               <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
@@ -445,79 +499,258 @@ export function MainScreen({
   return (
     <View>
       <View style={styles.homeScreenCon}>
-        <CustomHeader iconShow={false} crossHandler={headercrossHandler} />
+        <CustomHeader
+          iconShow={showCart ? true : false}
+          crossHandler={() => setShowCart(false)}
+        />
 
         <View style={styles.displayflex2}>
-          <View style={styles.itemLIistCon}>
-            <View>
-              <FlatList
-                data={filterMenuTitle}
-                extraData={filterMenuTitle}
-                renderItem={catTypeRenderItem}
-                keyExtractor={item => item.id}
-                horizontal
-                contentContainerStyle={styles.contentContainer}
-              />
-            </View>
-            <Spacer space={SH(15)} />
-            <View style={styles.displayflex}>
-              <Text style={styles.allProduct}>
-                All Products{' '}
-                <Text style={styles.allProductCount}>
-                  ({productArray?.length ?? '0'})
-                </Text>
-              </Text>
-              <View style={styles.barcodeInputWraper}>
-                <View style={styles.displayRow}>
-                  <View>
-                    <Image
-                      source={search_light}
-                      style={styles.sideSearchStyle}
+          {showCart ? (
+            <View style={styles.itemLIistCon}>
+              <Spacer space={SH(3)} />
+              <View style={styles.displayflex}>
+                <TouchableOpacity
+                  style={styles.backProScreen}
+                  // onPress={() => {
+                  //   crossHandler();
+                  //   dispatch(getUserDetailSuccess([]));
+                  // }}
+                  onPress={() => setShowCart(false)}
+                >
+                  <Image source={rightBack} style={styles.arrowStyle} />
+                  <Text style={[styles.holdCart, { color: COLORS.dark_grey }]}>
+                    {strings.posRetail.backProdscreen}
+                  </Text>
+                </TouchableOpacity>
+                <View style={styles.barcodeInputWraper}>
+                  <View style={styles.displayRow}>
+                    <View>
+                      <Image
+                        source={search_light}
+                        style={styles.sideSearchStyle}
+                      />
+                    </View>
+                    <TextInput
+                      placeholder="Search by Barcode, SKU, Name"
+                      style={styles.sideBarsearchInput}
+                      // value={search}
+                      // onChangeText={search => (
+                      //   setSearch(search), onChangeFun(search)
+                      // )}
+                      placeholderTextColor={COLORS.gerySkies}
                     />
                   </View>
-                  <TextInput
-                    placeholder="Search by Barcode, SKU, Name"
-                    style={styles.sideBarsearchInput}
-                    // value={search}
-                    // onChangeText={search => (
-                    //   setSearch(search), onChangeFun(search)
-                    // )}
-                    placeholderTextColor={COLORS.gerySkies}
-                  />
+                </View>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles.blueListHeader}>
+                <View style={styles.displayflex}>
+                  <View style={[styles.tableListSide, styles.listLeft]}>
+                    <Text
+                      style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}
+                    >
+                      #
+                    </Text>
+                    <Text style={styles.cashLabelWhite}>Item</Text>
+                  </View>
+                  <View style={[styles.tableListSide, styles.tableListSide2]}>
+                    <Text style={styles.cashLabelWhite}>Unit Price</Text>
+                    <Text style={styles.cashLabelWhite}>Quantity</Text>
+                    <Text style={styles.cashLabelWhite}>Line Total</Text>
+                    <Text style={{ color: COLORS.primary }}>1</Text>
+                  </View>
+                </View>
+              </View>
+              {arr?.map((item, index) => (
+                <>
+                  {item?.poscart_products?.map((data, ind) => (
+                    <View style={styles.blueListData} key={ind}>
+                      <View style={styles.displayflex}>
+                        <View style={[styles.tableListSide, styles.listLeft]}>
+                          <Text
+                            style={[
+                              styles.blueListDataText,
+                              styles.cashLabelWhiteHash,
+                            ]}
+                          >
+                            {ind + 1}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Image
+                              source={{ uri: data.product_details?.image }}
+                              style={styles.columbiaMen}
+                            />
+                            <View style={{ marginLeft: 10 }}>
+                              <Text
+                                style={[
+                                  styles.blueListDataText,
+                                  { width: SW(80) },
+                                ]}
+                                numberOfLines={1}
+                              >
+                                {data.product_details?.name}
+                              </Text>
+                              <Text style={styles.sukNumber}>
+                                SUK: {data?.product_details?.sku}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                        <View
+                          style={[styles.tableListSide, styles.tableListSide2]}
+                        >
+                          <Text style={styles.blueListDataText}>
+                            $
+                            {
+                              data?.product_details?.supply?.supply_prices
+                                ?.selling_price
+                            }
+                          </Text>
+                          <View style={styles.listCountCon}>
+                            <TouchableOpacity
+                              style={{
+                                width: SW(10),
+                                alignItems: 'center',
+                              }}
+                              onPress={() =>
+                                updateQuantity(item?.id, data?.id, '-')
+                              }
+                            >
+                              <Image source={minus} style={styles.minus} />
+                            </TouchableOpacity>
+                            {isLoading ? (
+                              <ActivityIndicator
+                                size="small"
+                                color={COLORS.primary}
+                              />
+                            ) : (
+                              <Text>{data.qty}</Text>
+                            )}
+                            <TouchableOpacity
+                              style={{
+                                width: SW(10),
+                                alignItems: 'center',
+                              }}
+                              onPress={() =>
+                                updateQuantity(item?.id, data?.id, '+')
+                              }
+                            >
+                              <Image source={plus} style={styles.minus} />
+                            </TouchableOpacity>
+                          </View>
+                          <Text style={styles.blueListDataText}>
+                            $
+                            {(
+                              data.product_details?.supply?.supply_prices
+                                ?.selling_price * data?.qty
+                            ).toFixed(2)}
+                          </Text>
+                          <TouchableOpacity
+                            style={{
+                              width: SW(8),
+                              height: SH(40),
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                            onPress={() => removeOneCartHandler(data.id)}
+                          >
+                            <Image
+                              source={borderCross}
+                              style={styles.borderCross}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+                  ))}
+                </>
+              ))}
+
+              <Spacer space={SH(7)} />
+            </View>
+          ) : (
+            <View style={styles.itemLIistCon}>
+              <View>
+                <FlatList
+                  data={filterMenuTitle}
+                  extraData={filterMenuTitle}
+                  renderItem={catTypeRenderItem}
+                  keyExtractor={item => item.id}
+                  horizontal
+                  contentContainerStyle={styles.contentContainer}
+                />
+              </View>
+              <Spacer space={SH(15)} />
+              <View style={styles.displayflex}>
+                <Text style={styles.allProduct}>
+                  All Products{' '}
+                  <Text style={styles.allProductCount}>
+                    ({productArray?.length ?? '0'})
+                  </Text>
+                </Text>
+                <View style={styles.barcodeInputWraper}>
+                  <View style={styles.displayRow}>
+                    <View>
+                      <Image
+                        source={search_light}
+                        style={styles.sideSearchStyle}
+                      />
+                    </View>
+                    <TextInput
+                      placeholder="Search by Barcode, SKU, Name"
+                      style={styles.sideBarsearchInput}
+                      // value={search}
+                      // onChangeText={search => (
+                      //   setSearch(search), onChangeFun(search)
+                      // )}
+                      placeholderTextColor={COLORS.gerySkies}
+                    />
+                  </View>
+                </View>
+              </View>
+
+              <Spacer space={SH(15)} />
+              <View style={styles.productBodyCon}>
+                <View style={styles.productListHeight}>
+                  {isProductLoading ? (
+                    <View style={{ marginTop: 100 }}>
+                      <ActivityIndicator
+                        size="large"
+                        color={COLORS.indicator}
+                      />
+                    </View>
+                  ) : productArray?.length === 0 ? (
+                    <View style={styles.noProductText}>
+                      <Text
+                        style={[styles.emptyListText, { fontSize: SF(25) }]}
+                      >
+                        {strings.valiadtion.noProduct}
+                      </Text>
+                    </View>
+                  ) : (
+                    <FlatList
+                      data={showProductsFrom || productArray}
+                      renderItem={renderItem}
+                      keyExtractor={(item, index) => index}
+                      extraData={showProductsFrom}
+                      numColumns={5}
+                      // horizontal
+                      // contentContainerStyle={{
+                      //   flexGrow: 1,
+                      //   justifyContent: 'space-between',
+                      // }}
+                    />
+                  )}
                 </View>
               </View>
             </View>
+          )}
 
-            <Spacer space={SH(15)} />
-            <View style={styles.productBodyCon}>
-              <View style={styles.productListHeight}>
-                {isProductLoading ? (
-                  <View style={{ marginTop: 100 }}>
-                    <ActivityIndicator size="large" color={COLORS.indicator} />
-                  </View>
-                ) : productArray?.length === 0 ? (
-                  <View style={styles.noProductText}>
-                    <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
-                      {strings.valiadtion.noProduct}
-                    </Text>
-                  </View>
-                ) : (
-                  <FlatList
-                    data={showProductsFrom || productArray}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => index}
-                    extraData={showProductsFrom}
-                    numColumns={5}
-                    // horizontal
-                    // contentContainerStyle={{
-                    //   flexGrow: 1,
-                    //   justifyContent: 'space-between',
-                    // }}
-                  />
-                )}
-              </View>
-            </View>
-          </View>
           <View
             pointerEvents={cartData?.length === 0 ? 'none' : 'auto'}
             style={[
@@ -539,7 +772,9 @@ export function MainScreen({
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.holdCartCon, styles.dark_greyBg]}
-                onPress={() => dispatch(clearAllCart())}
+                onPress={() => {
+                  dispatch(clearAllCart()), setShowCart(false);
+                }}
               >
                 {/* <Image source={eraser} style={styles.pause} /> */}
                 <Text style={styles.holdCart}>
@@ -679,13 +914,54 @@ export function MainScreen({
               </Text>
             </View>
             <View style={{ flex: 1 }} />
-            <TouchableOpacity
-              style={styles.checkoutButtonSideBar}
-              onPress={() => checkOutHandler()}
-            >
-              <Text style={styles.checkoutText}>{strings.retail.checkOut}</Text>
-              <Image source={checkArrow} style={styles.checkArrow} />
-            </TouchableOpacity>
+            {!showCart ? (
+              <TouchableOpacity
+                style={styles.checkoutButtonSideBar}
+                // onPress={() => checkOutHandler()}
+                onPress={() => {
+                  setShowCart(true), dispatch(cartScreenTrue({ state: true }));
+                }}
+              >
+                <Text style={styles.checkoutText}>
+                  {strings.retail.checkOut}
+                </Text>
+                <Image source={checkArrow} style={styles.checkArrow} />
+              </TouchableOpacity>
+            ) : getuserDetailByNo?.length === 0 || !okk ? (
+              <TouchableOpacity
+                style={styles.checkoutButtonSideBar}
+                onPress={() =>
+                  Toast.show({
+                    text2: 'Please select the customer',
+                    position: 'bottom',
+                    type: 'error_toast',
+                    visibilityTime: 1500,
+                  })
+                }
+              >
+                <Text style={styles.checkoutText}>
+                  {strings.retail.checkOut}
+                </Text>
+                <Image source={checkArrow} style={styles.checkArrow} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={[
+                  styles.checkoutButtonSideBar,
+                  { opacity: getuserDetailByNo?.length === 0 ? 0.5 : 1 },
+                ]}
+                onPress={() => {
+                  onPressPayNow();
+                  // dispatch(customerNumber({ number: customerPhoneNo }));
+                }}
+                disabled={getuserDetailByNo?.length === 0 ? true : false}
+              >
+                <Text style={styles.checkoutText}>
+                  {strings.posRetail.payNow}
+                </Text>
+                <Image source={checkArrow} style={styles.checkArrow} />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>

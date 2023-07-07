@@ -31,6 +31,7 @@ import { ActivityIndicator } from 'react-native';
 import { DarkTheme } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { getSessionHistory } from '@/actions/CashTrackingAction';
+import { width } from '@/theme/ScalerDimensions';
 const windowHeight = Dimensions.get('window').height;
 
 export function SessionHistoryTable({
@@ -112,24 +113,31 @@ export function SessionHistoryTable({
         <Table>
           <View style={styles.tableDataHeaderCon}>
             <View style={styles.displayFlex}>
-              <View style={{ flexDirection: 'row', width: windowWidth * 0.25 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: windowWidth * 0.22,
+                }}
+              >
                 <Text style={styles.text}>#</Text>
                 <Text
                   style={[
                     styles.text,
-                    { paddingHorizontal: moderateScale(10) },
+                    {
+                      paddingHorizontal: moderateScale(10),
+                    },
                   ]}
                 >
                   Date
                 </Text>
               </View>
-              <View style={styles.dateHeadAlign}>
-                <Text style={styles.text}>Ended By</Text>
-                <Text style={styles.text}>Session Started</Text>
-                <Text style={styles.text}>Added cash</Text>
-                <Text style={styles.text}>Removed cash</Text>
-                <Text style={styles.text}>Counted cash</Text>
-                <Text style={[styles.text, { paddingRight: 25 }]}>
+              <View style={[styles.dateHeadAlign]}>
+                <Text style={styles.historyHeaderText}>Ended By</Text>
+                <Text style={styles.historyHeaderText}>Session Started</Text>
+                <Text style={styles.historyHeaderText}>Added cash</Text>
+                <Text style={styles.historyHeaderText}>Removed cash</Text>
+                <Text style={styles.historyHeaderText}>Counted cash</Text>
+                <Text style={[styles.historyHeaderText, { paddingRight: 25 }]}>
                   Session Ended
                 </Text>
               </View>
@@ -156,7 +164,7 @@ export function SessionHistoryTable({
                       <View
                         style={{
                           flexDirection: 'row',
-                          width: windowWidth * 0.25,
+                          width: windowWidth * 0.22,
                         }}
                       >
                         <Text
@@ -182,42 +190,51 @@ export function SessionHistoryTable({
                         </View>
                       </View>
                       <View style={styles.dateTimeAlign}>
-                        <View style={styles.flexAlign}>
+                        <View
+                          style={[
+                            styles.historydataText,
+                            {
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                            },
+                          ]}
+                        >
                           <Image
                             source={{
                               uri: item.seller_details?.user_profiles
                                 ?.profile_photo,
                             }}
-                            style={styles.allienpic}
+                            style={[styles.allienpic, { marginRight: 4 }]}
                           />
                           <Text
                             style={[
                               styles.usertableRowText,
-                              { paddingHorizontal: moderateScale(3) },
+                              { width: windowWidth * 0.09 },
                             ]}
+                            numberOfLines={1}
                           >
                             {item.seller_details?.user_profiles?.firstname}
                           </Text>
                         </View>
-                        <Text style={styles.usertableRowText}>
+                        <Text style={styles.historydataText} numberOfLines={1}>
                           ${item.start_tracking_session}
                           {'.00'}
                         </Text>
-                        <Text style={styles.usertableRowText}>
+                        <Text style={styles.historydataText} numberOfLines={1}>
                           ${item.add_cash}
                           {'.00'}
                         </Text>
-                        <Text style={styles.usertableRowText}>
+                        <Text style={styles.historydataText} numberOfLines={1}>
                           ${item.removed_cash}
                           {'.00'}
                         </Text>
-                        <Text style={styles.usertableRowText}>
+                        <Text style={styles.historydataText} numberOfLines={1}>
                           ${item.counted_cash}
                           {'.00'}
                         </Text>
                         <Text
                           style={[
-                            styles.usertableRowText,
+                            styles.historydataText,
                             {
                               color:
                                 item.end_tracking_session < 0
@@ -225,6 +242,7 @@ export function SessionHistoryTable({
                                   : COLORS.solid_grey,
                             },
                           ]}
+                          numberOfLines={1}
                         >
                           {item.end_tracking_session < 0 ? '-' : null} $
                           {item.end_tracking_session < 0

@@ -432,7 +432,7 @@ export const styles = StyleSheet.create({
     height: Platform.OS === 'android' ? SH(40) : SH(45),
     justifyContent: 'center',
     marginTop: 5,
-    paddingLeft: moderateScale(22),
+    // paddingLeft: moderateScale(22),
     backgroundColor: COLORS.white,
   },
   sideSearchStyle: {

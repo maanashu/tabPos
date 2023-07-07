@@ -17,6 +17,9 @@ const INITIALSTATE = {
   checkSuppliedVariant: [],
   requestMoney: {},
   requestCheck: {},
+  trueCart: {},
+  trueCustomer: {},
+  customerNumber: {},
 };
 
 export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -186,6 +189,22 @@ export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         requestCheck: payload,
+      };
+
+    case TYPES.CART_SCREEN_TRUE:
+      return {
+        ...state,
+        trueCart: payload.trueCart,
+      };
+    case TYPES.TURE_CUSTOMER:
+      return {
+        ...state,
+        trueCustomer: payload.trueCustomer,
+      };
+    case TYPES.CUSTOMER_NUMBER:
+      return {
+        ...state,
+        customerNumber: payload.customerNumber,
       };
 
     case TYPES.CLEAR_STORE:
