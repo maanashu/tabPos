@@ -245,4 +245,18 @@ export class AnalyticsController {
         });
     });
   }
+
+  static async getOrders(orderID) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.getOrders + `/${orderID}`;
+
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }

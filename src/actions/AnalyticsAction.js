@@ -160,6 +160,19 @@ const getOrderDataError = error => ({
   payload: { error },
 });
 
+const getOrdersRequest = () => ({
+  type: TYPES.GET_ORDER_REQUEST,
+  payload: null,
+});
+const getOrdersSuccess = orderList => ({
+  type: TYPES.GET_ORDER_SUCCESS,
+  payload: { orderList },
+});
+const getOrdersError = error => ({
+  type: TYPES.GET_ORDER_ERROR,
+  payload: { error },
+});
+
 export const totalProGraph = sellerID => async dispatch => {
   dispatch(getTotalProGraphRequest());
   try {
@@ -281,5 +294,15 @@ export const getOrderData = orderID => async dispatch => {
     return dispatch(getOrderDataSuccess(res?.payload));
   } catch (error) {
     dispatch(getOrderDataError(error?.message));
+  }
+};
+
+export const getOrders = orderID => async dispatch => {
+  dispatch(getOrdersRequest());
+  try {
+    const res = await AnalyticsController.getOrders(orderID);
+    return dispatch(getOrdersSuccess(res));
+  } catch (error) {
+    dispatch(getOrdersError(error.message));
   }
 };
