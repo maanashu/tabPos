@@ -1019,6 +1019,7 @@ export const styles = StyleSheet.create({
   tableHeaderLeftPro: {
     flexDirection: 'row',
     width: windowWidth * 0.03,
+    alignSelf:"flex-start"
   },
   tableHeaderRightPro: {
     flexDirection: 'row',
@@ -1088,7 +1089,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     letterSpacing: -1,
-    width: windowWidth * 0.01,
+    width: windowWidth * 0.02,
   },
   tableTextCenter: {
     alignSelf: 'center',
