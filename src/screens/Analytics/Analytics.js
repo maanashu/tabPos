@@ -58,6 +58,7 @@ import {
   dropRight,
   movingArrowBlue,
   fillRadio,
+  userImage,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
@@ -97,6 +98,7 @@ import {
   catSubBrandData,
   getOrderData,
   getOrderTypeList,
+  getOrders,
   getOrderstatistics,
   getProductList,
   getProductModal,
@@ -128,6 +130,7 @@ export function Analytics(props) {
   const getOrderListData = getAnalyticsData?.getOrderTypeList;
   const Orderstatistics = getAnalyticsData?.getOrderstatistics;
   const OrderData = getAnalyticsData?.getOrderData;
+  const OrderDetails = getAnalyticsData?.orderList;
   const [value, setValue] = useState('Weekly');
   const [accCatTable, setAccCatTable] = useState('');
   const [revenueTableHeading, setRevenueTableHeading] = useState('');
@@ -243,6 +246,9 @@ export function Analytics(props) {
   );
   const orderstatisticsLoader = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
+  );
+  const orderData = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER_DATA], state)
   );
 
   const tobacoTableHandler = catId => {
@@ -2026,7 +2032,9 @@ export function Analytics(props) {
           }}
         >
           <Image
-            source={{ uri: item?.product_image }}
+            source={
+              item?.product_image ? { uri: item?.product_image } : userImage
+            }
             style={styles.ashtonStyle}
           />
           <View style={{ paddingHorizontal: moderateScale(10) }}>
@@ -2055,6 +2063,38 @@ export function Analytics(props) {
         </Text>
       </View>
     </View>
+  );
+
+  const renderOrderItem = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell>
+        <Text style={styles.rowText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.buyerTableSettingSecond}>
+        {/* <View style={{width:SH(200), height:SH(40)}}>
+                <View style={styles.flexAlign}>
+                    <Image source={asthonLogo} style={styles.asthonLogo}/>
+                    <View style={{paddingHorizontal:moderateScale(5)}}>
+                       <Text style={styles.rowText}>Ashton Classic</Text>
+                       <Text style={[styles.rowText, {color:COLORS.darkGray}]}>Box of 25</Text>
+                    </View>
+                </View>
+            </View> */}
+
+        <Text style={styles.rowText}>{item.product_name}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell
+        style={[styles.buyerTableSettingFirst, { marginLeft: SH(240) }]}
+      >
+        <Text style={styles.revenueDataText}>{item?.qty}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.buyerTableSettingFirst}>
+        <Text style={styles.revenueDataText}>16 Box</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.buyerTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{item?.price}</Text>
+      </DataTable.Cell>
+    </DataTable.Row>
   );
 
   const tableHeaderAccCat = accCatTable => {
@@ -3789,7 +3829,7 @@ export function Analytics(props) {
             showsVerticalScrollIndicator={false}
           > */}
         <View style={styles.modalMainView}>
-          <Spacer space={SH(35)} />
+          <Spacer space={SH(10)} />
           <View style={styles.displayFlex}>
             <TouchableOpacity
               style={styles.backButtonCon}
@@ -4908,7 +4948,7 @@ export function Analytics(props) {
                         <Text style={styles.costoName}>
                           {strings.customers.costo}
                         </Text>
-                        <Spacer space={SH(10)} />
+                        <Spacer space={SH(8)} />
                         <View style={styles.flexAlign}>
                           <Image source={location} style={styles.Phonelight} />
                           <Text style={styles.costoAdd}>
@@ -4952,7 +4992,7 @@ export function Analytics(props) {
                       </View>
                     </View>
                   </View>
-                  <Spacer space={SH(30)} />
+                  <Spacer space={SH(10)} />
                   <View style={{ paddingHorizontal: moderateScale(18) }}>
                     <Text style={styles.orderStatus}>
                       {strings.customers.orderStatus}
@@ -4968,10 +5008,10 @@ export function Analytics(props) {
                     <View
                       style={[
                         styles.costoHr,
-                        { marginVertical: verticalScale(8) },
+                        { marginVertical: verticalScale(5) },
                       ]}
                     />
-                    <Spacer space={SH(20)} />
+                    <Spacer space={SH(15)} />
                     <View style={{ flexDirection: 'row' }}>
                       <View style={{ flexDirection: 'column' }}>
                         <Image source={blankRadio} style={styles.ticketImage} />
@@ -5160,7 +5200,12 @@ export function Analytics(props) {
                 { paddingHorizontal: moderateScale(10) },
               ]}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
                 {/* <TouchableOpacity
                       // onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)} }
                       onPress = {() => {tablebackSetting ? (setRevenueOrderBuyer(false), setRevenueTable(true)) : (setRevenueOrderBuyer(false), setOrderList(true)) }}
@@ -5229,13 +5274,22 @@ export function Analytics(props) {
                   <View style={{ flexDirection: 'row' }}>
                     <Image source={angela} style={styles.angelaPic} />
                     <View style={{ flexDirection: 'column' }}>
-                      <Text style={styles.angela}>{strings.wallet.angela}</Text>
+                      <Text style={styles.angela}>
+                        {OrderDetails?.user_details?.firstname}
+                      </Text>
                       <Spacer space={SH(10)} />
                       <Text style={styles.angelaAddress}>
-                        {strings.wallet.angelaAddress1}
+                        {
+                          OrderDetails?.user_details?.current_address
+                            ?.street_address
+                        }{' '}
+                        {OrderDetails?.user_details?.current_address?.city},{' '}
+                        {OrderDetails?.user_details?.current_address?.state}{' '}
+                        {OrderDetails?.user_details?.current_address?.zipcode}
                       </Text>
                       <Text style={styles.angelaAddress}>
-                        {strings.wallet.angelaAddress2}
+                        {strings.wallet.angelaAddress2}{' '}
+                        {OrderDetails?.user_details?.phone_number}
                       </Text>
                     </View>
                   </View>
@@ -5251,27 +5305,27 @@ export function Analytics(props) {
                   <Text style={styles.invoiceId}>
                     {strings.wallet.invoiceIdLabel}{' '}
                     <Text style={{ color: COLORS.solid_grey }}>
-                      {strings.wallet.invoiceId}
+                      {OrderDetails?.invoice?.invoice_id}
                     </Text>
                   </Text>
                   <Spacer space={SH(5)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.createDateLabel}{' '}
                     <Text style={{ color: COLORS.solid_grey }}>
-                      {strings.wallet.createDate}
+                      {OrderDetails?.invoice?.created_date}
                     </Text>
                   </Text>
                   <Spacer space={SH(5)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.dueDateLabel}{' '}
                     <Text style={{ color: COLORS.solid_grey }}>
-                      {strings.wallet.createDate}
+                      {moment(OrderDetails?.invoice?.due_date).format('LL')}
                     </Text>
                   </Text>
                   <Spacer space={SH(5)} />
                   <Text style={styles.deliveryDate}>
                     {strings.wallet.deliveryDate}{' '}
-                    <Text>{strings.wallet.createDate}</Text>
+                    {moment(OrderDetails?.invoice?.delivery_date).format('LL')}{' '}
                   </Text>
                   <View style={styles.pointConOrder}>
                     <Text style={styles.pointTextOrder}>
@@ -5306,38 +5360,13 @@ export function Analytics(props) {
                     </DataTable.Title>
                   </DataTable.Header>
 
-                  <DataTable.Row>
-                    <DataTable.Cell>
-                      <Text style={styles.rowText}>1</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.buyerTableSettingSecond}>
-                      {/* <View style={{width:SH(200), height:SH(40)}}>
-                                <View style={styles.flexAlign}>
-                                    <Image source={asthonLogo} style={styles.asthonLogo}/>
-                                    <View style={{paddingHorizontal:moderateScale(5)}}>
-                                       <Text style={styles.rowText}>Ashton Classic</Text>
-                                       <Text style={[styles.rowText, {color:COLORS.darkGray}]}>Box of 25</Text>
-                                    </View>
-                                </View>
-                            </View> */}
-
-                      <Text style={styles.rowText}>Ashton Classic</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell
-                      style={[
-                        styles.buyerTableSettingFirst,
-                        { marginLeft: SH(240) },
-                      ]}
-                    >
-                      <Text style={styles.revenueDataText}>16 Box</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.buyerTableSettingFirst}>
-                      <Text style={styles.revenueDataText}>16 Box</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.buyerTableSettingFirst}>
-                      <Text style={styles.revenueDataText}>$4,063.20</Text>
-                    </DataTable.Cell>
-                  </DataTable.Row>
+                  <View>
+                    <FlatList
+                      data={OrderDetails?.order_details}
+                      renderItem={renderOrderItem}
+                      keyExtractor={item => item.id}
+                    />
+                  </View>
 
                   {/* <DataTable.Row>
                           <DataTable.Cell><Text style={styles.rowText}>1</Text></DataTable.Cell>
@@ -5377,7 +5406,7 @@ export function Analytics(props) {
                         {strings.wallet.subtotal}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
+                        {OrderDetails?.actual_amount}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -5400,7 +5429,7 @@ export function Analytics(props) {
                           { color: COLORS.roseRed },
                         ]}
                       >
-                        {strings.wallet.subtotalPrice}
+                        {OrderDetails?.discount}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -5409,7 +5438,7 @@ export function Analytics(props) {
                         {strings.wallet.shippingCharge}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
+                        {OrderDetails?.shipping_charge}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -5432,7 +5461,7 @@ export function Analytics(props) {
                         </View>
                       </View>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
+                        {OrderDetails?.payable_amount}
                       </Text>
                     </View>
                     <Spacer space={SH(10)} />
@@ -5587,7 +5616,7 @@ export function Analytics(props) {
                     scrollEnabled={false}
                   >
                     <View>
-                      <Spacer space={SH(10)} />
+                      <Spacer space={SH(5)} />
                       <Text style={styles.paymenttdone}>
                         {strings.posSale.paymenttdone}
                       </Text>
@@ -5635,9 +5664,13 @@ export function Analytics(props) {
                           }}
                         >
                           <Image
-                            source={{
-                              uri: OrderData?.user_details?.profile_photo,
-                            }}
+                            source={
+                              OrderData?.user_details?.profile_photo
+                                ? {
+                                    uri: OrderData?.user_details?.profile_photo,
+                                  }
+                                : userImage
+                            }
                             style={styles.jbrCustomer}
                           />
                           <View style={{ paddingHorizontal: moderateScale(8) }}>
@@ -5729,6 +5762,7 @@ export function Analytics(props) {
                           style={styles.checkoutButton}
                           onPress={() => {
                             setRevenueOrderBuyer(true), setOrderList(false);
+                            dispatch(getOrders(OrderData?.id));
                           }}
                         >
                           <Text style={styles.checkoutText}>Checkout</Text>
@@ -6171,7 +6205,6 @@ export function Analytics(props) {
           : totalReveueDetail
           ? totalRevnueCustomHeader()
           : customHeader()}
-
         {totalProductFunction()}
         {productDetailModal()}
         {invoiceModal()}
@@ -6182,6 +6215,15 @@ export function Analytics(props) {
         {/* {totalRevenueFuntion()} */}
       </View>
       {productModalLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
+      {orderData ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator
             color={COLORS.primary}

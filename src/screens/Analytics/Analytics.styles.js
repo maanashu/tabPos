@@ -897,7 +897,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: COLORS.orderStatusBackground,
     // width:SH(403),
-    height: SH(107),
+    height: SH(80),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(10),
     // alignItems:'center'
@@ -1524,13 +1524,13 @@ export const styles = StyleSheet.create({
   costoContainer: {
     borderWidth: 1,
     width: windowWidth * 0.44,
-    height: SH(140),
+    height: SH(100),
     borderRadius: 10,
     borderColor: COLORS.solidGrey,
   },
   trackingAngela: {
-    Width: SH(60),
-    height: SH(60),
+    Width: SH(50),
+    height: SH(50),
     resizeMode: 'contain',
   },
   costoHr: {
@@ -1540,12 +1540,12 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(5),
   },
   costoName: {
-    fontSize: SF(24),
+    fontSize: SF(20),
     color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonBold,
   },
   costoAdd: {
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(5),
@@ -1557,19 +1557,19 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   ciagrtext: {
-    fontSize: SF(16),
+    fontSize: SF(12),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(4),
   },
   ticketImage: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
   },
   detailText: {
     color: COLORS.primary,
-    fontSize: SF(12),
+    fontSize: SF(11),
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(10),
   },
@@ -1580,18 +1580,18 @@ export const styles = StyleSheet.create({
   },
   mapStyle: {
     width: SW(163),
-    height: SH(1070),
+    height: SH(610),
     resizeMode: 'cover',
     borderRadius: 15,
   },
   orderStatus: {
     color: COLORS.solid_grey,
-    fontSize: SF(15),
+    fontSize: SF(12),
     fontFamily: Fonts.SemiBold,
   },
   movingArrow: {
     width: SW(8),
-    height: SW(16),
+    height: SH(18),
     resizeMode: 'cover',
     marginTop: 10,
     marginBottom: 4,
@@ -1603,7 +1603,7 @@ export const styles = StyleSheet.create({
   },
   waitMinuteLight: {
     color: COLORS.gerySkies,
-    fontSize: SF(12),
+    fontSize: SF(10),
     fontFamily: Fonts.Regular,
   },
   carriarCon: {
@@ -1642,14 +1642,14 @@ export const styles = StyleSheet.create({
     paddingLeft: moderateScale(5),
   },
   Phonelight: {
-    width: SH(16),
-    height: SH(16),
+    width: SH(14),
+    height: SH(14),
     resizeMode: 'contain',
   },
   mapBorder: {
     borderWidth: 2,
     width: SW(164),
-    height: SH(1074),
+    height: SH(610),
     borderRadius: 18,
     borderColor: COLORS.solidGrey,
   },
