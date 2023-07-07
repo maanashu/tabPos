@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -59,9 +59,10 @@ import { logoutUserFunction } from '@/actions/UserActions';
 import { KeyboardAvoidingView } from 'react-native';
 import { getSearchProduct } from '@/actions/RetailAction';
 import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
-import { getLoginSessionTime } from '@/utils/GlobalMethods';
+import { getLoginSessionTime, orderDeliveryTime } from '@/utils/GlobalMethods';
 
 export function DashBoard({ navigation }) {
+  const textInputRef = useRef(null);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -96,12 +97,7 @@ export function DashBoard({ navigation }) {
   const [selectionId, setSelectionId] = useState();
   const [search, setSearch] = useState();
   const [productDet, setproductDet] = useState();
-
-  var aaa = new Date();
-  const newDate = aaa.getTime();
-
-  var bbb = new Date(getLoginDeatil?.updated_at);
-  const sessionDate = bbb.getTime();
+  const [timeChange, setTimeChange] = useState(true);
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -132,6 +128,30 @@ export function DashBoard({ navigation }) {
   const clearInput = () => {
     setAmountCount('');
     setTrackNotes('');
+  };
+  useEffect(() => {
+    if (timeChange) {
+      orderTime();
+    }
+  }, [timeChange === true]);
+
+  const orderTime = estimateTime => {
+    const currentDateTime = new Date();
+    const givenTimestamp = new Date(estimateTime);
+    const timeDifference = givenTimestamp.getTime() - currentDateTime.getTime();
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+    const seconds = Math.floor((timeDifference / 1000) % 60);
+    const timeFormatted = (
+      <View>
+        <Text style={[styles.nameTextBold, styles.timeSec]}>
+          {hours < 1 ? '00' : hours}:{minutes < 1 ? '00' : minutes}:
+          {seconds < 1 ? '00' : seconds}
+        </Text>
+      </View>
+    );
+
+    return timeFormatted;
   };
 
   const startTrackingFun = async () => {
@@ -221,7 +241,7 @@ export function DashBoard({ navigation }) {
         </View>
       </View>
       <View style={{ width: SW(50) }}>
-        <Text style={[styles.nameText, styles.nameTextBold]}>
+        <Text style={[styles.nameText, styles.nameTextBold]} numberOfLines={1}>
           {item?.delivery_details?.title}
         </Text>
         <View style={styles.timeView}>
@@ -234,7 +254,11 @@ export function DashBoard({ navigation }) {
       </View>
       <View style={styles.rightIconStyle1}>
         <View style={styles.timeView}>
-          <Text style={[styles.nameTextBold, styles.timeSec]}>00:03:56</Text>
+          <Text style={[styles.nameTextBold, styles.timeSec]}>
+            {item.estimated_preparation_time === null
+              ? '00:00:00'
+              : orderTime(item.estimated_preparation_time)}
+          </Text>
           <Image source={rightIcon} style={styles.pinIcon} />
         </View>
       </View>
@@ -292,7 +316,6 @@ export function DashBoard({ navigation }) {
                     onChangeText={setAmountCount}
                   />
                 </View>
-
                 <Spacer space={SH(40)} />
                 <View>
                   <Text style={styles.amountCountedText}>
@@ -532,9 +555,10 @@ export function DashBoard({ navigation }) {
                     setSearch(search);
                     onChangeFun(search);
                   }}
+                  ref={textInputRef}
                 />
               </View>
-              <TouchableOpacity onPress={() => alert('Coming soon')}>
+              <TouchableOpacity onPress={() => textInputRef.current.focus()}>
                 <Image source={scn} style={styles.scnStyle} />
               </TouchableOpacity>
             </View>

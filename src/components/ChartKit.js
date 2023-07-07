@@ -1,8 +1,9 @@
+import { COLORS, SH } from '@/theme';
 import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
-export function ChartKit({ productGraphObject, arrayLength }) {
+export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
   return (
     <View>
       {productGraphObject === undefined ? (
@@ -101,13 +102,17 @@ export function ChartKit({ productGraphObject, arrayLength }) {
               },
             ],
           }}
-          width={Dimensions.get('window').width * 0.41}
-          height={190}
+          width={Dimensions.get('window').width * 0.4}
+          height={chartStyle ? 170 : 190}
           chartConfig={{
             decimalPlaces: 0,
             backgroundColor: '#000',
-            backgroundGradientFrom: '#fff',
-            backgroundGradientTo: '#fff',
+            backgroundGradientFrom: chartStyle
+              ? COLORS.textInputBackground
+              : '#fff',
+            backgroundGradientTo: chartStyle
+              ? COLORS.textInputBackground
+              : '#fff',
             decimalPlaces: 2,
             color: () => `rgba(39, 90, 255, 1)`,
             labelColor: (opacity = 1) => `rgba(98, 98, 98, ${opacity})`,
@@ -125,7 +130,7 @@ export function ChartKit({ productGraphObject, arrayLength }) {
           }}
           // bezier
           style={{
-            marginVertical: 8,
+            marginVertical: chartStyle ? 0 : SH(8),
             borderRadius: 16,
           }}
         />

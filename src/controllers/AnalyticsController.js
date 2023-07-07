@@ -177,4 +177,86 @@ export class AnalyticsController {
         });
     });
   }
+
+  static async getOrderstatistics(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.getOrderstatistics +
+        `?seller_id=${sellerID}&filter=week`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getOrderTypeList(sellerID, data) {
+    return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.getOrderTypeList +
+        `?seller_id=${sellerID}&filter=week&` +
+        params;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          if (error?.statusCode !== 204) {
+            Toast.show({
+              text2: error?.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
+          reject(error);
+        });
+    });
+  }
+
+  static async getOrderData(orderID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.getOrderData + `/${orderID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getOrders(orderID) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.getOrders + `/${orderID}`;
+
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }

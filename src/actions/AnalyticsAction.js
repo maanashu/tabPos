@@ -116,6 +116,63 @@ const getProductModalReset = () => ({
   type: TYPES.GET_PRODUCT_MODAL_RESET,
   payload: null,
 });
+const getOrderstatisticsRequest = () => ({
+  type: TYPES.GET_ORDER_STATISTICS_REQUEST,
+  payload: null,
+});
+const getOrderstatisticsSuccess = getOrderstatistics => ({
+  type: TYPES.GET_ORDER_STATISTICS_SUCCESS,
+  payload: { getOrderstatistics },
+});
+const getOrderstatisticsError = error => ({
+  type: TYPES.GET_ORDER_STATISTICS_ERROR,
+  payload: { error },
+});
+const getOrderTypeListRequest = () => ({
+  type: TYPES.GET_ORDER_TYPE_LIST_REQUEST,
+  payload: null,
+});
+const getOrderTypeListSuccess = getOrderTypeList => ({
+  type: TYPES.GET_ORDER_TYPE_LIST_SUCCESS,
+  payload: { getOrderTypeList },
+});
+const getOrderTypeListError = error => ({
+  type: TYPES.GET_ORDER_TYPE_LIST_ERROR,
+  payload: { error },
+});
+const getOrderTypeListReset = () => ({
+  type: TYPES.GET_ORDER_TYPE_LIST_RESET,
+  payload: null,
+});
+
+const getOrderDataRequest = () => ({
+  type: TYPES.GET_ORDER_DATA_REQUEST,
+  payload: null,
+});
+
+const getOrderDataSuccess = getOrderData => ({
+  type: TYPES.GET_ORDER_DATA_SUCCESS,
+  payload: { getOrderData },
+});
+
+const getOrderDataError = error => ({
+  type: TYPES.GET_ORDER_DATA_ERROR,
+  payload: { error },
+});
+
+const getOrdersRequest = () => ({
+  type: TYPES.GET_ORDER_REQUEST,
+  payload: null,
+});
+const getOrdersSuccess = orderList => ({
+  type: TYPES.GET_ORDER_SUCCESS,
+  payload: { orderList },
+});
+const getOrdersError = error => ({
+  type: TYPES.GET_ORDER_ERROR,
+  payload: { error },
+});
+
 export const totalProGraph = sellerID => async dispatch => {
   dispatch(getTotalProGraphRequest());
   try {
@@ -204,5 +261,48 @@ export const getProductModal = productId => async dispatch => {
       dispatch(getProductModalReset());
     }
     dispatch(getProductModalError(error.message));
+  }
+};
+
+export const getOrderstatistics = sellerID => async dispatch => {
+  dispatch(getOrderstatisticsRequest());
+  try {
+    const res = await AnalyticsController.getOrderstatistics(sellerID);
+    return dispatch(getOrderstatisticsSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getOrderstatisticsError(error.message));
+  }
+};
+
+export const getOrderTypeList = (sellerID, data) => async dispatch => {
+  dispatch(getOrderTypeListRequest());
+  try {
+    const res = await AnalyticsController.getOrderTypeList(sellerID, data);
+    return dispatch(getOrderTypeListSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getOrderTypeListReset());
+    }
+    dispatch(getOrderTypeListError(error?.message));
+  }
+};
+
+export const getOrderData = orderID => async dispatch => {
+  dispatch(getOrderDataRequest());
+  try {
+    const res = await AnalyticsController.getOrderData(orderID);
+    return dispatch(getOrderDataSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getOrderDataError(error?.message));
+  }
+};
+
+export const getOrders = orderID => async dispatch => {
+  dispatch(getOrdersRequest());
+  try {
+    const res = await AnalyticsController.getOrders(orderID);
+    return dispatch(getOrdersSuccess(res));
+  } catch (error) {
+    dispatch(getOrdersError(error.message));
   }
 };

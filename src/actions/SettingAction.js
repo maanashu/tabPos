@@ -340,7 +340,6 @@ export const taxPayer = data => async dispatch => {
   dispatch(taxPayerRequest());
   try {
     const res = await SettingController.taxPayer(data);
-    console.log('res', res);
     return dispatch(taxPayerSuccess(res));
   } catch (error) {
     dispatch(taxPayerError(error.message));

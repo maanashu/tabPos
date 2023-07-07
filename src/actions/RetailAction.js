@@ -423,6 +423,18 @@ const clearCheckStore = () => ({
   type: TYPES.CLEAR_CHECK_STORE,
   payload: null,
 });
+export const cartScreenTrue = trueCart => ({
+  type: TYPES.CART_SCREEN_TRUE,
+  payload: { trueCart },
+});
+export const customerTrue = trueCustomer => ({
+  type: TYPES.TURE_CUSTOMER,
+  payload: { trueCustomer },
+});
+export const customerNumber = customerNumber => ({
+  type: TYPES.CUSTOMER_NUMBER,
+  payload: { customerNumber },
+});
 
 export const getCategory = sellerID => async dispatch => {
   dispatch(getCategoryRequest());

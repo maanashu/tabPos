@@ -85,6 +85,9 @@ export const ApiOrderInventory = {
   getTotalSale: 'orders/pos/transaction-count',
   shippingGraph: 'orders/pos/statistics/orders',
   deliveringOrder: 'orders/pos/delivering-orders/count',
+  getOrderstatistics: 'orders/pos/orders/statistics',
+  getOrderTypeList: 'orders/pos/orders',
+  getOrderData: 'orders/pos',
 };
 
 export const ApiWalletInventory = {

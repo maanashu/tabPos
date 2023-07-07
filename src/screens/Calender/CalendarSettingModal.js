@@ -216,7 +216,6 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
                 defaultAppointmentRequestMode: defaultAppointmentRequestMode,
                 defaultEmployeesColorSet: defaultEmployeesColorSet,
               };
-              console.log('Calendar Default Settings', calendatSettings);
               setIsVisible(false);
             }}
             style={[styles.acceptbtnContainer]}

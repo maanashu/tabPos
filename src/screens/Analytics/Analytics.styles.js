@@ -813,7 +813,7 @@ export const styles = StyleSheet.create({
   },
   orderSideCon: {
     // borderWidth: 1,
-    width: SH(459),
+    width: SW(120),
     height: SH(665),
     position: 'absolute',
     top: 0,
@@ -874,6 +874,8 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
     fontSize: SF(18),
+    flex: 1,
+    marginLeft: SW(20),
   },
   onlyxstyle: {
     color: COLORS.dark_grey,
@@ -895,7 +897,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: COLORS.orderStatusBackground,
     // width:SH(403),
-    height: SH(107),
+    height: SH(80),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(10),
     // alignItems:'center'
@@ -932,6 +934,7 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(15),
     resizeMode: 'contain',
+    borderRadius: SW(15),
   },
   cusAddText: {
     fontSize: SF(16),
@@ -939,7 +942,7 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
   },
   walletIdCon: {
-    height: SH(75),
+    height: SH(60),
     borderTopWidth: 1,
     borderColor: COLORS.washGrey,
     justifyContent: 'center',
@@ -1016,7 +1019,7 @@ export const styles = StyleSheet.create({
 
   // TOTAL RENEVUE CSS START
   revenueGraph: {
-    width: SH(1254),
+    width: SW(335),
     height: SH(194),
     resizeMode: 'contain',
   },
@@ -1055,6 +1058,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: moderateScale(4),
+    alignSelf: 'center',
   },
   allJbrConBluish: {
     borderColor: COLORS.primary,
@@ -1064,6 +1068,7 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontSize: SF(14),
     paddingHorizontal: moderateScale(7),
+    height: SH(20),
   },
   allJbrTextbluish: {
     fontFamily: Fonts.SemiBold,
@@ -1110,7 +1115,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: SF(12),
-    paddingHorizontal: moderateScale(3),
   },
   codeLogo: {
     width: SH(18),
@@ -1213,18 +1217,18 @@ export const styles = StyleSheet.create({
   },
   customerAddreCons: {
     borderWidth: 1,
-    height: SH(300),
+    height: SH(280),
     borderRadius: 5,
     borderColor: COLORS.washGrey,
   },
   numpadContainer2false: {
-    width: SH(880),
+    width: SW(230),
     height: windowHeight,
     backgroundColor: COLORS.white,
     paddingHorizontal: moderateScale(10),
   },
   numpadContainer2true: {
-    width: SH(1350),
+    flex: 1,
     height: windowHeight,
     backgroundColor: COLORS.white,
     paddingHorizontal: moderateScale(10),
@@ -1520,13 +1524,13 @@ export const styles = StyleSheet.create({
   costoContainer: {
     borderWidth: 1,
     width: windowWidth * 0.44,
-    height: SH(140),
+    height: SH(100),
     borderRadius: 10,
     borderColor: COLORS.solidGrey,
   },
   trackingAngela: {
-    Width: SH(60),
-    height: SH(60),
+    Width: SH(50),
+    height: SH(50),
     resizeMode: 'contain',
   },
   costoHr: {
@@ -1536,12 +1540,12 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(5),
   },
   costoName: {
-    fontSize: SF(24),
+    fontSize: SF(20),
     color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonBold,
   },
   costoAdd: {
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(5),
@@ -1553,19 +1557,19 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   ciagrtext: {
-    fontSize: SF(16),
+    fontSize: SF(12),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(4),
   },
   ticketImage: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
   },
   detailText: {
     color: COLORS.primary,
-    fontSize: SF(12),
+    fontSize: SF(11),
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(10),
   },
@@ -1576,18 +1580,18 @@ export const styles = StyleSheet.create({
   },
   mapStyle: {
     width: SW(163),
-    height: SH(1070),
+    height: SH(610),
     resizeMode: 'cover',
     borderRadius: 15,
   },
   orderStatus: {
     color: COLORS.solid_grey,
-    fontSize: SF(15),
+    fontSize: SF(12),
     fontFamily: Fonts.SemiBold,
   },
   movingArrow: {
     width: SW(8),
-    height: SW(16),
+    height: SH(18),
     resizeMode: 'cover',
     marginTop: 10,
     marginBottom: 4,
@@ -1599,7 +1603,7 @@ export const styles = StyleSheet.create({
   },
   waitMinuteLight: {
     color: COLORS.gerySkies,
-    fontSize: SF(12),
+    fontSize: SF(10),
     fontFamily: Fonts.Regular,
   },
   carriarCon: {
@@ -1638,14 +1642,14 @@ export const styles = StyleSheet.create({
     paddingLeft: moderateScale(5),
   },
   Phonelight: {
-    width: SH(16),
-    height: SH(16),
+    width: SH(14),
+    height: SH(14),
     resizeMode: 'contain',
   },
   mapBorder: {
     borderWidth: 2,
     width: SW(164),
-    height: SH(1074),
+    height: SH(610),
     borderRadius: 18,
     borderColor: COLORS.solidGrey,
   },
@@ -1705,5 +1709,17 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  graphRevenue: {
+    backgroundColor: COLORS.textInputBackground,
+    height: windowHeight * 0.265,
+    paddingHorizontal: moderateScale(5),
+    width: Platform.OS === 'android' ? windowWidth * 0.42 : windowWidth * 0.42,
+    marginRight: SW(8),
+  },
+  listLoader: {
+    marginTop: SH(140),
+    marginLeft: SW(150),
+    alignItems: 'flex-start',
   },
 });

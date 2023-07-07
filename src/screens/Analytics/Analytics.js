@@ -58,6 +58,7 @@ import {
   dropRight,
   movingArrowBlue,
   fillRadio,
+  userImage,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
@@ -95,6 +96,10 @@ import { createDispatchHook, useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import {
   catSubBrandData,
+  getOrderData,
+  getOrderTypeList,
+  getOrders,
+  getOrderstatistics,
   getProductList,
   getProductModal,
   totalInvernteryGraph,
@@ -106,12 +111,14 @@ import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import moment from 'moment';
 
 export function Analytics(props) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const orderID = getAuth?.merchantLoginData?.id;
   const getAnalyticsData = useSelector(getAnalytics);
   const totalProductModalData = getAnalyticsData?.getProductModal;
   const getTotalProductArray = getAnalyticsData?.getProductList;
@@ -120,6 +127,10 @@ export function Analytics(props) {
   const orderGraphObject = getAnalyticsData?.getOrderGraph;
   const inventeryGraphObject = getAnalyticsData?.getInventeryGraph;
   const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
+  const getOrderListData = getAnalyticsData?.getOrderTypeList;
+  const Orderstatistics = getAnalyticsData?.getOrderstatistics;
+  const OrderData = getAnalyticsData?.getOrderData;
+  const OrderDetails = getAnalyticsData?.orderList;
   const [value, setValue] = useState('Weekly');
   const [accCatTable, setAccCatTable] = useState('');
   const [revenueTableHeading, setRevenueTableHeading] = useState('');
@@ -165,6 +176,7 @@ export function Analytics(props) {
     setRevenueTable(true), setRevenueTableHeading('');
   };
   const [categoryName, setCategoryName] = useState();
+
   const productDetailData = [
     {
       heading: 'Cost Price',
@@ -204,6 +216,7 @@ export function Analytics(props) {
       dispatch(totalInvernteryGraph(sellerID));
       dispatch(totalRevenueGraph(sellerID));
       dispatch(totalOrderGraph(sellerID));
+      dispatch(getOrderstatistics(sellerID));
     }
   }, [isFocused]);
   const productGraphLoading = useSelector(state =>
@@ -227,6 +240,15 @@ export function Analytics(props) {
   );
   const productModalLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_PRODUCT_MODAL], state)
+  );
+  const orderTypeList = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER_TYPE_LIST], state)
+  );
+  const orderstatisticsLoader = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
+  );
+  const orderData = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER_DATA], state)
   );
 
   const tobacoTableHandler = catId => {
@@ -346,19 +368,39 @@ export function Analytics(props) {
       // setInventoryChangeTable(true);
     }
   };
+
   const totalOrderViseHandler = item => {
-    if (item.category === 'Total Order') {
+    if (item.count === 0) {
+      Toast.show({
+        text2: 'No data found',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (item.title == 'Total Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Total Order');
-    } else if (item.category === 'Store Order') {
+      const data = { page: 1, limit: 10, type: 'total_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else if (item.title == 'Store Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Store Order');
-    } else if (item.category === 'Online Order') {
+      const data = { page: 1, limit: 10, type: 'store_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else if (item.title == 'Online Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Online Order');
-    } else if (item.category === 'Shipping Order') {
+      const data = { page: 1, limit: 10, type: 'delivery_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else if (item.title == 'Shipping Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Shipping Order');
+      const data = { page: 1, limit: 10, type: 'shipping_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
     } else {
       setRevenueTableHeading('');
       setRevenueTable(true);
@@ -368,40 +410,52 @@ export function Analytics(props) {
     if (revenueTableHeading === 'Total Order') {
       return (
         <Text style={[styles.trancationHeading, styles.tableHeaderSetting]}>
-          {strings.analytics.totalOrder}
+          {strings.analytics.totalOrder}{' '}
           <Text style={styles.totalTranStyle}>
-            {' '}
-            {strings.analytics.totalOrderCount}
+            {orderstatisticsLoader ? (
+              <ActivityIndicator color={COLORS.primary} />
+            ) : (
+              Orderstatistics?.total_order
+            )}
           </Text>
         </Text>
       );
     } else if (revenueTableHeading === 'Store Order') {
       return (
         <Text style={[styles.trancationHeading, styles.tableHeaderSetting]}>
-          {strings.analytics.storeOrder}
+          {strings.analytics.storeOrder}{' '}
           <Text style={styles.totalTranStyle}>
-            {' '}
-            {strings.analytics.totalOrderCount}
+            {orderstatisticsLoader ? (
+              <ActivityIndicator color={COLORS.primary} />
+            ) : (
+              Orderstatistics?.total_order
+            )}
           </Text>
         </Text>
       );
     } else if (revenueTableHeading === 'Online Order') {
       return (
         <Text style={[styles.trancationHeading, styles.tableHeaderSetting]}>
-          {strings.analytics.deliveryOrder}
+          {strings.analytics.deliveryOrder}{' '}
           <Text style={styles.totalTranStyle}>
-            {' '}
-            {strings.analytics.totalOrderCount}
+            {orderstatisticsLoader ? (
+              <ActivityIndicator color={COLORS.primary} />
+            ) : (
+              Orderstatistics?.total_order
+            )}
           </Text>
         </Text>
       );
     } else if (revenueTableHeading === 'Shipping Order') {
       return (
         <Text style={[styles.trancationHeading, styles.tableHeaderSetting]}>
-          {strings.analytics.shipingOrder}
+          {strings.analytics.shipingOrder}{' '}
           <Text style={styles.totalTranStyle}>
-            {' '}
-            {strings.analytics.totalOrderCount}
+            {orderstatisticsLoader ? (
+              <ActivityIndicator color={COLORS.primary} />
+            ) : (
+              Orderstatistics?.total_order
+            )}
           </Text>
         </Text>
       );
@@ -417,11 +471,284 @@ export function Analytics(props) {
       );
     }
   };
+
+  const getOrderListItem = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View>
+          <Text style={styles.revenueDataText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
+          <Text style={styles.revenueDataTextLight}>
+            {moment(item?.created_at).format('h:mm A')}
+          </Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <Text style={styles.revenueDataText}>{item?.invoice?.invoice_id}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>Delivery</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>${item?.tips}</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.actual_amount}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>JBR</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity
+          style={styles.completeBtnCon2}
+          onPress={() => {
+            setRevenueCompleteSideBar(true),
+              setRevenueTable(false),
+              setTablebackSetting(false),
+              setOrderList(true);
+            dispatch(getOrderData(item?.id));
+          }}
+        >
+          <Text style={styles.completeText}>Completed</Text>
+        </TouchableOpacity>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
+
+  const getOrderListStore = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View>
+          <Text style={styles.revenueDataText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
+          <Text style={styles.revenueDataTextLight}>
+            {moment(item?.created_at).format('h:mm A')}
+          </Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <Text style={styles.revenueDataText}>{item?.invoice?.invoice_id}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>Delivery</Text>
+      </DataTable.Cell>
+      {/* <DataTable.Cell style={styles.dateTableSetting}>
+      <View style={styles.flexAlign}>
+        <Image source={clay} style={styles.clay} />
+        <Text style={styles.revenueDataText}>$23.50</Text>
+      </View>
+    </DataTable.Cell> */}
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.actual_amount}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>JBR</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity
+          style={styles.completeBtnCon2}
+          onPress={() => {
+            setRevenueCompleteSideBar(true),
+              setRevenueTable(false),
+              setTablebackSetting(false),
+              setOrderList(true);
+          }}
+        >
+          <Text style={styles.completeText}>Completed</Text>
+        </TouchableOpacity>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
+
+  const getOrderListDelivery = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View>
+          <Text style={styles.revenueDataText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
+          <Text style={styles.revenueDataTextLight}>
+            {moment(item?.created_at).format('h:mm A')}
+          </Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <Text style={styles.revenueDataText}>{item?.invoice?.invoice_id}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>Delivery</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={deliverCheck} style={styles.codeLogo} />
+          <Text style={[styles.revenueDataText, { color: COLORS.primary }]}>
+            $23.50
+          </Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.actual_amount}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>JBR</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity
+          style={styles.completeBtnCon2}
+          onPress={() => {
+            setRevenueTable(false),
+              setRevenueOrderBuyer(true),
+              setTablebackSetting(true);
+          }}
+        >
+          <Text style={styles.completeText}>Completed</Text>
+        </TouchableOpacity>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
+
+  const getOrderListShipping = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View>
+          <Text style={styles.revenueDataText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
+          <Text style={styles.revenueDataTextLight}>
+            {moment(item?.created_at).format('h:mm A')}
+          </Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <Text style={styles.revenueDataText}>{item?.invoice?.invoice_id}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>Delivery</Text>
+      </DataTable.Cell>
+      {/* <DataTable.Cell style={styles.dateTableSetting}>
+      <View style={styles.flexAlign}>
+        <Image source={deliverCheck} style={styles.codeLogo} />
+        <Text style={[styles.revenueDataText, {color:COLORS.primary}]}>$23.50</Text>
+      </View>
+    </DataTable.Cell> */}
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          <Image source={clay} style={styles.clay} />
+          <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.actual_amount}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>JBR</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity
+          style={styles.completeBtnCon2}
+          onPress={() => {
+            setRevenueTable(false),
+              setRevenueOrderBuyer(true),
+              setTablebackSetting(true);
+          }}
+        >
+          <Text style={styles.completeText}>Completed</Text>
+        </TouchableOpacity>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
   const orderTableDataFun = revenueTableHeading => {
     if (revenueTableHeading === 'Total Order') {
       return (
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
-          <ScrollView horizontal>
+          <ScrollView
+            horizontal
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          >
             <DataTable style={{ zIndex: -99 }}>
               <DataTable.Header
                 style={{ backgroundColor: COLORS.textInputBackground }}
@@ -560,73 +887,37 @@ export function Analytics(props) {
                   <Text style={styles.revenueText}>Status</Text>
                 </DataTable.Title>
               </DataTable.Header>
-
-              <View style={{ height: SH(380), zIndex: -99 }}>
-                {/* <ScrollView> */}
-                <DataTable.Row>
-                  <DataTable.Cell style={styles.dateTableSettingFirst}>
-                    <Text style={styles.revenueDataText}>1</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View>
-                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <Text style={styles.revenueDataText}>2565916565..</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>
-                        Michael E. Clay
+              {orderTypeList ? (
+                <View style={styles.listLoader}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : (
+                <View style={{ height: SH(380), zIndex: -99 }}>
+                  {/* <ScrollView> */}
+                  {getOrderListData?.length === 0 ? (
+                    <View style={styles.listLoader}>
+                      <Text
+                        style={{
+                          fontSize: SF(20),
+                          color: COLORS.darkGray,
+                        }}
+                      >
+                        {'No data found'}
                       </Text>
                     </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>12</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>Delivery</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
+                  ) : (
+                    <View>
+                      <FlatList
+                        data={getOrderListData}
+                        renderItem={getOrderListItem}
+                        keyExtractor={item => item.id}
+                        showsHorizontalScrollIndicator={false}
+                      />
                     </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>JBR</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <TouchableOpacity
-                      style={styles.completeBtnCon2}
-                      onPress={() => {
-                        setRevenueCompleteSideBar(true),
-                          setRevenueTable(false),
-                          setTablebackSetting(false),
-                          setOrderList(true);
-                      }}
-                    >
-                      <Text style={styles.completeText}>Completed</Text>
-                    </TouchableOpacity>
-                  </DataTable.Cell>
-                </DataTable.Row>
-                {/* </ScrollView> */}
-              </View>
+                  )}
+                  {/* </ScrollView> */}
+                </View>
+              )}
             </DataTable>
           </ScrollView>
         </View>
@@ -634,7 +925,11 @@ export function Analytics(props) {
     } else if (revenueTableHeading === 'Store Order') {
       return (
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
-          <ScrollView horizontal>
+          <ScrollView
+            horizontal
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          >
             <DataTable style={{ zIndex: -99 }}>
               <DataTable.Header
                 style={{ backgroundColor: COLORS.textInputBackground }}
@@ -773,10 +1068,36 @@ export function Analytics(props) {
                   <Text style={styles.revenueText}>Status</Text>
                 </DataTable.Title>
               </DataTable.Header>
+              {orderTypeList ? (
+                <View style={styles.listLoader}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : (
+                <View style={{ height: SH(380), zIndex: -99 }}>
+                  {/* <ScrollView> */}
 
-              <View style={{ height: SH(380), zIndex: -99 }}>
-                {/* <ScrollView> */}
-                <DataTable.Row>
+                  {getOrderListData?.length === 0 ? (
+                    <View style={styles.listLoader}>
+                      <Text
+                        style={{
+                          fontSize: SF(20),
+                          color: COLORS.darkGray,
+                        }}
+                      >
+                        {'No data found'}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View>
+                      <FlatList
+                        data={getOrderListData}
+                        renderItem={getOrderListStore}
+                        keyExtractor={item => item.id}
+                        showsHorizontalScrollIndicator={false}
+                      />
+                    </View>
+                  )}
+                  {/* <DataTable.Row>
                   <DataTable.Cell style={styles.dateTableSettingFirst}>
                     <Text style={styles.revenueDataText}>1</Text>
                   </DataTable.Cell>
@@ -808,38 +1129,40 @@ export function Analytics(props) {
                       <Image source={clay} style={styles.clay} />
                       <Text style={styles.revenueDataText}>$23.50</Text>
                     </View>
-                  </DataTable.Cell> */}
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>JBR</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <TouchableOpacity
-                      style={styles.completeBtnCon2}
-                      onPress={() => {
-                        setRevenueCompleteSideBar(true),
-                          setRevenueTable(false),
-                          setTablebackSetting(false),
-                          setOrderList(true);
-                      }}
-                    >
-                      <Text style={styles.completeText}>Completed</Text>
-                    </TouchableOpacity>
-                  </DataTable.Cell>
-                </DataTable.Row>
-                {/* </ScrollView> */}
-              </View>
+                  </DataTable.Cell> 
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <View style={styles.flexAlign}>
+                    <Image source={clay} style={styles.clay} />
+                    <Text style={styles.revenueDataText}>$23.50</Text>
+                  </View>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>$2,561.00</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>$2,561.00</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>JBR</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <TouchableOpacity
+                    style={styles.completeBtnCon2}
+                    onPress={() => {
+                      setRevenueCompleteSideBar(true),
+                        setRevenueTable(false),
+                        setTablebackSetting(false),
+                        setOrderList(true);
+                    }}
+                  >
+                    <Text style={styles.completeText}>Completed</Text>
+                  </TouchableOpacity>
+                </DataTable.Cell>*/}
+                  {/* </DataTable.Row> */}
+
+                  {/* </ScrollView> */}
+                </View>
+              )}
             </DataTable>
           </ScrollView>
         </View>
@@ -847,7 +1170,11 @@ export function Analytics(props) {
     } else if (revenueTableHeading === 'Online Order') {
       return (
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
-          <ScrollView horizontal>
+          <ScrollView
+            horizontal
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          >
             <DataTable style={{ zIndex: -99 }}>
               <DataTable.Header
                 style={{ backgroundColor: COLORS.textInputBackground }}
@@ -986,10 +1313,35 @@ export function Analytics(props) {
                   <Text style={styles.revenueText}>Status</Text>
                 </DataTable.Title>
               </DataTable.Header>
-
-              <View style={{ height: SH(380), zIndex: -99 }}>
-                {/* <ScrollView> */}
-                <DataTable.Row>
+              {orderTypeList ? (
+                <View style={styles.listLoader}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : (
+                <View style={{ height: SH(380), zIndex: -99 }}>
+                  {/* <ScrollView> */}
+                  {getOrderListData?.length === 0 ? (
+                    <View style={styles.listLoader}>
+                      <Text
+                        style={{
+                          fontSize: SF(20),
+                          color: COLORS.darkGray,
+                        }}
+                      >
+                        {'No data found'}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View>
+                      <FlatList
+                        data={getOrderListData}
+                        renderItem={getOrderListDelivery}
+                        keyExtractor={item => item.id}
+                        showsHorizontalScrollIndicator={false}
+                      />
+                    </View>
+                  )}
+                  {/* <DataTable.Row>
                   <DataTable.Cell style={styles.dateTableSettingFirst}>
                     <Text style={styles.revenueDataText}>1</Text>
                   </DataTable.Cell>
@@ -1117,9 +1469,10 @@ export function Analytics(props) {
                       <Text style={styles.completeText}>Canceled</Text>
                     </TouchableOpacity>
                   </DataTable.Cell>
-                </DataTable.Row>
-                {/* </ScrollView> */}
-              </View>
+                </DataTable.Row> */}
+                  {/* </ScrollView> */}
+                </View>
+              )}
             </DataTable>
           </ScrollView>
         </View>
@@ -1127,7 +1480,11 @@ export function Analytics(props) {
     } else if (revenueTableHeading === 'Shipping Order') {
       return (
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
-          <ScrollView horizontal>
+          <ScrollView
+            horizontal
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          >
             <DataTable style={{ zIndex: -99 }}>
               <DataTable.Header
                 style={{ backgroundColor: COLORS.textInputBackground }}
@@ -1266,126 +1623,37 @@ export function Analytics(props) {
                   <Text style={styles.revenueText}>Status</Text>
                 </DataTable.Title>
               </DataTable.Header>
-
-              <View style={{ height: SH(380), zIndex: -99 }}>
-                {/* <ScrollView> */}
-                <DataTable.Row>
-                  <DataTable.Cell style={styles.dateTableSettingFirst}>
-                    <Text style={styles.revenueDataText}>1</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View>
-                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <Text style={styles.revenueDataText}>2565916565..</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>
-                        Michael E. Clay
+              {orderTypeList ? (
+                <View style={styles.listLoader}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : (
+                <View style={{ height: SH(380), alignSelf: 'flex-start' }}>
+                  {/* <ScrollView> */}
+                  {getOrderListData?.length === 0 ? (
+                    <View style={styles.listLoader}>
+                      <Text
+                        style={{
+                          fontSize: SF(20),
+                          color: COLORS.darkGray,
+                        }}
+                      >
+                        {'No data found'}
                       </Text>
                     </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>12</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>Delivery</Text>
-                  </DataTable.Cell>
-                  {/* <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={deliverCheck} style={styles.codeLogo} />
-                      <Text style={[styles.revenueDataText, {color:COLORS.primary}]}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell> */}
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>JBR</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <TouchableOpacity
-                      style={styles.completeBtnCon2}
-                      onPress={() => {
-                        setRevenueTable(false),
-                          setRevenueOrderBuyer(true),
-                          setTablebackSetting(true);
-                      }}
-                    >
-                      <Text style={styles.completeText}>Completed</Text>
-                    </TouchableOpacity>
-                  </DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                  <DataTable.Cell style={styles.dateTableSettingFirst}>
-                    <Text style={styles.revenueDataText}>1</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
+                  ) : (
                     <View>
-                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
+                      <FlatList
+                        data={getOrderListData}
+                        renderItem={getOrderListShipping}
+                        keyExtractor={item => item.id}
+                        showsHorizontalScrollIndicator={false}
+                      />
                     </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <Text style={styles.revenueDataText}>2565916565..</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>
-                        Michael E. Clay
-                      </Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>12</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>Delivery</Text>
-                  </DataTable.Cell>
-                  {/* <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={null} style={styles.codeLogo} />
-                      <Text style={[styles.revenueDataText, {color:COLORS.primary}]}>{null}</Text>
-                    </View>
-                  </DataTable.Cell> */}
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>{null}</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>{null}</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <TouchableOpacity style={styles.cancelBtnCon2}>
-                      <Text style={styles.completeText}>Canceled</Text>
-                    </TouchableOpacity>
-                  </DataTable.Cell>
-                </DataTable.Row>
-                {/* </ScrollView> */}
-              </View>
+                  )}
+                  {/* </ScrollView> */}
+                </View>
+              )}
             </DataTable>
           </ScrollView>
         </View>
@@ -1393,7 +1661,11 @@ export function Analytics(props) {
     } else {
       return (
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
-          <ScrollView horizontal>
+          <ScrollView
+            horizontal
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          >
             <DataTable style={{ zIndex: -99 }}>
               <DataTable.Header
                 style={{ backgroundColor: COLORS.textInputBackground }}
@@ -1630,21 +1902,58 @@ export function Analytics(props) {
       style={[styles.allJbrCon, { borderColor }]}
     >
       <Text style={[styles.allJbrText, { color, fontFamily }]}>
-        {item.transaction} {item.count}
+        {item.title}{' '}
+        {orderstatisticsLoader ? (
+          <ActivityIndicator color={COLORS.primary} />
+        ) : (
+          item.count
+        )}
       </Text>
     </TouchableOpacity>
   );
 
+  const orderListTabChange = item => {
+    if (item.title == 'Total Order') {
+      setRevenueTable(true);
+      setRevenueTableHeading('Total Order');
+      const data = { page: 1, limit: 10, type: 'total_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else if (item.title == 'Store Order') {
+      setRevenueTable(true);
+      setRevenueTableHeading('Store Order');
+      const data = { page: 1, limit: 10, type: 'store_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else if (item.title == 'Online Order') {
+      setRevenueTable(true);
+      setRevenueTableHeading('Online Order');
+      const data = { page: 1, limit: 10, type: 'delivery_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else if (item.title == 'Shipping Order') {
+      setRevenueTable(true);
+      setRevenueTableHeading('Shipping Order');
+      const data = { page: 1, limit: 10, type: 'shipping_order' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
+    } else {
+      setRevenueTableHeading('');
+      setRevenueTable(true);
+    }
+  };
+
   const allTransactionItem = ({ item }) => {
     const borderColor =
-      item.id === selectedId ? COLORS.primary : COLORS.solidGrey;
-    const color = item.id === selectedId ? COLORS.primary : COLORS.dark_grey;
-    const fontFamily = item.id === selectedId ? Fonts.SemiBold : Fonts.Regular;
+      item.title === selectedId ? COLORS.primary : COLORS.solidGrey;
+    const color = item.title === selectedId ? COLORS.primary : COLORS.dark_grey;
+    const fontFamily =
+      item.title === selectedId ? Fonts.SemiBold : Fonts.Regular;
 
     return (
       <TransactionTypeItem
         item={item}
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => orderListTabChange(item)}
         borderColor={borderColor}
         color={color}
         fontFamily={fontFamily}
@@ -1710,25 +2019,82 @@ export function Analytics(props) {
   );
   const renderJbrItem = ({ item }) => (
     <View style={[styles.jbrListCon]}>
-      <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
-        <View style={{ flexDirection: 'row', width: SW(60) }}>
-          <Image source={menu} style={styles.ashtonStyle} />
+      <View
+        style={[
+          styles.displayFlex,
+          { paddingVertical: verticalScale(5), justifyContent: 'flex-start' },
+        ]}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+          }}
+        >
+          <Image
+            source={
+              item?.product_image ? { uri: item?.product_image } : userImage
+            }
+            style={styles.ashtonStyle}
+          />
           <View style={{ paddingHorizontal: moderateScale(10) }}>
-            <Text style={[styles.jfrText, { color: COLORS.black }]}>
-              {item.name}
+            <Text
+              style={[styles.jfrText, { color: COLORS.black }]}
+              numberOfLines={1}
+            >
+              {item.product_name}
             </Text>
             <Text style={styles.boxText}>Box</Text>
           </View>
         </View>
         <Text style={styles.onexstyle}>
           <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>
-          {strings.posSale.onex}
+          {item?.qty}
         </Text>
-        <Text style={[styles.jfrText, { color: COLORS.black }]}>
+        <Text
+          style={[
+            styles.jfrText,
+            {
+              color: COLORS.black,
+            },
+          ]}
+        >
           {item.price}
         </Text>
       </View>
     </View>
+  );
+
+  const renderOrderItem = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell>
+        <Text style={styles.rowText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.buyerTableSettingSecond}>
+        {/* <View style={{width:SH(200), height:SH(40)}}>
+                <View style={styles.flexAlign}>
+                    <Image source={asthonLogo} style={styles.asthonLogo}/>
+                    <View style={{paddingHorizontal:moderateScale(5)}}>
+                       <Text style={styles.rowText}>Ashton Classic</Text>
+                       <Text style={[styles.rowText, {color:COLORS.darkGray}]}>Box of 25</Text>
+                    </View>
+                </View>
+            </View> */}
+
+        <Text style={styles.rowText}>{item.product_name}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell
+        style={[styles.buyerTableSettingFirst, { marginLeft: SH(240) }]}
+      >
+        <Text style={styles.revenueDataText}>{item?.qty}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.buyerTableSettingFirst}>
+        <Text style={styles.revenueDataText}>16 Box</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.buyerTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{item?.price}</Text>
+      </DataTable.Cell>
+    </DataTable.Row>
   );
 
   const tableHeaderAccCat = accCatTable => {
@@ -1827,7 +2193,10 @@ export function Analytics(props) {
               </View>
             </View>
             <View style={{ height: windowHeight * 0.56 }}>
-              <ScrollView>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+              >
                 {catSubBrandArrayLoad ? (
                   <View style={{ marginTop: 50 }}>
                     <ActivityIndicator size="large" color={COLORS.primary} />
@@ -1951,7 +2320,10 @@ export function Analytics(props) {
               </View>
             </View>
             <View style={{ height: windowHeight * 0.56 }}>
-              <ScrollView>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+              >
                 {catSubBrandArrayLoad ? (
                   <View style={{ marginTop: 50 }}>
                     <ActivityIndicator size="large" color={COLORS.primary} />
@@ -2075,7 +2447,10 @@ export function Analytics(props) {
               </View>
             </View>
             <View style={{ height: windowHeight * 0.56 }}>
-              <ScrollView>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+              >
                 {catSubBrandArrayLoad ? (
                   <View style={{ marginTop: 50 }}>
                     <ActivityIndicator size="large" color={COLORS.primary} />
@@ -2209,7 +2584,10 @@ export function Analytics(props) {
             </View>
             {/* getTotalProductArray */}
             <View style={{ height: windowHeight * 0.56 }}>
-              <ScrollView>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+              >
                 {totalProuductArrayLoad ? (
                   <View style={{ marginTop: 50 }}>
                     <ActivityIndicator size="large" color={COLORS.primary} />
@@ -2364,7 +2742,10 @@ export function Analytics(props) {
               </View>
             </View>
             <View style={{ height: windowHeight * 0.56 }}>
-              <ScrollView>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+              >
                 {totalProuductArrayLoad ? (
                   <View style={{ marginTop: 50 }}>
                     <ActivityIndicator size="large" color={COLORS.primary} />
@@ -2519,7 +2900,10 @@ export function Analytics(props) {
               </View>
             </View>
             <View style={{ height: windowHeight * 0.56 }}>
-              <ScrollView>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+              >
                 {totalProuductArrayLoad ? (
                   <View style={{ marginTop: 50 }}>
                     <ActivityIndicator size="large" color={COLORS.primary} />
@@ -2674,7 +3058,10 @@ export function Analytics(props) {
               </View>
             </View>
             <View style={{ height: windowHeight * 0.56 }}>
-              <ScrollView>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+              >
                 {catSubBrandArrayLoad ? (
                   <View style={{ marginTop: 50 }}>
                     <ActivityIndicator size="large" color={COLORS.primary} />
@@ -3442,7 +3829,7 @@ export function Analytics(props) {
             showsVerticalScrollIndicator={false}
           > */}
         <View style={styles.modalMainView}>
-          <Spacer space={SH(35)} />
+          <Spacer space={SH(10)} />
           <View style={styles.displayFlex}>
             <TouchableOpacity
               style={styles.backButtonCon}
@@ -3609,7 +3996,10 @@ export function Analytics(props) {
               </View>
             </View>
           </View>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          >
             <View>
               <Spacer space={SH(20)} />
               <View style={styles.displayFlex}>
@@ -4308,7 +4698,10 @@ export function Analytics(props) {
                 <Spacer space={SH(15)} />
 
                 <View style={{ height: SH(590) }}>
-                  <ScrollView showsVerticalScrollIndicator={false}>
+                  <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                  >
                     <Spacer space={SH(20)} />
                     <Text style={styles.paymenttdone}>
                       {strings.posSale.paymenttdone}
@@ -4540,7 +4933,10 @@ export function Analytics(props) {
           </View>
           <Spacer space={SH(28)} />
           <View style={styles.trackingNoBody}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+            >
               <Spacer space={SH(10)} />
               <View style={styles.displayFlex}>
                 <View style={styles.mapContainer}>
@@ -4552,7 +4948,7 @@ export function Analytics(props) {
                         <Text style={styles.costoName}>
                           {strings.customers.costo}
                         </Text>
-                        <Spacer space={SH(10)} />
+                        <Spacer space={SH(8)} />
                         <View style={styles.flexAlign}>
                           <Image source={location} style={styles.Phonelight} />
                           <Text style={styles.costoAdd}>
@@ -4596,7 +4992,7 @@ export function Analytics(props) {
                       </View>
                     </View>
                   </View>
-                  <Spacer space={SH(30)} />
+                  <Spacer space={SH(10)} />
                   <View style={{ paddingHorizontal: moderateScale(18) }}>
                     <Text style={styles.orderStatus}>
                       {strings.customers.orderStatus}
@@ -4612,10 +5008,10 @@ export function Analytics(props) {
                     <View
                       style={[
                         styles.costoHr,
-                        { marginVertical: verticalScale(8) },
+                        { marginVertical: verticalScale(5) },
                       ]}
                     />
-                    <Spacer space={SH(20)} />
+                    <Spacer space={SH(15)} />
                     <View style={{ flexDirection: 'row' }}>
                       <View style={{ flexDirection: 'column' }}>
                         <Image source={blankRadio} style={styles.ticketImage} />
@@ -4804,7 +5200,12 @@ export function Analytics(props) {
                 { paddingHorizontal: moderateScale(10) },
               ]}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
                 {/* <TouchableOpacity
                       // onPress={() => {setRevenueOrderBuyer(false), setOrderList(true)} }
                       onPress = {() => {tablebackSetting ? (setRevenueOrderBuyer(false), setRevenueTable(true)) : (setRevenueOrderBuyer(false), setOrderList(true)) }}
@@ -4873,13 +5274,22 @@ export function Analytics(props) {
                   <View style={{ flexDirection: 'row' }}>
                     <Image source={angela} style={styles.angelaPic} />
                     <View style={{ flexDirection: 'column' }}>
-                      <Text style={styles.angela}>{strings.wallet.angela}</Text>
+                      <Text style={styles.angela}>
+                        {OrderDetails?.user_details?.firstname}
+                      </Text>
                       <Spacer space={SH(10)} />
                       <Text style={styles.angelaAddress}>
-                        {strings.wallet.angelaAddress1}
+                        {
+                          OrderDetails?.user_details?.current_address
+                            ?.street_address
+                        }{' '}
+                        {OrderDetails?.user_details?.current_address?.city},{' '}
+                        {OrderDetails?.user_details?.current_address?.state}{' '}
+                        {OrderDetails?.user_details?.current_address?.zipcode}
                       </Text>
                       <Text style={styles.angelaAddress}>
-                        {strings.wallet.angelaAddress2}
+                        {strings.wallet.angelaAddress2}{' '}
+                        {OrderDetails?.user_details?.phone_number}
                       </Text>
                     </View>
                   </View>
@@ -4895,27 +5305,27 @@ export function Analytics(props) {
                   <Text style={styles.invoiceId}>
                     {strings.wallet.invoiceIdLabel}{' '}
                     <Text style={{ color: COLORS.solid_grey }}>
-                      {strings.wallet.invoiceId}
+                      {OrderDetails?.invoice?.invoice_id}
                     </Text>
                   </Text>
                   <Spacer space={SH(5)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.createDateLabel}{' '}
                     <Text style={{ color: COLORS.solid_grey }}>
-                      {strings.wallet.createDate}
+                      {OrderDetails?.invoice?.created_date}
                     </Text>
                   </Text>
                   <Spacer space={SH(5)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.dueDateLabel}{' '}
                     <Text style={{ color: COLORS.solid_grey }}>
-                      {strings.wallet.createDate}
+                      {moment(OrderDetails?.invoice?.due_date).format('LL')}
                     </Text>
                   </Text>
                   <Spacer space={SH(5)} />
                   <Text style={styles.deliveryDate}>
                     {strings.wallet.deliveryDate}{' '}
-                    <Text>{strings.wallet.createDate}</Text>
+                    {moment(OrderDetails?.invoice?.delivery_date).format('LL')}{' '}
                   </Text>
                   <View style={styles.pointConOrder}>
                     <Text style={styles.pointTextOrder}>
@@ -4950,38 +5360,13 @@ export function Analytics(props) {
                     </DataTable.Title>
                   </DataTable.Header>
 
-                  <DataTable.Row>
-                    <DataTable.Cell>
-                      <Text style={styles.rowText}>1</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.buyerTableSettingSecond}>
-                      {/* <View style={{width:SH(200), height:SH(40)}}>
-                                <View style={styles.flexAlign}>
-                                    <Image source={asthonLogo} style={styles.asthonLogo}/>
-                                    <View style={{paddingHorizontal:moderateScale(5)}}>
-                                       <Text style={styles.rowText}>Ashton Classic</Text>
-                                       <Text style={[styles.rowText, {color:COLORS.darkGray}]}>Box of 25</Text>
-                                    </View>
-                                </View>
-                            </View> */}
-
-                      <Text style={styles.rowText}>Ashton Classic</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell
-                      style={[
-                        styles.buyerTableSettingFirst,
-                        { marginLeft: SH(240) },
-                      ]}
-                    >
-                      <Text style={styles.revenueDataText}>16 Box</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.buyerTableSettingFirst}>
-                      <Text style={styles.revenueDataText}>16 Box</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={styles.buyerTableSettingFirst}>
-                      <Text style={styles.revenueDataText}>$4,063.20</Text>
-                    </DataTable.Cell>
-                  </DataTable.Row>
+                  <View>
+                    <FlatList
+                      data={OrderDetails?.order_details}
+                      renderItem={renderOrderItem}
+                      keyExtractor={item => item.id}
+                    />
+                  </View>
 
                   {/* <DataTable.Row>
                           <DataTable.Cell><Text style={styles.rowText}>1</Text></DataTable.Cell>
@@ -5021,7 +5406,7 @@ export function Analytics(props) {
                         {strings.wallet.subtotal}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
+                        {OrderDetails?.actual_amount}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -5044,7 +5429,7 @@ export function Analytics(props) {
                           { color: COLORS.roseRed },
                         ]}
                       >
-                        {strings.wallet.subtotalPrice}
+                        {OrderDetails?.discount}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -5053,7 +5438,7 @@ export function Analytics(props) {
                         {strings.wallet.shippingCharge}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
+                        {OrderDetails?.shipping_charge}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -5076,7 +5461,7 @@ export function Analytics(props) {
                         </View>
                       </View>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
+                        {OrderDetails?.payable_amount}
                       </Text>
                     </View>
                     <Spacer space={SH(10)} />
@@ -5181,7 +5566,9 @@ export function Analytics(props) {
                   <Text style={styles.listOfItems}>
                     {strings.posSale.listOfItem}
                   </Text>
-                  <Text style={styles.walletItem}>4 Items</Text>
+                  <Text style={styles.walletItem}>
+                    {OrderData?.total_items} Items
+                  </Text>
                 </View>
                 <Text style={styles.rewardPointStyle}>
                   {strings.posSale.rewardpoint}
@@ -5191,7 +5578,7 @@ export function Analytics(props) {
 
               <View>
                 <FlatList
-                  data={jbritemList}
+                  data={OrderData?.order_details}
                   renderItem={renderJbrItem}
                   keyExtractor={item => item.id}
                 />
@@ -5207,7 +5594,7 @@ export function Analytics(props) {
           </View>
           {revenueCompleteSideBar ? (
             <View style={[styles.orderSideCon, { height: windowHeight }]}>
-              <View style={{ width: SH(420), alignSelf: 'center' }}>
+              <View style={{ width: SW(100), alignSelf: 'center' }}>
                 <Spacer space={SH(20)} />
                 <View style={styles.displayFlex}>
                   <Text style={styles.moreActText}>Payment Details</Text>
@@ -5220,14 +5607,16 @@ export function Analytics(props) {
                     />
                   </TouchableOpacity>
                 </View>
-                <Spacer space={SH(25)} />
+                <Spacer space={SH(15)} />
                 <View>
                   <ScrollView
                     showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{ flexGrow: 1 }}
+                    scrollEnabled={false}
                   >
                     <View>
-                      <Spacer space={SH(20)} />
+                      <Spacer space={SH(5)} />
                       <Text style={styles.paymenttdone}>
                         {strings.posSale.paymenttdone}
                       </Text>
@@ -5236,14 +5625,16 @@ export function Analytics(props) {
                         <View style={styles.displayFlex}>
                           <View>
                             <Text style={styles.paymentTipsText}>
-                              Payable $254.60
+                              Payable {OrderData?.payable_amount}
                             </Text>
                             <Spacer space={SH(10)} />
                             <Text style={styles.paymentTipsText}>
-                              Tips $0.60
+                              Tips {OrderData?.tips}
                             </Text>
                           </View>
-                          <Text style={styles.paymentPay}>$254.60</Text>
+                          <Text style={styles.paymentPay}>
+                            ${OrderData?.payable_amount}
+                          </Text>
                         </View>
                       </View>
                       <Spacer space={SH(10)} />
@@ -5260,7 +5651,7 @@ export function Analytics(props) {
                         </Text>
                       </Text>
 
-                      <Spacer space={SH(25)} />
+                      <Spacer space={SH(20)} />
                       <View style={styles.customerAddreCons}>
                         <Spacer space={SH(15)} />
                         <Text style={styles.customer}>Customer</Text>
@@ -5273,33 +5664,44 @@ export function Analytics(props) {
                           }}
                         >
                           <Image
-                            source={jbrCustomer}
+                            source={
+                              OrderData?.user_details?.profile_photo
+                                ? {
+                                    uri: OrderData?.user_details?.profile_photo,
+                                  }
+                                : userImage
+                            }
                             style={styles.jbrCustomer}
                           />
                           <View style={{ paddingHorizontal: moderateScale(8) }}>
                             <Text
                               style={[styles.cusAddText, { fontSize: SF(20) }]}
                             >
-                              {strings.posSale.customerName}
+                              {OrderData?.user_details?.firstname}
                             </Text>
                             <Spacer space={SH(8)} />
                             <Text style={styles.cusAddText}>
-                              {strings.posSale.customerMobileNo}
+                              {OrderData?.user_details?.phone_number}
                             </Text>
                             <Spacer space={SH(5)} />
                             <Text style={styles.cusAddText}>
-                              {strings.posSale.customerEmail}
+                              {OrderData?.user_details?.email}
                             </Text>
                             <Spacer space={SH(8)} />
                             <Text style={styles.cusAddText}>
-                              {strings.posSale.customerAddr}
-                            </Text>
-                            <Text style={styles.cusAddText}>
-                              {strings.posSale.customerAddr2}
+                              {
+                                OrderData?.user_details?.current_address
+                                  ?.street_address
+                              }{' '}
+                              {OrderData?.user_details?.current_address?.city},{' '}
+                              {OrderData?.user_details?.current_address?.state}{' '}
+                              {
+                                OrderData?.user_details?.current_address
+                                  ?.zipcode
+                              }
                             </Text>
                           </View>
                         </View>
-                        <Spacer space={SH(20)} />
                         <View style={{ flex: 1 }}></View>
                         <View style={styles.walletIdCon}>
                           <Text style={styles.walletIdLabel}>
@@ -5311,22 +5713,28 @@ export function Analytics(props) {
                           </Text>
                         </View>
                       </View>
-                      <Spacer space={SH(35)} />
+                      <Spacer space={SH(20)} />
                       <View style={styles.bottomContainer}>
                         <Spacer space={SH(10)} />
                         <View style={styles.bottomSubCon}>
                           <Text style={styles.smalldarkText}>Sub Total</Text>
-                          <Text style={styles.smallLightText}>$4.00</Text>
+                          <Text style={styles.smallLightText}>
+                            ${OrderData?.actual_amount}
+                          </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.bottomSubCon}>
                           <Text style={styles.smallLightText}>Discount</Text>
-                          <Text style={styles.smallLightText}>-$2.00</Text>
+                          <Text style={styles.smallLightText}>
+                            -${OrderData?.discount}
+                          </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.bottomSubCon}>
                           <Text style={styles.smallLightText}>Tax</Text>
-                          <Text style={styles.smallLightText}>$4.00</Text>
+                          <Text style={styles.smallLightText}>
+                            ${OrderData?.tax}
+                          </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.hr}></View>
@@ -5340,18 +5748,21 @@ export function Analytics(props) {
                           <Text
                             style={[styles.smalldarkText, { fontSize: SF(20) }]}
                           >
-                            $254.60
+                            ${OrderData?.payable_amount}
                           </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.bottomSubCon}>
-                          <Text style={styles.smallLightText}>4 Items</Text>
+                          <Text style={styles.smallLightText}>
+                            {OrderData?.total_items} Items
+                          </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <TouchableOpacity
                           style={styles.checkoutButton}
                           onPress={() => {
                             setRevenueOrderBuyer(true), setOrderList(false);
+                            dispatch(getOrders(OrderData?.id));
                           }}
                         >
                           <Text style={styles.checkoutText}>Checkout</Text>
@@ -5373,16 +5784,19 @@ export function Analytics(props) {
     } else if (ReveueTable) {
       return (
         <View style={{ flex: 1 }}>
-          {orderTableHeadingFun(revenueTableHeading)}
-          <View style={[styles.allTypeCon]}>
-            <FlatList
-              data={allRevenueTypeData}
-              renderItem={allTransactionItem}
-              keyExtractor={item => item.id}
-              extraData={selectedId}
-              horizontal
-            />
-          </View>
+          <>
+            {orderTableHeadingFun(revenueTableHeading)}
+            <View style={[styles.allTypeCon]}>
+              <FlatList
+                data={Orderstatistics?.data}
+                renderItem={allTransactionItem}
+                keyExtractor={item => item.title}
+                extraData={selectedId}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+          </>
           <View style={styles.orderTypeCon}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={styles.datePickerCon}>
@@ -5766,6 +6180,7 @@ export function Analytics(props) {
                 </View>
               )}
             </View>
+
             <HomeGraph
               header="Total Orders"
               subHeader={
@@ -5790,7 +6205,6 @@ export function Analytics(props) {
           : totalReveueDetail
           ? totalRevnueCustomHeader()
           : customHeader()}
-
         {totalProductFunction()}
         {productDetailModal()}
         {invoiceModal()}
@@ -5801,6 +6215,15 @@ export function Analytics(props) {
         {/* {totalRevenueFuntion()} */}
       </View>
       {productModalLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
+      {orderData ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator
             color={COLORS.primary}

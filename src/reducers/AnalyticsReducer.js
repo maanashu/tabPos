@@ -9,6 +9,10 @@ const INITIALSTATE = {
   catSubBrandData: [],
   getProductList: [],
   getProductModal: {},
+  getOrderstatistics: [],
+  getOrderTypeList: [],
+  getOrderData: {},
+  orderList: {},
 };
 
 export const analyticsReducer = (
@@ -74,6 +78,31 @@ export const analyticsReducer = (
         getProductModal: {},
       };
 
+    case TYPES.GET_ORDER_STATISTICS_SUCCESS:
+      return {
+        ...state,
+        getOrderstatistics: payload.getOrderstatistics,
+      };
+    case TYPES.GET_ORDER_TYPE_LIST_SUCCESS:
+      return {
+        ...state,
+        getOrderTypeList: payload?.getOrderTypeList,
+      };
+    case TYPES.GET_ORDER_TYPE_LIST_RESET:
+      return {
+        ...state,
+        getOrderTypeList: [],
+      };
+    case TYPES.GET_ORDER_DATA_SUCCESS:
+      return {
+        ...state,
+        getOrderData: payload?.getOrderData,
+      };
+    case TYPES.GET_ORDER_SUCCESS:
+      return {
+        ...state,
+        orderList: payload?.orderList.payload,
+      };
     default:
       return state;
   }

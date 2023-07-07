@@ -15,15 +15,50 @@ export function Notification() {
   const getSettingData = useSelector(getSetting);
 
   const [appNotificationArray, setAppNotificationArray] = useState([
+    // {
+    //   key: '1',
+    //   name: 'Sms Notifications',
+    //   value: 'notification_status',
+    //   isSelected: getSettingData?.getSetting?.notification_status ?? false,
+    // },
+    // {
+    //   key: '2',
+    //   name: 'Email Notifications',
+    //   value: 'email_notification_status',
+    //   isSelected:
+    //     getSettingData?.getSetting?.email_notification_status ?? false,
+    // },
     {
-      key: '1',
-      name: 'Sms Notifications',
+      key: '3',
+      name: 'Order Notifications',
       value: 'notification_status',
-      isSelected: getSettingData?.getSetting?.notification_status ?? false,
+      isSelected:
+        getSettingData?.getSetting?.email_notification_status ?? false,
     },
     {
-      key: '2',
-      name: 'Email Notifications',
+      key: '4',
+      name: 'Shipping Notifications',
+      value: 'email_notification_status',
+      isSelected:
+        getSettingData?.getSetting?.email_notification_status ?? false,
+    },
+    {
+      key: '5',
+      name: 'Services Notifications',
+      value: 'notification_status',
+      isSelected:
+        getSettingData?.getSetting?.email_notification_status ?? false,
+    },
+    {
+      key: '6',
+      name: 'Wallet Notifications',
+      value: 'notification_status',
+      isSelected:
+        getSettingData?.getSetting?.email_notification_status ?? false,
+    },
+    {
+      key: '7',
+      name: 'Account Notifications',
       value: 'email_notification_status',
       isSelected:
         getSettingData?.getSetting?.email_notification_status ?? false,

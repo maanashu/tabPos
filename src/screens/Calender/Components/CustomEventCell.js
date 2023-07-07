@@ -4,7 +4,6 @@ import { getStartEndFormattedDate } from '@/utils/GlobalMethods';
 import { styles } from '../Calender.styles';
 
 const CustomEventCell = (event, touchableOpacityProps) => {
-  console.log('eventData', JSON.stringify(event));
   return (
     <TouchableOpacity
       style={[...touchableOpacityProps.style, styles.eventContainer]}

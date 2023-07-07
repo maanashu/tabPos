@@ -398,7 +398,7 @@ export class RetailController {
           //   type: 'error_toast',
           //   visibilityTime: 1500,
           // });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   }
@@ -447,7 +447,6 @@ export class RetailController {
         tips: data.tips,
         mode_of_payment: data.modeOfPayment,
       };
-      console.log('body', body);
 
       HttpClient.post(endpoint, body)
         .then(response => {
@@ -477,10 +476,8 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint =
         WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
-          console.log('response', response);
           resolve(response);
         })
         .catch(error => {

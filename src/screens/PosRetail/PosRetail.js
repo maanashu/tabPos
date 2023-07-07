@@ -27,6 +27,7 @@ import Modal from 'react-native-modal';
 import {
   addDiscountToCart,
   addNotescart,
+  customerNumber,
   getAllCart,
   getCategory,
   getProductDefault,
@@ -47,11 +48,14 @@ export function PosRetail() {
   const getRetailData = useSelector(getRetail);
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const cartID2 = getRetailData?.getAllCart?.id;
+  const cartData = getRetailData?.getAllCart;
+  const finalAmountForDiscount =
+    cartData?.amount?.products_price.toFixed(2) -
+    cartData?.amount?.tax.toFixed(2);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
-
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   const [tipAmount, setTipAmount] = useState(0.0);
@@ -133,7 +137,17 @@ export function PosRetail() {
     }
   };
   const saveDiscountHandler = () => {
-    if (!cartID2) {
+    if (
+      amountDis > finalAmountForDiscount ||
+      percentDis > finalAmountForDiscount
+    ) {
+      Toast.show({
+        text2: 'Please enter discount less then total amount',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else if (!cartID2) {
       Toast.show({
         text2: strings.posSale.addItemCart,
         position: 'bottom',
@@ -186,6 +200,10 @@ export function PosRetail() {
   const addDiscountHandler = () => {
     setAddDiscount(true);
   };
+
+  useEffect(() => {
+    dispatch(customerNumber({ number: '' }));
+  }, []);
 
   const saveNotesHandler = () => {
     if (!notes) {
@@ -242,6 +260,9 @@ export function PosRetail() {
         sellerID={sellerID}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
+        onPressPayNow={() => {
+          setselectedScreen('CartAmountTips');
+        }}
       />
     ),
     ['CartScreen']: (
@@ -256,7 +277,7 @@ export function PosRetail() {
     ),
     ['CartAmountTips']: (
       <CartAmountTips
-        onPressBack={() => setselectedScreen('CartScreen')}
+        onPressBack={() => setselectedScreen('MainScreen')}
         onPressContinue={tip => {
           setTipAmount(tip);
           setselectedScreen('CartAmountPayBy');

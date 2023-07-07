@@ -30,7 +30,6 @@ export const FinalPaymentScreen = ({
   // const getRetailData = useSelector(getRetail);
   // const cartData = getRetailData?.getAllCart;
   const cartProducts = cartData?.poscart_products;
-  console.log('payDetail', payDetail);
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';

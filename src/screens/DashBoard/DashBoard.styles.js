@@ -441,7 +441,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 12,
     position: 'absolute',
-    top: -50,
+    top: 0,
     left: 10,
     paddingHorizontal: moderateScale(12),
     marginLeft: moderateScale(10),

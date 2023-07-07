@@ -265,7 +265,7 @@ export function Staff() {
                   </View>
 
                   {staffDetailData?.map((item, index) => (
-                    <View>
+                    <View style={{}}>
                       <TouchableOpacity
                         style={styles.tableDataCon}
                         onPress={() => {
@@ -284,9 +284,9 @@ export function Staff() {
                               style={[
                                 styles.text,
                                 styles.hourRateLigh,
-                                { textAlign: 'left' },
+                                { textAlign: 'left' ,width:"100%"},
                               ]}
-                              numberOfLines={1}
+                              numberOfLines={2}
                             >
                               {moment(item.start_time).format('LL')} -{' '}
                               {moment(item.end_time).format('LL')}
@@ -404,8 +404,8 @@ export function Staff() {
                                 </TouchableOpacity>
                                 <View
                                   style={[
-                                    styles.text,
-                                    { alignItems: 'center' },
+                                     styles.text,
+                                    {alignItems:"center" },
                                   ]}
                                 >
                                   <Image
