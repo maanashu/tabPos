@@ -26,6 +26,8 @@ import { Table } from 'react-native-table-component';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
+moment.suppressDeprecationWarnings = true;
+
 export function UserProfile({
   userDetailHandler,
   userName,
@@ -99,8 +101,16 @@ export function UserProfile({
               <Spacer space={SH(10)} />
               <View style={[styles.pointCon, styles.acceptCon]}>
                 <View style={styles.flexAlign}>
-                  <TouchableOpacity style={styles.toggleBtnCon} onPress={() => setToggles(!toggles)}>
-                  <Image source={toggle} style={toggles ? styles.toggleBtnStyle : styles.toggleBtnStyle2} />
+                  <TouchableOpacity
+                    style={styles.toggleBtnCon}
+                    onPress={() => setToggles(!toggles)}
+                  >
+                    <Image
+                      source={toggle}
+                      style={
+                        toggles ? styles.toggleBtnStyle : styles.toggleBtnStyle2
+                      }
+                    />
                   </TouchableOpacity>
                   <Text style={styles.acceptMarketText}>
                     {strings.customers.acceptMarket}
@@ -223,7 +233,7 @@ export function UserDetails({
     { label: '50', value: '50' },
     { label: '70', value: '70' },
   ]);
-  const [toglex, setToglex] = useState(false)
+  const [toglex, setToglex] = useState(false);
 
   return (
     <View>
@@ -297,8 +307,16 @@ export function UserDetails({
               <Spacer space={SH(10)} />
               <View style={[styles.pointCon, styles.acceptCon]}>
                 <View style={styles.flexAlign}>
-                <TouchableOpacity style={styles.toggleBtnCon} onPress={() => setToglex(!toglex)}>
-                  <Image source={toggle} style={toglex ? styles.toggleBtnStyle : styles.toggleBtnStyle2} />
+                  <TouchableOpacity
+                    style={styles.toggleBtnCon}
+                    onPress={() => setToglex(!toglex)}
+                  >
+                    <Image
+                      source={toggle}
+                      style={
+                        toglex ? styles.toggleBtnStyle : styles.toggleBtnStyle2
+                      }
+                    />
                   </TouchableOpacity>
                   <Text style={styles.acceptMarketText}>
                     {strings.customers.acceptMarket}

@@ -44,6 +44,8 @@ import CalendarSettingModal from './CalendarSettingModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 
+moment.suppressDeprecationWarnings = true;
+
 export function Calender(props) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -167,7 +169,11 @@ export function Calender(props) {
         </View>
         <View style={styles.deliveryView}>
           <TouchableOpacity
-            onPress={() => navigate(NAVIGATION.notificationsList)}
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.calender,
+              })
+            }
           >
             <Image
               source={notifications}

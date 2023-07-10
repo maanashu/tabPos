@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     borderRadius: moderateScale(50),
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 7,
+    borderWidth: 2,
     borderColor: COLORS.solidGrey,
     marginHorizontal: moderateScale(10),
   },

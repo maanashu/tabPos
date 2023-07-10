@@ -48,18 +48,26 @@ export const styles = StyleSheet.create({
   },
   searchView: {
     borderWidth: 1,
-    width: SW(65),
-    height: SH(43),
-    borderRadius: 20,
+    // width: SW(65),
+    height: SH(38),
+    borderRadius: 30,
     borderColor: COLORS.row_grey,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingLeft: 10,
   },
   searchImage: {
-    width: SH(24),
-    height: SH(24),
+    width: SH(20),
+    height: SH(20),
     resizeMode: 'contain',
-    left: 3,
+  },
+  textInputStyles: {
+    width: SW(75),
+    // marginLeft: 10,
+    fontFamily: Fonts.Italic,
+    // borderWidth: 3,
+    fontSize: SF(15),
+    paddingLeft: 5,
   },
   deliveryView: {
     flexDirection: 'row',
@@ -76,12 +84,7 @@ export const styles = StyleSheet.create({
     height: SH(28),
     resizeMode: 'contain',
   },
-  textInputStyles: {
-    width: SW(45),
-    marginLeft: 10,
-    fontFamily: Fonts.Italic,
-    fontSize: SF(15),
-  },
+
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
@@ -1019,7 +1022,7 @@ export const styles = StyleSheet.create({
   tableHeaderLeftPro: {
     flexDirection: 'row',
     width: windowWidth * 0.03,
-    alignSelf:"flex-start"
+    alignSelf: 'flex-start',
   },
   tableHeaderRightPro: {
     flexDirection: 'row',

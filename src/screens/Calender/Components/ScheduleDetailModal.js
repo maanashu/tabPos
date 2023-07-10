@@ -9,6 +9,8 @@ import { moderateScale } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import moment from 'moment';
 
+moment.suppressDeprecationWarnings = true;
+
 const ScheduleDetailModal = ({
   schduleDetail,
   setSchduleDetail,

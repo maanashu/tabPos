@@ -34,10 +34,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   textInputStyle: {
-    width: SW(45),
-    marginLeft: 10,
+    width: SW(75),
     fontFamily: Fonts.Italic,
     fontSize: SF(15),
+    paddingLeft: 5,
   },
   truckStyle: {
     width: SH(32),
@@ -57,18 +57,17 @@ export const styles = StyleSheet.create({
   },
   searchView: {
     borderWidth: 1,
-    width: SW(65),
-    height: SH(40),
-    borderRadius: SH(23),
+    height: SH(38),
+    borderRadius: 30,
     borderColor: COLORS.row_grey,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingLeft: 10,
   },
   searchImage: {
-    width: SH(24),
-    height: SH(24),
+    width: SH(20),
+    height: SH(20),
     resizeMode: 'contain',
-    left: 3,
   },
   calenderCon: {
     width: windowWidth * 0.84,

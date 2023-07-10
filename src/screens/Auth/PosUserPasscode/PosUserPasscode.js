@@ -91,8 +91,8 @@ export function PosUserPasscode({ route }) {
     }
   };
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
+    <View
+      style={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
@@ -138,6 +138,6 @@ export function PosUserPasscode({ route }) {
           />
         </View>
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 }

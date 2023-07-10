@@ -47,21 +47,6 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     paddingRight: 10,
   },
-  searchView: {
-    borderWidth: 1,
-    width: SW(65),
-    height: SH(43),
-    borderRadius: 20,
-    borderColor: COLORS.row_grey,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  searchImage: {
-    width: SH(24),
-    height: SH(24),
-    resizeMode: 'contain',
-    left: 3,
-  },
   deliveryView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -77,11 +62,28 @@ export const styles = StyleSheet.create({
     height: SH(28),
     resizeMode: 'contain',
   },
+  searchView: {
+    borderWidth: 1,
+    // width: SW(65),
+    height: SH(38),
+    borderRadius: 30,
+    borderColor: COLORS.row_grey,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 10,
+  },
+  searchImage: {
+    width: SH(20),
+    height: SH(20),
+    resizeMode: 'contain',
+  },
   textInputStyles: {
-    width: SW(45),
-    marginLeft: 10,
+    width: SW(75),
+    // marginLeft: 10,
     fontFamily: Fonts.Italic,
+    // borderWidth: 3,
     fontSize: SF(15),
+    paddingLeft: 5,
   },
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,
@@ -1190,7 +1192,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     zIndex: 99,
     borderRadius: 10,
-    ...ShadowStyles.shadow
+    ...ShadowStyles.shadow,
   },
   userNotFound: {
     color: COLORS.primary,
@@ -1198,11 +1200,11 @@ export const styles = StyleSheet.create({
     fontSize: SF(20),
     alignSelf: 'center',
   },
-  tableBodyCon:{
-    borderBottomWidth:1,
-    paddingHorizontal:moderateScale(10)
+  tableBodyCon: {
+    borderBottomWidth: 1,
+    paddingHorizontal: moderateScale(10),
   },
-  tableHeight:{
-    height:windowHeight * 0.53
-  }
+  tableHeight: {
+    height: windowHeight * 0.53,
+  },
 });

@@ -68,6 +68,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 
+moment.suppressDeprecationWarnings = true;
+
 export function ShippingOrder() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -315,7 +317,11 @@ export function ShippingOrder() {
 
         <View style={styles.deliveryView}>
           <TouchableOpacity
-            onPress={() => navigate(NAVIGATION.notificationsList)}
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.shippingOrder,
+              })
+            }
           >
             <Image
               source={notifications}

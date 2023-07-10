@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.white,
   },
   flexRow: {
     flexDirection: 'row',

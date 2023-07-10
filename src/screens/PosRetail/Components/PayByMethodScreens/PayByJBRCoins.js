@@ -37,6 +37,8 @@ import {
 } from '@/actions/RetailAction';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+moment.suppressDeprecationWarnings = true;
+
 export const PayByJBRCoins = ({
   onPressBack,
   onPressContinue,

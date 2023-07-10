@@ -8,6 +8,8 @@ import { changeAppointmentStatus } from '@/actions/AppointmentAction';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import { calculateDuration } from '@/utils/GlobalMethods';
 
+moment.suppressDeprecationWarnings = true;
+
 const EventItemCard = ({ item, index }) => {
   const userDetails = item?.user_details;
   const userAddress = userDetails?.current_address;

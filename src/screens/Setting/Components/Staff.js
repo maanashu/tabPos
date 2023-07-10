@@ -40,6 +40,8 @@ import moment from 'moment';
 import { store } from '@/store';
 const windowWidth = Dimensions.get('window').width;
 
+moment.suppressDeprecationWarnings = true;
+
 export function Staff() {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -284,7 +286,7 @@ export function Staff() {
                               style={[
                                 styles.text,
                                 styles.hourRateLigh,
-                                { textAlign: 'left' ,width:"100%"},
+                                { textAlign: 'left', width: '100%' },
                               ]}
                               numberOfLines={2}
                             >
@@ -404,8 +406,8 @@ export function Staff() {
                                 </TouchableOpacity>
                                 <View
                                   style={[
-                                     styles.text,
-                                    {alignItems:"center" },
+                                    styles.text,
+                                    { alignItems: 'center' },
                                   ]}
                                 >
                                   <Image

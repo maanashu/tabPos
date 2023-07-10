@@ -34,6 +34,8 @@ import { getSessionHistory } from '@/actions/CashTrackingAction';
 import { width } from '@/theme/ScalerDimensions';
 const windowHeight = Dimensions.get('window').height;
 
+moment.suppressDeprecationWarnings = true;
+
 export function SessionHistoryTable({
   tableTouchHandler,
   tableDataArray,

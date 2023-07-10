@@ -73,6 +73,8 @@ import { DELIVERY_MODE } from '@/constants/enums';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 
+moment.suppressDeprecationWarnings = true;
+
 export function Customers() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -255,7 +257,11 @@ export function Customers() {
         )}
         <View style={styles.deliveryView}>
           <TouchableOpacity
-            onPress={() => navigate(NAVIGATION.notificationsList)}
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.customers,
+              })
+            }
           >
             <Image
               source={notifications}
@@ -868,8 +874,8 @@ export function Customers() {
                     editable={false}
                     numberOfLines={4}
                     style={styles.textInputStyle}
-                    placeholder="Note:"
-                    placeholderTextColor="#000"
+                    placeholder={'Note:'}
+                    placeholderTextColor={COLORS.black}
                   />
                   <View style={styles.noteContainer}>
                     <Spacer space={SH(12)} />
@@ -884,7 +890,9 @@ export function Customers() {
                           : '0'}
                       </Text>
                     </View>
+
                     <View style={styles.subtotalHr}></View>
+
                     <View style={styles.tablesubTotal}>
                       <Text style={styles.tablesubTotalLabel}>
                         {strings.wallet.serviceCharge}
@@ -893,7 +901,9 @@ export function Customers() {
                         ${orderDetail?.tax ? orderDetail?.tax : '0'}
                       </Text>
                     </View>
+
                     <View style={styles.subtotalHr}></View>
+
                     <View style={styles.tablesubTotal}>
                       <Text style={styles.tablesubTotalLabel}>
                         {strings.wallet.discount}
@@ -907,14 +917,18 @@ export function Customers() {
                         ${orderDetail?.discount ? orderDetail?.discount : '0'}
                       </Text>
                     </View>
+
                     <View style={styles.subtotalHr}></View>
+
                     <View style={styles.tablesubTotal}>
                       <Text style={styles.tablesubTotalLabel}>
                         {strings.wallet.shippingCharge}
                       </Text>
                       <Text style={styles.tablesubTotalText}>${'0'}</Text>
                     </View>
+
                     <View style={styles.subtotalHr}></View>
+
                     <View style={styles.tablesubTotal}>
                       <View
                         style={{ flexDirection: 'row', alignItems: 'center' }}

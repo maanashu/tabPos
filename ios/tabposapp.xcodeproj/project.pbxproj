@@ -23,6 +23,7 @@
 		A2263E08294A044F003CEA47 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2263E07294A044F003CEA47 /* BootSplash.storyboard */; };
 		A2D38CD128E5ABEF004141A8 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = A2D38CD028E5ABEF004141A8 /* fonts */; };
 		A592F8871F9144A883C1A278 /* Maison Mono Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 328414CFAB54414FB17BA4A2 /* Maison Mono Regular.ttf */; };
+		B164BE8C2A5C41C100F4E99F /* Beepbeep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B164BE8B2A5C41C000F4E99F /* Beepbeep.mp3 */; };
 		BA8E5A9AFD124195A865628C /* MaisonMonoTRIAL-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C584E8A42E44464BFE17C3E /* MaisonMonoTRIAL-Bold.otf */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 		68500D47A5CA3D992DBCB9C6 /* Pods_tabposapp_tabposappTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tabposapp_tabposappTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2263E07294A044F003CEA47 /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BootSplash.storyboard; sourceTree = "<group>"; };
 		A2D38CD028E5ABEF004141A8 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		B164BE8B2A5C41C000F4E99F /* Beepbeep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Beepbeep.mp3; sourceTree = "<group>"; };
 		BCD7D55791D9F488648B1630 /* Pods-tabposapp-tabposappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tabposapp-tabposappTests.release.xcconfig"; path = "Target Support Files/Pods-tabposapp-tabposappTests/Pods-tabposapp-tabposappTests.release.xcconfig"; sourceTree = "<group>"; };
 		C51AEED5BEE640A086BDA7C4 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../src/assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		D098B3E9DD854BF29E4FEE5C /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-MediumItalic.ttf"; path = "../src/assets/fonts/Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B164BE8B2A5C41C000F4E99F /* Beepbeep.mp3 */,
 				A2D38CD028E5ABEF004141A8 /* fonts */,
 				13B07FAE1A68108700A75B9A /* tabposapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -290,6 +293,7 @@
 				1D91A5C2B3A340C48EE41714 /* Montserrat-Bold.ttf in Resources */,
 				9AA45A1F723747E491CF5140 /* Montserrat-Italic.ttf in Resources */,
 				053CB105E9484CD2B945459E /* Montserrat-Medium.ttf in Resources */,
+				B164BE8C2A5C41C100F4E99F /* Beepbeep.mp3 in Resources */,
 				485D432670A6489085BE23D4 /* Montserrat-MediumItalic.ttf in Resources */,
 				4E5861FDE0F44DCBAF4B1EEC /* Montserrat-Regular.ttf in Resources */,
 				8B362915CBF4462BBC3ACDC4 /* Montserrat-SemiBold.ttf in Resources */,

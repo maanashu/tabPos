@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
   profilePic: {
     width: SH(110),
     height: SH(110),
-    borderRadius: 100,
+    borderRadius: SH(55),
     resizeMode: 'contain',
   },
   darksmallText: {

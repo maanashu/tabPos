@@ -115,6 +115,8 @@ import moment from 'moment';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 
+moment.suppressDeprecationWarnings = true;
+
 export function Analytics(props) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -3778,7 +3780,11 @@ export function Analytics(props) {
         )}
         <View style={styles.deliveryView}>
           <TouchableOpacity
-            onPress={() => navigate(NAVIGATION.notificationsList)}
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.analytics,
+              })
+            }
           >
             <Image
               source={notifications}
@@ -3811,7 +3817,11 @@ export function Analytics(props) {
         </TouchableOpacity>
         <View style={styles.deliveryView}>
           <TouchableOpacity
-            onPress={() => navigate(NAVIGATION.notificationsList)}
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.analytics,
+              })
+            }
           >
             <Image
               source={notifications}

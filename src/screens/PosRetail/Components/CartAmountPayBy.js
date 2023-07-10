@@ -24,6 +24,8 @@ import { useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { CustomHeader } from './CustomHeader';
 
+moment.suppressDeprecationWarnings = true;
+
 const DATA = [
   { title: 'Card', icon: cardPayment },
   { title: 'JBR Coin', icon: qrCodeIcon },

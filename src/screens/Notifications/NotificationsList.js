@@ -1,19 +1,3 @@
-import { fetchAllNotifications } from '@/actions/SettingAction';
-import {
-  backArrow,
-  blankCheckBox,
-  cash,
-  settingsIcon,
-  userImage,
-  wallet,
-} from '@/assets';
-import { strings } from '@/localization';
-import { goBack } from '@/navigation/NavigationRef';
-import { getSetting } from '@/selectors/SettingSelector';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { COLORS } from '@/theme';
-import { TYPES } from '@/Types/SettingTypes';
-import moment from 'moment';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   View,
@@ -21,16 +5,38 @@ import {
   Image,
   SectionList,
   SafeAreaView,
+  ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { CustomHeader } from '../PosRetail/Components';
-import { styles } from './styles';
 
-export default function NotificationsList() {
+import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+  cash,
+  wallet,
+  userImage,
+  backArrow,
+  blankCheckBox,
+  settingsIcon,
+} from '@/assets';
+import { COLORS } from '@/theme';
+import { strings } from '@/localization';
+import { TYPES } from '@/Types/SettingTypes';
+import { goBack, navigate } from '@/navigation/NavigationRef';
+import { getSetting } from '@/selectors/SettingSelector';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { fetchAllNotifications } from '@/actions/SettingAction';
+
+moment.suppressDeprecationWarnings = true;
+
+import { styles } from './styles';
+import { NAVIGATION } from '@/constants';
+
+export default function NotificationsList(props) {
+  const screen = props?.route?.params?.screen;
   const dispatch = useDispatch();
   const notifications = useSelector(getSetting)?.notifications;
-  console.log('notifications-----', notifications);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -43,7 +49,9 @@ export default function NotificationsList() {
 
   const sectionedNotifications = useMemo(() => {
     return notifications?.reduce((acc, curr) => {
-      const date = moment(curr?.created_at).format('MMMM DD, YYYY');
+      const date = moment(curr?.notification?.created_at).format(
+        'MMMM DD, YYYY'
+      );
       let title = date;
       if (moment(date).isSame(moment(), strings.common.day)) {
         title = strings.common.today;
@@ -119,7 +127,9 @@ export default function NotificationsList() {
     <View style={styles.headerMainView}>
       <TouchableOpacity
         activeOpacity={1}
-        onPress={() => goBack()}
+        onPress={() => {
+          screen ? navigate(screen) : goBack();
+        }}
         style={styles.backViewStyle}
       >
         <Image source={backArrow} style={styles.backIconStyle} />
@@ -148,7 +158,6 @@ export default function NotificationsList() {
           </View>
         )}
         renderItem={({ item }) => {
-          console.log('item----', item);
           return (
             <TouchableOpacity
               //   onPress={() => openNotificationHandler(item)}

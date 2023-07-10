@@ -8,6 +8,8 @@ import {
 import { strings } from '@/localization';
 import moment from 'moment';
 
+moment.suppressDeprecationWarnings = true;
+
 const HandleUnhandledTouches = () => {
   Keyboard.dismiss();
 };

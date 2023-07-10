@@ -13,6 +13,8 @@ import moment from 'moment';
 import { NAVIGATION } from '@/constants';
 import { goBack } from '@/navigation/NavigationRef';
 
+moment.suppressDeprecationWarnings = true;
+
 export function LoginIntial({ route }) {
   const getData = useSelector(getAuthData);
   const { posuserdata } = route.params;

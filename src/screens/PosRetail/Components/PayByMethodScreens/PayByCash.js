@@ -19,6 +19,8 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder } from '@/actions/RetailAction';
 
+moment.suppressDeprecationWarnings = true;
+
 export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);

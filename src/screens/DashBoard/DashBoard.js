@@ -61,6 +61,8 @@ import { getSearchProduct } from '@/actions/RetailAction';
 import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 import { getLoginSessionTime, orderDeliveryTime } from '@/utils/GlobalMethods';
 
+moment.suppressDeprecationWarnings = true;
+
 export function DashBoard({ navigation }) {
   const textInputRef = useRef(null);
   const isFocused = useIsFocused();

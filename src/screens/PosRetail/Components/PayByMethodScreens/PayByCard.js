@@ -17,6 +17,8 @@ import { COLORS } from '@/theme';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useSelector } from 'react-redux';
 
+moment.suppressDeprecationWarnings = true;
+
 export const PayByCard = ({
   onPressBack,
   onPressContinue,

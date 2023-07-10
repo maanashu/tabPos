@@ -58,6 +58,10 @@ import { TYPES } from '@/Types/RewardTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { BarChart } from 'react-native-chart-kit';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
+
+moment.suppressDeprecationWarnings = true;
 
 export function Reward() {
   const dispatch = useDispatch();
@@ -161,10 +165,18 @@ export function Reward() {
         )}
 
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 20 }]}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.reward,
+              })
+            }
+          >
+            <Image
+              source={notifications}
+              style={[styles.truckStyle, { right: 20 }]}
+            />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput

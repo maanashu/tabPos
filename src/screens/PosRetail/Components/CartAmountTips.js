@@ -20,6 +20,8 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { COLORS } from '@/theme';
 import { CustomHeader } from './CustomHeader';
 
+moment.suppressDeprecationWarnings = true;
+
 export const CartAmountTips = ({
   onPressBack,
   onPressContinue,

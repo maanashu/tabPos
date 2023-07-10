@@ -55,8 +55,12 @@ import { getWallet } from '@/selectors/WalletSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/WalletTypes';
 import moment from 'moment';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 const windowHeight = Dimensions.get('window').height;
+
+moment.suppressDeprecationWarnings = true;
 
 export function Wallet() {
   const isFocused = useIsFocused();
@@ -223,10 +227,18 @@ export function Wallet() {
         )}
 
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 20 }]}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.wallet,
+              })
+            }
+          >
+            <Image
+              source={notifications}
+              style={[styles.truckStyle, { right: 20 }]}
+            />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput

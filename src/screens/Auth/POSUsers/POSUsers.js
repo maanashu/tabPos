@@ -23,6 +23,8 @@ import {
 import { getAuthData } from '@/selectors/AuthSelector';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
+moment.suppressDeprecationWarnings = true;
+
 export function POSUsers({ navigation }) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
