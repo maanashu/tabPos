@@ -57,6 +57,8 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import moment from 'moment';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useIsFocused } from '@react-navigation/native';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function DeliveryOrder() {
   const isFocused = useIsFocused();
@@ -284,10 +286,14 @@ export function DeliveryOrder() {
         )}
 
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 10 }]}
-          />
+          <TouchableOpacity
+            onPress={() => navigate(NAVIGATION.notificationsList)}
+          >
+            <Image
+              source={notifications}
+              style={[styles.truckStyle, { right: 10 }]}
+            />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput

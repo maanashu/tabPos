@@ -15,6 +15,8 @@ import {
   PosUserPasscode,
 } from '@/screens';
 import { HomeNavigator } from '@/navigation/HomeNavigator';
+import { Notification } from '@/screens/Setting/Components';
+import NotificationsList from '@/screens/Notifications/NotificationsList';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();

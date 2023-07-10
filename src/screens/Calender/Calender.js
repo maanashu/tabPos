@@ -41,6 +41,8 @@ import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
 import ScheduleDetailModal from './Components/ScheduleDetailModal';
 import EventItemCard from './Components/EventItemCard';
 import CalendarSettingModal from './CalendarSettingModal';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function Calender(props) {
   const isFocused = useIsFocused();
@@ -164,10 +166,14 @@ export function Calender(props) {
           <Text style={styles.deliveryText}>{strings.calender.calender}</Text>
         </View>
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 25 }]}
-          />
+          <TouchableOpacity
+            onPress={() => navigate(NAVIGATION.notificationsList)}
+          >
+            <Image
+              source={notifications}
+              style={[styles.truckStyle, { right: 25 }]}
+            />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput

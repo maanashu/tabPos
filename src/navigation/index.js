@@ -15,6 +15,10 @@ export function RootNavigator() {
   const posUser = useSelector(getUser);
   const merchantToken = auth?.merchantLoginData?.token;
   const posUserToken = posUser?.posLoginData?.token;
+
+  console.log('merchantToken----', merchantToken);
+  console.log('posUserToken----', posUserToken);
+
   return (
     <NavigationContainer ref={navigationRef}>
       {merchantToken && !posUserToken ? (

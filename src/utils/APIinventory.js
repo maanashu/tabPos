@@ -38,6 +38,7 @@ export const ApiUserInventory = {
   getTax: 'tax',
   getGoogleCode: 'users/2fa/qr-code',
   verifyGoogleCode: 'users/2fa/verify',
+  notifications: 'notifications',
 };
 
 export const ApiProductInventory = {

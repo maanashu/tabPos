@@ -198,6 +198,21 @@ const taxPayerError = error => ({
   payload: { error },
 });
 
+const fetchAllNotificationsRequest = () => ({
+  type: TYPES.FETCH_ALL_NOTIFICATIONS_REQUEST,
+  payload: null,
+});
+
+const fetchAllNotificationsSuccess = notifications => ({
+  type: TYPES.FETCH_ALL_NOTIFICATIONS_SUCCESS,
+  payload: [...notifications],
+});
+
+const fetchAllNotificationsError = err => ({
+  type: TYPES.FETCH_ALL_NOTIFICATIONS_ERROR,
+  payload: { ...err },
+});
+
 export const getSettings = () => async dispatch => {
   dispatch(getSettingRequest());
   try {
@@ -343,5 +358,15 @@ export const taxPayer = data => async dispatch => {
     return dispatch(taxPayerSuccess(res));
   } catch (error) {
     dispatch(taxPayerError(error.message));
+  }
+};
+
+export const fetchAllNotifications = () => async dispatch => {
+  dispatch(fetchAllNotificationsRequest());
+  try {
+    const res = await SettingController.fetchAllNotifications();
+    dispatch(fetchAllNotificationsSuccess(res));
+  } catch (error) {
+    dispatch(fetchAllNotificationsError(error));
   }
 };

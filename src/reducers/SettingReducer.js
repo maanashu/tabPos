@@ -10,6 +10,7 @@ const INITIALSTATE = {
   getTax: [],
   getTaxTrue: [],
   getGoogleCode: {},
+  notifications: [],
 };
 
 export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -24,7 +25,6 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
         ...state,
         getShippingPickup: payload.getShippingPickup,
       };
-
     case TYPES.GET_USER_ADD_SUCCESS:
       return {
         ...state,
@@ -35,7 +35,6 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
         ...state,
         getUserAddress: [],
       };
-
     case TYPES.GET_COUNTRIES_SUCCESS:
       return {
         ...state,
@@ -46,7 +45,6 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
         ...state,
         getCountries: [],
       };
-
     case TYPES.GET_STATE_SUCCESS:
       return {
         ...state,
@@ -57,7 +55,6 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
         ...state,
         getState: [],
       };
-
     case TYPES.STAFF_DETAIL_SUCCESS:
       return {
         ...state,
@@ -78,7 +75,6 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
         ...state,
         getTax: [],
       };
-
     case TYPES.GET_TAX_TRUE_SUCCESS:
       return {
         ...state,
@@ -89,11 +85,15 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
         ...state,
         getTaxTrue: [],
       };
-
     case TYPES.GET_GOOGLE_CODE_SUCCESS:
       return {
         ...state,
         getGoogleCode: payload.getGoogleCode,
+      };
+    case TYPES.FETCH_ALL_NOTIFICATIONS_SUCCESS:
+      return {
+        ...state,
+        notifications: [...payload],
       };
     default:
       return state;

@@ -1,7 +1,10 @@
 export const en = {
   common: {
-    loading: 'Loading',
     connectionError: 'Connection error',
+    today: 'Today',
+    yesterday: 'Yesterday',
+    day: 'day',
+    days: 'days',
   },
   home: {
     header: 'Home',
@@ -46,6 +49,10 @@ export const en = {
     id: 'ID:256913',
     date: 'Today Wednesday 11 Aug 2022',
     time: 'Time 3:25 pm',
+  },
+  notifications: {
+    header: 'Notifications',
+    noData: 'No notifications yet',
   },
   deliveryOrders: {
     heading: 'Delivery orders',

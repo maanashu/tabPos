@@ -112,6 +112,8 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import moment from 'moment';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function Analytics(props) {
   const isFocused = useIsFocused();
@@ -3775,10 +3777,14 @@ export function Analytics(props) {
           </View>
         )}
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 25 }]}
-          />
+          <TouchableOpacity
+            onPress={() => navigate(NAVIGATION.notificationsList)}
+          >
+            <Image
+              source={notifications}
+              style={[styles.truckStyle, { right: 25 }]}
+            />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput
@@ -3804,10 +3810,14 @@ export function Analytics(props) {
           <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
         </TouchableOpacity>
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 25 }]}
-          />
+          <TouchableOpacity
+            onPress={() => navigate(NAVIGATION.notificationsList)}
+          >
+            <Image
+              source={notifications}
+              style={[styles.truckStyle, { right: 25 }]}
+            />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput

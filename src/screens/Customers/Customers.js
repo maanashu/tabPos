@@ -70,6 +70,8 @@ import moment from 'moment';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { DELIVERY_MODE } from '@/constants/enums';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function Customers() {
   const isFocused = useIsFocused();
@@ -252,10 +254,14 @@ export function Customers() {
           </View>
         )}
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 20 }]}
-          />
+          <TouchableOpacity
+            onPress={() => navigate(NAVIGATION.notificationsList)}
+          >
+            <Image
+              source={notifications}
+              style={[styles.truckStyle, { right: 20 }]}
+            />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput
