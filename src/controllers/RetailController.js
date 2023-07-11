@@ -19,7 +19,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getCategory +
-        `?page=1&limit=20&seller_id=${sellerID}&main_category=true`;
+        `?seller_id=${sellerID}&main_category=true`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -41,7 +41,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getSubCategory +
-        `?page=1&limit=20&category_id=${selectedId}&seller_id=${sellerID}&main_category=false`;
+        `?category_id=${selectedId}&seller_id=${sellerID}&main_category=false`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -144,7 +144,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `?app_name=pos&delivery_options=3&seller_id=${sellerID}&page=${page}&limit=30`;
+        `?app_name=pos&delivery_options=3&seller_id=${sellerID}`;
       console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {

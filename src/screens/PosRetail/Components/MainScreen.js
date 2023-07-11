@@ -170,9 +170,14 @@ export function MainScreen({
     }
   }, [products]);
 
-  const endReachData = () => {
+  // paginatio  section start
+
+  const handleMoreData = () => {
     setPage(prevPage => prevPage + 1);
+    dispatch(getProductDefault(sellerID, page));
   };
+
+  // paginatio  section end
 
   const productFun = async productId => {
     const res = await dispatch(getOneProduct(sellerID, productId));
@@ -767,8 +772,16 @@ export function MainScreen({
                       keyExtractor={(item, index) => index}
                       extraData={showProductsFrom}
                       numColumns={5}
-                      onEndReached={endReachData}
-                      onEndReachedThreshold={0.1}
+                      // onEndReached={handleMoreData}
+                      // onEndReachedThreshold={0.1}
+                      // ListFooterComponent={() => {
+                      //   return (
+                      //     <ActivityIndicator
+                      //       size="large"
+                      //       color={COLORS.primary}
+                      //     />
+                      //   );
+                      // }}
 
                       // horizontal
                       // contentContainerStyle={{

@@ -94,6 +94,29 @@ export function App() {
     return async () => await AsyncStorage.removeItem('acceptOrder');
     unsubscribe();
   }, []);
+
+  const currentState = useRef(AppState.currentState);
+  const [state, setState] = useState(currentState.current);
+
+  useEffect(() => {
+    const handleChange = AppState.addEventListener('change', changedState => {
+      currentState.current = changedState;
+      setState(currentState.current);
+    });
+
+    return () => {
+      handleChange.remove();
+    };
+  }, []);
+  useEffect(() => {
+    if (state === 'background') {
+      console.log(
+        '---------------------------------------------------------------'
+      );
+    }
+  }, [state]);
+
+  console.log('currentState', state);
   return (
     <Provider store={store}>
       <PersistGate onBeforeLift={hide} persistor={persistor}>

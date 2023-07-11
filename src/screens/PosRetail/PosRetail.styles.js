@@ -1256,4 +1256,18 @@ export const styles = StyleSheet.create({
     height: SW(10),
     resizeMode: 'contain',
   },
+  cancelCatCon: {
+    width: SW(30),
+    height: SW(10),
+    backgroundColor: COLORS.red,
+    borderRadius: 8,
+    marginHorizontal: moderateScale(20),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  catCancelText: {
+    color: COLORS.white,
+    fontSize: SF(12),
+    fontFamily: Fonts.SemiBold,
+  },
 });
