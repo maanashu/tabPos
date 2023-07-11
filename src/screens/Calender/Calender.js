@@ -40,6 +40,11 @@ import CustomHoursCell from './Components/CustomHoursCell';
 import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
 import ScheduleDetailModal from './Components/ScheduleDetailModal';
 import EventItemCard from './Components/EventItemCard';
+import CalendarSettingModal from './CalendarSettingModal';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
+
+moment.suppressDeprecationWarnings = true;
 import CalendarSettingModal from './Components/CalendarSettingModal';
 
 export function Calender(props) {
