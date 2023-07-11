@@ -53,8 +53,14 @@ export function Calender(props) {
   const [showRequestsView, setshowRequestsView] = useState(false);
   const [isCalendarSettingModalVisible, setisCalendarSettingModalVisible] =
     useState(false);
+
   const getAppointmentList2 = getAppointmentList?.filter(
-    item => item.status === 0 || item.status === 1 || item.status === 2
+    item => item.status !== 3
+  );
+
+  // Only show appointments on calendar which are approved
+  const getApprovedAppointments = getAppointmentList?.filter(
+    item => item.status === 1
   );
 
   // Will be used to show list of all appointments
@@ -78,8 +84,8 @@ export function Calender(props) {
 
   useEffect(() => {
     let extractedAppointmentEvents = [];
-    if (getAppointmentList) {
-      getAppointmentList2.map(booking => {
+    if (getApprovedAppointments) {
+      getApprovedAppointments.map(booking => {
         const startDateTime = new Date(booking.start_date_time);
         const endDateTime = new Date(booking.end_date_time);
 
@@ -87,11 +93,11 @@ export function Calender(props) {
           ...extractedAppointmentEvents,
           {
             title:
-              getAppointmentList[0].appointment_details[0].product_name ??
+              getApprovedAppointments[0].appointment_details[0].product_name ??
               'NULL',
             start: startDateTime,
             end: endDateTime,
-            completeData: getAppointmentList[0] ?? {},
+            completeData: getApprovedAppointments[0] ?? {},
           },
         ];
       });
@@ -302,14 +308,14 @@ export function Calender(props) {
               <View style={{ marginTop: 50 }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
               </View>
-            ) : getAppointmentList2?.length === 0 ? (
+            ) : appointmentListArr?.length === 0 ? (
               <View>
                 <Text style={styles.requestNotFound}>Request not found</Text>
               </View>
             ) : (
               <View style={{ marginBottom: ms(40) }}>
                 <Text style={styles._requestTitle}>
-                  {`Request (${getAppointmentList2?.length ?? 0})`}
+                  {`Request (${appointmentListArr?.length ?? 0})`}
                 </Text>
                 <FlatList
                   data={appointmentListArr}
