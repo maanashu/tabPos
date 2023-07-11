@@ -40,7 +40,7 @@ import CustomHoursCell from './Components/CustomHoursCell';
 import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
 import ScheduleDetailModal from './Components/ScheduleDetailModal';
 import EventItemCard from './Components/EventItemCard';
-import CalendarSettingModal from './CalendarSettingModal';
+import CalendarSettingModal from './Components/CalendarSettingModal';
 
 export function Calender(props) {
   const isFocused = useIsFocused();
@@ -55,6 +55,11 @@ export function Calender(props) {
     useState(false);
   const getAppointmentList2 = getAppointmentList?.filter(
     item => item.status === 0 || item.status === 1 || item.status === 2
+  );
+
+  // Will be used to show list of all appointments
+  const appointmentListArr = getAppointmentList2.filter(
+    item => item.status !== 1
   );
 
   const data = {
@@ -222,33 +227,37 @@ export function Calender(props) {
             </View>
           </View>
           <View style={styles.rightTabContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                setshowRequestsView(!showRequestsView);
-              }}
-              style={styles.requestCalendarContainer}
-            >
+            <TouchableOpacity style={styles.requestCalendarContainer}>
               <View>
                 <Image
                   source={calendarIcon}
                   style={styles.requestCalendarIcon}
                 />
                 <View style={styles.requestEventBadgeContainer}>
-                  <Text style={styles.RequestEventBadgeText}>
-                    {getAppointmentList2?.length ?? 0}
-                  </Text>
+                  <Text style={styles.RequestEventBadgeText}>0</Text>
                 </View>
               </View>
             </TouchableOpacity>
 
             <View style={{ flex: 1 }}>
-              <TouchableOpacity style={styles.alignmentCalendarContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (appointmentListArr.length === 0) {
+                    setshowRequestsView(false);
+                  } else {
+                    setshowRequestsView(!showRequestsView);
+                  }
+                }}
+                style={styles.alignmentCalendarContainer}
+              >
                 <Image
                   source={todayCalendarIcon}
                   style={styles.asignessCalendarImage}
                 />
                 <View style={styles.circularBadgeContainer}>
-                  <Text style={styles.asigneesBadgeText}>0</Text>
+                  <Text style={styles.asigneesBadgeText}>
+                    {appointmentListArr?.length ?? 0}
+                  </Text>
                 </View>
               </TouchableOpacity>
               <FlatList
@@ -303,7 +312,7 @@ export function Calender(props) {
                   {`Request (${getAppointmentList2?.length ?? 0})`}
                 </Text>
                 <FlatList
-                  data={getAppointmentList2}
+                  data={appointmentListArr}
                   keyExtractor={(_, index) => index}
                   renderItem={eventItem}
                 />

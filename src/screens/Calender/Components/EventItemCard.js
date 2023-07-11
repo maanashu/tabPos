@@ -7,8 +7,10 @@ import moment from 'moment';
 import { changeAppointmentStatus } from '@/actions/AppointmentAction';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import { calculateDuration } from '@/utils/GlobalMethods';
+import { useDispatch } from 'react-redux';
 
 const EventItemCard = ({ item, index }) => {
+  const dispatch = useDispatch();
   const userDetails = item?.user_details;
   const userAddress = userDetails?.current_address;
   const appointmentDetail = item?.appointment_details[0];
@@ -90,26 +92,24 @@ const EventItemCard = ({ item, index }) => {
       </View>
 
       <View style={styles._btnContainer}>
-        {item?.status !== 1 && (
-          <TouchableOpacity
-            onPress={() => {
-              const appointmentID =
-                item.appointment_details[0]?.appointment_id ?? '';
-
-              dispatch(
-                changeAppointmentStatus(
-                  appointmentID,
-                  APPOINTMENT_STATUS.REJECTED_BY_SELLER
-                )
-              );
-            }}
-            style={styles.declineBtnContainer}
-          >
-            <Text style={styles.declineText}>Decline</Text>
-          </TouchableOpacity>
-        )}
         <TouchableOpacity
-          disabled={item?.status === 1}
+          onPress={() => {
+            const appointmentID =
+              item.appointment_details[0]?.appointment_id ?? '';
+
+            dispatch(
+              changeAppointmentStatus(
+                appointmentID,
+                APPOINTMENT_STATUS.REJECTED_BY_SELLER
+              )
+            );
+          }}
+          style={styles.declineBtnContainer}
+        >
+          <Text style={styles.declineText}>Decline</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
           onPress={() => {
             const appointmentID =
               item.appointment_details[0]?.appointment_id ?? '';
@@ -121,14 +121,9 @@ const EventItemCard = ({ item, index }) => {
               )
             );
           }}
-          style={[
-            styles.acceptbtnContainer,
-            // { backgroundColor: item?.status === 1 ? 'green' : COLORS.primary },
-          ]}
+          style={styles.acceptbtnContainer}
         >
-          <Text style={styles.approveText}>
-            {item?.status === 1 ? 'Approved' : 'Approve'}
-          </Text>
+          <Text style={styles.approveText}>Approve</Text>
         </TouchableOpacity>
       </View>
     </View>
