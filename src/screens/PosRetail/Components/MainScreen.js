@@ -8,6 +8,7 @@ import { Spacer } from '@/components';
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
 import {
   addDiscountPic,
+  addToCart,
   borderCross,
   categoryMenu,
   checkArrow,
@@ -49,6 +50,7 @@ import {
   getBrand,
   getOneProduct,
   getProduct,
+  getProductDefault,
   getSubCategory,
   getUserDetail,
   getUserDetailSuccess,
@@ -58,6 +60,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
+import { log } from 'react-native-reanimated';
 
 export function MainScreen({
   checkOutHandler,
@@ -101,6 +104,9 @@ export function MainScreen({
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAdd, setUserAdd] = useState('');
+
+  const [page, setPage] = useState(1);
+  console.log('------page', page);
 
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -158,10 +164,15 @@ export function MainScreen({
   }, [isFocus]);
 
   useEffect(() => {
+    dispatch(getProductDefault(sellerID, page));
     if (products) {
       setshowProductsFrom(products);
     }
   }, [products]);
+
+  const endReachData = () => {
+    setPage(prevPage => prevPage + 1);
+  };
 
   const productFun = async productId => {
     const res = await dispatch(getOneProduct(sellerID, productId));
@@ -247,6 +258,18 @@ export function MainScreen({
       dispatch(addTocart(data));
       // dispatch(createCartAction(withoutVariantObject));
     }
+  };
+
+  const onClickAddCart = item => {
+    const data = {
+      seller_id: sellerID,
+      supplyId: item?.supplies?.[0]?.id,
+      supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
+      product_id: item?.id,
+      service_id: item?.service_id,
+      qty: 1,
+    };
+    dispatch(addTocart(data));
   };
 
   const changeView = () => {
@@ -489,10 +512,15 @@ export function MainScreen({
         {item.sub_category?.name}
       </Text>
       <Spacer space={SH(6)} />
-      <Text numberOfLines={1} style={styles.productPrice}>
-        {/* {`$${item?.price}`} */}$
-        {item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-      </Text>
+      <TouchableOpacity style={styles.displayflex}>
+        <Text numberOfLines={1} style={styles.productPrice}>
+          {/* {`$${item?.price}`} */}$
+          {item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+        </Text>
+        <TouchableOpacity onPress={() => onClickAddCart(item)}>
+          <Image source={addToCart} style={styles.addToCart} />
+        </TouchableOpacity>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 
@@ -739,6 +767,9 @@ export function MainScreen({
                       keyExtractor={(item, index) => index}
                       extraData={showProductsFrom}
                       numColumns={5}
+                      onEndReached={endReachData}
+                      onEndReachedThreshold={0.1}
+
                       // horizontal
                       // contentContainerStyle={{
                       //   flexGrow: 1,
@@ -896,7 +927,10 @@ export function MainScreen({
             <View style={[styles.displayflex2, styles.paddVertical]}>
               <Text style={styles.subTotal}>Discount</Text>
               <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                ${cartData?.amount?.discount ?? '0.00'}
+                $
+                {cartData?.amount?.discount === 0
+                  ? '0.00'
+                  : cartData?.amount?.discount.toFixed(2) ?? '0.00'}
               </Text>
             </View>
             <View
@@ -930,13 +964,15 @@ export function MainScreen({
             ) : getuserDetailByNo?.length === 0 || !okk ? (
               <TouchableOpacity
                 style={styles.checkoutButtonSideBar}
-                onPress={() =>
-                  Toast.show({
-                    text2: 'Please select the customer',
-                    position: 'bottom',
-                    type: 'error_toast',
-                    visibilityTime: 1500,
-                  })
+                onPress={
+                  () =>
+                    Toast.show({
+                      text2: 'Please select the customer',
+                      position: 'bottom',
+                      type: 'error_toast',
+                      visibilityTime: 1500,
+                    })
+                  // onPressPayNow()
                 }
               >
                 <Text style={styles.checkoutText}>

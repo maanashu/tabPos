@@ -62,6 +62,7 @@ export function PosRetail() {
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
   const [addDiscount, setAddDiscount] = useState(false);
+  const [page, setPage] = useState(1);
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
   const getCart = getRetailData?.getAllCart;
@@ -225,7 +226,7 @@ export function PosRetail() {
   };
 
   useEffect(() => {
-    dispatch(getProductDefault(sellerID));
+    dispatch(getProductDefault(sellerID, page));
     dispatch(getCategory(sellerID));
     dispatch(getAllCart());
   }, [isFocus]);

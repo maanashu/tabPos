@@ -378,7 +378,7 @@ export const styles = StyleSheet.create({
   },
   productPrice: {
     color: COLORS.black,
-    fontSize: SF(15),
+    fontSize: SF(12),
     fontFamily: Fonts.SemiBold,
   },
 
@@ -1250,5 +1250,10 @@ export const styles = StyleSheet.create({
     width: '98%',
     marginTop: ms(10),
     color: COLORS.white,
+  },
+  addToCart: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
   },
 });

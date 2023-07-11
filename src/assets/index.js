@@ -55,6 +55,7 @@ export { default as card } from '@/assets/icons/ic_retail/card.png';
 export { default as money } from '@/assets/icons/ic_retail/money.png';
 export { default as marboloPlus } from '@/assets/icons/ic_retail/marboloPlus.png';
 export { default as loader } from '@/assets/icons/ic_retail/loader.png';
+export { default as addToCart } from '@/assets/icons/ic_retail/addToCart.png';
 export { default as ashton } from '@/assets/icons/ic_retail/ashton.png';
 export { default as crossButton3 } from '@/assets/icons/ic_retail/crossButton.png';
 export { default as jbrCustomer } from '@/assets/icons/ic_retail/jbrCustomer.png';

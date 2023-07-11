@@ -135,12 +135,17 @@ export class RetailController {
     });
   }
 
-  static async getProductDefault(sellerID) {
+  static async getProductDefault(sellerID, page) {
     return new Promise((resolve, reject) => {
+      // const endpoint =
+      //   PRODUCT_URL +
+      //   ApiProductInventory.getProduct +
+      //   `?app_name=pos&delivery_options=3&seller_id=${sellerID}&page=1&limit=10`;
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `?app_name=pos&delivery_options=3&seller_id=${sellerID}&page=1&limit=10`;
+        `?app_name=pos&delivery_options=3&seller_id=${sellerID}&page=${page}&limit=30`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
