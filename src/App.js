@@ -12,6 +12,9 @@ import { Fonts, success, error, toastcross, toastcheck } from '@/assets';
 import { COLORS, SF, SH, SW } from './theme';
 import NetInfo from '@react-native-community/netinfo';
 import { configureMessaging, getDeviceToken } from './utils/Notifications';
+import RNLockTask from 'react-native-lock-task';
+
+RNLockTask.startLockTask();
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 SystemNavigationBar.stickyImmersive();
 

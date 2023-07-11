@@ -40,11 +40,7 @@ import CustomHoursCell from './Components/CustomHoursCell';
 import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
 import ScheduleDetailModal from './Components/ScheduleDetailModal';
 import EventItemCard from './Components/EventItemCard';
-import CalendarSettingModal from './CalendarSettingModal';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
-
-moment.suppressDeprecationWarnings = true;
+import CalendarSettingModal from './Components/CalendarSettingModal';
 
 export function Calender(props) {
   const isFocused = useIsFocused();
@@ -57,8 +53,19 @@ export function Calender(props) {
   const [showRequestsView, setshowRequestsView] = useState(false);
   const [isCalendarSettingModalVisible, setisCalendarSettingModalVisible] =
     useState(false);
+
   const getAppointmentList2 = getAppointmentList?.filter(
-    item => item.status === 0 || item.status === 1 || item.status === 2
+    item => item.status !== 3
+  );
+
+  // Only show appointments on calendar which are approved
+  const getApprovedAppointments = getAppointmentList?.filter(
+    item => item.status === 1
+  );
+
+  // Will be used to show list of all appointments
+  const appointmentListArr = getAppointmentList2.filter(
+    item => item.status !== 1
   );
 
   const data = {
@@ -77,8 +84,8 @@ export function Calender(props) {
 
   useEffect(() => {
     let extractedAppointmentEvents = [];
-    if (getAppointmentList) {
-      getAppointmentList2.map(booking => {
+    if (getApprovedAppointments) {
+      getApprovedAppointments.map(booking => {
         const startDateTime = new Date(booking.start_date_time);
         const endDateTime = new Date(booking.end_date_time);
 
@@ -86,11 +93,11 @@ export function Calender(props) {
           ...extractedAppointmentEvents,
           {
             title:
-              getAppointmentList[0].appointment_details[0].product_name ??
+              getApprovedAppointments[0].appointment_details[0].product_name ??
               'NULL',
             start: startDateTime,
             end: endDateTime,
-            completeData: getAppointmentList[0] ?? {},
+            completeData: getApprovedAppointments[0] ?? {},
           },
         ];
       });
@@ -234,33 +241,37 @@ export function Calender(props) {
             </View>
           </View>
           <View style={styles.rightTabContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                setshowRequestsView(!showRequestsView);
-              }}
-              style={styles.requestCalendarContainer}
-            >
+            <TouchableOpacity style={styles.requestCalendarContainer}>
               <View>
                 <Image
                   source={calendarIcon}
                   style={styles.requestCalendarIcon}
                 />
                 <View style={styles.requestEventBadgeContainer}>
-                  <Text style={styles.RequestEventBadgeText}>
-                    {getAppointmentList2?.length ?? 0}
-                  </Text>
+                  <Text style={styles.RequestEventBadgeText}>0</Text>
                 </View>
               </View>
             </TouchableOpacity>
 
             <View style={{ flex: 1 }}>
-              <TouchableOpacity style={styles.alignmentCalendarContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (appointmentListArr.length === 0) {
+                    setshowRequestsView(false);
+                  } else {
+                    setshowRequestsView(!showRequestsView);
+                  }
+                }}
+                style={styles.alignmentCalendarContainer}
+              >
                 <Image
                   source={todayCalendarIcon}
                   style={styles.asignessCalendarImage}
                 />
                 <View style={styles.circularBadgeContainer}>
-                  <Text style={styles.asigneesBadgeText}>0</Text>
+                  <Text style={styles.asigneesBadgeText}>
+                    {appointmentListArr?.length ?? 0}
+                  </Text>
                 </View>
               </TouchableOpacity>
               <FlatList
@@ -305,17 +316,17 @@ export function Calender(props) {
               <View style={{ marginTop: 50 }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
               </View>
-            ) : getAppointmentList2?.length === 0 ? (
+            ) : appointmentListArr?.length === 0 ? (
               <View>
                 <Text style={styles.requestNotFound}>Request not found</Text>
               </View>
             ) : (
               <View style={{ marginBottom: ms(40) }}>
                 <Text style={styles._requestTitle}>
-                  {`Request (${getAppointmentList2?.length ?? 0})`}
+                  {`Request (${appointmentListArr?.length ?? 0})`}
                 </Text>
                 <FlatList
-                  data={getAppointmentList2}
+                  data={appointmentListArr}
                   keyExtractor={(_, index) => index}
                   renderItem={eventItem}
                 />
