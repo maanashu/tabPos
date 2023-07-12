@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
+    "postinstall": "patch-package && npx pod-install"
   },
   "dependencies": {
     "@notifee/react-native": "^7.7.1",
@@ -28,6 +29,7 @@
     "dayjs": "^1.11.9",
     "link": "^1.5.1",
     "moment": "^2.29.4",
+    "patch-package": "^7.0.1",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
     "react-native": "^0.69.4",
