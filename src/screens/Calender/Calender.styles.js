@@ -536,6 +536,7 @@ export const styles = StyleSheet.create({
   serviceChargeSub: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     width: '100%',
     marginTop: ms(5),
   },
@@ -617,4 +618,40 @@ export const styles = StyleSheet.create({
     marginLeft: ms(8),
     marginVertical: ms(8),
   },
+  subtotalContainers: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: ms(5),
+  },
+  invoiceTxt: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(7),
+    marginVertical: ms(5),
+  },
+  amountSliptContainer: {
+    marginTop: ms(15),
+    marginHorizontal: ms(15),
+    padding: ms(5),
+    borderRadius: ms(5),
+    backgroundColor: COLORS.textInputBackground,
+  },
+  assignedContainer: {
+    backgroundColor: COLORS.white,
+    margin: ms(10),
+    marginTop: ms(2),
+    borderRadius: ms(5),
+    paddingHorizontal: ms(8),
+    marginBottom: ms(20),
+  },
+  chatIconStl: { height: ms(15), width: ms(15), resizeMode: 'contain' },
+  eventDetailModalContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: ms(5),
+    width: '40%',
+    alignSelf: 'center',
+    paddingVertical: ms(10),
+  },
+  crossStl: { height: ms(15), width: ms(15), tintColor: COLORS.black },
+  crossEventDetailModal: { position: 'absolute', right: ms(10), top: ms(5) },
 });

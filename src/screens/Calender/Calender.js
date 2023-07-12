@@ -23,14 +23,10 @@ import { ScreenWrapper } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import { Calendar } from '@/components/CustomCalendar';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 import { CALENDAR_MODES } from '@/constants/enums';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAppointment } from '@/actions/AppointmentAction';
-import { getAuthData } from '@/selectors/AuthSelector';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -49,9 +45,10 @@ moment.suppressDeprecationWarnings = true;
 import CalendarSettingModal from './Components/CalendarSettingModal';
 
 export function Calender(props) {
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const getAuth = useSelector(getAuthData);
   const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
   const [storeItem, setStoreItem] = useState();
@@ -59,6 +56,9 @@ export function Calender(props) {
   const [showRequestsView, setshowRequestsView] = useState(false);
   const [isCalendarSettingModalVisible, setisCalendarSettingModalVisible] =
     useState(false);
+
+  const [showEventDetailModal, setshowEventDetailModal] = useState(false);
+  const [eventData, setEventData] = useState({});
 
   const getAppointmentList2 = getAppointmentList?.filter(
     item => item.status !== 3
@@ -70,7 +70,7 @@ export function Calender(props) {
   );
 
   // Will be used to show list of all appointments
-  const appointmentListArr = getAppointmentList2?.filter(
+  const appointmentListArr = getAppointmentList2??.filter(
     item => item.status !== 1
   );
 
@@ -89,24 +89,21 @@ export function Calender(props) {
   }, [isFocused]);
 
   useEffect(() => {
-    let extractedAppointmentEvents = [];
     if (getApprovedAppointments) {
-      getApprovedAppointments.map(booking => {
-        const startDateTime = new Date(booking.start_date_time);
-        const endDateTime = new Date(booking.end_date_time);
+      const extractedAppointmentEvents = getApprovedAppointments.map(
+        booking => {
+          const startDateTime = new Date(booking.start_date_time);
+          const endDateTime = new Date(booking.end_date_time);
 
-        extractedAppointmentEvents = [
-          ...extractedAppointmentEvents,
-          {
-            title:
-              getApprovedAppointments[0].appointment_details[0].product_name ??
-              'NULL',
+          return {
+            title: booking.appointment_details[0]?.product_name || 'NULL',
             start: startDateTime,
             end: endDateTime,
-            completeData: getApprovedAppointments[0] ?? {},
-          },
-        ];
-      });
+            completeData: booking,
+          };
+        }
+      );
+
       setExtractedAppointment(extractedAppointmentEvents);
     }
   }, [getAppointmentList]);
@@ -239,42 +236,46 @@ export function Calender(props) {
                 }}
                 dayHeaderHighlightColor={COLORS.dayHighlight}
                 hourComponent={CustomHoursCell}
+                onPressEvent={event => {
+                  setEventData(event);
+                  setshowEventDetailModal(true);
+                }}
                 renderEvent={CustomEventCell}
               />
             </View>
           </View>
           <View style={styles.rightTabContainer}>
-            <TouchableOpacity style={styles.requestCalendarContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                if (appointmentListArr.length === 0) {
+                  setshowRequestsView(false);
+                } else {
+                  setshowRequestsView(!showRequestsView);
+                }
+              }}
+              style={styles.requestCalendarContainer}
+            >
               <View>
                 <Image
                   source={calendarIcon}
                   style={styles.requestCalendarIcon}
                 />
                 <View style={styles.requestEventBadgeContainer}>
-                  <Text style={styles.RequestEventBadgeText}>0</Text>
+                  <Text style={styles.RequestEventBadgeText}>
+                    {appointmentListArr?.length ?? 0}
+                  </Text>
                 </View>
               </View>
             </TouchableOpacity>
 
             <View style={{ flex: 1 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  if (appointmentListArr.length === 0) {
-                    setshowRequestsView(false);
-                  } else {
-                    setshowRequestsView(!showRequestsView);
-                  }
-                }}
-                style={styles.alignmentCalendarContainer}
-              >
+              <TouchableOpacity style={styles.alignmentCalendarContainer}>
                 <Image
                   source={todayCalendarIcon}
                   style={styles.asignessCalendarImage}
                 />
                 <View style={styles.circularBadgeContainer}>
-                  <Text style={styles.asigneesBadgeText}>
-                    {appointmentListArr?.length ?? 0}
-                  </Text>
+                  <Text style={styles.asigneesBadgeText}>{0}</Text>
                 </View>
               </TouchableOpacity>
               <FlatList
@@ -341,6 +342,10 @@ export function Calender(props) {
         <CalendarSettingModal
           isVisible={isCalendarSettingModalVisible}
           setIsVisible={setisCalendarSettingModalVisible}
+        />
+
+        <EventDetailModal
+          {...{ eventData, showEventDetailModal, setshowEventDetailModal }}
         />
 
         {schduleDetailModal()}
