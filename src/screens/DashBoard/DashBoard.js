@@ -32,10 +32,8 @@ import {
   sellingBucket,
   sessionEndBar,
 } from '@/assets';
-import { PosSearchListModal } from './Components';
 import { logoutFunction } from '@/actions/AuthActions';
 import { Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   addSellingSelection,
   getDrawerSession,
@@ -56,7 +54,6 @@ import { PosSearchListModal } from './Components';
 import { getUser } from '@/selectors/UserSelectors';
 import { navigate } from '@/navigation/NavigationRef';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { STARTSELLING } from '@/constants/flatListData';
 import { logoutUserFunction } from '@/actions/UserActions';
 import { getLoginSessionTime } from '@/utils/GlobalMethods';
 import { getDashboard } from '@/selectors/DashboardSelector';
@@ -101,6 +98,22 @@ export function DashBoard({ navigation }) {
   const [search, setSearch] = useState();
   const [productDet, setproductDet] = useState();
   const [timeChange, setTimeChange] = useState(true);
+  const [page, setpage] = useState(1);
+
+  const STARTSELLING = [
+    {
+      id: 1,
+      heading: 'START SELLING',
+      subHeading: 'Scan/Search',
+      image: sellingBucket,
+    },
+    {
+      id: 2,
+      heading: 'ONLINE ORDERS ',
+      subHeading: onLineOrder + ' ' + 'Orders',
+      image: onlineMan,
+    },
+  ];
 
   // useEffect(() => {
   //   const interval = setInterval(() => {

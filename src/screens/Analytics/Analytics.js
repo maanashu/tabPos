@@ -59,6 +59,10 @@ import {
   movingArrowBlue,
   fillRadio,
   userImage,
+  toastcross,
+  cashProfile,
+  terryProfile,
+  user,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
@@ -116,6 +120,7 @@ import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 
 moment.suppressDeprecationWarnings = true;
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 export function Analytics(props) {
   const isFocused = useIsFocused();
@@ -180,6 +185,15 @@ export function Analytics(props) {
     setRevenueTable(true), setRevenueTableHeading('');
   };
   const [categoryName, setCategoryName] = useState();
+
+  const homeCoordinate = {
+    latitude: 30.704649,
+    longitude: 76.717873,
+  };
+  const storeCoordinates = {
+    latitude: 30.73827,
+    longitude: 76.765144,
+  };
 
   const productDetailData = [
     {
@@ -4963,16 +4977,34 @@ export function Analytics(props) {
                   <View style={[styles.costoContainer]}>
                     <Spacer space={SH(10)} />
                     <View style={{ flexDirection: 'row' }}>
-                      <Image source={angela} style={styles.trackingAngela} />
+                      <Image
+                        source={
+                          OrderDetails?.user_details?.profile_photo
+                            ? {
+                                uri: OrderDetails?.user_details?.profile_photo,
+                              }
+                            : user
+                        }
+                        style={styles.trackingAngela}
+                      />
+
                       <View>
                         <Text style={styles.costoName}>
-                          {strings.customers.costo}
+                          {OrderDetails?.user_details?.firstname}
                         </Text>
                         <Spacer space={SH(8)} />
                         <View style={styles.flexAlign}>
                           <Image source={location} style={styles.Phonelight} />
                           <Text style={styles.costoAdd}>
-                            {strings.customers.costoAdd}
+                            {
+                              OrderDetails?.user_details?.current_address
+                                ?.street_address
+                            }{' '}
+                            {OrderDetails?.user_details?.current_address?.city},{' '}
+                            {
+                              OrderDetails?.user_details?.current_address
+                                ?.zipcode
+                            }{' '}
                           </Text>
                         </View>
                         <View style={styles.costoHr}></View>
@@ -4983,7 +5015,9 @@ export function Analytics(props) {
                                 source={ticket}
                                 style={styles.ticketImage}
                               />
-                              <Text style={styles.ciagrtext}>$516.30</Text>
+                              <Text style={styles.ciagrtext}>
+                                ${OrderDetails?.payable_amount}
+                              </Text>
                             </View>
                           </View>
                           <View
@@ -4994,8 +5028,9 @@ export function Analytics(props) {
                           >
                             <View style={styles.flexAlign}>
                               <Image source={box} style={styles.ticketImage} />
-                              <Text style={styles.ciagrtext}>
-                                4 boxes Cigar
+                              <Text style={styles.ciagrtext} numberOfLines={1}>
+                                {OrderDetails?.total_items} box{' '}
+                                {OrderDetails?.order_details[0]?.product_name}
                               </Text>
                             </View>
                           </View>
@@ -5150,7 +5185,11 @@ export function Analytics(props) {
                               { color: COLORS.dark_grey },
                             ]}
                           >
-                            {strings.customers.dateTime}
+                            {moment(OrderDetails?.created_at).format('LL')}
+                            {'  |  '}
+                            {moment(OrderDetails?.created_at).format(
+                              'h:mm A'
+                            )}{' '}
                           </Text>
                         </View>
                       </View>
@@ -5200,7 +5239,39 @@ export function Analytics(props) {
                 </View>
                 <View style={styles.mapContainer}>
                   <View style={styles.mapBorder}>
-                    <Image source={map} style={styles.mapStyle} />
+                    <MapView
+                      provider={PROVIDER_GOOGLE}
+                      showCompass
+                      region={{
+                        latitude: 30.704649,
+                        longitude: 76.717873,
+                        latitudeDelta: 0.0992,
+                        longitudeDelta: 0.0421,
+                      }}
+                      style={styles.mapStyle}
+                    >
+                      <Marker image={toastcross} coordinate={homeCoordinate} />
+
+                      <Marker
+                        image={toastcross}
+                        coordinate={storeCoordinates}
+                      />
+
+                      {/* <MapViewDirections
+                        origin={{
+                          latitude: 30.704649,
+                          longitude: 76.717873,
+                        }}
+                        destination={{
+                          latitude: 30.741482,
+                          longitude: 76.768066,
+                        }}
+                        apikey={PROVIDER_GOOGLE}
+                        strokeWidth={3}
+                        strokeColor={COLORS.primary}
+                      /> */}
+                    </MapView>
+                    {/* <Image source={map} style={styles.mapStyle} /> */}
                   </View>
                 </View>
               </View>
@@ -5291,8 +5362,21 @@ export function Analytics(props) {
                   <Spacer space={SH(10)} />
                   <Text style={styles.buyer}>{strings.wallet.buyer}</Text>
                   <Spacer space={SH(15)} />
-                  <View style={{ flexDirection: 'row' }}>
-                    <Image source={angela} style={styles.angelaPic} />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <Image
+                      source={
+                        OrderDetails?.user_details?.profile_photo
+                          ? {
+                              uri: OrderDetails?.user_details?.profile_photo,
+                            }
+                          : userImage
+                      }
+                      style={styles.angelaPic}
+                    />
                     <View style={{ flexDirection: 'column' }}>
                       <Text style={styles.angela}>
                         {OrderDetails?.user_details?.firstname}

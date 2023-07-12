@@ -21,7 +21,7 @@ export function Spacer({ space, horizontal, backgroundColor, style }) {
 Spacer.defaultProps = {
   space: 10,
   horizontal: false,
-  backgroundColor: COLORS.white,
+  backgroundColor: 'transparent',
   style: { flex: 1 },
 };
 

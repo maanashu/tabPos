@@ -601,7 +601,7 @@ export function MainScreen({
   //  categoryType -----end
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.homeScreenCon}>
         <CustomHeader
           iconShow={showCart ? true : false}

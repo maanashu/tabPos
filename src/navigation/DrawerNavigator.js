@@ -40,7 +40,6 @@ import { getUser } from '@/selectors/UserSelectors';
 import { navigate } from '@/navigation/NavigationRef';
 import { logoutFunction } from '@/actions/AuthActions';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { cartScreenTrue } from '@/actions/RetailAction';
 import { logoutUserFunction } from '@/actions/UserActions';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { endTrackingSession } from '@/actions/CashTrackingAction';

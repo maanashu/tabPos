@@ -40,9 +40,9 @@ import EventItemCard from './Components/EventItemCard';
 import CalendarSettingModal from './Components/CalendarSettingModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import EventDetailModal from './Components/EventDetailModal';
 
 moment.suppressDeprecationWarnings = true;
-import CalendarSettingModal from './Components/CalendarSettingModal';
 
 export function Calender(props) {
   const windowWidth = Dimensions.get('window').width;
@@ -70,7 +70,7 @@ export function Calender(props) {
   );
 
   // Will be used to show list of all appointments
-  const appointmentListArr = getAppointmentList2??.filter(
+  const appointmentListArr = getAppointmentList2?.filter(
     item => item.status !== 1
   );
 
@@ -247,7 +247,7 @@ export function Calender(props) {
           <View style={styles.rightTabContainer}>
             <TouchableOpacity
               onPress={() => {
-                if (appointmentListArr.length === 0) {
+                if (appointmentListArr?.length === 0) {
                   setshowRequestsView(false);
                 } else {
                   setshowRequestsView(!showRequestsView);

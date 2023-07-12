@@ -1294,11 +1294,9 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   angelaPic: {
-    Width: SW(10),
-    height: SW(10),
+    width: SW(20),
+    height: SH(40),
     resizeMode: 'contain',
-    marginRight: -20,
-    marginLeft: -35,
   },
   buyer: {
     color: COLORS.dark_grey,
@@ -1531,8 +1529,8 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   trackingAngela: {
-    Width: SH(50),
-    height: SH(50),
+    width: SW(20),
+    height: SH(40),
     resizeMode: 'contain',
   },
   costoHr: {
@@ -1654,6 +1652,7 @@ export const styles = StyleSheet.create({
     height: SH(610),
     borderRadius: 18,
     borderColor: COLORS.solidGrey,
+    overflow: 'hidden',
   },
   buyerTableSettingFirst: {
     width: SH(10),
