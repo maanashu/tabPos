@@ -7,6 +7,7 @@ const INITIALSTATE = {
   posLoginDetail: {},
   searchProductList: [],
   onLineOrders: {},
+  selection: {},
 };
 
 export const dashboardReducer = (
@@ -29,6 +30,11 @@ export const dashboardReducer = (
       return {
         ...state,
         getSesssion: payload.getSesssion?.payload,
+      };
+    case TYPES.ADD_SELLING_SELECTION_SUCCESS:
+      return {
+        ...state,
+        selection: payload?.selection,
       };
     case TYPES.GET_DRAWER_SESSION_RESET:
       return {

@@ -145,7 +145,6 @@ export class RetailController {
         PRODUCT_URL +
         ApiProductInventory.getProduct +
         `?app_name=pos&delivery_options=3&seller_id=${sellerID}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

@@ -113,14 +113,10 @@ export function App() {
     };
   }, []);
   useEffect(() => {
-    if (state === 'background' || state === 'inactive') {
-      console.log(
-        '---------------------------------------------------------------'
-      );
+    if (state === 'background') {
     }
   }, [state]);
 
-  console.log('currentState', state);
   return (
     <Provider store={store}>
       <PersistGate onBeforeLift={hide} persistor={persistor}>

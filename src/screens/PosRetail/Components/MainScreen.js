@@ -215,7 +215,7 @@ export function MainScreen({
   const [userAdd, setUserAdd] = useState('');
 
   const [page, setPage] = useState(1);
-  // console.log('------page', page);
+  console.log('------page', page);
 
   const dispatch = useDispatch();
   const isFocus = useIsFocused();

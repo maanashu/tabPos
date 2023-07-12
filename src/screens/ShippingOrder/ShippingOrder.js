@@ -28,6 +28,7 @@ import {
   userImage,
   parachuteBox,
   parcel,
+  bell,
 } from '@/assets';
 import { styles } from './ShippingOrder.styles';
 import { strings } from '@/localization';
@@ -323,10 +324,7 @@ export function ShippingOrder() {
               })
             }
           >
-            <Image
-              source={notifications}
-              style={[styles.truckStyle, { right: 10 }]}
-            />
+            <Image source={bell} style={[styles.truckStyle, { right: 10 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />

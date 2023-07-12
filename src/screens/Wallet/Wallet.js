@@ -11,11 +11,10 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import { COLORS, SH, SW, SF } from '@/theme';
+import { COLORS, SH, SF } from '@/theme';
 import { styles } from '@/screens/Wallet/Wallet.styles';
 import { strings } from '@/localization';
 import {
-  notifications,
   search_light,
   wallet2,
   transactionChart,
@@ -32,6 +31,7 @@ import {
   cash,
   card2,
   tableArrow,
+  bell,
 } from '@/assets';
 import {
   DaySelector,
@@ -234,10 +234,7 @@ export function Wallet() {
               })
             }
           >
-            <Image
-              source={notifications}
-              style={[styles.truckStyle, { right: 20 }]}
-            />
+            <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />

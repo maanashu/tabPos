@@ -433,6 +433,10 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(16),
   },
+  sessionViewStyle: {
+    width: SW(140),
+    alignItems: 'center',
+  },
 
   // searching list Modal css start
   searchproductCon: {

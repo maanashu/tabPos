@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {
+  bell,
   notifications,
   search_light,
   roundCalender,
@@ -40,6 +41,11 @@ import CustomHoursCell from './Components/CustomHoursCell';
 import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
 import ScheduleDetailModal from './Components/ScheduleDetailModal';
 import EventItemCard from './Components/EventItemCard';
+import CalendarSettingModal from './Components/CalendarSettingModal';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
+
+moment.suppressDeprecationWarnings = true;
 import CalendarSettingModal from './Components/CalendarSettingModal';
 
 export function Calender(props) {
@@ -182,10 +188,7 @@ export function Calender(props) {
               })
             }
           >
-            <Image
-              source={notifications}
-              style={[styles.truckStyle, { right: 25 }]}
-            />
+            <Image source={bell} style={[styles.truckStyle, { right: 25 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />

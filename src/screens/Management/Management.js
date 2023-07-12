@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {
+  bell,
   crossButton,
   Fonts,
   notifications,
@@ -328,10 +329,7 @@ export function Management() {
               })
             }
           >
-            <Image
-              source={notifications}
-              style={[styles.truckStyle, { right: 25 }]}
-            />
+            <Image source={bell} style={[styles.truckStyle, { right: 25 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />

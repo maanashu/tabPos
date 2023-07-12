@@ -116,6 +116,19 @@ const searchProductListReset = () => ({
   payload: null,
 });
 
+const addSellingSelectionRequest = () => ({
+  type: TYPES.ADD_SELLING_SELECTION_REQUEST,
+  payload: null,
+});
+const addSellingSelectionSuccess = selection => ({
+  type: TYPES.ADD_SELLING_SELECTION_SUCCESS,
+  payload: { selection },
+});
+const addSellingSelectionError = error => ({
+  type: TYPES.ADD_SELLING_SELECTION_ERROR,
+  payload: { error },
+});
+
 const onLineOrdersRequest = () => ({
   type: TYPES.ONLINE_ORDERS_REQUEST,
   payload: null,
@@ -221,6 +234,15 @@ export const searchProductList = (search, sellerID) => async dispatch => {
       dispatch(searchProductListReset());
     }
     dispatch(searchProductListError(error.message));
+  }
+};
+
+export const addSellingSelection = data => async dispatch => {
+  dispatch(addSellingSelectionRequest());
+  try {
+    dispatch(addSellingSelectionSuccess(data));
+  } catch (error) {
+    dispatch(addSellingSelectionError(error.message));
   }
 };
 
