@@ -36,6 +36,7 @@ import {
   radio,
   userImage,
   parcel,
+  bell,
 } from '@/assets';
 import {
   acceptOrder,
@@ -284,10 +285,7 @@ export function DeliveryOrder() {
               })
             }
           >
-            <Image
-              source={notifications}
-              style={[styles.truckStyle, { right: 10 }]}
-            />
+            <Image source={bell} style={[styles.truckStyle, { right: 10 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />

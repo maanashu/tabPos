@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet,
-  Image,
-  Dimensions,
-  Alert,
   View,
+  Alert,
+  Image,
   Platform,
-  SafeAreaView,
+  Dimensions,
+  StyleSheet,
 } from 'react-native';
+
+import { useDispatch, useSelector } from 'react-redux';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { COLORS, SF, SW } from '@/theme';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
+
 import {
   Fonts,
   deliveryTruck,
@@ -29,26 +28,26 @@ import {
   tray,
   users,
   blueusers,
-  reward,
   settings,
   power,
   bluetray,
   blueCalender,
-  blueReward,
   blueSetting,
 } from '@/assets';
-import { useDispatch, useSelector } from 'react-redux';
-import { logoutFunction } from '@/actions/AuthActions';
-import { logoutUserFunction } from '@/actions/UserActions';
-import { getAuthData } from '@/selectors/AuthSelector';
+import { COLORS, SF, SW } from '@/theme';
+import { NAVIGATION } from '@/constants';
 import { getUser } from '@/selectors/UserSelectors';
+import { navigate } from '@/navigation/NavigationRef';
+import { logoutFunction } from '@/actions/AuthActions';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { cartScreenTrue } from '@/actions/RetailAction';
+import { logoutUserFunction } from '@/actions/UserActions';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { endTrackingSession } from '@/actions/CashTrackingAction';
 import {
-  getDrawerSession,
+  addSellingSelection,
   getDrawerSessionSuccess,
 } from '@/actions/DashboardAction';
-import { cartScreenTrue } from '@/actions/RetailAction';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -56,9 +55,11 @@ export function DrawerNavigator(props) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
-
   const getDashboardData = useSelector(getDashboard);
   const getSessionObj = getDashboardData?.getSesssion;
+  const selection = getDashboardData?.selection;
+
+  const [active, setActive] = useState('dashBoard');
 
   const profileObj = {
     openingBalance: getSessionObj?.opening_balance,
@@ -66,6 +67,20 @@ export function DrawerNavigator(props) {
     profile: getSessionObj?.seller_details?.user_profiles?.profile_photo,
     name: getSessionObj?.seller_details?.user_profiles?.firstname,
     id: getSessionObj?.id,
+  };
+
+  useEffect(() => {
+    getSelectedOption();
+  }, [selection]);
+
+  const getSelectedOption = async () => {
+    if (selection || selection !== undefined) {
+      if (selection === 1) {
+        setActive('posRetail');
+      } else {
+        setActive('delivery');
+      }
+    }
   };
 
   const merchantEndSesion = async () => {
@@ -84,8 +99,6 @@ export function DrawerNavigator(props) {
       alert('something went wrong');
     }
   };
-
-  const [active, setActive] = useState('dashBoard');
 
   const logoutHandler = () => {
     Alert.alert('Logout', 'Are you sure you want to logout ?', [
@@ -106,59 +119,40 @@ export function DrawerNavigator(props) {
 
   return (
     <DrawerContentScrollView
-      showsHorizontalScrollIndicator={false}
-      showsVerticalScrollIndicator={false}
-      horizontal={false}
-      vertical
-      contentContainerStyle={{
-        alignItems: 'flex-start',
-        // justifyContent: 'space-evenly',
-        left: 0,
-        right: 10,
-        // borderWidth: 1,
-        width: SW(25),
-        height: Platform.OS === 'android' ? windowHeight * 0.95 : windowHeight,
-      }}
       {...props}
+      vertical
+      horizontal={false}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.contentContainerStyle}
     >
       <DrawerItem
-        activeBackgroundColor="transparent"
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
         focused={active === 'dashBoard' ? true : false}
         onPress={() => {
-          setActive('dashBoard'), navigate(NAVIGATION.dashBoard);
+          setActive('dashBoard');
+          navigate(NAVIGATION.dashBoard);
+          dispatch(addSellingSelection());
         }}
-        label=""
         icon={({ focused, color, size }) => (
           <Image
-            source={focused ? logo_icon : logo_icon}
             style={styles.iconStyle}
+            source={focused ? logo_icon : logo_icon}
           />
         )}
       />
 
-      {/* <DrawerItem
-        activeBackgroundColor="transparent"
-        focused={active === 'retail' ? true : false}
-        onPress={() => {
-          setActive('retail'), navigate(NAVIGATION.retails);
-        }}
-        label=""
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? retail : greyRetail}
-            style={styles.iconStyle}
-          />
-        )}
-      /> */}
       <DrawerItem
-        activeBackgroundColor="transparent"
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
         focused={active === 'posRetail' ? true : false}
         onPress={() => {
           setActive('posRetail');
           navigate(NAVIGATION.posRetail);
+          dispatch(addSellingSelection());
           dispatch(cartScreenTrue({ state: false }));
         }}
-        label=""
         icon={({ focused, color, size }) => (
           <Image
             source={focused ? retail : greyRetail}
@@ -168,12 +162,14 @@ export function DrawerNavigator(props) {
       />
 
       <DrawerItem
-        activeBackgroundColor="transparent"
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
         focused={active === 'delivery' ? true : false}
         onPress={() => {
-          setActive('delivery'), navigate(NAVIGATION.deliveryOrder);
+          setActive('delivery');
+          dispatch(addSellingSelection());
+          navigate(NAVIGATION.deliveryOrder);
         }}
-        label=""
         icon={({ focused, color, size }) => (
           <Image
             source={focused ? blueTruck : deliveryTruck}
@@ -183,12 +179,14 @@ export function DrawerNavigator(props) {
       />
 
       <DrawerItem
-        activeBackgroundColor="transparent"
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
         focused={active === 'para' ? true : false}
         onPress={() => {
-          setActive('para'), navigate(NAVIGATION.shippingOrder);
+          setActive('para');
+          dispatch(addSellingSelection());
+          navigate(NAVIGATION.shippingOrder);
         }}
-        label=""
         icon={({ focused, color, size }) => (
           <Image
             source={focused ? bluepara : parachuteBox}
@@ -198,12 +196,14 @@ export function DrawerNavigator(props) {
       />
 
       <DrawerItem
-        activeBackgroundColor="transparent"
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
         focused={active === 'calender' ? true : false}
         onPress={() => {
-          setActive('calender'), navigate(NAVIGATION.calender);
+          setActive('calender');
+          navigate(NAVIGATION.calender);
+          dispatch(addSellingSelection());
         }}
-        label=""
         icon={({ focused, color, size }) => (
           <Image
             source={focused ? blueCalender : calendar}
@@ -213,12 +213,14 @@ export function DrawerNavigator(props) {
       />
 
       <DrawerItem
-        activeBackgroundColor="transparent"
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
         focused={active === 'analytics' ? true : false}
         onPress={() => {
-          setActive('analytics'), navigate(NAVIGATION.analytics);
+          setActive('analytics');
+          navigate(NAVIGATION.analytics);
+          dispatch(addSellingSelection());
         }}
-        label=""
         icon={({ focused, color, size }) => (
           <Image
             source={focused ? blueanalytics : analytics}
@@ -228,12 +230,14 @@ export function DrawerNavigator(props) {
       />
 
       <DrawerItem
-        activeBackgroundColor="transparent"
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
         focused={active === 'wallet' ? true : false}
         onPress={() => {
-          setActive('wallet'), navigate(NAVIGATION.wallet);
+          setActive('wallet');
+          navigate(NAVIGATION.wallet);
+          dispatch(addSellingSelection());
         }}
-        label=""
         icon={({ focused, color, size }) => (
           <Image
             source={focused ? bluewallet : wallet}
@@ -243,24 +247,28 @@ export function DrawerNavigator(props) {
       />
 
       <DrawerItem
-        activeBackgroundColor="transparent"
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
         focused={active === 'management' ? true : false}
         onPress={() => {
-          setActive('management'), navigate(NAVIGATION.management);
+          setActive('management');
+          dispatch(addSellingSelection());
+          navigate(NAVIGATION.management);
         }}
-        label=""
         icon={({ focused, color, size }) => (
           <Image source={focused ? bluetray : tray} style={styles.iconStyle} />
         )}
       />
 
       <DrawerItem
-        activeBackgroundColor="transparent"
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
         focused={active === 'users' ? true : false}
         onPress={() => {
-          setActive('users'), navigate(NAVIGATION.customers);
+          setActive('users');
+          navigate(NAVIGATION.customers);
+          dispatch(addSellingSelection());
         }}
-        label=""
         icon={({ focused, color, size }) => (
           <Image
             source={focused ? blueusers : users}
@@ -269,28 +277,15 @@ export function DrawerNavigator(props) {
         )}
       />
 
-      {/* <DrawerItem
-        activeBackgroundColor="transparent"
-        focused={active === 'reward' ? true : false}
-        onPress={() => {
-          setActive('reward'), navigate(NAVIGATION.reward);
-        }}
-        label=""
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? blueReward : reward}
-            style={focused ? styles.iconStyle2 : styles.iconStyle}
-          />
-        )}
-      /> */}
-
       <DrawerItem
-        activeBackgroundColor="transparent"
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
         focused={active === 'setting' ? true : false}
         onPress={() => {
-          setActive('setting'), navigate(NAVIGATION.setting);
+          setActive('setting');
+          navigate(NAVIGATION.setting);
+          dispatch(addSellingSelection());
         }}
-        label=""
         icon={({ focused, color, size }) => (
           <Image
             source={focused ? blueSetting : settings}
@@ -299,37 +294,12 @@ export function DrawerNavigator(props) {
         )}
       />
 
-      {/* <DrawerItem
-        activeBackgroundColor="transparent"
-        focused={active === 'posRetail' ? true : false}
-        onPress={() => {
-          setActive('posRetail'), navigate(NAVIGATION.posRetail);
-        }}
-        label=""
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? retail : greyRetail}
-            style={styles.iconStyle}
-          />
-        )}
-      /> */}
-
       {getUserData?.posLoginData?.id !=
       getAuth?.merchantLoginData?.id ? null : (
-        <View
-          style={{
-            backgroundColor: COLORS.textInputBackground,
-            position: 'absolute',
-            left: 0,
-            bottom: 0,
-          }}
-        >
+        <View style={styles.endSessionViewStyle}>
           <DrawerItem
-            // onPress={() => {
-            //   logoutHandler();
-            // }}
+            label={''}
             onPress={() => merchantEndSesion()}
-            label=""
             icon={({ focused, color, size }) => (
               <Image source={power} style={styles.iconStyle} />
             )}
@@ -341,6 +311,19 @@ export function DrawerNavigator(props) {
 }
 
 const styles = StyleSheet.create({
+  endSessionViewStyle: {
+    backgroundColor: COLORS.textInputBackground,
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+  },
+  contentContainerStyle: {
+    alignItems: 'flex-start',
+    left: 0,
+    right: 10,
+    width: SW(25),
+    height: Platform.OS === 'android' ? windowHeight * 0.95 : windowHeight,
+  },
   drawerMainView: {
     flex: 1,
     backgroundColor: COLORS.text,

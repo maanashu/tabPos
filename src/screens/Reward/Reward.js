@@ -38,6 +38,7 @@ import {
   unionRight,
   userImage,
   wallet2,
+  bell,
 } from '@/assets';
 import LinearGradient from 'react-native-linear-gradient';
 import { Table } from 'react-native-table-component';
@@ -172,10 +173,7 @@ export function Reward() {
               })
             }
           >
-            <Image
-              source={notifications}
-              style={[styles.truckStyle, { right: 20 }]}
-            />
+            <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />

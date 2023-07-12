@@ -265,6 +265,7 @@ export { default as todayCalendarIcon } from '@/assets/images/todayCalendar.png'
 export { default as calendarSettingsIcon } from '@/assets/images/settings.png';
 export { default as eventClockIcon } from '@/assets/images/clock.png';
 export { default as radioSelect } from '@/assets/images/radioSelect.png';
+export { default as bankLogo } from '@/assets/icons/ic_wallet/bankLogo.png';
 export { default as radioUnSelect } from '@/assets/images/radioUnselect.png';
 
 /* Fonts */

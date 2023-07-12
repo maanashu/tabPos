@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   notificationHeader: {
-    left: 5,
+    left: 8,
     fontSize: SF(16),
     color: COLORS.solid_grey,
     marginTop: moderateScale(8),
@@ -24,12 +24,13 @@ export const styles = StyleSheet.create({
     borderRadius: moderateScale(3),
     marginVertical: 8,
     borderWidth: 1,
-    ...ShadowStyles.shadow,
+    ...ShadowStyles.shadow1,
+    marginHorizontal: SW(6),
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(10),
     backgroundColor: COLORS.white,
     borderColor: COLORS.washGrey,
-    paddingVertical: moderateScale(8),
+    paddingVertical: moderateScale(15),
   },
   imgContainer: {
     flexDirection: 'row',
@@ -37,8 +38,8 @@ export const styles = StyleSheet.create({
     width: Dimensions.get('window').width - 165,
   },
   notificationImg: {
-    width: SW(20),
-    height: SW(20),
+    width: SW(12),
+    height: SW(12),
     borderRadius: 50,
   },
   notificationTextView: {

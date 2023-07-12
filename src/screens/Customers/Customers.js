@@ -19,6 +19,7 @@ import {
 import { getCustomerDummy } from '@/constants/staticData';
 import { strings } from '@/localization';
 import {
+  bell,
   notifications,
   search_light,
   leftBack,
@@ -263,10 +264,7 @@ export function Customers() {
               })
             }
           >
-            <Image
-              source={notifications}
-              style={[styles.truckStyle, { right: 20 }]}
-            />
+            <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />

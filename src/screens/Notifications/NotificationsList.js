@@ -15,29 +15,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   cash,
   wallet,
+  bankLogo,
   userImage,
   backArrow,
+  cashProfile,
   blankCheckBox,
   settingsIcon,
 } from '@/assets';
 import { COLORS } from '@/theme';
 import { strings } from '@/localization';
 import { TYPES } from '@/Types/SettingTypes';
-import { goBack, navigate } from '@/navigation/NavigationRef';
 import { getSetting } from '@/selectors/SettingSelector';
+import { goBack, navigate } from '@/navigation/NavigationRef';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { fetchAllNotifications } from '@/actions/SettingAction';
 
 moment.suppressDeprecationWarnings = true;
 
 import { styles } from './styles';
-import { NAVIGATION } from '@/constants';
 
 export default function NotificationsList(props) {
   const screen = props?.route?.params?.screen;
   const dispatch = useDispatch();
   const notifications = useSelector(getSetting)?.notifications;
-  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     dispatch(fetchAllNotifications());
@@ -88,7 +88,7 @@ export default function NotificationsList(props) {
               }}
             />
           ) : (
-            <Image style={styles.notificationImg} source={userImage} />
+            <Image style={styles.notificationImg} source={cashProfile} />
           )}
         </>
       );
@@ -108,7 +108,7 @@ export default function NotificationsList(props) {
       item?.notification?.event_name === 'bank_account_added' ||
       item?.notification?.event_name === 'bank_account_deleted'
     ) {
-      return <Image style={styles.notificationImg} source={blankCheckBox} />;
+      return <Image style={styles.notificationImg} source={bankLogo} />;
     } else {
       return (
         <Image
@@ -116,7 +116,7 @@ export default function NotificationsList(props) {
           source={
             item?.notification?.user_image
               ? { uri: item?.notification?.user_image }
-              : userImage
+              : cashProfile
           }
         />
       );
@@ -138,55 +138,56 @@ export default function NotificationsList(props) {
     </View>
   );
 
+  const renderItem = ({ item, index }) => (
+    <View
+      style={[
+        styles.notificationItem,
+        !item?.is_read && { backgroundColor: COLORS.inputBorder },
+      ]}
+    >
+      <View style={styles.imgContainer}>
+        {notificationIcons(item)}
+        <View style={styles.notificationTextView}>
+          <Text style={styles.notificationTitle}>
+            {item?.notification?.title}
+          </Text>
+          <Text style={styles.notificationDescrip}>
+            {item?.notification?.description.length > 70
+              ? `${item?.notification?.description?.slice(0, 70)}...`
+              : item?.notification?.description}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.notificationTime}>
+        <Text style={styles.notificationTimeText}>
+          {moment(item?.notification?.created_at).fromNow()}
+        </Text>
+      </View>
+    </View>
+  );
+
+  const ListEmptyComponent = () => (
+    <View style={styles.emptyView}>
+      {isLoading ? (
+        <ActivityIndicator color={COLORS.primary} />
+      ) : (
+        <Text style={styles.notificationDescrip}>
+          {strings.notifications.noData}
+        </Text>
+      )}
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       {customHeader()}
 
       <SectionList
+        renderItem={renderItem}
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => item?.notification_id}
         sections={sectionedNotifications || []}
-        ListEmptyComponent={() => (
-          <View style={styles.emptyView}>
-            {isLoading ? (
-              <ActivityIndicator color={COLORS.primary} />
-            ) : (
-              <Text style={styles.notificationDescrip}>
-                {strings.notifications.noData}
-              </Text>
-            )}
-          </View>
-        )}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity
-              //   onPress={() => openNotificationHandler(item)}
-              style={[
-                styles.notificationItem,
-                !item?.is_read && { backgroundColor: COLORS.inputBorder },
-              ]}
-            >
-              <View style={styles.imgContainer}>
-                {notificationIcons(item)}
-                <View style={styles.notificationTextView}>
-                  <Text style={styles.notificationTitle}>
-                    {item?.notification?.title}
-                  </Text>
-                  <Text style={styles.notificationDescrip}>
-                    {item?.notification?.description.length > 70
-                      ? `${item?.notification?.description?.slice(0, 70)}...`
-                      : item?.notification?.description}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.notificationTime}>
-                <Text style={styles.notificationTimeText}>
-                  {moment(item?.notification?.created_at).fromNow()}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
+        ListEmptyComponent={ListEmptyComponent}
+        keyExtractor={item => item?.notification_id}
         renderSectionHeader={({ section: { title } }) => (
           <View style={{ backgroundColor: COLORS.white }}>
             <Text style={styles.notificationHeader}>{title}</Text>
