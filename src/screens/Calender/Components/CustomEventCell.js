@@ -6,6 +6,7 @@ import { styles } from '../Calender.styles';
 const CustomEventCell = (event, touchableOpacityProps) => {
   return (
     <TouchableOpacity
+      {...touchableOpacityProps}
       style={[...touchableOpacityProps.style, styles.eventContainer]}
     >
       <Text style={styles.eventTitle}>{event.title}</Text>

@@ -265,6 +265,7 @@ export { default as calendarSettingsIcon } from '@/assets/images/settings.png';
 export { default as eventClockIcon } from '@/assets/images/clock.png';
 export { default as radioSelect } from '@/assets/images/radioSelect.png';
 export { default as radioUnSelect } from '@/assets/images/radioUnselect.png';
+export { default as chatIcon } from '@/assets/images/Chat_light.png';
 
 /* Fonts */
 export const Fonts = {
