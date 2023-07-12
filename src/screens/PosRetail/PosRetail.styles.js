@@ -352,7 +352,7 @@ export const styles = StyleSheet.create({
   },
   productCon: {
     width: Platform.OS === 'ios' ? windowWidth * 0.115 : windowWidth * 0.117,
-    height: Platform.OS === 'ios' ? windowHeight * 0.22 : windowHeight * 0.24,
+    height: Platform.OS === 'ios' ? windowHeight * 0.22 : windowHeight * 0.25,
     backgroundColor: COLORS.white,
     borderRadius: 5,
     paddingHorizontal: moderateScale(3),
@@ -598,6 +598,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: 7,
     height: Platform.OS === 'android' ? SH(48) : SH(45),
+    justifyContent: 'center',
   },
   catProArrayCon: {
     borderRadius: 10,
@@ -1180,7 +1181,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   productListHeight: {
-    // borderWidth: 1,
     height: windowHeight * 0.7,
   },
   loader: {

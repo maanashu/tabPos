@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { AppState, Image, StyleSheet, Text, View } from 'react-native';
 import { hide } from 'react-native-bootsplash';
 import { enableScreens } from 'react-native-screens';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/store';
 import { RootNavigator } from '@/navigation';
@@ -16,6 +16,7 @@ import RNLockTask from 'react-native-lock-task';
 
 RNLockTask.startLockTask();
 import SystemNavigationBar from 'react-native-system-navigation-bar';
+import { getDashboard } from './selectors/DashboardSelector';
 SystemNavigationBar.stickyImmersive();
 
 enableScreens();
@@ -112,7 +113,7 @@ export function App() {
     };
   }, []);
   useEffect(() => {
-    if (state === 'background') {
+    if (state === 'background' || state === 'inactive') {
       console.log(
         '---------------------------------------------------------------'
       );

@@ -6,6 +6,7 @@ const INITIALSTATE = {
   getTotalSale: [],
   posLoginDetail: {},
   searchProductList: [],
+  onLineOrders: {},
 };
 
 export const dashboardReducer = (
@@ -66,6 +67,11 @@ export const dashboardReducer = (
       return {
         ...state,
         searchProductList: [],
+      };
+    case TYPES.ONLINE_ORDERS_SUCCESS:
+      return {
+        ...state,
+        onLineOrders: payload,
       };
 
     default:

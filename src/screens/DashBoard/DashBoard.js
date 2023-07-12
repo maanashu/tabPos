@@ -1,4 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -21,6 +26,7 @@ import {
   clock,
   crossButton,
   lockLight,
+  onlineMan,
   pay,
   pin,
   plus,
@@ -28,9 +34,9 @@ import {
   scn,
   search_light,
   sellingArrow,
+  sellingBucket,
   sessionEndBar,
 } from '@/assets';
-import { STARTSELLING } from '@/constants/flatListData';
 import { PosSearchListModal } from './Components';
 import { logoutFunction } from '@/actions/AuthActions';
 import { Alert } from 'react-native';
@@ -41,6 +47,7 @@ import {
   getDrawerSessionSuccess,
   getOrderDeliveries,
   getTotalSaleAction,
+  onLineOrders,
   posLoginDetail,
   searchProductList,
 } from '@/actions/DashboardAction';
@@ -74,6 +81,8 @@ export function DashBoard({ navigation }) {
   const getLoginDeatil = getDashboardData?.posLoginDetail;
   const getSessionObj = getDashboardData?.getSesssion;
   const getPosUser = getUserData?.posLoginData;
+  const onLineOrder =
+    getDashboardData?.onLineOrders?.onLineOrders?.onlineOrders;
 
   const TotalSale = getDashboardData?.getTotalSale;
 
@@ -100,6 +109,31 @@ export function DashBoard({ navigation }) {
   const [search, setSearch] = useState();
   const [productDet, setproductDet] = useState();
   const [timeChange, setTimeChange] = useState(true);
+  const [page, setPage] = useState(1);
+
+  const STARTSELLING = [
+    {
+      id: 1,
+      heading: 'START SELLING',
+      subHeading: 'Scan/Search',
+      image: sellingBucket,
+    },
+    {
+      id: 2,
+      heading: 'ONLINE ORDERS ',
+      subHeading: onLineOrder + ' ' + 'Orders',
+      image: onlineMan,
+    },
+  ];
+
+  const handleMoreData = () => {
+    if (page < getDashboardData?.getOrderDeliveries?.total_pages)
+      setPage(page + 1);
+  };
+
+  useEffect(() => {
+    handleMoreData();
+  }, [page]);
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -119,11 +153,12 @@ export function DashBoard({ navigation }) {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getOrderDeliveries(sellerID));
+      dispatch(getOrderDeliveries(sellerID, page));
       startTrackingFun();
       clearInput();
       dispatch(getTotalSaleAction(sellerID));
       dispatch(posLoginDetail());
+      dispatch(onLineOrders(sellerID));
     }
   }, [isFocused]);
 
@@ -337,7 +372,7 @@ export function DashBoard({ navigation }) {
               </View>
               <View style={{ flex: 1 }} />
               <Button
-                title={strings.management.save}
+                title={strings.management.startSession}
                 textStyle={[
                   styles.buttonText,
                   { color: amountCount ? COLORS.white : COLORS.darkGray },
@@ -419,7 +454,10 @@ export function DashBoard({ navigation }) {
                     <Text style={{ color: COLORS.white }}>Your Session</Text>
                   </TouchableOpacity> */}
               </View>
-              <Spacer space={SH(4)} />
+              <Spacer
+                space={SH(4)}
+                backgroundColor={COLORS.textInputBackground}
+              />
               <View style={[styles.displayflex, styles.paddingV]}>
                 <Text style={styles.cashLabel}>
                   {strings.dashboard.cashSaleAmount}
@@ -451,7 +489,10 @@ export function DashBoard({ navigation }) {
               <Text style={styles.todaySale}>
                 {strings.dashboard.cashDrawer}
               </Text>
-              <Spacer space={SH(4)} />
+              <Spacer
+                space={SH(4)}
+                backgroundColor={COLORS.textInputBackground}
+              />
               <View style={[styles.displayflex, styles.paddingV]}>
                 <Text style={styles.cashLabel}>
                   {strings.dashboard.openBal}

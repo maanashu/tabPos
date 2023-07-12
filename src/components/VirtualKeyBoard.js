@@ -70,7 +70,7 @@ export const VirtualKeyBoard = ({
               textStyle={enteredValue ? styles.selectedText : styles.buttonText}
               style={enteredValue ? styles.submitButton : styles.button}
             />
-            <Spacer space={SH(40)} />
+            {/* <Spacer space={SH(40)} /> */}
           </View>
         )}
         X

@@ -116,10 +116,23 @@ const searchProductListReset = () => ({
   payload: null,
 });
 
-export const getOrderDeliveries = sellerID => async dispatch => {
+const onLineOrdersRequest = () => ({
+  type: TYPES.ONLINE_ORDERS_REQUEST,
+  payload: null,
+});
+const onLineOrdersSuccess = onLineOrders => ({
+  type: TYPES.ONLINE_ORDERS_SUCCESS,
+  payload: { onLineOrders },
+});
+const onLineOrdersError = error => ({
+  type: TYPES.ONLINE_ORDERS_ERROR,
+  payload: { error },
+});
+
+export const getOrderDeliveries = (sellerID, page) => async dispatch => {
   dispatch(getOrderDeliveriesRequest());
   try {
-    const res = await DashboardController.getOrderDeliveries(sellerID);
+    const res = await DashboardController.getOrderDeliveries(sellerID, page);
     dispatch(getOrderDeliveriesSuccess(res?.payload?.data));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -208,5 +221,15 @@ export const searchProductList = (search, sellerID) => async dispatch => {
       dispatch(searchProductListReset());
     }
     dispatch(searchProductListError(error.message));
+  }
+};
+
+export const onLineOrders = sellerID => async dispatch => {
+  dispatch(onLineOrdersRequest());
+  try {
+    const res = await DashboardController.onLineOrders(sellerID);
+    dispatch(onLineOrdersSuccess(res?.payload));
+  } catch (error) {
+    dispatch(onLineOrdersError(error.message));
   }
 };

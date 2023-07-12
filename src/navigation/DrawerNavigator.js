@@ -48,7 +48,7 @@ import {
   getDrawerSession,
   getDrawerSessionSuccess,
 } from '@/actions/DashboardAction';
-import { cartScreenTrue } from '@/actions/RetailAction';
+import { cartScreenTrue, getUserDetailSuccess } from '@/actions/RetailAction';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -157,6 +157,7 @@ export function DrawerNavigator(props) {
           setActive('posRetail');
           navigate(NAVIGATION.posRetail);
           dispatch(cartScreenTrue({ state: false }));
+          dispatch(getUserDetailSuccess([]));
         }}
         label=""
         icon={({ focused, color, size }) => (

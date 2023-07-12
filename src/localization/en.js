@@ -284,7 +284,7 @@ export const en = {
     dateTime: 'Today Friday Auguest 26, 2022   | 11.04 AM',
     allein: 'Allein',
     removeCash: 'Removed cash',
-    countCash: 'Counted Cash',
+
     discrepancy: 'Discrepancy',
     breakFast: 'Note: breakfast',
     startTrackingSession: 'Stared tracking session',
@@ -299,10 +299,12 @@ export const en = {
     sessionHistory: 'Session history',
     cashSummary: 'Cash summary',
     amountexpect: 'Amount expected',
-    amountCounted: 'Amount counted',
+
     selectAmountDra: 'Select amount to leave in drawer',
     otherAmountusd: 'Other amount (USD)',
     transactionType: 'Transaction type',
+    transactionType: 'Transaction type',
+    startSession: 'Start Session',
   },
   customers: {
     sales: 'Sales',

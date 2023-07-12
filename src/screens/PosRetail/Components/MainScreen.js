@@ -1,5 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, Keyboard, Text, View } from 'react-native';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import {
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -60,7 +67,109 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
-import { log } from 'react-native-reanimated';
+import { cond, log } from 'react-native-reanimated';
+
+const ProductFlatListCom = memo(
+  ({
+    isProductLoading,
+    productArray,
+    showProductsFrom,
+    productFun,
+    setSelectedId,
+    selectedId,
+    onClickAddCart,
+  }) => {
+    const renderItem = ({ item }) => {
+      const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
+      const color = item.id === selectedId ? 'white' : 'black';
+      return (
+        <Item
+          item={item}
+          onPress={() => setSelectedId(item.id)}
+          backgroundColor={backgroundColor}
+          textColor={color}
+        />
+      );
+    };
+
+    const Item = ({ item }) => (
+      <TouchableOpacity
+        style={styles.productCon}
+        onPress={() => productFun(item.id)}
+        activeOpacity={0.7}
+      >
+        <Image source={{ uri: item.image }} style={styles.categoryshoes} />
+        <Spacer space={SH(10)} />
+        <Text numberOfLines={1} style={styles.productDes}>
+          {item.name}
+        </Text>
+        <Text numberOfLines={1} style={styles.productDes}>
+          short cardigan
+        </Text>
+        <Spacer space={SH(6)} />
+        <Text numberOfLines={1} style={styles.productSubHead}>
+          {item.sub_category?.name}
+        </Text>
+        <Spacer space={SH(6)} />
+        <TouchableOpacity style={styles.displayflex}>
+          <Text numberOfLines={1} style={styles.productPrice}>
+            {/* {`$${item?.price}`} */}$
+            {item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+          </Text>
+          <TouchableOpacity onPress={() => onClickAddCart(item)}>
+            <Image source={addToCart} style={styles.addToCart} />
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </TouchableOpacity>
+    );
+
+    return (
+      <View style={styles.productBodyCon}>
+        <View style={styles.productListHeight}>
+          {isProductLoading ? (
+            <View style={{ marginTop: 100 }}>
+              <ActivityIndicator size="large" color={COLORS.indicator} />
+            </View>
+          ) : productArray?.length === 0 ? (
+            <View style={styles.noProductText}>
+              <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                {strings.valiadtion.noProduct}
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              data={showProductsFrom || productArray}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index}
+              extraData={showProductsFrom}
+              numColumns={5}
+              contentContainerStyle={{ flexGrow: 1 }}
+              scrollEnabled={true}
+              // onEndReached={handleMoreData}
+              // onEndReachedThreshold={0.1}
+              // ListFooterComponent={() => {
+              //   return (
+              //     <ActivityIndicator
+              //       size="large"
+              //       color={COLORS.primary}
+              //     />
+              //   );
+              // }}
+
+              // horizontal
+              // contentContainerStyle={{
+              //   flexGrow: 1,
+              //   justifyContent: 'space-between',
+              // }}
+            />
+          )}
+
+          <Spacer space={SH(15)} backgroundColor={COLORS.textInputBackground} />
+        </View>
+      </View>
+    );
+  }
+);
 
 export function MainScreen({
   checkOutHandler,
@@ -106,7 +215,7 @@ export function MainScreen({
   const [userAdd, setUserAdd] = useState('');
 
   const [page, setPage] = useState(1);
-  console.log('------page', page);
+  // console.log('------page', page);
 
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -144,6 +253,7 @@ export function MainScreen({
     },
   ];
   const phoneNumberSearchFun = customerPhoneNo => {
+    setCustomerPhoneNo(customerPhoneNo);
     if (customerPhoneNo?.length > 9) {
       // checkOutHandler();
       dispatch(getUserDetail(customerPhoneNo));
@@ -179,12 +289,15 @@ export function MainScreen({
 
   // paginatio  section end
 
-  const productFun = async productId => {
-    const res = await dispatch(getOneProduct(sellerID, productId));
-    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-      setAddCartModal(true);
-    }
-  };
+  const productFun = useCallback(
+    async productId => {
+      const res = await dispatch(getOneProduct(sellerID, productId));
+      if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+        setAddCartModal(true);
+      }
+    },
+    [sellerID]
+  );
   const removeOneCartHandler = productId => {
     const data = {
       cartId: cartData?.id,
@@ -265,17 +378,20 @@ export function MainScreen({
     }
   };
 
-  const onClickAddCart = item => {
-    const data = {
-      seller_id: sellerID,
-      supplyId: item?.supplies?.[0]?.id,
-      supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
-      product_id: item?.id,
-      service_id: item?.service_id,
-      qty: 1,
-    };
-    dispatch(addTocart(data));
-  };
+  const onClickAddCart = useCallback(
+    item => {
+      const data = {
+        seller_id: sellerID,
+        supplyId: item?.supplies?.[0]?.id,
+        supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
+        product_id: item?.id,
+        service_id: item?.service_id,
+        qty: 1,
+      };
+      dispatch(addTocart(data));
+    },
+    [sellerID]
+  );
 
   const changeView = () => {
     if (getuserDetailByNo?.length > 0) {
@@ -484,53 +600,8 @@ export function MainScreen({
   );
   //  categoryType -----end
 
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === selectedId ? 'white' : 'black';
-
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
-  };
-
-  const Item = ({ item }) => (
-    <TouchableOpacity
-      style={styles.productCon}
-      onPress={() => productFun(item.id)}
-      activeOpacity={0.7}
-    >
-      <Image source={{ uri: item.image }} style={styles.categoryshoes} />
-      <Spacer space={SH(10)} />
-      <Text numberOfLines={1} style={styles.productDes}>
-        {item.name}
-      </Text>
-      <Text numberOfLines={1} style={styles.productDes}>
-        short cardigan
-      </Text>
-      <Spacer space={SH(6)} />
-      <Text numberOfLines={1} style={styles.productSubHead}>
-        {item.sub_category?.name}
-      </Text>
-      <Spacer space={SH(6)} />
-      <TouchableOpacity style={styles.displayflex}>
-        <Text numberOfLines={1} style={styles.productPrice}>
-          {/* {`$${item?.price}`} */}$
-          {item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-        </Text>
-        <TouchableOpacity onPress={() => onClickAddCart(item)}>
-          <Image source={addToCart} style={styles.addToCart} />
-        </TouchableOpacity>
-      </TouchableOpacity>
-    </TouchableOpacity>
-  );
-
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.homeScreenCon}>
         <CustomHeader
           iconShow={showCart ? true : false}
@@ -748,7 +819,16 @@ export function MainScreen({
               </View>
 
               <Spacer space={SH(15)} />
-              <View style={styles.productBodyCon}>
+              <ProductFlatListCom
+                isProductLoading={isProductLoading}
+                productArray={productArray}
+                showProductsFrom={showProductsFrom}
+                productFun={productFun}
+                setSelectedId={setSelectedId}
+                selectedId={selectedId}
+                onClickAddCart={onClickAddCart}
+              />
+              {/* <View style={styles.productBodyCon}>
                 <View style={styles.productListHeight}>
                   {isProductLoading ? (
                     <View style={{ marginTop: 100 }}>
@@ -772,6 +852,8 @@ export function MainScreen({
                       keyExtractor={(item, index) => index}
                       extraData={showProductsFrom}
                       numColumns={5}
+                      contentContainerStyle={{ flexGrow: 1 }}
+                      scrollEnabled={true}
                       // onEndReached={handleMoreData}
                       // onEndReachedThreshold={0.1}
                       // ListFooterComponent={() => {
@@ -790,8 +872,13 @@ export function MainScreen({
                       // }}
                     />
                   )}
+
+                  <Spacer
+                    space={SH(15)}
+                    backgroundColor={COLORS.textInputBackground}
+                  />
                 </View>
-              </View>
+              </View> */}
             </View>
           )}
 
@@ -842,7 +929,6 @@ export function MainScreen({
                     keyboardType="numeric"
                     value={customerPhoneNo}
                     onChangeText={customerPhoneNo => {
-                      setCustomerPhoneNo(customerPhoneNo);
                       phoneNumberSearchFun(customerPhoneNo);
                     }}
                     placeholderTextColor={COLORS.solid_grey}
@@ -1019,92 +1105,105 @@ export function MainScreen({
         transparent={true}
         isVisible={categoryModal || subCategoryModal || brandModal}
       >
-        <View>
-          {categoryModal ? (
-            <CategoryModal
-              crossHandler={() => setCategoryModal(false)}
-              categoryArray={categoryArray}
-              onSelectCategory={selectedCat => {
-                dispatch(getProduct(selectedCat.id, null, null, sellerID));
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 100}
+          // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
+        >
+          <ScrollView>
+            <View>
+              {categoryModal ? (
+                <CategoryModal
+                  crossHandler={() => setCategoryModal(false)}
+                  categoryArray={categoryArray}
+                  onSelectCategory={selectedCat => {
+                    dispatch(getProduct(selectedCat.id, null, null, sellerID));
 
-                setselectedCatID(selectedCat.id);
+                    setselectedCatID(selectedCat.id);
 
-                setisFilterDataSeclectedOfIndex(0); // Enable Selection of subcategory if any category is selected
+                    setisFilterDataSeclectedOfIndex(0); // Enable Selection of subcategory if any category is selected
 
-                setfilterMenuTitle(prevData => {
-                  const newData = [...prevData];
+                    setfilterMenuTitle(prevData => {
+                      const newData = [...prevData];
 
-                  // Set Category
-                  newData[0].name = selectedCat.name;
-                  newData[0].isSelected = true;
+                      // Set Category
+                      newData[0].name = selectedCat.name;
+                      newData[0].isSelected = true;
 
-                  // Reset SubCategory selections
-                  newData[1].isSelected = false;
-                  newData[1].name = originalFilterData[1].name;
+                      // Reset SubCategory selections
+                      newData[1].isSelected = false;
+                      newData[1].name = originalFilterData[1].name;
 
-                  // Reset Brand selections
-                  newData[2].isSelected = false;
-                  newData[2].name = originalFilterData[2].name;
+                      // Reset Brand selections
+                      newData[2].isSelected = false;
+                      newData[2].name = originalFilterData[2].name;
 
-                  return newData;
-                });
+                      return newData;
+                    });
 
-                setCategoryModal(false);
-              }}
-            />
-          ) : subCategoryModal ? (
-            <SubCatModal
-              crossHandler={() => setSubCategoryModal(false)}
-              onSelectSubCategory={selectedSubCat => {
-                dispatch(
-                  getProduct(selectedCatID, selectedSubCat.id, null, sellerID)
-                );
-                setselectedSubCatID(selectedSubCat.id);
-                setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
+                    setCategoryModal(false);
+                  }}
+                />
+              ) : subCategoryModal ? (
+                <SubCatModal
+                  crossHandler={() => setSubCategoryModal(false)}
+                  onSelectSubCategory={selectedSubCat => {
+                    dispatch(
+                      getProduct(
+                        selectedCatID,
+                        selectedSubCat.id,
+                        null,
+                        sellerID
+                      )
+                    );
+                    setselectedSubCatID(selectedSubCat.id);
+                    setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
 
-                setfilterMenuTitle(prevData => {
-                  const newData = [...prevData];
+                    setfilterMenuTitle(prevData => {
+                      const newData = [...prevData];
 
-                  // Set SubCategory
-                  newData[1].name = selectedSubCat.name;
-                  newData[1].isSelected = true;
+                      // Set SubCategory
+                      newData[1].name = selectedSubCat.name;
+                      newData[1].isSelected = true;
 
-                  // Reset Brand selections
-                  newData[2].isSelected = false;
-                  newData[2].name = originalFilterData[2].name;
+                      // Reset Brand selections
+                      newData[2].isSelected = false;
+                      newData[2].name = originalFilterData[2].name;
 
-                  return newData;
-                });
+                      return newData;
+                    });
 
-                setSubCategoryModal(false);
-              }}
-            />
-          ) : (
-            <BrandModal
-              crossHandler={() => setBrandModal(false)}
-              onSelectbrands={selectedBrand => {
-                dispatch(
-                  getProduct(
-                    selectedCatID,
-                    selectedSubCatID,
-                    selectedBrand.id,
-                    sellerID
-                  )
-                );
-                setselectedBrandID(selectedBrand.id);
-                setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
+                    setSubCategoryModal(false);
+                  }}
+                />
+              ) : (
+                <BrandModal
+                  crossHandler={() => setBrandModal(false)}
+                  onSelectbrands={selectedBrand => {
+                    dispatch(
+                      getProduct(
+                        selectedCatID,
+                        selectedSubCatID,
+                        selectedBrand.id,
+                        sellerID
+                      )
+                    );
+                    setselectedBrandID(selectedBrand.id);
+                    setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
 
-                setfilterMenuTitle(prevData => {
-                  const newData = [...prevData];
-                  newData[2].name = selectedBrand.name;
-                  newData[2].isSelected = true;
-                  return newData;
-                });
-                setBrandModal(false);
-              }}
-            />
-          )}
-        </View>
+                    setfilterMenuTitle(prevData => {
+                      const newData = [...prevData];
+                      newData[2].name = selectedBrand.name;
+                      newData[2].isSelected = true;
+                      return newData;
+                    });
+                    setBrandModal(false);
+                  }}
+                />
+              )}
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </Modal>
 
       <Modal

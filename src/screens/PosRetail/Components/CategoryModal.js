@@ -17,6 +17,7 @@ export function CategoryModal({
   onSelectCategory,
 }) {
   const [selectedId, setSelectedId] = useState();
+  console.log('categoryArray', categoryArray);
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
