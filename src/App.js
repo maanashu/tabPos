@@ -1,5 +1,12 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
-import { AppState, Image, StyleSheet, Text, View } from 'react-native';
+import {
+  AppState,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { hide } from 'react-native-bootsplash';
 import { enableScreens } from 'react-native-screens';
 import { Provider, useSelector } from 'react-redux';
@@ -12,13 +19,13 @@ import { Fonts, success, error, toastcross, toastcheck } from '@/assets';
 import { COLORS, SF, SH, SW } from './theme';
 import NetInfo from '@react-native-community/netinfo';
 import { configureMessaging, getDeviceToken } from './utils/Notifications';
-import RNLockTask from 'react-native-lock-task';
-
-RNLockTask.startLockTask();
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import { getDashboard } from './selectors/DashboardSelector';
-SystemNavigationBar.stickyImmersive();
+import RNLockTask from 'react-native-lock-task';
 
+Platform.OS === 'android' && RNLockTask.startLockTask();
+
+SystemNavigationBar.stickyImmersive();
 enableScreens();
 
 const toastConfig = {
