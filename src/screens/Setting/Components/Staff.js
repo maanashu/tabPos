@@ -104,15 +104,17 @@ export function Staff() {
       <View style={styles.flexRow}>
         <View style={styles.dispalyRow}>
           <Image
-            source={{ uri: item.user_profiles?.profile_photo ?? userImage }}
+            source={{
+              uri: item.user?.user_profiles?.profile_photo ?? userImage,
+            }}
             style={styles.teamMember}
           />
           <View style={styles.marginLeft}>
             <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-              {item.user_profiles?.firstname}
+              {item.user?.user_profiles?.firstname}
             </Text>
             <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
-              {item.user_profiles?.pos_role ?? 'Merchant'}
+              {item?.pos_role ?? 'Merchant'}
             </Text>
           </View>
         </View>

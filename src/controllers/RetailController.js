@@ -63,7 +63,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getBrand +
-        `?page=1&limit=10&seller_id=${sellerID}&category_id=${selectedId}`;
+        `?seller_id=${sellerID}&category_id=${selectedId}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
