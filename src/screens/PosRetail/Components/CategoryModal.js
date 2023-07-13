@@ -17,6 +17,7 @@ export function CategoryModal({
   onSelectCategory,
 }) {
   const [selectedId, setSelectedId] = useState();
+  console.log('categoryArray', categoryArray);
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
@@ -47,9 +48,17 @@ export function CategoryModal({
       <Spacer space={SH(20)} />
       <View style={styles.displayflex}>
         <Text style={styles.categories}>{strings.posRetail.categories}</Text>
-        <TouchableOpacity onPress={crossHandler}>
-          <Image source={crossButton} style={styles.crossButton} />
-        </TouchableOpacity>
+        <View style={[styles.displayRow]}>
+          <TouchableOpacity
+            style={styles.cancelCatCon}
+            onPress={() => alert('in Progress')}
+          >
+            <Text style={styles.catCancelText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={crossHandler}>
+            <Image source={crossButton} style={styles.crossButton} />
+          </TouchableOpacity>
+        </View>
       </View>
       <Spacer space={SH(15)} />
       <View style={styles.categoryInputWraper}>

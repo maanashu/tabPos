@@ -11,11 +11,10 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import { COLORS, SH, SW, SF } from '@/theme';
+import { COLORS, SH, SF } from '@/theme';
 import { styles } from '@/screens/Wallet/Wallet.styles';
 import { strings } from '@/localization';
 import {
-  notifications,
   search_light,
   wallet2,
   transactionChart,
@@ -32,6 +31,7 @@ import {
   cash,
   card2,
   tableArrow,
+  bell,
 } from '@/assets';
 import {
   DaySelector,
@@ -55,8 +55,12 @@ import { getWallet } from '@/selectors/WalletSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/WalletTypes';
 import moment from 'moment';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 const windowHeight = Dimensions.get('window').height;
+
+moment.suppressDeprecationWarnings = true;
 
 export function Wallet() {
   const isFocused = useIsFocused();
@@ -223,10 +227,15 @@ export function Wallet() {
         )}
 
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 20 }]}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.wallet,
+              })
+            }
+          >
+            <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput

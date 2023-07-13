@@ -11,8 +11,12 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class DashboardController {
-  static async getOrderDeliveries(sellerID) {
+  static async getOrderDeliveries(sellerID, page) {
     return new Promise((resolve, reject) => {
+      // const endpoint =
+      //   ORDER_URL +
+      //   ApiOrderInventory.getOrderUser +
+      //   `?seller_id=${sellerID}&delivery_option=1&page=${page}&limit=10`;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderUser +
@@ -130,7 +134,6 @@ export class DashboardController {
         ORDER_URL +
         ApiOrderInventory.getTotalSale +
         `?seller_id=${sellerID}&filter=today`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -181,6 +184,28 @@ export class DashboardController {
           resolve(response);
         })
         .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  static async onLineOrders(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.onLineOrders + `?seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          {
+            Toast.show({
+              text2: error.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
           reject(error);
         });
     });

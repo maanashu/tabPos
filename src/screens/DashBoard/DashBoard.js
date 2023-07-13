@@ -1,67 +1,74 @@
-import React, { useEffect, useState } from 'react';
-import { Button, ScreenWrapper, Spacer } from '@/components';
-import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
-  Dimensions,
-  FlatList,
-  TouchableOpacity,
   Image,
+  FlatList,
   TextInput,
   ScrollView,
+  TouchableOpacity,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
+
+import moment from 'moment';
 import Modal from 'react-native-modal';
-import { styles } from '@/screens/DashBoard/DashBoard.styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+
 import {
   cashProfile,
   clock,
   crossButton,
   lockLight,
+  onlineMan,
   pay,
   pin,
-  plus,
   rightIcon,
   scn,
   search_light,
   sellingArrow,
+  sellingBucket,
   sessionEndBar,
 } from '@/assets';
-import { STARTSELLING } from '@/constants/flatListData';
-import { PosSearchListModal } from './Components';
 import { logoutFunction } from '@/actions/AuthActions';
 import { Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import {
+  addSellingSelection,
   getDrawerSession,
   getDrawerSessionPost,
   getDrawerSessionSuccess,
   getOrderDeliveries,
   getTotalSaleAction,
+  onLineOrders,
   posLoginDetail,
   searchProductList,
 } from '@/actions/DashboardAction';
-import { getAuthData } from '@/selectors/AuthSelector';
-import { useIsFocused } from '@react-navigation/native';
-import { getDashboard } from '@/selectors/DashboardSelector';
-import { navigate } from '@/navigation/NavigationRef';
+import { strings } from '@/localization';
 import { NAVIGATION } from '@/constants';
-import { TYPES } from '@/Types/DashboardTypes';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { digits } from '@/utils/validators';
-import moment from 'moment';
-import { endTrackingSession } from '@/actions/CashTrackingAction';
+import { COLORS, SF, SH, SW } from '@/theme';
+import { TYPES } from '@/Types/DashboardTypes';
+import { PosSearchListModal } from './Components';
 import { getUser } from '@/selectors/UserSelectors';
+import { navigate } from '@/navigation/NavigationRef';
+import { getAuthData } from '@/selectors/AuthSelector';
 import { logoutUserFunction } from '@/actions/UserActions';
-import { KeyboardAvoidingView } from 'react-native';
-import { getSearchProduct } from '@/actions/RetailAction';
-import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 import { getLoginSessionTime } from '@/utils/GlobalMethods';
+import { getDashboard } from '@/selectors/DashboardSelector';
+import { Button, ScreenWrapper, Spacer } from '@/components';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { endTrackingSession } from '@/actions/CashTrackingAction';
+import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
+
+import { styles } from './DashBoard.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+moment.suppressDeprecationWarnings = true;
 
 export function DashBoard({ navigation }) {
+  const textInputRef = useRef(null);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -71,7 +78,8 @@ export function DashBoard({ navigation }) {
   const getLoginDeatil = getDashboardData?.posLoginDetail;
   const getSessionObj = getDashboardData?.getSesssion;
   const getPosUser = getUserData?.posLoginData;
-
+  const onLineOrder =
+    getDashboardData?.onLineOrders?.onLineOrders?.onlineOrders;
   const TotalSale = getDashboardData?.getTotalSale;
 
   const todayCashAmount = TotalSale?.[3]?.total_sale_amount.toFixed(2);
@@ -80,28 +88,32 @@ export function DashBoard({ navigation }) {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getDeliveryData = getDashboardData?.getOrderDeliveries;
   const getDeliveryData2 = getDeliveryData?.filter(item => item.status <= 3);
-  const [searchScreen, setSearchScreen] = useState(false);
+
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
   const [trackNotes, setTrackNotes] = useState('');
-  const [productdetailModal, setProductdetailModal] = useState(false);
-  const [selected, setSelected] = useState('categoryList');
   const [yourSessionEndModal, setYourSessionEndModal] = useState(false);
-  const [readyPickup, setReadyPickup] = useState(false);
-  const [pickupDetails, setPickupDetails] = useState(false);
-  const [currentTime, setCurrentTime] = useState(moment().format('HH:mm:ss'));
   const [searchModal, setSearchModal] = useState(false);
   const [searchModalDetail, setSearchModalDetail] = useState(false);
-  const [searchProViewdetail, setSearchProViewdetail] = useState(false);
-  const [selectionId, setSelectionId] = useState();
   const [search, setSearch] = useState();
   const [productDet, setproductDet] = useState();
+  const [timeChange, setTimeChange] = useState(true);
+  const [page, setpage] = useState(1);
 
-  var aaa = new Date();
-  const newDate = aaa.getTime();
-
-  var bbb = new Date(getLoginDeatil?.updated_at);
-  const sessionDate = bbb.getTime();
+  const STARTSELLING = [
+    {
+      id: 1,
+      heading: 'START SELLING',
+      subHeading: 'Scan/Search',
+      image: sellingBucket,
+    },
+    {
+      id: 2,
+      heading: 'ONLINE ORDERS ',
+      subHeading: onLineOrder + ' ' + 'Orders',
+      image: onlineMan,
+    },
+  ];
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -121,11 +133,12 @@ export function DashBoard({ navigation }) {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getOrderDeliveries(sellerID));
+      dispatch(getOrderDeliveries(sellerID, page));
       startTrackingFun();
       clearInput();
       dispatch(getTotalSaleAction(sellerID));
       dispatch(posLoginDetail());
+      dispatch(onLineOrders(sellerID));
     }
   }, [isFocused]);
 
@@ -134,9 +147,33 @@ export function DashBoard({ navigation }) {
     setTrackNotes('');
   };
 
+  useEffect(() => {
+    if (timeChange) {
+      orderTime();
+    }
+  }, [timeChange === true]);
+
+  const orderTime = estimateTime => {
+    const currentDateTime = new Date();
+    const givenTimestamp = new Date(estimateTime);
+    const timeDifference = givenTimestamp.getTime() - currentDateTime.getTime();
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+    const seconds = Math.floor((timeDifference / 1000) % 60);
+    const timeFormatted = (
+      <View>
+        <Text style={[styles.nameTextBold, styles.timeSec]}>
+          {hours < 1 ? '00' : hours}:{minutes < 1 ? '00' : minutes}:
+          {seconds < 1 ? '00' : seconds}
+        </Text>
+      </View>
+    );
+
+    return timeFormatted;
+  };
+
   const startTrackingFun = async () => {
     const res = await dispatch(getDrawerSession());
-    // if (res) {
     if (res?.type === 'GET_DRAWER_SESSION_SUCCESS') {
       setTrackingSession(false);
       setAmountCount('');
@@ -145,6 +182,7 @@ export function DashBoard({ navigation }) {
       setTrackingSession(true);
     }
   };
+
   const startTrackingSesHandler = async () => {
     if (!amountCount) {
       alert('Please Enter Amount');
@@ -165,31 +203,17 @@ export function DashBoard({ navigation }) {
   const orderDelveriesLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_DELIVERIES], state)
   );
+
   const getSessionLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_DRAWER_SESSION], state)
   );
 
-  const logoutHandler = () => {
-    Alert.alert('Logout', 'Are you sure you want to logout ?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: () => {
-          dispatch(logoutFunction());
-          // dispatch(logoutUserFunction());
-        },
-      },
-    ]);
-  };
-
-  const startSellingHandler = id => {
+  const startSellingHandler = async id => {
     if (id === 1) {
+      dispatch(addSellingSelection(id));
       navigate(NAVIGATION.posRetail);
     } else if (id === 2) {
+      dispatch(addSellingSelection(id));
       navigate(NAVIGATION.deliveryOrder);
     }
   };
@@ -221,7 +245,7 @@ export function DashBoard({ navigation }) {
         </View>
       </View>
       <View style={{ width: SW(50) }}>
-        <Text style={[styles.nameText, styles.nameTextBold]}>
+        <Text style={[styles.nameText, styles.nameTextBold]} numberOfLines={1}>
           {item?.delivery_details?.title}
         </Text>
         <View style={styles.timeView}>
@@ -234,7 +258,11 @@ export function DashBoard({ navigation }) {
       </View>
       <View style={styles.rightIconStyle1}>
         <View style={styles.timeView}>
-          <Text style={[styles.nameTextBold, styles.timeSec]}>00:03:56</Text>
+          <Text style={[styles.nameTextBold, styles.timeSec]}>
+            {item.estimated_preparation_time === null
+              ? '00:00:00'
+              : orderTime(item.estimated_preparation_time)}
+          </Text>
           <Image source={rightIcon} style={styles.pinIcon} />
         </View>
       </View>
@@ -244,19 +272,18 @@ export function DashBoard({ navigation }) {
   const trackinSessionModal = () => {
     return (
       <Modal
-        animationType="fade"
         transparent={true}
+        animationType={'fade'}
         isVisible={trackingSession}
       >
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : 100}
-          // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
         >
           <ScrollView>
             <View style={styles.modalMainView}>
               <View style={styles.headerView}>
-                <View style={{ width: SW(140), alignItems: 'center' }}>
+                <View style={styles.sessionViewStyle}>
                   <Text
                     style={[styles.trackingButtonText, { fontSize: SF(16) }]}
                   >
@@ -265,8 +292,8 @@ export function DashBoard({ navigation }) {
                 </View>
 
                 <TouchableOpacity
-                  onPress={() => dispatch(logoutUserFunction())}
                   style={styles.crossButonBorder}
+                  onPress={() => dispatch(logoutUserFunction())}
                 >
                   <Image source={crossButton} style={styles.crossIconStyle} />
                 </TouchableOpacity>
@@ -292,7 +319,6 @@ export function DashBoard({ navigation }) {
                     onChangeText={setAmountCount}
                   />
                 </View>
-
                 <Spacer space={SH(40)} />
                 <View>
                   <Text style={styles.amountCountedText}>
@@ -312,7 +338,7 @@ export function DashBoard({ navigation }) {
               </View>
               <View style={{ flex: 1 }} />
               <Button
-                title={strings.management.save}
+                title={strings.management.startSession}
                 textStyle={[
                   styles.buttonText,
                   { color: amountCount ? COLORS.white : COLORS.darkGray },
@@ -344,42 +370,40 @@ export function DashBoard({ navigation }) {
     }
   };
 
-  const bodyView = () => {
-    return (
-      <View style={styles.homeScreenCon}>
-        <View style={styles.displayRow}>
-          <View style={styles.cashProfileCon}>
-            {/* <Spacer space={SH(20)} /> */}
-            <Spacer space={SH(12)} />
-            <View style={styles.cashProfilecon}>
-              <Image
-                source={
-                  getPosUser?.user_profiles?.profile_photo
-                    ? { uri: getPosUser?.user_profiles?.profile_photo }
-                    : cashProfile
-                }
-                style={styles.cashProfile}
-              />
-            </View>
-            <Text style={styles.cashierName}>
-              {getPosUser?.user_profiles?.firstname ?? 'username'}
-            </Text>
-            <Text style={styles.posCashier}>
-              {getPosUser?.user_profiles?.pos_role === null
-                ? 'Merchant'
-                : getPosUser?.user_profiles?.pos_role}
-            </Text>
-            <Text style={styles.cashLabel}>
-              ID : {getPosUser?.user_profiles?.user_id ?? '0'}
-            </Text>
-            <Spacer space={SH(10)} />
+  const bodyView = () => (
+    <View style={styles.homeScreenCon}>
+      <View style={styles.displayRow}>
+        <View style={styles.cashProfileCon}>
+          <Spacer space={SH(12)} />
+          <View style={styles.cashProfilecon}>
+            <Image
+              source={
+                getPosUser?.user_profiles?.profile_photo
+                  ? { uri: getPosUser?.user_profiles?.profile_photo }
+                  : cashProfile
+              }
+              style={styles.cashProfile}
+            />
+          </View>
+          <Text style={styles.cashierName}>
+            {getPosUser?.user_profiles?.firstname ?? 'username'}
+          </Text>
+          <Text style={styles.posCashier}>
+            {getPosUser?.user_profiles?.pos_role === null
+              ? 'Merchant'
+              : getPosUser?.user_profiles?.pos_role}
+          </Text>
+          <Text style={styles.cashLabel}>
+            ID : {getPosUser?.user_profiles?.user_id ?? '0'}
+          </Text>
+          <Spacer space={SH(10)} />
 
-            <View style={styles.todaySaleCon}>
-              <View style={styles.displayflex}>
-                <Text style={styles.todaySale}>
-                  {strings.dashboard.todaySale}
-                </Text>
-                {/* <TouchableOpacity
+          <View style={styles.todaySaleCon}>
+            <View style={styles.displayflex}>
+              <Text style={styles.todaySale}>
+                {strings.dashboard.todaySale}
+              </Text>
+              {/* <TouchableOpacity
                     style={{
                       width: SW(30),
                       height: SW(8),
@@ -393,201 +417,187 @@ export function DashBoard({ navigation }) {
                   >
                     <Text style={{ color: COLORS.white }}>Your Session</Text>
                   </TouchableOpacity> */}
-              </View>
-              <Spacer space={SH(4)} />
-              <View style={[styles.displayflex, styles.paddingV]}>
-                <Text style={styles.cashLabel}>
-                  {strings.dashboard.cashSaleAmount}
-                </Text>
-                <Text style={styles.cashAmount}>
-                  {/* ${TotalSale?.[3]?.total_sale_amount ?? '0.00'} */}$
-                  {todayCashAmount ?? '0.00'}
-                </Text>
-              </View>
-              <View style={[styles.displayflex, styles.paddingV]}>
-                <Text style={styles.cashLabel}>
-                  {strings.dashboard.cardSaleAmount}
-                </Text>
-                <Text style={styles.cashAmount}>
-                  ${todayCardAmount ?? '0.00'}
-                </Text>
-              </View>
-              <View style={[styles.displayflex, styles.paddingV]}>
-                <Text style={styles.saleAmountLable} numberOfLines={1}>
-                  {strings.dashboard.jobrCoinSaleAmount}
-                </Text>
-                <Text style={styles.cashAmount}>
-                  JOBR {todayJbrAmount ?? '0.00'}
-                </Text>
-              </View>
             </View>
-            <Spacer space={SH(10)} />
-            <View style={styles.todaySaleCon}>
-              <Text style={styles.todaySale}>
-                {strings.dashboard.cashDrawer}
+            <Spacer
+              space={SH(4)}
+              backgroundColor={COLORS.textInputBackground}
+            />
+            <View style={[styles.displayflex, styles.paddingV]}>
+              <Text style={styles.cashLabel}>
+                {strings.dashboard.cashSaleAmount}
               </Text>
-              <Spacer space={SH(4)} />
-              <View style={[styles.displayflex, styles.paddingV]}>
-                <Text style={styles.cashLabel}>
-                  {strings.dashboard.openBal}
-                </Text>
-                <Text style={styles.cashAmount}>
-                  ${profileObj?.openingBalance}
-                </Text>
-              </View>
-              <View style={[styles.displayflex, styles.paddingV]}>
-                <Text style={styles.cashLabel}>
-                  {strings.dashboard.closeBal}
-                </Text>
-                <Text style={styles.cashAmount}>
-                  ${profileObj?.closeBalance}
-                </Text>
-              </View>
+              <Text style={styles.cashAmount}>
+                {/* ${TotalSale?.[3]?.total_sale_amount ?? '0.00'} */}$
+                {todayCashAmount ?? '0.00'}
+              </Text>
             </View>
-            <Spacer space={SH(10)} />
-            <View style={styles.profileHrRow}></View>
-            <Spacer space={SH(10)} />
-
-            <View style={styles.sessionCon}>
-              <View style={[styles.displayflex, styles.paddingV]}>
-                <Text style={styles.cashLabel}>
-                  {moment().format('dddd')}
-                  {', '}
-                  {moment().format('ll')}
-                </Text>
-                <Text style={styles.cashLabel}>{moment().format('LTS')}</Text>
-              </View>
-              <View style={[styles.displayflex, styles.paddingV]}>
-                <Text style={styles.cashLabel}>
-                  {strings.dashboard.logTime}
-                </Text>
-                <Text style={styles.cashAmount}>
-                  {moment(getLoginDeatil?.updated_at).format('LTS')}
-                </Text>
-              </View>
-              <View style={[styles.displayflex, styles.paddingV]}>
-                <Text style={styles.cashLabel}>
-                  {strings.dashboard.session}
-                </Text>
-                <Text style={styles.cashAmount}>
-                  {getLoginSessionTime(
-                    moment(getLoginDeatil?.updated_at).format('LTS')
-                  )}
-                </Text>
-              </View>
+            <View style={[styles.displayflex, styles.paddingV]}>
+              <Text style={styles.cashLabel}>
+                {strings.dashboard.cardSaleAmount}
+              </Text>
+              <Text style={styles.cashAmount}>
+                ${todayCardAmount ?? '0.00'}
+              </Text>
             </View>
-            <View style={{ flex: 1 }} />
-            <TouchableOpacity
-              style={styles.checkoutButton}
-              onPress={async () => {
-                const data = {
-                  amount: parseInt(profileObj?.closeBalance),
-                  drawerId: profileObj?.id,
-                  transactionType: 'end_tracking_session',
-                  modeOfcash: 'cash_out',
-                };
-
-                const res = await dispatch(endTrackingSession(data));
-                if (res?.type === 'END_TRACKING_SUCCESS') {
-                  dispatch(getDrawerSessionSuccess(null));
-                  dispatch(logoutUserFunction());
-                  // if (navigation) {
-                  //   navigation.dispatch(
-                  //     CommonActions.reset({
-                  //       index: 0,
-                  //       routes: [{ name: NAVIGATION.posUsers }],
-                  //     })
-                  //   );
-                  // }
-                } else {
-                  alert('something went wrong');
-                }
-              }}
-            >
-              <View style={styles.displayRow}>
-                <Image source={lockLight} style={styles.lockLight} />
-                <Text style={[styles.checkoutText1]}>
-                  {strings.dashboard.lockScreen}
-                </Text>
-              </View>
-            </TouchableOpacity>
-
-            <Spacer space={SH(10)} />
+            <View style={[styles.displayflex, styles.paddingV]}>
+              <Text style={styles.saleAmountLable} numberOfLines={1}>
+                {strings.dashboard.jobrCoinSaleAmount}
+              </Text>
+              <Text style={styles.cashAmount}>
+                JOBR {todayJbrAmount ?? '0.00'}
+              </Text>
+            </View>
           </View>
-          <View style={styles.rightOrderCon}>
-            <View
-              style={styles.inputWraper}
-              // onPress={() => setSearchScreen(true)}
-            >
-              <View style={styles.displayRow}>
-                <View>
-                  <Image source={search_light} style={styles.searchStyle} />
-                </View>
-                <TextInput
-                  placeholder={strings.retail.searchProduct}
-                  style={styles.searchInput}
-                  // editable={false}
-                  value={search}
-                  onChangeText={search => {
-                    setSearch(search);
-                    onChangeFun(search);
-                  }}
-                />
-              </View>
-              <TouchableOpacity onPress={() => alert('Coming soon')}>
-                <Image source={scn} style={styles.scnStyle} />
-              </TouchableOpacity>
+          <Spacer space={SH(10)} />
+          <View style={styles.todaySaleCon}>
+            <Text style={styles.todaySale}>{strings.dashboard.cashDrawer}</Text>
+            <Spacer
+              space={SH(4)}
+              backgroundColor={COLORS.textInputBackground}
+            />
+            <View style={[styles.displayflex, styles.paddingV]}>
+              <Text style={styles.cashLabel}>{strings.dashboard.openBal}</Text>
+              <Text style={styles.cashAmount}>
+                ${profileObj?.openingBalance}
+              </Text>
             </View>
-            <Spacer space={SH(20)} />
-            <View style={styles.displayflex}>
-              {STARTSELLING.map((item, index) => (
-                <View style={styles.storeCardCon} key={index}>
-                  <Image source={item.image} style={styles.sellingBucket} />
-                  <Spacer space={SH(8)} />
-                  <Text style={styles.startSelling}>{item.heading}</Text>
-                  <Spacer space={SH(4)} />
-                  <Text style={styles.scanSer}>{item.subHeading}</Text>
-                  <Spacer space={SH(12)} />
-                  <TouchableOpacity
-                    style={styles.arrowBtnCon}
-                    onPress={() => startSellingHandler(item.id)}
-                  >
-                    <Image source={sellingArrow} style={styles.sellingArrow} />
-                  </TouchableOpacity>
-                </View>
-              ))}
+            <View style={[styles.displayflex, styles.paddingV]}>
+              <Text style={styles.cashLabel}>{strings.dashboard.closeBal}</Text>
+              <Text style={styles.cashAmount}>${profileObj?.closeBalance}</Text>
             </View>
-            <Spacer space={SH(20)} />
+          </View>
+          <Spacer space={SH(10)} />
+          <View style={styles.profileHrRow}></View>
+          <Spacer space={SH(10)} />
 
-            <View style={styles.homeTableCon}>
-              <View>
-                <Text style={styles.deliveries}>
-                  {strings.dashboard.deliveries}
-                </Text>
-              </View>
-              {orderDelveriesLoading ? (
-                <View style={{ marginTop: 50 }}>
-                  <ActivityIndicator size="large" color={COLORS.indicator} />
-                </View>
-              ) : getDeliveryData2?.length === 0 ||
-                getDeliveryData2 === undefined ? (
-                <View>
-                  <Text style={styles.requestNotFound}>Orders not found</Text>
-                </View>
-              ) : (
-                <FlatList
-                  data={getDeliveryData2}
-                  extraData={getDeliveryData2}
-                  renderItem={tableListItem}
-                  keyExtractor={item => item.id}
-                />
-              )}
+          <View style={styles.sessionCon}>
+            <View style={[styles.displayflex, styles.paddingV]}>
+              <Text style={styles.cashLabel}>
+                {moment().format('dddd')}
+                {', '}
+                {moment().format('ll')}
+              </Text>
+              <Text style={styles.cashLabel}>{moment().format('LTS')}</Text>
             </View>
+            <View style={[styles.displayflex, styles.paddingV]}>
+              <Text style={styles.cashLabel}>{strings.dashboard.logTime}</Text>
+              <Text style={styles.cashAmount}>
+                {moment(getLoginDeatil?.updated_at).format('LTS')}
+              </Text>
+            </View>
+            <View style={[styles.displayflex, styles.paddingV]}>
+              <Text style={styles.cashLabel}>{strings.dashboard.session}</Text>
+              <Text style={styles.cashAmount}>
+                {getLoginSessionTime(
+                  moment(getLoginDeatil?.updated_at).format('LTS')
+                )}
+              </Text>
+            </View>
+          </View>
+          <View style={{ flex: 1 }} />
+          <TouchableOpacity
+            style={styles.checkoutButton}
+            onPress={async () => {
+              const data = {
+                amount: parseInt(profileObj?.closeBalance),
+                drawerId: profileObj?.id,
+                transactionType: 'end_tracking_session',
+                modeOfcash: 'cash_out',
+              };
+
+              const res = await dispatch(endTrackingSession(data));
+              if (res?.type === 'END_TRACKING_SUCCESS') {
+                dispatch(getDrawerSessionSuccess(null));
+                dispatch(logoutUserFunction());
+              } else {
+                alert('something went wrong');
+              }
+            }}
+          >
+            <View style={styles.displayRow}>
+              <Image source={lockLight} style={styles.lockLight} />
+              <Text style={[styles.checkoutText1]}>
+                {strings.dashboard.lockScreen}
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <Spacer space={SH(10)} />
+        </View>
+        <View style={styles.rightOrderCon}>
+          <View
+            style={styles.inputWraper}
+            // onPress={() => setSearchScreen(true)}
+          >
+            <View style={styles.displayRow}>
+              <View>
+                <Image source={search_light} style={styles.searchStyle} />
+              </View>
+              <TextInput
+                placeholder={strings.retail.searchProduct}
+                style={styles.searchInput}
+                // editable={false}
+                value={search}
+                onChangeText={search => {
+                  setSearch(search);
+                  onChangeFun(search);
+                }}
+                ref={textInputRef}
+              />
+            </View>
+            <TouchableOpacity onPress={() => textInputRef.current.focus()}>
+              <Image source={scn} style={styles.scnStyle} />
+            </TouchableOpacity>
+          </View>
+          <Spacer space={SH(20)} />
+          <View style={styles.displayflex}>
+            {STARTSELLING.map((item, index) => (
+              <View style={styles.storeCardCon} key={index}>
+                <Image source={item.image} style={styles.sellingBucket} />
+                <Spacer space={SH(8)} />
+                <Text style={styles.startSelling}>{item.heading}</Text>
+                <Spacer space={SH(4)} />
+                <Text style={styles.scanSer}>{item.subHeading}</Text>
+                <Spacer space={SH(12)} />
+                <TouchableOpacity
+                  style={styles.arrowBtnCon}
+                  onPress={() => startSellingHandler(item.id)}
+                >
+                  <Image source={sellingArrow} style={styles.sellingArrow} />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+          <Spacer space={SH(20)} />
+
+          <View style={styles.homeTableCon}>
+            <View>
+              <Text style={styles.deliveries}>
+                {strings.dashboard.deliveries}
+              </Text>
+            </View>
+            {orderDelveriesLoading ? (
+              <View style={{ marginTop: 50 }}>
+                <ActivityIndicator size="large" color={COLORS.indicator} />
+              </View>
+            ) : getDeliveryData2?.length === 0 ||
+              getDeliveryData2 === undefined ? (
+              <View>
+                <Text style={styles.requestNotFound}>Orders not found</Text>
+              </View>
+            ) : (
+              <FlatList
+                data={getDeliveryData2}
+                extraData={getDeliveryData2}
+                renderItem={tableListItem}
+                keyExtractor={item => item.id}
+              />
+            )}
           </View>
         </View>
       </View>
-    );
-  };
+    </View>
+  );
 
   return (
     <ScreenWrapper>
@@ -595,19 +605,20 @@ export function DashBoard({ navigation }) {
         {bodyView()}
         {trackinSessionModal()}
       </View>
+
       {getSessionLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator
-            color={COLORS.primary}
-            size="large"
+            size={'large'}
             style={styles.loader}
+            color={COLORS.primary}
           />
         </View>
       ) : null}
 
       <Modal
-        animationType="fade"
         transparent={true}
+        animationType={'fade'}
         isVisible={yourSessionEndModal}
       >
         <View style={styles.yourSessionendCon}>

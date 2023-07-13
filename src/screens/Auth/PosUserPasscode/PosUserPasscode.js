@@ -72,7 +72,7 @@ export function PosUserPasscode({ route }) {
     } else {
       let data = {
         merchant_id: getData?.merchantLoginData?.uniqe_id,
-        pos_user_id: posuser.id.toString(),
+        pos_user_id: posuser.user_id.toString(),
         pos_security_pin: value,
       };
 
@@ -91,8 +91,8 @@ export function PosUserPasscode({ route }) {
     }
   };
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
+    <View
+      style={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
@@ -138,6 +138,6 @@ export function PosUserPasscode({ route }) {
           />
         </View>
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 }

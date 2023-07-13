@@ -19,7 +19,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getCategory +
-        `?page=1&limit=20&seller_id=${sellerID}&main_category=true`;
+        `?seller_id=${sellerID}&main_category=true`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -41,7 +41,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getSubCategory +
-        `?page=1&limit=20&category_id=${selectedId}&seller_id=${sellerID}&main_category=false`;
+        `?category_id=${selectedId}&seller_id=${sellerID}&main_category=false`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -135,12 +135,16 @@ export class RetailController {
     });
   }
 
-  static async getProductDefault(sellerID) {
+  static async getProductDefault(sellerID, page) {
     return new Promise((resolve, reject) => {
+      // const endpoint =
+      //   PRODUCT_URL +
+      //   ApiProductInventory.getProduct +
+      //   `?app_name=pos&delivery_options=3&seller_id=${sellerID}&page=1&limit=10`;
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `?app_name=pos&delivery_options=3&seller_id=${sellerID}&page=1&limit=10`;
+        `?app_name=pos&delivery_options=3&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -398,7 +402,7 @@ export class RetailController {
           //   type: 'error_toast',
           //   visibilityTime: 1500,
           // });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   }
@@ -447,7 +451,6 @@ export class RetailController {
         tips: data.tips,
         mode_of_payment: data.modeOfPayment,
       };
-      console.log('body', body);
 
       HttpClient.post(endpoint, body)
         .then(response => {
@@ -477,10 +480,8 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint =
         WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then(response => {
-          console.log('response', response);
           resolve(response);
         })
         .catch(error => {

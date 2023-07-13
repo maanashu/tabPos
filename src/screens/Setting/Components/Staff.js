@@ -40,6 +40,8 @@ import moment from 'moment';
 import { store } from '@/store';
 const windowWidth = Dimensions.get('window').width;
 
+moment.suppressDeprecationWarnings = true;
+
 export function Staff() {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -47,7 +49,6 @@ export function Staff() {
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
   const posUserArray = getAuth?.getAllPosUsers;
-  // console.log('posUserArray', posUserArray);
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [expandView, setExpandView] = useState(false);
@@ -265,7 +266,7 @@ export function Staff() {
                   </View>
 
                   {staffDetailData?.map((item, index) => (
-                    <View>
+                    <View style={{}}>
                       <TouchableOpacity
                         style={styles.tableDataCon}
                         onPress={() => {
@@ -284,9 +285,9 @@ export function Staff() {
                               style={[
                                 styles.text,
                                 styles.hourRateLigh,
-                                { textAlign: 'left' },
+                                { textAlign: 'left', width: '100%' },
                               ]}
-                              numberOfLines={1}
+                              numberOfLines={2}
                             >
                               {moment(item.start_time).format('LL')} -{' '}
                               {moment(item.end_time).format('LL')}

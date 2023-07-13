@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">JOBR POS</string>
+   <string name="sample_device_admin">JOBR POS</string>
+   <string name="sample_device_admin_description">JOBR POS description</string>
 </resources>

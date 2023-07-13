@@ -21,12 +21,16 @@ export function ProductCard({
   cartMinusOnPress,
   cartPlusOnPress,
   productCount,
-  ProductHandler
+  ProductHandler,
 }) {
   return (
-    <TouchableOpacity style={styles.productContainer} onPress={ProductHandler} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={styles.productContainer}
+      onPress={ProductHandler}
+      activeOpacity={0.7}
+    >
       <View style={{ flexDirection: 'row' }}>
-        <Image source={productImage} style={styles.marboloStyle}/>
+        <Image source={productImage} style={styles.marboloStyle} />
         <View style={{ paddingHorizontal: moderateScale(5) }}>
           <Text numberOfLines={1} style={styles.productName}>
             {productName}
@@ -61,7 +65,9 @@ export function ProductCard({
           <Image source={minus} style={styles.plusBtn} />
         </TouchableOpacity>
 
-        <Text style={styles.count}>{productCount?.qty ? productCount?.qty : 0 }</Text>
+        <Text style={styles.count}>
+          {productCount?.qty ? productCount?.qty : 0}
+        </Text>
         <TouchableOpacity onPress={cartPlusOnPress} style={{ height: SH(35) }}>
           <Image source={plus} style={styles.plusBtn} />
         </TouchableOpacity>
@@ -81,7 +87,7 @@ const styles = StyleSheet.create({
     margin: Platform.OS === 'ios' ? 4 : 11,
     padding: 15,
     elevation: 4,
-    shadowColor: '#000000',
+    shadowColor: COLORS.black,
     shadowRadius: 4.84,
     shadowOpacity: 0.01,
     shadowOffset: {
@@ -98,7 +104,7 @@ const styles = StyleSheet.create({
     width: SW(14),
     height: SW(14),
     resizeMode: 'contain',
-    borderRadius:50
+    borderRadius: 50,
   },
   productName: {
     fontSize: SF(18),

@@ -804,21 +804,6 @@ export const basicData = [
   },
 ];
 
-export const STARTSELLING = [
-  {
-    id: 1,
-    heading: 'START SELLING',
-    subHeading: 'Scan/Search',
-    image: sellingBucket,
-  },
-  {
-    id: 2,
-    heading: 'ONLINE ORDERS ',
-    subHeading: '30 Orders',
-    image: onlineMan,
-  },
-];
-
 export const homeTableData = [
   {
     id: 1,

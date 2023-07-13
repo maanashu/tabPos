@@ -20,6 +20,8 @@ import AddedCartItemsCard from '../../../components/AddedCartItemsCard';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useSelector } from 'react-redux';
 
+moment.suppressDeprecationWarnings = true;
+
 export const FinalPaymentScreen = ({
   onPressBack,
   paymentMethod,
@@ -30,7 +32,6 @@ export const FinalPaymentScreen = ({
   // const getRetailData = useSelector(getRetail);
   // const cartData = getRetailData?.getAllCart;
   const cartProducts = cartData?.poscart_products;
-  console.log('payDetail', payDetail);
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';

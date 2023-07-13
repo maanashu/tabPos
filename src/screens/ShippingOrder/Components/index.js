@@ -27,6 +27,8 @@ import moment from 'moment';
 import { useDispatch } from 'react-redux';
 const windowHeight = Dimensions.get('window').height;
 
+moment.suppressDeprecationWarnings = true;
+
 export function BottomSheet({ subTotal, tax, total, item, discount }) {
   return (
     <View>

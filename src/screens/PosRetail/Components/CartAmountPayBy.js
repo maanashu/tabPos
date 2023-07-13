@@ -24,6 +24,8 @@ import { useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { CustomHeader } from './CustomHeader';
 
+moment.suppressDeprecationWarnings = true;
+
 const DATA = [
   { title: 'Card', icon: cardPayment },
   { title: 'JBR Coin', icon: qrCodeIcon },
@@ -43,7 +45,6 @@ export const CartAmountPayBy = ({
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
     return totalPayment.toFixed(2);
   };
-  console.log('totalPayAmount', Math.round(totalPayAmount()) * 100);
 
   const totalAmountByPaymentMethod = index => {
     if (index === 0) {

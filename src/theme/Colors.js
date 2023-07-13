@@ -37,4 +37,7 @@ export const COLORS = {
   light_sky: '#F4F9FF',
   transparentGreen: '#F1FFF8',
   transparentBlue: '#F2F8FF',
+  dayHighlight: 'rgb(66, 133, 244)',
+  yellowTweet: '#FCBA30',
+  transparent: 'transparent',
 };

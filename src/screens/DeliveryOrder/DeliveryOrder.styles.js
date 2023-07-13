@@ -46,18 +46,18 @@ export const styles = StyleSheet.create({
   },
   searchView: {
     borderWidth: 1,
-    width: SW(65),
-    height: SH(43),
-    borderRadius: 20,
+    // width: SW(65),
+    height: SH(38),
+    borderRadius: 30,
     borderColor: COLORS.row_grey,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingLeft: 10,
   },
   searchImage: {
     width: SH(20),
     height: SH(20),
     resizeMode: 'contain',
-    left: 3,
   },
   dropdown2Con: {
     width: SW(15),
@@ -67,10 +67,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   textInputStyle: {
-    width: SW(45),
-    marginLeft: 10,
+    width: SW(75),
+    // marginLeft: 10,
     fontFamily: Fonts.Italic,
+    // borderWidth: 3,
     fontSize: SF(15),
+    paddingLeft: 5,
   },
   orderView: {
     backgroundColor: COLORS.orderStatusBackground,

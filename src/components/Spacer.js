@@ -1,3 +1,4 @@
+import { COLORS } from '@/theme';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -20,7 +21,7 @@ export function Spacer({ space, horizontal, backgroundColor, style }) {
 Spacer.defaultProps = {
   space: 10,
   horizontal: false,
-  backgroundColor: '#FFFFF',
+  backgroundColor: 'transparent',
   style: { flex: 1 },
 };
 

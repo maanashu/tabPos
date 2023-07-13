@@ -38,6 +38,7 @@ export const ApiUserInventory = {
   getTax: 'tax',
   getGoogleCode: 'users/2fa/qr-code',
   verifyGoogleCode: 'users/2fa/verify',
+  notifications: 'notifications',
 };
 
 export const ApiProductInventory = {
@@ -88,6 +89,7 @@ export const ApiOrderInventory = {
   getOrderstatistics: 'orders/pos/orders/statistics',
   getOrderTypeList: 'orders/pos/orders',
   getOrderData: 'orders/pos',
+  onLineOrders: 'orders/pos/seller/online-orders',
 };
 
 export const ApiWalletInventory = {

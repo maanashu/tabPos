@@ -37,6 +37,8 @@ import {
 } from '@/actions/RetailAction';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+moment.suppressDeprecationWarnings = true;
+
 export const PayByJBRCoins = ({
   onPressBack,
   onPressContinue,
@@ -50,7 +52,6 @@ export const PayByJBRCoins = ({
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
   const getWalletQr = getRetailData?.getWallet?.qr_code;
-  console.log('getWalletQr', getWalletQr);
   const cartData = getRetailData?.getAllCart;
   const walletUser = getRetailData?.walletGetByPhone?.[0];
   const getCartAmount = getRetailData?.getAllCart?.amount;

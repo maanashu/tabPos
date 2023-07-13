@@ -19,6 +19,7 @@ import {
 import { getCustomerDummy } from '@/constants/staticData';
 import { strings } from '@/localization';
 import {
+  bell,
   notifications,
   search_light,
   leftBack,
@@ -68,6 +69,12 @@ import { TYPES } from '@/Types/CustomersTypes';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { DELIVERY_MODE } from '@/constants/enums';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
+
+moment.suppressDeprecationWarnings = true;
 
 export function Customers() {
   const isFocused = useIsFocused();
@@ -94,9 +101,9 @@ export function Customers() {
   const [tracking, setTracking] = useState(false);
   const [userStore, setUserStore] = useState('');
   const [orderDetail, setOrderDetail] = useState('');
-  const [selectedValue, setSelectedValue] = useState(5);
+  const [selectedValue, setSelectedValue] = useState(50);
   const orderStatus = orderDetail?.status;
-  const [selectTime, setSelectTime] = useState();
+  const [selectTime, setSelectTime] = useState({ value: 'week' });
 
   const selected = value => (
     setSelectedValue(value), dispatch(getUserOrder(sellerID, value))
@@ -185,10 +192,17 @@ export function Customers() {
   const newCustomerItem = ({ item }) => (
     <TouchableOpacity
       style={styles.custometrCon}
-      onPress={() => (
-        setWeeklyUser(!weeklyUser),
-        dispatch(getUserOrder(sellerID, selectedValue))
-      )}
+      onPress={() =>
+        item.count === 0
+          ? Toast.show({
+              text2: 'Customer Not Found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            })
+          : (setWeeklyUser(!weeklyUser),
+            dispatch(getUserOrder(sellerID, item?.customertype, selectedValue)))
+      }
     >
       <View style={styles.flexAlign}>
         <Image source={item.img} style={styles.newCustomer} />
@@ -243,10 +257,15 @@ export function Customers() {
           </View>
         )}
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 20 }]}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.customers,
+              })
+            }
+          >
+            <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput
@@ -853,8 +872,8 @@ export function Customers() {
                     editable={false}
                     numberOfLines={4}
                     style={styles.textInputStyle}
-                    placeholder="Note:"
-                    placeholderTextColor="#000"
+                    placeholder={'Note:'}
+                    placeholderTextColor={COLORS.black}
                   />
                   <View style={styles.noteContainer}>
                     <Spacer space={SH(12)} />
@@ -869,7 +888,9 @@ export function Customers() {
                           : '0'}
                       </Text>
                     </View>
+
                     <View style={styles.subtotalHr}></View>
+
                     <View style={styles.tablesubTotal}>
                       <Text style={styles.tablesubTotalLabel}>
                         {strings.wallet.serviceCharge}
@@ -878,7 +899,9 @@ export function Customers() {
                         ${orderDetail?.tax ? orderDetail?.tax : '0'}
                       </Text>
                     </View>
+
                     <View style={styles.subtotalHr}></View>
+
                     <View style={styles.tablesubTotal}>
                       <Text style={styles.tablesubTotalLabel}>
                         {strings.wallet.discount}
@@ -892,14 +915,18 @@ export function Customers() {
                         ${orderDetail?.discount ? orderDetail?.discount : '0'}
                       </Text>
                     </View>
+
                     <View style={styles.subtotalHr}></View>
+
                     <View style={styles.tablesubTotal}>
                       <Text style={styles.tablesubTotalLabel}>
                         {strings.wallet.shippingCharge}
                       </Text>
                       <Text style={styles.tablesubTotalText}>${'0'}</Text>
                     </View>
+
                     <View style={styles.subtotalHr}></View>
+
                     <View style={styles.tablesubTotal}>
                       <View
                         style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -1045,19 +1072,24 @@ export function Customers() {
                       <View style={styles.tableHeaderRightPro}>
                         <Text style={styles.tableTextData}>{item.id}</Text>
                         <Text style={styles.tableTextData}>
-                          {item.date
-                            ? moment(item.date).format('LL')
+                          {item.created_at
+                            ? moment(item.created_at).format('LL')
                             : 'date not found'}
                         </Text>
 
-                        <Text style={styles.tableTextData}>Maimi</Text>
-                        <Text style={styles.tableTextData}>DHL</Text>
                         <Text style={styles.tableTextData}>
-                          {item.total_items} times
+                          {item?.seller_details?.current_address?.city}
                         </Text>
                         <Text style={styles.tableTextData}>
-                          ${item.payable_amount}
+                          {item?.shipping_detail?.title}
                         </Text>
+                        <Text style={styles.tableTextData}>
+                          {item?.total_items} times
+                        </Text>
+                        <Text style={styles.tableTextData}>
+                          ${item?.payable_amount}
+                        </Text>
+
                         <View
                           style={[
                             styles.saleTypeView,
@@ -1071,7 +1103,7 @@ export function Customers() {
                           ]}
                         >
                           <Text style={styles.saleTypeText}>
-                            {item.shipping}
+                            {DELIVERY_MODE[item?.delivery_option]}
                           </Text>
                         </View>
                       </View>
@@ -1161,6 +1193,7 @@ export function Customers() {
                           {item?.total_products}
                         </Text>
                         <Text style={styles.tableTextData}>
+                          {'$'}
                           {item?.life_time_spent?.toFixed(2)}
                         </Text>
                       </View>
@@ -1206,7 +1239,11 @@ export function Customers() {
                 </Text>
                 <View>
                   {/* <DaySelector
+
                   setSelectTime={setSelectTime}
+                  onPresFun={productOnPress}
+                  selectId={selectedId}
+                  setSelectId={setSelectedId}
                   /> */}
                 </View>
               </View>

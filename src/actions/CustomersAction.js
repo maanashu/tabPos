@@ -30,7 +30,10 @@ const getOrderUsertReset = () => ({
   type: TYPES.GET_ORDER_USER_RESET,
   payload: null,
 });
-
+const getUserOrderReset = () => ({
+  type: TYPES.GET_USER_ORDER_RESET,
+  payload: null,
+});
 const getCustomersRequest = () => ({
   type: TYPES.GET_CUSTOMERS_REQUEST,
   payload: null,
@@ -46,12 +49,15 @@ const getCustomersError = error => ({
 
 
 
-export const getUserOrder = (sellerID,selectedValue) => async dispatch => {
+export const getUserOrder = (sellerID,type,selectedValue) => async dispatch => {
   dispatch(getUserOrderRequest());
   try {
-      const res = await CustomersController.getUserOrder(sellerID, selectedValue);
+      const res = await CustomersController.getUserOrder(sellerID,type, selectedValue);
       dispatch(getUserOrderSuccess(res));
   } catch (error) {
+    if (error?.statusCode === 204){
+      dispatch(getUserOrderReset());
+    }
       dispatch(getUserOrderError(error.message));
   }
 };

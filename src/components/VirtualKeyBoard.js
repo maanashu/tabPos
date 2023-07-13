@@ -4,8 +4,9 @@ import { KeyPadButton } from './KeyPadButton';
 import { strings } from '@/localization';
 import { Spacer } from './Spacer';
 import { Button } from './Button';
-import { COLORS, SH } from '@/theme';
+import { COLORS, SF, SH } from '@/theme';
 import { verticalScale } from 'react-native-size-matters';
+import { Fonts } from '@/assets';
 
 export const VirtualKeyBoard = ({
   maxCharLength,
@@ -69,9 +70,10 @@ export const VirtualKeyBoard = ({
               textStyle={enteredValue ? styles.selectedText : styles.buttonText}
               style={enteredValue ? styles.submitButton : styles.button}
             />
-            <Spacer space={SH(40)} />
+            {/* <Spacer space={SH(40)} /> */}
           </View>
         )}
+        X
       />
     </View>
   );
@@ -81,17 +83,23 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: COLORS.primary,
     width: windowWidth * 0.32,
+    height: SH(60),
   },
   button: {
     backgroundColor: COLORS.textInputBackground,
     width: windowWidth * 0.32,
+    height: SH(60),
   },
   buttonText: {
     color: COLORS.darkGray,
-    paddingVertical: verticalScale(7),
+    fontSize: SF(14),
+    // paddingVertical: verticalScale(7),
+    fontFamily: Fonts.SemiBold,
   },
   selectedText: {
     color: COLORS.white,
-    paddingVertical: verticalScale(7),
+    fontSize: SF(14),
+    // paddingVertical: verticalScale(7),
+    fontFamily: Fonts.SemiBold,
   },
 });

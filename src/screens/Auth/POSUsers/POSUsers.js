@@ -23,6 +23,8 @@ import {
 import { getAuthData } from '@/selectors/AuthSelector';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
+moment.suppressDeprecationWarnings = true;
+
 export function POSUsers({ navigation }) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -93,29 +95,24 @@ export function POSUsers({ navigation }) {
                   <Spacer space={SH(10)} />
                   <Image
                     source={
-                      item.user_profiles?.profile_photo
-                        ? { uri: item.user_profiles?.profile_photo }
-                        : userImage
+                      { uri: item.user?.user_profiles?.profile_photo } ??
+                      userImage
                     }
                     style={styles.profileImage}
                   />
                   <Text style={styles.firstName}>
-                    {item.user_profiles?.firstname}
+                    {item.user?.user_profiles?.firstname}
                   </Text>
-                  <Text style={styles.role}>
-                    {item.user_profiles?.pos_role === null
-                      ? 'Merchant'
-                      : item.user_profiles?.pos_role}
-                  </Text>
-                  {item.api_tokens.length > 0 && (
+                  <Text style={styles.role}>{item.pos_role}</Text>
+                  {item.user?.api_tokens.length > 0 && (
                     <>
                       <Text style={[styles.dateTime, { marginTop: SH(20) }]}>
-                        {moment(item.api_tokens[0].updated_at).format(
+                        {moment(item.user?.api_tokens[0].updated_at).format(
                           'dddd, DD MMM YYYY'
                         )}
                       </Text>
                       <Text style={styles.dateTime}>
-                        {moment(item.api_tokens[0].updated_at).format(
+                        {moment(item.user?.api_tokens[0].updated_at).format(
                           'hh:mm a'
                         )}
                       </Text>

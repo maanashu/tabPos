@@ -14,6 +14,8 @@ import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { getUser } from '@/selectors/UserSelectors';
 
+moment.suppressDeprecationWarnings = true;
+
 export function CustomHeader({ crossHandler, iconShow }) {
   const getUserData = useSelector(getUser);
   const getPosUser = getUserData?.posLoginData;

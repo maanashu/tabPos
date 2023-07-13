@@ -150,7 +150,7 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
   const userInputClear = () => {
     setUserEmail('');
     setUserName('');
-    setCustomerPhoneNo('');
+    // setCustomerPhoneNo('');
     setUserAdd('');
   };
 

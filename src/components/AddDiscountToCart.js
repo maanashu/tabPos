@@ -89,7 +89,7 @@ export function AddDiscountToCart({
               />
             </View>
           </View>
-          <Spacer space={SH(12)} />
+          <Spacer space={SH(12)} backgroundColor={COLORS.textInputBackground} />
           <View
             style={
               percentageCheck
@@ -140,7 +140,7 @@ export function AddDiscountToCart({
             </View>
           </View>
 
-          <Spacer space={SH(12)} />
+          <Spacer space={SH(12)} backgroundColor={COLORS.textInputBackground} />
           <View
             style={
               discountCheck
@@ -191,9 +191,9 @@ export function AddDiscountToCart({
             </View>
           </View>
 
-          <Spacer space={SH(12)} />
+          <Spacer space={SH(12)} backgroundColor={COLORS.textInputBackground} />
           <Text style={styles.discountTitle}> {strings.retail.DisTitle}</Text>
-          <Spacer space={SH(12)} />
+          <Spacer space={SH(12)} backgroundColor={COLORS.textInputBackground} />
 
           <TextInput
             placeholder="Tittle"
@@ -205,7 +205,7 @@ export function AddDiscountToCart({
             spellCheck={false}
           />
 
-          <Spacer space={SH(12)} />
+          <Spacer space={SH(12)} backgroundColor={COLORS.textInputBackground} />
         </View>
 
         {/* <View style={styles.saveButtonCon}>

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {
+  bell,
   crossButton,
   Fonts,
   notifications,
@@ -49,6 +50,8 @@ import { FlatList } from 'react-native';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import { logoutUserFunction } from '@/actions/UserActions';
+
+moment.suppressDeprecationWarnings = true;
 
 export function Management() {
   const isFocused = useIsFocused();
@@ -319,10 +322,15 @@ export function Management() {
           </View>
         )}
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 25 }]}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.management,
+              })
+            }
+          >
+            <Image source={bell} style={[styles.truckStyle, { right: 25 }]} />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput
@@ -479,7 +487,7 @@ export function Management() {
               />
             </View>
             <Spacer space={SH(20)} />
-            <View >
+            <View>
               <Text style={styles.amountCountedText}>
                 {strings.management.transactionType}
               </Text>

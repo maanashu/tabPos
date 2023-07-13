@@ -55,6 +55,7 @@ export { default as card } from '@/assets/icons/ic_retail/card.png';
 export { default as money } from '@/assets/icons/ic_retail/money.png';
 export { default as marboloPlus } from '@/assets/icons/ic_retail/marboloPlus.png';
 export { default as loader } from '@/assets/icons/ic_retail/loader.png';
+export { default as addToCart } from '@/assets/icons/ic_retail/addToCart.png';
 export { default as ashton } from '@/assets/icons/ic_retail/ashton.png';
 export { default as crossButton3 } from '@/assets/icons/ic_retail/crossButton.png';
 export { default as jbrCustomer } from '@/assets/icons/ic_retail/jbrCustomer.png';
@@ -260,6 +261,14 @@ export { default as QR } from '@/assets/icons/ic_retail/QR.png';
 export { default as categoryMenu } from '@/assets/icons/ic_posRetail/categoryMenu.png';
 export { default as categoryshoes } from '@/assets/icons/ic_posRetail/categoryshoes.png';
 export { default as barcode } from '@/assets/icons/ic_posRetail/barcode.png';
+export { default as calendarIcon } from '@/assets/images/calendarIcon.png';
+export { default as todayCalendarIcon } from '@/assets/images/todayCalendar.png';
+export { default as calendarSettingsIcon } from '@/assets/images/settings.png';
+export { default as eventClockIcon } from '@/assets/images/clock.png';
+export { default as radioSelect } from '@/assets/images/radioSelect.png';
+export { default as bankLogo } from '@/assets/icons/ic_wallet/bankLogo.png';
+export { default as radioUnSelect } from '@/assets/images/radioUnselect.png';
+export { default as chatIcon } from '@/assets/images/Chat_light.png';
 
 /* Fonts */
 export const Fonts = {

@@ -2,15 +2,23 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  TextInput,
   Image,
   FlatList,
-  TouchableOpacity,
   Platform,
+  TextInput,
   Dimensions,
+  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+
+import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+import { moderateScale } from 'react-native-size-matters';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import CircularProgress from 'react-native-circular-progress-indicator';
+
 import {
   deliveryTruck,
   notifications,
@@ -28,36 +36,34 @@ import {
   radio,
   userImage,
   parcel,
-  toastcross,
+  bell,
 } from '@/assets';
-import { styles } from '@/screens/DeliveryOrder/DeliveryOrder.styles';
-import { strings } from '@/localization';
-import { deliveryOrders, loadingData } from '@/constants/staticData';
-import { COLORS, SH, SW } from '@/theme';
-import { Button, ChartKit, ScreenWrapper, Spacer } from '@/components';
-import { moderateScale } from 'react-native-size-matters';
-import { BottomSheet } from '@/screens/DeliveryOrder/Components';
-import { useDispatch, useSelector } from 'react-redux';
-import MapViewDirections from 'react-native-maps-directions';
 import {
   acceptOrder,
   getOrderCount,
   getOrders,
   getReviewDefault,
-  getOrdersSuccess,
   deliveryOrd,
   deliverygraph,
   deliOrder,
 } from '@/actions/DeliveryAction';
+import { NAVIGATION } from '@/constants';
+import { strings } from '@/localization';
+import { COLORS, SH, SW } from '@/theme';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { loadingData } from '@/constants/staticData';
+import { navigate } from '@/navigation/NavigationRef';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { BottomSheet } from '@/screens/DeliveryOrder/Components';
+import { Button, ChartKit, ScreenWrapper, Spacer } from '@/components';
+
+import { styles } from './DeliveryOrder.styles';
+
 const windowHeight = Dimensions.get('window').height;
-import CircularProgress from 'react-native-circular-progress-indicator';
-import moment from 'moment';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { useIsFocused } from '@react-navigation/native';
+
+moment.suppressDeprecationWarnings = true;
 
 export function DeliveryOrder() {
   const isFocused = useIsFocused();
@@ -71,11 +77,7 @@ export function DeliveryOrder() {
   const [orderCount, setOrderCount] = useState(
     getDeliveryData?.orderList ?? []
   );
-  console.log(orderCount);
-  const deliveringOrder = getDeliveryData?.deliveryOrd;
-  const orderArray = getDeliveryData?.orderList?.data ?? [];
   const [viewAllReviews, setViewAllReviews] = useState(false);
-  const [orderAccepted, setOrderAccepted] = useState(false);
   const [readyPickup, setReadyForPickup] = useState(false);
   const [showArea, setShowArea] = useState(true);
   const [headingType, setHeadingType] = useState('');
@@ -155,6 +157,7 @@ export function DeliveryOrder() {
       image: require('@/assets/icons/ic_deliveryOrder/Category.png'),
     },
   ];
+
   const orderConversion = [
     {
       key: '1',
@@ -177,18 +180,6 @@ export function DeliveryOrder() {
     },
   ];
 
-  const homeCoordinate = {
-    latitude: 30.704649,
-    longitude: 76.717873,
-  };
-  const storeCoordinates = {
-    latitude: 30.73827,
-    longitude: 76.765144,
-  };
-  const sellerCoordinates = {
-    latitude: 30.695202,
-    longitude: 76.854172,
-  };
   useEffect(() => {
     if (isFocused) {
       dispatch(getOrderCount(sellerID)),
@@ -238,6 +229,7 @@ export function DeliveryOrder() {
     dispatch(acceptOrder(data));
     setViewAllReviews(false);
   };
+
   const singleorderCancelHandler = id => {
     const data = {
       orderId: id,
@@ -286,10 +278,15 @@ export function DeliveryOrder() {
         )}
 
         <View style={styles.deliveryView}>
-          <Image
-            source={notifications}
-            style={[styles.truckStyle, { right: 10 }]}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.deliveryOrder,
+              })
+            }
+          >
+            <Image source={bell} style={[styles.truckStyle, { right: 10 }]} />
+          </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
             <TextInput
@@ -361,7 +358,7 @@ export function DeliveryOrder() {
     }
   };
 
-  const navigationHandler = (item, index) => {
+  const navigationHandler = item => {
     if (item.status === 'Orders to Review') {
       {
         orderAccType(item);
@@ -416,7 +413,7 @@ export function DeliveryOrder() {
       </View>
     </TouchableOpacity>
   );
-  const renderItem2 = ({ item, index }) => (
+  const renderItem2 = () => (
     <TouchableOpacity
       style={[
         styles.orderView,
@@ -432,7 +429,7 @@ export function DeliveryOrder() {
     item.order_details.map(item => setOrderId(item.order_id));
     item.order_details.map(item => setOrderIdDate(item.created_at));
   };
-  const OrderReviewItem = ({ item, index, onPress, backgroundColor }) => (
+  const OrderReviewItem = ({ item, onPress, backgroundColor }) => (
     <TouchableOpacity
       onPress={onPress}
       style={[styles.reviewRenderView, { backgroundColor }]}
@@ -502,7 +499,7 @@ export function DeliveryOrder() {
     );
   };
 
-  const renderReviewItemDef = ({ item, index }) => (
+  const renderReviewItemDef = ({ item }) => (
     <TouchableOpacity
       style={[styles.reviewRenderView]}
       onPress={() => singleOrderReview(item)}
@@ -555,7 +552,7 @@ export function DeliveryOrder() {
     </TouchableOpacity>
   );
 
-  const renderOrder = ({ item, index }) => (
+  const renderOrder = ({ item }) => (
     <View style={styles.renderOrderView}>
       <Text style={styles.countText}>{item.count ? item.count : '0'}</Text>
       <Text style={[styles.statusText2, { textAlign: 'left' }]}>
@@ -564,7 +561,7 @@ export function DeliveryOrder() {
     </View>
   );
 
-  const renderDeliveryOrders = ({ item, index }) => (
+  const renderDeliveryOrders = ({ item }) => (
     <View style={styles.deliveryViewStyle}>
       <View style={styles.rowSpaceBetween}>
         <View style={styles.rowCenter}>
@@ -585,7 +582,7 @@ export function DeliveryOrder() {
     </View>
   );
 
-  const renderDeliveryOrdersDummy = ({ item, index }) => (
+  const renderDeliveryOrdersDummy = () => (
     <View style={styles.deliveryViewStyle}>
       <View style={styles.rowSpaceBetween}>
         <View style={styles.rowCenter}>
@@ -600,7 +597,7 @@ export function DeliveryOrder() {
     </View>
   );
 
-  const renderProductList = ({ item, index }) => (
+  const renderProductList = ({ item }) => (
     <TouchableOpacity
       style={styles.productViewStyle}
       onPress={() => alert('coming soon')}
@@ -631,27 +628,6 @@ export function DeliveryOrder() {
     </TouchableOpacity>
   );
 
-  const orderStatusText = () => {
-    if (orderAccepted && readyPickup === false) {
-      return (
-        <Text style={styles.orderReviewText}>
-          {strings.deliveryOrders.ordersPreparing}
-        </Text>
-      );
-    } else if (orderAccepted && readyPickup) {
-      return (
-        <Text style={styles.orderReviewText}>
-          {strings.deliveryOrders.ready}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.orderReviewText}>
-          {strings.deliveryOrders.orderReview}
-        </Text>
-      );
-    }
-  };
   const headingAccordingShip = headingType => {
     if (headingType === 'Orders to Review') {
       return (
@@ -841,25 +817,7 @@ export function DeliveryOrder() {
               longitudeDelta: 0.0421,
             }}
             style={styles.map}
-          >
-            <Marker image={toastcross} coordinate={homeCoordinate} />
-
-            <Marker image={toastcross} coordinate={storeCoordinates} />
-            <Marker image={toastcross} coordinate={sellerCoordinates} />
-            {/* <MapViewDirections
-              origin={{
-                latitude: 30.704649,
-                longitude: 76.717873,
-              }}
-              destination={{
-                latitude: 30.741482,
-                longitude: 76.768066,
-              }}
-              apikey={PROVIDER_GOOGLE}
-              strokeWidth={3}
-              strokeColor={COLORS.primary}
-            /> */}
-          </MapView>
+          ></MapView>
           <View>{showOrderStatusModal()}</View>
         </View>
       );

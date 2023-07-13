@@ -15,7 +15,6 @@ if (Platform.OS === 'android') {
 }
 
 notifee.onBackgroundEvent(async ({ type, detail }) => {
-  console.log('Check details: ' + detail, type);
   if (type === 'PRESS') {
     // Handle notification press event
   } else if (type === 'ACTION_PRESS') {

@@ -20,6 +20,8 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { COLORS } from '@/theme';
 import { CustomHeader } from './CustomHeader';
 
+moment.suppressDeprecationWarnings = true;
+
 export const CartAmountTips = ({
   onPressBack,
   onPressContinue,
@@ -33,9 +35,9 @@ export const CartAmountTips = ({
   const getTips = getRetailData?.getTips;
 
   const tipsArr = [
-    getTips?.first_tips ?? 0,
-    getTips?.second_tips ?? 0,
-    getTips?.third_tips ?? 0,
+    getTips?.first_tips ?? 18,
+    getTips?.second_tips ?? 20,
+    getTips?.third_tips ?? 22,
   ];
 
   const [selectedTipIndex, setselectedTipIndex] = useState(null);

@@ -1,0 +1,18 @@
+diff --git a/node_modules/react-native-lock-task/android/build.gradle b/node_modules/react-native-lock-task/android/build.gradle
+index 1a541a4..ad417b6 100644
+--- a/node_modules/react-native-lock-task/android/build.gradle
++++ b/node_modules/react-native-lock-task/android/build.gradle
+@@ -13,11 +13,11 @@ buildscript {
+ apply plugin: 'com.android.library'
+ 
+ android {
+-    compileSdkVersion 29
++    compileSdkVersion 31
+ 
+     defaultConfig {
+         minSdkVersion 21
+-        targetSdkVersion 29
++        targetSdkVersion 31
+         versionCode 1
+         versionName "1.0"
+     }

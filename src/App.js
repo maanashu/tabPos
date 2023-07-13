@@ -1,8 +1,15 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
-import { AppState, Image, StyleSheet, Text, View } from 'react-native';
+import {
+  AppState,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { hide } from 'react-native-bootsplash';
 import { enableScreens } from 'react-native-screens';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/store';
 import { RootNavigator } from '@/navigation';
@@ -13,8 +20,12 @@ import { COLORS, SF, SH, SW } from './theme';
 import NetInfo from '@react-native-community/netinfo';
 import { configureMessaging, getDeviceToken } from './utils/Notifications';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
-SystemNavigationBar.stickyImmersive();
+import { getDashboard } from './selectors/DashboardSelector';
+import RNLockTask from 'react-native-lock-task';
 
+Platform.OS === 'android' && RNLockTask.startLockTask();
+
+SystemNavigationBar.stickyImmersive();
 enableScreens();
 
 const toastConfig = {
@@ -94,6 +105,25 @@ export function App() {
     return async () => await AsyncStorage.removeItem('acceptOrder');
     unsubscribe();
   }, []);
+
+  const currentState = useRef(AppState.currentState);
+  const [state, setState] = useState(currentState.current);
+
+  useEffect(() => {
+    const handleChange = AppState.addEventListener('change', changedState => {
+      currentState.current = changedState;
+      setState(currentState.current);
+    });
+
+    return () => {
+      handleChange.remove();
+    };
+  }, []);
+  useEffect(() => {
+    if (state === 'background') {
+    }
+  }, [state]);
+
   return (
     <Provider store={store}>
       <PersistGate onBeforeLift={hide} persistor={persistor}>

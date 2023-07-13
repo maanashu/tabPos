@@ -52,9 +52,17 @@ export function BrandModal({ crossHandler, onSelectbrands }) {
       <Spacer space={SH(20)} />
       <View style={styles.displayflex}>
         <Text style={styles.categories}>{strings.posRetail.brand}</Text>
-        <TouchableOpacity onPress={crossHandler}>
-          <Image source={crossButton} style={styles.crossButton} />
-        </TouchableOpacity>
+        <View style={[styles.displayRow]}>
+          <TouchableOpacity
+            style={styles.cancelCatCon}
+            onPress={() => alert('in Progress')}
+          >
+            <Text style={styles.catCancelText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={crossHandler}>
+            <Image source={crossButton} style={styles.crossButton} />
+          </TouchableOpacity>
+        </View>
       </View>
       <Spacer space={SH(15)} />
       <View style={styles.categoryInputWraper}>

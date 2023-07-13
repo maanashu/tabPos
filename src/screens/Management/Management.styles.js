@@ -29,11 +29,28 @@ export const styles = StyleSheet.create({
     paddingVertical: SH(18),
     flexDirection: 'row',
   },
+  searchView: {
+    borderWidth: 1,
+    // width: SW(65),
+    height: SH(38),
+    borderRadius: 30,
+    borderColor: COLORS.row_grey,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 10,
+  },
+  searchImage: {
+    width: SH(20),
+    height: SH(20),
+    resizeMode: 'contain',
+  },
   textInputStyle: {
-    width: SW(45),
-    marginLeft: 10,
+    width: SW(75),
+    // marginLeft: 10,
     fontFamily: Fonts.Italic,
+    // borderWidth: 3,
     fontSize: SF(15),
+    paddingLeft: 5,
   },
   truckStyle: {
     width: SH(32),
@@ -50,21 +67,6 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontSize: SF(20),
     paddingLeft: SW(4),
-  },
-  searchView: {
-    borderWidth: 1,
-    width: SW(65),
-    height: SH(43),
-    borderRadius: 20,
-    borderColor: COLORS.row_grey,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  searchImage: {
-    width: SH(24),
-    height: SH(24),
-    resizeMode: 'contain',
-    left: 3,
   },
   cashDrawerView: {
     width: windowWidth - 100,
@@ -163,8 +165,8 @@ export const styles = StyleSheet.create({
   },
   countCashView: {
     width: SW(130),
-     alignSelf: 'center',
-    height:"70%"
+    alignSelf: 'center',
+    height: '70%',
   },
   countCashText: {
     fontFamily: Fonts.MaisonBold,
@@ -485,6 +487,22 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     textAlign: 'center',
   },
+  historyHeaderText: {
+    width: windowWidth * 0.112,
+    justifyContent: 'center',
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    textAlign: 'left',
+  },
+  historydataText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+    textAlign: 'left',
+    width: windowWidth * 0.112,
+    justifyContent: 'center',
+  },
   usertableRowStyle: {
     borderBottomWidth: 1,
     borderBottomColor: COLORS.solidGrey,
@@ -494,7 +512,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: SF(12),
-    textAlign: 'center',
+    // textAlign: 'center',
   },
   tableMainView: {
     zIndex: -10,
@@ -558,7 +576,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: windowWidth * 0.65,
-    paddingRight: 50,
   },
   dateHeadAlign: {
     flexDirection: 'row',

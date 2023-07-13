@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Image, StatusBar } from 'react-native';
 import { Spacer } from '@/components';
-import { SH } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { dropdown } from '@/assets';
 import { styles } from './VerifyPhone.styles';
 import { strings } from '@/localization';
@@ -64,13 +64,9 @@ export function VerifyPhone() {
   };
 
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-    >
+    <View style={{ flexGrow: 1 }}>
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+        <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
         <View style={styles.verifyContainer}>
           <Spacer space={SH(25)} />
           <View></View>
@@ -104,7 +100,7 @@ export function VerifyPhone() {
               onChangeText={onChangePhoneNumber}
               style={styles.textInputContainer}
               placeholder={strings.verifyPhone.placeHolderText}
-              placeholderTextColor="#626262"
+              placeholderTextColor={COLORS.darkGray}
               showSoftInputOnFocus={false}
             />
           </View>
@@ -117,6 +113,6 @@ export function VerifyPhone() {
           />
         </View>
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 }

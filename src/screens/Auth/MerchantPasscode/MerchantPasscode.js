@@ -84,8 +84,8 @@ export function MerchantPasscode({ route }) {
     }
   };
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
+    <View
+      style={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
@@ -126,6 +126,6 @@ export function MerchantPasscode({ route }) {
           />
         </View>
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 }

@@ -8,6 +8,8 @@ import {
 import { strings } from '@/localization';
 import moment from 'moment';
 
+moment.suppressDeprecationWarnings = true;
+
 const HandleUnhandledTouches = () => {
   Keyboard.dismiss();
 };
@@ -148,6 +150,45 @@ const getLoginSessionTime = userLoginTime => {
   return sessionTimeFormatted;
 };
 
+const orderDeliveryTime = orderTime => {
+  // Get the current time
+  const currentTime = moment();
+
+  // Specify the login time (12:53:27 PM)
+  const orderCreateTime = moment(orderTime, 'h:mm:ss A');
+
+  // Calculate the time difference in minutes
+  const orderCreateTimeInMinutes = currentTime.diff(orderCreateTime, 'minutes');
+
+  // Convert minutes to hours and minutes
+  const ordersHours = Math.floor(orderCreateTimeInMinutes / 60);
+  const ordersMinutes = orderCreateTimeInMinutes % 60;
+  const ordersSecond = ordersMinutes * 60;
+
+  // Format the time as "hh:mm"
+  const orderTimeFormatted = moment({
+    hours: ordersHours,
+    minutes: ordersMinutes,
+    seconds: ordersSecond,
+  }).format('HH[h]:mm[m]');
+
+  return orderTimeFormatted;
+};
+const getStartEndFormattedDate = date => {
+  return `${moment(date).format('hh:mm A')}`;
+};
+
+function calculateDuration(start_time, end_time) {
+  const format = 'hh:mm A';
+  const start = moment(start_time, format);
+  const end = moment(end_time, format);
+  const duration = moment.duration(end.diff(start));
+  const hours = duration.hours();
+  const minutes = duration.minutes();
+
+  return `${hours} HR ${minutes} Min`;
+}
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -159,4 +200,7 @@ export {
   ValidateEmail,
   ValidateName,
   getLoginSessionTime,
+  orderDeliveryTime,
+  getStartEndFormattedDate,
+  calculateDuration,
 };

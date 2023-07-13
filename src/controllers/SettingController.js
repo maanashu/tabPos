@@ -30,6 +30,7 @@ export class SettingController {
         });
     });
   }
+
   static async upadteApi(data) {
     return new Promise(async (resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getSetting;
@@ -71,7 +72,6 @@ export class SettingController {
   static async addressUpdateById(body) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getShippingPickup;
-      console.log('endpoint', endpoint);
       HttpClient.put(endpoint, body)
         .then(response => {
           resolve(response);
@@ -106,6 +106,7 @@ export class SettingController {
         });
     });
   }
+
   static async getCountries() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getCountries;
@@ -124,6 +125,7 @@ export class SettingController {
         });
     });
   }
+
   static async getState(id) {
     return new Promise((resolve, reject) => {
       const endpoint =
@@ -186,6 +188,7 @@ export class SettingController {
         });
     });
   }
+
   static async getTaxTrue(data) {
     return new Promise((resolve, reject) => {
       const endpoint =
@@ -270,6 +273,19 @@ export class SettingController {
             visibilityTime: 1500,
           });
 
+          reject(error);
+        });
+    });
+  }
+
+  static async fetchAllNotifications() {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.notifications;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response?.payload?.data);
+        })
+        .catch(error => {
           reject(error);
         });
     });
