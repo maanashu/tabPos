@@ -18,13 +18,17 @@ import Toast, { BaseToast } from 'react-native-toast-message';
 import { Fonts, success, error, toastcross, toastcheck } from '@/assets';
 import { COLORS, SF, SH, SW } from './theme';
 import NetInfo from '@react-native-community/netinfo';
-import { configureMessaging, getDeviceToken } from './utils/Notifications';
-import SystemNavigationBar from 'react-native-system-navigation-bar';
+
 import { getDashboard } from './selectors/DashboardSelector';
 import RNLockTask from 'react-native-lock-task';
 
 Platform.OS === 'android' && RNLockTask.startLockTask();
-
+import {
+  configureMessaging,
+  getDeviceToken,
+  requestPermission,
+} from './utils/Notifications';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
 SystemNavigationBar.stickyImmersive();
 enableScreens();
 
@@ -100,6 +104,7 @@ const unsubscribe = NetInfo.addEventListener(state => {
 });
 export function App() {
   useEffect(() => {
+    requestPermission();
     configureMessaging();
     getDeviceToken();
     return async () => await AsyncStorage.removeItem('acceptOrder');
