@@ -506,8 +506,20 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexAlign}>
-          <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+          <Image
+            source={
+              item?.user_details?.profile_photo
+                ? {
+                    uri: item?.user_details?.user_profiles?.profile_photo,
+                  }
+                : user
+            }
+            style={styles.clay}
+          />
+          <Text style={styles.revenueDataText}>
+            {'  '}
+            {item?.user_details?.user_profiles?.firstname}
+          </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -5772,7 +5784,12 @@ export function Analytics(props) {
                               {OrderData?.user_details?.email}
                             </Text>
                             <Spacer space={SH(8)} />
-                            <Text style={styles.cusAddText}>
+                            <Text
+                              style={[
+                                styles.cusAddText,
+                                { paddingRight: moderateScale(10) },
+                              ]}
+                            >
                               {
                                 OrderData?.user_details?.current_address
                                   ?.street_address

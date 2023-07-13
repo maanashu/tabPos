@@ -937,7 +937,7 @@ export const styles = StyleSheet.create({
     borderRadius: SW(15),
   },
   cusAddText: {
-    fontSize: SF(16),
+    fontSize: SF(14),
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
   },
