@@ -339,18 +339,18 @@ export function DashBoard({ navigation }) {
               <View style={{ flex: 1 }} />
               <Button
                 title={strings.management.startSession}
-                textStyle={[
-                  styles.buttonText,
-                  { color: amountCount ? COLORS.white : COLORS.darkGray },
-                ]}
-                style={[
-                  styles.saveButton,
-                  {
+                textStyle={{
+                  ...styles.buttonText,
+                  ...{ color: amountCount ? COLORS.white : COLORS.darkGray },
+                }}
+                style={{
+                  ...styles.saveButton,
+                  ...{
                     backgroundColor: amountCount
                       ? COLORS.primary
                       : COLORS.textInputBackground,
                   },
-                ]}
+                }}
                 onPress={startTrackingSesHandler}
               />
               <Spacer space={SH(40)} />
@@ -651,7 +651,10 @@ export function DashBoard({ navigation }) {
             <Button
               title={strings.dashboard.expandTwoHour}
               textStyle={styles.expandOneHourText}
-              style={[styles.expandOneHourButton, styles.expandTwoHourButton]}
+              style={{
+                ...styles.expandOneHourButton,
+                ...styles.expandTwoHourButton,
+              }}
             />
           </View>
         </View>
