@@ -146,7 +146,7 @@ export const getAllPosUsers = () => async dispatch => {
   dispatch(getAllPosUsersRequest());
   try {
     const res = await AuthController.getAllPosUsers();
-    dispatch(getAllPosUsersSuccess(res?.payload?.users));
+    dispatch(getAllPosUsersSuccess(res?.payload?.pos_staff));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllPosUsersReset());

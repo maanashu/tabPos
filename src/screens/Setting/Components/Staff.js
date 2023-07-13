@@ -49,7 +49,6 @@ export function Staff() {
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
   const posUserArray = getAuth?.getAllPosUsers;
-  // console.log('posUserArray', posUserArray);
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [expandView, setExpandView] = useState(false);

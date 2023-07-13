@@ -72,7 +72,7 @@ export function PosUserPasscode({ route }) {
     } else {
       let data = {
         merchant_id: getData?.merchantLoginData?.uniqe_id,
-        pos_user_id: posuser.id.toString(),
+        pos_user_id: posuser.user_id.toString(),
         pos_security_pin: value,
       };
 

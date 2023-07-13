@@ -59,34 +59,29 @@ export function LoginIntial({ route }) {
             <Spacer space={SH(25)} />
             <Image
               source={
-                posuserdata?.user_profiles?.profile_photo
-                  ? { uri: posuserdata?.user_profiles?.profile_photo }
-                  : userImage
+                { uri: posuserdata?.user?.user_profiles?.profile_photo } ??
+                userImage
               }
               style={styles.profilePic}
             />
             <Spacer space={SH(25)} />
             <Text style={styles.darksmallText}>
-              {posuserdata.user_profiles.firstname}
+              {posuserdata.user?.user_profiles.firstname}
             </Text>
             <Spacer space={SH(5)} />
-            <Text style={styles.role}>
-              {posuserdata.user_profiles?.pos_role === null
-                ? 'Merchant'
-                : posuserdata.user_profiles?.pos_role}
-            </Text>
+            <Text style={styles.role}>{posuserdata?.pos_role}</Text>
             <Spacer space={SH(15)} />
-            {posuserdata.api_tokens.length > 0 && (
+            {posuserdata.user?.api_tokens.length > 0 && (
               <>
                 <Text style={styles.lightsmallText}>
-                  {moment(posuserdata.api_tokens[0].updated_at).format(
+                  {moment(posuserdata.user?.api_tokens[0].updated_at).format(
                     'dddd, DD MMM YYYY'
                   )}
                 </Text>
                 <Spacer space={SH(8)} />
                 <Text style={styles.lightsmallText}>
                   Time{' '}
-                  {moment(posuserdata.api_tokens[0].updated_at).format(
+                  {moment(posuserdata.user?.api_tokens[0].updated_at).format(
                     'hh:mm a'
                   )}
                 </Text>
