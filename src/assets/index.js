@@ -269,6 +269,8 @@ export { default as radioSelect } from '@/assets/images/radioSelect.png';
 export { default as bankLogo } from '@/assets/icons/ic_wallet/bankLogo.png';
 export { default as radioUnSelect } from '@/assets/images/radioUnselect.png';
 export { default as chatIcon } from '@/assets/images/Chat_light.png';
+export { default as locationTracker } from '@/assets/icons/ic_deliveryOrder/locationTracker.png';
+export { default as storeTracker } from '@/assets/icons/ic_deliveryOrder/storeTracker.png';
 
 /* Fonts */
 export const Fonts = {
