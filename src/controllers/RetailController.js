@@ -630,4 +630,28 @@ export class RetailController {
       setTimeout(resolve, 500);
     });
   }
+
+  static async scanProductAdd(data) {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.scanProductAdd;
+      console.log('endpoint', endpoint);
+      console.log('body', data);
+      // return;
+      HttpClient.post(endpoint, data)
+        .then(response => {
+          console.log('response', response);
+          resolve(response);
+        })
+        .catch(error => {
+          console.log('error', error);
+          Toast.show({
+            position: 'top',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
 }

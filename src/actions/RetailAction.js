@@ -436,6 +436,21 @@ export const customerNumber = customerNumber => ({
   payload: { customerNumber },
 });
 
+const scanProductAddRequest = () => ({
+  type: TYPES.SCAN_PRODUCT_ADD_REQUEST,
+  payload: null,
+});
+
+const scanProductAddSuccess = scanProductAdd => ({
+  type: TYPES.SCAN_PRODUCT_ADD_SUCCESS,
+  payload: scanProductAdd,
+});
+
+const scanProductAddError = error => ({
+  type: TYPES.SCAN_PRODUCT_ADD_ERROR,
+  payload: { error },
+});
+
 export const getCategory = sellerID => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -728,6 +743,17 @@ export const requestCheck = data => async dispatch => {
     return dispatch(requestCheckSuccess(res?.payload?.status));
   } catch (error) {
     dispatch(requestCheckError(error.message));
+  }
+};
+
+export const scanProductAdd = data => async dispatch => {
+  dispatch(scanProductAddRequest());
+  try {
+    const res = await RetailController.scanProductAdd(data);
+    return dispatch(scanProductAddSuccess(res?.payload));
+  } catch (error) {
+    dispatch(scanProductAddError(error.message));
+    throw error;
   }
 };
 

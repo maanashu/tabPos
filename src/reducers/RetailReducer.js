@@ -20,6 +20,7 @@ const INITIALSTATE = {
   trueCart: {},
   trueCustomer: {},
   customerNumber: {},
+  scanProductAdd: {},
 };
 
 export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -205,6 +206,11 @@ export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         customerNumber: payload.customerNumber,
+      };
+    case TYPES.SCAN_PRODUCT_ADD_SUCCESS:
+      return {
+        ...state,
+        scanProductAdd: payload.scanProductAdd,
       };
 
     case TYPES.CLEAR_STORE:

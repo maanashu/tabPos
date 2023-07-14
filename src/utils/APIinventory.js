@@ -90,6 +90,7 @@ export const ApiOrderInventory = {
   getOrderTypeList: 'orders/pos/orders',
   getOrderData: 'orders/pos',
   onLineOrders: 'orders/pos/seller/online-orders',
+  scanProductAdd: 'poscarts/scan',
 };
 
 export const ApiWalletInventory = {

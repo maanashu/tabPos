@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
 } from 'react-native';
 
 import moment from 'moment';
@@ -21,6 +22,7 @@ import {
   cashProfile,
   clock,
   crossButton,
+  keyboard,
   lockLight,
   onlineMan,
   pay,
@@ -64,6 +66,7 @@ import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 
 import { styles } from './DashBoard.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAllCart, scanProductAdd } from '@/actions/RetailAction';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -99,6 +102,30 @@ export function DashBoard({ navigation }) {
   const [productDet, setproductDet] = useState();
   const [timeChange, setTimeChange] = useState(true);
   const [page, setpage] = useState(1);
+  const [sku, setSku] = useState('');
+  const onSetSkuFun = async sku => {
+    setSku(sku);
+    console.log(sku);
+    const data = {
+      seller_id: sellerID,
+      upc_code: sku,
+      qty: 1,
+    };
+    console.log('data', data);
+    // Keyboard.dismiss();
+    const res = await dispatch(scanProductAdd(data))
+      .then(res => {
+        // alert('success');
+        setSku('');
+        dispatch(getAllCart());
+        textInputRef.current.focus();
+      })
+      .catch(error => {
+        // alert('error');
+        setSku('');
+        textInputRef.current.focus();
+      });
+  };
 
   const STARTSELLING = [
     {
@@ -139,6 +166,7 @@ export function DashBoard({ navigation }) {
       dispatch(getTotalSaleAction(sellerID));
       dispatch(posLoginDetail());
       dispatch(onLineOrders(sellerID));
+      setSku('');
     }
   }, [isFocused]);
 
@@ -537,10 +565,14 @@ export function DashBoard({ navigation }) {
                 placeholder={strings.retail.searchProduct}
                 style={styles.searchInput}
                 // editable={false}
-                value={search}
-                onChangeText={search => {
-                  setSearch(search);
-                  onChangeFun(search);
+                // value={search}
+                // onChangeText={search => {
+                //   setSearch(search);
+                //   onChangeFun(search);
+                // }}
+                value={sku}
+                onChangeText={sku => {
+                  onSetSkuFun(sku);
                 }}
                 ref={textInputRef}
               />
