@@ -464,10 +464,10 @@ export const getCategory = sellerID => async dispatch => {
   }
 };
 
-export const getSubCategory = (sellerID, selectedId) => async dispatch => {
+export const getSubCategory = sellerID => async dispatch => {
   dispatch(getSubCategoryRequest());
   try {
-    const res = await RetailController.getSubCategory(sellerID, selectedId);
+    const res = await RetailController.getSubCategory(sellerID);
     dispatch(getSubCategorySuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -477,10 +477,10 @@ export const getSubCategory = (sellerID, selectedId) => async dispatch => {
   }
 };
 
-export const getBrand = (sellerID, selectedId) => async dispatch => {
+export const getBrand = sellerID => async dispatch => {
   dispatch(getBrandRequest());
   try {
-    const res = await RetailController.getBrand(sellerID, selectedId);
+    const res = await RetailController.getBrand(sellerID);
     dispatch(getBrandSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
