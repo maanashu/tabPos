@@ -101,6 +101,8 @@ import {
   getOrderstatistics,
   getProductList,
   getProductModal,
+  getSellerProductList,
+  getTotalInventoryCost,
   totalInvernteryGraph,
   totalOrderGraph,
   totalProGraph,
@@ -133,6 +135,8 @@ export function Analytics(props) {
   const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
   const getOrderListData = getAnalyticsData?.getOrderTypeList;
   const Orderstatistics = getAnalyticsData?.getOrderstatistics;
+  const totalInventoryCost = getAnalyticsData?.getTotalInventoryCost;
+  const sellerProductList = getAnalyticsData?.getSellerProductList;
   const OrderData = getAnalyticsData?.getOrderData;
   const OrderDetails = getAnalyticsData?.orderList;
   const [value, setValue] = useState('Weekly');
@@ -230,6 +234,7 @@ export function Analytics(props) {
       dispatch(totalRevenueGraph(sellerID));
       dispatch(totalOrderGraph(sellerID));
       dispatch(getOrderstatistics(sellerID));
+      dispatch(getTotalInventoryCost(sellerID));
     }
   }, [isFocused]);
   const productGraphLoading = useSelector(state =>
@@ -358,25 +363,33 @@ export function Analytics(props) {
   };
 
   const inverntoryUnitViseHandler = item => {
-    if (item.category === 'Unit In') {
+    if (item.title === 'Unit In') {
       setProductDetail(false);
       setInverntoryProductTable(true);
       setInventoryChangeTable(false);
-      setInventoryTable('Unit In');
-    } else if (item.category === 'Unit Out') {
+      const data = { page: 1, limit: 20, type: 'unit_in' };
+      dispatch(getSellerProductList(sellerID, data));
+      setInventoryTable(item.title);
+    } else if (item.title === 'Unit Out') {
       setProductDetail(false);
       setInverntoryProductTable(true);
       setInventoryChangeTable(false);
-      setInventoryTable('Unit Out');
-    } else if (item.category === 'Unit Return') {
+      const data = { page: 1, limit: 20, type: 'unit_out' };
+      dispatch(getSellerProductList(sellerID, data));
+      setInventoryTable(item.title);
+    } else if (item.title === 'Unit Return') {
       setProductDetail(false);
       setInverntoryProductTable(true);
       setInventoryChangeTable(false);
-      setInventoryTable('Unit Return');
-    } else if (item.category === 'Stock on Hand') {
+      const data = { page: 1, limit: 20, type: 'unit_return' };
+      dispatch(getSellerProductList(sellerID, data));
+      setInventoryTable(item.title);
+    } else if (item.title === 'Unit In Hand') {
       setProductDetail(false);
       setInverntoryProductTable(true);
       setInventoryChangeTable(false);
+      const data = { page: 1, limit: 20, type: 'unit_in_hand' };
+      dispatch(getSellerProductList(sellerID, data));
       setInventoryTable('Stock on Hand');
       // setInventoryChangeTable(true);
     }
@@ -2199,7 +2212,44 @@ export function Analytics(props) {
       </View>
     </View>
   );
-
+  const renderSellerProductItem = ({ item, index }) => (
+    <View style={styles.tableDataCon}>
+      <View style={styles.displayFlex}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: windowWidth * 0.25,
+          }}
+        >
+          <Text style={styles.usertableRowText}>{index + 1}</Text>
+          <TouchableOpacity
+            style={styles.tableDataLeft}
+            onPress={() => setInventoryChangeTable(true)}
+          >
+            <Image source={tobaco} style={styles.allienpic} />
+            <Text
+              style={[
+                styles.usertableRowText,
+                { marginHorizontal: moderateScale(7), width: SW(50) },
+              ]}
+              numberOfLines={1}
+            >
+              {item?.products?.name}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.tablerightSectionBody}>
+          <Text style={[styles.usertableRowText]}>125698740</Text>
+          <Text style={styles.usertableRowText}>20</Text>
+          <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
+          <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
+            $200
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
   const renderOrderItem = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell>
@@ -3313,7 +3363,7 @@ export function Analytics(props) {
     if (inventoryTable === 'Unit In') {
       return (
         <Text style={styles.categoryHeader}>
-          Aromas de San Andrés:<Text> 19</Text>
+          Aromas de San Andrés:<Text> 25</Text>
         </Text>
       );
     } else if (inventoryTable === 'Unit Out') {
@@ -3619,40 +3669,12 @@ export function Analytics(props) {
                 </View>
               </View>
             </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={styles.tableDataLeft}
-                    onPress={() => setInventoryChangeTable(true)}
-                  >
-                    <Image source={tobaco} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Aromas de San Andrés
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.tablerightSectionBody}>
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={styles.usertableRowText}>20</Text>
-                  <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
-                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
-                    $200
-                  </Text>
-                </View>
-              </View>
+            <View style={{ height: SH(500) }}>
+              <FlatList
+                data={sellerProductList}
+                renderItem={renderSellerProductItem}
+                keyExtractor={item => item.id}
+              />
             </View>
           </Table>
         </View>
@@ -3906,7 +3928,7 @@ export function Analytics(props) {
         ) : (
           <View style={styles.deliveryView}>
             <Image source={analytics} style={styles.truckStyle} />
-            <Text style={styles.deliveryText}>{strings.analytics.header}</Text>
+            {/* <Text style={styles.deliveryText}>{strings.analytics.header}</Text> */}
           </View>
         )}
         <View style={styles.deliveryView}>
@@ -5410,7 +5432,10 @@ export function Analytics(props) {
                         <View>
                           <Image
                             source={locationTracker}
-                            style={{ height: SH(50), width: SW(50) }}
+                            style={{
+                              height: SH(50),
+                              width: SW(50),
+                            }}
                             resizeMode="contain"
                           />
                         </View>

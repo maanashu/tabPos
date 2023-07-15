@@ -46,6 +46,8 @@ export function TotalProductSub({
     CatSubBrandArray: getAnalyticsData?.getTotalProDetail?.result,
   };
 
+  const totalInventoryCost = getAnalyticsData?.getTotalInventoryCost;
+
   const productMulti = data?.newAdd * 100;
   const productScale = productMulti / data?.totalActive;
   const [backTime, setBackTime] = useState();
@@ -93,9 +95,9 @@ export function TotalProductSub({
       onPress={() => inverntoryUnitViseHandler(item)}
     >
       <View style={styles.categoryChildCon}>
-        <Text style={styles.categoryCount}>{item.categoryCount}</Text>
+        <Text style={styles.categoryCount}>{item.count}</Text>
         <Text numberOfLines={1} style={styles.categoryText}>
-          {item.category}
+          {item.title}
         </Text>
       </View>
       <View style={styles.categoryChildPercent}>
@@ -313,7 +315,7 @@ export function TotalProductSub({
               },
             ]}
           >
-            $8,426,590
+            ${totalInventoryCost?.total_inventory_cost}
           </Text>
           <Spacer space={SH(5)} />
           <View style={styles.productGraphcon}>
@@ -327,7 +329,7 @@ export function TotalProductSub({
                 <View>
                   <FlatList
                     scrollEnabled={false}
-                    data={inverntrycategoryData}
+                    data={totalInventoryCost?.unit_data}
                     renderItem={categoryInventoryItem}
                     //   keyExtractor={item => item.id}
                     numColumns={2}
@@ -347,7 +349,9 @@ export function TotalProductSub({
                       <Text style={styles.newAddText}>
                         {strings.TotalProSub.lowStock}
                       </Text>
-                      <Text style={styles.newAddTextBold}>25</Text>
+                      <Text style={styles.newAddTextBold}>
+                        {totalInventoryCost?.low_stock_items}
+                      </Text>
                     </View>
                     <View style={styles.addedhr}></View>
                     <Spacer space={SH(10)} />
@@ -363,7 +367,7 @@ export function TotalProductSub({
                           { color: COLORS.primary },
                         ]}
                       >
-                        95
+                        {totalInventoryCost?.items_to_be_adjusted}
                       </Text>
                     </View>
                     <View style={styles.addedhr}></View>
@@ -383,7 +387,7 @@ export function TotalProductSub({
                           { color: COLORS.solid_grey },
                         ]}
                       >
-                        311
+                        {totalInventoryCost?.items_to_be_shipped}
                       </Text>
                     </View>
                   </View>
