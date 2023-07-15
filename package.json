@@ -9,6 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
+    "build:androidRelease": "sh build-android-release.sh",
     "postinstall": "patch-package && npx pod-install"
   },
   "dependencies": {
