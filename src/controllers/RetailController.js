@@ -31,18 +31,17 @@ export class RetailController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(error);
+          reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
   }
 
-  static async getSubCategory(sellerID) {
+  static async getSubCategory(sellerID, selectedId) {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getSubCategory +
-        `?seller_id=${sellerID}&main_category=false&need_subcategory=true`;
-
+        `?category_id=${selectedId}&seller_id=${sellerID}&main_category=false`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -59,10 +58,12 @@ export class RetailController {
     });
   }
 
-  static async getBrand(sellerID) {
+  static async getBrand(sellerID, selectedId) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerID}`;
+        PRODUCT_URL +
+        ApiProductInventory.getBrand +
+        `?seller_id=${sellerID}&category_id=${selectedId}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -633,12 +634,16 @@ export class RetailController {
   static async scanProductAdd(data) {
     return new Promise(async (resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.scanProductAdd;
+      console.log('endpoint', endpoint);
+      console.log('body', data);
       // return;
       HttpClient.post(endpoint, data)
         .then(response => {
+          console.log('response', response);
           resolve(response);
         })
         .catch(error => {
+          console.log('error', error);
           Toast.show({
             position: 'top',
             type: 'error_toast',

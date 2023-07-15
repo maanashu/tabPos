@@ -627,7 +627,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   categoryflatlistHeight: {
-    flex: 1,
+    height: windowHeight * 0.58,
   },
 
   // categoryModal css end
@@ -1269,11 +1269,5 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SF(12),
     fontFamily: Fonts.SemiBold,
-  },
-  categoryEmptyList: {
-    fontSize: SF(22),
-    color: COLORS.primary,
-    fontFamily: Fonts.Regular,
-    alignSelf: 'center',
   },
 });

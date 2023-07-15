@@ -105,11 +105,13 @@ export function DashBoard({ navigation }) {
   const [sku, setSku] = useState('');
   const onSetSkuFun = async sku => {
     setSku(sku);
+    console.log(sku);
     const data = {
       seller_id: sellerID,
       upc_code: sku,
       qty: 1,
     };
+    console.log('data', data);
     // Keyboard.dismiss();
     const res = await dispatch(scanProductAdd(data))
       .then(res => {

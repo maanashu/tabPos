@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 
 import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
@@ -12,18 +12,12 @@ import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { TYPES } from '@/Types/Types';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function BrandModal({ crossHandler, onSelectbrands }) {
   const [selectedId, setSelectedId] = useState();
 
   const getRetailData = useSelector(getRetail);
   const brandArray = getRetailData?.brands;
-
-  const isLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_BRAND], state)
-  );
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
@@ -41,23 +35,18 @@ export function BrandModal({ crossHandler, onSelectbrands }) {
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity
-      onPress={() => onSelectbrands(item)}
+      onPress={() => {
+        onSelectbrands(item);
+      }}
       style={styles.catProArrayCon}
     >
       <Image source={{ uri: item.image }} style={styles.cloth} />
       <Spacer space={SH(5)} />
       <Text style={styles.categories}>{item.name}</Text>
       <Spacer space={SH(3)} />
-      <Text style={styles.listed}>{item.products_count} listed</Text>
+      <Text style={styles.listed}>24 listed</Text>
     </TouchableOpacity>
   );
-  const ListEmptyComponent = () => {
-    return (
-      <View style={{ marginTop: 50 }}>
-        <Text style={styles.categoryEmptyList}>Brand Not Found</Text>
-      </View>
-    );
-  };
   return (
     <View style={styles.categoryModalCon}>
       <Spacer space={SH(20)} />
@@ -91,21 +80,13 @@ export function BrandModal({ crossHandler, onSelectbrands }) {
 
       <Spacer space={SH(15)} />
       <View style={styles.categoryflatlistHeight}>
-        {isLoading ? (
-          <View style={{ marginTop: 50 }}>
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          </View>
-        ) : (
-          <FlatList
-            data={brandArray}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-            extraData={brandArray}
-            numColumns={4}
-            ListEmptyComponent={ListEmptyComponent}
-          />
-        )}
-
+        <FlatList
+          data={brandArray}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          extraData={brandArray}
+          numColumns={4}
+        />
         <Spacer space={SH(5)} />
       </View>
     </View>
