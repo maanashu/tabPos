@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
 import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
@@ -12,12 +12,18 @@ import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useSelector } from 'react-redux';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 export function SubCatModal({ crossHandler, onSelectSubCategory }) {
   const [selectedId, setSelectedId] = useState();
 
   const getRetailData = useSelector(getRetail);
   const subCatgories = getRetailData?.subCategories;
+
+  const isLoading = useSelector(state =>
+    isLoadingSelector([TYPES.GET_SUB_CATEGORY], state)
+  );
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
@@ -44,9 +50,16 @@ export function SubCatModal({ crossHandler, onSelectSubCategory }) {
       <Spacer space={SH(5)} />
       <Text style={styles.categories}>{item.name}</Text>
       <Spacer space={SH(3)} />
-      <Text style={styles.listed}>24 listed</Text>
+      <Text style={styles.listed}>{item.products_count} listed</Text>
     </TouchableOpacity>
   );
+  const ListEmptyComponent = () => {
+    return (
+      <View style={{ marginTop: 50 }}>
+        <Text style={styles.categoryEmptyList}>Sub-Category Not Found</Text>
+      </View>
+    );
+  };
   return (
     <View style={styles.categoryModalCon}>
       <Spacer space={SH(20)} />
@@ -80,13 +93,21 @@ export function SubCatModal({ crossHandler, onSelectSubCategory }) {
 
       <Spacer space={SH(15)} />
       <View style={styles.categoryflatlistHeight}>
-        <FlatList
-          data={subCatgories}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          extraData={subCatgories}
-          numColumns={4}
-        />
+        {isLoading ? (
+          <View style={{ marginTop: 50 }}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          </View>
+        ) : (
+          <FlatList
+            data={subCatgories}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            extraData={subCatgories}
+            numColumns={4}
+            ListEmptyComponent={ListEmptyComponent}
+          />
+        )}
+
         <Spacer space={SH(5)} />
       </View>
     </View>
