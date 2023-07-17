@@ -56,6 +56,10 @@ export function Staff() {
   const [Index, setIndex] = useState();
   const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
   const posUserId = store.getState().user?.posLoginData?.id;
+  console.log(
+    'store.getState().user?.posLoginData',
+    store.getState().user?.posLoginData
+  );
   useEffect(() => {
     if (isFocused) {
       dispatch(getAllPosUsers());
@@ -63,7 +67,7 @@ export function Staff() {
   }, [isFocused]);
 
   const staffDetailhandler = async id => {
-    if (posRole === null) {
+    if (posRole === 'admin') {
       const res = await dispatch(getStaffDetail());
       if (res?.type === 'STAFF_DETAIL_SUCCESS') {
         setStaffDetail(true);
@@ -437,7 +441,7 @@ export function Staff() {
               {strings.settings.device}
             </Text>
             <View style={{ zIndex: 99 }}>
-              {posRole === null ? (
+              {posRole === 'admin' ? (
                 <TouchableOpacity
                   style={styles.addNewButtonCon}
                   activeOpacity={0.3}

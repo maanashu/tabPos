@@ -114,8 +114,6 @@ export function DashBoard({ navigation }) {
       textInputRef.current.focus();
     }
   }, [scan]);
-
-  console.log('scan', scan);
   const onSetSkuFun = async sku => {
     setSku(sku);
     if (sku?.length > 3) {
@@ -124,7 +122,6 @@ export function DashBoard({ navigation }) {
         upc_code: sku,
         qty: 1,
       };
-      console.log('data', data);
       const res = await dispatch(scanProductAdd(data))
         .then(res => {
           setSku('');
