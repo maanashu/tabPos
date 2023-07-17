@@ -109,6 +109,11 @@ export function DashBoard({ navigation }) {
   useEffect(() => {
     setScan(false);
   }, []);
+  useEffect(() => {
+    if (scan) {
+      textInputRef.current.focus();
+    }
+  }, [scan]);
 
   console.log('scan', scan);
   const onSetSkuFun = async sku => {
@@ -576,7 +581,7 @@ export function DashBoard({ navigation }) {
                   onChangeText={sku => {
                     onSetSkuFun(sku);
                   }}
-                  ref={scan ? textInputRef : null}
+                  ref={textInputRef}
                 />
               ) : (
                 <TextInput
