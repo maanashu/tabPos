@@ -31,37 +31,37 @@ export function Notification() {
     {
       key: '3',
       name: 'Order Notifications',
-      value: 'notification_status',
+      value: 'order_notification_status',
       isSelected:
-        getSettingData?.getSetting?.email_notification_status ?? false,
+        getSettingData?.getSetting?.order_notification_status ?? false,
     },
     {
       key: '4',
       name: 'Shipping Notifications',
-      value: 'email_notification_status',
+      value: 'shipping_notification_status',
       isSelected:
-        getSettingData?.getSetting?.email_notification_status ?? false,
+        getSettingData?.getSetting?.shipping_notification_status ?? false,
     },
     {
       key: '5',
       name: 'Services Notifications',
-      value: 'notification_status',
+      value: 'service_notification_status',
       isSelected:
-        getSettingData?.getSetting?.email_notification_status ?? false,
+        getSettingData?.getSetting?.service_notification_status ?? false,
     },
     {
       key: '6',
       name: 'Wallet Notifications',
-      value: 'notification_status',
+      value: 'wallet_notification_status',
       isSelected:
-        getSettingData?.getSetting?.email_notification_status ?? false,
+        getSettingData?.getSetting?.wallet_notification_status ?? false,
     },
     {
       key: '7',
       name: 'Account Notifications',
-      value: 'email_notification_status',
+      value: 'account_notification_status',
       isSelected:
-        getSettingData?.getSetting?.email_notification_status ?? false,
+        getSettingData?.getSetting?.account_notification_status ?? false,
     },
     // {
     //   key: '3',
