@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,8 +16,6 @@ import {
 import { checkbox, checkedCheckbox, Fonts } from '@/assets';
 import { Spacer } from './Spacer';
 import { strings } from '@/localization';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export function AddDiscountToCart({
   amountDis,

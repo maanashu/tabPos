@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { pin, eventClockIcon } from '@/assets';
+import { pin, eventClockIcon, userImage } from '@/assets';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import moment from 'moment';
@@ -23,9 +23,13 @@ const EventItemCard = ({ item, index }) => {
 
         <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
           <Image
-            source={{
-              uri: 'https://xsgames.co/randomusers/avatar.php?g=male',
-            }}
+            source={
+              userDetails?.profile_photo
+                ? {
+                    uri: userDetails?.profile_photo,
+                  }
+                : userImage
+            }
             style={styles.customerUserProfile}
           />
           <View style={{ marginLeft: ms(6) }}>
