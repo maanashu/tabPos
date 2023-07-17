@@ -1,4 +1,4 @@
-import { TYPES } from '@/Types/DashboardTypes';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 
 const INITIALSTATE = {
   getOrderDeliveries: [],
@@ -15,66 +15,66 @@ export const dashboardReducer = (
   { payload, type }
 ) => {
   switch (type) {
-    case TYPES.GET_ORDER_DELIVERIES_SUCCESS:
+    case DASHBOARDTYPE.GET_ORDER_DELIVERIES_SUCCESS:
       return {
         ...state,
         getOrderDeliveries: payload.getOrderDeliveries,
       };
-    case TYPES.GET_ORDER_DELIVERIES_RESET:
+    case DASHBOARDTYPE.GET_ORDER_DELIVERIES_RESET:
       return {
         ...state,
         getOrderDeliveries: [],
       };
 
-    case TYPES.GET_DRAWER_SESSION_SUCCESS:
+    case DASHBOARDTYPE.GET_DRAWER_SESSION_SUCCESS:
       return {
         ...state,
         getSesssion: payload.getSesssion?.payload,
       };
-    case TYPES.ADD_SELLING_SELECTION_SUCCESS:
+    case DASHBOARDTYPE.ADD_SELLING_SELECTION_SUCCESS:
       return {
         ...state,
         selection: payload?.selection,
       };
-    case TYPES.GET_DRAWER_SESSION_RESET:
+    case DASHBOARDTYPE.GET_DRAWER_SESSION_RESET:
       return {
         ...state,
         getSesssion: {},
       };
 
-    case TYPES.GET_TOTAL_SALE_SUCCESS:
+    case DASHBOARDTYPE.GET_TOTAL_SALE_SUCCESS:
       return {
         ...state,
         getTotalSale: payload.getTotalSale,
       };
-    case TYPES.GET_TOTAL_SALE_RESET:
+    case DASHBOARDTYPE.GET_TOTAL_SALE_RESET:
       return {
         ...state,
         getTotalSale: [],
       };
 
-    case TYPES.POS_LOGIN_DETAIL_SUCCESS:
+    case DASHBOARDTYPE.POS_LOGIN_DETAIL_SUCCESS:
       return {
         ...state,
         posLoginDetail: payload.posLoginDetail,
       };
-    case TYPES.POS_LOGIN_DETAIL_RESET:
+    case DASHBOARDTYPE.POS_LOGIN_DETAIL_RESET:
       return {
         ...state,
         posLoginDetail: {},
       };
 
-    case TYPES.SEARCH_PRODUCT_LIST_SUCCESS:
+    case DASHBOARDTYPE.SEARCH_PRODUCT_LIST_SUCCESS:
       return {
         ...state,
         searchProductList: payload.searchProductList,
       };
-    case TYPES.SEARCH_PRODUCT_LIST_RESET:
+    case DASHBOARDTYPE.SEARCH_PRODUCT_LIST_RESET:
       return {
         ...state,
         searchProductList: [],
       };
-    case TYPES.ONLINE_ORDERS_SUCCESS:
+    case DASHBOARDTYPE.ONLINE_ORDERS_SUCCESS:
       return {
         ...state,
         onLineOrders: payload,

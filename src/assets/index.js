@@ -32,6 +32,7 @@ export { default as power } from '@/assets/icons/ic_navigator/power.png';
 export { default as menu } from '@/assets/icons/ic_retail/menu.png';
 export { default as search_light } from '@/assets/icons/ic_retail/Search_light.png';
 export { default as scn } from '@/assets/icons/ic_retail/scn.png';
+export { default as scanSearch } from '@/assets/icons/ic_retail/scanSearch.png';
 export { default as purchese } from '@/assets/icons/ic_retail/purchese.png';
 export { default as arrow_right } from '@/assets/icons/ic_retail/arrow_right.png';
 export { default as categoryProduct } from '@/assets/icons/ic_retail/categoryProduct.png';
