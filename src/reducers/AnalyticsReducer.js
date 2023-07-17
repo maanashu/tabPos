@@ -15,6 +15,8 @@ const INITIALSTATE = {
   orderList: {},
   getTotalInventoryCost: {},
   getSellerProductList: [],
+  getSellerInfo: [],
+  getSellerProductDetails: {},
 };
 
 export const analyticsReducer = (
@@ -119,6 +121,16 @@ export const analyticsReducer = (
       return {
         ...state,
         getSellerProductList: [],
+      };
+    case TYPES.GET_SELLER_INFO_SUCCESS:
+      return {
+        ...state,
+        getSellerInfo: payload?.getSellerInfo,
+      };
+    case TYPES.GET_SELLER_PRODUCT_DETAILS_SUCCESS:
+      return {
+        ...state,
+        getSellerProductDetails: payload?.getSellerProductDetails,
       };
     default:
       return state;

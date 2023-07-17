@@ -207,6 +207,36 @@ const getSellerProductListReset = () => ({
   payload: null,
 });
 
+const getSellerInfoRequest = () => ({
+  type: TYPES.GET_SELLER_INFO_REQUEST,
+  payload: null,
+});
+
+const getSellerInfoSuccess = getSellerInfo => ({
+  type: TYPES.GET_SELLER_INFO_SUCCESS,
+  payload: { getSellerInfo },
+});
+
+const getSellerInfoError = error => ({
+  type: TYPES.GET_SELLER_INFO_ERROR,
+  payload: { error },
+});
+
+const getSellerProductDetailsRequest = () => ({
+  type: TYPES.GET_SELLER_PRODUCT_DETAILS_REQUEST,
+  payload: null,
+});
+
+const getSellerProductDetailsSuccess = getSellerProductDetails => ({
+  type: TYPES.GET_SELLER_PRODUCT_DETAILS_SUCCESS,
+  payload: { getSellerProductDetails },
+});
+
+const getSellerProductDetailsError = error => ({
+  type: TYPES.GET_SELLER_PRODUCT_DETAILS_ERROR,
+  payload: { error },
+});
+
 export const totalProGraph = sellerID => async dispatch => {
   dispatch(getTotalProGraphRequest());
   try {
@@ -361,5 +391,25 @@ export const getSellerProductList = (sellerID, data) => async dispatch => {
       dispatch(getSellerProductListReset());
     }
     dispatch(getSellerProductListError(error.message));
+  }
+};
+
+export const getSellerInfo = (productID, data) => async dispatch => {
+  dispatch(getSellerInfoRequest());
+  try {
+    const res = await AnalyticsController.getSellerInfo(productID, data);
+    dispatch(getSellerInfoSuccess(res?.payload?.data));
+  } catch (error) {
+    dispatch(getSellerInfoError(error.message));
+  }
+};
+
+export const getSellerProductDetails = sellerID => async dispatch => {
+  dispatch(getSellerProductDetailsRequest());
+  try {
+    const res = await AnalyticsController.getSellerProductDetails(sellerID);
+    dispatch(getSellerProductDetailsSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getSellerProductDetailsError(error.message));
   }
 };

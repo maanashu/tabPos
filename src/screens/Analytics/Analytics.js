@@ -101,6 +101,8 @@ import {
   getOrderstatistics,
   getProductList,
   getProductModal,
+  getSellerInfo,
+  getSellerProductDetails,
   getSellerProductList,
   getTotalInventoryCost,
   totalInvernteryGraph,
@@ -135,8 +137,10 @@ export function Analytics(props) {
   const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
   const getOrderListData = getAnalyticsData?.getOrderTypeList;
   const Orderstatistics = getAnalyticsData?.getOrderstatistics;
-  const totalInventoryCost = getAnalyticsData?.getTotalInventoryCost;
+  const sellerInfo = getAnalyticsData?.getSellerInfo;
   const sellerProductList = getAnalyticsData?.getSellerProductList;
+  const sellerProductDetails = getAnalyticsData?.getSellerProductDetails;
+  console.log('sellerProductDetails', JSON.stringify(sellerProductDetails));
   const OrderData = getAnalyticsData?.getOrderData;
   const OrderDetails = getAnalyticsData?.orderList;
   const [value, setValue] = useState('Weekly');
@@ -2212,37 +2216,45 @@ export function Analytics(props) {
       </View>
     </View>
   );
-  const renderSellerProductItem = ({ item, index }) => (
+
+  const renderSellerInfo = ({ item, index }) => (
     <View style={styles.tableDataCon}>
       <View style={styles.displayFlex}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: windowWidth * 0.25,
-          }}
-        >
-          <Text style={styles.usertableRowText}>{index + 1}</Text>
+        <View style={styles.tableHeaderLeft}>
+          <Text style={[styles.usertableRowText, { textAlign: 'center' }]}>
+            {index + 1}
+          </Text>
           <TouchableOpacity
             style={styles.tableDataLeft}
-            onPress={() => setInventoryChangeTable(true)}
+            onPress={() => {
+              setInvoiceModal(true), setInvoiceTrackId(false);
+              dispatch(getSellerProductDetails(item?.supplier_id));
+            }}
           >
-            <Image source={tobaco} style={styles.allienpic} />
-            <Text
-              style={[
-                styles.usertableRowText,
-                { marginHorizontal: moderateScale(7), width: SW(50) },
-              ]}
-              numberOfLines={1}
+            <Image source={recordTape} style={styles.allienpic} />
+            <View
+              style={{
+                justifyContent: 'flex-start',
+                paddingHorizontal: moderateScale(4),
+              }}
             >
-              {item?.products?.name}
-            </Text>
+              <Text style={[styles.usertableRowText]}>{item?.supplier}</Text>
+              <Text
+                style={[styles.usertableRowText, { color: COLORS.gerySkies }]}
+              >
+                Florida
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
         <View style={styles.tablerightSectionBody}>
-          <Text style={[styles.usertableRowText]}>125698740</Text>
-          <Text style={styles.usertableRowText}>20</Text>
-          <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
+          <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
+            {item?.invoice}
+          </Text>
+          <Text style={styles.usertableRowText}>{item?.unit_in}</Text>
+          <Text style={styles.usertableRowText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
           <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
             $200
           </Text>
@@ -2250,6 +2262,109 @@ export function Analytics(props) {
       </View>
     </View>
   );
+  const renderSellerProductDetails = ({ item, index }) => (
+    <View style={styles.tableDataCon}>
+      <View style={styles.displayFlex}>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: windowWidth * 0.25,
+          }}
+        >
+          <Text style={styles.usertableRowText}>{index + 1}</Text>
+          <Text
+            style={[
+              styles.usertableRowText,
+              { paddingHorizontal: moderateScale(12), width: SW(60) },
+            ]}
+            numberOfLines={1}
+          >
+            {item?.name}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: windowWidth * 0.45,
+            paddingRight: Platform.OS === 'ios' ? 40 : 0,
+          }}
+        >
+          <Text style={[styles.usertableRowText, { marginLeft: SW(-7) }]}>
+            {item?.sku ? item?.sku : '###'}
+          </Text>
+          <Text style={[styles.usertableRowText, { marginLeft: SW(-7) }]}>
+            {item?.price}
+          </Text>
+          <Text style={styles.usertableRowText}>1</Text>
+          <Text style={[styles.usertableRowText, { marginRight: SW(8) }]}>
+            $250.00
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderSellerProductItem = ({ item, index }) => {
+    const data = { page: 1, limit: 20 };
+    const productID = item?.products?.id;
+    return (
+      <View style={styles.tableDataCon}>
+        <View style={styles.displayFlex}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: windowWidth * 0.25,
+            }}
+          >
+            <Text style={styles.usertableRowText}>{index + 1}</Text>
+            <TouchableOpacity
+              style={styles.tableDataLeft}
+              onPress={() => {
+                setInventoryChangeTable(true);
+                dispatch(getSellerInfo(productID, data));
+              }}
+            >
+              <Image
+                source={
+                  item?.products?.image
+                    ? {
+                        uri: item?.products?.image,
+                      }
+                    : user
+                }
+                style={styles.allienpic}
+              />
+              <Text
+                style={[
+                  styles.usertableRowText,
+                  { marginHorizontal: moderateScale(7), width: SW(50) },
+                ]}
+                numberOfLines={1}
+              >
+                {item?.products?.name}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.tablerightSectionBody}>
+            <Text style={[styles.usertableRowText]}>
+              {item?.products?.barcode ? item?.products?.barcode : '######'}
+            </Text>
+            <Text style={styles.usertableRowText}>
+              {item?.products?.unit_in ? item?.products?.unit_in : 20}
+            </Text>
+            <Text style={styles.usertableRowText}>
+              {moment(item?.created_at).format('LL')}
+            </Text>
+            <Text style={[styles.usertableRowText, { marginRight: SW(25) }]}>
+              ${item?.products?.price}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
   const renderOrderItem = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell>
@@ -3435,52 +3550,13 @@ export function Analytics(props) {
                 </View>
               </View>
             </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View style={styles.tableHeaderLeft}>
-                  <Text
-                    style={[styles.usertableRowText, { textAlign: 'center' }]}
-                  >
-                    1
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.tableDataLeft}
-                    onPress={() => {
-                      setInvoiceModal(true), setInvoiceTrackId(false);
-                    }}
-                  >
-                    <Image source={recordTape} style={styles.allienpic} />
-                    <View
-                      style={{
-                        justifyContent: 'flex-start',
-                        paddingHorizontal: moderateScale(4),
-                      }}
-                    >
-                      <Text style={[styles.usertableRowText]}>
-                        Record & Tape
-                      </Text>
-                      <Text
-                        style={[
-                          styles.usertableRowText,
-                          { color: COLORS.gerySkies },
-                        ]}
-                      >
-                        Florida
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.tablerightSectionBody}>
-                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                    125698740
-                  </Text>
-                  <Text style={styles.usertableRowText}>20</Text>
-                  <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
-                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
-                    $200
-                  </Text>
-                </View>
-              </View>
+
+            <View style={{ height: SH(500) }}>
+              <FlatList
+                data={sellerInfo}
+                renderItem={renderSellerInfo}
+                keyExtractor={item => item.id}
+              />
             </View>
           </Table>
         </View>
@@ -4187,19 +4263,36 @@ export function Analytics(props) {
                     <Image source={recordTape} style={styles.allienpic} />
                     <View style={{ marginHorizontal: moderateScale(5) }}>
                       <Text style={styles.addressText}>
-                        {strings.analytics.supplierAdd}
+                        {
+                          sellerProductDetails?.user_profiles?.current_address
+                            ?.street_address
+                        }
                       </Text>
                       <Text style={styles.addressText}>
-                        {strings.analytics.supplierNewAdd}
+                        {
+                          sellerProductDetails?.user_profiles?.current_address
+                            ?.city
+                        }
                       </Text>
                       <Text style={styles.addressText}>
-                        {strings.analytics.streetNo}
+                        {
+                          sellerProductDetails?.user_profiles?.current_address
+                            ?.state
+                        }{' '}
+                        {
+                          sellerProductDetails?.user_profiles?.current_address
+                            ?.zipcode
+                        }
                       </Text>
                       <Text style={styles.addressText}>
-                        {strings.analytics.city}
+                        {
+                          sellerProductDetails?.user_profiles?.current_address
+                            ?.country
+                        }
                       </Text>
                       <Text style={styles.addressText}>
-                        {strings.analytics.supplierPhoneNumber}
+                        Phone :{' '}
+                        {sellerProductDetails?.user_profiles?.full_phone_number}{' '}
                       </Text>
                       <Spacer space={SH(60)} />
                       <View>
@@ -4458,42 +4551,12 @@ export function Analytics(props) {
                       </View>
                     </View>
                   </View>
-                  <View style={styles.tableDataCon}>
-                    <View style={styles.displayFlex}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          width: windowWidth * 0.25,
-                        }}
-                      >
-                        <Text style={styles.usertableRowText}>1</Text>
-                        <Text
-                          style={[
-                            styles.usertableRowText,
-                            { paddingHorizontal: moderateScale(12) },
-                          ]}
-                        >
-                          Aromas de San Andrés
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          width: windowWidth * 0.45,
-                          paddingRight: Platform.OS === 'ios' ? 40 : 0,
-                        }}
-                      >
-                        <Text style={[styles.usertableRowText]}>1105</Text>
-                        <Text
-                          style={[styles.usertableRowText, { marginLeft: -20 }]}
-                        >
-                          $250.00
-                        </Text>
-                        <Text style={styles.usertableRowText}>1</Text>
-                        <Text style={styles.usertableRowText}>$250.00</Text>
-                      </View>
-                    </View>
+                  <View style={{ height: SH(100) }}>
+                    <FlatList
+                      data={sellerProductDetails?.products_details?.data}
+                      renderItem={renderSellerProductDetails}
+                      keyExtractor={item => item.id}
+                    />
                   </View>
                 </Table>
                 <Spacer space={SH(25)} />
@@ -4520,7 +4583,7 @@ export function Analytics(props) {
                         {strings.analytics.subtotal}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.analytics.comisionCharge}
+                        $ {sellerProductDetails?.sub_total.toFixed(2)}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -4534,7 +4597,7 @@ export function Analytics(props) {
                           { color: COLORS.roseRed },
                         ]}
                       >
-                        {strings.analytics.discountPrice}
+                        -$ {sellerProductDetails?.discount}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -4543,7 +4606,7 @@ export function Analytics(props) {
                         {strings.analytics.shippingCharge}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.analytics.discountPrice}
+                        $ {sellerProductDetails?.shipping_charge}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -4552,7 +4615,7 @@ export function Analytics(props) {
                         {strings.analytics.commision}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.analytics.comisionCharge}
+                        $ {sellerProductDetails?.commission}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -4570,7 +4633,7 @@ export function Analytics(props) {
                         </View>
                       </View>
                       <Text style={styles.tablesubDarkLabel}>
-                        {strings.wallet.subtotalPrice}
+                        $ {sellerProductDetails?.total.toFixed(2)}
                       </Text>
                     </View>
                     {invoiceTrackId ? (
