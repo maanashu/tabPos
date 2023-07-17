@@ -8,6 +8,7 @@ import { changeAppointmentStatus } from '@/actions/AppointmentAction';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import { calculateDuration } from '@/utils/GlobalMethods';
 import { useDispatch } from 'react-redux';
+import ProfileImage from '@/components/ProfileImage';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -22,14 +23,8 @@ const EventItemCard = ({ item, index }) => {
         <Text style={styles._eventTitle}>Customer:</Text>
 
         <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
-          <Image
-            source={
-              userDetails?.profile_photo
-                ? {
-                    uri: userDetails?.profile_photo,
-                  }
-                : userImage
-            }
+          <ProfileImage
+            source={{ uri: userDetails?.profile_photo }}
             style={styles.customerUserProfile}
           />
           <View style={{ marginLeft: ms(6) }}>

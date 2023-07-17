@@ -6,6 +6,7 @@ import { ms } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import moment from 'moment';
 import { calculateDuration } from '@/utils/GlobalMethods';
+import ProfileImage from '@/components/ProfileImage';
 
 const EventDetailModal = ({
   showEventDetailModal,
@@ -30,10 +31,8 @@ const EventDetailModal = ({
 
           <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
             <View style={{ flexDirection: 'row', flex: 1 }}>
-              <Image
-                source={{
-                  uri: 'https://xsgames.co/randomusers/avatar.php?g=male',
-                }}
+              <ProfileImage
+                source={{ uri: userDetails?.profile_photo }}
                 style={styles.customerUserProfile}
               />
               <View style={{ marginLeft: ms(6), flex: 1 }}>
@@ -57,10 +56,8 @@ const EventDetailModal = ({
           <Text style={styles._eventTitle}>Assigned:</Text>
 
           <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
-            <Image
-              source={{
-                uri: 'https://xsgames.co/randomusers/avatar.php?g=male',
-              }}
+            <ProfileImage
+              source={{ uri: userDetails?.profile_photo }}
               style={styles.customerUserProfile}
             />
             <View style={{ marginLeft: ms(6) }}>
