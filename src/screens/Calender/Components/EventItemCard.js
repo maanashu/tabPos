@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { pin, eventClockIcon } from '@/assets';
+import { pin, eventClockIcon, userImage } from '@/assets';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import moment from 'moment';
@@ -8,6 +8,7 @@ import { changeAppointmentStatus } from '@/actions/AppointmentAction';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import { calculateDuration } from '@/utils/GlobalMethods';
 import { useDispatch } from 'react-redux';
+import ProfileImage from '@/components/ProfileImage';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -22,10 +23,8 @@ const EventItemCard = ({ item, index }) => {
         <Text style={styles._eventTitle}>Customer:</Text>
 
         <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
-          <Image
-            source={{
-              uri: 'https://xsgames.co/randomusers/avatar.php?g=male',
-            }}
+          <ProfileImage
+            source={{ uri: userDetails?.profile_photo }}
             style={styles.customerUserProfile}
           />
           <View style={{ marginLeft: ms(6) }}>

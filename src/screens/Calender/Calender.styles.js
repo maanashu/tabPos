@@ -601,7 +601,7 @@ export const styles = StyleSheet.create({
   customerUserProfile: {
     height: ms(20),
     width: ms(20),
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderRadius: ms(10),
   },
   customerDetailContainer: {
