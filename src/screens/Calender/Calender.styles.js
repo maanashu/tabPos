@@ -378,7 +378,6 @@ export const styles = StyleSheet.create({
   },
   requestCalendarIcon: { height: ms(20), width: ms(20), resizeMode: 'contain' },
   requestCalendarContainer: {
-    backgroundColor: COLORS.white,
     height: ms(35),
     width: '80%',
     marginTop: ms(5),

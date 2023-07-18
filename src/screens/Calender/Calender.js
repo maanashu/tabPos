@@ -253,7 +253,14 @@ export function Calender(props) {
                   setshowRequestsView(!showRequestsView);
                 }
               }}
-              style={styles.requestCalendarContainer}
+              style={[
+                styles.requestCalendarContainer,
+                {
+                  backgroundColor: showRequestsView
+                    ? COLORS.white
+                    : COLORS.textInputBackground,
+                },
+              ]}
             >
               <View>
                 <Image
