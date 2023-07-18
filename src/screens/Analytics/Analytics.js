@@ -18,7 +18,6 @@ import {
   search_light,
   location,
   backArrow,
-  map,
   dropdown2,
   analytics,
   tobaco,
@@ -36,10 +35,8 @@ import {
   printIcon,
   willis,
   track,
-  angela,
   deliverCheck,
   fedx,
-  menu,
   jbrCustomer,
   checkArrow,
   ups,
@@ -52,17 +49,15 @@ import {
   movingArrow,
   blankRadio,
   contact,
-  angela2,
   ticket,
   box,
   dropRight,
   movingArrowBlue,
   fillRadio,
   userImage,
-  toastcross,
-  cashProfile,
-  terryProfile,
   user,
+  locationTracker,
+  storeTracker,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
@@ -106,6 +101,10 @@ import {
   getOrderstatistics,
   getProductList,
   getProductModal,
+  getSellerInfo,
+  getSellerProductDetails,
+  getSellerProductList,
+  getTotalInventoryCost,
   totalInvernteryGraph,
   totalOrderGraph,
   totalProGraph,
@@ -138,6 +137,10 @@ export function Analytics(props) {
   const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
   const getOrderListData = getAnalyticsData?.getOrderTypeList;
   const Orderstatistics = getAnalyticsData?.getOrderstatistics;
+  const sellerInfo = getAnalyticsData?.getSellerInfo;
+  const sellerProductList = getAnalyticsData?.getSellerProductList;
+  const sellerProductDetails = getAnalyticsData?.getSellerProductDetails;
+  // console.log('sellerProductDetails', JSON.stringify(sellerProductDetails));
   const OrderData = getAnalyticsData?.getOrderData;
   const OrderDetails = getAnalyticsData?.orderList;
   const [value, setValue] = useState('Weekly');
@@ -192,7 +195,7 @@ export function Analytics(props) {
   };
   const storeCoordinates = {
     latitude: 30.73827,
-    longitude: 76.765144,
+    longitude: 76.755144,
   };
 
   const productDetailData = [
@@ -235,6 +238,7 @@ export function Analytics(props) {
       dispatch(totalRevenueGraph(sellerID));
       dispatch(totalOrderGraph(sellerID));
       dispatch(getOrderstatistics(sellerID));
+      dispatch(getTotalInventoryCost(sellerID));
     }
   }, [isFocused]);
   const productGraphLoading = useSelector(state =>
@@ -268,7 +272,9 @@ export function Analytics(props) {
   const orderData = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_DATA], state)
   );
-
+  const orderDetailsLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER], state)
+  );
   const tobacoTableHandler = catId => {
     setDetailtable(true);
     dispatch(getProductList(catId));
@@ -363,25 +369,33 @@ export function Analytics(props) {
   };
 
   const inverntoryUnitViseHandler = item => {
-    if (item.category === 'Unit In') {
+    if (item.title === 'Unit In') {
       setProductDetail(false);
       setInverntoryProductTable(true);
       setInventoryChangeTable(false);
-      setInventoryTable('Unit In');
-    } else if (item.category === 'Unit Out') {
+      const data = { page: 1, limit: 20, type: 'unit_in' };
+      dispatch(getSellerProductList(sellerID, data));
+      setInventoryTable(item.title);
+    } else if (item.title === 'Unit Out') {
       setProductDetail(false);
       setInverntoryProductTable(true);
       setInventoryChangeTable(false);
-      setInventoryTable('Unit Out');
-    } else if (item.category === 'Unit Return') {
+      const data = { page: 1, limit: 20, type: 'unit_out' };
+      dispatch(getSellerProductList(sellerID, data));
+      setInventoryTable(item.title);
+    } else if (item.title === 'Unit Return') {
       setProductDetail(false);
       setInverntoryProductTable(true);
       setInventoryChangeTable(false);
-      setInventoryTable('Unit Return');
-    } else if (item.category === 'Stock on Hand') {
+      const data = { page: 1, limit: 20, type: 'unit_return' };
+      dispatch(getSellerProductList(sellerID, data));
+      setInventoryTable(item.title);
+    } else if (item.title === 'Unit In Hand') {
       setProductDetail(false);
       setInverntoryProductTable(true);
       setInventoryChangeTable(false);
+      const data = { page: 1, limit: 20, type: 'unit_in_hand' };
+      dispatch(getSellerProductList(sellerID, data));
       setInventoryTable('Stock on Hand');
       // setInventoryChangeTable(true);
     }
@@ -398,30 +412,33 @@ export function Analytics(props) {
     } else if (item.title == 'Total Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Total Order');
-      const data = { page: 1, limit: 10, type: 'total_order' };
+      const data = { page: 1, limit: 20, type: 'total_order' };
       dispatch(getOrderTypeList(sellerID, data));
       setSelectedId(item.title);
     } else if (item.title == 'Store Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Store Order');
-      const data = { page: 1, limit: 10, type: 'store_order' };
+      const data = { page: 1, limit: 20, type: 'store_order' };
       dispatch(getOrderTypeList(sellerID, data));
       setSelectedId(item.title);
     } else if (item.title == 'Online Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Online Order');
-      const data = { page: 1, limit: 10, type: 'delivery_order' };
+      const data = { page: 1, limit: 20, type: 'delivery_order' };
       dispatch(getOrderTypeList(sellerID, data));
       setSelectedId(item.title);
     } else if (item.title == 'Shipping Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Shipping Order');
-      const data = { page: 1, limit: 10, type: 'shipping_order' };
+      const data = { page: 1, limit: 20, type: 'shipping_order' };
       dispatch(getOrderTypeList(sellerID, data));
       setSelectedId(item.title);
     } else {
-      setRevenueTableHeading('');
       setRevenueTable(true);
+      setRevenueTableHeading('Total Revenue');
+      const data = { page: 1, limit: 20, type: 'total_revenue' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
     }
   };
   const orderTableHeadingFun = revenueTableHeading => {
@@ -510,25 +527,42 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexAlign}>
-          <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+          <Image
+            source={
+              item?.user_details?.profile_photo
+                ? {
+                    uri: item?.user_details?.user_profiles?.profile_photo,
+                  }
+                : user
+            }
+            style={styles.clay}
+          />
+          <Text style={styles.revenueDataText}>
+            {'  '}
+            {item?.user_details?.user_profiles?.firstname}
+          </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>Delivery</Text>
+        <Text style={styles.revenueDataText}>
+          {(item?.delivery_option == 1 && 'Delivery') ||
+            (item?.delivery_option == 2 && 'Reservation') ||
+            (item?.delivery_option == 3 && 'Pickup') ||
+            (item?.delivery_option == 4 && 'Shipping')}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
-          <Image source={clay} style={styles.clay} />
+          {/* <Image source={clay} style={styles.clay} /> */}
           <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
-          <Image source={clay} style={styles.clay} />
+          {/* <Image source={clay} style={styles.clay} /> */}
           <Text style={styles.revenueDataText}>${item?.tips}</Text>
         </View>
       </DataTable.Cell>
@@ -539,7 +573,7 @@ export function Analytics(props) {
         <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>JBR</Text>
+        <Text style={styles.revenueDataText}>{item?.mode_of_payment}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity
@@ -578,15 +612,32 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexAlign}>
-          <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+          <Image
+            source={
+              item?.user_details?.profile_photo
+                ? {
+                    uri: item?.user_details?.user_profiles?.profile_photo,
+                  }
+                : user
+            }
+            style={styles.clay}
+          />
+          <Text style={styles.revenueDataText}>
+            {'  '}
+            {item?.user_details?.user_profiles?.firstname}
+          </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>Delivery</Text>
+        <Text style={styles.revenueDataText}>
+          {(item?.delivery_option == 1 && 'Delivery') ||
+            (item?.delivery_option == 2 && 'Reservation') ||
+            (item?.delivery_option == 3 && 'Pickup') ||
+            (item?.delivery_option == 4 && 'Shipping')}
+        </Text>{' '}
       </DataTable.Cell>
       {/* <DataTable.Cell style={styles.dateTableSetting}>
       <View style={styles.flexAlign}>
@@ -596,8 +647,8 @@ export function Analytics(props) {
     </DataTable.Cell> */}
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
-          <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
+          {/* <Image source={clay} style={styles.clay} /> */}
+          <Text style={styles.revenueDataText}>${item?.tips}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -607,7 +658,7 @@ export function Analytics(props) {
         <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>JBR</Text>
+        <Text style={styles.revenueDataText}>{item?.mode_of_payment}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity
@@ -617,6 +668,7 @@ export function Analytics(props) {
               setRevenueTable(false),
               setTablebackSetting(false),
               setOrderList(true);
+            dispatch(getOrderData(item?.id));
           }}
         >
           <Text style={styles.completeText}>Completed</Text>
@@ -645,27 +697,44 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexAlign}>
-          <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+          <Image
+            source={
+              item?.user_details?.profile_photo
+                ? {
+                    uri: item?.user_details?.user_profiles?.profile_photo,
+                  }
+                : user
+            }
+            style={styles.clay}
+          />
+          <Text style={styles.revenueDataText}>
+            {'  '}
+            {item?.user_details?.user_profiles?.firstname}
+          </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>Delivery</Text>
+        <Text style={styles.revenueDataText}>
+          {(item?.delivery_option == 1 && 'Delivery') ||
+            (item?.delivery_option == 2 && 'Reservation') ||
+            (item?.delivery_option == 3 && 'Pickup') ||
+            (item?.delivery_option == 4 && 'Shipping')}
+        </Text>{' '}
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
           <Image source={deliverCheck} style={styles.codeLogo} />
           <Text style={[styles.revenueDataText, { color: COLORS.primary }]}>
-            $23.50
+            ${item?.tips}
           </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
-          <Image source={clay} style={styles.clay} />
+          {/* <Image source={clay} style={styles.clay} /> */}
           <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
         </View>
       </DataTable.Cell>
@@ -676,7 +745,7 @@ export function Analytics(props) {
         <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>JBR</Text>
+        <Text style={styles.revenueDataText}>{item?.mode_of_payment}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity
@@ -685,6 +754,8 @@ export function Analytics(props) {
             setRevenueTable(false),
               setRevenueOrderBuyer(true),
               setTablebackSetting(true);
+            setOrderList(true);
+            dispatch(getOrderData(item?.id));
           }}
         >
           <Text style={styles.completeText}>Completed</Text>
@@ -713,15 +784,32 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexAlign}>
-          <Image source={clay} style={styles.clay} />
-          <Text style={styles.revenueDataText}>Michael E. Clay</Text>
+          <Image
+            source={
+              item?.user_details?.profile_photo
+                ? {
+                    uri: item?.user_details?.user_profiles?.profile_photo,
+                  }
+                : user
+            }
+            style={styles.clay}
+          />
+          <Text style={styles.revenueDataText}>
+            {'  '}
+            {item?.user_details?.user_profiles?.firstname}
+          </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>Delivery</Text>
+        <Text style={styles.revenueDataText}>
+          {(item?.delivery_option == 1 && 'Delivery') ||
+            (item?.delivery_option == 2 && 'Reservation') ||
+            (item?.delivery_option == 3 && 'Pickup') ||
+            (item?.delivery_option == 4 && 'Shipping')}
+        </Text>
       </DataTable.Cell>
       {/* <DataTable.Cell style={styles.dateTableSetting}>
       <View style={styles.flexAlign}>
@@ -731,7 +819,7 @@ export function Analytics(props) {
     </DataTable.Cell> */}
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
-          <Image source={clay} style={styles.clay} />
+          {/* <Image source={clay} style={styles.clay} /> */}
           <Text style={styles.revenueDataText}>${item?.delivery_charge}</Text>
         </View>
       </DataTable.Cell>
@@ -742,7 +830,7 @@ export function Analytics(props) {
         <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>JBR</Text>
+        <Text style={styles.revenueDataText}>{item?.mode_of_payment}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity
@@ -751,6 +839,93 @@ export function Analytics(props) {
             setRevenueTable(false),
               setRevenueOrderBuyer(true),
               setTablebackSetting(true);
+            setOrderList(true);
+            dispatch(getOrderData(item?.id));
+          }}
+        >
+          <Text style={styles.completeText}>Completed</Text>
+        </TouchableOpacity>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
+
+  const getOrderListRevenue = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTableSettingFirst}>
+        <Text style={styles.revenueDataText}>{index + 1}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View>
+          <Text style={styles.revenueDataText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
+          <Text style={styles.revenueDataTextLight}>
+            {moment(item?.created_at).format('h:mm A')}
+          </Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <Text style={styles.revenueDataText}>{item?.invoice?.invoice_id}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexAlign}>
+          <Image
+            source={
+              item?.user_details?.profile_photo
+                ? {
+                    uri: item?.user_details?.user_profiles?.profile_photo,
+                  }
+                : user
+            }
+            style={styles.clay}
+          />
+          <Text style={styles.revenueDataText}>
+            {'  '}
+            {item?.user_details?.user_profiles?.firstname}
+          </Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>
+          {(item?.delivery_option == 1 && 'Delivery') ||
+            (item?.delivery_option == 2 && 'Reservation') ||
+            (item?.delivery_option == 3 && 'Pickup') ||
+            (item?.delivery_option == 4 && 'Shipping')}
+        </Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          {/* <Image source={clay} style={styles.clay} /> */}
+          <Text style={styles.revenueDataText}>{item?.delivery_charge}</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <View style={styles.flexAlign}>
+          {/* <Image source={clay} style={styles.clay} /> */}
+          <Text style={styles.revenueDataText}>{item?.tips}</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.actual_amount}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.mode_of_payment}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity
+          style={styles.completeBtnCon2}
+          onPress={() => {
+            setRevenueCompleteSideBar(true),
+              setRevenueTable(false),
+              setTablebackSetting(false),
+              setOrderList(true);
+            dispatch(getOrderData(item?.id));
           }}
         >
           <Text style={styles.completeText}>Completed</Text>
@@ -1822,73 +1997,37 @@ export function Analytics(props) {
                   <Text style={styles.revenueText}>Status</Text>
                 </DataTable.Title>
               </DataTable.Header>
-
-              <View style={{ height: SH(380), zIndex: -99 }}>
-                {/* <ScrollView> */}
-                <DataTable.Row>
-                  <DataTable.Cell style={styles.dateTableSettingFirst}>
-                    <Text style={styles.revenueDataText}>1</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View>
-                      <Text style={styles.revenueDataText}>Jun 21, 2022</Text>
-                      <Text style={styles.revenueDataTextLight}>13: 21</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <Text style={styles.revenueDataText}>2565916565..</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTablealignStart}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>
-                        Michael E. Clay
+              {orderTypeList ? (
+                <View style={styles.listLoader}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : (
+                <View style={{ height: SH(380), alignSelf: 'flex-start' }}>
+                  {/* <ScrollView> */}
+                  {getOrderListData?.length === 0 ? (
+                    <View style={styles.listLoader}>
+                      <Text
+                        style={{
+                          fontSize: SF(20),
+                          color: COLORS.darkGray,
+                        }}
+                      >
+                        {'No data found'}
                       </Text>
                     </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>12</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>Delivery</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
+                  ) : (
+                    <View>
+                      <FlatList
+                        data={getOrderListData}
+                        renderItem={getOrderListRevenue}
+                        keyExtractor={item => item.id}
+                        showsHorizontalScrollIndicator={false}
+                      />
                     </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <View style={styles.flexAlign}>
-                      <Image source={clay} style={styles.clay} />
-                      <Text style={styles.revenueDataText}>$23.50</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>$2,561.00</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <Text style={styles.revenueDataText}>JBR</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={styles.dateTableSetting}>
-                    <TouchableOpacity
-                      style={styles.completeBtnCon2}
-                      onPress={() => {
-                        setRevenueCompleteSideBar(true),
-                          setRevenueTable(false),
-                          setTablebackSetting(false),
-                          setOrderList(true);
-                      }}
-                    >
-                      <Text style={styles.completeText}>Completed</Text>
-                    </TouchableOpacity>
-                  </DataTable.Cell>
-                </DataTable.Row>
-                {/* </ScrollView> */}
-              </View>
+                  )}
+                  {/* </ScrollView> */}
+                </View>
+              )}
             </DataTable>
           </ScrollView>
         </View>
@@ -1934,30 +2073,33 @@ export function Analytics(props) {
     if (item.title == 'Total Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Total Order');
-      const data = { page: 1, limit: 10, type: 'total_order' };
+      const data = { page: 1, limit: 20, type: 'total_order' };
       dispatch(getOrderTypeList(sellerID, data));
       setSelectedId(item.title);
     } else if (item.title == 'Store Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Store Order');
-      const data = { page: 1, limit: 10, type: 'store_order' };
+      const data = { page: 1, limit: 20, type: 'store_order' };
       dispatch(getOrderTypeList(sellerID, data));
       setSelectedId(item.title);
     } else if (item.title == 'Online Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Online Order');
-      const data = { page: 1, limit: 10, type: 'delivery_order' };
+      const data = { page: 1, limit: 20, type: 'delivery_order' };
       dispatch(getOrderTypeList(sellerID, data));
       setSelectedId(item.title);
     } else if (item.title == 'Shipping Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Shipping Order');
-      const data = { page: 1, limit: 10, type: 'shipping_order' };
+      const data = { page: 1, limit: 20, type: 'shipping_order' };
       dispatch(getOrderTypeList(sellerID, data));
       setSelectedId(item.title);
     } else {
-      setRevenueTableHeading('');
       setRevenueTable(true);
+      setRevenueTableHeading('Total Revenue');
+      const data = { page: 1, limit: 20, type: 'total_revenue' };
+      dispatch(getOrderTypeList(sellerID, data));
+      setSelectedId(item.title);
     }
   };
 
@@ -2083,6 +2225,208 @@ export function Analytics(props) {
     </View>
   );
 
+  const renderSellerInfo = ({ item, index }) => (
+    <View style={styles.tableDataCon}>
+      <View style={styles.displayFlex}>
+        <View style={styles.tableHeaderLeft}>
+          <Text style={[styles.usertableRowText, { textAlign: 'center' }]}>
+            {index + 1}
+          </Text>
+          <TouchableOpacity
+            style={styles.tableDataLeft}
+            onPress={() => {
+              setInvoiceModal(true), setInvoiceTrackId(false);
+              dispatch(getSellerProductDetails(item?.supplier_id));
+            }}
+          >
+            <Image source={recordTape} style={styles.allienpic} />
+            <View
+              style={{
+                justifyContent: 'flex-start',
+                paddingHorizontal: moderateScale(4),
+              }}
+            >
+              <Text style={[styles.usertableRowText]}>{item?.supplier}</Text>
+              <Text
+                style={[styles.usertableRowText, { color: COLORS.gerySkies }]}
+              >
+                Florida
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.tablerightSectionBody}>
+          <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
+            {item?.invoice}
+          </Text>
+          <Text style={styles.usertableRowText}>{item?.unit_in}</Text>
+          <Text style={styles.usertableRowText}>
+            {moment(item?.created_at).format('LL')}
+          </Text>
+          <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
+            $200
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderSellerStock = ({ item, index }) => (
+    <View style={styles.tableDataCon}>
+      <View style={styles.displayFlex}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: windowWidth * 0.25,
+          }}
+        >
+          <Text style={styles.usertableRowText}>{index + 1}</Text>
+          <TouchableOpacity
+            style={styles.tableDataLeft}
+            onPress={() => setStockHandProductModel(true)}
+          >
+            <Image
+              source={
+                item?.image
+                  ? {
+                      uri: item?.image,
+                    }
+                  : user
+              }
+              style={styles.allienpic}
+            />
+            <Text
+              style={[
+                styles.usertableRowText,
+                { paddingHorizontal: moderateScale(3) },
+              ]}
+            >
+              {item?.supplier}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.tablerightSectionBody}>
+          <Text style={[styles.usertableRowText]}>125698740</Text>
+          <Text style={[styles.usertableRowText, { marginLeft: -80 }]}>
+            {item?.unit_in}
+          </Text>
+          <Text style={[styles.usertableRowText, { marginLeft: -50 }]}>
+            145
+          </Text>
+          <Text style={styles.usertableRowText}>5</Text>
+          <Text style={styles.usertableRowText}>50</Text>
+          <Text style={styles.usertableRowText}>20</Text>
+          <Text style={[styles.usertableRowText, { marginRight: 40 }]}>
+            $200
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+  const renderSellerProductDetails = ({ item, index }) => (
+    <View style={styles.tableDataCon}>
+      <View style={styles.displayFlex}>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: windowWidth * 0.25,
+          }}
+        >
+          <Text style={styles.usertableRowText}>{index + 1}</Text>
+          <Text
+            style={[
+              styles.usertableRowText,
+              { paddingHorizontal: moderateScale(12), width: SW(60) },
+            ]}
+            numberOfLines={1}
+          >
+            {item?.name}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: windowWidth * 0.45,
+            paddingRight: Platform.OS === 'ios' ? 40 : 0,
+          }}
+        >
+          <Text style={[styles.usertableRowText, { marginLeft: SW(-7) }]}>
+            {item?.sku ? item?.sku : '###'}
+          </Text>
+          <Text style={[styles.usertableRowText, { marginLeft: SW(-7) }]}>
+            {item?.price}
+          </Text>
+          <Text style={styles.usertableRowText}>1</Text>
+          <Text style={[styles.usertableRowText, { marginRight: SW(8) }]}>
+            $250.00
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderSellerProductItem = ({ item, index }) => {
+    const data = { page: 1, limit: 20 };
+    const productID = item?.products?.id;
+    return (
+      <View style={styles.tableDataCon}>
+        <View style={styles.displayFlex}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: windowWidth * 0.25,
+            }}
+          >
+            <Text style={styles.usertableRowText}>{index + 1}</Text>
+            <TouchableOpacity
+              style={styles.tableDataLeft}
+              onPress={() => {
+                setInventoryChangeTable(true);
+                dispatch(getSellerInfo(productID, data));
+              }}
+            >
+              <Image
+                source={
+                  item?.products?.image
+                    ? {
+                        uri: item?.products?.image,
+                      }
+                    : user
+                }
+                style={styles.allienpic}
+              />
+              <Text
+                style={[
+                  styles.usertableRowText,
+                  { marginHorizontal: moderateScale(7), width: SW(50) },
+                ]}
+                numberOfLines={1}
+              >
+                {item?.products?.name}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.tablerightSectionBody}>
+            <Text style={[styles.usertableRowText]}>
+              {item?.products?.barcode ? item?.products?.barcode : '######'}
+            </Text>
+            <Text style={styles.usertableRowText}>
+              {item?.total_quantity ? item?.total_quantity : 20}
+            </Text>
+            <Text style={styles.usertableRowText}>
+              {moment(item?.created_at).format('LL')}
+            </Text>
+            <Text style={[styles.usertableRowText, { marginRight: SW(25) }]}>
+              ${item?.products?.price}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
   const renderOrderItem = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell>
@@ -3196,7 +3540,7 @@ export function Analytics(props) {
     if (inventoryTable === 'Unit In') {
       return (
         <Text style={styles.categoryHeader}>
-          Aromas de San Andrés:<Text> 19</Text>
+          Aromas de San Andrés:<Text> 25</Text>
         </Text>
       );
     } else if (inventoryTable === 'Unit Out') {
@@ -3268,52 +3612,13 @@ export function Analytics(props) {
                 </View>
               </View>
             </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View style={styles.tableHeaderLeft}>
-                  <Text
-                    style={[styles.usertableRowText, { textAlign: 'center' }]}
-                  >
-                    1
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.tableDataLeft}
-                    onPress={() => {
-                      setInvoiceModal(true), setInvoiceTrackId(false);
-                    }}
-                  >
-                    <Image source={recordTape} style={styles.allienpic} />
-                    <View
-                      style={{
-                        justifyContent: 'flex-start',
-                        paddingHorizontal: moderateScale(4),
-                      }}
-                    >
-                      <Text style={[styles.usertableRowText]}>
-                        Record & Tape
-                      </Text>
-                      <Text
-                        style={[
-                          styles.usertableRowText,
-                          { color: COLORS.gerySkies },
-                        ]}
-                      >
-                        Florida
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.tablerightSectionBody}>
-                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                    125698740
-                  </Text>
-                  <Text style={styles.usertableRowText}>20</Text>
-                  <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
-                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
-                    $200
-                  </Text>
-                </View>
-              </View>
+
+            <View style={{ height: SH(500) }}>
+              <FlatList
+                data={sellerInfo}
+                renderItem={renderSellerInfo}
+                keyExtractor={item => item.id}
+              />
             </View>
           </Table>
         </View>
@@ -3502,40 +3807,12 @@ export function Analytics(props) {
                 </View>
               </View>
             </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={styles.tableDataLeft}
-                    onPress={() => setInventoryChangeTable(true)}
-                  >
-                    <Image source={tobaco} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Aromas de San Andrés
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.tablerightSectionBody}>
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={styles.usertableRowText}>20</Text>
-                  <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
-                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
-                    $200
-                  </Text>
-                </View>
-              </View>
+            <View style={{ height: SH(500) }}>
+              <FlatList
+                data={sellerProductList}
+                renderItem={renderSellerProductItem}
+                keyExtractor={item => item.id}
+              />
             </View>
           </Table>
         </View>
@@ -3700,47 +3977,12 @@ export function Analytics(props) {
                 </View>
               </View>
             </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={styles.tableDataLeft}
-                    onPress={() => setStockHandProductModel(true)}
-                  >
-                    <Image source={tobaco} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Aromas de San Andrés
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.tablerightSectionBody}>
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={[styles.usertableRowText, { marginLeft: -80 }]}>
-                    200
-                  </Text>
-                  <Text style={[styles.usertableRowText, { marginLeft: -50 }]}>
-                    145
-                  </Text>
-                  <Text style={styles.usertableRowText}>5</Text>
-                  <Text style={styles.usertableRowText}>50</Text>
-                  <Text style={styles.usertableRowText}>20</Text>
-                  <Text style={[styles.usertableRowText, { marginRight: 40 }]}>
-                    $200
-                  </Text>
-                </View>
-              </View>
+            <View style={{ height: SH(500) }}>
+              <FlatList
+                data={sellerInfo}
+                renderItem={renderSellerStock}
+                keyExtractor={item => item.id}
+              />
             </View>
           </Table>
         </View>
@@ -3789,7 +4031,7 @@ export function Analytics(props) {
         ) : (
           <View style={styles.deliveryView}>
             <Image source={analytics} style={styles.truckStyle} />
-            <Text style={styles.deliveryText}>{strings.analytics.header}</Text>
+            {/* <Text style={styles.deliveryText}>{strings.analytics.header}</Text> */}
           </View>
         )}
         <View style={styles.deliveryView}>
@@ -4048,19 +4290,36 @@ export function Analytics(props) {
                     <Image source={recordTape} style={styles.allienpic} />
                     <View style={{ marginHorizontal: moderateScale(5) }}>
                       <Text style={styles.addressText}>
-                        {strings.analytics.supplierAdd}
+                        {
+                          sellerProductDetails?.user_profiles?.current_address
+                            ?.street_address
+                        }
                       </Text>
                       <Text style={styles.addressText}>
-                        {strings.analytics.supplierNewAdd}
+                        {
+                          sellerProductDetails?.user_profiles?.current_address
+                            ?.city
+                        }
                       </Text>
                       <Text style={styles.addressText}>
-                        {strings.analytics.streetNo}
+                        {
+                          sellerProductDetails?.user_profiles?.current_address
+                            ?.state
+                        }{' '}
+                        {
+                          sellerProductDetails?.user_profiles?.current_address
+                            ?.zipcode
+                        }
                       </Text>
                       <Text style={styles.addressText}>
-                        {strings.analytics.city}
+                        {
+                          sellerProductDetails?.user_profiles?.current_address
+                            ?.country
+                        }
                       </Text>
                       <Text style={styles.addressText}>
-                        {strings.analytics.supplierPhoneNumber}
+                        Phone :{' '}
+                        {sellerProductDetails?.user_profiles?.full_phone_number}{' '}
                       </Text>
                       <Spacer space={SH(60)} />
                       <View>
@@ -4319,42 +4578,12 @@ export function Analytics(props) {
                       </View>
                     </View>
                   </View>
-                  <View style={styles.tableDataCon}>
-                    <View style={styles.displayFlex}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          width: windowWidth * 0.25,
-                        }}
-                      >
-                        <Text style={styles.usertableRowText}>1</Text>
-                        <Text
-                          style={[
-                            styles.usertableRowText,
-                            { paddingHorizontal: moderateScale(12) },
-                          ]}
-                        >
-                          Aromas de San Andrés
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          width: windowWidth * 0.45,
-                          paddingRight: Platform.OS === 'ios' ? 40 : 0,
-                        }}
-                      >
-                        <Text style={[styles.usertableRowText]}>1105</Text>
-                        <Text
-                          style={[styles.usertableRowText, { marginLeft: -20 }]}
-                        >
-                          $250.00
-                        </Text>
-                        <Text style={styles.usertableRowText}>1</Text>
-                        <Text style={styles.usertableRowText}>$250.00</Text>
-                      </View>
-                    </View>
+                  <View style={{ height: SH(100) }}>
+                    <FlatList
+                      data={sellerProductDetails?.products_details?.data}
+                      renderItem={renderSellerProductDetails}
+                      keyExtractor={item => item.id}
+                    />
                   </View>
                 </Table>
                 <Spacer space={SH(25)} />
@@ -4381,7 +4610,7 @@ export function Analytics(props) {
                         {strings.analytics.subtotal}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.analytics.comisionCharge}
+                        $ {sellerProductDetails?.sub_total.toFixed(2)}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -4395,7 +4624,7 @@ export function Analytics(props) {
                           { color: COLORS.roseRed },
                         ]}
                       >
-                        {strings.analytics.discountPrice}
+                        -$ {sellerProductDetails?.discount}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -4404,7 +4633,7 @@ export function Analytics(props) {
                         {strings.analytics.shippingCharge}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.analytics.discountPrice}
+                        $ {sellerProductDetails?.shipping_charge}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -4413,7 +4642,7 @@ export function Analytics(props) {
                         {strings.analytics.commision}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.analytics.comisionCharge}
+                        $ {sellerProductDetails?.commission}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -4431,7 +4660,7 @@ export function Analytics(props) {
                         </View>
                       </View>
                       <Text style={styles.tablesubDarkLabel}>
-                        {strings.wallet.subtotalPrice}
+                        $ {sellerProductDetails?.total.toFixed(2)}
                       </Text>
                     </View>
                     {invoiceTrackId ? (
@@ -5209,11 +5438,18 @@ export function Analytics(props) {
                       <View style={styles.displayFlex}>
                         <View style={styles.flexAlign}>
                           <Image
-                            source={angela2}
+                            source={
+                              OrderDetails?.driver_details?.profile_photo
+                                ? {
+                                    uri: OrderDetails?.driver_details
+                                      ?.profile_photo,
+                                  }
+                                : user
+                            }
                             style={styles.tracking2Angela}
                           />
                           <Text style={styles.gredoName}>
-                            {strings.customers.geredo}
+                            {OrderDetails?.driver_details?.firstname}
                           </Text>
                         </View>
                         <View style={styles.contactButton}>
@@ -5243,19 +5479,57 @@ export function Analytics(props) {
                       provider={PROVIDER_GOOGLE}
                       showCompass
                       region={{
-                        latitude: 30.704649,
-                        longitude: 76.717873,
-                        latitudeDelta: 0.0992,
+                        latitude:
+                          OrderDetails?.seller_details?.seller_location[1],
+                        longitude:
+                          OrderDetails?.seller_details?.seller_location[0],
+                        latitudeDelta: 0.0692,
                         longitudeDelta: 0.0421,
                       }}
                       style={styles.mapStyle}
                     >
-                      <Marker image={toastcross} coordinate={homeCoordinate} />
+                      <Marker
+                        coordinate={{
+                          latitude: OrderDetails?.seller_details
+                            ?.seller_location[1]
+                            ? OrderDetails?.seller_details?.seller_location[1]
+                            : 0,
+                          longitude: OrderDetails?.seller_details
+                            ?.seller_location[0]
+                            ? OrderDetails?.seller_details?.seller_location[0]
+                            : 0,
+                        }}
+                      >
+                        <View>
+                          <Image
+                            source={storeTracker}
+                            style={{ height: SH(50), width: SW(50) }}
+                            resizeMode="contain"
+                          />
+                        </View>
+                      </Marker>
 
                       <Marker
-                        image={toastcross}
-                        coordinate={storeCoordinates}
-                      />
+                        coordinate={{
+                          latitude: OrderDetails?.coordinates?.[1]
+                            ? OrderDetails?.coordinates?.[1]
+                            : 0,
+                          longitude: OrderDetails?.coordinates?.[0]
+                            ? OrderDetails?.coordinates?.[0]
+                            : 0,
+                        }}
+                      >
+                        <View>
+                          <Image
+                            source={locationTracker}
+                            style={{
+                              height: SH(50),
+                              width: SW(50),
+                            }}
+                            resizeMode="contain"
+                          />
+                        </View>
+                      </Marker>
 
                       {/* <MapViewDirections
                         origin={{
@@ -5519,7 +5793,7 @@ export function Analytics(props) {
                         {strings.wallet.serviceCharge}
                       </Text>
                       <Text style={styles.tablesubTotalText}>
-                        {strings.wallet.subtotalPrice}
+                        {OrderDetails?.service_charge?.service_charge}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
@@ -5583,10 +5857,19 @@ export function Analytics(props) {
               <View style={styles.trackingCon}>
                 <View style={styles.displayFlex}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={willis} style={styles.willis} />
-                    <View>
+                    <Image
+                      source={
+                        OrderDetails?.shipping_details?.image
+                          ? {
+                              uri: OrderDetails?.shipping_details?.image,
+                            }
+                          : user
+                      }
+                      style={styles.tracking2Angela}
+                    />
+                    <View style={{ paddingHorizontal: SW(5) }}>
                       <Text style={styles.willisName}>
-                        {strings.wallet.willis}
+                        {OrderDetails?.shipping_details?.title}
                       </Text>
                       <Text style={styles.trackingNumber}>
                         {strings.wallet.trackingNo}
@@ -5792,7 +6075,12 @@ export function Analytics(props) {
                               {OrderData?.user_details?.email}
                             </Text>
                             <Spacer space={SH(8)} />
-                            <Text style={styles.cusAddText}>
+                            <Text
+                              style={[
+                                styles.cusAddText,
+                                { paddingRight: moderateScale(10) },
+                              ]}
+                            >
                               {
                                 OrderData?.user_details?.current_address
                                   ?.street_address
@@ -6328,6 +6616,15 @@ export function Analytics(props) {
         </View>
       ) : null}
       {orderData ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
+      {orderDetailsLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator
             color={COLORS.primary}

@@ -259,4 +259,73 @@ export class AnalyticsController {
         });
     });
   }
+
+  static async getTotalInventoryCost(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.getTotalInventoryCost +
+        `?seller_id=${sellerID}&filter=year`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getSellerProductList(sellerID, data) {
+    return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
+      const endpoint = `${
+        PRODUCT_URL + ApiProductInventory.getSellerProductList
+      }?seller_id=${sellerID}&filter=year&${params}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getSellerInfo(productID, data) {
+    return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
+      const endpoint = `${
+        PRODUCT_URL + ApiProductInventory.getSellerInfo
+      }?product_id=${productID}&${params}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getSellerProductDetails(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint = `${
+        PRODUCT_URL + ApiProductInventory.getSellerProductDetails
+      }?seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }

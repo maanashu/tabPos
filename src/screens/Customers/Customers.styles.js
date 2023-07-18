@@ -804,9 +804,10 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.79,
   },
   map: {
-    width: windowWidth * 0.44,
-    height: windowHeight * 0.79,
-    borderRadius: 20,
+    width: SW(163),
+    height: SH(640),
+    resizeMode: 'cover',
+    borderRadius: 15,
   },
   costoContainer: {
     borderWidth: 1,
@@ -858,7 +859,7 @@ export const styles = StyleSheet.create({
   },
   greyRadioArr: {
     width: SW(7),
-    height: SW(11),
+    height: SH(48),
     resizeMode: 'contain',
     // marginVertical:verticalScale(1)
   },
@@ -901,12 +902,12 @@ export const styles = StyleSheet.create({
   },
   verifyTextLight: {
     color: COLORS.gerySkies,
-    fontSize: SF(8),
+    fontSize: SF(10),
     fontFamily: Fonts.SemiBold,
   },
   verifyTextDark: {
     color: COLORS.solid_grey,
-    fontSize: SF(8),
+    fontSize: SF(10),
     fontFamily: Fonts.SemiBold,
   },
   waitMinuteLight: {

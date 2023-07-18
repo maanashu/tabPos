@@ -173,6 +173,70 @@ const getOrdersError = error => ({
   payload: { error },
 });
 
+const getTotalInventoryCostRequest = () => ({
+  type: TYPES.GET_TOTAL_INVENTORY_COST_REQUEST,
+  payload: null,
+});
+
+const getTotalInventoryCostSuccess = getTotalInventoryCost => ({
+  type: TYPES.GET_TOTAL_INVENTORY_COST_SUCCESS,
+  payload: { getTotalInventoryCost },
+});
+
+const getTotalInventoryCostError = error => ({
+  type: TYPES.GET_TOTAL_INVENTORY_COST_ERROR,
+  payload: { error },
+});
+
+const getSellerProductListRequest = () => ({
+  type: TYPES.GET_SELLER_PRODUCT_LIST_REQUEST,
+  payload: null,
+});
+
+const getSellerProductListSuccess = getSellerProductList => ({
+  type: TYPES.GET_SELLER_PRODUCT_LIST_SUCCESS,
+  payload: { getSellerProductList },
+});
+
+const getSellerProductListError = error => ({
+  type: TYPES.GET_SELLER_PRODUCT_LIST_ERROR,
+  payload: { error },
+});
+const getSellerProductListReset = () => ({
+  type: TYPES.GET_SELLER_PRODUCT_LIST_RESET,
+  payload: null,
+});
+
+const getSellerInfoRequest = () => ({
+  type: TYPES.GET_SELLER_INFO_REQUEST,
+  payload: null,
+});
+
+const getSellerInfoSuccess = getSellerInfo => ({
+  type: TYPES.GET_SELLER_INFO_SUCCESS,
+  payload: { getSellerInfo },
+});
+
+const getSellerInfoError = error => ({
+  type: TYPES.GET_SELLER_INFO_ERROR,
+  payload: { error },
+});
+
+const getSellerProductDetailsRequest = () => ({
+  type: TYPES.GET_SELLER_PRODUCT_DETAILS_REQUEST,
+  payload: null,
+});
+
+const getSellerProductDetailsSuccess = getSellerProductDetails => ({
+  type: TYPES.GET_SELLER_PRODUCT_DETAILS_SUCCESS,
+  payload: { getSellerProductDetails },
+});
+
+const getSellerProductDetailsError = error => ({
+  type: TYPES.GET_SELLER_PRODUCT_DETAILS_ERROR,
+  payload: { error },
+});
+
 export const totalProGraph = sellerID => async dispatch => {
   dispatch(getTotalProGraphRequest());
   try {
@@ -304,5 +368,48 @@ export const getOrders = orderID => async dispatch => {
     return dispatch(getOrdersSuccess(res));
   } catch (error) {
     dispatch(getOrdersError(error.message));
+  }
+};
+
+export const getTotalInventoryCost = sellerID => async dispatch => {
+  dispatch(getTotalInventoryCostRequest());
+  try {
+    const res = await AnalyticsController.getTotalInventoryCost(sellerID);
+    return dispatch(getTotalInventoryCostSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getTotalInventoryCostError(error.message));
+  }
+};
+
+export const getSellerProductList = (sellerID, data) => async dispatch => {
+  dispatch(getSellerProductListRequest());
+  try {
+    const res = await AnalyticsController.getSellerProductList(sellerID, data);
+    dispatch(getSellerProductListSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getSellerProductListReset());
+    }
+    dispatch(getSellerProductListError(error.message));
+  }
+};
+
+export const getSellerInfo = (productID, data) => async dispatch => {
+  dispatch(getSellerInfoRequest());
+  try {
+    const res = await AnalyticsController.getSellerInfo(productID, data);
+    dispatch(getSellerInfoSuccess(res?.payload?.data));
+  } catch (error) {
+    dispatch(getSellerInfoError(error.message));
+  }
+};
+
+export const getSellerProductDetails = sellerID => async dispatch => {
+  dispatch(getSellerProductDetailsRequest());
+  try {
+    const res = await AnalyticsController.getSellerProductDetails(sellerID);
+    dispatch(getSellerProductDetailsSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getSellerProductDetailsError(error.message));
   }
 };

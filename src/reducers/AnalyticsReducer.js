@@ -13,6 +13,10 @@ const INITIALSTATE = {
   getOrderTypeList: [],
   getOrderData: {},
   orderList: {},
+  getTotalInventoryCost: {},
+  getSellerProductList: [],
+  getSellerInfo: [],
+  getSellerProductDetails: {},
 };
 
 export const analyticsReducer = (
@@ -102,6 +106,31 @@ export const analyticsReducer = (
       return {
         ...state,
         orderList: payload?.orderList.payload,
+      };
+    case TYPES.GET_TOTAL_INVENTORY_COST_SUCCESS:
+      return {
+        ...state,
+        getTotalInventoryCost: payload?.getTotalInventoryCost,
+      };
+    case TYPES.GET_SELLER_PRODUCT_LIST_SUCCESS:
+      return {
+        ...state,
+        getSellerProductList: payload?.getSellerProductList,
+      };
+    case TYPES.GET_SELLER_PRODUCT_LIST_RESET:
+      return {
+        ...state,
+        getSellerProductList: [],
+      };
+    case TYPES.GET_SELLER_INFO_SUCCESS:
+      return {
+        ...state,
+        getSellerInfo: payload?.getSellerInfo,
+      };
+    case TYPES.GET_SELLER_PRODUCT_DETAILS_SUCCESS:
+      return {
+        ...state,
+        getSellerProductDetails: payload?.getSellerProductDetails,
       };
     default:
       return state;
