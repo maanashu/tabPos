@@ -17,7 +17,10 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import { DaySelector, Spacer } from '@/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-import { getTotalProDetail } from '@/actions/AnalyticsAction';
+import {
+  getTotalInventoryCost,
+  getTotalProDetail,
+} from '@/actions/AnalyticsAction';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -31,8 +34,13 @@ export function TotalProductSub({
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [productSelectId, setProductSelectId] = useState(2);
+  const [inventorySelectId, setInventorySelectId] = useState(2);
   const [selectProTime, setSelectProTime] = useState({ value: 'week' });
+  const [selectInventoryTime, setSelectInventoryTime] = useState({
+    value: 'week',
+  });
   const productTime = selectProTime?.value;
+  const inventoryTime = selectInventoryTime?.value;
   const getAnalyticsData = useSelector(getAnalytics);
   const data = {
     totalProduct: getAnalyticsData?.getTotalProDetail?.total_products ?? '0',
@@ -59,6 +67,13 @@ export function TotalProductSub({
       // saving error
     }
   };
+  const storeDataInventory = async value => {
+    try {
+      await AsyncStorage.setItem('abc', value);
+    } catch (e) {
+      // saving error
+    }
+  };
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem('abc');
@@ -74,6 +89,10 @@ export function TotalProductSub({
     dispatch(getTotalProDetail(sellerID, value));
     storeData(value);
   };
+  const inventoryOnPress = value => {
+    dispatch(getTotalInventoryCost(sellerID, value));
+    storeDataInventory(value);
+  };
   const productDetLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_TOTALPRO_DETAIL], state)
   );
@@ -81,21 +100,30 @@ export function TotalProductSub({
   useEffect(() => {
     if (isFocused) {
       dispatch(getTotalProDetail(sellerID, productTime));
+      dispatch(getTotalInventoryCost(sellerID, inventoryTime));
       getData();
     }
   }, [isFocused]);
 
-  const catSubBrandLoad = useSelector(state =>
-    isLoadingSelector([TYPES.GET_REVENUE_GRAPH], state)
+  const inventoryCostLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_TOTAL_INVENTORY_COST], state)
   );
 
   const categoryInventoryItem = ({ item }) => (
     <TouchableOpacity
       style={styles.categoryCon}
-      onPress={() => inverntoryUnitViseHandler(item)}
+      onPress={() => inverntoryUnitViseHandler(item, inventoryTime)}
     >
       <View style={styles.categoryChildCon}>
-        <Text style={styles.categoryCount}>{item.count}</Text>
+        {inventoryCostLoad ? (
+          <ActivityIndicator
+            size="small"
+            style={{ alignItems: 'flex-start' }}
+            color={COLORS.black}
+          />
+        ) : (
+          <Text style={styles.categoryCount}>{item.count}</Text>
+        )}
         <Text numberOfLines={1} style={styles.categoryText}>
           {item.title}
         </Text>
@@ -296,9 +324,12 @@ export function TotalProductSub({
           <Spacer space={SH(10)} />
           <View style={styles.displayFlex}>
             <View>
-              {/* <DaySelector
-              setSelectTime={setSelectTime}
-              /> */}
+              <DaySelector
+                onPresFun={inventoryOnPress}
+                setSelectTime={setSelectInventoryTime}
+                selectId={inventorySelectId}
+                setSelectId={setInventorySelectId}
+              />
             </View>
             <Text style={styles.trancationHeading}>
               {strings.analytics.totalInvetry}

@@ -2069,36 +2069,36 @@ export function Analytics(props) {
     </TouchableOpacity>
   );
 
-  const orderListTabChange = item => {
+  const orderListTabChange = (item, orderTime) => {
     if (item.title == 'Total Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Total Order');
       const data = { page: 1, limit: 20, type: 'total_order' };
-      dispatch(getOrderTypeList(sellerID, data));
+      dispatch(getOrderTypeList(sellerID, data, orderTime));
       setSelectedId(item.title);
     } else if (item.title == 'Store Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Store Order');
       const data = { page: 1, limit: 20, type: 'store_order' };
-      dispatch(getOrderTypeList(sellerID, data));
+      dispatch(getOrderTypeList(sellerID, data, orderTime));
       setSelectedId(item.title);
     } else if (item.title == 'Online Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Online Order');
       const data = { page: 1, limit: 20, type: 'delivery_order' };
-      dispatch(getOrderTypeList(sellerID, data));
+      dispatch(getOrderTypeList(sellerID, data, orderTime));
       setSelectedId(item.title);
     } else if (item.title == 'Shipping Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Shipping Order');
       const data = { page: 1, limit: 20, type: 'shipping_order' };
-      dispatch(getOrderTypeList(sellerID, data));
+      dispatch(getOrderTypeList(sellerID, data, orderTime));
       setSelectedId(item.title);
     } else {
       setRevenueTable(true);
       setRevenueTableHeading('Total Revenue');
       const data = { page: 1, limit: 20, type: 'total_revenue' };
-      dispatch(getOrderTypeList(sellerID, data));
+      dispatch(getOrderTypeList(sellerID, data, orderTime));
       setSelectedId(item.title);
     }
   };
@@ -6279,6 +6279,7 @@ export function Analytics(props) {
         <TotalRevenueSub
           totalOrderViseHandler={totalOrderViseHandler}
           totalRevenueHandler={totalRevenueHandler}
+          sellerID={sellerID}
         />
       );
     } else if (inventoryProductTable) {

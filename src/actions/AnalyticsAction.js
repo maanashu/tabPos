@@ -328,28 +328,36 @@ export const getProductModal = productId => async dispatch => {
   }
 };
 
-export const getOrderstatistics = sellerID => async dispatch => {
+export const getOrderstatistics = (sellerID, orderTime) => async dispatch => {
   dispatch(getOrderstatisticsRequest());
   try {
-    const res = await AnalyticsController.getOrderstatistics(sellerID);
+    const res = await AnalyticsController.getOrderstatistics(
+      sellerID,
+      orderTime
+    );
     return dispatch(getOrderstatisticsSuccess(res?.payload));
   } catch (error) {
     dispatch(getOrderstatisticsError(error.message));
   }
 };
 
-export const getOrderTypeList = (sellerID, data) => async dispatch => {
-  dispatch(getOrderTypeListRequest());
-  try {
-    const res = await AnalyticsController.getOrderTypeList(sellerID, data);
-    return dispatch(getOrderTypeListSuccess(res?.payload?.data));
-  } catch (error) {
-    if (error?.statusCode === 204) {
-      dispatch(getOrderTypeListReset());
+export const getOrderTypeList =
+  (sellerID, data, orderTime) => async dispatch => {
+    dispatch(getOrderTypeListRequest());
+    try {
+      const res = await AnalyticsController.getOrderTypeList(
+        sellerID,
+        data,
+        orderTime
+      );
+      return dispatch(getOrderTypeListSuccess(res?.payload?.data));
+    } catch (error) {
+      if (error?.statusCode === 204) {
+        dispatch(getOrderTypeListReset());
+      }
+      dispatch(getOrderTypeListError(error?.message));
     }
-    dispatch(getOrderTypeListError(error?.message));
-  }
-};
+  };
 
 export const getOrderData = orderID => async dispatch => {
   dispatch(getOrderDataRequest());
@@ -371,15 +379,19 @@ export const getOrders = orderID => async dispatch => {
   }
 };
 
-export const getTotalInventoryCost = sellerID => async dispatch => {
-  dispatch(getTotalInventoryCostRequest());
-  try {
-    const res = await AnalyticsController.getTotalInventoryCost(sellerID);
-    return dispatch(getTotalInventoryCostSuccess(res?.payload));
-  } catch (error) {
-    dispatch(getTotalInventoryCostError(error.message));
-  }
-};
+export const getTotalInventoryCost =
+  (sellerID, inventoryTime) => async dispatch => {
+    dispatch(getTotalInventoryCostRequest());
+    try {
+      const res = await AnalyticsController.getTotalInventoryCost(
+        sellerID,
+        inventoryTime
+      );
+      return dispatch(getTotalInventoryCostSuccess(res?.payload));
+    } catch (error) {
+      dispatch(getTotalInventoryCostError(error.message));
+    }
+  };
 
 export const getSellerProductList = (sellerID, data) => async dispatch => {
   dispatch(getSellerProductListRequest());

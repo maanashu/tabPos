@@ -178,12 +178,12 @@ export class AnalyticsController {
     });
   }
 
-  static async getOrderstatistics(sellerID) {
+  static async getOrderstatistics(sellerID, orderTime) {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderstatistics +
-        `?seller_id=${sellerID}&filter=week`;
+        `?seller_id=${sellerID}&filter=${orderTime}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -200,19 +200,20 @@ export class AnalyticsController {
     });
   }
 
-  static async getOrderTypeList(sellerID, data) {
+  static async getOrderTypeList(sellerID, data, orderTime) {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderTypeList +
-        `?seller_id=${sellerID}&filter=week&` +
+        `?seller_id=${sellerID}&filter=${orderTime}&` +
         params;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
         })
         .catch(error => {
+          console.log('error', JSON.stringify(error));
           if (error?.statusCode !== 204) {
             Toast.show({
               text2: error?.msg,
@@ -260,12 +261,12 @@ export class AnalyticsController {
     });
   }
 
-  static async getTotalInventoryCost(sellerID) {
+  static async getTotalInventoryCost(sellerID, inventoryTime) {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getTotalInventoryCost +
-        `?seller_id=${sellerID}&filter=year`;
+        `?seller_id=${sellerID}&filter=${inventoryTime}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
