@@ -140,7 +140,7 @@ export function Analytics(props) {
   const sellerInfo = getAnalyticsData?.getSellerInfo;
   const sellerProductList = getAnalyticsData?.getSellerProductList;
   const sellerProductDetails = getAnalyticsData?.getSellerProductDetails;
-  console.log('sellerProductDetails', JSON.stringify(sellerProductDetails));
+  // console.log('sellerProductDetails', JSON.stringify(sellerProductDetails));
   const OrderData = getAnalyticsData?.getOrderData;
   const OrderDetails = getAnalyticsData?.orderList;
   const [value, setValue] = useState('Weekly');
@@ -272,7 +272,9 @@ export function Analytics(props) {
   const orderData = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_DATA], state)
   );
-
+  const orderDetailsLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER], state)
+  );
   const tobacoTableHandler = catId => {
     setDetailtable(true);
     dispatch(getProductList(catId));
@@ -666,6 +668,7 @@ export function Analytics(props) {
               setRevenueTable(false),
               setTablebackSetting(false),
               setOrderList(true);
+            dispatch(getOrderData(item?.id));
           }}
         >
           <Text style={styles.completeText}>Completed</Text>
@@ -751,6 +754,8 @@ export function Analytics(props) {
             setRevenueTable(false),
               setRevenueOrderBuyer(true),
               setTablebackSetting(true);
+            setOrderList(true);
+            dispatch(getOrderData(item?.id));
           }}
         >
           <Text style={styles.completeText}>Completed</Text>
@@ -834,6 +839,8 @@ export function Analytics(props) {
             setRevenueTable(false),
               setRevenueOrderBuyer(true),
               setTablebackSetting(true);
+            setOrderList(true);
+            dispatch(getOrderData(item?.id));
           }}
         >
           <Text style={styles.completeText}>Completed</Text>
@@ -918,6 +925,7 @@ export function Analytics(props) {
               setRevenueTable(false),
               setTablebackSetting(false),
               setOrderList(true);
+            dispatch(getOrderData(item?.id));
           }}
         >
           <Text style={styles.completeText}>Completed</Text>
@@ -2262,6 +2270,60 @@ export function Analytics(props) {
       </View>
     </View>
   );
+
+  const renderSellerStock = ({ item, index }) => (
+    <View style={styles.tableDataCon}>
+      <View style={styles.displayFlex}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: windowWidth * 0.25,
+          }}
+        >
+          <Text style={styles.usertableRowText}>{index + 1}</Text>
+          <TouchableOpacity
+            style={styles.tableDataLeft}
+            onPress={() => setStockHandProductModel(true)}
+          >
+            <Image
+              source={
+                item?.image
+                  ? {
+                      uri: item?.image,
+                    }
+                  : user
+              }
+              style={styles.allienpic}
+            />
+            <Text
+              style={[
+                styles.usertableRowText,
+                { paddingHorizontal: moderateScale(3) },
+              ]}
+            >
+              {item?.supplier}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.tablerightSectionBody}>
+          <Text style={[styles.usertableRowText]}>125698740</Text>
+          <Text style={[styles.usertableRowText, { marginLeft: -80 }]}>
+            {item?.unit_in}
+          </Text>
+          <Text style={[styles.usertableRowText, { marginLeft: -50 }]}>
+            145
+          </Text>
+          <Text style={styles.usertableRowText}>5</Text>
+          <Text style={styles.usertableRowText}>50</Text>
+          <Text style={styles.usertableRowText}>20</Text>
+          <Text style={[styles.usertableRowText, { marginRight: 40 }]}>
+            $200
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
   const renderSellerProductDetails = ({ item, index }) => (
     <View style={styles.tableDataCon}>
       <View style={styles.displayFlex}>
@@ -2352,7 +2414,7 @@ export function Analytics(props) {
               {item?.products?.barcode ? item?.products?.barcode : '######'}
             </Text>
             <Text style={styles.usertableRowText}>
-              {item?.products?.unit_in ? item?.products?.unit_in : 20}
+              {item?.total_quantity ? item?.total_quantity : 20}
             </Text>
             <Text style={styles.usertableRowText}>
               {moment(item?.created_at).format('LL')}
@@ -3915,47 +3977,12 @@ export function Analytics(props) {
                 </View>
               </View>
             </View>
-            <View style={styles.tableDataCon}>
-              <View style={styles.displayFlex}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: windowWidth * 0.25,
-                  }}
-                >
-                  <Text style={styles.usertableRowText}>1</Text>
-                  <TouchableOpacity
-                    style={styles.tableDataLeft}
-                    onPress={() => setStockHandProductModel(true)}
-                  >
-                    <Image source={tobaco} style={styles.allienpic} />
-                    <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
-                    >
-                      Aromas de San Andrés
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.tablerightSectionBody}>
-                  <Text style={[styles.usertableRowText]}>125698740</Text>
-                  <Text style={[styles.usertableRowText, { marginLeft: -80 }]}>
-                    200
-                  </Text>
-                  <Text style={[styles.usertableRowText, { marginLeft: -50 }]}>
-                    145
-                  </Text>
-                  <Text style={styles.usertableRowText}>5</Text>
-                  <Text style={styles.usertableRowText}>50</Text>
-                  <Text style={styles.usertableRowText}>20</Text>
-                  <Text style={[styles.usertableRowText, { marginRight: 40 }]}>
-                    $200
-                  </Text>
-                </View>
-              </View>
+            <View style={{ height: SH(500) }}>
+              <FlatList
+                data={sellerInfo}
+                renderItem={renderSellerStock}
+                keyExtractor={item => item.id}
+              />
             </View>
           </Table>
         </View>
@@ -6589,6 +6616,15 @@ export function Analytics(props) {
         </View>
       ) : null}
       {orderData ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator
+            color={COLORS.primary}
+            size="large"
+            style={styles.loader}
+          />
+        </View>
+      ) : null}
+      {orderDetailsLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator
             color={COLORS.primary}
