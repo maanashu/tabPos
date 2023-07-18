@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import {
   bell,
-  notifications,
   search_light,
   roundCalender,
   calendarIcon,
@@ -56,7 +56,7 @@ export function Calender(props) {
   const [showRequestsView, setshowRequestsView] = useState(false);
   const [isCalendarSettingModalVisible, setisCalendarSettingModalVisible] =
     useState(false);
-
+  const [showEmployeeHeader, setshowEmployeeHeader] = useState(false);
   const [showEventDetailModal, setshowEventDetailModal] = useState(false);
   const [eventData, setEventData] = useState({});
 
@@ -170,6 +170,7 @@ export function Calender(props) {
       />
     );
   };
+
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -197,6 +198,31 @@ export function Calender(props) {
           </View>
         </View>
       </View>
+    );
+  };
+
+  const employeeHeader = () => {
+    return (
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.headerScrollContainer}
+        horizontal
+      >
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
+          <View style={styles.headerEmployeeCard} key={index}>
+            <Image
+              source={{
+                uri: `https://xsgames.co/randomusers/avatar.php?g=male`,
+              }}
+              style={styles.headerEmployeeImage}
+            />
+            <View style={{ marginLeft: ms(5) }}>
+              <Text style={styles.headerEmployeeName}>Fazal Haq</Text>
+              <Text style={styles.headerEmployeeDesignation}>Hair Dresser</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
     );
   };
 
@@ -228,6 +254,12 @@ export function Calender(props) {
                 mode={calendarMode}
                 events={extractedAppointment}
                 height={windowHeight * 0.91}
+                {...(showEmployeeHeader
+                  ? {
+                      renderHeader: () => employeeHeader(),
+                      // renderHeaderForMonthView: () => employeeHeader(),
+                    }
+                  : {})}
                 headerContainerStyle={{
                   height:
                     calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
@@ -253,7 +285,14 @@ export function Calender(props) {
                   setshowRequestsView(!showRequestsView);
                 }
               }}
-              style={styles.requestCalendarContainer}
+              style={[
+                styles.requestCalendarContainer,
+                {
+                  backgroundColor: showRequestsView
+                    ? COLORS.white
+                    : COLORS.textInputBackground,
+                },
+              ]}
             >
               <View>
                 <Image
@@ -268,8 +307,20 @@ export function Calender(props) {
               </View>
             </TouchableOpacity>
 
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity style={styles.alignmentCalendarContainer}>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setshowEmployeeHeader(!showEmployeeHeader);
+                }}
+                style={[
+                  styles.alignmentCalendarContainer,
+                  {
+                    backgroundColor: showEmployeeHeader
+                      ? COLORS.white
+                      : COLORS.textInputBackground,
+                  },
+                ]}
+              >
                 <Image
                   source={todayCalendarIcon}
                   style={styles.asignessCalendarImage}

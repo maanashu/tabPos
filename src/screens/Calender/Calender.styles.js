@@ -378,7 +378,6 @@ export const styles = StyleSheet.create({
   },
   requestCalendarIcon: { height: ms(20), width: ms(20), resizeMode: 'contain' },
   requestCalendarContainer: {
-    backgroundColor: COLORS.white,
     height: ms(35),
     width: '80%',
     marginTop: ms(5),
@@ -435,15 +434,23 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    right: -8,
-    bottom: -6,
+    right: ms(5),
+    bottom: ms(5),
   },
   asignessCalendarImage: {
     height: ms(14),
     width: ms(14),
     resizeMode: 'contain',
+    alignSelf: 'center',
   },
-  alignmentCalendarContainer: { alignSelf: 'center', marginVertical: ms(10) },
+  alignmentCalendarContainer: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginVertical: ms(10),
+    borderRadius: ms(3),
+    height: ms(35),
+    width: ms(35),
+  },
   calendarIconSettings: {
     height: ms(20),
     width: ms(20),
@@ -665,4 +672,32 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   eventProfilePic: { height: ms(12), width: ms(12), resizeMode: 'cover' },
+  headerEmployeeDesignation: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(6),
+    color: COLORS.black,
+  },
+  headerEmployeeName: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(7),
+    color: COLORS.black,
+  },
+  headerEmployeeImage: {
+    height: ms(18),
+    width: ms(18),
+    borderRadius: ms(9),
+    borderWidth: 1,
+    borderColor: 'teal',
+  },
+  headerEmployeeCard: {
+    padding: ms(5),
+    marginLeft: ms(5),
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  headerScrollContainer: {
+    backgroundColor: COLORS.textInputBackground,
+    flexGrow: 1,
+    paddingLeft: ms(25),
+  },
 });
