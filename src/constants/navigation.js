@@ -24,4 +24,5 @@ export const NAVIGATION = {
   posRetail: 'PosRetail',
   CartAmountTips: 'CartAmountTips',
   notificationsList: 'NotificationsList',
+  posRetail2: 'PosRetail2',
 };

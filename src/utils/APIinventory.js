@@ -52,6 +52,7 @@ export const ApiProductInventory = {
   getProductList: 'products/pos/product-list',
   getProductModal: 'products/pos/',
   checkSuppliedVariant: 'supply_variants/by-attribute-value-ids',
+  product: 'products',
 };
 
 // export const ApiSupportInventory = {

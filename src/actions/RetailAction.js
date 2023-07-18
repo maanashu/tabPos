@@ -451,6 +451,26 @@ const scanProductAddError = error => ({
   payload: { error },
 });
 
+const getMainProductRequest = () => ({
+  type: TYPES.GET_MAIN_PRODUCT_REQUEST,
+  payload: null,
+});
+
+const getMainProductSuccess = getMainProduct => ({
+  type: TYPES.GET_MAIN_PRODUCT_SUCCESS,
+  payload: getMainProduct,
+});
+
+const getMainProductReset = () => ({
+  type: TYPES.GET_MAIN_PRODUCT_RESET,
+  payload: null,
+});
+
+const getMainProductError = error => ({
+  type: TYPES.GET_MAIN_PRODUCT_ERROR,
+  payload: { error },
+});
+
 export const getCategory = sellerID => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -763,4 +783,17 @@ export const clearCheck = () => async dispatch => {
 
 export const retailclearstore = () => async dispatch => {
   dispatch(clearRetailStore());
+};
+
+export const getMainProduct = sellerID => async dispatch => {
+  dispatch(getMainProductRequest());
+  try {
+    const res = await RetailController.getMainProduct(sellerID);
+    dispatch(getMainProductSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getMainProductReset());
+    }
+    dispatch(getMainProductError(error.message));
+  }
 };

@@ -56,10 +56,7 @@ export function Staff() {
   const [Index, setIndex] = useState();
   const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
   const posUserId = store.getState().user?.posLoginData?.id;
-  console.log(
-    'store.getState().user?.posLoginData',
-    store.getState().user?.posLoginData
-  );
+
   useEffect(() => {
     if (isFocused) {
       dispatch(getAllPosUsers());
@@ -101,7 +98,7 @@ export function Staff() {
       style={styles.twoStepMemberCon}
       // onPress={() => setStaffDetail(true)}
       onPress={() => {
-        staffDetailhandler(item.id);
+        staffDetailhandler(item?.user?.id);
         setData(item);
       }}
     >

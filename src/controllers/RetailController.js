@@ -649,4 +649,26 @@ export class RetailController {
         });
     });
   }
+
+  static async getMainProduct(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.product +
+        `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
 }

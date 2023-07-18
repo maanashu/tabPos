@@ -271,6 +271,12 @@ export { default as bankLogo } from '@/assets/icons/ic_wallet/bankLogo.png';
 export { default as radioUnSelect } from '@/assets/images/radioUnselect.png';
 export { default as chatIcon } from '@/assets/images/Chat_light.png';
 
+// new Pos module image
+export { default as bucket } from '@/assets/icons/ic_posRetail/bucket.png';
+export { default as holdCart } from '@/assets/icons/ic_posRetail/holdCart.png';
+export { default as sideArrow } from '@/assets/icons/ic_posRetail/sideArrow.png';
+export { default as sideEarser } from '@/assets/icons/ic_posRetail/sideEarser.png';
+export { default as sideKeyboard } from '@/assets/icons/ic_posRetail/sideKeyboard.png';
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',
