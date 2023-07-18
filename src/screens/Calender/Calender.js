@@ -203,26 +203,33 @@ export function Calender(props) {
 
   const employeeHeader = () => {
     return (
-      <ScrollView
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.headerScrollContainer}
-        horizontal
-      >
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
-          <View style={styles.headerEmployeeCard} key={index}>
-            <Image
-              source={{
-                uri: `https://xsgames.co/randomusers/avatar.php?g=male`,
-              }}
-              style={styles.headerEmployeeImage}
-            />
-            <View style={{ marginLeft: ms(5) }}>
-              <Text style={styles.headerEmployeeName}>Fazal Haq</Text>
-              <Text style={styles.headerEmployeeDesignation}>Hair Dresser</Text>
+      <View>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={[
+            styles.headerScrollContainer,
+            { paddingLeft: calendarMode === CALENDAR_MODES.MONTH ? 0 : ms(25) },
+          ]}
+          horizontal
+        >
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
+            <View style={styles.headerEmployeeCard} key={index}>
+              <Image
+                source={{
+                  uri: `https://xsgames.co/randomusers/avatar.php?g=male`,
+                }}
+                style={styles.headerEmployeeImage}
+              />
+              <View style={{ marginLeft: ms(5) }}>
+                <Text style={styles.headerEmployeeName}>Fazal Haq</Text>
+                <Text style={styles.headerEmployeeDesignation}>
+                  Hair Dresser
+                </Text>
+              </View>
             </View>
-          </View>
-        ))}
-      </ScrollView>
+          ))}
+        </ScrollView>
+      </View>
     );
   };
 
@@ -257,7 +264,7 @@ export function Calender(props) {
                 {...(showEmployeeHeader
                   ? {
                       renderHeader: () => employeeHeader(),
-                      // renderHeaderForMonthView: () => employeeHeader(),
+                      renderHeaderForMonthView: () => employeeHeader(),
                     }
                   : {})}
                 headerContainerStyle={{
