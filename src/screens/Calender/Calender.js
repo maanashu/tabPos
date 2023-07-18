@@ -257,7 +257,7 @@ export function Calender(props) {
                 {...(showEmployeeHeader
                   ? {
                       renderHeader: () => employeeHeader(),
-                      renderHeaderForMonthView: () => employeeHeader(),
+                      // renderHeaderForMonthView: () => employeeHeader(),
                     }
                   : {})}
                 headerContainerStyle={{
