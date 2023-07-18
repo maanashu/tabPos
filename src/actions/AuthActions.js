@@ -31,7 +31,7 @@ const merchantLoginError = error => ({
   type: TYPES.MERCHANT_LOGIN_ERROR,
   payload: { error },
 });
-const merchantLoginSuccess = merchantLoginData => ({
+export const merchantLoginSuccess = merchantLoginData => ({
   type: TYPES.MERCHANT_LOGIN_SUCCESS,
   payload: { merchantLoginData },
 });
