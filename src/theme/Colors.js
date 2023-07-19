@@ -40,4 +40,5 @@ export const COLORS = {
   dayHighlight: 'rgb(66, 133, 244)',
   yellowTweet: '#FCBA30',
   transparent: 'transparent',
+  pink: '#FB466C',
 };

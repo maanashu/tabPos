@@ -1,3 +1,21 @@
+import {
+  Cart,
+  Delivery,
+  deliveryTruck,
+  dhl,
+  drawerdeliveryTruck,
+  fedex,
+  fedexNew,
+  fedx,
+  Group,
+  NoCard,
+  ReturnTruck,
+  task,
+  timer,
+  ups,
+  usps,
+} from '@/assets';
+
 export const orderStatus = [
   {
     key: '1',
@@ -306,4 +324,74 @@ export const transactionDataList = [
   { label: 'Shipping charge', value: 'shipping_charge' },
   { label: 'Sales', value: 'sales' },
   { label: 'Refund', value: 'refund' },
+];
+
+export const shippingTypes = [
+  {
+    key: '1',
+    title: 'USPS',
+    image: usps,
+    total: '17',
+  },
+  {
+    key: '2',
+    title: 'UPS',
+    image: fedex,
+    total: '17',
+  },
+  {
+    key: '3',
+    title: 'FedEX',
+    image: fedexNew,
+    total: '17',
+  },
+  {
+    key: '4',
+    title: 'DHL',
+    image: dhl,
+    total: '17',
+  },
+];
+
+export const rightSideDrawer = [
+  {
+    key: '1',
+    image: task,
+  },
+  {
+    key: '2',
+    image: drawerdeliveryTruck,
+  },
+  {
+    key: '3',
+    image: timer,
+  },
+  {
+    key: '4',
+    image: Group,
+  },
+  {
+    key: '5',
+    image: Delivery,
+  },
+  {
+    key: '6',
+    image: Cart,
+  },
+  {
+    key: '7',
+    image: NoCard,
+  },
+  {
+    key: '8',
+    image: ReturnTruck,
+  },
+];
+
+export const orderToReview = [
+  {
+    key: '1',
+    name: 'Rebecca R. Russell',
+    totalItems: '3 items',
+  },
 ];

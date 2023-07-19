@@ -314,6 +314,25 @@ export function DrawerNavigator(props) {
         )}
       />
 
+      <DrawerItem
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
+        focused={active === 'shippingOrder2' ? true : false}
+        onPress={() => {
+          setActive('shippingOrder2');
+          navigate(NAVIGATION.shippingOrder2);
+          // dispatch(addSellingSelection());
+          // dispatch(cartScreenTrue({ state: false }));
+          // dispatch(getUserDetailSuccess([]));
+        }}
+        icon={({ focused, color, size }) => (
+          <Image
+            source={focused ? bluepara : parachuteBox}
+            style={styles.iconStyle}
+          />
+        )}
+      />
+
       {getUserData?.posLoginData?.id !=
       getAuth?.merchantLoginData?.id ? null : (
         <View style={styles.endSessionViewStyle}>
