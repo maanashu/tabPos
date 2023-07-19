@@ -392,6 +392,7 @@ export function MainScreen({
               scrollEnabled={true}
             />
           </View>
+
           <View style={styles.rightSideView}>
             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
               <View style={styles.bucketBackgorund}>

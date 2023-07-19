@@ -25,4 +25,5 @@ export const NAVIGATION = {
   CartAmountTips: 'CartAmountTips',
   notificationsList: 'NotificationsList',
   posRetail2: 'PosRetail2',
+  analytics2: 'Analytics2',
 };

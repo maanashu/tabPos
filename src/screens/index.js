@@ -24,3 +24,4 @@ export { DashBoard } from '@/screens/DashBoard/DashBoard';
 export { Products } from '@/screens/Products/Products';
 export { PosRetail } from '@/screens/PosRetail/PosRetail';
 export { PosRetail2 } from '@/screens/PosRetail2/PosRetail2';
+export { Analytics2 } from '@/screens/Analytics2/Analytics2';

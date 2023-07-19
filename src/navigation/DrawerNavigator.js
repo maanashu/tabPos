@@ -314,6 +314,23 @@ export function DrawerNavigator(props) {
         )}
       />
 
+      <DrawerItem
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
+        focused={active === 'analytics2' ? true : false}
+        onPress={() => {
+          setActive('analytics2');
+          navigate(NAVIGATION.analytics2);
+          dispatch(addSellingSelection());
+        }}
+        icon={({ focused, color, size }) => (
+          <Image
+            source={focused ? blueanalytics : analytics}
+            style={styles.iconStyle}
+          />
+        )}
+      />
+
       {getUserData?.posLoginData?.id !=
       getAuth?.merchantLoginData?.id ? null : (
         <View style={styles.endSessionViewStyle}>
