@@ -32,6 +32,7 @@ export { default as power } from '@/assets/icons/ic_navigator/power.png';
 export { default as menu } from '@/assets/icons/ic_retail/menu.png';
 export { default as search_light } from '@/assets/icons/ic_retail/Search_light.png';
 export { default as scn } from '@/assets/icons/ic_retail/scn.png';
+export { default as scanSearch } from '@/assets/icons/ic_retail/scanSearch.png';
 export { default as purchese } from '@/assets/icons/ic_retail/purchese.png';
 export { default as arrow_right } from '@/assets/icons/ic_retail/arrow_right.png';
 export { default as categoryProduct } from '@/assets/icons/ic_retail/categoryProduct.png';
@@ -272,6 +273,12 @@ export { default as chatIcon } from '@/assets/images/Chat_light.png';
 export { default as locationTracker } from '@/assets/icons/ic_deliveryOrder/locationTracker.png';
 export { default as storeTracker } from '@/assets/icons/ic_deliveryOrder/storeTracker.png';
 
+// new Pos module image
+export { default as bucket } from '@/assets/icons/ic_posRetail/bucket.png';
+export { default as holdCart } from '@/assets/icons/ic_posRetail/holdCart.png';
+export { default as sideArrow } from '@/assets/icons/ic_posRetail/sideArrow.png';
+export { default as sideEarser } from '@/assets/icons/ic_posRetail/sideEarser.png';
+export { default as sideKeyboard } from '@/assets/icons/ic_posRetail/sideKeyboard.png';
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',

@@ -56,6 +56,7 @@ export function Staff() {
   const [Index, setIndex] = useState();
   const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
   const posUserId = store.getState().user?.posLoginData?.id;
+
   useEffect(() => {
     if (isFocused) {
       dispatch(getAllPosUsers());
@@ -63,7 +64,7 @@ export function Staff() {
   }, [isFocused]);
 
   const staffDetailhandler = async id => {
-    if (posRole === null) {
+    if (posRole === 'admin') {
       const res = await dispatch(getStaffDetail());
       if (res?.type === 'STAFF_DETAIL_SUCCESS') {
         setStaffDetail(true);
@@ -97,22 +98,24 @@ export function Staff() {
       style={styles.twoStepMemberCon}
       // onPress={() => setStaffDetail(true)}
       onPress={() => {
-        staffDetailhandler(item.id);
+        staffDetailhandler(item?.user?.id);
         setData(item);
       }}
     >
       <View style={styles.flexRow}>
         <View style={styles.dispalyRow}>
           <Image
-            source={{ uri: item.user_profiles?.profile_photo ?? userImage }}
+            source={{
+              uri: item.user?.user_profiles?.profile_photo ?? userImage,
+            }}
             style={styles.teamMember}
           />
           <View style={styles.marginLeft}>
             <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-              {item.user_profiles?.firstname}
+              {item.user?.user_profiles?.firstname}
             </Text>
             <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
-              {item.user_profiles?.pos_role ?? 'Merchant'}
+              {item?.pos_role ?? 'Merchant'}
             </Text>
           </View>
         </View>
@@ -435,7 +438,7 @@ export function Staff() {
               {strings.settings.device}
             </Text>
             <View style={{ zIndex: 99 }}>
-              {posRole === null ? (
+              {posRole === 'admin' ? (
                 <TouchableOpacity
                   style={styles.addNewButtonCon}
                   activeOpacity={0.3}

@@ -31,17 +31,18 @@ export class RetailController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   }
 
-  static async getSubCategory(sellerID, selectedId) {
+  static async getSubCategory(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getSubCategory +
-        `?category_id=${selectedId}&seller_id=${sellerID}&main_category=false`;
+        `?seller_id=${sellerID}&main_category=false&need_subcategory=true`;
+
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -58,12 +59,10 @@ export class RetailController {
     });
   }
 
-  static async getBrand(sellerID, selectedId) {
+  static async getBrand(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.getBrand +
-        `?page=1&limit=10&seller_id=${sellerID}&category_id=${selectedId}`;
+        PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -628,6 +627,48 @@ export class RetailController {
   static async logout() {
     return new Promise(resolve => {
       setTimeout(resolve, 500);
+    });
+  }
+
+  static async scanProductAdd(data) {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.scanProductAdd;
+      // return;
+      HttpClient.post(endpoint, data)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'top',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getMainProduct(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.product +
+        `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
     });
   }
 }

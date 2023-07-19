@@ -295,6 +295,25 @@ export function DrawerNavigator(props) {
         )}
       />
 
+      <DrawerItem
+        label={''}
+        activeBackgroundColor={COLORS.transparent}
+        focused={active === 'posRetail2' ? true : false}
+        onPress={() => {
+          setActive('posRetail2');
+          navigate(NAVIGATION.posRetail2);
+          // dispatch(addSellingSelection());
+          // dispatch(cartScreenTrue({ state: false }));
+          // dispatch(getUserDetailSuccess([]));
+        }}
+        icon={({ focused, color, size }) => (
+          <Image
+            source={focused ? retail : greyRetail}
+            style={styles.iconStyle}
+          />
+        )}
+      />
+
       {getUserData?.posLoginData?.id !=
       getAuth?.merchantLoginData?.id ? null : (
         <View style={styles.endSessionViewStyle}>

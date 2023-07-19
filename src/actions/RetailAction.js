@@ -436,6 +436,41 @@ export const customerNumber = customerNumber => ({
   payload: { customerNumber },
 });
 
+const scanProductAddRequest = () => ({
+  type: TYPES.SCAN_PRODUCT_ADD_REQUEST,
+  payload: null,
+});
+
+const scanProductAddSuccess = scanProductAdd => ({
+  type: TYPES.SCAN_PRODUCT_ADD_SUCCESS,
+  payload: scanProductAdd,
+});
+
+const scanProductAddError = error => ({
+  type: TYPES.SCAN_PRODUCT_ADD_ERROR,
+  payload: { error },
+});
+
+const getMainProductRequest = () => ({
+  type: TYPES.GET_MAIN_PRODUCT_REQUEST,
+  payload: null,
+});
+
+const getMainProductSuccess = getMainProduct => ({
+  type: TYPES.GET_MAIN_PRODUCT_SUCCESS,
+  payload: getMainProduct,
+});
+
+const getMainProductReset = () => ({
+  type: TYPES.GET_MAIN_PRODUCT_RESET,
+  payload: null,
+});
+
+const getMainProductError = error => ({
+  type: TYPES.GET_MAIN_PRODUCT_ERROR,
+  payload: { error },
+});
+
 export const getCategory = sellerID => async dispatch => {
   dispatch(getCategoryRequest());
   try {
@@ -449,10 +484,10 @@ export const getCategory = sellerID => async dispatch => {
   }
 };
 
-export const getSubCategory = (sellerID, selectedId) => async dispatch => {
+export const getSubCategory = sellerID => async dispatch => {
   dispatch(getSubCategoryRequest());
   try {
-    const res = await RetailController.getSubCategory(sellerID, selectedId);
+    const res = await RetailController.getSubCategory(sellerID);
     dispatch(getSubCategorySuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -462,10 +497,10 @@ export const getSubCategory = (sellerID, selectedId) => async dispatch => {
   }
 };
 
-export const getBrand = (sellerID, selectedId) => async dispatch => {
+export const getBrand = sellerID => async dispatch => {
   dispatch(getBrandRequest());
   try {
-    const res = await RetailController.getBrand(sellerID, selectedId);
+    const res = await RetailController.getBrand(sellerID);
     dispatch(getBrandSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -731,10 +766,34 @@ export const requestCheck = data => async dispatch => {
   }
 };
 
+export const scanProductAdd = data => async dispatch => {
+  dispatch(scanProductAddRequest());
+  try {
+    const res = await RetailController.scanProductAdd(data);
+    return dispatch(scanProductAddSuccess(res?.payload));
+  } catch (error) {
+    dispatch(scanProductAddError(error.message));
+    throw error;
+  }
+};
+
 export const clearCheck = () => async dispatch => {
   dispatch(clearCheckStore());
 };
 
 export const retailclearstore = () => async dispatch => {
   dispatch(clearRetailStore());
+};
+
+export const getMainProduct = sellerID => async dispatch => {
+  dispatch(getMainProductRequest());
+  try {
+    const res = await RetailController.getMainProduct(sellerID);
+    dispatch(getMainProductSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getMainProductReset());
+    }
+    dispatch(getMainProductError(error.message));
+  }
 };

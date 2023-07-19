@@ -52,6 +52,7 @@ export const ApiProductInventory = {
   getProductList: 'products/pos/product-list',
   getProductModal: 'products/pos/',
   checkSuppliedVariant: 'supply_variants/by-attribute-value-ids',
+  product: 'products',
   getTotalInventoryCost: 'supplies/pos/seller-inventory/statistics',
   getSellerProductList: 'supplies/pos/product-list',
   getSellerInfo: 'supplies/pos/seller-info',
@@ -94,6 +95,7 @@ export const ApiOrderInventory = {
   getOrderTypeList: 'orders/pos/orders',
   getOrderData: 'orders/pos',
   onLineOrders: 'orders/pos/seller/online-orders',
+  scanProductAdd: 'poscarts/scan',
 };
 
 export const ApiWalletInventory = {

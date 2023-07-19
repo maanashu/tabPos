@@ -18,8 +18,8 @@ import { Fonts, backArrow2, crossButton, minus, plus } from '@/assets';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/DashboardTypes';
-import { retailType } from '@/Types/Types';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { TYPES } from '@/Types/Types';
 import { useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
@@ -150,7 +150,7 @@ export function PosSearchListModal({
   };
 
   const isSearchProLoading = useSelector(state =>
-    isLoadingSelector([TYPES.SEARCH_PRODUCT_LIST], state)
+    isLoadingSelector([DASHBOARDTYPE.SEARCH_PRODUCT_LIST], state)
   );
   const addToCartLoad = useSelector(state =>
     isLoadingSelector([TYPES.ADDCART], state)

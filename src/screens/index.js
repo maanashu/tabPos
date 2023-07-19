@@ -23,3 +23,4 @@ export { Setting } from '@/screens/Setting/Setting';
 export { DashBoard } from '@/screens/DashBoard/DashBoard';
 export { Products } from '@/screens/Products/Products';
 export { PosRetail } from '@/screens/PosRetail/PosRetail';
+export { PosRetail2 } from '@/screens/PosRetail2/PosRetail2';

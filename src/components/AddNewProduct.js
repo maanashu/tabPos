@@ -34,8 +34,14 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import DropDownPicker from 'react-native-dropdown-picker';
 
-
-export function AddNewProduct({onPress,removeToCartOnPress, updateToCartOnPress, addProMinusOnPress,addProPlusOnPress, addProductCount}) {
+export function AddNewProduct({
+  onPress,
+  removeToCartOnPress,
+  updateToCartOnPress,
+  addProMinusOnPress,
+  addProPlusOnPress,
+  addProductCount,
+}) {
   const [productCategory, setProductCategory] = useState(false);
   const [productCategoryValue, setProductCategoryValue] = useState(null);
   const [productCategoryItem, setProductCategoryItem] = useState([
@@ -74,7 +80,9 @@ export function AddNewProduct({onPress,removeToCartOnPress, updateToCartOnPress,
           <Image source={scanner} style={styles.scanerStyle} />
           <Spacer space={SH(10)} />
           <View>
-            <Text style={styles.newProductLabel}>{strings.posSale.scanBarcode}</Text>
+            <Text style={styles.newProductLabel}>
+              {strings.posSale.scanBarcode}
+            </Text>
             <Spacer space={SH(10)} />
             <View style={styles.scannedbarCodeCon}>
               <Text style={styles.barCodeNumText}>0123-4567</Text>
@@ -82,13 +90,17 @@ export function AddNewProduct({onPress,removeToCartOnPress, updateToCartOnPress,
           </View>
           <Spacer space={SH(20)} />
           <View>
-            <Text style={styles.newProductLabel}>{strings.posSale.productName}</Text>
+            <Text style={styles.newProductLabel}>
+              {strings.posSale.productName}
+            </Text>
             <Spacer space={SH(10)} />
             <TextInput placeholder="Product name" style={styles.productInput} />
           </View>
           <Spacer space={SH(20)} />
           <View>
-            <Text style={styles.newProductLabel}>{strings.posSale.selectCat}</Text>
+            <Text style={styles.newProductLabel}>
+              {strings.posSale.selectCat}
+            </Text>
             <Spacer space={SH(10)} />
             <DropDownPicker
               ArrowDownIconComponent={({ style }) => (
@@ -124,7 +136,9 @@ export function AddNewProduct({onPress,removeToCartOnPress, updateToCartOnPress,
           </View>
           <Spacer space={SH(20)} />
           <View>
-            <Text style={styles.newProductLabel}>{strings.posSale.selectSubCat}</Text>
+            <Text style={styles.newProductLabel}>
+              {strings.posSale.selectSubCat}
+            </Text>
             <Spacer space={SH(10)} />
             <DropDownPicker
               ArrowDownIconComponent={({ style }) => (
@@ -160,7 +174,9 @@ export function AddNewProduct({onPress,removeToCartOnPress, updateToCartOnPress,
           </View>
           <Spacer space={SH(20)} />
           <View>
-            <Text style={styles.newProductLabel}>{strings.posSale.selectBrand}</Text>
+            <Text style={styles.newProductLabel}>
+              {strings.posSale.selectBrand}
+            </Text>
             <Spacer space={SH(10)} />
             <DropDownPicker
               ArrowDownIconComponent={({ style }) => (
@@ -213,11 +229,13 @@ export function AddNewProduct({onPress,removeToCartOnPress, updateToCartOnPress,
             style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
           >
             <TouchableOpacity onPress={addProMinusOnPress}>
-            <Image source={minus} style={styles.plusBtn2} />
+              <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
-            <Text style={[styles.price, { fontSize: SF(24) }]}>{addProductCount}</Text>
+            <Text style={[styles.price, { fontSize: SF(24) }]}>
+              {addProductCount}
+            </Text>
             <TouchableOpacity onPress={addProPlusOnPress}>
-            <Image source={plus} style={styles.plusBtn2} />
+              <Image source={plus} style={styles.plusBtn2} />
             </TouchableOpacity>
           </View>
 
@@ -227,7 +245,9 @@ export function AddNewProduct({onPress,removeToCartOnPress, updateToCartOnPress,
               style={styles.buttonContainer}
               onPress={removeToCartOnPress}
             >
-              <Text style={styles.removeButton}>{strings.posSale.removeCart}</Text>
+              <Text style={styles.removeButton}>
+                {strings.posSale.removeCart}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -237,7 +257,7 @@ export function AddNewProduct({onPress,removeToCartOnPress, updateToCartOnPress,
               onPress={updateToCartOnPress}
             >
               <Text style={[styles.removeButton, { color: COLORS.white }]}>
-              {strings.posSale.updateCart}
+                {strings.posSale.updateCart}
               </Text>
             </TouchableOpacity>
           </View>

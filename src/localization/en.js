@@ -727,6 +727,8 @@ export const en = {
     brand: 'Brands',
     payNow: 'Pay Now ',
     backProdscreen: 'Back to Product Screen',
+    // new design  en
+    allProduct: 'All Products',
   },
   Staff: {
     Staff: 'Staff',

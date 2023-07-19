@@ -1,144 +1,144 @@
 import { DashboardController } from '@/controllers';
-import { TYPES } from '@/Types/DashboardTypes';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 
 const getOrderDeliveriesRequest = () => ({
-  type: TYPES.GET_ORDER_DELIVERIES_REQUEST,
+  type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_REQUEST,
   payload: null,
 });
 const getOrderDeliveriesSuccess = getOrderDeliveries => ({
-  type: TYPES.GET_ORDER_DELIVERIES_SUCCESS,
+  type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_SUCCESS,
   payload: { getOrderDeliveries },
 });
 const getOrderDeliveriesError = error => ({
-  type: TYPES.GET_ORDER_DELIVERIES_ERROR,
+  type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_ERROR,
   payload: { error },
 });
 const getOrderDeliveriesReset = () => ({
-  type: TYPES.GET_ORDER_DELIVERIES_RESET,
+  type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_RESET,
   payload: null,
 });
 
 const getDrawerSessionRequest = () => ({
-  type: TYPES.GET_DRAWER_SESSION_REQUEST,
+  type: DASHBOARDTYPE.GET_DRAWER_SESSION_REQUEST,
   payload: null,
 });
 export const getDrawerSessionSuccess = getSesssion => ({
-  type: TYPES.GET_DRAWER_SESSION_SUCCESS,
+  type: DASHBOARDTYPE.GET_DRAWER_SESSION_SUCCESS,
   payload: { getSesssion },
 });
 const getDrawerSessionError = error => ({
-  type: TYPES.GET_DRAWER_SESSION_ERROR,
+  type: DASHBOARDTYPE.GET_DRAWER_SESSION_ERROR,
   payload: { error },
 });
 const getDrawerSessionReset = () => ({
-  type: TYPES.GET_DRAWER_SESSION_RESET,
+  type: DASHBOARDTYPE.GET_DRAWER_SESSION_RESET,
   payload: null,
 });
 
 const getDrawerSessionPostRequest = () => ({
-  type: TYPES.GET_DRAWER_SESSION_POST_REQUEST,
+  type: DASHBOARDTYPE.GET_DRAWER_SESSION_POST_REQUEST,
   payload: null,
 });
 const getDrawerSessionPostSuccess = () => ({
-  type: TYPES.GET_DRAWER_SESSION_POST_SUCCESS,
+  type: DASHBOARDTYPE.GET_DRAWER_SESSION_POST_SUCCESS,
   payload: {},
 });
 const getDrawerSessionPostError = error => ({
-  type: TYPES.GET_DRAWER_SESSION_POST_ERROR,
+  type: DASHBOARDTYPE.GET_DRAWER_SESSION_POST_ERROR,
   payload: { error },
 });
 const getDrawerSessionPostReset = () => ({
-  type: TYPES.GET_DRAWER_SESSION_POST_RESET,
+  type: DASHBOARDTYPE.GET_DRAWER_SESSION_POST_RESET,
   payload: null,
 });
 
 const startstarckingSessionRequest = () => ({
-  type: TYPES.START_TRACKING_SESSION_REQUEST,
+  type: DASHBOARDTYPE.START_TRACKING_SESSION_REQUEST,
   payload: null,
 });
 const startstarckingSessionSuccess = () => ({
-  type: TYPES.START_TRACKING_SESSION_SUCCESS,
+  type: DASHBOARDTYPE.START_TRACKING_SESSION_SUCCESS,
   payload: {},
 });
 const startstarckingSessionError = error => ({
-  type: TYPES.START_TRACKING_SESSION_ERROR,
+  type: DASHBOARDTYPE.START_TRACKING_SESSION_ERROR,
   payload: { error },
 });
 
 const getTotalSaleRequest = () => ({
-  type: TYPES.GET_TOTAL_SALE_REQUEST,
+  type: DASHBOARDTYPE.GET_TOTAL_SALE_REQUEST,
   payload: null,
 });
 const getTotalSaleSuccess = getTotalSale => ({
-  type: TYPES.GET_TOTAL_SALE_SUCCESS,
+  type: DASHBOARDTYPE.GET_TOTAL_SALE_SUCCESS,
   payload: { getTotalSale },
 });
 const getTotalSaleError = error => ({
-  type: TYPES.GET_TOTAL_SALE_ERROR,
+  type: DASHBOARDTYPE.GET_TOTAL_SALE_ERROR,
   payload: { error },
 });
 const getTotalSaleReset = () => ({
-  type: TYPES.GET_TOTAL_SALE_RESET,
+  type: DASHBOARDTYPE.GET_TOTAL_SALE_RESET,
   payload: null,
 });
 
 const posLoginDetailRequest = () => ({
-  type: TYPES.POS_LOGIN_DETAIL_REQUEST,
+  type: DASHBOARDTYPE.POS_LOGIN_DETAIL_REQUEST,
   payload: null,
 });
 const posLoginDetailSuccess = posLoginDetail => ({
-  type: TYPES.POS_LOGIN_DETAIL_SUCCESS,
+  type: DASHBOARDTYPE.POS_LOGIN_DETAIL_SUCCESS,
   payload: { posLoginDetail },
 });
 const posLoginDetailError = error => ({
-  type: TYPES.POS_LOGIN_DETAIL_ERROR,
+  type: DASHBOARDTYPE.POS_LOGIN_DETAIL_ERROR,
   payload: { error },
 });
 const posLoginDetailReset = () => ({
-  type: TYPES.POS_LOGIN_DETAIL_RESET,
+  type: DASHBOARDTYPE.POS_LOGIN_DETAIL_RESET,
   payload: null,
 });
 
 const searchProductListRequest = () => ({
-  type: TYPES.SEARCH_PRODUCT_LIST_REQUEST,
+  type: DASHBOARDTYPE.SEARCH_PRODUCT_LIST_REQUEST,
   payload: null,
 });
 const searchProductListSuccess = searchProductList => ({
-  type: TYPES.SEARCH_PRODUCT_LIST_SUCCESS,
+  type: DASHBOARDTYPE.SEARCH_PRODUCT_LIST_SUCCESS,
   payload: { searchProductList },
 });
 const searchProductListError = error => ({
-  type: TYPES.SEARCH_PRODUCT_LIST_ERROR,
+  type: DASHBOARDTYPE.SEARCH_PRODUCT_LIST_ERROR,
   payload: { error },
 });
 const searchProductListReset = () => ({
-  type: TYPES.SEARCH_PRODUCT_LIST_RESET,
+  type: DASHBOARDTYPE.SEARCH_PRODUCT_LIST_RESET,
   payload: null,
 });
 
 const addSellingSelectionRequest = () => ({
-  type: TYPES.ADD_SELLING_SELECTION_REQUEST,
+  type: DASHBOARDTYPE.ADD_SELLING_SELECTION_REQUEST,
   payload: null,
 });
 const addSellingSelectionSuccess = selection => ({
-  type: TYPES.ADD_SELLING_SELECTION_SUCCESS,
+  type: DASHBOARDTYPE.ADD_SELLING_SELECTION_SUCCESS,
   payload: { selection },
 });
 const addSellingSelectionError = error => ({
-  type: TYPES.ADD_SELLING_SELECTION_ERROR,
+  type: DASHBOARDTYPE.ADD_SELLING_SELECTION_ERROR,
   payload: { error },
 });
 
 const onLineOrdersRequest = () => ({
-  type: TYPES.ONLINE_ORDERS_REQUEST,
+  type: DASHBOARDTYPE.ONLINE_ORDERS_REQUEST,
   payload: null,
 });
 const onLineOrdersSuccess = onLineOrders => ({
-  type: TYPES.ONLINE_ORDERS_SUCCESS,
+  type: DASHBOARDTYPE.ONLINE_ORDERS_SUCCESS,
   payload: { onLineOrders },
 });
 const onLineOrdersError = error => ({
-  type: TYPES.ONLINE_ORDERS_ERROR,
+  type: DASHBOARDTYPE.ONLINE_ORDERS_ERROR,
   payload: { error },
 });
 

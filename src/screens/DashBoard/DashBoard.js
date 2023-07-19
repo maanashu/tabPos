@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
 } from 'react-native';
 
 import moment from 'moment';
@@ -21,11 +22,13 @@ import {
   cashProfile,
   clock,
   crossButton,
+  keyboard,
   lockLight,
   onlineMan,
   pay,
   pin,
   rightIcon,
+  scanSearch,
   scn,
   search_light,
   sellingArrow,
@@ -49,7 +52,7 @@ import { strings } from '@/localization';
 import { NAVIGATION } from '@/constants';
 import { digits } from '@/utils/validators';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { TYPES } from '@/Types/DashboardTypes';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { PosSearchListModal } from './Components';
 import { getUser } from '@/selectors/UserSelectors';
 import { navigate } from '@/navigation/NavigationRef';
@@ -64,6 +67,8 @@ import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 
 import { styles } from './DashBoard.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAllCart, scanProductAdd } from '@/actions/RetailAction';
+import { log } from 'react-native-reanimated';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -99,6 +104,36 @@ export function DashBoard({ navigation }) {
   const [productDet, setproductDet] = useState();
   const [timeChange, setTimeChange] = useState(true);
   const [page, setpage] = useState(1);
+  const [sku, setSku] = useState('');
+  const [scan, setScan] = useState(false);
+  useEffect(() => {
+    setScan(false);
+  }, []);
+  useEffect(() => {
+    if (scan) {
+      textInputRef.current.focus();
+    }
+  }, [scan]);
+  const onSetSkuFun = async sku => {
+    setSku(sku);
+    if (sku?.length > 3) {
+      const data = {
+        seller_id: sellerID,
+        upc_code: sku,
+        qty: 1,
+      };
+      const res = await dispatch(scanProductAdd(data))
+        .then(res => {
+          setSku('');
+          dispatch(getAllCart());
+          textInputRef.current.focus();
+        })
+        .catch(error => {
+          setSku('');
+          textInputRef.current.focus();
+        });
+    }
+  };
 
   const STARTSELLING = [
     {
@@ -139,6 +174,7 @@ export function DashBoard({ navigation }) {
       dispatch(getTotalSaleAction(sellerID));
       dispatch(posLoginDetail());
       dispatch(onLineOrders(sellerID));
+      setSku('');
     }
   }, [isFocused]);
 
@@ -201,11 +237,11 @@ export function DashBoard({ navigation }) {
   };
 
   const orderDelveriesLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_ORDER_DELIVERIES], state)
+    isLoadingSelector([DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
   );
 
   const getSessionLoad = useSelector(state =>
-    isLoadingSelector([TYPES.GET_DRAWER_SESSION], state)
+    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION], state)
   );
 
   const startSellingHandler = async id => {
@@ -339,18 +375,18 @@ export function DashBoard({ navigation }) {
               <View style={{ flex: 1 }} />
               <Button
                 title={strings.management.startSession}
-                textStyle={[
-                  styles.buttonText,
-                  { color: amountCount ? COLORS.white : COLORS.darkGray },
-                ]}
-                style={[
-                  styles.saveButton,
-                  {
+                textStyle={{
+                  ...styles.buttonText,
+                  ...{ color: amountCount ? COLORS.white : COLORS.darkGray },
+                }}
+                style={{
+                  ...styles.saveButton,
+                  ...{
                     backgroundColor: amountCount
                       ? COLORS.primary
                       : COLORS.textInputBackground,
                   },
-                ]}
+                }}
                 onPress={startTrackingSesHandler}
               />
               <Spacer space={SH(40)} />
@@ -533,20 +569,34 @@ export function DashBoard({ navigation }) {
               <View>
                 <Image source={search_light} style={styles.searchStyle} />
               </View>
-              <TextInput
-                placeholder={strings.retail.searchProduct}
-                style={styles.searchInput}
-                // editable={false}
-                value={search}
-                onChangeText={search => {
-                  setSearch(search);
-                  onChangeFun(search);
-                }}
-                ref={textInputRef}
-              />
+              {scan ? (
+                <TextInput
+                  placeholder="scan product"
+                  style={styles.searchInput}
+                  // editable={false}
+                  value={sku}
+                  onChangeText={sku => {
+                    onSetSkuFun(sku);
+                  }}
+                  ref={textInputRef}
+                />
+              ) : (
+                <TextInput
+                  placeholder="search product here"
+                  style={styles.searchInput}
+                  value={search}
+                  onChangeText={search => {
+                    setSearch(search);
+                    onChangeFun(search);
+                  }}
+                />
+              )}
             </View>
-            <TouchableOpacity onPress={() => textInputRef.current.focus()}>
-              <Image source={scn} style={styles.scnStyle} />
+            <TouchableOpacity
+              //  onPress={() => textInputRef.current.focus()}
+              onPress={() => setScan(!scan)}
+            >
+              <Image source={scan ? scanSearch : scn} style={styles.scnStyle} />
             </TouchableOpacity>
           </View>
           <Spacer space={SH(20)} />
@@ -651,7 +701,10 @@ export function DashBoard({ navigation }) {
             <Button
               title={strings.dashboard.expandTwoHour}
               textStyle={styles.expandOneHourText}
-              style={[styles.expandOneHourButton, styles.expandTwoHourButton]}
+              style={{
+                ...styles.expandOneHourButton,
+                ...styles.expandTwoHourButton,
+              }}
             />
           </View>
         </View>
