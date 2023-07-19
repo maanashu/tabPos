@@ -18,3 +18,4 @@ export { CartScreen } from '@/screens/PosRetail2/Components/CartScreen';
 export { AddCartModal } from '@/screens/PosRetail2/Components/AddCartModal';
 export { AddCartDetailModal } from '@/screens/PosRetail2/Components/AddCartDetailModal';
 export { SideCartDet } from '@/screens/PosRetail2/Components/SideCartDet';
+export { CartListModal } from '@/screens/PosRetail2/Components/CartListModal';

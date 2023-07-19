@@ -8,17 +8,20 @@ import { Spacer } from '@/components';
 import { styles } from '@/screens/PosRetail2/PosRetail2.styles';
 import {
   addDiscountPic,
+  addToCart,
   borderCross,
   categoryMenu,
   categoryshoes,
   checkArrow,
   cloth,
+  clothes,
   columbiaMen,
   crossBg,
   crossButton,
   email,
   eraser,
   Fonts,
+  holdCart,
   keyboard,
   location,
   minus,
@@ -29,6 +32,7 @@ import {
   plus,
   rightBack,
   search_light,
+  sideKeyboard,
   terryProfile,
 } from '@/assets';
 import { TouchableOpacity } from 'react-native';
@@ -184,164 +188,6 @@ export function CartScreen({
     dispatch(clearOneCart(data));
   };
 
-  const changeView = () => {
-    if (getuserDetailByNo?.length > 0) {
-      return (
-        <View>
-          <View style={styles.nameAddSingleCon}>
-            <View style={styles.displayRow}>
-              <Image source={terryProfile} style={styles.Phonelight} />
-              <Text style={styles.terryText}>
-                {getuserDetailByNo?.[0]?.first_name}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.nameAddSingleCon}>
-            <View style={styles.displayRow}>
-              <Image source={Phone_light} style={styles.Phonelight} />
-              <Text style={styles.terryText}>
-                {getuserDetailByNo?.[0]?.phone_number}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.nameAddSingleCon}>
-            <View style={styles.displayRow}>
-              <Image source={email} style={styles.Phonelight} />
-              <Text style={styles.terryText}>
-                {getuserDetailByNo?.[0]?.email}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.nameAddSingleCon}>
-            <View style={styles.displayRow}>
-              <Image source={location} style={styles.Phonelight} />
-              <Text
-                style={[styles.terryText, { width: SW(70) }]}
-                numberOfLines={1}
-              >
-                {getuserDetailByNo?.[0]?.city},{getuserDetailByNo?.[0]?.address}
-                ,{getuserDetailByNo?.[0]?.state} {getuserDetailByNo?.[0]?.zip}
-              </Text>
-            </View>
-          </View>
-          {okk ? (
-            <TouchableOpacity
-              style={styles.okButtonCon}
-              // onPress={() => setStoreUser(getuserDetailByNo?.[0])}
-              onPress={() => {
-                dispatch(getUserDetailSuccess([]));
-                setOkk(false);
-              }}
-            >
-              <Text style={[styles.okText]}>Cancel Customer</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.okButtonCon}
-              // onPress={() => setStoreUser(getuserDetailByNo?.[0])}
-              onPress={() => setOkk(!okk)}
-            >
-              <Image source={ok} style={styles.lockLight} />
-              <Text style={[styles.okText]}>{strings.dashboard.ok}</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      );
-    } else if (
-      getuserDetailByNo?.length === 0 &&
-      // sendInventer &&
-      customerPhoneNo?.length > 9
-    ) {
-      return (
-        <View>
-          <View
-            style={[
-              styles.sideBarInputWraper,
-              { backgroundColor: COLORS.textInputBackground },
-            ]}
-          >
-            <View style={styles.displayRow}>
-              <View>
-                <Image source={terryProfile} style={styles.sideSearchStyle} />
-              </View>
-              <TextInput
-                placeholder="Name"
-                style={styles.sideBarsearchInput}
-                value={userName}
-                onChangeText={setUserName}
-                placeholderTextColor={COLORS.gerySkies}
-              />
-            </View>
-          </View>
-          {/* <View
-            style={[
-              styles.sideBarInputWraper,
-              { backgroundColor: COLORS.textInputBackground },
-            ]}
-          >
-            <View style={styles.displayRow}>
-              <View>
-                <Image source={Phone_light} style={styles.sideSearchStyle} />
-              </View>
-              <TextInput
-                placeholder="Phone Number"
-                style={styles.sideBarsearchInput}
-                keyboardType="numeric"
-                value={userPhoneNo}
-                onChangeText={setUserPhoneNo}
-                placeholderTextColor={COLORS.gerySkies}
-              />
-            </View>
-          </View> */}
-          <View
-            style={[
-              styles.sideBarInputWraper,
-              { backgroundColor: COLORS.textInputBackground },
-            ]}
-          >
-            <View style={styles.displayRow}>
-              <View>
-                <Image source={email} style={styles.sideSearchStyle} />
-              </View>
-              <TextInput
-                placeholder="Email Address"
-                style={styles.sideBarsearchInput}
-                value={userEmail}
-                onChangeText={setUserEmail}
-                placeholderTextColor={COLORS.gerySkies}
-              />
-            </View>
-          </View>
-          <View
-            style={[
-              styles.sideBarInputWraper,
-              { backgroundColor: COLORS.textInputBackground },
-            ]}
-          >
-            <View style={styles.displayRow}>
-              <View>
-                <Image source={location} style={styles.sideSearchStyle} />
-              </View>
-              <TextInput
-                placeholder="Address"
-                style={styles.sideBarsearchInput}
-                value={userAdd}
-                onChangeText={setUserAdd}
-                placeholderTextColor={COLORS.gerySkies}
-              />
-            </View>
-          </View>
-          <TouchableOpacity
-            onPress={addCustomerHandler}
-            style={[styles.okButtonCon, { backgroundColor: COLORS.dark_grey }]}
-          >
-            <Text style={[styles.okText]}>Add Customer</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-  };
-
   const catTypeFun = id => {
     id === 1
       ? setCategoryModal(true)
@@ -433,7 +279,7 @@ export function CartScreen({
         />
 
         <View style={styles.displayflex2}>
-          <View style={[styles.itemLIistCon, { borderWidth: 1 }]}>
+          <View style={[styles.itemLIistCon]}>
             <Spacer space={SH(3)} />
             <View style={styles.displayflex}>
               <TouchableOpacity
@@ -599,30 +445,32 @@ export function CartScreen({
 
             <Spacer space={SH(7)} />
           </View>
-          <View
-            pointerEvents={cartData?.length === 0 ? 'none' : 'auto'}
-            style={[
-              styles.rightSideCon,
-              { opacity: cartData?.length === 0 ? 0.1 : 1 },
-            ]}
-          >
+          <View style={styles.rightSideCon}>
             <View style={styles.displayflex}>
-              <Image source={keyboard} style={styles.keyboard} />
+              <TouchableOpacity
+                style={styles.holdCartPad}
+                //   onPress={() => setProductdetailModal(true)}
+              >
+                <Image source={sideKeyboard} style={styles.keyboardIcon} />
+              </TouchableOpacity>
               <TouchableOpacity
                 style={styles.holdCartCon}
                 //   onPress={() => setProductdetailModal(true)}
               >
-                {/* <Image source={pause} style={styles.pause} /> */}
+                <Image source={holdCart} style={styles.pause} />
 
                 <Text style={styles.holdCart}>
                   {strings.dashboard.holdCart}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.holdCartCon, styles.dark_greyBg]}
+                style={styles.holdCartCon}
                 onPress={clearCartHandler}
               >
-                {/* <Image source={eraser} style={styles.pause} /> */}
+                <Image
+                  source={eraser}
+                  style={[styles.pause, { tintColor: COLORS.dark_grey }]}
+                />
                 <Text style={styles.holdCart}>
                   {strings.dashboard.clearcart}
                 </Text>
@@ -631,43 +479,32 @@ export function CartScreen({
             <Spacer space={SH(10)} />
             <View>
               <View style={styles.nameAddCon}>
-                <View style={styles.sideBarInputWraper}>
-                  <View style={styles.displayRow}>
-                    <View>
-                      <Image
-                        source={search_light}
-                        style={styles.sideSearchStyle}
-                      />
-                    </View>
-                    <TextInput
-                      placeholder="803-238-2630"
-                      style={styles.sideBarsearchInput}
-                      keyboardType="numeric"
-                      value={customerPhoneNo}
-                      onChangeText={customerPhoneNo => {
-                        setCustomerPhoneNo(customerPhoneNo);
-                        phoneNumberSearchFun(customerPhoneNo);
-                      }}
-                      placeholderTextColor={COLORS.solid_grey}
-                    />
-                  </View>
+                <View style={styles.avaliableOfferCon}>
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>
+                    Available Offer
+                  </Text>
                 </View>
-                {userDetalLoader ? (
-                  <View style={{ marginTop: 40, alignSelf: 'center' }}>
-                    <ActivityIndicator size="large" color={COLORS.indicator} />
+                {[1, 2, 3].map((item, index) => (
+                  <View style={styles.avaliableOferBodyCon}>
+                    <View
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
+                      <View style={{ borderRadius: 4 }}>
+                        <Image source={clothes} style={styles.offerImage} />
+                      </View>
+                      <View style={{ marginLeft: 4 }}>
+                        <Text style={styles.offerText}>Marbolo red pack</Text>
+                        <Text style={styles.offerPrice}>White/S</Text>
+                        <Text style={styles.offerPrice}>
+                          $6.56 <Text style={styles.offerPriceDark}>$6.56</Text>
+                        </Text>
+                      </View>
+                    </View>
+                    <Image source={addToCart} style={styles.sideAddToCart} />
                   </View>
-                ) : (
-                  changeView()
-                )}
+                ))}
               </View>
-              <Spacer space={SH(10)} />
-              <View
-                style={{
-                  borderWidth: 1,
-                  //   borderStyle: 'dashed',
-                  borderColor: COLORS.solidGrey,
-                }}
-              />
+
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
                 <TouchableOpacity
@@ -710,13 +547,16 @@ export function CartScreen({
                 <Text style={styles.subTotal}>Total Taxes</Text>
                 <Text style={styles.subTotalDollar}>
                   {' '}
-                  ${cartData?.amount?.tax ?? '0.00'}
+                  ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Discount</Text>
                 <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                  ${cartData?.amount?.discount ?? '0.00'}
+                  ${' '}
+                  {cartData?.amount?.discount === 0
+                    ? '0.00'
+                    : cartData?.amount?.discount.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
               <View
@@ -735,38 +575,15 @@ export function CartScreen({
               </View>
             </View>
             <View style={{ flex: 1 }} />
-            {getuserDetailByNo?.length === 0 || !okk ? (
-              <TouchableOpacity
-                style={styles.checkoutButtonSideBar}
-                onPress={() =>
-                  Toast.show({
-                    text2: 'Please select the customer',
-                    position: 'bottom',
-                    type: 'error_toast',
-                    visibilityTime: 1500,
-                  })
-                }
-              >
-                <Text style={styles.checkoutText}>
-                  {strings.retail.checkOut}
-                </Text>
-                <Image source={checkArrow} style={styles.checkArrow} />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={[
-                  styles.checkoutButtonSideBar,
-                  { opacity: getuserDetailByNo?.length === 0 ? 0.5 : 1 },
-                ]}
-                onPress={onPressPayNow}
-                disabled={getuserDetailByNo?.length === 0 ? true : false}
-              >
-                <Text style={styles.checkoutText}>
-                  {strings.posRetail.payNow}
-                </Text>
-                <Image source={checkArrow} style={styles.checkArrow} />
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity
+              style={[styles.checkoutButtonSideBar]}
+              onPress={onPressPayNow}
+            >
+              <Text style={styles.checkoutText}>
+                {strings.posRetail.payNow}
+              </Text>
+              <Image source={checkArrow} style={styles.checkArrow} />
+            </TouchableOpacity>
           </View>
         </View>
       </View>

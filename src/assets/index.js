@@ -279,6 +279,7 @@ export { default as holdCart } from '@/assets/icons/ic_posRetail/holdCart.png';
 export { default as sideArrow } from '@/assets/icons/ic_posRetail/sideArrow.png';
 export { default as sideEarser } from '@/assets/icons/ic_posRetail/sideEarser.png';
 export { default as sideKeyboard } from '@/assets/icons/ic_posRetail/sideKeyboard.png';
+export { default as addToCartBlue } from '@/assets/icons/ic_posRetail/addToCartBlue.png';
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',
