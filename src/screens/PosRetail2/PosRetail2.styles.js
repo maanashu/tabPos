@@ -1313,7 +1313,7 @@ export const styles = StyleSheet.create({
   productView: {
     backgroundColor: Colors.white,
     borderRadius: 10,
-    width: windowWidth * 0.84,
+    width: Platform.OS === 'android' ? windowWidth * 0.84 : windowWidth * 0.83,
     height: windowHeight * 0.87,
     paddingTop: verticalScale(6),
     paddingHorizontal: moderateScale(10),
@@ -1367,7 +1367,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 7,
-    width: windowWidth * 0.21,
+    width: Platform.OS === 'android' ? windowWidth * 0.21 : windowWidth * 0.2,
     height: SH(45),
     justifyContent: 'center',
   },
@@ -1402,8 +1402,8 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   productCon: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.115 : windowWidth * 0.11,
-    height: Platform.OS === 'ios' ? windowHeight * 0.22 : windowHeight * 0.26,
+    width: Platform.OS === 'ios' ? windowWidth * 0.108 : windowWidth * 0.11,
+    height: Platform.OS === 'ios' ? windowHeight * 0.23 : windowHeight * 0.26,
     backgroundColor: COLORS.white,
     borderRadius: 5,
     paddingHorizontal: moderateScale(3),
