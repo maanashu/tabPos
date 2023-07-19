@@ -9,13 +9,13 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 10,
     backgroundColor: COLORS.white,
-    justifyContent:"center"
+    justifyContent: 'center',
   },
   containerSix: {
     flex: 1,
     marginHorizontal: 10,
     backgroundColor: COLORS.white,
-    justifyContent:"center"
+    justifyContent: 'center',
   },
   flexRow: {
     flexDirection: 'row',
@@ -51,9 +51,10 @@ export const styles = StyleSheet.create({
   posUserCon: {
     backgroundColor: COLORS.textInputBackground,
     alignItems: 'center',
-    margin: SH(25),
+    marginVertical: SH(25),
+    marginHorizontal: SH(15),
     padding: SH(10),
-    width: SH(306),
+    width: SH(280),
     height: SH(320),
     borderRadius: 15,
   },
@@ -100,11 +101,8 @@ export const styles = StyleSheet.create({
     marginRight: 4,
   },
 
-
-
-
-   // setting security css start
-   securityMainCon: {
+  // setting security css start
+  securityMainCon: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 10,
@@ -323,7 +321,6 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: 'center',
     backgroundColor: '#fff',
-   
   },
   flexWidthSix: {
     width: windowWidth * 0.35,

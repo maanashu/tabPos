@@ -1229,8 +1229,8 @@ export function ShippingOrder() {
                       radius={90}
                       activeStrokeWidth={30}
                       inActiveStrokeWidth={30}
-                      activeStrokeColor="#275AFF"
-                      inActiveStrokeColor="#EFEFEF"
+                      activeStrokeColor={COLORS.primary}
+                      inActiveStrokeColor={COLORS.washGrey}
                       strokeLinecap="butt"
                       valueSuffix={'%'}
                       progressValueStyle={{
