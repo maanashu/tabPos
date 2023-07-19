@@ -201,12 +201,13 @@ export const styles = StyleSheet.create({
   _payBYBoxContainer: {
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
-    height: ms(110),
+    height: ms(125),
     width: ms(170),
     margin: ms(3),
     borderRadius: ms(6),
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
+    padding:ms(10)
   },
   _payByTitle: {
     fontFamily: Fonts.Regular,
@@ -1476,4 +1477,154 @@ export const styles = StyleSheet.create({
     fontSize: SF(11),
     fontFamily: Fonts.SemiBold,
   },
+
+  //NEW DESIGN 
+
+  //Tip
+  _payBYBoxContainerTip: {
+    borderColor: COLORS.solidGrey,
+    borderWidth: 1,
+    height: ms(55),
+    width: ms(126),
+    margin: ms(3),
+    borderRadius: ms(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  _payByAmountTip: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: ms(9),
+    marginTop: ms(4),
+  },
+  _payByMethodTip: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: ms(14),
+    marginTop: ms(4),
+  },
+
+
+//Recipe
+
+_payBYBoxContainerReceipe: {
+  borderColor: COLORS.solidGrey,
+  borderWidth: 1,
+  height: ms(50),
+  width: ms(170),
+  margin: ms(3),
+  borderRadius: ms(6),
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+_payByAmountReceipe: {
+  fontFamily: Fonts.Regular,
+  color: COLORS.solid_grey,
+  fontSize: ms(9),
+  marginTop: ms(4),
+},
+_payByMethodReceipe: {
+  fontFamily: Fonts.SemiBold,
+  color: COLORS.solid_grey,
+  fontSize: ms(14),
+  marginTop: ms(4),
+},
+selectTips:{
+  fontSize:ms(12),
+  margin:ms(5),
+  fontFamily: Fonts.Regular,
+  color: COLORS.gerySkies,
+}
+,
+saveView:{
+  backgroundColor:"#F5F6F7",
+  height: ms(15),
+  width: ms(80),
+  margin:ms(6),
+  justifyContent:"center",
+  alignItems:"center",borderRadius:5
+},
+saveText:{
+  fontSize:ms(8),
+  fontFamily:Fonts.Medium
+},
+_kCenterContainer: {
+  height: '100%',
+  alignSelf: 'flex-end',
+  flex: 0.6,
+  borderLeftWidth: 1,
+  borderColor: COLORS.textInputBackground,
+  alignItems: 'center',
+},
+_kSubCenterContainer: {
+  color: COLORS.dark_grey,
+  fontFamily: Fonts.SemiBold,
+  fontSize: ms(7),
+  marginTop: ms(5),
+},
+_kAddress: {
+  color: COLORS.dark_grey,
+  fontFamily: Fonts.Regular,
+  fontSize: ms(6),
+  marginTop: ms(5),
+},
+_kNumber: {
+  color: COLORS.dark_grey,
+  fontFamily: Fonts.Regular,
+  fontSize: ms(6),
+  marginTop: ms(3),
+},
+_flatListContainer: { height: ms(100), width: '100%', marginTop: ms(5) },
+_barCode: {
+  fontFamily: Fonts.SemiBold,
+  fontSize: ms(10),
+  color: COLORS.dark_grey,
+},
+_barCodeImage: { height: ms(25), width: '70%', marginTop: ms(5) },
+_thankyou: {
+  fontFamily: Fonts.SemiBold,
+  fontSize: ms(11),
+  color: COLORS.dark_grey,
+  marginTop: ms(10),
+},
+_cashRemainView: {
+  marginTop: ms(15),
+  height: 1,
+  width: '50%',
+  backgroundColor: COLORS.silver_solid,
+},
+_cashRemainText: {
+  fontFamily: Fonts.SemiBold,
+  fontSize: ms(15),
+  color: COLORS.solid_grey,
+  marginTop: ms(10),
+},
+_printButton: {
+  width: '30%',
+  height: ms(26),
+  backgroundColor: 'transparent',
+  borderColor: COLORS.lineGrey,
+  borderWidth: 0.2,
+  borderRadius: ms(1),
+  marginHorizontal: moderateScale(5),
+},
+_printBtnText: {
+  fontFamily: Fonts.SemiBold,
+  fontSize: ms(7),
+  color: COLORS.darkGray,
+  fontWeight: 'normal',
+},
+noProductText: {
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginVertical: verticalScale(50),
+},
+emptyListText: {
+  fontSize: SF(16),
+  color: COLORS.primary,
+  fontFamily: Fonts.Regular,
+},
+
 });
