@@ -227,7 +227,6 @@ export function PosRetail2() {
 
   useEffect(() => {
     dispatch(getProductDefault(sellerID, page));
-    // dispatch(getCategory(sellerID));
     dispatch(getAllCart());
   }, [isFocus]);
 
@@ -254,14 +253,9 @@ export function PosRetail2() {
   const renderScreen = {
     ['MainScreen']: (
       <MainScreen
-        headercrossHandler={() => alert('abc')}
-        checkOutHandler={() => setselectedScreen('CartScreen')}
-        productArray={defaultArrayproduct}
-        categoryArray={categoryArray}
+        cartScreenHandler={() => setselectedScreen('CartScreen')}
         sellerID={sellerID}
-        addNotesHandler={addNotesHandler}
-        addDiscountHandler={addDiscountHandler}
-        onPressPayNow={() => {
+        checkOutHandler={() => {
           setselectedScreen('CartAmountTips');
         }}
       />

@@ -1,12 +1,5 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import {
-  FlatList,
-  Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -76,8 +69,10 @@ import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { cond, log } from 'react-native-reanimated';
+import { CartListModal } from './CartListModal';
 
 export function MainScreen({
+  cartScreenHandler,
   checkOutHandler,
   headercrossHandler,
   categoryArray,
@@ -97,8 +92,15 @@ export function MainScreen({
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
+  // console.log('cartData', JSON.stringify(cartData));
+  const cartLength = cartData?.poscart_products?.length;
+  console.log('cartLength', cartLength);
   const productArray = getRetailData?.getMainProduct;
+  // console.log('productArray', JSON.stringify(productArray));
   let arr = [getRetailData?.getAllCart];
+  const [cartModal, setCartModal] = useState(false);
+
+  const matchId = cartData?.poscart_products?.filter(item => item?.product_id);
 
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
 
@@ -130,13 +132,18 @@ export function MainScreen({
       setselectedCatID(selectedCatID);
     }
   }, [selectedCatID]);
+  useEffect(() => {
+    if (cartLength === 0 || cartLength === undefined) {
+      setCartModal(false);
+    }
+  }, [cartLength]);
 
   const [okk, setOkk] = useState(getRetailData?.trueCustomer?.state || false);
 
   const [productDetail, setProductDetail] = useState();
 
   const isProductLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_PRODUCT_DEF, TYPES.GET_PRODUCT], state)
+    isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state)
   );
   const userDetalLoader = useSelector(state =>
     isLoadingSelector([TYPES.GET_USERDETAIL], state)
@@ -314,8 +321,12 @@ export function MainScreen({
         <Text numberOfLines={1} style={styles.productPrice}>
           ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
         </Text>
+        {/* addToCartBlue */}
         <TouchableOpacity onPress={() => onClickAddCart(item)}>
           <Image source={addToCart} style={styles.addToCart} />
+          {/* <View style={styles.productBadge}>
+            <Text style={styles.productBadgeText}>{item.id}</Text>
+          </View> */}
         </TouchableOpacity>
       </TouchableOpacity>
     </TouchableOpacity>
@@ -340,7 +351,9 @@ export function MainScreen({
                 <Text style={styles.allProduct}>
                   {strings.posRetail.allProduct}
                 </Text>
-                <Text style={styles.productCount}>(1280)</Text>
+                <Text style={styles.productCount}>
+                  ({productArray?.length ?? '0'})
+                </Text>
               </View>
               <View>
                 <FlatList
@@ -379,31 +392,80 @@ export function MainScreen({
             <Spacer space={SH(10)} />
             <View style={styles.hr} />
             <Spacer space={SH(10)} />
-
-            <FlatList
-              data={productArray}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => index}
-              extraData={productArray}
-              numColumns={7}
-              contentContainerStyle={{
-                flexGrow: 1,
-              }}
-              scrollEnabled={true}
-            />
+            {isProductLoading ? (
+              <View style={{ marginTop: 100 }}>
+                <ActivityIndicator size="large" color={COLORS.indicator} />
+              </View>
+            ) : (
+              <FlatList
+                data={productArray}
+                extraData={productArray}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index}
+                numColumns={7}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                }}
+                scrollEnabled={true}
+                ListEmptyComponent={() => (
+                  <View style={styles.noProductText}>
+                    <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                      {strings.valiadtion.noProduct}
+                    </Text>
+                  </View>
+                )}
+              />
+            )}
           </View>
           <View style={styles.rightSideView}>
             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <View style={styles.bucketBackgorund}>
-                <Image source={bucket} style={styles.sideBarImage} />
-                <View style={styles.bucketBadge}>
-                  <Text style={styles.badgetext}>0</Text>
+              <TouchableOpacity
+                style={styles.bucketBackgorund}
+                disabled={cartLength > 0 ? false : true}
+                onPress={() => setCartModal(true)}
+              >
+                <Image
+                  source={bucket}
+                  style={
+                    cartLength > 0
+                      ? [styles.sideBarImage, { tintColor: COLORS.primary }]
+                      : styles.sideBarImage
+                  }
+                />
+                <View
+                  style={
+                    cartLength > 0
+                      ? [styles.bucketBadge, styles.bucketBadgePrimary]
+                      : styles.bucketBadge
+                  }
+                >
+                  <Text
+                    style={
+                      cartLength > 0
+                        ? [styles.badgetext, { color: COLORS.white }]
+                        : styles.badgetext
+                    }
+                  >
+                    {cartLength ?? '0'}
+                  </Text>
                 </View>
-              </View>
+              </TouchableOpacity>
               <Spacer space={SH(25)} />
               <Image source={sideKeyboard} style={styles.sideBarImage} />
               <Spacer space={SH(20)} />
-              <Image source={sideEarser} style={styles.sideBarImage} />
+              <TouchableOpacity
+                onPress={() => dispatch(clearAllCart())}
+                disabled={cartLength > 0 ? false : true}
+              >
+                <Image
+                  source={sideEarser}
+                  style={
+                    cartLength > 0
+                      ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                      : styles.sideBarImage
+                  }
+                />
+              </TouchableOpacity>
               <Spacer space={SH(20)} />
               <View>
                 <Image source={holdCart} style={styles.sideBarImage} />
@@ -413,12 +475,53 @@ export function MainScreen({
               </View>
             </View>
             <View style={{ flex: 1 }} />
-            <View style={styles.bucketBackgorund}>
-              <Image source={sideArrow} style={styles.sideBarImage} />
-            </View>
+            <TouchableOpacity
+              disabled={cartLength > 0 ? false : true}
+              onPress={cartScreenHandler}
+              style={
+                cartLength > 0
+                  ? [
+                      styles.bucketBackgorund,
+                      { backgroundColor: COLORS.primary },
+                    ]
+                  : styles.bucketBackgorund
+              }
+            >
+              <Image
+                source={sideArrow}
+                style={
+                  cartLength > 0
+                    ? [styles.sideBarImage, { tintColor: COLORS.white }]
+                    : styles.sideBarImage
+                }
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
+      {/* cart list modal start */}
+      <Modal animationType="fade" transparent={true} isVisible={cartModal}>
+        <CartListModal checkOutHandler={checkOutHandler} />
+      </Modal>
+
+      {/* cart list modal end */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={addCartModal || addCartDetailModal}
+      >
+        {addCartDetailModal ? (
+          <AddCartDetailModal
+            crossHandler={() => setAddCartDetailModal(false)}
+          />
+        ) : (
+          <AddCartModal
+            crossHandler={() => setAddCartModal(false)}
+            detailHandler={() => setAddCartDetailModal(true)}
+            sellerID={sellerID}
+          />
+        )}
+      </Modal>
     </View>
   );
 }

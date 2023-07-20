@@ -746,4 +746,18 @@ export const en = {
   deviceDetails: {
     deviceDetailsText: 'Device Details',
   },
+
+  shippingOrder: {
+    shippingStatus: `Today’s Shipping Status`,
+    shippingOrders: 'Shipping Order',
+    shippedOrder: 'Shipped Orders',
+    currentStatus: 'Current Status',
+    orderConvertion: 'Order convertion',
+    deliveredOrders: 'Delivered Orders',
+    cancelledOrders: 'Cancelled Orders',
+    returnedOrders: 'Returned Orders',
+    deliveredCount: '88.9%',
+    cancelledCount: '6.9%',
+    returnedCount: '4.2%',
+  },
 };

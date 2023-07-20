@@ -279,6 +279,23 @@ export { default as holdCart } from '@/assets/icons/ic_posRetail/holdCart.png';
 export { default as sideArrow } from '@/assets/icons/ic_posRetail/sideArrow.png';
 export { default as sideEarser } from '@/assets/icons/ic_posRetail/sideEarser.png';
 export { default as sideKeyboard } from '@/assets/icons/ic_posRetail/sideKeyboard.png';
+export { default as addToCartBlue } from '@/assets/icons/ic_posRetail/addToCartBlue.png';
+
+export { default as fedex } from '@/assets/icons/ic_analytics/fedex.png';
+export { default as dhl } from '@/assets/icons/ic_analytics/dhl.png';
+export { default as usps } from '@/assets/icons/ic_analytics/usps.png';
+export { default as fedexNew } from '@/assets/icons/ic_analytics/fedexNew.png';
+
+export { default as task } from '@/assets/icons/sideBarIcons/task.png';
+export { default as drawerdeliveryTruck } from '@/assets/icons/sideBarIcons/Shipping.png';
+export { default as timer } from '@/assets/icons/sideBarIcons/timer.png';
+export { default as firstTruck } from '@/assets/icons/sideBarIcons/firstTruck.png';
+export { default as Group } from '@/assets/icons/sideBarIcons/Group.png';
+export { default as Delivery } from '@/assets/icons/sideBarIcons/delivery.png';
+export { default as Cart } from '@/assets/icons/sideBarIcons/cart.png';
+export { default as NoCard } from '@/assets/icons/sideBarIcons/noCard.png';
+export { default as ReturnTruck } from '@/assets/icons/sideBarIcons/returnTruck.png';
+
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',
