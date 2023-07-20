@@ -4,6 +4,7 @@ import { StyleSheet, View, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
 export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
+  console.log('first2387 63', productGraphObject?.datasets?.[0]?.data);
   return (
     <View>
       {productGraphObject === undefined ? (
@@ -134,6 +135,7 @@ export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
             borderRadius: 16,
             marginLeft: SW(-8),
           }}
+          withVerticalLines={false}
         />
       )}
     </View>
