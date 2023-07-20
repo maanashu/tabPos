@@ -1,12 +1,5 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import {
-  FlatList,
-  Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -101,6 +94,7 @@ export function MainScreen({
   const cartData = getRetailData?.getAllCart;
   // console.log('cartData', JSON.stringify(cartData));
   const cartLength = cartData?.poscart_products?.length;
+  console.log('cartLength', cartLength);
   const productArray = getRetailData?.getMainProduct;
   // console.log('productArray', JSON.stringify(productArray));
   let arr = [getRetailData?.getAllCart];
@@ -138,6 +132,11 @@ export function MainScreen({
       setselectedCatID(selectedCatID);
     }
   }, [selectedCatID]);
+  useEffect(() => {
+    if (cartLength === 0 || cartLength === undefined) {
+      setCartModal(false);
+    }
+  }, [cartLength]);
 
   const [okk, setOkk] = useState(getRetailData?.trueCustomer?.state || false);
 
@@ -352,7 +351,9 @@ export function MainScreen({
                 <Text style={styles.allProduct}>
                   {strings.posRetail.allProduct}
                 </Text>
-                <Text style={styles.productCount}>(1280)</Text>
+                <Text style={styles.productCount}>
+                  ({productArray?.length ?? '0'})
+                </Text>
               </View>
               <View>
                 <FlatList
@@ -498,9 +499,28 @@ export function MainScreen({
           </View>
         </View>
       </View>
-
+      {/* cart list modal start */}
       <Modal animationType="fade" transparent={true} isVisible={cartModal}>
-        <CartListModal checkOutHandler={() => setCartModal(false)} />
+        <CartListModal checkOutHandler={checkOutHandler} />
+      </Modal>
+
+      {/* cart list modal end */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={addCartModal || addCartDetailModal}
+      >
+        {addCartDetailModal ? (
+          <AddCartDetailModal
+            crossHandler={() => setAddCartDetailModal(false)}
+          />
+        ) : (
+          <AddCartModal
+            crossHandler={() => setAddCartModal(false)}
+            detailHandler={() => setAddCartDetailModal(true)}
+            sellerID={sellerID}
+          />
+        )}
       </Modal>
     </View>
   );

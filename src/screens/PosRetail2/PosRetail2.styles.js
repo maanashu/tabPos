@@ -446,8 +446,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   avaliableOfferCon: {
-    height:
-      Platform.OS === 'android' ? windowHeight * 0.05 : windowHeight * 0.37,
+    height: windowHeight * 0.05,
     borderTopEndRadius: 5,
     borderTopLeftRadius: 5,
     backgroundColor: COLORS.dark_grey,
@@ -951,7 +950,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
-    marginVertical: verticalScale(4),
+    marginVertical: verticalScale(2),
     // alignContent: 'center',
   },
   blueListDataText: {
@@ -1504,6 +1503,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
     marginVertical: verticalScale(2),
+    paddingHorizontal: ms(5),
   },
   shorttableListSide: {
     width: windowWidth * 0.12,

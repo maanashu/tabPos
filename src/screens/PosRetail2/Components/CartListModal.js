@@ -1,54 +1,33 @@
-import React, { useState } from 'react';
-import {
-  ActivityIndicator,
-  Dimensions,
-  FlatList,
-  Text,
-  View,
-} from 'react-native';
+import React from 'react';
+import { ActivityIndicator, Text, View } from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
-import { strings } from '@/localization';
 import { Spacer } from '@/components';
-import { tinycolor } from 'tinycolor2';
 
 import { styles } from '@/screens/PosRetail2/PosRetail2.styles';
 import {
-  Fonts,
   borderCross,
   bucket,
   checkArrow,
-  cloth,
-  clothes,
-  crossButton,
   holdCart,
   minus,
   plus,
-  search_light,
   sideEarser,
   sideKeyboard,
 } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import { moderateScale } from 'react-native-size-matters';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import {
-  addTocart,
-  checkSuppliedVariant,
-  clearOneCart,
-} from '@/actions/RetailAction';
+import { addTocart, clearAllCart, clearOneCart } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 export function CartListModal({ checkOutHandler }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
-  console.log('cartData', cartData);
   let arr = [getRetailData?.getAllCart];
   const isLoading = useSelector(state =>
     isLoadingSelector([TYPES.ADDCART], state)
@@ -114,7 +93,7 @@ export function CartListModal({ checkOutHandler }) {
           <View style={styles.shortCartListHeight}>
             <ScrollView>
               {arr?.map((item, index) => (
-                <>
+                <View key={index}>
                   {item?.poscart_products?.map((data, ind) => (
                     <View style={styles.shortCartListData} key={ind}>
                       <View style={styles.displayflex}>
@@ -208,7 +187,7 @@ export function CartListModal({ checkOutHandler }) {
                       </View>
                     </View>
                   ))}
-                </>
+                </View>
               ))}
             </ScrollView>
           </View>
@@ -238,7 +217,7 @@ export function CartListModal({ checkOutHandler }) {
               style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
             />
             <Spacer space={SH(20)} />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => dispatch(clearAllCart())}>
               <Image
                 source={sideEarser}
                 style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}

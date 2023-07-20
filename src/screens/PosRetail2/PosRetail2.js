@@ -255,6 +255,9 @@ export function PosRetail2() {
       <MainScreen
         cartScreenHandler={() => setselectedScreen('CartScreen')}
         sellerID={sellerID}
+        checkOutHandler={() => {
+          setselectedScreen('CartAmountTips');
+        }}
       />
     ),
     ['CartScreen']: (
