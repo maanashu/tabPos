@@ -301,28 +301,13 @@ export const styles = StyleSheet.create({
     paddingBottom: verticalScale(4),
     // borderWidth: 1,
   },
-  chooseCategoryCon: {
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 7,
-    width: windowWidth * 0.2,
-    height: SH(45),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: moderateScale(8),
-  },
+
   categoryMenu: {
     width: SW(7),
     height: SW(7),
     resizeMode: 'contain',
   },
-  chooseCat: {
-    color: COLORS.black,
-    fontSize: SF(13),
-    fontFamily: Fonts.Medium,
-    width: windowWidth * 0.16,
-  },
+
   contentContainer: {
     flex: 1,
     justifyContent: 'space-between',
@@ -354,22 +339,6 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     // paddingTop: verticalScale(5),
     paddingHorizontal: moderateScale(4),
-  },
-  productCon: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.115 : windowWidth * 0.117,
-    height: Platform.OS === 'ios' ? windowHeight * 0.22 : windowHeight * 0.25,
-    backgroundColor: COLORS.white,
-    borderRadius: 5,
-    paddingHorizontal: moderateScale(3),
-    paddingBottom: verticalScale(5),
-    marginTop: verticalScale(5),
-    marginLeft: 6,
-  },
-  categoryshoes: {
-    width: windowWidth * 0.117,
-    height: windowHeight * 0.11,
-    resizeMode: 'contain',
-    alignSelf: 'center',
   },
   productDes: {
     color: COLORS.black,
@@ -1291,20 +1260,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: moderateScale(8),
+    paddingHorizontal: moderateScale(7),
     marginHorizontal: moderateVerticalScale(8),
   },
   chooseCat: {
     color: COLORS.black,
     fontSize: SF(13),
     fontFamily: Fonts.Medium,
-    // width: windowWidth * 0.16,
+    width: windowWidth * 0.11,
   },
-  categoryMenu: {
-    width: SW(7),
-    height: SW(7),
-    resizeMode: 'contain',
-  },
+
   barcodeInputWraper: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
@@ -1357,7 +1322,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   categoryshoes: {
-    width: windowWidth * 0.117,
+    width: Platform.OS === 'ios' ? windowWidth * 0.108 : windowWidth * 0.11,
     height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',

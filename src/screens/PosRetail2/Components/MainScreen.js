@@ -1,5 +1,11 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -7,28 +13,14 @@ import { Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail2/PosRetail2.styles';
 import {
-  addDiscountPic,
   addToCart,
-  borderCross,
   bucket,
   categoryMenu,
-  checkArrow,
-  clothes,
-  email,
   holdCart,
-  keyboard,
-  location,
-  minus,
-  notess,
-  ok,
-  Phone_light,
-  plus,
-  rightBack,
   search_light,
   sideArrow,
   sideEarser,
   sideKeyboard,
-  terryProfile,
 } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
@@ -47,39 +39,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TYPES } from '@/Types/Types';
 import {
   addTocart,
-  cartScreenTrue,
   clearAllCart,
-  clearOneCart,
-  customerNumber,
-  customerTrue,
-  getAllCart,
   getBrand,
   getCategory,
-  getMainProduct,
   getOneProduct,
   getProduct,
   getProductDefault,
   getSubCategory,
-  getUserDetail,
-  getUserDetailSuccess,
-  sendInvitation,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useIsFocused } from '@react-navigation/native';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { emailReg } from '@/utils/validators';
-import { cond, log } from 'react-native-reanimated';
 import { CartListModal } from './CartListModal';
 
 export function MainScreen({
   cartScreenHandler,
   checkOutHandler,
-  headercrossHandler,
   categoryArray,
   sellerID,
-  addNotesHandler,
-  addDiscountHandler,
-  onPressPayNow,
+  productArray,
 }) {
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
@@ -92,19 +69,30 @@ export function MainScreen({
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
-  // console.log('cartData', JSON.stringify(cartData));
   const cartLength = cartData?.poscart_products?.length;
-  console.log('cartLength', cartLength);
-  const productArray = getRetailData?.getMainProduct;
-  // console.log('productArray', JSON.stringify(productArray));
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
 
-  const matchId = cartData?.poscart_products?.filter(item => item?.product_id);
-
-  const [customerPhoneNo, setCustomerPhoneNo] = useState();
-
   const [showProductsFrom, setshowProductsFrom] = useState();
+
+  const mainProductArray = getRetailData?.getMainProduct;
+  // console.log('mainProductArray', mainProductArray);
+
+  useEffect(() => {
+    setfilterMenuTitle(originalFilterData);
+    setisFilterDataSeclectedOfIndex(null);
+    setTimeout(() => {
+      setshowProductsFrom(productArray);
+    }, 1000);
+  }, [isFocus]);
+
+  useEffect(() => {
+    // dispatch(getMainProduct())
+    // dispatch(getProductDefault(sellerID, page));
+    if (products) {
+      setshowProductsFrom(products);
+    }
+  }, [products]);
 
   const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
 
@@ -140,25 +128,17 @@ export function MainScreen({
 
   const [okk, setOkk] = useState(getRetailData?.trueCustomer?.state || false);
 
-  const [productDetail, setProductDetail] = useState();
-
   const isProductLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state)
-  );
-  const userDetalLoader = useSelector(state =>
-    isLoadingSelector([TYPES.GET_USERDETAIL], state)
-  );
-  const isLoading = useSelector(state =>
-    isLoadingSelector([TYPES.ADDCART], state)
   );
 
   const [showCart, setShowCart] = useState(
     getRetailData?.trueCart?.state || false
   );
 
-  useEffect(() => {
-    dispatch(getMainProduct(sellerID));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getMainProduct(sellerID));
+  // }, []);
 
   const onClickAddCart = item => {
     const data = {
@@ -204,32 +184,6 @@ export function MainScreen({
     setUserAdd('');
   };
 
-  const updateQuantity = (cartId, productId, operation) => {
-    const updatedArr = [...arr];
-
-    const cartItem = updatedArr
-      .find(item => item.id === cartId)
-      ?.poscart_products.find(product => product.id === productId);
-
-    if (cartItem) {
-      if (operation === '+') {
-        cartItem.qty += 1;
-      } else if (operation === '-') {
-        cartItem.qty -= 1;
-      }
-      const data = {
-        seller_id: cartItem?.product_details?.supply?.seller_id,
-        supplyId: cartItem?.supply_id,
-        supplyPriceID: cartItem?.supply_price_id,
-        product_id: cartItem?.product_id,
-        service_id: cartItem?.service_id,
-        qty: cartItem?.qty,
-      };
-      dispatch(addTocart(data));
-      // dispatch(createCartAction(withoutVariantObject));
-    }
-  };
-
   //  categoryType -----start
   const catTypeRenderItem = ({ item }) => {
     const backgroundColor = item.id === catTypeId ? '#6e3b6e' : '#f9c2ff';
@@ -242,14 +196,14 @@ export function MainScreen({
           if (item.id === 1) {
             setCatTypeId(item.id);
             setCategoryModal(true);
-            // dispatch(getCategory(sellerID));
+            dispatch(getCategory(sellerID));
           } else if (
             item.id === 2
             // && isFilterDataSeclectedOfIndex === 0) ||
             // item.isSelected === true
           ) {
             setCatTypeId(item.id);
-            // dispatch(getSubCategory(sellerID));
+            dispatch(getSubCategory(sellerID));
             setSubCategoryModal(true);
           } else if (
             item.id === 3
@@ -257,7 +211,7 @@ export function MainScreen({
           ) {
             setBrandModal(true);
             setCatTypeId(item.id);
-            // dispatch(getBrand(sellerID));
+            dispatch(getBrand(sellerID));
           }
         }}
         backgroundColor={backgroundColor}
@@ -278,7 +232,7 @@ export function MainScreen({
         source={categoryMenu}
         style={[
           styles.categoryMenu,
-          // { tintColor: item.isSelected && COLORS.solid_green },
+          { tintColor: item.isSelected && COLORS.solid_green },
         ]}
       />
     </TouchableOpacity>
@@ -357,12 +311,8 @@ export function MainScreen({
               </View>
               <View>
                 <FlatList
-                  data={[
-                    { name: 'category', id: 1 },
-                    { name: 'Subcategory', id: 2 },
-                    { name: 'brands', id: 3 },
-                  ]}
-                  // extraData={filterMenuTitle}
+                  data={filterMenuTitle}
+                  extraData={filterMenuTitle}
                   renderItem={catTypeRenderItem}
                   keyExtractor={item => item.id}
                   horizontal
@@ -398,8 +348,8 @@ export function MainScreen({
               </View>
             ) : (
               <FlatList
-                data={productArray}
-                extraData={productArray}
+                data={showProductsFrom || productArray}
+                extraData={showProductsFrom || productArray}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index}
                 numColumns={7}
@@ -521,6 +471,117 @@ export function MainScreen({
             sellerID={sellerID}
           />
         )}
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={categoryModal || subCategoryModal || brandModal}
+      >
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 100}
+          // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
+        >
+          <ScrollView>
+            <View>
+              {categoryModal ? (
+                <CategoryModal
+                  cancelCategory={() => {
+                    setselectedCatID(null);
+                    setCategoryModal(false);
+                    // dispatch(getProductDefault(sellerID, page));
+
+                    // dispatch(getProduct(selectedCatID, null, null, sellerID));
+                  }}
+                  crossHandler={() => setCategoryModal(false)}
+                  categoryArray={categoryArray}
+                  onSelectCategory={selectedCat => {
+                    dispatch(getProduct(selectedCat.id, null, null, sellerID));
+
+                    setselectedCatID(selectedCat.id);
+
+                    setisFilterDataSeclectedOfIndex(0);
+                    setfilterMenuTitle(prevData => {
+                      const newData = [...prevData];
+
+                      // Set Category
+                      newData[0].name = selectedCat.name;
+                      newData[0].isSelected = true;
+
+                      // Reset SubCategory selections
+                      // newData[1].isSelected = false;
+                      // newData[1].name = originalFilterData[1].name;
+
+                      // Reset Brand selections
+                      // newData[2].isSelected = false;
+                      // newData[2].name = originalFilterData[2].name;
+
+                      return newData;
+                    });
+
+                    setCategoryModal(false);
+                  }}
+                />
+              ) : subCategoryModal ? (
+                <SubCatModal
+                  crossHandler={() => setSubCategoryModal(false)}
+                  onSelectSubCategory={selectedSubCat => {
+                    dispatch(
+                      getProduct(
+                        selectedCatID,
+                        selectedSubCat.id,
+                        null,
+                        sellerID
+                      )
+                    );
+                    setselectedSubCatID(selectedSubCat.id);
+                    setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
+
+                    setfilterMenuTitle(prevData => {
+                      const newData = [...prevData];
+
+                      // Set SubCategory
+                      newData[1].name = selectedSubCat.name;
+                      newData[1].isSelected = true;
+
+                      // Reset Brand selections
+                      // newData[2].isSelected = false;
+                      // newData[2].name = originalFilterData[2].name;
+
+                      return newData;
+                    });
+                    setSubCategoryModal(false);
+                  }}
+                />
+              ) : (
+                <BrandModal
+                  crossHandler={() => setBrandModal(false)}
+                  onSelectbrands={selectedBrand => {
+                    dispatch(
+                      getProduct(
+                        selectedCatID,
+                        selectedSubCatID,
+                        selectedBrand.id,
+                        sellerID
+                      )
+                    );
+                    setselectedBrandID(selectedBrand.id);
+                    setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
+
+                    setfilterMenuTitle(prevData => {
+                      const newData = [...prevData];
+                      newData[2].name = selectedBrand.name;
+                      newData[2].isSelected = true;
+                      return newData;
+                    });
+                    setBrandModal(false);
+                  }}
+                />
+              )}
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );

@@ -95,19 +95,19 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getProduct +
-          `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${sellerID}&category_ids=${selectedId}`
+          `?app_name=pos&delivery_options=3&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       } else if (selectedId && subSelectedId && sellerID && !brandSelectedId) {
         return (
           PRODUCT_URL +
           ApiProductInventory.getProduct +
-          `?app_name=pos&delivery_options=3&page=1&limit=10&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+          `?app_name=pos&delivery_options=3&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       } else if (selectedId && subSelectedId && brandSelectedId && sellerID) {
         return (
           PRODUCT_URL +
           ApiProductInventory.getProduct +
-          `?app_name=pos&delivery_options=3&page=1&limit=10&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+          `?app_name=pos&delivery_options=3&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       }
     };
@@ -655,7 +655,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.product +
-        `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${sellerID}`;
+        `?app_name=pos&delivery_options=3&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);

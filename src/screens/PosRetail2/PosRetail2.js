@@ -30,6 +30,7 @@ import {
   customerNumber,
   getAllCart,
   getCategory,
+  getMainProduct,
   getProductDefault,
 } from '@/actions/RetailAction';
 import { useIsFocused } from '@react-navigation/native';
@@ -226,6 +227,7 @@ export function PosRetail2() {
   };
 
   useEffect(() => {
+    // dispatch(getMainProduct(sellerID));
     dispatch(getProductDefault(sellerID, page));
     dispatch(getAllCart());
   }, [isFocus]);
@@ -255,7 +257,13 @@ export function PosRetail2() {
       <MainScreen
         cartScreenHandler={() => setselectedScreen('CartScreen')}
         sellerID={sellerID}
-        checkOutHandler={() => {
+        headercrossHandler={() => alert('abc')}
+        checkOutHandler={() => setselectedScreen('CartScreen')}
+        productArray={defaultArrayproduct}
+        categoryArray={categoryArray}
+        addNotesHandler={addNotesHandler}
+        addDiscountHandler={addDiscountHandler}
+        onPressPayNow={() => {
           setselectedScreen('CartAmountTips');
         }}
       />
