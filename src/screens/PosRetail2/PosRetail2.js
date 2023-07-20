@@ -256,7 +256,8 @@ export function PosRetail2() {
         cartScreenHandler={() => setselectedScreen('CartScreen')}
         sellerID={sellerID}
         checkOutHandler={() => {
-          setselectedScreen('CartAmountTips');
+          setselectedScreen('CartAmountPayBy')
+          // setselectedScreen('CartAmountTips');
         }}
       />
     ),

@@ -120,9 +120,9 @@ const getAllCartRequest = () => ({
   payload: null,
 });
 
-const getAllCartSuccess = getAllCart => ({
+export const getAllCartSuccess = getAllCart => ({
   type: TYPES.GET_ALL_CART_SUCCESS,
-  payload: { getAllCart },
+  payload:getAllCart,
 });
 
 const getAllCartError = error => ({
@@ -556,6 +556,9 @@ export const getAllCart = () => async dispatch => {
   dispatch(getAllCartRequest());
   try {
     const res = await RetailController.getAllCart();
+console.log("sdsdsdsds",JSON.stringify(res));
+
+
     dispatch(getAllCartSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
