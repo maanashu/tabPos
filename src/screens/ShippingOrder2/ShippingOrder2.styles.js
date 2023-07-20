@@ -2,12 +2,15 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { ms, verticalScale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.textInputBackground,
+  },
   firstRowStyle: {
     flexDirection: 'row',
     paddingHorizontal: 20,
@@ -17,7 +20,6 @@ const styles = StyleSheet.create({
     width: SW(100),
     height: SH(120),
     alignItems: 'flex-start',
-    ...ShadowStyles.shadow2,
     borderRadius: 10,
     paddingTop: SH(16),
     backgroundColor: COLORS.white,
@@ -43,7 +45,6 @@ const styles = StyleSheet.create({
   currentStatusView: {
     width: SW(100),
     borderRadius: 10,
-    ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
     paddingVertical: SH(15),
   },
@@ -87,7 +88,6 @@ const styles = StyleSheet.create({
   orderConvertionView: {
     width: SW(100),
     borderRadius: 10,
-    ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
     paddingVertical: SH(15),
   },
@@ -127,21 +127,78 @@ const styles = StyleSheet.create({
     fontSize: SF(14),
     color: COLORS.dark_grey,
   },
+  orderRowStyle: {
+    borderWidth: 1,
+    borderRadius: 5,
+    height: SH(60),
+    marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    paddingHorizontal: 20,
+    borderColor: COLORS.blue_shade,
+  },
+  rightIconStyle: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+  },
+  pinImageStyle: {
+    width: SH(16),
+    height: SH(16),
+    resizeMode: 'contain',
+  },
+  timeTextStyle: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    color: COLORS.primary,
+  },
+  nameTextStyle: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+  },
+  distanceTextStyle: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(11),
+    color: COLORS.dark_grey,
+    paddingLeft: 5,
+  },
+
   // -------------------
   rightSideView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    // borderWidth: 1,
-    ...ShadowStyles.shadow,
     width: windowWidth * 0.06,
-    // height: windowHeight * 0.86,
     paddingVertical: verticalScale(6),
     alignItems: 'center',
+  },
+  shippingOrdersView: {
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    width: SW(110),
+    paddingVertical: verticalScale(6),
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    top: 0,
+    right: 0,
+    zIndex: 999,
   },
   drawerIconView: {
     flexDirection: 'column',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: 5,
+  },
+  firstIconStyle: {
+    alignSelf: 'center',
+    width: SW(13),
+    height: SW(13),
+    alignSelf: 'center',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 25,
+    backgroundColor: COLORS.textInputBackground,
   },
   sideBarImage: {
     width: SW(9),
@@ -152,7 +209,6 @@ const styles = StyleSheet.create({
     width: SW(17),
     height: SW(17),
     borderRadius: 5,
-    backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -190,7 +246,6 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   orderToReviewView: {
-    ...ShadowStyles.shadow2,
     borderRadius: 10,
     backgroundColor: COLORS.white,
   },
@@ -218,6 +273,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
     backgroundColor: COLORS.darkGray,
+  },
+  shippingOrderHeading: {
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(16),
+    color: COLORS.dark_grey,
+    paddingLeft: SW(6),
   },
 });
 
