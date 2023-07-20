@@ -650,12 +650,31 @@ export class RetailController {
     });
   }
 
-  static async getMainProduct(sellerID) {
+  static async getDynamicProducts(productTypeID = {}) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const defaultParams = {
+        app_name: 'pos',
+        delivery_options: '3',
+        seller_id: sellerID,
+      };
+
+      let finalParams;
+
+      if (Object.keys(productTypeID).length !== 0) {
+        finalParams = {
+          ...defaultParams,
+          ...productTypeID,
+        };
+      } else {
+        finalParams = {
+          ...defaultParams,
+        };
+      }
+
+      const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.product +
-        `?app_name=pos&delivery_options=3&seller_id=${sellerID}`;
+        PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -664,7 +683,68 @@ export class RetailController {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
-            text2: error.msg,
+            text2: 'Product not found',
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getMainProduct(
+    selectedId,
+    subSelectedId,
+    brandSelectedId,
+    sellerID
+  ) {
+    const urlAccCat = (
+      selectedId,
+      subSelectedId,
+      brandSelectedId,
+      sellerID
+    ) => {
+      if (sellerID && !selectedId && !subSelectedId && !brandSelectedId) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.product +
+          `?app_name=pos&delivery_options=3&seller_id=${sellerID}`
+        );
+      } else if (selectedId && sellerID && !subSelectedId && !brandSelectedId) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getProduct +
+          `?app_name=pos&delivery_options=3&seller_id=${sellerID}&category_ids=${selectedId}`
+        );
+      } else if (selectedId && subSelectedId && sellerID && !brandSelectedId) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getProduct +
+          `?app_name=pos&delivery_options=3&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+        );
+      } else if (selectedId && subSelectedId && brandSelectedId && sellerID) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getProduct +
+          `?app_name=pos&delivery_options=3&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+        );
+      }
+    };
+    return new Promise((resolve, reject) => {
+      const endpoint = urlAccCat(
+        selectedId,
+        subSelectedId,
+        brandSelectedId,
+        sellerID
+      );
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: 'Product not found',
             visibilityTime: 2000,
           });
           reject(error);

@@ -785,10 +785,18 @@ export const retailclearstore = () => async dispatch => {
   dispatch(clearRetailStore());
 };
 
-export const getMainProduct = sellerID => async dispatch => {
+export const getMainProduct = productTypeId => async dispatch => {
   dispatch(getMainProductRequest());
   try {
-    const res = await RetailController.getMainProduct(sellerID);
+    // const res = await RetailController.getMainProduct(
+    //   selectedId,
+    //   subSelectedId,
+    //   brandSelectedId,
+    //   sellerID
+    // );
+
+    const res = await RetailController.getDynamicProducts(productTypeId);
+
     dispatch(getMainProductSuccess(res?.payload?.data));
   } catch (error) {
     if (error?.statusCode === 204) {

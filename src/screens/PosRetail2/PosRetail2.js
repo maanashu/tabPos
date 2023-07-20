@@ -227,8 +227,7 @@ export function PosRetail2() {
   };
 
   useEffect(() => {
-    // dispatch(getMainProduct(sellerID));
-    dispatch(getProductDefault(sellerID, page));
+    dispatch(getMainProduct());
     dispatch(getAllCart());
   }, [isFocus]);
 

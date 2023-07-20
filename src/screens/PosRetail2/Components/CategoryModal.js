@@ -67,7 +67,7 @@ export function CategoryModal({
             style={styles.cancelCatCon}
             onPress={cancelCategory}
           >
-            <Text style={styles.catCancelText}>Cancel</Text>
+            <Text style={styles.catCancelText}>Clear</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={crossHandler}>
             <Image source={crossButton} style={styles.crossButton} />

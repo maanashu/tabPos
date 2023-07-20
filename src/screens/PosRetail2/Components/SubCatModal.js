@@ -15,7 +15,11 @@ import { useSelector } from 'react-redux';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 
-export function SubCatModal({ crossHandler, onSelectSubCategory }) {
+export function SubCatModal({
+  crossHandler,
+  onSelectSubCategory,
+  cancelSubCategory,
+}) {
   const [selectedId, setSelectedId] = useState();
 
   const getRetailData = useSelector(getRetail);
@@ -68,9 +72,9 @@ export function SubCatModal({ crossHandler, onSelectSubCategory }) {
         <View style={[styles.displayRow]}>
           <TouchableOpacity
             style={styles.cancelCatCon}
-            onPress={() => alert('in Progress')}
+            onPress={cancelSubCategory}
           >
-            <Text style={styles.catCancelText}>Cancel</Text>
+            <Text style={styles.catCancelText}>Clear</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={crossHandler}>
             <Image source={crossButton} style={styles.crossButton} />

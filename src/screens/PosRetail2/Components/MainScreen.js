@@ -42,6 +42,7 @@ import {
   clearAllCart,
   getBrand,
   getCategory,
+  getMainProduct,
   getOneProduct,
   getProduct,
   getProductDefault,
@@ -93,6 +94,10 @@ export function MainScreen({
       setshowProductsFrom(products);
     }
   }, [products]);
+
+  useEffect(() => {
+    dispatch(getMainProduct());
+  }, []);
 
   const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
 
@@ -306,7 +311,7 @@ export function MainScreen({
                   {strings.posRetail.allProduct}
                 </Text>
                 <Text style={styles.productCount}>
-                  ({productArray?.length ?? '0'})
+                  ({mainProductArray?.length ?? '0'})
                 </Text>
               </View>
               <View>
@@ -348,8 +353,8 @@ export function MainScreen({
               </View>
             ) : (
               <FlatList
-                data={showProductsFrom || productArray}
-                extraData={showProductsFrom || productArray}
+                data={mainProductArray}
+                extraData={mainProductArray}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index}
                 numColumns={7}
@@ -490,16 +495,22 @@ export function MainScreen({
                   cancelCategory={() => {
                     setselectedCatID(null);
                     setCategoryModal(false);
-                    // dispatch(getProductDefault(sellerID, page));
-
-                    // dispatch(getProduct(selectedCatID, null, null, sellerID));
+                    dispatch(getMainProduct());
+                    setfilterMenuTitle(prevData => {
+                      const newData = [...prevData];
+                      newData[0].isSelected = false;
+                      newData[0].name = originalFilterData[0].name;
+                      return newData;
+                    });
                   }}
                   crossHandler={() => setCategoryModal(false)}
                   categoryArray={categoryArray}
                   onSelectCategory={selectedCat => {
-                    dispatch(getProduct(selectedCat.id, null, null, sellerID));
-
                     setselectedCatID(selectedCat.id);
+                    const categoryID = {
+                      category_ids: selectedCat.id,
+                    };
+                    dispatch(getMainProduct(categoryID));
 
                     setisFilterDataSeclectedOfIndex(0);
                     setfilterMenuTitle(prevData => {
@@ -510,12 +521,12 @@ export function MainScreen({
                       newData[0].isSelected = true;
 
                       // Reset SubCategory selections
-                      // newData[1].isSelected = false;
-                      // newData[1].name = originalFilterData[1].name;
+                      newData[1].isSelected = false;
+                      newData[1].name = originalFilterData[1].name;
 
                       // Reset Brand selections
-                      // newData[2].isSelected = false;
-                      // newData[2].name = originalFilterData[2].name;
+                      newData[2].isSelected = false;
+                      newData[2].name = originalFilterData[2].name;
 
                       return newData;
                     });
@@ -525,16 +536,23 @@ export function MainScreen({
                 />
               ) : subCategoryModal ? (
                 <SubCatModal
+                  cancelSubCategory={() => {
+                    setselectedSubCatID(null);
+                    setSubCategoryModal(false);
+                    dispatch(getMainProduct());
+                    setfilterMenuTitle(prevData => {
+                      const newData = [...prevData];
+                      newData[1].isSelected = false;
+                      newData[1].name = originalFilterData[1].name;
+                      return newData;
+                    });
+                  }}
                   crossHandler={() => setSubCategoryModal(false)}
                   onSelectSubCategory={selectedSubCat => {
-                    dispatch(
-                      getProduct(
-                        selectedCatID,
-                        selectedSubCat.id,
-                        null,
-                        sellerID
-                      )
-                    );
+                    const subCategoryID = {
+                      sub_category_ids: selectedSubCat.id,
+                    };
+                    dispatch(getMainProduct(subCategoryID));
                     setselectedSubCatID(selectedSubCat.id);
                     setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
 
@@ -545,9 +563,13 @@ export function MainScreen({
                       newData[1].name = selectedSubCat.name;
                       newData[1].isSelected = true;
 
-                      // Reset Brand selections
-                      // newData[2].isSelected = false;
-                      // newData[2].name = originalFilterData[2].name;
+                      // Reset category selections
+                      newData[0].isSelected = false;
+                      newData[0].name = originalFilterData[0].name;
+
+                      // Reset brand selections
+                      newData[2].isSelected = false;
+                      newData[2].name = originalFilterData[2].name;
 
                       return newData;
                     });
@@ -556,23 +578,38 @@ export function MainScreen({
                 />
               ) : (
                 <BrandModal
+                  cancelBrand={() => {
+                    setselectedBrandID(null);
+                    setBrandModal(false);
+                    dispatch(getMainProduct());
+                    setfilterMenuTitle(prevData => {
+                      const newData = [...prevData];
+                      newData[2].isSelected = false;
+                      newData[2].name = originalFilterData[2].name;
+                      return newData;
+                    });
+                  }}
                   crossHandler={() => setBrandModal(false)}
                   onSelectbrands={selectedBrand => {
-                    dispatch(
-                      getProduct(
-                        selectedCatID,
-                        selectedSubCatID,
-                        selectedBrand.id,
-                        sellerID
-                      )
-                    );
                     setselectedBrandID(selectedBrand.id);
+                    const brandID = {
+                      brand_id: selectedBrand.id,
+                    };
+                    dispatch(getMainProduct(brandID));
                     setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
 
                     setfilterMenuTitle(prevData => {
                       const newData = [...prevData];
                       newData[2].name = selectedBrand.name;
                       newData[2].isSelected = true;
+
+                      // Reset category selections
+                      newData[0].isSelected = false;
+                      newData[0].name = originalFilterData[0].name;
+
+                      // Reset subCategory selections
+                      newData[1].isSelected = false;
+                      newData[1].name = originalFilterData[1].name;
                       return newData;
                     });
                     setBrandModal(false);
