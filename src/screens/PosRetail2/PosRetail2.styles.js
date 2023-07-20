@@ -209,6 +209,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     padding:ms(10)
   },
+  _payBYBoxContainerEmpty: {
+   
+    height: ms(125),
+    width: ms(170),
+    margin: ms(3),
+    alignItems: 'center',
+    padding:ms(10)
+  },
   _payByTitle: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
@@ -1487,7 +1495,13 @@ _payBYBoxContainerReceipe: {
   justifyContent: 'center',
   alignItems: 'center',
 },
-
+_payBYBoxContainerReceipeEmpty: {
+  height: ms(50),
+  width: ms(170),
+  margin: ms(3),
+  justifyContent: 'center',
+  alignItems: 'center',
+},
 _payByAmountReceipe: {
   fontFamily: Fonts.Regular,
   color: COLORS.solid_grey,
@@ -1672,4 +1686,253 @@ emptyListText: {
   shortCartListHeight: {
     height: windowHeight * 0.7,
   },
+
+
+
+
+  //PHONE POPUP 
+
+  calendarSettingModalContainer: {
+    width: ms(295),
+    height: ms(420),
+    backgroundColor: 'white',
+    padding: ms(10),
+    paddingVertical: ms(15),
+    alignSelf: 'center',
+    borderRadius: ms(10),
+    alignItems: "center"
+  },
+  _btnContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    width: windowWidth * 0.35,
+  },
+  declineBtnContainer: {
+    height: ms(40),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.textInputBackground,
+    flex: 1,
+    borderRadius: ms(3),
+  },
+  acceptbtnContainer: {
+    height: ms(40),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.primary,
+    flex: 1,
+    borderRadius: ms(3),
+    marginLeft: ms(8),
+  },
+  declineText: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(8),
+    color: COLORS.dark_grey,
+  },
+
+  input: {
+    width: "90%",
+    height: 70,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  numberPad: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: windowWidth * 0.35,
+    marginVertical: SW(7),
+  },
+  submitButton: {
+    backgroundColor: COLORS.primary,
+    width: windowWidth * 0.32,
+    height: SH(60),
+  },
+  buttonText: {
+    color: COLORS.darkGray,
+    fontSize: SF(14),
+    fontFamily: Fonts.SemiBold,
+  },
+
+  keyPadButton: {
+    height: SH(110),
+    width: SH(125),
+    justifyContent: 'center',
+    borderColor: COLORS.gerySkies,
+    alignItems: 'center',
+    borderWidth: 0.3,
+    // borderRadius: 5,
+    // overflow: 'hidden', 
+  },
+  outerBorderRadius: {
+    borderRadius:5 ,
+    overflow: 'hidden',
+  },
+  keyPadText: {
+    fontSize: SH(28),
+    fontFamily: Fonts.Medium,
+    color: COLORS.solid_grey,
+  },
+  textInputView: {
+    paddingHorizontal: SW(12),
+    borderWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: windowHeight * 0.08,
+    width: windowWidth * 0.348,
+    // marginVertical: 10,
+    borderWidth: 1,
+    borderColor: "#D8D8D8",
+    borderRadius: 5,
+    marginHorizontal: SW(10),
+    // marginBottom:SW(12)
+  },
+  dropDownIcon: {
+    width: 7,
+    height: 7,
+    resizeMode: 'contain',
+  },
+  countryCodeText: {
+    color: COLORS.black,
+    fontSize: SF(18),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(8),
+  },
+  textInputContainer: {
+    color: COLORS.black,
+    fontSize: SF(16),
+    fontFamily: Fonts.Italic,
+    width: windowWidth * 0.2,
+  },
+
+  jobrSaveView:{
+    borderColor: COLORS.primary,
+    borderWidth: 1,
+    height: ms(50),
+    width: ms(520),
+    margin: ms(3),
+    borderRadius: ms(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop:ms(25)
+
+},
+youSave: {
+  fontFamily: Fonts.Regular,
+  color: COLORS.primary,
+  fontSize: ms(9),
+  marginBottom: ms(5),
+},
+saveJBR: {
+  fontFamily: Fonts.SemiBold,
+  color: COLORS.primary,
+  fontSize: ms(14),
+  marginTop: ms(4),
+},
+
+jbrContainer: {
+  flexDirection: 'row',
+  alignItems: 'baseline', // To align "JBR" and the percentage value on the same baseline
+},
+jbrText: {
+  fontFamily: Fonts.Bold,
+  color: COLORS.primary,
+  fontSize: ms(11),
+  
+  marginTop: ms(4),
+  alignSelf:"flex-start",marginRight:ms(3)
+  // You can apply any other styles you want for "JBR"
+},
+savePercent: {
+  fontFamily: Fonts.Bold,
+  color: COLORS.primary,
+  fontSize: ms(15),
+  marginTop: ms(4), // Set your desired font size for the percentage value
+  // Add any other styles you want for the percentage value here
+},
+
+
+//Email Modal 
+
+
+
+  emailModalContainer: {
+  width: ms(350),
+  height: ms(160),
+  backgroundColor: 'white',
+  // padding: ms(10),
+   paddingVertical: ms(15),
+  alignSelf: 'center',
+  borderRadius: ms(10),
+  alignItems: "center"
+},
+modalHeaderCon: {
+  height: SH(80),
+  width:ms(300),
+  // paddingHorizontal: moderateScale(0),
+  justifyContent: 'center',
+
+},
+crossButton: {
+  width: SW(9),
+  height: SW(9),
+  resizeMode: 'contain',
+},
+crossButtonCon: {
+  width: SW(13),
+  height: SW(13),
+  // justifyContent: 'center',
+  alignItems: 'center',
+},
+modalDataCon: {
+  width: windowWidth * 0.38,
+  alignSelf: 'center',
+  flex: 1,
+},
+flexRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+},
+twoStepText: {
+  fontSize: SF(25),
+  fontFamily: Fonts.MaisonBold,
+  color: COLORS.black,
+  textAlign:"left"
+},
+
+inputContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderWidth: 1,
+  borderColor: '#ccc',
+  borderRadius: 5,
+  width:ms(300),
+  height:ms(40),
+  marginTop:ms(25),
+  padding:15
+},
+textInput: {
+  flex:1,
+  height: 45,
+  fontSize:ms(10),
+  paddingHorizontal: 15,
+
+},
+payNowButton: {
+ height:ms(30),
+  width:ms(70),
+  backgroundColor:COLORS.darkGray,
+  borderRadius: 5,
+  alignItems:"center",
+  justifyContent:"center",
+  // marginHorizontal:ms(5)
+},
+payNowButtonText: {
+  color: 'white',
+  fontSize: 16,
+  fontWeight: 'bold',
+},
+
 });

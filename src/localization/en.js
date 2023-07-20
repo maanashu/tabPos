@@ -176,6 +176,7 @@ export const en = {
     DisTitle: 'Discount Title',
     sendRequest: 'Send Request',
     next: 'Next',
+    eRecipeEmail:`e-recipe will Send\nto your email`
   },
   posSale: {
     paymentHeader: 'Customer & Payment',

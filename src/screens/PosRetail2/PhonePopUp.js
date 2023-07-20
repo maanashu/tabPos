@@ -3,173 +3,36 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput, FlatList, D
 import { Fonts, radioSelect, radioUnSelect, cross, deleteBack, dropdown } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { moderateScale, ms } from 'react-native-size-matters';
-import Modal from 'react-native-modal';
-import { strings } from '@/localization';
-import { APPOINTMENT_REQUEST_MODE, CALENDAR_MODES, CALENDAR_TIME_FORMAT, EMPLOYEES_COLOR_SET_MODE } from '@/constants/enums';
-import CountryPicker from 'react-native-country-picker-modal';
 
-const PhonePopUp = ({ isVisible, setIsVisible }) => {
+export const PhonePopUp = ({ value, onPress }) => {
+  if (value === 'cross' || value === 'deleteBack') {
+    // Render an image for the delete and cross buttons
+    const imageSource = value === 'cross' ? cross : deleteBack;
 
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [flag, setFlag] = useState('US');
-  const [countryCode, setCountryCode] = useState('+1');
-  const [enteredValue, setEnteredValue] = useState('+1');
-
-  const onChangePhoneNumber = phone => {
-    setPhoneNumber(phone);
-  };
-
-  const KEYBOARD_DATA = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    'cross',
-    '0',
-    'deleteBack',
-  ];
-
-  const renderKeyPress = (value) => {
-    if (value === 'cross' || value === 'deleteBack') {
-      // Render an image for the delete and cross buttons
-      const imageSource = value === 'cross' ? cross : deleteBack;
-
-      return (
-        <TouchableOpacity
-          style={[styles.keyPadButton, styles.outerBorderRadius]}
-          onPress={value => {
-            if (value === 'cross') {
-              setEnteredValue('');
-            } else if (value === 'deleteBack') {
-              setEnteredValue(prev => prev.slice(0, -1));
-            } else {
-              setEnteredValue(prev => {
-                const newValue = prev + value;
-                if (newValue.length > maxCharLength) {
-                  return newValue.slice(0, maxCharLength);
-                } else {
-                  return newValue;
-                }
-              });
-            }
-          }}
-        >
-          <Image
-            source={imageSource}
-            style={{ resizeMode: 'contain', height: SH(20), width: SH(20), tintColor: COLORS.darkGray }}
-          />
-        </TouchableOpacity>
-      );
-    } else {
-      // Render a text button for the numeric keys
-      return (
-        <TouchableOpacity
-          style={[styles.keyPadButton, styles.outerBorderRadius]}
-          onPress={value => {
-            if (value === 'cross') {
-              setEnteredValue('');
-            } else if (value === 'deleteBack') {
-              setEnteredValue(prev => prev.slice(0, -1));
-            } else {
-              setEnteredValue(prev => {
-                const newValue = prev + value;
-                if (newValue.length > maxCharLength) {
-                  return newValue.slice(0, maxCharLength);
-                } else {
-                  return newValue;
-                }
-              });
-            }
-          }}
-        >
-          <Text style={styles.keyPadText}>{value}</Text>
-        </TouchableOpacity>
-      );
-    }
+    return (
+      <TouchableOpacity
+        style={[styles.keyPadButton, { backgroundColor: '#FFFF' }]}
+        onPress={() => onPress(value)}
+      >
+        <Image
+          source={imageSource}
+        
+          style={{ resizeMode: 'contain', height: SH(20),tintColor:"#626262", width: SH(20) }}
+        />
+      </TouchableOpacity>
+    );
+  } else {
+    // Render a text button for the numeric keys
+    return (
+      <TouchableOpacity
+        style={styles.keyPadButton}
+        onPress={() => onPress(value)}
+      >
+        <Text style={styles.keyPadText}>{value}</Text>
+      </TouchableOpacity>
+    );
   }
-
-  return (
-    <Modal isVisible={isVisible}>
-      <View style={styles.calendarSettingModalContainer}>
-        <View style={styles.textInputView}>
-          <CountryPicker
-            onSelect={code => {
-              setFlag(code.cca2);
-              if (code.callingCode !== []) {
-                setCountryCode('+' + code.callingCode.flat());
-              } else {
-                setCountryCode('');
-              }
-            }}
-            countryCode={flag}
-            withFilter
-            withCallingCode
-          />
-          <Image source={dropdown} style={styles.dropDownIcon} />
-          <Text style={styles.countryCodeText}>{countryCode}</Text>
-          <TextInput
-            maxLength={15}
-            returnKeyType="done"
-            keyboardType="number-pad"
-            value={phoneNumber.trim()}
-            onChangeText={onChangePhoneNumber}
-            style={styles.textInputContainer}
-            placeholder={strings.verifyPhone.placeHolderText}
-            placeholderTextColor={COLORS.darkGray}
-            showSoftInputOnFocus={false}
-          />
-        </View>
-        <View style={styles.numberPad}>
-          <FlatList
-            data={KEYBOARD_DATA}
-            scrollEnabled={false}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(_, index) => index.toString()}
-            contentContainerStyle={{
-              alignItems: 'center',
-            }}
-            numColumns={3}
-            renderItem={({ item, index }) => (
-              renderKeyPress(item)
-            )}
-          />
-        </View>
-
-        <View style={styles._btnContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setIsVisible(false);
-            }}
-            style={styles.declineBtnContainer}
-          >
-            <Text style={styles.declineText}>Close</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              const calendatSettings = {
-                defaultCalendarMode: defaultCalendarMode,
-                defaultTimeFormat: defaultTimeFormat,
-                defaultAppointmentRequestMode: defaultAppointmentRequestMode,
-                defaultEmployeesColorSet: defaultEmployeesColorSet,
-              };
-              setIsVisible(false);
-            }}
-            style={[styles.acceptbtnContainer]}
-          >
-            <Text style={styles.approveText}>Pay Now</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-  );
 };
-
 export default PhonePopUp;
 
 const windowWidth = Dimensions.get('window').width;
@@ -177,7 +40,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   calendarSettingModalContainer: {
-    width: ms(300),
+    width: ms(295),
     height: ms(420),
     backgroundColor: 'white',
     padding: ms(10),
