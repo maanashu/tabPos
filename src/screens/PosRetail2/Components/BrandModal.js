@@ -15,9 +15,8 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { TYPES } from '@/Types/Types';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
-export function BrandModal({ crossHandler, onSelectbrands }) {
+export function BrandModal({ crossHandler, onSelectbrands, cancelBrand }) {
   const [selectedId, setSelectedId] = useState();
-
   const getRetailData = useSelector(getRetail);
   const brandArray = getRetailData?.brands;
 
@@ -64,11 +63,8 @@ export function BrandModal({ crossHandler, onSelectbrands }) {
       <View style={styles.displayflex}>
         <Text style={styles.categories}>{strings.posRetail.brand}</Text>
         <View style={[styles.displayRow]}>
-          <TouchableOpacity
-            style={styles.cancelCatCon}
-            onPress={() => alert('in Progress')}
-          >
-            <Text style={styles.catCancelText}>Cancel</Text>
+          <TouchableOpacity style={styles.cancelCatCon} onPress={cancelBrand}>
+            <Text style={styles.catCancelText}>Clear</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={crossHandler}>
             <Image source={crossButton} style={styles.crossButton} />
