@@ -138,10 +138,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderColor: COLORS.blue_shade,
   },
+  showAllOrdersView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    height: SH(60),
+    marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    paddingHorizontal: 20,
+    width: SW(140),
+    borderColor: COLORS.blue_shade,
+  },
   rightIconStyle: {
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
+  },
+  locationViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   pinImageStyle: {
     width: SH(16),
@@ -152,6 +168,9 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.primary,
+  },
+  orderDetailStyle: {
+    justifyContent: 'center',
   },
   nameTextStyle: {
     fontFamily: Fonts.Regular,
@@ -197,13 +216,27 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 25,
+    // marginBottom: 25,
     backgroundColor: COLORS.textInputBackground,
+  },
+  shippingDrawerView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 13,
+    paddingHorizontal: 25,
   },
   sideBarImage: {
     width: SW(9),
     height: SW(9),
     resizeMode: 'contain',
+  },
+  shippingDrawerTitleText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+  },
+  shippingDrawerCountText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
   },
   bucketBackgorund: {
     width: SW(17),
@@ -248,6 +281,11 @@ const styles = StyleSheet.create({
   orderToReviewView: {
     borderRadius: 10,
     backgroundColor: COLORS.white,
+    marginBottom: 90,
+  },
+  contentContainerStyle: {
+    flexGrow: 1,
+    paddingBottom: 20,
   },
   headingRowStyle: {
     flexDirection: 'row',
@@ -260,6 +298,13 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
+  },
+  numberOrdersText: {
+    color: COLORS.dark_grey,
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
   },
   viewallTextStyle: {
     fontFamily: Fonts.Regular,
@@ -274,11 +319,75 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: COLORS.darkGray,
   },
+  modalStyle: {
+    flex: 1,
+  },
+  shippingOrderViewStyle: {
+    position: 'absolute',
+    zIndex: 99,
+    backgroundColor: COLORS.white,
+    right: -50,
+    top: -50,
+    bottom: -50,
+    borderRadius: 10,
+  },
+  shippingOrderHeader: {
+    paddingTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   shippingOrderHeading: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(16),
     color: COLORS.dark_grey,
     paddingLeft: SW(6),
+  },
+  backImageStyle: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+  },
+  orderDetailView: {
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    width: SW(160),
+    marginBottom: 90,
+  },
+  userDetailView: {
+    flex: 1,
+    borderWidth: 1,
+    paddingVertical: 20,
+    borderRadius: 10,
+    height: SH(80),
+    marginVertical: 10,
+    flexDirection: 'row',
+    borderWidth: 1,
+  },
+  userImageStyle: {
+    width: SH(36),
+    height: SH(36),
+    resizeMode: 'contain',
+  },
+  userNameView: {
+    paddingLeft: 10,
+  },
+  orderproductView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    height: SH(60),
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    paddingHorizontal: 5,
+    borderColor: COLORS.blue_shade,
+  },
+  removeProductImageStyle: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
   },
 });
 

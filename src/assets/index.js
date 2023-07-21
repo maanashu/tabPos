@@ -296,6 +296,8 @@ export { default as Cart } from '@/assets/icons/sideBarIcons/cart.png';
 export { default as NoCard } from '@/assets/icons/sideBarIcons/noCard.png';
 export { default as ReturnTruck } from '@/assets/icons/sideBarIcons/returnTruck.png';
 export { default as flipTruck } from '@/assets/icons/sideBarIcons/flipTruck.png';
+export { default as scooter } from '@/assets/icons/ic_shipingOrder/scooter.png';
+export { default as removeProduct } from '@/assets/icons/ic_shipingOrder/removeProduct.png';
 
 /* Fonts */
 export const Fonts = {
