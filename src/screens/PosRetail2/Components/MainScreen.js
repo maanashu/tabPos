@@ -77,7 +77,6 @@ export function MainScreen({
   const [showProductsFrom, setshowProductsFrom] = useState();
 
   const mainProductArray = getRetailData?.getMainProduct;
-  // console.log('mainProductArray', mainProductArray);
 
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
@@ -172,15 +171,12 @@ export function MainScreen({
     },
   ];
 
-  const productFun = useCallback(
-    async productId => {
-      const res = await dispatch(getOneProduct(sellerID, productId));
-      if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-        setAddCartModal(true);
-      }
-    },
-    [sellerID]
-  );
+  const productFun = async productId => {
+    const res = await dispatch(getOneProduct(sellerID, productId));
+    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+      setAddCartModal(true);
+    }
+  };
 
   const userInputClear = () => {
     setUserEmail('');
@@ -456,7 +452,13 @@ export function MainScreen({
         </View>
       </View>
       {/* cart list modal start */}
-      <Modal animationType="fade" transparent={true} isVisible={cartModal}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={cartModal}
+        animationIn="slideInRight"
+        animationOut="slideOutRight"
+      >
         <CartListModal checkOutHandler={checkOutHandler} />
       </Modal>
 

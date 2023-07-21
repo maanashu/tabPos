@@ -337,7 +337,7 @@ export function DrawerNavigator(props) {
             />
           )}
         />
-        <DrawerItem
+        {/* <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
           focused={active === 'analytics2' ? true : false}
@@ -352,7 +352,7 @@ export function DrawerNavigator(props) {
               style={styles.iconStyle}
             />
           )}
-        />
+        /> */}
 
         {getUserData?.posLoginData?.id !=
         getAuth?.merchantLoginData?.id ? null : (

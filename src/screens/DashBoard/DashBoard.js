@@ -83,6 +83,7 @@ export function DashBoard({ navigation }) {
   const getLoginDeatil = getDashboardData?.posLoginDetail;
   const getSessionObj = getDashboardData?.getSesssion;
   const getPosUser = getUserData?.posLoginData;
+  // console.log('getPosUser', getPosUser);
   const onLineOrder =
     getDashboardData?.onLineOrders?.onLineOrders?.onlineOrders;
   const TotalSale = getDashboardData?.getTotalSale;
