@@ -41,6 +41,8 @@ export const styles = StyleSheet.create({
     fontSize: SH(14),
     fontFamily: Fonts.SemiBold,
     color: COLORS.primary,
+    width: SH(270),
+    textAlign: 'center',
   },
   dateTime: {
     fontSize: SH(12),
@@ -54,7 +56,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: SH(15),
     padding: SH(10),
     width: Platform.OS === 'ios' ? ms(150) : ms(156),
-    height: SH(320),
+    height: ms(190),
     borderRadius: 15,
   },
   posLoginHeader: {

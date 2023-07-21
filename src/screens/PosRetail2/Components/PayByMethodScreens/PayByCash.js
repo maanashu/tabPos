@@ -36,8 +36,8 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
   const customer = getuserDetailByNo?.[0];
 
   const saveCartData = { ...getRetailData };
-  const valueTen = '10';
-  const valueTwenty = '20';
+  const valueTen = '10.00';
+  const valueTwenty = '20.00';
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
@@ -52,9 +52,6 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
       tips: amount === undefined || amount === '' ? cashRate : amount,
       modeOfPayment: 'cash',
     };
-    alert('Create order in progress without customer');
-    // console.log('data', data);
-    return;
     const callback = response => {
       if (response) {
         onPressContinue(saveCartData, data);

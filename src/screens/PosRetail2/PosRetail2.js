@@ -54,11 +54,12 @@ export function PosRetail2() {
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
-  const [tipAmount, setTipAmount] = useState(0.0);
+  // const [tipAmount, setTipAmount] = useState(0.0);
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
   const [addDiscount, setAddDiscount] = useState(false);
   const [page, setPage] = useState(1);
+  const [tipAmount, selectTipAmount] = useState();
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
   const getCart = getRetailData?.getAllCart;
@@ -286,6 +287,9 @@ export function PosRetail2() {
           } else if (item.index === 2) {
             setselectedScreen('PayByCard');
           }
+        }}
+        payNowByphone={tip => {
+          selectTipAmount(tip);
         }}
       />
     ),
