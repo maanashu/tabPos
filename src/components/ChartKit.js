@@ -9,7 +9,7 @@ export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
       {productGraphObject === undefined ? (
         <LineChart
           data={{
-            labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             datasets: [
               {
                 data: [0, 0, 100, 40, 30, 50, 60],
@@ -17,8 +17,8 @@ export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
               },
             ],
           }}
-          width={Dimensions.get('window').width * 0.41}
-          height={190}
+          width={Dimensions.get('window').width * 0.24}
+          height={SH(172)}
           chartConfig={{
             decimalPlaces: 0,
             backgroundColor: '#000',
@@ -39,11 +39,12 @@ export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
               strokeWidth: '2',
             },
           }}
-          // bezier
+          bezier
           style={{
-            marginVertical: 8,
             borderRadius: 16,
+            marginLeft: SW(-3),
           }}
+          withVerticalLines={false}
         />
       ) : arrayLength === 2 ? (
         <LineChart
@@ -103,7 +104,7 @@ export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
             ],
           }}
           width={Dimensions.get('window').width * 0.24}
-          height={chartStyle ? 130 : 160}
+          height={chartStyle ? 130 : SH(165)}
           chartConfig={{
             decimalPlaces: 0,
             backgroundColor: '#000',
@@ -130,9 +131,8 @@ export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
           }}
           bezier
           style={{
-            marginVertical: chartStyle ? 0 : SH(8),
             borderRadius: 16,
-            marginLeft: SW(-8),
+            marginLeft: SW(-6),
           }}
           withVerticalLines={false}
         />

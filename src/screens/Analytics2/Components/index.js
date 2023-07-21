@@ -17,46 +17,26 @@ export function HomeGraph({
   productGraphObject,
   homeGraphHandler,
   arrayLength,
-  productLoader,
-  hideHeader,
-  chartStyle,
 }) {
   return (
-    <View style={[styles.totalProductCon, chartStyle && styles.graphRevenue]}>
+    <View style={styles.totalProductCon}>
       <Spacer space={SH(20)} />
-      {hideHeader ? (
-        <></>
-      ) : (
-        <View style={styles.displayFlex}>
-          <View>
-            <Text style={styles.darkBlackText}>{header}</Text>
-            <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
-              {header === 'Total Products' ? null : '$'}
-              {subHeader}
-            </Text>
-          </View>
-          <TouchableOpacity onPress={homeGraphHandler}>
-            <Image source={rightlight} style={styles.rightlight} />
-          </TouchableOpacity>
+      <View style={styles.displayFlex}>
+        <View>
+          <Text style={styles.darkBlackText}>{header}</Text>
+          <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
+            {header === 'Total Products' ? null : '$'}
+            {subHeader}
+          </Text>
         </View>
-      )}
-      <Spacer space={SH(5)} />
-      {productLoader ? (
-        <View style={{ marginTop: 50 }}>
-          <ActivityIndicator size="large" color={COLORS.indicator} />
-        </View>
-      ) : chartStyle ? (
-        <ChartKit
-          productGraphObject={productGraphObject}
-          arrayLength={arrayLength}
-          chartStyle
-        />
-      ) : (
-        <ChartKit
-          productGraphObject={productGraphObject}
-          arrayLength={arrayLength}
-        />
-      )}
+        <TouchableOpacity onPress={homeGraphHandler}>
+          <Image source={rightlight} style={styles.rightlight} />
+        </TouchableOpacity>
+      </View>
+      <ChartKit
+        productGraphObject={productGraphObject}
+        arrayLength={arrayLength}
+      />
     </View>
   );
 }
