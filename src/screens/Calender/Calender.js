@@ -49,6 +49,7 @@ export function Calender(props) {
   const windowHeight = Dimensions.get('window').height;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+
   const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
   const [storeItem, setStoreItem] = useState();
@@ -59,6 +60,15 @@ export function Calender(props) {
   const [showEmployeeHeader, setshowEmployeeHeader] = useState(false);
   const [showEventDetailModal, setshowEventDetailModal] = useState(false);
   const [eventData, setEventData] = useState({});
+  const [schduleDetail, setSchduleDetail] = useState(false);
+  const [week, setWeek] = useState(true);
+  const [month, setMonth] = useState(false);
+  const [day, setDay] = useState(false);
+
+  const [calendarDate, setCalendarDate] = useState(moment());
+  const [calendarMode, setCalendarMode] = useState(CALENDAR_MODES.WEEK);
+
+  const [selectedStaffEmployeeId, setSelectedStaffEmployeeId] = useState(null);
 
   const getAppointmentList2 = getAppointmentList?.filter(
     item => item.status !== 3
@@ -107,14 +117,6 @@ export function Calender(props) {
       setExtractedAppointment(extractedAppointmentEvents);
     }
   }, [getAppointmentList]);
-
-  const [schduleDetail, setSchduleDetail] = useState(false);
-  const [week, setWeek] = useState(true);
-  const [month, setMonth] = useState(false);
-  const [day, setDay] = useState(false);
-
-  const [calendarDate, setCalendarDate] = useState(moment());
-  const [calendarMode, setCalendarMode] = useState(CALENDAR_MODES.WEEK);
 
   const nextMonth = () =>
     setCalendarDate(calendarDate.clone().add(1, calendarMode));
@@ -343,16 +345,37 @@ export function Calender(props) {
                 keyExtractor={(_, index) => index.toString()}
                 renderItem={({ item, index }) => {
                   return (
-                    <TouchableOpacity style={styles.renderItemContainer}>
-                      <Image
-                        source={{
-                          uri: `https://xsgames.co/randomusers/avatar.php?g=male`,
-                        }}
-                        style={styles.employeeImages}
-                      />
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelectedStaffEmployeeId(prev => {
+                          if (prev === index) {
+                            setSelectedStaffEmployeeId(null);
+                          } else {
+                            setSelectedStaffEmployeeId(index);
+                          }
+                        });
+                      }}
+                      style={[
+                        styles.renderItemContainer,
+                        {
+                          backgroundColor:
+                            selectedStaffEmployeeId === index
+                              ? COLORS.white
+                              : COLORS.textInputBackground,
+                        },
+                      ]}
+                    >
+                      <View>
+                        <Image
+                          source={{
+                            uri: `https://xsgames.co/randomusers/avatar.php?g=male`,
+                          }}
+                          style={styles.employeeImages}
+                        />
 
-                      <View style={styles.circularBadgeEmployee}>
-                        <Text style={styles.badgeTextEmployee}>{item}</Text>
+                        <View style={styles.circularBadgeEmployee}>
+                          <Text style={styles.badgeTextEmployee}>{item}</Text>
+                        </View>
                       </View>
                     </TouchableOpacity>
                   );
