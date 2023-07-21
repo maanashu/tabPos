@@ -6,6 +6,7 @@ import {
   Platform,
   Dimensions,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -126,187 +127,246 @@ export function DrawerNavigator(props) {
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.contentContainerStyle}
     >
-      <DrawerItem
-        label={''}
-        activeBackgroundColor={COLORS.transparent}
-        focused={active === 'dashBoard' ? true : false}
-        onPress={() => {
-          setActive('dashBoard');
-          navigate(NAVIGATION.dashBoard);
-          dispatch(addSellingSelection());
-        }}
-        icon={({ focused, color, size }) => (
-          <Image
-            style={styles.iconStyle}
-            source={focused ? logo_icon : logo_icon}
-          />
-        )}
-      />
+      <ScrollView>
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'dashBoard' ? true : false}
+          onPress={() => {
+            setActive('dashBoard');
+            navigate(NAVIGATION.dashBoard);
+            dispatch(addSellingSelection());
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              style={styles.iconStyle}
+              source={focused ? logo_icon : logo_icon}
+            />
+          )}
+        />
 
-      <DrawerItem
-        label={''}
-        activeBackgroundColor={COLORS.transparent}
-        focused={active === 'posRetail' ? true : false}
-        onPress={() => {
-          setActive('posRetail');
-          navigate(NAVIGATION.posRetail);
-          dispatch(addSellingSelection());
-          dispatch(cartScreenTrue({ state: false }));
-          dispatch(getUserDetailSuccess([]));
-        }}
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? retail : greyRetail}
-            style={styles.iconStyle}
-          />
-        )}
-      />
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'posRetail' ? true : false}
+          onPress={() => {
+            setActive('posRetail');
+            navigate(NAVIGATION.posRetail);
+            dispatch(addSellingSelection());
+            dispatch(cartScreenTrue({ state: false }));
+            dispatch(getUserDetailSuccess([]));
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? retail : greyRetail}
+              style={styles.iconStyle}
+            />
+          )}
+        />
 
-      <DrawerItem
-        label={''}
-        activeBackgroundColor={COLORS.transparent}
-        focused={active === 'delivery' ? true : false}
-        onPress={() => {
-          setActive('delivery');
-          dispatch(addSellingSelection());
-          navigate(NAVIGATION.deliveryOrder);
-        }}
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? blueTruck : deliveryTruck}
-            style={styles.iconStyle}
-          />
-        )}
-      />
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'delivery' ? true : false}
+          onPress={() => {
+            setActive('delivery');
+            dispatch(addSellingSelection());
+            navigate(NAVIGATION.deliveryOrder);
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? blueTruck : deliveryTruck}
+              style={styles.iconStyle}
+            />
+          )}
+        />
 
-      <DrawerItem
-        label={''}
-        activeBackgroundColor={COLORS.transparent}
-        focused={active === 'para' ? true : false}
-        onPress={() => {
-          setActive('para');
-          dispatch(addSellingSelection());
-          navigate(NAVIGATION.shippingOrder);
-        }}
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? bluepara : parachuteBox}
-            style={styles.iconStyle}
-          />
-        )}
-      />
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'para' ? true : false}
+          onPress={() => {
+            setActive('para');
+            dispatch(addSellingSelection());
+            navigate(NAVIGATION.shippingOrder);
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? bluepara : parachuteBox}
+              style={styles.iconStyle}
+            />
+          )}
+        />
 
-      <DrawerItem
-        label={''}
-        activeBackgroundColor={COLORS.transparent}
-        focused={active === 'calender' ? true : false}
-        onPress={() => {
-          setActive('calender');
-          navigate(NAVIGATION.calender);
-          dispatch(addSellingSelection());
-        }}
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? blueCalender : calendar}
-            style={styles.iconStyle}
-          />
-        )}
-      />
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'calender' ? true : false}
+          onPress={() => {
+            setActive('calender');
+            navigate(NAVIGATION.calender);
+            dispatch(addSellingSelection());
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? blueCalender : calendar}
+              style={styles.iconStyle}
+            />
+          )}
+        />
 
-      <DrawerItem
-        label={''}
-        activeBackgroundColor={COLORS.transparent}
-        focused={active === 'analytics' ? true : false}
-        onPress={() => {
-          setActive('analytics');
-          navigate(NAVIGATION.analytics);
-          dispatch(addSellingSelection());
-        }}
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? blueanalytics : analytics}
-            style={styles.iconStyle}
-          />
-        )}
-      />
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'analytics' ? true : false}
+          onPress={() => {
+            setActive('analytics');
+            navigate(NAVIGATION.analytics);
+            dispatch(addSellingSelection());
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? blueanalytics : analytics}
+              style={styles.iconStyle}
+            />
+          )}
+        />
 
-      <DrawerItem
-        label={''}
-        activeBackgroundColor={COLORS.transparent}
-        focused={active === 'wallet' ? true : false}
-        onPress={() => {
-          setActive('wallet');
-          navigate(NAVIGATION.wallet);
-          dispatch(addSellingSelection());
-        }}
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? bluewallet : wallet}
-            style={styles.iconStyle}
-          />
-        )}
-      />
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'wallet' ? true : false}
+          onPress={() => {
+            setActive('wallet');
+            navigate(NAVIGATION.wallet);
+            dispatch(addSellingSelection());
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? bluewallet : wallet}
+              style={styles.iconStyle}
+            />
+          )}
+        />
 
-      <DrawerItem
-        label={''}
-        activeBackgroundColor={COLORS.transparent}
-        focused={active === 'management' ? true : false}
-        onPress={() => {
-          setActive('management');
-          dispatch(addSellingSelection());
-          navigate(NAVIGATION.management);
-        }}
-        icon={({ focused, color, size }) => (
-          <Image source={focused ? bluetray : tray} style={styles.iconStyle} />
-        )}
-      />
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'management' ? true : false}
+          onPress={() => {
+            setActive('management');
+            dispatch(addSellingSelection());
+            navigate(NAVIGATION.management);
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? bluetray : tray}
+              style={styles.iconStyle}
+            />
+          )}
+        />
 
-      <DrawerItem
-        label={''}
-        activeBackgroundColor={COLORS.transparent}
-        focused={active === 'users' ? true : false}
-        onPress={() => {
-          setActive('users');
-          navigate(NAVIGATION.customers);
-          dispatch(addSellingSelection());
-        }}
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? blueusers : users}
-            style={styles.iconStyle}
-          />
-        )}
-      />
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'users' ? true : false}
+          onPress={() => {
+            setActive('users');
+            navigate(NAVIGATION.customers);
+            dispatch(addSellingSelection());
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? blueusers : users}
+              style={styles.iconStyle}
+            />
+          )}
+        />
 
-      <DrawerItem
-        label={''}
-        activeBackgroundColor={COLORS.transparent}
-        focused={active === 'setting' ? true : false}
-        onPress={() => {
-          setActive('setting');
-          navigate(NAVIGATION.setting);
-          dispatch(addSellingSelection());
-        }}
-        icon={({ focused, color, size }) => (
-          <Image
-            source={focused ? blueSetting : settings}
-            style={focused ? styles.iconStyle2 : styles.iconStyle}
-          />
-        )}
-      />
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'setting' ? true : false}
+          onPress={() => {
+            setActive('setting');
+            navigate(NAVIGATION.setting);
+            dispatch(addSellingSelection());
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? blueSetting : settings}
+              style={focused ? styles.iconStyle2 : styles.iconStyle}
+            />
+          )}
+        />
 
-      {getUserData?.posLoginData?.id !=
-      getAuth?.merchantLoginData?.id ? null : (
-        <View style={styles.endSessionViewStyle}>
-          <DrawerItem
-            label={''}
-            onPress={() => merchantEndSesion()}
-            icon={({ focused, color, size }) => (
-              <Image source={power} style={styles.iconStyle} />
-            )}
-          />
-        </View>
-      )}
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'posRetail2' ? true : false}
+          onPress={() => {
+            setActive('posRetail2');
+            navigate(NAVIGATION.posRetail2);
+            // dispatch(addSellingSelection());
+            // dispatch(cartScreenTrue({ state: false }));
+            // dispatch(getUserDetailSuccess([]));
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? retail : greyRetail}
+              style={styles.iconStyle}
+            />
+          )}
+        />
+
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'shippingOrder2' ? true : false}
+          onPress={() => {
+            setActive('shippingOrder2');
+            navigate(NAVIGATION.shippingOrder2);
+            // dispatch(addSellingSelection());
+            // dispatch(cartScreenTrue({ state: false }));
+            // dispatch(getUserDetailSuccess([]));
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? bluepara : parachuteBox}
+              style={styles.iconStyle}
+            />
+          )}
+        />
+        {/* <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'analytics2' ? true : false}
+          onPress={() => {
+            setActive('analytics2');
+            navigate(NAVIGATION.analytics2);
+            dispatch(addSellingSelection());
+          }}
+          icon={({ focused, color, size }) => (
+            <Image
+              source={focused ? blueanalytics : analytics}
+              style={styles.iconStyle}
+            />
+          )}
+        /> */}
+
+        {getUserData?.posLoginData?.id !=
+        getAuth?.merchantLoginData?.id ? null : (
+          <View style={styles.endSessionViewStyle}>
+            <DrawerItem
+              label={''}
+              onPress={() => merchantEndSesion()}
+              icon={({ focused, color, size }) => (
+                <Image source={power} style={styles.iconStyle} />
+              )}
+            />
+          </View>
+        )}
+      </ScrollView>
     </DrawerContentScrollView>
   );
 }

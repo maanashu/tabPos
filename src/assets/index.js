@@ -32,6 +32,7 @@ export { default as power } from '@/assets/icons/ic_navigator/power.png';
 export { default as menu } from '@/assets/icons/ic_retail/menu.png';
 export { default as search_light } from '@/assets/icons/ic_retail/Search_light.png';
 export { default as scn } from '@/assets/icons/ic_retail/scn.png';
+export { default as scanSearch } from '@/assets/icons/ic_retail/scanSearch.png';
 export { default as purchese } from '@/assets/icons/ic_retail/purchese.png';
 export { default as arrow_right } from '@/assets/icons/ic_retail/arrow_right.png';
 export { default as categoryProduct } from '@/assets/icons/ic_retail/categoryProduct.png';
@@ -269,6 +270,41 @@ export { default as radioSelect } from '@/assets/images/radioSelect.png';
 export { default as bankLogo } from '@/assets/icons/ic_wallet/bankLogo.png';
 export { default as radioUnSelect } from '@/assets/images/radioUnselect.png';
 export { default as chatIcon } from '@/assets/images/Chat_light.png';
+export { default as locationTracker } from '@/assets/icons/ic_deliveryOrder/locationTracker.png';
+export { default as storeTracker } from '@/assets/icons/ic_deliveryOrder/storeTracker.png';
+export { default as analyticsReport } from '@/assets/images/analyticsReport.png';
+export { default as averageOrder } from '@/assets/images/averageOrder.png';
+export { default as channel } from '@/assets/images/channel.png';
+export { default as locationSales } from '@/assets/images/locationSales.png';
+export { default as profit } from '@/assets/images/profit.png';
+export { default as totalCost } from '@/assets/images/totalCost.png';
+export { default as totalSales } from '@/assets/images/totalSales.png';
+export { default as totalOrders } from '@/assets/images/totalOrders.png';
+export { default as productSelling } from '@/assets/images/productSelling.png';
+export { default as revenueTotal } from '@/assets/images/revenueTotal.png';
+
+// new Pos module image
+export { default as bucket } from '@/assets/icons/ic_posRetail/bucket.png';
+export { default as holdCart } from '@/assets/icons/ic_posRetail/holdCart.png';
+export { default as sideArrow } from '@/assets/icons/ic_posRetail/sideArrow.png';
+export { default as sideEarser } from '@/assets/icons/ic_posRetail/sideEarser.png';
+export { default as sideKeyboard } from '@/assets/icons/ic_posRetail/sideKeyboard.png';
+export { default as addToCartBlue } from '@/assets/icons/ic_posRetail/addToCartBlue.png';
+
+export { default as fedex } from '@/assets/icons/ic_analytics/fedex.png';
+export { default as dhl } from '@/assets/icons/ic_analytics/dhl.png';
+export { default as usps } from '@/assets/icons/ic_analytics/usps.png';
+export { default as fedexNew } from '@/assets/icons/ic_analytics/fedexNew.png';
+
+export { default as task } from '@/assets/icons/sideBarIcons/task.png';
+export { default as drawerdeliveryTruck } from '@/assets/icons/sideBarIcons/Shipping.png';
+export { default as timer } from '@/assets/icons/sideBarIcons/timer.png';
+export { default as firstTruck } from '@/assets/icons/sideBarIcons/firstTruck.png';
+export { default as Group } from '@/assets/icons/sideBarIcons/Group.png';
+export { default as Delivery } from '@/assets/icons/sideBarIcons/delivery.png';
+export { default as Cart } from '@/assets/icons/sideBarIcons/cart.png';
+export { default as NoCard } from '@/assets/icons/sideBarIcons/noCard.png';
+export { default as ReturnTruck } from '@/assets/icons/sideBarIcons/returnTruck.png';
 
 /* Fonts */
 export const Fonts = {

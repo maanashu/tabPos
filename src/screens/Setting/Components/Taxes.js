@@ -172,7 +172,7 @@ export function Taxes() {
   );
 
   const activeBtnHandler = () => {
-    if (posRole === null) {
+    if (posRole === 'admin') {
       setCountryModel(true), dispatch(getCountries());
     } else {
       Toast.show({

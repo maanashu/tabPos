@@ -17,7 +17,10 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import { DaySelector, Spacer } from '@/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-import { getTotalProDetail } from '@/actions/AnalyticsAction';
+import {
+  getTotalInventoryCost,
+  getTotalProDetail,
+} from '@/actions/AnalyticsAction';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -31,8 +34,13 @@ export function TotalProductSub({
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [productSelectId, setProductSelectId] = useState(2);
+  const [inventorySelectId, setInventorySelectId] = useState(2);
   const [selectProTime, setSelectProTime] = useState({ value: 'week' });
+  const [selectInventoryTime, setSelectInventoryTime] = useState({
+    value: 'week',
+  });
   const productTime = selectProTime?.value;
+  const inventoryTime = selectInventoryTime?.value;
   const getAnalyticsData = useSelector(getAnalytics);
   const data = {
     totalProduct: getAnalyticsData?.getTotalProDetail?.total_products ?? '0',
@@ -46,11 +54,20 @@ export function TotalProductSub({
     CatSubBrandArray: getAnalyticsData?.getTotalProDetail?.result,
   };
 
+  const totalInventoryCost = getAnalyticsData?.getTotalInventoryCost;
+
   const productMulti = data?.newAdd * 100;
   const productScale = productMulti / data?.totalActive;
   const [backTime, setBackTime] = useState();
 
   const storeData = async value => {
+    try {
+      await AsyncStorage.setItem('abc', value);
+    } catch (e) {
+      // saving error
+    }
+  };
+  const storeDataInventory = async value => {
     try {
       await AsyncStorage.setItem('abc', value);
     } catch (e) {
@@ -72,6 +89,10 @@ export function TotalProductSub({
     dispatch(getTotalProDetail(sellerID, value));
     storeData(value);
   };
+  const inventoryOnPress = value => {
+    dispatch(getTotalInventoryCost(sellerID, value));
+    storeDataInventory(value);
+  };
   const productDetLoad = useSelector(state =>
     isLoadingSelector([TYPES.GET_TOTALPRO_DETAIL], state)
   );
@@ -79,23 +100,32 @@ export function TotalProductSub({
   useEffect(() => {
     if (isFocused) {
       dispatch(getTotalProDetail(sellerID, productTime));
+      dispatch(getTotalInventoryCost(sellerID, inventoryTime));
       getData();
     }
   }, [isFocused]);
 
-  const catSubBrandLoad = useSelector(state =>
-    isLoadingSelector([TYPES.GET_REVENUE_GRAPH], state)
+  const inventoryCostLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_TOTAL_INVENTORY_COST], state)
   );
 
   const categoryInventoryItem = ({ item }) => (
     <TouchableOpacity
       style={styles.categoryCon}
-      onPress={() => inverntoryUnitViseHandler(item)}
+      onPress={() => inverntoryUnitViseHandler(item, inventoryTime)}
     >
       <View style={styles.categoryChildCon}>
-        <Text style={styles.categoryCount}>{item.categoryCount}</Text>
+        {inventoryCostLoad ? (
+          <ActivityIndicator
+            size="small"
+            style={{ alignItems: 'flex-start' }}
+            color={COLORS.black}
+          />
+        ) : (
+          <Text style={styles.categoryCount}>{item.count}</Text>
+        )}
         <Text numberOfLines={1} style={styles.categoryText}>
-          {item.category}
+          {item.title}
         </Text>
       </View>
       <View style={styles.categoryChildPercent}>
@@ -294,9 +324,12 @@ export function TotalProductSub({
           <Spacer space={SH(10)} />
           <View style={styles.displayFlex}>
             <View>
-              {/* <DaySelector
-              setSelectTime={setSelectTime}
-              /> */}
+              <DaySelector
+                onPresFun={inventoryOnPress}
+                setSelectTime={setSelectInventoryTime}
+                selectId={inventorySelectId}
+                setSelectId={setInventorySelectId}
+              />
             </View>
             <Text style={styles.trancationHeading}>
               {strings.analytics.totalInvetry}
@@ -313,7 +346,7 @@ export function TotalProductSub({
               },
             ]}
           >
-            $8,426,590
+            ${totalInventoryCost?.total_inventory_cost}
           </Text>
           <Spacer space={SH(5)} />
           <View style={styles.productGraphcon}>
@@ -327,7 +360,7 @@ export function TotalProductSub({
                 <View>
                   <FlatList
                     scrollEnabled={false}
-                    data={inverntrycategoryData}
+                    data={totalInventoryCost?.unit_data}
                     renderItem={categoryInventoryItem}
                     //   keyExtractor={item => item.id}
                     numColumns={2}
@@ -347,7 +380,9 @@ export function TotalProductSub({
                       <Text style={styles.newAddText}>
                         {strings.TotalProSub.lowStock}
                       </Text>
-                      <Text style={styles.newAddTextBold}>25</Text>
+                      <Text style={styles.newAddTextBold}>
+                        {totalInventoryCost?.low_stock_items}
+                      </Text>
                     </View>
                     <View style={styles.addedhr}></View>
                     <Spacer space={SH(10)} />
@@ -363,7 +398,7 @@ export function TotalProductSub({
                           { color: COLORS.primary },
                         ]}
                       >
-                        95
+                        {totalInventoryCost?.items_to_be_adjusted}
                       </Text>
                     </View>
                     <View style={styles.addedhr}></View>
@@ -383,7 +418,7 @@ export function TotalProductSub({
                           { color: COLORS.solid_grey },
                         ]}
                       >
-                        311
+                        {totalInventoryCost?.items_to_be_shipped}
                       </Text>
                     </View>
                   </View>

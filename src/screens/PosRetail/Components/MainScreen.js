@@ -55,6 +55,7 @@ import {
   customerTrue,
   getAllCart,
   getBrand,
+  getCategory,
   getOneProduct,
   getProduct,
   getProductDefault,
@@ -219,6 +220,12 @@ export function MainScreen({
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
 
+  useEffect(() => {
+    if (selectedCatID) {
+      setselectedCatID(selectedCatID);
+    }
+  }, [selectedCatID]);
+
   const [okk, setOkk] = useState(getRetailData?.trueCustomer?.state || false);
 
   const [productDetail, setProductDetail] = useState();
@@ -273,6 +280,7 @@ export function MainScreen({
   }, [isFocus]);
 
   useEffect(() => {
+    //  dispatch(getMainProduct())
     dispatch(getProductDefault(sellerID, page));
     if (products) {
       setshowProductsFrom(products);
@@ -561,17 +569,22 @@ export function MainScreen({
           if (item.id === 1) {
             setCatTypeId(item.id);
             setCategoryModal(true);
+            dispatch(getCategory(sellerID));
           } else if (
-            (item.id === 2 && isFilterDataSeclectedOfIndex === 0) ||
-            item.isSelected === true
+            item.id === 2
+            // && isFilterDataSeclectedOfIndex === 0) ||
+            // item.isSelected === true
           ) {
             setCatTypeId(item.id);
-            dispatch(getSubCategory(sellerID, selectedCatID));
+            dispatch(getSubCategory(sellerID));
             setSubCategoryModal(true);
-          } else if (item.id === 3 && isFilterDataSeclectedOfIndex === 1) {
-            setCatTypeId(item.id);
-            dispatch(getBrand(sellerID, selectedSubCatID));
+          } else if (
+            item.id === 3
+            //  && isFilterDataSeclectedOfIndex === 1
+          ) {
             setBrandModal(true);
+            setCatTypeId(item.id);
+            dispatch(getBrand(sellerID));
           }
         }}
         backgroundColor={backgroundColor}
@@ -1113,6 +1126,11 @@ export function MainScreen({
             <View>
               {categoryModal ? (
                 <CategoryModal
+                  cancelCategory={() => {
+                    setselectedCatID(null);
+                    setCategoryModal(false);
+                    dispatch(getProduct(selectedCatID, null, null, sellerID));
+                  }}
                   crossHandler={() => setCategoryModal(false)}
                   categoryArray={categoryArray}
                   onSelectCategory={selectedCat => {
@@ -1120,8 +1138,7 @@ export function MainScreen({
 
                     setselectedCatID(selectedCat.id);
 
-                    setisFilterDataSeclectedOfIndex(0); // Enable Selection of subcategory if any category is selected
-
+                    setisFilterDataSeclectedOfIndex(0);
                     setfilterMenuTitle(prevData => {
                       const newData = [...prevData];
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
 import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
@@ -10,14 +10,21 @@ import { cloth, crossButton, search_light } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { useSelector } from 'react-redux';
+import { TYPES } from '@/Types/Types';
 
 export function CategoryModal({
   crossHandler,
   categoryArray,
   onSelectCategory,
+  cancelCategory,
 }) {
   const [selectedId, setSelectedId] = useState();
-  console.log('categoryArray', categoryArray);
+
+  const categoryLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_CATEGORY], state)
+  );
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
@@ -40,9 +47,16 @@ export function CategoryModal({
       <Spacer space={SH(5)} />
       <Text style={styles.categories}>{item.name}</Text>
       <Spacer space={SH(3)} />
-      <Text style={styles.listed}>24 listed</Text>
+      <Text style={styles.listed}>{item.products_count} listed</Text>
     </TouchableOpacity>
   );
+  const ListEmptyComponent = () => {
+    return (
+      <View style={{ marginTop: 50 }}>
+        <Text style={styles.categoryEmptyList}>Category Not Found</Text>
+      </View>
+    );
+  };
   return (
     <View style={styles.categoryModalCon}>
       <Spacer space={SH(20)} />
@@ -51,7 +65,7 @@ export function CategoryModal({
         <View style={[styles.displayRow]}>
           <TouchableOpacity
             style={styles.cancelCatCon}
-            onPress={() => alert('in Progress')}
+            onPress={cancelCategory}
           >
             <Text style={styles.catCancelText}>Cancel</Text>
           </TouchableOpacity>
@@ -75,14 +89,23 @@ export function CategoryModal({
       </View>
 
       <Spacer space={SH(15)} />
+
       <View style={styles.categoryflatlistHeight}>
-        <FlatList
-          data={categoryArray}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          extraData={categoryArray}
-          numColumns={4}
-        />
+        {categoryLoad ? (
+          <View style={{ marginTop: 50 }}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          </View>
+        ) : (
+          <FlatList
+            data={categoryArray}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            extraData={categoryArray}
+            numColumns={4}
+            ListEmptyComponent={ListEmptyComponent}
+          />
+        )}
+
         <Spacer space={SH(5)} />
       </View>
     </View>

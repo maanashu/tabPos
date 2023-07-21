@@ -1,38 +1,99 @@
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, View, Image, FlatList } from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { catPercent, colorFrame, productMap, revenueGraph } from '@/assets';
 import { strings } from '@/localization';
 import { styles } from './Analytics.styles';
-import { totalOrderData } from '@/constants/flatListData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { DaySelector, Spacer } from '@/components';
 import { HomeGraph } from './Components';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AnalyticsTypes';
+import { useEffect } from 'react';
+import { getOrderstatistics } from '@/actions/AnalyticsAction';
+import { useIsFocused } from '@react-navigation/native';
 
 export function TotalRevenueSub({
   totalOrderViseHandler,
   totalRevenueHandler,
+  sellerID,
 }) {
   const [selectTime, setSelectTime] = useState();
   const getAnalyticsData = useSelector(getAnalytics);
+  const [orderSelectId, setOrderSelectId] = useState(2);
+  const [selectOrderTime, setSelectOrderTime] = useState({ value: 'week' });
+  const [backTime, setBackTime] = useState();
+
+  const orderTime = selectOrderTime?.value;
   const orderGraphObject = getAnalyticsData?.getOrderGraph;
   const Orderstatistics = getAnalyticsData?.getOrderstatistics;
+
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+
+  const storeData = async value => {
+    try {
+      await AsyncStorage.setItem('abc', value);
+    } catch (e) {
+      // saving error
+    }
+  };
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('abc');
+      if (value !== null) {
+        setBackTime(value);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
   const totalGraphLoading = useSelector(state =>
     isLoadingSelector([TYPES.GET_ORDER_GRAPH], state)
   );
+  const orderOnPress = value => {
+    dispatch(getOrderstatistics(sellerID, value));
+    storeData(value);
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getOrderstatistics(sellerID, orderTime));
+      getData();
+    }
+  }, [isFocused]);
+
+  const totalCostLoad = useSelector(state =>
+    isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
+  );
+
   const graphHandler = item => {};
 
   const totalOrderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.categoryCon}
-      onPress={() => totalOrderViseHandler(item)}
+      onPress={() => totalOrderViseHandler(item, orderTime)}
     >
       <View style={styles.categoryChildCon}>
-        <Text style={styles.categoryCount}>{item.count}</Text>
+        {totalCostLoad ? (
+          <ActivityIndicator
+            size="small"
+            style={{ alignItems: 'flex-start' }}
+            color={COLORS.black}
+          />
+        ) : (
+          <Text style={styles.categoryCount}>{item.count}</Text>
+        )}
         <Text numberOfLines={1} style={styles.categoryText}>
           {item.title}
         </Text>
@@ -84,9 +145,14 @@ export function TotalRevenueSub({
           <Spacer space={SH(10)} />
           <View style={styles.displayFlex}>
             <View>
-              {/* <DaySelector
-            setSelectTime={setSelectTime}
-            /> */}
+              <View>
+                <DaySelector
+                  onPresFun={orderOnPress}
+                  setSelectTime={setSelectOrderTime}
+                  selectId={orderSelectId}
+                  setSelectId={setOrderSelectId}
+                />
+              </View>
             </View>
             <Text style={styles.trancationHeading}>
               {strings.analytics.totalOrder}
@@ -118,7 +184,7 @@ export function TotalRevenueSub({
                   <FlatList
                     data={Orderstatistics?.data}
                     renderItem={totalOrderItem}
-                    keyExtractor={item => item.id}
+                    // keyExtractor={item => item.id}
                     numColumns={2}
                     scrollEnabled={false}
                   />

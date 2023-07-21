@@ -1,13 +1,14 @@
 import messaging from '@react-native-firebase/messaging';
-import notifee from '@notifee/react-native';
+import notifee, { AuthorizationStatus } from '@notifee/react-native';
 
 // Request user permission for notifications
 const requestPermission = async () => {
-  try {
-    await messaging().requestPermission();
-    console.log('Notification permission granted');
-  } catch (error) {
-    console.log('Notification permission denied:', error);
+  const settings = await notifee.requestPermission();
+
+  if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
+    console.log('Permission settings:', settings);
+  } else {
+    console.log('User declined permissions');
   }
 };
 
@@ -47,11 +48,9 @@ const onMessageReceivedBackground = async message => {
 
 // Configure Firebase Cloud Messaging
 const configureMessaging = async () => {
-  await requestPermission();
-
   messaging().onMessage(onMessageReceivedForeground);
 
   messaging().setBackgroundMessageHandler(onMessageReceivedBackground);
 };
 
-export { configureMessaging, getDeviceToken };
+export { configureMessaging, requestPermission, getDeviceToken };

@@ -176,6 +176,7 @@ export const en = {
     DisTitle: 'Discount Title',
     sendRequest: 'Send Request',
     next: 'Next',
+    eRecipeEmail:`e-recipe will Send\nto your email`
   },
   posSale: {
     paymentHeader: 'Customer & Payment',
@@ -727,6 +728,8 @@ export const en = {
     brand: 'Brands',
     payNow: 'Pay Now ',
     backProdscreen: 'Back to Product Screen',
+    // new design  en
+    allProduct: 'All Products',
   },
   Staff: {
     Staff: 'Staff',
@@ -743,5 +746,19 @@ export const en = {
   },
   deviceDetails: {
     deviceDetailsText: 'Device Details',
+  },
+
+  shippingOrder: {
+    shippingStatus: `Today’s Shipping Status`,
+    shippingOrders: 'Shipping Order',
+    shippedOrder: 'Shipped Orders',
+    currentStatus: 'Current Status',
+    orderConvertion: 'Order convertion',
+    deliveredOrders: 'Delivered Orders',
+    cancelledOrders: 'Cancelled Orders',
+    returnedOrders: 'Returned Orders',
+    deliveredCount: '88.9%',
+    cancelledCount: '6.9%',
+    returnedCount: '4.2%',
   },
 };

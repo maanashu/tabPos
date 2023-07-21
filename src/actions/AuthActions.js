@@ -31,7 +31,7 @@ const merchantLoginError = error => ({
   type: TYPES.MERCHANT_LOGIN_ERROR,
   payload: { error },
 });
-const merchantLoginSuccess = merchantLoginData => ({
+export const merchantLoginSuccess = merchantLoginData => ({
   type: TYPES.MERCHANT_LOGIN_SUCCESS,
   payload: { merchantLoginData },
 });
@@ -142,10 +142,10 @@ export const register = (data, params) => async dispatch => {
   }
 };
 
-export const getAllPosUsers = () => async dispatch => {
+export const getAllPosUsers = sellerID => async dispatch => {
   dispatch(getAllPosUsersRequest());
   try {
-    const res = await AuthController.getAllPosUsers();
+    const res = await AuthController.getAllPosUsers(sellerID);
     dispatch(getAllPosUsersSuccess(res?.payload?.pos_staff));
   } catch (error) {
     if (error?.statusCode === 204) {

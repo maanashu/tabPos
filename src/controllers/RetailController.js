@@ -31,17 +31,18 @@ export class RetailController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   }
 
-  static async getSubCategory(sellerID, selectedId) {
+  static async getSubCategory(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getSubCategory +
-        `?category_id=${selectedId}&seller_id=${sellerID}&main_category=false`;
+        `?seller_id=${sellerID}&main_category=false&need_subcategory=true`;
+
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -58,12 +59,10 @@ export class RetailController {
     });
   }
 
-  static async getBrand(sellerID, selectedId) {
+  static async getBrand(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.getBrand +
-        `?page=1&limit=10&seller_id=${sellerID}&category_id=${selectedId}`;
+        PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -96,19 +95,19 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getProduct +
-          `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${sellerID}&category_ids=${selectedId}`
+          `?app_name=pos&delivery_options=3&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       } else if (selectedId && subSelectedId && sellerID && !brandSelectedId) {
         return (
           PRODUCT_URL +
           ApiProductInventory.getProduct +
-          `?app_name=pos&delivery_options=3&page=1&limit=10&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+          `?app_name=pos&delivery_options=3&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       } else if (selectedId && subSelectedId && brandSelectedId && sellerID) {
         return (
           PRODUCT_URL +
           ApiProductInventory.getProduct +
-          `?app_name=pos&delivery_options=3&page=1&limit=10&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+          `?app_name=pos&delivery_options=3&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
         );
       }
     };
@@ -443,14 +442,18 @@ export class RetailController {
   static async createOrder(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
-      const body = {
-        cart_id: data.cartid,
-        user_id: data.userId,
-        // shipping: 'Pickup',
-        // app_name: 'Pos',
-        tips: data.tips,
-        mode_of_payment: data.modeOfPayment,
-      };
+      const body = data?.userId
+        ? {
+            cart_id: data.cartid,
+            user_id: data.userId,
+            tips: data.tips,
+            mode_of_payment: data.modeOfPayment,
+          }
+        : {
+            cart_id: data.cartid,
+            tips: data.tips,
+            mode_of_payment: data.modeOfPayment,
+          };
 
       HttpClient.post(endpoint, body)
         .then(response => {
@@ -628,6 +631,128 @@ export class RetailController {
   static async logout() {
     return new Promise(resolve => {
       setTimeout(resolve, 500);
+    });
+  }
+
+  static async scanProductAdd(data) {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.scanProductAdd;
+      // return;
+      HttpClient.post(endpoint, data)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'top',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getDynamicProducts(productTypeID = {}) {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const defaultParams = {
+        app_name: 'pos',
+        delivery_options: '3',
+        seller_id: sellerID,
+      };
+
+      let finalParams;
+
+      if (Object.keys(productTypeID).length !== 0) {
+        finalParams = {
+          ...defaultParams,
+          ...productTypeID,
+        };
+      } else {
+        finalParams = {
+          ...defaultParams,
+        };
+      }
+
+      const convertToQueryParam = new URLSearchParams(finalParams).toString();
+      const endpoint =
+        PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: 'Product not found',
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getMainProduct(
+    selectedId,
+    subSelectedId,
+    brandSelectedId,
+    sellerID
+  ) {
+    const urlAccCat = (
+      selectedId,
+      subSelectedId,
+      brandSelectedId,
+      sellerID
+    ) => {
+      if (sellerID && !selectedId && !subSelectedId && !brandSelectedId) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.product +
+          `?app_name=pos&delivery_options=3&seller_id=${sellerID}`
+        );
+      } else if (selectedId && sellerID && !subSelectedId && !brandSelectedId) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getProduct +
+          `?app_name=pos&delivery_options=3&seller_id=${sellerID}&category_ids=${selectedId}`
+        );
+      } else if (selectedId && subSelectedId && sellerID && !brandSelectedId) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getProduct +
+          `?app_name=pos&delivery_options=3&sub_category_ids=${subSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+        );
+      } else if (selectedId && subSelectedId && brandSelectedId && sellerID) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getProduct +
+          `?app_name=pos&delivery_options=3&sub_category_ids=${subSelectedId}&brand_id=${brandSelectedId}&seller_id=${sellerID}&category_ids=${selectedId}`
+        );
+      }
+    };
+    return new Promise((resolve, reject) => {
+      const endpoint = urlAccCat(
+        selectedId,
+        subSelectedId,
+        brandSelectedId,
+        sellerID
+      );
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: 'Product not found',
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
     });
   }
 }

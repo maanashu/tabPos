@@ -45,6 +45,8 @@ import {
   radioArrBlue,
   cusBarClr,
   customersGraph,
+  storeTracker,
+  locationTracker,
 } from '@/assets';
 import { BarChartCom, DaySelector, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
@@ -615,41 +617,52 @@ export function Customers() {
                     provider={PROVIDER_GOOGLE}
                     showCompass
                     region={{
-                      latitude:
-                        orderDetail?.seller_details?.seller_location?.[0],
+                      latitude: orderDetail?.seller_details?.seller_location[1],
                       longitude:
-                        orderDetail?.seller_details?.seller_location?.[1],
+                        orderDetail?.seller_details?.seller_location[0],
                       latitudeDelta: 0.09,
-                      longitudeDelta: 0.09,
+                      longitudeDelta: 0.04,
                     }}
                     style={styles.map}
                   >
                     <Marker
                       coordinate={{
                         latitude: orderDetail?.seller_details
-                          ?.seller_location?.[0]
-                          ? orderDetail?.seller_details?.seller_location?.[0]
+                          ?.seller_location[1]
+                          ? orderDetail?.seller_details?.seller_location[1]
                           : 0,
                         longitude: orderDetail?.seller_details
-                          ?.seller_location?.[1]
-                          ? orderDetail?.seller_details?.seller_location?.[1]
+                          ?.seller_location[0]
+                          ? orderDetail?.seller_details?.seller_location[0]
                           : 0,
                       }}
-                      image={shop_light}
-                      style={{ width: 8, height: 8 }}
-                    ></Marker>
+                    >
+                      <View>
+                        <Image
+                          source={storeTracker}
+                          style={{ height: SH(50), width: SW(50) }}
+                          resizeMode="contain"
+                        />
+                      </View>
+                    </Marker>
                     <Marker
                       coordinate={{
-                        latitude: orderDetail?.coordinates?.[0]
-                          ? orderDetail?.coordinates?.[0]
-                          : 0,
-                        longitude: orderDetail?.coordinates?.[1]
+                        latitude: orderDetail?.coordinates?.[1]
                           ? orderDetail?.coordinates?.[1]
                           : 0,
+                        longitude: orderDetail?.coordinates?.[0]
+                          ? orderDetail?.coordinates?.[0]
+                          : 0,
                       }}
-                      image={blueLocation}
-                      style={{ width: 8, height: 8 }}
-                    ></Marker>
+                    >
+                      <View>
+                        <Image
+                          source={locationTracker}
+                          style={{ height: SH(50), width: SW(50) }}
+                          resizeMode="contain"
+                        />
+                      </View>
+                    </Marker>
                   </MapView>
                 </View>
               </View>

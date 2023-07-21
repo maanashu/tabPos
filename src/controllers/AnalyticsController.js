@@ -178,12 +178,12 @@ export class AnalyticsController {
     });
   }
 
-  static async getOrderstatistics(sellerID) {
+  static async getOrderstatistics(sellerID, orderTime) {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderstatistics +
-        `?seller_id=${sellerID}&filter=week`;
+        `?seller_id=${sellerID}&filter=${orderTime}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -200,13 +200,13 @@ export class AnalyticsController {
     });
   }
 
-  static async getOrderTypeList(sellerID, data) {
+  static async getOrderTypeList(sellerID, data, orderTime) {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderTypeList +
-        `?seller_id=${sellerID}&filter=week&` +
+        `?seller_id=${sellerID}&filter=${orderTime}&` +
         params;
       HttpClient.get(endpoint)
         .then(response => {
@@ -250,6 +250,75 @@ export class AnalyticsController {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getOrders + `/${orderID}`;
 
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getTotalInventoryCost(sellerID, inventoryTime) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.getTotalInventoryCost +
+        `?seller_id=${sellerID}&filter=${inventoryTime}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getSellerProductList(sellerID, data) {
+    return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
+      const endpoint = `${
+        PRODUCT_URL + ApiProductInventory.getSellerProductList
+      }?seller_id=${sellerID}&filter=year&${params}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getSellerInfo(productID, data) {
+    return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
+      const endpoint = `${
+        PRODUCT_URL + ApiProductInventory.getSellerInfo
+      }?product_id=${productID}&${params}`;
+      HttpClient.get(endpoint)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getSellerProductDetails(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint = `${
+        PRODUCT_URL + ApiProductInventory.getSellerProductDetails
+      }?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
