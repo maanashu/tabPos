@@ -140,7 +140,6 @@ export function Analytics(props) {
   const sellerInfo = getAnalyticsData?.getSellerInfo;
   const sellerProductList = getAnalyticsData?.getSellerProductList;
   const sellerProductDetails = getAnalyticsData?.getSellerProductDetails;
-  // console.log('sellerProductDetails', JSON.stringify(sellerProductDetails));
   const OrderData = getAnalyticsData?.getOrderData;
   const OrderDetails = getAnalyticsData?.orderList;
   const [value, setValue] = useState('Weekly');

@@ -4,7 +4,7 @@ import { getStartEndFormattedDate } from '@/utils/GlobalMethods';
 import { styles } from '../Calender.styles';
 
 const CustomEventCell = (event, touchableOpacityProps) => {
-  const profilePic = event?.completeData?.user_details?.profile_photo;
+  const profilePic = null; //event?.completeData?.user_details?.profile_photo;
   return (
     <TouchableOpacity
       {...touchableOpacityProps}

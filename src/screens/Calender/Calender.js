@@ -49,65 +49,17 @@ export function Calender(props) {
   const windowHeight = Dimensions.get('window').height;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+
   const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
+  const appointmentPages = getCalenderData?.pages;
   const [storeItem, setStoreItem] = useState();
   const [extractedAppointment, setExtractedAppointment] = useState([]);
   const [showRequestsView, setshowRequestsView] = useState(false);
-  const [isCalendarSettingModalVisible, setisCalendarSettingModalVisible] =
-    useState(false);
+  const [isCalendarSettingModalVisible, setisCalendarSettingModalVisible] = useState(false);
   const [showEmployeeHeader, setshowEmployeeHeader] = useState(false);
   const [showEventDetailModal, setshowEventDetailModal] = useState(false);
   const [eventData, setEventData] = useState({});
-
-  const getAppointmentList2 = getAppointmentList?.filter(
-    item => item.status !== 3
-  );
-
-  // Only show appointments on calendar which are approved
-  const getApprovedAppointments = getAppointmentList?.filter(
-    item => item.status === 1
-  );
-
-  // Will be used to show list of all appointments
-  const appointmentListArr = getAppointmentList2?.filter(
-    item => item.status !== 1
-  );
-
-  const data = {
-    zipcode: storeItem?.current_address?.zipcode,
-    street: storeItem?.current_address?.street_address,
-    city: storeItem?.current_address?.city,
-    state: storeItem?.current_address?.state,
-    country: storeItem?.current_address?.country,
-  };
-
-  useEffect(() => {
-    if (isFocused) {
-      dispatch(getAppointment());
-    }
-  }, [isFocused]);
-
-  useEffect(() => {
-    if (getApprovedAppointments) {
-      const extractedAppointmentEvents = getApprovedAppointments.map(
-        booking => {
-          const startDateTime = new Date(booking.start_date_time);
-          const endDateTime = new Date(booking.end_date_time);
-
-          return {
-            title: booking.appointment_details[0]?.product_name || 'NULL',
-            start: startDateTime,
-            end: endDateTime,
-            completeData: booking,
-          };
-        }
-      );
-
-      setExtractedAppointment(extractedAppointmentEvents);
-    }
-  }, [getAppointmentList]);
-
   const [schduleDetail, setSchduleDetail] = useState(false);
   const [week, setWeek] = useState(true);
   const [month, setMonth] = useState(false);
@@ -116,10 +68,54 @@ export function Calender(props) {
   const [calendarDate, setCalendarDate] = useState(moment());
   const [calendarMode, setCalendarMode] = useState(CALENDAR_MODES.WEEK);
 
-  const nextMonth = () =>
-    setCalendarDate(calendarDate.clone().add(1, calendarMode));
-  const prevMonth = () =>
-    setCalendarDate(calendarDate.clone().subtract(1, calendarMode));
+  const [selectedStaffEmployeeId, setSelectedStaffEmployeeId] = useState(null);
+
+  //Pagination for appointments
+  const [pageNumber, setPageNumber] = useState(1);
+  console.log('get Appointment list', getAppointmentList);
+  const getAppointmentList2 = getAppointmentList?.filter((item) => item.status !== 3);
+
+  // Only show appointments on calendar which are approved
+  const getApprovedAppointments = getAppointmentList?.filter((item) => item.status === 1);
+
+  // Will be used to show list of all appointments
+  const appointmentListArr = getAppointmentList2?.filter((item) => item.status !== 1);
+
+  const data = {
+    zipcode: storeItem?.current_address?.zipcode,
+    street: storeItem?.current_address?.street_address,
+    city: storeItem?.current_address?.city,
+    state: storeItem?.current_address?.state,
+    country: storeItem?.current_address?.country,
+  };
+  console.log(appointmentPages?.currentPages);
+
+  useEffect(() => {
+    if (isFocused || showRequestsView) {
+      dispatch(getAppointment(pageNumber));
+    }
+  }, [isFocused, pageNumber, showRequestsView]);
+
+  useEffect(() => {
+    if (getApprovedAppointments) {
+      const extractedAppointmentEvents = getApprovedAppointments.map((booking) => {
+        const startDateTime = new Date(booking.start_date_time);
+        const endDateTime = new Date(booking.end_date_time);
+
+        return {
+          title: booking.appointment_details[0]?.product_name || 'NULL',
+          start: startDateTime,
+          end: endDateTime,
+          completeData: booking,
+        };
+      });
+
+      setExtractedAppointment(extractedAppointmentEvents);
+    }
+  }, [getAppointmentList]);
+
+  const nextMonth = () => setCalendarDate(calendarDate.clone().add(1, calendarMode));
+  const prevMonth = () => setCalendarDate(calendarDate.clone().subtract(1, calendarMode));
 
   const weekHandler = () => {
     setCalendarMode(CALENDAR_MODES.WEEK);
@@ -141,21 +137,33 @@ export function Calender(props) {
   };
 
   const getFormattedHeaderDate = () => {
-    if (
-      calendarMode === CALENDAR_MODES.MONTH ||
-      calendarMode === CALENDAR_MODES.WEEK
-    ) {
+    if (calendarMode === CALENDAR_MODES.MONTH || calendarMode === CALENDAR_MODES.WEEK) {
       return calendarDate.format('MMM YYYY');
     } else if (calendarMode === CALENDAR_MODES.DAY) {
       return calendarDate.format('DD MMM YYYY');
     }
   };
-  const isRequestLoading = useSelector(state =>
+  const isRequestLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_APPOINTMENTS], state)
+  );
+
+  const isAppointmentStatusChangedLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.CHANGE_APPOINTMENT_STATUS], state)
   );
 
   const eventItem = ({ item, index }) => {
     return <EventItemCard item={item} index={index} />;
+  };
+
+  const handleEndReached = () => {
+    if (appointmentPages?.currentPages < appointmentPages?.totalPages) {
+      setPageNumber(pageNumber + 1);
+    }
+  };
+
+  const renderLoader = () => {
+    // Render the loader component when loading more data is in progress.
+    return isRequestLoading ? <ActivityIndicator size="large" color="#000000" /> : null;
   };
 
   const schduleDetailModal = () => {
@@ -222,9 +230,7 @@ export function Calender(props) {
               />
               <View style={{ marginLeft: ms(5) }}>
                 <Text style={styles.headerEmployeeName}>Fazal Haq</Text>
-                <Text style={styles.headerEmployeeDesignation}>
-                  Hair Dresser
-                </Text>
+                <Text style={styles.headerEmployeeDesignation}>Hair Dresser</Text>
               </View>
             </View>
           ))}
@@ -268,14 +274,13 @@ export function Calender(props) {
                     }
                   : {})}
                 headerContainerStyle={{
-                  height:
-                    calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
+                  height: calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
                   backgroundColor: COLORS.textInputBackground,
                   paddingTop: ms(5),
                 }}
                 dayHeaderHighlightColor={COLORS.dayHighlight}
                 hourComponent={CustomHoursCell}
-                onPressEvent={event => {
+                onPressEvent={(event) => {
                   setEventData(event);
                   setshowEventDetailModal(true);
                 }}
@@ -295,17 +300,12 @@ export function Calender(props) {
               style={[
                 styles.requestCalendarContainer,
                 {
-                  backgroundColor: showRequestsView
-                    ? COLORS.white
-                    : COLORS.textInputBackground,
+                  backgroundColor: showRequestsView ? COLORS.white : COLORS.textInputBackground,
                 },
               ]}
             >
               <View>
-                <Image
-                  source={calendarIcon}
-                  style={styles.requestCalendarIcon}
-                />
+                <Image source={calendarIcon} style={styles.requestCalendarIcon} />
                 <View style={styles.requestEventBadgeContainer}>
                   <Text style={styles.RequestEventBadgeText}>
                     {appointmentListArr?.length ?? 0}
@@ -322,16 +322,11 @@ export function Calender(props) {
                 style={[
                   styles.alignmentCalendarContainer,
                   {
-                    backgroundColor: showEmployeeHeader
-                      ? COLORS.white
-                      : COLORS.textInputBackground,
+                    backgroundColor: showEmployeeHeader ? COLORS.white : COLORS.textInputBackground,
                   },
                 ]}
               >
-                <Image
-                  source={todayCalendarIcon}
-                  style={styles.asignessCalendarImage}
-                />
+                <Image source={todayCalendarIcon} style={styles.asignessCalendarImage} />
                 <View style={styles.circularBadgeContainer}>
                   <Text style={styles.asigneesBadgeText}>{0}</Text>
                 </View>
@@ -343,16 +338,37 @@ export function Calender(props) {
                 keyExtractor={(_, index) => index.toString()}
                 renderItem={({ item, index }) => {
                   return (
-                    <TouchableOpacity style={styles.renderItemContainer}>
-                      <Image
-                        source={{
-                          uri: `https://xsgames.co/randomusers/avatar.php?g=male`,
-                        }}
-                        style={styles.employeeImages}
-                      />
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelectedStaffEmployeeId((prev) => {
+                          if (prev === index) {
+                            setSelectedStaffEmployeeId(null);
+                          } else {
+                            setSelectedStaffEmployeeId(index);
+                          }
+                        });
+                      }}
+                      style={[
+                        styles.renderItemContainer,
+                        {
+                          backgroundColor:
+                            selectedStaffEmployeeId === index
+                              ? COLORS.white
+                              : COLORS.textInputBackground,
+                        },
+                      ]}
+                    >
+                      <View>
+                        <Image
+                          source={{
+                            uri: `https://xsgames.co/randomusers/avatar.php?g=male`,
+                          }}
+                          style={styles.employeeImages}
+                        />
 
-                      <View style={styles.circularBadgeEmployee}>
-                        <Text style={styles.badgeTextEmployee}>{item}</Text>
+                        <View style={styles.circularBadgeEmployee}>
+                          <Text style={styles.badgeTextEmployee}>{item}</Text>
+                        </View>
                       </View>
                     </TouchableOpacity>
                   );
@@ -363,10 +379,7 @@ export function Calender(props) {
                 onPress={() => setisCalendarSettingModalVisible(true)}
                 style={styles.CalendarSettingsContainer}
               >
-                <Image
-                  source={calendarSettingsIcon}
-                  style={styles.calendarIconSettings}
-                />
+                <Image source={calendarSettingsIcon} style={styles.calendarIconSettings} />
               </TouchableOpacity>
             </View>
           </View>
@@ -374,13 +387,9 @@ export function Calender(props) {
 
         {showRequestsView && (
           <View style={styles.notificationCon}>
-            {isRequestLoading ? (
+            {isRequestLoading && pageNumber === 1 ? (
               <View style={{ marginTop: 50 }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
-              </View>
-            ) : appointmentListArr?.length === 0 ? (
-              <View>
-                <Text style={styles.requestNotFound}>Request not found</Text>
               </View>
             ) : (
               <View style={{ marginBottom: ms(40) }}>
@@ -388,9 +397,13 @@ export function Calender(props) {
                   {`Request (${appointmentListArr?.length ?? 0})`}
                 </Text>
                 <FlatList
+                  extraData={appointmentListArr}
                   data={appointmentListArr}
                   keyExtractor={(_, index) => index}
                   renderItem={eventItem}
+                  onEndReached={handleEndReached}
+                  onEndReachedThreshold={0.1} // Adjust this value as per your requirements
+                  ListFooterComponent={renderLoader}
                 />
               </View>
             )}
@@ -402,9 +415,7 @@ export function Calender(props) {
           setIsVisible={setisCalendarSettingModalVisible}
         />
 
-        <EventDetailModal
-          {...{ eventData, showEventDetailModal, setshowEventDetailModal }}
-        />
+        <EventDetailModal {...{ eventData, showEventDetailModal, setshowEventDetailModal }} />
 
         {schduleDetailModal()}
       </View>

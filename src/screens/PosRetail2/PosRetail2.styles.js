@@ -1,5 +1,5 @@
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW, ShadowStyles } from '@/theme';
 import { height, width } from '@/theme/ScalerDimensions';
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { Colors } from 'react-native-paper';
@@ -1030,10 +1030,11 @@ export const styles = StyleSheet.create({
   _kContainer: {
     height: ms(200),
     width: ms(300),
-    backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: ms(5),
+    ...ShadowStyles.shadow2,
+    backgroundColor: COLORS.white,
   },
   _kCenterContainer: {
     height: '100%',
@@ -1607,8 +1608,8 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     position: 'absolute',
-    top: -30,
-    right: -40,
+    top: -40,
+    right: -50,
     borderRadius: 10,
     padding: 18,
   },
@@ -1652,16 +1653,18 @@ export const styles = StyleSheet.create({
   },
 
   //PHONE POPUP
-
   calendarSettingModalContainer: {
-    width: ms(295),
-    height: ms(420),
+    width: windowWidth * 0.35,
+    height: windowHeight * 0.84,
     backgroundColor: 'white',
-    padding: ms(10),
-    paddingVertical: ms(15),
     alignSelf: 'center',
-    borderRadius: ms(10),
+    borderRadius: 7,
     alignItems: 'center',
+    borderWidth: 1,
+    paddingHorizontal: moderateVerticalScale(10),
+    paddingVertical: verticalScale(15),
+    position: 'absolute',
+    top: -40,
   },
   _btnContainer: {
     flexDirection: 'row',
@@ -1736,18 +1739,15 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
   },
   textInputView: {
-    paddingHorizontal: SW(12),
+    paddingHorizontal: SW(4),
     borderWidth: 0,
     alignItems: 'center',
     flexDirection: 'row',
     height: windowHeight * 0.08,
-    width: windowWidth * 0.348,
-    // marginVertical: 10,
+    width: windowWidth * 0.3,
     borderWidth: 1,
     borderColor: '#D8D8D8',
     borderRadius: 5,
-    marginHorizontal: SW(10),
-    // marginBottom:SW(12)
   },
   dropDownIcon: {
     width: 7,
