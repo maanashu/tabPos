@@ -239,7 +239,7 @@ export function Calender(props) {
             { paddingLeft: calendarMode === CALENDAR_MODES.MONTH ? 0 : ms(25) },
           ]}
         >
-          {getStaffUsers.map((item, index) => {
+          {getStaffUsers?.map((item, index) => {
             const userProfile = item?.user?.user_profiles;
             const userRoles = item?.user?.user_roles[0]?.role?.name;
             return (
