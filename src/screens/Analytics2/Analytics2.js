@@ -67,7 +67,6 @@ import {
   BarChartCom,
   ScreenWrapper,
 } from '@/components';
-import { styles } from '@/screens/Analytics/Analytics.styles';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
@@ -90,7 +89,6 @@ import {
   allRevenueTypeData,
   totalOrderData,
 } from '@/constants/flatListData';
-import { HomeGraph } from './Components';
 import { createDispatchHook, useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import {
@@ -120,8 +118,11 @@ import { NAVIGATION } from '@/constants';
 
 moment.suppressDeprecationWarnings = true;
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { styles } from './Analytics2.styles';
+import { HomeGraph } from './Components';
+import { MainScreen } from './Components/MainScreen';
 
-export function Analytics(props) {
+export function Analytics2(props) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -6597,7 +6598,8 @@ export function Analytics(props) {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        {orderList || revenueOrderBuyer || orderTracking
+        <MainScreen />
+        {/* {orderList || revenueOrderBuyer || orderTracking
           ? null
           : totalReveueDetail
           ? totalRevnueCustomHeader()
@@ -6606,7 +6608,7 @@ export function Analytics(props) {
         {productDetailModal()}
         {invoiceModal()}
         {productOrderModal()}
-        {stockHandProductModal()}
+        {stockHandProductModal()} */}
 
         {/* {totalRevnueCustomHeader()} */}
         {/* {totalRevenueFuntion()} */}

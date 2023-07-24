@@ -36,8 +36,8 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
   const customer = getuserDetailByNo?.[0];
 
   const saveCartData = { ...getRetailData };
-  const valueTen = '10';
-  const valueTwenty = '20';
+  const valueTen = '10.00';
+  const valueTwenty = '20.00';
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';

@@ -1,5 +1,5 @@
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW, ShadowStyles } from '@/theme';
 import { height, width } from '@/theme/ScalerDimensions';
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { Colors } from 'react-native-paper';
@@ -1021,10 +1021,11 @@ export const styles = StyleSheet.create({
   _kContainer: {
     height: ms(200),
     width: ms(300),
-    backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: ms(5),
+    ...ShadowStyles.shadow2,
+    backgroundColor: COLORS.white,
   },
   _kCenterContainer: {
     height: '100%',
@@ -1443,8 +1444,8 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     position: 'absolute',
-    top: -30,
-    right: -40,
+    top: -40,
+    right: -50,
     borderRadius: 10,
     padding: 18,
   },

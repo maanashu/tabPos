@@ -44,23 +44,27 @@ export const FinalPaymentScreen = ({
 
   return (
     <SafeAreaView style={styles._innerContainer}>
-      <View
-        style={[
-          styles._topContainer,
-          {
-            justifyContent: 'center',
-            marginLeft: ms(12),
-          },
-        ]}
-      >
-        <BackButton
-          onPress={onPressBack}
-          title={'Back'}
-          style={{ top: ms(5), left: ms(0), backgroundColor: 'transparent' }}
-        />
-      </View>
-      <View style={[styles._centerContainer, { marginTop: ms(30) }]}>
+      <View style={styles._centerContainer}>
         <View style={styles._upperContainer}>
+          <View
+            style={[
+              styles._topContainer,
+              {
+                justifyContent: 'center',
+                marginLeft: ms(12),
+              },
+            ]}
+          >
+            <BackButton
+              onPress={onPressBack}
+              title={'Back'}
+              style={{
+                top: ms(5),
+                left: ms(0),
+                backgroundColor: 'transparent',
+              }}
+            />
+          </View>
           <View style={styles._kUpperContainer}>
             <View style={styles._kContainer}>
               <Text style={[styles._totalAmountTitle, { fontSize: ms(15) }]}>
@@ -99,12 +103,12 @@ export const FinalPaymentScreen = ({
                 style={styles._printButton}
                 textStyle={styles._printBtnText}
               /> */}
-              <Button
+              {/* <Button
                 onPress={() => alert('Coming soon')}
                 title={'e-mail'}
                 style={styles._printButton}
                 textStyle={styles._printBtnText}
-              />
+              /> */}
               {/* <Button
                 onPress={() => alert('Coming soon')}
                 title={'e-receipt'}
@@ -114,7 +118,7 @@ export const FinalPaymentScreen = ({
             </View>
           </View>
 
-          <View style={styles._kCenterContainer}>
+          <View style={[styles._kCenterContainer, { borderWidth: 1 }]}>
             <Text style={styles._kSubCenterContainer}>Primark</Text>
             <Text style={styles._kAddress}>
               63 Ivy Road, Hawkville, GA, USA 31036

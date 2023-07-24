@@ -442,14 +442,18 @@ export class RetailController {
   static async createOrder(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
-      const body = {
-        cart_id: data.cartid,
-        user_id: data.userId,
-        // shipping: 'Pickup',
-        // app_name: 'Pos',
-        tips: data.tips,
-        mode_of_payment: data.modeOfPayment,
-      };
+      const body = data?.userId
+        ? {
+            cart_id: data.cartid,
+            user_id: data.userId,
+            tips: data.tips,
+            mode_of_payment: data.modeOfPayment,
+          }
+        : {
+            cart_id: data.cartid,
+            tips: data.tips,
+            mode_of_payment: data.modeOfPayment,
+          };
 
       HttpClient.post(endpoint, body)
         .then(response => {
