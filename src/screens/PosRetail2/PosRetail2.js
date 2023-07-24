@@ -20,6 +20,7 @@ import {
   PayByCash,
   PayByJBRCoins,
 } from '@/screens/PosRetail2/Components';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -43,6 +44,7 @@ import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { strings } from '@/localization';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import Main from 'react-native-country-picker-modal';
 
 export function PosRetail2() {
   const dispatch = useDispatch();
@@ -121,7 +123,7 @@ export function PosRetail2() {
         ? 'code'
         : ''
     );
-  }, [getRetailData?.getAllCart]);
+  }, []);
 
   const clearInput = () => {
     setNotes('');
@@ -226,16 +228,16 @@ export function PosRetail2() {
     }
   };
 
-  useEffect(() => {
-    dispatch(getMainProduct());
-    dispatch(getAllCart());
-  }, [isFocus]);
+  // useEffect(() => {
+  //   dispatch(getMainProduct());
+  //   dispatch(getAllCart());
+  // }, [isFocus]);
 
   const isLoading = useSelector(state =>
     isLoadingSelector(
       [
         TYPES.GET_ONE_PRODUCT,
-        TYPES.ADDCART,
+        // TYPES.ADDCART,
         TYPES.GET_CLEAR_ALL_CART,
         TYPES.GET_ALL_CART,
         TYPES.GET_WALLET_PHONE,
@@ -355,12 +357,14 @@ export function PosRetail2() {
   };
 
   const screenChangeView = () => {
+    console.log("Render");
     return renderScreen[selectedScreen];
   };
 
   return (
     <ScreenWrapper>
       <View style={styles.container}>{screenChangeView()}</View>
+     
       {isLoading ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator

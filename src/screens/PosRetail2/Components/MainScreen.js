@@ -36,6 +36,7 @@ import { AddCartDetailModal } from './AddCartDetailModal';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useDispatch, useSelector } from 'react-redux';
+import FastImage from 'react-native-fast-image'
 import { TYPES } from '@/Types/Types';
 import {
   addTocart,
@@ -50,15 +51,9 @@ import {
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useIsFocused } from '@react-navigation/native';
-import { CartListModal } from './CartListModal';
+import  CartListModal  from './CartListModal';
 
-export function MainScreen({
-  cartScreenHandler,
-  checkOutHandler,
-  categoryArray,
-  sellerID,
-  productArray,
-}) {
+const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArray, sellerID, productArray }) => {
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
@@ -103,8 +98,7 @@ export function MainScreen({
 
   const [filterMenuTitle, setfilterMenuTitle] = useState(filterMenuData);
 
-  const [isFilterDataSeclectedOfIndex, setisFilterDataSeclectedOfIndex] =
-    useState();
+  const [isFilterDataSeclectedOfIndex, setisFilterDataSeclectedOfIndex] =useState();
 
   const [selectedCatID, setselectedCatID] = useState(null);
   const [selectedSubCatID, setselectedSubCatID] = useState(null);
@@ -125,11 +119,11 @@ export function MainScreen({
       setselectedCatID(selectedCatID);
     }
   }, [selectedCatID]);
-  useEffect(() => {
-    if (cartLength === 0 || cartLength === undefined) {
-      setCartModal(false);
-    }
-  }, [cartLength]);
+    useEffect(() => {
+      if (cartLength === 0 || cartLength === undefined) {
+        setCartModal(false);
+      }
+    }, [cartLength]);
 
   const [okk, setOkk] = useState(getRetailData?.trueCustomer?.state || false);
 
@@ -146,45 +140,18 @@ export function MainScreen({
   // }, []);
 
   const onClickAddCart = item => {
-
-    // const data = {
-    //   seller_id: sellerID,
-    //   supplyId: item?.supplies?.[0]?.id,
-    //   supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
-    //   product_id: item?.id,
-    //   service_id: item?.service_id,
-    //   qty: 1,
-    // };
-
- //New Changes
-    var arr=getRetailData?.getAllCart;
-    const products = arr.poscart_products.map((item) => ({
-      product_id: item?.product_id,
-      qty: item?.qty,
-      supply_id: item?.supply_id,
-      supply_price_id: item?.supply_price_id,
-    }));
-    var existingProductIndex = products.findIndex((product) => product.product_id === item?.id);
-
-if (existingProductIndex !== -1) {
-  // If the product already exists in the cart, increase the quantity by 1
-  products[existingProductIndex].qty += 1;
-} else {
-  // If the product does not exist in the cart, add it with quantity 1
-  var newData = {
-    product_id: item?.id,
-    qty: 1,
-    supply_id: item?.supplies?.[0]?.id,
-    supply_price_id: item?.supplies?.[0]?.supply_prices[0]?.id,
-  };
-  products.push(newData);
-}
-const data=   {
-      "seller_id":sellerID,
-      "products": products
-}
+    const data = {
+      seller_id: sellerID,
+      supplyId: item?.supplies?.[0]?.id,
+      supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
+      product_id: item?.id,
+      service_id: item?.service_id,
+      qty: 1,
+    };
+  
+   
     dispatch(addTocart(data));
-    // console.log("PRODUCT _SSSSS",item?.id,"SELLERRR"=-=-=-=-=-=+sellerID);
+
   };
 
   const originalFilterData = [
@@ -266,13 +233,21 @@ const data=   {
       <Text style={styles.chooseCat} numberOfLines={1}>
         {item.name}
       </Text>
-      <Image
+      {/* <Image
         source={categoryMenu}
         style={[
           styles.categoryMenu,
           { tintColor: item.isSelected && COLORS.solid_green },
         ]}
-      />
+      /> */}
+       <FastImage
+      source={categoryMenu}
+       style={[
+        styles.categoryMenu,
+        { tintColor: item.isSelected && COLORS.solid_green },
+      ]}
+      resizeMode={FastImage.resizeMode.contain}
+    />
     </TouchableOpacity>
   );
   //  categoryType -----end
@@ -289,14 +264,23 @@ const data=   {
       />
     );
   };
-
+  
   const Item = ({ item }) => (
     <TouchableOpacity
       style={styles.productCon}
       onPress={() => productFun(item.id)}
       activeOpacity={0.7}
     >
-      <Image source={{ uri: item.image }} style={styles.categoryshoes} />
+      {/* <Image source={{ uri: item.image }} style={styles.categoryshoes} /> */}
+      
+      <FastImage
+      source={{
+        uri: item.image,
+        priority: FastImage.priority.normal,
+      }}
+      style={styles.categoryshoes}
+      resizeMode={FastImage.resizeMode.contain}
+    />
       <Spacer space={SH(10)} />
       <Text numberOfLines={1} style={styles.productDes}>
         {item.name}
@@ -315,7 +299,12 @@ const data=   {
         </Text>
         {/* addToCartBlue */}
         <TouchableOpacity onPress={() => onClickAddCart(item)}>
-          <Image source={addToCart} style={styles.addToCart} />
+          {/* <Image source={addToCart} style={styles.addToCart} /> */}
+        <FastImage
+        source={addToCart}
+        style={styles.addToCart}
+         resizeMode={FastImage.resizeMode.contain}
+      />
           {/* <View style={styles.productBadge}>
             <Text style={styles.productBadgeText}>{item.id}</Text>
           </View> */}
@@ -323,6 +312,7 @@ const data=   {
       </TouchableOpacity>
     </TouchableOpacity>
   );
+
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -490,7 +480,9 @@ const data=   {
       </View>
       {/* cart list modal start */}
       <Modal animationType="fade" transparent={true} isVisible={cartModal}>
-        <CartListModal checkOutHandler={checkOutHandler}
+        <CartListModal 
+
+         checkOutHandler={checkOutHandler}
          CloseCartModal={onCloseCartModal}
         />
       </Modal>
@@ -658,4 +650,5 @@ const data=   {
       </Modal>
     </View>
   );
-}
+});
+export { MainScreen };

@@ -27,7 +27,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { useFocusEffect } from '@react-navigation/native';
 
-export function CartListModal({ checkOutHandler ,CloseCartModal}) {
+function CartListModal({ checkOutHandler, CloseCartModal }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
@@ -86,7 +86,7 @@ export function CartListModal({ checkOutHandler ,CloseCartModal}) {
     var DATA={
     payload:arr
     }
-    dispatch(getAllCartSuccess(DATA))
+   dispatch(getAllCartSuccess(DATA))
   };
   const removeOneCartHandler = (productId,index) => {
     // const data = {
@@ -94,7 +94,6 @@ export function CartListModal({ checkOutHandler ,CloseCartModal}) {
     //   productId: productId,
     // };
     // dispatch(clearOneCart(data));
-
 
     var arr=getRetailData?.getAllCart
     const product = arr.poscart_products[index];
@@ -108,28 +107,27 @@ export function CartListModal({ checkOutHandler ,CloseCartModal}) {
       payload:arr
     }
     dispatch(getAllCartSuccess(DATA))
-
-
-
   };
   useFocusEffect(
     React.useCallback(() => {
       return () => {
         var arr=getRetailData?.getAllCart;
-        const products = arr.poscart_products.map((item) => ({
-          product_id: item?.product_id,
-          qty: item?.qty,
-          supply_id: item?.supply_id,
-          supply_price_id: item?.supply_price_id,
-        }));
-         const data=   {
-          "seller_id":arr?.seller_id,
-          "products": products
-         }
+        // console.log("RESSSPSPPSPS",JSON.stringify(arr));
+        if(arr.poscart_products.length>0){
+          const products = arr.poscart_products.map((item) => ({
+            product_id: item?.product_id,
+            qty: item?.qty,
+          }));
         
-        dispatch(addTocart(data));
-
-      };
+           const data={
+            "updated_products":products
+        }
+          dispatch(updateCartQty(data,arr.id));
+        }
+        else{
+          clearCartHandler()
+        }
+     };
     }, [])
   );
   
@@ -315,3 +313,4 @@ export function CartListModal({ checkOutHandler ,CloseCartModal}) {
     </View>
   );
 }
+export default React.memo(CartListModal);

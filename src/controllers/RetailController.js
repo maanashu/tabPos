@@ -254,26 +254,26 @@ export class RetailController {
       // let supplyID = data.supplyId.toString();
       // let supplyPriceID = data.supplyPriceID.toString();
       // let variantId = data.supplyVariantId.toString();
-      // const body = data?.supplyVariantId
-      //   ? {
-      //       seller_id: data.seller_id,
-      //       service_id: data.service_id,
-      //       product_id: data.product_id,
-      //       qty: data.qty,
-      //       supply_id: data.supplyId.toString(),
-      //       supply_price_id: data.supplyPriceID.toString(),
-      //       supply_variant_id: data.supplyVariantId.toString(),
-      //     }
-      //   : {
-      //       seller_id: data.seller_id,
-      //       service_id: data.service_id,
-      //       product_id: data.product_id,
-      //       qty: data.qty,
-      //       supply_id: data.supplyId.toString(),
-      //       supply_price_id: data.supplyPriceID.toString(),
-      //     };
-      // console.log("DATTATAA",JSON.stringify(data));
-      HttpClient.post(endpoint, data)
+      const body = data?.supplyVariantId
+        ? {
+            seller_id: data.seller_id,
+            service_id: data.service_id,
+            product_id: data.product_id,
+            qty: data.qty,
+            supply_id: data.supplyId.toString(),
+            supply_price_id: data.supplyPriceID.toString(),
+            supply_variant_id: data.supplyVariantId.toString(),
+          }
+        : {
+            seller_id: data.seller_id,
+            service_id: data.service_id,
+            product_id: data.product_id,
+            qty: data.qty,
+            supply_id: data.supplyId.toString(),
+            supply_price_id: data.supplyPriceID.toString(),
+          };
+       console.log("DATTATAA",JSON.stringify(data));
+      HttpClient.post(endpoint, body)
         .then(response => {
       console.log("RESPONSE",JSON.stringify(response));
 
@@ -299,6 +299,48 @@ export class RetailController {
         });
     });
   }
+
+  static async updateCartQty(data,cartId) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.updateCartQty + `/${cartId}`;
+      // const body = {
+      //   updated_products:
+      //      [
+      //         {
+      //             "qty": 2,
+      //             "product_id": 3458
+      //         }
+      //     ]
+      // };
+
+      console.log("DATATTAA",JSON.stringify(data));
+      HttpClient.put(endpoint, data)
+        .then(response => {
+          console.log("RESPONSEEEE",JSON.stringify(data));
+          // if (response?.msg === 'PosCart updated!') {
+          //   Toast.show({
+          //     text2: 'Notes add succesfully',
+          //     position: 'bottom',
+          //     type: 'success_toast',
+          //     visibilityTime: 1500,
+          //   });
+          //   resolve(response);
+          // }
+        })
+        .catch(error => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error.msg);
+        });
+    });
+  }
+
+
   static async addNotes(data) {
     return new Promise((resolve, reject) => {
       const endpoint =
@@ -396,6 +438,7 @@ export class RetailController {
         `?page=1&limit=10&search=${customerPhoneNo}`;
       HttpClient.get(endpoint)
         .then(response => {
+         
           resolve(response);
         })
         .catch(error => {

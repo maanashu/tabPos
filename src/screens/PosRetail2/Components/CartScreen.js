@@ -54,6 +54,7 @@ import {
   getUserDetail,
   getUserDetailSuccess,
   sendInvitation,
+  updateCartQty,
 } from '@/actions/RetailAction';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -100,20 +101,22 @@ export function CartScreen({
     React.useCallback(() => {
       return () => {
         var arr=getRetailData?.getAllCart;
-        const products = arr.poscart_products.map((item) => ({
-          product_id: item?.product_id,
-          qty: item?.qty,
-          supply_id: item?.supply_id,
-          supply_price_id: item?.supply_price_id,
-        }));
-         const data=   {
-          "seller_id":arr?.seller_id,
-          "products": products
-         }
+        // console.log("RESSSPSPPSPS",JSON.stringify(arr));
+        if(arr.poscart_products.length>0){
+          const products = arr.poscart_products.map((item) => ({
+            product_id: item?.product_id,
+            qty: item?.qty,
+          }));
         
-        dispatch(addTocart(data));
-
-      };
+           const data={
+            "updated_products":products
+        }
+          dispatch(updateCartQty(data,arr.id));
+        }
+        else{
+          clearCartHandler()
+        }
+     };
     }, [])
   );
   
