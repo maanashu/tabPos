@@ -56,8 +56,8 @@ export const styles = StyleSheet.create({
     marginVertical: SH(25),
     marginHorizontal: SH(15),
     padding: SH(10),
-    width: SH(280),
-    height: SH(320),
+    width: SH(255),
+    height: SH(300),
     borderRadius: 15,
   },
   posLoginHeader: {
@@ -149,8 +149,7 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(3),
   },
   twoStepMemberConTax: {
-    marginLeft:
-      Platform.OS === 'android' ? moderateScale(35) : moderateScale(20),
+    marginLeft: Platform.OS === 'android' ? moderateScale(35) : moderateScale(20),
   },
   twoStepMemberCon2: {
     width: windowWidth * 0.38,

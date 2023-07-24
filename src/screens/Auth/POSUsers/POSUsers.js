@@ -1,9 +1,5 @@
-import {
-  getAllPosUsers,
-  logoutFunction,
-  merchantLoginSuccess,
-} from '@/actions/AuthActions';
-import { Fonts, checkArrow, powerAuth, userImage } from '@/assets';
+import { getAllPosUsers, logoutFunction, merchantLoginSuccess } from '@/actions/AuthActions';
+import { checkArrow, powerAuth, userImage } from '@/assets';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { COLORS, SH, SW, SF } from '@/theme';
@@ -20,20 +16,8 @@ import { TYPES } from '@/Types/Types';
 import { ActivityIndicator } from 'react-native';
 import { ScreenWrapper, Spacer } from '@/components';
 import Modal from 'react-native-modal';
-import {
-  StackActions,
-  useIsFocused,
-  useNavigation,
-} from '@react-navigation/native';
-import {
-  checkboxSec,
-  crossButton,
-  googleAuth,
-  securityLogo,
-  teamMember,
-  vector,
-  vectorOff,
-} from '@/assets';
+import { useIsFocused } from '@react-navigation/native';
+import { checkboxSec, crossButton, googleAuth } from '@/assets';
 import {
   CodeField,
   useBlurOnFulfill,
@@ -46,18 +30,6 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { getSetting } from '@/selectors/SettingSelector';
 import { getGoogleCode, verifyGoogleCode } from '@/actions/SettingAction';
 
-const aaaaa = [
-  {
-    name: 'cashier',
-  },
-  {
-    name: 'admin',
-  },
-  {
-    name: 'watchman',
-  },
-];
-
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
 import { digits } from '@/utils/validators';
@@ -65,7 +37,6 @@ import { digits } from '@/utils/validators';
 export function POSUsers({ navigation }) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
-  const [posusers, setposusers] = useState([]);
   const getAuth = useSelector(getAuthData);
   const [value, setValue] = useState('');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
@@ -83,11 +54,8 @@ export function POSUsers({ navigation }) {
     setValue,
   });
   const getSettingData = useSelector(getSetting);
-  const qrCodeLoad = useSelector(state =>
-    isLoadingSelector([TYPES.GET_GOOGLE_CODE], state)
-  );
-  const googleAuthenticator =
-    getSettingData?.getSetting?.google_authenticator_status;
+  const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
+  const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status;
   const googleCode = getSettingData?.getGoogleCode;
 
   const merchantData = getAuth?.merchantLoginData;
@@ -103,7 +71,7 @@ export function POSUsers({ navigation }) {
     }
   }, [isFocused]);
 
-  const getPosUserLoading = useSelector(state =>
+  const getPosUserLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ALL_POS_USERS], state)
   );
 
@@ -179,13 +147,8 @@ export function POSUsers({ navigation }) {
       {!twoFactorEnabled ? (
         <View style={styles.container}>
           <View style={styles.flexRow}>
-            <Text style={styles.posLoginHeader}>
-              {strings.posUsersList.heading}
-            </Text>
-            <TouchableOpacity
-              style={styles.logoutCon}
-              onPress={() => logoutHandler()}
-            >
+            <Text style={styles.posLoginHeader}>{strings.posUsersList.heading}</Text>
+            <TouchableOpacity style={styles.logoutCon} onPress={() => logoutHandler()}>
               <Image source={powerAuth} style={styles.powerAuth} />
               <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
             </TouchableOpacity>
@@ -201,6 +164,7 @@ export function POSUsers({ navigation }) {
             </View>
           ) : (
             <FlatList
+              numColumns={4}
               data={posUserArray}
               extraData={posUserArray}
               scrollEnabled={true}
@@ -211,33 +175,22 @@ export function POSUsers({ navigation }) {
                   <View style={styles.posUserCon}>
                     <Spacer space={SH(10)} />
                     <Image
-                      source={
-                        { uri: item.user?.user_profiles?.profile_photo } ??
-                        userImage
-                      }
+                      source={{ uri: item.user?.user_profiles?.profile_photo } ?? userImage}
                       style={styles.profileImage}
                     />
-                    <Text style={styles.firstName}>
-                      {item.user?.user_profiles?.firstname}
-                    </Text>
+                    <Text style={styles.firstName}>{item.user?.user_profiles?.firstname}</Text>
                     <Text style={styles.role} numberOfLines={1}>
                       {item.user?.user_roles?.length > 0
-                        ? item.user?.user_roles?.map(
-                            (item, index) => item.role?.name
-                          )
+                        ? item.user?.user_roles?.map((item, index) => item.role?.name)
                         : 'admin'}
                     </Text>
                     {item.user?.api_tokens.length > 0 && (
                       <>
                         <Text style={[styles.dateTime, { marginTop: SH(20) }]}>
-                          {moment(item.user?.api_tokens[0].updated_at).format(
-                            'dddd, DD MMM YYYY'
-                          )}
+                          {moment(item.user?.api_tokens[0].updated_at).format('dddd, DD MMM YYYY')}
                         </Text>
                         <Text style={styles.dateTime}>
-                          {moment(item.user?.api_tokens[0].updated_at).format(
-                            'hh:mm a'
-                          )}
+                          {moment(item.user?.api_tokens[0].updated_at).format('hh:mm a')}
                         </Text>
                       </>
                     )}
@@ -266,7 +219,6 @@ export function POSUsers({ navigation }) {
                   </View>
                 );
               }}
-              numColumns={4}
             />
           )}
         </View>
@@ -336,52 +288,34 @@ export function POSUsers({ navigation }) {
                           dispatch(logoutFunction()), setGoogleAuthScan(false);
                         }}
                       >
-                        <Image
-                          source={crossButton}
-                          style={styles.crossButton}
-                        />
+                        <Image source={crossButton} style={styles.crossButton} />
                       </TouchableOpacity>
                     </View>
                   </View>
-                  <View
-                    style={[styles.modalDataCon, { justifyContent: 'center' }]}
-                  >
+                  <View style={[styles.modalDataCon, { justifyContent: 'center' }]}>
                     <View style={styles.scanCodeCon}>
-                      <Text
-                        style={[styles.firstDownloader, { fontSize: SF(11) }]}
-                      >
+                      <Text style={[styles.firstDownloader, { fontSize: SF(11) }]}>
                         {strings.settings.qrCode}
                       </Text>
                     </View>
                     <Spacer space={SH(30)} />
                     <View style={styles.scurityScanCon}>
                       {qrCodeLoad ? (
-                        <ActivityIndicator
-                          size="large"
-                          color={COLORS.primary}
-                        />
+                        <ActivityIndicator size="large" color={COLORS.primary} />
                       ) : (
-                        <Image
-                          source={{ uri: googleCode?.qrCode }}
-                          style={styles.scurityScan}
-                        />
+                        <Image source={{ uri: googleCode?.qrCode }} style={styles.scurityScan} />
                       )}
                     </View>
                     <Spacer space={SH(30)} />
                     <TouchableOpacity
-                      style={[
-                        styles.checkoutButton,
-                        { backgroundColor: COLORS.primary },
-                      ]}
+                      style={[styles.checkoutButton, { backgroundColor: COLORS.primary }]}
                       onPress={() => {
                         setTwoStepModal(false);
                         setGoogleAuthScan(false);
                         setSixDigit(true);
                       }}
                     >
-                      <Text
-                        style={[styles.checkoutText, { color: COLORS.white }]}
-                      >
+                      <Text style={[styles.checkoutText, { color: COLORS.white }]}>
                         {strings.settings.next}
                       </Text>
                       <Image
@@ -404,10 +338,7 @@ export function POSUsers({ navigation }) {
                           dispatch(logoutFunction()), setTwoStepModal(false);
                         }}
                       >
-                        <Image
-                          source={crossButton}
-                          style={styles.crossButton}
-                        />
+                        <Image source={crossButton} style={styles.crossButton} />
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -416,30 +347,20 @@ export function POSUsers({ navigation }) {
                     <Text style={styles.firstDownloader}>
                       {strings.settings.firstDownloader}
                       <Text style={styles.primaryClr}>Google Play Store </Text>
-                      or the{' '}
-                      <Text style={styles.primaryClr}>iOS App Store</Text>
+                      or the <Text style={styles.primaryClr}>iOS App Store</Text>
                     </Text>
                     <Spacer space={SH(50)} />
                     <TouchableOpacity
-                      style={
-                        googleAuthStart
-                          ? styles.googleAuthConSel
-                          : styles.googleAuthCon
-                      }
+                      style={googleAuthStart ? styles.googleAuthConSel : styles.googleAuthCon}
                       onPress={() => setGoogleAuthStart(!googleAuthStart)}
                     >
                       <View style={styles.dispalyRow}>
                         <Image source={googleAuth} style={styles.googleAuth} />
                         <View style={styles.marginLeft}>
-                          <Text style={styles.googleAuthText}>
-                            {strings.settings.googleAuth}
-                          </Text>
+                          <Text style={styles.googleAuthText}>{strings.settings.googleAuth}</Text>
                           <Spacer space={SH(5)} />
                           <Text
-                            style={[
-                              styles.firstDownloader,
-                              { fontSize: SF(11), width: SW(120) },
-                            ]}
+                            style={[styles.firstDownloader, { fontSize: SF(11), width: SW(120) }]}
                           >
                             {strings.settings.instead}
                           </Text>
@@ -449,10 +370,7 @@ export function POSUsers({ navigation }) {
                     <View style={{ flex: 1 }} />
                     <View style={styles.buttonSetting}>
                       <View style={styles.dispalyRow}>
-                        <Image
-                          source={checkboxSec}
-                          style={styles.checkboxSec}
-                        />
+                        <Image source={checkboxSec} style={styles.checkboxSec} />
                         <Text style={[styles.firstDownloader, styles.fontLeft]}>
                           {strings.settings.doLater}
                         </Text>
@@ -461,15 +379,10 @@ export function POSUsers({ navigation }) {
                       <TouchableOpacity
                         style={
                           googleAuthStart
-                            ? [
-                                styles.checkoutButton,
-                                { backgroundColor: COLORS.primary },
-                              ]
+                            ? [styles.checkoutButton, { backgroundColor: COLORS.primary }]
                             : styles.checkoutButton
                         }
-                        onPress={() => (
-                          setGoogleAuthStart(false), setGoogleAuthScan(true)
-                        )}
+                        onPress={() => (setGoogleAuthStart(false), setGoogleAuthScan(true))}
                       >
                         <Text
                           style={
