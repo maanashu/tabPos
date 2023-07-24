@@ -26,7 +26,11 @@ import { Calendar } from '@/components/CustomCalendar';
 import { CALENDAR_MODES } from '@/constants/enums';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAppointment } from '@/actions/AppointmentAction';
+import {
+  getAppointment,
+  getAppointmentByStaffId,
+  getStaffUsersList,
+} from '@/actions/AppointmentAction';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -52,6 +56,8 @@ export function Calender(props) {
 
   const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
+  const getAppointmentByStaffIdList = getCalenderData?.geAppointmentById;
+  const getStaffUsers = getCalenderData?.staffUsers;
   const appointmentPages = getCalenderData?.pages;
   const [storeItem, setStoreItem] = useState();
   const [extractedAppointment, setExtractedAppointment] = useState([]);
@@ -72,7 +78,6 @@ export function Calender(props) {
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
-  console.log('get Appointment list', getAppointmentList);
   const getAppointmentList2 = getAppointmentList?.filter((item) => item.status !== 3);
 
   // Only show appointments on calendar which are approved
@@ -95,6 +100,18 @@ export function Calender(props) {
       dispatch(getAppointment(pageNumber));
     }
   }, [isFocused, pageNumber, showRequestsView]);
+
+  useEffect(() => {
+    if (selectedStaffEmployeeId) {
+      dispatch(getAppointmentByStaffId(1, selectedStaffEmployeeId));
+    }
+  }, [selectedStaffEmployeeId]);
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getStaffUsersList());
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     if (getApprovedAppointments) {
@@ -156,8 +173,10 @@ export function Calender(props) {
   };
 
   const handleEndReached = () => {
-    if (appointmentPages?.currentPages < appointmentPages?.totalPages) {
-      setPageNumber(pageNumber + 1);
+    if (!selectedStaffEmployeeId) {
+      if (appointmentPages?.currentPages < appointmentPages?.totalPages) {
+        setPageNumber(pageNumber + 1);
+      }
     }
   };
 
@@ -213,27 +232,33 @@ export function Calender(props) {
     return (
       <View>
         <ScrollView
+          horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={[
             styles.headerScrollContainer,
             { paddingLeft: calendarMode === CALENDAR_MODES.MONTH ? 0 : ms(25) },
           ]}
-          horizontal
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
-            <View style={styles.headerEmployeeCard} key={index}>
-              <Image
-                source={{
-                  uri: `https://xsgames.co/randomusers/avatar.php?g=male`,
-                }}
-                style={styles.headerEmployeeImage}
-              />
-              <View style={{ marginLeft: ms(5) }}>
-                <Text style={styles.headerEmployeeName}>Fazal Haq</Text>
-                <Text style={styles.headerEmployeeDesignation}>Hair Dresser</Text>
+          {getStaffUsers.map((item, index) => {
+            const userProfile = item?.user?.user_profiles;
+            const userRoles = item?.user?.user_roles[0]?.role?.name;
+            return (
+              <View style={styles.headerEmployeeCard} key={index}>
+                <Image
+                  source={{
+                    uri: userProfile?.profile_photo,
+                  }}
+                  style={styles.headerEmployeeImage}
+                />
+                <View style={{ marginLeft: ms(5) }}>
+                  <Text style={styles.headerEmployeeName}>
+                    {userProfile?.firstname + ' ' + userProfile?.lastname}
+                  </Text>
+                  <Text style={styles.headerEmployeeDesignation}>{userRoles}</Text>
+                </View>
               </View>
-            </View>
-          ))}
+            );
+          })}
         </ScrollView>
       </View>
     );
@@ -294,6 +319,7 @@ export function Calender(props) {
                 if (appointmentListArr?.length === 0) {
                   setshowRequestsView(false);
                 } else {
+                  setSelectedStaffEmployeeId(null);
                   setshowRequestsView(!showRequestsView);
                 }
               }}
@@ -332,19 +358,22 @@ export function Calender(props) {
                 </View>
               </TouchableOpacity>
               <FlatList
-                data={[1, 2, 3, 4, 5]}
+                data={getStaffUsers}
                 showsVerticalScrollIndicator={false}
                 style={{ marginBottom: ms(40) }}
                 keyExtractor={(_, index) => index.toString()}
                 renderItem={({ item, index }) => {
+                  const userProfile = item?.user?.user_profiles;
+                  const posUserId = item?.user?.unique_uuid;
                   return (
                     <TouchableOpacity
                       onPress={() => {
+                        setshowRequestsView(!showRequestsView);
                         setSelectedStaffEmployeeId((prev) => {
-                          if (prev === index) {
+                          if (prev === posUserId) {
                             setSelectedStaffEmployeeId(null);
                           } else {
-                            setSelectedStaffEmployeeId(index);
+                            setSelectedStaffEmployeeId(posUserId);
                           }
                         });
                       }}
@@ -352,7 +381,7 @@ export function Calender(props) {
                         styles.renderItemContainer,
                         {
                           backgroundColor:
-                            selectedStaffEmployeeId === index
+                            selectedStaffEmployeeId === posUserId
                               ? COLORS.white
                               : COLORS.textInputBackground,
                         },
@@ -361,13 +390,15 @@ export function Calender(props) {
                       <View>
                         <Image
                           source={{
-                            uri: `https://xsgames.co/randomusers/avatar.php?g=male`,
+                            uri: userProfile?.profile_photo,
                           }}
-                          style={styles.employeeImages}
+                          style={[styles.employeeImages, { borderColor: item?.color_code }]}
                         />
 
-                        <View style={styles.circularBadgeEmployee}>
-                          <Text style={styles.badgeTextEmployee}>{item}</Text>
+                        <View
+                          style={[styles.circularBadgeEmployee, { borderColor: item?.color_code }]}
+                        >
+                          <Text style={styles.badgeTextEmployee}>{`0`}</Text>
                         </View>
                       </View>
                     </TouchableOpacity>
@@ -394,11 +425,15 @@ export function Calender(props) {
             ) : (
               <View style={{ marginBottom: ms(40) }}>
                 <Text style={styles._requestTitle}>
-                  {`Request (${appointmentListArr?.length ?? 0})`}
+                  {`Request (${
+                    selectedStaffEmployeeId
+                      ? getAppointmentByStaffIdList.length ?? 0
+                      : appointmentListArr?.length ?? 0
+                  })`}
                 </Text>
                 <FlatList
-                  extraData={appointmentListArr}
-                  data={appointmentListArr}
+                  extraData={selectedStaffEmployeeId}
+                  data={selectedStaffEmployeeId ? getAppointmentByStaffIdList : appointmentListArr}
                   keyExtractor={(_, index) => index}
                   renderItem={eventItem}
                   onEndReached={handleEndReached}

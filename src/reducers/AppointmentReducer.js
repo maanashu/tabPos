@@ -2,6 +2,7 @@ import { TYPES } from '@/Types/AppointmentTypes';
 
 const INITIALSTATE = {
   getAppointment: [],
+  geAppointmentById: [],
   appointmentStatus: null,
   staffUsers: [],
 };
@@ -32,6 +33,32 @@ export const appointmentReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getAppointment: [],
+      };
+
+    case TYPES.GET_APPOINTMENTS_BY_STAFF_ID_SUCCESS:
+      const { geAppointmentById } = state;
+      const { appointmentsById, staffAppointmentPages } = payload;
+
+      // Merge the existing data with the new data based on the unique identifier 'id'
+      const mergedAppointmentsByID = geAppointmentById.map(
+        (existingItem) =>
+          appointmentsById.find((newItem) => existingItem.id === newItem.id) || existingItem
+      );
+
+      // Add any new unique appointments that were not in the existing data
+      const newUniqueAppointmentsByID = appointmentsById.filter(
+        (newItem) => !geAppointmentById.some((existingItem) => existingItem.id === newItem.id)
+      );
+
+      return {
+        ...state,
+        geAppointmentById: [...mergedAppointmentsByID, ...newUniqueAppointmentsByID],
+        staffAppointmentPages: staffAppointmentPages,
+      };
+    case TYPES.GET_APPOINTMENTS_BY_STAFF_ID_RESET:
+      return {
+        ...state,
+        geAppointmentById: [],
       };
     case TYPES.GET_STAFF_USERS_SUCCESS:
       const { staffUsers } = state;

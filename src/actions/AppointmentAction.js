@@ -21,6 +21,24 @@ const getAppointmentReset = () => ({
   payload: null,
 });
 
+// get all appointments by staff id
+const getAppointmentByStaffIdRequest = () => ({
+  type: TYPES.GET_APPOINTMENTS_BY_STAFF_ID_REQUEST,
+  payload: null,
+});
+const getAppointmentByStaffIdSuccess = (appointmentsById, staffAppointmentPages) => ({
+  type: TYPES.GET_APPOINTMENTS_BY_STAFF_ID_SUCCESS,
+  payload: { appointmentsById, staffAppointmentPages },
+});
+const getAppointmentByStaffIdError = (error) => ({
+  type: TYPES.GET_APPOINTMENTS_BY_STAFF_ID_ERROR,
+  payload: { error },
+});
+const getAppointmentByStaffIdReset = () => ({
+  type: TYPES.GET_APPOINTMENTS_BY_STAFF_ID_RESET,
+  payload: null,
+});
+
 // Get Staff users list
 const getStaffUsersRequest = () => ({
   type: TYPES.GET_STAFF_USERS_REQUEST,
@@ -71,6 +89,23 @@ export const getAppointment = (pageNumber) => async (dispatch) => {
       dispatch(getAppointmentReset());
     }
     dispatch(getAppointmentError(error.message));
+  }
+};
+
+export const getAppointmentByStaffId = (pageNumber, posUserId) => async (dispatch) => {
+  dispatch(getAppointmentByStaffIdRequest());
+  try {
+    const res = await AppointmentController.getAppointment(pageNumber, posUserId);
+
+    const currentPages = res?.payload?.current_page;
+    const totalPages = res?.payload?.total_pages;
+    const pages = { currentPages: currentPages, totalPages: totalPages };
+    dispatch(getAppointmentByStaffIdSuccess(res?.payload?.data, pages));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getAppointmentByStaffIdReset());
+    }
+    dispatch(getAppointmentByStaffIdError(error.message));
   }
 };
 

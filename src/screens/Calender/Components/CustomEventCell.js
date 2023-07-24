@@ -4,25 +4,22 @@ import { getStartEndFormattedDate } from '@/utils/GlobalMethods';
 import { styles } from '../Calender.styles';
 
 const CustomEventCell = (event, touchableOpacityProps) => {
-  const profilePic = null; //event?.completeData?.user_details?.profile_photo;
+  const posUserDetils = event?.completeData?.pos_user_details;
+  const staffDetails = posUserDetils?.user?.user_profiles;
+  const colorCode = posUserDetils?.color_code;
   return (
     <TouchableOpacity
       {...touchableOpacityProps}
       style={[...touchableOpacityProps.style, styles.eventContainer]}
     >
       <View style={{}}>
-        {profilePic && (
-          <View style={styles.profilePicContainer}>
-            <Image
-              source={{ uri: profilePic }}
-              style={styles.eventProfilePic}
-            />
+        {staffDetails?.profile_photo && (
+          <View style={[styles.profilePicContainer, { borderColor: colorCode }]}>
+            <Image source={{ uri: staffDetails?.profile_photo }} style={styles.eventProfilePic} />
           </View>
         )}
       </View>
-      <Text style={styles.startEndDate}>
-        {getStartEndFormattedDate(event.start)}
-      </Text>
+      <Text style={styles.startEndDate}>{getStartEndFormattedDate(event.start)}</Text>
       <Text style={styles.eventTitle}>{event.title}</Text>
     </TouchableOpacity>
   );

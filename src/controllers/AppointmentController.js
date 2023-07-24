@@ -3,10 +3,9 @@ import { HttpClient } from './HttpClient';
 import { store } from '@/store';
 
 export class AppointmentController {
-  static async getAppointment(pageNumber = 1) {
+  static async getAppointment(pageNumber = 1, posUserId) {
     return new Promise((resolve, reject) => {
       const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
-
       const defaultQueryParams = {
         seller_id: sellerId,
         need_upcoming: true,
@@ -17,6 +16,11 @@ export class AppointmentController {
         page: pageNumber,
         limit: 10,
       };
+
+      // Check if pos user id is available
+      if (posUserId) {
+        queryParams.pos_user_id = posUserId;
+      }
 
       const stringifiedQueryParams = new URLSearchParams(queryParams);
 
