@@ -372,7 +372,6 @@ export function MainScreen({
               />
             )}
           </View>
-
           <View style={styles.rightSideView}>
             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
               <TouchableOpacity

@@ -48,13 +48,10 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount }) => {
   const createOrderHandler = () => {
     const data = {
       cartid: getRetailData?.getAllCart?.id,
-      // userId: customer?.user_id,
+      userId: customer?.user_id,
       tips: amount === undefined || amount === '' ? cashRate : amount,
       modeOfPayment: 'cash',
     };
-    alert('Create order in progress without customer');
-    // console.log('data', data);
-    return;
     const callback = response => {
       if (response) {
         onPressContinue(saveCartData, data);

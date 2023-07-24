@@ -271,7 +271,7 @@ export function PosRetail2() {
       <CartScreen
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
-          setselectedScreen('CartAmountPayBy');
+          setselectedScreen('CartAmountTips');
         }}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
@@ -290,15 +290,15 @@ export function PosRetail2() {
     ),
     ['CartAmountPayBy']: (
       <CartAmountPayBy
-        onPressBack={() => setselectedScreen('CartScreen')}
+        onPressBack={() => setselectedScreen('CartAmountTips')}
         tipAmount={tipAmount}
         onPressPaymentMethod={item => {
           if (item.index === 0) {
-            setselectedScreen('PayByCash');
+            setselectedScreen('PayByCard');
           } else if (item.index === 1) {
             setselectedScreen('PayByJBRCoins');
           } else if (item.index === 2) {
-            setselectedScreen('PayByCard');
+            setselectedScreen('PayByCash');
           }
         }}
       />

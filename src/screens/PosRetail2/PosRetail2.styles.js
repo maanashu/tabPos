@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     // marginTop: ms(20),
     // marginHorizontal: ms(26),
-    // marginBottom: ms(10),
+    marginBottom: ms(10),
     borderRadius: ms(3),
     justifyContent: 'center',
     alignItems: 'center',
@@ -121,7 +121,6 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     flex: 1,
     paddingHorizontal: moderateScale(12),
-    paddingVertical: verticalScale(10),
   },
   _inputMain: {
     marginTop: ms(15),
@@ -202,38 +201,30 @@ export const styles = StyleSheet.create({
   _payBYBoxContainer: {
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
-    height: ms(125),
+    height: ms(110),
     width: ms(170),
     margin: ms(3),
     borderRadius: ms(6),
-    // justifyContent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
-    padding: ms(10),
-  },
-  _payBYBoxContainerEmpty: {
-    height: ms(125),
-    width: ms(170),
-    margin: ms(3),
-    alignItems: 'center',
-    padding: ms(10),
   },
   _payByTitle: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: ms(9),
-    marginBottom: ms(3),
+    marginBottom: ms(5),
   },
   _payByMethod: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
     fontSize: ms(14),
-    marginTop: ms(2),
+    marginTop: ms(4),
   },
   _payByAmount: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: ms(10),
-    marginTop: ms(2),
+    marginTop: ms(4),
   },
   _payByIcon: {
     height: ms(22),
@@ -1419,161 +1410,6 @@ export const styles = StyleSheet.create({
     fontSize: SF(11),
     fontFamily: Fonts.SemiBold,
   },
-
-  //NEW DESIGN
-
-  //Tip
-  _payBYBoxContainerTip: {
-    borderColor: COLORS.solidGrey,
-    borderWidth: 1,
-    height: ms(50),
-    width: ms(126),
-    margin: ms(3),
-    borderRadius: ms(6),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  _payByAmountTip: {
-    fontFamily: Fonts.Regular,
-    color: COLORS.solid_grey,
-    fontSize: ms(9),
-    marginTop: ms(4),
-  },
-  _payByMethodTip: {
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
-    fontSize: ms(12),
-    marginTop: ms(4),
-  },
-
-  //Recipe
-
-  _payBYBoxContainerReceipe: {
-    borderColor: COLORS.solidGrey,
-    borderWidth: 1,
-    height: ms(45),
-    width: ms(170),
-    margin: ms(3),
-    borderRadius: ms(6),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  _payBYBoxContainerReceipeEmpty: {
-    height: ms(50),
-    width: ms(170),
-    margin: ms(3),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  _payByAmountReceipe: {
-    fontFamily: Fonts.Regular,
-    color: COLORS.solid_grey,
-    fontSize: ms(9),
-    marginTop: ms(4),
-  },
-  _payByMethodReceipe: {
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
-    fontSize: ms(12),
-    // marginTop: ms(4),
-  },
-  selectTips: {
-    fontSize: ms(12),
-    margin: ms(5),
-    fontFamily: Fonts.Regular,
-    color: COLORS.gerySkies,
-  },
-  saveView: {
-    backgroundColor: '#F5F6F7',
-    height: ms(15),
-    width: ms(80),
-    margin: ms(6),
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-  },
-  saveText: {
-    fontSize: ms(8),
-    fontFamily: Fonts.Medium,
-  },
-  _kCenterContainer: {
-    height: '100%',
-    alignSelf: 'flex-end',
-    flex: 0.6,
-    borderLeftWidth: 1,
-    borderColor: COLORS.textInputBackground,
-    alignItems: 'center',
-  },
-  _kSubCenterContainer: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(7),
-    marginTop: ms(5),
-  },
-  _kAddress: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: ms(6),
-    marginTop: ms(5),
-  },
-  _kNumber: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: ms(6),
-    marginTop: ms(3),
-  },
-  _flatListContainer: { height: ms(100), width: '100%', marginTop: ms(5) },
-  _barCode: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(10),
-    color: COLORS.dark_grey,
-  },
-  _barCodeImage: { height: ms(25), width: '70%', marginTop: ms(5) },
-  _thankyou: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(11),
-    color: COLORS.dark_grey,
-    marginTop: ms(10),
-  },
-  _cashRemainView: {
-    marginTop: ms(15),
-    height: 1,
-    width: '50%',
-    backgroundColor: COLORS.silver_solid,
-  },
-  _cashRemainText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(15),
-    color: COLORS.solid_grey,
-    marginTop: ms(10),
-  },
-  _printButton: {
-    width: '30%',
-    height: ms(26),
-    backgroundColor: 'transparent',
-    borderColor: COLORS.lineGrey,
-    borderWidth: 0.2,
-    borderRadius: ms(1),
-    marginHorizontal: moderateScale(5),
-  },
-  _printBtnText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(7),
-    color: COLORS.darkGray,
-    fontWeight: 'normal',
-  },
-  noProductText: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: verticalScale(50),
-  },
-  emptyListText: {
-    fontSize: SF(16),
-    color: COLORS.primary,
-    fontFamily: Fonts.Regular,
-  },
-
   avaliableOferBodyCon: {
     height:
       Platform.OS === 'android' ? windowHeight * 0.07 : windowHeight * 0.07,
@@ -1649,245 +1485,5 @@ export const styles = StyleSheet.create({
   },
   shortCartListHeight: {
     height: windowHeight * 0.7,
-  },
-
-  //PHONE POPUP
-
-  calendarSettingModalContainer: {
-    width: ms(295),
-    height: ms(420),
-    backgroundColor: 'white',
-    padding: ms(10),
-    paddingVertical: ms(15),
-    alignSelf: 'center',
-    borderRadius: ms(10),
-    alignItems: 'center',
-  },
-  _btnContainer: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-    width: windowWidth * 0.35,
-  },
-  declineBtnContainer: {
-    height: ms(40),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.textInputBackground,
-    flex: 1,
-    borderRadius: ms(3),
-  },
-  acceptbtnContainer: {
-    height: ms(40),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.primary,
-    flex: 1,
-    borderRadius: ms(3),
-    marginLeft: ms(8),
-  },
-  declineText: {
-    fontFamily: Fonts.Regular,
-    fontSize: ms(8),
-    color: COLORS.dark_grey,
-  },
-
-  input: {
-    width: '90%',
-    height: 70,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    paddingHorizontal: 10,
-    marginBottom: 20,
-  },
-  numberPad: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: windowWidth * 0.35,
-    marginVertical: SW(7),
-  },
-  submitButton: {
-    backgroundColor: COLORS.primary,
-    width: windowWidth * 0.32,
-    height: SH(60),
-  },
-  buttonText: {
-    color: COLORS.darkGray,
-    fontSize: SF(14),
-    fontFamily: Fonts.SemiBold,
-  },
-
-  keyPadButton: {
-    height: SH(110),
-    width: SH(125),
-    justifyContent: 'center',
-    borderColor: COLORS.gerySkies,
-    alignItems: 'center',
-    borderWidth: 0.3,
-    // borderRadius: 5,
-    // overflow: 'hidden',
-  },
-  outerBorderRadius: {
-    borderRadius: 5,
-    overflow: 'hidden',
-  },
-  keyPadText: {
-    fontSize: SH(28),
-    fontFamily: Fonts.Medium,
-    color: COLORS.solid_grey,
-  },
-  textInputView: {
-    paddingHorizontal: SW(12),
-    borderWidth: 0,
-    alignItems: 'center',
-    flexDirection: 'row',
-    height: windowHeight * 0.08,
-    width: windowWidth * 0.348,
-    // marginVertical: 10,
-    borderWidth: 1,
-    borderColor: '#D8D8D8',
-    borderRadius: 5,
-    marginHorizontal: SW(10),
-    // marginBottom:SW(12)
-  },
-  dropDownIcon: {
-    width: 7,
-    height: 7,
-    resizeMode: 'contain',
-  },
-  countryCodeText: {
-    color: COLORS.black,
-    fontSize: SF(18),
-    fontFamily: Fonts.Regular,
-    paddingHorizontal: moderateScale(8),
-  },
-  textInputContainer: {
-    color: COLORS.black,
-    fontSize: SF(16),
-    fontFamily: Fonts.Italic,
-    width: windowWidth * 0.2,
-  },
-
-  jobrSaveView: {
-    borderColor: COLORS.primary,
-    borderWidth: 1,
-    height: ms(50),
-    width: ms(520),
-    margin: ms(3),
-    borderRadius: ms(6),
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: ms(25),
-  },
-  youSave: {
-    fontFamily: Fonts.Regular,
-    color: COLORS.primary,
-    fontSize: ms(9),
-    marginBottom: ms(5),
-  },
-  saveJBR: {
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.primary,
-    fontSize: ms(14),
-    marginTop: ms(4),
-  },
-
-  jbrContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline', // To align "JBR" and the percentage value on the same baseline
-  },
-  jbrText: {
-    fontFamily: Fonts.Bold,
-    color: COLORS.primary,
-    fontSize: ms(11),
-
-    marginTop: ms(4),
-    alignSelf: 'flex-start',
-    marginRight: ms(3),
-    // You can apply any other styles you want for "JBR"
-  },
-  savePercent: {
-    fontFamily: Fonts.Bold,
-    color: COLORS.primary,
-    fontSize: ms(15),
-    marginTop: ms(4), // Set your desired font size for the percentage value
-    // Add any other styles you want for the percentage value here
-  },
-
-  //Email Modal
-
-  emailModalContainer: {
-    width: ms(350),
-    height: ms(160),
-    backgroundColor: 'white',
-    // padding: ms(10),
-    paddingVertical: ms(15),
-    alignSelf: 'center',
-    borderRadius: ms(10),
-    alignItems: 'center',
-  },
-  modalHeaderCon: {
-    height: SH(80),
-    width: ms(300),
-    // paddingHorizontal: moderateScale(0),
-    justifyContent: 'center',
-  },
-  crossButton: {
-    width: SW(9),
-    height: SW(9),
-    resizeMode: 'contain',
-  },
-  crossButtonCon: {
-    width: SW(13),
-    height: SW(13),
-    // justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalDataCon: {
-    width: windowWidth * 0.38,
-    alignSelf: 'center',
-    flex: 1,
-  },
-  flexRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  twoStepText: {
-    fontSize: SF(25),
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.black,
-    textAlign: 'left',
-  },
-
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    width: ms(300),
-    height: ms(40),
-    marginTop: ms(25),
-    padding: 15,
-  },
-  textInput: {
-    flex: 1,
-    height: 45,
-    fontSize: ms(10),
-    paddingHorizontal: 15,
-  },
-  payNowButton: {
-    height: ms(30),
-    width: ms(70),
-    backgroundColor: COLORS.darkGray,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    // marginHorizontal:ms(5)
-  },
-  payNowButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });

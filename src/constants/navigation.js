@@ -26,5 +26,4 @@ export const NAVIGATION = {
   notificationsList: 'NotificationsList',
   posRetail2: 'PosRetail2',
   shippingOrder2: 'ShippingOrder2',
-  analytics2: 'Analytics2',
 };

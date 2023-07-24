@@ -1,4 +1,4 @@
-import { COLORS, SH, SW } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
@@ -102,8 +102,8 @@ export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
               },
             ],
           }}
-          width={Dimensions.get('window').width * 0.24}
-          height={chartStyle ? 130 : 160}
+          width={Dimensions.get('window').width * 0.4}
+          height={chartStyle ? 170 : 190}
           chartConfig={{
             decimalPlaces: 0,
             backgroundColor: '#000',
@@ -128,13 +128,11 @@ export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
               strokeWidth: '2',
             },
           }}
-          bezier
+          // bezier
           style={{
             marginVertical: chartStyle ? 0 : SH(8),
             borderRadius: 16,
-            marginLeft: SW(-8),
           }}
-          withVerticalLines={false}
         />
       )}
     </View>

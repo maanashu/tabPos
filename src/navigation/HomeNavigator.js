@@ -20,7 +20,6 @@ import {
   PosRetail,
   PosRetail2,
   ShippingOrder2,
-  Analytics2,
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
@@ -124,11 +123,6 @@ export function HomeNavigator() {
       <Drawer.Screen
         component={ShippingOrder2}
         name={NAVIGATION.shippingOrder2}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        component={Analytics2}
-        name={NAVIGATION.analytics2}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>
