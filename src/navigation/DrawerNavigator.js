@@ -307,7 +307,7 @@ export function DrawerNavigator(props) {
           )}
         />
 
-        {getUserData?.posLoginData?.id != getAuth?.merchantLoginData?.id ? null : (
+        {/* {getUserData?.posLoginData?.id != getAuth?.merchantLoginData?.id ? null : (
           <View style={styles.endSessionViewStyle}>
             <DrawerItem
               label={''}
@@ -315,7 +315,7 @@ export function DrawerNavigator(props) {
               icon={({ focused, color, size }) => <Image source={power} style={styles.iconStyle} />}
             />
           </View>
-        )}
+        )} */}
       </ScrollView>
     </DrawerContentScrollView>
   );
