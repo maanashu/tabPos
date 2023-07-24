@@ -89,13 +89,13 @@ const styles = StyleSheet.create({
     width: SW(100),
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    paddingVertical: SH(15),
   },
   orderTextStyle: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
     color: COLORS.solid_grey,
     paddingLeft: SW(6),
+    paddingTop: 13,
   },
   piechartViewStyle: {
     alignSelf: 'center',
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   orderRowStyle: {
     borderWidth: 1,
     borderRadius: 5,
-    height: SH(60),
+    height: SH(65),
     marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     width: SW(140),
     borderColor: COLORS.blue_shade,
   },
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   },
   timeTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.primary,
   },
   orderDetailStyle: {
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   },
   nameTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.solid_grey,
   },
   distanceTextStyle: {
@@ -281,7 +281,6 @@ const styles = StyleSheet.create({
   orderToReviewView: {
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    marginBottom: 90,
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -298,6 +297,12 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
+  },
+  graphViewStyle: {
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    width: Dimensions.get('window').width * 0.56,
+    paddingHorizontal: 20,
   },
   numberOrdersText: {
     color: COLORS.dark_grey,
@@ -364,9 +369,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderWidth: 1,
   },
+  orderDetailViewStyle: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+    paddingVertical: 30,
+    borderRadius: 10,
+    marginTop: 20,
+    backgroundColor: COLORS.textInputBackground,
+  },
   userImageStyle: {
     width: SH(36),
     height: SH(36),
+    resizeMode: 'contain',
+  },
+  scooterImageStyle: {
+    width: SH(26),
+    height: SH(26),
     resizeMode: 'contain',
   },
   userNameView: {
@@ -388,6 +409,21 @@ const styles = StyleSheet.create({
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
+  },
+  invoiceText: {
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(14),
+    color: COLORS.darkGray,
+  },
+  itemCountText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(28),
+    color: COLORS.dark_grey,
+  },
+  totalText: {
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(18),
+    color: COLORS.solid_grey,
   },
 });
 
