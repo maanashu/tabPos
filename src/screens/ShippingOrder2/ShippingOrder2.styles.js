@@ -2,12 +2,15 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { ms, verticalScale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.textInputBackground,
+  },
   firstRowStyle: {
     flexDirection: 'row',
     paddingHorizontal: 20,
@@ -17,7 +20,6 @@ const styles = StyleSheet.create({
     width: SW(100),
     height: SH(120),
     alignItems: 'flex-start',
-    ...ShadowStyles.shadow2,
     borderRadius: 10,
     paddingTop: SH(16),
     backgroundColor: COLORS.white,
@@ -43,7 +45,6 @@ const styles = StyleSheet.create({
   currentStatusView: {
     width: SW(100),
     borderRadius: 10,
-    ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
     paddingVertical: SH(15),
   },
@@ -87,7 +88,6 @@ const styles = StyleSheet.create({
   orderConvertionView: {
     width: SW(100),
     borderRadius: 10,
-    ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
     paddingVertical: SH(15),
   },
@@ -127,32 +127,121 @@ const styles = StyleSheet.create({
     fontSize: SF(14),
     color: COLORS.dark_grey,
   },
+  orderRowStyle: {
+    borderWidth: 1,
+    borderRadius: 5,
+    height: SH(60),
+    marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    paddingHorizontal: 20,
+    borderColor: COLORS.blue_shade,
+  },
+  showAllOrdersView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    height: SH(60),
+    marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    paddingHorizontal: 20,
+    width: SW(140),
+    borderColor: COLORS.blue_shade,
+  },
+  rightIconStyle: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+  },
+  locationViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pinImageStyle: {
+    width: SH(16),
+    height: SH(16),
+    resizeMode: 'contain',
+  },
+  timeTextStyle: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    color: COLORS.primary,
+  },
+  orderDetailStyle: {
+    justifyContent: 'center',
+  },
+  nameTextStyle: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+  },
+  distanceTextStyle: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(11),
+    color: COLORS.dark_grey,
+    paddingLeft: 5,
+  },
+
   // -------------------
   rightSideView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    // borderWidth: 1,
-    ...ShadowStyles.shadow,
     width: windowWidth * 0.06,
-    // height: windowHeight * 0.86,
     paddingVertical: verticalScale(6),
     alignItems: 'center',
+  },
+  shippingOrdersView: {
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    width: SW(110),
+    paddingVertical: verticalScale(6),
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    top: 0,
+    right: 0,
+    zIndex: 999,
   },
   drawerIconView: {
     flexDirection: 'column',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: 5,
+  },
+  firstIconStyle: {
+    alignSelf: 'center',
+    width: SW(13),
+    height: SW(13),
+    alignSelf: 'center',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // marginBottom: 25,
+    backgroundColor: COLORS.textInputBackground,
+  },
+  shippingDrawerView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 13,
+    paddingHorizontal: 25,
   },
   sideBarImage: {
     width: SW(9),
     height: SW(9),
     resizeMode: 'contain',
   },
+  shippingDrawerTitleText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+  },
+  shippingDrawerCountText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+  },
   bucketBackgorund: {
     width: SW(17),
     height: SW(17),
     borderRadius: 5,
-    backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -190,9 +279,13 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   orderToReviewView: {
-    ...ShadowStyles.shadow2,
     borderRadius: 10,
     backgroundColor: COLORS.white,
+    marginBottom: 90,
+  },
+  contentContainerStyle: {
+    flexGrow: 1,
+    paddingBottom: 20,
   },
   headingRowStyle: {
     flexDirection: 'row',
@@ -206,6 +299,13 @@ const styles = StyleSheet.create({
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
   },
+  numberOrdersText: {
+    color: COLORS.dark_grey,
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+  },
   viewallTextStyle: {
     fontFamily: Fonts.Regular,
     fontSize: SF(12),
@@ -218,6 +318,76 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
     backgroundColor: COLORS.darkGray,
+  },
+  modalStyle: {
+    flex: 1,
+  },
+  shippingOrderViewStyle: {
+    position: 'absolute',
+    zIndex: 99,
+    backgroundColor: COLORS.white,
+    right: -50,
+    top: -50,
+    bottom: -50,
+    borderRadius: 10,
+  },
+  shippingOrderHeader: {
+    paddingTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  shippingOrderHeading: {
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(16),
+    color: COLORS.dark_grey,
+    paddingLeft: SW(6),
+  },
+  backImageStyle: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+  },
+  orderDetailView: {
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    width: SW(160),
+    marginBottom: 90,
+  },
+  userDetailView: {
+    flex: 1,
+    borderWidth: 1,
+    paddingVertical: 20,
+    borderRadius: 10,
+    height: SH(80),
+    marginVertical: 10,
+    flexDirection: 'row',
+    borderWidth: 1,
+  },
+  userImageStyle: {
+    width: SH(36),
+    height: SH(36),
+    resizeMode: 'contain',
+  },
+  userNameView: {
+    paddingLeft: 10,
+  },
+  orderproductView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    height: SH(60),
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    paddingHorizontal: 5,
+    borderColor: COLORS.blue_shade,
+  },
+  removeProductImageStyle: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
   },
 });
 

@@ -40,8 +40,7 @@ export const en = {
   passcode: {
     heading: 'Enter Passcode',
     success: 'Successfully verified',
-    loginBack:
-      'Please login back to your email inbox and set your new password',
+    loginBack: 'Please login back to your email inbox and set your new password',
   },
   loginIntial: {
     heading: 'CONFIRM YOUR LOG IN',
@@ -131,8 +130,7 @@ export const en = {
   passcode: {
     heading: 'Enter Passcode',
     success: 'Successfully verified',
-    loginBack:
-      'Please login back to your email inbox and set your new password',
+    loginBack: 'Please login back to your email inbox and set your new password',
   },
   loginIntial: {
     heading: 'CONFIRM YOUR LOG IN',
@@ -176,7 +174,7 @@ export const en = {
     DisTitle: 'Discount Title',
     sendRequest: 'Send Request',
     next: 'Next',
-    eRecipeEmail:`e-recipe will Send\nto your email`
+    eRecipeEmail: `e-recipe will Send\nto your email`,
   },
   posSale: {
     paymentHeader: 'Customer & Payment',
@@ -540,8 +538,7 @@ export const en = {
     plans: 'Plans',
     yourPlan: 'Your Plan',
     basic: 'Basic',
-    everyThingNeed:
-      'Everything you need to create a store, ship products, and process payments',
+    everyThingNeed: 'Everything you need to create a store, ship products, and process payments',
     chnagePlan: 'Change Plan',
     includePlan: 'Your Plan includes app',
     planFeat: 'Plan Features',
@@ -550,8 +547,7 @@ export const en = {
     simpleTra: 'Simple, Transparent pricing that grows with you',
     monthlyBil: 'Monthly Billing',
     annualBil: 'Annually Billing',
-    basicSubHead:
-      'Everything you need to create a store, ship products, and process payments',
+    basicSubHead: 'Everything you need to create a store, ship products, and process payments',
     getStart: 'Get Started',
     invoice: 'Invoices',
     invoiveHeading: 'Taxes and duties',
@@ -711,8 +707,7 @@ export const en = {
   Languages: {
     languages: 'Languages',
     Publishedlanguages: 'Published languages',
-    active:
-      "Active in the markets they've been added to and visible to customers.",
+    active: "Active in the markets they've been added to and visible to customers.",
     englishUSE: 'English  (USE)',
     englishUK: 'English (UK)',
     default: 'Default',
@@ -734,8 +729,7 @@ export const en = {
   Staff: {
     Staff: 'Staff',
     staffList: 'Staff List',
-    staffDes:
-      "Active in the markets they've been added to and visible to customers.",
+    staffDes: "Active in the markets they've been added to and visible to customers.",
     addStaff: 'Add Staff',
   },
   legal: {
