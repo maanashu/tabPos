@@ -1,12 +1,5 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
-import {
-  AppState,
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { AppState, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { hide } from 'react-native-bootsplash';
 import { enableScreens } from 'react-native-screens';
 import { Provider, useSelector } from 'react-redux';
@@ -18,16 +11,11 @@ import Toast, { BaseToast } from 'react-native-toast-message';
 import { Fonts, success, error, toastcross, toastcheck } from '@/assets';
 import { COLORS, SF, SH, SW } from './theme';
 import NetInfo from '@react-native-community/netinfo';
+import { configureMessaging, getDeviceToken, requestPermission } from './utils/Notifications';
 
-import { getDashboard } from './selectors/DashboardSelector';
 import RNLockTask from 'react-native-lock-task';
-
 Platform.OS === 'android' && RNLockTask.startLockTask();
-import {
-  configureMessaging,
-  getDeviceToken,
-  requestPermission,
-} from './utils/Notifications';
+
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 SystemNavigationBar.stickyImmersive();
 enableScreens();
@@ -38,9 +26,7 @@ const toastConfig = {
       {...rest}
       style={{ borderLeftColor: COLORS.green, zIndex: 999 }}
       contentContainerstyle={{ paddingHorizontal: SW(15) }}
-      renderTrailingIcon={() => (
-        <Image source={toastcheck} style={styles.tralingicon} />
-      )}
+      renderTrailingIcon={() => <Image source={toastcheck} style={styles.tralingicon} />}
       text2Style={{
         fontSize: SF(14),
         color: COLORS.green,
@@ -63,9 +49,7 @@ const toastConfig = {
       {...rest}
       style={{ borderLeftColor: COLORS.red, zIndex: 999 }}
       contentContainerstyle={{ paddingHorizontal: SW(15) }}
-      renderTrailingIcon={() => (
-        <Image source={toastcross} style={styles.tralingicon} />
-      )}
+      renderTrailingIcon={() => <Image source={toastcross} style={styles.tralingicon} />}
       text2Style={{
         fontSize: SF(14),
         color: COLORS.red,
@@ -85,7 +69,7 @@ const toastConfig = {
   ),
 };
 
-const unsubscribe = NetInfo.addEventListener(state => {
+const unsubscribe = NetInfo.addEventListener((state) => {
   if (state.isConnected === false) {
     Toast.show({
       text2: 'Go offline',
@@ -107,15 +91,17 @@ export function App() {
     requestPermission();
     configureMessaging();
     getDeviceToken();
-    return async () => await AsyncStorage.removeItem('acceptOrder');
-    unsubscribe();
+    return async () => {
+      await AsyncStorage.removeItem('acceptOrder');
+      unsubscribe();
+    };
   }, []);
 
   const currentState = useRef(AppState.currentState);
   const [state, setState] = useState(currentState.current);
 
   useEffect(() => {
-    const handleChange = AppState.addEventListener('change', changedState => {
+    const handleChange = AppState.addEventListener('change', (changedState) => {
       currentState.current = changedState;
       setState(currentState.current);
     });

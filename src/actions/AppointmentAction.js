@@ -8,11 +8,11 @@ const getAppointmentRequest = () => ({
   type: TYPES.GET_APPOINTMENTS_REQUEST,
   payload: null,
 });
-const getAppointmentSuccess = getAppointment => ({
+const getAppointmentSuccess = (appointments, pages) => ({
   type: TYPES.GET_APPOINTMENTS_SUCCESS,
-  payload: { getAppointment },
+  payload: { appointments, pages },
 });
-const getAppointmentError = error => ({
+const getAppointmentError = (error) => ({
   type: TYPES.GET_APPOINTMENTS_ERROR,
   payload: { error },
 });
@@ -26,11 +26,11 @@ const changeAppointmentStatusRequest = () => ({
   type: TYPES.CHANGE_APPOINTMENT_STATUS_REQUEST,
   payload: null,
 });
-const changeAppointmentStatusSuccess = status => ({
+const changeAppointmentStatusSuccess = (status) => ({
   type: TYPES.CHANGE_APPOINTMENT_STATUS_SUCCESS,
   payload: { status },
 });
-const changeAppointmentStatusError = error => ({
+const changeAppointmentStatusError = (error) => ({
   type: TYPES.CHANGE_APPOINTMENT_STATUS_ERROR,
   payload: { error },
 });
@@ -39,11 +39,15 @@ const changeAppointmentStatusReset = () => ({
   payload: null,
 });
 
-export const getAppointment = () => async dispatch => {
+export const getAppointment = (pageNumber) => async (dispatch) => {
   dispatch(getAppointmentRequest());
   try {
-    const res = await AppointmentController.getAppointment();
-    dispatch(getAppointmentSuccess(res?.payload?.data));
+    const res = await AppointmentController.getAppointment(pageNumber);
+
+    const currentPages = res?.payload?.current_page;
+    const totalPages = res?.payload?.total_pages;
+    const pages = { currentPages: currentPages, totalPages: totalPages };
+    dispatch(getAppointmentSuccess(res?.payload?.data, pages));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAppointmentReset());
@@ -51,35 +55,31 @@ export const getAppointment = () => async dispatch => {
     dispatch(getAppointmentError(error.message));
   }
 };
-export const changeAppointmentStatus =
-  (appointmentId, status) => async dispatch => {
-    dispatch(changeAppointmentStatusRequest());
-    try {
-      const res = await AppointmentController.changeAppointmentAPI(
-        appointmentId,
-        status
-      );
-      dispatch(changeAppointmentStatusSuccess(res?.payload));
-      dispatch(getAppointment());
-      Toast.show({
-        text2:
-          status === APPOINTMENT_STATUS.ACCEPTED_BY_SELLER
-            ? 'Appointment approved'
-            : 'Appointment Rejected',
-        position: 'bottom',
-        type: 'success_toast',
-        visibilityTime: 2500,
-      });
-    } catch (error) {
-      Toast.show({
-        text2: error.msg,
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 9000,
-      });
-      if (error?.statusCode === 204) {
-        dispatch(changeAppointmentStatusReset());
-      }
-      dispatch(changeAppointmentStatusError(error.message));
+export const changeAppointmentStatus = (appointmentId, status) => async (dispatch) => {
+  dispatch(changeAppointmentStatusRequest());
+  try {
+    const res = await AppointmentController.changeAppointmentAPI(appointmentId, status);
+    dispatch(changeAppointmentStatusSuccess(res?.payload));
+    dispatch(getAppointment());
+    Toast.show({
+      text2:
+        status === APPOINTMENT_STATUS.ACCEPTED_BY_SELLER
+          ? 'Appointment approved'
+          : 'Appointment Rejected',
+      position: 'bottom',
+      type: 'success_toast',
+      visibilityTime: 2500,
+    });
+  } catch (error) {
+    Toast.show({
+      text2: error.msg,
+      position: 'bottom',
+      type: 'error_toast',
+      visibilityTime: 9000,
+    });
+    if (error?.statusCode === 204) {
+      dispatch(changeAppointmentStatusReset());
     }
-  };
+    dispatch(changeAppointmentStatusError(error.message));
+  }
+};

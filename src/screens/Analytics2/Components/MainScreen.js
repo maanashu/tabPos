@@ -1,18 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { View, Image, TouchableOpacity, Text, Dimensions } from 'react-native';
 import {
-  View,
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-  Dimensions,
-  Platform,
-  ActivityIndicator,
-} from 'react-native';
-import {
-  rightlight,
   analyticsReport,
   profit,
   revenueTotal,
@@ -24,24 +12,17 @@ import {
   totalCost,
   totalOrders,
 } from '@/assets';
-import { COLORS, SF, SW, SH } from '@/theme';
-import { Spacer, BarChartCom, ScreenWrapper } from '@/components';
-
+import { SH } from '@/theme';
+import { Spacer, ScreenWrapper } from '@/components';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
-import moment from 'moment';
-
-moment.suppressDeprecationWarnings = true;
+import { useSelector } from 'react-redux';
+import Modal from 'react-native-modal';
 import { styles } from '../Analytics2.styles';
 import { HomeGraph } from '.';
 
-export function MainScreen(props) {
-  const isFocused = useIsFocused();
-  const dispatch = useDispatch();
-
+export function MainScreen() {
   const getAnalyticsData = useSelector(getAnalytics);
+  const [showModal, setShowModal] = useState(false);
 
   const productGraphObject2 = getAnalyticsData?.getTotalGraph;
 
@@ -49,13 +30,13 @@ export function MainScreen(props) {
     <ScreenWrapper>
       <View style={styles.container}>
         <View style={styles.homeMainContainer}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={styles.flexDirectionRow}>
             <View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={styles.flexDirectionRow}>
                 <HomeGraph
                   header="Total Profit"
                   subHeader={
-                    getAnalyticsData?.getTotalGraph?.totalResult ?? '0'
+                    getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'
                   }
                   productGraphObject={productGraphObject2}
                   homeGraphHandler={() => {}}
@@ -64,7 +45,7 @@ export function MainScreen(props) {
                 <HomeGraph
                   header="Total Revenue"
                   subHeader={
-                    getAnalyticsData?.getTotalGraph?.totalResult ?? '0'
+                    getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'
                   }
                   productGraphObject={productGraphObject2}
                   homeGraphHandler={() => {}}
@@ -73,18 +54,18 @@ export function MainScreen(props) {
                 <HomeGraph
                   header="Total Sales"
                   subHeader={
-                    getAnalyticsData?.getTotalGraph?.totalResult ?? '0'
+                    getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'
                   }
                   productGraphObject={productGraphObject2}
                   homeGraphHandler={() => {}}
                   arrayLength={productGraphObject2?.datasets?.length}
                 />
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={styles.flexDirectionRow}>
                 <HomeGraph
                   header="Sales by Channel"
                   subHeader={
-                    getAnalyticsData?.getTotalGraph?.totalResult ?? '0'
+                    getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'
                   }
                   productGraphObject={productGraphObject2}
                   homeGraphHandler={() => {}}
@@ -94,7 +75,7 @@ export function MainScreen(props) {
                 <HomeGraph
                   header="Average Order value"
                   subHeader={
-                    getAnalyticsData?.getTotalGraph?.totalResult ?? '0'
+                    getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'
                   }
                   productGraphObject={productGraphObject2}
                   homeGraphHandler={() => {}}
@@ -104,18 +85,18 @@ export function MainScreen(props) {
                 <HomeGraph
                   header="Top Selling Products"
                   subHeader={
-                    getAnalyticsData?.getTotalGraph?.totalResult ?? '0'
+                    getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'
                   }
                   productGraphObject={productGraphObject2}
                   homeGraphHandler={() => {}}
                   arrayLength={productGraphObject2?.datasets?.length}
                 />
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={styles.flexDirectionRow}>
                 <HomeGraph
                   header="Sales by Locations"
                   subHeader={
-                    getAnalyticsData?.getTotalGraph?.totalResult ?? '0'
+                    getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'
                   }
                   productGraphObject={productGraphObject2}
                   homeGraphHandler={() => {}}
@@ -124,7 +105,7 @@ export function MainScreen(props) {
                 <HomeGraph
                   header="Total Orders"
                   subHeader={
-                    getAnalyticsData?.getTotalGraph?.totalResult ?? '0'
+                    getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'
                   }
                   productGraphObject={productGraphObject2}
                   homeGraphHandler={() => {}}
@@ -133,7 +114,7 @@ export function MainScreen(props) {
                 <HomeGraph
                   header="Total Costs"
                   subHeader={
-                    getAnalyticsData?.getTotalGraph?.totalResult ?? '0'
+                    getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'
                   }
                   productGraphObject={productGraphObject2}
                   homeGraphHandler={() => {}}
@@ -141,12 +122,15 @@ export function MainScreen(props) {
                 />
               </View>
             </View>
+
             <View style={styles.rightSideView}>
               <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                <View style={styles.bucketBackgorund}>
+                <TouchableOpacity
+                  style={styles.bucketBackgorund}
+                  onPress={() => setShowModal(!showModal)}
+                >
                   <Image source={analyticsReport} style={styles.sideBarImage} />
-                </View>
-
+                </TouchableOpacity>
                 <Spacer space={SH(25)} />
                 <Image source={profit} style={styles.sideBarImage} />
               </View>
@@ -195,6 +179,107 @@ export function MainScreen(props) {
             </View>
           </View>
         </View>
+        <Modal isVisible={showModal} statusBarTranslucent>
+          <View style={styles.modalView}>
+            <View style={styles.flexAlign}>
+              <Text style={styles.headerText}>{'Analytics Reports'}</Text>
+              <TouchableOpacity
+                style={styles.imageView}
+                onPress={() => setShowModal(false)}
+              >
+                <Image source={analyticsReport} style={styles.headerImage} />
+              </TouchableOpacity>
+            </View>
+            <Spacer space={SH(25)} />
+
+            <View style={styles.flexAlign}>
+              <Image source={profit} style={styles.subImages} />
+              <View style={styles.marginLeft4}>
+                <Text style={styles.costText}>$ 2050</Text>
+                <Text style={styles.subTitle}>{'Total Profit'}</Text>
+              </View>
+            </View>
+            <Spacer space={SH(15)} />
+
+            <View style={styles.flexAlign}>
+              <Image source={revenueTotal} style={styles.subImages} />
+              <View style={styles.marginLeft4}>
+                <Text style={styles.costText}>$ 2050</Text>
+                <Text style={styles.subTitle}>{'Total Revenue'}</Text>
+              </View>
+            </View>
+
+            <Spacer space={SH(15)} />
+
+            <View style={styles.flexAlign}>
+              <Image source={totalSales} style={styles.subImages} />
+              <View style={styles.marginLeft4}>
+                <Text style={styles.costText}>$ 2050</Text>
+                <Text style={styles.subTitle}>{'Total Sales'}</Text>
+              </View>
+            </View>
+
+            <Spacer space={SH(15)} />
+
+            <View style={styles.flexAlign}>
+              <Image source={channel} style={styles.subImages} />
+              <View style={styles.marginLeft4}>
+                <Text style={styles.costText}>$ 2050</Text>
+                <Text style={styles.subTitle}>{'Sales by Channel'}</Text>
+              </View>
+            </View>
+
+            <Spacer space={SH(15)} />
+
+            <View style={styles.flexAlign}>
+              <Image source={averageOrder} style={styles.subImages} />
+              <View style={styles.marginLeft4}>
+                <Text style={styles.costText}>$ 2050</Text>
+                <Text style={styles.subTitle}>{'Average Order Value'}</Text>
+              </View>
+            </View>
+
+            <Spacer space={SH(15)} />
+
+            <View style={styles.flexAlign}>
+              <Image source={productSelling} style={styles.subImages} />
+              <View style={styles.marginLeft4}>
+                <Text style={styles.costText}>$ 2050</Text>
+                <Text style={styles.subTitle}>{'Top Selling Products'}</Text>
+              </View>
+            </View>
+
+            <Spacer space={SH(15)} />
+
+            <View style={styles.flexAlign}>
+              <Image source={locationSales} style={styles.subImages} />
+              <View style={styles.marginLeft4}>
+                <Text style={styles.costText}>$ 2050</Text>
+                <Text style={styles.subTitle}>{'Sales by Locations'}</Text>
+              </View>
+            </View>
+
+            <Spacer space={SH(15)} />
+
+            <View style={styles.flexAlign}>
+              <Image source={totalOrders} style={styles.subImages} />
+              <View style={styles.marginLeft4}>
+                <Text style={styles.costText}>$ 2050</Text>
+                <Text style={styles.subTitle}>{'Total Orders'}</Text>
+              </View>
+            </View>
+
+            <Spacer space={SH(15)} />
+
+            <View style={styles.flexAlign}>
+              <Image source={totalCost} style={styles.subImages} />
+              <View style={styles.marginLeft4}>
+                <Text style={styles.costText}>$ 2050</Text>
+                <Text style={styles.subTitle}>{'Total Costs'}</Text>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </ScreenWrapper>
   );
