@@ -21,6 +21,24 @@ const getAppointmentReset = () => ({
   payload: null,
 });
 
+// Get Staff users list
+const getStaffUsersRequest = () => ({
+  type: TYPES.GET_STAFF_USERS_REQUEST,
+  payload: null,
+});
+const getStaffUsersSuccess = (staffUsersList, staffPages) => ({
+  type: TYPES.GET_STAFF_USERS_SUCCESS,
+  payload: { staffUsersList, staffPages },
+});
+const getStaffUsersError = (error) => ({
+  type: TYPES.GET_STAFF_USERS_ERROR,
+  payload: { error },
+});
+const getStaffUsersReset = () => ({
+  type: TYPES.GET_STAFF_USERS_RESET,
+  payload: null,
+});
+
 // Change appointments status
 const changeAppointmentStatusRequest = () => ({
   type: TYPES.CHANGE_APPOINTMENT_STATUS_REQUEST,
@@ -55,6 +73,24 @@ export const getAppointment = (pageNumber) => async (dispatch) => {
     dispatch(getAppointmentError(error.message));
   }
 };
+
+export const getStaffUsersList = (pageNumber) => async (dispatch) => {
+  dispatch(getStaffUsersRequest());
+  try {
+    const res = await AppointmentController.getAllStaffUsers(pageNumber);
+
+    const currentPages = res?.payload?.current_page;
+    const totalPages = res?.payload?.total_pages;
+    const pages = { currentPages: currentPages, totalPages: totalPages };
+    dispatch(getStaffUsersSuccess(res?.payload?.pos_staff, pages));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getStaffUsersReset());
+    }
+    dispatch(getStaffUsersError(error.message));
+  }
+};
+
 export const changeAppointmentStatus = (appointmentId, status) => async (dispatch) => {
   dispatch(changeAppointmentStatusRequest());
   try {

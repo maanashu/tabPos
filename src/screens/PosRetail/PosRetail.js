@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { AddDiscountToCart, ScreenWrapper, Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail/PosRetail.styles';
@@ -50,8 +44,7 @@ export function PosRetail() {
   const cartID2 = getRetailData?.getAllCart?.id;
   const cartData = getRetailData?.getAllCart;
   const finalAmountForDiscount =
-    cartData?.amount?.products_price.toFixed(2) -
-    cartData?.amount?.tax.toFixed(2);
+    cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const defaultArrayproduct = getRetailData?.getProductDefault;
@@ -102,15 +95,9 @@ export function PosRetail() {
     setPercentageCheck(getCart?.discount_flag === 'percentage' ? true : false);
     setAmountCheck(getCart?.discount_flag === 'amount' ? true : false);
     setDiscountCheck(getCart?.discount_flag === 'code' ? true : false);
-    setAmountDis(
-      getCart?.discount_flag === 'amount' ? getCart?.discount_value : ''
-    );
-    setPercentDis(
-      getCart?.discount_flag === 'percentage' ? getCart?.discount_value : ''
-    );
-    setDiscountCode(
-      getCart?.discount_flag === 'code' ? getCart?.discount_value : ''
-    );
+    setAmountDis(getCart?.discount_flag === 'amount' ? getCart?.discount_value : '');
+    setPercentDis(getCart?.discount_flag === 'percentage' ? getCart?.discount_value : '');
+    setDiscountCode(getCart?.discount_flag === 'code' ? getCart?.discount_value : '');
     setValue(
       getCart?.discount_flag === 'amount'
         ? 'amount'
@@ -138,10 +125,7 @@ export function PosRetail() {
     }
   };
   const saveDiscountHandler = () => {
-    if (
-      amountDis > finalAmountForDiscount ||
-      percentDis > finalAmountForDiscount
-    ) {
+    if (amountDis > finalAmountForDiscount || percentDis > finalAmountForDiscount) {
       Toast.show({
         text2: 'Please enter discount less then total amount',
         position: 'bottom',
@@ -231,7 +215,7 @@ export function PosRetail() {
     dispatch(getAllCart());
   }, [isFocus]);
 
-  const isLoading = useSelector(state =>
+  const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
         TYPES.GET_ONE_PRODUCT,
@@ -279,7 +263,7 @@ export function PosRetail() {
     ['CartAmountTips']: (
       <CartAmountTips
         onPressBack={() => setselectedScreen('MainScreen')}
-        onPressContinue={tip => {
+        onPressContinue={(tip) => {
           setTipAmount(tip);
           setselectedScreen('CartAmountPayBy');
         }}
@@ -291,7 +275,7 @@ export function PosRetail() {
       <CartAmountPayBy
         onPressBack={() => setselectedScreen('CartAmountTips')}
         tipAmount={tipAmount}
-        onPressPaymentMethod={item => {
+        onPressPaymentMethod={(item) => {
           if (item.index === 0) {
             setselectedScreen('PayByCard');
           } else if (item.index === 1) {
@@ -362,19 +346,11 @@ export function PosRetail() {
       <View style={styles.container}>{screenChangeView()}</View>
       {isLoading ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator
-            color={COLORS.primary}
-            size="large"
-            style={styles.loader}
-          />
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        isVisible={addNotes || addDiscount}
-      >
+      <Modal animationType="fade" transparent={true} isVisible={addNotes || addDiscount}>
         <KeyboardAvoidingView
         // style={{ flex: 1 }}
         // behavior={Platform.OS === 'ios' ? 'padding' : 100}
@@ -383,12 +359,7 @@ export function PosRetail() {
           <ScrollView>
             {addDiscount ? (
               <View style={[styles.addNotesCon, styles.addDiscountConPop]}>
-                <View
-                  style={[
-                    styles.addCartDetailConHeader,
-                    styles.addCartDetailConHeader2,
-                  ]}
-                >
+                <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
                   <Text style={styles.jacketName}>Add Discount</Text>
                   <TouchableOpacity onPress={() => setAddDiscount(false)}>
                     <Image source={crossButton} style={styles.crossBg} />
@@ -424,12 +395,7 @@ export function PosRetail() {
               </View>
             ) : (
               <View style={[styles.addNotesCon, styles.addNotesCon2]}>
-                <View
-                  style={[
-                    styles.addCartDetailConHeader,
-                    styles.addCartDetailConHeader2,
-                  ]}
-                >
+                <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
                   <Text style={styles.jacketName}>Add Notes</Text>
                   <TouchableOpacity onPress={() => setAddNotes(false)}>
                     <Image source={crossButton} style={styles.crossBg} />

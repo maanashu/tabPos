@@ -1,4 +1,4 @@
-import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
+import { ORDER_URL, ApiOrderInventory, ApiUserInventory, USER_URL } from '@/utils/APIinventory';
 import { HttpClient } from './HttpClient';
 import { store } from '@/store';
 
@@ -40,6 +40,22 @@ export class AppointmentController {
       HttpClient.put(endpoint, body)
         .then((response) => {
           resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getAllStaffUsers(pageNumber = 1) {
+    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+    return new Promise(async (resolve, reject) => {
+      const endpoint = `${USER_URL}${ApiUserInventory.getPosUsers}?page=${pageNumber}&limit=10&seller_id=${sellerId}&need_staff_member=true`;
+      await HttpClient.get(endpoint)
+        .then((response) => {
+          if (response?.status_code === 200) {
+            resolve(response);
+          }
         })
         .catch((error) => {
           reject(error);

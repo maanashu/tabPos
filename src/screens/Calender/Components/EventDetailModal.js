@@ -13,6 +13,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const userDetails = completeData?.user_details;
   const userAddress = userDetails?.current_address;
   const appointmentDetail = completeData?.appointment_details[0];
+  const posUserDetails = completeData?.pos_user_details;
   return (
     <Modal isVisible={showEventDetailModal}>
       <View style={styles.eventDetailModalContainer}>
@@ -50,9 +51,14 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
           <Text style={styles._eventTitle}>Assigned:</Text>
 
           <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
-            <ProfileImage source={{ uri: null }} style={styles.customerUserProfile} />
+            <ProfileImage
+              source={{ uri: posUserDetails?.profile_photo }}
+              style={styles.customerUserProfile}
+            />
             <View style={{ marginLeft: ms(6) }}>
-              <Text style={styles.customerName}>{`EmployeeName`}</Text>
+              <Text style={styles.customerName}>
+                {posUserDetails?.firstname + ' ' + posUserDetails?.lastname}
+              </Text>
               <Text style={styles.eventAddress}>{`occupation`}</Text>
             </View>
           </View>

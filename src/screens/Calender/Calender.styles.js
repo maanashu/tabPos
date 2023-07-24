@@ -412,7 +412,6 @@ export const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   renderItemContainer: {
-    borderColor: COLORS.yellowTweet,
     height: ms(28),
     width: ms(28),
     borderRadius: ms(2),

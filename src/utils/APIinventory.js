@@ -32,8 +32,7 @@ export const ApiUserInventory = {
   getCountries: 'countries',
   getState: 'states',
   getDrawerSessionById: 'drawer_management/drawer-session/history',
-  getDrawer: status =>
-    `drawer_management/drawer-session/history?drawer_id=${status}`,
+  getDrawer: (status) => `drawer_management/drawer-session/history?drawer_id=${status}`,
   staffDetail: 'user_settings/staff/transactions',
   getTax: 'tax',
   getGoogleCode: 'users/2fa/qr-code',
@@ -119,6 +118,5 @@ export const API_URLS_USING_POS_USER_ACCESS_TOKEN = [
   USER_URL + ApiUserInventory.trackSessionSave,
   USER_URL + ApiUserInventory.posLoginDetail,
   USER_URL + ApiUserInventory.loginPosuser,
-  USER_URL +
-    `drawer_management/drawer-session/history?drawer_id=${posDrawerId}`,
+  USER_URL + `drawer_management/drawer-session/history?drawer_id=${posDrawerId}`,
 ];
