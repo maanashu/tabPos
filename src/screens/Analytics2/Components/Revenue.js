@@ -8,7 +8,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { LineChart } from 'react-native-chart-kit';
 import { DataTable } from 'react-native-paper';
 
-export function TotalProfit() {
+export function Revenue() {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
   const [channelItem, setChannelItem] = useState([
@@ -26,7 +26,7 @@ export function TotalProfit() {
           marginHorizontal: SW(5),
         }}
       >
-        {'Total Profits'}
+        {'Total Revenue'}
       </Text>
 
       <View style={{ flexDirection: 'row' }}>
@@ -105,11 +105,6 @@ export function TotalProfit() {
                 data: [12, 20, 12, 30, 42, 40, 50, 40],
                 strokeWidth: 2,
                 color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
-              },
-              {
-                data: [8, 15, 8, 24, 35, 35, 45, 35],
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(167, 167, 167, ${opacity})`, // optional
               },
             ],
           }}
@@ -195,6 +190,9 @@ export function TotalProfit() {
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Total Sales</Text>
               </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Total Revenue</Text>
+              </DataTable.Title>
             </DataTable.Header>
 
             {/* <FlatList
@@ -233,6 +231,9 @@ export function TotalProfit() {
               </DataTable.Cell>
               <DataTable.Cell style={styles.dateTableSetting}>
                 <Text style={styles.revenueDataText}>$2300</Text>
+              </DataTable.Cell>
+              <DataTable.Cell style={styles.dateTableSetting}>
+                <Text style={styles.revenueDataText2}>$19,666.50</Text>
               </DataTable.Cell>
               <DataTable.Cell style={styles.dateTableSetting}>
                 <Text style={styles.revenueDataText2}>$19,666.50</Text>
