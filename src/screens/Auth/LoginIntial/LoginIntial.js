@@ -69,13 +69,7 @@ export function LoginIntial({ route }) {
               {posuserdata.user?.user_profiles.firstname}
             </Text>
             <Spacer space={SH(5)} />
-            <Text style={styles.role}>
-              {posuserdata.user?.user_roles?.length > 0
-                ? posuserdata.user?.user_roles?.map(
-                    (item, index) => item.role?.name
-                  )
-                : 'admin'}
-            </Text>
+            <Text style={styles.role}>{posuserdata?.pos_role}</Text>
             <Spacer space={SH(15)} />
             {posuserdata.user?.api_tokens.length > 0 && (
               <>

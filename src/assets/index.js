@@ -272,6 +272,16 @@ export { default as radioUnSelect } from '@/assets/images/radioUnselect.png';
 export { default as chatIcon } from '@/assets/images/Chat_light.png';
 export { default as locationTracker } from '@/assets/icons/ic_deliveryOrder/locationTracker.png';
 export { default as storeTracker } from '@/assets/icons/ic_deliveryOrder/storeTracker.png';
+export { default as analyticsReport } from '@/assets/images/analyticsReport.png';
+export { default as averageOrder } from '@/assets/images/averageOrder.png';
+export { default as channel } from '@/assets/images/channel.png';
+export { default as locationSales } from '@/assets/images/locationSales.png';
+export { default as profit } from '@/assets/images/profit.png';
+export { default as totalCost } from '@/assets/images/totalCost.png';
+export { default as totalSales } from '@/assets/images/totalSales.png';
+export { default as totalOrders } from '@/assets/images/totalOrders.png';
+export { default as productSelling } from '@/assets/images/productSelling.png';
+export { default as revenueTotal } from '@/assets/images/revenueTotal.png';
 
 // new Pos module image
 export { default as bucket } from '@/assets/icons/ic_posRetail/bucket.png';
@@ -295,9 +305,6 @@ export { default as Delivery } from '@/assets/icons/sideBarIcons/delivery.png';
 export { default as Cart } from '@/assets/icons/sideBarIcons/cart.png';
 export { default as NoCard } from '@/assets/icons/sideBarIcons/noCard.png';
 export { default as ReturnTruck } from '@/assets/icons/sideBarIcons/returnTruck.png';
-export { default as flipTruck } from '@/assets/icons/sideBarIcons/flipTruck.png';
-export { default as scooter } from '@/assets/icons/ic_shipingOrder/scooter.png';
-export { default as removeProduct } from '@/assets/icons/ic_shipingOrder/removeProduct.png';
 
 /* Fonts */
 export const Fonts = {

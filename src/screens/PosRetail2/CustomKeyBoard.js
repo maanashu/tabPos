@@ -1,11 +1,4 @@
-import {
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, View ,TouchableOpacity} from 'react-native';
 import React from 'react';
 import { KeyPadButton } from './KeyPadButton';
 import { strings } from '@/localization';
@@ -38,7 +31,7 @@ export const CustomKeyboard = ({
     'deleteBack',
   ];
   return (
-    <View style={{ marginVertical: ms(10) }}>
+    <View style={{marginVertical:ms(10)}}>
       <FlatList
         data={KEYBOARD_DATA}
         scrollEnabled={false}
@@ -70,29 +63,23 @@ export const CustomKeyboard = ({
           />
         )}
         ListFooterComponent={() => (
-          <View style={styles._btnContainer}>
+            <View style={styles._btnContainer}>
             <TouchableOpacity
               onPress={() => {
-                onClosePress();
+                onClosePress()
               }}
               style={styles.declineBtnContainer}
             >
               <Text style={styles.declineText}>Close</Text>
             </TouchableOpacity>
-
+  
             <TouchableOpacity
               onPress={() => {
-                onPayNowPress();
+             onPayNowPress()
               }}
-              style={[
-                styles.acceptbtnContainer,
-                {
-                  backgroundColor:
-                    enteredValue.length > 0 ? COLORS.primary : COLORS.darkGray,
-                },
-              ]}
+              style={[styles.acceptbtnContainer,{backgroundColor:enteredValue.length>0?COLORS.primary:COLORS.darkGray}]}
             >
-              <Text style={[styles.approveText]}>Pay Now</Text>
+              <Text style={[styles.approveText,]}>Pay Now</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -127,8 +114,8 @@ const styles = StyleSheet.create({
   _btnContainer: {
     flexDirection: 'row',
     alignSelf: 'center',
-    width: windowWidth * 0.3,
-    marginTop: ms(10),
+    width: windowWidth * 0.35,
+    marginTop:ms(10)
   },
   declineBtnContainer: {
     height: ms(40),
@@ -137,8 +124,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     flex: 1,
     borderRadius: ms(3),
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
   },
   acceptbtnContainer: {
     height: ms(40),
@@ -152,10 +137,10 @@ const styles = StyleSheet.create({
   approveText: {
     color: COLORS.white,
     fontSize: SF(12),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Regular,
   },
   declineText: {
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Regular,
     fontSize: ms(8),
     color: COLORS.dark_grey,
   },

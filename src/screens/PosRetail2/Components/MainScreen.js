@@ -77,6 +77,7 @@ export function MainScreen({
   const [showProductsFrom, setshowProductsFrom] = useState();
 
   const mainProductArray = getRetailData?.getMainProduct;
+  // console.log('mainProductArray', mainProductArray);
 
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
@@ -145,15 +146,45 @@ export function MainScreen({
   // }, []);
 
   const onClickAddCart = item => {
-    const data = {
-      seller_id: sellerID,
-      supplyId: item?.supplies?.[0]?.id,
-      supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
-      product_id: item?.id,
-      service_id: item?.service_id,
-      qty: 1,
-    };
+
+    // const data = {
+    //   seller_id: sellerID,
+    //   supplyId: item?.supplies?.[0]?.id,
+    //   supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
+    //   product_id: item?.id,
+    //   service_id: item?.service_id,
+    //   qty: 1,
+    // };
+
+ //New Changes
+    var arr=getRetailData?.getAllCart;
+    const products = arr.poscart_products.map((item) => ({
+      product_id: item?.product_id,
+      qty: item?.qty,
+      supply_id: item?.supply_id,
+      supply_price_id: item?.supply_price_id,
+    }));
+    var existingProductIndex = products.findIndex((product) => product.product_id === item?.id);
+
+if (existingProductIndex !== -1) {
+  // If the product already exists in the cart, increase the quantity by 1
+  products[existingProductIndex].qty += 1;
+} else {
+  // If the product does not exist in the cart, add it with quantity 1
+  var newData = {
+    product_id: item?.id,
+    qty: 1,
+    supply_id: item?.supplies?.[0]?.id,
+    supply_price_id: item?.supplies?.[0]?.supply_prices[0]?.id,
+  };
+  products.push(newData);
+}
+const data=   {
+      "seller_id":sellerID,
+      "products": products
+}
     dispatch(addTocart(data));
+    // console.log("PRODUCT _SSSSS",item?.id,"SELLERRR"=-=-=-=-=-=+sellerID);
   };
 
   const originalFilterData = [
@@ -171,12 +202,15 @@ export function MainScreen({
     },
   ];
 
-  const productFun = async productId => {
-    const res = await dispatch(getOneProduct(sellerID, productId));
-    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-      setAddCartModal(true);
-    }
-  };
+  const productFun = useCallback(
+    async productId => {
+      const res = await dispatch(getOneProduct(sellerID, productId));
+      if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+        setAddCartModal(true);
+      }
+    },
+    [sellerID]
+  );
 
   const userInputClear = () => {
     setUserEmail('');
@@ -184,6 +218,9 @@ export function MainScreen({
     // setCustomerPhoneNo('');
     setUserAdd('');
   };
+  const onCloseCartModal=()=>{
+    setCartModal(false)
+  }
 
   //  categoryType -----start
   const catTypeRenderItem = ({ item }) => {
@@ -368,6 +405,7 @@ export function MainScreen({
               />
             )}
           </View>
+
           <View style={styles.rightSideView}>
             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
               <TouchableOpacity
@@ -451,14 +489,10 @@ export function MainScreen({
         </View>
       </View>
       {/* cart list modal start */}
-      <Modal
-        animationType="fade"
-        transparent={true}
-        isVisible={cartModal}
-        animationIn="slideInRight"
-        animationOut="slideOutRight"
-      >
-        <CartListModal checkOutHandler={checkOutHandler} />
+      <Modal animationType="fade" transparent={true} isVisible={cartModal}>
+        <CartListModal checkOutHandler={checkOutHandler}
+         CloseCartModal={onCloseCartModal}
+        />
       </Modal>
 
       {/* cart list modal end */}

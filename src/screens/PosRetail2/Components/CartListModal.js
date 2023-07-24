@@ -9,6 +9,8 @@ import {
   borderCross,
   bucket,
   checkArrow,
+  cross,
+  crossButton,
   holdCart,
   minus,
   plus,
@@ -20,11 +22,12 @@ import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { addTocart, clearAllCart, clearOneCart } from '@/actions/RetailAction';
+import { addTocart, clearAllCart, clearOneCart, getAllCartSuccess } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
+import { useFocusEffect } from '@react-navigation/native';
 
-export function CartListModal({ checkOutHandler }) {
+export function CartListModal({ checkOutHandler ,CloseCartModal}) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
@@ -33,39 +36,103 @@ export function CartListModal({ checkOutHandler }) {
     isLoadingSelector([TYPES.ADDCART], state)
   );
 
-  const updateQuantity = (cartId, productId, operation) => {
-    const updatedArr = [...arr];
+  const updateQuantity = (cartId, productId, operation,index) => {
+    // const updatedArr = [...arr];
 
-    const cartItem = updatedArr
-      .find(item => item.id === cartId)
-      ?.poscart_products.find(product => product.id === productId);
+    // const cartItem = updatedArr
+    //   .find(item => item.id === cartId)
+    //   ?.poscart_products.find(product => product.id === productId);
 
-    if (cartItem) {
-      if (operation === '+') {
-        cartItem.qty += 1;
-      } else if (operation === '-') {
-        cartItem.qty -= 1;
+    // if (cartItem) {
+    //   if (operation === '+') {
+    //     cartItem.qty += 1;
+    //   } else if (operation === '-') {
+    //     cartItem.qty -= 1;
+    //   }
+    //   const data = {
+    //     seller_id: cartItem?.product_details?.supply?.seller_id,
+    //     supplyId: cartItem?.supply_id,
+    //     supplyPriceID: cartItem?.supply_price_id,
+    //     product_id: cartItem?.product_id,
+    //     service_id: cartItem?.service_id,
+    //     qty: cartItem?.qty,
+    //   };
+    //   dispatch(addTocart(data));
+    //   // dispatch(createCartAction(withoutVariantObject));
+    // }
+
+
+    //Mukul code----->
+
+    var arr=getRetailData?.getAllCart
+    const product = arr.poscart_products[index];
+    const productPrice = product.product_details.price;
+
+    if (operation === '+') {
+      product.qty += 1;
+      arr.amount.total_amount += productPrice;
+      arr.amount.products_price += productPrice;
+    } else if (operation === '-') {
+      if (product.qty > 0) {
+        if(product.qty==1){
+          arr.poscart_products.splice(index, 1);
+       }
+        product.qty -= 1;
+        arr.amount.total_amount -= productPrice;
+        arr.amount.products_price -= productPrice;
+      
       }
-      const data = {
-        seller_id: cartItem?.product_details?.supply?.seller_id,
-        supplyId: cartItem?.supply_id,
-        supplyPriceID: cartItem?.supply_price_id,
-        product_id: cartItem?.product_id,
-        service_id: cartItem?.service_id,
-        qty: cartItem?.qty,
-      };
-      dispatch(addTocart(data));
-      // dispatch(createCartAction(withoutVariantObject));
     }
+    var DATA={
+    payload:arr
+    }
+    dispatch(getAllCartSuccess(DATA))
   };
-  const removeOneCartHandler = productId => {
-    const data = {
-      cartId: cartData?.id,
-      productId: productId,
-    };
-    dispatch(clearOneCart(data));
-  };
+  const removeOneCartHandler = (productId,index) => {
+    // const data = {
+    //   cartId: cartData?.id,
+    //   productId: productId,
+    // };
+    // dispatch(clearOneCart(data));
 
+
+    var arr=getRetailData?.getAllCart
+    const product = arr.poscart_products[index];
+    const productPrice = product.product_details.price;
+    if (product.qty > 0) {
+      arr.amount.total_amount -= productPrice * product.qty;
+      arr.amount.products_price -= productPrice * product.qty;
+      arr.poscart_products.splice(index, 1);
+    }
+    var DATA={
+      payload:arr
+    }
+    dispatch(getAllCartSuccess(DATA))
+
+
+
+  };
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        var arr=getRetailData?.getAllCart;
+        const products = arr.poscart_products.map((item) => ({
+          product_id: item?.product_id,
+          qty: item?.qty,
+          supply_id: item?.supply_id,
+          supply_price_id: item?.supply_price_id,
+        }));
+         const data=   {
+          "seller_id":arr?.seller_id,
+          "products": products
+         }
+        
+        dispatch(addTocart(data));
+
+      };
+    }, [])
+  );
+  
   return (
     <View style={styles.cartListModalView}>
       <View style={styles.displayRow}>
@@ -81,6 +148,15 @@ export function CartListModal({ checkOutHandler }) {
           </View>
         </TouchableOpacity>
         <Text style={styles.carttoAdd}>Cart to add</Text>
+        <TouchableOpacity
+         style={styles.crossView}
+         onPress={()=>CloseCartModal()}
+         >
+      <Image
+            source={crossButton}
+            style={[styles.crossImage]}
+          />
+      </TouchableOpacity>
       </View>
       <View
         style={{
@@ -137,7 +213,7 @@ export function CartListModal({ checkOutHandler }) {
                                 alignItems: 'center',
                               }}
                               onPress={() =>
-                                updateQuantity(item?.id, data?.id, '-')
+                                updateQuantity(item?.id, data?.id, '-',ind)
                               }
                             >
                               <Image source={minus} style={styles.minus} />
@@ -156,7 +232,7 @@ export function CartListModal({ checkOutHandler }) {
                                 alignItems: 'center',
                               }}
                               onPress={() =>
-                                updateQuantity(item?.id, data?.id, '+')
+                                updateQuantity(item?.id, data?.id, '+',ind)
                               }
                             >
                               <Image source={plus} style={styles.minus} />
@@ -176,7 +252,7 @@ export function CartListModal({ checkOutHandler }) {
                               justifyContent: 'center',
                               alignItems: 'center',
                             }}
-                            onPress={() => removeOneCartHandler(data.id)}
+                            onPress={() => removeOneCartHandler(data.id,ind)}
                           >
                             <Image
                               source={borderCross}
@@ -198,7 +274,7 @@ export function CartListModal({ checkOutHandler }) {
               <Text style={styles.blueListDataText}>Item Value</Text>
 
               <Text style={[styles.productPrice, { fontSize: SF(20) }]}>
-                ${cartData?.amount?.total_amount ?? '0.00'}
+                ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
               </Text>
             </View>
             <TouchableOpacity

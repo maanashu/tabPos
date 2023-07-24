@@ -176,6 +176,7 @@ export const en = {
     DisTitle: 'Discount Title',
     sendRequest: 'Send Request',
     next: 'Next',
+    eRecipeEmail:`e-recipe will Send\nto your email`
   },
   posSale: {
     paymentHeader: 'Customer & Payment',
@@ -463,7 +464,6 @@ export const en = {
     ReadyToShip: 'Ready to ship',
     orderShip: 'Order Shipped',
     cancelShip: 'Cancelled Shipped',
-    numberOfOrders: 'Number of Orders',
   },
   valiadtion: {
     validPhone: 'Please enter valid phone number',

@@ -1,22 +1,6 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-  Dimensions,
-} from 'react-native';
-import {
-  Fonts,
-  radioSelect,
-  radioUnSelect,
-  cross,
-  deleteBack,
-  dropdown,
-} from '@/assets';
+import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput, FlatList, Dimensions } from 'react-native';
+import { Fonts, radioSelect, radioUnSelect, cross, deleteBack, dropdown } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { moderateScale, ms } from 'react-native-size-matters';
 
@@ -32,12 +16,8 @@ export const PhonePopUp = ({ value, onPress }) => {
       >
         <Image
           source={imageSource}
-          style={{
-            resizeMode: 'contain',
-            height: SH(20),
-            tintColor: '#626262',
-            width: SH(20),
-          }}
+        
+          style={{ resizeMode: 'contain', height: SH(20),tintColor:"#626262", width: SH(20) }}
         />
       </TouchableOpacity>
     );
@@ -67,7 +47,7 @@ const styles = StyleSheet.create({
     paddingVertical: ms(15),
     alignSelf: 'center',
     borderRadius: ms(10),
-    alignItems: 'center',
+    alignItems: "center"
   },
   _btnContainer: {
     flexDirection: 'row',
@@ -98,7 +78,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: '90%',
+    width: "90%",
     height: 70,
     borderWidth: 1,
     borderColor: '#ccc',
@@ -124,17 +104,16 @@ const styles = StyleSheet.create({
 
   keyPadButton: {
     height: SH(110),
-    width: windowWidth * 0.1,
+    width: SH(125),
     justifyContent: 'center',
     borderColor: COLORS.gerySkies,
     alignItems: 'center',
     borderWidth: 0.3,
-    borderWidth: 0.5,
     // borderRadius: 5,
-    // overflow: 'hidden',
+    // overflow: 'hidden', 
   },
   outerBorderRadius: {
-    borderRadius: 5,
+    borderRadius:5 ,
     overflow: 'hidden',
   },
   keyPadText: {
@@ -151,7 +130,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.35,
     // marginVertical: 10,
     borderWidth: 1,
-    borderColor: '#D8D8D8',
+    borderColor: "#D8D8D8",
     borderRadius: 5,
     marginHorizontal: SW(10),
     // marginBottom:SW(12)
@@ -174,3 +153,4 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.2,
   },
 });
+

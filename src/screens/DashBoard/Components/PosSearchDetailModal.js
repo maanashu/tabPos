@@ -25,15 +25,32 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const addToCart = () => {
-    const data = {
-      seller_id: sellerID,
-      product_id: productData?.id,
-      qty: 1,
-      service_id: productData.service_id,
-      supplyId: productData?.supplies?.[0]?.id,
-      supplyPriceID: productData?.supplies?.[0]?.supply_prices[0]?.id,
-    };
+    // const data = {
+    //   seller_id: sellerID,
+    //   product_id: productData?.id,
+    //   qty: 1,
+    //   service_id: productData.service_id,
+    //   supplyId: productData?.supplies?.[0]?.id,
+    //   supplyPriceID: productData?.supplies?.[0]?.supply_prices[0]?.id,
+    // };
+
+
+    //New changes 
+    const data=   {
+      "seller_id":sellerID,
+      "products": [
+        {
+          product_id: productData?.id,
+          qty: item?.qty,
+          supply_id: productData?.supplies?.[0]?.id,
+          supply_price_id: productData?.supplies?.[0]?.supply_prices[0]?.id,
+        }
+      ]
+     }
+
+
     dispatch(addTocart(data));
+
     alert('Product Add to cart successfully');
   };
   const addToCartLoad = useSelector(state =>

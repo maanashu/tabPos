@@ -46,22 +46,9 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { getSetting } from '@/selectors/SettingSelector';
 import { getGoogleCode, verifyGoogleCode } from '@/actions/SettingAction';
 
-const aaaaa = [
-  {
-    name: 'cashier',
-  },
-  {
-    name: 'admin',
-  },
-  {
-    name: 'watchman',
-  },
-];
-
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
 import { digits } from '@/utils/validators';
-
 export function POSUsers({ navigation }) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -70,7 +57,6 @@ export function POSUsers({ navigation }) {
   const [value, setValue] = useState('');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const posUserArray = getAuth?.getAllPosUsers;
-  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const posUserArrayReverse = posUserArray?.reverse();
 
   const refSix = useBlurOnFulfill({ value, cellCount: CELL_COUNT_SIX });
@@ -98,7 +84,7 @@ export function POSUsers({ navigation }) {
         setTwoStepModal(true);
         dispatch(getGoogleCode());
       } else {
-        dispatch(getAllPosUsers(sellerID));
+        dispatch(getAllPosUsers());
       }
     }
   }, [isFocused]);
@@ -163,7 +149,7 @@ export function POSUsers({ navigation }) {
         setTwoStepModal(false);
         setGoogleAuthScan(false);
         setSixDigit(false);
-        dispatch(getAllPosUsers(sellerID));
+        dispatch(getAllPosUsers());
       } else if (res === undefined) {
         setValue('');
       }
@@ -195,14 +181,14 @@ export function POSUsers({ navigation }) {
             <View style={{ marginTop: 50 }}>
               <ActivityIndicator size="large" color={COLORS.indicator} />
             </View>
-          ) : posUserArray?.length === 0 ? (
+          ) : posUserArrayReverse?.length === 0 ? (
             <View style={{ marginTop: 100 }}>
               <Text style={styles.posUserNot}>Pos user not found</Text>
             </View>
           ) : (
             <FlatList
-              data={posUserArray}
-              extraData={posUserArray}
+              data={posUserArrayReverse}
+              extraData={posUserArrayReverse}
               scrollEnabled={true}
               contentContainerStyle={{ flexGrow: 1 }}
               style={{ height: '100%' }}
@@ -220,13 +206,7 @@ export function POSUsers({ navigation }) {
                     <Text style={styles.firstName}>
                       {item.user?.user_profiles?.firstname}
                     </Text>
-                    <Text style={styles.role} numberOfLines={1}>
-                      {item.user?.user_roles?.length > 0
-                        ? item.user?.user_roles?.map(
-                            (item, index) => item.role?.name
-                          )
-                        : 'admin'}
-                    </Text>
+                    <Text style={styles.role}>{item.pos_role}</Text>
                     {item.user?.api_tokens.length > 0 && (
                       <>
                         <Text style={[styles.dateTime, { marginTop: SH(20) }]}>

@@ -254,26 +254,29 @@ export class RetailController {
       // let supplyID = data.supplyId.toString();
       // let supplyPriceID = data.supplyPriceID.toString();
       // let variantId = data.supplyVariantId.toString();
-      const body = data?.supplyVariantId
-        ? {
-            seller_id: data.seller_id,
-            service_id: data.service_id,
-            product_id: data.product_id,
-            qty: data.qty,
-            supply_id: data.supplyId.toString(),
-            supply_price_id: data.supplyPriceID.toString(),
-            supply_variant_id: data.supplyVariantId.toString(),
-          }
-        : {
-            seller_id: data.seller_id,
-            service_id: data.service_id,
-            product_id: data.product_id,
-            qty: data.qty,
-            supply_id: data.supplyId.toString(),
-            supply_price_id: data.supplyPriceID.toString(),
-          };
-      HttpClient.post(endpoint, body)
+      // const body = data?.supplyVariantId
+      //   ? {
+      //       seller_id: data.seller_id,
+      //       service_id: data.service_id,
+      //       product_id: data.product_id,
+      //       qty: data.qty,
+      //       supply_id: data.supplyId.toString(),
+      //       supply_price_id: data.supplyPriceID.toString(),
+      //       supply_variant_id: data.supplyVariantId.toString(),
+      //     }
+      //   : {
+      //       seller_id: data.seller_id,
+      //       service_id: data.service_id,
+      //       product_id: data.product_id,
+      //       qty: data.qty,
+      //       supply_id: data.supplyId.toString(),
+      //       supply_price_id: data.supplyPriceID.toString(),
+      //     };
+      // console.log("DATTATAA",JSON.stringify(data));
+      HttpClient.post(endpoint, data)
         .then(response => {
+      console.log("RESPONSE",JSON.stringify(response));
+
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -285,6 +288,7 @@ export class RetailController {
           resolve(response);
         })
         .catch(error => {
+          console.log("error",JSON.stringify(error));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -442,18 +446,14 @@ export class RetailController {
   static async createOrder(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
-      const body = data?.userId
-        ? {
-            cart_id: data.cartid,
-            user_id: data.userId,
-            tips: data.tips,
-            mode_of_payment: data.modeOfPayment,
-          }
-        : {
-            cart_id: data.cartid,
-            tips: data.tips,
-            mode_of_payment: data.modeOfPayment,
-          };
+      const body = {
+        cart_id: data.cartid,
+        user_id: data.userId,
+        // shipping: 'Pickup',
+        // app_name: 'Pos',
+        tips: data.tips,
+        mode_of_payment: data.modeOfPayment,
+      };
 
       HttpClient.post(endpoint, body)
         .then(response => {

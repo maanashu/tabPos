@@ -61,7 +61,7 @@ import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { useEffect } from 'react';
-
+import { useFocusEffect } from '@react-navigation/native';
 export function CartScreen({
   onPressPayNow,
   crossHandler,
@@ -96,62 +96,79 @@ export function CartScreen({
     isLoadingSelector([TYPES.ADDCART], state)
   );
   
-   useEffect(()=>{
-   return ()=>{
-   }
-   },[])
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        var arr=getRetailData?.getAllCart;
+        const products = arr.poscart_products.map((item) => ({
+          product_id: item?.product_id,
+          qty: item?.qty,
+          supply_id: item?.supply_id,
+          supply_price_id: item?.supply_price_id,
+        }));
+         const data=   {
+          "seller_id":arr?.seller_id,
+          "products": products
+         }
+        
+        dispatch(addTocart(data));
+
+      };
+    }, [])
+  );
   
   const updateQuantity = (cartId, productId, operation,index) => {
-    const updatedArr = [...arr];
+    // const updatedArr = [...arr];
   
-    const cartItem = updatedArr
-      .find(item => item.id === cartId)
-      ?.poscart_products.find(product => product.id === productId);
+    // const cartItem = updatedArr
+    //   .find(item => item.id === cartId)
+    //   ?.poscart_products.find(product => product.id === productId);
 
-      if (cartItem) {
-      if (operation === '+') {
-        cartItem.qty += 1;
-      } else if (operation === '-') {
-        cartItem.qty -= 1;
-      }
-      const data = {
-        seller_id: cartItem?.product_details?.supply?.seller_id,
-        supplyId: cartItem?.supply_id,
-        supplyPriceID: cartItem?.supply_price_id,
-        product_id: cartItem?.product_id,
-        service_id: cartItem?.service_id,
-        qty: cartItem?.qty,
-      };
+    //   if (cartItem) {
+    //   if (operation === '+') {
+    //     cartItem.qty += 1;
+    //   } else if (operation === '-') {
+    //     cartItem.qty -= 1;
+    //   }
+    //   const data = {
+    //     seller_id: cartItem?.product_details?.supply?.seller_id,
+    //     supplyId: cartItem?.supply_id,
+    //     supplyPriceID: cartItem?.supply_price_id,
+    //     product_id: cartItem?.product_id,
+    //     service_id: cartItem?.service_id,
+    //     qty: cartItem?.qty,
+    //   };
       
-      dispatch(addTocart(data));
-      // dispatch(createCartAction(withoutVariantObject));
-    }
+    //   dispatch(addTocart(data));
+    //   // dispatch(createCartAction(withoutVariantObject));
+    // }
 
 
      //Mukul code----->
 
-      // var arr=getRetailData?.getAllCart
-      // const product = arr.poscart_products[index];
-      // const productPrice = product.product_details.price;
+      var arr=getRetailData?.getAllCart
+      const product = arr.poscart_products[index];
+      const productPrice = product.product_details.price;
 
-      // if (operation === '+') {
-      //   product.qty += 1;
-      //   arr.amount.total_amount += productPrice;
-      //   arr.amount.products_price += productPrice;
-      // } else if (operation === '-') {
-      //   if (product.qty > 0) {
-      //     product.qty -= 1;
-      //     arr.amount.total_amount -= productPrice;
-      //     arr.amount.products_price -= productPrice;
-      //    if(product.qty==1){
-      //       arr.poscart_products.splice(index, 1);
-      //    }
-      //   }
-      // }
-      // var DATA={
-      // payload:arr
-      // }
-      // dispatch(getAllCartSuccess(DATA))
+      if (operation === '+') {
+        product.qty += 1;
+        arr.amount.total_amount += productPrice;
+        arr.amount.products_price += productPrice;
+      } else if (operation === '-') {
+        if (product.qty > 0) {
+          if(product.qty==1){
+            arr.poscart_products.splice(index, 1);
+         }
+          product.qty -= 1;
+          arr.amount.total_amount -= productPrice;
+          arr.amount.products_price -= productPrice;
+       
+        }
+      }
+      var DATA={
+      payload:arr
+      }
+      dispatch(getAllCartSuccess(DATA))
   };
   const addCustomerHandler = () => {
     if (!userName) {
@@ -216,27 +233,27 @@ export function CartScreen({
   };
   const removeOneCartHandler = (productId,index) => {
     
-    const data = {
-      cartId: cartData?.id,
-      productId: productId,
-    };
-    dispatch(clearOneCart(data));
+    // const data = {
+    //   cartId: cartData?.id,
+    //   productId: productId,
+    // };
+    // dispatch(clearOneCart(data));
 
 
     //Mukul code-----> 
 
-    // var arr=getRetailData?.getAllCart
-    // const product = arr.poscart_products[index];
-    // const productPrice = product.product_details.price;
-    // if (product.qty > 0) {
-    //   arr.amount.total_amount -= productPrice * product.qty;
-    //   arr.amount.products_price -= productPrice * product.qty;
-    //   arr.poscart_products.splice(index, 1);
-    // }
-    // var DATA={
-    //   payload:arr
-    // }
-    // dispatch(getAllCartSuccess(DATA))
+    var arr=getRetailData?.getAllCart
+    const product = arr.poscart_products[index];
+    const productPrice = product.product_details.price;
+    if (product.qty > 0) {
+      arr.amount.total_amount -= productPrice * product.qty;
+      arr.amount.products_price -= productPrice * product.qty;
+      arr.poscart_products.splice(index, 1);
+    }
+    var DATA={
+      payload:arr
+    }
+    dispatch(getAllCartSuccess(DATA))
   };
 
   const catTypeFun = id => {

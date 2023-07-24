@@ -537,26 +537,60 @@ export function Retails() {
 
   const addToCartHandler = item => {
     setAddRemoveSelectedId(null);
-    const data = handlerTrue
-      ? {
-          seller_id: sellerID,
-          product_id: selectedData?.id,
-          qty: proCount === undefined ? 0 : proCount,
-          service_id: selectedData.service_id,
-          supplyId: selectedData?.supplies?.[0]?.id,
-          supplyPriceid: selectedData?.supplies?.[0]?.supply_prices[0]?.id,
-        }
-      : {
-          seller_id: sellerID,
-          product_id: item.id,
-          qty: proCount === undefined ? 0 : proCount,
-          service_id: item.service_id,
-          supplyId: item?.supplies?.[0]?.id,
-          supplyPriceid:
-            addRemoveSelectedId === null
-              ? item?.supplies?.[0]?.supply_prices[0]?.id
-              : addRemoveSelectedId,
-        };
+    // const data = handlerTrue
+    //   ? {
+    //       seller_id: sellerID,
+    //       product_id: selectedData?.id,
+    //       qty: proCount === undefined ? 0 : proCount,
+    //       service_id: selectedData.service_id,
+    //       supplyId: selectedData?.supplies?.[0]?.id,
+    //       supplyPriceid: selectedData?.supplies?.[0]?.supply_prices[0]?.id,
+    //     }
+    //   : {
+    //       seller_id: sellerID,
+    //       product_id: item.id,
+    //       qty: proCount === undefined ? 0 : proCount,
+    //       service_id: item.service_id,
+    //       supplyId: item?.supplies?.[0]?.id,
+    //       supplyPriceid:
+    //         addRemoveSelectedId === null
+    //           ? item?.supplies?.[0]?.supply_prices[0]?.id
+    //           : addRemoveSelectedId,
+    //     };
+
+     
+//New Changes
+    var arr=getRetailData?.getAllCart;
+    const products = arr.poscart_products.map((item) => ({
+      product_id: item?.product_id,
+      qty: item?.qty,
+      supply_id: item?.supply_id,
+      supply_price_id: item?.supply_price_id,
+    }));
+
+    var existingProductIndex = products.findIndex((product) => product.product_id === handlerTrue?selectedData?.id:item.id);
+
+if (existingProductIndex !== -1) {
+  // If the product already exists in the cart, increase the quantity by 1
+  products[existingProductIndex].qty += 1;
+} else {
+    var newData={
+      product_id:handlerTrue?selectedData?.id:item.id,
+      qty:selectedQuantities[item.id],
+      supply_id:handlerTrue? selectedData?.supplies?.[0]?.id:item?.supplies?.[0]?.id ,
+      supply_price_id:handlerTrue?selectedData?.supplies?.[0]?.supply_prices[0]?.id: addRemoveSelectedId === null
+      ? item?.supplies?.[0]?.supply_prices[0]?.id
+      : addRemoveSelectedId,
+    }
+    products.push(newData)
+
+  }
+
+    const data=   {
+      "seller_id":sellerID,
+      "products": products
+     }
+
 
     dispatch(addTocart(data));
     setPosSearch(false);
@@ -565,28 +599,88 @@ export function Retails() {
     setAddRemoveSelectedId(null);
   };
   const addToCartCatPro = productData => {
-    const data = {
-      seller_id: sellerID,
-      product_id: productData?.id,
-      service_id: productData?.service_id,
-      qty: serPro,
-      supplyId: productData?.supplies?.[0]?.id,
-      supplyPriceid: productData?.supplies?.[0]?.supply_prices[0]?.id,
-    };
+    // const data = {
+    //   seller_id: sellerID,
+    //   product_id: productData?.id,
+    //   service_id: productData?.service_id,
+    //   qty: serPro,
+    //   supplyId: productData?.supplies?.[0]?.id,
+    //   supplyPriceid: productData?.supplies?.[0]?.supply_prices[0]?.id,
+    // };
+
+
+    var arr=getRetailData?.getAllCart;
+    const products = arr.poscart_products.map((item) => ({
+      product_id: item?.product_id,
+      qty: item?.qty,
+      supply_id: item?.supply_id,
+      supply_price_id: item?.supply_price_id,
+    }));
+
+    var existingProductIndex = products.findIndex((product) => product.product_id === productData?.id);
+
+if (existingProductIndex !== -1) {
+  // If the product already exists in the cart, increase the quantity by 1
+  products[existingProductIndex].qty += 1;
+} else {
+    var newData={
+      product_id:productData?.id,
+      qty:serPro,
+      supply_id:productData?.supplies?.[0]?.id,
+      supply_price_id:productData?.supplies?.[0]?.supply_prices[0]?.id,
+    }
+    products.push(newData)
+  }
+    const data=   {
+      "seller_id":sellerID,
+      "products": products
+     }
+
+
     dispatch(addTocart(data));
     setProductModal(false);
     setSerPro(0);
   };
 
   const updateToCart = ({ cartProductServiceId, count }) => {
-    const data = {
-      seller_id: sellerID,
-      product_id: cartData?.product_id,
-      service_id: parseInt(cartProductServiceId),
-      qty: count,
-      supplyId: cartData?.supply_id,
-      supplyPriceid: cartData?.supply_price_id,
-    };
+    // const data = {
+    //   seller_id: sellerID,
+    //   product_id: cartData?.product_id,
+    //   service_id: parseInt(cartProductServiceId),
+    //   qty: count,
+    //   supplyId: cartData?.supply_id,
+    //   supplyPriceid: cartData?.supply_price_id,
+    // };
+
+
+//New Changes
+    var arr=getRetailData?.getAllCart;
+    const products = arr.poscart_products.map((item) => ({
+      product_id: item?.product_id,
+      qty: item?.qty,
+      supply_id: item?.supply_id,
+      supply_price_id: item?.supply_price_id,
+    }));
+
+    var existingProductIndex = products.findIndex((product) => product.product_id === cartData?.product_id);
+
+if (existingProductIndex !== -1) {
+  // If the product already exists in the cart, increase the quantity by 1
+  products[existingProductIndex].qty += 1;
+} else {
+    var newData={
+      product_id:cartData?.product_id,
+      qty:serPro,
+      supply_id:cartData?.supply_id,
+      supply_price_id: cartData?.supply_price_id,
+    }
+    products.push(newData)
+  }
+    const data=   {
+      "seller_id":sellerID,
+      "products": products
+     }
+
     dispatch(addTocart(data));
     setAmountPopup(false);
   };
