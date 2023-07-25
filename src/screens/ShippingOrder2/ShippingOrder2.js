@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
 
 import PieChart from 'react-native-pie-chart';
 import ReactNativeModal from 'react-native-modal';
@@ -36,8 +29,11 @@ import {
   rightSideDrawer,
   shippingDrawer,
   orderProducts,
+  legends,
+  labels,
+  orderReview,
 } from '@/constants/staticData';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
 import { strings } from '@/localization';
 import { ScreenWrapper, Spacer } from '@/components';
 
@@ -48,7 +44,8 @@ export function ShippingOrder2() {
   const series = [823, 101, 40];
   const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet];
 
-  const [orderDetail, setOrderDetail] = useState(orderToReview[0]);
+  const [userDetail, setUserDetail] = useState(orderToReview[0]);
+  const [orderDetail, setOrderDetail] = useState(orderToReview[0]?.products);
   const [viewAllOrders, setViewAllOrders] = useState(false);
   const [openShippingOrders, setOpenShippingOrders] = useState(false);
   const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
@@ -64,7 +61,7 @@ export function ShippingOrder2() {
     </View>
   );
 
-  const showBadge = image => {
+  const showBadge = (image) => {
     if (image === Cart) {
       return (
         <View
@@ -79,10 +76,7 @@ export function ShippingOrder2() {
     } else if (image === NoCard) {
       return (
         <View
-          style={[
-            styles.bucketBadge,
-            { backgroundColor: COLORS.pink, borderColor: COLORS.pink },
-          ]}
+          style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
         >
           <Text style={[styles.badgetext, { color: COLORS.white }]}>0</Text>
         </View>
@@ -141,7 +135,8 @@ export function ShippingOrder2() {
   const renderOrderToReview = ({ item, index }) => (
     <TouchableOpacity
       onPress={() => {
-        setOrderDetail(item);
+        setUserDetail(item);
+        setOrderDetail(item?.products);
       }}
       style={viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle}
     >
@@ -153,7 +148,7 @@ export function ShippingOrder2() {
         </View>
       </View>
 
-      <View style={styles.orderDetailStyle}>
+      <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
         <Text style={styles.nameTextStyle}>{item?.totalItems}</Text>
         <View style={styles.locationViewStyle}>
           <Image source={pay} style={styles.pinImageStyle} />
@@ -238,10 +233,7 @@ export function ShippingOrder2() {
         {item?.totalprice}
       </Text>
 
-      <Image
-        source={removeProduct}
-        style={[styles.removeProductImageStyle, { marginRight: 10 }]}
-      />
+      <Image source={removeProduct} style={[styles.removeProductImageStyle, { marginRight: 10 }]} />
     </View>
   );
 
@@ -259,16 +251,14 @@ export function ShippingOrder2() {
             }}
           >
             <Image source={backArrow2} style={styles.backImageStyle} />
-            <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
-              {'Back'}
-            </Text>
+            <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>{'Back'}</Text>
           </TouchableOpacity>
         ) : null}
         <Spacer space={SH(20)} />
 
         {viewAllOrders ? (
           <View style={styles.firstRowStyle}>
-            <View style={styles.orderToReviewView}>
+            <View style={[styles.orderToReviewView, { marginBottom: 75 }]}>
               <FlatList
                 data={orderToReview}
                 renderItem={renderOrderToReview}
@@ -284,74 +274,224 @@ export function ShippingOrder2() {
               />
             </View>
 
-            <View style={styles.orderDetailView}>
-              <View
-                style={{
-                  alignSelf: 'center',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingHorizontal: 10,
-                  marginHorizontal: 10,
-                  paddingVertical: 30,
-                  borderRadius: 10,
-                  marginTop: 20,
-                  backgroundColor: COLORS.textInputBackground,
-                }}
-              >
-                <View style={{ flexDirection: 'row' }}>
-                  <Image source={profileImage} style={styles.userImageStyle} />
+            {orderDetail ? (
+              <View style={styles.orderDetailView}>
+                <View style={styles.orderDetailViewStyle}>
+                  <View
+                    style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <Image source={profileImage} style={styles.userImageStyle} />
 
-                  <View style={styles.userNameView}>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Bold,
-                        fontSize: SF(14),
-                        color: COLORS.solid_grey,
-                      }}
-                    >
-                      {orderDetail?.name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Medium,
-                        fontSize: SF(11),
-                        color: COLORS.dark_grey,
-                      }}
-                    >
-                      {'1480 Bassel Street, New Orleans, LA 70113'}
-                    </Text>
+                    <View style={styles.userNameView}>
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Bold,
+                          fontSize: SF(14),
+                          color: COLORS.solid_grey,
+                        }}
+                      >
+                        {userDetail?.name}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Medium,
+                          fontSize: SF(11),
+                          color: COLORS.dark_grey,
+                        }}
+                      >
+                        {'1480 Bassel Street, New Orleans, LA 70113'}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingLeft: 15,
+                    }}
+                  >
+                    <Image source={scooter} style={styles.scooterImageStyle} />
+
+                    <View style={[styles.userNameView, { paddingLeft: 5 }]}>
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Bold,
+                          fontSize: SF(14),
+                          color: COLORS.primary,
+                        }}
+                      >
+                        {userDetail?.deliveryType}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Medium,
+                          fontSize: SF(11),
+                          color: COLORS.dark_grey,
+                        }}
+                      >
+                        {userDetail?.time}
+                      </Text>
+                    </View>
                   </View>
                 </View>
 
-                <View style={{ flexDirection: 'row' }}>
-                  <Image source={scooter} style={styles.userImageStyle} />
+                <FlatList data={orderDetail} renderItem={renderOrderProducts} />
 
-                  <View style={styles.userNameView}>
-                    <Text
+                <View
+                  style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white,
+                    ...ShadowStyles.shadow1,
+                    marginHorizontal: 20,
+                  }}
+                >
+                  <View style={{ paddingLeft: 15 }}>
+                    <View>
+                      <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'Total Item'}</Text>
+                      <Text style={styles.itemCountText}>{'7'}</Text>
+                    </View>
+
+                    <Spacer space={SH(15)} />
+                    <View>
+                      <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'Order Date'}</Text>
+                      <Text style={styles.itemCountText}>{'20/12/2023'}</Text>
+                    </View>
+
+                    <Spacer space={SH(15)} />
+                    <View>
+                      <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'Order ID#'}</Text>
+                      <Text style={styles.itemCountText}>{'AST0000876'}</Text>
+                    </View>
+                  </View>
+
+                  <View style={{ paddingHorizontal: 10, width: SW(70) }}>
+                    <View
                       style={{
-                        fontFamily: Fonts.Bold,
-                        fontSize: SF(14),
-                        color: COLORS.primary,
+                        paddingHorizontal: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                       }}
                     >
-                      {orderDetail?.deliveryType}
-                    </Text>
-                    <Text
+                      <Text style={[styles.invoiceText, { color: COLORS.solid_grey }]}>
+                        {'Sub Total'}
+                      </Text>
+                      <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'$4.00'}</Text>
+                    </View>
+
+                    <View
                       style={{
-                        fontFamily: Fonts.Medium,
-                        fontSize: SF(11),
-                        color: COLORS.dark_grey,
+                        paddingHorizontal: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingTop: 10,
                       }}
                     >
-                      {orderDetail?.time}
-                    </Text>
+                      <Text style={styles.invoiceText}>{'Discount'}</Text>
+                      <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'-$2.00'}</Text>
+                    </View>
+
+                    <View
+                      style={{
+                        paddingHorizontal: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingTop: 10,
+                      }}
+                    >
+                      <Text style={styles.invoiceText}>{'Other fees'}</Text>
+                      <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'$4.00'}</Text>
+                    </View>
+
+                    <View
+                      style={{
+                        paddingHorizontal: 10,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        paddingTop: 10,
+                      }}
+                    >
+                      <Text style={styles.invoiceText}>{'Tax'}</Text>
+                      <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'$4.00'}</Text>
+                    </View>
+
+                    <View
+                      style={{
+                        paddingHorizontal: 10,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        paddingTop: 10,
+                      }}
+                    >
+                      <Text style={styles.totalText}>{'Total'}</Text>
+                      <Text style={styles.totalText}>{'$254.60'}</Text>
+                    </View>
+
+                    <Spacer space={SH(15)} />
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        right: 20,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          height: SH(48),
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderWidth: 1.5,
+                          borderColor: COLORS.primary,
+                          borderRadius: 5,
+                          paddingHorizontal: 20,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            fontFamily: Fonts.SemiBold,
+                            fontSize: SF(16),
+                            color: COLORS.primary,
+                          }}
+                        >
+                          {'Decline'}
+                        </Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={{
+                          height: SH(48),
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 5,
+                          backgroundColor: COLORS.primary,
+                          marginLeft: 10,
+                          paddingHorizontal: 10,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            fontFamily: Fonts.SemiBold,
+                            fontSize: SF(16),
+                            color: COLORS.white,
+                          }}
+                        >
+                          {'Accept Order'}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
-
-              <FlatList data={orderProducts} renderItem={renderOrderProducts} />
-            </View>
-
+            ) : null}
             {openShippingOrders ? (
               <>
                 <ReactNativeModal
@@ -373,14 +513,9 @@ export function ShippingOrder2() {
                           <View style={styles.rightSideView}>
                             <TouchableOpacity
                               style={styles.firstIconStyle}
-                              onPress={() =>
-                                setOpenShippingOrders(!openShippingOrders)
-                              }
+                              onPress={() => setOpenShippingOrders(!openShippingOrders)}
                             >
-                              <Image
-                                source={flipTruck}
-                                style={styles.sideBarImage}
-                              />
+                              <Image source={flipTruck} style={styles.sideBarImage} />
                             </TouchableOpacity>
                           </View>
                         </View>
@@ -431,32 +566,26 @@ export function ShippingOrder2() {
                 </View>
 
                 <View style={styles.shippingOrdersViewStyle}>
-                  <Text style={styles.shippedOrderText}>
-                    {strings.shippingOrder.shippedOrder}
-                  </Text>
+                  <Text style={styles.shippedOrderText}>{strings.shippingOrder.shippedOrder}</Text>
                   <Text style={styles.shippedOrderText}>{'10'}</Text>
                 </View>
               </View>
 
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(15)} />
 
               {/* second View */}
               <View style={styles.currentStatusView}>
-                <Text style={styles.currentStatusText}>
-                  {strings.shippingOrder.currentStatus}
-                </Text>
+                <Text style={styles.currentStatusText}>{strings.shippingOrder.currentStatus}</Text>
 
                 <FlatList data={shippingTypes} renderItem={renderItem} />
               </View>
 
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(15)} />
               {/* third view */}
               <View style={styles.orderConvertionView}>
-                <Text style={styles.orderTextStyle}>
-                  {strings.shippingOrder.orderConvertion}
-                </Text>
+                <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
 
-                <Spacer space={SH(29)} />
+                <Spacer space={SH(22)} />
                 <View style={styles.piechartViewStyle}>
                   <PieChart
                     series={series}
@@ -490,75 +619,49 @@ export function ShippingOrder2() {
                     <Text style={styles.orderTypeTextStyle}>
                       {strings.shippingOrder.returnedOrders}
                     </Text>
-                    <Text style={styles.countTextStyle}>
-                      {strings.shippingOrder.returnedCount}
-                    </Text>
+                    <Text style={styles.countTextStyle}>{strings.shippingOrder.returnedCount}</Text>
                   </View>
+                  <Spacer space={SH(7)} />
                 </View>
               </View>
             </View>
 
             {/* rightView */}
             <View>
-              <View
-                style={{
-                  backgroundColor: COLORS.white,
-                  borderRadius: 10,
-                  width: Dimensions.get('window').width * 0.56,
-                  paddingHorizontal: 20,
-                }}
-              >
-                <Text style={styles.numberOrdersText}>
-                  {strings.shipingOrder.numberOfOrders}
-                </Text>
+              <View style={styles.graphViewStyle}>
+                <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
 
                 <LineChart
                   bezier
                   data={{
-                    labels: [
-                      'Monday',
-                      'Tuesday',
-                      'Wednesday',
-                      'Thursday',
-                      'Friday',
-                      'Saturday',
-                      'Sunday',
-                    ],
+                    labels: labels,
+                    legend: legends,
                     datasets: [
                       {
                         data: [32, 48, 33, 49, 94, 79, 87],
                         strokeWidth: 5,
-                        color: (opacity = 1) => `rgba(31, 179, 255,${opacity})`, // optional
+                        color: (opacity = 1) => `rgba(31, 179, 255,${opacity})`,
                       },
                       {
                         data: [19, 31, 19, 32, 71, 58, 79],
                         strokeWidth: 5,
-                        color: (opacity = 1) => `rgba(39, 90, 255, ${opacity})`, // optional
+                        color: (opacity = 1) => `rgba(39, 90, 255, ${opacity})`,
                       },
                       {
                         data: [15, 20, 15, 20, 35, 30, 38],
                         strokeWidth: 5,
-                        color: (opacity = 1) =>
-                          `rgba(251, 70, 108, ${opacity})`, // optional
+                        color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`,
                       },
                       {
                         data: [5, 9, 5, 8, 19, 15, 20],
                         strokeWidth: 5,
-
-                        color: (opacity = 1) =>
-                          `rgba(252, 186, 48, ${opacity})`, // optional
+                        color: (opacity = 1) => `rgba(252, 186, 48, ${opacity})`,
                       },
                     ],
-                    legend: [
-                      'In Coming Orders',
-                      'Delivered Orders',
-                      'Cancelled Orders',
-                      'Returned Orders',
-                    ],
                   }}
-                  width={Dimensions.get('window').width * 0.53}
-                  height={320}
+                  height={285}
                   withDots={false}
+                  width={Dimensions.get('window').width * 0.53}
                   chartConfig={{
                     backgroundColor: COLORS.black,
                     backgroundGradientFrom: COLORS.white,
@@ -585,7 +688,7 @@ export function ShippingOrder2() {
                 />
               </View>
 
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(15)} />
               <View style={styles.orderToReviewView}>
                 <FlatList
                   data={orderToReview.slice(0, 4)}
@@ -603,9 +706,7 @@ export function ShippingOrder2() {
                         onPress={() => setViewAllOrders(true)}
                         style={styles.viewAllButtonStyle}
                       >
-                        <Text style={styles.viewallTextStyle}>
-                          {strings.reward.viewAll}
-                        </Text>
+                        <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
                       </TouchableOpacity>
                     </View>
                   )}
@@ -635,14 +736,9 @@ export function ShippingOrder2() {
                           <View style={styles.rightSideView}>
                             <TouchableOpacity
                               style={styles.firstIconStyle}
-                              onPress={() =>
-                                setOpenShippingOrders(!openShippingOrders)
-                              }
+                              onPress={() => setOpenShippingOrders(!openShippingOrders)}
                             >
-                              <Image
-                                source={flipTruck}
-                                style={styles.sideBarImage}
-                              />
+                              <Image source={flipTruck} style={styles.sideBarImage} />
                             </TouchableOpacity>
                           </View>
                         </View>

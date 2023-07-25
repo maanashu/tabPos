@@ -462,6 +462,7 @@ export const en = {
     ReadyToShip: 'Ready to ship',
     orderShip: 'Order Shipped',
     cancelShip: 'Cancelled Shipped',
+    numberOfOrders: 'Number of Orders',
   },
   valiadtion: {
     validPhone: 'Please enter valid phone number',
