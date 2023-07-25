@@ -309,6 +309,19 @@ export { default as flipTruck } from '@/assets/icons/sideBarIcons/flipTruck.png'
 export { default as scooter } from '@/assets/icons/ic_shipingOrder/scooter.png';
 export { default as removeProduct } from '@/assets/icons/ic_shipingOrder/removeProduct.png';
 
+// Delivery Orders new tab
+export { default as expressType } from '@/assets/icons/deliveryOrdersNew/expressDelivery.png';
+export { default as oneHourType } from '@/assets/icons/deliveryOrdersNew/oneHourDelivery.png';
+export { default as twoHourType } from '@/assets/icons/deliveryOrdersNew/twoHourDelivery.png';
+export { default as customType } from '@/assets/icons/deliveryOrdersNew/customDelivery.png';
+export { default as deliveryBox } from '@/assets/icons/deliveryOrdersNew/box.png';
+export { default as deliveryDriver } from '@/assets/icons/deliveryOrdersNew/driver.png';
+export { default as deliveryorderProducts } from '@/assets/icons/deliveryOrdersNew/orderProducts.png';
+export { default as deliveryParcel } from '@/assets/icons/deliveryOrdersNew/parcel.png';
+export { default as returnShipping } from '@/assets/icons/deliveryOrdersNew/returnShipping.png';
+export { default as deliveryShipping } from '@/assets/icons/deliveryOrdersNew/Shipping.png';
+export { default as returnDeliveryBox } from '@/assets/icons/deliveryOrdersNew/returnDeliveryBox.png';
+
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',

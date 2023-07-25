@@ -110,6 +110,7 @@ export const en = {
     assignToDriver: 'Assign to Driver',
     pickup: 'Pickup',
     orderReject: 'Order rejected',
+    otherFees: 'Other fees',
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -352,7 +353,6 @@ export const en = {
     time: '10.00 AM- 11.00 PM',
     dateLabel: 'Date:',
     date: 'Sunday, Oct 29, 2022',
-
     no: 'No',
     addr: '1189 Main Street, Seattle, WA 98161',
     email: 'richard@example.com',
@@ -755,5 +755,15 @@ export const en = {
     deliveredCount: '88.9%',
     cancelledCount: '6.9%',
     returnedCount: '4.2%',
+    totalItem: 'Total Item',
+    orderDate: 'Order Date',
+    orderId: 'Order ID#',
+    orderIdValue: 'AST0000876',
+    orderDateValue: '20/12/2023',
+    totalItemsValue: '7',
+  },
+  deliveryOrders2: {
+    orderStatus: 'Today’s Order Status',
+    pickupOrders: 'Pickup Orders',
   },
 };
