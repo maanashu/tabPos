@@ -138,4 +138,61 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     padding: SW(4),
   },
+  dropdown: {
+    alignSelf: 'center',
+    zIndex: Platform.OS === 'ios' ? 100 : 0,
+    fontStyle: Fonts.Regular,
+    fontSize: SF(14),
+    borderColor: COLORS.transparent,
+  },
+  dropDownIcon: {
+    width: SW(7),
+    height: SH(7),
+    resizeMode: 'contain',
+    paddingRight: 30,
+  },
+  containerStyle: {
+    alignSelf: 'center',
+    backgroundColor: COLORS.white,
+    width: SW(50),
+    borderRadius: SW(2),
+    borderColor: COLORS.gerySkies,
+    borderWidth: 1,
+  },
+  dateTableSettingFirst: {
+    width: SH(40),
+    justifyContent: 'center',
+  },
+  revenueText: {
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    textAlign: 'center',
+    letterSpacing: -1,
+    // paddingHorizontal:moderateScale(40)
+  },
+  dateTableSetting: {
+    width: SH(185),
+    justifyContent: 'center',
+  },
+  dateTablealignStart: {
+    width: SH(185),
+    justifyContent: 'flex-start',
+  },
+  tableMainView: {
+    backgroundColor: COLORS.transparent,
+    marginHorizontal: SW(6),
+    marginRight: SW(10),
+    zIndex: -9,
+  },
+  revenueDataText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+  },
+  revenueDataText2: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.black,
+    fontSize: SF(14),
+  },
 });
