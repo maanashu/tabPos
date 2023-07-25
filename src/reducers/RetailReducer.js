@@ -94,7 +94,7 @@ export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
     case TYPES.GET_ALL_CART_SUCCESS:
       return {
         ...state,
-        getAllCart: payload?.getAllCart?.payload ?? [],
+        getAllCart: payload?.payload ?? [],
       };
     case TYPES.GET_ALL_CART_RESET:
       return {

@@ -120,9 +120,9 @@ const getAllCartRequest = () => ({
   payload: null,
 });
 
-const getAllCartSuccess = getAllCart => ({
+export const getAllCartSuccess = getAllCart => ({
   type: TYPES.GET_ALL_CART_SUCCESS,
-  payload: { getAllCart },
+  payload:getAllCart,
 });
 
 const getAllCartError = error => ({
@@ -188,6 +188,35 @@ const addTocartError = error => ({
   type: TYPES.ADDCART_ERROR,
   payload: { error },
 });
+
+
+const updateCartQtyRequest = () => ({
+  type: TYPES.UPDATE_CART_QTY_REQUEST,
+  payload: null,
+});
+
+const updateCartQtySuccess = () => ({
+  type: TYPES.UPDATE_CART_QTY_SUCCESS,
+  payload: {},
+});
+
+const updateCartQtyError = error => ({
+  type: TYPES.UPDATE_CART_QTY_ERROR,
+  payload: { error },
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const addNotesRequest = () => ({
   type: TYPES.ADDNOTES_REQUEST,
@@ -601,6 +630,16 @@ export const addTocart = data => async dispatch => {
     dispatch(getAllCart());
   } catch (error) {
     dispatch(addTocartError(error.message));
+  }
+};
+export const updateCartQty = (data,cartId) => async dispatch => {
+  dispatch(updateCartQtyRequest());
+  try {
+    const res = await RetailController.updateCartQty(data,cartId);
+    dispatch(updateCartQtySuccess(res));
+    // dispatch(getAllCart());
+  } catch (error) {
+    dispatch(updateCartQtyError(error.message));
   }
 };
 

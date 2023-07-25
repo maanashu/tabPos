@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 10,
     backgroundColor: COLORS.white,
-    // justifyContent: 'center',
   },
   containerSix: {
     flex: 1,
@@ -42,8 +41,6 @@ export const styles = StyleSheet.create({
     fontSize: SH(14),
     fontFamily: Fonts.SemiBold,
     color: COLORS.primary,
-    width: SH(270),
-    textAlign: 'center',
   },
   dateTime: {
     fontSize: SH(12),

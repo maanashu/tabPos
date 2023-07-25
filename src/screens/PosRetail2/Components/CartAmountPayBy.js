@@ -56,8 +56,8 @@ const RECIPE_DATA = [
 export const CartAmountPayBy = ({
   onPressBack,
   onPressPaymentMethod,
+  tipAmount = 0.0,
   payDetail,
-  payNowByphone,
 }) => {
   const getRetailData = useSelector(getRetail);
 
@@ -65,7 +65,7 @@ export const CartAmountPayBy = ({
   const cartProducts = cartData?.poscart_products;
 
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
-  const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
+  const [selectedTipAmount, setSelectedTipAmount] = useState(0.0);
 
   const [selectedPaymentIndex, setSelectedPaymentIndex] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
@@ -84,9 +84,7 @@ export const CartAmountPayBy = ({
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
-    const totalPayment =
-      parseFloat(cartAmount) +
-      parseFloat(selectedTipAmount === '' ? '0.0' : selectedTipAmount);
+    const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
     return totalPayment.toFixed(2);
   };
 
@@ -356,9 +354,7 @@ export const CartAmountPayBy = ({
             enteredValue={phoneNumber}
             setEnteredValue={setPhoneNumber}
             onClosePress={closeHandler}
-            onPayNowPress={() => {
-              payNowHandler(), payNowByphone(selectedTipAmount);
-            }}
+            onPayNowPress={payNowHandler}
           />
         </View>
       </Modal>
