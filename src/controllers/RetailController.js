@@ -17,14 +17,12 @@ export class RetailController {
   static async getCategory(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.getCategory +
-        `?seller_id=${sellerID}&main_category=true`;
+        PRODUCT_URL + ApiProductInventory.getCategory + `?seller_id=${sellerID}&main_category=true`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: 'catgory error',
             position: 'bottom',
@@ -44,10 +42,10 @@ export class RetailController {
         `?seller_id=${sellerID}&main_category=false&need_subcategory=true`;
 
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: 'Sub-Category not found',
             position: 'bottom',
@@ -61,13 +59,12 @@ export class RetailController {
 
   static async getBrand(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerID}`;
+      const endpoint = PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: 'Brands not found',
             position: 'bottom',
@@ -79,18 +76,8 @@ export class RetailController {
     });
   }
 
-  static async getProduct(
-    selectedId,
-    subSelectedId,
-    brandSelectedId,
-    sellerID
-  ) {
-    const urlAccCat = (
-      selectedId,
-      subSelectedId,
-      brandSelectedId,
-      sellerID
-    ) => {
+  static async getProduct(selectedId, subSelectedId, brandSelectedId, sellerID) {
+    const urlAccCat = (selectedId, subSelectedId, brandSelectedId, sellerID) => {
       if (selectedId && sellerID && !subSelectedId && !brandSelectedId) {
         return (
           PRODUCT_URL +
@@ -112,17 +99,12 @@ export class RetailController {
       }
     };
     return new Promise((resolve, reject) => {
-      const endpoint = urlAccCat(
-        selectedId,
-        subSelectedId,
-        brandSelectedId,
-        sellerID
-      );
+      const endpoint = urlAccCat(selectedId, subSelectedId, brandSelectedId, sellerID);
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: 'Product not found',
             position: 'bottom',
@@ -145,10 +127,10 @@ export class RetailController {
         ApiProductInventory.getProduct +
         `?app_name=pos&delivery_options=3&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // Toast.show({
           //   text2: 'def product error',
           //   position: 'bottom',
@@ -167,13 +149,13 @@ export class RetailController {
         ApiProductInventory.getProduct +
         `?app_name=pos&delivery_options=3&search=${search}&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           if (response.status === 204) {
             resolve([]);
           }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -189,10 +171,10 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -202,10 +184,10 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.clearAllCart;
       HttpClient.delete(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -225,7 +207,7 @@ export class RetailController {
         productId: data.productId,
       };
       HttpClient.delete(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response?.status_code === 200) {
             Toast.show({
               position: 'bottom',
@@ -236,7 +218,7 @@ export class RetailController {
           }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -273,7 +255,7 @@ export class RetailController {
             supply_price_id: data.supplyPriceID.toString(),
           };
       HttpClient.post(endpoint, body)
-        .then(response => {
+        .then((response) => {
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -284,7 +266,7 @@ export class RetailController {
           // }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -295,15 +277,52 @@ export class RetailController {
         });
     });
   }
+
+  static async updateCartQty(data, cartId) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.updateCartQty + `/${cartId}`;
+      // const body = {
+      //   updated_products:
+      //      [
+      //         {
+      //             "qty": 2,
+      //             "product_id": 3458
+      //         }
+      //     ]
+      // };
+
+      HttpClient.put(endpoint, data)
+        .then((response) => {
+          // if (response?.msg === 'PosCart updated!') {
+          //   Toast.show({
+          //     text2: 'Notes add succesfully',
+          //     position: 'bottom',
+          //     type: 'success_toast',
+          //     visibilityTime: 1500,
+          //   });
+          //   resolve(response);
+          // }
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error.msg);
+        });
+    });
+  }
+
   static async addNotes(data) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL + ApiOrderInventory.addNotes + `/${data.cartId}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.addNotes + `/${data.cartId}`;
       const body = {
         notes: data.notes,
       };
       HttpClient.put(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response?.msg === 'PosCart updated!') {
             Toast.show({
               text2: 'Notes add succesfully',
@@ -314,7 +333,7 @@ export class RetailController {
             resolve(response);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -328,8 +347,7 @@ export class RetailController {
 
   static async addDiscountToCart(data) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL + ApiOrderInventory.addNotes + `/${data.cartId}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.addNotes + `/${data.cartId}`;
       const orderAmountstrfy = JSON.stringify(data.orderAmount);
       const discountInput = data.amountDis
         ? data.amountDis
@@ -344,7 +362,7 @@ export class RetailController {
       };
 
       HttpClient.put(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response?.msg === 'PosCart updated!') {
             Toast.show({
               text2: 'Discount add succesfully',
@@ -355,7 +373,7 @@ export class RetailController {
             resolve(response);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -369,16 +387,12 @@ export class RetailController {
 
   static async getProductBundle(id) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL +
-        ApiOrderInventory.getProductBundle +
-        '?product_id=' +
-        `${id}`;
+      const endpoint = PRODUCT_URL + ApiOrderInventory.getProductBundle + '?product_id=' + `${id}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -391,10 +405,10 @@ export class RetailController {
         ApiWalletInventory.getUserDetail +
         `?page=1&limit=10&search=${customerPhoneNo}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // Toast.show({
           //   text2: error.msg,
           //   position: 'bottom',
@@ -416,7 +430,7 @@ export class RetailController {
         phone: data.userPhoneNo,
       };
       HttpClient.post(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response?.status_code === 200) {
             Toast.show({
               position: 'bottom',
@@ -427,7 +441,7 @@ export class RetailController {
           }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -442,21 +456,17 @@ export class RetailController {
   static async createOrder(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
-      const body = data?.userId
-        ? {
-            cart_id: data.cartid,
-            user_id: data.userId,
-            tips: data.tips,
-            mode_of_payment: data.modeOfPayment,
-          }
-        : {
-            cart_id: data.cartid,
-            tips: data.tips,
-            mode_of_payment: data.modeOfPayment,
-          };
+      const body = {
+        cart_id: data.cartid,
+        user_id: data.userId,
+        // shipping: 'Pickup',
+        // app_name: 'Pos',
+        tips: data.tips,
+        mode_of_payment: data.modeOfPayment,
+      };
 
       HttpClient.post(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response?.msg === 'Order placed successfully!') {
             Toast.show({
               position: 'bottom',
@@ -467,7 +477,7 @@ export class RetailController {
           }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -481,13 +491,12 @@ export class RetailController {
 
   static async getWalletId(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
+      const endpoint = WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -495,12 +504,9 @@ export class RetailController {
 
   static async walletGetByPhone(walletIdInp) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        WALLET_URL +
-        ApiWalletInventory.walletGetByPhone +
-        `?search=${walletIdInp}`;
+      const endpoint = WALLET_URL + ApiWalletInventory.walletGetByPhone + `?search=${walletIdInp}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           if (response?.msg === 'api wallets found') {
             Toast.show({
               position: 'bottom',
@@ -511,7 +517,7 @@ export class RetailController {
           }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           if (error?.error === 'emptyContent') {
             Toast.show({
               position: 'bottom',
@@ -534,7 +540,7 @@ export class RetailController {
         reciever_address: data.wallletAdd,
       };
       HttpClient.post(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response?.msg === 'Payment request sent success!') {
             Toast.show({
               text2: 'Request send successfully',
@@ -545,7 +551,7 @@ export class RetailController {
           }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -559,13 +565,12 @@ export class RetailController {
 
   static async requestCheck(data) {
     return new Promise(async (resolve, reject) => {
-      const endpoint =
-        WALLET_URL + ApiWalletInventory.requestCheck + `${data.requestId}`;
+      const endpoint = WALLET_URL + ApiWalletInventory.requestCheck + `${data.requestId}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -575,10 +580,10 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -591,10 +596,10 @@ export class RetailController {
         ApiProductInventory.getProduct +
         `/${productId}?app_name=pos&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -613,10 +618,10 @@ export class RetailController {
         ApiProductInventory.checkSuppliedVariant +
         `?attribute_value_ids=${data.sizeId},${data.colorId}&supply_id=${data.supplyId}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -629,7 +634,7 @@ export class RetailController {
   }
 
   static async logout() {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(resolve, 500);
     });
   }
@@ -639,10 +644,10 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.scanProductAdd;
       // return;
       HttpClient.post(endpoint, data)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'top',
             type: 'error_toast',
@@ -677,13 +682,12 @@ export class RetailController {
       }
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
-      const endpoint =
-        PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -695,18 +699,8 @@ export class RetailController {
     });
   }
 
-  static async getMainProduct(
-    selectedId,
-    subSelectedId,
-    brandSelectedId,
-    sellerID
-  ) {
-    const urlAccCat = (
-      selectedId,
-      subSelectedId,
-      brandSelectedId,
-      sellerID
-    ) => {
+  static async getMainProduct(selectedId, subSelectedId, brandSelectedId, sellerID) {
+    const urlAccCat = (selectedId, subSelectedId, brandSelectedId, sellerID) => {
       if (sellerID && !selectedId && !subSelectedId && !brandSelectedId) {
         return (
           PRODUCT_URL +
@@ -734,17 +728,12 @@ export class RetailController {
       }
     };
     return new Promise((resolve, reject) => {
-      const endpoint = urlAccCat(
-        selectedId,
-        subSelectedId,
-        brandSelectedId,
-        sellerID
-      );
+      const endpoint = urlAccCat(selectedId, subSelectedId, brandSelectedId, sellerID);
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

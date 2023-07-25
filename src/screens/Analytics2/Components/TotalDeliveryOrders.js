@@ -8,7 +8,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { LineChart } from 'react-native-chart-kit';
 import { DataTable } from 'react-native-paper';
 
-export function TotalProfit({ onPress }) {
+export function TotalDeliveryOrders({ onPress }) {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
   const [channelItem, setChannelItem] = useState([
@@ -21,7 +21,7 @@ export function TotalProfit({ onPress }) {
         <Image source={backArrow2} style={styles.backImageStyle} />
         <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>{'Back'}</Text>
       </TouchableOpacity>
-      <Text style={styles.graphTitle}> {'Total Profits'}</Text>
+      <Text style={styles.graphTitle}>{'Total Delivery Orders'}</Text>
 
       <View style={styles.flexDirectionRow}>
         <View style={styles.headerView}>
@@ -70,11 +70,6 @@ export function TotalProfit({ onPress }) {
                 data: [12, 20, 12, 30, 42, 40, 50, 40],
                 strokeWidth: 2,
                 color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
-              },
-              {
-                data: [8, 15, 8, 24, 35, 35, 45, 35],
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(167, 167, 167, ${opacity})`, // optional
               },
             ],
           }}

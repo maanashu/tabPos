@@ -50,16 +50,19 @@ import {
   addTocart,
   clearAllCart,
   clearOneCart,
+  getAllCartSuccess,
   getUserDetail,
   getUserDetailSuccess,
   sendInvitation,
+  updateCartQty,
 } from '@/actions/RetailAction';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
-
+import { useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 export function CartScreen({
   onPressPayNow,
   crossHandler,
@@ -93,31 +96,82 @@ export function CartScreen({
   const isLoading = useSelector(state =>
     isLoadingSelector([TYPES.ADDCART], state)
   );
+  
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        var arr=getRetailData?.getAllCart;
+        // console.log("RESSSPSPPSPS",JSON.stringify(arr));
+        if(arr.poscart_products.length>0){
+          const products = arr.poscart_products.map((item) => ({
+            product_id: item?.product_id,
+            qty: item?.qty,
+          }));
+        
+           const data={
+            "updated_products":products
+        }
+          dispatch(updateCartQty(data,arr.id));
+        }
+        else{
+          clearCartHandler()
+        }
+     };
+    }, [])
+  );
+  
+  const updateQuantity = (cartId, productId, operation,index) => {
+    // const updatedArr = [...arr];
+  
+    // const cartItem = updatedArr
+    //   .find(item => item.id === cartId)
+    //   ?.poscart_products.find(product => product.id === productId);
 
-  const updateQuantity = (cartId, productId, operation) => {
-    const updatedArr = [...arr];
+    //   if (cartItem) {
+    //   if (operation === '+') {
+    //     cartItem.qty += 1;
+    //   } else if (operation === '-') {
+    //     cartItem.qty -= 1;
+    //   }
+    //   const data = {
+    //     seller_id: cartItem?.product_details?.supply?.seller_id,
+    //     supplyId: cartItem?.supply_id,
+    //     supplyPriceID: cartItem?.supply_price_id,
+    //     product_id: cartItem?.product_id,
+    //     service_id: cartItem?.service_id,
+    //     qty: cartItem?.qty,
+    //   };
+      
+    //   dispatch(addTocart(data));
+    //   // dispatch(createCartAction(withoutVariantObject));
+    // }
 
-    const cartItem = updatedArr
-      .find(item => item.id === cartId)
-      ?.poscart_products.find(product => product.id === productId);
 
-    if (cartItem) {
+     //Mukul code----->
+
+      var arr=getRetailData?.getAllCart
+      const product = arr.poscart_products[index];
+      const productPrice = product.product_details.price;
+
       if (operation === '+') {
-        cartItem.qty += 1;
+        product.qty += 1;
+        arr.amount.total_amount += productPrice;
+        arr.amount.products_price += productPrice;
       } else if (operation === '-') {
-        cartItem.qty -= 1;
+        if (product.qty > 0) {
+          if(product.qty==1){
+            arr.poscart_products.splice(index, 1);
+         }
+          product.qty -= 1;
+          arr.amount.total_amount -= productPrice;
+          arr.amount.products_price -= productPrice;
+       
+        }
       }
-      const data = {
-        seller_id: cartItem?.product_details?.supply?.seller_id,
-        supplyId: cartItem?.supply_id,
-        supplyPriceID: cartItem?.supply_price_id,
-        product_id: cartItem?.product_id,
-        service_id: cartItem?.service_id,
-        qty: cartItem?.qty,
-      };
-      dispatch(addTocart(data));
-      // dispatch(createCartAction(withoutVariantObject));
-    }
+      var DATA={
+      payload:arr
+      }
+      dispatch(getAllCartSuccess(DATA))
   };
   const addCustomerHandler = () => {
     if (!userName) {
@@ -180,12 +234,29 @@ export function CartScreen({
       dispatch(getUserDetailSuccess([]));
     }
   };
-  const removeOneCartHandler = productId => {
-    const data = {
-      cartId: cartData?.id,
-      productId: productId,
-    };
-    dispatch(clearOneCart(data));
+  const removeOneCartHandler = (productId,index) => {
+    
+    // const data = {
+    //   cartId: cartData?.id,
+    //   productId: productId,
+    // };
+    // dispatch(clearOneCart(data));
+
+
+    //Mukul code-----> 
+
+    var arr=getRetailData?.getAllCart
+    const product = arr.poscart_products[index];
+    const productPrice = product.product_details.price;
+    if (product.qty > 0) {
+      arr.amount.total_amount -= productPrice * product.qty;
+      arr.amount.products_price -= productPrice * product.qty;
+      arr.poscart_products.splice(index, 1);
+    }
+    var DATA={
+      payload:arr
+    }
+    dispatch(getAllCartSuccess(DATA))
   };
 
   const catTypeFun = id => {
@@ -390,7 +461,7 @@ export function CartScreen({
                               alignItems: 'center',
                             }}
                             onPress={() =>
-                              updateQuantity(item?.id, data?.id, '-')
+                              updateQuantity(item?.id, data?.id, '-',ind)
                             }
                           >
                             <Image source={minus} style={styles.minus} />
@@ -409,7 +480,7 @@ export function CartScreen({
                               alignItems: 'center',
                             }}
                             onPress={() =>
-                              updateQuantity(item?.id, data?.id, '+')
+                              updateQuantity(item?.id, data?.id, '+',ind)
                             }
                           >
                             <Image source={plus} style={styles.minus} />
@@ -429,7 +500,7 @@ export function CartScreen({
                             justifyContent: 'center',
                             alignItems: 'center',
                           }}
-                          onPress={() => removeOneCartHandler(data.id)}
+                          onPress={() => removeOneCartHandler(data.id,ind)}
                         >
                           <Image
                             source={borderCross}
@@ -536,7 +607,7 @@ export function CartScreen({
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Sub Total</Text>
                 <Text style={styles.subTotalDollar}>
-                  ${cartData?.amount?.products_price ?? '0.00'}
+                  ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
               <View style={[styles.displayflex2, styles.paddVertical]}>
@@ -570,7 +641,7 @@ export function CartScreen({
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.itemValue}>Item value</Text>
                 <Text style={[styles.subTotalDollar, styles.itemValueBold]}>
-                  ${cartData?.amount?.total_amount ?? '0.00'}
+                  ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
             </View>

@@ -380,6 +380,7 @@ export function MainScreen({
         service_id: cartItem?.service_id,
         qty: cartItem?.qty,
       };
+      
       dispatch(addTocart(data));
       // dispatch(createCartAction(withoutVariantObject));
     }
@@ -387,14 +388,43 @@ export function MainScreen({
 
   const onClickAddCart = useCallback(
     item => {
-      const data = {
-        seller_id: sellerID,
-        supplyId: item?.supplies?.[0]?.id,
-        supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
-        product_id: item?.id,
-        service_id: item?.service_id,
-        qty: 1,
-      };
+      // const data = {
+      //   seller_id: sellerID,
+      //   supplyId: item?.supplies?.[0]?.id,
+      //   supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
+      //   product_id: item?.id,
+      //   service_id: item?.service_id,
+      //   qty: 1,
+      // };
+
+
+      var arr=getRetailData?.getAllCart;
+      const products = arr.poscart_products.map((item) => ({
+        product_id: item?.product_id,
+        qty: item?.qty,
+        supply_id: item?.supply_id,
+        supply_price_id: item?.supply_price_id,
+      }));
+
+      var existingProductIndex = products.findIndex((product) => product.product_id === item?.id);
+
+     if (existingProductIndex !== -1) {
+    // If the product already exists in the cart, increase the quantity by 1
+     products[existingProductIndex].qty += 1;
+     } else {
+      var newData={
+        product_id:item?.id,
+        qty:1,
+        supply_id:item?.supplies?.[0]?.id,
+        supply_price_id:item?.supplies?.[0]?.supply_prices[0]?.id,
+      }
+      products.push(newData)
+    }
+      
+      const data=   {
+        "seller_id":sellerID,
+        "products": products
+       }
       dispatch(addTocart(data));
     },
     [sellerID]

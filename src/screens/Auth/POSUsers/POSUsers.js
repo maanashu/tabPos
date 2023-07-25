@@ -42,7 +42,6 @@ export function POSUsers({ navigation }) {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const posUserArray = getAuth?.getAllPosUsers;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const posUserArrayReverse = posUserArray?.reverse();
 
   const refSix = useBlurOnFulfill({ value, cellCount: CELL_COUNT_SIX });
   const [twoStepModal, setTwoStepModal] = useState(false);
@@ -186,7 +185,7 @@ export function POSUsers({ navigation }) {
                     </Text>
                     {item.user?.api_tokens.length > 0 && (
                       <>
-                        <Text style={[styles.dateTime, { marginTop: SH(20) }]}>
+                        <Text style={[styles.dateTime, { marginTop: SH(10) }]}>
                           {moment(item.user?.api_tokens[0].updated_at).format('dddd, DD MMM YYYY')}
                         </Text>
                         <Text style={styles.dateTime}>

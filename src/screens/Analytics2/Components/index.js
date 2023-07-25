@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import { Text, TouchableOpacity, View, Image, ActivityIndicator } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
 import { rightlight } from '@/assets';
 import { ChartKit, Spacer } from '@/components';
@@ -29,14 +23,8 @@ export function HomeGraph({
             {subHeader}
           </Text>
         </View>
-        <TouchableOpacity onPress={homeGraphHandler}>
-          <Image source={rightlight} style={styles.rightlight} />
-        </TouchableOpacity>
       </View>
-      <ChartKit
-        productGraphObject={productGraphObject}
-        arrayLength={arrayLength}
-      />
+      <ChartKit productGraphObject={productGraphObject} arrayLength={arrayLength} />
     </View>
   );
 }

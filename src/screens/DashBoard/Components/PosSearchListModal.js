@@ -136,14 +136,28 @@ export function PosSearchListModal({
     ) {
       alert('Please Quantity Add');
     } else {
-      const data = {
-        seller_id: sellerID,
-        product_id: item.id,
-        qty: selectedQuantities[item.id],
-        service_id: item.service_id,
-        supplyId: item?.supplies?.[0]?.id,
-        supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
-      };
+      // const data = {
+      //   seller_id: sellerID,
+      //   product_id: item.id,
+      //   qty: selectedQuantities[item.id],
+      //   service_id: item.service_id,
+      //   supplyId: item?.supplies?.[0]?.id,
+      //   supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
+      // };
+
+
+     //New Changes
+      const data=   {
+        "seller_id":sellerID,
+        "products": [
+          {
+            product_id:item.id,
+            qty:selectedQuantities[item.id],
+            supply_id: item?.supplies?.[0]?.id,
+            supply_price_id: item?.supplies?.[0]?.supply_prices[0]?.id,
+          }
+        ]
+       }
       dispatch(addTocart(data));
       setAddRemoveSelectedId(null);
     }

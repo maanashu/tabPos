@@ -62,15 +62,48 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
         alert('Please add quantity to cart');
         return;
       } else {
-        const data = {
-          seller_id: sellerID,
-          service_id: productDetail?.product_detail?.service_id,
-          product_id: productDetail?.product_detail?.id,
-          qty: count,
-          supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-          supplyPriceID:
-            productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-        };
+        // const data = {
+        //   seller_id: sellerID,
+        //   service_id: productDetail?.product_detail?.service_id,
+        //   product_id: productDetail?.product_detail?.id,
+        //   qty: count,
+        //   supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+        //   supplyPriceID:
+        //     productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+        // };
+
+//New Changes
+var arr=getRetailData?.getAllCart;
+const products = arr.poscart_products.map((item) => ({
+  product_id: item?.product_id,
+  qty: item?.qty,
+  supply_id: item?.supply_id,
+  supply_price_id: item?.supply_price_id,
+}));
+
+var existingProductIndex = products.findIndex((product) => product.product_id === productDetail?.product_detail?.id);
+
+if (existingProductIndex !== -1) {
+  // If the product already exists in the cart, increase the quantity by 1
+  products[existingProductIndex].qty += 1;
+} else {
+var newData={
+  product_id: productDetail?.product_detail?.id,
+  qty:count,
+  supply_id:productDetail?.product_detail?.supplies?.[0]?.id,
+  supply_price_id:productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+}
+products.push(newData)
+}
+const data=   {
+  "seller_id":arr?.seller_id,
+  "products": products
+ }
+
+
+
+
+
         dispatch(addTocart(data));
         crossHandler();
       }
@@ -91,17 +124,49 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
         crossHandler();
         const res = await dispatch(checkSuppliedVariant(data));
         if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
-          const data = {
-            seller_id: sellerID,
-            service_id: productDetail?.product_detail?.service_id,
+          // const data = {
+          //   seller_id: sellerID,
+          //   service_id: productDetail?.product_detail?.service_id,
+          //   product_id: productDetail?.product_detail?.id,
+          //   qty: count,
+          //   supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+          //   supplyPriceID:
+          //     productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]
+          //       ?.id,
+          //   supplyVariantId: res?.payload?.attribute_variant_id,
+          // };
+
+
+
+          //New Changes
+          var arr=getRetailData?.getAllCart;
+          const products = arr.poscart_products.map((item) => ({
+            product_id: item?.product_id,
+            qty: item?.qty,
+            supply_id: item?.supply_id,
+            supply_price_id: item?.supply_price_id,
+          }));
+          var existingProductIndex = products.findIndex((product) => product.product_id === productDetail?.product_detail?.id);
+
+if (existingProductIndex !== -1) {
+  // If the product already exists in the cart, increase the quantity by 1
+  products[existingProductIndex].qty += 1;
+} else {
+          var newData={
             product_id: productDetail?.product_detail?.id,
-            qty: count,
-            supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-            supplyPriceID:
-              productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]
-                ?.id,
-            supplyVariantId: res?.payload?.attribute_variant_id,
-          };
+            qty:count,
+            supply_id: productDetail?.product_detail?.supplies?.[0]?.id,
+            supply_price_id:productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]
+            ?.id,
+          }
+          products.push(newData)
+
+        }
+          const data=   {
+            "seller_id":sellerID,
+            "products": products
+           }
+
           dispatch(addTocart(data));
           // crossHandler();
         }

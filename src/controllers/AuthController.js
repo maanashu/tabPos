@@ -222,9 +222,9 @@ export class AuthController {
       });
   }
 
-  static async getAllPosUsers(sellerID) {
+  static async getAllPosUsers() {
     return new Promise(async (resolve, reject) => {
-      const endpoint = `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10&seller_id=${sellerID}`;
+      const endpoint = `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10`;
       await HttpClient.get(endpoint)
         .then(response => {
           if (response?.status_code === 200) {

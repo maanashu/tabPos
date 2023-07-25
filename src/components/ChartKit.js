@@ -1,4 +1,5 @@
-import { COLORS, SH, SW } from '@/theme';
+import { Fonts } from '@/assets';
+import { COLORS, SF, SH, SW } from '@/theme';
 import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
@@ -6,7 +7,7 @@ import { LineChart } from 'react-native-chart-kit';
 export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
   return (
     <View>
-      {productGraphObject === undefined ? (
+      {productGraphObject === 23 ? (
         <LineChart
           data={{
             labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -46,50 +47,53 @@ export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
           }}
           withVerticalLines={false}
         />
-      ) : arrayLength === 2 ? (
+      ) : productGraphObject === undefined ? (
         <LineChart
+          bezier
           data={{
-            labels: productGraphObject?.labels,
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             datasets: [
               {
-                data: productGraphObject?.datasets?.[0]?.data,
-                color: () => `rgba(31, 179, 255, 1)`,
+                data: [25, 50, 80, 55, 95, 75, 100],
                 strokeWidth: 2,
+                color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
               },
               {
-                data: productGraphObject?.datasets?.[1]?.data,
-                color: () => `rgba(39, 90, 255, 1)`,
+                data: [25, 40, 50, 45, 55, 45, 50],
                 strokeWidth: 2,
+                color: (opacity = 1) => `rgba(167, 167, 167, ${opacity})`, // optional
               },
             ],
           }}
-          width={Dimensions.get('window').width * 0.41}
-          height={190}
+          width={Dimensions.get('window').width * 0.24}
+          height={SH(172)}
+          withDots={false}
           chartConfig={{
+            backgroundColor: COLORS.red,
+            backgroundGradientFrom: COLORS.white,
+            backgroundGradientTo: COLORS.white,
             decimalPlaces: 0,
-            backgroundColor: '#000',
-            backgroundGradientFrom: '#fff',
-            backgroundGradientTo: '#fff',
-            decimalPlaces: 2,
-            color: () => `rgba(39, 90, 255, 1)`,
-            labelColor: (opacity = 1) => `rgba(98, 98, 98, ${opacity})`,
+            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             style: {
               borderRadius: 16,
+              backgroundColor: COLORS.white,
             },
+            labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
             propsForBackgroundLines: {
               strokeWidth: 1,
-              stroke: '#CCCCCC',
+              stroke: '#EFEFEF',
             },
             propsForDots: {
               r: '0',
               strokeWidth: '2',
             },
           }}
-          // bezier
           style={{
-            marginVertical: 8,
             borderRadius: 16,
+            marginLeft: SW(-3),
           }}
+          withShadow={false}
+          fromZero
         />
       ) : (
         <LineChart
@@ -108,12 +112,8 @@ export function ChartKit({ productGraphObject, arrayLength, chartStyle }) {
           chartConfig={{
             decimalPlaces: 0,
             backgroundColor: '#000',
-            backgroundGradientFrom: chartStyle
-              ? COLORS.textInputBackground
-              : '#fff',
-            backgroundGradientTo: chartStyle
-              ? COLORS.textInputBackground
-              : '#fff',
+            backgroundGradientFrom: chartStyle ? COLORS.textInputBackground : '#fff',
+            backgroundGradientTo: chartStyle ? COLORS.textInputBackground : '#fff',
             decimalPlaces: 2,
             color: () => `rgba(39, 90, 255, 1)`,
             labelColor: (opacity = 1) => `rgba(98, 98, 98, ${opacity})`,

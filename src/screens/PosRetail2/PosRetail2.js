@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { AddDiscountToCart, ScreenWrapper, Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail2/PosRetail2.styles';
@@ -20,6 +14,7 @@ import {
   PayByCash,
   PayByJBRCoins,
 } from '@/screens/PosRetail2/Components';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -43,6 +38,7 @@ import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { strings } from '@/localization';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import Main from 'react-native-country-picker-modal';
 
 export function PosRetail2() {
   const dispatch = useDispatch();
@@ -51,20 +47,18 @@ export function PosRetail2() {
   const cartID2 = getRetailData?.getAllCart?.id;
   const cartData = getRetailData?.getAllCart;
   const finalAmountForDiscount =
-    cartData?.amount?.products_price.toFixed(2) -
-    cartData?.amount?.tax.toFixed(2);
+    cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
-  // const [tipAmount, setTipAmount] = useState(0.0);
+  const [tipAmount, setTipAmount] = useState(0.0);
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
   const [addDiscount, setAddDiscount] = useState(false);
   const [page, setPage] = useState(1);
-  const [tipAmount, selectTipAmount] = useState();
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
   const getCart = getRetailData?.getAllCart;
@@ -104,15 +98,9 @@ export function PosRetail2() {
     setPercentageCheck(getCart?.discount_flag === 'percentage' ? true : false);
     setAmountCheck(getCart?.discount_flag === 'amount' ? true : false);
     setDiscountCheck(getCart?.discount_flag === 'code' ? true : false);
-    setAmountDis(
-      getCart?.discount_flag === 'amount' ? getCart?.discount_value : ''
-    );
-    setPercentDis(
-      getCart?.discount_flag === 'percentage' ? getCart?.discount_value : ''
-    );
-    setDiscountCode(
-      getCart?.discount_flag === 'code' ? getCart?.discount_value : ''
-    );
+    setAmountDis(getCart?.discount_flag === 'amount' ? getCart?.discount_value : '');
+    setPercentDis(getCart?.discount_flag === 'percentage' ? getCart?.discount_value : '');
+    setDiscountCode(getCart?.discount_flag === 'code' ? getCart?.discount_value : '');
     setValue(
       getCart?.discount_flag === 'amount'
         ? 'amount'
@@ -122,7 +110,7 @@ export function PosRetail2() {
         ? 'code'
         : ''
     );
-  }, [getRetailData?.getAllCart]);
+  }, []);
 
   const clearInput = () => {
     setNotes('');
@@ -140,10 +128,7 @@ export function PosRetail2() {
     }
   };
   const saveDiscountHandler = () => {
-    if (
-      amountDis > finalAmountForDiscount ||
-      percentDis > finalAmountForDiscount
-    ) {
+    if (amountDis > finalAmountForDiscount || percentDis > finalAmountForDiscount) {
       Toast.show({
         text2: 'Please enter discount less then total amount',
         position: 'bottom',
@@ -227,16 +212,16 @@ export function PosRetail2() {
     }
   };
 
-  useEffect(() => {
-    dispatch(getMainProduct());
-    dispatch(getAllCart());
-  }, [isFocus]);
+  // useEffect(() => {
+  //   dispatch(getMainProduct());
+  //   dispatch(getAllCart());
+  // }, [isFocus]);
 
-  const isLoading = useSelector(state =>
+  const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
         TYPES.GET_ONE_PRODUCT,
-        TYPES.ADDCART,
+        // TYPES.ADDCART,
         TYPES.GET_CLEAR_ALL_CART,
         TYPES.GET_ALL_CART,
         TYPES.GET_WALLET_PHONE,
@@ -281,7 +266,7 @@ export function PosRetail2() {
     ['CartAmountTips']: (
       <CartAmountTips
         onPressBack={() => setselectedScreen('MainScreen')}
-        onPressContinue={tip => {
+        onPressContinue={(tip) => {
           setTipAmount(tip);
           setselectedScreen('CartAmountPayBy');
         }}
@@ -293,7 +278,7 @@ export function PosRetail2() {
       <CartAmountPayBy
         onPressBack={() => setselectedScreen('CartScreen')}
         tipAmount={tipAmount}
-        onPressPaymentMethod={item => {
+        onPressPaymentMethod={(item) => {
           if (item.index === 0) {
             setselectedScreen('PayByCash');
           } else if (item.index === 1) {
@@ -301,9 +286,6 @@ export function PosRetail2() {
           } else if (item.index === 2) {
             setselectedScreen('PayByCard');
           }
-        }}
-        payNowByphone={tip => {
-          selectTipAmount(tip);
         }}
       />
     ),
@@ -365,21 +347,14 @@ export function PosRetail2() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>{screenChangeView()}</View>
+
       {isLoading ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator
-            color={COLORS.primary}
-            size="large"
-            style={styles.loader}
-          />
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        isVisible={addNotes || addDiscount}
-      >
+      <Modal animationType="fade" transparent={true} isVisible={addNotes || addDiscount}>
         <KeyboardAvoidingView
         // style={{ flex: 1 }}
         // behavior={Platform.OS === 'ios' ? 'padding' : 100}
@@ -388,12 +363,7 @@ export function PosRetail2() {
           <ScrollView>
             {addDiscount ? (
               <View style={[styles.addNotesCon, styles.addDiscountConPop]}>
-                <View
-                  style={[
-                    styles.addCartDetailConHeader,
-                    styles.addCartDetailConHeader2,
-                  ]}
-                >
+                <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
                   <Text style={styles.jacketName}>Add Discount</Text>
                   <TouchableOpacity onPress={() => setAddDiscount(false)}>
                     <Image source={crossButton} style={styles.crossBg} />
@@ -429,12 +399,7 @@ export function PosRetail2() {
               </View>
             ) : (
               <View style={[styles.addNotesCon, styles.addNotesCon2]}>
-                <View
-                  style={[
-                    styles.addCartDetailConHeader,
-                    styles.addCartDetailConHeader2,
-                  ]}
-                >
+                <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
                   <Text style={styles.jacketName}>Add Notes</Text>
                   <TouchableOpacity onPress={() => setAddNotes(false)}>
                     <Image source={crossButton} style={styles.crossBg} />

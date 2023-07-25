@@ -62,17 +62,57 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
         alert('Please add quantity to cart');
         return;
       } else {
-        const data = {
-          seller_id: sellerID,
-          service_id: productDetail?.product_detail?.service_id,
-          product_id: productDetail?.product_detail?.id,
-          qty: count,
-          supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-          supplyPriceID:
-            productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-        };
-        dispatch(addTocart(data));
-        crossHandler();
+        // const data = {
+        //   seller_id: sellerID,
+        //   service_id: productDetail?.product_detail?.service_id,
+        //   product_id: productDetail?.product_detail?.id,
+        //   qty: count,
+        //   supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+        //   supplyPriceID:
+        //     productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+        // };
+
+        // dispatch(addTocart(data));
+        // crossHandler();
+
+
+        //New Code
+
+        var arr=getRetailData?.getAllCart;
+    const products = arr.poscart_products.map((item) => ({
+      product_id: item?.product_id,
+      qty: item?.qty,
+      supply_id: item?.supply_id,
+      supply_price_id: item?.supply_price_id,
+    }));
+    var existingProductIndex = products.findIndex((product) => product.product_id === productDetail?.product_detail?.id);
+
+if (existingProductIndex !== -1) {
+  // If the product already exists in the cart, increase the quantity by 1
+  products[existingProductIndex].qty += 1;
+} else {
+  // If the product does not exist in the cart, add it with quantity 1
+  var newData = {
+    product_id:productDetail?.product_detail?.id,
+    qty:count,
+    supply_id:productDetail?.product_detail?.supplies?.[0]?.id,
+    supply_price_id: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+  };
+  products.push(newData);
+}
+const data=   {
+      "seller_id":sellerID,
+      "products": products
+}
+
+
+
+         dispatch(addTocart(data));
+         crossHandler();
+
+
+
+
       }
     } else {
       if (count === 0) {

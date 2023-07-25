@@ -43,12 +43,11 @@ export function CustomHeader({ crossHandler, iconShow }) {
             style={styles.iconStyle}
           />
           <Text style={styles.cashLabelBold}>
-            {getPosUser?.user_profiles?.firstname ?? 'username'}
-            {/* (
+            {getPosUser?.user_profiles?.firstname ?? 'username'}(
             {getPosUser?.user_profiles?.pos_role === null
               ? 'Merchant'
               : getPosUser?.user_profiles?.pos_role}
-            ) */}
+            )
           </Text>
         </View>
         <View style={styles._border} />
