@@ -288,7 +288,7 @@ export function PosRetail2() {
             setselectedScreen('PayByCard');
           }
         }}
-        payNowByphone={tip => {
+        payNowByphone={(tip) => {
           selectTipAmount(tip);
         }}
       />

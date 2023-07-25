@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
-
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
@@ -66,7 +65,8 @@ const MainScreen = React.memo(
 
     const [showProductsFrom, setshowProductsFrom] = useState();
 
-    const mainProductArray = getRetailData?.getMainProduct;
+    const mainProductArray = getRetailData?.getMainProduct?.data;
+    console.log('mainProductArray', getRetailData?.getMainProduct);
 
     useEffect(() => {
       setfilterMenuTitle(originalFilterData);
@@ -220,13 +220,7 @@ const MainScreen = React.memo(
         <Text style={styles.chooseCat} numberOfLines={1}>
           {item.name}
         </Text>
-        {/* <Image
-        source={categoryMenu}
-        style={[
-          styles.categoryMenu,
-          { tintColor: item.isSelected && COLORS.solid_green },
-        ]}
-      /> */}
+
         <FastImage
           source={categoryMenu}
           style={[styles.categoryMenu, { tintColor: item.isSelected && COLORS.solid_green }]}
@@ -314,7 +308,9 @@ const MainScreen = React.memo(
               >
                 <View style={{ marginRight: 15 }}>
                   <Text style={styles.allProduct}>{strings.posRetail.allProduct}</Text>
-                  <Text style={styles.productCount}>({mainProductArray?.length ?? '0'})</Text>
+                  <Text style={styles.productCount}>
+                    ({getRetailData?.getMainProduct?.total ?? '0'})
+                  </Text>
                 </View>
                 <View>
                   <FlatList
@@ -452,7 +448,6 @@ const MainScreen = React.memo(
           </View>
         </View>
         {/* cart list modal start */}
-
         <Modal
           animationType="fade"
           transparent={true}
@@ -460,7 +455,7 @@ const MainScreen = React.memo(
           animationIn="slideInRight"
           animationOut="slideOutRight"
         >
-          <CartListModal checkOutHandler={checkOutHandler} CloseCartModal={onCloseCartModal} />
+          <CartListModal checkOutHandler={checkOutHandler} />
         </Modal>
 
         {/* cart list modal end */}
