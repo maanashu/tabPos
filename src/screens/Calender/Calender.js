@@ -468,7 +468,9 @@ export function Calender(props) {
           setIsVisible={setisCalendarSettingModalVisible}
         />
 
-        <EventDetailModal {...{ eventData, showEventDetailModal, setshowEventDetailModal }} />
+        <EventDetailModal
+          {...{ eventData, showEventDetailModal, setshowEventDetailModal, dispatch }}
+        />
 
         {schduleDetailModal()}
       </View>

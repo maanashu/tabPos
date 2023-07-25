@@ -1,20 +1,34 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { eventClockIcon, pin, chatIcon, crossButton } from '@/assets';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { eventClockIcon, pin, chatIcon, crossButton, editIcon, cancleIc } from '@/assets';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import moment from 'moment';
 import { calculateDuration } from '@/utils/GlobalMethods';
 import ProfileImage from '@/components/ProfileImage';
+import { changeAppointmentStatus } from '@/actions/AppointmentAction';
+import { APPOINTMENT_STATUS } from '@/constants/status';
 
-const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, eventData }) => {
+const EventDetailModal = ({
+  showEventDetailModal,
+  setshowEventDetailModal,
+  eventData,
+  dispatch,
+}) => {
   const { completeData } = eventData;
   const userDetails = completeData?.user_details;
   const userAddress = userDetails?.current_address;
   const appointmentDetail = completeData?.appointment_details[0];
   const posUserDetails = completeData?.pos_user_details?.user?.user_profiles;
   const posUserRole = completeData?.pos_user_details?.user?.user_roles[0]?.role?.name || 'NULL';
+
+  const handleCancelAppointment = () => {
+    const appointmentID = appointmentDetail?.appointment_id ?? '';
+    dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
+    setshowEventDetailModal(false);
+  };
+
   return (
     <Modal isVisible={showEventDetailModal}>
       <View style={styles.eventDetailModalContainer}>
@@ -43,9 +57,66 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 </View>
               </View>
             </View>
-            <TouchableOpacity style={{ height: ms(20), width: ms(20) }}>
-              <Image source={chatIcon} style={styles.chatIconStl} />
-            </TouchableOpacity>
+            <View
+              style={{
+                height: ms(20),
+                flexDirection: 'row',
+                marginRight: ms(5),
+                alignItems: 'center',
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  Alert.alert(
+                    'Do you want to cancel this appointment',
+                    '',
+                    [
+                      {
+                        text: 'No',
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'Yes',
+                        onPress: handleCancelAppointment,
+                      },
+                    ],
+                    { cancelable: false }
+                  );
+                }}
+              >
+                <Image
+                  source={cancleIc}
+                  style={{
+                    height: ms(12),
+                    width: ms(12),
+                    resizeMode: 'contain',
+                    marginRight: ms(7),
+                  }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  alert('edit coming soon');
+                }}
+              >
+                <Image
+                  source={editIcon}
+                  style={{
+                    height: ms(10),
+                    width: ms(10),
+                    resizeMode: 'contain',
+                    marginRight: ms(5),
+                  }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  alert('message coming soon');
+                }}
+              >
+                <Image source={chatIcon} style={styles.chatIconStl} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
         <View style={styles.assignedContainer}>

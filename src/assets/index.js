@@ -282,6 +282,8 @@ export { default as totalSales } from '@/assets/images/totalSales.png';
 export { default as totalOrders } from '@/assets/images/totalOrders.png';
 export { default as productSelling } from '@/assets/images/productSelling.png';
 export { default as revenueTotal } from '@/assets/images/revenueTotal.png';
+export { default as editIcon } from '@/assets/images/pen.png';
+export { default as cancleIc } from '@/assets/images/multiply.png';
 
 // new Pos module image
 export { default as bucket } from '@/assets/icons/ic_posRetail/bucket.png';
