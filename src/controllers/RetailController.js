@@ -291,10 +291,8 @@ export class RetailController {
       //     ]
       // };
 
-      console.log('DATATTAA', JSON.stringify(data));
       HttpClient.put(endpoint, data)
         .then((response) => {
-          console.log('RESPONSEEEE', JSON.stringify(data));
           // if (response?.msg === 'PosCart updated!') {
           //   Toast.show({
           //     text2: 'Notes add succesfully',

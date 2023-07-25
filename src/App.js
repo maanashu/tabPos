@@ -17,7 +17,7 @@ import RNLockTask from 'react-native-lock-task';
 Platform.OS === 'android' && RNLockTask.startLockTask();
 
 import SystemNavigationBar from 'react-native-system-navigation-bar';
-SystemNavigationBar.fullScreen();
+SystemNavigationBar.stickyImmersive();
 enableScreens();
 
 const toastConfig = {
