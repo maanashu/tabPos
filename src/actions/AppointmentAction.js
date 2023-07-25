@@ -113,7 +113,6 @@ export const getStaffUsersList = (pageNumber) => async (dispatch) => {
   dispatch(getStaffUsersRequest());
   try {
     const res = await AppointmentController.getAllStaffUsers(pageNumber);
-
     const currentPages = res?.payload?.current_page;
     const totalPages = res?.payload?.total_pages;
     const pages = { currentPages: currentPages, totalPages: totalPages };

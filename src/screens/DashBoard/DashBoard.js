@@ -84,8 +84,7 @@ export function DashBoard({ navigation }) {
   const getSessionObj = getDashboardData?.getSesssion;
   const getPosUser = getUserData?.posLoginData;
   // console.log('getPosUser', getPosUser);
-  const onLineOrder =
-    getDashboardData?.onLineOrders?.onLineOrders?.onlineOrders;
+  const onLineOrder = getDashboardData?.onLineOrders?.onLineOrders?.onlineOrders;
   const TotalSale = getDashboardData?.getTotalSale;
 
   const todayCashAmount = TotalSale?.[3]?.total_sale_amount.toFixed(2);
@@ -93,7 +92,7 @@ export function DashBoard({ navigation }) {
   const todayCardAmount = TotalSale?.[2]?.total_sale_amount.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getDeliveryData = getDashboardData?.getOrderDeliveries;
-  const getDeliveryData2 = getDeliveryData?.filter(item => item.status <= 3);
+  const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
 
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
@@ -115,7 +114,7 @@ export function DashBoard({ navigation }) {
       textInputRef.current.focus();
     }
   }, [scan]);
-  const onSetSkuFun = async sku => {
+  const onSetSkuFun = async (sku) => {
     setSku(sku);
     if (sku?.length > 3) {
       const data = {
@@ -124,12 +123,12 @@ export function DashBoard({ navigation }) {
         qty: 1,
       };
       const res = await dispatch(scanProductAdd(data))
-        .then(res => {
+        .then((res) => {
           setSku('');
           dispatch(getAllCart());
           textInputRef.current.focus();
         })
-        .catch(error => {
+        .catch((error) => {
           setSku('');
           textInputRef.current.focus();
         });
@@ -167,6 +166,7 @@ export function DashBoard({ navigation }) {
     id: getSessionObj?.id,
   };
 
+  console.log('userid: ' + getPosUser?.uuid);
   useEffect(() => {
     if (isFocused) {
       dispatch(getOrderDeliveries(sellerID, page));
@@ -190,7 +190,7 @@ export function DashBoard({ navigation }) {
     }
   }, [timeChange === true]);
 
-  const orderTime = estimateTime => {
+  const orderTime = (estimateTime) => {
     const currentDateTime = new Date();
     const givenTimestamp = new Date(estimateTime);
     const timeDifference = givenTimestamp.getTime() - currentDateTime.getTime();
@@ -200,8 +200,7 @@ export function DashBoard({ navigation }) {
     const timeFormatted = (
       <View>
         <Text style={[styles.nameTextBold, styles.timeSec]}>
-          {hours < 1 ? '00' : hours}:{minutes < 1 ? '00' : minutes}:
-          {seconds < 1 ? '00' : seconds}
+          {hours < 1 ? '00' : hours}:{minutes < 1 ? '00' : minutes}:{seconds < 1 ? '00' : seconds}
         </Text>
       </View>
     );
@@ -237,15 +236,15 @@ export function DashBoard({ navigation }) {
     }
   };
 
-  const orderDelveriesLoading = useSelector(state =>
+  const orderDelveriesLoading = useSelector((state) =>
     isLoadingSelector([DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
   );
 
-  const getSessionLoad = useSelector(state =>
+  const getSessionLoad = useSelector((state) =>
     isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION], state)
   );
 
-  const startSellingHandler = async id => {
+  const startSellingHandler = async (id) => {
     if (id === 1) {
       dispatch(addSellingSelection(id));
       navigate(NAVIGATION.posRetail);
@@ -266,9 +265,7 @@ export function DashBoard({ navigation }) {
         </Text>
         <View style={styles.timeView}>
           <Image source={pin} style={styles.pinIcon} />
-          <Text style={styles.timeText}>
-            {item?.distance ? item?.distance : '0miles'} miles
-          </Text>
+          <Text style={styles.timeText}>{item?.distance ? item?.distance : '0miles'} miles</Text>
         </View>
       </View>
 
@@ -276,9 +273,7 @@ export function DashBoard({ navigation }) {
         <Text style={styles.nameText}>{item?.order_details?.length} items</Text>
         <View style={styles.timeView}>
           <Image source={pay} style={styles.pinIcon} />
-          <Text style={styles.timeText}>
-            ${item.payable_amount ? item.payable_amount : '0'}
-          </Text>
+          <Text style={styles.timeText}>${item.payable_amount ? item.payable_amount : '0'}</Text>
         </View>
       </View>
       <View style={{ width: SW(50) }}>
@@ -288,8 +283,7 @@ export function DashBoard({ navigation }) {
         <View style={styles.timeView}>
           <Image source={clock} style={styles.pinIcon} />
           <Text style={styles.timeText}>
-            {item?.preffered_delivery_start_time} -{' '}
-            {item?.preffered_delivery_end_time}
+            {item?.preffered_delivery_start_time} - {item?.preffered_delivery_end_time}
           </Text>
         </View>
       </View>
@@ -308,11 +302,7 @@ export function DashBoard({ navigation }) {
 
   const trackinSessionModal = () => {
     return (
-      <Modal
-        transparent={true}
-        animationType={'fade'}
-        isVisible={trackingSession}
-      >
+      <Modal transparent={true} animationType={'fade'} isVisible={trackingSession}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : 100}
@@ -321,9 +311,7 @@ export function DashBoard({ navigation }) {
             <View style={styles.modalMainView}>
               <View style={styles.headerView}>
                 <View style={styles.sessionViewStyle}>
-                  <Text
-                    style={[styles.trackingButtonText, { fontSize: SF(16) }]}
-                  >
+                  <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
                     {strings.management.session}
                   </Text>
                 </View>
@@ -338,15 +326,11 @@ export function DashBoard({ navigation }) {
 
               <Spacer space={SH(40)} />
               <View style={styles.countCashView}>
-                <Text style={styles.countCashText}>
-                  {strings.management.countCash}
-                </Text>
+                <Text style={styles.countCashText}>{strings.management.countCash}</Text>
 
                 <Spacer space={SH(40)} />
                 <View>
-                  <Text style={styles.amountCountedText}>
-                    {strings.management.amountCounted}
-                  </Text>
+                  <Text style={styles.amountCountedText}>{strings.management.amountCounted}</Text>
                   <TextInput
                     placeholder={strings.management.amount}
                     style={styles.inputStyle}
@@ -358,9 +342,7 @@ export function DashBoard({ navigation }) {
                 </View>
                 <Spacer space={SH(40)} />
                 <View>
-                  <Text style={styles.amountCountedText}>
-                    {strings.management.note}
-                  </Text>
+                  <Text style={styles.amountCountedText}>{strings.management.note}</Text>
                   <TextInput
                     placeholder={strings.management.note}
                     style={styles.noteInputStyle}
@@ -383,9 +365,7 @@ export function DashBoard({ navigation }) {
                 style={{
                   ...styles.saveButton,
                   ...{
-                    backgroundColor: amountCount
-                      ? COLORS.primary
-                      : COLORS.textInputBackground,
+                    backgroundColor: amountCount ? COLORS.primary : COLORS.textInputBackground,
                   },
                 }}
                 onPress={startTrackingSesHandler}
@@ -398,7 +378,7 @@ export function DashBoard({ navigation }) {
     );
   };
 
-  const onChangeFun = search => {
+  const onChangeFun = (search) => {
     if (search.length > 3) {
       dispatch(searchProductList(search, sellerID));
       setSearchModal(true);
@@ -430,16 +410,12 @@ export function DashBoard({ navigation }) {
               ? 'Merchant'
               : getPosUser?.user_profiles?.pos_role}
           </Text>
-          <Text style={styles.cashLabel}>
-            ID : {getPosUser?.user_profiles?.user_id ?? '0'}
-          </Text>
+          <Text style={styles.cashLabel}>ID : {getPosUser?.user_profiles?.user_id ?? '0'}</Text>
           <Spacer space={SH(10)} />
 
           <View style={styles.todaySaleCon}>
             <View style={styles.displayflex}>
-              <Text style={styles.todaySale}>
-                {strings.dashboard.todaySale}
-              </Text>
+              <Text style={styles.todaySale}>{strings.dashboard.todaySale}</Text>
               {/* <TouchableOpacity
                     style={{
                       width: SW(30),
@@ -455,48 +431,31 @@ export function DashBoard({ navigation }) {
                     <Text style={{ color: COLORS.white }}>Your Session</Text>
                   </TouchableOpacity> */}
             </View>
-            <Spacer
-              space={SH(4)}
-              backgroundColor={COLORS.textInputBackground}
-            />
+            <Spacer space={SH(4)} backgroundColor={COLORS.textInputBackground} />
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={styles.cashLabel}>
-                {strings.dashboard.cashSaleAmount}
-              </Text>
+              <Text style={styles.cashLabel}>{strings.dashboard.cashSaleAmount}</Text>
               <Text style={styles.cashAmount}>
-                {/* ${TotalSale?.[3]?.total_sale_amount ?? '0.00'} */}$
-                {todayCashAmount ?? '0.00'}
+                {/* ${TotalSale?.[3]?.total_sale_amount ?? '0.00'} */}${todayCashAmount ?? '0.00'}
               </Text>
             </View>
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={styles.cashLabel}>
-                {strings.dashboard.cardSaleAmount}
-              </Text>
-              <Text style={styles.cashAmount}>
-                ${todayCardAmount ?? '0.00'}
-              </Text>
+              <Text style={styles.cashLabel}>{strings.dashboard.cardSaleAmount}</Text>
+              <Text style={styles.cashAmount}>${todayCardAmount ?? '0.00'}</Text>
             </View>
             <View style={[styles.displayflex, styles.paddingV]}>
               <Text style={styles.saleAmountLable} numberOfLines={1}>
                 {strings.dashboard.jobrCoinSaleAmount}
               </Text>
-              <Text style={styles.cashAmount}>
-                JOBR {todayJbrAmount ?? '0.00'}
-              </Text>
+              <Text style={styles.cashAmount}>JOBR {todayJbrAmount ?? '0.00'}</Text>
             </View>
           </View>
           <Spacer space={SH(10)} />
           <View style={styles.todaySaleCon}>
             <Text style={styles.todaySale}>{strings.dashboard.cashDrawer}</Text>
-            <Spacer
-              space={SH(4)}
-              backgroundColor={COLORS.textInputBackground}
-            />
+            <Spacer space={SH(4)} backgroundColor={COLORS.textInputBackground} />
             <View style={[styles.displayflex, styles.paddingV]}>
               <Text style={styles.cashLabel}>{strings.dashboard.openBal}</Text>
-              <Text style={styles.cashAmount}>
-                ${profileObj?.openingBalance}
-              </Text>
+              <Text style={styles.cashAmount}>${profileObj?.openingBalance}</Text>
             </View>
             <View style={[styles.displayflex, styles.paddingV]}>
               <Text style={styles.cashLabel}>{strings.dashboard.closeBal}</Text>
@@ -525,9 +484,7 @@ export function DashBoard({ navigation }) {
             <View style={[styles.displayflex, styles.paddingV]}>
               <Text style={styles.cashLabel}>{strings.dashboard.session}</Text>
               <Text style={styles.cashAmount}>
-                {getLoginSessionTime(
-                  moment(getLoginDeatil?.updated_at).format('LTS')
-                )}
+                {getLoginSessionTime(moment(getLoginDeatil?.updated_at).format('LTS'))}
               </Text>
             </View>
           </View>
@@ -553,9 +510,7 @@ export function DashBoard({ navigation }) {
           >
             <View style={styles.displayRow}>
               <Image source={lockLight} style={styles.lockLight} />
-              <Text style={[styles.checkoutText1]}>
-                {strings.dashboard.lockScreen}
-              </Text>
+              <Text style={[styles.checkoutText1]}>{strings.dashboard.lockScreen}</Text>
             </View>
           </TouchableOpacity>
 
@@ -576,7 +531,7 @@ export function DashBoard({ navigation }) {
                   style={styles.searchInput}
                   // editable={false}
                   value={sku}
-                  onChangeText={sku => {
+                  onChangeText={(sku) => {
                     onSetSkuFun(sku);
                   }}
                   ref={textInputRef}
@@ -586,7 +541,7 @@ export function DashBoard({ navigation }) {
                   placeholder="search product here"
                   style={styles.searchInput}
                   value={search}
-                  onChangeText={search => {
+                  onChangeText={(search) => {
                     setSearch(search);
                     onChangeFun(search);
                   }}
@@ -623,16 +578,13 @@ export function DashBoard({ navigation }) {
 
           <View style={styles.homeTableCon}>
             <View>
-              <Text style={styles.deliveries}>
-                {strings.dashboard.deliveries}
-              </Text>
+              <Text style={styles.deliveries}>{strings.dashboard.deliveries}</Text>
             </View>
             {orderDelveriesLoading ? (
               <View style={{ marginTop: 50 }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
               </View>
-            ) : getDeliveryData2?.length === 0 ||
-              getDeliveryData2 === undefined ? (
+            ) : getDeliveryData2?.length === 0 || getDeliveryData2 === undefined ? (
               <View>
                 <Text style={styles.requestNotFound}>Orders not found</Text>
               </View>
@@ -641,7 +593,7 @@ export function DashBoard({ navigation }) {
                 data={getDeliveryData2}
                 extraData={getDeliveryData2}
                 renderItem={tableListItem}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
               />
             )}
           </View>
@@ -659,25 +611,15 @@ export function DashBoard({ navigation }) {
 
       {getSessionLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator
-            size={'large'}
-            style={styles.loader}
-            color={COLORS.primary}
-          />
+          <ActivityIndicator size={'large'} style={styles.loader} color={COLORS.primary} />
         </View>
       ) : null}
 
-      <Modal
-        transparent={true}
-        animationType={'fade'}
-        isVisible={yourSessionEndModal}
-      >
+      <Modal transparent={true} animationType={'fade'} isVisible={yourSessionEndModal}>
         <View style={styles.yourSessionendCon}>
           <View style={styles.yourSessionendHeader}>
             <Text>{null}</Text>
-            <Text style={styles.yourSession}>
-              {strings.dashboard.yourSessionEnd}
-            </Text>
+            <Text style={styles.yourSession}>{strings.dashboard.yourSessionEnd}</Text>
             <TouchableOpacity onPress={() => setYourSessionEndModal(false)}>
               <Image source={crossButton} style={styles.crossBg} />
             </TouchableOpacity>
@@ -688,9 +630,7 @@ export function DashBoard({ navigation }) {
             <Spacer space={SH(10)} />
             <Image source={sessionEndBar} style={styles.sessionEndBar} />
             <Spacer space={SH(10)} />
-            <Text style={styles.yourSession}>
-              {strings.dashboard.yourSessionEnd}
-            </Text>
+            <Text style={styles.yourSession}>{strings.dashboard.yourSessionEnd}</Text>
             <Spacer space={SH(20)} />
 
             <Button
@@ -720,9 +660,7 @@ export function DashBoard({ navigation }) {
       >
         {searchModalDetail ? (
           <PosSearchDetailModal
-            backArrowhandler={() => (
-              setSearchModal(true), setSearchModalDetail(false)
-            )}
+            backArrowhandler={() => (setSearchModal(true), setSearchModalDetail(false))}
             productData={productDet}
           />
         ) : (
@@ -733,10 +671,8 @@ export function DashBoard({ navigation }) {
               search={search}
               setSearch={setSearch}
               onChangeFun={onChangeFun}
-              viewDetailHandler={item => (
-                setSearchModal(false),
-                setSearchModalDetail(true),
-                setproductDet(item)
+              viewDetailHandler={(item) => (
+                setSearchModal(false), setSearchModalDetail(true), setproductDet(item)
               )}
               // item={}
             />

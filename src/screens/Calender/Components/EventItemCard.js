@@ -12,7 +12,7 @@ import ProfileImage from '@/components/ProfileImage';
 
 moment.suppressDeprecationWarnings = true;
 
-const EventItemCard = ({ item, index }) => {
+const EventItemCard = ({ item, index, onPressAccept = () => {}, onPressReject = () => {} }) => {
   const dispatch = useDispatch();
   const userDetails = item?.user_details;
   const userAddress = userDetails?.current_address;
@@ -33,9 +33,7 @@ const EventItemCard = ({ item, index }) => {
             </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={pin} style={styles.eventAddressIcon} />
-              <Text style={styles.eventAddress}>
-                {userAddress.street_address}
-              </Text>
+              <Text style={styles.eventAddress}>{userAddress.street_address}</Text>
             </View>
           </View>
         </View>
@@ -43,18 +41,14 @@ const EventItemCard = ({ item, index }) => {
 
       <View style={{ marginHorizontal: ms(10) }}>
         <Text style={styles._eventTitle}>Service Requested:</Text>
-        <Text style={styles.hairCutTitle}>
-          {appointmentDetail.product_name}
-        </Text>
+        <Text style={styles.hairCutTitle}>{appointmentDetail.product_name}</Text>
       </View>
       <View style={styles.subContainer1}>
         <Text style={styles._eventTitle}>Service Time:</Text>
         <View style={styles.serviceTimeContainer}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image source={eventClockIcon} style={styles.evenclockIcon} />
-            <Text style={styles.eventDay}>
-              {moment(item.date).format('dddd')}
-            </Text>
+            <Text style={styles.eventDay}>{moment(item.date).format('dddd')}</Text>
           </View>
           <View style={styles.lineStl} />
 
@@ -70,9 +64,7 @@ const EventItemCard = ({ item, index }) => {
       </View>
       <View style={styles.duractionContainer}>
         <Text style={styles._eventTitle}>Duration:</Text>
-        <Text style={styles.duractiontxt}>
-          {calculateDuration(item.start_time, item.end_time)}
-        </Text>
+        <Text style={styles.duractiontxt}>{calculateDuration(item.start_time, item.end_time)}</Text>
       </View>
 
       <View style={{ marginTop: ms(15), marginHorizontal: ms(10) }}>
@@ -95,15 +87,10 @@ const EventItemCard = ({ item, index }) => {
       <View style={styles._btnContainer}>
         <TouchableOpacity
           onPress={() => {
-            const appointmentID =
-              item.appointment_details[0]?.appointment_id ?? '';
+            const appointmentID = item.appointment_details[0]?.appointment_id ?? '';
 
-            dispatch(
-              changeAppointmentStatus(
-                appointmentID,
-                APPOINTMENT_STATUS.REJECTED_BY_SELLER
-              )
-            );
+            dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
+            onPressReject();
           }}
           style={styles.declineBtnContainer}
         >
@@ -112,15 +99,10 @@ const EventItemCard = ({ item, index }) => {
 
         <TouchableOpacity
           onPress={() => {
-            const appointmentID =
-              item.appointment_details[0]?.appointment_id ?? '';
+            const appointmentID = item.appointment_details[0]?.appointment_id ?? '';
 
-            dispatch(
-              changeAppointmentStatus(
-                appointmentID,
-                APPOINTMENT_STATUS.ACCEPTED_BY_SELLER
-              )
-            );
+            dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.ACCEPTED_BY_SELLER));
+            onPressAccept();
           }}
           style={styles.acceptbtnContainer}
         >

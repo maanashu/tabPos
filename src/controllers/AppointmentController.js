@@ -20,6 +20,7 @@ export class AppointmentController {
       // Check if pos user id is available
       if (posUserId) {
         queryParams.pos_user_id = posUserId;
+        queryParams.status = 0;
       }
 
       const stringifiedQueryParams = new URLSearchParams(queryParams);
@@ -53,6 +54,7 @@ export class AppointmentController {
 
   static async getAllStaffUsers(pageNumber = 1) {
     const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+    console.log('sellerId', sellerId);
     return new Promise(async (resolve, reject) => {
       const endpoint = `${USER_URL}${ApiUserInventory.getPosUsers}?page=${pageNumber}&limit=10&seller_id=${sellerId}&need_staff_member=true`;
       await HttpClient.get(endpoint)

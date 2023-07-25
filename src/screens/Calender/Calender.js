@@ -78,6 +78,7 @@ export function Calender(props) {
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
+
   const getAppointmentList2 = getAppointmentList?.filter((item) => item.status !== 3);
 
   // Only show appointments on calendar which are approved
@@ -169,7 +170,24 @@ export function Calender(props) {
   );
 
   const eventItem = ({ item, index }) => {
-    return <EventItemCard item={item} index={index} />;
+    return (
+      <EventItemCard
+        item={item}
+        index={index}
+        onPressAccept={() => {
+          setTimeout(() => {
+            selectedStaffEmployeeId &&
+              dispatch(getAppointmentByStaffId(1, selectedStaffEmployeeId));
+          }, 1000);
+        }}
+        onPressReject={() => {
+          setTimeout(() => {
+            selectedStaffEmployeeId &&
+              dispatch(getAppointmentByStaffId(1, selectedStaffEmployeeId));
+          }, 1000);
+        }}
+      />
+    );
   };
 
   const handleEndReached = () => {
@@ -398,7 +416,7 @@ export function Calender(props) {
                         <View
                           style={[styles.circularBadgeEmployee, { borderColor: item?.color_code }]}
                         >
-                          <Text style={styles.badgeTextEmployee}>{`0`}</Text>
+                          <Text style={styles.badgeTextEmployee}>{item?.appointment_counts}</Text>
                         </View>
                       </View>
                     </TouchableOpacity>
@@ -427,12 +445,12 @@ export function Calender(props) {
                 <Text style={styles._requestTitle}>
                   {`Request (${
                     selectedStaffEmployeeId
-                      ? getAppointmentByStaffIdList.length ?? 0
+                      ? getAppointmentByStaffIdList?.length ?? 0
                       : appointmentListArr?.length ?? 0
                   })`}
                 </Text>
                 <FlatList
-                  extraData={selectedStaffEmployeeId}
+                  extraData={getAppointmentByStaffIdList || appointmentListArr}
                   data={selectedStaffEmployeeId ? getAppointmentByStaffIdList : appointmentListArr}
                   keyExtractor={(_, index) => index}
                   renderItem={eventItem}
