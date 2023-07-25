@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { Fonts } from '@/assets';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { moderateScale, ms, scale, verticalScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
@@ -53,8 +53,8 @@ export const styles = StyleSheet.create({
     marginVertical: SH(25),
     marginHorizontal: SH(15),
     padding: SH(10),
-    width: SH(255),
-    height: SH(300),
+    width: Platform.OS === 'ios' ? ms(150) : ms(156),
+    height: SH(320),
     borderRadius: 15,
   },
   posLoginHeader: {
