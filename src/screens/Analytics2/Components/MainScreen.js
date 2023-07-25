@@ -29,7 +29,7 @@ export function MainScreen() {
           arrayLength={productGraphObject2?.datasets?.length}
         />
         <HomeGraph
-          header="Total Sales"
+          header="Total Costs"
           subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'}
           productGraphObject={productGraphObject2}
           homeGraphHandler={() => {}}
@@ -38,7 +38,7 @@ export function MainScreen() {
       </View>
       <View style={styles.flexDirectionRow}>
         <HomeGraph
-          header="Sales by Channel"
+          header="Total POS Orders"
           subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'}
           productGraphObject={productGraphObject2}
           homeGraphHandler={() => {}}
@@ -46,7 +46,7 @@ export function MainScreen() {
         />
 
         <HomeGraph
-          header="Average Order value"
+          header="Total Delivery Orders"
           subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'}
           productGraphObject={productGraphObject2}
           homeGraphHandler={() => {}}
@@ -54,7 +54,7 @@ export function MainScreen() {
         />
 
         <HomeGraph
-          header="Top Selling Products"
+          header="Total Shipping Orders"
           subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'}
           productGraphObject={productGraphObject2}
           homeGraphHandler={() => {}}
@@ -62,13 +62,6 @@ export function MainScreen() {
         />
       </View>
       <View style={styles.flexDirectionRow}>
-        <HomeGraph
-          header="Sales by Locations"
-          subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'}
-          productGraphObject={productGraphObject2}
-          homeGraphHandler={() => {}}
-          arrayLength={productGraphObject2?.datasets?.length}
-        />
         <HomeGraph
           header="Total Orders"
           subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'}
@@ -77,7 +70,14 @@ export function MainScreen() {
           arrayLength={productGraphObject2?.datasets?.length}
         />
         <HomeGraph
-          header="Total Costs"
+          header="Top Sales by Locations"
+          subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'}
+          productGraphObject={productGraphObject2}
+          homeGraphHandler={() => {}}
+          arrayLength={productGraphObject2?.datasets?.length}
+        />
+        <HomeGraph
+          header="Top Selling Products"
           subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '5193'}
           productGraphObject={productGraphObject2}
           homeGraphHandler={() => {}}
