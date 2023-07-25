@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { ms, verticalScale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -177,6 +177,11 @@ const styles = StyleSheet.create({
     fontSize: SF(12),
     color: COLORS.solid_grey,
   },
+  varientTextStyle: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(11),
+    color: COLORS.darkGray,
+  },
   distanceTextStyle: {
     fontFamily: Fonts.Regular,
     fontSize: SF(11),
@@ -348,6 +353,12 @@ const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     paddingLeft: SW(6),
   },
+  backView: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 12,
+  },
   backImageStyle: {
     width: SW(10),
     height: SW(10),
@@ -424,6 +435,55 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
     color: COLORS.solid_grey,
+  },
+  acceptButtonView: {
+    height: SH(48),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    backgroundColor: COLORS.primary,
+    marginLeft: 10,
+    paddingHorizontal: 10,
+  },
+  acceptTextStyle: {
+    textAlign: 'center',
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+    color: COLORS.white,
+  },
+  declineButtonStyle: {
+    height: SH(48),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: COLORS.primary,
+    borderRadius: 5,
+    paddingHorizontal: 20,
+  },
+  declineTextStyle: {
+    textAlign: 'center',
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+    color: COLORS.primary,
+  },
+  orderDetailsView: {
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: 10,
+  },
+  orderandPriceView: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    backgroundColor: COLORS.white,
+    ...ShadowStyles.shadow1,
+    marginHorizontal: 20,
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center',
+    width: SW(150),
+    paddingVertical: 15,
   },
 });
 

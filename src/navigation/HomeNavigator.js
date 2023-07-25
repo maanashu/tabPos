@@ -21,6 +21,7 @@ import {
   PosRetail2,
   ShippingOrder2,
   Analytics2,
+  DeliveryOrders2,
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
@@ -44,7 +45,7 @@ export function HomeNavigator() {
         drawerPosition: 'left',
         drawerType: 'permanent',
       }}
-      drawerContent={props => <DrawerNavigator {...props} />}
+      drawerContent={(props) => <DrawerNavigator {...props} />}
     >
       <Drawer.Screen
         component={DashBoard}
@@ -66,11 +67,7 @@ export function HomeNavigator() {
         name={NAVIGATION.shippingOrder}
         options={{ headerShown: false }}
       />
-      <Drawer.Screen
-        component={Wallet}
-        name={NAVIGATION.wallet}
-        options={{ headerShown: false }}
-      />
+      <Drawer.Screen component={Wallet} name={NAVIGATION.wallet} options={{ headerShown: false }} />
       <Drawer.Screen
         component={Management}
         name={NAVIGATION.management}
@@ -91,11 +88,7 @@ export function HomeNavigator() {
         name={NAVIGATION.analytics}
         options={{ headerShown: false }}
       />
-      <Drawer.Screen
-        component={Reward}
-        name={NAVIGATION.reward}
-        options={{ headerShown: false }}
-      />
+      <Drawer.Screen component={Reward} name={NAVIGATION.reward} options={{ headerShown: false }} />
       <Drawer.Screen
         component={Setting}
         name={NAVIGATION.setting}
@@ -129,6 +122,11 @@ export function HomeNavigator() {
       <Drawer.Screen
         component={Analytics2}
         name={NAVIGATION.analytics2}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        component={DeliveryOrders2}
+        name={NAVIGATION.deliveryOrders2}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

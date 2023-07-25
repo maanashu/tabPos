@@ -281,6 +281,19 @@ export function DrawerNavigator(props) {
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
+          focused={active === 'deliveryOrders2' ? true : false}
+          onPress={() => {
+            setActive('deliveryOrders2');
+            navigate(NAVIGATION.deliveryOrders2);
+          }}
+          icon={({ focused, color, size }) => (
+            <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
+          )}
+        />
+
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
           focused={active === 'shippingOrder2' ? true : false}
           onPress={() => {
             setActive('shippingOrder2');

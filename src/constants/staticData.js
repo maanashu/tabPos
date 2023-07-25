@@ -1,18 +1,28 @@
 import {
   Cart,
   columbiaMen,
+  customType,
   Delivery,
+  deliveryDriver,
+  deliveryorderProducts,
+  deliveryParcel,
   deliveryTruck,
   dhl,
   drawerdeliveryTruck,
+  expressType,
   fedex,
   fedexNew,
   fedx,
   Group,
   NoCard,
+  oneHourType,
+  parcel,
+  returnShipping,
   ReturnTruck,
+  shipping,
   task,
   timer,
+  twoHourType,
   ups,
   usps,
 } from '@/assets';
@@ -444,6 +454,15 @@ export const orderToReview = [
         totalprice: '$80.99',
         image: columbiaMen,
       },
+      {
+        key: '6',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
     ],
   },
   {
@@ -493,6 +512,15 @@ export const orderToReview = [
       },
       {
         key: '5',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
+      {
+        key: '6',
         name: `Columbia Men's Rain Jacket`,
         colorandsize: 'White / S',
         price: '$80.99',
@@ -556,6 +584,15 @@ export const orderToReview = [
         totalprice: '$80.99',
         image: columbiaMen,
       },
+      {
+        key: '6',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
     ],
   },
   {
@@ -605,6 +642,15 @@ export const orderToReview = [
       },
       {
         key: '5',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
+      {
+        key: '6',
         name: `Columbia Men's Rain Jacket`,
         colorandsize: 'White / S',
         price: '$80.99',
@@ -668,6 +714,15 @@ export const orderToReview = [
         totalprice: '$80.99',
         image: columbiaMen,
       },
+      {
+        key: '6',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
     ],
   },
   {
@@ -717,6 +772,15 @@ export const orderToReview = [
       },
       {
         key: '5',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
+      {
+        key: '6',
         name: `Columbia Men's Rain Jacket`,
         colorandsize: 'White / S',
         price: '$80.99',
@@ -780,6 +844,15 @@ export const orderToReview = [
         totalprice: '$80.99',
         image: columbiaMen,
       },
+      {
+        key: '6',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
     ],
   },
   {
@@ -829,6 +902,15 @@ export const orderToReview = [
       },
       {
         key: '5',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
+      {
+        key: '6',
         name: `Columbia Men's Rain Jacket`,
         colorandsize: 'White / S',
         price: '$80.99',
@@ -892,6 +974,15 @@ export const orderToReview = [
         totalprice: '$80.99',
         image: columbiaMen,
       },
+      {
+        key: '6',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
     ],
   },
   {
@@ -941,6 +1032,33 @@ export const orderToReview = [
       },
       {
         key: '5',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
+      {
+        key: '6',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
+      {
+        key: '7',
+        name: `Columbia Men's Rain Jacket`,
+        colorandsize: 'White / S',
+        price: '$80.99',
+        quantity: '1',
+        totalprice: '$80.99',
+        image: columbiaMen,
+      },
+      {
+        key: '8',
         name: `Columbia Men's Rain Jacket`,
         colorandsize: 'White / S',
         price: '$80.99',
@@ -1003,54 +1121,6 @@ export const shippingDrawer = [
   },
 ];
 
-export const orderProducts = [
-  {
-    key: '1',
-    name: `Columbia Men's Rain Jacket`,
-    colorandsize: 'White / S',
-    price: '$80.99',
-    quantity: '1',
-    totalprice: '$80.99',
-    image: columbiaMen,
-  },
-  {
-    key: '2',
-    name: `Columbia Men's Rain Jacket`,
-    colorandsize: 'White / S',
-    price: '$80.99',
-    quantity: '1',
-    totalprice: '$80.99',
-    image: columbiaMen,
-  },
-  {
-    key: '3',
-    name: `Columbia Men's Rain Jacket`,
-    colorandsize: 'White / S',
-    price: '$80.99',
-    quantity: '1',
-    totalprice: '$80.99',
-    image: columbiaMen,
-  },
-  {
-    key: '4',
-    name: `Columbia Men's Rain Jacket`,
-    colorandsize: 'White / S',
-    price: '$80.99',
-    quantity: '1',
-    totalprice: '$80.99',
-    image: columbiaMen,
-  },
-  {
-    key: '5',
-    name: `Columbia Men's Rain Jacket`,
-    colorandsize: 'White / S',
-    price: '$80.99',
-    quantity: '1',
-    totalprice: '$80.99',
-    image: columbiaMen,
-  },
-];
-
 export const legends = [
   'In Coming Orders',
   'Delivered Orders',
@@ -1066,4 +1136,168 @@ export const labels = [
   'Friday',
   'Saturday',
   'Sunday',
+];
+
+export const deliveryTypes = [
+  {
+    key: '1',
+    title: 'Express Delivery',
+    image: expressType,
+    total: '17',
+  },
+  {
+    key: '2',
+    title: '1 hour delivery window',
+    image: oneHourType,
+    total: '17',
+  },
+  {
+    key: '3',
+    title: '2 hour delivery window',
+    image: twoHourType,
+    total: '17',
+  },
+  {
+    key: '4',
+    title: 'Customer Pickups',
+    image: customType,
+    total: '17',
+  },
+];
+
+export const DeliveryDrawer = [
+  {
+    key: '1',
+    image: task,
+    title: 'Orders to Review',
+    count: '49',
+  },
+  {
+    key: '2',
+    image: drawerdeliveryTruck,
+    title: 'Accepted',
+    count: '23',
+  },
+  {
+    key: '3',
+    image: timer,
+    title: 'Order Preparing ',
+    count: '15',
+  },
+  {
+    key: '4',
+    image: Group,
+    title: 'Printing Label',
+    count: '9',
+  },
+  {
+    key: '5',
+    image: Delivery,
+    title: 'Shipped',
+    count: '49',
+  },
+  {
+    key: '6',
+    image: Cart,
+    title: 'Delivered',
+    count: '15',
+  },
+  {
+    key: '7',
+    image: NoCard,
+    title: 'Rejected/ Cancelled',
+    count: '9',
+  },
+  {
+    key: '8',
+    image: ReturnTruck,
+    title: 'Cancelled',
+    count: '23',
+  },
+];
+
+export const rightSideDeliveryDrawer = [
+  {
+    key: '1',
+    image: task,
+  },
+  {
+    key: '2',
+    image: deliveryorderProducts,
+  },
+  {
+    key: '3',
+    image: timer,
+  },
+  {
+    key: '4',
+    image: deliveryParcel,
+  },
+  {
+    key: '5',
+    image: deliveryDriver,
+  },
+  {
+    key: '6',
+    image: shipping,
+  },
+  {
+    key: '7',
+    image: NoCard,
+  },
+  {
+    key: '8',
+    image: returnShipping,
+  },
+];
+
+export const deliveryDrawer = [
+  {
+    key: '1',
+    image: task,
+    title: 'Orders to Review',
+    count: '49',
+  },
+  {
+    key: '2',
+    image: deliveryorderProducts,
+    title: 'Accepted',
+    count: '23',
+  },
+  {
+    key: '3',
+    image: timer,
+    title: 'Order Preparing ',
+    count: '15',
+  },
+  {
+    key: '4',
+    image: deliveryParcel,
+    title: 'Ready to Pickup',
+    count: '9',
+  },
+  {
+    key: '5',
+    image: deliveryDriver,
+    title: 'Assign to Driver',
+    count: '49',
+  },
+  {
+    key: '6',
+    image: deliveryorderProducts,
+    title: 'Delivered',
+    count: '15',
+  },
+  {
+    key: '7',
+    image: NoCard,
+    title: 'Rejected/ Cancelled',
+    count: '9',
+  },
+  {
+    key: '8',
+    image: returnShipping,
+    title: 'Cancelled',
+    count: '23',
+  },
 ];
