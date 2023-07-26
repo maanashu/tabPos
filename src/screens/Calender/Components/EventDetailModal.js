@@ -7,7 +7,7 @@ import Modal from 'react-native-modal';
 import moment from 'moment';
 import { calculateDuration } from '@/utils/GlobalMethods';
 import ProfileImage from '@/components/ProfileImage';
-import { changeAppointmentStatus } from '@/actions/AppointmentAction';
+import { changeAppointmentStatus, rescheduleAppointment } from '@/actions/AppointmentAction';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useState } from 'react';
@@ -45,8 +45,15 @@ const EventDetailModal = ({
   const handleCancelAppointment = () => {
     const appointmentID = appointmentDetail?.appointment_id ?? '';
     dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
+    clearDateTimeFromModal(); //clear date time states
     setshowRescheduleTimeModal(false);
     setshowEventDetailModal(false);
+  };
+
+  const clearDateTimeFromModal = () => {
+    setRescheduleAppointmentDate('');
+    setRescheduleAppointmentStartTime('');
+    setRescheduleAppointmentEndTime('');
   };
 
   return (
@@ -177,7 +184,10 @@ const EventDetailModal = ({
           <Text style={styles.recheduleTitle}>Reschedule Appointment</Text>
 
           <TouchableOpacity
-            onPress={() => setshowRescheduleTimeModal(false)}
+            onPress={() => {
+              clearDateTimeFromModal(); //clear date time states
+              setshowRescheduleTimeModal(false);
+            }}
             style={styles.crossEventDetailModal}
           >
             <Image source={crossButton} style={styles.crossStl} />
@@ -251,12 +261,11 @@ const EventDetailModal = ({
                       : rescheduleAppointmentEndTime,
                 };
 
-                console.log(params);
-
+                const appointmentId = completeData?.id;
+                dispatch(rescheduleAppointment(appointmentId, params));
+                clearDateTimeFromModal(); //clear date time states
                 setshowRescheduleTimeModal(false);
                 setshowEventDetailModal(false);
-
-                //dispatch rescheduleAPI
               }}
               style={styles.rescheduleBtn}
             >

@@ -51,6 +51,19 @@ export class AppointmentController {
         });
     });
   }
+  static async rescheduleAppointmentAPI(appointmentId, params) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.rescheduleAppointmentURL + `${appointmentId}`;
+
+      HttpClient.put(endpoint, params)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
 
   static async getAllStaffUsers(pageNumber = 1) {
     const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
