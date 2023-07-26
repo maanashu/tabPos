@@ -74,7 +74,7 @@ export function Revenue({ onPress }) {
             ],
           }}
           width={Dimensions.get('window').width - SW(80)}
-          height={260}
+          height={SH(210)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
