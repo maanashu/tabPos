@@ -4,7 +4,6 @@ export { CartAmountTips } from '@/screens/PosRetail2/Components/CartAmountTips';
 // Select Payment Method Screen
 export { CartAmountPayBy } from '@/screens/PosRetail2/Components/CartAmountPayBy';
 export { FinalPaymentScreen } from '@/screens/PosRetail2/Components/FinalPaymentScreen';
-export { FinalPaymentScreen2 } from '@/screens/PosRetail2/Components/FinalPaymentScreen2';
 
 // Payment method screens
 export { PayByCash } from '@/screens/PosRetail2/Components/PayByMethodScreens/PayByCash';

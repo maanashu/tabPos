@@ -163,7 +163,6 @@ export function DashBoard({ navigation }) {
     id: getSessionObj?.id,
   };
 
-  console.log('userid: ' + getPosUser?.uuid);
   useEffect(() => {
     if (isFocused) {
       dispatch(getOrderDeliveries(sellerID, page));

@@ -60,10 +60,10 @@ export const styles = StyleSheet.create({
   _totalAmountTitle: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
-    fontSize: ms(20),
+    fontSize: ms(17),
   },
   _dollarSymbol: {
-    fontSize: ms(20),
+    fontSize: ms(17),
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
     marginTop: ms(2),
@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
   _amount: {
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(30),
+    fontSize: ms(25),
   },
   _bottomContainer: {
     marginTop: ms(10),
@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
   },
   _boxView: {
     height: ms(110),
-    width: ms(118),
+    width: ms(110),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
     justifyContent: 'center',
@@ -197,7 +197,8 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(125),
-    width: ms(170),
+
+    width: ms(157),
     margin: ms(3),
     borderRadius: ms(6),
     // justifyContent: 'center',
@@ -309,6 +310,7 @@ export const styles = StyleSheet.create({
     width: SW(7),
     height: SW(7),
     resizeMode: 'contain',
+    tintColor: COLORS.primary,
   },
 
   contentContainer: {
@@ -1435,7 +1437,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(50),
-    width: ms(126),
+    width: ms(116),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1461,7 +1463,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(45),
-    width: ms(170),
+    width: ms(157),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1777,7 +1779,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.primary,
     borderWidth: 1,
     height: ms(50),
-    width: ms(520),
+    // width: ms(40),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1897,7 +1899,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  //  final payment design css
+  //  final payment design css start
   leftCon: {
     backgroundColor: COLORS.white,
     borderRadius: 8,
@@ -1909,5 +1911,13 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     width: windowWidth * 0.25,
     height: windowHeight * 0.9,
+  },
+  //  final payment design css end
+
+  selectTipsHeader: {
+    backgroundColor: COLORS.blue_shade,
+    borderTopLeftRadius: 8,
+    borderTopEndRadius: 8,
+    paddingVertical: verticalScale(6),
   },
 });

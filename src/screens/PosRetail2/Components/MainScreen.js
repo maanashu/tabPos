@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -18,7 +18,7 @@ import {
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import Modal from 'react-native-modal';
+import Modal, { ReactNativeModal } from 'react-native-modal';
 import { CategoryModal } from './CategoryModal';
 import { SubCatModal } from './SubCatModal';
 import { BrandModal } from './BrandModal';
@@ -38,8 +38,6 @@ import {
   getCategory,
   getMainProduct,
   getOneProduct,
-  getProduct,
-  getProductDefault,
   getSubCategory,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -129,10 +127,6 @@ export function MainScreen({
 
   const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
 
-  // useEffect(() => {
-  //   dispatch(getMainProduct(sellerID));
-  // }, []);
-
   const onClickAddCart = (item) => {
     const data = {
       seller_id: sellerID,
@@ -219,13 +213,19 @@ export function MainScreen({
       onPress={onPress}
       //   onPress={() => setCategoryModal(true)}
     >
-      <Text style={styles.chooseCat} numberOfLines={1}>
-        {item.name}
-      </Text>
+      <View style={{ flexDirection: 'column' }}>
+        <Text style={styles.chooseCat} numberOfLines={1}>
+          {item.name}
+        </Text>
+        <Text style={styles.listed}>{'0'} listed</Text>
+      </View>
 
       <FastImage
         source={categoryMenu}
-        style={[styles.categoryMenu, { tintColor: item.isSelected && COLORS.solid_green }]}
+        style={[
+          styles.categoryMenu,
+          { tintColor: item.isSelected ? COLORS.solid_green : COLORS.black },
+        ]}
         resizeMode={FastImage.resizeMode.contain}
       />
     </TouchableOpacity>
@@ -447,15 +447,18 @@ export function MainScreen({
         </View>
       </View>
       {/* cart list modal start */}
-      <Modal
+      <ReactNativeModal
         animationType="fade"
         transparent={true}
         isVisible={cartModal}
-        animationIn="slideInRight"
-        animationOut="slideOutRight"
+        animationIn={'slideInRight'}
+        animationOut={'slideOutRight'}
       >
-        <CartListModal checkOutHandler={checkOutHandler} />
-      </Modal>
+        <CartListModal
+          checkOutHandler={checkOutHandler}
+          CloseCartModal={() => setCartModal(false)}
+        />
+      </ReactNativeModal>
 
       {/* cart list modal end */}
       <Modal animationType="fade" transparent={true} isVisible={addCartModal || addCartDetailModal}>

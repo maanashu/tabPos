@@ -34,7 +34,7 @@ export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
     case TYPES.GET_CATEGORY_SUCCESS:
       return {
         ...state,
-        categoryList: payload.categoryList,
+        categoryList: payload?.categoryList,
       };
     case TYPES.GET_CATEGORY_RESET:
       return {
