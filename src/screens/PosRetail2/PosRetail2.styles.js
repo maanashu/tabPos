@@ -3,12 +3,7 @@ import { COLORS, SF, SH, SW, ShadowStyles } from '@/theme';
 import { height, width } from '@/theme/ScalerDimensions';
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { Colors } from 'react-native-paper';
-import {
-  moderateScale,
-  verticalScale,
-  ms,
-  moderateVerticalScale,
-} from 'react-native-size-matters';
+import { moderateScale, verticalScale, ms, moderateVerticalScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -36,8 +31,7 @@ export const styles = StyleSheet.create({
   homeScreenCon: {
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
-    paddingHorizontal:
-      Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
+    paddingHorizontal: Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
   },
   searchScreenHeader: {
     height: SH(60),
@@ -418,8 +412,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   nameAddCon: {
-    height:
-      Platform.OS === 'android' ? windowHeight * 0.38 : windowHeight * 0.37,
+    height: Platform.OS === 'android' ? windowHeight * 0.38 : windowHeight * 0.37,
     borderRadius: 5,
     backgroundColor: COLORS.white,
   },
@@ -1229,8 +1222,7 @@ export const styles = StyleSheet.create({
   homeScreenCon: {
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
-    paddingHorizontal:
-      Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
+    paddingHorizontal: Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
   },
   productView: {
     backgroundColor: Colors.white,
@@ -1257,15 +1249,16 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
-    tintColor:COLORS.darkGray,
+    tintColor: COLORS.darkGray,
   },
   crossView: {
     width: SW(10),
     height: SW(10),
-    position:"absolute",
-    right:ms(5),
-    top:ms(2),
-    justifyContent:"center",alignItems:"center"
+    position: 'absolute',
+    right: ms(5),
+    top: ms(2),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bucketBackgorund: {
     width: SW(17),
@@ -1590,8 +1583,7 @@ export const styles = StyleSheet.create({
   },
 
   avaliableOferBodyCon: {
-    height:
-      Platform.OS === 'android' ? windowHeight * 0.07 : windowHeight * 0.07,
+    height: Platform.OS === 'android' ? windowHeight * 0.07 : windowHeight * 0.07,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: ms(10),
@@ -1903,5 +1895,19 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+
+  //  final payment design css
+  leftCon: {
+    backgroundColor: COLORS.white,
+    borderRadius: 8,
+    width: windowWidth * 0.65,
+    height: windowHeight * 0.9,
+  },
+  rightCon: {
+    backgroundColor: COLORS.white,
+    borderRadius: 8,
+    width: windowWidth * 0.25,
+    height: windowHeight * 0.9,
   },
 });

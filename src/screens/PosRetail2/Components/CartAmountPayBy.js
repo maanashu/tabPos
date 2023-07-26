@@ -85,8 +85,7 @@ export const CartAmountPayBy = ({
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment =
-      parseFloat(cartAmount) +
-      parseFloat(selectedTipAmount === '' ? '0.0' : selectedTipAmount);
+      parseFloat(cartAmount) + parseFloat(selectedTipAmount === '' ? '0.0' : selectedTipAmount);
     return totalPayment.toFixed(2);
   };
 
@@ -97,7 +96,7 @@ export const CartAmountPayBy = ({
     const percentageValue = (percent / 100) * parseFloat(value);
     return percentageValue.toFixed(2) ?? 0.0;
   };
-  const totalAmountByPaymentMethod = index => {
+  const totalAmountByPaymentMethod = (index) => {
     if (index === 0) {
       return `$${totalPayAmount()}`;
     } else if (index === 1) {
@@ -114,7 +113,7 @@ export const CartAmountPayBy = ({
     const percentageValue = (percentage / 100) * parseFloat(value);
     return percentageValue.toFixed(2) ?? 0.0;
   }
-  const onChangePhoneNumber = phone => {
+  const onChangePhoneNumber = (phone) => {
     setPhoneNumber(phone);
   };
   const payNowHandler = () => {
@@ -194,10 +193,7 @@ export const CartAmountPayBy = ({
                   styles._payBYBoxContainerTip,
                   {
                     borderWidth: 1,
-                    borderColor:
-                      selectedTipIndex === index
-                        ? COLORS.blueLight
-                        : COLORS.solidGrey,
+                    borderColor: selectedTipIndex === index ? COLORS.blueLight : COLORS.solidGrey,
                   },
                 ]}
               >
@@ -205,10 +201,7 @@ export const CartAmountPayBy = ({
                 {index !== 3 && (
                   <Text style={styles._payByAmountTip}>
                     {'USD $'}
-                    {calculatePercentageValue(
-                      cartData?.amount?.total_amount,
-                      item.title
-                    )}
+                    {calculatePercentageValue(cartData?.amount?.total_amount, item.title)}
                   </Text>
                 )}
               </TouchableOpacity>
@@ -237,17 +230,13 @@ export const CartAmountPayBy = ({
                     {
                       borderWidth: 1,
                       borderColor:
-                        selectedPaymentIndex === index
-                          ? COLORS.blueLight
-                          : COLORS.solidGrey,
+                        selectedPaymentIndex === index ? COLORS.blueLight : COLORS.solidGrey,
                     },
                   ]}
                 >
                   <Text style={styles._payByTitle}>Pay By</Text>
                   <Text style={styles._payByMethod}>{item.title}</Text>
-                  <Text style={styles._payByAmount}>
-                    {totalAmountByPaymentMethod(index)}
-                  </Text>
+                  <Text style={styles._payByAmount}>{totalAmountByPaymentMethod(index)}</Text>
                   <Image source={item.icon} style={styles._payByIcon} />
                   {index == 1 && (
                     <View style={styles.saveView}>
@@ -289,9 +278,7 @@ export const CartAmountPayBy = ({
                     {
                       borderWidth: 1,
                       borderColor:
-                        selectedRecipeIndex === index
-                          ? COLORS.blueLight
-                          : COLORS.solidGrey,
+                        selectedRecipeIndex === index ? COLORS.blueLight : COLORS.solidGrey,
                     },
                   ]}
                 >
@@ -303,10 +290,7 @@ export const CartAmountPayBy = ({
         )}
 
         {selectedPaymentIndex == 1 && (
-          <TouchableOpacity
-            style={styles.jobrSaveView}
-            onPress={() => payNowHandler()}
-          >
+          <TouchableOpacity style={styles.jobrSaveView} onPress={() => payNowHandler()}>
             <Text style={styles.youSave}>You save</Text>
             <View style={styles.jbrContainer}>
               <Text style={styles.jbrText}>JBR</Text>
@@ -325,7 +309,7 @@ export const CartAmountPayBy = ({
         <View style={styles.calendarSettingModalContainer}>
           <View style={styles.textInputView}>
             <CountryPicker
-              onSelect={code => {
+              onSelect={(code) => {
                 setFlag(code.cca2);
                 if (code.callingCode !== []) {
                   setCountryCode('+' + code.callingCode.flat());
@@ -366,15 +350,11 @@ export const CartAmountPayBy = ({
         <View style={styles.emailModalContainer}>
           <View style={styles.modalHeaderCon}>
             <View style={styles.flexRow}>
-              <Text style={[styles.twoStepText]}>
-                {strings.retail.eRecipeEmail}
-              </Text>
+              <Text style={[styles.twoStepText]}>{strings.retail.eRecipeEmail}</Text>
               <TouchableOpacity
                 style={styles.crossButtonCon}
                 onPress={() => {
-                  setEmailModal(false),
-                    setSelectedRecipeIndex(null),
-                    setEmail('');
+                  setEmailModal(false), setSelectedRecipeIndex(null), setEmail('');
                 }}
               >
                 <Image source={crossButton} style={styles.crossButton} />
@@ -390,10 +370,7 @@ export const CartAmountPayBy = ({
               onChangeText={setEmail}
               keyboardType="email-address"
             />
-            <TouchableOpacity
-              style={styles.payNowButton}
-              onPress={payNowHandler}
-            >
+            <TouchableOpacity style={styles.payNowButton} onPress={payNowHandler}>
               <Text style={styles.payNowButtonText}>Pay Now</Text>
             </TouchableOpacity>
           </View>

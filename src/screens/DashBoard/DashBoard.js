@@ -66,9 +66,7 @@ import { endTrackingSession } from '@/actions/CashTrackingAction';
 import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 
 import { styles } from './DashBoard.styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAllCart, scanProductAdd } from '@/actions/RetailAction';
-import { log } from 'react-native-reanimated';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -405,9 +403,9 @@ export function DashBoard({ navigation }) {
             {getPosUser?.user_profiles?.firstname ?? 'username'}
           </Text>
           <Text style={styles.posCashier}>
-            {getPosUser?.user_profiles?.pos_role === null
-              ? 'Merchant'
-              : getPosUser?.user_profiles?.pos_role}
+            {getPosUser?.user_roles?.length > 0
+              ? getPosUser?.user_roles?.map((item, index) => item.role?.name)
+              : 'admin'}
           </Text>
           <Text style={styles.cashLabel}>ID : {getPosUser?.user_profiles?.user_id ?? '0'}</Text>
           <Spacer space={SH(10)} />

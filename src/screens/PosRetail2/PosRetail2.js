@@ -13,6 +13,7 @@ import {
   PayByCard,
   PayByCash,
   PayByJBRCoins,
+  FinalPaymentScreen2,
 } from '@/screens/PosRetail2/Components';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,6 +54,7 @@ export function PosRetail2() {
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
+
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   // const [tipAmount, setTipAmount] = useState(0.0);
   const [addNotes, setAddNotes] = useState(false);

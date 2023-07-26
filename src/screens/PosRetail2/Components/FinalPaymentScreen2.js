@@ -17,7 +17,7 @@ import AddedCartItemsCard from '../../../components/AddedCartItemsCard';
 
 moment.suppressDeprecationWarnings = true;
 
-export const FinalPaymentScreen = ({
+export const FinalPaymentScreen2 = ({
   onPressBack,
   paymentMethod,
   tipAmount,
