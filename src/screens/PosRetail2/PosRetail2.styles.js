@@ -178,7 +178,7 @@ export const styles = StyleSheet.create({
     fontSize: ms(8),
   },
   _topContainer: {
-    position: 'absolute',
+    // position: 'absolute',
     marginLeft: ms(25),
     width: '98%',
     alignItems: 'center',
@@ -197,8 +197,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(125),
-
-    width: ms(157),
+    width: Platform.OS === 'ios' ? ms(135) : ms(157),
     margin: ms(3),
     borderRadius: ms(6),
     // justifyContent: 'center',
@@ -1437,7 +1436,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(50),
-    width: ms(116),
+    width: Platform.OS === 'ios' ? ms(100) : ms(116),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1463,7 +1462,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(45),
-    width: ms(157),
+    width: Platform.OS === 'ios' ? ms(135) : ms(157),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1909,7 +1908,7 @@ export const styles = StyleSheet.create({
   rightCon: {
     backgroundColor: COLORS.white,
     borderRadius: 8,
-    width: windowWidth * 0.25,
+    width: Platform.OS === 'ios' ? windowWidth * 0.23 : windowWidth * 0.25,
     height: windowHeight * 0.9,
   },
   //  final payment design css end

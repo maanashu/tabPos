@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  Platform,
   SafeAreaView,
   Text,
   TextInput,
@@ -116,7 +117,12 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas }
             />
           </View>
 
-          <View style={{ marginTop: ms(60), paddingHorizontal: ms(70) }}>
+          <View
+            style={{
+              marginTop: ms(60),
+              paddingHorizontal: Platform.OS === 'ios' ? ms(30) : ms(70),
+            }}
+          >
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
               <View style={{ flexDirection: 'row' }}>
