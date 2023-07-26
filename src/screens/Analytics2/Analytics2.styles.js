@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     width: Platform.OS === 'android' ? windowWidth * 0.275 : windowWidth * 0.28,
     height: windowHeight * 0.318,
     resizeMode: 'contain',
-    ...ShadowStyles.shadow2,
+    // ...ShadowStyles.shadow2,
     borderRadius: 10,
     paddingHorizontal: moderateScale(15),
     marginHorizontal: moderateScale(5),

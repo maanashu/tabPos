@@ -19,18 +19,16 @@ export function MainScreen({
   onPressProducts,
 }) {
   const getAnalyticsData = useSelector(getAnalytics);
-
-  const productGraphObject2 = getAnalyticsData?.getTotalGraph;
-
+  const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
   return (
     <View>
       <View style={styles.flexDirectionRow}>
         <HomeGraph
           header="Total Profit"
-          subHeader={'5193'}
-          // productGraphObject={productGraphObject2}
+          subHeader={analyticStatistics?.total_count ?? '0'}
+          analyticGraphObject={analyticStatistics}
           homeGraphHandler={() => {}}
-          // arrayLength={productGraphObject2?.datasets?.length}
+          arrayLength={analyticStatistics?.datasets?.length}
           onPress={onPressProfit}
         />
         <HomeGraph

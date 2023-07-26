@@ -12,14 +12,12 @@ export class AnalyticsController {
   static async totalProGraph(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.totalProGraph +
-        `?seller_id=${sellerID}&filter=week`;
+        ORDER_URL + ApiOrderInventory.totalProGraph + `?seller_id=${sellerID}&filter=week`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -34,14 +32,12 @@ export class AnalyticsController {
   static async totalOrderGraph(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.totalOrderGraph +
-        `?seller_id=${sellerID}&filter=week`;
+        ORDER_URL + ApiOrderInventory.totalOrderGraph + `?seller_id=${sellerID}&filter=week`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -56,14 +52,12 @@ export class AnalyticsController {
   static async totalInvernteryGraph(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.totalInvernteryGraph +
-        `?seller_id=${sellerID}&filter=week`;
+        ORDER_URL + ApiOrderInventory.totalInvernteryGraph + `?seller_id=${sellerID}&filter=week`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -78,14 +72,12 @@ export class AnalyticsController {
   static async totalRevenueGraph(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.totalRevenueGraph +
-        `?seller_id=${sellerID}&filter=week`;
+        ORDER_URL + ApiOrderInventory.totalRevenueGraph + `?seller_id=${sellerID}&filter=week`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -104,10 +96,10 @@ export class AnalyticsController {
         ApiProductInventory.getTotalProDetail +
         `?seller_id=${sellerID}&filter=${productTime}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -126,10 +118,10 @@ export class AnalyticsController {
         ApiProductInventory.catSubBrandData +
         `?seller_id=${data?.sellerID}&filter=${data?.time}&type=${data?.type}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -142,15 +134,12 @@ export class AnalyticsController {
   }
   static async getProductList(catId) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.getProductList +
-        `?category_id=${catId}`;
+      const endpoint = PRODUCT_URL + ApiProductInventory.getProductList + `?category_id=${catId}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -159,14 +148,12 @@ export class AnalyticsController {
   static async getProductModal(productId) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.searchProductList +
-        `/${productId}?app_name=pos`;
+        PRODUCT_URL + ApiProductInventory.searchProductList + `/${productId}?app_name=pos`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -185,10 +172,10 @@ export class AnalyticsController {
         ApiOrderInventory.getOrderstatistics +
         `?seller_id=${sellerID}&filter=${orderTime}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -209,10 +196,10 @@ export class AnalyticsController {
         `?seller_id=${sellerID}&filter=${orderTime}&` +
         params;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           if (error?.statusCode !== 204) {
             Toast.show({
               text2: error?.msg,
@@ -228,13 +215,12 @@ export class AnalyticsController {
 
   static async getOrderData(orderID) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderData + `/${orderID}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.getOrderData + `/${orderID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -251,10 +237,10 @@ export class AnalyticsController {
       const endpoint = ORDER_URL + ApiOrderInventory.getOrders + `/${orderID}`;
 
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -267,10 +253,10 @@ export class AnalyticsController {
         ApiProductInventory.getTotalInventoryCost +
         `?seller_id=${sellerID}&filter=${inventoryTime}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -289,10 +275,10 @@ export class AnalyticsController {
         PRODUCT_URL + ApiProductInventory.getSellerProductList
       }?seller_id=${sellerID}&filter=year&${params}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -305,10 +291,10 @@ export class AnalyticsController {
         PRODUCT_URL + ApiProductInventory.getSellerInfo
       }?product_id=${productID}&${params}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -320,11 +306,31 @@ export class AnalyticsController {
         PRODUCT_URL + ApiProductInventory.getSellerProductDetails
       }?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
+        });
+    });
+  }
+
+  static async getAnalyticStatistics(sellerID, flag) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.getAnalyticStatistics + `?seller_id=${sellerID}&flag=${flag}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
   }

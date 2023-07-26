@@ -17,12 +17,10 @@ const INITIALSTATE = {
   getSellerProductList: [],
   getSellerInfo: [],
   getSellerProductDetails: {},
+  getAnalyticStatistics: {},
 };
 
-export const analyticsReducer = (
-  state = { INITIALSTATE },
-  { payload, type }
-) => {
+export const analyticsReducer = (state = { INITIALSTATE }, { payload, type }) => {
   switch (type) {
     case TYPES.GET_TOTAL_GRAPH_SUCCESS:
       return {
@@ -131,6 +129,11 @@ export const analyticsReducer = (
       return {
         ...state,
         getSellerProductDetails: payload?.getSellerProductDetails,
+      };
+    case TYPES.GET_ANALYTIC_STATISTICS_SUCCESS:
+      return {
+        ...state,
+        getAnalyticStatistics: payload?.getAnalyticStatistics,
       };
     default:
       return state;

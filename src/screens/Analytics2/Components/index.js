@@ -8,7 +8,7 @@ import { styles } from '../Analytics2.styles';
 export function HomeGraph({
   header,
   subHeader,
-  productGraphObject,
+  analyticGraphObject,
   homeGraphHandler,
   arrayLength,
   onPress,
@@ -26,7 +26,7 @@ export function HomeGraph({
         </View>
       </View>
       <TouchableOpacity onPress={onPress}>
-        <NewChartKit productGraphObject={productGraphObject} arrayLength={arrayLength} />
+        <NewChartKit analyticGraphObject={analyticGraphObject} arrayLength={arrayLength} />
       </TouchableOpacity>
     </View>
   );
