@@ -87,6 +87,9 @@ export function Calender(props) {
   // Will be used to show list of all appointments
   const appointmentListArr = getAppointmentList2?.filter((item) => item.status !== 1);
 
+  const totalAppointmentCountOfStaff =
+    getStaffUsers?.reduce((total, user) => total + user.appointment_counts, 0) || 0;
+
   const data = {
     zipcode: storeItem?.current_address?.zipcode,
     street: storeItem?.current_address?.street_address,
@@ -372,7 +375,7 @@ export function Calender(props) {
               >
                 <Image source={todayCalendarIcon} style={styles.asignessCalendarImage} />
                 <View style={styles.circularBadgeContainer}>
-                  <Text style={styles.asigneesBadgeText}>{0}</Text>
+                  <Text style={styles.asigneesBadgeText}>{totalAppointmentCountOfStaff}</Text>
                 </View>
               </TouchableOpacity>
               <FlatList

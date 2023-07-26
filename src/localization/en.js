@@ -373,6 +373,7 @@ export const en = {
     approved: 'Accepted',
     no: 'No',
     cancel: 'Cancel',
+    cancelAppointment: 'Do you want to cancel this appointment',
   },
   analytics: {
     header: 'Analytics',
