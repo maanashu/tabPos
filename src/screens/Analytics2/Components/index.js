@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, TouchableOpacity, View, Image, ActivityIndicator } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
 import { rightlight } from '@/assets';
-import { ChartKit, Spacer } from '@/components';
+import { NewChartKit, Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 
 export function HomeGraph({
@@ -11,6 +11,7 @@ export function HomeGraph({
   productGraphObject,
   homeGraphHandler,
   arrayLength,
+  onPress,
 }) {
   return (
     <View style={styles.totalProductCon}>
@@ -24,7 +25,9 @@ export function HomeGraph({
           </Text>
         </View>
       </View>
-      <ChartKit productGraphObject={productGraphObject} arrayLength={arrayLength} />
+      <TouchableOpacity onPress={onPress}>
+        <NewChartKit productGraphObject={productGraphObject} arrayLength={arrayLength} />
+      </TouchableOpacity>
     </View>
   );
 }

@@ -82,8 +82,8 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   bucketBackgorund: {
-    width: SW(17),
-    height: SW(17),
+    width: SW(12),
+    height: SW(12),
     borderRadius: 5,
     backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
