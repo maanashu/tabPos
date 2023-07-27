@@ -704,9 +704,9 @@ export const styles = StyleSheet.create({
   editOptionIcon: { height: ms(10), width: ms(10), resizeMode: 'contain', marginRight: ms(5) },
   cancelOptionIcon: { height: ms(12), width: ms(12), resizeMode: 'contain', marginRight: ms(7) },
   EventDetailoptionsContainer: {
-    height: ms(20),
+    width: ms(40),
+    justifyContent: 'center',
     flexDirection: 'row',
-    marginRight: ms(5),
     alignItems: 'center',
   },
   rescheduleTimeText: { fontFamily: Fonts.SemiBold, fontSize: ms(6), color: COLORS.darkGray },
