@@ -3,24 +3,24 @@ import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
 import { Dimensions, StyleSheet } from 'react-native';
 import { ms, verticalScale } from 'react-native-size-matters';
 
-const windowWidth = Dimensions.get('window').width;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
   },
   firstRowStyle: {
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
+    flex: 1,
+    marginTop: ms(10),
+    marginHorizontal: ms(7),
+    marginBottom: ms(7),
+    // justifyContent: 'space-between',
+    backgroundColor: COLORS.textInputBackground,
   },
-
   orderRowStyle: {
     borderWidth: 1,
     borderRadius: 5,
-    height: SH(65),
-    marginVertical: 10,
+    height: SH(58),
+    marginVertical: 7.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
@@ -82,11 +82,15 @@ const styles = StyleSheet.create({
 
   orderToReviewView: {
     borderRadius: 10,
+    width: Dimensions.get('window').width * 0.61,
+    height: Dimensions.get('window').height / 2.25,
     backgroundColor: COLORS.white,
+    marginLeft: 10,
   },
   contentContainerStyle: {
     flexGrow: 1,
     paddingBottom: 20,
+    marginBottom: 100,
   },
   headingRowStyle: {
     flexDirection: 'row',
@@ -99,6 +103,12 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
+  },
+  viewAllOrders: {
+    backgroundColor: COLORS.white,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    width: Dimensions.get('window').width * 0.4,
   },
 
   viewallTextStyle: {
@@ -129,8 +139,10 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: SW(160),
-    marginBottom: 90,
+    width: Dimensions.get('window').width * 0.43,
+    marginBottom: 140,
+    // flex: 1,
+    paddingHorizontal: 20,
   },
   userDetailView: {
     flex: 1,
@@ -146,10 +158,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
+    paddingHorizontal: 20,
+    // marginHorizontal: -50,
     paddingVertical: 30,
     borderRadius: 10,
+    width: Dimensions.get('window').width / 2.6,
     marginTop: 20,
     backgroundColor: COLORS.textInputBackground,
   },
@@ -174,7 +187,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     paddingHorizontal: 5,
     borderColor: COLORS.blue_shade,
   },
@@ -196,12 +209,12 @@ const styles = StyleSheet.create({
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(28),
+    fontSize: SF(22),
     color: COLORS.dark_grey,
   },
   totalText: {
     fontFamily: Fonts.MaisonBold,
-    fontSize: SF(18),
+    fontSize: SF(16),
     color: COLORS.solid_grey,
   },
   acceptButtonView: {
@@ -246,17 +259,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLORS.white,
     ...ShadowStyles.shadow1,
-    marginHorizontal: 20,
-    position: 'absolute',
     bottom: 10,
     alignSelf: 'center',
-    width: SW(150),
+    width: Dimensions.get('window').width / 2.6,
     paddingVertical: 15,
   },
   shippingOrdersViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    width: ms(120),
+    right: 60,
   },
   shippingDrawerView: {
     flexDirection: 'row',
@@ -318,13 +331,13 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   itemMainViewStyle: {
-    marginHorizontal: SW(6),
-    marginVertical: SH(4),
+    marginHorizontal: ms(6),
+    marginVertical: ms(4),
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.white,
     paddingHorizontal: 12,
-    paddingVertical: 3,
+    paddingVertical: 2,
     alignItems: 'center',
     flexDirection: 'row',
     borderWidth: 1,
@@ -348,6 +361,74 @@ const styles = StyleSheet.create({
     fontSize: SF(14),
     color: COLORS.solid_grey,
     paddingTop: 5,
+  },
+  rightSideView: {
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    width: Dimensions.get('window').width * 0.06,
+    paddingVertical: verticalScale(6),
+    alignItems: 'center',
+    // position: 'absolute',
+    top: 20,
+    right: 20,
+    bottom: 20,
+  },
+  firstIconStyle: {
+    alignSelf: 'center',
+    width: SW(13),
+    height: SW(13),
+    alignSelf: 'center',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.textInputBackground,
+  },
+  sideBarImage: {
+    width: SW(9),
+    height: SW(9),
+    resizeMode: 'contain',
+  },
+  orderConvertionView: {
+    borderRadius: 10,
+    // width: ms(184),
+    paddingHorizontal: ms(10),
+    backgroundColor: COLORS.white,
+  },
+  orderTextStyle: {
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(18),
+    color: COLORS.solid_grey,
+    paddingTop: 13,
+  },
+  piechartViewStyle: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  percentageTextStyle: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    color: COLORS.black,
+    position: 'absolute',
+    textAlign: 'center',
+    top: 90,
+  },
+  ordersRowView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: ms(135),
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+  },
+  orderTypeTextStyle: {
+    fontFamily: Fonts.Medium,
+    fontSize: SF(14),
+    color: COLORS.dark_grey,
+  },
+  countTextStyle: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    color: COLORS.dark_grey,
   },
 });
 
