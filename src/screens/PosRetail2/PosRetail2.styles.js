@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
   },
   _boxView: {
     height: ms(110),
-    width: ms(110),
+    width: ms(120),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
     justifyContent: 'center',
@@ -119,7 +119,7 @@ export const styles = StyleSheet.create({
   },
   _inputMain: {
     marginTop: ms(15),
-    width: '98%',
+    width: ms(380),
   },
   _inputSubView: {
     flexDirection: 'row',
@@ -269,7 +269,7 @@ export const styles = StyleSheet.create({
   },
   _orContainer: {
     flexDirection: 'row',
-    marginVertical: ms(5),
+    // marginVertical: ms(3),
     alignItems: 'center',
   },
   _borderView: {
@@ -1340,7 +1340,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   categoryshoes: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.108 : windowWidth * 0.11,
+    width: Platform.OS === 'ios' ? windowWidth * 0.106 : windowWidth * 0.1,
     height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',
@@ -1918,5 +1918,22 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopEndRadius: 8,
     paddingVertical: verticalScale(6),
+  },
+
+  // jbrcoin modal popup
+  scanPopUpCon: {
+    width: ms(360),
+    height: ms(365),
+    backgroundColor: COLORS.white,
+    alignSelf: 'center',
+    borderRadius: 10,
+  },
+  scanPopHeader: {
+    borderBottomWidth: 1,
+    height: ms(35),
+    paddingHorizontal: ms(15),
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    borderColor: COLORS.solidGrey,
   },
 });

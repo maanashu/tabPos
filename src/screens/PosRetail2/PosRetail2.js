@@ -319,20 +319,20 @@ export function PosRetail2() {
         cartDatas={savedTempCartData}
       />
     ),
-    ['PayByJBRCoins']: (
-      <PayByJBRCoins
-        tipAmount={tipAmount}
-        onPressBack={() => {
-          setselectedScreen('CartAmountPayBy');
-        }}
-        onPressContinue={(cartData, data) => {
-          setpaymentMethod('JBRCoins');
-          setSavedTempCartData(cartData?.getAllCart);
-          setselectedScreen('FinalPaymentScreen');
-          setCashPayDetail(data);
-        }}
-      />
-    ),
+    // ['PayByJBRCoins']: (
+    //   <PayByJBRCoins
+    //     tipAmount={tipAmount}
+    //     onPressBack={() => {
+    //       setselectedScreen('CartAmountPayBy');
+    //     }}
+    //     onPressContinue={(cartData, data) => {
+    //       setpaymentMethod('JBRCoins');
+    //       setSavedTempCartData(cartData?.getAllCart);
+    //       setselectedScreen('FinalPaymentScreen');
+    //       setCashPayDetail(data);
+    //     }}
+    //   />
+    // ),
     ['FinalPaymentScreen']: (
       <FinalPaymentScreen
         tipAmount={tipAmount}

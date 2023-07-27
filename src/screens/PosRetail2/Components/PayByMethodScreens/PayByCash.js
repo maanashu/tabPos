@@ -119,7 +119,7 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas }
 
           <View
             style={{
-              marginTop: ms(60),
+              marginTop: ms(20),
               paddingHorizontal: Platform.OS === 'ios' ? ms(30) : ms(70),
             }}
           >
@@ -134,13 +134,20 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas }
               <View style={{ margin: ms(10), alignItems: 'center' }}>
                 <Text style={styles._selectTips}>Received Amount</Text>
 
-                <View style={{ flexDirection: 'row', marginTop: ms(10) }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: ms(10),
+                    justifyContent: 'space-between',
+                  }}
+                >
                   <FlatList
                     data={selectCashArray}
                     extraData={selectCashArray}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                     horizontal
+                    scrollEnabled={false}
                   />
                 </View>
 
@@ -227,7 +234,7 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas }
             <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
             <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
-            <Spacer space={SH(30)} />
+            <Spacer space={SH(10)} />
             <Text style={styles._thankyou}>Thank You</Text>
             <Image source={barcode} style={styles._barCodeImage} />
             <Text style={styles._barCode}>ABC-abc-1234</Text>
