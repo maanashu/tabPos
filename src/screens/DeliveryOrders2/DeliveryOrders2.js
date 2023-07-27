@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-
-import { View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
-
-import PieChart from 'react-native-pie-chart';
-import ReactNativeModal from 'react-native-modal';
-import { LineChart } from 'react-native-chart-kit';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  SafeAreaView,
+  Dimensions,
+} from 'react-native';
 
 import {
   pay,
@@ -13,39 +16,29 @@ import {
   NoCard,
   rightIcon,
   watchLogo,
-  firstTruck,
   ReturnTruck,
-  flipTruck,
   backArrow2,
   Fonts,
   scooter,
   profileImage,
   removeProduct,
   deliveryBox,
-  returnDeliveryBox,
 } from '@/assets';
-import {
-  shippingTypes,
-  orderToReview,
-  rightSideDrawer,
-  shippingDrawer,
-  legends,
-  labels,
-  deliveryTypes,
-  rightSideDeliveryDrawer,
-  deliveryDrawer,
-} from '@/constants/staticData';
+import { orderToReview, rightSideDeliveryDrawer } from '@/constants/staticData';
 import { strings } from '@/localization';
 import { ScreenWrapper, Spacer } from '@/components';
-import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
+import RightSideBar from './Components/RightSideBar';
 
 import styles from './styles';
-import RightSideBar from './Components/RightSideBar';
+
 import Graph from './Components/Graph';
 import OrderStatus from './Components/OrderStatus';
+import { ms } from 'react-native-size-matters';
+import PieChart from 'react-native-pie-chart';
 
 export function DeliveryOrders2() {
-  const widthAndHeight = 200;
+  const widthAndHeight = 190;
   const series = [823, 101, 40];
   const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet];
 
@@ -197,19 +190,17 @@ export function DeliveryOrders2() {
   );
 
   return (
-    <ScreenWrapper>
-      <View style={styles.container}>
-        {viewAllOrders ? (
+    <SafeAreaView style={styles.container}>
+      {viewAllOrders ? (
+        <>
           <TouchableOpacity onPress={() => setViewAllOrders(false)} style={styles.backView}>
             <Image source={backArrow2} style={styles.backImageStyle} />
             <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>{'Back'}</Text>
           </TouchableOpacity>
-        ) : null}
-        <Spacer space={SH(20)} />
 
-        {viewAllOrders ? (
-          <View style={styles.firstRowStyle}>
-            <View style={[styles.orderToReviewView, { marginBottom: 75 }]}>
+          <Spacer space={SH(20)} />
+          <View style={{ flexDirection: 'row' }}>
+            <View style={[styles.viewAllOrders, { marginBottom: 110 }]}>
               <FlatList
                 data={orderToReview}
                 renderItem={renderOrderToReview}
@@ -365,6 +356,28 @@ export function DeliveryOrders2() {
               </View>
             ) : null}
 
+            <View style={styles.rightSideView}>
+              <FlatList
+                data={rightSideDeliveryDrawer}
+                renderItem={renderDrawer}
+                ListHeaderComponent={() => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setOpenShippingOrders(!openShippingOrders);
+                      setIsOpenSideBarDrawer(true);
+                    }}
+                    style={styles.firstIconStyle}
+                  >
+                    <Image source={deliveryBox} style={styles.sideBarImage} />
+                  </TouchableOpacity>
+                )}
+                contentContainerStyle={{
+                  height: Dimensions.get('window').height - 160,
+                }}
+                keyExtractor={(item, index) => item.key.toString()}
+              />
+            </View>
+
             <RightSideBar
               {...{
                 openShippingOrders,
@@ -376,29 +389,88 @@ export function DeliveryOrders2() {
               }}
             />
           </View>
-        ) : (
+        </>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+          }}
+        >
+          <Spacer space={SH(15)} />
           <View style={styles.firstRowStyle}>
-            {/* left View */}
-            <OrderStatus
-              {...{
-                renderItem,
-                series,
-                sliceColor,
-                widthAndHeight,
+            <View
+              style={{
+                flexDirection: 'row',
               }}
-            />
+            >
+              <OrderStatus
+                {...{
+                  renderItem,
+                  series,
+                  sliceColor,
+                  widthAndHeight,
+                }}
+              />
 
-            {/* rightView */}
-            <View>
               <Graph />
+            </View>
 
-              <Spacer space={SH(15)} />
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 20,
+              }}
+            >
+              <View style={styles.orderConvertionView}>
+                <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
+
+                <Spacer space={ms(18)} />
+                <View style={styles.piechartViewStyle}>
+                  <PieChart
+                    series={series}
+                    coverRadius={0.65}
+                    sliceColor={sliceColor}
+                    coverFill={COLORS.white}
+                    widthAndHeight={widthAndHeight}
+                  />
+                  <Text style={styles.percentageTextStyle}>{'97.51%'}</Text>
+
+                  <Spacer space={ms(18)} />
+                  <View style={styles.ordersRowView}>
+                    <Text style={styles.orderTypeTextStyle}>
+                      {strings.shippingOrder.deliveredOrders}
+                    </Text>
+                    <Text style={styles.countTextStyle}>
+                      {strings.shippingOrder.deliveredCount}
+                    </Text>
+                  </View>
+
+                  <View style={styles.ordersRowView}>
+                    <Text style={styles.orderTypeTextStyle}>
+                      {strings.shippingOrder.cancelledOrders}
+                    </Text>
+                    <Text style={styles.countTextStyle}>
+                      {strings.shippingOrder.cancelledCount}
+                    </Text>
+                  </View>
+
+                  <View style={styles.ordersRowView}>
+                    <Text style={styles.orderTypeTextStyle}>
+                      {strings.shippingOrder.returnedOrders}
+                    </Text>
+                    <Text style={styles.countTextStyle}>{strings.shippingOrder.returnedCount}</Text>
+                  </View>
+                </View>
+              </View>
+
               <View style={styles.orderToReviewView}>
                 <FlatList
                   data={orderToReview.slice(0, 4)}
                   renderItem={renderOrderToReview}
                   contentContainerStyle={{
                     flexGrow: 1,
+                    paddingBottom: 10,
                   }}
                   ListHeaderComponent={() => (
                     <View style={styles.headingRowStyle}>
@@ -417,21 +489,42 @@ export function DeliveryOrders2() {
                 />
               </View>
             </View>
+          </View>
 
-            {/* right bar view */}
-            <RightSideBar
-              {...{
-                openShippingOrders,
-                isOpenSideBarDrawer,
-                renderShippingDrawer,
-                setOpenShippingOrders,
-                renderDrawer,
-                setIsOpenSideBarDrawer,
+          <View style={styles.rightSideView}>
+            <FlatList
+              data={rightSideDeliveryDrawer}
+              renderItem={renderDrawer}
+              ListHeaderComponent={() => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setOpenShippingOrders(!openShippingOrders);
+                    setIsOpenSideBarDrawer(true);
+                  }}
+                  style={styles.firstIconStyle}
+                >
+                  <Image source={deliveryBox} style={styles.sideBarImage} />
+                </TouchableOpacity>
+              )}
+              contentContainerStyle={{
+                height: Dimensions.get('window').height - 90,
               }}
+              keyExtractor={(item, index) => item.key.toString()}
             />
           </View>
-        )}
-      </View>
-    </ScreenWrapper>
+
+          <RightSideBar
+            {...{
+              openShippingOrders,
+              isOpenSideBarDrawer,
+              renderShippingDrawer,
+              setOpenShippingOrders,
+              renderDrawer,
+              setIsOpenSideBarDrawer,
+            }}
+          />
+        </View>
+      )}
+    </SafeAreaView>
   );
 }

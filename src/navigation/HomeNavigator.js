@@ -27,6 +27,7 @@ import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
 import { CartAmountTips } from '@/screens/PosRetail/Components';
 import NotificationsList from '@/screens/Notifications/NotificationsList';
+import { OrderDetail } from '@/screens/DeliveryOrders2/OrderDetail/OrderDetail';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -127,6 +128,11 @@ export function HomeNavigator() {
       <Drawer.Screen
         component={DeliveryOrders2}
         name={NAVIGATION.deliveryOrders2}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        component={OrderDetail}
+        name={NAVIGATION.orderDetail}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

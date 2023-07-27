@@ -28,4 +28,5 @@ export const NAVIGATION = {
   shippingOrder2: 'ShippingOrder2',
   analytics2: 'Analytics2',
   deliveryOrders2: 'DeliveryOrders2',
+  orderDetail: 'OrderDetail',
 };
