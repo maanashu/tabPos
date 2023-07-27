@@ -25,15 +25,15 @@ export const styles = StyleSheet.create({
   totalProductCon: {
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
-    width: Platform.OS === 'android' ? windowWidth * 0.275 : windowWidth * 0.28,
-    height: windowHeight * 0.318,
+    width: Platform.OS === 'android' ? windowWidth * 0.275 : windowWidth * 0.27,
+    height: Platform.OS === 'android' ? windowHeight * 0.318 : windowHeight * 0.3,
     resizeMode: 'contain',
-    ...ShadowStyles.shadow2,
+    // ...ShadowStyles.shadow2,
     borderRadius: 10,
     paddingHorizontal: moderateScale(15),
     marginHorizontal: moderateScale(5),
     marginVertical: verticalScale(2),
-    marginTop: verticalScale(3),
+    marginTop: Platform.OS === 'android' ? verticalScale(3) : verticalScale(6),
   },
   rightlight: {
     width: SH(36),
@@ -71,10 +71,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: windowWidth * 0.06,
-    height: windowHeight - SW(4),
+    height: Platform.OS === 'ios' ? windowHeight * 0.928 : windowHeight - SH(4),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
     alignSelf: 'center',
+    marginTop: Platform.OS === 'ios' ? SH(6) : SH(0),
   },
   sideBarImage: {
     width: SW(7),
@@ -213,7 +214,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
     color: COLORS.text,
-    paddingLeft: SW(6),
   },
   goBack: {
     marginTop: 10,
@@ -237,7 +237,10 @@ export const styles = StyleSheet.create({
   graphHeaderView: {
     marginVertical: SH(10),
     backgroundColor: COLORS.white,
-    width: Dimensions.get('window').width - SW(63),
+    width:
+      Platform.OS === 'android'
+        ? Dimensions.get('window').width - SW(63)
+        : Dimensions.get('window').width - SW(68),
     marginHorizontal: SW(5),
     borderRadius: SW(5),
   },
@@ -264,7 +267,6 @@ export const styles = StyleSheet.create({
     fontSize: SF(20),
     color: COLORS.black,
     marginVertical: SH(15),
-    marginHorizontal: SW(5),
     height: SH(30),
   },
 });

@@ -97,6 +97,7 @@ export const ApiOrderInventory = {
   scanProductAdd: 'poscarts/scan',
   updateCartQty: 'poscarts/change-qty',
   rescheduleAppointmentURL: `appointments/reschedule/`,
+  getAnalyticStatistics: `orders/pos/analytics`,
 };
 
 export const ApiWalletInventory = {

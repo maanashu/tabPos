@@ -5,11 +5,11 @@ const getTotalProGraphRequest = () => ({
   type: TYPES.GET_TOTAL_GRAPH_REQUEST,
   payload: null,
 });
-const getTotalProGraphSuccess = getTotalGraph => ({
+const getTotalProGraphSuccess = (getTotalGraph) => ({
   type: TYPES.GET_TOTAL_GRAPH_SUCCESS,
   payload: { getTotalGraph },
 });
-const getTotalProGraphError = error => ({
+const getTotalProGraphError = (error) => ({
   type: TYPES.GET_TOTAL_GRAPH_ERROR,
   payload: { error },
 });
@@ -18,11 +18,11 @@ const getTotalOrderGraphRequest = () => ({
   type: TYPES.GET_ORDER_GRAPH_REQUEST,
   payload: null,
 });
-const getTotalOrderGraphSuccess = getOrderGraph => ({
+const getTotalOrderGraphSuccess = (getOrderGraph) => ({
   type: TYPES.GET_ORDER_GRAPH_SUCCESS,
   payload: { getOrderGraph },
 });
-const getTotalOrderGraphError = error => ({
+const getTotalOrderGraphError = (error) => ({
   type: TYPES.GET_ORDER_GRAPH_ERROR,
   payload: { error },
 });
@@ -31,11 +31,11 @@ const getTotalInvernteryGraphRequest = () => ({
   type: TYPES.GET_INVENTERY_GRAPH_REQUEST,
   payload: null,
 });
-const getTotalInvernteryGraphSuccess = getInventeryGraph => ({
+const getTotalInvernteryGraphSuccess = (getInventeryGraph) => ({
   type: TYPES.GET_INVENTERY_GRAPH_SUCCESS,
   payload: { getInventeryGraph },
 });
-const getTotalInvernteryGraphError = error => ({
+const getTotalInvernteryGraphError = (error) => ({
   type: TYPES.GET_INVENTERY_GRAPH_ERROR,
   payload: { error },
 });
@@ -44,11 +44,11 @@ const getTotalRevenueGraphRequest = () => ({
   type: TYPES.GET_REVENUE_GRAPH_REQUEST,
   payload: null,
 });
-const getTotalRevenueGraphSuccess = getRevenueGraph => ({
+const getTotalRevenueGraphSuccess = (getRevenueGraph) => ({
   type: TYPES.GET_REVENUE_GRAPH_SUCCESS,
   payload: { getRevenueGraph },
 });
-const getTotalRevenueGraphError = error => ({
+const getTotalRevenueGraphError = (error) => ({
   type: TYPES.GET_REVENUE_GRAPH_ERROR,
   payload: { error },
 });
@@ -57,11 +57,11 @@ const getTotalProDetailRequest = () => ({
   type: TYPES.GET_TOTALPRO_DETAIL_REQUEST,
   payload: null,
 });
-const getTotalProDetailSuccess = getTotalProDetail => ({
+const getTotalProDetailSuccess = (getTotalProDetail) => ({
   type: TYPES.GET_TOTALPRO_DETAIL_SUCCESS,
   payload: { getTotalProDetail },
 });
-const getTotalProDetailError = error => ({
+const getTotalProDetailError = (error) => ({
   type: TYPES.GET_TOTALPRO_DETAIL_ERROR,
   payload: { error },
 });
@@ -70,11 +70,11 @@ const catSubBrandDataRequest = () => ({
   type: TYPES.CAT_SUB_BRAND_REQUEST,
   payload: null,
 });
-const catSubBrandDataSuccess = catSubBrandData => ({
+const catSubBrandDataSuccess = (catSubBrandData) => ({
   type: TYPES.CAT_SUB_BRAND_SUCCESS,
   payload: { catSubBrandData },
 });
-const catSubBrandDataError = error => ({
+const catSubBrandDataError = (error) => ({
   type: TYPES.CAT_SUB_BRAND_ERROR,
   payload: { error },
 });
@@ -87,11 +87,11 @@ const getProductListRequest = () => ({
   type: TYPES.GET_PRODUCT_LIST_REQUEST,
   payload: null,
 });
-const getProductListSuccess = getProductList => ({
+const getProductListSuccess = (getProductList) => ({
   type: TYPES.GET_PRODUCT_LIST_SUCCESS,
   payload: { getProductList },
 });
-const getProductListError = error => ({
+const getProductListError = (error) => ({
   type: TYPES.GET_PRODUCT_LIST_ERROR,
   payload: { error },
 });
@@ -104,11 +104,11 @@ const getProductModalRequest = () => ({
   type: TYPES.GET_PRODUCT_MODAL_REQUEST,
   payload: null,
 });
-const getProductModalSuccess = getProductModal => ({
+const getProductModalSuccess = (getProductModal) => ({
   type: TYPES.GET_PRODUCT_MODAL_SUCCESS,
   payload: { getProductModal },
 });
-const getProductModalError = error => ({
+const getProductModalError = (error) => ({
   type: TYPES.GET_PRODUCT_MODAL_ERROR,
   payload: { error },
 });
@@ -120,11 +120,11 @@ const getOrderstatisticsRequest = () => ({
   type: TYPES.GET_ORDER_STATISTICS_REQUEST,
   payload: null,
 });
-const getOrderstatisticsSuccess = getOrderstatistics => ({
+const getOrderstatisticsSuccess = (getOrderstatistics) => ({
   type: TYPES.GET_ORDER_STATISTICS_SUCCESS,
   payload: { getOrderstatistics },
 });
-const getOrderstatisticsError = error => ({
+const getOrderstatisticsError = (error) => ({
   type: TYPES.GET_ORDER_STATISTICS_ERROR,
   payload: { error },
 });
@@ -132,11 +132,11 @@ const getOrderTypeListRequest = () => ({
   type: TYPES.GET_ORDER_TYPE_LIST_REQUEST,
   payload: null,
 });
-const getOrderTypeListSuccess = getOrderTypeList => ({
+const getOrderTypeListSuccess = (getOrderTypeList) => ({
   type: TYPES.GET_ORDER_TYPE_LIST_SUCCESS,
   payload: { getOrderTypeList },
 });
-const getOrderTypeListError = error => ({
+const getOrderTypeListError = (error) => ({
   type: TYPES.GET_ORDER_TYPE_LIST_ERROR,
   payload: { error },
 });
@@ -150,12 +150,12 @@ const getOrderDataRequest = () => ({
   payload: null,
 });
 
-const getOrderDataSuccess = getOrderData => ({
+const getOrderDataSuccess = (getOrderData) => ({
   type: TYPES.GET_ORDER_DATA_SUCCESS,
   payload: { getOrderData },
 });
 
-const getOrderDataError = error => ({
+const getOrderDataError = (error) => ({
   type: TYPES.GET_ORDER_DATA_ERROR,
   payload: { error },
 });
@@ -164,11 +164,11 @@ const getOrdersRequest = () => ({
   type: TYPES.GET_ORDER_REQUEST,
   payload: null,
 });
-const getOrdersSuccess = orderList => ({
+const getOrdersSuccess = (orderList) => ({
   type: TYPES.GET_ORDER_SUCCESS,
   payload: { orderList },
 });
-const getOrdersError = error => ({
+const getOrdersError = (error) => ({
   type: TYPES.GET_ORDER_ERROR,
   payload: { error },
 });
@@ -178,12 +178,12 @@ const getTotalInventoryCostRequest = () => ({
   payload: null,
 });
 
-const getTotalInventoryCostSuccess = getTotalInventoryCost => ({
+const getTotalInventoryCostSuccess = (getTotalInventoryCost) => ({
   type: TYPES.GET_TOTAL_INVENTORY_COST_SUCCESS,
   payload: { getTotalInventoryCost },
 });
 
-const getTotalInventoryCostError = error => ({
+const getTotalInventoryCostError = (error) => ({
   type: TYPES.GET_TOTAL_INVENTORY_COST_ERROR,
   payload: { error },
 });
@@ -193,12 +193,12 @@ const getSellerProductListRequest = () => ({
   payload: null,
 });
 
-const getSellerProductListSuccess = getSellerProductList => ({
+const getSellerProductListSuccess = (getSellerProductList) => ({
   type: TYPES.GET_SELLER_PRODUCT_LIST_SUCCESS,
   payload: { getSellerProductList },
 });
 
-const getSellerProductListError = error => ({
+const getSellerProductListError = (error) => ({
   type: TYPES.GET_SELLER_PRODUCT_LIST_ERROR,
   payload: { error },
 });
@@ -212,12 +212,12 @@ const getSellerInfoRequest = () => ({
   payload: null,
 });
 
-const getSellerInfoSuccess = getSellerInfo => ({
+const getSellerInfoSuccess = (getSellerInfo) => ({
   type: TYPES.GET_SELLER_INFO_SUCCESS,
   payload: { getSellerInfo },
 });
 
-const getSellerInfoError = error => ({
+const getSellerInfoError = (error) => ({
   type: TYPES.GET_SELLER_INFO_ERROR,
   payload: { error },
 });
@@ -227,17 +227,32 @@ const getSellerProductDetailsRequest = () => ({
   payload: null,
 });
 
-const getSellerProductDetailsSuccess = getSellerProductDetails => ({
+const getSellerProductDetailsSuccess = (getSellerProductDetails) => ({
   type: TYPES.GET_SELLER_PRODUCT_DETAILS_SUCCESS,
   payload: { getSellerProductDetails },
 });
 
-const getSellerProductDetailsError = error => ({
+const getSellerProductDetailsError = (error) => ({
   type: TYPES.GET_SELLER_PRODUCT_DETAILS_ERROR,
   payload: { error },
 });
 
-export const totalProGraph = sellerID => async dispatch => {
+const getAnalyticStatisticsRequest = () => ({
+  type: TYPES.GET_ANALYTIC_STATISTICS_REQUEST,
+  payload: null,
+});
+
+const getAnalyticStatisticsSuccess = (getAnalyticStatistics) => ({
+  type: TYPES.GET_ANALYTIC_STATISTICS_SUCCESS,
+  payload: { getAnalyticStatistics },
+});
+
+const getAnalyticStatisticsError = (error) => ({
+  type: TYPES.GET_ANALYTIC_STATISTICS_ERROR,
+  payload: { error },
+});
+
+export const totalProGraph = (sellerID) => async (dispatch) => {
   dispatch(getTotalProGraphRequest());
   try {
     const res = await AnalyticsController.totalProGraph(sellerID);
@@ -247,7 +262,7 @@ export const totalProGraph = sellerID => async dispatch => {
   }
 };
 
-export const totalOrderGraph = sellerID => async dispatch => {
+export const totalOrderGraph = (sellerID) => async (dispatch) => {
   dispatch(getTotalOrderGraphRequest());
   try {
     const res = await AnalyticsController.totalOrderGraph(sellerID);
@@ -256,7 +271,7 @@ export const totalOrderGraph = sellerID => async dispatch => {
     dispatch(getTotalOrderGraphError(error.message));
   }
 };
-export const totalInvernteryGraph = sellerID => async dispatch => {
+export const totalInvernteryGraph = (sellerID) => async (dispatch) => {
   dispatch(getTotalInvernteryGraphRequest());
   try {
     const res = await AnalyticsController.totalInvernteryGraph(sellerID);
@@ -266,7 +281,7 @@ export const totalInvernteryGraph = sellerID => async dispatch => {
   }
 };
 
-export const totalRevenueGraph = sellerID => async dispatch => {
+export const totalRevenueGraph = (sellerID) => async (dispatch) => {
   dispatch(getTotalRevenueGraphRequest());
   try {
     const res = await AnalyticsController.totalRevenueGraph(sellerID);
@@ -276,20 +291,17 @@ export const totalRevenueGraph = sellerID => async dispatch => {
   }
 };
 
-export const getTotalProDetail = (sellerID, productTime) => async dispatch => {
+export const getTotalProDetail = (sellerID, productTime) => async (dispatch) => {
   dispatch(getTotalProDetailRequest());
   try {
-    const res = await AnalyticsController.getTotalProDetail(
-      sellerID,
-      productTime
-    );
+    const res = await AnalyticsController.getTotalProDetail(sellerID, productTime);
     dispatch(getTotalProDetailSuccess(res?.payload));
   } catch (error) {
     dispatch(getTotalProDetailError(error.message));
   }
 };
 
-export const catSubBrandData = data => async dispatch => {
+export const catSubBrandData = (data) => async (dispatch) => {
   dispatch(catSubBrandDataRequest());
   try {
     const res = await AnalyticsController.catSubBrandData(data);
@@ -302,7 +314,7 @@ export const catSubBrandData = data => async dispatch => {
   }
 };
 
-export const getProductList = catId => async dispatch => {
+export const getProductList = (catId) => async (dispatch) => {
   dispatch(getProductListRequest());
   try {
     const res = await AnalyticsController.getProductList(catId);
@@ -315,7 +327,7 @@ export const getProductList = catId => async dispatch => {
   }
 };
 
-export const getProductModal = productId => async dispatch => {
+export const getProductModal = (productId) => async (dispatch) => {
   dispatch(getProductModalRequest());
   try {
     const res = await AnalyticsController.getProductModal(productId);
@@ -328,38 +340,30 @@ export const getProductModal = productId => async dispatch => {
   }
 };
 
-export const getOrderstatistics = (sellerID, orderTime) => async dispatch => {
+export const getOrderstatistics = (sellerID, orderTime) => async (dispatch) => {
   dispatch(getOrderstatisticsRequest());
   try {
-    const res = await AnalyticsController.getOrderstatistics(
-      sellerID,
-      orderTime
-    );
+    const res = await AnalyticsController.getOrderstatistics(sellerID, orderTime);
     return dispatch(getOrderstatisticsSuccess(res?.payload));
   } catch (error) {
     dispatch(getOrderstatisticsError(error.message));
   }
 };
 
-export const getOrderTypeList =
-  (sellerID, data, orderTime) => async dispatch => {
-    dispatch(getOrderTypeListRequest());
-    try {
-      const res = await AnalyticsController.getOrderTypeList(
-        sellerID,
-        data,
-        orderTime
-      );
-      return dispatch(getOrderTypeListSuccess(res?.payload?.data));
-    } catch (error) {
-      if (error?.statusCode === 204) {
-        dispatch(getOrderTypeListReset());
-      }
-      dispatch(getOrderTypeListError(error?.message));
+export const getOrderTypeList = (sellerID, data, orderTime) => async (dispatch) => {
+  dispatch(getOrderTypeListRequest());
+  try {
+    const res = await AnalyticsController.getOrderTypeList(sellerID, data, orderTime);
+    return dispatch(getOrderTypeListSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getOrderTypeListReset());
     }
-  };
+    dispatch(getOrderTypeListError(error?.message));
+  }
+};
 
-export const getOrderData = orderID => async dispatch => {
+export const getOrderData = (orderID) => async (dispatch) => {
   dispatch(getOrderDataRequest());
   try {
     const res = await AnalyticsController.getOrderData(orderID);
@@ -369,7 +373,7 @@ export const getOrderData = orderID => async dispatch => {
   }
 };
 
-export const getOrders = orderID => async dispatch => {
+export const getOrders = (orderID) => async (dispatch) => {
   dispatch(getOrdersRequest());
   try {
     const res = await AnalyticsController.getOrders(orderID);
@@ -379,21 +383,17 @@ export const getOrders = orderID => async dispatch => {
   }
 };
 
-export const getTotalInventoryCost =
-  (sellerID, inventoryTime) => async dispatch => {
-    dispatch(getTotalInventoryCostRequest());
-    try {
-      const res = await AnalyticsController.getTotalInventoryCost(
-        sellerID,
-        inventoryTime
-      );
-      return dispatch(getTotalInventoryCostSuccess(res?.payload));
-    } catch (error) {
-      dispatch(getTotalInventoryCostError(error.message));
-    }
-  };
+export const getTotalInventoryCost = (sellerID, inventoryTime) => async (dispatch) => {
+  dispatch(getTotalInventoryCostRequest());
+  try {
+    const res = await AnalyticsController.getTotalInventoryCost(sellerID, inventoryTime);
+    return dispatch(getTotalInventoryCostSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getTotalInventoryCostError(error.message));
+  }
+};
 
-export const getSellerProductList = (sellerID, data) => async dispatch => {
+export const getSellerProductList = (sellerID, data) => async (dispatch) => {
   dispatch(getSellerProductListRequest());
   try {
     const res = await AnalyticsController.getSellerProductList(sellerID, data);
@@ -406,7 +406,7 @@ export const getSellerProductList = (sellerID, data) => async dispatch => {
   }
 };
 
-export const getSellerInfo = (productID, data) => async dispatch => {
+export const getSellerInfo = (productID, data) => async (dispatch) => {
   dispatch(getSellerInfoRequest());
   try {
     const res = await AnalyticsController.getSellerInfo(productID, data);
@@ -416,12 +416,22 @@ export const getSellerInfo = (productID, data) => async dispatch => {
   }
 };
 
-export const getSellerProductDetails = sellerID => async dispatch => {
+export const getSellerProductDetails = (sellerID) => async (dispatch) => {
   dispatch(getSellerProductDetailsRequest());
   try {
     const res = await AnalyticsController.getSellerProductDetails(sellerID);
     dispatch(getSellerProductDetailsSuccess(res?.payload));
   } catch (error) {
     dispatch(getSellerProductDetailsError(error.message));
+  }
+};
+
+export const getAnalyticStatistics = (sellerID) => async (dispatch) => {
+  dispatch(getAnalyticStatisticsRequest());
+  try {
+    const res = await AnalyticsController.getAnalyticStatistics(sellerID);
+    dispatch(getAnalyticStatisticsSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getAnalyticStatisticsError(error.message));
   }
 };
