@@ -426,10 +426,10 @@ export const getSellerProductDetails = (sellerID) => async (dispatch) => {
   }
 };
 
-export const getAnalyticStatistics = (sellerID, flag) => async (dispatch) => {
+export const getAnalyticStatistics = (sellerID) => async (dispatch) => {
   dispatch(getAnalyticStatisticsRequest());
   try {
-    const res = await AnalyticsController.getAnalyticStatistics(sellerID, flag);
+    const res = await AnalyticsController.getAnalyticStatistics(sellerID);
     dispatch(getAnalyticStatisticsSuccess(res?.payload));
   } catch (error) {
     dispatch(getAnalyticStatisticsError(error.message));

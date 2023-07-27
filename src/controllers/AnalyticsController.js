@@ -315,10 +315,10 @@ export class AnalyticsController {
     });
   }
 
-  static async getAnalyticStatistics(sellerID, flag) {
+  static async getAnalyticStatistics(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getAnalyticStatistics + `?seller_id=${sellerID}&flag=${flag}`;
+        ORDER_URL + ApiOrderInventory.getAnalyticStatistics + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

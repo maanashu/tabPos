@@ -25,27 +25,30 @@ export function MainScreen({
       <View style={styles.flexDirectionRow}>
         <HomeGraph
           header="Total Profit"
-          subHeader={analyticStatistics?.total_count ?? '0'}
+          subHeader={analyticStatistics?.profit?.total_count ?? '0'}
           analyticGraphObject={analyticStatistics}
-          homeGraphHandler={() => {}}
-          arrayLength={analyticStatistics?.datasets?.length}
+          arrayLength={analyticStatistics?.profit?.graph_data?.datasets?.length}
           onPress={onPressProfit}
+          labels={analyticStatistics?.profit?.graph_data?.labels}
+          data={analyticStatistics?.profit?.graph_data?.datasets?.[0]?.data}
         />
         <HomeGraph
           header="Total Revenue"
-          subHeader={'5193'}
-          // productGraphObject={productGraphObject2}
-          homeGraphHandler={() => {}}
-          // arrayLength={productGraphObject2?.datasets?.length}
+          subHeader={analyticStatistics?.revenue?.total_count ?? '0'}
+          analyticGraphObject={analyticStatistics}
+          arrayLength={analyticStatistics?.revenue?.graph_data?.datasets?.length}
           onPress={onPressRevenue}
+          labels={analyticStatistics?.revenue?.graph_data?.labels}
+          data={analyticStatistics?.revenue?.graph_data?.datasets?.[0]?.data}
         />
         <HomeGraph
           header="Total Costs"
-          subHeader={'5193'}
-          // productGraphObject={productGraphObject2}
-          homeGraphHandler={() => {}}
-          // arrayLength={productGraphObject2?.datasets?.length}
+          subHeader={analyticStatistics?.cost?.total_count ?? '0'}
+          analyticGraphObject={analyticStatistics}
+          arrayLength={analyticStatistics?.cost?.graph_data?.datasets?.length}
           onPress={onPressCost}
+          labels={analyticStatistics?.cost?.graph_data?.labels}
+          data={analyticStatistics?.cost?.graph_data?.datasets?.[0]?.data}
         />
       </View>
       <View style={styles.flexDirectionRow}>

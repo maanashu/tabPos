@@ -75,7 +75,7 @@ export const styles = StyleSheet.create({
     paddingVertical: verticalScale(6),
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: Platform.OS === 'ios' && SH(6),
+    marginTop: Platform.OS === 'ios' ? SH(6) : SH(0),
   },
   sideBarImage: {
     width: SW(7),

@@ -39,12 +39,10 @@ export function Analytics2() {
   const [showModal, setShowModal] = useState(false);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const getAnalyticsData = useSelector(getAnalytics);
-  const AnalyticStatistics = getAnalyticsData?.getAnalyticStatistics;
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAnalyticStatistics(sellerID, flag));
+    dispatch(getAnalyticStatistics(sellerID));
   }, []);
 
   const goBack = () => {
@@ -54,9 +52,7 @@ export function Analytics2() {
   const renderScreen = {
     ['MainScreen']: (
       <MainScreen
-        onPressProfit={() => {
-          setselectedScreen('TotalProfit'), setFlag('profits');
-        }}
+        onPressProfit={() => setselectedScreen('TotalProfit')}
         onPressRevenue={() => setselectedScreen('Revenue')}
         onPressCost={() => setselectedScreen('TotalCost')}
         onPressDelivery={() => setselectedScreen('TotalDeliveryOrders')}

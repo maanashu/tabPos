@@ -4,10 +4,10 @@ import React from 'react';
 import { StyleSheet, View, Dimensions, Platform } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
-export function NewChartKit({ analyticGraphObject, arrayLength, chartStyle }) {
+export function NewChartKit({ arrayLength, labels, data }) {
   return (
     <View>
-      {analyticGraphObject === undefined ? (
+      {data === undefined ? (
         <LineChart
           bezier
           data={{
@@ -108,10 +108,10 @@ export function NewChartKit({ analyticGraphObject, arrayLength, chartStyle }) {
       ) : (
         <LineChart
           data={{
-            labels: analyticGraphObject?.graph_data?.labels,
+            labels: labels,
             datasets: [
               {
-                data: analyticGraphObject?.graph_data?.datasets?.[0]?.data,
+                data: data,
                 strokeWidth: 2,
                 color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
               },

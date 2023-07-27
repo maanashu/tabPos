@@ -5,14 +5,7 @@ import { rightlight } from '@/assets';
 import { NewChartKit, Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 
-export function HomeGraph({
-  header,
-  subHeader,
-  analyticGraphObject,
-  homeGraphHandler,
-  arrayLength,
-  onPress,
-}) {
+export function HomeGraph({ header, subHeader, data, labels, arrayLength, onPress }) {
   return (
     <View style={styles.totalProductCon}>
       <Spacer space={SH(20)} />
@@ -26,7 +19,7 @@ export function HomeGraph({
         </View>
       </View>
       <TouchableOpacity onPress={onPress}>
-        <NewChartKit analyticGraphObject={analyticGraphObject} arrayLength={arrayLength} />
+        <NewChartKit data={data} arrayLength={arrayLength} labels={labels} />
       </TouchableOpacity>
     </View>
   );
