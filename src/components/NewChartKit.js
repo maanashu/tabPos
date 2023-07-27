@@ -1,7 +1,7 @@
 import { Fonts } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, Platform } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
 export function NewChartKit({ analyticGraphObject, arrayLength, chartStyle }) {
@@ -25,8 +25,12 @@ export function NewChartKit({ analyticGraphObject, arrayLength, chartStyle }) {
               },
             ],
           }}
-          width={Dimensions.get('window').width * 0.24}
-          height={SH(175)}
+          width={
+            Platform.OS === 'android'
+              ? Dimensions.get('window').width * 0.24
+              : Dimensions.get('window').width * 0.26
+          }
+          height={Platform.OS === 'android' ? SH(175) : SH(172)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -50,7 +54,7 @@ export function NewChartKit({ analyticGraphObject, arrayLength, chartStyle }) {
           }}
           style={{
             borderRadius: 16,
-            marginLeft: SW(-3),
+            marginLeft: Platform.OS === 'android' ? SW(-3) : SW(-8),
           }}
           withShadow={false}
           fromZero
@@ -66,8 +70,12 @@ export function NewChartKit({ analyticGraphObject, arrayLength, chartStyle }) {
               },
             ],
           }}
-          width={Dimensions.get('window').width * 0.24}
-          height={SH(175)}
+          width={
+            Platform.OS === 'android'
+              ? Dimensions.get('window').width * 0.24
+              : Dimensions.get('window').width * 0.26
+          }
+          height={Platform.OS === 'android' ? SH(175) : SH(172)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -91,7 +99,7 @@ export function NewChartKit({ analyticGraphObject, arrayLength, chartStyle }) {
           }}
           style={{
             borderRadius: 16,
-            marginLeft: SW(-3),
+            marginLeft: Platform.OS === 'android' ? SW(-3) : SW(-8),
           }}
           withShadow={false}
           fromZero
@@ -109,8 +117,12 @@ export function NewChartKit({ analyticGraphObject, arrayLength, chartStyle }) {
               },
             ],
           }}
-          width={Dimensions.get('window').width * 0.24}
-          height={SH(175)}
+          width={
+            Platform.OS === 'android'
+              ? Dimensions.get('window').width * 0.24
+              : Dimensions.get('window').width * 0.26
+          }
+          height={Platform.OS === 'android' ? SH(175) : SH(172)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -134,7 +146,7 @@ export function NewChartKit({ analyticGraphObject, arrayLength, chartStyle }) {
           }}
           style={{
             borderRadius: 16,
-            marginLeft: SW(-3),
+            marginLeft: Platform.OS === 'android' ? SW(-3) : SW(-8),
           }}
           withShadow={false}
           fromZero

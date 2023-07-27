@@ -5,7 +5,7 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import { styles } from '../Analytics2.styles';
 import { HomeGraph } from '.';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 
 export function MainScreen({
   onPressProfit,
@@ -61,12 +61,12 @@ export function MainScreen({
 
           <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressPosOrder}>
             <BarChartCom
-              barWid={Platform.OS === 'android' ? Dimensions.get('window').width * 0.24 : SH(380)}
-              barHei={SH(135)}
-              barSpacing={Platform.OS === 'android' ? 16 : 18}
-              barW={Platform.OS === 'android' ? 5 : 7}
-              labelTextSty={{ color: COLORS.gerySkies, fontSize: 11 }}
-              initialSpacing={SH(10)}
+              barWid={Dimensions.get('window').width * 0.24}
+              barHei={Platform.OS === 'android' ? SH(135) : SH(130)}
+              barSpacing={SW(4.2)}
+              barW={SW(1.5)}
+              labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
+              initialSpacing={SH(5)}
             />
           </TouchableOpacity>
         </View>
@@ -101,12 +101,12 @@ export function MainScreen({
 
           <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressOrders}>
             <BarChartCom
-              barWid={Platform.OS === 'android' ? Dimensions.get('window').width * 0.24 : SH(380)}
-              barHei={SH(135)}
-              barSpacing={Platform.OS === 'android' ? 16 : 18}
-              barW={Platform.OS === 'android' ? 5 : 7}
-              labelTextSty={{ color: COLORS.gerySkies, fontSize: 11 }}
-              initialSpacing={SH(10)}
+              barWid={Dimensions.get('window').width * 0.24}
+              barHei={Platform.OS === 'android' ? SH(135) : SH(130)}
+              barSpacing={SW(4.2)}
+              barW={SW(1.5)}
+              labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
+              initialSpacing={SH(5)}
             />
           </TouchableOpacity>
         </View>
@@ -122,12 +122,12 @@ export function MainScreen({
 
           <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressSellingLocations}>
             <BarChartCom
-              barWid={Platform.OS === 'android' ? Dimensions.get('window').width * 0.24 : SH(380)}
-              barHei={SH(135)}
-              barSpacing={Platform.OS === 'android' ? 16 : 18}
-              barW={Platform.OS === 'android' ? 5 : 7}
-              labelTextSty={{ color: COLORS.gerySkies, fontSize: 11 }}
-              initialSpacing={SH(10)}
+              barWid={Dimensions.get('window').width * 0.24}
+              barHei={Platform.OS === 'android' ? SH(135) : SH(130)}
+              barSpacing={SW(4.2)}
+              barW={SW(1.5)}
+              labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
+              initialSpacing={SH(5)}
             />
           </TouchableOpacity>
         </View>
