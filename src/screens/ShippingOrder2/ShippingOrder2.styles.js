@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     color: COLORS.solid_grey,
-    paddingLeft: SW(6),
+    paddingLeft: SW(10),
     paddingTop: SH(10),
   },
   shippingOrdersViewStyle: {
