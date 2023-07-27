@@ -10,7 +10,7 @@ import { ms } from 'react-native-size-matters';
 
 const OrderStatus = ({ renderItem, series, sliceColor, widthAndHeight }) => {
   return (
-    <View>
+    <View style={{ paddingHorizontal: 10 }}>
       <View style={styles.deliveryStatusViewStyle}>
         <Text style={styles.deliveryStatusText}>{strings.deliveryOrders2.orderStatus}</Text>
 
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: COLORS.white,
     paddingVertical: ms(3),
-    width: ms(184),
-    paddingLeft: ms(10),
+    // width: ms(184),
+    paddingHorizontal: ms(10),
     backgroundColor: COLORS.white,
   },
   deliveryStatusText: {

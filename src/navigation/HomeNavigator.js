@@ -130,11 +130,6 @@ export function HomeNavigator() {
         name={NAVIGATION.deliveryOrders2}
         options={{ headerShown: false }}
       />
-      <Drawer.Screen
-        component={OrderDetail}
-        name={NAVIGATION.orderDetail}
-        options={{ headerShown: false }}
-      />
     </Drawer.Navigator>
   );
 }

@@ -34,7 +34,7 @@ import styles from './styles';
 
 import Graph from './Components/Graph';
 import OrderStatus from './Components/OrderStatus';
-import { ms } from 'react-native-size-matters';
+import { ms, verticalScale } from 'react-native-size-matters';
 import PieChart from 'react-native-pie-chart';
 
 export function DeliveryOrders2() {
@@ -192,15 +192,25 @@ export function DeliveryOrders2() {
   return (
     <SafeAreaView style={styles.container}>
       {viewAllOrders ? (
-        <>
+        <View
+          style={{
+            flex: 1,
+            // justifyContent: 'space-between',
+          }}
+        >
           <TouchableOpacity onPress={() => setViewAllOrders(false)} style={styles.backView}>
             <Image source={backArrow2} style={styles.backImageStyle} />
             <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>{'Back'}</Text>
           </TouchableOpacity>
 
           <Spacer space={SH(20)} />
-          <View style={{ flexDirection: 'row' }}>
-            <View style={[styles.viewAllOrders, { marginBottom: 110 }]}>
+          <View
+            style={{
+              width: Dimensions.get('window').width,
+              flexDirection: 'row',
+            }}
+          >
+            <View style={[styles.viewAllOrders, { marginBottom: 140 }]}>
               <FlatList
                 data={orderToReview}
                 renderItem={renderOrderToReview}
@@ -219,7 +229,7 @@ export function DeliveryOrders2() {
             {orderDetail ? (
               <View style={styles.orderDetailView}>
                 <View style={styles.orderDetailViewStyle}>
-                  <View style={styles.locationViewStyle}>
+                  <View style={[styles.locationViewStyle, { width: ms(120) }]}>
                     <Image source={profileImage} style={styles.userImageStyle} />
 
                     <View style={styles.userNameView}>
@@ -233,12 +243,7 @@ export function DeliveryOrders2() {
                   </View>
 
                   <View
-                    style={[
-                      styles.locationViewStyle,
-                      {
-                        paddingLeft: 15,
-                      },
-                    ]}
+                    style={[styles.locationViewStyle, { width: ms(120), paddingHorizontal: 3 }]}
                   >
                     <Image source={scooter} style={styles.scooterImageStyle} />
 
@@ -271,7 +276,7 @@ export function DeliveryOrders2() {
                     data={orderDetail}
                     renderItem={renderOrderProducts}
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
+                    contentContainerStyle={{ paddingBottom: 20 }}
                   />
                 </View>
 
@@ -356,7 +361,20 @@ export function DeliveryOrders2() {
               </View>
             ) : null}
 
-            <View style={styles.rightSideView}>
+            <View
+              style={{
+                backgroundColor: COLORS.white,
+                borderRadius: 10,
+                width: Dimensions.get('window').width * 0.06,
+                paddingVertical: verticalScale(6),
+                alignItems: 'center',
+                // position: 'absolute',
+                // top: 20,
+                right: 10,
+                marginBottom: 40,
+                left: 10,
+              }}
+            >
               <FlatList
                 data={rightSideDeliveryDrawer}
                 renderItem={renderDrawer}
@@ -389,7 +407,7 @@ export function DeliveryOrders2() {
               }}
             />
           </View>
-        </>
+        </View>
       ) : (
         <View
           style={{
@@ -472,6 +490,7 @@ export function DeliveryOrders2() {
                     flexGrow: 1,
                     paddingBottom: 10,
                   }}
+                  scrollEnabled={false}
                   ListHeaderComponent={() => (
                     <View style={styles.headingRowStyle}>
                       <Text style={styles.ordersToReviewText}>

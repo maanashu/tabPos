@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     paddingHorizontal: 20,
-    marginHorizontal: 15,
+    marginLeft: 5,
     height: Dimensions.get('window').height / 2.15,
   },
   numberOrdersText: {

@@ -40,7 +40,9 @@ const styles = StyleSheet.create({
   shippingOrdersViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: ms(120),
     justifyContent: 'space-between',
+    right: 20,
   },
   currentStatusView: {
     width: SW(100),
@@ -367,7 +369,8 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: SW(160),
+    // width: SW(160),
+    width: Dimensions.get('window').width * 0.43,
     marginBottom: 90,
   },
   userDetailView: {
@@ -384,11 +387,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     marginHorizontal: 10,
     paddingVertical: 30,
     borderRadius: 10,
     marginTop: 20,
+    width: Dimensions.get('window').width / 2.4,
     backgroundColor: COLORS.textInputBackground,
   },
   userImageStyle: {
@@ -482,7 +486,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     alignSelf: 'center',
-    width: SW(150),
+    width: Dimensions.get('window').width / 2.6,
     paddingVertical: 15,
   },
 });
