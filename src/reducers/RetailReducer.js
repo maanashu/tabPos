@@ -22,6 +22,8 @@ const INITIALSTATE = {
   customerNumber: {},
   scanProductAdd: {},
   getMainProduct: [],
+  bulkCreate: {},
+  bulkData: [],
 };
 
 export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
@@ -35,6 +37,16 @@ export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         categoryList: payload?.categoryList,
+      };
+    case TYPES.SAVE_BULK_DATA_SUCCESS:
+      return {
+        ...state,
+        bulkData: payload?.bulkData,
+      };
+    case TYPES.SAVE_BULK_DATA_RESET:
+      return {
+        ...state,
+        bulkData: [],
       };
     case TYPES.GET_CATEGORY_RESET:
       return {
@@ -223,6 +235,11 @@ export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
       return {
         ...state,
         getMainProduct: [],
+      };
+    case TYPES.BULK_CREATE_SUCCESS:
+      return {
+        ...state,
+        bulkCreate: payload.bulkCreate,
       };
 
     case TYPES.CLEAR_STORE:

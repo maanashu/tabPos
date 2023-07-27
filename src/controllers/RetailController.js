@@ -748,4 +748,24 @@ export class RetailController {
         });
     });
   }
+
+  static async bulkCreate(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
+
+      HttpClient.post(endpoint, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
+        });
+    });
+  }
 }

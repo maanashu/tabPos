@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -33,15 +33,17 @@ import FastImage from 'react-native-fast-image';
 import { TYPES } from '@/Types/Types';
 import {
   addTocart,
+  bulkCreate,
   clearAllCart,
   getBrand,
   getCategory,
   getMainProduct,
   getOneProduct,
   getSubCategory,
+  saveBulkOrderData,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { CartListModal } from './CartListModal';
 
 export function MainScreen({
@@ -66,10 +68,12 @@ export function MainScreen({
   const cartLength = cartData?.poscart_products?.length;
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
+  const [cartProduct, setCartProoduct] = useState([]);
 
   const [showProductsFrom, setshowProductsFrom] = useState();
 
   const mainProductArray = getRetailData?.getMainProduct?.data;
+  const bulkCreateData = getRetailData?.bulkCreate;
 
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
@@ -125,20 +129,48 @@ export function MainScreen({
     }
   }, [cartLength]);
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        const data = {
+          seller_id: sellerID,
+          products: getRetailData?.bulkData,
+        };
+        dispatch(bulkCreate(data));
+      };
+    }, [])
+  );
+
   const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
 
-  const onClickAddCart = (item) => {
-    const data = {
-      seller_id: sellerID,
-      supplyId: item?.supplies?.[0]?.id,
-      supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
-      product_id: item?.id,
-      service_id: item?.service_id,
-      qty: 1,
-    };
+  function findProductById(productIdToFind, cartProduct) {
+    return cartProduct.find((product) => product.product_id === productIdToFind); // Corrected property name here
+  }
 
-    dispatch(addTocart(data));
+  const onClickAddCart = (item) => {
+    const productIdToFind = item.id;
+    const foundProduct = findProductById(productIdToFind, cartProduct);
+
+    if (foundProduct) {
+      const updatedCart = cartProduct.map((product) =>
+        product.product_id === productIdToFind ? { ...product, qty: product.qty + 1 } : product
+      );
+
+      setCartProoduct(updatedCart); // Corrected typo in function name here
+    } else {
+      const productData = {
+        supply_id: item?.supplies?.[0]?.id || null,
+        supply_price_id: item?.supplies?.[0]?.supply_prices?.[0]?.id || null,
+        product_id: item.id,
+        qty: 1,
+      };
+      const updatedCart = [...cartProduct, productData];
+      setCartProoduct(updatedCart); // Corrected typo in function name here
+      dispatch(saveBulkOrderData(updatedCart));
+    }
   };
+
+  // Your JSX rendering code here
 
   const originalFilterData = [
     {
@@ -191,7 +223,7 @@ export function MainScreen({
             // item.isSelected === true
           ) {
             setCatTypeId(item.id);
-            dispatch(getSubCategory(sellerID));
+            dispatch(gcartProductetSubCategory(sellerID));
             setSubCategoryModal(true);
           } else if (
             item.id === 3

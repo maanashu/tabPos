@@ -486,6 +486,25 @@ const getMainProductError = (error) => ({
   payload: { error },
 });
 
+const bulkCreateRequest = () => ({
+  type: TYPES.BULK_CREATE_REQUEST,
+  payload: null,
+});
+
+const bulkCreateSuccess = (bulkCreate) => ({
+  type: TYPES.BULK_CREATE_SUCCESS,
+  payload: { bulkCreate },
+});
+
+const bulkCreateError = (error) => ({
+  type: TYPES.BULK_CREATE_ERROR,
+  payload: { error },
+});
+export const saveBulkOrderData = (bulkData) => ({
+  type: TYPES.SAVE_BULK_DATA_SUCCESS,
+  payload: { bulkData },
+});
+
 export const getCategory = (sellerID) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -828,5 +847,15 @@ export const getMainProduct = (productTypeId) => async (dispatch) => {
       dispatch(getMainProductReset());
     }
     dispatch(getMainProductError(error.message));
+  }
+};
+
+export const bulkCreate = (data) => async (dispatch) => {
+  dispatch(bulkCreateRequest());
+  try {
+    const res = await RetailController.bulkCreate(data);
+    dispatch(bulkCreateSuccess(res));
+  } catch (error) {
+    dispatch(bulkCreateError(error));
   }
 };
