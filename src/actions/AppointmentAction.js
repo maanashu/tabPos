@@ -75,6 +75,20 @@ const changeAppointmentStatusReset = () => ({
   payload: null,
 });
 
+// Reschedule Appointments
+const resheduleAppointmentRequest = () => ({
+  type: TYPES.RESCHEDULE_APPOINTMENT_REQUEST,
+  payload: null,
+});
+const resheduleAppointmentSuccess = (status) => ({
+  type: TYPES.RESCHEDULE_APPOINTMENT_SUCCESS,
+  payload: { status },
+});
+const resheduleAppointmentError = (error) => ({
+  type: TYPES.RESCHEDULE_APPOINTMENT_ERROR,
+  payload: { error },
+});
+
 export const getAppointment = (pageNumber) => async (dispatch) => {
   dispatch(getAppointmentRequest());
   try {
@@ -113,7 +127,6 @@ export const getStaffUsersList = (pageNumber) => async (dispatch) => {
   dispatch(getStaffUsersRequest());
   try {
     const res = await AppointmentController.getAllStaffUsers(pageNumber);
-
     const currentPages = res?.payload?.current_page;
     const totalPages = res?.payload?.total_pages;
     const pages = { currentPages: currentPages, totalPages: totalPages };
@@ -152,5 +165,27 @@ export const changeAppointmentStatus = (appointmentId, status) => async (dispatc
       dispatch(changeAppointmentStatusReset());
     }
     dispatch(changeAppointmentStatusError(error.message));
+  }
+};
+export const rescheduleAppointment = (appointmentId, params) => async (dispatch) => {
+  dispatch(resheduleAppointmentRequest());
+  try {
+    const res = await AppointmentController.rescheduleAppointmentAPI(appointmentId, params);
+    dispatch(resheduleAppointmentSuccess(res?.payload));
+    dispatch(getAppointment());
+    Toast.show({
+      text2: 'Appointment Rescheduled',
+      position: 'bottom',
+      type: 'success_toast',
+      visibilityTime: 2500,
+    });
+  } catch (error) {
+    Toast.show({
+      text2: error.msg,
+      position: 'bottom',
+      type: 'error_toast',
+      visibilityTime: 9000,
+    });
+    dispatch(resheduleAppointmentError(error.message));
   }
 };

@@ -1,5 +1,5 @@
 import { Fonts } from '@/assets';
-import { COLORS } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import React from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
@@ -11,109 +11,110 @@ export function BarChartCom({
   barW,
   labelTextSty,
   revenueData,
+  initialSpacing,
 }) {
   const barData =
     revenueData === undefined
-      ?
-       [
+      ? [
           {
             value: 44,
             spacing: 2,
-            label: 'Saturday',
+            label: 'Mon',
             labelWidth: 60,
             labelTextStyle: labelTextSty,
-            frontColor: COLORS.primary,
+            frontColor: COLORS.blue_shade,
+            intialSapce: 0,
           },
           {
             value: 56,
             spacing: 2,
-            frontColor: COLORS.bluish_green,
+            frontColor: COLORS.primary,
           },
-          { value: 66, frontColor: COLORS.lightGreen },
+          { value: 66, frontColor: COLORS.darkGray },
           {
             value: 22,
             spacing: 2,
-            label: 'Sunday',
+            label: 'Tue',
             labelWidth: 60,
             labelTextStyle: labelTextSty,
-            frontColor: COLORS.primary,
+            frontColor: COLORS.blue_shade,
           },
           {
             value: 55,
             spacing: 2,
-            frontColor: COLORS.bluish_green,
+            frontColor: COLORS.primary,
           },
-          { value: 88, frontColor: COLORS.lightGreen },
+          { value: 88, frontColor: COLORS.darkGray },
           {
             value: 99,
             spacing: 2,
-            label: 'Monday',
+            label: 'Wed',
             labelWidth: 60,
             labelTextStyle: labelTextSty,
-            frontColor: COLORS.primary,
+            frontColor: COLORS.blue_shade,
           },
           {
             value: 22,
             spacing: 2,
-            frontColor: COLORS.bluish_green,
+            frontColor: COLORS.primary,
           },
-          { value: 55, frontColor: COLORS.lightGreen },
+          { value: 55, frontColor: COLORS.darkGray },
           {
             value: 44,
             spacing: 2,
-            label: 'Tuesday',
+            label: 'Thu',
             labelWidth: 60,
             labelTextStyle: labelTextSty,
-            frontColor: COLORS.primary,
+            frontColor: COLORS.blue_shade,
           },
           {
             value: 44,
             spacing: 2,
-            frontColor: COLORS.bluish_green,
-          },
-          { value: 22, frontColor: COLORS.lightGreen },
-          {
-            value: 10,
-            spacing: 2,
-            label: 'Wednesday',
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
             frontColor: COLORS.primary,
           },
+          { value: 22, frontColor: COLORS.darkGray },
           {
             value: 10,
             spacing: 2,
-            frontColor: COLORS.bluish_green,
+            label: 'Fri',
+            labelWidth: 60,
+            labelTextStyle: labelTextSty,
+            frontColor: COLORS.blue_shade,
           },
-          { value: 20, frontColor: COLORS.lightGreen },
+          {
+            value: 10,
+            spacing: 2,
+            frontColor: COLORS.primary,
+          },
+          { value: 20, frontColor: COLORS.darkGray },
           {
             value: 30,
             spacing: 2,
-            label: 'Thursday',
+            label: 'Sat',
             labelWidth: 60,
             labelTextStyle: labelTextSty,
-            frontColor: COLORS.primary,
+            frontColor: COLORS.blue_shade,
           },
           {
             value: 11,
             spacing: 2,
-            frontColor: COLORS.bluish_green,
+            frontColor: COLORS.primary,
           },
-          { value: 67, frontColor: COLORS.lightGreen },
+          { value: 67, frontColor: COLORS.darkGray },
           {
             value: 10,
             spacing: 2,
-            label: 'Friday',
+            label: 'Sun',
             labelWidth: 60,
             labelTextStyle: labelTextSty,
-            frontColor: COLORS.primary,
+            frontColor: COLORS.blue_shade,
           },
           {
             value: 40,
             spacing: 2,
-            frontColor: COLORS.bluish_green,
+            frontColor: COLORS.primary,
           },
-          { value: 20, frontColor: COLORS.lightGreen },
+          { value: 20, frontColor: COLORS.darkGray },
         ]
       : [
           {
@@ -247,13 +248,15 @@ export function BarChartCom({
         xAxisThickness={1}
         yAxisThickness={0}
         xAxisType={'dashed'}
-        xAxisColor={'#1FB3FF'}
-        yAxisTextStyle={{ color: '#275AFF', fontSize: 11 }}
+        yAxisType={'dashed'}
+        xAxisColor={`rgba(39, 90, 255, 1)`}
+        yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
         noOfSections={4}
         maxValue={100}
-        yAxisLength={400}
+        yAxisLength={350}
         height={barHei}
         width={barWid}
+        initialSpacing={initialSpacing}
       />
     </View>
   );

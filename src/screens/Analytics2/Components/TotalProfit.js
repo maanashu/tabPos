@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { Fonts, calendar, clay, dropdown } from '@/assets';
+import { Fonts, backArrow2, calendar, clay, dropdown } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { LineChart } from 'react-native-chart-kit';
 import { DataTable } from 'react-native-paper';
 
-export function TotalProfit() {
+export function TotalProfit({ onPress }) {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
   const [channelItem, setChannelItem] = useState([
@@ -17,33 +17,16 @@ export function TotalProfit() {
   ]);
   return (
     <View>
-      <Text
-        style={{
-          fontFamily: Fonts.MaisonBold,
-          fontSize: SF(20),
-          color: COLORS.black,
-          marginVertical: SH(15),
-          marginHorizontal: SW(5),
-        }}
-      >
-        {'Total Profits'}
-      </Text>
+      <TouchableOpacity onPress={onPress} style={styles.goBack}>
+        <Image source={backArrow2} style={styles.backImageStyle} />
+        <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>{'Back'}</Text>
+      </TouchableOpacity>
+      <Text style={styles.graphTitle}> {'Total Profits'}</Text>
 
-      <View style={{ flexDirection: 'row' }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            padding: SW(3),
-            alignItems: 'center',
-            backgroundColor: COLORS.white,
-            marginHorizontal: SW(5),
-            borderRadius: SW(2),
-            borderColor: COLORS.gerySkies,
-            borderWidth: 1,
-          }}
-        >
-          <Image source={calendar} style={{ height: SH(20), width: SW(6) }} />
-          <Text style={{ marginLeft: SW(3), fontSize: SF(16) }}>{'Oct 23 - Nov 23, 2022'}</Text>
+      <View style={styles.flexDirectionRow}>
+        <View style={styles.headerView}>
+          <Image source={calendar} style={styles.calenderImage} />
+          <Text style={styles.dateText}>{'Oct 23 - Nov 23, 2022'}</Text>
         </View>
         <DropDownPicker
           ArrowDownIconComponent={({ style }) => (
@@ -66,26 +49,8 @@ export function TotalProfit() {
         />
       </View>
 
-      <View
-        style={{
-          marginVertical: SH(10),
-          backgroundColor: COLORS.white,
-          width: Dimensions.get('window').width - SW(63),
-          marginHorizontal: SW(5),
-          borderRadius: SW(5),
-        }}
-      >
-        <Text
-          style={{
-            paddingHorizontal: SW(10),
-            paddingVertical: SH(15),
-            fontSize: SF(18),
-            fontFamily: Fonts.Bold,
-            color: COLORS.black,
-          }}
-        >
-          {'Total Profits'}
-        </Text>
+      <View style={styles.graphHeaderView}>
+        <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
 
         <LineChart
           bezier
@@ -113,8 +78,8 @@ export function TotalProfit() {
               },
             ],
           }}
-          width={Dimensions.get('window').width - SW(90)}
-          height={260}
+          width={Dimensions.get('window').width - SW(80)}
+          height={SH(210)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -152,17 +117,9 @@ export function TotalProfit() {
           <DataTable
             style={{
               zIndex: -99,
-              borderRadius: SW(10),
             }}
           >
-            <DataTable.Header
-              style={{
-                backgroundColor: COLORS.white,
-                borderTopRightRadius: SW(4),
-                borderTopLeftRadius: SW(4),
-                overflow: 'hidden',
-              }}
-            >
+            <DataTable.Header style={styles.tableListHeader}>
               <DataTable.Title style={styles.dateTablealignStart}>
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
@@ -195,6 +152,9 @@ export function TotalProfit() {
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Total Sales</Text>
               </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Total Revenue</Text>
+              </DataTable.Title>
             </DataTable.Header>
 
             {/* <FlatList
@@ -203,41 +163,45 @@ export function TotalProfit() {
                         keyExtractor={item => item.id}
                         showsHorizontalScrollIndicator={false}
                       /> */}
-
-            <DataTable.Row>
-              <DataTable.Cell style={styles.dateTablealignStart}>
-                <View>
-                  <Text style={styles.revenueDataText}>Oct 23, 2023</Text>
-                </View>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dateTableSetting}>
-                <Text style={styles.revenueDataText}>3</Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dateTableSetting}>
-                <Text style={styles.revenueDataText}>$23,000</Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dateTableSetting}>
-                <Text style={styles.revenueDataText}>$560</Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dateTableSetting}>
-                <Text style={styles.revenueDataText}>0</Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dateTableSetting}>
-                <Text style={styles.revenueDataText}>$560</Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dateTableSetting}>
-                <Text style={styles.revenueDataText}>$23.50</Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dateTableSetting}>
-                <Text style={styles.revenueDataText}>$450</Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dateTableSetting}>
-                <Text style={styles.revenueDataText}>$2300</Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dateTableSetting}>
-                <Text style={styles.revenueDataText2}>$19,666.50</Text>
-              </DataTable.Cell>
-            </DataTable.Row>
+            <View style={styles.bottomTableView}>
+              <DataTable.Row>
+                <DataTable.Cell style={styles.dateTablealignStart}>
+                  <View>
+                    <Text style={styles.revenueDataText}>Oct 23, 2023</Text>
+                  </View>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>3</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>$23,000</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>$560</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>0</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>$560</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>$23.50</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>$450</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText}>$2300</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText2}>$19,666.50</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.dateTableSetting}>
+                  <Text style={styles.revenueDataText2}>$19,666.50</Text>
+                </DataTable.Cell>
+              </DataTable.Row>
+            </View>
           </DataTable>
         </ScrollView>
       </View>

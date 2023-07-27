@@ -20,6 +20,7 @@ export class AppointmentController {
       // Check if pos user id is available
       if (posUserId) {
         queryParams.pos_user_id = posUserId;
+        queryParams.status = 0;
       }
 
       const stringifiedQueryParams = new URLSearchParams(queryParams);
@@ -42,6 +43,19 @@ export class AppointmentController {
         status: `${status}`,
       };
       HttpClient.put(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+  static async rescheduleAppointmentAPI(appointmentId, params) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.rescheduleAppointmentURL + `${appointmentId}`;
+
+      HttpClient.put(endpoint, params)
         .then((response) => {
           resolve(response);
         })

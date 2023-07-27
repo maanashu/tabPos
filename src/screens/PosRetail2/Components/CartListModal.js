@@ -33,7 +33,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { useFocusEffect } from '@react-navigation/native';
 
-function CartListModal({ checkOutHandler, CloseCartModal }) {
+export function CartListModal({ checkOutHandler, CloseCartModal }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;

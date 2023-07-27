@@ -12,6 +12,7 @@ import {
   MainScreen,
   PayByCard,
   PayByCash,
+  PayByCash2,
   PayByJBRCoins,
 } from '@/screens/PosRetail2/Components';
 
@@ -38,7 +39,6 @@ import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { strings } from '@/localization';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import Main from 'react-native-country-picker-modal';
 
 export function PosRetail2() {
   const dispatch = useDispatch();
@@ -53,12 +53,13 @@ export function PosRetail2() {
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
+
   const [paymentMethod, setpaymentMethod] = useState('Cash');
-  const [tipAmount, setTipAmount] = useState(0.0);
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
   const [addDiscount, setAddDiscount] = useState(false);
   const [page, setPage] = useState(1);
+  const [tipAmount, selectTipAmount] = useState();
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
   const getCart = getRetailData?.getAllCart;
@@ -287,6 +288,9 @@ export function PosRetail2() {
             setselectedScreen('PayByCard');
           }
         }}
+        payNowByphone={(tip) => {
+          selectTipAmount(tip);
+        }}
       />
     ),
     ['PayByCard']: (
@@ -313,6 +317,7 @@ export function PosRetail2() {
           setselectedScreen('FinalPaymentScreen');
           setCashPayDetail(data);
         }}
+        cartDatas={savedTempCartData}
       />
     ),
     ['PayByJBRCoins']: (

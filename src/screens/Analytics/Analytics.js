@@ -61,12 +61,7 @@ import {
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SW, SH } from '@/theme';
-import {
-  Spacer,
-  TableDropdown,
-  BarChartCom,
-  ScreenWrapper,
-} from '@/components';
+import { Spacer, TableDropdown, BarChartCom, ScreenWrapper } from '@/components';
 import { styles } from '@/screens/Analytics/Analytics.styles';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -140,7 +135,6 @@ export function Analytics(props) {
   const sellerInfo = getAnalyticsData?.getSellerInfo;
   const sellerProductList = getAnalyticsData?.getSellerProductList;
   const sellerProductDetails = getAnalyticsData?.getSellerProductDetails;
-  // console.log('sellerProductDetails', JSON.stringify(sellerProductDetails));
   const OrderData = getAnalyticsData?.getOrderData;
   const OrderDetails = getAnalyticsData?.orderList;
   const [value, setValue] = useState('Weekly');
@@ -241,57 +235,53 @@ export function Analytics(props) {
       dispatch(getTotalInventoryCost(sellerID));
     }
   }, [isFocused]);
-  const productGraphLoading = useSelector(state =>
+  const productGraphLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TOTAL_GRAPH], state)
   );
-  const totalInventoryLoading = useSelector(state =>
+  const totalInventoryLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_INVENTERY_GRAPH], state)
   );
-  const totalGraphLoading = useSelector(state =>
+  const totalGraphLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ORDER_GRAPH], state)
   );
-  const totalRevenueLoading = useSelector(state =>
+  const totalRevenueLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_REVENUE_GRAPH], state)
   );
 
-  const catSubBrandArrayLoad = useSelector(state =>
+  const catSubBrandArrayLoad = useSelector((state) =>
     isLoadingSelector([TYPES.CAT_SUB_BRAND], state)
   );
-  const totalProuductArrayLoad = useSelector(state =>
+  const totalProuductArrayLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_PRODUCT_LIST], state)
   );
-  const productModalLoad = useSelector(state =>
+  const productModalLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_PRODUCT_MODAL], state)
   );
-  const orderTypeList = useSelector(state =>
+  const orderTypeList = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ORDER_TYPE_LIST], state)
   );
-  const orderstatisticsLoader = useSelector(state =>
+  const orderstatisticsLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
   );
-  const orderData = useSelector(state =>
-    isLoadingSelector([TYPES.GET_ORDER_DATA], state)
-  );
-  const orderDetailsLoad = useSelector(state =>
-    isLoadingSelector([TYPES.GET_ORDER], state)
-  );
-  const tobacoTableHandler = catId => {
+  const orderData = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
+  const orderDetailsLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER], state));
+  const tobacoTableHandler = (catId) => {
     setDetailtable(true);
     dispatch(getProductList(catId));
   };
-  const productModalHandler = async productId => {
+  const productModalHandler = async (productId) => {
     const res = await dispatch(getProductModal(productId));
     if (res?.type === 'GET_PRODUCT_MODAL_SUCCESS') {
       setProductDetailModel(true);
     }
   };
-  const sellingPriceHandler = index => {
+  const sellingPriceHandler = (index) => {
     const newArray = [...sellPriceArray];
     newArray[1].enabled = !newArray[1].enabled;
     setSellPriceArray(sellPriceArray);
   };
 
-  const graphHandler = item => {
+  const graphHandler = (item) => {
     if (item === 'Total Products') {
       setProductDetail(true);
     } else if (item === 'Total Inventory  Cost') {
@@ -368,7 +358,7 @@ export function Analytics(props) {
     }
   };
 
-  const inverntoryUnitViseHandler = item => {
+  const inverntoryUnitViseHandler = (item) => {
     if (item.title === 'Unit In') {
       setProductDetail(false);
       setInverntoryProductTable(true);
@@ -446,7 +436,7 @@ export function Analytics(props) {
       setSelectedId(item.title);
     }
   };
-  const orderTableHeadingFun = revenueTableHeading => {
+  const orderTableHeadingFun = (revenueTableHeading) => {
     if (revenueTableHeading === 'Total Order') {
       return (
         <Text style={[styles.trancationHeading, styles.tableHeaderSetting]}>
@@ -503,10 +493,7 @@ export function Analytics(props) {
       return (
         <Text style={[styles.trancationHeading, styles.tableHeaderSetting]}>
           {strings.analytics.totalRevenue}
-          <Text style={styles.totalTranStyle}>
-            {' '}
-            {strings.analytics.totalPrice}
-          </Text>
+          <Text style={styles.totalTranStyle}> {strings.analytics.totalPrice}</Text>
         </Text>
       );
     }
@@ -519,9 +506,7 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View>
-          <Text style={styles.revenueDataText}>
-            {moment(item?.created_at).format('LL')}
-          </Text>
+          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
           <Text style={styles.revenueDataTextLight}>
             {moment(item?.created_at).format('h:mm A')}
           </Text>
@@ -604,9 +589,7 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View>
-          <Text style={styles.revenueDataText}>
-            {moment(item?.created_at).format('LL')}
-          </Text>
+          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
           <Text style={styles.revenueDataTextLight}>
             {moment(item?.created_at).format('h:mm A')}
           </Text>
@@ -689,9 +672,7 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View>
-          <Text style={styles.revenueDataText}>
-            {moment(item?.created_at).format('LL')}
-          </Text>
+          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
           <Text style={styles.revenueDataTextLight}>
             {moment(item?.created_at).format('h:mm A')}
           </Text>
@@ -732,9 +713,7 @@ export function Analytics(props) {
       <DataTable.Cell style={styles.dateTableSetting}>
         <View style={styles.flexAlign}>
           <Image source={deliverCheck} style={styles.codeLogo} />
-          <Text style={[styles.revenueDataText, { color: COLORS.primary }]}>
-            ${item?.tips}
-          </Text>
+          <Text style={[styles.revenueDataText, { color: COLORS.primary }]}>${item?.tips}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -756,9 +735,7 @@ export function Analytics(props) {
         <TouchableOpacity
           style={styles.completeBtnCon2}
           onPress={() => {
-            setRevenueTable(false),
-              setRevenueOrderBuyer(true),
-              setTablebackSetting(true);
+            setRevenueTable(false), setRevenueOrderBuyer(true), setTablebackSetting(true);
             setOrderList(true);
             dispatch(getOrderData(item?.id));
           }}
@@ -776,9 +753,7 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View>
-          <Text style={styles.revenueDataText}>
-            {moment(item?.created_at).format('LL')}
-          </Text>
+          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
           <Text style={styles.revenueDataTextLight}>
             {moment(item?.created_at).format('h:mm A')}
           </Text>
@@ -841,9 +816,7 @@ export function Analytics(props) {
         <TouchableOpacity
           style={styles.completeBtnCon2}
           onPress={() => {
-            setRevenueTable(false),
-              setRevenueOrderBuyer(true),
-              setTablebackSetting(true);
+            setRevenueTable(false), setRevenueOrderBuyer(true), setTablebackSetting(true);
             setOrderList(true);
             dispatch(getOrderData(item?.id));
           }}
@@ -861,9 +834,7 @@ export function Analytics(props) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View>
-          <Text style={styles.revenueDataText}>
-            {moment(item?.created_at).format('LL')}
-          </Text>
+          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
           <Text style={styles.revenueDataTextLight}>
             {moment(item?.created_at).format('h:mm A')}
           </Text>
@@ -938,7 +909,7 @@ export function Analytics(props) {
       </DataTable.Cell>
     </DataTable.Row>
   );
-  const orderTableDataFun = revenueTableHeading => {
+  const orderTableDataFun = (revenueTableHeading) => {
     if (revenueTableHeading === 'Total Order') {
       return (
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
@@ -948,9 +919,7 @@ export function Analytics(props) {
             showsHorizontalScrollIndicator={false}
           >
             <DataTable style={{ zIndex: -99 }}>
-              <DataTable.Header
-                style={{ backgroundColor: COLORS.textInputBackground }}
-              >
+              <DataTable.Header style={{ backgroundColor: COLORS.textInputBackground }}>
                 <DataTable.Title style={styles.dateTableSettingFirst}>
                   <Text style={styles.revenueText}>#</Text>
                 </DataTable.Title>
@@ -973,10 +942,7 @@ export function Analytics(props) {
                       onPress={() => setSaleDropDown(!saleDropDown)}
                     >
                       <Text style={styles.revenueText}>Order type</Text>
-                      <Image
-                        source={dropdown}
-                        style={styles.dropdownIconSale}
-                      />
+                      <Image source={dropdown} style={styles.dropdownIconSale} />
                     </TouchableOpacity>
                     {saleDropDown ? (
                       <View style={[styles.tableDropDownCon]}>
@@ -985,27 +951,15 @@ export function Analytics(props) {
                             source={checkedCheckboxSquare}
                             style={styles.checkedCheckboxSquare}
                           />
-                          <Text style={styles.allText}>
-                            {strings.analytics.all}
-                          </Text>
+                          <Text style={styles.allText}>{strings.analytics.all}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.onlineSale}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.storeSale}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
                         </View>
                         <Spacer space={SH(4)} />
                       </View>
@@ -1032,10 +986,7 @@ export function Analytics(props) {
                       onPress={() => setPayMentDropDown(!paymentModeDropDown)}
                     >
                       <Text style={styles.revenueText}>Mode of payment</Text>
-                      <Image
-                        source={dropdown}
-                        style={styles.dropdownIconSale}
-                      />
+                      <Image source={dropdown} style={styles.dropdownIconSale} />
                     </TouchableOpacity>
                     {paymentModeDropDown ? (
                       <View style={styles.tableDropDownCon}>
@@ -1044,36 +995,19 @@ export function Analytics(props) {
                             source={checkedCheckboxSquare}
                             style={styles.checkedCheckboxSquare}
                           />
-                          <Text style={styles.allText}>
-                            {strings.analytics.all}
-                          </Text>
+                          <Text style={styles.allText}>{strings.analytics.all}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.jbr}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.jbr}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.cash}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.cash}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.card}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.card}</Text>
                         </View>
                         <Spacer space={SH(4)} />
                       </View>
@@ -1108,7 +1042,7 @@ export function Analytics(props) {
                       <FlatList
                         data={getOrderListData}
                         renderItem={getOrderListItem}
-                        keyExtractor={item => item.id}
+                        keyExtractor={(item) => item.id}
                         showsHorizontalScrollIndicator={false}
                       />
                     </View>
@@ -1129,9 +1063,7 @@ export function Analytics(props) {
             showsHorizontalScrollIndicator={false}
           >
             <DataTable style={{ zIndex: -99 }}>
-              <DataTable.Header
-                style={{ backgroundColor: COLORS.textInputBackground }}
-              >
+              <DataTable.Header style={{ backgroundColor: COLORS.textInputBackground }}>
                 <DataTable.Title style={styles.dateTableSettingFirst}>
                   <Text style={styles.revenueText}>#</Text>
                 </DataTable.Title>
@@ -1154,10 +1086,7 @@ export function Analytics(props) {
                       onPress={() => setSaleDropDown(!saleDropDown)}
                     >
                       <Text style={styles.revenueText}>Order type</Text>
-                      <Image
-                        source={dropdown}
-                        style={styles.dropdownIconSale}
-                      />
+                      <Image source={dropdown} style={styles.dropdownIconSale} />
                     </TouchableOpacity>
                     {saleDropDown ? (
                       <View style={[styles.tableDropDownCon]}>
@@ -1166,27 +1095,15 @@ export function Analytics(props) {
                             source={checkedCheckboxSquare}
                             style={styles.checkedCheckboxSquare}
                           />
-                          <Text style={styles.allText}>
-                            {strings.analytics.all}
-                          </Text>
+                          <Text style={styles.allText}>{strings.analytics.all}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.onlineSale}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.storeSale}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
                         </View>
                         <Spacer space={SH(4)} />
                       </View>
@@ -1213,10 +1130,7 @@ export function Analytics(props) {
                       onPress={() => setPayMentDropDown(!paymentModeDropDown)}
                     >
                       <Text style={styles.revenueText}>Mode of payment</Text>
-                      <Image
-                        source={dropdown}
-                        style={styles.dropdownIconSale}
-                      />
+                      <Image source={dropdown} style={styles.dropdownIconSale} />
                     </TouchableOpacity>
                     {paymentModeDropDown ? (
                       <View style={styles.tableDropDownCon}>
@@ -1225,36 +1139,19 @@ export function Analytics(props) {
                             source={checkedCheckboxSquare}
                             style={styles.checkedCheckboxSquare}
                           />
-                          <Text style={styles.allText}>
-                            {strings.analytics.all}
-                          </Text>
+                          <Text style={styles.allText}>{strings.analytics.all}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.jbr}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.jbr}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.cash}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.cash}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.card}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.card}</Text>
                         </View>
                         <Spacer space={SH(4)} />
                       </View>
@@ -1290,7 +1187,7 @@ export function Analytics(props) {
                       <FlatList
                         data={getOrderListData}
                         renderItem={getOrderListStore}
-                        keyExtractor={item => item.id}
+                        keyExtractor={(item) => item.id}
                         showsHorizontalScrollIndicator={false}
                       />
                     </View>
@@ -1374,9 +1271,7 @@ export function Analytics(props) {
             showsHorizontalScrollIndicator={false}
           >
             <DataTable style={{ zIndex: -99 }}>
-              <DataTable.Header
-                style={{ backgroundColor: COLORS.textInputBackground }}
-              >
+              <DataTable.Header style={{ backgroundColor: COLORS.textInputBackground }}>
                 <DataTable.Title style={styles.dateTableSettingFirst}>
                   <Text style={styles.revenueText}>#</Text>
                 </DataTable.Title>
@@ -1399,10 +1294,7 @@ export function Analytics(props) {
                       onPress={() => setSaleDropDown(!saleDropDown)}
                     >
                       <Text style={styles.revenueText}>Order type</Text>
-                      <Image
-                        source={dropdown}
-                        style={styles.dropdownIconSale}
-                      />
+                      <Image source={dropdown} style={styles.dropdownIconSale} />
                     </TouchableOpacity>
                     {saleDropDown ? (
                       <View style={[styles.tableDropDownCon]}>
@@ -1411,27 +1303,15 @@ export function Analytics(props) {
                             source={checkedCheckboxSquare}
                             style={styles.checkedCheckboxSquare}
                           />
-                          <Text style={styles.allText}>
-                            {strings.analytics.all}
-                          </Text>
+                          <Text style={styles.allText}>{strings.analytics.all}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.onlineSale}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.storeSale}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
                         </View>
                         <Spacer space={SH(4)} />
                       </View>
@@ -1458,10 +1338,7 @@ export function Analytics(props) {
                       onPress={() => setPayMentDropDown(!paymentModeDropDown)}
                     >
                       <Text style={styles.revenueText}>Mode of payment</Text>
-                      <Image
-                        source={dropdown}
-                        style={styles.dropdownIconSale}
-                      />
+                      <Image source={dropdown} style={styles.dropdownIconSale} />
                     </TouchableOpacity>
                     {paymentModeDropDown ? (
                       <View style={styles.tableDropDownCon}>
@@ -1470,36 +1347,19 @@ export function Analytics(props) {
                             source={checkedCheckboxSquare}
                             style={styles.checkedCheckboxSquare}
                           />
-                          <Text style={styles.allText}>
-                            {strings.analytics.all}
-                          </Text>
+                          <Text style={styles.allText}>{strings.analytics.all}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.jbr}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.jbr}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.cash}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.cash}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.card}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.card}</Text>
                         </View>
                         <Spacer space={SH(4)} />
                       </View>
@@ -1534,7 +1394,7 @@ export function Analytics(props) {
                       <FlatList
                         data={getOrderListData}
                         renderItem={getOrderListDelivery}
-                        keyExtractor={item => item.id}
+                        keyExtractor={(item) => item.id}
                         showsHorizontalScrollIndicator={false}
                       />
                     </View>
@@ -1684,9 +1544,7 @@ export function Analytics(props) {
             showsHorizontalScrollIndicator={false}
           >
             <DataTable style={{ zIndex: -99 }}>
-              <DataTable.Header
-                style={{ backgroundColor: COLORS.textInputBackground }}
-              >
+              <DataTable.Header style={{ backgroundColor: COLORS.textInputBackground }}>
                 <DataTable.Title style={styles.dateTableSettingFirst}>
                   <Text style={styles.revenueText}>#</Text>
                 </DataTable.Title>
@@ -1709,10 +1567,7 @@ export function Analytics(props) {
                       onPress={() => setSaleDropDown(!saleDropDown)}
                     >
                       <Text style={styles.revenueText}>Order type</Text>
-                      <Image
-                        source={dropdown}
-                        style={styles.dropdownIconSale}
-                      />
+                      <Image source={dropdown} style={styles.dropdownIconSale} />
                     </TouchableOpacity>
                     {saleDropDown ? (
                       <View style={[styles.tableDropDownCon]}>
@@ -1721,27 +1576,15 @@ export function Analytics(props) {
                             source={checkedCheckboxSquare}
                             style={styles.checkedCheckboxSquare}
                           />
-                          <Text style={styles.allText}>
-                            {strings.analytics.all}
-                          </Text>
+                          <Text style={styles.allText}>{strings.analytics.all}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.onlineSale}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.storeSale}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
                         </View>
                         <Spacer space={SH(4)} />
                       </View>
@@ -1768,10 +1611,7 @@ export function Analytics(props) {
                       onPress={() => setPayMentDropDown(!paymentModeDropDown)}
                     >
                       <Text style={styles.revenueText}>Mode of payment</Text>
-                      <Image
-                        source={dropdown}
-                        style={styles.dropdownIconSale}
-                      />
+                      <Image source={dropdown} style={styles.dropdownIconSale} />
                     </TouchableOpacity>
                     {paymentModeDropDown ? (
                       <View style={styles.tableDropDownCon}>
@@ -1780,36 +1620,19 @@ export function Analytics(props) {
                             source={checkedCheckboxSquare}
                             style={styles.checkedCheckboxSquare}
                           />
-                          <Text style={styles.allText}>
-                            {strings.analytics.all}
-                          </Text>
+                          <Text style={styles.allText}>{strings.analytics.all}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.jbr}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.jbr}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.cash}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.cash}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.card}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.card}</Text>
                         </View>
                         <Spacer space={SH(4)} />
                       </View>
@@ -1844,7 +1667,7 @@ export function Analytics(props) {
                       <FlatList
                         data={getOrderListData}
                         renderItem={getOrderListShipping}
-                        keyExtractor={item => item.id}
+                        keyExtractor={(item) => item.id}
                         showsHorizontalScrollIndicator={false}
                       />
                     </View>
@@ -1865,9 +1688,7 @@ export function Analytics(props) {
             showsHorizontalScrollIndicator={false}
           >
             <DataTable style={{ zIndex: -99 }}>
-              <DataTable.Header
-                style={{ backgroundColor: COLORS.textInputBackground }}
-              >
+              <DataTable.Header style={{ backgroundColor: COLORS.textInputBackground }}>
                 <DataTable.Title style={styles.dateTableSettingFirst}>
                   <Text style={styles.revenueText}>#</Text>
                 </DataTable.Title>
@@ -1890,10 +1711,7 @@ export function Analytics(props) {
                       onPress={() => setSaleDropDown(!saleDropDown)}
                     >
                       <Text style={styles.revenueText}>Sales type</Text>
-                      <Image
-                        source={dropdown}
-                        style={styles.dropdownIconSale}
-                      />
+                      <Image source={dropdown} style={styles.dropdownIconSale} />
                     </TouchableOpacity>
                     {saleDropDown ? (
                       <View style={[styles.tableDropDownCon]}>
@@ -1902,27 +1720,15 @@ export function Analytics(props) {
                             source={checkedCheckboxSquare}
                             style={styles.checkedCheckboxSquare}
                           />
-                          <Text style={styles.allText}>
-                            {strings.analytics.all}
-                          </Text>
+                          <Text style={styles.allText}>{strings.analytics.all}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.onlineSale}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.onlineSale}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.storeSale}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.storeSale}</Text>
                         </View>
                         <Spacer space={SH(4)} />
                       </View>
@@ -1949,10 +1755,7 @@ export function Analytics(props) {
                       onPress={() => setPayMentDropDown(!paymentModeDropDown)}
                     >
                       <Text style={styles.revenueText}>Mode of payment</Text>
-                      <Image
-                        source={dropdown}
-                        style={styles.dropdownIconSale}
-                      />
+                      <Image source={dropdown} style={styles.dropdownIconSale} />
                     </TouchableOpacity>
                     {paymentModeDropDown ? (
                       <View style={styles.tableDropDownCon}>
@@ -1961,36 +1764,19 @@ export function Analytics(props) {
                             source={checkedCheckboxSquare}
                             style={styles.checkedCheckboxSquare}
                           />
-                          <Text style={styles.allText}>
-                            {strings.analytics.all}
-                          </Text>
+                          <Text style={styles.allText}>{strings.analytics.all}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.jbr}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.jbr}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.cash}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.cash}</Text>
                         </View>
                         <View style={[styles.flexAlign, styles.allCon]}>
-                          <Image
-                            source={blankCheckBox}
-                            style={styles.checkedCheckboxSquare}
-                          />
-                          <Text style={styles.allText}>
-                            {strings.analytics.card}
-                          </Text>
+                          <Image source={blankCheckBox} style={styles.checkedCheckboxSquare} />
+                          <Text style={styles.allText}>{strings.analytics.card}</Text>
                         </View>
                         <Spacer space={SH(4)} />
                       </View>
@@ -2025,7 +1811,7 @@ export function Analytics(props) {
                       <FlatList
                         data={getOrderListData}
                         renderItem={getOrderListRevenue}
-                        keyExtractor={item => item.id}
+                        keyExtractor={(item) => item.id}
                         showsHorizontalScrollIndicator={false}
                       />
                     </View>
@@ -2040,7 +1826,7 @@ export function Analytics(props) {
     }
   };
 
-  const naviagtionHandler = item => {
+  const naviagtionHandler = (item) => {
     if (item.transaction === 'All') {
       return alert('All');
     } else if (item.transaction === 'Store') {
@@ -2052,29 +1838,16 @@ export function Analytics(props) {
     }
   };
 
-  const TransactionTypeItem = ({
-    item,
-    onPress,
-    borderColor,
-    color,
-    fontFamily,
-  }) => (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[styles.allJbrCon, { borderColor }]}
-    >
+  const TransactionTypeItem = ({ item, onPress, borderColor, color, fontFamily }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.allJbrCon, { borderColor }]}>
       <Text style={[styles.allJbrText, { color, fontFamily }]}>
         {item.title}{' '}
-        {orderstatisticsLoader ? (
-          <ActivityIndicator color={COLORS.primary} />
-        ) : (
-          item.count
-        )}
+        {orderstatisticsLoader ? <ActivityIndicator color={COLORS.primary} /> : item.count}
       </Text>
     </TouchableOpacity>
   );
 
-  const orderListTabChange = item => {
+  const orderListTabChange = (item) => {
     if (item.title == 'Total Order') {
       setRevenueTable(true);
       setRevenueTableHeading('Total Order');
@@ -2109,11 +1882,9 @@ export function Analytics(props) {
   };
 
   const allTransactionItem = ({ item, orderTime }) => {
-    const borderColor =
-      item.title === selectedId ? COLORS.primary : COLORS.solidGrey;
+    const borderColor = item.title === selectedId ? COLORS.primary : COLORS.solidGrey;
     const color = item.title === selectedId ? COLORS.primary : COLORS.dark_grey;
-    const fontFamily =
-      item.title === selectedId ? Fonts.SemiBold : Fonts.Regular;
+    const fontFamily = item.title === selectedId ? Fonts.SemiBold : Fonts.Regular;
 
     return (
       <TransactionTypeItem
@@ -2146,12 +1917,7 @@ export function Analytics(props) {
   // );
   const productDetailItem = ({ item }) => (
     <View style={[styles.sellingPriceConblue, styles.sellingPriceCongrey]}>
-      <Text
-        style={[
-          styles.sellingCount,
-          { fontSize: SF(17), fontFamily: Fonts.MaisonRegular },
-        ]}
-      >
+      <Text style={[styles.sellingCount, { fontSize: SF(17), fontFamily: Fonts.MaisonRegular }]}>
         {item.heading}
       </Text>
       <Spacer space={SH(8)} />
@@ -2197,16 +1963,11 @@ export function Analytics(props) {
           }}
         >
           <Image
-            source={
-              item?.product_image ? { uri: item?.product_image } : userImage
-            }
+            source={item?.product_image ? { uri: item?.product_image } : userImage}
             style={styles.ashtonStyle}
           />
           <View style={{ paddingHorizontal: moderateScale(10) }}>
-            <Text
-              style={[styles.jfrText, { color: COLORS.black }]}
-              numberOfLines={1}
-            >
+            <Text style={[styles.jfrText, { color: COLORS.black }]} numberOfLines={1}>
               {item.product_name}
             </Text>
             <Text style={styles.boxText}>Box</Text>
@@ -2234,9 +1995,7 @@ export function Analytics(props) {
     <View style={styles.tableDataCon}>
       <View style={styles.displayFlex}>
         <View style={styles.tableHeaderLeft}>
-          <Text style={[styles.usertableRowText, { textAlign: 'center' }]}>
-            {index + 1}
-          </Text>
+          <Text style={[styles.usertableRowText, { textAlign: 'center' }]}>{index + 1}</Text>
           <TouchableOpacity
             style={styles.tableDataLeft}
             onPress={() => {
@@ -2252,25 +2011,15 @@ export function Analytics(props) {
               }}
             >
               <Text style={[styles.usertableRowText]}>{item?.supplier}</Text>
-              <Text
-                style={[styles.usertableRowText, { color: COLORS.gerySkies }]}
-              >
-                Florida
-              </Text>
+              <Text style={[styles.usertableRowText, { color: COLORS.gerySkies }]}>Florida</Text>
             </View>
           </TouchableOpacity>
         </View>
         <View style={styles.tablerightSectionBody}>
-          <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-            {item?.invoice}
-          </Text>
+          <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>{item?.invoice}</Text>
           <Text style={styles.usertableRowText}>{item?.unit_in}</Text>
-          <Text style={styles.usertableRowText}>
-            {moment(item?.created_at).format('LL')}
-          </Text>
-          <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
-            $200
-          </Text>
+          <Text style={styles.usertableRowText}>{moment(item?.created_at).format('LL')}</Text>
+          <Text style={[styles.usertableRowText, { marginRight: 90 }]}>$200</Text>
         </View>
       </View>
     </View>
@@ -2301,30 +2050,19 @@ export function Analytics(props) {
               }
               style={styles.allienpic}
             />
-            <Text
-              style={[
-                styles.usertableRowText,
-                { paddingHorizontal: moderateScale(3) },
-              ]}
-            >
+            <Text style={[styles.usertableRowText, { paddingHorizontal: moderateScale(3) }]}>
               {item?.supplier}
             </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.tablerightSectionBody}>
           <Text style={[styles.usertableRowText]}>125698740</Text>
-          <Text style={[styles.usertableRowText, { marginLeft: -80 }]}>
-            {item?.unit_in}
-          </Text>
-          <Text style={[styles.usertableRowText, { marginLeft: -50 }]}>
-            145
-          </Text>
+          <Text style={[styles.usertableRowText, { marginLeft: -80 }]}>{item?.unit_in}</Text>
+          <Text style={[styles.usertableRowText, { marginLeft: -50 }]}>145</Text>
           <Text style={styles.usertableRowText}>5</Text>
           <Text style={styles.usertableRowText}>50</Text>
           <Text style={styles.usertableRowText}>20</Text>
-          <Text style={[styles.usertableRowText, { marginRight: 40 }]}>
-            $200
-          </Text>
+          <Text style={[styles.usertableRowText, { marginRight: 40 }]}>$200</Text>
         </View>
       </View>
     </View>
@@ -2360,13 +2098,9 @@ export function Analytics(props) {
           <Text style={[styles.usertableRowText, { marginLeft: SW(-7) }]}>
             {item?.sku ? item?.sku : '###'}
           </Text>
-          <Text style={[styles.usertableRowText, { marginLeft: SW(-7) }]}>
-            {item?.price}
-          </Text>
+          <Text style={[styles.usertableRowText, { marginLeft: SW(-7) }]}>{item?.price}</Text>
           <Text style={styles.usertableRowText}>1</Text>
-          <Text style={[styles.usertableRowText, { marginRight: SW(8) }]}>
-            $250.00
-          </Text>
+          <Text style={[styles.usertableRowText, { marginRight: SW(8) }]}>$250.00</Text>
         </View>
       </View>
     </View>
@@ -2421,9 +2155,7 @@ export function Analytics(props) {
             <Text style={styles.usertableRowText}>
               {item?.total_quantity ? item?.total_quantity : 20}
             </Text>
-            <Text style={styles.usertableRowText}>
-              {moment(item?.created_at).format('LL')}
-            </Text>
+            <Text style={styles.usertableRowText}>{moment(item?.created_at).format('LL')}</Text>
             <Text style={[styles.usertableRowText, { marginRight: SW(25) }]}>
               ${item?.products?.price}
             </Text>
@@ -2450,9 +2182,7 @@ export function Analytics(props) {
 
         <Text style={styles.rowText}>{item.product_name}</Text>
       </DataTable.Cell>
-      <DataTable.Cell
-        style={[styles.buyerTableSettingFirst, { marginLeft: SH(240) }]}
-      >
+      <DataTable.Cell style={[styles.buyerTableSettingFirst, { marginLeft: SH(240) }]}>
         <Text style={styles.revenueDataText}>{item?.qty}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.buyerTableSettingFirst}>
@@ -2464,7 +2194,7 @@ export function Analytics(props) {
     </DataTable.Row>
   );
 
-  const tableHeaderAccCat = accCatTable => {
+  const tableHeaderAccCat = (accCatTable) => {
     if (accCatTable === 'Category') {
       return (
         <Text style={styles.categoryHeader}>
@@ -2491,7 +2221,7 @@ export function Analytics(props) {
       );
     }
   };
-  const tableHeaderChange = accCatTable => {
+  const tableHeaderChange = (accCatTable) => {
     if (accCatTable === 'Category') {
       return (
         <Text style={styles.categoryHeader}>
@@ -2518,7 +2248,7 @@ export function Analytics(props) {
       );
     }
   };
-  const tableAccCategory = accCatTable => {
+  const tableAccCategory = (accCatTable) => {
     if (accCatTable === 'Category') {
       return (
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
@@ -2532,12 +2262,7 @@ export function Analytics(props) {
                   }}
                 >
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Category Name
                   </Text>
                 </View>
@@ -2549,9 +2274,7 @@ export function Analytics(props) {
                     paddingRight: Platform.OS === 'ios' ? 40 : 0,
                   }}
                 >
-                  <Text style={styles.brandHeaderText}>
-                    Sub-Category Listed
-                  </Text>
+                  <Text style={styles.brandHeaderText}>Sub-Category Listed</Text>
                   <Text style={styles.brandHeaderText}>Brand Listed</Text>
                   <Text style={styles.brandHeaderText}>Product Listed</Text>
                   <Text style={styles.brandHeaderText}>Total Product Sold</Text>
@@ -2570,9 +2293,7 @@ export function Analytics(props) {
                   </View>
                 ) : catSubBrandArray?.length === 0 ? (
                   <View style={styles.noProductView}>
-                    <Text style={styles.noProductText}>
-                      {strings.analytics.noProduct}
-                    </Text>
+                    <Text style={styles.noProductText}>{strings.analytics.noProduct}</Text>
                   </View>
                 ) : (
                   catSubBrandArray?.map((item, index) => (
@@ -2591,9 +2312,7 @@ export function Analytics(props) {
                             width: windowWidth * 0.25,
                           }}
                         >
-                          <Text style={styles.usertableRowText}>
-                            {index + 1}
-                          </Text>
+                          <Text style={styles.usertableRowText}>{index + 1}</Text>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -2620,10 +2339,7 @@ export function Analytics(props) {
                             paddingHorizontal: Platform.OS === 'ios' ? 40 : 30,
                           }}
                         >
-                          <Text
-                            style={[styles.brandDataText]}
-                            numberOfLines={1}
-                          >
+                          <Text style={[styles.brandDataText]} numberOfLines={1}>
                             {item.sub_category_listed}
                           </Text>
                           <Text style={styles.brandDataText} numberOfLines={1}>
@@ -2661,12 +2377,7 @@ export function Analytics(props) {
                   }}
                 >
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Sub Category Name
                   </Text>
                 </View>
@@ -2697,9 +2408,7 @@ export function Analytics(props) {
                   </View>
                 ) : catSubBrandArray?.length === 0 ? (
                   <View style={styles.noProductView}>
-                    <Text style={styles.noProductText}>
-                      {strings.analytics.noProduct}
-                    </Text>
+                    <Text style={styles.noProductText}>{strings.analytics.noProduct}</Text>
                   </View>
                 ) : (
                   catSubBrandArray?.map((item, index) => (
@@ -2718,9 +2427,7 @@ export function Analytics(props) {
                             width: windowWidth * 0.25,
                           }}
                         >
-                          <Text style={styles.usertableRowText}>
-                            {index + 1}
-                          </Text>
+                          <Text style={styles.usertableRowText}>{index + 1}</Text>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -2747,10 +2454,7 @@ export function Analytics(props) {
                             paddingRight: Platform.OS === 'ios' ? 40 : 0,
                           }}
                         >
-                          <Text
-                            style={[styles.brandDataText]}
-                            numberOfLines={1}
-                          >
+                          <Text style={[styles.brandDataText]} numberOfLines={1}>
                             {item.category_name}
                           </Text>
                           <Text style={styles.brandDataText} numberOfLines={1}>
@@ -2788,12 +2492,7 @@ export function Analytics(props) {
                   }}
                 >
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Brand Name
                   </Text>
                 </View>
@@ -2824,9 +2523,7 @@ export function Analytics(props) {
                   </View>
                 ) : catSubBrandArray?.length === 0 ? (
                   <View style={styles.noProductView}>
-                    <Text style={styles.noProductText}>
-                      {strings.analytics.noProduct}
-                    </Text>
+                    <Text style={styles.noProductText}>{strings.analytics.noProduct}</Text>
                   </View>
                 ) : (
                   catSubBrandArray?.map((item, index) => (
@@ -2845,9 +2542,7 @@ export function Analytics(props) {
                             width: windowWidth * 0.25,
                           }}
                         >
-                          <Text style={styles.usertableRowText}>
-                            {index + 1}
-                          </Text>
+                          <Text style={styles.usertableRowText}>{index + 1}</Text>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -2874,16 +2569,10 @@ export function Analytics(props) {
                             paddingRight: Platform.OS === 'ios' ? 40 : 40,
                           }}
                         >
-                          <Text
-                            style={[styles.brandDataText]}
-                            numberOfLines={1}
-                          >
+                          <Text style={[styles.brandDataText]} numberOfLines={1}>
                             {item.category_name}
                           </Text>
-                          <Text
-                            style={styles.brandDataText}
-                            numberOfLines={1}
-                          ></Text>
+                          <Text style={styles.brandDataText} numberOfLines={1}></Text>
                           <Text style={styles.brandDataText} numberOfLines={1}>
                             {item.product_listed}
                           </Text>
@@ -2905,7 +2594,7 @@ export function Analytics(props) {
       );
     }
   };
-  const tableChangeHandler = accCatTable => {
+  const tableChangeHandler = (accCatTable) => {
     if (accCatTable === 'Category') {
       return (
         <View style={[styles.tableMainView, { zIndex: -9 }]}>
@@ -2920,12 +2609,7 @@ export function Analytics(props) {
                   }}
                 >
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Product Name
                   </Text>
                 </View>
@@ -2961,9 +2645,7 @@ export function Analytics(props) {
                   </View>
                 ) : getTotalProductArray?.length === 0 ? (
                   <View style={styles.noProductView}>
-                    <Text style={styles.noProductText}>
-                      {strings.analytics.noProduct}
-                    </Text>
+                    <Text style={styles.noProductText}>{strings.analytics.noProduct}</Text>
                   </View>
                 ) : (
                   getTotalProductArray?.map((item, index) => (
@@ -2980,9 +2662,7 @@ export function Analytics(props) {
                             width: windowWidth * 0.2,
                           }}
                         >
-                          <Text style={styles.usertableRowText}>
-                            {index + 1}
-                          </Text>
+                          <Text style={styles.usertableRowText}>{index + 1}</Text>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -2990,10 +2670,7 @@ export function Analytics(props) {
                               paddingHorizontal: moderateScale(10),
                             }}
                           >
-                            <Image
-                              source={{ uri: item.image }}
-                              style={styles.allienpic}
-                            />
+                            <Image source={{ uri: item.image }} style={styles.allienpic} />
                             <Text
                               numberOfLines={1}
                               style={[
@@ -3013,46 +2690,25 @@ export function Analytics(props) {
                             paddingRight: 30,
                           }}
                         >
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.barcode}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.category?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.sub_category?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.brand?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.stock}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.total_product_sold}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             ${item.total_sales}
                           </Text>
                         </View>
@@ -3079,12 +2735,7 @@ export function Analytics(props) {
                   }}
                 >
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Product Name
                   </Text>
                 </View>
@@ -3119,9 +2770,7 @@ export function Analytics(props) {
                   </View>
                 ) : getTotalProductArray?.length === 0 ? (
                   <View style={styles.noProductView}>
-                    <Text style={styles.noProductText}>
-                      {strings.analytics.noProduct}
-                    </Text>
+                    <Text style={styles.noProductText}>{strings.analytics.noProduct}</Text>
                   </View>
                 ) : (
                   getTotalProductArray?.map((item, index) => (
@@ -3138,9 +2787,7 @@ export function Analytics(props) {
                             width: windowWidth * 0.2,
                           }}
                         >
-                          <Text style={styles.usertableRowText}>
-                            {index + 1}
-                          </Text>
+                          <Text style={styles.usertableRowText}>{index + 1}</Text>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -3148,10 +2795,7 @@ export function Analytics(props) {
                               paddingHorizontal: moderateScale(10),
                             }}
                           >
-                            <Image
-                              source={{ uri: item.image }}
-                              style={styles.allienpic}
-                            />
+                            <Image source={{ uri: item.image }} style={styles.allienpic} />
                             <Text
                               numberOfLines={1}
                               style={[
@@ -3171,46 +2815,25 @@ export function Analytics(props) {
                             paddingRight: 30,
                           }}
                         >
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.barcode}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.category?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.sub_category?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.brand?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.stock}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.total_product_sold}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             ${item.total_sales}
                           </Text>
                         </View>
@@ -3237,12 +2860,7 @@ export function Analytics(props) {
                   }}
                 >
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Product Name
                   </Text>
                 </View>
@@ -3277,9 +2895,7 @@ export function Analytics(props) {
                   </View>
                 ) : getTotalProductArray?.length === 0 ? (
                   <View style={styles.noProductView}>
-                    <Text style={styles.noProductText}>
-                      {strings.analytics.noProduct}
-                    </Text>
+                    <Text style={styles.noProductText}>{strings.analytics.noProduct}</Text>
                   </View>
                 ) : (
                   getTotalProductArray?.map((item, index) => (
@@ -3296,9 +2912,7 @@ export function Analytics(props) {
                             width: windowWidth * 0.2,
                           }}
                         >
-                          <Text style={styles.usertableRowText}>
-                            {index + 1}
-                          </Text>
+                          <Text style={styles.usertableRowText}>{index + 1}</Text>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -3306,10 +2920,7 @@ export function Analytics(props) {
                               paddingHorizontal: moderateScale(10),
                             }}
                           >
-                            <Image
-                              source={{ uri: item.image }}
-                              style={styles.allienpic}
-                            />
+                            <Image source={{ uri: item.image }} style={styles.allienpic} />
                             <Text
                               numberOfLines={1}
                               style={[
@@ -3329,46 +2940,25 @@ export function Analytics(props) {
                             paddingRight: 30,
                           }}
                         >
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.barcode}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.category?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.sub_category?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.brand?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.stock}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.total_product_sold}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             ${item.total_sales}
                           </Text>
                         </View>
@@ -3395,12 +2985,7 @@ export function Analytics(props) {
                   }}
                 >
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Product Name
                   </Text>
                 </View>
@@ -3435,9 +3020,7 @@ export function Analytics(props) {
                   </View>
                 ) : catSubBrandArray?.length === 0 ? (
                   <View style={styles.noProductView}>
-                    <Text style={styles.noProductText}>
-                      {strings.analytics.noProduct}
-                    </Text>
+                    <Text style={styles.noProductText}>{strings.analytics.noProduct}</Text>
                   </View>
                 ) : (
                   catSubBrandArray?.map((item, index) => (
@@ -3454,9 +3037,7 @@ export function Analytics(props) {
                             width: windowWidth * 0.2,
                           }}
                         >
-                          <Text style={styles.usertableRowText}>
-                            {index + 1}
-                          </Text>
+                          <Text style={styles.usertableRowText}>{index + 1}</Text>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -3464,10 +3045,7 @@ export function Analytics(props) {
                               paddingHorizontal: moderateScale(10),
                             }}
                           >
-                            <Image
-                              source={{ uri: item.image }}
-                              style={styles.allienpic}
-                            />
+                            <Image source={{ uri: item.image }} style={styles.allienpic} />
                             <Text
                               numberOfLines={1}
                               style={[
@@ -3487,46 +3065,25 @@ export function Analytics(props) {
                             paddingRight: 30,
                           }}
                         >
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.barcode}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.category?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.sub_category?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.brand?.name}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.stock}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             {item.total_product_sold}
                           </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={styles.productDataWidth}
-                          >
+                          <Text numberOfLines={1} style={styles.productDataWidth}>
                             ${item.total_sales}
                           </Text>
                         </View>
@@ -3541,7 +3098,7 @@ export function Analytics(props) {
       );
     }
   };
-  const inventryTableHeaderChange = inventoryTable => {
+  const inventryTableHeaderChange = (inventoryTable) => {
     if (inventoryTable === 'Unit In') {
       return (
         <Text style={styles.categoryHeader}>
@@ -3562,7 +3119,7 @@ export function Analytics(props) {
       );
     }
   };
-  const inventryTableHeader = inventoryTable => {
+  const inventryTableHeader = (inventoryTable) => {
     if (inventoryTable === 'Unit In') {
       return (
         <Text style={styles.categoryHeader}>
@@ -3589,7 +3146,7 @@ export function Analytics(props) {
       );
     }
   };
-  const inventryTableChangeHandler = inventoryTable => {
+  const inventryTableChangeHandler = (inventoryTable) => {
     if (inventoryTable === 'Unit In') {
       return (
         <View style={{ zIndex: -9 }}>
@@ -3598,12 +3155,7 @@ export function Analytics(props) {
               <View style={styles.displayFlex}>
                 <View style={styles.tableHeaderLeft}>
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Supplier
                   </Text>
                 </View>
@@ -3611,9 +3163,7 @@ export function Analytics(props) {
                   <Text style={styles.text}>Invoice</Text>
                   <Text style={styles.text}>Unit In</Text>
                   <Text style={styles.text}>Date</Text>
-                  <Text style={[styles.text, { marginRight: 80 }]}>
-                    Total Cost
-                  </Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>Total Cost</Text>
                 </View>
               </View>
             </View>
@@ -3622,7 +3172,7 @@ export function Analytics(props) {
               <FlatList
                 data={sellerInfo}
                 renderItem={renderSellerInfo}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
               />
             </View>
           </Table>
@@ -3636,12 +3186,7 @@ export function Analytics(props) {
               <View style={styles.displayFlex}>
                 <View style={styles.tableHeaderLeft}>
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Customer
                   </Text>
                 </View>
@@ -3649,20 +3194,14 @@ export function Analytics(props) {
                   <Text style={styles.text}>Invoice</Text>
                   <Text style={styles.text}>Unit Out</Text>
                   <Text style={styles.text}>Date</Text>
-                  <Text style={[styles.text, { marginRight: 80 }]}>
-                    Total Cost
-                  </Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>Total Cost</Text>
                 </View>
               </View>
             </View>
             <View style={styles.tableDataCon}>
               <View style={styles.displayFlex}>
                 <View style={styles.tableHeaderLeft}>
-                  <Text
-                    style={[styles.usertableRowText, { textAlign: 'center' }]}
-                  >
-                    1
-                  </Text>
+                  <Text style={[styles.usertableRowText, { textAlign: 'center' }]}>1</Text>
                   <TouchableOpacity
                     style={styles.tableDataLeft}
                     onPress={() => {
@@ -3676,29 +3215,18 @@ export function Analytics(props) {
                         paddingHorizontal: moderateScale(4),
                       }}
                     >
-                      <Text style={[styles.usertableRowText]}>
-                        Record & Tape
-                      </Text>
-                      <Text
-                        style={[
-                          styles.usertableRowText,
-                          { color: COLORS.gerySkies },
-                        ]}
-                      >
+                      <Text style={[styles.usertableRowText]}>Record & Tape</Text>
+                      <Text style={[styles.usertableRowText, { color: COLORS.gerySkies }]}>
                         Florida
                       </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.tablerightSectionBody}>
-                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                    125698740
-                  </Text>
+                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>125698740</Text>
                   <Text style={styles.usertableRowText}>20</Text>
                   <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
-                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
-                    $200
-                  </Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>$200</Text>
                 </View>
               </View>
             </View>
@@ -3713,12 +3241,7 @@ export function Analytics(props) {
               <View style={styles.displayFlex}>
                 <View style={styles.tableHeaderLeft}>
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Supplier
                   </Text>
                 </View>
@@ -3726,20 +3249,14 @@ export function Analytics(props) {
                   <Text style={styles.text}>Invoice</Text>
                   <Text style={styles.text}>Date</Text>
                   <Text style={styles.text}>Unit In</Text>
-                  <Text style={[styles.text, { marginRight: 80 }]}>
-                    Total Cost
-                  </Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>Total Cost</Text>
                 </View>
               </View>
             </View>
             <View style={styles.tableDataCon}>
               <View style={styles.displayFlex}>
                 <View style={styles.tableHeaderLeft}>
-                  <Text
-                    style={[styles.usertableRowText, { textAlign: 'center' }]}
-                  >
-                    1
-                  </Text>
+                  <Text style={[styles.usertableRowText, { textAlign: 'center' }]}>1</Text>
                   <TouchableOpacity
                     style={styles.tableDataLeft}
                     onPress={() => {
@@ -3753,29 +3270,18 @@ export function Analytics(props) {
                         paddingHorizontal: moderateScale(4),
                       }}
                     >
-                      <Text style={[styles.usertableRowText]}>
-                        Record & Tape
-                      </Text>
-                      <Text
-                        style={[
-                          styles.usertableRowText,
-                          { color: COLORS.gerySkies },
-                        ]}
-                      >
+                      <Text style={[styles.usertableRowText]}>Record & Tape</Text>
+                      <Text style={[styles.usertableRowText, { color: COLORS.gerySkies }]}>
                         Florida
                       </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.tablerightSectionBody}>
-                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>
-                    125698740
-                  </Text>
+                  <Text style={[styles.usertableRowText, { paddingLeft: 10 }]}>125698740</Text>
                   <Text style={styles.usertableRowText}>20</Text>
                   <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
-                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
-                    $200
-                  </Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>$200</Text>
                 </View>
               </View>
             </View>
@@ -3784,7 +3290,7 @@ export function Analytics(props) {
       );
     }
   };
-  const inventoryTableHandler = inventoryTable => {
+  const inventoryTableHandler = (inventoryTable) => {
     if (inventoryTable === 'Unit In') {
       return (
         <View style={{ zIndex: -9 }}>
@@ -3793,12 +3299,7 @@ export function Analytics(props) {
               <View style={styles.displayFlex}>
                 <View style={styles.tableHeaderLeft}>
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Prouct Name
                   </Text>
                 </View>
@@ -3806,9 +3307,7 @@ export function Analytics(props) {
                   <Text style={styles.text}>Barcode</Text>
                   <Text style={styles.text}>Unit In</Text>
                   <Text style={styles.text}>Date</Text>
-                  <Text style={[styles.text, { marginRight: 80 }]}>
-                    Total Cost
-                  </Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>Total Cost</Text>
                 </View>
               </View>
             </View>
@@ -3816,7 +3315,7 @@ export function Analytics(props) {
               <FlatList
                 data={sellerProductList}
                 renderItem={renderSellerProductItem}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
               />
             </View>
           </Table>
@@ -3830,12 +3329,7 @@ export function Analytics(props) {
               <View style={styles.displayFlex}>
                 <View style={styles.tableHeaderLeft}>
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Prouct Name
                   </Text>
                 </View>
@@ -3843,9 +3337,7 @@ export function Analytics(props) {
                   <Text style={styles.text}>Barcode</Text>
                   <Text style={styles.text}>Unit Out</Text>
                   <Text style={styles.text}>Date</Text>
-                  <Text style={[styles.text, { marginRight: 80 }]}>
-                    Total Cost
-                  </Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>Total Cost</Text>
                 </View>
               </View>
             </View>
@@ -3865,10 +3357,7 @@ export function Analytics(props) {
                   >
                     <Image source={tobaco} style={styles.allienpic} />
                     <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
+                      style={[styles.usertableRowText, { paddingHorizontal: moderateScale(3) }]}
                     >
                       Aromas de San Andrés
                     </Text>
@@ -3878,9 +3367,7 @@ export function Analytics(props) {
                   <Text style={[styles.usertableRowText]}>125698740</Text>
                   <Text style={styles.usertableRowText}>20</Text>
                   <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
-                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
-                    $200
-                  </Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>$200</Text>
                 </View>
               </View>
             </View>
@@ -3895,12 +3382,7 @@ export function Analytics(props) {
               <View style={styles.displayFlex}>
                 <View style={styles.tableHeaderLeft}>
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Prouct Name
                   </Text>
                 </View>
@@ -3908,9 +3390,7 @@ export function Analytics(props) {
                   <Text style={styles.text}>Barcode</Text>
                   <Text style={styles.text}>Unit Return</Text>
                   <Text style={styles.text}>Date</Text>
-                  <Text style={[styles.text, { marginRight: 80 }]}>
-                    Total Cost
-                  </Text>
+                  <Text style={[styles.text, { marginRight: 80 }]}>Total Cost</Text>
                 </View>
               </View>
             </View>
@@ -3930,10 +3410,7 @@ export function Analytics(props) {
                   >
                     <Image source={tobaco} style={styles.allienpic} />
                     <Text
-                      style={[
-                        styles.usertableRowText,
-                        { paddingHorizontal: moderateScale(3) },
-                      ]}
+                      style={[styles.usertableRowText, { paddingHorizontal: moderateScale(3) }]}
                     >
                       Aromas de San Andrés
                     </Text>
@@ -3943,9 +3420,7 @@ export function Analytics(props) {
                   <Text style={[styles.usertableRowText]}>125698740</Text>
                   <Text style={styles.usertableRowText}>20</Text>
                   <Text style={styles.usertableRowText}>Aug 20, 2022</Text>
-                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>
-                    $200
-                  </Text>
+                  <Text style={[styles.usertableRowText, { marginRight: 90 }]}>$200</Text>
                 </View>
               </View>
             </View>
@@ -3960,12 +3435,7 @@ export function Analytics(props) {
               <View style={styles.displayFlex}>
                 <View style={styles.tableHeaderLeft}>
                   <Text style={styles.text}>#</Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { paddingHorizontal: moderateScale(10) },
-                    ]}
-                  >
+                  <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                     Prouct Name
                   </Text>
                 </View>
@@ -3976,9 +3446,7 @@ export function Analytics(props) {
                   <Text style={styles.text}>Unit Return</Text>
                   <Text style={styles.text}>Stock on hand</Text>
                   <Text style={styles.text}>Re-order level</Text>
-                  <Text style={[styles.text, { marginRight: 20 }]}>
-                    Total Cost
-                  </Text>
+                  <Text style={[styles.text, { marginRight: 20 }]}>Total Cost</Text>
                 </View>
               </View>
             </View>
@@ -3986,7 +3454,7 @@ export function Analytics(props) {
               <FlatList
                 data={sellerInfo}
                 renderItem={renderSellerStock}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
               />
             </View>
           </Table>
@@ -4047,10 +3515,7 @@ export function Analytics(props) {
               })
             }
           >
-            <Image
-              source={notifications}
-              style={[styles.truckStyle, { right: 25 }]}
-            />
+            <Image source={notifications} style={[styles.truckStyle, { right: 25 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
@@ -4084,10 +3549,7 @@ export function Analytics(props) {
               })
             }
           >
-            <Image
-              source={notifications}
-              style={[styles.truckStyle, { right: 25 }]}
-            />
+            <Image source={notifications} style={[styles.truckStyle, { right: 25 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
             <Image source={search_light} style={styles.searchImage} />
@@ -4114,25 +3576,17 @@ export function Analytics(props) {
           <View style={styles.displayFlex}>
             <TouchableOpacity
               style={styles.backButtonCon}
-              onPress={() => (
-                setProductDetailModel(false), setEditButton(false)
-              )}
+              onPress={() => (setProductDetailModel(false), setEditButton(false))}
             >
               <Image source={backArrow} style={styles.backButtonArrow} />
               <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
             </TouchableOpacity>
             {editButton ? (
-              <TouchableOpacity
-                style={styles.saveButtonCon}
-                onPress={() => setEditButton(false)}
-              >
+              <TouchableOpacity style={styles.saveButtonCon} onPress={() => setEditButton(false)}>
                 <Text style={styles.saveText}>{strings.analytics.save}</Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity
-                style={styles.editButtonCon}
-                onPress={() => setEditButton(true)}
-              >
+              <TouchableOpacity style={styles.editButtonCon} onPress={() => setEditButton(true)}>
                 <View style={styles.flexAlign}>
                   <Image source={pencil} style={styles.pencil} />
                   <Text style={styles.edit}>{strings.analytics.edit}</Text>
@@ -4186,9 +3640,7 @@ export function Analytics(props) {
                       keyboardType="numeric"
                     />
                   ) : (
-                    <Text style={styles.sellingCount}>
-                      ${totalProductModalData?.selling_price}
-                    </Text>
+                    <Text style={styles.sellingCount}>${totalProductModalData?.selling_price}</Text>
                   )}
                 </View>
                 <Spacer space={SH(20)} />
@@ -4213,9 +3665,7 @@ export function Analytics(props) {
                       keyboardType="numeric"
                     />
                   ) : (
-                    <Text style={styles.sellingCount}>
-                      {totalProductModalData?.re_order}
-                    </Text>
+                    <Text style={styles.sellingCount}>{totalProductModalData?.re_order}</Text>
                   )}
                 </View>
               </View>
@@ -4223,7 +3673,7 @@ export function Analytics(props) {
                 <FlatList
                   data={productDetailData}
                   renderItem={productDetailItem}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item) => item.id}
                   numColumns={3}
                   //  horizontal
                   contentContainerStyle={styles.contentContainer}
@@ -4252,23 +3702,16 @@ export function Analytics(props) {
                 <TouchableOpacity onPress={() => setInvoiceModal(false)}>
                   <Image source={leftBack} style={styles.leftBackStyle} />
                 </TouchableOpacity>
-                <Text style={styles.invoiceIdText}>
-                  {strings.analytics.invoiveId}
-                </Text>
+                <Text style={styles.invoiceIdText}>{strings.analytics.invoiveId}</Text>
               </View>
               <View style={styles.flexAlign}>
                 <View style={styles.printButtonCon}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image
                       source={printIcon}
-                      style={[
-                        styles.crossButtonStyle,
-                        { marginHorizontal: moderateScale(3) },
-                      ]}
+                      style={[styles.crossButtonStyle, { marginHorizontal: moderateScale(3) }]}
                     />
-                    <Text style={styles.saveText}>
-                      {strings.analytics.print}
-                    </Text>
+                    <Text style={styles.saveText}>{strings.analytics.print}</Text>
                   </View>
                 </View>
                 <TouchableOpacity onPress={() => setInvoiceModal(false)}>
@@ -4277,10 +3720,7 @@ export function Analytics(props) {
               </View>
             </View>
           </View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-          >
+          <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
             <View>
               <Spacer space={SH(20)} />
               <View style={styles.displayFlex}>
@@ -4289,53 +3729,31 @@ export function Analytics(props) {
                     {strings.analytics.supplierDetails}
                   </Text>
                   <Spacer space={SH(15)} />
-                  <View
-                    style={[styles.flexAlign, { alignItems: 'flex-start' }]}
-                  >
+                  <View style={[styles.flexAlign, { alignItems: 'flex-start' }]}>
                     <Image source={recordTape} style={styles.allienpic} />
                     <View style={{ marginHorizontal: moderateScale(5) }}>
                       <Text style={styles.addressText}>
-                        {
-                          sellerProductDetails?.user_profiles?.current_address
-                            ?.street_address
-                        }
+                        {sellerProductDetails?.user_profiles?.current_address?.street_address}
                       </Text>
                       <Text style={styles.addressText}>
-                        {
-                          sellerProductDetails?.user_profiles?.current_address
-                            ?.city
-                        }
+                        {sellerProductDetails?.user_profiles?.current_address?.city}
                       </Text>
                       <Text style={styles.addressText}>
-                        {
-                          sellerProductDetails?.user_profiles?.current_address
-                            ?.state
-                        }{' '}
-                        {
-                          sellerProductDetails?.user_profiles?.current_address
-                            ?.zipcode
-                        }
+                        {sellerProductDetails?.user_profiles?.current_address?.state}{' '}
+                        {sellerProductDetails?.user_profiles?.current_address?.zipcode}
                       </Text>
                       <Text style={styles.addressText}>
-                        {
-                          sellerProductDetails?.user_profiles?.current_address
-                            ?.country
-                        }
+                        {sellerProductDetails?.user_profiles?.current_address?.country}
                       </Text>
                       <Text style={styles.addressText}>
-                        Phone :{' '}
-                        {sellerProductDetails?.user_profiles?.full_phone_number}{' '}
+                        Phone : {sellerProductDetails?.user_profiles?.full_phone_number}{' '}
                       </Text>
                       <Spacer space={SH(60)} />
                       <View>
-                        <Text
-                          style={[styles.trackIdText, { color: COLORS.black }]}
-                        >
+                        <Text style={[styles.trackIdText, { color: COLORS.black }]}>
                           {strings.analytics.taxNumberLabel}
                         </Text>
-                        <Text style={styles.addressText}>
-                          {strings.analytics.taxNumber}
-                        </Text>
+                        <Text style={styles.addressText}>{strings.analytics.taxNumber}</Text>
                       </View>
                     </View>
                   </View>
@@ -4344,141 +3762,69 @@ export function Analytics(props) {
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ marginHorizontal: moderateScale(10) }}>
                       <View style={styles.trackIdCon}>
-                        <Text style={styles.trackIdText}>
-                          {strings.analytics.trackId}
-                        </Text>
+                        <Text style={styles.trackIdText}>{strings.analytics.trackId}</Text>
                         <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
-                          <Text
-                            style={[
-                              styles.trackIdText,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
+                          <Text style={[styles.trackIdText, { color: COLORS.solid_grey }]}>
                             #1255266
                           </Text>
-                          <Image
-                            source={location}
-                            style={styles.crossButtonStyle}
-                          />
+                          <Image source={location} style={styles.crossButtonStyle} />
                         </View>
                       </View>
                       <Spacer space={SH(10)} />
                       <View style={styles.trackIdCon}>
-                        <Text style={styles.trackIdText}>
-                          {strings.analytics.dueDate}
-                        </Text>
+                        <Text style={styles.trackIdText}>{strings.analytics.dueDate}</Text>
                         <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
-                          <Text
-                            style={[
-                              styles.trackIdText,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
+                          <Text style={[styles.trackIdText, { color: COLORS.solid_grey }]}>
                             Sep 27, 2022
                           </Text>
                         </View>
                       </View>
                       <Spacer space={SH(10)} />
                       <View style={styles.trackIdCon}>
-                        <Text style={styles.trackIdText}>
-                          {strings.analytics.date}
-                        </Text>
+                        <Text style={styles.trackIdText}>{strings.analytics.date}</Text>
                         <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
-                          <Text
-                            style={[
-                              styles.trackIdText,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
+                          <Text style={[styles.trackIdText, { color: COLORS.solid_grey }]}>
                             Sep 27, 2022
                           </Text>
                         </View>
                       </View>
                     </View>
                     <View style={{}}>
-                      <View
-                        style={[
-                          styles.trackIdCon,
-                          { borderColor: COLORS.primary },
-                        ]}
-                      >
-                        <Text
-                          style={[
-                            styles.trackIdText,
-                            { color: COLORS.primary },
-                          ]}
-                        >
+                      <View style={[styles.trackIdCon, { borderColor: COLORS.primary }]}>
+                        <Text style={[styles.trackIdText, { color: COLORS.primary }]}>
                           {strings.analytics.trackId}
                         </Text>
                         <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
-                          <Text
-                            style={[
-                              styles.trackIdText,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
+                          <Text style={[styles.trackIdText, { color: COLORS.solid_grey }]}>
                             #1255266
                           </Text>
-                          <Image
-                            source={location}
-                            style={styles.crossButtonStyle}
-                          />
+                          <Image source={location} style={styles.crossButtonStyle} />
                         </View>
                       </View>
                       <Spacer space={SH(10)} />
-                      <View
-                        style={[
-                          styles.trackIdCon,
-                          { borderColor: COLORS.primary },
-                        ]}
-                      >
-                        <Text
-                          style={[
-                            styles.trackIdText,
-                            { color: COLORS.primary },
-                          ]}
-                        >
+                      <View style={[styles.trackIdCon, { borderColor: COLORS.primary }]}>
+                        <Text style={[styles.trackIdText, { color: COLORS.primary }]}>
                           {strings.analytics.dueDate}
                         </Text>
                         <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
-                          <Text
-                            style={[
-                              styles.trackIdText,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
+                          <Text style={[styles.trackIdText, { color: COLORS.solid_grey }]}>
                             Sep 27, 2022
                           </Text>
                         </View>
                       </View>
                       <Spacer space={SH(10)} />
-                      <View
-                        style={[
-                          styles.trackIdCon,
-                          { borderColor: COLORS.primary },
-                        ]}
-                      >
-                        <Text
-                          style={[
-                            styles.trackIdText,
-                            { color: COLORS.primary },
-                          ]}
-                        >
+                      <View style={[styles.trackIdCon, { borderColor: COLORS.primary }]}>
+                        <Text style={[styles.trackIdText, { color: COLORS.primary }]}>
                           {strings.analytics.date}
                         </Text>
                         <Spacer space={SH(10)} />
                         <View style={styles.displayFlex}>
-                          <Text
-                            style={[
-                              styles.trackIdText,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
+                          <Text style={[styles.trackIdText, { color: COLORS.solid_grey }]}>
                             Sep 27, 2022
                           </Text>
                         </View>
@@ -4488,55 +3834,31 @@ export function Analytics(props) {
                 ) : (
                   <View style={{ marginHorizontal: moderateScale(10) }}>
                     <View style={styles.trackIdCon}>
-                      <Text style={styles.trackIdText}>
-                        {strings.analytics.trackId}
-                      </Text>
+                      <Text style={styles.trackIdText}>{strings.analytics.trackId}</Text>
                       <Spacer space={SH(10)} />
                       <View style={styles.displayFlex}>
-                        <Text
-                          style={[
-                            styles.trackIdText,
-                            { color: COLORS.solid_grey },
-                          ]}
-                        >
+                        <Text style={[styles.trackIdText, { color: COLORS.solid_grey }]}>
                           #1255266
                         </Text>
-                        <Image
-                          source={location}
-                          style={styles.crossButtonStyle}
-                        />
+                        <Image source={location} style={styles.crossButtonStyle} />
                       </View>
                     </View>
                     <Spacer space={SH(10)} />
                     <View style={styles.trackIdCon}>
-                      <Text style={styles.trackIdText}>
-                        {strings.analytics.dueDate}
-                      </Text>
+                      <Text style={styles.trackIdText}>{strings.analytics.dueDate}</Text>
                       <Spacer space={SH(10)} />
                       <View style={styles.displayFlex}>
-                        <Text
-                          style={[
-                            styles.trackIdText,
-                            { color: COLORS.solid_grey },
-                          ]}
-                        >
+                        <Text style={[styles.trackIdText, { color: COLORS.solid_grey }]}>
                           Sep 27, 2022
                         </Text>
                       </View>
                     </View>
                     <Spacer space={SH(10)} />
                     <View style={styles.trackIdCon}>
-                      <Text style={styles.trackIdText}>
-                        {strings.analytics.date}
-                      </Text>
+                      <Text style={styles.trackIdText}>{strings.analytics.date}</Text>
                       <Spacer space={SH(10)} />
                       <View style={styles.displayFlex}>
-                        <Text
-                          style={[
-                            styles.trackIdText,
-                            { color: COLORS.solid_grey },
-                          ]}
-                        >
+                        <Text style={[styles.trackIdText, { color: COLORS.solid_grey }]}>
                           Sep 27, 2022
                         </Text>
                       </View>
@@ -4557,12 +3879,7 @@ export function Analytics(props) {
                         }}
                       >
                         <Text style={styles.text}>#</Text>
-                        <Text
-                          style={[
-                            styles.text,
-                            { paddingHorizontal: moderateScale(10) },
-                          ]}
-                        >
+                        <Text style={[styles.text, { paddingHorizontal: moderateScale(10) }]}>
                           Items
                         </Text>
                       </View>
@@ -4574,9 +3891,7 @@ export function Analytics(props) {
                           paddingRight: Platform.OS === 'ios' ? 40 : 0,
                         }}
                       >
-                        <Text style={[styles.text, { marginLeft: -65 }]}>
-                          SKU
-                        </Text>
+                        <Text style={[styles.text, { marginLeft: -65 }]}>SKU</Text>
                         <Text style={styles.text}>Price</Text>
                         <Text style={styles.text}>Quantity</Text>
                         <Text style={styles.text}>Amount</Text>
@@ -4587,14 +3902,12 @@ export function Analytics(props) {
                     <FlatList
                       data={sellerProductDetails?.products_details?.data}
                       renderItem={renderSellerProductDetails}
-                      keyExtractor={item => item.id}
+                      keyExtractor={(item) => item.id}
                     />
                   </View>
                 </Table>
                 <Spacer space={SH(25)} />
-                <View
-                  style={[styles.displayFlex, { alignItems: 'flex-start' }]}
-                >
+                <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
                   <TextInput
                     multiline
                     numberOfLines={4}
@@ -4602,33 +3915,18 @@ export function Analytics(props) {
                     placeholder="Note:"
                     placeholderTextColor="#000"
                   />
-                  <View
-                    style={
-                      invoiceTrackId
-                        ? styles.noteContainer2
-                        : styles.noteContainer
-                    }
-                  >
+                  <View style={invoiceTrackId ? styles.noteContainer2 : styles.noteContainer}>
                     <Spacer space={SH(12)} />
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.analytics.subtotal}
-                      </Text>
+                      <Text style={styles.tablesubTotalLabel}>{strings.analytics.subtotal}</Text>
                       <Text style={styles.tablesubTotalText}>
                         $ {sellerProductDetails?.sub_total.toFixed(2)}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.analytics.discount}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.tablesubTotalText,
-                          { color: COLORS.roseRed },
-                        ]}
-                      >
+                      <Text style={styles.tablesubTotalLabel}>{strings.analytics.discount}</Text>
+                      <Text style={[styles.tablesubTotalText, { color: COLORS.roseRed }]}>
                         -$ {sellerProductDetails?.discount}
                       </Text>
                     </View>
@@ -4643,25 +3941,17 @@ export function Analytics(props) {
                     </View>
                     <View style={styles.subtotalHr}></View>
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.analytics.commision}
-                      </Text>
+                      <Text style={styles.tablesubTotalLabel}>{strings.analytics.commision}</Text>
                       <Text style={styles.tablesubTotalText}>
                         $ {sellerProductDetails?.commission}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
                     <View style={styles.tablesubTotal}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}
-                      >
-                        <Text style={styles.tablesubDarkLabel}>
-                          {strings.wallet.total}
-                        </Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={styles.tablesubDarkLabel}>{strings.wallet.total}</Text>
                         <View style={styles.paidContainer}>
-                          <Text style={styles.paidText}>
-                            {strings.wallet.paid}
-                          </Text>
+                          <Text style={styles.paidText}>{strings.wallet.paid}</Text>
                         </View>
                       </View>
                       <Text style={styles.tablesubDarkLabel}>
@@ -4678,21 +3968,11 @@ export function Analytics(props) {
                               alignItems: 'center',
                             }}
                           >
-                            <Text
-                              style={[
-                                styles.tablesubDarkLabel,
-                                { color: COLORS.primary },
-                              ]}
-                            >
+                            <Text style={[styles.tablesubDarkLabel, { color: COLORS.primary }]}>
                               Refund
                             </Text>
                           </View>
-                          <Text
-                            style={[
-                              styles.tablesubDarkLabel,
-                              { color: COLORS.primary },
-                            ]}
-                          >
+                          <Text style={[styles.tablesubDarkLabel, { color: COLORS.primary }]}>
                             {strings.analytics.refund}
                           </Text>
                         </View>
@@ -4708,54 +3988,31 @@ export function Analytics(props) {
                 <View>
                   <Spacer space={SH(30)} />
                   <View>
-                    <Text style={styles.shippingDetail}>
-                      {strings.wallet.shippingDetail}
-                    </Text>
+                    <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
                   </View>
                   <Spacer space={SH(20)} />
                   <View style={styles.trackingCon}>
                     <View style={styles.displayFlex}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}
-                      >
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image source={fedx} style={styles.willis} />
                         <View>
-                          <Text style={styles.willisName}>
-                            {strings.analytics.FedEx}
-                          </Text>
-                          <Text style={styles.trackingNumber}>
-                            {strings.wallet.trackingNo}
-                          </Text>
+                          <Text style={styles.willisName}>{strings.analytics.FedEx}</Text>
+                          <Text style={styles.trackingNumber}>{strings.wallet.trackingNo}</Text>
                         </View>
                       </View>
                       <View style={{ flexDirection: 'row' }}>
                         <View
-                          style={[
-                            styles.deliverBtnCon,
-                            { marginHorizontal: moderateScale(8) },
-                          ]}
+                          style={[styles.deliverBtnCon, { marginHorizontal: moderateScale(8) }]}
                         >
                           <View style={styles.deliverTextCon}>
-                            <Image
-                              source={deliverCheck}
-                              style={styles.deliveryCheck}
-                            />
-                            <Text style={styles.deliveredText}>
-                              {strings.wallet.delivered}
-                            </Text>
+                            <Image source={deliverCheck} style={styles.deliveryCheck} />
+                            <Text style={styles.deliveredText}>{strings.wallet.delivered}</Text>
                           </View>
                         </View>
-                        <View
-                          style={[styles.deliverBtnCon, styles.trackingBtnCon]}
-                        >
+                        <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
                           <TouchableOpacity style={styles.deliverTextCon}>
-                            <Image
-                              source={track}
-                              style={styles.deliveryCheck}
-                            />
-                            <Text style={styles.deliveredText}>
-                              {strings.wallet.tracking}
-                            </Text>
+                            <Image source={track} style={styles.deliveryCheck} />
+                            <Text style={styles.deliveredText}>{strings.wallet.tracking}</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -4771,47 +4028,26 @@ export function Analytics(props) {
                   <Spacer space={SH(20)} />
                   <View style={styles.trackingCon}>
                     <View style={styles.displayFlex}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}
-                      >
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image source={ups} style={styles.willis} />
                         <View>
-                          <Text style={styles.willisName}>
-                            {strings.analytics.ups}
-                          </Text>
-                          <Text style={styles.trackingNumber}>
-                            {strings.wallet.trackingNo}
-                          </Text>
+                          <Text style={styles.willisName}>{strings.analytics.ups}</Text>
+                          <Text style={styles.trackingNumber}>{strings.wallet.trackingNo}</Text>
                         </View>
                       </View>
                       <View style={{ flexDirection: 'row' }}>
                         <View
-                          style={[
-                            styles.deliverBtnCon,
-                            { marginHorizontal: moderateScale(8) },
-                          ]}
+                          style={[styles.deliverBtnCon, { marginHorizontal: moderateScale(8) }]}
                         >
                           <View style={styles.deliverTextCon}>
-                            <Image
-                              source={deliverCheck}
-                              style={styles.deliveryCheck}
-                            />
-                            <Text style={styles.deliveredText}>
-                              {strings.wallet.delivered}
-                            </Text>
+                            <Image source={deliverCheck} style={styles.deliveryCheck} />
+                            <Text style={styles.deliveredText}>{strings.wallet.delivered}</Text>
                           </View>
                         </View>
-                        <View
-                          style={[styles.deliverBtnCon, styles.trackingBtnCon]}
-                        >
+                        <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
                           <TouchableOpacity style={styles.deliverTextCon}>
-                            <Image
-                              source={track}
-                              style={styles.deliveryCheck}
-                            />
-                            <Text style={styles.deliveredText}>
-                              {strings.wallet.tracking}
-                            </Text>
+                            <Image source={track} style={styles.deliveryCheck} />
+                            <Text style={styles.deliveredText}>{strings.wallet.tracking}</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -4823,54 +4059,31 @@ export function Analytics(props) {
                 <View>
                   <Spacer space={SH(30)} />
                   <View>
-                    <Text style={styles.shippingDetail}>
-                      {strings.wallet.shippingDetail}
-                    </Text>
+                    <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
                   </View>
                   <Spacer space={SH(20)} />
                   <View style={styles.trackingCon}>
                     <View style={styles.displayFlex}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}
-                      >
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image source={fedx} style={styles.willis} />
                         <View>
-                          <Text style={styles.willisName}>
-                            {strings.analytics.FedEx}
-                          </Text>
-                          <Text style={styles.trackingNumber}>
-                            {strings.wallet.trackingNo}
-                          </Text>
+                          <Text style={styles.willisName}>{strings.analytics.FedEx}</Text>
+                          <Text style={styles.trackingNumber}>{strings.wallet.trackingNo}</Text>
                         </View>
                       </View>
                       <View style={{ flexDirection: 'row' }}>
                         <View
-                          style={[
-                            styles.deliverBtnCon,
-                            { marginHorizontal: moderateScale(8) },
-                          ]}
+                          style={[styles.deliverBtnCon, { marginHorizontal: moderateScale(8) }]}
                         >
                           <View style={styles.deliverTextCon}>
-                            <Image
-                              source={deliverCheck}
-                              style={styles.deliveryCheck}
-                            />
-                            <Text style={styles.deliveredText}>
-                              {strings.wallet.delivered}
-                            </Text>
+                            <Image source={deliverCheck} style={styles.deliveryCheck} />
+                            <Text style={styles.deliveredText}>{strings.wallet.delivered}</Text>
                           </View>
                         </View>
-                        <View
-                          style={[styles.deliverBtnCon, styles.trackingBtnCon]}
-                        >
+                        <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
                           <TouchableOpacity style={styles.deliverTextCon}>
-                            <Image
-                              source={track}
-                              style={styles.deliveryCheck}
-                            />
-                            <Text style={styles.deliveredText}>
-                              {strings.wallet.tracking}
-                            </Text>
+                            <Image source={track} style={styles.deliveryCheck} />
+                            <Text style={styles.deliveredText}>{strings.wallet.tracking}</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -4902,50 +4115,34 @@ export function Analytics(props) {
                 <TouchableOpacity onPress={() => setProductOrderModel(false)}>
                   <Image source={leftBack} style={styles.leftBackStyle} />
                 </TouchableOpacity>
-                <Text style={styles.invoiceIdText}>
-                  {strings.analytics.orderHeaader}
-                </Text>
+                <Text style={styles.invoiceIdText}>{strings.analytics.orderHeaader}</Text>
                 <View style={styles.completeBtnCon}>
-                  <Text style={styles.completeText}>
-                    {strings.analytics.complete}
-                  </Text>
+                  <Text style={styles.completeText}>{strings.analytics.complete}</Text>
                 </View>
               </View>
             </View>
           </View>
-          <View
-            style={
-              paymentSideBar
-                ? styles.flatListHeightTrue
-                : styles.flatListHeightFalse
-            }
-          >
+          <View style={paymentSideBar ? styles.flatListHeightTrue : styles.flatListHeightFalse}>
             <Spacer space={SH(30)} />
             <View style={styles.displayFlex}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.listOfItem}>
-                  {strings.posSale.listOfItem}
-                </Text>
+                <Text style={styles.listOfItem}>{strings.posSale.listOfItem}</Text>
                 <Text style={styles.walletItem}>4 Items</Text>
               </View>
-              <Text style={styles.rewardPointStyle}>
-                {strings.posSale.rewardpoint}
-              </Text>
+              <Text style={styles.rewardPointStyle}>{strings.posSale.rewardpoint}</Text>
             </View>
             <Spacer space={SH(15)} />
             <View>
               <FlatList
                 data={jbritemList}
                 renderItem={renderJbrItem}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
               />
             </View>
             <View style={{ flex: 1 }} />
             <View>
               <Text style={styles.walletItem}>{strings.posSale.notes}</Text>
-              <Text style={styles.itmybdaystyle}>
-                {strings.posSale.itMynday}
-              </Text>
+              <Text style={styles.itmybdaystyle}>{strings.posSale.itMynday}</Text>
             </View>
           </View>
 
@@ -4956,10 +4153,7 @@ export function Analytics(props) {
                 <View style={styles.displayFlex}>
                   <Text style={styles.moreActText}>Payment Details</Text>
                   <TouchableOpacity onPress={() => setPaymentSideBar(false)}>
-                    <Image
-                      source={crossButton}
-                      style={styles.crossButtonStyle}
-                    />
+                    <Image source={crossButton} style={styles.crossButtonStyle} />
                   </TouchableOpacity>
                 </View>
 
@@ -4971,16 +4165,12 @@ export function Analytics(props) {
                     showsHorizontalScrollIndicator={false}
                   >
                     <Spacer space={SH(20)} />
-                    <Text style={styles.paymenttdone}>
-                      {strings.posSale.paymenttdone}
-                    </Text>
+                    <Text style={styles.paymenttdone}>{strings.posSale.paymenttdone}</Text>
                     <Spacer space={SH(10)} />
                     <View style={styles.paymentTipsCon}>
                       <View style={styles.displayFlex}>
                         <View>
-                          <Text style={styles.paymentTipsText}>
-                            Payable $254.60
-                          </Text>
+                          <Text style={styles.paymentTipsText}>Payable $254.60</Text>
                           <Spacer space={SH(10)} />
                           <Text style={styles.paymentTipsText}>Tips $0.60</Text>
                         </View>
@@ -5014,42 +4204,25 @@ export function Analytics(props) {
                           paddingHorizontal: moderateScale(10),
                         }}
                       >
-                        <Image
-                          source={jbrCustomer}
-                          style={styles.jbrCustomer}
-                        />
+                        <Image source={jbrCustomer} style={styles.jbrCustomer} />
                         <View style={{ paddingHorizontal: moderateScale(8) }}>
-                          <Text
-                            style={[styles.cusAddText, { fontSize: SF(20) }]}
-                          >
+                          <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
                             {strings.posSale.customerName}
                           </Text>
                           <Spacer space={SH(8)} />
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerMobileNo}
-                          </Text>
+                          <Text style={styles.cusAddText}>{strings.posSale.customerMobileNo}</Text>
                           <Spacer space={SH(5)} />
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerEmail}
-                          </Text>
+                          <Text style={styles.cusAddText}>{strings.posSale.customerEmail}</Text>
                           <Spacer space={SH(8)} />
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerAddr}
-                          </Text>
-                          <Text style={styles.cusAddText}>
-                            {strings.posSale.customerAddr2}
-                          </Text>
+                          <Text style={styles.cusAddText}>{strings.posSale.customerAddr}</Text>
+                          <Text style={styles.cusAddText}>{strings.posSale.customerAddr2}</Text>
                         </View>
                       </View>
                       <View style={{ flex: 1 }}></View>
                       <View style={styles.walletIdCon}>
-                        <Text style={styles.walletIdLabel}>
-                          {strings.analytics.walletIdLabel}
-                        </Text>
+                        <Text style={styles.walletIdLabel}>{strings.analytics.walletIdLabel}</Text>
                         <Spacer space={SH(5)} />
-                        <Text style={styles.walletId}>
-                          {strings.analytics.walletId}
-                        </Text>
+                        <Text style={styles.walletId}>{strings.analytics.walletId}</Text>
                       </View>
                     </View>
 
@@ -5074,16 +4247,8 @@ export function Analytics(props) {
                       <View style={styles.hr}></View>
                       <Spacer space={SH(12)} />
                       <View style={styles.bottomSubCon}>
-                        <Text
-                          style={[styles.smalldarkText, { fontSize: SF(18) }]}
-                        >
-                          Total
-                        </Text>
-                        <Text
-                          style={[styles.smalldarkText, { fontSize: SF(20) }]}
-                        >
-                          $254.60
-                        </Text>
+                        <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>Total</Text>
+                        <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>$254.60</Text>
                       </View>
                       <Spacer space={SH(12)} />
                       <View style={styles.bottomSubCon}>
@@ -5121,10 +4286,7 @@ export function Analytics(props) {
               <Image source={backArrow} style={styles.backButtonArrow} />
               <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.editButtonCon}
-              onPress={() => alert('coming soon')}
-            >
+            <TouchableOpacity style={styles.editButtonCon} onPress={() => alert('coming soon')}>
               <View style={styles.flexAlign}>
                 <Image source={share} style={styles.pencil} />
                 <Text style={styles.edit}>{strings.analytics.share}</Text>
@@ -5142,9 +4304,7 @@ export function Analytics(props) {
                 {strings.analytics.detail}
               </Text>
               <Spacer space={SH(10)} />
-              <Text style={styles.description}>
-                {strings.analytics.description}
-              </Text>
+              <Text style={styles.description}>{strings.analytics.description}</Text>
             </View>
           </View>
           <Spacer space={SH(30)} />
@@ -5152,7 +4312,7 @@ export function Analytics(props) {
             <FlatList
               data={stockHandData}
               renderItem={stockHandItem}
-              keyExtractor={item => item.id}
+              keyExtractor={(item) => item.id}
               numColumns={4}
               //  horizontal
               // contentContainerStyle={styles.contentContainer}
@@ -5169,12 +4329,7 @@ export function Analytics(props) {
         <View style={{ flex: 1, backgroundColor: COLORS.white }}>
           <Spacer space={SH(20)} />
           <View style={styles.onlinedeliveryCon}>
-            <View
-              style={[
-                styles.displayFlex,
-                { paddingHorizontal: moderateScale(10) },
-              ]}
-            >
+            <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <TouchableOpacity
                   onPress={() => {
@@ -5183,9 +4338,7 @@ export function Analytics(props) {
                 >
                   <Image source={leftBack} style={styles.leftBackStyle} />
                 </TouchableOpacity>
-                <Text style={styles.orderNoStyle}>
-                  {strings.trackingNumber.trackingNo}
-                </Text>
+                <Text style={styles.orderNoStyle}>{strings.trackingNumber.trackingNo}</Text>
                 <View style={styles.completedButton}>
                   <Text style={styles.completedText}>Completed</Text>
                 </View>
@@ -5201,10 +4354,7 @@ export function Analytics(props) {
           </View>
           <Spacer space={SH(28)} />
           <View style={styles.trackingNoBody}>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-            >
+            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
               <Spacer space={SH(10)} />
               <View style={styles.displayFlex}>
                 <View style={styles.mapContainer}>
@@ -5230,36 +4380,20 @@ export function Analytics(props) {
                         <View style={styles.flexAlign}>
                           <Image source={location} style={styles.Phonelight} />
                           <Text style={styles.costoAdd}>
-                            {
-                              OrderDetails?.user_details?.current_address
-                                ?.street_address
-                            }{' '}
+                            {OrderDetails?.user_details?.current_address?.street_address}{' '}
                             {OrderDetails?.user_details?.current_address?.city},{' '}
-                            {
-                              OrderDetails?.user_details?.current_address
-                                ?.zipcode
-                            }{' '}
+                            {OrderDetails?.user_details?.current_address?.zipcode}{' '}
                           </Text>
                         </View>
                         <View style={styles.costoHr}></View>
                         <View style={styles.flexAlign}>
                           <View style={styles.costoPayCon}>
                             <View style={styles.flexAlign}>
-                              <Image
-                                source={ticket}
-                                style={styles.ticketImage}
-                              />
-                              <Text style={styles.ciagrtext}>
-                                ${OrderDetails?.payable_amount}
-                              </Text>
+                              <Image source={ticket} style={styles.ticketImage} />
+                              <Text style={styles.ciagrtext}>${OrderDetails?.payable_amount}</Text>
                             </View>
                           </View>
-                          <View
-                            style={[
-                              styles.costoPayCon,
-                              { alignItems: 'center' },
-                            ]}
-                          >
+                          <View style={[styles.costoPayCon, { alignItems: 'center' }]}>
                             <View style={styles.flexAlign}>
                               <Image source={box} style={styles.ticketImage} />
                               <Text style={styles.ciagrtext} numberOfLines={1}>
@@ -5269,13 +4403,8 @@ export function Analytics(props) {
                             </View>
                           </View>
                           <View style={styles.flexAlign}>
-                            <Text style={styles.detailText}>
-                              {strings.customers.detail}
-                            </Text>
-                            <Image
-                              source={dropRight}
-                              style={styles.dropRight}
-                            />
+                            <Text style={styles.detailText}>{strings.customers.detail}</Text>
+                            <Image source={dropRight} style={styles.dropRight} />
                           </View>
                         </View>
                       </View>
@@ -5283,56 +4412,26 @@ export function Analytics(props) {
                   </View>
                   <Spacer space={SH(10)} />
                   <View style={{ paddingHorizontal: moderateScale(18) }}>
-                    <Text style={styles.orderStatus}>
-                      {strings.customers.orderStatus}
-                    </Text>
-                    <Text
-                      style={[
-                        styles.orderStatus,
-                        { fontFamily: Fonts.Regular },
-                      ]}
-                    >
+                    <Text style={styles.orderStatus}>{strings.customers.orderStatus}</Text>
+                    <Text style={[styles.orderStatus, { fontFamily: Fonts.Regular }]}>
                       {strings.customers.assignDriver}
                     </Text>
-                    <View
-                      style={[
-                        styles.costoHr,
-                        { marginVertical: verticalScale(5) },
-                      ]}
-                    />
+                    <View style={[styles.costoHr, { marginVertical: verticalScale(5) }]} />
                     <Spacer space={SH(15)} />
                     <View style={{ flexDirection: 'row' }}>
                       <View style={{ flexDirection: 'column' }}>
                         <Image source={blankRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrow}
-                          style={styles.movingArrow}
-                        />
+                        <Image source={movingArrow} style={styles.movingArrow} />
                         <Image source={blankRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrow}
-                          style={styles.movingArrow}
-                        />
+                        <Image source={movingArrow} style={styles.movingArrow} />
                         <Image source={blankRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrow}
-                          style={styles.movingArrow}
-                        />
+                        <Image source={movingArrow} style={styles.movingArrow} />
                         <Image source={blankRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrow}
-                          style={styles.movingArrow}
-                        />
+                        <Image source={movingArrow} style={styles.movingArrow} />
                         <Image source={blankRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrowBlue}
-                          style={styles.movingArrow}
-                        />
+                        <Image source={movingArrowBlue} style={styles.movingArrow} />
                         <Image source={fillRadio} style={styles.ticketImage} />
-                        <Image
-                          source={movingArrowBlue}
-                          style={styles.movingArrow}
-                        />
+                        <Image source={movingArrowBlue} style={styles.movingArrow} />
                         <Image source={fillRadio} style={styles.ticketImage} />
                       </View>
                       <View
@@ -5343,87 +4442,51 @@ export function Analytics(props) {
                         }}
                       >
                         <View style={{ marginTop: -14 }}>
-                          <Text style={styles.verifyTextLight}>
-                            {strings.customers.verifyCode}
-                          </Text>
+                          <Text style={styles.verifyTextLight}>{strings.customers.verifyCode}</Text>
                           <Text style={styles.waitMinuteLight}>_ _ _ _ _</Text>
                         </View>
                         <View>
-                          <Text style={styles.verifyTextLight}>
-                            {strings.customers.delivery}
-                          </Text>
+                          <Text style={styles.verifyTextLight}>{strings.customers.delivery}</Text>
                           <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
+                          <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
                         </View>
                         <View>
-                          <Text style={styles.verifyTextLight}>
-                            {strings.customers.yourBlock}
-                          </Text>
+                          <Text style={styles.verifyTextLight}>{strings.customers.yourBlock}</Text>
                           <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
+                          <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
                         </View>
                         <View>
                           <Text style={styles.verifyTextLight}>
                             {strings.customers.productPick}
                           </Text>
                           <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
+                          <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
                         </View>
                         <View>
                           <Text style={styles.verifyTextLight}>
                             {strings.customers.assignDriver}
                           </Text>
                           <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
+                          <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
                         </View>
                         <View>
-                          <Text
-                            style={[
-                              styles.verifyTextLight,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
+                          <Text style={[styles.verifyTextLight, { color: COLORS.solid_grey }]}>
                             {strings.customers.readyPickup}
                           </Text>
                           <Spacer space={SH(5)} />
-                          <Text
-                            style={[
-                              styles.waitMinuteLight,
-                              { color: COLORS.dark_grey },
-                            ]}
-                          >
+                          <Text style={[styles.waitMinuteLight, { color: COLORS.dark_grey }]}>
                             {strings.customers.waitMinute}
                           </Text>
                         </View>
                         <View>
-                          <Text
-                            style={[
-                              styles.verifyTextLight,
-                              { color: COLORS.solid_grey },
-                            ]}
-                          >
+                          <Text style={[styles.verifyTextLight, { color: COLORS.solid_grey }]}>
                             {strings.customers.orderAccepted}
                           </Text>
                           <Spacer space={SH(5)} />
-                          <Text
-                            style={[
-                              styles.waitMinuteLight,
-                              { color: COLORS.dark_grey },
-                            ]}
-                          >
+                          <Text style={[styles.waitMinuteLight, { color: COLORS.dark_grey }]}>
                             {moment(OrderDetails?.created_at).format('LL')}
                             {'  |  '}
-                            {moment(OrderDetails?.created_at).format(
-                              'h:mm A'
-                            )}{' '}
+                            {moment(OrderDetails?.created_at).format('h:mm A')}{' '}
                           </Text>
                         </View>
                       </View>
@@ -5431,12 +4494,7 @@ export function Analytics(props) {
                     <Spacer space={SH(25)} />
                     <View style={styles.carriarCon}>
                       <Spacer space={SH(12)} />
-                      <Text
-                        style={[
-                          styles.verifyTextLight,
-                          { color: COLORS.black },
-                        ]}
-                      >
+                      <Text style={[styles.verifyTextLight, { color: COLORS.black }]}>
                         {strings.customers.carriar}
                       </Text>
                       <Spacer space={SH(12)} />
@@ -5446,8 +4504,7 @@ export function Analytics(props) {
                             source={
                               OrderDetails?.driver_details?.profile_photo
                                 ? {
-                                    uri: OrderDetails?.driver_details
-                                      ?.profile_photo,
+                                    uri: OrderDetails?.driver_details?.profile_photo,
                                   }
                                 : user
                             }
@@ -5459,18 +4516,10 @@ export function Analytics(props) {
                         </View>
                         <View style={styles.contactButton}>
                           <View
-                            style={[
-                              styles.flexAlign,
-                              { paddingHorizontal: moderateScale(12) },
-                            ]}
+                            style={[styles.flexAlign, { paddingHorizontal: moderateScale(12) }]}
                           >
-                            <Image
-                              source={contact}
-                              style={styles.contactStyle}
-                            />
-                            <Text style={styles.contactText}>
-                              {strings.customers.contact}
-                            </Text>
+                            <Image source={contact} style={styles.contactStyle} />
+                            <Text style={styles.contactText}>{strings.customers.contact}</Text>
                           </View>
                         </View>
                       </View>
@@ -5484,10 +4533,8 @@ export function Analytics(props) {
                       provider={PROVIDER_GOOGLE}
                       showCompass
                       region={{
-                        latitude:
-                          OrderDetails?.seller_details?.seller_location[1],
-                        longitude:
-                          OrderDetails?.seller_details?.seller_location[0],
+                        latitude: OrderDetails?.seller_details?.seller_location[1],
+                        longitude: OrderDetails?.seller_details?.seller_location[0],
                         latitudeDelta: 0.0692,
                         longitudeDelta: 0.0421,
                       }}
@@ -5495,12 +4542,10 @@ export function Analytics(props) {
                     >
                       <Marker
                         coordinate={{
-                          latitude: OrderDetails?.seller_details
-                            ?.seller_location[1]
+                          latitude: OrderDetails?.seller_details?.seller_location[1]
                             ? OrderDetails?.seller_details?.seller_location[1]
                             : 0,
-                          longitude: OrderDetails?.seller_details
-                            ?.seller_location[0]
+                          longitude: OrderDetails?.seller_details?.seller_location[0]
                             ? OrderDetails?.seller_details?.seller_location[0]
                             : 0,
                         }}
@@ -5564,12 +4609,7 @@ export function Analytics(props) {
         <View style={{ flex: 1, backgroundColor: COLORS.white }}>
           <Spacer space={SH(20)} />
           <View style={styles.onlinedeliveryCon}>
-            <View
-              style={[
-                styles.displayFlex,
-                { paddingHorizontal: moderateScale(10) },
-              ]}
-            >
+            <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -5601,9 +4641,7 @@ export function Analytics(props) {
                     <Image source={leftBack} style={styles.leftBackStyle} />
                   </TouchableOpacity>
                 )}
-                <Text style={styles.orderNoStyle}>
-                  {strings.wallet.orderNo}
-                </Text>
+                <Text style={styles.orderNoStyle}>{strings.wallet.orderNo}</Text>
                 <View style={styles.completedButton}>
                   <Text style={styles.completedText}>Completed</Text>
                 </View>
@@ -5657,22 +4695,16 @@ export function Analytics(props) {
                       style={styles.angelaPic}
                     />
                     <View style={{ flexDirection: 'column' }}>
-                      <Text style={styles.angela}>
-                        {OrderDetails?.user_details?.firstname}
-                      </Text>
+                      <Text style={styles.angela}>{OrderDetails?.user_details?.firstname}</Text>
                       <Spacer space={SH(10)} />
                       <Text style={styles.angelaAddress}>
-                        {
-                          OrderDetails?.user_details?.current_address
-                            ?.street_address
-                        }{' '}
+                        {OrderDetails?.user_details?.current_address?.street_address}{' '}
                         {OrderDetails?.user_details?.current_address?.city},{' '}
                         {OrderDetails?.user_details?.current_address?.state}{' '}
                         {OrderDetails?.user_details?.current_address?.zipcode}
                       </Text>
                       <Text style={styles.angelaAddress}>
-                        {strings.wallet.angelaAddress2}{' '}
-                        {OrderDetails?.user_details?.phone_number}
+                        {strings.wallet.angelaAddress2} {OrderDetails?.user_details?.phone_number}
                       </Text>
                     </View>
                   </View>
@@ -5681,9 +4713,7 @@ export function Analytics(props) {
                 </View>
                 <View style={styles.invoiceCon}>
                   <Spacer space={SH(10)} />
-                  <Text style={styles.invoiceDetail}>
-                    {strings.wallet.invoiceDetails}
-                  </Text>
+                  <Text style={styles.invoiceDetail}>{strings.wallet.invoiceDetails}</Text>
                   <Spacer space={SH(10)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.invoiceIdLabel}{' '}
@@ -5711,9 +4741,7 @@ export function Analytics(props) {
                     {moment(OrderDetails?.invoice?.delivery_date).format('LL')}{' '}
                   </Text>
                   <View style={styles.pointConOrder}>
-                    <Text style={styles.pointTextOrder}>
-                      {strings.wallet.point}
-                    </Text>
+                    <Text style={styles.pointTextOrder}>{strings.wallet.point}</Text>
                   </View>
                 </View>
               </View>
@@ -5728,10 +4756,7 @@ export function Analytics(props) {
                       <Text style={styles.tableLabel}>Descriptions</Text>
                     </DataTable.Title>
                     <DataTable.Title
-                      style={[
-                        styles.buyerTableSettingFirst,
-                        { marginLeft: SH(240) },
-                      ]}
+                      style={[styles.buyerTableSettingFirst, { marginLeft: SH(240) }]}
                     >
                       <Text style={styles.tableLabel}>No. of Items</Text>
                     </DataTable.Title>
@@ -5747,7 +4772,7 @@ export function Analytics(props) {
                     <FlatList
                       data={OrderDetails?.order_details}
                       renderItem={renderOrderItem}
-                      keyExtractor={item => item.id}
+                      keyExtractor={(item) => item.id}
                     />
                   </View>
 
@@ -5785,67 +4810,39 @@ export function Analytics(props) {
                   <View style={styles.noteContainer}>
                     <Spacer space={SH(12)} />
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.wallet.subtotal}
-                      </Text>
-                      <Text style={styles.tablesubTotalText}>
-                        {OrderDetails?.actual_amount}
-                      </Text>
+                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.subtotal}</Text>
+                      <Text style={styles.tablesubTotalText}>{OrderDetails?.actual_amount}</Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.wallet.serviceCharge}
-                      </Text>
+                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.serviceCharge}</Text>
                       <Text style={styles.tablesubTotalText}>
                         {OrderDetails?.service_charge?.service_charge}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.wallet.discount}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.tablesubTotalText,
-                          { color: COLORS.roseRed },
-                        ]}
-                      >
+                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.discount}</Text>
+                      <Text style={[styles.tablesubTotalText, { color: COLORS.roseRed }]}>
                         {OrderDetails?.discount}
                       </Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.wallet.shippingCharge}
-                      </Text>
-                      <Text style={styles.tablesubTotalText}>
-                        {OrderDetails?.shipping_charge}
-                      </Text>
+                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.shippingCharge}</Text>
+                      <Text style={styles.tablesubTotalText}>{OrderDetails?.shipping_charge}</Text>
                     </View>
                     <View style={styles.subtotalHr}></View>
                     <View style={styles.tablesubTotal}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}
-                      >
-                        <Text
-                          style={[
-                            styles.tablesubTotalLabel,
-                            { fontFamily: Fonts.SemiBold },
-                          ]}
-                        >
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[styles.tablesubTotalLabel, { fontFamily: Fonts.SemiBold }]}>
                           {strings.wallet.total}
                         </Text>
                         <View style={styles.paidContainer}>
-                          <Text style={styles.paidText}>
-                            {strings.wallet.paid}
-                          </Text>
+                          <Text style={styles.paidText}>{strings.wallet.paid}</Text>
                         </View>
                       </View>
-                      <Text style={styles.tablesubTotalText}>
-                        {OrderDetails?.payable_amount}
-                      </Text>
+                      <Text style={styles.tablesubTotalText}>{OrderDetails?.payable_amount}</Text>
                     </View>
                     <Spacer space={SH(10)} />
                   </View>
@@ -5854,9 +4851,7 @@ export function Analytics(props) {
               </View>
               <Spacer space={SH(25)} />
               <View>
-                <Text style={styles.shippingDetail}>
-                  {strings.wallet.shippingDetail}
-                </Text>
+                <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
               </View>
               <Spacer space={SH(20)} />
               <View style={styles.trackingCon}>
@@ -5873,29 +4868,15 @@ export function Analytics(props) {
                       style={styles.tracking2Angela}
                     />
                     <View style={{ paddingHorizontal: SW(5) }}>
-                      <Text style={styles.willisName}>
-                        {OrderDetails?.shipping_details?.title}
-                      </Text>
-                      <Text style={styles.trackingNumber}>
-                        {strings.wallet.trackingNo}
-                      </Text>
+                      <Text style={styles.willisName}>{OrderDetails?.shipping_details?.title}</Text>
+                      <Text style={styles.trackingNumber}>{strings.wallet.trackingNo}</Text>
                     </View>
                   </View>
                   <View style={{ flexDirection: 'row' }}>
-                    <View
-                      style={[
-                        styles.deliverBtnCon,
-                        { marginHorizontal: moderateScale(8) },
-                      ]}
-                    >
+                    <View style={[styles.deliverBtnCon, { marginHorizontal: moderateScale(8) }]}>
                       <View style={styles.deliverTextCon}>
-                        <Image
-                          source={deliverCheck}
-                          style={styles.deliveryCheck}
-                        />
-                        <Text style={styles.deliveredText}>
-                          {strings.wallet.delivered}
-                        </Text>
+                        <Image source={deliverCheck} style={styles.deliveryCheck} />
+                        <Text style={styles.deliveredText}>{strings.wallet.delivered}</Text>
                       </View>
                     </View>
                     <View style={[styles.deliverBtnCon, styles.trackingBtnCon]}>
@@ -5906,9 +4887,7 @@ export function Analytics(props) {
                         }}
                       >
                         <Image source={track} style={styles.deliveryCheck} />
-                        <Text style={styles.deliveredText}>
-                          {strings.wallet.tracking}
-                        </Text>
+                        <Text style={styles.deliveredText}>{strings.wallet.tracking}</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -5924,9 +4903,7 @@ export function Analytics(props) {
         <View style={[styles.displayFlex]}>
           <View
             style={
-              revenueCompleteSideBar
-                ? styles.numpadContainer2false
-                : styles.numpadContainer2true
+              revenueCompleteSideBar ? styles.numpadContainer2false : styles.numpadContainer2true
             }
           >
             <View style={{ height: windowHeight, paddingBottom: 60 }}>
@@ -5941,13 +4918,9 @@ export function Analytics(props) {
                     >
                       <Image source={leftBack} style={styles.leftBackStyle} />
                     </TouchableOpacity>
-                    <Text style={styles.invoiceIdText}>
-                      {strings.analytics.orderHeaader}
-                    </Text>
+                    <Text style={styles.invoiceIdText}>{strings.analytics.orderHeaader}</Text>
                     <View style={styles.completeBtnCon2}>
-                      <Text style={styles.completeText}>
-                        {strings.analytics.complete}
-                      </Text>
+                      <Text style={styles.completeText}>{strings.analytics.complete}</Text>
                     </View>
                   </View>
                 </View>
@@ -5955,16 +4928,10 @@ export function Analytics(props) {
               <Spacer space={SH(40)} />
               <View style={styles.displayFlex}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={styles.listOfItems}>
-                    {strings.posSale.listOfItem}
-                  </Text>
-                  <Text style={styles.walletItem}>
-                    {OrderData?.total_items} Items
-                  </Text>
+                  <Text style={styles.listOfItems}>{strings.posSale.listOfItem}</Text>
+                  <Text style={styles.walletItem}>{OrderData?.total_items} Items</Text>
                 </View>
-                <Text style={styles.rewardPointStyle}>
-                  {strings.posSale.rewardpoint}
-                </Text>
+                <Text style={styles.rewardPointStyle}>{strings.posSale.rewardpoint}</Text>
               </View>
               <Spacer space={SH(20)} />
 
@@ -5972,7 +4939,7 @@ export function Analytics(props) {
                 <FlatList
                   data={OrderData?.order_details}
                   renderItem={renderJbrItem}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item) => item.id}
                 />
               </View>
               {/* <View style={{ flex: 1 }} />
@@ -5990,13 +4957,8 @@ export function Analytics(props) {
                 <Spacer space={SH(20)} />
                 <View style={styles.displayFlex}>
                   <Text style={styles.moreActText}>Payment Details</Text>
-                  <TouchableOpacity
-                    onPress={() => setRevenueCompleteSideBar(false)}
-                  >
-                    <Image
-                      source={crossButton}
-                      style={styles.crossButtonStyle}
-                    />
+                  <TouchableOpacity onPress={() => setRevenueCompleteSideBar(false)}>
+                    <Image source={crossButton} style={styles.crossButtonStyle} />
                   </TouchableOpacity>
                 </View>
                 <Spacer space={SH(15)} />
@@ -6009,9 +4971,7 @@ export function Analytics(props) {
                   >
                     <View>
                       <Spacer space={SH(5)} />
-                      <Text style={styles.paymenttdone}>
-                        {strings.posSale.paymenttdone}
-                      </Text>
+                      <Text style={styles.paymenttdone}>{strings.posSale.paymenttdone}</Text>
                       <Spacer space={SH(10)} />
                       <View style={styles.paymentTipsCon}>
                         <View style={styles.displayFlex}>
@@ -6020,13 +4980,9 @@ export function Analytics(props) {
                               Payable {OrderData?.payable_amount}
                             </Text>
                             <Spacer space={SH(10)} />
-                            <Text style={styles.paymentTipsText}>
-                              Tips {OrderData?.tips}
-                            </Text>
+                            <Text style={styles.paymentTipsText}>Tips {OrderData?.tips}</Text>
                           </View>
-                          <Text style={styles.paymentPay}>
-                            ${OrderData?.payable_amount}
-                          </Text>
+                          <Text style={styles.paymentPay}>${OrderData?.payable_amount}</Text>
                         </View>
                       </View>
                       <Spacer space={SH(10)} />
@@ -6066,9 +5022,7 @@ export function Analytics(props) {
                             style={styles.jbrCustomer}
                           />
                           <View style={{ paddingHorizontal: moderateScale(8) }}>
-                            <Text
-                              style={[styles.cusAddText, { fontSize: SF(20) }]}
-                            >
+                            <Text style={[styles.cusAddText, { fontSize: SF(20) }]}>
                               {OrderData?.user_details?.firstname}
                             </Text>
                             <Spacer space={SH(8)} />
@@ -6076,26 +5030,13 @@ export function Analytics(props) {
                               {OrderData?.user_details?.phone_number}
                             </Text>
                             <Spacer space={SH(5)} />
-                            <Text style={styles.cusAddText}>
-                              {OrderData?.user_details?.email}
-                            </Text>
+                            <Text style={styles.cusAddText}>{OrderData?.user_details?.email}</Text>
                             <Spacer space={SH(8)} />
-                            <Text
-                              style={[
-                                styles.cusAddText,
-                                { paddingRight: moderateScale(10) },
-                              ]}
-                            >
-                              {
-                                OrderData?.user_details?.current_address
-                                  ?.street_address
-                              }{' '}
+                            <Text style={[styles.cusAddText, { paddingRight: moderateScale(10) }]}>
+                              {OrderData?.user_details?.current_address?.street_address}{' '}
                               {OrderData?.user_details?.current_address?.city},{' '}
                               {OrderData?.user_details?.current_address?.state}{' '}
-                              {
-                                OrderData?.user_details?.current_address
-                                  ?.zipcode
-                              }
+                              {OrderData?.user_details?.current_address?.zipcode}
                             </Text>
                           </View>
                         </View>
@@ -6105,9 +5046,7 @@ export function Analytics(props) {
                             {strings.analytics.walletIdLabel}
                           </Text>
                           <Spacer space={SH(5)} />
-                          <Text style={styles.walletId}>
-                            {strings.analytics.walletId}
-                          </Text>
+                          <Text style={styles.walletId}>{strings.analytics.walletId}</Text>
                         </View>
                       </View>
                       <Spacer space={SH(20)} />
@@ -6115,44 +5054,30 @@ export function Analytics(props) {
                         <Spacer space={SH(10)} />
                         <View style={styles.bottomSubCon}>
                           <Text style={styles.smalldarkText}>Sub Total</Text>
-                          <Text style={styles.smallLightText}>
-                            ${OrderData?.actual_amount}
-                          </Text>
+                          <Text style={styles.smallLightText}>${OrderData?.actual_amount}</Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.bottomSubCon}>
                           <Text style={styles.smallLightText}>Discount</Text>
-                          <Text style={styles.smallLightText}>
-                            -${OrderData?.discount}
-                          </Text>
+                          <Text style={styles.smallLightText}>-${OrderData?.discount}</Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.bottomSubCon}>
                           <Text style={styles.smallLightText}>Tax</Text>
-                          <Text style={styles.smallLightText}>
-                            ${OrderData?.tax}
-                          </Text>
+                          <Text style={styles.smallLightText}>${OrderData?.tax}</Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.hr}></View>
                         <Spacer space={SH(12)} />
                         <View style={styles.bottomSubCon}>
-                          <Text
-                            style={[styles.smalldarkText, { fontSize: SF(18) }]}
-                          >
-                            Total
-                          </Text>
-                          <Text
-                            style={[styles.smalldarkText, { fontSize: SF(20) }]}
-                          >
+                          <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>Total</Text>
+                          <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
                             ${OrderData?.payable_amount}
                           </Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <View style={styles.bottomSubCon}>
-                          <Text style={styles.smallLightText}>
-                            {OrderData?.total_items} Items
-                          </Text>
+                          <Text style={styles.smallLightText}>{OrderData?.total_items} Items</Text>
                         </View>
                         <Spacer space={SH(12)} />
                         <TouchableOpacity
@@ -6163,10 +5088,7 @@ export function Analytics(props) {
                           }}
                         >
                           <Text style={styles.checkoutText}>Checkout</Text>
-                          <Image
-                            source={checkArrow}
-                            style={styles.checkArrow}
-                          />
+                          <Image source={checkArrow} style={styles.checkArrow} />
                         </TouchableOpacity>
                       </View>
                       <Spacer space={SH(100)} />
@@ -6187,7 +5109,7 @@ export function Analytics(props) {
               <FlatList
                 data={Orderstatistics?.data}
                 renderItem={allTransactionItem}
-                keyExtractor={item => item.title}
+                keyExtractor={(item) => item.title}
                 extraData={selectedId}
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -6217,22 +5139,14 @@ export function Analytics(props) {
                 alignItems: 'center',
               }}
             >
-              <Text style={[styles.paginationCount, { fontSize: 12 }]}>
-                Showing Results
-              </Text>
+              <Text style={[styles.paginationCount, { fontSize: 12 }]}>Showing Results</Text>
               <View style={{ marginHorizontal: moderateScale(10) }}>
                 <DropDownPicker
                   ArrowUpIconComponent={({ style }) => (
-                    <Image
-                      source={dropdown2}
-                      style={styles.dropDownIconPagination}
-                    />
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
                   )}
                   ArrowDownIconComponent={({ style }) => (
-                    <Image
-                      source={dropdown2}
-                      style={styles.dropDownIconPagination}
-                    />
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
                   )}
                   style={styles.dropdown}
                   containerStyle={[
@@ -6259,16 +5173,8 @@ export function Analytics(props) {
               <View style={[styles.unionCon, { marginLeft: 7 }]}>
                 <Image source={mask} style={styles.unionStyle} />
               </View>
-              <Text style={styles.paginationCount}>
-                {strings.wallet.paginationCount}
-              </Text>
-              <View
-                style={[
-                  styles.unionCon,
-                  styles.unionConWhite,
-                  { marginRight: 7 },
-                ]}
-              >
+              <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
+              <View style={[styles.unionCon, styles.unionConWhite, { marginRight: 7 }]}>
                 <Image source={maskRight} style={styles.unionStyle} />
               </View>
               <View style={[styles.unionCon, styles.unionConWhite]}>
@@ -6336,16 +5242,10 @@ export function Analytics(props) {
               <View style={{ marginHorizontal: moderateScale(10) }}>
                 <DropDownPicker
                   ArrowUpIconComponent={({ style }) => (
-                    <Image
-                      source={dropdown2}
-                      style={styles.dropDownIconPagination}
-                    />
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
                   )}
                   ArrowDownIconComponent={({ style }) => (
-                    <Image
-                      source={dropdown2}
-                      style={styles.dropDownIconPagination}
-                    />
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
                   )}
                   style={styles.dropdown}
                   containerStyle={[
@@ -6372,16 +5272,8 @@ export function Analytics(props) {
               <View style={[styles.unionCon, { marginLeft: 7 }]}>
                 <Image source={mask} style={styles.unionStyle} />
               </View>
-              <Text style={styles.paginationCount}>
-                {strings.wallet.paginationCount}
-              </Text>
-              <View
-                style={[
-                  styles.unionCon,
-                  styles.unionConWhite,
-                  { marginRight: 7 },
-                ]}
-              >
+              <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
+              <View style={[styles.unionCon, styles.unionConWhite, { marginRight: 7 }]}>
                 <Image source={maskRight} style={styles.unionStyle} />
               </View>
               <View style={[styles.unionCon, styles.unionConWhite]}>
@@ -6398,9 +5290,7 @@ export function Analytics(props) {
     if (productCat) {
       return (
         <View style={{ flex: 1 }}>
-          {detailTable
-            ? tableHeaderChange(accCatTable)
-            : tableHeaderAccCat(accCatTable)}
+          {detailTable ? tableHeaderChange(accCatTable) : tableHeaderAccCat(accCatTable)}
 
           <Spacer space={SH(40)} />
           <View style={styles.orderTypeCon}>
@@ -6441,16 +5331,10 @@ export function Analytics(props) {
               <View style={{ marginHorizontal: moderateScale(10) }}>
                 <DropDownPicker
                   ArrowUpIconComponent={({ style }) => (
-                    <Image
-                      source={dropdown2}
-                      style={styles.dropDownIconPagination}
-                    />
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
                   )}
                   ArrowDownIconComponent={({ style }) => (
-                    <Image
-                      source={dropdown2}
-                      style={styles.dropDownIconPagination}
-                    />
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
                   )}
                   style={styles.dropdown}
                   containerStyle={[
@@ -6477,16 +5361,8 @@ export function Analytics(props) {
               <View style={[styles.unionCon, { marginLeft: 7 }]}>
                 <Image source={mask} style={styles.unionStyle} />
               </View>
-              <Text style={styles.paginationCount}>
-                {strings.wallet.paginationCount}
-              </Text>
-              <View
-                style={[
-                  styles.unionCon,
-                  styles.unionConWhite,
-                  { marginRight: 7 },
-                ]}
-              >
+              <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
+              <View style={[styles.unionCon, styles.unionConWhite, { marginRight: 7 }]}>
                 <Image source={maskRight} style={styles.unionStyle} />
               </View>
               <View style={[styles.unionCon, styles.unionConWhite]}>
@@ -6494,9 +5370,7 @@ export function Analytics(props) {
               </View>
             </View>
           </View>
-          {detailTable
-            ? tableChangeHandler(accCatTable)
-            : tableAccCategory(accCatTable)}
+          {detailTable ? tableChangeHandler(accCatTable) : tableAccCategory(accCatTable)}
         </View>
       );
     } else if (productDetail) {
@@ -6510,9 +5384,7 @@ export function Analytics(props) {
     } else {
       return (
         <View style={styles.homeMainContainer}>
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-          >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <HomeGraph
               header="Total Products"
               subHeader={getAnalyticsData?.getTotalGraph?.totalResult ?? '0'}
@@ -6523,19 +5395,14 @@ export function Analytics(props) {
             />
             <HomeGraph
               header="Total Inventory  Cost"
-              subHeader={
-                getAnalyticsData?.getInventeryGraph?.totalResult.toFixed(2) ??
-                '0'
-              }
+              subHeader={getAnalyticsData?.getInventeryGraph?.totalResult.toFixed(2) ?? '0'}
               productGraphObject={inventeryGraphObject}
               homeGraphHandler={() => graphHandler('Total Inventory  Cost')}
               arrayLength={inventeryGraphObject?.datasets?.length}
               productLoader={totalInventoryLoading}
             />
           </View>
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-          >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {/* <HomeGraph
               header="Total Revenue"
               subHeader= {getAnalyticsData?.getRevenueGraph?.totalResult.toFixed(2) ?? '$0'}
@@ -6581,9 +5448,7 @@ export function Analytics(props) {
 
             <HomeGraph
               header="Total Orders"
-              subHeader={
-                getAnalyticsData?.getOrderGraph?.totalResult.toFixed(2) ?? '0'
-              }
+              subHeader={getAnalyticsData?.getOrderGraph?.totalResult.toFixed(2) ?? '0'}
               productGraphObject={orderGraphObject}
               homeGraphHandler={() => graphHandler('Total Orders')}
               arrayLength={orderGraphObject?.datasets?.length}
@@ -6614,29 +5479,17 @@ export function Analytics(props) {
       </View>
       {productModalLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator
-            color={COLORS.primary}
-            size="large"
-            style={styles.loader}
-          />
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
       {orderData ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator
-            color={COLORS.primary}
-            size="large"
-            style={styles.loader}
-          />
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
       {orderDetailsLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator
-            color={COLORS.primary}
-            size="large"
-            style={styles.loader}
-          />
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
     </ScreenWrapper>

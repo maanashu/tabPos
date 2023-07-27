@@ -6,12 +6,12 @@ const getCategoryRequest = () => ({
   payload: null,
 });
 
-const getCategorySuccess = categoryList => ({
+const getCategorySuccess = (categoryList) => ({
   type: TYPES.GET_CATEGORY_SUCCESS,
   payload: { categoryList },
 });
 
-const getCategoryError = error => ({
+const getCategoryError = (error) => ({
   type: TYPES.GET_CATEGORY_ERROR,
   payload: { error },
 });
@@ -25,12 +25,12 @@ const getSubCategoryRequest = () => ({
   payload: null,
 });
 
-const getSubCategorySuccess = subCategoryList => ({
+const getSubCategorySuccess = (subCategoryList) => ({
   type: TYPES.GET_SUB_CATEGORY_SUCCESS,
   payload: { subCategoryList },
 });
 
-const getSubCategoryError = error => ({
+const getSubCategoryError = (error) => ({
   type: TYPES.GET_SUB_CATEGORY_ERROR,
   payload: { error },
 });
@@ -45,12 +45,12 @@ const getBrandRequest = () => ({
   payload: null,
 });
 
-const getBrandSuccess = brandList => ({
+const getBrandSuccess = (brandList) => ({
   type: TYPES.GET_BRAND_SUCCESS,
   payload: { brandList },
 });
 
-const getBrandError = error => ({
+const getBrandError = (error) => ({
   type: TYPES.GET_BRAND_ERROR,
   payload: { error },
 });
@@ -65,12 +65,12 @@ const getProductRequest = () => ({
   payload: null,
 });
 
-const getProductSuccess = productList => ({
+const getProductSuccess = (productList) => ({
   type: TYPES.GET_PRODUCT_SUCCESS,
   payload: { productList },
 });
 
-const getProductError = error => ({
+const getProductError = (error) => ({
   type: TYPES.GET_PRODUCT_ERROR,
   payload: { error },
 });
@@ -85,12 +85,12 @@ const getProductDefRequest = () => ({
   payload: null,
 });
 
-const getProductDefSuccess = getProductDefault => ({
+const getProductDefSuccess = (getProductDefault) => ({
   type: TYPES.GET_PRODUCT_DEF_SUCCESS,
   payload: { getProductDefault },
 });
 
-const getProductDefError = error => ({
+const getProductDefError = (error) => ({
   type: TYPES.GET_PRODUCT_DEF_ERROR,
   payload: { error },
 });
@@ -105,12 +105,12 @@ const getSeaProductRequest = () => ({
   payload: null,
 });
 
-const getSeaProductSuccess = SeaProductList => ({
+const getSeaProductSuccess = (SeaProductList) => ({
   type: TYPES.GET_SEAPRODUCT_SUCCESS,
   payload: { SeaProductList },
 });
 
-const getSeaProductError = error => ({
+const getSeaProductError = (error) => ({
   type: TYPES.GET_SEAPRODUCT_ERROR,
   payload: { error },
 });
@@ -120,12 +120,12 @@ const getAllCartRequest = () => ({
   payload: null,
 });
 
-export const getAllCartSuccess = getAllCart => ({
+export const getAllCartSuccess = (getAllCart) => ({
   type: TYPES.GET_ALL_CART_SUCCESS,
-  payload:getAllCart,
+  payload: getAllCart,
 });
 
-const getAllCartError = error => ({
+const getAllCartError = (error) => ({
   type: TYPES.GET_ALL_CART_ERROR,
   payload: { error },
 });
@@ -145,7 +145,7 @@ const getClearAllCartSuccess = () => ({
   payload: {},
 });
 
-const getClearAllCartError = error => ({
+const getClearAllCartError = (error) => ({
   type: TYPES.GET_CLEAR_ALL_CART_ERROR,
   payload: { error },
 });
@@ -165,7 +165,7 @@ const clearOneCartSuccess = () => ({
   payload: {},
 });
 
-const clearOneCartError = error => ({
+const clearOneCartError = (error) => ({
   type: TYPES.GET_CLEAR_ONE_CART_ERROR,
   payload: { error },
 });
@@ -184,11 +184,10 @@ const addTocartSuccess = () => ({
   payload: {},
 });
 
-const addTocartError = error => ({
+const addTocartError = (error) => ({
   type: TYPES.ADDCART_ERROR,
   payload: { error },
 });
-
 
 const updateCartQtyRequest = () => ({
   type: TYPES.UPDATE_CART_QTY_REQUEST,
@@ -200,23 +199,10 @@ const updateCartQtySuccess = () => ({
   payload: {},
 });
 
-const updateCartQtyError = error => ({
+const updateCartQtyError = (error) => ({
   type: TYPES.UPDATE_CART_QTY_ERROR,
   payload: { error },
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const addNotesRequest = () => ({
   type: TYPES.ADDNOTES_REQUEST,
@@ -228,7 +214,7 @@ const addNotesSuccess = () => ({
   payload: {},
 });
 
-const addNotesError = error => ({
+const addNotesError = (error) => ({
   type: TYPES.ADDNOTES_ERROR,
   payload: { error },
 });
@@ -243,7 +229,7 @@ const addDiscountSuccess = () => ({
   payload: {},
 });
 
-const addDiscountError = error => ({
+const addDiscountError = (error) => ({
   type: TYPES.ADD_DISCOUNT_ERROR,
   payload: { error },
 });
@@ -253,12 +239,12 @@ const getProductBundleRequest = () => ({
   payload: null,
 });
 
-const getProductBundleSuccess = productbunList => ({
+const getProductBundleSuccess = (productbunList) => ({
   type: TYPES.GET_BUNDLEOFFER_SUCCESS,
   payload: { productbunList },
 });
 
-const getProductBundleError = error => ({
+const getProductBundleError = (error) => ({
   type: TYPES.GET_BUNDLEOFFER_ERROR,
   payload: { error },
 });
@@ -273,12 +259,12 @@ const getUserDetailRequest = () => ({
   payload: null,
 });
 
-export const getUserDetailSuccess = getUserDetail => ({
+export const getUserDetailSuccess = (getUserDetail) => ({
   type: TYPES.GET_USERDETAIL_SUCCESS,
   payload: { getUserDetail },
 });
 
-const getUserDetailError = error => ({
+const getUserDetailError = (error) => ({
   type: TYPES.GET_USERDETAIL_ERROR,
   payload: { error },
 });
@@ -298,7 +284,7 @@ const sendInvitationSuccess = () => ({
   payload: {},
 });
 
-const sendInvitationError = error => ({
+const sendInvitationError = (error) => ({
   type: TYPES.SEND_INVITATION_ERROR,
   payload: { error },
 });
@@ -313,7 +299,7 @@ const createOrderSuccess = () => ({
   payload: {},
 });
 
-const createOrderError = error => ({
+const createOrderError = (error) => ({
   type: TYPES.CREATE_ORDER_ERROR,
   payload: { error },
 });
@@ -328,12 +314,12 @@ const getWalletIdRequest = () => ({
   payload: null,
 });
 
-const getWalletIdSuccess = getWallet => ({
+const getWalletIdSuccess = (getWallet) => ({
   type: TYPES.GET_WALLET_SUCCESS,
   payload: { getWallet },
 });
 
-const getWalletIdError = error => ({
+const getWalletIdError = (error) => ({
   type: TYPES.GET_WALLET_ERROR,
   payload: { error },
 });
@@ -348,12 +334,12 @@ const walletGetByPhoneRequest = () => ({
   payload: null,
 });
 
-const walletGetByPhoneSuccess = walletGetByPhone => ({
+const walletGetByPhoneSuccess = (walletGetByPhone) => ({
   type: TYPES.GET_WALLET_PHONE_SUCCESS,
   payload: { walletGetByPhone },
 });
 
-const walletGetByPhoneError = error => ({
+const walletGetByPhoneError = (error) => ({
   type: TYPES.GET_WALLET_PHONE_ERROR,
   payload: { error },
 });
@@ -368,12 +354,12 @@ const requestMoneyRequest = () => ({
   payload: null,
 });
 
-export const requestMoneySuccess = requestMoney => ({
+export const requestMoneySuccess = (requestMoney) => ({
   type: TYPES.REQUEST_MONEY_SUCCESS,
   payload: requestMoney,
 });
 
-const requestMoneyError = error => ({
+const requestMoneyError = (error) => ({
   type: TYPES.REQUEST_MONEY_ERROR,
   payload: { error },
 });
@@ -383,12 +369,12 @@ const getTipsRequest = () => ({
   payload: null,
 });
 
-const getTipsSuccess = getTips => ({
+const getTipsSuccess = (getTips) => ({
   type: TYPES.GET_TIPS_SUCCESS,
   payload: { getTips },
 });
 
-const getTipsError = error => ({
+const getTipsError = (error) => ({
   type: TYPES.GET_TIPS_ERROR,
   payload: { error },
 });
@@ -403,12 +389,12 @@ const getOneProductRequest = () => ({
   payload: null,
 });
 
-const getOneProductSuccess = getOneProduct => ({
+const getOneProductSuccess = (getOneProduct) => ({
   type: TYPES.GET_ONE_PRODUCT_SUCCESS,
   payload: { getOneProduct },
 });
 
-const getOneProductError = error => ({
+const getOneProductError = (error) => ({
   type: TYPES.GET_ONE_PRODUCT_ERROR,
   payload: { error },
 });
@@ -418,7 +404,7 @@ const checkSuppliedVariantRequest = () => ({
   payload: null,
 });
 
-const checkSuppliedVariantSuccess = checkSuppliedVariant => ({
+const checkSuppliedVariantSuccess = (checkSuppliedVariant) => ({
   type: TYPES.CHECK_SUPPLIES_VARIANT_SUCCESS,
   payload: checkSuppliedVariant,
 });
@@ -428,7 +414,7 @@ const checkSuppliedVariantReset = () => ({
   payload: null,
 });
 
-const checkSuppliedVariantError = error => ({
+const checkSuppliedVariantError = (error) => ({
   type: TYPES.CHECK_SUPPLIES_VARIANT_ERROR,
   payload: { error },
 });
@@ -438,12 +424,12 @@ const requestCheckRequest = () => ({
   payload: null,
 });
 
-export const requestCheckSuccess = requestCheck => ({
+export const requestCheckSuccess = (requestCheck) => ({
   type: TYPES.REQUEST_CHECK_SUCCESS,
   payload: requestCheck,
 });
 
-const requestCheckError = error => ({
+const requestCheckError = (error) => ({
   type: TYPES.REQUEST_CHECK_ERROR,
   payload: { error },
 });
@@ -452,15 +438,15 @@ const clearCheckStore = () => ({
   type: TYPES.CLEAR_CHECK_STORE,
   payload: null,
 });
-export const cartScreenTrue = trueCart => ({
+export const cartScreenTrue = (trueCart) => ({
   type: TYPES.CART_SCREEN_TRUE,
   payload: { trueCart },
 });
-export const customerTrue = trueCustomer => ({
+export const customerTrue = (trueCustomer) => ({
   type: TYPES.TURE_CUSTOMER,
   payload: { trueCustomer },
 });
-export const customerNumber = customerNumber => ({
+export const customerNumber = (customerNumber) => ({
   type: TYPES.CUSTOMER_NUMBER,
   payload: { customerNumber },
 });
@@ -470,12 +456,12 @@ const scanProductAddRequest = () => ({
   payload: null,
 });
 
-const scanProductAddSuccess = scanProductAdd => ({
+const scanProductAddSuccess = (scanProductAdd) => ({
   type: TYPES.SCAN_PRODUCT_ADD_SUCCESS,
   payload: scanProductAdd,
 });
 
-const scanProductAddError = error => ({
+const scanProductAddError = (error) => ({
   type: TYPES.SCAN_PRODUCT_ADD_ERROR,
   payload: { error },
 });
@@ -485,7 +471,7 @@ const getMainProductRequest = () => ({
   payload: null,
 });
 
-const getMainProductSuccess = getMainProduct => ({
+const getMainProductSuccess = (getMainProduct) => ({
   type: TYPES.GET_MAIN_PRODUCT_SUCCESS,
   payload: getMainProduct,
 });
@@ -495,12 +481,12 @@ const getMainProductReset = () => ({
   payload: null,
 });
 
-const getMainProductError = error => ({
+const getMainProductError = (error) => ({
   type: TYPES.GET_MAIN_PRODUCT_ERROR,
   payload: { error },
 });
 
-export const getCategory = sellerID => async dispatch => {
+export const getCategory = (sellerID) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
     const res = await RetailController.getCategory(sellerID);
@@ -513,7 +499,7 @@ export const getCategory = sellerID => async dispatch => {
   }
 };
 
-export const getSubCategory = sellerID => async dispatch => {
+export const getSubCategory = (sellerID) => async (dispatch) => {
   dispatch(getSubCategoryRequest());
   try {
     const res = await RetailController.getSubCategory(sellerID);
@@ -526,7 +512,7 @@ export const getSubCategory = sellerID => async dispatch => {
   }
 };
 
-export const getBrand = sellerID => async dispatch => {
+export const getBrand = (sellerID) => async (dispatch) => {
   dispatch(getBrandRequest());
   try {
     const res = await RetailController.getBrand(sellerID);
@@ -540,7 +526,7 @@ export const getBrand = sellerID => async dispatch => {
 };
 
 export const getProduct =
-  (selectedId, subSelectedId, brandSelectedId, sellerID) => async dispatch => {
+  (selectedId, subSelectedId, brandSelectedId, sellerID) => async (dispatch) => {
     dispatch(getProductRequest());
     try {
       const res = await RetailController.getProduct(
@@ -558,7 +544,7 @@ export const getProduct =
     }
   };
 
-export const getProductDefault = (sellerID, page) => async dispatch => {
+export const getProductDefault = (sellerID, page) => async (dispatch) => {
   dispatch(getProductDefRequest());
   try {
     const res = await RetailController.getProductDefault(sellerID, page);
@@ -571,7 +557,7 @@ export const getProductDefault = (sellerID, page) => async dispatch => {
   }
 };
 
-export const getSearchProduct = (search, sellerID) => async dispatch => {
+export const getSearchProduct = (search, sellerID) => async (dispatch) => {
   dispatch(getSeaProductRequest());
   try {
     const res = await RetailController.getSearchProduct(search, sellerID);
@@ -581,7 +567,7 @@ export const getSearchProduct = (search, sellerID) => async dispatch => {
   }
 };
 
-export const getAllCart = () => async dispatch => {
+export const getAllCart = () => async (dispatch) => {
   dispatch(getAllCartRequest());
   try {
     const res = await RetailController.getAllCart();
@@ -594,7 +580,7 @@ export const getAllCart = () => async dispatch => {
   }
 };
 
-export const clearAllCart = () => async dispatch => {
+export const clearAllCart = () => async (dispatch) => {
   dispatch(getClearAllCartRequest());
   try {
     const res = await RetailController.clearAllCart();
@@ -608,7 +594,7 @@ export const clearAllCart = () => async dispatch => {
   }
 };
 
-export const clearOneCart = data => async dispatch => {
+export const clearOneCart = (data) => async (dispatch) => {
   dispatch(ClearOneCartRequest());
   try {
     const res = await RetailController.clearOneCart(data);
@@ -622,7 +608,7 @@ export const clearOneCart = data => async dispatch => {
   }
 };
 
-export const addTocart = data => async dispatch => {
+export const addTocart = (data) => async (dispatch) => {
   dispatch(addTocartRequest());
   try {
     const res = await RetailController.addTocart(data);
@@ -632,10 +618,10 @@ export const addTocart = data => async dispatch => {
     dispatch(addTocartError(error.message));
   }
 };
-export const updateCartQty = (data,cartId) => async dispatch => {
+export const updateCartQty = (data, cartId) => async (dispatch) => {
   dispatch(updateCartQtyRequest());
   try {
-    const res = await RetailController.updateCartQty(data,cartId);
+    const res = await RetailController.updateCartQty(data, cartId);
     dispatch(updateCartQtySuccess(res));
     // dispatch(getAllCart());
   } catch (error) {
@@ -643,7 +629,7 @@ export const updateCartQty = (data,cartId) => async dispatch => {
   }
 };
 
-export const addNotescart = data => async dispatch => {
+export const addNotescart = (data) => async (dispatch) => {
   dispatch(addNotesRequest());
   try {
     const res = await RetailController.addNotes(data);
@@ -654,7 +640,7 @@ export const addNotescart = data => async dispatch => {
   }
 };
 
-export const addDiscountToCart = data => async dispatch => {
+export const addDiscountToCart = (data) => async (dispatch) => {
   dispatch(addDiscountRequest());
   try {
     const res = await RetailController.addDiscountToCart(data);
@@ -666,7 +652,7 @@ export const addDiscountToCart = data => async dispatch => {
   }
 };
 
-export const getProductBundle = id => async dispatch => {
+export const getProductBundle = (id) => async (dispatch) => {
   dispatch(getProductBundleRequest());
   try {
     const res = await RetailController.getProductBundle(id);
@@ -679,7 +665,7 @@ export const getProductBundle = id => async dispatch => {
   }
 };
 
-export const getUserDetail = customerPhoneNo => async dispatch => {
+export const getUserDetail = (customerPhoneNo) => async (dispatch) => {
   dispatch(getUserDetailRequest());
   try {
     const res = await RetailController.getUserDetail(customerPhoneNo);
@@ -692,7 +678,7 @@ export const getUserDetail = customerPhoneNo => async dispatch => {
   }
 };
 
-export const sendInvitation = data => async dispatch => {
+export const sendInvitation = (data) => async (dispatch) => {
   dispatch(sendInvitationRequest());
   try {
     const res = await RetailController.sendInvitation(data);
@@ -702,7 +688,7 @@ export const sendInvitation = data => async dispatch => {
   }
 };
 
-export const createOrder = (data, callback) => async dispatch => {
+export const createOrder = (data, callback) => async (dispatch) => {
   dispatch(createOrderRequest());
   try {
     const res = await RetailController.createOrder(data);
@@ -715,7 +701,7 @@ export const createOrder = (data, callback) => async dispatch => {
   }
 };
 
-export const getWalletId = sellerID => async dispatch => {
+export const getWalletId = (sellerID) => async (dispatch) => {
   dispatch(getWalletIdRequest());
   try {
     const res = await RetailController.getWalletId(sellerID);
@@ -728,7 +714,7 @@ export const getWalletId = sellerID => async dispatch => {
   }
 };
 
-export const walletGetByPhone = walletIdInp => async dispatch => {
+export const walletGetByPhone = (walletIdInp) => async (dispatch) => {
   dispatch(walletGetByPhoneRequest());
   try {
     const res = await RetailController.walletGetByPhone(walletIdInp);
@@ -741,7 +727,7 @@ export const walletGetByPhone = walletIdInp => async dispatch => {
   }
 };
 
-export const requestMoney = data => async dispatch => {
+export const requestMoney = (data) => async (dispatch) => {
   dispatch(requestMoneyRequest());
   try {
     const res = await RetailController.requestMoney(data);
@@ -751,7 +737,7 @@ export const requestMoney = data => async dispatch => {
   }
 };
 
-export const getTip = sellerID => async dispatch => {
+export const getTip = (sellerID) => async (dispatch) => {
   dispatch(getTipsRequest());
   try {
     const res = await RetailController.getTips(sellerID);
@@ -764,7 +750,7 @@ export const getTip = sellerID => async dispatch => {
   }
 };
 
-export const logout = () => async dispatch => {
+export const logout = () => async (dispatch) => {
   try {
     await RetailController.logout();
   } finally {
@@ -772,7 +758,7 @@ export const logout = () => async dispatch => {
   }
 };
 
-export const getOneProduct = (sellerID, productId) => async dispatch => {
+export const getOneProduct = (sellerID, productId) => async (dispatch) => {
   dispatch(getOneProductRequest());
   try {
     const res = await RetailController.getOneProduct(sellerID, productId);
@@ -782,7 +768,7 @@ export const getOneProduct = (sellerID, productId) => async dispatch => {
   }
 };
 
-export const checkSuppliedVariant = data => async dispatch => {
+export const checkSuppliedVariant = (data) => async (dispatch) => {
   dispatch(checkSuppliedVariantRequest());
   try {
     const res = await RetailController.checkSuppliedVariant(data);
@@ -795,7 +781,7 @@ export const checkSuppliedVariant = data => async dispatch => {
   }
 };
 
-export const requestCheck = data => async dispatch => {
+export const requestCheck = (data) => async (dispatch) => {
   dispatch(requestCheckRequest());
   try {
     const res = await RetailController.requestCheck(data);
@@ -805,7 +791,7 @@ export const requestCheck = data => async dispatch => {
   }
 };
 
-export const scanProductAdd = data => async dispatch => {
+export const scanProductAdd = (data) => async (dispatch) => {
   dispatch(scanProductAddRequest());
   try {
     const res = await RetailController.scanProductAdd(data);
@@ -816,15 +802,15 @@ export const scanProductAdd = data => async dispatch => {
   }
 };
 
-export const clearCheck = () => async dispatch => {
+export const clearCheck = () => async (dispatch) => {
   dispatch(clearCheckStore());
 };
 
-export const retailclearstore = () => async dispatch => {
+export const retailclearstore = () => async (dispatch) => {
   dispatch(clearRetailStore());
 };
 
-export const getMainProduct = productTypeId => async dispatch => {
+export const getMainProduct = (productTypeId) => async (dispatch) => {
   dispatch(getMainProductRequest());
   try {
     // const res = await RetailController.getMainProduct(
@@ -836,7 +822,7 @@ export const getMainProduct = productTypeId => async dispatch => {
 
     const res = await RetailController.getDynamicProducts(productTypeId);
 
-    dispatch(getMainProductSuccess(res?.payload?.data));
+    dispatch(getMainProductSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getMainProductReset());

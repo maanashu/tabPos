@@ -7,8 +7,6 @@ import { getDeviceToken } from '@/utils/Notifications';
 import { Alert } from 'react-native';
 import { logoutUserFunction } from '@/actions/UserActions';
 import { logoutFunction } from '@/actions/AuthActions';
-import { useDispatch, useSelector } from 'react-redux';
-import { log } from 'react-native-reanimated';
 
 const getTimeZone = RNLocalize.getTimeZone();
 
@@ -18,7 +16,10 @@ client.interceptors.request.use(async function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
   const user = store.getState().user?.posLoginData?.token;
   const fcmToken = await getDeviceToken();
-  // console.log('resigter', register);
+
+  console.log('merchant token: ' + register);
+  console.log('user token: ' + user);
+
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
    * @returns Token for api call
@@ -46,11 +47,11 @@ client.interceptors.request.use(async function (config) {
 });
 
 client.interceptors.response.use(
-  response =>
+  (response) =>
     response.status === 204
       ? Promise.reject({ error: 'emptyContent', statusCode: 204 })
       : response.data,
-  error => {
+  (error) => {
     if (error.response) {
       if (error.response.data.msg === 'invalid_token') {
         // Show an alert in React Native
@@ -74,7 +75,7 @@ client.interceptors.response.use(
   }
 );
 
-const setAuthorization = token => {
+const setAuthorization = (token) => {
   client.defaults.headers.common.authorization = token;
 };
 

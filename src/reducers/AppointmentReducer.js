@@ -36,23 +36,11 @@ export const appointmentReducer = (state = INITIALSTATE, { payload, type }) => {
       };
 
     case TYPES.GET_APPOINTMENTS_BY_STAFF_ID_SUCCESS:
-      const { geAppointmentById } = state;
       const { appointmentsById, staffAppointmentPages } = payload;
-
-      // Merge the existing data with the new data based on the unique identifier 'id'
-      const mergedAppointmentsByID = geAppointmentById.map(
-        (existingItem) =>
-          appointmentsById.find((newItem) => existingItem.id === newItem.id) || existingItem
-      );
-
-      // Add any new unique appointments that were not in the existing data
-      const newUniqueAppointmentsByID = appointmentsById.filter(
-        (newItem) => !geAppointmentById.some((existingItem) => existingItem.id === newItem.id)
-      );
 
       return {
         ...state,
-        geAppointmentById: [...mergedAppointmentsByID, ...newUniqueAppointmentsByID],
+        geAppointmentById: appointmentsById,
         staffAppointmentPages: staffAppointmentPages,
       };
     case TYPES.GET_APPOINTMENTS_BY_STAFF_ID_RESET:
@@ -61,23 +49,11 @@ export const appointmentReducer = (state = INITIALSTATE, { payload, type }) => {
         geAppointmentById: [],
       };
     case TYPES.GET_STAFF_USERS_SUCCESS:
-      const { staffUsers } = state;
       const { staffUsersList, staffPages } = payload;
-
-      // Merge the existing data with the new data based on the unique identifier 'id'
-      const mergedStaffUsers = staffUsers.map(
-        (existingItem) =>
-          staffUsersList.find((newItem) => existingItem.id === newItem.id) || existingItem
-      );
-
-      // Add any new unique Staff users that were not in the existing data
-      const newUniqueStaffUsers = staffUsersList.filter(
-        (newItem) => !staffUsers.some((existingItem) => existingItem.id === newItem.id)
-      );
 
       return {
         ...state,
-        staffUsers: [...mergedStaffUsers, ...newUniqueStaffUsers],
+        staffUsers: staffUsersList,
         staffPages: staffPages,
       };
     case TYPES.GET_STAFF_USERS_RESET:

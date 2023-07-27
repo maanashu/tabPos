@@ -1,12 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
-
+import React, { useEffect, useState } from 'react';
+import { FlatList, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
@@ -25,7 +18,7 @@ import {
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import Modal from 'react-native-modal';
+import Modal, { ReactNativeModal } from 'react-native-modal';
 import { CategoryModal } from './CategoryModal';
 import { SubCatModal } from './SubCatModal';
 import { BrandModal } from './BrandModal';
@@ -36,7 +29,7 @@ import { AddCartDetailModal } from './AddCartDetailModal';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useDispatch, useSelector } from 'react-redux';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
 import { TYPES } from '@/Types/Types';
 import {
   addTocart,
@@ -45,16 +38,21 @@ import {
   getCategory,
   getMainProduct,
   getOneProduct,
-  getProduct,
-  getProductDefault,
   getSubCategory,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useIsFocused } from '@react-navigation/native';
-import  CartListModal  from './CartListModal';
+import { CartListModal } from './CartListModal';
 
-const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArray, sellerID, productArray }) => {
+export function MainScreen({
+  cartScreenHandler,
+  checkOutHandler,
+  categoryArray,
+  sellerID,
+  productArray,
+}) {
   const [selectedId, setSelectedId] = useState();
+
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
   const [brandModal, setBrandModal] = useState(false);
@@ -71,8 +69,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
 
   const [showProductsFrom, setshowProductsFrom] = useState();
 
-  const mainProductArray = getRetailData?.getMainProduct;
-  // console.log('mainProductArray', mainProductArray);
+  const mainProductArray = getRetailData?.getMainProduct?.data;
 
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
@@ -93,12 +90,15 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
   useEffect(() => {
     dispatch(getMainProduct());
   }, []);
+  const isProductLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state)
+  );
 
   const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
 
   const [filterMenuTitle, setfilterMenuTitle] = useState(filterMenuData);
 
-  const [isFilterDataSeclectedOfIndex, setisFilterDataSeclectedOfIndex] =useState();
+  const [isFilterDataSeclectedOfIndex, setisFilterDataSeclectedOfIndex] = useState();
 
   const [selectedCatID, setselectedCatID] = useState(null);
   const [selectedSubCatID, setselectedSubCatID] = useState(null);
@@ -119,27 +119,15 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
       setselectedCatID(selectedCatID);
     }
   }, [selectedCatID]);
-    useEffect(() => {
-      if (cartLength === 0 || cartLength === undefined) {
-        setCartModal(false);
-      }
-    }, [cartLength]);
+  useEffect(() => {
+    if (cartLength === 0 || cartLength === undefined) {
+      setCartModal(false);
+    }
+  }, [cartLength]);
 
-  const [okk, setOkk] = useState(getRetailData?.trueCustomer?.state || false);
+  const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
 
-  const isProductLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state)
-  );
-
-  const [showCart, setShowCart] = useState(
-    getRetailData?.trueCart?.state || false
-  );
-
-  // useEffect(() => {
-  //   dispatch(getMainProduct(sellerID));
-  // }, []);
-
-  const onClickAddCart = item => {
+  const onClickAddCart = (item) => {
     const data = {
       seller_id: sellerID,
       supplyId: item?.supplies?.[0]?.id,
@@ -148,10 +136,8 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
       service_id: item?.service_id,
       qty: 1,
     };
-  
-   
-    dispatch(addTocart(data));
 
+    dispatch(addTocart(data));
   };
 
   const originalFilterData = [
@@ -169,15 +155,12 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
     },
   ];
 
-  const productFun = useCallback(
-    async productId => {
-      const res = await dispatch(getOneProduct(sellerID, productId));
-      if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-        setAddCartModal(true);
-      }
-    },
-    [sellerID]
-  );
+  const productFun = async (productId) => {
+    const res = await dispatch(getOneProduct(sellerID, productId));
+    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+      setAddCartModal(true);
+    }
+  };
 
   const userInputClear = () => {
     setUserEmail('');
@@ -185,9 +168,9 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
     // setCustomerPhoneNo('');
     setUserAdd('');
   };
-  const onCloseCartModal=()=>{
-    setCartModal(false)
-  }
+  const onCloseCartModal = () => {
+    setCartModal(false);
+  };
 
   //  categoryType -----start
   const catTypeRenderItem = ({ item }) => {
@@ -230,24 +213,21 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
       onPress={onPress}
       //   onPress={() => setCategoryModal(true)}
     >
-      <Text style={styles.chooseCat} numberOfLines={1}>
-        {item.name}
-      </Text>
-      {/* <Image
+      <View style={{ flexDirection: 'column' }}>
+        <Text style={styles.chooseCat} numberOfLines={1}>
+          {item.name}
+        </Text>
+        <Text style={styles.listed}>{'0'} listed</Text>
+      </View>
+
+      <FastImage
         source={categoryMenu}
         style={[
           styles.categoryMenu,
-          { tintColor: item.isSelected && COLORS.solid_green },
+          { tintColor: item.isSelected ? COLORS.solid_green : COLORS.black },
         ]}
-      /> */}
-       <FastImage
-      source={categoryMenu}
-       style={[
-        styles.categoryMenu,
-        { tintColor: item.isSelected && COLORS.solid_green },
-      ]}
-      resizeMode={FastImage.resizeMode.contain}
-    />
+        resizeMode={FastImage.resizeMode.contain}
+      />
     </TouchableOpacity>
   );
   //  categoryType -----end
@@ -264,7 +244,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
       />
     );
   };
-  
+
   const Item = ({ item }) => (
     <TouchableOpacity
       style={styles.productCon}
@@ -272,15 +252,15 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
       activeOpacity={0.7}
     >
       {/* <Image source={{ uri: item.image }} style={styles.categoryshoes} /> */}
-      
+
       <FastImage
-      source={{
-        uri: item.image,
-        priority: FastImage.priority.normal,
-      }}
-      style={styles.categoryshoes}
-      resizeMode={FastImage.resizeMode.contain}
-    />
+        source={{
+          uri: item.image,
+          priority: FastImage.priority.normal,
+        }}
+        style={styles.categoryshoes}
+        resizeMode={FastImage.resizeMode.contain}
+      />
       <Spacer space={SH(10)} />
       <Text numberOfLines={1} style={styles.productDes}>
         {item.name}
@@ -300,11 +280,11 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
         {/* addToCartBlue */}
         <TouchableOpacity onPress={() => onClickAddCart(item)}>
           {/* <Image source={addToCart} style={styles.addToCart} /> */}
-        <FastImage
-        source={addToCart}
-        style={styles.addToCart}
-         resizeMode={FastImage.resizeMode.contain}
-      />
+          <FastImage
+            source={addToCart}
+            style={styles.addToCart}
+            resizeMode={FastImage.resizeMode.contain}
+          />
           {/* <View style={styles.productBadge}>
             <Text style={styles.productBadgeText}>{item.id}</Text>
           </View> */}
@@ -313,14 +293,10 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
     </TouchableOpacity>
   );
 
-
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.homeScreenCon}>
-        <CustomHeader
-          iconShow={showCart ? true : false}
-          crossHandler={() => setShowCart(false)}
-        />
+        <CustomHeader iconShow={showCart ? true : false} crossHandler={() => setShowCart(false)} />
         <View style={styles.displayflex2}>
           <View style={styles.productView}>
             <View
@@ -330,11 +306,9 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
               }}
             >
               <View style={{ marginRight: 15 }}>
-                <Text style={styles.allProduct}>
-                  {strings.posRetail.allProduct}
-                </Text>
+                <Text style={styles.allProduct}>{strings.posRetail.allProduct}</Text>
                 <Text style={styles.productCount}>
-                  ({mainProductArray?.length ?? '0'})
+                  ({getRetailData?.getMainProduct?.total ?? '0'})
                 </Text>
               </View>
               <View>
@@ -342,7 +316,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
                   data={filterMenuTitle}
                   extraData={filterMenuTitle}
                   renderItem={catTypeRenderItem}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item) => item.id}
                   horizontal
                   // contentContainerStyle={styles.contentContainer}
                 />
@@ -350,10 +324,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
               <View style={styles.barcodeInputWraper}>
                 <View style={styles.displayRow}>
                   <View>
-                    <Image
-                      source={search_light}
-                      style={styles.sideSearchStyle}
-                    />
+                    <Image source={search_light} style={styles.sideSearchStyle} />
                   </View>
                   <TextInput
                     placeholder="Search by Barcode, SKU, Name"
@@ -459,10 +430,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
               onPress={cartScreenHandler}
               style={
                 cartLength > 0
-                  ? [
-                      styles.bucketBackgorund,
-                      { backgroundColor: COLORS.primary },
-                    ]
+                  ? [styles.bucketBackgorund, { backgroundColor: COLORS.primary }]
                   : styles.bucketBackgorund
               }
             >
@@ -479,24 +447,23 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
         </View>
       </View>
       {/* cart list modal start */}
-      <Modal animationType="fade" transparent={true} isVisible={cartModal}>
-        <CartListModal 
-
-         checkOutHandler={checkOutHandler}
-         CloseCartModal={onCloseCartModal}
-        />
-      </Modal>
-
-      {/* cart list modal end */}
-      <Modal
+      <ReactNativeModal
         animationType="fade"
         transparent={true}
-        isVisible={addCartModal || addCartDetailModal}
+        isVisible={cartModal}
+        animationIn={'slideInRight'}
+        animationOut={'slideOutRight'}
       >
+        <CartListModal
+          checkOutHandler={checkOutHandler}
+          CloseCartModal={() => setCartModal(false)}
+        />
+      </ReactNativeModal>
+
+      {/* cart list modal end */}
+      <Modal animationType="fade" transparent={true} isVisible={addCartModal || addCartDetailModal}>
         {addCartDetailModal ? (
-          <AddCartDetailModal
-            crossHandler={() => setAddCartDetailModal(false)}
-          />
+          <AddCartDetailModal crossHandler={() => setAddCartDetailModal(false)} />
         ) : (
           <AddCartModal
             crossHandler={() => setAddCartModal(false)}
@@ -524,7 +491,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
                     setselectedCatID(null);
                     setCategoryModal(false);
                     dispatch(getMainProduct());
-                    setfilterMenuTitle(prevData => {
+                    setfilterMenuTitle((prevData) => {
                       const newData = [...prevData];
                       newData[0].isSelected = false;
                       newData[0].name = originalFilterData[0].name;
@@ -533,7 +500,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
                   }}
                   crossHandler={() => setCategoryModal(false)}
                   categoryArray={categoryArray}
-                  onSelectCategory={selectedCat => {
+                  onSelectCategory={(selectedCat) => {
                     setselectedCatID(selectedCat.id);
                     const categoryID = {
                       category_ids: selectedCat.id,
@@ -541,7 +508,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
                     dispatch(getMainProduct(categoryID));
 
                     setisFilterDataSeclectedOfIndex(0);
-                    setfilterMenuTitle(prevData => {
+                    setfilterMenuTitle((prevData) => {
                       const newData = [...prevData];
 
                       // Set Category
@@ -568,7 +535,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
                     setselectedSubCatID(null);
                     setSubCategoryModal(false);
                     dispatch(getMainProduct());
-                    setfilterMenuTitle(prevData => {
+                    setfilterMenuTitle((prevData) => {
                       const newData = [...prevData];
                       newData[1].isSelected = false;
                       newData[1].name = originalFilterData[1].name;
@@ -576,7 +543,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
                     });
                   }}
                   crossHandler={() => setSubCategoryModal(false)}
-                  onSelectSubCategory={selectedSubCat => {
+                  onSelectSubCategory={(selectedSubCat) => {
                     const subCategoryID = {
                       sub_category_ids: selectedSubCat.id,
                     };
@@ -584,7 +551,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
                     setselectedSubCatID(selectedSubCat.id);
                     setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
 
-                    setfilterMenuTitle(prevData => {
+                    setfilterMenuTitle((prevData) => {
                       const newData = [...prevData];
 
                       // Set SubCategory
@@ -610,7 +577,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
                     setselectedBrandID(null);
                     setBrandModal(false);
                     dispatch(getMainProduct());
-                    setfilterMenuTitle(prevData => {
+                    setfilterMenuTitle((prevData) => {
                       const newData = [...prevData];
                       newData[2].isSelected = false;
                       newData[2].name = originalFilterData[2].name;
@@ -618,7 +585,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
                     });
                   }}
                   crossHandler={() => setBrandModal(false)}
-                  onSelectbrands={selectedBrand => {
+                  onSelectbrands={(selectedBrand) => {
                     setselectedBrandID(selectedBrand.id);
                     const brandID = {
                       brand_id: selectedBrand.id,
@@ -626,7 +593,7 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
                     dispatch(getMainProduct(brandID));
                     setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
 
-                    setfilterMenuTitle(prevData => {
+                    setfilterMenuTitle((prevData) => {
                       const newData = [...prevData];
                       newData[2].name = selectedBrand.name;
                       newData[2].isSelected = true;
@@ -650,5 +617,4 @@ const MainScreen = React.memo(({ cartScreenHandler, checkOutHandler, categoryArr
       </Modal>
     </View>
   );
-});
-export { MainScreen };
+}

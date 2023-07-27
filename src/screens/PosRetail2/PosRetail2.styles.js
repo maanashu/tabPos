@@ -1,14 +1,9 @@
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW, ShadowStyles } from '@/theme';
 import { height, width } from '@/theme/ScalerDimensions';
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { Colors } from 'react-native-paper';
-import {
-  moderateScale,
-  verticalScale,
-  ms,
-  moderateVerticalScale,
-} from 'react-native-size-matters';
+import { moderateScale, verticalScale, ms, moderateVerticalScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -36,8 +31,7 @@ export const styles = StyleSheet.create({
   homeScreenCon: {
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
-    paddingHorizontal:
-      Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
+    paddingHorizontal: Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
   },
   searchScreenHeader: {
     height: SH(60),
@@ -66,10 +60,10 @@ export const styles = StyleSheet.create({
   _totalAmountTitle: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
-    fontSize: ms(20),
+    fontSize: ms(17),
   },
   _dollarSymbol: {
-    fontSize: ms(20),
+    fontSize: ms(17),
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
     marginTop: ms(2),
@@ -83,7 +77,7 @@ export const styles = StyleSheet.create({
   _amount: {
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(30),
+    fontSize: ms(25),
   },
   _bottomContainer: {
     marginTop: ms(10),
@@ -98,7 +92,7 @@ export const styles = StyleSheet.create({
   },
   _boxView: {
     height: ms(110),
-    width: ms(118),
+    width: ms(110),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
     justifyContent: 'center',
@@ -203,7 +197,8 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(125),
-    width: ms(170),
+
+    width: ms(157),
     margin: ms(3),
     borderRadius: ms(6),
     // justifyContent: 'center',
@@ -315,6 +310,7 @@ export const styles = StyleSheet.create({
     width: SW(7),
     height: SW(7),
     resizeMode: 'contain',
+    tintColor: COLORS.primary,
   },
 
   contentContainer: {
@@ -418,8 +414,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   nameAddCon: {
-    height:
-      Platform.OS === 'android' ? windowHeight * 0.38 : windowHeight * 0.37,
+    height: Platform.OS === 'android' ? windowHeight * 0.38 : windowHeight * 0.37,
     borderRadius: 5,
     backgroundColor: COLORS.white,
   },
@@ -1030,10 +1025,11 @@ export const styles = StyleSheet.create({
   _kContainer: {
     height: ms(200),
     width: ms(300),
-    backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: ms(5),
+    ...ShadowStyles.shadow2,
+    backgroundColor: COLORS.white,
   },
   _kCenterContainer: {
     height: '100%',
@@ -1228,8 +1224,7 @@ export const styles = StyleSheet.create({
   homeScreenCon: {
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
-    paddingHorizontal:
-      Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
+    paddingHorizontal: Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
   },
   productView: {
     backgroundColor: Colors.white,
@@ -1256,15 +1251,16 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
-    tintColor:COLORS.darkGray,
+    tintColor: COLORS.darkGray,
   },
   crossView: {
     width: SW(10),
     height: SW(10),
-    position:"absolute",
-    right:ms(5),
-    top:ms(2),
-    justifyContent:"center",alignItems:"center"
+    position: 'absolute',
+    right: ms(5),
+    top: ms(2),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bucketBackgorund: {
     width: SW(17),
@@ -1441,7 +1437,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(50),
-    width: ms(126),
+    width: ms(116),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1467,7 +1463,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(45),
-    width: ms(170),
+    width: ms(157),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1589,8 +1585,7 @@ export const styles = StyleSheet.create({
   },
 
   avaliableOferBodyCon: {
-    height:
-      Platform.OS === 'android' ? windowHeight * 0.07 : windowHeight * 0.07,
+    height: Platform.OS === 'android' ? windowHeight * 0.07 : windowHeight * 0.07,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: ms(10),
@@ -1621,8 +1616,8 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     position: 'absolute',
-    top: -30,
-    right: -40,
+    top: -40,
+    right: -50,
     borderRadius: 10,
     padding: 18,
   },
@@ -1666,16 +1661,18 @@ export const styles = StyleSheet.create({
   },
 
   //PHONE POPUP
-
   calendarSettingModalContainer: {
-    width: ms(295),
-    height: ms(420),
+    width: windowWidth * 0.35,
+    height: windowHeight * 0.84,
     backgroundColor: 'white',
-    padding: ms(10),
-    paddingVertical: ms(15),
     alignSelf: 'center',
-    borderRadius: ms(10),
+    borderRadius: 7,
     alignItems: 'center',
+    borderWidth: 1,
+    paddingHorizontal: moderateVerticalScale(10),
+    paddingVertical: verticalScale(15),
+    position: 'absolute',
+    top: -40,
   },
   _btnContainer: {
     flexDirection: 'row',
@@ -1750,18 +1747,15 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
   },
   textInputView: {
-    paddingHorizontal: SW(12),
+    paddingHorizontal: SW(4),
     borderWidth: 0,
     alignItems: 'center',
     flexDirection: 'row',
     height: windowHeight * 0.08,
-    width: windowWidth * 0.348,
-    // marginVertical: 10,
+    width: windowWidth * 0.3,
     borderWidth: 1,
     borderColor: '#D8D8D8',
     borderRadius: 5,
-    marginHorizontal: SW(10),
-    // marginBottom:SW(12)
   },
   dropDownIcon: {
     width: 7,
@@ -1785,7 +1779,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.primary,
     borderWidth: 1,
     height: ms(50),
-    width: ms(520),
+    // width: ms(40),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1903,5 +1897,27 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+
+  //  final payment design css start
+  leftCon: {
+    backgroundColor: COLORS.white,
+    borderRadius: 8,
+    width: windowWidth * 0.65,
+    height: windowHeight * 0.9,
+  },
+  rightCon: {
+    backgroundColor: COLORS.white,
+    borderRadius: 8,
+    width: windowWidth * 0.25,
+    height: windowHeight * 0.9,
+  },
+  //  final payment design css end
+
+  selectTipsHeader: {
+    backgroundColor: COLORS.blue_shade,
+    borderTopLeftRadius: 8,
+    borderTopEndRadius: 8,
+    paddingVertical: verticalScale(6),
   },
 });
