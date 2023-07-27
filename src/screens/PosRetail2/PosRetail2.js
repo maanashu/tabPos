@@ -93,6 +93,10 @@ export function PosRetail2() {
     getCart?.discount_flag === 'code' ? true : false
   );
   const [cashPayDetail, setCashPayDetail] = useState();
+
+  useEffect(() => {
+    dispatch(getAllCart());
+  }, [isFocus]);
   useEffect(() => {
     setNotes(getCart?.notes);
     setDescriptionDis(getCart?.discount_desc);
@@ -212,11 +216,6 @@ export function PosRetail2() {
       setAddNotes(false);
     }
   };
-
-  // useEffect(() => {
-  //   dispatch(getMainProduct());
-  //   dispatch(getAllCart());
-  // }, [isFocus]);
 
   const isLoading = useSelector((state) =>
     isLoadingSelector(

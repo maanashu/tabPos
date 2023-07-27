@@ -134,17 +134,15 @@ export const CartAmountPayBy = ({
       <View style={styles.displayflex}>
         <View style={styles.leftCon}>
           <View style={styles.selectTipsHeader}>
-            <View style={[styles._topContainer]}>
-              <BackButton
-                onPress={onPressBack}
-                title={'Back'}
-                style={{
-                  top: ms(10),
-                  left: ms(-10),
-                  backgroundColor: 'transparent',
-                }}
-              />
-            </View>
+            <BackButton
+              onPress={onPressBack}
+              title={'Back'}
+              style={{
+                top: ms(10),
+                left: ms(10),
+                backgroundColor: 'transparent',
+              }}
+            />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
               <View style={{ flexDirection: 'row' }}>
@@ -155,7 +153,7 @@ export const CartAmountPayBy = ({
           </View>
 
           <View style={{ flex: 1, paddingHorizontal: ms(18) }}>
-            <View style={{ marginTop: ms(15) }}>
+            <View style={{ marginTop: ms(10) }}>
               <Text style={styles.selectTips}>Select Tips</Text>
               <View style={{ flexDirection: 'row' }}>
                 {TIPS_DATA.map((item, index) => (
@@ -174,14 +172,29 @@ export const CartAmountPayBy = ({
                       styles._payBYBoxContainerTip,
                       {
                         borderWidth: 1,
-                        borderColor:
-                          selectedTipIndex === index ? COLORS.blueLight : COLORS.solidGrey,
+                        borderColor: selectedTipIndex === index ? COLORS.primary : COLORS.solidGrey,
                       },
                     ]}
                   >
-                    <Text style={styles._payByMethodTip}>{item.percent}</Text>
+                    <Text
+                      style={[
+                        styles._payByMethodTip,
+                        {
+                          color: selectedTipIndex === index ? COLORS.primary : COLORS.solid_grey,
+                        },
+                      ]}
+                    >
+                      {item.percent}
+                    </Text>
                     {index !== 3 && (
-                      <Text style={styles._payByAmountTip}>
+                      <Text
+                        style={[
+                          styles._payByAmountTip,
+                          {
+                            color: selectedTipIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      >
                         {'USD $'}
                         {calculatePercentageValue(cartData?.amount?.total_amount, item.title)}
                       </Text>
@@ -212,14 +225,53 @@ export const CartAmountPayBy = ({
                         {
                           borderWidth: 1,
                           borderColor:
-                            selectedPaymentIndex === index ? COLORS.blueLight : COLORS.solidGrey,
+                            selectedPaymentIndex === index ? COLORS.primary : COLORS.solidGrey,
                         },
                       ]}
                     >
-                      <Text style={styles._payByTitle}>Pay By</Text>
-                      <Text style={styles._payByMethod}>{item.title}</Text>
-                      <Text style={styles._payByAmount}>{totalAmountByPaymentMethod(index)}</Text>
-                      <Image source={item.icon} style={styles._payByIcon} />
+                      <Text
+                        style={[
+                          styles._payByTitle,
+                          {
+                            color:
+                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      >
+                        Pay By
+                      </Text>
+                      <Text
+                        style={[
+                          styles._payByMethod,
+                          {
+                            color:
+                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      >
+                        {item.title}
+                      </Text>
+                      <Text
+                        style={[
+                          styles._payByAmount,
+                          {
+                            color:
+                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      >
+                        {totalAmountByPaymentMethod(index)}
+                      </Text>
+                      <Image
+                        source={item.icon}
+                        style={[
+                          styles._payByIcon,
+                          {
+                            tintColor:
+                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      />
                       {index == 1 && (
                         <View style={styles.saveView}>
                           <Text style={styles.saveText}>Save 1%</Text>
@@ -260,11 +312,21 @@ export const CartAmountPayBy = ({
                         {
                           borderWidth: 1,
                           borderColor:
-                            selectedRecipeIndex === index ? COLORS.blueLight : COLORS.solidGrey,
+                            selectedRecipeIndex === index ? COLORS.primary : COLORS.solidGrey,
                         },
                       ]}
                     >
-                      <Text style={styles._payByMethodReceipe}>{item.title}</Text>
+                      <Text
+                        style={[
+                          styles._payByMethodReceipe,
+                          {
+                            color:
+                              selectedRecipeIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      >
+                        {item.title}
+                      </Text>
                     </TouchableOpacity>
                   ))}
                 </View>

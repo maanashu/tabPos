@@ -1488,8 +1488,8 @@ export const styles = StyleSheet.create({
     // marginTop: ms(4),
   },
   selectTips: {
-    fontSize: ms(12),
-    margin: ms(5),
+    fontSize: ms(11),
+    margin: ms(3),
     fontFamily: Fonts.Regular,
     color: COLORS.gerySkies,
   },
