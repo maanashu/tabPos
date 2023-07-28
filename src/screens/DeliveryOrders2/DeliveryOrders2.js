@@ -77,35 +77,35 @@ export function DeliveryOrders2() {
     dispatch(getOrderCount(sellerID));
     dispatch(getReviewDefault(0, sellerID));
 
-    if (getDeliveryData?.deliveringOrder?.length > 0) {
-      const deliveryTypes = [
-        {
-          key: '1',
-          delivery_type_title: getDeliveryData?.deliveringOrder[0].delivery_type_title,
-          count: getDeliveryData?.deliveringOrder[0].count,
-          image: expressType,
-        },
-        {
-          key: '2',
-          delivery_type_title: getDeliveryData?.deliveringOrder[1].delivery_type_title,
-          count: getDeliveryData?.deliveringOrder[0].count,
-          image: oneHourType,
-        },
-        {
-          key: '3',
-          delivery_type_title: getDeliveryData?.deliveringOrder[2].delivery_type_title,
-          count: getDeliveryData?.deliveringOrder[0].count,
-          image: twoHourType,
-        },
-        {
-          key: '4',
-          delivery_type_title: 'Customer Pickups',
-          count: orderCount[6].count,
-          image: customType,
-        },
-      ];
-      setDeliveryTypes(deliveryTypes);
-    }
+    // if (getDeliveryData?.deliveringOrder?.length > 0) {
+    const deliveryTypes = [
+      {
+        key: '1',
+        delivery_type_title: getDeliveryData?.deliveringOrder?.[0]?.delivery_type_title,
+        count: getDeliveryData?.deliveringOrder?.[0]?.count,
+        image: expressType,
+      },
+      {
+        key: '2',
+        delivery_type_title: getDeliveryData?.deliveringOrder?.[1]?.delivery_type_title,
+        count: getDeliveryData?.deliveringOrder[0].count,
+        image: oneHourType,
+      },
+      {
+        key: '3',
+        delivery_type_title: getDeliveryData?.deliveringOrder?.[2]?.delivery_type_title,
+        count: getDeliveryData?.deliveringOrder?.[0]?.count,
+        image: twoHourType,
+      },
+      {
+        key: '4',
+        delivery_type_title: 'Customer Pickups',
+        count: orderCount?.[6]?.count,
+        image: customType,
+      },
+    ];
+    setDeliveryTypes(deliveryTypes);
+    // }
   }, []);
 
   const renderItem = ({ item, index }) => (
@@ -293,7 +293,7 @@ export function DeliveryOrders2() {
           <View style={styles.firstRowStyle}>
             <View style={[styles.orderToReviewView, { marginBottom: 75 }]}>
               <FlatList
-                data={getDeliveryData?.getReviewDef}
+                data={getDeliveryData?.getReviewDef ?? []}
                 renderItem={renderOrderToReview}
                 showsVerticalScrollIndicator={false}
                 ListHeaderComponent={() => (
