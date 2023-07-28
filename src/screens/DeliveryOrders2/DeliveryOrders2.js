@@ -63,9 +63,9 @@ export function DeliveryOrders2() {
   const series = [823, 101, 40];
   const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet];
 
-  const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef[0] ?? '');
+  const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? '');
   const [orderDetail, setOrderDetail] = useState(
-    getDeliveryData?.getReviewDef[0]?.order_details ?? []
+    getDeliveryData?.getReviewDef?.[0]?.order_details ?? []
   );
   const [viewAllOrders, setViewAllOrders] = useState(false);
   const [openShippingOrders, setOpenShippingOrders] = useState(false);
@@ -81,26 +81,29 @@ export function DeliveryOrders2() {
     const deliveryTypes = [
       {
         key: '1',
-        delivery_type_title: getDeliveryData?.deliveringOrder?.[0]?.delivery_type_title,
-        count: getDeliveryData?.deliveringOrder?.[0]?.count,
+        delivery_type_title:
+          getDeliveryData?.deliveringOrder?.[0]?.delivery_type_title ?? 'Express Delivery',
+        count: getDeliveryData?.deliveringOrder?.[0]?.count ?? 0,
         image: expressType,
       },
       {
         key: '2',
-        delivery_type_title: getDeliveryData?.deliveringOrder?.[1]?.delivery_type_title,
-        count: getDeliveryData?.deliveringOrder[0].count,
+        delivery_type_title:
+          getDeliveryData?.deliveringOrder?.[1]?.delivery_type_title ?? '1 hour delivery window',
+        count: getDeliveryData?.deliveringOrder?.[0].count ?? 0,
         image: oneHourType,
       },
       {
         key: '3',
-        delivery_type_title: getDeliveryData?.deliveringOrder?.[2]?.delivery_type_title,
-        count: getDeliveryData?.deliveringOrder?.[0]?.count,
+        delivery_type_title:
+          getDeliveryData?.deliveringOrder?.[2]?.delivery_type_title ?? '2 hour delivery window',
+        count: getDeliveryData?.deliveringOrder?.[0]?.count ?? 0,
         image: twoHourType,
       },
       {
         key: '4',
         delivery_type_title: 'Customer Pickups',
-        count: orderCount?.[6]?.count,
+        count: orderCount?.[6]?.count ?? 0,
         image: customType,
       },
     ];
@@ -647,7 +650,7 @@ export function DeliveryOrders2() {
               <Spacer space={SH(15)} />
               <View style={styles.orderToReviewView}>
                 <FlatList
-                  data={getDeliveryData?.getReviewDef.slice(0, 4)}
+                  data={getDeliveryData?.getReviewDef?.slice(0, 4)}
                   renderItem={renderOrderToReview}
                   contentContainerStyle={{
                     flexGrow: 1,
