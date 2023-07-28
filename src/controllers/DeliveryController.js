@@ -8,14 +8,12 @@ export class DeliveryController {
   static async getOrderCount(status) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getOrderCount +
-        `?seller_id=${status}&delivery_option=1`;
+        ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${status}&delivery_option=1`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -34,10 +32,10 @@ export class DeliveryController {
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -50,10 +48,10 @@ export class DeliveryController {
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -61,13 +59,12 @@ export class DeliveryController {
 
   static async acceptOrder(data) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL + ApiOrderInventory.acceptOrder + `/${data.orderId}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.acceptOrder + `/${data.orderId}`;
       const body = {
         status: data.status,
       };
       HttpClient.put(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response?.msg === 'Order status updated successfully!') {
             Toast.show({
               position: 'bottom',
@@ -78,7 +75,7 @@ export class DeliveryController {
           }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -86,13 +83,12 @@ export class DeliveryController {
 
   static async deliveryOrd() {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrders + `?delivery_option=1`;
+      const endpoint = ORDER_URL + ApiOrderInventory.getOrders + `?delivery_option=1`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -101,14 +97,12 @@ export class DeliveryController {
   static async deliverygraph(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.shippingGraph +
-        `?seller_id=${sellerID}&filter=week`;
+        ORDER_URL + ApiOrderInventory.shippingGraph + `?seller_id=${sellerID}&filter=week`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -122,15 +116,12 @@ export class DeliveryController {
 
   static async deliveringOrder(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.deliveringOrder +
-        `?seller_id=${sellerID}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.deliveringOrder + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',

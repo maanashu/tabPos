@@ -1,10 +1,4 @@
-import {
-  Alert,
-  Keyboard,
-  Linking,
-  PermissionsAndroid,
-  ToastAndroid,
-} from 'react-native';
+import { Alert, Keyboard, Linking, PermissionsAndroid, ToastAndroid } from 'react-native';
 import { strings } from '@/localization';
 import moment from 'moment';
 
@@ -49,9 +43,8 @@ const NormalAlert = ({
   });
 };
 
-const ValidateEmail = param => {
-  const emailRegex =
-    /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+const ValidateEmail = (param) => {
+  const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   const paramTrim = param?.trim();
   if (paramTrim) {
     if (emailRegex.test(paramTrim)) {
@@ -68,7 +61,7 @@ const ValidateEmail = param => {
   }
 };
 
-const ValidateName = param => {
+const ValidateName = (param) => {
   const nameRegex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
   const paramTrim = param?.trim();
   if (paramTrim) {
@@ -121,13 +114,13 @@ const requestPermissions = async () => {
   }
 };
 const getCurrentLocation = () => {
-  Geolocation.getCurrentPosition(loc => {
+  Geolocation.getCurrentPosition((loc) => {
     setLatitude(loc.coords.latitude);
     setLongitude(loc.coords.longitude);
   });
 };
 
-const getLoginSessionTime = userLoginTime => {
+const getLoginSessionTime = (userLoginTime) => {
   // Get the current time
   const currentTime = moment();
 
@@ -150,7 +143,7 @@ const getLoginSessionTime = userLoginTime => {
   return sessionTimeFormatted;
 };
 
-const orderDeliveryTime = orderTime => {
+const orderDeliveryTime = (orderTime) => {
   // Get the current time
   const currentTime = moment();
 
@@ -174,7 +167,7 @@ const orderDeliveryTime = orderTime => {
 
   return orderTimeFormatted;
 };
-const getStartEndFormattedDate = date => {
+const getStartEndFormattedDate = (date) => {
   return `${moment(date).format('hh:mm A')}`;
 };
 
