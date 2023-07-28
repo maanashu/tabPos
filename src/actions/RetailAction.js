@@ -504,6 +504,10 @@ export const saveBulkOrderData = (bulkData) => ({
   type: TYPES.SAVE_BULK_DATA_SUCCESS,
   payload: { bulkData },
 });
+export const saveBulkOrderDataReset = () => ({
+  type: TYPES.SAVE_BULK_DATA_RESET,
+  payload: null,
+});
 
 export const getCategory = (sellerID) => async (dispatch) => {
   dispatch(getCategoryRequest());
@@ -590,6 +594,7 @@ export const getAllCart = () => async (dispatch) => {
   dispatch(getAllCartRequest());
   try {
     const res = await RetailController.getAllCart();
+    console.log('res getALL action', JSON.stringify(res));
     dispatch(getAllCartSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -854,8 +859,14 @@ export const bulkCreate = (data) => async (dispatch) => {
   dispatch(bulkCreateRequest());
   try {
     const res = await RetailController.bulkCreate(data);
-    dispatch(bulkCreateSuccess(res));
+    console.log('response, action', JSON.stringify(res));
+
+    dispatch(bulkCreateSuccess(res?.payload));
+    dispatch(getAllCart());
+    dispatch(saveBulkOrderDataReset());
   } catch (error) {
+    console.log('response, action eroo', JSON.stringify(error));
+
     dispatch(bulkCreateError(error));
   }
 };

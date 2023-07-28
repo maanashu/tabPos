@@ -61,6 +61,7 @@ export function MainScreen({
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
+  const [addCartList, setAddCartList] = useState(getRetailData?.bulkData ?? []);
 
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
@@ -73,7 +74,8 @@ export function MainScreen({
   const [showProductsFrom, setshowProductsFrom] = useState();
 
   const mainProductArray = getRetailData?.getMainProduct?.data;
-  const bulkCreateData = getRetailData?.bulkCreate;
+  const bulkCreateData = getRetailData?.getAllCart;
+  const cartProductLength = bulkCreateData?.poscart_products?.length;
 
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
@@ -134,9 +136,10 @@ export function MainScreen({
       return () => {
         const data = {
           seller_id: sellerID,
-          products: getRetailData?.bulkData,
+          products: addCartList,
         };
         dispatch(bulkCreate(data));
+        setCartProoduct([]);
       };
     }, [])
   );
@@ -156,7 +159,8 @@ export function MainScreen({
         product.product_id === productIdToFind ? { ...product, qty: product.qty + 1 } : product
       );
 
-      setCartProoduct(updatedCart); // Corrected typo in function name here
+      setCartProoduct(updatedCart);
+      // Corrected typo in function name here
     } else {
       const productData = {
         supply_id: item?.supplies?.[0]?.id || null,
@@ -167,9 +171,10 @@ export function MainScreen({
       const updatedCart = [...cartProduct, productData];
       setCartProoduct(updatedCart); // Corrected typo in function name here
       dispatch(saveBulkOrderData(updatedCart));
+      setAddCartList([...getRetailData?.bulkData, ...updatedCart]);
     }
   };
-
+  // console.log('kgkg', addCartList);
   // Your JSX rendering code here
 
   const originalFilterData = [
@@ -409,26 +414,26 @@ export function MainScreen({
                 <Image
                   source={bucket}
                   style={
-                    cartLength > 0
+                    cartProductLength > 0
                       ? [styles.sideBarImage, { tintColor: COLORS.primary }]
                       : styles.sideBarImage
                   }
                 />
                 <View
                   style={
-                    cartLength > 0
+                    cartProductLength > 0
                       ? [styles.bucketBadge, styles.bucketBadgePrimary]
                       : styles.bucketBadge
                   }
                 >
                   <Text
                     style={
-                      cartLength > 0
+                      cartProductLength > 0
                         ? [styles.badgetext, { color: COLORS.white }]
                         : styles.badgetext
                     }
                   >
-                    {cartLength ?? '0'}
+                    {cartProductLength + cartProduct.length ?? '0'}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -437,12 +442,12 @@ export function MainScreen({
               <Spacer space={SH(20)} />
               <TouchableOpacity
                 onPress={() => dispatch(clearAllCart())}
-                disabled={cartLength > 0 ? false : true}
+                disabled={cartProductLength > 0 ? false : true}
               >
                 <Image
                   source={sideEarser}
                   style={
-                    cartLength > 0
+                    cartProductLength > 0
                       ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
                       : styles.sideBarImage
                   }
@@ -461,7 +466,7 @@ export function MainScreen({
               disabled={cartLength > 0 ? false : true}
               onPress={cartScreenHandler}
               style={
-                cartLength > 0
+                cartProductLength > 0
                   ? [styles.bucketBackgorund, { backgroundColor: COLORS.primary }]
                   : styles.bucketBackgorund
               }
@@ -469,7 +474,7 @@ export function MainScreen({
               <Image
                 source={sideArrow}
                 style={
-                  cartLength > 0
+                  cartProductLength > 0
                     ? [styles.sideBarImage, { tintColor: COLORS.white }]
                     : styles.sideBarImage
                 }

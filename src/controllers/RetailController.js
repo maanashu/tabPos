@@ -764,7 +764,7 @@ export class RetailController {
             text2: error.msg,
             visibilityTime: 2000,
           });
-          reject(error.msg);
+          reject(error);
         });
     });
   }
