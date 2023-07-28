@@ -568,24 +568,26 @@ const styles = StyleSheet.create({
   orderRowStyle: {
     borderWidth: 1,
     borderRadius: 5,
-    height: SH(65),
+    // height: SH(65),
     marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
+    paddingVertical: 17,
     paddingHorizontal: 20,
     borderColor: COLORS.blue_shade,
   },
   showAllOrdersView: {
     borderWidth: 1,
     borderRadius: 5,
-    height: SH(60),
+    // height: SH(60),
     marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 15,
     width: SW(140),
+    paddingVertical: 10,
     borderColor: COLORS.blue_shade,
   },
   rightIconStyle: {
@@ -608,6 +610,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   orderDetailStyle: {
+    width: SW(35),
     justifyContent: 'center',
   },
   nameTextStyle: {
@@ -834,7 +837,8 @@ const styles = StyleSheet.create({
   userImageStyle: {
     width: SH(36),
     height: SH(36),
-    resizeMode: 'contain',
+    borderRadius: 100,
+    resizeMode: 'cover',
   },
   scooterImageStyle: {
     width: SH(26),
@@ -847,13 +851,14 @@ const styles = StyleSheet.create({
   orderproductView: {
     borderWidth: 1,
     borderRadius: 5,
-    height: SH(60),
+    // height: SH(60),
     marginVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 5,
+    paddingVertical: 6,
     borderColor: COLORS.blue_shade,
   },
   removeProductImageStyle: {

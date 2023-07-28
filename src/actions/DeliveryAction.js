@@ -5,11 +5,11 @@ const getOrderCountRequest = () => ({
   type: TYPES.GET_ORDER_COUNT_REQUEST,
   payload: null,
 });
-const getOrderCountSuccess = getOrderCount => ({
+const getOrderCountSuccess = (getOrderCount) => ({
   type: TYPES.GET_ORDER_COUNT_SUCCESS,
   payload: { getOrderCount },
 });
-const getOrderCountError = error => ({
+const getOrderCountError = (error) => ({
   type: TYPES.GET_ORDER_COUNT_ERROR,
   payload: { error },
 });
@@ -18,11 +18,11 @@ const getOrderListRequest = () => ({
   type: TYPES.GET_ORDER_LIST_REQUEST,
   payload: null,
 });
-const getOrderListSuccess = getorderList => ({
+const getOrderListSuccess = (getorderList) => ({
   type: TYPES.GET_ORDER_LIST_SUCCESS,
   payload: { getorderList },
 });
-const getOrderListError = error => ({
+const getOrderListError = (error) => ({
   type: TYPES.GET_ORDER_LIST_ERROR,
   payload: { error },
 });
@@ -31,11 +31,11 @@ const getReviewDefRequest = () => ({
   type: TYPES.GET_REVIEW_DEF_REQUEST,
   payload: null,
 });
-const getReviewDefSuccess = getReviewDef => ({
+const getReviewDefSuccess = (getReviewDef) => ({
   type: TYPES.GET_REVIEW_DEF_SUCCESS,
   payload: { getReviewDef },
 });
-const getReviewDefError = error => ({
+const getReviewDefError = (error) => ({
   type: TYPES.GET_REVIEW_DEF_ERROR,
   payload: { error },
 });
@@ -48,11 +48,11 @@ const getOrdersRequest = () => ({
   type: TYPES.GET_ORDER_REQUEST,
   payload: null,
 });
-const getOrdersSuccess = orderList => ({
+const getOrdersSuccess = (orderList) => ({
   type: TYPES.GET_ORDER_SUCCESS,
   payload: { orderList },
 });
-const getOrdersError = error => ({
+const getOrdersError = (error) => ({
   type: TYPES.GET_ORDER_ERROR,
   payload: { error },
 });
@@ -65,7 +65,7 @@ const acceptOrderSuccess = () => ({
   type: TYPES.ACCEPT_ORDER_SUCCESS,
   payload: {},
 });
-const acceptOrderError = error => ({
+const acceptOrderError = (error) => ({
   type: TYPES.ACCEPT_ORDER_ERROR,
   payload: { error },
 });
@@ -74,11 +74,11 @@ const deliveryOrdRequest = () => ({
   type: TYPES.DELIVERY_ORDER_REQUEST,
   payload: null,
 });
-const deliveryOrdSuccess = deliveryOrd => ({
+const deliveryOrdSuccess = (deliveryOrd) => ({
   type: TYPES.DELIVERY_ORDER_SUCCESS,
   payload: { deliveryOrd },
 });
-const deliveryOrdError = error => ({
+const deliveryOrdError = (error) => ({
   type: TYPES.DELIVERY_ORDER_ERROR,
   payload: { error },
 });
@@ -91,11 +91,11 @@ const deliverygraphRequest = () => ({
   type: TYPES.DELIVERY_GRAPH_REQUEST,
   payload: null,
 });
-const deliverygraphSuccess = deliverygraph => ({
+const deliverygraphSuccess = (deliverygraph) => ({
   type: TYPES.DELIVERY_GRAPH_SUCCESS,
   payload: { deliverygraph },
 });
-const deliverygraphError = error => ({
+const deliverygraphError = (error) => ({
   type: TYPES.DELIVERY_GRAPH_ERROR,
   payload: { error },
 });
@@ -104,11 +104,11 @@ const deliveringOrderRequest = () => ({
   type: TYPES.DELIVERING_ORDER_REQUEST,
   payload: null,
 });
-const deliveringOrderSuccess = deliveringOrder => ({
+const deliveringOrderSuccess = (deliveringOrder) => ({
   type: TYPES.DELIVERING_ORDER_SUCCESS,
   payload: { deliveringOrder },
 });
-const deliveringOrderError = error => ({
+const deliveringOrderError = (error) => ({
   type: TYPES.DELIVERING_ORDER_ERROR,
   payload: { error },
 });
@@ -117,7 +117,7 @@ const deliveringOrderReset = () => ({
   payload: null,
 });
 
-export const getOrderCount = status => async dispatch => {
+export const getOrderCount = (status) => async (dispatch) => {
   dispatch(getOrderCountRequest());
   try {
     const res = await DeliveryController.getOrderCount(status);
@@ -126,7 +126,7 @@ export const getOrderCount = status => async dispatch => {
     dispatch(getOrderCountError(error.message));
   }
 };
-export const getReviewDefault = (status, sellerID) => async dispatch => {
+export const getReviewDefault = (status, sellerID) => async (dispatch) => {
   dispatch(getReviewDefRequest());
   try {
     const res = await DeliveryController.getReviewDefault(status, sellerID);
@@ -139,7 +139,7 @@ export const getReviewDefault = (status, sellerID) => async dispatch => {
   }
 };
 
-export const getOrders = (status, sellerID) => async dispatch => {
+export const getOrders = (status, sellerID) => async (dispatch) => {
   dispatch(getOrdersRequest());
   try {
     const res = await DeliveryController.getOrders(status, sellerID);
@@ -149,7 +149,7 @@ export const getOrders = (status, sellerID) => async dispatch => {
   }
 };
 
-export const acceptOrder = data => async dispatch => {
+export const acceptOrder = (data) => async (dispatch) => {
   dispatch(acceptOrderRequest());
   try {
     const res = await DeliveryController.acceptOrder(data);
@@ -161,7 +161,7 @@ export const acceptOrder = data => async dispatch => {
   }
 };
 
-export const deliveryOrd = () => async dispatch => {
+export const deliveryOrd = () => async (dispatch) => {
   dispatch(deliveryOrdRequest());
   try {
     const res = await DeliveryController.deliveryOrd();
@@ -174,7 +174,7 @@ export const deliveryOrd = () => async dispatch => {
   }
 };
 
-export const deliverygraph = sellerID => async dispatch => {
+export const deliverygraph = (sellerID) => async (dispatch) => {
   dispatch(deliverygraphRequest());
   try {
     const res = await DeliveryController.deliverygraph(sellerID);
@@ -184,7 +184,7 @@ export const deliverygraph = sellerID => async dispatch => {
   }
 };
 
-export const deliOrder = sellerID => async dispatch => {
+export const deliOrder = (sellerID) => async (dispatch) => {
   dispatch(deliveringOrderRequest());
   try {
     const res = await DeliveryController.deliveringOrder(sellerID);
