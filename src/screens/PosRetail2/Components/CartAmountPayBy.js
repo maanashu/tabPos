@@ -1,7 +1,9 @@
 import {
   FlatList,
   Image,
+  KeyboardAvoidingView,
   SafeAreaView,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -25,14 +27,18 @@ import {
 } from '@/assets';
 import moment from 'moment';
 import { COLORS, SF, SH } from '@/theme';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { CustomHeader } from './CustomHeader';
 import { useState } from 'react';
 import PhonePopUp from '../PhonePopUp';
-import Modal from 'react-native-modal';
+import Modal, { ReactNativeModal } from 'react-native-modal';
 import { strings } from '@/localization';
 import { CustomKeyboard } from '../CustomKeyBoard';
+import { PayByJBRCoins } from './PayByMethodScreens/PayByJBRCoins';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { digits } from '@/utils/validators';
+import { walletGetByPhone } from '@/actions/RetailAction';
 moment.suppressDeprecationWarnings = true;
 
 const DATA = [
@@ -59,6 +65,7 @@ export const CartAmountPayBy = ({
   payDetail,
   payNowByphone,
 }) => {
+  const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
 
   const cartData = getRetailData?.getAllCart;
@@ -72,15 +79,15 @@ export const CartAmountPayBy = ({
 
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState(null);
   const [selectedRecipeMethod, setSelectedRecipeMethod] = useState(null);
-
   const [phonePopVisible, setPhonePopVisible] = useState(false);
-
   const [emailModal, setEmailModal] = useState(false);
-
+  const [qrPopUp, setQrPopUp] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
+  const [walletIdInp, setWalletIdInp] = useState();
+  const walletUser = getRetailData?.walletGetByPhone?.[0];
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
@@ -100,7 +107,7 @@ export const CartAmountPayBy = ({
     if (index === 0) {
       return `$${totalPayAmount()}`;
     } else if (index === 1) {
-      return `JBR ${Math.round(totalPayAmount()) * 100}`;
+      return `JBR ${(totalPayAmount() * 100).toFixed(0)}`;
     } else {
       return `$${totalPayAmount()}`;
     }
@@ -111,6 +118,7 @@ export const CartAmountPayBy = ({
       return '';
     }
     const percentageValue = (percentage / 100) * parseFloat(value);
+    // console.log('percentageValue', percentageValue);
     return percentageValue.toFixed(2) ?? 0.0;
   }
   const onChangePhoneNumber = (phone) => {
@@ -129,22 +137,36 @@ export const CartAmountPayBy = ({
     setPhonePopVisible(false);
   };
 
+  const requestFun = (phoneNumber) => {
+    if (phoneNumber && phoneNumber.length > 5 && digits.test(phoneNumber)) {
+      dispatch(walletGetByPhone(phoneNumber));
+      alert('In progress');
+    } else if (phoneNumber && phoneNumber.length < 5) {
+      alert(strings.valiadtion.validPhone);
+      return;
+    } else if (phoneNumber && digits.test(phoneNumber) === false) {
+      alert(strings.valiadtion.validPhone);
+      return;
+    } else {
+      alert(strings.valiadtion.enterPhone);
+      return;
+    }
+  };
+
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View style={styles.displayflex}>
         <View style={styles.leftCon}>
           <View style={styles.selectTipsHeader}>
-            <View style={[styles._topContainer]}>
-              <BackButton
-                onPress={onPressBack}
-                title={'Back'}
-                style={{
-                  top: ms(10),
-                  left: ms(-10),
-                  backgroundColor: 'transparent',
-                }}
-              />
-            </View>
+            <BackButton
+              onPress={onPressBack}
+              title={'Back'}
+              style={{
+                top: ms(10),
+                left: ms(10),
+                backgroundColor: 'transparent',
+              }}
+            />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
               <View style={{ flexDirection: 'row' }}>
@@ -155,9 +177,9 @@ export const CartAmountPayBy = ({
           </View>
 
           <View style={{ flex: 1, paddingHorizontal: ms(18) }}>
-            <View style={{ marginTop: ms(15) }}>
+            <View style={{ marginTop: ms(10) }}>
               <Text style={styles.selectTips}>Select Tips</Text>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 {TIPS_DATA.map((item, index) => (
                   <TouchableOpacity
                     onPress={() => {
@@ -166,7 +188,12 @@ export const CartAmountPayBy = ({
                         cartData?.amount?.total_amount,
                         item.title
                       );
-                      setSelectedTipAmount(tipAmount);
+                      {
+                        item.percent === 'No Tip'
+                          ? setSelectedTipAmount('0.00')
+                          : setSelectedTipAmount(tipAmount);
+                      }
+
                       setSelectedTipIndex(index);
                     }}
                     key={index}
@@ -174,14 +201,29 @@ export const CartAmountPayBy = ({
                       styles._payBYBoxContainerTip,
                       {
                         borderWidth: 1,
-                        borderColor:
-                          selectedTipIndex === index ? COLORS.blueLight : COLORS.solidGrey,
+                        borderColor: selectedTipIndex === index ? COLORS.primary : COLORS.solidGrey,
                       },
                     ]}
                   >
-                    <Text style={styles._payByMethodTip}>{item.percent}</Text>
+                    <Text
+                      style={[
+                        styles._payByMethodTip,
+                        {
+                          color: selectedTipIndex === index ? COLORS.primary : COLORS.solid_grey,
+                        },
+                      ]}
+                    >
+                      {item.percent}
+                    </Text>
                     {index !== 3 && (
-                      <Text style={styles._payByAmountTip}>
+                      <Text
+                        style={[
+                          styles._payByAmountTip,
+                          {
+                            color: selectedTipIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      >
                         {'USD $'}
                         {calculatePercentageValue(cartData?.amount?.total_amount, item.title)}
                       </Text>
@@ -197,7 +239,7 @@ export const CartAmountPayBy = ({
                 }}
               >
                 <Text style={styles.selectTips}>Select Payment Method</Text>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   {DATA.map((item, index) => (
                     <TouchableOpacity
                       onPress={() => {
@@ -212,14 +254,53 @@ export const CartAmountPayBy = ({
                         {
                           borderWidth: 1,
                           borderColor:
-                            selectedPaymentIndex === index ? COLORS.blueLight : COLORS.solidGrey,
+                            selectedPaymentIndex === index ? COLORS.primary : COLORS.solidGrey,
                         },
                       ]}
                     >
-                      <Text style={styles._payByTitle}>Pay By</Text>
-                      <Text style={styles._payByMethod}>{item.title}</Text>
-                      <Text style={styles._payByAmount}>{totalAmountByPaymentMethod(index)}</Text>
-                      <Image source={item.icon} style={styles._payByIcon} />
+                      <Text
+                        style={[
+                          styles._payByTitle,
+                          {
+                            color:
+                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      >
+                        Pay By
+                      </Text>
+                      <Text
+                        style={[
+                          styles._payByMethod,
+                          {
+                            color:
+                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      >
+                        {item.title}
+                      </Text>
+                      <Text
+                        style={[
+                          styles._payByAmount,
+                          {
+                            color:
+                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      >
+                        {totalAmountByPaymentMethod(index)}
+                      </Text>
+                      <Image
+                        source={item.icon}
+                        style={[
+                          styles._payByIcon,
+                          {
+                            tintColor:
+                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      />
                       {index == 1 && (
                         <View style={styles.saveView}>
                           <Text style={styles.saveText}>Save 1%</Text>
@@ -239,7 +320,7 @@ export const CartAmountPayBy = ({
                 }}
               >
                 <Text style={styles.selectTips}>E-Recipe</Text>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   {RECIPE_DATA.map((item, index) => (
                     <TouchableOpacity
                       onPress={() => {
@@ -251,7 +332,7 @@ export const CartAmountPayBy = ({
                         } else if (index == 1) {
                           setEmailModal(true);
                         } else {
-                          // payNowHandler();
+                          payNowHandler(), payNowByphone(selectedTipAmount);
                         }
                       }}
                       key={index}
@@ -260,11 +341,21 @@ export const CartAmountPayBy = ({
                         {
                           borderWidth: 1,
                           borderColor:
-                            selectedRecipeIndex === index ? COLORS.blueLight : COLORS.solidGrey,
+                            selectedRecipeIndex === index ? COLORS.primary : COLORS.solidGrey,
                         },
                       ]}
                     >
-                      <Text style={styles._payByMethodReceipe}>{item.title}</Text>
+                      <Text
+                        style={[
+                          styles._payByMethodReceipe,
+                          {
+                            color:
+                              selectedRecipeIndex === index ? COLORS.primary : COLORS.solid_grey,
+                          },
+                        ]}
+                      >
+                        {item.title}
+                      </Text>
                     </TouchableOpacity>
                   ))}
                 </View>
@@ -272,7 +363,7 @@ export const CartAmountPayBy = ({
             )}
 
             {selectedPaymentIndex == 1 && (
-              <TouchableOpacity style={styles.jobrSaveView} onPress={() => payNowHandler()}>
+              <TouchableOpacity style={styles.jobrSaveView} onPress={() => setQrPopUp(true)}>
                 <Text style={styles.youSave}>You save</Text>
                 <View style={styles.jbrContainer}>
                   <Text style={styles.jbrText}>JBR</Text>
@@ -344,7 +435,7 @@ export const CartAmountPayBy = ({
             <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
             <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
-            <Spacer space={SH(30)} />
+            <Spacer space={SH(10)} />
             <Text style={styles._thankyou}>Thank You</Text>
             <Image source={barcode} style={styles._barCodeImage} />
             <Text style={styles._barCode}>ABC-abc-1234</Text>
@@ -398,7 +489,9 @@ export const CartAmountPayBy = ({
         <View style={styles.emailModalContainer}>
           <View style={styles.modalHeaderCon}>
             <View style={styles.flexRow}>
-              <Text style={[styles.twoStepText]}>{strings.retail.eRecipeEmail}</Text>
+              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
+                {strings.retail.eRecipeEmail}
+              </Text>
               <TouchableOpacity
                 style={styles.crossButtonCon}
                 onPress={() => {
@@ -413,17 +506,42 @@ export const CartAmountPayBy = ({
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.textInput}
-              placeholder="Enter email"
+              placeholder="you@you.mail"
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
+              placeholderTextColor={COLORS.solidGrey}
             />
-            <TouchableOpacity style={styles.payNowButton} onPress={payNowHandler}>
+            <TouchableOpacity
+              style={styles.payNowButton}
+              onPress={() => {
+                payNowHandler(), payNowByphone(selectedTipAmount);
+              }}
+            >
               <Text style={styles.payNowButtonText}>Pay Now</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
+
+      {/* qr code scan pop */}
+      <ReactNativeModal isVisible={qrPopUp}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 100}
+        >
+          <ScrollView>
+            <PayByJBRCoins
+              crossHandler={() => setQrPopUp(false)}
+              tipAmount={selectedTipAmount}
+              totalPayment={totalPayAmount()}
+              walletIdInp={walletIdInp}
+              setWalletIdInp={setWalletIdInp}
+              sendRequestFun={(phoneNo) => requestFun(phoneNo)}
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </ReactNativeModal>
     </SafeAreaView>
   );
 };

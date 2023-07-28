@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import ReactNativeModal from 'react-native-modal';
-import { verticalScale } from 'react-native-size-matters';
+import { ms, verticalScale } from 'react-native-size-matters';
 
 import { strings } from '@/localization';
 import { COLORS, SF, SW } from '@/theme';
@@ -60,29 +60,8 @@ const RightSideBar = ({
               />
             </View>
           </ReactNativeModal>
-
-          <View style={{ width: 90 }} />
         </>
-      ) : (
-        <View style={styles.rightSideView}>
-          <FlatList
-            data={rightSideDeliveryDrawer}
-            renderItem={renderDrawer}
-            ListHeaderComponent={() => (
-              <TouchableOpacity
-                onPress={() => {
-                  setOpenShippingOrders(!openShippingOrders);
-                  setIsOpenSideBarDrawer(true);
-                }}
-                style={styles.firstIconStyle}
-              >
-                <Image source={deliveryBox} style={styles.sideBarImage} />
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item, index) => item.key.toString()}
-          />
-        </View>
-      )}
+      ) : null}
     </>
   );
 };
@@ -100,13 +79,14 @@ const styles = StyleSheet.create({
     right: -50,
     top: -50,
     bottom: -50,
+    width: ms(180),
     borderRadius: 10,
   },
   shippingOrderHeader: {
     paddingTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   shippingOrderHeading: {
     fontFamily: Fonts.MaisonBold,
@@ -120,6 +100,10 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.06,
     paddingVertical: verticalScale(6),
     alignItems: 'center',
+    // flex: 1,
+    // position: 'absolute',
+    // top: 15,
+    // right: 20,
   },
   firstIconStyle: {
     alignSelf: 'center',

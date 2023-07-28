@@ -40,9 +40,9 @@ const Graph = () => {
             },
           ],
         }}
-        height={285}
+        height={Dimensions.get('window').height / 2.9}
         withDots={false}
-        width={Dimensions.get('window').width * 0.53}
+        width={Dimensions.get('window').width * 0.58}
         chartConfig={{
           backgroundColor: COLORS.black,
           backgroundGradientFrom: COLORS.white,
@@ -77,8 +77,9 @@ const styles = StyleSheet.create({
   graphViewStyle: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: Dimensions.get('window').width * 0.56,
     paddingHorizontal: 20,
+    marginLeft: 5,
+    height: Dimensions.get('window').height / 2.15,
   },
   numberOrdersText: {
     color: COLORS.dark_grey,

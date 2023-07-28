@@ -27,6 +27,7 @@ import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
 import { CartAmountTips } from '@/screens/PosRetail/Components';
 import NotificationsList from '@/screens/Notifications/NotificationsList';
+import { OrderDetail } from '@/screens/DeliveryOrders2/OrderDetail/OrderDetail';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();

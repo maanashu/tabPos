@@ -35,6 +35,7 @@ import { ScreenWrapper, Spacer } from '@/components';
 import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
 
 import styles from './ShippingOrder2.styles';
+import { ms } from 'react-native-size-matters';
 
 export function ShippingOrder2() {
   const widthAndHeight = 200;
@@ -220,7 +221,7 @@ export function ShippingOrder2() {
             {orderDetail ? (
               <View style={styles.orderDetailView}>
                 <View style={styles.orderDetailViewStyle}>
-                  <View style={styles.locationViewStyle}>
+                  <View style={[styles.locationViewStyle, { width: ms(140) }]}>
                     <Image source={profileImage} style={styles.userImageStyle} />
 
                     <View style={styles.userNameView}>
@@ -233,14 +234,7 @@ export function ShippingOrder2() {
                     </View>
                   </View>
 
-                  <View
-                    style={[
-                      styles.locationViewStyle,
-                      {
-                        paddingLeft: 15,
-                      },
-                    ]}
-                  >
+                  <View style={[styles.locationViewStyle, { width: ms(140) }]}>
                     <Image source={scooter} style={styles.scooterImageStyle} />
 
                     <View style={[styles.userNameView, { paddingLeft: 5 }]}>

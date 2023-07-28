@@ -75,6 +75,7 @@ export function Calender(props) {
   const [calendarMode, setCalendarMode] = useState(CALENDAR_MODES.WEEK);
 
   const [selectedStaffEmployeeId, setSelectedStaffEmployeeId] = useState(null);
+  const [selectedStaffData, setSelectedStaffData] = useState(null);
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
@@ -84,7 +85,7 @@ export function Calender(props) {
   // Only show appointments on calendar which are approved
   const getApprovedAppointments = getAppointmentList?.filter((item) => item.status === 1);
 
-  // Will be used to show list of all appointments
+  // Will be used to show list of all unaccepted appointments
   const appointmentListArr = getAppointmentList2?.filter((item) => item.status !== 1);
 
   const totalAppointmentCountOfStaff =
@@ -97,7 +98,14 @@ export function Calender(props) {
     state: storeItem?.current_address?.state,
     country: storeItem?.current_address?.country,
   };
-  console.log(appointmentPages?.currentPages);
+
+  const getAppointmentsForSelectedStaff = () => {
+    const filteredAppointments = getApprovedAppointments?.filter(
+      (appointments) => appointments?.pos_user_id === selectedStaffEmployeeId
+    );
+
+    return filteredAppointments;
+  };
 
   useEffect(() => {
     if (isFocused || showRequestsView) {
@@ -105,9 +113,15 @@ export function Calender(props) {
     }
   }, [isFocused, pageNumber, showRequestsView]);
 
+  // useEffect(() => {
+  //   if (selectedStaffEmployeeId) {
+  //     dispatch(getAppointmentByStaffId(1, selectedStaffEmployeeId));
+  //   }
+  // }, [selectedStaffEmployeeId]);
+
   useEffect(() => {
     if (selectedStaffEmployeeId) {
-      dispatch(getAppointmentByStaffId(1, selectedStaffEmployeeId));
+      getAppointmentsForSelectedStaff();
     }
   }, [selectedStaffEmployeeId]);
 
@@ -119,7 +133,11 @@ export function Calender(props) {
 
   useEffect(() => {
     if (getApprovedAppointments) {
-      const extractedAppointmentEvents = getApprovedAppointments.map((booking) => {
+      const approvedAppointmentsFor = selectedStaffEmployeeId
+        ? getAppointmentsForSelectedStaff()
+        : getApprovedAppointments;
+
+      const extractedAppointmentEvents = approvedAppointmentsFor.map((booking) => {
         const startDateTime = new Date(booking.start_date_time);
         const endDateTime = new Date(booking.end_date_time);
 
@@ -133,7 +151,7 @@ export function Calender(props) {
 
       setExtractedAppointment(extractedAppointmentEvents);
     }
-  }, [getAppointmentList]);
+  }, [getAppointmentList, selectedStaffEmployeeId]);
 
   const nextMonth = () => setCalendarDate(calendarDate.clone().add(1, calendarMode));
   const prevMonth = () => setCalendarDate(calendarDate.clone().subtract(1, calendarMode));
@@ -250,6 +268,7 @@ export function Calender(props) {
   };
 
   const employeeHeader = () => {
+    const staffUsers = selectedStaffEmployeeId ? [selectedStaffData] : getStaffUsers;
     return (
       <View>
         <ScrollView
@@ -260,7 +279,7 @@ export function Calender(props) {
             { paddingLeft: calendarMode === CALENDAR_MODES.MONTH ? 0 : ms(25) },
           ]}
         >
-          {getStaffUsers?.map((item, index) => {
+          {staffUsers?.map((item, index) => {
             const userProfile = item?.user?.user_profiles;
             const userRoles = item?.user?.user_roles[0]?.role?.name;
             return (
@@ -337,10 +356,10 @@ export function Calender(props) {
           <View style={styles.rightTabContainer}>
             <TouchableOpacity
               onPress={() => {
+                setSelectedStaffEmployeeId(null);
                 if (appointmentListArr?.length === 0) {
                   setshowRequestsView(false);
                 } else {
-                  setSelectedStaffEmployeeId(null);
                   setshowRequestsView(!showRequestsView);
                 }
               }}
@@ -364,12 +383,20 @@ export function Calender(props) {
             <View style={{ flex: 1, alignItems: 'center' }}>
               <TouchableOpacity
                 onPress={() => {
-                  setshowEmployeeHeader(!showEmployeeHeader);
+                  setSelectedStaffEmployeeId(null);
+                  if (selectedStaffEmployeeId) {
+                    setshowEmployeeHeader(true);
+                  } else {
+                    setshowEmployeeHeader(!showEmployeeHeader);
+                  }
                 }}
                 style={[
                   styles.alignmentCalendarContainer,
                   {
-                    backgroundColor: showEmployeeHeader ? COLORS.white : COLORS.textInputBackground,
+                    backgroundColor:
+                      showEmployeeHeader && !selectedStaffEmployeeId
+                        ? COLORS.white
+                        : COLORS.textInputBackground,
                   },
                 ]}
               >
@@ -389,14 +416,16 @@ export function Calender(props) {
                   return (
                     <TouchableOpacity
                       onPress={() => {
-                        setshowRequestsView(!showRequestsView);
                         setSelectedStaffEmployeeId((prev) => {
                           if (prev === posUserId) {
                             setSelectedStaffEmployeeId(null);
+                            setshowEmployeeHeader(false);
                           } else {
+                            setshowEmployeeHeader(true);
                             setSelectedStaffEmployeeId(posUserId);
                           }
                         });
+                        setSelectedStaffData(item);
                       }}
                       style={[
                         styles.renderItemContainer,
