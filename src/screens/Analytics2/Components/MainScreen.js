@@ -5,7 +5,7 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import { styles } from '../Analytics2.styles';
 import { HomeGraph } from '.';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 
 export function MainScreen({
   onPressProfit,
@@ -19,35 +19,36 @@ export function MainScreen({
   onPressProducts,
 }) {
   const getAnalyticsData = useSelector(getAnalytics);
-
-  const productGraphObject2 = getAnalyticsData?.getTotalGraph;
-
+  const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
   return (
     <View>
       <View style={styles.flexDirectionRow}>
         <HomeGraph
           header="Total Profit"
-          subHeader={'5193'}
-          // productGraphObject={productGraphObject2}
-          homeGraphHandler={() => {}}
-          // arrayLength={productGraphObject2?.datasets?.length}
+          subHeader={analyticStatistics?.profit?.total_count ?? '0'}
+          analyticGraphObject={analyticStatistics}
+          arrayLength={analyticStatistics?.profit?.graph_data?.datasets?.length}
           onPress={onPressProfit}
+          labels={analyticStatistics?.profit?.graph_data?.labels}
+          data={analyticStatistics?.profit?.graph_data?.datasets?.[0]?.data}
         />
         <HomeGraph
           header="Total Revenue"
-          subHeader={'5193'}
-          // productGraphObject={productGraphObject2}
-          homeGraphHandler={() => {}}
-          // arrayLength={productGraphObject2?.datasets?.length}
+          subHeader={analyticStatistics?.revenue?.total_count ?? '0'}
+          analyticGraphObject={analyticStatistics}
+          arrayLength={analyticStatistics?.revenue?.graph_data?.datasets?.length}
           onPress={onPressRevenue}
+          labels={analyticStatistics?.revenue?.graph_data?.labels}
+          data={analyticStatistics?.revenue?.graph_data?.datasets?.[0]?.data}
         />
         <HomeGraph
           header="Total Costs"
-          subHeader={'5193'}
-          // productGraphObject={productGraphObject2}
-          homeGraphHandler={() => {}}
-          // arrayLength={productGraphObject2?.datasets?.length}
+          subHeader={analyticStatistics?.cost?.total_count ?? '0'}
+          analyticGraphObject={analyticStatistics}
+          arrayLength={analyticStatistics?.cost?.graph_data?.datasets?.length}
           onPress={onPressCost}
+          labels={analyticStatistics?.cost?.graph_data?.labels}
+          data={analyticStatistics?.cost?.graph_data?.datasets?.[0]?.data}
         />
       </View>
       <View style={styles.flexDirectionRow}>
@@ -63,12 +64,12 @@ export function MainScreen({
 
           <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressPosOrder}>
             <BarChartCom
-              barWid={Platform.OS === 'android' ? Dimensions.get('window').width * 0.24 : SH(380)}
-              barHei={SH(135)}
-              barSpacing={Platform.OS === 'android' ? 16 : 18}
-              barW={Platform.OS === 'android' ? 5 : 7}
-              labelTextSty={{ color: COLORS.gerySkies, fontSize: 11 }}
-              initialSpacing={SH(10)}
+              barWid={Dimensions.get('window').width * 0.24}
+              barHei={Platform.OS === 'android' ? SH(135) : SH(130)}
+              barSpacing={SW(4.2)}
+              barW={SW(1.5)}
+              labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
+              initialSpacing={SH(5)}
             />
           </TouchableOpacity>
         </View>
@@ -103,12 +104,12 @@ export function MainScreen({
 
           <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressOrders}>
             <BarChartCom
-              barWid={Platform.OS === 'android' ? Dimensions.get('window').width * 0.24 : SH(380)}
-              barHei={SH(135)}
-              barSpacing={Platform.OS === 'android' ? 16 : 18}
-              barW={Platform.OS === 'android' ? 5 : 7}
-              labelTextSty={{ color: COLORS.gerySkies, fontSize: 11 }}
-              initialSpacing={SH(10)}
+              barWid={Dimensions.get('window').width * 0.24}
+              barHei={Platform.OS === 'android' ? SH(135) : SH(130)}
+              barSpacing={SW(4.2)}
+              barW={SW(1.5)}
+              labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
+              initialSpacing={SH(5)}
             />
           </TouchableOpacity>
         </View>
@@ -124,12 +125,12 @@ export function MainScreen({
 
           <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressSellingLocations}>
             <BarChartCom
-              barWid={Platform.OS === 'android' ? Dimensions.get('window').width * 0.24 : SH(380)}
-              barHei={SH(135)}
-              barSpacing={Platform.OS === 'android' ? 16 : 18}
-              barW={Platform.OS === 'android' ? 5 : 7}
-              labelTextSty={{ color: COLORS.gerySkies, fontSize: 11 }}
-              initialSpacing={SH(10)}
+              barWid={Dimensions.get('window').width * 0.24}
+              barHei={Platform.OS === 'android' ? SH(135) : SH(130)}
+              barSpacing={SW(4.2)}
+              barW={SW(1.5)}
+              labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
+              initialSpacing={SH(5)}
             />
           </TouchableOpacity>
         </View>

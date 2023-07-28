@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
   },
   _boxView: {
     height: ms(110),
-    width: ms(110),
+    width: ms(120),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
     justifyContent: 'center',
@@ -119,7 +119,7 @@ export const styles = StyleSheet.create({
   },
   _inputMain: {
     marginTop: ms(15),
-    width: '98%',
+    width: ms(380),
   },
   _inputSubView: {
     flexDirection: 'row',
@@ -178,7 +178,7 @@ export const styles = StyleSheet.create({
     fontSize: ms(8),
   },
   _topContainer: {
-    position: 'absolute',
+    // position: 'absolute',
     marginLeft: ms(25),
     width: '98%',
     alignItems: 'center',
@@ -197,8 +197,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(125),
-
-    width: ms(157),
+    width: Platform.OS === 'ios' ? ms(135) : ms(157),
     margin: ms(3),
     borderRadius: ms(6),
     // justifyContent: 'center',
@@ -270,7 +269,7 @@ export const styles = StyleSheet.create({
   },
   _orContainer: {
     flexDirection: 'row',
-    marginVertical: ms(5),
+    // marginVertical: ms(3),
     alignItems: 'center',
   },
   _borderView: {
@@ -1341,7 +1340,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   categoryshoes: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.108 : windowWidth * 0.11,
+    width: Platform.OS === 'ios' ? windowWidth * 0.106 : windowWidth * 0.1,
     height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',
@@ -1437,7 +1436,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(50),
-    width: ms(116),
+    width: Platform.OS === 'ios' ? ms(100) : ms(116),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1463,7 +1462,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(45),
-    width: ms(157),
+    width: Platform.OS === 'ios' ? ms(135) : ms(157),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1489,8 +1488,8 @@ export const styles = StyleSheet.create({
     // marginTop: ms(4),
   },
   selectTips: {
-    fontSize: ms(12),
-    margin: ms(5),
+    fontSize: ms(11),
+    margin: ms(3),
     fontFamily: Fonts.Regular,
     color: COLORS.gerySkies,
   },
@@ -1909,7 +1908,7 @@ export const styles = StyleSheet.create({
   rightCon: {
     backgroundColor: COLORS.white,
     borderRadius: 8,
-    width: windowWidth * 0.25,
+    width: Platform.OS === 'ios' ? windowWidth * 0.23 : windowWidth * 0.25,
     height: windowHeight * 0.9,
   },
   //  final payment design css end
@@ -1919,5 +1918,22 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopEndRadius: 8,
     paddingVertical: verticalScale(6),
+  },
+
+  // jbrcoin modal popup
+  scanPopUpCon: {
+    width: ms(360),
+    height: ms(365),
+    backgroundColor: COLORS.white,
+    alignSelf: 'center',
+    borderRadius: 10,
+  },
+  scanPopHeader: {
+    borderBottomWidth: 1,
+    height: ms(35),
+    paddingHorizontal: ms(15),
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    borderColor: COLORS.solidGrey,
   },
 });

@@ -27,9 +27,9 @@ export function TopSellingLocation({ onPress }) {
     <View>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
         <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>{'Back'}</Text>
+        <Text style={styles.currentStatusText}>{'Back'}</Text>
       </TouchableOpacity>
-      <Text style={styles.graphTitle}>{'Top Selling by Locations'}</Text>
+      <Text style={styles.graphTitle}> {'Top Selling by Locations'}</Text>
 
       <View style={styles.flexDirectionRow}>
         <View style={styles.headerView}>
@@ -61,10 +61,10 @@ export function TopSellingLocation({ onPress }) {
         <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
         <View style={{ alignSelf: 'center', height: SH(210) }}>
           <BarChartCom
-            barWid={Platform.OS === 'android' ? Dimensions.get('window').width - SW(110) : SH(380)}
+            barWid={Dimensions.get('window').width - SW(110)}
             barHei={SH(140)}
-            barSpacing={Platform.OS === 'android' ? SW(30) : 18}
-            barW={Platform.OS === 'android' ? 7 : 7}
+            barSpacing={SW(30)}
+            barW={7}
             labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
             initialSpacing={SW(20)}
           />

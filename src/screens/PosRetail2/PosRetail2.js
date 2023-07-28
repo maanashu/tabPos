@@ -93,6 +93,10 @@ export function PosRetail2() {
     getCart?.discount_flag === 'code' ? true : false
   );
   const [cashPayDetail, setCashPayDetail] = useState();
+
+  useEffect(() => {
+    dispatch(getAllCart());
+  }, [isFocus]);
   useEffect(() => {
     setNotes(getCart?.notes);
     setDescriptionDis(getCart?.discount_desc);
@@ -213,11 +217,6 @@ export function PosRetail2() {
     }
   };
 
-  // useEffect(() => {
-  //   dispatch(getMainProduct());
-  //   dispatch(getAllCart());
-  // }, [isFocus]);
-
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -320,20 +319,20 @@ export function PosRetail2() {
         cartDatas={savedTempCartData}
       />
     ),
-    ['PayByJBRCoins']: (
-      <PayByJBRCoins
-        tipAmount={tipAmount}
-        onPressBack={() => {
-          setselectedScreen('CartAmountPayBy');
-        }}
-        onPressContinue={(cartData, data) => {
-          setpaymentMethod('JBRCoins');
-          setSavedTempCartData(cartData?.getAllCart);
-          setselectedScreen('FinalPaymentScreen');
-          setCashPayDetail(data);
-        }}
-      />
-    ),
+    // ['PayByJBRCoins']: (
+    //   <PayByJBRCoins
+    //     tipAmount={tipAmount}
+    //     onPressBack={() => {
+    //       setselectedScreen('CartAmountPayBy');
+    //     }}
+    //     onPressContinue={(cartData, data) => {
+    //       setpaymentMethod('JBRCoins');
+    //       setSavedTempCartData(cartData?.getAllCart);
+    //       setselectedScreen('FinalPaymentScreen');
+    //       setCashPayDetail(data);
+    //     }}
+    //   />
+    // ),
     ['FinalPaymentScreen']: (
       <FinalPaymentScreen
         tipAmount={tipAmount}

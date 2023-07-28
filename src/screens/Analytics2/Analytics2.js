@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Image, Text } from 'react-native';
 
 import { ScreenWrapper, Spacer } from '@/components';
@@ -28,10 +28,22 @@ import { TopSellingProduct } from './Components/TopSellingProduct';
 import { TotalOrders } from './Components/TotalOrders';
 import { TopSellingLocation } from './Components/TopSellingLocation';
 import { TotalPosOrder } from './Components/TotalPosOrder';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 export function Analytics2() {
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
+  const [flag, setFlag] = useState('profits');
   const [showModal, setShowModal] = useState(false);
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAnalyticStatistics(sellerID));
+  }, []);
 
   const goBack = () => {
     setselectedScreen('MainScreen');

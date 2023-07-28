@@ -19,7 +19,7 @@ export function TotalProfit({ onPress }) {
     <View>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
         <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>{'Back'}</Text>
+        <Text style={styles.currentStatusText}>{'Back'}</Text>
       </TouchableOpacity>
       <Text style={styles.graphTitle}> {'Total Profits'}</Text>
 
