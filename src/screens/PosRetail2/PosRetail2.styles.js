@@ -1270,7 +1270,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: moderateScale(7),
-    marginHorizontal: moderateVerticalScale(8),
+    marginHorizontal: moderateVerticalScale(5),
   },
   chooseCat: {
     color: COLORS.black,
@@ -1289,7 +1289,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cartSearchInputWraper: {
-    width: Platform.OS === 'android' ? windowWidth * 0.42 : windowWidth * 0.2,
+    width: windowWidth * 0.42,
     paddingHorizontal: ms(5),
   },
   sideSearchStyle: {

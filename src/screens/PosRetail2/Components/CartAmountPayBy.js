@@ -241,16 +241,16 @@ export const CartAmountPayBy = ({
       <View style={styles.displayflex}>
         <View style={styles.leftCon}>
           <View style={styles.selectTipsHeader}>
-            <BackButton
-              onPress={onPressBack}
-              title={'Back'}
-              style={{
-                top: ms(10),
-                left: ms(10),
-                backgroundColor: 'transparent',
-              }}
-            />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <BackButton
+                onPress={onPressBack}
+                title={'Back'}
+                style={{
+                  top: ms(10),
+                  left: ms(10),
+                  backgroundColor: 'transparent',
+                }}
+              />
               <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles._dollarSymbol}>$</Text>
