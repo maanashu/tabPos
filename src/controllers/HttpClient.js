@@ -55,7 +55,7 @@ client.interceptors.response.use(
     if (error.response) {
       if (error.response.data.msg === 'invalid_token') {
         // Show an alert in React Native
-        Alert.alert('Invalid Token', 'Please login again.', [
+        Alert.alert('Session activated from another device, please login again to continue', [
           {
             text: 'Ok',
             onPress: () => {

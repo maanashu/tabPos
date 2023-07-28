@@ -523,12 +523,13 @@ export class RetailController {
         })
         .catch((error) => {
           if (error?.error === 'emptyContent') {
-            Toast.show({
-              position: 'bottom',
-              type: 'error_toast',
-              text2: 'Wallet not found',
-              visibilityTime: 2000,
-            });
+            alert('Wallet not found');
+            // Toast.show({
+            //   position: 'bottom',
+            //   type: 'error_toast',
+            //   text2: 'Wallet not found',
+            //   visibilityTime: 2000,
+            // });
           }
           reject(error);
         });
@@ -742,6 +743,38 @@ export class RetailController {
             position: 'bottom',
             type: 'error_toast',
             text2: 'Product not found',
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async attachCustomer(data) {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.attachCustomer + `${data.cartId}`;
+      const body = data?.phoneNo
+        ? {
+            phone_no: data?.phoneNo,
+          }
+        : {
+            email: data?.phoneEmail,
+          };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: response?.msg,
+            visibilityTime: 2000,
+          });
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
             visibilityTime: 2000,
           });
           reject(error);

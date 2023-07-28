@@ -7,13 +7,11 @@ import {
   CartAmountPayBy,
   CartAmountTips,
   CartScreen,
-  CustomHeader,
   FinalPaymentScreen,
   MainScreen,
   PayByCard,
   PayByCash,
   PayByCash2,
-  PayByJBRCoins,
 } from '@/screens/PosRetail2/Components';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -115,7 +113,7 @@ export function PosRetail2() {
         ? 'code'
         : ''
     );
-  }, []);
+  }, [getRetailData?.getAllCart]);
 
   const clearInput = () => {
     setNotes('');
@@ -290,6 +288,7 @@ export function PosRetail2() {
         payNowByphone={(tip) => {
           selectTipAmount(tip);
         }}
+        cartid={cartID2}
       />
     ),
     ['PayByCard']: (
@@ -398,7 +397,7 @@ export function PosRetail2() {
                   style={[styles.holdCartCon, styles.addNotesBtn]}
                   onPress={() => saveDiscountHandler()}
                 >
-                  <Text style={styles.holdCart}>Add Discount</Text>
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -424,7 +423,7 @@ export function PosRetail2() {
                   style={[styles.holdCartCon, styles.addNotesBtn]}
                   onPress={() => saveNotesHandler()}
                 >
-                  <Text style={styles.holdCart}>Add Notes</Text>
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
                 </TouchableOpacity>
               </View>
             )}

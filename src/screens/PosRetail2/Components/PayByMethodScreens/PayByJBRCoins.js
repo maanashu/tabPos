@@ -9,34 +9,19 @@ import {
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { ms } from 'react-native-size-matters';
-import { Button, Spacer } from '@/components';
-import { Fonts, QR, cardPayment, checkArrow, crossButton, PaymentDone } from '@/assets';
+import { Spacer } from '@/components';
+import { Fonts, QR, crossButton } from '@/assets';
 import moment from 'moment';
-import BackButton from '@/components/BackButton';
 import { styles } from '../../PosRetail2.styles';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
-import {
-  getWalletId,
-  requestCheck,
-  requestMoney,
-  walletGetByPhone,
-  requestCheckSuccess,
-  createOrder,
-  requestMoneySuccess,
-  clearCheck,
-} from '@/actions/RetailAction';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { walletGetByPhone, requestCheckSuccess, requestMoneySuccess } from '@/actions/RetailAction';
 
 moment.suppressDeprecationWarnings = true;
 
 export const PayByJBRCoins = ({
-  onPressBack,
-  onPressContinue,
-  tipAmount,
-  screen,
   crossHandler,
   totalPayment,
   sendRequestFun,
@@ -184,6 +169,7 @@ export const PayByJBRCoins = ({
                     value={walletIdInp}
                     onChangeText={setWalletIdInp}
                     placeholderTextColor={COLORS.solid_grey}
+                    maxLength={10}
                   />
                   <TouchableOpacity
                     // onPress={onPressContinue}

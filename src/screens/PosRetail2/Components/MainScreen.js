@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
+import { FlatList, Keyboard, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
@@ -9,7 +9,9 @@ import {
   addToCart,
   bucket,
   categoryMenu,
+  cross,
   holdCart,
+  keyboard,
   search_light,
   sideArrow,
   sideEarser,
@@ -66,6 +68,7 @@ export function MainScreen({
   const cartLength = cartData?.poscart_products?.length;
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
+  const [search, setSearch] = useState('');
 
   const [showProductsFrom, setshowProductsFrom] = useState();
 
@@ -90,6 +93,18 @@ export function MainScreen({
   useEffect(() => {
     dispatch(getMainProduct());
   }, []);
+
+  const onChangeFun = (search) => {
+    setSearch(search);
+    if (search?.length > 3) {
+      const searchName = {
+        search: search,
+      };
+      dispatch(getMainProduct(searchName));
+    } else if (search?.length >= 3) {
+      dispatch(getMainProduct());
+    }
+  };
   const isProductLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state)
   );
@@ -262,12 +277,12 @@ export function MainScreen({
         resizeMode={FastImage.resizeMode.contain}
       />
       <Spacer space={SH(10)} />
-      <Text numberOfLines={1} style={styles.productDes}>
+      <Text numberOfLines={2} style={styles.productDes}>
         {item.name}
       </Text>
-      <Text numberOfLines={1} style={styles.productDes}>
+      {/* <Text numberOfLines={1} style={styles.productDes}>
         short cardigan
-      </Text>
+      </Text> */}
       <Spacer space={SH(6)} />
       <Text numberOfLines={1} style={styles.productSubHead}>
         {item.sub_category?.name}
@@ -329,12 +344,19 @@ export function MainScreen({
                   <TextInput
                     placeholder="Search by Barcode, SKU, Name"
                     style={styles.sideBarsearchInput}
-                    // value={search}
-                    // onChangeText={search => (
-                    //   setSearch(search), onChangeFun(search)
-                    // )}
+                    value={search}
+                    onChangeText={(search) => onChangeFun(search)}
                     placeholderTextColor={COLORS.gerySkies}
                   />
+                  {search?.length > 0 ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSearch(''), dispatch(getMainProduct()), Keyboard.dismiss();
+                      }}
+                    >
+                      <Image source={cross} style={[styles.sideSearchStyle, styles.crossStyling]} />
+                    </TouchableOpacity>
+                  ) : null}
                 </View>
               </View>
             </View>
@@ -506,6 +528,7 @@ export function MainScreen({
                       category_ids: selectedCat.id,
                     };
                     dispatch(getMainProduct(categoryID));
+                    setSearch(''); // Clear the search input product
 
                     setisFilterDataSeclectedOfIndex(0);
                     setfilterMenuTitle((prevData) => {
@@ -548,6 +571,7 @@ export function MainScreen({
                       sub_category_ids: selectedSubCat.id,
                     };
                     dispatch(getMainProduct(subCategoryID));
+                    setSearch(''); // Clear the search input product
                     setselectedSubCatID(selectedSubCat.id);
                     setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
 
@@ -591,6 +615,7 @@ export function MainScreen({
                       brand_id: selectedBrand.id,
                     };
                     dispatch(getMainProduct(brandID));
+                    setSearch(''); // Clear the search input product
                     setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
 
                     setfilterMenuTitle((prevData) => {

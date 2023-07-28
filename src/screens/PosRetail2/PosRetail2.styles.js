@@ -317,16 +317,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: SW(2),
   },
-  barcodeInputWraper: {
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    backgroundColor: COLORS.textInputBackground,
-    borderRadius: 7,
-    width: windowWidth * 0.41,
-    height: SH(45),
-    marginRight: 8,
-    justifyContent: 'center',
-  },
+
   allProduct: {
     color: COLORS.solid_grey,
     fontSize: SF(13),
@@ -1297,6 +1288,10 @@ export const styles = StyleSheet.create({
     height: SH(45),
     justifyContent: 'center',
   },
+  cartSearchInputWraper: {
+    width: Platform.OS === 'android' ? windowWidth * 0.42 : windowWidth * 0.2,
+    paddingHorizontal: ms(5),
+  },
   sideSearchStyle: {
     width: SW(6),
     height: SW(6),
@@ -1305,13 +1300,20 @@ export const styles = StyleSheet.create({
     marginRight: moderateScale(5),
     tintColor: COLORS.gerySkies,
   },
+  crossStyling: {
+    width: SW(4),
+    height: SW(4),
+  },
   sideBarsearchInput: {
     borderRadius: 7,
-    width: windowWidth * 0.24,
+    width: windowWidth * 0.15,
     fontFamily: Fonts.Italic,
     fontSize: SF(11),
     color: COLORS.solid_grey,
     height: SH(40),
+  },
+  searchCartInput: {
+    width: windowWidth * 0.35,
   },
   allProduct: {
     color: COLORS.solid_grey,
