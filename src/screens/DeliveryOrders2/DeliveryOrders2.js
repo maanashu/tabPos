@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 
-import moment from 'moment';
-import PieChart from 'react-native-pie-chart';
-import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 import { LineChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,39 +9,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   pay,
   pin,
-  Cart,
-  NoCard,
   rightIcon,
   firstTruck,
-  ReturnTruck,
   flipTruck,
-  backArrow2,
-  Fonts,
-  scooter,
-  removeProduct,
-  deliveryBox,
-  returnDeliveryBox,
   clock,
-  userImage,
   expressType,
   oneHourType,
   twoHourType,
   customType,
+  blankCheckBox,
+  checkedCheckboxSquare,
+  incomingOrders,
+  cancelledOrders,
+  returnedOrders,
 } from '@/assets';
-import {
-  rightSideDrawer,
-  shippingDrawer,
-  legends,
-  labels,
-  rightSideDeliveryDrawer,
-  deliveryDrawer,
-} from '@/constants/staticData';
 import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
+import Header from './Components/Header';
+import OrderDetail from './Components/OrderDetail';
+import OrderReview from './Components/OrderReview';
 import { ScreenWrapper, Spacer } from '@/components';
+import RightSideBar from './Components/RightSideBar';
 import { getAuthData } from '@/selectors/AuthSelector';
+import CurrentStatus from './Components/CurrentStatus';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import { acceptOrder, deliOrder, getOrderCount, getReviewDefault } from '@/actions/DeliveryAction';
+import OrderConvertion from './Components/OrderConvertion';
+import TodayOrderStatus from './Components/TodayOrderStatus';
+import { graphOptions, labels, rightSideDrawer, shippingDrawer } from '@/constants/staticData';
+import { deliOrder, getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
 
 import styles from './styles';
 
@@ -53,16 +45,13 @@ export function DeliveryOrders2() {
   const getAuth = useSelector(getAuthData);
   const getDeliveryData = useSelector(getDelivery);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const orderCount = getDeliveryData?.getOrderCount;
-  const length = orderCount?.map((item) => item.count);
-  const orderPlaced = length?.reduce((sum, num) => sum + num);
-
-  // console.log('orderCount==========', orderCount);
+  const todayOrderStatusData = getDeliveryData?.todayOrderStatus;
 
   const widthAndHeight = 200;
   const series = [823, 101, 40];
   const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet];
 
+  const [graphData, setGraphData] = useState(graphOptions);
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? '');
   const [orderDetail, setOrderDetail] = useState(
     getDeliveryData?.getReviewDef?.[0]?.order_details ?? []
@@ -73,11 +62,11 @@ export function DeliveryOrders2() {
   const [deliverytypes, setDeliveryTypes] = useState();
 
   useEffect(() => {
+    dispatch(todayOrders(sellerID));
     dispatch(deliOrder(sellerID));
     dispatch(getOrderCount(sellerID));
     dispatch(getReviewDefault(0, sellerID));
 
-    // if (getDeliveryData?.deliveringOrder?.length > 0) {
     const deliveryTypes = [
       {
         key: '1',
@@ -90,28 +79,28 @@ export function DeliveryOrders2() {
         key: '2',
         delivery_type_title:
           getDeliveryData?.deliveringOrder?.[1]?.delivery_type_title ?? '1 hour delivery window',
-        count: getDeliveryData?.deliveringOrder?.[0].count ?? 0,
+        count: getDeliveryData?.deliveringOrder?.[1]?.count ?? 0,
         image: oneHourType,
       },
       {
         key: '3',
         delivery_type_title:
           getDeliveryData?.deliveringOrder?.[2]?.delivery_type_title ?? '2 hour delivery window',
-        count: getDeliveryData?.deliveringOrder?.[0]?.count ?? 0,
+        count: getDeliveryData?.deliveringOrder?.[2]?.count ?? 0,
         image: twoHourType,
       },
       {
         key: '4',
-        delivery_type_title: 'Customer Pickups',
-        count: orderCount?.[6]?.count ?? 0,
+        delivery_type_title:
+          getDeliveryData?.deliveringOrder?.[3]?.delivery_type_title ?? 'Customer Pickups',
+        count: getDeliveryData?.deliveringOrder?.[3]?.count ?? 0,
         image: customType,
       },
     ];
     setDeliveryTypes(deliveryTypes);
-    // }
   }, []);
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({ item }) => (
     <View style={styles.itemMainViewStyle}>
       <Image source={item?.image} style={styles.shippingTypeImage} />
       <View style={styles.shippingTypeDetails}>
@@ -121,8 +110,8 @@ export function DeliveryOrders2() {
     </View>
   );
 
-  const showBadge = (image) => {
-    if (image === Cart) {
+  const showBadge = (item) => {
+    if (item?.title === 'Delivered') {
       return (
         <View
           style={[
@@ -133,7 +122,7 @@ export function DeliveryOrders2() {
           <Text style={[styles.badgetext, { color: COLORS.white }]}>0</Text>
         </View>
       );
-    } else if (image === NoCard) {
+    } else if (item?.title === 'Rejected') {
       return (
         <View
           style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
@@ -141,7 +130,7 @@ export function DeliveryOrders2() {
           <Text style={[styles.badgetext, { color: COLORS.white }]}>0</Text>
         </View>
       );
-    } else if (image === ReturnTruck) {
+    } else if (item?.title === 'Cancelled') {
       return (
         <View
           style={[
@@ -173,132 +162,190 @@ export function DeliveryOrders2() {
     }
   };
 
-  const renderDrawer = ({ item, index }) => (
+  const renderDrawer = ({ item }) => (
     <View style={styles.drawerIconView}>
       <View style={styles.bucketBackgorund}>
         <Image source={item.image} style={styles.sideBarImage} />
-        {showBadge(item?.image)}
+        {showBadge(item)}
       </View>
     </View>
   );
 
-  const renderShippingDrawer = ({ item, index }) => (
+  const renderShippingDrawer = ({ item }) => (
     <View style={styles.shippingDrawerView}>
       <Image source={item.image} style={styles.sideBarImage} />
       <View style={{ paddingLeft: 15, justifyContent: 'center' }}>
-        <Text style={styles.shippingDrawerCountText}>{item?.count}</Text>
-        <Text style={styles.shippingDrawerTitleText}>{item?.title}</Text>
+        <Text
+          style={[
+            styles.shippingDrawerCountText,
+            {
+              color:
+                item?.title === 'Delivered'
+                  ? COLORS.primary
+                  : item?.title === 'Rejected'
+                  ? COLORS.pink
+                  : item?.title === 'Cancelled'
+                  ? COLORS.yellowTweet
+                  : COLORS.solid_grey,
+            },
+          ]}
+        >
+          {item?.count}
+        </Text>
+        <Text
+          style={[
+            styles.shippingDrawerTitleText,
+            {
+              color:
+                item?.title === 'Delivered'
+                  ? COLORS.primary
+                  : item?.title === 'Rejected'
+                  ? COLORS.pink
+                  : item?.title === 'Cancelled'
+                  ? COLORS.yellowTweet
+                  : COLORS.solid_grey,
+            },
+          ]}
+        >
+          {item?.title}
+        </Text>
       </View>
     </View>
   );
 
-  const renderOrderToReview = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          setUserDetail(item);
-          setOrderDetail(item?.order_details);
-        }}
-        style={viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle}
-      >
-        <View style={styles.orderDetailStyle}>
-          <Text style={styles.nameTextStyle}>
-            {item?.user_details?.firstname ? item?.user_details?.firstname : 'user name'}
+  const renderOrderToReview = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => {
+        setUserDetail(item);
+        setOrderDetail(item?.order_details);
+      }}
+      style={viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle}
+    >
+      <View style={styles.orderDetailStyle}>
+        <Text style={styles.nameTextStyle}>
+          {item?.user_details?.firstname ? item?.user_details?.firstname : 'user name'}
+        </Text>
+        <View style={styles.locationViewStyle}>
+          <Image source={pin} style={styles.pinImageStyle} />
+          <Text style={styles.distanceTextStyle}>{item?.distance ? item?.distance : '0'}</Text>
+        </View>
+      </View>
+
+      <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
+        <Text style={styles.nameTextStyle}>
+          {item?.order_details?.length > 1
+            ? item?.order_details?.length + ' Items'
+            : item?.order_details?.length + ' Item'}
+        </Text>
+        <View style={styles.locationViewStyle}>
+          <Image source={pay} style={styles.pinImageStyle} />
+          <Text style={styles.distanceTextStyle}>
+            {item?.payable_amount ? item?.payable_amount : '00'}
           </Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={pin} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>{item?.distance ? item?.distance : '0'}</Text>
-          </View>
         </View>
+      </View>
 
-        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
-          <Text style={styles.nameTextStyle}>
-            {item?.order_details?.length > 1
-              ? item?.order_details?.length + ' Items'
-              : item?.order_details?.length + ' Item'}
+      <View style={[styles.orderDetailStyle, { width: SW(55) }]}>
+        <Text style={styles.timeTextStyle}>{item?.delivery_details?.title}</Text>
+        <View style={styles.locationViewStyle}>
+          <Image source={clock} style={styles.pinImageStyle} />
+          <Text style={styles.distanceTextStyle}>
+            {' '}
+            {item?.preffered_delivery_start_time ? item?.preffered_delivery_start_time : '00.00'}
+            {'-'} {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00'}
           </Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={pay} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>
-              {item?.payable_amount ? item?.payable_amount : '00'}
-            </Text>
-          </View>
         </View>
+      </View>
 
-        <View style={[styles.orderDetailStyle, { width: SW(55) }]}>
-          <Text style={styles.timeTextStyle}>{item?.delivery_details?.title}</Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={clock} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>
-              {' '}
-              {item?.preffered_delivery_start_time ? item?.preffered_delivery_start_time : '00.00'}
-              {'-'}{' '}
-              {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00'}
-            </Text>
-          </View>
-        </View>
-
-        <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
-          <Image source={rightIcon} style={styles.rightIconStyle} />
-        </TouchableOpacity>
+      <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
+        <Image source={rightIcon} style={styles.rightIconStyle} />
       </TouchableOpacity>
-    );
+    </TouchableOpacity>
+  );
+
+  const headerComponent = () => (
+    <View style={styles.headingRowStyle}>
+      <Text style={styles.ordersToReviewText}>{strings.shipingOrder.orderOfReview}</Text>
+
+      {getDeliveryData?.getReviewDef?.length > 0 ? (
+        <TouchableOpacity onPress={() => setViewAllOrders(true)} style={styles.viewAllButtonStyle}>
+          <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
+        </TouchableOpacity>
+      ) : (
+        <View />
+      )}
+    </View>
+  );
+
+  const emptyComponent = () => (
+    <View style={styles.emptyView}>
+      <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
+    </View>
+  );
+
+  const changeValue = (item, index) => {
+    let list = graphOptions;
+    list[index].checked = !list[index].checked;
+    setGraphData(list);
   };
 
-  const renderOrderProducts = ({ item, index }) => {
+  const renderGraphItem = ({ item, index }) => {
     return (
-      <View style={styles.orderproductView}>
-        <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
-          <Image source={{ uri: item?.product_image }} style={styles.userImageStyle} />
-
-          <View style={{ paddingLeft: 10, width: ms(100) }}>
-            <Text style={styles.nameTextStyle}>{item?.product_name}</Text>
-            <Text style={styles.varientTextStyle}>{'Box'}</Text>
-          </View>
-        </View>
-
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
-
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-
-        <Image
-          source={removeProduct}
-          style={[styles.removeProductImageStyle, { marginRight: 10 }]}
-        />
+      <View style={styles.shippingDrawerView}>
+        {item?.checked ? (
+          <TouchableOpacity onPress={() => changeValue(item, index)}>
+            <Image
+              source={
+                item?.title === 'In Coming Orders'
+                  ? incomingOrders
+                  : item?.title === 'Cancelled Orders'
+                  ? cancelledOrders
+                  : item?.title === 'Returned Orders'
+                  ? returnedOrders
+                  : checkedCheckboxSquare
+              }
+              style={styles.rightIconStyle}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => changeValue(item, index)}>
+            <Image
+              source={blankCheckBox}
+              style={[
+                styles.rightIconStyle,
+                {
+                  tintColor:
+                    item?.title === 'In Coming Orders'
+                      ? COLORS.bluish_green
+                      : item?.title === 'Cancelled Orders'
+                      ? COLORS.pink
+                      : item?.title === 'Returned Orders'
+                      ? COLORS.yellowTweet
+                      : COLORS.primary,
+                },
+              ]}
+            />
+          </TouchableOpacity>
+        )}
+        <Text style={styles.varientTextStyle}>{item?.title}</Text>
       </View>
     );
-  };
-
-  const declineHandler = (id) => {
-    const data = {
-      orderId: id,
-      status: 7,
-      sellerID: sellerID,
-    };
-    dispatch(acceptOrder(data));
-    setViewAllOrders(false);
   };
 
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        {viewAllOrders ? (
-          <TouchableOpacity onPress={() => setViewAllOrders(false)} style={styles.backView}>
-            <Image source={backArrow2} style={styles.backImageStyle} />
-            <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>{'Back'}</Text>
-          </TouchableOpacity>
-        ) : null}
+        <Header {...{ viewAllOrders, setViewAllOrders }} />
+
         <Spacer space={SH(20)} />
 
         {viewAllOrders ? (
           <View style={styles.firstRowStyle}>
             <View style={[styles.orderToReviewView, { marginBottom: 75 }]}>
               <FlatList
-                data={getDeliveryData?.getReviewDef ?? []}
                 renderItem={renderOrderToReview}
                 showsVerticalScrollIndicator={false}
+                data={getDeliveryData?.getReviewDef ?? []}
                 ListHeaderComponent={() => (
                   <View style={styles.headingRowStyle}>
                     <Text style={styles.ordersToReviewText}>
@@ -310,152 +357,7 @@ export function DeliveryOrders2() {
               />
             </View>
 
-            <View style={styles.orderDetailView}>
-              <View style={styles.orderDetailViewStyle}>
-                <View style={[styles.locationViewStyle, { width: ms(140) }]}>
-                  <Image
-                    source={
-                      userDetail?.user_details?.profile_photo
-                        ? { uri: userDetail?.user_details?.profile_photo }
-                        : userImage
-                    }
-                    style={styles.userImageStyle}
-                  />
-
-                  <View style={styles.userNameView}>
-                    <Text style={[styles.totalTextStyle, { padding: 0 }]}>
-                      {userDetail?.user_details?.firstname
-                        ? userDetail?.user_details?.firstname
-                        : 'user name'}
-                    </Text>
-                    <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
-                      {userDetail?.address}
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={[styles.locationViewStyle, { width: ms(140) }]}>
-                  <Image source={scooter} style={styles.scooterImageStyle} />
-
-                  <View style={[styles.userNameView, { paddingLeft: 5 }]}>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Bold,
-                        fontSize: SF(14),
-                        color: COLORS.primary,
-                      }}
-                    >
-                      {userDetail?.delivery_details?.title ?? 'ghfgh'}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Medium,
-                        fontSize: SF(11),
-                        color: COLORS.dark_grey,
-                      }}
-                    >
-                      {userDetail?.preffered_delivery_start_time
-                        ? userDetail?.preffered_delivery_start_time
-                        : '00.00'}
-                      {'-'}{' '}
-                      {userDetail?.preffered_delivery_end_time
-                        ? userDetail?.preffered_delivery_end_time
-                        : '00.00'}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={{ height: SH(400) }}>
-                <FlatList
-                  scrollEnabled
-                  data={orderDetail}
-                  renderItem={renderOrderProducts}
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
-                />
-              </View>
-
-              <View style={styles.orderandPriceView}>
-                <View style={{ paddingLeft: 15 }}>
-                  <View>
-                    <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                      {strings.shippingOrder.totalItem}
-                    </Text>
-                    <Text style={styles.itemCountText}>{userDetail?.total_items}</Text>
-                  </View>
-
-                  <Spacer space={SH(15)} />
-                  <View>
-                    <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                      {strings.shippingOrder.orderDate}
-                    </Text>
-                    <Text style={styles.itemCountText}>
-                      {moment(userDetail?.date).format('DD/MM/YYYY')}
-                    </Text>
-                  </View>
-
-                  <Spacer space={SH(15)} />
-                  <View>
-                    <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                      {strings.shippingOrder.orderId}
-                    </Text>
-                    <Text style={styles.itemCountText}>{userDetail?.id}</Text>
-                  </View>
-                </View>
-
-                <View style={{ paddingHorizontal: 10, width: SW(70) }}>
-                  <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
-                    <Text style={[styles.invoiceText, { color: COLORS.solid_grey }]}>
-                      {strings.deliveryOrders.subTotal}
-                    </Text>
-                    <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                      {userDetail?.actual_amount ? userDetail?.actual_amount : '0'}
-                    </Text>
-                  </View>
-
-                  <View style={styles.orderDetailsView}>
-                    <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
-                    <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                      {userDetail?.discount ? userDetail?.discount : '0'}
-                    </Text>
-                  </View>
-
-                  <View style={styles.orderDetailsView}>
-                    <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
-                    <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                      {strings.deliveryOrders.subTotalValue}
-                    </Text>
-                  </View>
-
-                  <View style={styles.orderDetailsView}>
-                    <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
-                    <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                      {userDetail?.tax ? userDetail?.tax : '0'}
-                    </Text>
-                  </View>
-
-                  <View style={styles.orderDetailsView}>
-                    <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
-                    <Text style={styles.totalText}>{'$' + userDetail?.payable_amount}</Text>
-                  </View>
-
-                  <Spacer space={SH(15)} />
-                  <View style={styles.shippingOrdersViewStyle}>
-                    <TouchableOpacity
-                      onPress={() => declineHandler(userDetail?.id)}
-                      style={styles.declineButtonStyle}
-                    >
-                      <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.acceptButtonView}>
-                      <Text style={styles.acceptTextStyle}>{strings.deliveryOrders.accept}</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
+            <OrderDetail />
 
             {openShippingOrders ? (
               <>
@@ -485,7 +387,7 @@ export function DeliveryOrders2() {
                           </View>
                         </View>
                       )}
-                      keyExtractor={(item, index) => item.key.toString()}
+                      keyExtractor={(item) => item.key.toString()}
                     />
                   </View>
                 </ReactNativeModal>
@@ -508,7 +410,7 @@ export function DeliveryOrders2() {
                       <Image source={firstTruck} style={styles.sideBarImage} />
                     </TouchableOpacity>
                   )}
-                  keyExtractor={(item, index) => item.key.toString()}
+                  keyExtractor={(item) => item.key.toString()}
                 />
               </View>
             )}
@@ -516,85 +418,39 @@ export function DeliveryOrders2() {
         ) : (
           <View style={styles.firstRowStyle}>
             <View>
-              <View style={styles.shippingStatusViewStyle}>
-                <Text style={styles.shippingStatusText}>{strings.deliveryOrders2.orderStatus}</Text>
-
-                <View style={styles.shippingOrdersViewStyle}>
-                  <Text style={styles.shippedOrderText}>{strings.analytics.deliveryOrder}</Text>
-                  <Text style={styles.shippedOrderText}>{'23'}</Text>
-                </View>
-
-                <View style={styles.shippingOrdersViewStyle}>
-                  <Text style={styles.shippedOrderText}>
-                    {strings.deliveryOrders2.pickupOrders}
-                  </Text>
-                  <Text style={styles.shippedOrderText}>{'10'}</Text>
-                </View>
-              </View>
+              <TodayOrderStatus {...{ todayOrderStatusData }} />
 
               <Spacer space={SH(15)} />
 
-              <View style={styles.currentStatusView}>
-                <Text style={styles.currentStatusText}>{strings.shippingOrder.currentStatus}</Text>
-
-                <FlatList data={deliverytypes} renderItem={renderItem} />
-              </View>
+              <CurrentStatus {...{ deliverytypes, renderItem }} />
 
               <Spacer space={SH(15)} />
 
-              <View style={styles.orderConvertionView}>
-                <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
-
-                <Spacer space={SH(22)} />
-                <View style={styles.piechartViewStyle}>
-                  <PieChart
-                    series={series}
-                    coverRadius={0.65}
-                    sliceColor={sliceColor}
-                    coverFill={COLORS.white}
-                    widthAndHeight={widthAndHeight}
-                  />
-                  <Text style={styles.percentageTextStyle}>{'97.51%'}</Text>
-
-                  <Spacer space={SH(12)} />
-                  <View style={styles.ordersRowView}>
-                    <Text style={styles.orderTypeTextStyle}>
-                      {strings.shippingOrder.deliveredOrders}
-                    </Text>
-                    <Text style={styles.countTextStyle}>
-                      {strings.shippingOrder.deliveredCount}
-                    </Text>
-                  </View>
-
-                  <View style={styles.ordersRowView}>
-                    <Text style={styles.orderTypeTextStyle}>
-                      {strings.shippingOrder.cancelledOrders}
-                    </Text>
-                    <Text style={styles.countTextStyle}>
-                      {strings.shippingOrder.cancelledCount}
-                    </Text>
-                  </View>
-
-                  <View style={styles.ordersRowView}>
-                    <Text style={styles.orderTypeTextStyle}>
-                      {strings.shippingOrder.returnedOrders}
-                    </Text>
-                    <Text style={styles.countTextStyle}>{strings.shippingOrder.returnedCount}</Text>
-                  </View>
-                  <Spacer space={SH(7)} />
-                </View>
-              </View>
+              <OrderConvertion {...{ series, sliceColor, widthAndHeight }} />
             </View>
 
             <View>
+              {/* <Graph /> */}
+
               <View style={styles.graphViewStyle}>
                 <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
 
+                <FlatList
+                  horizontal
+                  data={graphData}
+                  renderItem={renderGraphItem}
+                  contentContainerStyle={{ paddingBottom: 20 }}
+                />
+
                 <LineChart
                   bezier
+                  fromZero
+                  height={285}
+                  segments={10}
+                  withDots={false}
+                  withShadow={false}
                   data={{
                     labels: labels,
-                    legend: legends,
                     datasets: [
                       {
                         data: [32, 48, 33, 49, 94, 79, 87],
@@ -618,118 +474,40 @@ export function DeliveryOrders2() {
                       },
                     ],
                   }}
-                  height={285}
-                  withDots={false}
                   width={Dimensions.get('window').width * 0.53}
                   chartConfig={{
+                    decimalPlaces: 0,
                     backgroundColor: COLORS.black,
                     backgroundGradientFrom: COLORS.white,
                     backgroundGradientTo: COLORS.white,
-                    propsForLabels: {
-                      fontFamily: Fonts.Regular,
-                      fontSize: SF(12),
-                    },
-                    decimalPlaces: 0,
+                    propsForLabels: styles.shippingDrawerTitleText,
                     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                    style: {
-                      borderRadius: 16,
-                      backgroundColor: COLORS.white,
-                    },
                     labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
                   }}
-                  style={{
-                    borderRadius: 16,
-                    backgroundColor: COLORS.white,
-                  }}
-                  withShadow={false}
-                  fromZero
-                  segments={10}
                 />
               </View>
 
               <Spacer space={SH(15)} />
-              <View style={styles.orderToReviewView}>
-                <FlatList
-                  data={getDeliveryData?.getReviewDef?.slice(0, 4)}
-                  renderItem={renderOrderToReview}
-                  contentContainerStyle={{
-                    flexGrow: 1,
-                  }}
-                  ListHeaderComponent={() => (
-                    <View style={styles.headingRowStyle}>
-                      <Text style={styles.ordersToReviewText}>
-                        {strings.shipingOrder.orderOfReview}
-                      </Text>
-
-                      <TouchableOpacity
-                        onPress={() => setViewAllOrders(true)}
-                        style={styles.viewAllButtonStyle}
-                      >
-                        <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                />
-              </View>
+              <OrderReview
+                {...{
+                  renderOrderToReview,
+                  emptyComponent,
+                  headerComponent,
+                  getDeliveryData,
+                }}
+              />
             </View>
 
-            {openShippingOrders ? (
-              <>
-                <ReactNativeModal
-                  animationIn={'slideInRight'}
-                  animationOut={'slideOutRight'}
-                  style={styles.modalStyle}
-                  isVisible={isOpenSideBarDrawer}
-                >
-                  <View style={styles.shippingOrderViewStyle}>
-                    <FlatList
-                      data={deliveryDrawer}
-                      renderItem={renderShippingDrawer}
-                      ListHeaderComponent={() => (
-                        <View style={styles.shippingOrderHeader}>
-                          <Text style={styles.shippingOrderHeading}>
-                            {strings.deliveryOrders.heading}
-                          </Text>
-
-                          <View style={styles.rightSideView}>
-                            <TouchableOpacity
-                              style={styles.firstIconStyle}
-                              onPress={() => setOpenShippingOrders(!openShippingOrders)}
-                            >
-                              <Image source={returnDeliveryBox} style={styles.sideBarImage} />
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                      )}
-                      keyExtractor={(item, index) => item.key.toString()}
-                    />
-                  </View>
-                </ReactNativeModal>
-                <View style={{ width: 90 }} />
-              </>
-            ) : (
-              <View style={styles.rightSideView}>
-                <FlatList
-                  data={rightSideDeliveryDrawer}
-                  renderItem={renderDrawer}
-                  ListHeaderComponent={() => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setOpenShippingOrders(!openShippingOrders);
-                        setIsOpenSideBarDrawer(true);
-                      }}
-                      style={styles.firstIconStyle}
-                    >
-                      <Image source={deliveryBox} style={styles.sideBarImage} />
-                    </TouchableOpacity>
-                  )}
-                  contentContainerStyle={{
-                    height: Dimensions.get('window').height - 90,
-                  }}
-                  keyExtractor={(item, index) => item.key.toString()}
-                />
-              </View>
-            )}
+            <RightSideBar
+              {...{
+                openShippingOrders,
+                isOpenSideBarDrawer,
+                renderShippingDrawer,
+                setOpenShippingOrders,
+                renderDrawer,
+                setIsOpenSideBarDrawer,
+              }}
+            />
           </View>
         )}
       </View>

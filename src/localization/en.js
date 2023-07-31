@@ -766,5 +766,6 @@ export const en = {
   deliveryOrders2: {
     orderStatus: 'Today’s Order Status',
     pickupOrders: 'Pickup Orders',
+    noOrdersFound: 'No orders found',
   },
 };

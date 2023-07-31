@@ -2,7 +2,6 @@ import { strings } from '@/localization';
 import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
-import { err } from 'react-native-svg/lib/typescript/xml';
 
 export class DeliveryController {
   static async getOrderCount(status) {
@@ -117,6 +116,25 @@ export class DeliveryController {
   static async deliveringOrder(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.deliveringOrder + `?seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async todayOrders(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.todayOrders + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

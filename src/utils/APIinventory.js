@@ -99,6 +99,7 @@ export const ApiOrderInventory = {
   rescheduleAppointmentURL: `appointments/reschedule/`,
   getAnalyticStatistics: `orders/pos/analytics`,
   attachCustomer: 'orders/attach/user/',
+  todayOrders: 'orders/pos/today/orders-count',
 };
 
 export const ApiWalletInventory = {
