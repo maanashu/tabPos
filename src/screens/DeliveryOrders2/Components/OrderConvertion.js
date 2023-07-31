@@ -8,13 +8,14 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 
 import styles from '../styles';
+import { ms } from 'react-native-size-matters';
 
 const OrderConvertion = ({ series, sliceColor, widthAndHeight }) => {
   return (
     <View style={styles.orderConvertionView}>
       <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
 
-      <Spacer space={SH(22)} />
+      <Spacer space={ms(15)} />
       <View style={styles.piechartViewStyle}>
         <PieChart
           series={series}
@@ -38,6 +39,11 @@ const OrderConvertion = ({ series, sliceColor, widthAndHeight }) => {
 
         <View style={styles.ordersRowView}>
           <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.returnedOrders}</Text>
+          <Text style={styles.countTextStyle}>{strings.shippingOrder.returnedCount}</Text>
+        </View>
+
+        <View style={styles.ordersRowView}>
+          <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.inprogress}</Text>
           <Text style={styles.countTextStyle}>{strings.shippingOrder.returnedCount}</Text>
         </View>
         <Spacer space={SH(7)} />

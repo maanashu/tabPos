@@ -2,7 +2,7 @@ import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { ms, verticalScale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   firstRowStyle: {
-    borderWidth: 2,
     flexDirection: 'row',
     paddingHorizontal: ms(10),
     justifyContent: 'space-between',
@@ -85,7 +84,6 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   orderConvertionView: {
-    width: SW(100),
     borderRadius: 10,
     backgroundColor: COLORS.white,
   },
@@ -93,8 +91,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
     color: COLORS.solid_grey,
-    paddingLeft: SW(6),
-    paddingTop: 13,
+    paddingLeft: ms(6),
+    paddingTop: ms(10),
   },
   piechartViewStyle: {
     alignSelf: 'center',
@@ -107,7 +105,7 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     position: 'absolute',
     textAlign: 'center',
-    top: 90,
+    top: ms(40),
   },
   ordersRowView: {
     flexDirection: 'row',
@@ -317,7 +315,7 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingTop: ms(10),
   },
   viewallTextStyle: {
     fontFamily: Fonts.Regular,

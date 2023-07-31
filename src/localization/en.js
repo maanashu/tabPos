@@ -762,6 +762,7 @@ export const en = {
     orderIdValue: 'AST0000876',
     orderDateValue: '20/12/2023',
     totalItemsValue: '7',
+    inprogress: 'In-Progress Orders',
   },
   deliveryOrders2: {
     orderStatus: 'Today’s Order Status',

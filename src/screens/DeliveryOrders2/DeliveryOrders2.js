@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { View, Text, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 
+import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 import { LineChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,7 +41,6 @@ import { graphOptions, labels, rightSideDrawer, shippingDrawer } from '@/constan
 import { deliOrder, getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
 
 import styles from './styles';
-import { ms } from 'react-native-size-matters';
 
 export function DeliveryOrders2() {
   const dispatch = useDispatch();
@@ -49,9 +49,9 @@ export function DeliveryOrders2() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const todayOrderStatusData = getDeliveryData?.todayOrderStatus;
 
-  const widthAndHeight = 200;
-  const series = [823, 101, 40];
-  const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet];
+  const widthAndHeight = 150;
+  const series = [40, 101, 823];
+  const sliceColor = [COLORS.yellowTweet, COLORS.pink, COLORS.primary];
 
   const [graphData, setGraphData] = useState(graphOptions);
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? '');
@@ -440,7 +440,7 @@ export function DeliveryOrders2() {
           </View>
         ) : (
           <View style={styles.firstRowStyle}>
-            <View style={{ borderWidth: 1, borderColor: 'red' }}>
+            <View>
               <TodayOrderStatus {...{ todayOrderStatusData }} />
 
               <Spacer space={SH(15)} />
@@ -458,17 +458,12 @@ export function DeliveryOrders2() {
               <View style={styles.graphViewStyle}>
                 <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
 
-                <FlatList
-                  horizontal
-                  data={graphData}
-                  renderItem={renderGraphItem}
-                  contentContainerStyle={{ paddingBottom: 20 }}
-                />
+                <FlatList horizontal data={graphData} renderItem={renderGraphItem} />
 
                 <LineChart
                   bezier
                   fromZero
-                  height={285}
+                  height={ms(170)}
                   segments={10}
                   withDots={false}
                   withShadow={false}
@@ -497,7 +492,7 @@ export function DeliveryOrders2() {
                       },
                     ],
                   }}
-                  width={Dimensions.get('window').width * 0.53}
+                  width={Dimensions.get('window').width * 0.5}
                   chartConfig={{
                     decimalPlaces: 0,
                     backgroundColor: COLORS.black,
