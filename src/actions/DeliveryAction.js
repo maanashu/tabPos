@@ -117,6 +117,23 @@ const deliveringOrderReset = () => ({
   payload: null,
 });
 
+const todayOrdersRequest = () => ({
+  type: TYPES.TODAY_ORDER_STATUS_REQUEST,
+  payload: null,
+});
+const todayOrdersSuccess = (orderStatus) => ({
+  type: TYPES.TODAY_ORDER_STATUS_SUCCESS,
+  payload: { orderStatus },
+});
+const todayOrdersError = (error) => ({
+  type: TYPES.TODAY_ORDER_STATUS_ERROR,
+  payload: { error },
+});
+const todayOrdersReset = () => ({
+  type: TYPES.TODAY_ORDER_STATUS_RESET,
+  payload: null,
+});
+
 export const getOrderCount = (status) => async (dispatch) => {
   dispatch(getOrderCountRequest());
   try {
@@ -194,5 +211,18 @@ export const deliOrder = (sellerID) => async (dispatch) => {
       dispatch(deliveringOrderReset());
     }
     dispatch(deliveringOrderError(error.message));
+  }
+};
+
+export const todayOrders = (sellerID) => async (dispatch) => {
+  dispatch(todayOrdersRequest());
+  try {
+    const res = await DeliveryController.todayOrders(sellerID);
+    dispatch(todayOrdersSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(todayOrdersReset());
+    }
+    dispatch(todayOrdersError(error.message));
   }
 };

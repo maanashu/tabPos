@@ -323,6 +323,9 @@ export { default as deliveryParcel } from '@/assets/icons/deliveryOrdersNew/parc
 export { default as returnShipping } from '@/assets/icons/deliveryOrdersNew/returnShipping.png';
 export { default as deliveryShipping } from '@/assets/icons/deliveryOrdersNew/Shipping.png';
 export { default as returnDeliveryBox } from '@/assets/icons/deliveryOrdersNew/returnDeliveryBox.png';
+export { default as incomingOrders } from '@/assets/icons/deliveryOrdersNew/incomingOrders.png';
+export { default as cancelledOrders } from '@/assets/icons/deliveryOrdersNew/cancelledOrders.png';
+export { default as returnedOrders } from '@/assets/icons/deliveryOrdersNew/returnedOrders.png';
 
 /* Fonts */
 export const Fonts = {
