@@ -14,25 +14,16 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useSelector } from 'react-redux';
 import { TYPES } from '@/Types/Types';
 
-export function CategoryModal({
-  crossHandler,
-  categoryArray,
-  onSelectCategory,
-  cancelCategory,
-}) {
+export function CategoryModal({ crossHandler, categoryArray, onSelectCategory, cancelCategory }) {
   const [selectedId, setSelectedId] = useState();
 
-  const categoryLoad = useSelector(state =>
-    isLoadingSelector([TYPES.GET_CATEGORY], state)
-  );
+  const categoryLoad = useSelector((state) => isLoadingSelector([TYPES.GET_CATEGORY], state));
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
     const color = item.id === selectedId ? 'white' : 'black';
 
-    return (
-      <Item item={item} backgroundColor={backgroundColor} textColor={color} />
-    );
+    return <Item item={item} backgroundColor={backgroundColor} textColor={color} />;
   };
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
@@ -63,10 +54,7 @@ export function CategoryModal({
       <View style={styles.displayflex}>
         <Text style={styles.categories}>{strings.posRetail.categories}</Text>
         <View style={[styles.displayRow]}>
-          <TouchableOpacity
-            style={styles.cancelCatCon}
-            onPress={cancelCategory}
-          >
+          <TouchableOpacity style={styles.cancelCatCon} onPress={cancelCategory}>
             <Text style={styles.catCancelText}>Clear</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={crossHandler}>
@@ -99,7 +87,7 @@ export function CategoryModal({
           <FlatList
             data={categoryArray}
             renderItem={renderItem}
-            keyExtractor={item => item.id}
+            keyExtractor={(item) => item.id}
             extraData={categoryArray}
             numColumns={4}
             ListEmptyComponent={ListEmptyComponent}

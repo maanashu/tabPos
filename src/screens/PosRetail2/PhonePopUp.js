@@ -9,14 +9,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import {
-  Fonts,
-  radioSelect,
-  radioUnSelect,
-  cross,
-  deleteBack,
-  dropdown,
-} from '@/assets';
+import { Fonts, radioSelect, radioUnSelect, cross, deleteBack, dropdown } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { moderateScale, ms } from 'react-native-size-matters';
 
@@ -44,10 +37,7 @@ export const PhonePopUp = ({ value, onPress }) => {
   } else {
     // Render a text button for the numeric keys
     return (
-      <TouchableOpacity
-        style={styles.keyPadButton}
-        onPress={() => onPress(value)}
-      >
+      <TouchableOpacity style={styles.keyPadButton} onPress={() => onPress(value)}>
         <Text style={styles.keyPadText}>{value}</Text>
       </TouchableOpacity>
     );
@@ -60,7 +50,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   calendarSettingModalContainer: {
-    width: ms(295),
+    width: windowWidth * 0.5,
     height: ms(420),
     backgroundColor: 'white',
     padding: ms(10),
@@ -124,7 +114,7 @@ const styles = StyleSheet.create({
 
   keyPadButton: {
     height: SH(110),
-    width: windowWidth * 0.1,
+    width: windowWidth * 0.11,
     justifyContent: 'center',
     borderColor: COLORS.gerySkies,
     alignItems: 'center',

@@ -22,6 +22,7 @@ import {
   incomingOrders,
   cancelledOrders,
   returnedOrders,
+  removeProduct,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
@@ -39,6 +40,7 @@ import { graphOptions, labels, rightSideDrawer, shippingDrawer } from '@/constan
 import { deliOrder, getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
 
 import styles from './styles';
+import { ms } from 'react-native-size-matters';
 
 export function DeliveryOrders2() {
   const dispatch = useDispatch();
@@ -245,7 +247,7 @@ export function DeliveryOrders2() {
         </View>
       </View>
 
-      <View style={[styles.orderDetailStyle, { width: SW(55) }]}>
+      <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
         <Text style={styles.timeTextStyle}>{item?.delivery_details?.title}</Text>
         <View style={styles.locationViewStyle}>
           <Image source={clock} style={styles.pinImageStyle} />
@@ -332,6 +334,27 @@ export function DeliveryOrders2() {
     );
   };
 
+  const renderOrderProducts = ({ item, index }) => {
+    return (
+      <View style={styles.orderproductView}>
+        <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
+          <Image source={{ uri: item?.product_image }} style={styles.userImageStyle} />
+          <View style={{ paddingLeft: 10, width: ms(100) }}>
+            <Text style={styles.nameTextStyle}>{item?.product_name}</Text>
+            <Text style={styles.varientTextStyle}>{'Box'}</Text>
+          </View>
+        </View>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
+        <Image
+          source={removeProduct}
+          style={[styles.removeProductImageStyle, { marginRight: 10 }]}
+        />
+      </View>
+    );
+  };
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
@@ -357,7 +380,7 @@ export function DeliveryOrders2() {
               />
             </View>
 
-            <OrderDetail />
+            <OrderDetail {...{ userDetail, orderDetail, renderOrderProducts }} />
 
             {openShippingOrders ? (
               <>

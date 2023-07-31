@@ -30,18 +30,6 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { getSetting } from '@/selectors/SettingSelector';
 import { getGoogleCode, verifyGoogleCode } from '@/actions/SettingAction';
 
-const aaaaa = [
-  {
-    name: 'cashier',
-  },
-  {
-    name: 'admin',
-  },
-  {
-    name: 'watchman',
-  },
-];
-
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
 import { digits } from '@/utils/validators';

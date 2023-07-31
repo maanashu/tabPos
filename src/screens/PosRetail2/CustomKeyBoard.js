@@ -1,11 +1,4 @@
-import {
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { KeyPadButton } from './KeyPadButton';
 import { strings } from '@/localization';
@@ -23,20 +16,7 @@ export const CustomKeyboard = ({
   onClosePress = () => {},
   onPayNowPress = () => {},
 }) => {
-  const KEYBOARD_DATA = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    'cross',
-    '0',
-    'deleteBack',
-  ];
+  const KEYBOARD_DATA = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'cross', '0', 'deleteBack'];
   return (
     <View style={{ marginVertical: ms(10) }}>
       <FlatList
@@ -51,13 +31,13 @@ export const CustomKeyboard = ({
         renderItem={({ item, index }) => (
           <PhonePopUp
             value={item}
-            onPress={value => {
+            onPress={(value) => {
               if (value === 'cross') {
                 setEnteredValue('');
               } else if (value === 'deleteBack') {
-                setEnteredValue(prev => prev.slice(0, -1));
+                setEnteredValue((prev) => prev.slice(0, -1));
               } else {
-                setEnteredValue(prev => {
+                setEnteredValue((prev) => {
                   const newValue = prev + value;
                   if (newValue.length > maxCharLength) {
                     return newValue.slice(0, maxCharLength);
@@ -87,8 +67,7 @@ export const CustomKeyboard = ({
               style={[
                 styles.acceptbtnContainer,
                 {
-                  backgroundColor:
-                    enteredValue.length > 0 ? COLORS.primary : COLORS.darkGray,
+                  backgroundColor: enteredValue.length > 0 ? COLORS.primary : COLORS.darkGray,
                 },
               ]}
             >
@@ -127,7 +106,7 @@ const styles = StyleSheet.create({
   _btnContainer: {
     flexDirection: 'row',
     alignSelf: 'center',
-    width: windowWidth * 0.3,
+    width: windowWidth * 0.33,
     marginTop: ms(10),
   },
   declineBtnContainer: {

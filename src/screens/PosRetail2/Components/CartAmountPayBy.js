@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   Image,
   Keyboard,
@@ -43,6 +44,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { digits } from '@/utils/validators';
 import {
   attachCustomer,
+  getTip,
   getWalletId,
   requestMoney,
   walletGetByPhone,
@@ -51,6 +53,7 @@ import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 moment.suppressDeprecationWarnings = true;
 
 const DATA = [
@@ -59,12 +62,6 @@ const DATA = [
   { title: 'Card', icon: cardPayment },
 ];
 
-const TIPS_DATA = [
-  { title: 18, icon: cardPayment, percent: '18%' },
-  { title: 20, icon: cardPayment, percent: '20%' },
-  { title: 22, icon: cardPayment, percent: '22%' },
-  { title: '', icon: cardPayment, percent: 'No Tip' },
-];
 const RECIPE_DATA = [
   { title: 'SMS', icon: cardPayment },
   { title: 'Email', icon: cardPayment },
@@ -104,6 +101,25 @@ export const CartAmountPayBy = ({
   const getWalletQr = getRetailData?.getWallet?.qr_code;
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
 
+  const getTips = getRetailData?.getTips;
+
+  const tipsArr = [
+    getTips?.first_tips ?? 18,
+    getTips?.second_tips ?? 20,
+    getTips?.third_tips ?? 22,
+  ];
+
+  const TIPS_DATA = [
+    { title: getTips?.first_tips ?? 18, icon: cardPayment, percent: getTips?.first_tips ?? '18' },
+    {
+      title: getTips?.second_tips ?? 20,
+      icon: cardPayment,
+      percent: getTips?.second_tips ?? '20',
+    },
+    { title: getTips?.third_tips ?? 22, icon: cardPayment, percent: getTips?.third_tips ?? '22' },
+    { title: '', icon: cardPayment, percent: 'No Tip' },
+  ];
+
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment =
@@ -113,6 +129,7 @@ export const CartAmountPayBy = ({
 
   useEffect(() => {
     dispatch(getWalletId(sellerID));
+    dispatch(getTip(sellerID));
   }, []);
 
   const isLoading = useSelector((state) =>
@@ -134,7 +151,7 @@ export const CartAmountPayBy = ({
 
   const sendRequestFun = async () => {
     const data = {
-      amount: totalPayAmount(),
+      amount: (totalPayAmount() * 100).toFixed(0),
       wallletAdd: walletUser?.wallet_address,
     };
     const res = await dispatch(requestMoney(data));
@@ -162,7 +179,6 @@ export const CartAmountPayBy = ({
       return '';
     }
     const percentageValue = (percentage / 100) * parseFloat(value);
-    // console.log('percentageValue', percentageValue);
     return percentageValue.toFixed(2) ?? 0.0;
   }
   const onChangePhoneNumber = (phone) => {
@@ -172,9 +188,7 @@ export const CartAmountPayBy = ({
     onPressPaymentMethod({
       method: 'PayBy' + selectedPaymentMethod,
       index: selectedPaymentIndex,
-    }),
-      // setPhonePopVisible(false);
-      setEmailModal(false);
+    });
   };
 
   const attachUserByPhone = async (customerNo) => {
@@ -254,7 +268,9 @@ export const CartAmountPayBy = ({
               <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles._dollarSymbol}>$</Text>
-                <Text style={styles._amount}>{totalPayAmount()}</Text>
+                <Text style={styles._amount}>
+                  {cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                </Text>
               </View>
             </View>
           </View>
@@ -297,6 +313,7 @@ export const CartAmountPayBy = ({
                       ]}
                     >
                       {item.percent}
+                      {item.percent === 'No Tip' ? '' : '%'}
                     </Text>
                     {index !== 3 && (
                       <Text
@@ -415,7 +432,7 @@ export const CartAmountPayBy = ({
                           setPhoneNumber('');
                         } else if (index == 1) {
                           setEmailModal(true);
-                        } else {
+                        } else if (index == 2) {
                           payNowHandler(), payNowByphone(selectedTipAmount);
                         }
                       }}
@@ -579,50 +596,58 @@ export const CartAmountPayBy = ({
         </View>
       </Modal>
       <Modal isVisible={emailModal}>
-        <View style={styles.emailModalContainer}>
-          <View>
-            <View style={styles.modalHeaderCon}>
-              <View style={styles.flexRow}>
-                <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
-                  {strings.retail.eRecipeEmail}
-                </Text>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}
+        >
+          <View style={styles.emailModalContainer}>
+            <View>
+              <View style={styles.modalHeaderCon}>
+                <View style={styles.flexRow}>
+                  <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
+                    {strings.retail.eRecipeEmail}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.crossButtonCon}
+                    onPress={() => {
+                      setEmailModal(false), setSelectedRecipeIndex(null), setEmail('');
+                    }}
+                  >
+                    <Image source={crossButton} style={styles.crossButton} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="you@you.mail"
+                  value={email.trim()}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  placeholderTextColor={COLORS.solidGrey}
+                />
                 <TouchableOpacity
-                  style={styles.crossButtonCon}
+                  style={styles.payNowButton}
                   onPress={() => {
-                    setEmailModal(false), setSelectedRecipeIndex(null), setEmail('');
+                    // payNowHandler(),
+                    payNowByphone(selectedTipAmount);
+                    attachUserByEmail(email);
                   }}
                 >
-                  <Image source={crossButton} style={styles.crossButton} />
+                  <Text style={styles.payNowButtonText}>Pay Now</Text>
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.textInput}
-                placeholder="you@you.mail"
-                value={email.trim()}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                placeholderTextColor={COLORS.solidGrey}
-              />
-              <TouchableOpacity
-                style={styles.payNowButton}
-                onPress={() => {
-                  // payNowHandler(),
-                  payNowByphone(selectedTipAmount);
-                  attachUserByEmail(email);
-                }}
-              >
-                <Text style={styles.payNowButtonText}>Pay Now</Text>
-              </TouchableOpacity>
-            </View>
+            {isLoading ? (
+              <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+                <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
+              </View>
+            ) : null}
           </View>
-          {isLoading ? (
-            <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-              <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
-            </View>
-          ) : null}
-        </View>
+        </KeyboardAwareScrollView>
       </Modal>
 
       {/* qr code scan pop */}

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { ms, verticalScale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 15,
-    width: SW(140),
+    width: SW(130),
     paddingVertical: 10,
     borderColor: COLORS.blue_shade,
   },
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   orderDetailStyle: {
-    width: SW(35),
+    width: SW(33),
     justifyContent: 'center',
   },
   nameTextStyle: {
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 13,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 10,
     marginLeft: 20,
   },
   titleStyle: {
@@ -325,7 +325,10 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   emptyView: {
-    height: Dimensions.get('window').height / 2.75,
+    height:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').height / 3.2
+        : Dimensions.get('window').height / 2.8,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -491,14 +494,14 @@ const styles = StyleSheet.create({
   orderandPriceView: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    backgroundColor: COLORS.white,
-    ...ShadowStyles.shadow1,
-    marginHorizontal: 20,
+    backgroundColor: COLORS.textInputBackground,
+    // ...ShadowStyles.shadow1,
+    // marginHorizontal: 20,
     position: 'absolute',
-    bottom: 10,
+    bottom: 0,
     alignSelf: 'center',
-    width: Dimensions.get('window').width / 2.6,
-    paddingVertical: 15,
+    width: Dimensions.get('window').width * 0.43,
+    paddingTop: 15,
   },
 });
 
