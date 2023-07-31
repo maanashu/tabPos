@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
     marginVertical: SH(25),
     marginHorizontal: SH(15),
     padding: SH(10),
-    width: Platform.OS === 'ios' ? ms(150) : ms(156),
+    width: Platform.OS === 'ios' ? ms(140) : ms(156),
     height: ms(190),
     borderRadius: 15,
   },

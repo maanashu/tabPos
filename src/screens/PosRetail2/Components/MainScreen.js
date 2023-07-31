@@ -376,6 +376,7 @@ export function MainScreen({
                 numColumns={7}
                 contentContainerStyle={{
                   flexGrow: 1,
+                  justifyContent: 'space-between',
                 }}
                 scrollEnabled={true}
                 ListEmptyComponent={() => (

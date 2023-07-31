@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   Image,
   Keyboard,
@@ -52,6 +53,7 @@ import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 moment.suppressDeprecationWarnings = true;
 
 const DATA = [
@@ -186,9 +188,7 @@ export const CartAmountPayBy = ({
     onPressPaymentMethod({
       method: 'PayBy' + selectedPaymentMethod,
       index: selectedPaymentIndex,
-    }),
-      // setPhonePopVisible(false);
-      setEmailModal(false);
+    });
   };
 
   const attachUserByPhone = async (customerNo) => {
@@ -268,7 +268,9 @@ export const CartAmountPayBy = ({
               <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles._dollarSymbol}>$</Text>
-                <Text style={styles._amount}>{cartData?.amount?.total_amount ?? '0.00'}</Text>
+                <Text style={styles._amount}>
+                  {cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                </Text>
               </View>
             </View>
           </View>
@@ -430,7 +432,7 @@ export const CartAmountPayBy = ({
                           setPhoneNumber('');
                         } else if (index == 1) {
                           setEmailModal(true);
-                        } else {
+                        } else if (index == 2) {
                           payNowHandler(), payNowByphone(selectedTipAmount);
                         }
                       }}
@@ -594,50 +596,58 @@ export const CartAmountPayBy = ({
         </View>
       </Modal>
       <Modal isVisible={emailModal}>
-        <View style={styles.emailModalContainer}>
-          <View>
-            <View style={styles.modalHeaderCon}>
-              <View style={styles.flexRow}>
-                <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
-                  {strings.retail.eRecipeEmail}
-                </Text>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}
+        >
+          <View style={styles.emailModalContainer}>
+            <View>
+              <View style={styles.modalHeaderCon}>
+                <View style={styles.flexRow}>
+                  <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
+                    {strings.retail.eRecipeEmail}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.crossButtonCon}
+                    onPress={() => {
+                      setEmailModal(false), setSelectedRecipeIndex(null), setEmail('');
+                    }}
+                  >
+                    <Image source={crossButton} style={styles.crossButton} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="you@you.mail"
+                  value={email.trim()}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  placeholderTextColor={COLORS.solidGrey}
+                />
                 <TouchableOpacity
-                  style={styles.crossButtonCon}
+                  style={styles.payNowButton}
                   onPress={() => {
-                    setEmailModal(false), setSelectedRecipeIndex(null), setEmail('');
+                    // payNowHandler(),
+                    payNowByphone(selectedTipAmount);
+                    attachUserByEmail(email);
                   }}
                 >
-                  <Image source={crossButton} style={styles.crossButton} />
+                  <Text style={styles.payNowButtonText}>Pay Now</Text>
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.textInput}
-                placeholder="you@you.mail"
-                value={email.trim()}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                placeholderTextColor={COLORS.solidGrey}
-              />
-              <TouchableOpacity
-                style={styles.payNowButton}
-                onPress={() => {
-                  // payNowHandler(),
-                  payNowByphone(selectedTipAmount);
-                  attachUserByEmail(email);
-                }}
-              >
-                <Text style={styles.payNowButtonText}>Pay Now</Text>
-              </TouchableOpacity>
-            </View>
+            {isLoading ? (
+              <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+                <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
+              </View>
+            ) : null}
           </View>
-          {isLoading ? (
-            <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-              <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
-            </View>
-          ) : null}
-        </View>
+        </KeyboardAwareScrollView>
       </Modal>
 
       {/* qr code scan pop */}
