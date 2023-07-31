@@ -417,7 +417,7 @@ export function DeliveryOrders2() {
           </View>
         ) : (
           <View style={styles.firstRowStyle}>
-            <View>
+            <View style={{ borderWidth: 1, borderColor: 'red' }}>
               <TodayOrderStatus {...{ todayOrderStatusData }} />
 
               <Spacer space={SH(15)} />
@@ -429,7 +429,7 @@ export function DeliveryOrders2() {
               <OrderConvertion {...{ series, sliceColor, widthAndHeight }} />
             </View>
 
-            <View>
+            <View style={{ borderWidth: 1, borderColor: 'red' }}>
               {/* <Graph /> */}
 
               <View style={styles.graphViewStyle}>
