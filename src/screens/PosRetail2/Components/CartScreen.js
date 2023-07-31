@@ -10,8 +10,6 @@ import {
   addDiscountPic,
   addToCart,
   borderCross,
-  categoryMenu,
-  categoryshoes,
   checkArrow,
   clothes,
   cross,
@@ -44,27 +42,18 @@ import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
+
 export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   let arr = [getRetailData?.getAllCart];
-  const [selectedId, setSelectedId] = useState();
-  const [categoryModal, setCategoryModal] = useState(false);
-  const [subCategoryModal, setSubCategoryModal] = useState(false);
-  const [brandModal, setBrandModal] = useState(false);
-  const [catTypeId, setCatTypeId] = useState();
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
-  const [storeUser, setStoreUser] = useState();
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
 
   const [userName, setUserName] = useState('');
-  const [userPhoneNo, setUserPhoneNo] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAdd, setUserAdd] = useState('');
-  const [itemCart, setItemCart] = useState();
-  const [count, setCount] = useState(itemCart?.qty ?? '0');
-  const [okk, setOkk] = useState(false);
   const [cartSearch, setCartSearch] = useState('');
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
@@ -142,57 +131,11 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     };
     dispatch(getAllCartSuccess(DATA));
   };
-  const addCustomerHandler = () => {
-    if (!userName) {
-      Toast.show({
-        position: 'top',
-        type: 'error_toast',
-        text2: 'Please enter user Name',
-        visibilityTime: 2000,
-      });
-    } else if (!userEmail) {
-      Toast.show({
-        position: 'top',
-        type: 'error_toast',
-        text2: 'Please enter user Email',
-        visibilityTime: 2000,
-      });
-    } else if (userEmail && emailReg.test(userEmail) === false) {
-      Toast.show({
-        position: 'top',
-        type: 'error_toast',
-        text2: 'Please enter valid Email',
-        visibilityTime: 2000,
-      });
-    } else if (!userAdd) {
-      Toast.show({
-        position: 'top',
-        type: 'error_toast',
-        text2: 'Please enter user Address',
-        visibilityTime: 2000,
-      });
-    } else {
-      const data = {
-        userPhoneNo: customerPhoneNo,
-        userFirstname: userName,
-        userEmailAdd: userEmail,
-      };
-      dispatch(sendInvitation(data));
-      userInputClear();
-    }
-  };
-  const userInputClear = () => {
-    setUserEmail('');
-    setUserName('');
-    setCustomerPhoneNo('');
-    setUserAdd('');
-  };
 
   const clearCartHandler = () => {
     dispatch(clearAllCart());
     crossHandler();
   };
-  const userDetalLoader = useSelector((state) => isLoadingSelector([TYPES.GET_USERDETAIL], state));
 
   const phoneNumberSearchFun = (customerPhoneNo) => {
     if (customerPhoneNo?.length > 9) {
@@ -225,81 +168,6 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     dispatch(getAllCartSuccess(DATA));
   };
 
-  const catTypeFun = (id) => {
-    id === 1 ? setCategoryModal(true) : id === 2 ? setSubCategoryModal(true) : setBrandModal(true);
-  };
-
-  //  categoryType -----start
-  const catTypeRenderItem = ({ item }) => {
-    const backgroundColor = item.id === catTypeId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === catTypeId ? 'white' : 'black';
-
-    return (
-      <CatTypeItem
-        item={item}
-        onPress={() => {
-          setCatTypeId(item.id), catTypeFun(item.id);
-        }}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
-  };
-  const CatTypeItem = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity
-      style={styles.chooseCategoryCon}
-      onPress={onPress}
-      //   onPress={() => setCategoryModal(true)}
-    >
-      <Text style={styles.chooseCat}>{item.name}</Text>
-      <Image source={categoryMenu} style={styles.categoryMenu} />
-    </TouchableOpacity>
-  );
-  //  categoryType -----end
-
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === selectedId ? 'white' : 'black';
-
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
-  };
-
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity style={styles.productCon}>
-      <Image source={categoryshoes} style={styles.categoryshoes} />
-      <Spacer space={SH(10)} />
-      <Text numberOfLines={1} style={styles.productDes}>
-        Made well colored cozy
-      </Text>
-      <Text numberOfLines={1} style={styles.productDes}>
-        short cardigan
-      </Text>
-      <Spacer space={SH(6)} />
-      <Text numberOfLines={1} style={styles.productSubHead}>
-        Baby Boy
-      </Text>
-      <Spacer space={SH(6)} />
-      <Text numberOfLines={1} style={styles.productPrice}>
-        $5.65
-      </Text>
-    </TouchableOpacity>
-  );
-
-  const addQuantity = (qty) => {
-    setCount(count + 1);
-  };
-
-  const minusQuantity = (qty) => {
-    setCount(count - 1);
-  };
-
   return (
     <View>
       <View style={styles.homeScreenCon}>
@@ -307,7 +175,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
           iconShow
           crossHandler={() => {
             crossHandler();
-            dispatch(getUserDetailSuccess([]));
+            // dispatch(getUserDetailSuccess([]));
           }}
         />
 
@@ -319,7 +187,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                 style={styles.backProScreen}
                 onPress={() => {
                   crossHandler();
-                  dispatch(getUserDetailSuccess([]));
+                  // dispatch(getUserDetailSuccess([]));
                 }}
               >
                 <Image source={rightBack} style={styles.arrowStyle} />

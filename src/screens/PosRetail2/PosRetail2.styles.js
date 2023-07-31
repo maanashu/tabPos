@@ -1342,7 +1342,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   categoryshoes: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.106 : windowWidth * 0.1,
+    width: Platform.OS === 'ios' ? windowWidth * 0.104 : windowWidth * 0.1,
     height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',
