@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity, Platform } from 'react-native';
 
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
@@ -11,7 +11,7 @@ import { Fonts, scooter, userImage } from '@/assets';
 
 import styles from '../styles';
 
-const OrderDetail = () => {
+const OrderDetail = ({ userDetail, orderDetail, renderOrderProducts }) => {
   return (
     <View style={styles.orderDetailView}>
       <View style={styles.orderDetailViewStyle}>
@@ -37,7 +37,12 @@ const OrderDetail = () => {
           </View>
         </View>
 
-        <View style={[styles.locationViewStyle, { width: ms(140) }]}>
+        <View
+          style={[
+            styles.locationViewStyle,
+            { width: ms(120), right: Platform.OS === 'ios' ? 20 : 0 },
+          ]}
+        >
           <Image source={scooter} style={styles.scooterImageStyle} />
 
           <View style={[styles.userNameView, { paddingLeft: 5 }]}>
@@ -107,7 +112,7 @@ const OrderDetail = () => {
           </View>
         </View>
 
-        <View style={{ paddingHorizontal: 10, width: SW(70) }}>
+        <View style={{ paddingHorizontal: 10 }}>
           <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
             <Text style={[styles.invoiceText, { color: COLORS.solid_grey }]}>
               {strings.deliveryOrders.subTotal}
