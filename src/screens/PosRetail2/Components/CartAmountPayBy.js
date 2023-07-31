@@ -43,6 +43,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { digits } from '@/utils/validators';
 import {
   attachCustomer,
+  getTip,
   getWalletId,
   requestMoney,
   walletGetByPhone,
@@ -59,12 +60,6 @@ const DATA = [
   { title: 'Card', icon: cardPayment },
 ];
 
-const TIPS_DATA = [
-  { title: 18, icon: cardPayment, percent: '18%' },
-  { title: 20, icon: cardPayment, percent: '20%' },
-  { title: 22, icon: cardPayment, percent: '22%' },
-  { title: '', icon: cardPayment, percent: 'No Tip' },
-];
 const RECIPE_DATA = [
   { title: 'SMS', icon: cardPayment },
   { title: 'Email', icon: cardPayment },
@@ -104,6 +99,25 @@ export const CartAmountPayBy = ({
   const getWalletQr = getRetailData?.getWallet?.qr_code;
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
 
+  const getTips = getRetailData?.getTips;
+
+  const tipsArr = [
+    getTips?.first_tips ?? 18,
+    getTips?.second_tips ?? 20,
+    getTips?.third_tips ?? 22,
+  ];
+
+  const TIPS_DATA = [
+    { title: getTips?.first_tips ?? 18, icon: cardPayment, percent: getTips?.first_tips ?? '18' },
+    {
+      title: getTips?.second_tips ?? 20,
+      icon: cardPayment,
+      percent: getTips?.second_tips ?? '20',
+    },
+    { title: getTips?.third_tips ?? 22, icon: cardPayment, percent: getTips?.third_tips ?? '22' },
+    { title: '', icon: cardPayment, percent: 'No Tip' },
+  ];
+
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment =
@@ -113,6 +127,7 @@ export const CartAmountPayBy = ({
 
   useEffect(() => {
     dispatch(getWalletId(sellerID));
+    dispatch(getTip(sellerID));
   }, []);
 
   const isLoading = useSelector((state) =>
@@ -134,7 +149,7 @@ export const CartAmountPayBy = ({
 
   const sendRequestFun = async () => {
     const data = {
-      amount: totalPayAmount(),
+      amount: (totalPayAmount() * 100).toFixed(0),
       wallletAdd: walletUser?.wallet_address,
     };
     const res = await dispatch(requestMoney(data));
@@ -162,7 +177,6 @@ export const CartAmountPayBy = ({
       return '';
     }
     const percentageValue = (percentage / 100) * parseFloat(value);
-    // console.log('percentageValue', percentageValue);
     return percentageValue.toFixed(2) ?? 0.0;
   }
   const onChangePhoneNumber = (phone) => {
@@ -254,7 +268,7 @@ export const CartAmountPayBy = ({
               <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles._dollarSymbol}>$</Text>
-                <Text style={styles._amount}>{totalPayAmount()}</Text>
+                <Text style={styles._amount}>{cartData?.amount?.total_amount ?? '0.00'}</Text>
               </View>
             </View>
           </View>
@@ -297,6 +311,7 @@ export const CartAmountPayBy = ({
                       ]}
                     >
                       {item.percent}
+                      {item.percent === 'No Tip' ? '' : '%'}
                     </Text>
                     {index !== 3 && (
                       <Text
