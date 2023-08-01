@@ -428,7 +428,7 @@ export function MainScreen({
                     );
                   }}
                 />
-                {cateoryView ? <View style={styles.categoryFilterCon}></View> : null}
+                {/* {cateoryView ? <View style={styles.categoryFilterCon}></View> : null} */}
               </View>
             </View>
             <Spacer space={SH(10)} />
@@ -472,7 +472,7 @@ export function MainScreen({
                   return (
                     <TouchableOpacity
                       style={styles.productCon}
-                      onPress={() => productFun(item.id)}
+                      // onPress={() => productFun(item.id)}
                       activeOpacity={0.7}
                     >
                       <View style={styles.avalibleServiceCon}>
@@ -522,6 +522,7 @@ export function MainScreen({
                 contentContainerStyle={{
                   flexGrow: 1,
                   justifyContent: 'space-between',
+                  zIndex: -99,
                 }}
                 scrollEnabled={true}
                 ListEmptyComponent={() => (
@@ -531,6 +532,7 @@ export function MainScreen({
                     </Text>
                   </View>
                 )}
+                style={{ zIndex: -99 }}
               />
             )}
           </View>

@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     paddingLeft: SW(6),
   },
   shippingTypeImage: {
-    width: ms(20),
-    height: ms(20),
+    width: ms(15),
+    height: ms(15),
     resizeMode: 'contain',
     alignSelf: 'center',
   },

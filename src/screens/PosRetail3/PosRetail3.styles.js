@@ -1285,7 +1285,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 7,
-    width: Platform.OS === 'android' ? windowWidth * 0.38 : windowWidth * 0.2,
+    width: Platform.OS === 'android' ? windowWidth * 0.38 : windowWidth * 0.3,
     height: SH(45),
     justifyContent: 'center',
   },
@@ -1351,7 +1351,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   categoryshoes: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.103 : windowWidth * 0.1,
+    width: Platform.OS === 'ios' ? windowWidth * 0.09 : windowWidth * 0.1,
     height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',
@@ -1948,7 +1948,7 @@ export const styles = StyleSheet.create({
   },
   prouductAndServiceCon: {
     borderWidth: 1,
-    width: windowWidth * 0.09,
+    width: Platform.OS === 'ios' ? windowWidth * 0.11 : windowWidth * 0.01,
     height: SH(45),
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
@@ -1969,14 +1969,14 @@ export const styles = StyleSheet.create({
   avalibleServiceCon: {
     borderWidth: 0.5,
     marginVertical: ms(3),
-    width: Platform.OS === 'ios' ? windowWidth * 0.103 : windowWidth * 0.1,
+    width: Platform.OS === 'ios' ? windowWidth * 0.095 : windowWidth * 0.1,
     height: windowHeight * 0.15,
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
   },
   availableTimeCon: {
     backgroundColor: COLORS.darkGray,
-    width: Platform.OS === 'ios' ? windowWidth * 0.103 : windowWidth * 0.1,
+    width: Platform.OS === 'ios' ? windowWidth * 0.095 : windowWidth * 0.1,
     height: windowHeight * 0.035,
     borderBottomEndRadius: 5,
     borderBottomLeftRadius: 5,
@@ -1984,7 +1984,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: ms(5),
   },
   availableTime: {
-    fontSize: SF(8),
+    fontSize: SF(7),
     fontFamily: Fonts.Italic,
     color: COLORS.white,
   },
