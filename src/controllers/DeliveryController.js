@@ -75,6 +75,7 @@ export class DeliveryController {
           resolve(response);
         })
         .catch((error) => {
+          console.log(error);
           reject(error);
         });
     });
@@ -135,6 +136,26 @@ export class DeliveryController {
   static async todayOrders(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.todayOrders + `?seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getOrderstatistics(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.getOrderstatistics + `?seller_id=${sellerID}&filter=week`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

@@ -2,7 +2,7 @@ import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { ms, verticalScale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -13,36 +13,32 @@ const styles = StyleSheet.create({
   },
   firstRowStyle: {
     flexDirection: 'row',
-    paddingHorizontal: 15,
+    paddingHorizontal: ms(10),
     justifyContent: 'space-between',
   },
   shippingStatusViewStyle: {
-    width: SW(100),
-    height: SH(120),
     alignItems: 'flex-start',
     borderRadius: 10,
-    paddingTop: SH(16),
+    paddingVertical: ms(10),
     backgroundColor: COLORS.white,
   },
   shippingStatusText: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
+    paddingLeft: ms(15),
     color: COLORS.primary,
-    paddingLeft: SW(6),
   },
   shippedOrderText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     color: COLORS.solid_grey,
-    paddingLeft: SW(10),
-    paddingTop: SH(10),
+    paddingLeft: ms(15),
+    paddingTop: ms(10),
   },
   shippingOrdersViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    // width: ms(100),
     justifyContent: 'space-between',
-    right: 20,
   },
   currentStatusView: {
     width: SW(100),
@@ -57,9 +53,10 @@ const styles = StyleSheet.create({
     paddingLeft: SW(6),
   },
   shippingTypeImage: {
-    width: SH(30),
-    height: SH(30),
+    width: ms(20),
+    height: ms(20),
     resizeMode: 'contain',
+    alignSelf: 'center',
   },
   itemMainViewStyle: {
     borderWidth: 1,
@@ -85,10 +82,9 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.solid_grey,
-    paddingTop: 5,
+    paddingTop: ms(2),
   },
   orderConvertionView: {
-    width: SW(100),
     borderRadius: 10,
     backgroundColor: COLORS.white,
   },
@@ -96,8 +92,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
     color: COLORS.solid_grey,
-    paddingLeft: SW(6),
-    paddingTop: 13,
+    paddingLeft: ms(6),
+    paddingTop: ms(10),
   },
   piechartViewStyle: {
     alignSelf: 'center',
@@ -110,7 +106,7 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     position: 'absolute',
     textAlign: 'center',
-    top: 90,
+    top: ms(40),
   },
   ordersRowView: {
     flexDirection: 'row',
@@ -227,9 +223,8 @@ const styles = StyleSheet.create({
   shippingDrawerView: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 13,
-    // paddingHorizontal: 10,
-    marginLeft: 20,
+    paddingVertical: ms(10),
+    marginLeft: ms(15),
   },
   titleStyle: {
     color: COLORS.dark_grey,
@@ -320,7 +315,7 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingTop: ms(10),
   },
   viewallTextStyle: {
     fontFamily: Fonts.Regular,
@@ -387,7 +382,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: Dimensions.get('window').width * 0.43,
-    marginBottom: 90,
+    marginBottom: ms(45),
   },
   userDetailView: {
     flex: 1,
@@ -498,13 +493,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     backgroundColor: COLORS.textInputBackground,
-    // ...ShadowStyles.shadow1,
-    // marginHorizontal: 20,
     position: 'absolute',
     bottom: 0,
     alignSelf: 'center',
     width: Dimensions.get('window').width * 0.43,
     paddingTop: 15,
+    paddingHorizontal: 10,
+  },
+  activityIndicatorStyle: {
+    paddingVertical: ms(6),
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    paddingHorizontal: ms(30),
   },
 });
 

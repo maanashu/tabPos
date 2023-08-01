@@ -7,6 +7,8 @@ import { deliveryDrawer } from '@/constants/staticData';
 import { deliveryBox, returnDeliveryBox } from '@/assets';
 
 import styles from '../styles';
+import { COLORS } from '@/theme';
+import { ms } from 'react-native-size-matters';
 
 const RightSideBar = ({
   openShippingOrders,
@@ -18,7 +20,7 @@ const RightSideBar = ({
 }) => {
   return (
     <>
-      {openShippingOrders ? (
+      {/* {openShippingOrders ? (
         <>
           <ReactNativeModal
             animationIn={'slideInRight'}
@@ -52,29 +54,37 @@ const RightSideBar = ({
           </ReactNativeModal>
           <View style={{ width: 90 }} />
         </>
-      ) : (
-        <View style={styles.rightSideView}>
-          <FlatList
-            data={deliveryDrawer}
-            renderItem={renderDrawer}
-            ListHeaderComponent={() => (
-              <TouchableOpacity
-                onPress={() => {
-                  setOpenShippingOrders(!openShippingOrders);
-                  setIsOpenSideBarDrawer(true);
-                }}
-                style={styles.firstIconStyle}
-              >
+      ) : ( */}
+      <View style={styles.rightSideView}>
+        <FlatList
+          data={deliveryDrawer}
+          renderItem={renderDrawer}
+          ListHeaderComponent={() => (
+            <TouchableOpacity
+              onPress={() => {
+                setOpenShippingOrders('0');
+                setIsOpenSideBarDrawer(true);
+              }}
+              style={[
+                styles.firstIconStyle,
+                {
+                  backgroundColor:
+                    openShippingOrders === '0' ? COLORS.textInputBackground : COLORS.transparent,
+                },
+              ]}
+            >
+              <View style={styles.bucketBackgorund}>
                 <Image source={deliveryBox} style={styles.sideBarImage} />
-              </TouchableOpacity>
-            )}
-            contentContainerStyle={{
-              height: Dimensions.get('window').height - 90,
-            }}
-            keyExtractor={(item) => item.key.toString()}
-          />
-        </View>
-      )}
+              </View>
+            </TouchableOpacity>
+          )}
+          contentContainerStyle={{
+            height: Dimensions.get('window').height - 90,
+          }}
+          keyExtractor={(item) => item.key.toString()}
+        />
+      </View>
+      {/* )} */}
     </>
   );
 };
