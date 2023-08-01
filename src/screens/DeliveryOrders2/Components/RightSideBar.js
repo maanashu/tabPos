@@ -8,6 +8,7 @@ import { deliveryBox, returnDeliveryBox } from '@/assets';
 
 import styles from '../styles';
 import { COLORS } from '@/theme';
+import { ms } from 'react-native-size-matters';
 
 const RightSideBar = ({
   openShippingOrders,
@@ -72,7 +73,9 @@ const RightSideBar = ({
                 },
               ]}
             >
-              <Image source={deliveryBox} style={styles.sideBarImage} />
+              <View style={styles.bucketBackgorund}>
+                <Image source={deliveryBox} style={styles.sideBarImage} />
+              </View>
             </TouchableOpacity>
           )}
           contentContainerStyle={{

@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: Dimensions.get('window').width * 0.43,
-    marginBottom: ms(65),
+    marginBottom: ms(45),
   },
   userDetailView: {
     flex: 1,

@@ -208,8 +208,17 @@ export function DeliveryOrders2() {
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
-      onPress={() => setIsOpenSideBarDrawer(item?.key)}
-      style={styles.drawerIconView}
+      onPress={() => setOpenShippingOrders(item?.key)}
+      style={[
+        styles.firstIconStyle,
+        {
+          backgroundColor:
+            openShippingOrders === item?.key ? COLORS.textInputBackground : COLORS.transparent,
+          marginVertical: 10,
+          width: SW(15),
+          height: SW(15),
+        },
+      ]}
     >
       <View style={styles.bucketBackgorund}>
         <Image source={item.image} style={styles.sideBarImage} />
@@ -404,7 +413,32 @@ export function DeliveryOrders2() {
 
   const getGraphData = () => {
     graphData?.map((item, index) => {
-      if (item?.key === '1' && item?.checked) {
+      if (
+        item?.[0]?.checked &&
+        item?.[1]?.checked === false &&
+        item?.[2]?.checked === false &&
+        item?.[3]?.checked === false
+      ) {
+        return (datasets = [
+          {
+            data: [32, 48, 33, 49, 94, 79, 87],
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(31, 179, 255,${opacity})`,
+          },
+        ]);
+      } else if (
+        item?.[0]?.checked === false &&
+        item?.[1]?.checked &&
+        item?.[2]?.checked === false &&
+        item?.[3]?.checked === false
+      ) {
+        return (datasets = [
+          {
+            data: [19, 31, 19, 32, 71, 58, 79],
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(39, 90, 255, ${opacity})`,
+          },
+        ]);
       }
     });
   };
@@ -452,7 +486,7 @@ export function DeliveryOrders2() {
 
         {viewAllOrders ? (
           <View style={styles.firstRowStyle}>
-            <View style={[styles.orderToReviewView, { marginBottom: ms(65) }]}>
+            <View style={[styles.orderToReviewView, { paddingBottom: ms(30) }]}>
               <FlatList
                 renderItem={renderOrderToReview}
                 showsVerticalScrollIndicator={false}
@@ -555,28 +589,29 @@ export function DeliveryOrders2() {
                   withShadow={false}
                   data={{
                     labels: labels,
-                    datasets: [
-                      {
-                        data: [32, 48, 33, 49, 94, 79, 87],
-                        strokeWidth: 5,
-                        color: (opacity = 1) => `rgba(31, 179, 255,${opacity})`,
-                      },
-                      {
-                        data: [19, 31, 19, 32, 71, 58, 79],
-                        strokeWidth: 5,
-                        color: (opacity = 1) => `rgba(39, 90, 255, ${opacity})`,
-                      },
-                      {
-                        data: [15, 20, 15, 20, 35, 30, 38],
-                        strokeWidth: 5,
-                        color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`,
-                      },
-                      {
-                        data: [5, 9, 5, 8, 19, 15, 20],
-                        strokeWidth: 5,
-                        color: (opacity = 1) => `rgba(252, 186, 48, ${opacity})`,
-                      },
-                    ],
+                    datasets: getGraphData(),
+                    // datasets: [
+                    //   {
+                    //     data: [32, 48, 33, 49, 94, 79, 87],
+                    //     strokeWidth: 5,
+                    //     color: (opacity = 1) => `rgba(31, 179, 255,${opacity})`,
+                    //   },
+                    //   {
+                    //     data: [19, 31, 19, 32, 71, 58, 79],
+                    //     strokeWidth: 5,
+                    //     color: (opacity = 1) => `rgba(39, 90, 255, ${opacity})`,
+                    //   },
+                    //   {
+                    //     data: [15, 20, 15, 20, 35, 30, 38],
+                    //     strokeWidth: 5,
+                    //     color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`,
+                    //   },
+                    //   {
+                    //     data: [5, 9, 5, 8, 19, 15, 20],
+                    //     strokeWidth: 5,
+                    //     color: (opacity = 1) => `rgba(252, 186, 48, ${opacity})`,
+                    //   },
+                    // ],
                   }}
                   width={Dimensions.get('window').width * 0.5}
                   chartConfig={{
