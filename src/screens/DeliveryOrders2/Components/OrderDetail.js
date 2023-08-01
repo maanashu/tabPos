@@ -6,12 +6,18 @@ import { ms } from 'react-native-size-matters';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH } from '@/theme';
 import { Fonts, scooter, userImage } from '@/assets';
 
 import styles from '../styles';
 
-const OrderDetail = ({ userDetail, orderDetail, renderOrderProducts }) => {
+const OrderDetail = ({
+  userDetail,
+  orderDetail,
+  renderOrderProducts,
+  acceptHandler,
+  declineHandler,
+}) => {
   return (
     <View style={styles.orderDetailView}>
       <View style={styles.orderDetailViewStyle}>
@@ -40,7 +46,7 @@ const OrderDetail = ({ userDetail, orderDetail, renderOrderProducts }) => {
         <View
           style={[
             styles.locationViewStyle,
-            { width: ms(120), right: Platform.OS === 'ios' ? 20 : 0 },
+            { width: ms(120), right: Platform.OS === 'ios' ? 20 : 15 },
           ]}
         >
           <Image source={scooter} style={styles.scooterImageStyle} />
@@ -80,7 +86,7 @@ const OrderDetail = ({ userDetail, orderDetail, renderOrderProducts }) => {
           data={orderDetail}
           renderItem={renderOrderProducts}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}
         />
       </View>
 
@@ -157,7 +163,10 @@ const OrderDetail = ({ userDetail, orderDetail, renderOrderProducts }) => {
               <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.acceptButtonView}>
+            <TouchableOpacity
+              onPress={() => acceptHandler(userDetail?.id)}
+              style={styles.acceptButtonView}
+            >
               <Text style={styles.acceptTextStyle}>{strings.deliveryOrders.accept}</Text>
             </TouchableOpacity>
           </View>

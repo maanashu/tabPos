@@ -21,7 +21,7 @@ const TodayOrderStatus = ({ todayOrderStatusData }) => {
           style={{
             alignSelf: 'center',
             alignItems: 'center',
-            marginVertical: ms(20),
+            paddingVertical: ms(16),
             justifyContent: 'center',
           }}
         >
@@ -31,12 +31,12 @@ const TodayOrderStatus = ({ todayOrderStatusData }) => {
         <>
           <View style={styles.shippingOrdersViewStyle}>
             <Text style={styles.shippedOrderText}>{strings.analytics.deliveryOrder}</Text>
-            <Text style={styles.shippedOrderText}>{todayOrderStatusData?.[0]?.count}</Text>
+            <Text style={styles.shippedOrderText}>{todayOrderStatusData?.[0]?.count ?? '0'}</Text>
           </View>
 
           <View style={styles.shippingOrdersViewStyle}>
             <Text style={styles.shippedOrderText}>{strings.deliveryOrders2.pickupOrders}</Text>
-            <Text style={styles.shippedOrderText}>{todayOrderStatusData?.[1]?.count}</Text>
+            <Text style={styles.shippedOrderText}>{todayOrderStatusData?.[1]?.count ?? '0'}</Text>
           </View>
         </>
       )}

@@ -53,9 +53,10 @@ const styles = StyleSheet.create({
     paddingLeft: SW(6),
   },
   shippingTypeImage: {
-    width: SH(30),
-    height: SH(30),
+    width: ms(20),
+    height: ms(20),
     resizeMode: 'contain',
+    alignSelf: 'center',
   },
   itemMainViewStyle: {
     borderWidth: 1,
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.solid_grey,
-    paddingTop: 5,
+    paddingTop: ms(2),
   },
   orderConvertionView: {
     borderRadius: 10,
@@ -222,9 +223,8 @@ const styles = StyleSheet.create({
   shippingDrawerView: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 13,
-    // paddingHorizontal: 10,
-    marginLeft: 20,
+    paddingVertical: ms(10),
+    marginLeft: ms(15),
   },
   titleStyle: {
     color: COLORS.dark_grey,
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: Dimensions.get('window').width * 0.43,
-    marginBottom: 90,
+    marginBottom: ms(65),
   },
   userDetailView: {
     flex: 1,
@@ -493,13 +493,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     backgroundColor: COLORS.textInputBackground,
-    // ...ShadowStyles.shadow1,
-    // marginHorizontal: 20,
     position: 'absolute',
     bottom: 0,
     alignSelf: 'center',
     width: Dimensions.get('window').width * 0.43,
     paddingTop: 15,
+    paddingHorizontal: 10,
+  },
+  activityIndicatorStyle: {
+    paddingVertical: ms(6),
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    paddingHorizontal: ms(30),
   },
 });
 

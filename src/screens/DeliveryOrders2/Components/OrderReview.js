@@ -4,7 +4,7 @@ import styles from '../styles';
 
 const OrderReview = ({ renderOrderToReview, emptyComponent, headerComponent, getDeliveryData }) => {
   return (
-    <View style={[styles.orderToReviewView, { height: Dimensions.get('window').height / 2.5 }]}>
+    <View style={[styles.orderToReviewView, { height: Dimensions.get('window').height / 2.35 }]}>
       <FlatList
         scrollEnabled={getDeliveryData?.getReviewDef?.length > 0 ? true : false}
         renderItem={renderOrderToReview}

@@ -134,6 +134,19 @@ const todayOrdersReset = () => ({
   payload: null,
 });
 
+const getOrderstatisticsRequest = () => ({
+  type: TYPES.GET_ORDER_STATISTICS_REQUEST,
+  payload: null,
+});
+const getOrderstatisticsSuccess = (getOrderstatistics) => ({
+  type: TYPES.GET_ORDER_STATISTICS_SUCCESS,
+  payload: { getOrderstatistics },
+});
+const getOrderstatisticsError = (error) => ({
+  type: TYPES.GET_ORDER_STATISTICS_ERROR,
+  payload: { error },
+});
+
 export const getOrderCount = (status) => async (dispatch) => {
   dispatch(getOrderCountRequest());
   try {
@@ -166,10 +179,11 @@ export const getOrders = (status, sellerID) => async (dispatch) => {
   }
 };
 
-export const acceptOrder = (data) => async (dispatch) => {
+export const acceptOrder = (data, callback) => async (dispatch) => {
   dispatch(acceptOrderRequest());
   try {
     const res = await DeliveryController.acceptOrder(data);
+    callback && callback(res);
     dispatch(acceptOrderSuccess(res));
     dispatch(getOrderCount(data.sellerID));
     dispatch(getReviewDefault(0, sellerID));
@@ -224,5 +238,15 @@ export const todayOrders = (sellerID) => async (dispatch) => {
       dispatch(todayOrdersReset());
     }
     dispatch(todayOrdersError(error.message));
+  }
+};
+
+export const getOrderstatistics = (sellerID) => async (dispatch) => {
+  dispatch(getOrderstatisticsRequest());
+  try {
+    const res = await DeliveryController.getOrderstatistics(sellerID);
+    return dispatch(getOrderstatisticsSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getOrderstatisticsError(error.message));
   }
 };

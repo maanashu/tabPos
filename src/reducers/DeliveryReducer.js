@@ -9,6 +9,7 @@ const INITIALSTATE = {
   deliverygraph: {},
   deliveringOrder: [],
   todayOrderStatus: {},
+  getOrderstatistics: [],
 };
 
 export const deliveryReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -48,13 +49,11 @@ export const deliveryReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         deliveryOrd: [],
       };
-
     case TYPES.DELIVERY_GRAPH_SUCCESS:
       return {
         ...state,
         deliverygraph: payload.deliverygraph,
       };
-
     case TYPES.DELIVERING_ORDER_SUCCESS:
       return {
         ...state,
@@ -70,10 +69,11 @@ export const deliveryReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         todayOrderStatus: payload?.orderStatus,
       };
-
-    // case TYPES.CLEAR_STORE :
-    // return INITIALSTATE
-
+    case TYPES.GET_ORDER_STATISTICS_SUCCESS:
+      return {
+        ...state,
+        getOrderstatistics: payload.getOrderstatistics,
+      };
     default:
       return state;
   }

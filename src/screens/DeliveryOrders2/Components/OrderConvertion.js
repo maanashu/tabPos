@@ -2,15 +2,15 @@ import React from 'react';
 import { View, Text } from 'react-native';
 
 import PieChart from 'react-native-pie-chart';
+import { ms } from 'react-native-size-matters';
 
 import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 
 import styles from '../styles';
-import { ms } from 'react-native-size-matters';
 
-const OrderConvertion = ({ series, sliceColor, widthAndHeight }) => {
+const OrderConvertion = ({ series, sliceColor, widthAndHeight, pieChartData }) => {
   return (
     <View style={styles.orderConvertionView}>
       <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
@@ -24,29 +24,37 @@ const OrderConvertion = ({ series, sliceColor, widthAndHeight }) => {
           coverFill={COLORS.white}
           widthAndHeight={widthAndHeight}
         />
-        <Text style={styles.percentageTextStyle}>{'97.51%'}</Text>
+        <Text style={styles.percentageTextStyle}>{'100%'}</Text>
 
         <Spacer space={SH(12)} />
         <View style={styles.ordersRowView}>
-          <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.deliveredOrders}</Text>
-          <Text style={styles.countTextStyle}>{strings.shippingOrder.deliveredCount}</Text>
+          <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.incomingOrders}</Text>
+          <Text style={styles.countTextStyle}>
+            {`${parseInt(pieChartData?.[0]?.percentage)}%` ?? '0%'}
+          </Text>
         </View>
 
         <View style={styles.ordersRowView}>
-          <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.cancelledOrders}</Text>
-          <Text style={styles.countTextStyle}>{strings.shippingOrder.cancelledCount}</Text>
+          <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.processingOrders}</Text>
+          <Text style={styles.countTextStyle}>
+            {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
+          </Text>
         </View>
 
         <View style={styles.ordersRowView}>
-          <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.returnedOrders}</Text>
-          <Text style={styles.countTextStyle}>{strings.shippingOrder.returnedCount}</Text>
+          <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.readyPickupOrders}</Text>
+          <Text style={styles.countTextStyle}>
+            {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
+          </Text>
         </View>
 
         <View style={styles.ordersRowView}>
-          <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.inprogress}</Text>
-          <Text style={styles.countTextStyle}>{strings.shippingOrder.returnedCount}</Text>
+          <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.completed}</Text>
+          <Text style={styles.countTextStyle}>
+            {`${parseInt(pieChartData?.[3]?.percentage)}%` ?? '0'}
+          </Text>
         </View>
-        <Spacer space={SH(7)} />
+        <Spacer space={ms(10)} />
       </View>
     </View>
   );

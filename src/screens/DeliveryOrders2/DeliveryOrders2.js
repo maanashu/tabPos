@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-import { View, Text, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
 
 import { ms } from 'react-native-size-matters';
-import ReactNativeModal from 'react-native-modal';
 import { LineChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,7 +19,6 @@ import {
   pin,
   rightIcon,
   firstTruck,
-  flipTruck,
   clock,
   expressType,
   oneHourType,
@@ -25,11 +31,20 @@ import {
   returnedOrders,
   removeProduct,
 } from '@/assets';
+import {
+  acceptOrder,
+  deliOrder,
+  getOrderCount,
+  getOrderstatistics,
+  getReviewDefault,
+  todayOrders,
+} from '@/actions/DeliveryAction';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
 import Header from './Components/Header';
 import OrderDetail from './Components/OrderDetail';
 import OrderReview from './Components/OrderReview';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { ScreenWrapper, Spacer } from '@/components';
 import RightSideBar from './Components/RightSideBar';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -37,10 +52,11 @@ import CurrentStatus from './Components/CurrentStatus';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import OrderConvertion from './Components/OrderConvertion';
 import TodayOrderStatus from './Components/TodayOrderStatus';
-import { graphOptions, labels, rightSideDrawer, shippingDrawer } from '@/constants/staticData';
-import { deliOrder, getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { graphOptions, labels, rightSideDrawer } from '@/constants/staticData';
 
 import styles from './styles';
+import { goBack } from '@/navigation/NavigationRef';
 
 export function DeliveryOrders2() {
   const dispatch = useDispatch();
@@ -48,26 +64,33 @@ export function DeliveryOrders2() {
   const getDeliveryData = useSelector(getDelivery);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const todayOrderStatusData = getDeliveryData?.todayOrderStatus;
+  const pieChartData = getDeliveryData?.getOrderstatistics?.data;
 
   const widthAndHeight = 150;
-  const series = [40, 101, 823];
-  const sliceColor = [COLORS.yellowTweet, COLORS.pink, COLORS.primary];
+  const series = [
+    pieChartData?.[0]?.count,
+    pieChartData?.[1]?.count,
+    pieChartData?.[2]?.count,
+    pieChartData?.[3]?.count,
+  ];
+  const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet, COLORS.lightGreen];
 
+  const [deliverytypes, setDeliveryTypes] = useState();
   const [graphData, setGraphData] = useState(graphOptions);
+  const [viewAllOrders, setViewAllOrders] = useState(false);
+  const [openShippingOrders, setOpenShippingOrders] = useState(false);
+  const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? '');
   const [orderDetail, setOrderDetail] = useState(
     getDeliveryData?.getReviewDef?.[0]?.order_details ?? []
   );
-  const [viewAllOrders, setViewAllOrders] = useState(false);
-  const [openShippingOrders, setOpenShippingOrders] = useState(false);
-  const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
-  const [deliverytypes, setDeliveryTypes] = useState();
 
   useEffect(() => {
     dispatch(todayOrders(sellerID));
     dispatch(deliOrder(sellerID));
     dispatch(getOrderCount(sellerID));
     dispatch(getReviewDefault(0, sellerID));
+    dispatch(getOrderstatistics(sellerID));
 
     const deliveryTypes = [
       {
@@ -102,13 +125,32 @@ export function DeliveryOrders2() {
     setDeliveryTypes(deliveryTypes);
   }, []);
 
+  useEffect(() => {
+    dispatch(getReviewDefault(0, sellerID));
+
+    setUserDetail(getDeliveryData?.getReviewDef?.[0]);
+    setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
+  }, [viewAllOrders]);
+
+  const isDeliveryOrder = useSelector((state) =>
+    isLoadingSelector([TYPES.DELIVERING_ORDER], state)
+  );
+
+  const isAcceptOrder = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
+
   const renderItem = ({ item }) => (
     <View style={styles.itemMainViewStyle}>
       <Image source={item?.image} style={styles.shippingTypeImage} />
-      <View style={styles.shippingTypeDetails}>
-        <Text style={styles.shippingTypeText}>{item?.delivery_type_title}</Text>
-        <Text style={styles.totalTextStyle}>{item?.count}</Text>
-      </View>
+      {isDeliveryOrder ? (
+        <View style={styles.activityIndicatorStyle}>
+          <ActivityIndicator color={COLORS.primary} size={'small'} />
+        </View>
+      ) : (
+        <View style={styles.shippingTypeDetails}>
+          <Text style={styles.shippingTypeText}>{item?.delivery_type_title}</Text>
+          <Text style={styles.totalTextStyle}>{item?.count}</Text>
+        </View>
+      )}
     </View>
   );
 
@@ -165,12 +207,15 @@ export function DeliveryOrders2() {
   };
 
   const renderDrawer = ({ item }) => (
-    <View style={styles.drawerIconView}>
+    <TouchableOpacity
+      onPress={() => setIsOpenSideBarDrawer(item?.key)}
+      style={styles.drawerIconView}
+    >
       <View style={styles.bucketBackgorund}>
         <Image source={item.image} style={styles.sideBarImage} />
         {showBadge(item)}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   const renderShippingDrawer = ({ item }) => (
@@ -285,17 +330,19 @@ export function DeliveryOrders2() {
     </View>
   );
 
-  const changeValue = (item, index) => {
-    let list = graphOptions;
-    list[index].checked = !list[index].checked;
-    setGraphData(list);
+  const changeValue = (index) => {
+    setGraphData((prev) => {
+      let list = [...prev];
+      list[index].checked = !list[index].checked;
+      return list;
+    });
   };
 
   const renderGraphItem = ({ item, index }) => {
     return (
       <View style={styles.shippingDrawerView}>
         {item?.checked ? (
-          <TouchableOpacity onPress={() => changeValue(item, index)}>
+          <TouchableOpacity onPress={() => changeValue(index)}>
             <Image
               source={
                 item?.title === 'In Coming Orders'
@@ -310,7 +357,7 @@ export function DeliveryOrders2() {
             />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => changeValue(item, index)}>
+          <TouchableOpacity onPress={() => changeValue(index)}>
             <Image
               source={blankCheckBox}
               style={[
@@ -355,6 +402,47 @@ export function DeliveryOrders2() {
     );
   };
 
+  const getGraphData = () => {
+    graphData?.map((item, index) => {
+      if (item?.key === '1' && item?.checked) {
+      }
+    });
+  };
+
+  const acceptHandler = (id) => {
+    const data = {
+      orderId: id,
+      status: 1,
+      sellerID: sellerID,
+    };
+    dispatch(
+      acceptOrder(data, (res) => {
+        if (res?.msg === 'Order status updated successfully!') {
+          alert('Order accepted successfully');
+          setViewAllOrders(false);
+          dispatch(getReviewDefault(0, sellerID));
+        }
+      })
+    );
+  };
+
+  const declineHandler = (id) => {
+    const data = {
+      orderId: id,
+      status: 7,
+      sellerID: sellerID,
+    };
+    dispatch(
+      acceptOrder(data, (res) => {
+        if (res?.msg === 'Order status updated successfully!') {
+          alert('Order declined successfully');
+          setViewAllOrders(false);
+          dispatch(getReviewDefault(0, sellerID));
+        }
+      })
+    );
+  };
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
@@ -364,7 +452,7 @@ export function DeliveryOrders2() {
 
         {viewAllOrders ? (
           <View style={styles.firstRowStyle}>
-            <View style={[styles.orderToReviewView, { marginBottom: 75 }]}>
+            <View style={[styles.orderToReviewView, { marginBottom: ms(65) }]}>
               <FlatList
                 renderItem={renderOrderToReview}
                 showsVerticalScrollIndicator={false}
@@ -380,9 +468,11 @@ export function DeliveryOrders2() {
               />
             </View>
 
-            <OrderDetail {...{ userDetail, orderDetail, renderOrderProducts }} />
+            <OrderDetail
+              {...{ userDetail, orderDetail, renderOrderProducts, acceptHandler, declineHandler }}
+            />
 
-            {openShippingOrders ? (
+            {/* {openShippingOrders ? (
               <>
                 <ReactNativeModal
                   animationIn={'slideInRight'}
@@ -417,26 +507,18 @@ export function DeliveryOrders2() {
 
                 <View style={{ width: 90 }} />
               </>
-            ) : (
-              <View style={styles.rightSideView}>
-                <FlatList
-                  data={rightSideDrawer}
-                  renderItem={renderDrawer}
-                  ListHeaderComponent={() => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setOpenShippingOrders(!openShippingOrders);
-                        setIsOpenSideBarDrawer(true);
-                      }}
-                      style={styles.firstIconStyle}
-                    >
-                      <Image source={firstTruck} style={styles.sideBarImage} />
-                    </TouchableOpacity>
-                  )}
-                  keyExtractor={(item) => item.key.toString()}
-                />
-              </View>
-            )}
+            ) : ( */}
+            <RightSideBar
+              {...{
+                openShippingOrders,
+                isOpenSideBarDrawer,
+                renderShippingDrawer,
+                setOpenShippingOrders,
+                renderDrawer,
+                setIsOpenSideBarDrawer,
+              }}
+            />
+            {/* )} */}
           </View>
         ) : (
           <View style={styles.firstRowStyle}>
@@ -449,21 +531,25 @@ export function DeliveryOrders2() {
 
               <Spacer space={SH(15)} />
 
-              <OrderConvertion {...{ series, sliceColor, widthAndHeight }} />
+              <OrderConvertion {...{ series, sliceColor, widthAndHeight, pieChartData }} />
             </View>
 
-            <View style={{ borderWidth: 1, borderColor: 'red' }}>
-              {/* <Graph /> */}
-
+            <View style={{ justifyContent: 'space-between' }}>
               <View style={styles.graphViewStyle}>
                 <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
 
-                <FlatList horizontal data={graphData} renderItem={renderGraphItem} />
+                <FlatList
+                  horizontal
+                  data={graphData}
+                  scrollEnabled={false}
+                  renderItem={renderGraphItem}
+                  showsHorizontalScrollIndicator={false}
+                />
 
                 <LineChart
                   bezier
                   fromZero
-                  height={ms(170)}
+                  height={ms(185)}
                   segments={10}
                   withDots={false}
                   withShadow={false}
@@ -505,7 +591,6 @@ export function DeliveryOrders2() {
                 />
               </View>
 
-              <Spacer space={SH(15)} />
               <OrderReview
                 {...{
                   renderOrderToReview,
@@ -529,6 +614,33 @@ export function DeliveryOrders2() {
           </View>
         )}
       </View>
+
+      {isAcceptOrder ? (
+        <View
+          style={{
+            position: 'absolute',
+            alignSelf: 'center',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: 'rgba(0,0,0, 0.3)',
+          }}
+        >
+          <ActivityIndicator
+            color={COLORS.primary}
+            size={'small'}
+            style={{
+              position: 'absolute',
+              alignSelf: 'center',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
+          />
+        </View>
+      ) : null}
     </ScreenWrapper>
   );
 }
