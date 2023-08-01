@@ -4,15 +4,19 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
-import { styles } from '@/screens/PosRetail2/PosRetail2.styles';
+import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   addToCart,
   addToCartBlue,
   bucket,
   categoryMenu,
+  cloth,
+  clothes,
   cross,
   holdCart,
   keyboard,
+  multipleImag,
+  product,
   search_light,
   sideArrow,
   sideEarser,
@@ -25,7 +29,7 @@ import Modal, { ReactNativeModal } from 'react-native-modal';
 import { CategoryModal } from './CategoryModal';
 import { SubCatModal } from './SubCatModal';
 import { BrandModal } from './BrandModal';
-import { catTypeData } from '@/constants/flatListData';
+import { catTypeData, productServiceFilter } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
 import { AddCartModal } from './AddCartModal';
 import { AddCartDetailModal } from './AddCartDetailModal';
@@ -47,6 +51,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import { CartListModal } from './CartListModal';
 import { log } from 'react-native-reanimated';
+import { ms } from 'react-native-size-matters';
 
 export function MainScreen({
   cartScreenHandler,
@@ -80,7 +85,8 @@ export function MainScreen({
     product_id: obj.product_id,
     qty: obj.qty,
   }));
-
+  const [productServiceType, setProductServiceType] = useState(1);
+  const [cateoryView, setCateoryView] = useState(false);
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
     setisFilterDataSeclectedOfIndex(null);
@@ -319,6 +325,31 @@ export function MainScreen({
     );
   };
 
+  const ProductServiceItem = ({ item, color, onPress, index }) => (
+    <TouchableOpacity
+      style={[styles.prouductAndServiceCon, { borderColor: color }]}
+      onPress={onPress}
+    >
+      {index === 2 ? (
+        <>
+          <Text style={[styles.productText, { color: color }]}>{item.title}</Text>
+          <Image source={item.image} style={[styles.productImageStyle, { tintColor: color }]} />
+        </>
+      ) : (
+        <>
+          <Image source={item.image} style={[styles.productImageStyle, { tintColor: color }]} />
+          <Text style={[styles.productText, { color: color }]}>{item.title}</Text>
+        </>
+      )}
+    </TouchableOpacity>
+  );
+
+  const prouductServiceFun = (index) => {
+    if (index === 2) {
+      setCateoryView(!cateoryView);
+    }
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.homeScreenCon}>
@@ -331,13 +362,20 @@ export function MainScreen({
                 justifyContent: 'space-between',
               }}
             >
-              <View style={{ marginRight: 15 }}>
-                <Text style={styles.allProduct}>{strings.posRetail.allProduct}</Text>
-                <Text style={styles.productCount}>
-                  ({getRetailData?.getMainProduct?.total ?? '0'})
-                </Text>
-              </View>
-              <View>
+              {productServiceType === 1 ? (
+                <View style={styles.allProductSection}>
+                  <Text style={styles.allProduct}>{strings.posRetail.allProduct}</Text>
+                  <Text style={styles.productCount}>
+                    ({getRetailData?.getMainProduct?.total ?? '0'})
+                  </Text>
+                </View>
+              ) : (
+                <View style={styles.allProductSection}>
+                  <Text style={styles.allProduct}>{'All Services'}</Text>
+                  <Text style={styles.productCount}>({'0'})</Text>
+                </View>
+              )}
+              {/* <View>
                 <FlatList
                   data={filterMenuTitle}
                   extraData={filterMenuTitle}
@@ -346,7 +384,7 @@ export function MainScreen({
                   horizontal
                   // contentContainerStyle={styles.contentContainer}
                 />
-              </View>
+              </View> */}
               <View style={styles.barcodeInputWraper}>
                 <View style={styles.displayRow}>
                   <View>
@@ -370,19 +408,115 @@ export function MainScreen({
                   ) : null}
                 </View>
               </View>
+              <View>
+                <FlatList
+                  data={productServiceFilter}
+                  keyExtractor={(item) => item.id}
+                  horizontal
+                  renderItem={({ item, index }) => {
+                    const color = item.id === productServiceType ? COLORS.primary : COLORS.darkGray;
+
+                    return (
+                      <ProductServiceItem
+                        item={item}
+                        onPress={() => {
+                          setProductServiceType(item.id), prouductServiceFun(index);
+                        }}
+                        color={color}
+                        index={index}
+                      />
+                    );
+                  }}
+                />
+                {cateoryView ? <View style={styles.categoryFilterCon}></View> : null}
+              </View>
             </View>
             <Spacer space={SH(10)} />
-            <View style={styles.hr} />
+            {/* <View style={styles.hr} /> */}
             <Spacer space={SH(10)} />
-            {isProductLoading ? (
+            {productServiceType === 1 ? (
+              isProductLoading ? (
+                <View style={{ marginTop: 100 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : (
+                <FlatList
+                  data={mainProductArray}
+                  extraData={mainProductArray}
+                  renderItem={renderItem}
+                  keyExtractor={(item, index) => index}
+                  numColumns={7}
+                  contentContainerStyle={{
+                    flexGrow: 1,
+                    justifyContent: 'space-between',
+                  }}
+                  scrollEnabled={true}
+                  ListEmptyComponent={() => (
+                    <View style={styles.noProductText}>
+                      <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                        {strings.valiadtion.noProduct}
+                      </Text>
+                    </View>
+                  )}
+                />
+              )
+            ) : isProductLoading ? (
               <View style={{ marginTop: 100 }}>
                 <ActivityIndicator size="large" color={COLORS.indicator} />
               </View>
             ) : (
               <FlatList
-                data={mainProductArray}
-                extraData={mainProductArray}
-                renderItem={renderItem}
+                data={[1, 2, 3, 4, 5, 6]}
+                extraData={[1, 2, 3]}
+                renderItem={({ item, index }) => {
+                  return (
+                    <TouchableOpacity
+                      style={styles.productCon}
+                      onPress={() => productFun(item.id)}
+                      activeOpacity={0.7}
+                    >
+                      <View style={styles.avalibleServiceCon}>
+                        <FastImage
+                          source={{
+                            uri: 'https://w7.pngwing.com/pngs/713/598/png-transparent-woman-lying-on-massaging-table-massage-therapy-spa-beauty-parlour-alternative-health-services-spa-massage-miscellaneous-service-medicine-thumbnail.png',
+                          }}
+                          style={styles.categoryshoes}
+                          resizeMode={FastImage.resizeMode.contain}
+                        />
+                        <View style={{ flex: 1 }} />
+                        <View style={styles.availableTimeCon}>
+                          <Text style={styles.availableTime}>Available: Tue @ 2:00 pm </Text>
+                        </View>
+                      </View>
+
+                      <Text numberOfLines={2} style={styles.productDes}>
+                        Full body Massage
+                      </Text>
+                      <Spacer space={SH(6)} />
+                      <Text numberOfLines={1} style={styles.productSubHead}>
+                        Est: 45 ~ 50 min
+                      </Text>
+                      <Spacer space={SH(6)} />
+                      <Image
+                        source={multipleImag}
+                        style={{ width: ms(50), height: ms(15), resizeMode: 'cover' }}
+                      />
+                      <TouchableOpacity style={styles.displayflex}>
+                        <Text numberOfLines={1} style={styles.productPrice}>
+                          $10
+                        </Text>
+                        <TouchableOpacity>
+                          <Image source={addToCart} style={styles.addToCart} />
+                          {/* {isProductMatchArray ? (
+                        <View style={styles.productBadge}>
+                          <Text style={styles.productBadgeText}>{cartAddQty}</Text>
+                        </View>
+                      ) : null} */}
+                        </TouchableOpacity>
+                      </TouchableOpacity>
+                    </TouchableOpacity>
+                  );
+                }}
                 keyExtractor={(item, index) => index}
                 numColumns={7}
                 contentContainerStyle={{

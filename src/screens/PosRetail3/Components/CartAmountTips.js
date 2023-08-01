@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { ms } from 'react-native-size-matters';
-import { styles } from '../PosRetail.styles';
+import { styles } from '../PosRetail3.styles';
 import { Button } from '@/components';
 import BackButton from '../../../components/BackButton';
 import { crossButton } from '@/assets';
@@ -22,12 +22,7 @@ import { CustomHeader } from './CustomHeader';
 
 moment.suppressDeprecationWarnings = true;
 
-export const CartAmountTips = ({
-  onPressBack,
-  onPressContinue,
-  sellerID,
-  onPressNoTips,
-}) => {
+export const CartAmountTips = ({ onPressBack, onPressContinue, sellerID, onPressNoTips }) => {
   const disptach = useDispatch();
 
   const getRetailData = useSelector(getRetail);
@@ -85,9 +80,7 @@ export const CartAmountTips = ({
           <Text style={styles._totalAmountTitle}>Total Cart Amount:</Text>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles._dollarSymbol}>$</Text>
-            <Text style={styles._amount}>
-              {cartData?.amount?.total_amount ?? '0.00'}
-            </Text>
+            <Text style={styles._amount}>{cartData?.amount?.total_amount ?? '0.00'}</Text>
           </View>
         </View>
         <View style={styles._bottomContainer}>
@@ -122,18 +115,12 @@ export const CartAmountTips = ({
                     {
                       borderWidth: 1,
                       borderColor:
-                        selectedTipIndex === index
-                          ? COLORS.blueLight
-                          : COLORS.transparentBlue,
+                        selectedTipIndex === index ? COLORS.blueLight : COLORS.transparentBlue,
                     },
                   ]}
                 >
                   <Text style={styles._usdText}>
-                    USD{' '}
-                    {calculatePercentageValue(
-                      cartData?.amount?.total_amount,
-                      item
-                    )}
+                    USD {calculatePercentageValue(cartData?.amount?.total_amount, item)}
                   </Text>
                   <Text style={styles._tipsPercent}>{item}%</Text>
                 </TouchableOpacity>
@@ -143,15 +130,13 @@ export const CartAmountTips = ({
             <View style={styles._inputMain}>
               <View style={styles._inputSubView}>
                 <View style={styles.dollarInputCon}>
-                  {enteredTipAmount ? (
-                    <Text style={styles._dollarInput}>$</Text>
-                  ) : null}
+                  {enteredTipAmount ? <Text style={styles._dollarInput}>$</Text> : null}
 
                   <TextInput
                     placeholder="Other amount"
                     keyboardType="number-pad"
                     style={styles._inputContainer}
-                    onChangeText={value => {
+                    onChangeText={(value) => {
                       setselectedTipAmount(0.0);
                       setselectedTipIndex(null);
                       setEnteredTipAmount(value);
@@ -159,10 +144,7 @@ export const CartAmountTips = ({
                   />
                 </View>
 
-                <TouchableOpacity
-                  onPress={onPressNoTips}
-                  style={styles._tipsButton}
-                >
+                <TouchableOpacity onPress={onPressNoTips} style={styles._tipsButton}>
                   <Text style={styles._tipText}>No Tips</Text>
                 </TouchableOpacity>
               </View>

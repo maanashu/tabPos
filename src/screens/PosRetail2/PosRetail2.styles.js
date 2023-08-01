@@ -1363,8 +1363,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   addToCart: {
-    width: SW(12),
-    height: SW(12),
+    width: ms(28),
+    height: ms(28),
     resizeMode: 'contain',
   },
   sideAddToCart: {

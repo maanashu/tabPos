@@ -8,7 +8,6 @@ import {
   VerifyOtp,
   Passcode,
   VerifySucess,
-  Retails,
   POSUsers,
   LoginIntial,
   MerchantPasscode,
@@ -39,11 +38,7 @@ export function UserNavigator(props) {
         name={NAVIGATION.posUserPasscode}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        component={HomeNavigator}
-        name={'HOME'}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen component={HomeNavigator} name={'HOME'} options={{ headerShown: false }} />
       {/* <Stack.Screen
         component={HomeNavigator}
         name={NAVIGATION.retails}

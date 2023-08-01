@@ -66,7 +66,7 @@ export function DrawerNavigator(props) {
   const getSelectedOption = async () => {
     if (selection || selection !== undefined) {
       if (selection === 1) {
-        setActive('posRetail');
+        setActive('posRetail2');
       } else {
         setActive('delivery');
       }
@@ -130,8 +130,23 @@ export function DrawerNavigator(props) {
             <Image style={styles.iconStyle} source={focused ? logo_icon : logo_icon} />
           )}
         />
-
         <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'posRetail2' ? true : false}
+          onPress={() => {
+            setActive('posRetail2');
+            navigate(NAVIGATION.posRetail2);
+            // dispatch(addSellingSelection());
+            // dispatch(cartScreenTrue({ state: false }));
+            // dispatch(getUserDetailSuccess([]));
+          }}
+          icon={({ focused, color, size }) => (
+            <Image source={focused ? retail : greyRetail} style={styles.iconStyle} />
+          )}
+        />
+
+        {/* <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
           focused={active === 'posRetail' ? true : false}
@@ -145,7 +160,7 @@ export function DrawerNavigator(props) {
           icon={({ focused, color, size }) => (
             <Image source={focused ? retail : greyRetail} style={styles.iconStyle} />
           )}
-        />
+        /> */}
 
         <DrawerItem
           label={''}
@@ -265,10 +280,10 @@ export function DrawerNavigator(props) {
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
-          focused={active === 'posRetail2' ? true : false}
+          focused={active === 'posRetail3' ? true : false}
           onPress={() => {
-            setActive('posRetail2');
-            navigate(NAVIGATION.posRetail2);
+            setActive('posRetail3');
+            navigate(NAVIGATION.posRetail3);
             // dispatch(addSellingSelection());
             // dispatch(cartScreenTrue({ state: false }));
             // dispatch(getUserDetailSuccess([]));

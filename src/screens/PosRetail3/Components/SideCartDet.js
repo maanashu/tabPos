@@ -5,7 +5,7 @@ import { COLORS, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
-import { styles } from '@/screens/PosRetail/PosRetail.styles';
+import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   addDiscountPic,
   borderCross,
@@ -79,16 +79,14 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
 
   const [okk, setOkk] = useState(false);
 
-  const isLoading = useSelector(state =>
-    isLoadingSelector([TYPES.ADDCART], state)
-  );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
   const updateQuantity = (cartId, productId, operation) => {
     const updatedArr = [...arr];
 
     const cartItem = updatedArr
-      .find(item => item.id === cartId)
-      ?.poscart_products.find(product => product.id === productId);
+      .find((item) => item.id === cartId)
+      ?.poscart_products.find((product) => product.id === productId);
 
     if (cartItem) {
       if (operation === '+') {
@@ -158,10 +156,8 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
     dispatch(clearAllCart());
     crossHandler();
   };
-  const userDetalLoader = useSelector(state =>
-    isLoadingSelector([TYPES.GET_USERDETAIL], state)
-  );
-  const phoneNumberSearchFun = customerPhoneNo => {
+  const userDetalLoader = useSelector((state) => isLoadingSelector([TYPES.GET_USERDETAIL], state));
+  const phoneNumberSearchFun = (customerPhoneNo) => {
     if (customerPhoneNo?.length > 9) {
       dispatch(getUserDetail(customerPhoneNo));
       Keyboard.dismiss();
@@ -169,7 +165,7 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
       dispatch(getUserDetailSuccess([]));
     }
   };
-  const removeOneCartHandler = productId => {
+  const removeOneCartHandler = (productId) => {
     const data = {
       cartId: cartData?.id,
       productId: productId,
@@ -184,36 +180,27 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
           <View style={styles.nameAddSingleCon}>
             <View style={styles.displayRow}>
               <Image source={terryProfile} style={styles.Phonelight} />
-              <Text style={styles.terryText}>
-                {getuserDetailByNo?.[0]?.first_name}
-              </Text>
+              <Text style={styles.terryText}>{getuserDetailByNo?.[0]?.first_name}</Text>
             </View>
           </View>
           <View style={styles.nameAddSingleCon}>
             <View style={styles.displayRow}>
               <Image source={Phone_light} style={styles.Phonelight} />
-              <Text style={styles.terryText}>
-                {getuserDetailByNo?.[0]?.phone_number}
-              </Text>
+              <Text style={styles.terryText}>{getuserDetailByNo?.[0]?.phone_number}</Text>
             </View>
           </View>
           <View style={styles.nameAddSingleCon}>
             <View style={styles.displayRow}>
               <Image source={email} style={styles.Phonelight} />
-              <Text style={styles.terryText}>
-                {getuserDetailByNo?.[0]?.email}
-              </Text>
+              <Text style={styles.terryText}>{getuserDetailByNo?.[0]?.email}</Text>
             </View>
           </View>
           <View style={styles.nameAddSingleCon}>
             <View style={styles.displayRow}>
               <Image source={location} style={styles.Phonelight} />
-              <Text
-                style={[styles.terryText, { width: SW(70) }]}
-                numberOfLines={1}
-              >
-                {getuserDetailByNo?.[0]?.city},{getuserDetailByNo?.[0]?.address}
-                ,{getuserDetailByNo?.[0]?.state} {getuserDetailByNo?.[0]?.zip}
+              <Text style={[styles.terryText, { width: SW(70) }]} numberOfLines={1}>
+                {getuserDetailByNo?.[0]?.city},{getuserDetailByNo?.[0]?.address},
+                {getuserDetailByNo?.[0]?.state} {getuserDetailByNo?.[0]?.zip}
               </Text>
             </View>
           </View>
@@ -248,10 +235,7 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
       return (
         <View>
           <View
-            style={[
-              styles.sideBarInputWraper,
-              { backgroundColor: COLORS.textInputBackground },
-            ]}
+            style={[styles.sideBarInputWraper, { backgroundColor: COLORS.textInputBackground }]}
           >
             <View style={styles.displayRow}>
               <View>
@@ -287,10 +271,7 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
             </View>
           </View> */}
           <View
-            style={[
-              styles.sideBarInputWraper,
-              { backgroundColor: COLORS.textInputBackground },
-            ]}
+            style={[styles.sideBarInputWraper, { backgroundColor: COLORS.textInputBackground }]}
           >
             <View style={styles.displayRow}>
               <View>
@@ -306,10 +287,7 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
             </View>
           </View>
           <View
-            style={[
-              styles.sideBarInputWraper,
-              { backgroundColor: COLORS.textInputBackground },
-            ]}
+            style={[styles.sideBarInputWraper, { backgroundColor: COLORS.textInputBackground }]}
           >
             <View style={styles.displayRow}>
               <View>
@@ -348,7 +326,7 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
               style={styles.sideBarsearchInput}
               keyboardType="numeric"
               value={customerPhoneNo}
-              onChangeText={customerPhoneNo => {
+              onChangeText={(customerPhoneNo) => {
                 setCustomerPhoneNo(customerPhoneNo);
                 phoneNumberSearchFun(customerPhoneNo);
               }}
@@ -392,9 +370,7 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
       <Spacer space={SH(5)} />
       <View style={[styles.displayflex2, styles.paddVertical]}>
         <Text style={styles.subTotal}>Sub Total</Text>
-        <Text style={styles.subTotalDollar}>
-          ${cartData?.amount?.products_price ?? '0.00'}
-        </Text>
+        <Text style={styles.subTotalDollar}>${cartData?.amount?.products_price ?? '0.00'}</Text>
       </View>
       <View style={[styles.displayflex2, styles.paddVertical]}>
         <Text style={styles.subTotal}>Total VAT</Text>
@@ -402,10 +378,7 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
       </View>
       <View style={[styles.displayflex2, styles.paddVertical]}>
         <Text style={styles.subTotal}>Total Taxes</Text>
-        <Text style={styles.subTotalDollar}>
-          {' '}
-          ${cartData?.amount?.tax ?? '0.00'}
-        </Text>
+        <Text style={styles.subTotalDollar}> ${cartData?.amount?.tax ?? '0.00'}</Text>
       </View>
       <View style={[styles.displayflex2, styles.paddVertical]}>
         <Text style={styles.subTotal}>Discount</Text>

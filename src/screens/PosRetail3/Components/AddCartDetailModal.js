@@ -2,15 +2,8 @@ import React, { useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
 import { Spacer } from '@/components';
-import { styles } from '@/screens/PosRetail/PosRetail.styles';
-import {
-  Fonts,
-  bell,
-  cloth,
-  crossButton,
-  toggleSecBlue,
-  vectorOff,
-} from '@/assets';
+import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
+import { Fonts, bell, cloth, crossButton, toggleSecBlue, vectorOff } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -23,16 +16,14 @@ export function AddCartDetailModal({ crossHandler }) {
   const productDetail = getRetailData?.getOneProduct?.product_detail;
 
   let deliveryOption =
-    getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options.split(
-      ','
-    );
-  let deliveryOptionImage = deliveryOption.find(item => {
+    getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options.split(',');
+  let deliveryOptionImage = deliveryOption.find((item) => {
     return item === '1';
   });
-  let inStoreImage = deliveryOption.find(item => {
+  let inStoreImage = deliveryOption.find((item) => {
     return item === '3';
   });
-  let shippingImage = deliveryOption.find(item => {
+  let shippingImage = deliveryOption.find((item) => {
     return item === '4';
   });
   const [clothColorId, setClothColorId] = useState();
@@ -54,13 +45,7 @@ export function AddCartDetailModal({ crossHandler }) {
       />
     );
   };
-  const ClothColorItem = ({
-    item,
-    onPress,
-    backgroundColor,
-    textColor,
-    borderColor,
-  }) => (
+  const ClothColorItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
     <TouchableOpacity
       style={[styles.imageView, { borderColor }]}
       onPress={onPress}
@@ -75,8 +60,7 @@ export function AddCartDetailModal({ crossHandler }) {
   const sizerenderItem = ({ item }) => {
     const backgroundColor = item.id === clothSizeId ? '#6e3b6e' : '#f9c2ff';
     const color = item.id === clothSizeId ? 'white' : 'black';
-    const borderClr =
-      item.id === clothSizeId ? COLORS.primary : COLORS.solidGrey;
+    const borderClr = item.id === clothSizeId ? COLORS.primary : COLORS.solidGrey;
     return (
       <ClothSizeItem
         item={item}
@@ -87,26 +71,13 @@ export function AddCartDetailModal({ crossHandler }) {
       />
     );
   };
-  const ClothSizeItem = ({
-    item,
-    onPress,
-    backgroundColor,
-    textColor,
-    borderColor,
-  }) => (
+  const ClothSizeItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
     <TouchableOpacity
       style={[styles.sizeSelectItemCon, { borderColor }]}
       onPress={onPress}
       activeOpacity={1}
     >
-      <Text
-        style={[
-          styles.jacketName,
-          { fontSize: SF(14), fontFamily: Fonts.Regular },
-        ]}
-      >
-        6
-      </Text>
+      <Text style={[styles.jacketName, { fontSize: SF(14), fontFamily: Fonts.Regular }]}>6</Text>
       <Text style={[styles.jacketName, { fontSize: SF(14) }]}>6</Text>
     </TouchableOpacity>
   );
@@ -115,30 +86,17 @@ export function AddCartDetailModal({ crossHandler }) {
   // remind select section start
   const remindrenderItem = ({ item }) => {
     const color = item.id === remindId ? COLORS.dark_grey : COLORS.solidGrey;
-    return (
-      <RemindItem
-        item={item}
-        onPress={() => setRemindId(item.id)}
-        color={color}
-      />
-    );
+    return <RemindItem item={item} onPress={() => setRemindId(item.id)} color={color} />;
   };
   const RemindItem = ({ item, onPress, color }) => (
     <TouchableOpacity
-      style={[
-        styles.sizeSelectItemCon,
-        styles.adminItemCon,
-        { borderColor: color },
-      ]}
+      style={[styles.sizeSelectItemCon, styles.adminItemCon, { borderColor: color }]}
       onPress={onPress}
       activeOpacity={1}
     >
       <Image source={bell} style={[styles.bell, { tintColor: color }]} />
       <Text
-        style={[
-          styles.jacketName,
-          { fontSize: SF(14), fontFamily: Fonts.Regular, color: color },
-        ]}
+        style={[styles.jacketName, { fontSize: SF(14), fontFamily: Fonts.Regular, color: color }]}
       >
         Remind Admin
       </Text>
@@ -155,19 +113,13 @@ export function AddCartDetailModal({ crossHandler }) {
         </TouchableOpacity>
       </View>
       <View style={styles.addCartDetailBody}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.clothProfileCon}>
-            <Image
-              source={{ uri: productDetail?.image }}
-              style={styles.profileCloth}
-            />
+            <Image source={{ uri: productDetail?.image }} style={styles.profileCloth} />
             <View style={styles.profileClothDes}>
-              <Text style={[styles.jacketName, { fontSize: SF(15) }]}>
-                {productDetail?.name}
-              </Text>
+              <Text style={[styles.jacketName, { fontSize: SF(15) }]}>{productDetail?.name}</Text>
               <Text style={styles.clothProfileSubHead}>
-                {productDetail?.category?.name} {'>'}{' '}
-                {productDetail?.category?.name}
+                {productDetail?.category?.name} {'>'} {productDetail?.category?.name}
               </Text>
               <Text numberOfLines={1} style={styles.clothProfileDes}>
                 {productDetail?.description}
@@ -176,9 +128,7 @@ export function AddCartDetailModal({ crossHandler }) {
           </View>
           <Spacer space={SH(20)} />
           <View style={styles.priceCon}>
-            <Text style={[styles.jacketName, { fontFamily: Fonts.Regular }]}>
-              Price
-            </Text>
+            <Text style={[styles.jacketName, { fontFamily: Fonts.Regular }]}>Price</Text>
             <Text style={styles.jacketName}>
               ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
             </Text>
@@ -210,9 +160,7 @@ export function AddCartDetailModal({ crossHandler }) {
           <Spacer space={SH(20)} />
           <View style={styles.skuCon}>
             <View style={styles.skuConBody}>
-              <Text style={[styles.jacketName, { fontSize: SF(15) }]}>
-                Stock on Hand
-              </Text>
+              <Text style={[styles.jacketName, { fontSize: SF(15) }]}>Stock on Hand</Text>
             </View>
             <Spacer space={SH(20)} />
             <View style={styles.ScrollableMainCon}>
@@ -226,7 +174,7 @@ export function AddCartDetailModal({ crossHandler }) {
                   <FlatList
                     data={dummyData}
                     renderItem={clothColorrenderItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(item) => item.id}
                     extraData={dummyData}
                     // contentContainerStyle={{ flexGrow: 1 }}
                     // nestedScrollEnabled
@@ -236,12 +184,10 @@ export function AddCartDetailModal({ crossHandler }) {
                 <View style={styles.quantitySelectArea}>
                   <View style={styles.displayflex}>
                     <Text style={[styles.jacketName, { fontSize: SF(14) }]}>
-                      Size:{' '}
-                      <Text style={{ fontFamily: Fonts.Regular }}>USA</Text>
+                      Size: <Text style={{ fontFamily: Fonts.Regular }}>USA</Text>
                     </Text>
                     <Text style={[styles.jacketName, { fontSize: SF(14) }]}>
-                      Quantity::{' '}
-                      <Text style={{ fontFamily: Fonts.Regular }}>USA</Text>
+                      Quantity:: <Text style={{ fontFamily: Fonts.Regular }}>USA</Text>
                     </Text>
                   </View>
 
@@ -250,7 +196,7 @@ export function AddCartDetailModal({ crossHandler }) {
                   <FlatList
                     data={dummyData}
                     renderItem={sizerenderItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(item) => item.id}
                     extraData={dummyData}
                     // contentContainerStyle={{ flexGrow: 1 }}
                     // nestedScrollEnabled
@@ -263,7 +209,7 @@ export function AddCartDetailModal({ crossHandler }) {
                   <FlatList
                     data={dummyData}
                     renderItem={remindrenderItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(item) => item.id}
                     extraData={dummyData}
                     // contentContainerStyle={{ flexGrow: 1 }}
                     // nestedScrollEnabled
@@ -274,9 +220,7 @@ export function AddCartDetailModal({ crossHandler }) {
             </View>
             <Spacer space={SH(20)} />
             <View style={[styles.skuConBody, styles.reOrderBody]}>
-              <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>
-                Reorder Point
-              </Text>
+              <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>Reorder Point</Text>
               <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>10</Text>
             </View>
           </View>

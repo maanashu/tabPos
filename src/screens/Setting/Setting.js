@@ -38,7 +38,7 @@ export function Setting() {
   const [selectedId, setSelectedId] = useState(1);
   const [security, setSecurity] = useState(false);
   const [device, setDevice] = useState(false);
-  const onpressFun = id => {
+  const onpressFun = (id) => {
     if (id === 1) {
       setSecurity(true), setDevice(false);
     } else if (id === 2) {
@@ -52,7 +52,7 @@ export function Setting() {
       // dispatch(getShippingPickup());
     }
   }, [isFocused]);
-  const isLoad = useSelector(state =>
+  const isLoad = useSelector((state) =>
     isLoadingSelector(
       [
         TYPES.UPDATE_API,
@@ -90,48 +90,28 @@ export function Setting() {
     ),
   };
 
-  const Item = ({
-    item,
-    onPress,
-    backgroundColor,
-    textColor,
-    borderColor,
-    tintAndColor,
-  }) => (
+  const Item = ({ item, onPress, backgroundColor, textColor, borderColor, tintAndColor }) => (
     <TouchableOpacity
       style={[styles.headingBody, { backgroundColor, borderColor }]}
       onPress={onPress}
     >
       <View style={styles.flexRow}>
         <View style={styles.dispalyRow}>
-          <Image
-            source={item.image}
-            style={[styles.security, { tintColor: tintAndColor }]}
-          />
+          <Image source={item.image} style={[styles.security, { tintColor: tintAndColor }]} />
           <View style={{ marginLeft: 6 }}>
-            <Text style={[styles.securityText, { color: textColor }]}>
-              {item.name}
-            </Text>
-            <Text style={[styles.notUpdated, { color: tintAndColor }]}>
-              {item.subhead}
-            </Text>
+            <Text style={[styles.securityText, { color: textColor }]}>{item.name}</Text>
+            <Text style={[styles.notUpdated, { color: tintAndColor }]}>{item.subhead}</Text>
           </View>
         </View>
-        <Image
-          source={right_light}
-          style={[styles.right_light, { tintColor: tintAndColor }]}
-        />
+        <Image source={right_light} style={[styles.right_light, { tintColor: tintAndColor }]} />
       </View>
     </TouchableOpacity>
   );
 
   const renderItem = ({ item }) => {
-    const backgroundColor =
-      item.id === selectedId ? COLORS.blue_shade : '#transparent';
-    const tintAndColor =
-      item.id === selectedId ? COLORS.primary : COLORS.darkGray;
-    const borderColor =
-      item.id === selectedId ? COLORS.blue_shade : COLORS.solidGrey;
+    const backgroundColor = item.id === selectedId ? COLORS.blue_shade : '#transparent';
+    const tintAndColor = item.id === selectedId ? COLORS.primary : COLORS.darkGray;
+    const borderColor = item.id === selectedId ? COLORS.blue_shade : COLORS.solidGrey;
     const color = item.id === selectedId ? COLORS.primary : COLORS.black;
 
     return (
@@ -164,7 +144,7 @@ export function Setting() {
               <FlatList
                 data={settingLabelData}
                 renderItem={renderItem}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
                 extraData={selectedId}
               />
             </View>
@@ -174,11 +154,7 @@ export function Setting() {
       </View>
       {isLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator
-            color={COLORS.primary}
-            size="large"
-            style={styles.loader}
-          />
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
     </ScreenWrapper>

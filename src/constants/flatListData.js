@@ -17,6 +17,9 @@ import {
   cloth,
   clay,
   staffIcon,
+  product,
+  filter,
+  services,
 } from '@/assets';
 import { COLORS } from '@/theme';
 
@@ -981,5 +984,22 @@ export const catTypeData = [
   {
     id: 3,
     name: 'Choose Brand',
+  },
+];
+export const productServiceFilter = [
+  {
+    id: 1,
+    title: 'Products',
+    image: product,
+  },
+  {
+    id: 2,
+    title: 'Services',
+    image: services,
+  },
+  {
+    id: 3,
+    title: 'Filter',
+    image: filter,
   },
 ];

@@ -6,7 +6,6 @@ export const NAVIGATION = {
   verifyOtp: 'VerifyOtp',
   merchantPasscode: 'MerchantPasscode',
   loginIntial: 'LoginIntial',
-  retails: 'Retails',
   deliveryOrder: 'DeliveryOrder',
   shippingOrder: 'ShippingOrder',
   wallet: 'Wallet',
@@ -21,7 +20,6 @@ export const NAVIGATION = {
   posUsers: 'POSUsers',
   products: 'Products',
   posUserPasscode: 'PosUserPasscode',
-  posRetail: 'PosRetail',
   CartAmountTips: 'CartAmountTips',
   notificationsList: 'NotificationsList',
   posRetail2: 'PosRetail2',
@@ -29,4 +27,5 @@ export const NAVIGATION = {
   analytics2: 'Analytics2',
   deliveryOrders2: 'DeliveryOrders2',
   orderDetail: 'OrderDetail',
+  posRetail3: 'PosRetail3',
 };

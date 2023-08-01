@@ -292,6 +292,10 @@ export { default as sideArrow } from '@/assets/icons/ic_posRetail/sideArrow.png'
 export { default as sideEarser } from '@/assets/icons/ic_posRetail/sideEarser.png';
 export { default as sideKeyboard } from '@/assets/icons/ic_posRetail/sideKeyboard.png';
 export { default as addToCartBlue } from '@/assets/icons/ic_posRetail/addToCartBlue.png';
+export { default as product } from '@/assets/icons/ic_posRetail/product.png';
+export { default as services } from '@/assets/icons/ic_posRetail/services.png';
+export { default as filter } from '@/assets/icons/ic_posRetail/filter.png';
+export { default as multipleImag } from '@/assets/icons/ic_posRetail/multipleImag.png';
 
 export { default as fedex } from '@/assets/icons/ic_analytics/fedex.png';
 export { default as dhl } from '@/assets/icons/ic_analytics/dhl.png';

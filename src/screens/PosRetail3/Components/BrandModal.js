@@ -5,44 +5,39 @@ import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
-import { styles } from '@/screens/PosRetail/PosRetail.styles';
+import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { cloth, crossButton, search_light } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
 import { TYPES } from '@/Types/Types';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
-export function CategoryModal({
-  crossHandler,
-  categoryArray,
-  onSelectCategory,
-  cancelCategory,
-}) {
+export function BrandModal({ crossHandler, onSelectbrands, cancelBrand }) {
   const [selectedId, setSelectedId] = useState();
+  const getRetailData = useSelector(getRetail);
+  const brandArray = getRetailData?.brands;
 
-  const categoryLoad = useSelector(state =>
-    isLoadingSelector([TYPES.GET_CATEGORY], state)
-  );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_BRAND], state));
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
     const color = item.id === selectedId ? 'white' : 'black';
 
     return (
-      <Item item={item} backgroundColor={backgroundColor} textColor={color} />
+      <Item
+        item={item}
+        onPress={() => setSelectedId(item.id)}
+        backgroundColor={backgroundColor}
+        textColor={color}
+      />
     );
   };
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity
-      onPress={() => {
-        setSelectedId(item.id);
-        onSelectCategory(item);
-      }}
-      style={styles.catProArrayCon}
-    >
+    <TouchableOpacity onPress={() => onSelectbrands(item)} style={styles.catProArrayCon}>
       <Image source={{ uri: item.image }} style={styles.cloth} />
       <Spacer space={SH(5)} />
       <Text style={styles.categories}>{item.name}</Text>
@@ -53,7 +48,7 @@ export function CategoryModal({
   const ListEmptyComponent = () => {
     return (
       <View style={{ marginTop: 50 }}>
-        <Text style={styles.categoryEmptyList}>Category Not Found</Text>
+        <Text style={styles.categoryEmptyList}>Brand Not Found</Text>
       </View>
     );
   };
@@ -61,13 +56,10 @@ export function CategoryModal({
     <View style={styles.categoryModalCon}>
       <Spacer space={SH(20)} />
       <View style={styles.displayflex}>
-        <Text style={styles.categories}>{strings.posRetail.categories}</Text>
+        <Text style={styles.categories}>{strings.posRetail.brand}</Text>
         <View style={[styles.displayRow]}>
-          <TouchableOpacity
-            style={styles.cancelCatCon}
-            onPress={cancelCategory}
-          >
-            <Text style={styles.catCancelText}>Cancel</Text>
+          <TouchableOpacity style={styles.cancelCatCon} onPress={cancelBrand}>
+            <Text style={styles.catCancelText}>Clear</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={crossHandler}>
             <Image source={crossButton} style={styles.crossButton} />
@@ -89,18 +81,17 @@ export function CategoryModal({
       </View>
 
       <Spacer space={SH(15)} />
-
       <View style={styles.categoryflatlistHeight}>
-        {categoryLoad ? (
+        {isLoading ? (
           <View style={{ marginTop: 50 }}>
             <ActivityIndicator size="large" color={COLORS.primary} />
           </View>
         ) : (
           <FlatList
-            data={categoryArray}
+            data={brandArray}
             renderItem={renderItem}
-            keyExtractor={item => item.id}
-            extraData={categoryArray}
+            keyExtractor={(item) => item.id}
+            extraData={brandArray}
             numColumns={4}
             ListEmptyComponent={ListEmptyComponent}
           />

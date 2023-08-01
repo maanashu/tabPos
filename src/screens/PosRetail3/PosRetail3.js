@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { AddDiscountToCart, ScreenWrapper, Spacer } from '@/components';
 
-import { styles } from '@/screens/PosRetail/PosRetail.styles';
+import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   CartAmountPayBy,
   CartAmountTips,
   CartScreen,
-  CustomHeader,
   FinalPaymentScreen,
   MainScreen,
   PayByCard,
   PayByCash,
-  PayByJBRCoins,
-} from './Components';
+  PayByCash2,
+} from '@/screens/PosRetail3/Components';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -23,8 +23,6 @@ import {
   addNotescart,
   customerNumber,
   getAllCart,
-  getCategory,
-  getProductDefault,
 } from '@/actions/RetailAction';
 import { useIsFocused } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native';
@@ -37,7 +35,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { strings } from '@/localization';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-export function PosRetail() {
+export function PosRetail3() {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const getCartAmount = getRetailData?.getAllCart?.amount;
@@ -50,12 +48,13 @@ export function PosRetail() {
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
+
   const [paymentMethod, setpaymentMethod] = useState('Cash');
-  const [tipAmount, setTipAmount] = useState(0.0);
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
   const [addDiscount, setAddDiscount] = useState(false);
   const [page, setPage] = useState(1);
+  const [tipAmount, selectTipAmount] = useState();
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
   const getCart = getRetailData?.getAllCart;
@@ -89,6 +88,10 @@ export function PosRetail() {
     getCart?.discount_flag === 'code' ? true : false
   );
   const [cashPayDetail, setCashPayDetail] = useState();
+
+  useEffect(() => {
+    dispatch(getAllCart());
+  }, [isFocus]);
   useEffect(() => {
     setNotes(getCart?.notes);
     setDescriptionDis(getCart?.discount_desc);
@@ -209,12 +212,6 @@ export function PosRetail() {
     }
   };
 
-  useEffect(() => {
-    dispatch(getProductDefault(sellerID, page));
-    // dispatch(getCategory(sellerID));
-    dispatch(getAllCart());
-  }, [isFocus]);
-
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -238,11 +235,12 @@ export function PosRetail() {
   const renderScreen = {
     ['MainScreen']: (
       <MainScreen
+        cartScreenHandler={() => setselectedScreen('CartScreen')}
+        sellerID={sellerID}
         headercrossHandler={() => alert('abc')}
         checkOutHandler={() => setselectedScreen('CartScreen')}
         productArray={defaultArrayproduct}
         categoryArray={categoryArray}
-        sellerID={sellerID}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
         onPressPayNow={() => {
@@ -254,7 +252,7 @@ export function PosRetail() {
       <CartScreen
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
-          setselectedScreen('CartAmountTips');
+          setselectedScreen('CartAmountPayBy');
         }}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
@@ -273,17 +271,21 @@ export function PosRetail() {
     ),
     ['CartAmountPayBy']: (
       <CartAmountPayBy
-        onPressBack={() => setselectedScreen('CartAmountTips')}
+        onPressBack={() => setselectedScreen('CartScreen')}
         tipAmount={tipAmount}
         onPressPaymentMethod={(item) => {
           if (item.index === 0) {
-            setselectedScreen('PayByCard');
+            setselectedScreen('PayByCash');
           } else if (item.index === 1) {
             setselectedScreen('PayByJBRCoins');
           } else if (item.index === 2) {
-            setselectedScreen('PayByCash');
+            setselectedScreen('PayByCard');
           }
         }}
+        payNowByphone={(tip) => {
+          selectTipAmount(tip);
+        }}
+        cartid={cartID2}
       />
     ),
     ['PayByCard']: (
@@ -310,22 +312,23 @@ export function PosRetail() {
           setselectedScreen('FinalPaymentScreen');
           setCashPayDetail(data);
         }}
+        cartDatas={savedTempCartData}
       />
     ),
-    ['PayByJBRCoins']: (
-      <PayByJBRCoins
-        tipAmount={tipAmount}
-        onPressBack={() => {
-          setselectedScreen('CartAmountPayBy');
-        }}
-        onPressContinue={(cartData, data) => {
-          setpaymentMethod('JBRCoins');
-          setSavedTempCartData(cartData?.getAllCart);
-          setselectedScreen('FinalPaymentScreen');
-          setCashPayDetail(data);
-        }}
-      />
-    ),
+    // ['PayByJBRCoins']: (
+    //   <PayByJBRCoins
+    //     tipAmount={tipAmount}
+    //     onPressBack={() => {
+    //       setselectedScreen('CartAmountPayBy');
+    //     }}
+    //     onPressContinue={(cartData, data) => {
+    //       setpaymentMethod('JBRCoins');
+    //       setSavedTempCartData(cartData?.getAllCart);
+    //       setselectedScreen('FinalPaymentScreen');
+    //       setCashPayDetail(data);
+    //     }}
+    //   />
+    // ),
     ['FinalPaymentScreen']: (
       <FinalPaymentScreen
         tipAmount={tipAmount}
@@ -344,6 +347,7 @@ export function PosRetail() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>{screenChangeView()}</View>
+
       {isLoading ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
@@ -390,7 +394,7 @@ export function PosRetail() {
                   style={[styles.holdCartCon, styles.addNotesBtn]}
                   onPress={() => saveDiscountHandler()}
                 >
-                  <Text style={styles.holdCart}>Add Discount</Text>
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -416,7 +420,7 @@ export function PosRetail() {
                   style={[styles.holdCartCon, styles.addNotesBtn]}
                   onPress={() => saveNotesHandler()}
                 >
-                  <Text style={styles.holdCart}>Add Notes</Text>
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
                 </TouchableOpacity>
               </View>
             )}

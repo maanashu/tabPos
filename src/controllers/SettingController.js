@@ -1,23 +1,17 @@
-import {
-  ORDER_URL,
-  ApiOrderInventory,
-  USER_URL,
-  ApiUserInventory,
-} from '@/utils/APIinventory';
+import { ORDER_URL, ApiOrderInventory, USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 import { store } from '@/store';
-import axios from 'axios';
 
 export class SettingController {
   static async getSetting() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getSetting + `?app_name=pos`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.statusCode !== 204) {
             Toast.show({
               text2: error.msg,
@@ -35,10 +29,10 @@ export class SettingController {
     return new Promise(async (resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getSetting;
       HttpClient.patch(endpoint, data)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -54,10 +48,10 @@ export class SettingController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getShippingPickup;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -73,10 +67,10 @@ export class SettingController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getShippingPickup;
       HttpClient.put(endpoint, body)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -92,10 +86,10 @@ export class SettingController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getUserAddress;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -111,10 +105,10 @@ export class SettingController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getCountries;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -128,13 +122,12 @@ export class SettingController {
 
   static async getState(id) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        USER_URL + ApiUserInventory.getState + `?country_id=${id}`;
+      const endpoint = USER_URL + ApiUserInventory.getState + `?country_id=${id}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -150,10 +143,10 @@ export class SettingController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.staffDetail;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -172,10 +165,10 @@ export class SettingController {
         ApiUserInventory.getTax +
         `?is_tax_details=${data.is_tax}&seller_id=${data.sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           if (error?.error === 'emptyContent') {
             Toast.show({
               text2: 'tax not found',
@@ -196,10 +189,10 @@ export class SettingController {
         ApiUserInventory.getTax +
         `?is_tax_details=${data.is_tax}&seller_id=${data.sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -209,10 +202,10 @@ export class SettingController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getGoogleCode;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -228,10 +221,10 @@ export class SettingController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.verifyGoogleCode;
       HttpClient.post(endpoint, data)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           if (error?.msg === 'Invalid token code.') {
             Toast.show({
               text2: 'Token Code Expire',
@@ -262,10 +255,10 @@ export class SettingController {
         apartment: data?.appartment,
       };
       HttpClient.post(endpoint, body)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -282,10 +275,10 @@ export class SettingController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.notifications;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response?.payload?.data);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });

@@ -5,7 +5,7 @@ import { COLORS, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
-import { styles } from '@/screens/PosRetail2/PosRetail2.styles';
+import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   addDiscountPic,
   addToCart,
