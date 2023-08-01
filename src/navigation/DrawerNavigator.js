@@ -162,7 +162,7 @@ export function DrawerNavigator(props) {
           )}
         /> */}
 
-        <DrawerItem
+        {/* <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
           focused={active === 'delivery' ? true : false}
@@ -170,6 +170,19 @@ export function DrawerNavigator(props) {
             setActive('delivery');
             dispatch(addSellingSelection());
             navigate(NAVIGATION.deliveryOrder);
+          }}
+          icon={({ focused, color, size }) => (
+            <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
+          )}
+        /> */}
+
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'deliveryOrders2' ? true : false}
+          onPress={() => {
+            setActive('deliveryOrders2');
+            navigate(NAVIGATION.deliveryOrders2);
           }}
           icon={({ focused, color, size }) => (
             <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
@@ -290,19 +303,6 @@ export function DrawerNavigator(props) {
           }}
           icon={({ focused, color, size }) => (
             <Image source={focused ? retail : greyRetail} style={styles.iconStyle} />
-          )}
-        />
-
-        <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'deliveryOrders2' ? true : false}
-          onPress={() => {
-            setActive('deliveryOrders2');
-            navigate(NAVIGATION.deliveryOrders2);
-          }}
-          icon={({ focused, color, size }) => (
-            <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
           )}
         />
 
