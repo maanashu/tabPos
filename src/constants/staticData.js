@@ -1275,17 +1275,17 @@ export const graphOptions = [
   },
   {
     key: '2',
-    title: 'Delivered Orders',
-    checked: true,
-  },
-  {
-    key: '3',
     title: 'Cancelled Orders',
     checked: true,
   },
   {
-    key: '4',
+    key: '3',
     title: 'Returned Orders',
+    checked: true,
+  },
+  {
+    key: '4',
+    title: 'Delivered Orders',
     checked: true,
   },
 ];

@@ -385,7 +385,15 @@ export function DeliveryOrders2() {
             />
           </TouchableOpacity>
         )}
-        <Text style={styles.varientTextStyle}>{item?.title}</Text>
+        <Text style={styles.varientTextStyle}>
+          {item?.title === 'In Coming Orders'
+            ? 'Incoming Orders'
+            : item?.title === 'Cancelled Orders'
+            ? 'Order Processing'
+            : item?.title === 'Returned Orders'
+            ? 'Ready For Pickup'
+            : 'Completed'}
+        </Text>
       </View>
     );
   };
