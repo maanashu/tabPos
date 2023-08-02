@@ -13,7 +13,7 @@ const INITIALSTATE = {
   notifications: [],
 };
 
-export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
+export const settingReducer = (state = INITIALSTATE, { payload, type }) => {
   switch (type) {
     case TYPES.GET_SETTING_SUCCESS:
       return {

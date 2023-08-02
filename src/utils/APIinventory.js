@@ -100,6 +100,8 @@ export const ApiOrderInventory = {
   getAnalyticStatistics: `orders/pos/analytics`,
   attachCustomer: 'orders/attach/user/',
   todayOrders: 'orders/pos/today/orders-count',
+  graphOrders: 'orders/pos/graph/orders',
+  todayShipStatus: 'orders/pos/shipping/orders',
 };
 
 export const ApiWalletInventory = {

@@ -20,7 +20,7 @@ const INITIALSTATE = {
   getAnalyticStatistics: {},
 };
 
-export const analyticsReducer = (state = { INITIALSTATE }, { payload, type }) => {
+export const analyticsReducer = (state = INITIALSTATE, { payload, type }) => {
   switch (type) {
     case TYPES.GET_TOTAL_GRAPH_SUCCESS:
       return {

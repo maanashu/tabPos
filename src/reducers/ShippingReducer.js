@@ -10,10 +10,7 @@ const INITIALSTATE = {
   shippingGraph: {},
 };
 
-export const shippingReducer = (
-  state = { INITIALSTATE },
-  { payload, type }
-) => {
+export const shippingReducer = (state = INITIALSTATE, { payload, type }) => {
   switch (type) {
     case TYPES.GET_ORDER_COUNT_SUCCESS:
       return {

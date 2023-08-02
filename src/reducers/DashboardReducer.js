@@ -10,10 +10,7 @@ const INITIALSTATE = {
   selection: {},
 };
 
-export const dashboardReducer = (
-  state = { INITIALSTATE },
-  { payload, type }
-) => {
+export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
   switch (type) {
     case DASHBOARDTYPE.GET_ORDER_DELIVERIES_SUCCESS:
       return {

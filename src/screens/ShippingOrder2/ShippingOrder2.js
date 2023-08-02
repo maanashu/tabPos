@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
 
 import PieChart from 'react-native-pie-chart';
+import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 import { LineChart } from 'react-native-chart-kit';
 
@@ -31,13 +32,19 @@ import {
   labels,
 } from '@/constants/staticData';
 import { strings } from '@/localization';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { ScreenWrapper, Spacer } from '@/components';
-import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
 
 import styles from './ShippingOrder2.styles';
-import { ms } from 'react-native-size-matters';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { todayOrders } from '@/actions/DeliveryAction';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 export function ShippingOrder2() {
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const widthAndHeight = 200;
   const series = [823, 101, 40];
   const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet];
@@ -47,6 +54,10 @@ export function ShippingOrder2() {
   const [viewAllOrders, setViewAllOrders] = useState(false);
   const [openShippingOrders, setOpenShippingOrders] = useState(false);
   const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
+
+  useEffect(() => {
+    dispatch(todayOrders(sellerID));
+  }, []);
 
   const renderItem = ({ item, index }) => (
     <View style={styles.itemMainViewStyle}>
@@ -408,9 +419,7 @@ export function ShippingOrder2() {
           </View>
         ) : (
           <View style={styles.firstRowStyle}>
-            {/* left View */}
             <View>
-              {/* firstView */}
               <View style={styles.shippingStatusViewStyle}>
                 <Text style={styles.shippingStatusText}>
                   {strings.shippingOrder.shippingStatus}
@@ -431,7 +440,6 @@ export function ShippingOrder2() {
 
               <Spacer space={SH(15)} />
 
-              {/* second View */}
               <View style={styles.currentStatusView}>
                 <Text style={styles.currentStatusText}>{strings.shippingOrder.currentStatus}</Text>
 
@@ -439,7 +447,7 @@ export function ShippingOrder2() {
               </View>
 
               <Spacer space={SH(15)} />
-              {/* third view */}
+
               <View style={styles.orderConvertionView}>
                 <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
 
@@ -484,7 +492,6 @@ export function ShippingOrder2() {
               </View>
             </View>
 
-            {/* rightView */}
             <View>
               <View style={styles.graphViewStyle}>
                 <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
@@ -572,7 +579,6 @@ export function ShippingOrder2() {
               </View>
             </View>
 
-            {/* right bar view */}
             {openShippingOrders ? (
               <>
                 <ReactNativeModal

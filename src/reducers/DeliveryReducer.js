@@ -10,6 +10,7 @@ const INITIALSTATE = {
   deliveringOrder: [],
   todayOrderStatus: {},
   getOrderstatistics: [],
+  graphOrders: {},
 };
 
 export const deliveryReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -73,6 +74,11 @@ export const deliveryReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getOrderstatistics: payload.getOrderstatistics,
+      };
+    case TYPES.GET_GRAPH_ORDERS_SUCCESS:
+      return {
+        ...state,
+        graphOrders: payload?.getGraphOrders,
       };
     default:
       return state;
