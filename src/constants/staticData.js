@@ -1249,6 +1249,12 @@ export const deliveryDrawer = [
   },
   {
     key: '6',
+    image: deliveryDriver,
+    title: 'Picked Up',
+    count: '49',
+  },
+  {
+    key: '6',
     image: deliveryorderProducts,
     title: 'Delivered',
     count: '15',

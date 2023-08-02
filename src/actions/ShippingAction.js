@@ -5,11 +5,11 @@ const getOrderCountRequest = () => ({
   type: TYPES.GET_ORDER_COUNT_REQUEST,
   payload: null,
 });
-const getOrderCountSuccess = getOrderCount => ({
+const getOrderCountSuccess = (getOrderCount) => ({
   type: TYPES.GET_ORDER_COUNT_SUCCESS,
   payload: { getOrderCount },
 });
-const getOrderCountError = error => ({
+const getOrderCountError = (error) => ({
   type: TYPES.GET_ORDER_COUNT_ERROR,
   payload: { error },
 });
@@ -18,11 +18,11 @@ const getOrderListRequest = () => ({
   type: TYPES.GET_ORDER_LIST_REQUEST,
   payload: null,
 });
-const getOrderListSuccess = getorderList => ({
+const getOrderListSuccess = (getorderList) => ({
   type: TYPES.GET_ORDER_LIST_SUCCESS,
   payload: { getorderList },
 });
-const getOrderListError = error => ({
+const getOrderListError = (error) => ({
   type: TYPES.GET_ORDER_LIST_ERROR,
   payload: { error },
 });
@@ -31,11 +31,11 @@ const getReviewDefRequest = () => ({
   type: TYPES.GET_REVIEW_DEF_REQUEST,
   payload: null,
 });
-const getReviewDefSuccess = getReviewDef => ({
+const getReviewDefSuccess = (getReviewDef) => ({
   type: TYPES.GET_REVIEW_DEF_SUCCESS,
   payload: { getReviewDef },
 });
-const getReviewDefError = error => ({
+const getReviewDefError = (error) => ({
   type: TYPES.GET_REVIEW_DEF_ERROR,
   payload: { error },
 });
@@ -48,11 +48,11 @@ const getOrdersRequest = () => ({
   type: TYPES.GET_ORDER_REQUEST,
   payload: null,
 });
-const getOrdersSuccess = orderList => ({
+const getOrdersSuccess = (orderList) => ({
   type: TYPES.GET_ORDER_SUCCESS,
   payload: { orderList },
 });
-const getOrdersError = error => ({
+const getOrdersError = (error) => ({
   type: TYPES.GET_ORDER_ERROR,
   payload: { error },
 });
@@ -65,7 +65,7 @@ const acceptOrderSuccess = () => ({
   type: TYPES.ACCEPT_ORDER_SUCCESS,
   payload: {},
 });
-const acceptOrderError = error => ({
+const acceptOrderError = (error) => ({
   type: TYPES.ACCEPT_ORDER_ERROR,
   payload: { error },
 });
@@ -74,11 +74,11 @@ const deliveringOrdRequest = () => ({
   type: TYPES.DELIVERING_ORDER_REQUEST,
   payload: null,
 });
-const deliveringOrdSuccess = deliveryOrd => ({
+const deliveringOrdSuccess = (deliveryOrd) => ({
   type: TYPES.DELIVERING_ORDER_SUCCESS,
   payload: { deliveryOrd },
 });
-const deliveringOrdError = error => ({
+const deliveringOrdError = (error) => ({
   type: TYPES.DELIVERING_ORDER_ERROR,
   payload: { error },
 });
@@ -91,11 +91,11 @@ const getShippingServiceRequest = () => ({
   type: TYPES.GET_SHIPSERVICE_REQUEST,
   payload: null,
 });
-const getShippingServiceSuccess = getShippingService => ({
+const getShippingServiceSuccess = (getShippingService) => ({
   type: TYPES.GET_SHIPSERVICE_SUCCESS,
   payload: { getShippingService },
 });
-const getShippingServiceError = error => ({
+const getShippingServiceError = (error) => ({
   type: TYPES.GET_SHIPSERVICE_ERROR,
   payload: { error },
 });
@@ -112,7 +112,7 @@ const shipServiceUpdateSuccess = () => ({
   type: TYPES.SHIP_SERVICEUPDATE_SUCCESS,
   payload: null,
 });
-const shipServiceUpdateError = error => ({
+const shipServiceUpdateError = (error) => ({
   type: TYPES.SHIP_SERVICEUPDATE_ERROR,
   payload: { error },
 });
@@ -121,16 +121,29 @@ const shippingGraphRequest = () => ({
   type: TYPES.SHIPPING_GRAPH_REQUEST,
   payload: null,
 });
-const shippingGraphSuccess = shippingGraph => ({
+const shippingGraphSuccess = (shippingGraph) => ({
   type: TYPES.SHIPPING_GRAPH_SUCCESS,
   payload: { shippingGraph },
 });
-const shippingGraphError = error => ({
+const shippingGraphError = (error) => ({
   type: TYPES.SHIPPING_GRAPH_ERROR,
   payload: { error },
 });
 
-export const getOrderCount = status => async dispatch => {
+const todayShippingStatusRequest = () => ({
+  type: TYPES.TODAY_SHIPPING_STATUS_REQUEST,
+  payload: null,
+});
+const todayShippingStatusSuccess = (todayShippingStatus) => ({
+  type: TYPES.TODAY_SHIPPING_STATUS_SUCCESS,
+  payload: { todayShippingStatus },
+});
+const todayShippingStatusError = (error) => ({
+  type: TYPES.TODAY_SHIPPING_STATUS_ERROR,
+  payload: { error },
+});
+
+export const getOrderCount = (status) => async (dispatch) => {
   dispatch(getOrderCountRequest());
   try {
     const res = await ShippingController.getOrderCount(status);
@@ -139,7 +152,7 @@ export const getOrderCount = status => async dispatch => {
     dispatch(getOrderCountError(error.message));
   }
 };
-export const getReviewDefault = (status, sellerID) => async dispatch => {
+export const getReviewDefault = (status, sellerID) => async (dispatch) => {
   dispatch(getReviewDefRequest());
   try {
     const res = await ShippingController.getReviewDefault(status, sellerID);
@@ -152,7 +165,7 @@ export const getReviewDefault = (status, sellerID) => async dispatch => {
   }
 };
 
-export const getOrders = (status, sellerID) => async dispatch => {
+export const getOrders = (status, sellerID) => async (dispatch) => {
   dispatch(getOrdersRequest());
   try {
     const res = await ShippingController.getOrders(status, sellerID);
@@ -162,7 +175,7 @@ export const getOrders = (status, sellerID) => async dispatch => {
   }
 };
 
-export const acceptOrder = data => async dispatch => {
+export const acceptOrder = (data) => async (dispatch) => {
   dispatch(acceptOrderRequest());
   try {
     const res = await ShippingController.acceptOrder(data);
@@ -174,7 +187,7 @@ export const acceptOrder = data => async dispatch => {
   }
 };
 
-export const deliveringOrd = () => async dispatch => {
+export const deliveringOrd = () => async (dispatch) => {
   dispatch(deliveringOrdRequest());
   try {
     const res = await ShippingController.deliveringOrd();
@@ -187,7 +200,7 @@ export const deliveringOrd = () => async dispatch => {
   }
 };
 
-export const getShippingService = () => async dispatch => {
+export const getShippingService = () => async (dispatch) => {
   dispatch(getShippingServiceRequest());
   try {
     const res = await ShippingController.getShippingService();
@@ -200,7 +213,7 @@ export const getShippingService = () => async dispatch => {
   }
 };
 
-export const shipServiceUpdate = data => async dispatch => {
+export const shipServiceUpdate = (data) => async (dispatch) => {
   dispatch(shipServiceUpdateRequest());
   try {
     const res = await ShippingController.shipServiceUpdate(data);
@@ -210,12 +223,22 @@ export const shipServiceUpdate = data => async dispatch => {
   }
 };
 
-export const shippingGraph = sellerID => async dispatch => {
+export const shippingGraph = (sellerID) => async (dispatch) => {
   dispatch(shippingGraphRequest());
   try {
     const res = await ShippingController.shippingGraph(sellerID);
     dispatch(shippingGraphSuccess(res?.payload));
   } catch (error) {
     dispatch(shippingGraphError(error.message));
+  }
+};
+
+export const todayShippingStatus = (sellerID) => async (dispatch) => {
+  dispatch(todayShippingStatusRequest());
+  try {
+    const res = await ShippingController.todayShippingStatus(sellerID);
+    dispatch(todayShippingStatusSuccess(res?.payload));
+  } catch (error) {
+    dispatch(todayShippingStatusError(error.message));
   }
 };

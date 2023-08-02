@@ -6,7 +6,7 @@ const requestPermission = async () => {
   const settings = await notifee.requestPermission();
 
   if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
-    console.log('Permission settings:', settings);
+    // console.log('Permission settings:', settings);
   } else {
     console.log('User declined permissions');
   }
@@ -19,13 +19,13 @@ const getDeviceToken = async () => {
     const token = await messaging().getToken();
     return token;
   } catch (error) {
-    console.log('Error getting device token:', error);
+    // console.log('Error getting device token:', error);
     return null;
   }
 };
 
 // Handle incoming push notifications when the app is in the foreground
-const onMessageReceivedForeground = async message => {
+const onMessageReceivedForeground = async (message) => {
   await notifee.displayNotification({
     title: message.notification.title,
     body: message.notification.body,
@@ -36,7 +36,7 @@ const onMessageReceivedForeground = async message => {
 };
 
 // Handle incoming push notifications when the app is in the background or closed
-const onMessageReceivedBackground = async message => {
+const onMessageReceivedBackground = async (message) => {
   await notifee.displayNotification({
     title: message.notification.title,
     body: message.notification.body,
