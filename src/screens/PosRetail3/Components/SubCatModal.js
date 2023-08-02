@@ -5,25 +5,23 @@ import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
-import { styles } from '@/screens/PosRetail/PosRetail.styles';
+import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { cloth, crossButton, search_light } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { TYPES } from '@/Types/Types';
+import { useSelector } from 'react-redux';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
-export function BrandModal({ crossHandler, onSelectbrands }) {
+export function SubCatModal({ crossHandler, onSelectSubCategory, cancelSubCategory }) {
   const [selectedId, setSelectedId] = useState();
 
   const getRetailData = useSelector(getRetail);
-  const brandArray = getRetailData?.brands;
+  const subCatgories = getRetailData?.subCategories;
 
-  const isLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_BRAND], state)
-  );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_SUB_CATEGORY], state));
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
@@ -41,7 +39,9 @@ export function BrandModal({ crossHandler, onSelectbrands }) {
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity
-      onPress={() => onSelectbrands(item)}
+      onPress={() => {
+        onSelectSubCategory(item);
+      }}
       style={styles.catProArrayCon}
     >
       <Image source={{ uri: item.image }} style={styles.cloth} />
@@ -54,7 +54,7 @@ export function BrandModal({ crossHandler, onSelectbrands }) {
   const ListEmptyComponent = () => {
     return (
       <View style={{ marginTop: 50 }}>
-        <Text style={styles.categoryEmptyList}>Brand Not Found</Text>
+        <Text style={styles.categoryEmptyList}>Sub-Category Not Found</Text>
       </View>
     );
   };
@@ -62,13 +62,10 @@ export function BrandModal({ crossHandler, onSelectbrands }) {
     <View style={styles.categoryModalCon}>
       <Spacer space={SH(20)} />
       <View style={styles.displayflex}>
-        <Text style={styles.categories}>{strings.posRetail.brand}</Text>
+        <Text style={styles.categories}>{strings.posRetail.subCategories}</Text>
         <View style={[styles.displayRow]}>
-          <TouchableOpacity
-            style={styles.cancelCatCon}
-            onPress={() => alert('in Progress')}
-          >
-            <Text style={styles.catCancelText}>Cancel</Text>
+          <TouchableOpacity style={styles.cancelCatCon} onPress={cancelSubCategory}>
+            <Text style={styles.catCancelText}>Clear</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={crossHandler}>
             <Image source={crossButton} style={styles.crossButton} />
@@ -97,10 +94,10 @@ export function BrandModal({ crossHandler, onSelectbrands }) {
           </View>
         ) : (
           <FlatList
-            data={brandArray}
+            data={subCatgories}
             renderItem={renderItem}
-            keyExtractor={item => item.id}
-            extraData={brandArray}
+            keyExtractor={(item) => item.id}
+            extraData={subCatgories}
             numColumns={4}
             ListEmptyComponent={ListEmptyComponent}
           />

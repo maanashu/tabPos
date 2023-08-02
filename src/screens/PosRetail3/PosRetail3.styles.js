@@ -1,8 +1,9 @@
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW, ShadowStyles } from '@/theme';
 import { height, width } from '@/theme/ScalerDimensions';
 import { Dimensions, Platform, StyleSheet } from 'react-native';
-import { moderateScale, verticalScale, ms } from 'react-native-size-matters';
+import { Colors } from 'react-native-paper';
+import { moderateScale, verticalScale, ms, moderateVerticalScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -30,8 +31,7 @@ export const styles = StyleSheet.create({
   homeScreenCon: {
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
-    paddingHorizontal:
-      Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
+    paddingHorizontal: Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
   },
   searchScreenHeader: {
     height: SH(60),
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     // marginTop: ms(20),
     // marginHorizontal: ms(26),
-    marginBottom: ms(10),
+    // marginBottom: ms(10),
     borderRadius: ms(3),
     justifyContent: 'center',
     alignItems: 'center',
@@ -60,10 +60,10 @@ export const styles = StyleSheet.create({
   _totalAmountTitle: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
-    fontSize: ms(20),
+    fontSize: ms(17),
   },
   _dollarSymbol: {
-    fontSize: ms(20),
+    fontSize: ms(17),
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
     marginTop: ms(2),
@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
   _amount: {
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(30),
+    fontSize: ms(25),
   },
   _bottomContainer: {
     marginTop: ms(10),
@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
   },
   _boxView: {
     height: ms(110),
-    width: ms(118),
+    width: Platform.OS === 'ios' ? ms(103) : ms(120),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
     justifyContent: 'center',
@@ -115,10 +115,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     flex: 1,
     paddingHorizontal: moderateScale(12),
+    paddingVertical: verticalScale(10),
   },
   _inputMain: {
     marginTop: ms(15),
-    width: '98%',
+    width: Platform.OS === 'ios' ? ms(325) : ms(380),
   },
   _inputSubView: {
     flexDirection: 'row',
@@ -177,7 +178,7 @@ export const styles = StyleSheet.create({
     fontSize: ms(8),
   },
   _topContainer: {
-    position: 'absolute',
+    // position: 'absolute',
     marginLeft: ms(25),
     width: '98%',
     alignItems: 'center',
@@ -195,30 +196,38 @@ export const styles = StyleSheet.create({
   _payBYBoxContainer: {
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
-    height: ms(110),
+    height: ms(125),
+    width: Platform.OS === 'ios' ? ms(122) : ms(157),
+    marginHorizontal: ms(3),
+    borderRadius: ms(6),
+    // justifyContent: 'center',
+    alignItems: 'center',
+    padding: ms(10),
+  },
+  _payBYBoxContainerEmpty: {
+    height: ms(125),
     width: ms(170),
     margin: ms(3),
-    borderRadius: ms(6),
-    justifyContent: 'center',
     alignItems: 'center',
+    padding: ms(10),
   },
   _payByTitle: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: ms(9),
-    marginBottom: ms(5),
+    marginBottom: ms(3),
   },
   _payByMethod: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
     fontSize: ms(14),
-    marginTop: ms(4),
+    marginTop: ms(2),
   },
   _payByAmount: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
     fontSize: ms(10),
-    marginTop: ms(4),
+    marginTop: ms(2),
   },
   _payByIcon: {
     height: ms(22),
@@ -260,7 +269,7 @@ export const styles = StyleSheet.create({
   },
   _orContainer: {
     flexDirection: 'row',
-    marginVertical: ms(5),
+    // marginVertical: ms(3),
     alignItems: 'center',
   },
   _borderView: {
@@ -281,7 +290,7 @@ export const styles = StyleSheet.create({
     marginTop: ms(20),
   },
   itemLIistCon: {
-    width: windowWidth * 0.65,
+    width: windowWidth * 0.67,
     height: windowHeight * 0.88,
     backgroundColor: COLORS.white,
     borderRadius: 10,
@@ -289,50 +298,26 @@ export const styles = StyleSheet.create({
     paddingTop: verticalScale(8),
   },
   rightSideCon: {
-    width: windowWidth * 0.26,
+    width: windowWidth * 0.22,
     height: windowHeight * 0.87,
-    paddingHorizontal: moderateScale(4),
+    // paddingHorizontal: moderateScale(8),
     paddingBottom: verticalScale(4),
-    // backgroundColor: COLORS.white,
-    // backgroundColor: COLORS.textInputBackground,
+    // borderWidth: 1,
   },
-  chooseCategoryCon: {
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 7,
-    width: windowWidth * 0.2,
-    height: SH(45),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: moderateScale(8),
-  },
+
   categoryMenu: {
     width: SW(7),
     height: SW(7),
     resizeMode: 'contain',
+    tintColor: COLORS.primary,
   },
-  chooseCat: {
-    color: COLORS.black,
-    fontSize: SF(13),
-    fontFamily: Fonts.Medium,
-    width: windowWidth * 0.16,
-  },
+
   contentContainer: {
     flex: 1,
     justifyContent: 'space-between',
     paddingHorizontal: SW(2),
   },
-  barcodeInputWraper: {
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    backgroundColor: COLORS.textInputBackground,
-    borderRadius: 7,
-    width: windowWidth * 0.41,
-    height: SH(45),
-    marginRight: 8,
-    justifyContent: 'center',
-  },
+
   allProduct: {
     color: COLORS.solid_grey,
     fontSize: SF(13),
@@ -349,22 +334,6 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     // paddingTop: verticalScale(5),
     paddingHorizontal: moderateScale(4),
-  },
-  productCon: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.115 : windowWidth * 0.117,
-    height: Platform.OS === 'ios' ? windowHeight * 0.22 : windowHeight * 0.25,
-    backgroundColor: COLORS.white,
-    borderRadius: 5,
-    paddingHorizontal: moderateScale(3),
-    paddingBottom: verticalScale(5),
-    marginTop: verticalScale(5),
-    marginLeft: 6,
-  },
-  categoryshoes: {
-    width: windowWidth * 0.117,
-    height: windowHeight * 0.11,
-    resizeMode: 'contain',
-    alignSelf: 'center',
   },
   productDes: {
     color: COLORS.black,
@@ -389,21 +358,39 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   holdCartCon: {
-    width: windowWidth * 0.1,
+    width: windowWidth * 0.09,
     height: SH(38),
     borderRadius: 5,
-    backgroundColor: COLORS.marshmallow,
+    backgroundColor: COLORS.white,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+  },
+  holdCartPad: {
+    width: windowWidth * 0.03,
+    height: SH(38),
+    borderRadius: 5,
+    backgroundColor: COLORS.white,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
   },
   pause: {
-    width: SW(7),
-    height: SW(7),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
+    tintColor: COLORS.dark_grey,
+  },
+  keyboardIcon: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+    tintColor: COLORS.dark_grey,
   },
   holdCart: {
-    color: COLORS.white,
+    color: COLORS.dark_grey,
     fontSize: SF(12),
     fontFamily: Fonts.Bold,
     paddingHorizontal: moderateScale(3),
@@ -417,89 +404,23 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   nameAddCon: {
-    borderWidth: 1,
-    height:
-      Platform.OS === 'android' ? windowHeight * 0.35 : windowHeight * 0.37,
-    borderColor: COLORS.solidGrey,
+    height: Platform.OS === 'android' ? windowHeight * 0.38 : windowHeight * 0.37,
     borderRadius: 5,
-    paddingHorizontal: moderateScale(5),
-  },
-  sideBarInputWraper: {
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 7,
-    alignItems: 'center',
-    height: Platform.OS === 'android' ? SH(40) : SH(45),
-    justifyContent: 'center',
-    marginTop: 5,
-    // paddingLeft: moderateScale(22),
     backgroundColor: COLORS.white,
   },
-  sideSearchStyle: {
-    width: SW(6),
-    height: SW(6),
-    resizeMode: 'contain',
-    marginLeft: moderateScale(10),
-    marginRight: moderateScale(5),
-    tintColor: COLORS.gerySkies,
-  },
-  sideBarsearchInput: {
-    borderRadius: 7,
-    width: windowWidth * 0.24,
-    fontFamily: Fonts.Italic,
-    fontSize: SF(12),
-    color: COLORS.solid_grey,
-    height: SH(40),
-    flex: 1,
-  },
-  nameAddSingleCon: {
-    borderColor: COLORS.solidGrey,
-    borderRadius: 7,
+  avaliableOfferCon: {
+    height: windowHeight * 0.05,
+    borderTopEndRadius: 5,
+    borderTopLeftRadius: 5,
+    backgroundColor: COLORS.dark_grey,
     justifyContent: 'center',
-    height: Platform.OS === 'android' ? SH(40) : SH(45),
-    backgroundColor: COLORS.textInputBackground,
-    marginTop: 5,
+    paddingHorizontal: moderateScale(5),
   },
-  Phonelight: {
-    width: SW(5),
-    height: SW(5),
-    resizeMode: 'contain',
-    tintColor: COLORS.darkGray,
-    marginLeft: moderateScale(10),
-    marginRight: moderateScale(5),
-  },
-  terryText: {
-    color: COLORS.solid_grey,
-    fontSize: SF(14),
-    fontFamily: Fonts.Regular,
-  },
-  lockLight: {
-    width: SW(6),
-    height: SW(6),
-    resizeMode: 'contain',
-    paddingHorizontal: moderateScale(10),
-  },
-  okButtonCon: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.dark_grey,
-    width: windowWidth * 0.24,
-    alignSelf: 'center',
-    borderRadius: 5,
-    height: Platform.OS === 'android' ? SH(40) : SH(45),
-    marginTop: 5,
-  },
-  okText: {
-    color: COLORS.white,
-    fontSize: SF(14),
-    fontFamily: Fonts.SemiBold,
-  },
+
   addDiscountCon: {
     backgroundColor: COLORS.blue_shade,
     height: Platform.OS === 'android' ? SH(40) : SH(45),
-    width: windowWidth * 0.12,
+    width: windowWidth * 0.1,
     borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -551,14 +472,14 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   checkoutButtonSideBar: {
-    width: windowWidth * 0.25,
+    width: windowWidth * 0.22,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.primary,
     alignSelf: 'center',
     borderRadius: 5,
-    paddingVertical: verticalScale(7),
+    paddingVertical: verticalScale(5),
   },
   checkoutText: {
     color: COLORS.white,
@@ -604,7 +525,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    width: windowWidth * 0.123,
+    width: windowWidth * 0.12,
     justifyContent: 'center',
     paddingHorizontal: moderateScale(10),
     marginTop: verticalScale(5),
@@ -963,11 +884,6 @@ export const styles = StyleSheet.create({
     // alignContent: 'center',
   },
 
-  tableListSide: {
-    width: windowWidth * 0.25,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   listLeft: {
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -997,7 +913,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
-    marginVertical: verticalScale(4),
+    marginVertical: verticalScale(2),
     // alignContent: 'center',
   },
   blueListDataText: {
@@ -1099,10 +1015,11 @@ export const styles = StyleSheet.create({
   _kContainer: {
     height: ms(200),
     width: ms(300),
-    backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: ms(5),
+    ...ShadowStyles.shadow2,
+    backgroundColor: COLORS.white,
   },
   _kCenterContainer: {
     height: '100%',
@@ -1251,11 +1168,7 @@ export const styles = StyleSheet.create({
     marginTop: ms(10),
     color: COLORS.white,
   },
-  addToCart: {
-    width: SW(10),
-    height: SW(10),
-    resizeMode: 'contain',
-  },
+
   cancelCatCon: {
     width: SW(30),
     height: SW(10),
@@ -1275,5 +1188,815 @@ export const styles = StyleSheet.create({
     color: COLORS.primary,
     fontFamily: Fonts.Regular,
     alignSelf: 'center',
+  },
+
+  // ******new desgin css  start******
+
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.textInputBackground,
+  },
+
+  displayflex: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  displayRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  displayflex2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  homeScreenCon: {
+    flex: 1,
+    backgroundColor: COLORS.textInputBackground,
+    paddingHorizontal: Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
+  },
+  productView: {
+    backgroundColor: Colors.white,
+    borderTopLeftRadius: 10,
+    borderTopEndRadius: 10,
+    width: Platform.OS === 'android' ? windowWidth * 0.84 : windowWidth * 0.83,
+    height: windowHeight * 0.88,
+    paddingTop: verticalScale(6),
+    paddingHorizontal: moderateScale(10),
+  },
+  rightSideView: {
+    backgroundColor: Colors.white,
+    borderRadius: 10,
+    width: windowWidth * 0.06,
+    height: windowHeight * 0.86,
+    paddingVertical: verticalScale(6),
+    alignItems: 'center',
+  },
+  sideBarImage: {
+    width: SW(9),
+    height: SW(9),
+    resizeMode: 'contain',
+  },
+  crossImage: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+    tintColor: COLORS.darkGray,
+  },
+  crossView: {
+    width: SW(10),
+    height: SW(10),
+    position: 'absolute',
+    right: ms(5),
+    top: ms(2),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bucketBackgorund: {
+    width: SW(17),
+    height: SW(17),
+    borderRadius: 5,
+    backgroundColor: COLORS.textInputBackground,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  chooseCategoryCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 7,
+    width: windowWidth * 0.15,
+    height: SH(45),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(7),
+    marginHorizontal: moderateVerticalScale(5),
+  },
+  chooseCat: {
+    color: COLORS.black,
+    fontSize: SF(13),
+    fontFamily: Fonts.Medium,
+    width: windowWidth * 0.11,
+  },
+
+  barcodeInputWraper: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 7,
+    width: Platform.OS === 'android' ? windowWidth * 0.38 : windowWidth * 0.3,
+    height: SH(45),
+    justifyContent: 'center',
+  },
+  cartSearchInputWraper: {
+    width: windowWidth * 0.42,
+    paddingHorizontal: ms(5),
+  },
+  sideSearchStyle: {
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+    marginLeft: moderateScale(5),
+    marginRight: moderateScale(5),
+    tintColor: COLORS.gerySkies,
+  },
+  productImageStyle: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    marginHorizontal: ms(4),
+
+    tintColor: COLORS.darkGray,
+  },
+  crossStyling: {
+    width: SW(4),
+    height: SW(4),
+  },
+  sideBarsearchInput: {
+    borderRadius: 7,
+    width: windowWidth * 0.14,
+    fontFamily: Fonts.Italic,
+    fontSize: SF(11),
+    color: COLORS.solid_grey,
+    height: SH(40),
+  },
+  searchCartInput: {
+    width: windowWidth * 0.35,
+  },
+  allProduct: {
+    color: COLORS.solid_grey,
+    fontSize: SF(18),
+    fontFamily: Fonts.SemiBold,
+  },
+  productCount: {
+    color: COLORS.darkGray,
+    fontSize: SF(14),
+    fontFamily: Fonts.Italic,
+  },
+  hr: {
+    borderWidth: 0.4,
+    borderColor: COLORS.solidGrey,
+  },
+  productCon: {
+    width: Platform.OS === 'ios' ? windowWidth * 0.105 : windowWidth * 0.11,
+    // height: Platform.OS === 'ios' ? windowHeight * 0.23 : windowHeight * 0.26,
+    backgroundColor: COLORS.white,
+    borderRadius: 5,
+    paddingHorizontal: moderateScale(3),
+    // paddingBottom: verticalScale(5),
+    marginTop: verticalScale(5),
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
+  categoryshoes: {
+    width: Platform.OS === 'ios' ? windowWidth * 0.09 : windowWidth * 0.1,
+    height: windowHeight * 0.11,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  productDes: {
+    color: COLORS.black,
+    fontSize: SF(11),
+    fontFamily: Fonts.Medium,
+  },
+  productSubHead: {
+    color: COLORS.darkGray,
+    fontSize: SF(11),
+    fontFamily: Fonts.Italic,
+  },
+  productPrice: {
+    color: COLORS.black,
+    fontSize: SF(12),
+    fontFamily: Fonts.SemiBold,
+  },
+  addToCart: {
+    width: ms(28),
+    height: ms(28),
+    resizeMode: 'contain',
+  },
+  sideAddToCart: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+  },
+  bucketBadge: {
+    borderWidth: 2,
+    width: Platform.OS === 'ios' ? ms(11) : ms(13),
+    height: Platform.OS === 'ios' ? ms(11) : ms(13),
+    borderRadius: ms(10),
+    position: 'absolute',
+    right: Platform.OS === 'ios' ? 7 : 8,
+    bottom: Platform.OS === 'ios' ? 6 : 7,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.dark_grey,
+    backgroundColor: COLORS.solidGrey,
+  },
+  productBadge: {
+    width: ms(10),
+    height: ms(10),
+    borderRadius: ms(10),
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.dark_grey,
+    backgroundColor: COLORS.primary,
+  },
+  bucketBadgePrimary: {
+    borderColor: COLORS.white,
+    backgroundColor: COLORS.primary,
+  },
+  badgetext: {
+    color: COLORS.dark_grey,
+    fontSize: SF(11),
+    fontFamily: Fonts.SemiBold,
+  },
+  productBadgeText: {
+    color: COLORS.white,
+    fontSize: SF(11),
+    fontFamily: Fonts.Regular,
+  },
+
+  holdBadge: {
+    borderWidth: 2,
+    width: ms(13),
+    height: ms(13),
+    borderRadius: ms(10),
+    position: 'absolute',
+    right: -5,
+    bottom: -6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.gerySkies,
+    backgroundColor: COLORS.white,
+  },
+  holdBadgetext: {
+    color: COLORS.gerySkies,
+    fontSize: SF(11),
+    fontFamily: Fonts.SemiBold,
+  },
+
+  //NEW DESIGN
+
+  //Tip
+  _payBYBoxContainerTip: {
+    borderColor: COLORS.solidGrey,
+    borderWidth: 1,
+    height: ms(50),
+    width: Platform.OS === 'ios' ? ms(90) : ms(116),
+    marginHorizontal: ms(3),
+    borderRadius: ms(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  _payByAmountTip: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: ms(9),
+    marginTop: ms(4),
+  },
+  _payByMethodTip: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: ms(12),
+    marginTop: ms(4),
+  },
+
+  //Recipe
+
+  _payBYBoxContainerReceipe: {
+    borderColor: COLORS.solidGrey,
+    borderWidth: 1,
+    height: ms(45),
+    width: Platform.OS === 'ios' ? ms(122) : ms(157),
+    margin: ms(3),
+    borderRadius: ms(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  _payBYBoxContainerReceipeEmpty: {
+    height: ms(50),
+    width: ms(170),
+    margin: ms(3),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  _payByAmountReceipe: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: ms(9),
+    marginTop: ms(4),
+  },
+  _payByMethodReceipe: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: ms(12),
+    // marginTop: ms(4),
+  },
+  selectTips: {
+    fontSize: ms(11),
+    margin: ms(3),
+    fontFamily: Fonts.Regular,
+    color: COLORS.gerySkies,
+  },
+  saveView: {
+    backgroundColor: '#F5F6F7',
+    height: ms(15),
+    width: ms(80),
+    margin: ms(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  saveText: {
+    fontSize: ms(8),
+    fontFamily: Fonts.Medium,
+  },
+  _kCenterContainer: {
+    height: '100%',
+    alignSelf: 'flex-end',
+    flex: 0.6,
+    borderLeftWidth: 1,
+    borderColor: COLORS.textInputBackground,
+    alignItems: 'center',
+  },
+  _kSubCenterContainer: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(7),
+    marginTop: ms(5),
+  },
+  _kAddress: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: ms(6),
+    marginTop: ms(5),
+  },
+  _kNumber: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: ms(6),
+    marginTop: ms(3),
+  },
+  _flatListContainer: { height: ms(100), width: '100%', marginTop: ms(5) },
+  _barCode: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(10),
+    color: COLORS.dark_grey,
+  },
+  _barCodeImage: { height: ms(25), width: '70%', marginTop: ms(5) },
+  _thankyou: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(11),
+    color: COLORS.dark_grey,
+    marginTop: ms(10),
+  },
+  _cashRemainView: {
+    marginTop: ms(15),
+    height: 1,
+    width: '50%',
+    backgroundColor: COLORS.silver_solid,
+  },
+  _cashRemainText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(15),
+    color: COLORS.solid_grey,
+    marginTop: ms(10),
+  },
+  _printButton: {
+    width: '30%',
+    height: ms(26),
+    backgroundColor: 'transparent',
+    borderColor: COLORS.lineGrey,
+    borderWidth: 0.2,
+    borderRadius: ms(1),
+    marginHorizontal: moderateScale(5),
+  },
+  _printBtnText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(7),
+    color: COLORS.darkGray,
+    fontWeight: 'normal',
+  },
+  noProductText: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: verticalScale(50),
+  },
+  emptyListText: {
+    fontSize: SF(16),
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+  },
+
+  avaliableOferBodyCon: {
+    height: Platform.OS === 'android' ? windowHeight * 0.07 : windowHeight * 0.07,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: ms(10),
+    paddingVertical: verticalScale(7),
+  },
+  offerImage: {
+    width: SW(11),
+    height: SW(11),
+    resizeMode: 'contain',
+  },
+  offerText: {
+    color: COLORS.dark_grey,
+    fontSize: SF(10),
+    fontFamily: Fonts.Medium,
+  },
+  offerPrice: {
+    color: COLORS.darkGray,
+    fontSize: SF(9),
+    fontFamily: Fonts.Regular,
+  },
+  offerPriceDark: {
+    color: COLORS.dark_grey,
+    fontSize: SF(9),
+    fontFamily: Fonts.SemiBold,
+  },
+  cartListModalView: {
+    width: windowWidth * 0.43,
+    height: windowHeight * 0.9,
+    backgroundColor: COLORS.white,
+    position: 'absolute',
+    top: -40,
+    right: -50,
+    borderRadius: 10,
+    padding: 18,
+  },
+  shortestCartListBody: {
+    width: windowWidth * 0.35,
+  },
+  cartListIconBody: {
+    width: windowWidth * 0.04,
+  },
+  carttoAdd: {
+    color: COLORS.dark_grey,
+    fontSize: SF(17),
+    fontFamily: Fonts.MaisonBold,
+    marginLeft: 8,
+  },
+  shortCartListData: {
+    borderWidth: 1,
+    width: windowWidth * 0.35,
+    height: SH(48),
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    marginVertical: verticalScale(2),
+    paddingHorizontal: ms(5),
+  },
+  shorttableListSide: {
+    width: windowWidth * 0.12,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  ShorttableListSide2: {
+    width: windowWidth * 0.23,
+    flexDirection: 'row',
+    paddingHorizontal: ms(5),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  shortCartListHeight: {
+    height: windowHeight * 0.7,
+  },
+
+  //PHONE POPUP
+  calendarSettingModalContainer: {
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.84,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    borderRadius: 7,
+    alignItems: 'center',
+    borderWidth: 1,
+    paddingHorizontal: moderateVerticalScale(7),
+    paddingVertical: verticalScale(15),
+    position: 'absolute',
+  },
+  _btnContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    width: windowWidth * 0.35,
+  },
+  declineBtnContainer: {
+    height: ms(40),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.textInputBackground,
+    flex: 1,
+    borderRadius: ms(3),
+  },
+  acceptbtnContainer: {
+    height: ms(40),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.primary,
+    flex: 1,
+    borderRadius: ms(3),
+    marginLeft: ms(8),
+  },
+  declineText: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(8),
+    color: COLORS.dark_grey,
+  },
+
+  input: {
+    width: '90%',
+    height: 70,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  numberPad: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: windowWidth * 0.35,
+    marginVertical: SW(7),
+  },
+  submitButton: {
+    backgroundColor: COLORS.primary,
+    width: windowWidth * 0.32,
+    height: SH(60),
+  },
+  buttonText: {
+    color: COLORS.darkGray,
+    fontSize: SF(14),
+    fontFamily: Fonts.SemiBold,
+  },
+
+  keyPadButton: {
+    height: SH(110),
+    width: SH(125),
+    justifyContent: 'center',
+    borderColor: COLORS.gerySkies,
+    alignItems: 'center',
+    borderWidth: 0.3,
+    // borderRadius: 5,
+    // overflow: 'hidden',
+  },
+  outerBorderRadius: {
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  keyPadText: {
+    fontSize: SH(28),
+    fontFamily: Fonts.Medium,
+    color: COLORS.solid_grey,
+  },
+  textInputView: {
+    paddingHorizontal: SW(4),
+    borderWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: windowHeight * 0.08,
+    width: windowWidth * 0.33,
+    borderWidth: 1,
+    borderColor: '#D8D8D8',
+    borderRadius: 5,
+  },
+  dropDownIcon: {
+    width: 7,
+    height: 7,
+    resizeMode: 'contain',
+  },
+  countryCodeText: {
+    color: COLORS.black,
+    fontSize: SF(18),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(8),
+  },
+  textInputContainer: {
+    color: COLORS.black,
+    fontSize: SF(16),
+    fontFamily: Fonts.Italic,
+    width: windowWidth * 0.2,
+  },
+
+  jobrSaveView: {
+    borderColor: COLORS.primary,
+    borderWidth: 1,
+    height: ms(50),
+    // width: ms(40),
+    margin: ms(3),
+    borderRadius: ms(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: ms(25),
+  },
+  youSave: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.primary,
+    fontSize: ms(9),
+    marginBottom: ms(5),
+  },
+  saveJBR: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+    fontSize: ms(14),
+    marginTop: ms(4),
+  },
+
+  jbrContainer: {
+    flexDirection: 'row',
+    alignItems: 'baseline', // To align "JBR" and the percentage value on the same baseline
+  },
+  jbrText: {
+    fontFamily: Fonts.Bold,
+    color: COLORS.primary,
+    fontSize: ms(11),
+
+    marginTop: ms(4),
+    alignSelf: 'flex-start',
+    marginRight: ms(3),
+    // You can apply any other styles you want for "JBR"
+  },
+  savePercent: {
+    fontFamily: Fonts.Bold,
+    color: COLORS.primary,
+    fontSize: ms(15),
+    marginTop: ms(4), // Set your desired font size for the percentage value
+    // Add any other styles you want for the percentage value here
+  },
+
+  //Email Modal
+
+  emailModalContainer: {
+    width: ms(350),
+    height: ms(160),
+    backgroundColor: 'white',
+    // padding: ms(10),
+    paddingVertical: ms(15),
+    alignSelf: 'center',
+    borderRadius: ms(10),
+    alignItems: 'center',
+  },
+  modalHeaderCon: {
+    height: SH(80),
+    width: ms(300),
+    // paddingHorizontal: moderateScale(0),
+    justifyContent: 'center',
+  },
+  crossButton: {
+    width: SW(9),
+    height: SW(9),
+    resizeMode: 'contain',
+  },
+  crossButtonCon: {
+    width: SW(13),
+    height: SW(13),
+    // justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalDataCon: {
+    width: windowWidth * 0.38,
+    alignSelf: 'center',
+    flex: 1,
+  },
+  flexRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  twoStepText: {
+    fontSize: SF(25),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.black,
+    textAlign: 'left',
+  },
+
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    width: ms(300),
+    height: ms(40),
+    marginTop: ms(25),
+    padding: 15,
+  },
+  textInput: {
+    flex: 1,
+    height: 45,
+    fontSize: ms(10),
+    paddingHorizontal: 15,
+  },
+  payNowButton: {
+    height: ms(30),
+    width: ms(70),
+    backgroundColor: COLORS.darkGray,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // marginHorizontal:ms(5)
+  },
+  payNowButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  //  final payment design css start
+  leftCon: {
+    backgroundColor: COLORS.white,
+    borderRadius: 8,
+    width: windowWidth * 0.65,
+    height: windowHeight * 0.9,
+  },
+  rightCon: {
+    backgroundColor: COLORS.white,
+    borderRadius: 8,
+    width: Platform.OS === 'ios' ? windowWidth * 0.23 : windowWidth * 0.25,
+    height: windowHeight * 0.9,
+  },
+  //  final payment design css end
+
+  selectTipsHeader: {
+    backgroundColor: COLORS.blue_shade,
+    borderTopLeftRadius: 8,
+    borderTopEndRadius: 8,
+    paddingVertical: verticalScale(6),
+  },
+
+  // jbrcoin modal popup
+  scanPopUpCon: {
+    width: ms(360),
+    height: ms(365),
+    backgroundColor: COLORS.white,
+    alignSelf: 'center',
+    borderRadius: 10,
+  },
+  scanPopHeader: {
+    borderBottomWidth: 1,
+    height: ms(35),
+    paddingHorizontal: ms(15),
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    borderColor: COLORS.solidGrey,
+  },
+  prouductAndServiceCon: {
+    borderWidth: 1,
+    width: Platform.OS === 'ios' ? windowWidth * 0.11 : windowWidth * 0.01,
+    height: SH(45),
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginHorizontal: ms(5),
+  },
+  productText: {
+    fontSize: SF(14),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+  },
+  allProductSection: {
+    width: windowWidth * 0.12,
+  },
+
+  avalibleServiceCon: {
+    borderWidth: 0.5,
+    marginVertical: ms(3),
+    width: Platform.OS === 'ios' ? windowWidth * 0.095 : windowWidth * 0.1,
+    height: windowHeight * 0.15,
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+  },
+  availableTimeCon: {
+    backgroundColor: COLORS.darkGray,
+    width: Platform.OS === 'ios' ? windowWidth * 0.095 : windowWidth * 0.1,
+    height: windowHeight * 0.035,
+    borderBottomEndRadius: 5,
+    borderBottomLeftRadius: 5,
+    justifyContent: 'center',
+    paddingHorizontal: ms(5),
+  },
+  availableTime: {
+    fontSize: SF(7),
+    fontFamily: Fonts.Italic,
+    color: COLORS.white,
+  },
+  categoryFilterCon: {
+    zIndex: 999,
+    position: 'absolute',
+    right: 10,
+    top: 72,
+    borderRadius: 5,
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.8,
+    // height: ms(100),
+    backgroundColor: COLORS.textInputBackground,
   },
 });

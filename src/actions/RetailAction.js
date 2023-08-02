@@ -509,6 +509,26 @@ export const saveBulkOrderDataReset = () => ({
   payload: null,
 });
 
+const attachCustomerRequest = () => ({
+  type: TYPES.ATTACH_CUSTOMER_REQUEST,
+  payload: null,
+});
+
+const attachCustomerSuccess = (attachCustomer) => ({
+  type: TYPES.ATTACH_CUSTOMER_SUCCESS,
+  payload: attachCustomer,
+});
+
+const attachCustomerReset = () => ({
+  type: TYPES.ATTACH_CUSTOMER_RESET,
+  payload: null,
+});
+
+const attachCustomerError = (error) => ({
+  type: TYPES.ATTACH_CUSTOMER_ERROR,
+  payload: { error },
+});
+
 export const getCategory = (sellerID) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -868,5 +888,17 @@ export const bulkCreate = (data) => async (dispatch) => {
     console.log('response, action eroo', JSON.stringify(error));
 
     dispatch(bulkCreateError(error));
+  }
+};
+export const attachCustomer = (data) => async (dispatch) => {
+  dispatch(attachCustomerRequest());
+  try {
+    const res = await RetailController.attachCustomer(data);
+    return dispatch(attachCustomerSuccess(res));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(attachCustomerReset());
+    }
+    dispatch(attachCustomerError(error.message));
   }
 };

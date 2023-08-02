@@ -8,12 +8,11 @@ const INITIALSTATE = {
   deliveryOrd: {},
   deliverygraph: {},
   deliveringOrder: [],
+  todayOrderStatus: {},
+  getOrderstatistics: [],
 };
 
-export const deliveryReducer = (
-  state = { INITIALSTATE },
-  { payload, type }
-) => {
+export const deliveryReducer = (state = INITIALSTATE, { payload, type }) => {
   switch (type) {
     case TYPES.GET_ORDER_COUNT_SUCCESS:
       return {
@@ -50,13 +49,11 @@ export const deliveryReducer = (
         ...state,
         deliveryOrd: [],
       };
-
     case TYPES.DELIVERY_GRAPH_SUCCESS:
       return {
         ...state,
         deliverygraph: payload.deliverygraph,
       };
-
     case TYPES.DELIVERING_ORDER_SUCCESS:
       return {
         ...state,
@@ -67,10 +64,16 @@ export const deliveryReducer = (
         ...state,
         deliveringOrder: [],
       };
-
-    // case TYPES.CLEAR_STORE :
-    // return INITIALSTATE
-
+    case TYPES.TODAY_ORDER_STATUS_SUCCESS:
+      return {
+        ...state,
+        todayOrderStatus: payload?.orderStatus,
+      };
+    case TYPES.GET_ORDER_STATISTICS_SUCCESS:
+      return {
+        ...state,
+        getOrderstatistics: payload.getOrderstatistics,
+      };
     default:
       return state;
   }

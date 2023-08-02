@@ -18,23 +18,13 @@ export class DashboardController {
       //   ApiOrderInventory.getOrderUser +
       //   `?seller_id=${sellerID}&delivery_option=1&page=${page}&limit=10`;
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getOrderUser +
-        `?seller_id=${sellerID}&delivery_option=1`;
+        ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&delivery_option=1`;
 
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
-          // {
-          //   Toast.show({
-          //     text2: error.msg,
-          //     position: 'bottom',
-          //     type: 'error_toast',
-          //     visibilityTime: 1500,
-          //   });
-          // }
+        .catch((error) => {
           reject(error);
         });
     });
@@ -44,10 +34,10 @@ export class DashboardController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
       HttpClient.post(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -62,7 +52,7 @@ export class DashboardController {
       };
 
       HttpClient.post(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response?.msg === 'PosCart created successfully') {
             Toast.show({
               position: 'bottom',
@@ -73,7 +63,7 @@ export class DashboardController {
           }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -105,7 +95,7 @@ export class DashboardController {
           };
 
       HttpClient.post(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response?.msg === 'Create drawer activity.') {
             Toast.show({
               position: 'bottom',
@@ -116,7 +106,7 @@ export class DashboardController {
           }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -131,14 +121,12 @@ export class DashboardController {
   static async getTotalSale(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getTotalSale +
-        `?seller_id=${sellerID}&filter=today`;
+        ORDER_URL + ApiOrderInventory.getTotalSale + `?seller_id=${sellerID}&filter=today`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           {
             Toast.show({
               text2: error.msg,
@@ -156,10 +144,10 @@ export class DashboardController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.posLoginDetail;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           {
             Toast.show({
               text2: error?.msg,
@@ -180,10 +168,10 @@ export class DashboardController {
         ApiProductInventory.searchProductList +
         `?app_name=pos&delivery_options=3&search=${search}&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -191,13 +179,12 @@ export class DashboardController {
 
   static async onLineOrders(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL + ApiOrderInventory.onLineOrders + `?seller_id=${sellerID}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.onLineOrders + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           {
             Toast.show({
               text2: error.msg,

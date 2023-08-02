@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Keyboard, Text, View } from 'react-native';
+import { Keyboard, Text, View } from 'react-native';
 
 import { COLORS, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -10,46 +10,26 @@ import {
   addDiscountPic,
   addToCart,
   borderCross,
-  categoryMenu,
-  categoryshoes,
   checkArrow,
-  cloth,
   clothes,
-  columbiaMen,
-  crossBg,
-  crossButton,
-  email,
+  cross,
   eraser,
-  Fonts,
   holdCart,
-  keyboard,
-  location,
   minus,
   notess,
-  ok,
-  pause,
-  Phone_light,
   plus,
   rightBack,
   search_light,
   sideKeyboard,
-  terryProfile,
 } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import Modal from 'react-native-modal';
-import { CategoryModal } from './CategoryModal';
-import { SubCatModal } from './SubCatModal';
-import { BrandModal } from './BrandModal';
-import { catTypeData } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import {
-  addTocart,
   clearAllCart,
-  clearOneCart,
   getAllCartSuccess,
   getUserDetail,
   getUserDetailSuccess,
@@ -61,68 +41,47 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
-import { useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-export function CartScreen({
-  onPressPayNow,
-  crossHandler,
-  addNotesHandler,
-  addDiscountHandler,
-}) {
+
+export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   let arr = [getRetailData?.getAllCart];
-  const [selectedId, setSelectedId] = useState();
-  const [categoryModal, setCategoryModal] = useState(false);
-  const [subCategoryModal, setSubCategoryModal] = useState(false);
-  const [brandModal, setBrandModal] = useState(false);
-  const [catTypeId, setCatTypeId] = useState();
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
-  const [storeUser, setStoreUser] = useState();
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
 
   const [userName, setUserName] = useState('');
-  const [userPhoneNo, setUserPhoneNo] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAdd, setUserAdd] = useState('');
+  const [cartSearch, setCartSearch] = useState('');
 
-  const [itemCart, setItemCart] = useState();
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
-  const [count, setCount] = useState(itemCart?.qty ?? '0');
-
-  const [okk, setOkk] = useState(false);
-
-  const isLoading = useSelector(state =>
-    isLoadingSelector([TYPES.ADDCART], state)
-  );
-  
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        var arr=getRetailData?.getAllCart;
-        // console.log("RESSSPSPPSPS",JSON.stringify(arr));
-        if(arr.poscart_products.length>0){
+        var arr = getRetailData?.getAllCart;
+        if (arr.poscart_products.length > 0) {
           const products = arr.poscart_products.map((item) => ({
             product_id: item?.product_id,
             qty: item?.qty,
           }));
-        
-           const data={
-            "updated_products":products
+
+          const data = {
+            updated_products: products,
+          };
+          dispatch(updateCartQty(data, arr.id));
+        } else {
+          clearCartHandler();
         }
-          dispatch(updateCartQty(data,arr.id));
-        }
-        else{
-          clearCartHandler()
-        }
-     };
+      };
     }, [])
   );
-  
-  const updateQuantity = (cartId, productId, operation,index) => {
+
+  const updateQuantity = (cartId, productId, operation, index) => {
     // const updatedArr = [...arr];
-  
+
     // const cartItem = updatedArr
     //   .find(item => item.id === cartId)
     //   ?.poscart_products.find(product => product.id === productId);
@@ -141,92 +100,43 @@ export function CartScreen({
     //     service_id: cartItem?.service_id,
     //     qty: cartItem?.qty,
     //   };
-      
+
     //   dispatch(addTocart(data));
     //   // dispatch(createCartAction(withoutVariantObject));
     // }
 
+    //Mukul code----->
 
-     //Mukul code----->
+    var arr = getRetailData?.getAllCart;
+    const product = arr.poscart_products[index];
+    const productPrice = product.product_details.price;
 
-      var arr=getRetailData?.getAllCart
-      const product = arr.poscart_products[index];
-      const productPrice = product.product_details.price;
-
-      if (operation === '+') {
-        product.qty += 1;
-        arr.amount.total_amount += productPrice;
-        arr.amount.products_price += productPrice;
-      } else if (operation === '-') {
-        if (product.qty > 0) {
-          if(product.qty==1){
-            arr.poscart_products.splice(index, 1);
-         }
-          product.qty -= 1;
-          arr.amount.total_amount -= productPrice;
-          arr.amount.products_price -= productPrice;
-       
+    if (operation === '+') {
+      product.qty += 1;
+      arr.amount.total_amount += productPrice;
+      arr.amount.products_price += productPrice;
+    } else if (operation === '-') {
+      if (product.qty > 0) {
+        if (product.qty == 1) {
+          arr.poscart_products.splice(index, 1);
         }
+        product.qty -= 1;
+        arr.amount.total_amount -= productPrice;
+        arr.amount.products_price -= productPrice;
       }
-      var DATA={
-      payload:arr
-      }
-      dispatch(getAllCartSuccess(DATA))
-  };
-  const addCustomerHandler = () => {
-    if (!userName) {
-      Toast.show({
-        position: 'top',
-        type: 'error_toast',
-        text2: 'Please enter user Name',
-        visibilityTime: 2000,
-      });
-    } else if (!userEmail) {
-      Toast.show({
-        position: 'top',
-        type: 'error_toast',
-        text2: 'Please enter user Email',
-        visibilityTime: 2000,
-      });
-    } else if (userEmail && emailReg.test(userEmail) === false) {
-      Toast.show({
-        position: 'top',
-        type: 'error_toast',
-        text2: 'Please enter valid Email',
-        visibilityTime: 2000,
-      });
-    } else if (!userAdd) {
-      Toast.show({
-        position: 'top',
-        type: 'error_toast',
-        text2: 'Please enter user Address',
-        visibilityTime: 2000,
-      });
-    } else {
-      const data = {
-        userPhoneNo: customerPhoneNo,
-        userFirstname: userName,
-        userEmailAdd: userEmail,
-      };
-      dispatch(sendInvitation(data));
-      userInputClear();
     }
-  };
-  const userInputClear = () => {
-    setUserEmail('');
-    setUserName('');
-    setCustomerPhoneNo('');
-    setUserAdd('');
+    var DATA = {
+      payload: arr,
+    };
+    dispatch(getAllCartSuccess(DATA));
   };
 
   const clearCartHandler = () => {
     dispatch(clearAllCart());
     crossHandler();
   };
-  const userDetalLoader = useSelector(state =>
-    isLoadingSelector([TYPES.GET_USERDETAIL], state)
-  );
-  const phoneNumberSearchFun = customerPhoneNo => {
+
+  const phoneNumberSearchFun = (customerPhoneNo) => {
     if (customerPhoneNo?.length > 9) {
       dispatch(getUserDetail(customerPhoneNo));
       Keyboard.dismiss();
@@ -234,18 +144,16 @@ export function CartScreen({
       dispatch(getUserDetailSuccess([]));
     }
   };
-  const removeOneCartHandler = (productId,index) => {
-    
+  const removeOneCartHandler = (productId, index) => {
     // const data = {
     //   cartId: cartData?.id,
     //   productId: productId,
     // };
     // dispatch(clearOneCart(data));
 
+    //Mukul code----->
 
-    //Mukul code-----> 
-
-    var arr=getRetailData?.getAllCart
+    var arr = getRetailData?.getAllCart;
     const product = arr.poscart_products[index];
     const productPrice = product.product_details.price;
     if (product.qty > 0) {
@@ -253,89 +161,10 @@ export function CartScreen({
       arr.amount.products_price -= productPrice * product.qty;
       arr.poscart_products.splice(index, 1);
     }
-    var DATA={
-      payload:arr
-    }
-    dispatch(getAllCartSuccess(DATA))
-  };
-
-  const catTypeFun = id => {
-    id === 1
-      ? setCategoryModal(true)
-      : id === 2
-      ? setSubCategoryModal(true)
-      : setBrandModal(true);
-  };
-
-  //  categoryType -----start
-  const catTypeRenderItem = ({ item }) => {
-    const backgroundColor = item.id === catTypeId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === catTypeId ? 'white' : 'black';
-
-    return (
-      <CatTypeItem
-        item={item}
-        onPress={() => {
-          setCatTypeId(item.id), catTypeFun(item.id);
-        }}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
-  };
-  const CatTypeItem = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity
-      style={styles.chooseCategoryCon}
-      onPress={onPress}
-      //   onPress={() => setCategoryModal(true)}
-    >
-      <Text style={styles.chooseCat}>{item.name}</Text>
-      <Image source={categoryMenu} style={styles.categoryMenu} />
-    </TouchableOpacity>
-  );
-  //  categoryType -----end
-
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === selectedId ? 'white' : 'black';
-
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
-  };
-
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity style={styles.productCon}>
-      <Image source={categoryshoes} style={styles.categoryshoes} />
-      <Spacer space={SH(10)} />
-      <Text numberOfLines={1} style={styles.productDes}>
-        Made well colored cozy
-      </Text>
-      <Text numberOfLines={1} style={styles.productDes}>
-        short cardigan
-      </Text>
-      <Spacer space={SH(6)} />
-      <Text numberOfLines={1} style={styles.productSubHead}>
-        Baby Boy
-      </Text>
-      <Spacer space={SH(6)} />
-      <Text numberOfLines={1} style={styles.productPrice}>
-        $5.65
-      </Text>
-    </TouchableOpacity>
-  );
-
-  const addQuantity = qty => {
-    setCount(count + 1);
-  };
-
-  const minusQuantity = qty => {
-    setCount(count - 1);
+    var DATA = {
+      payload: arr,
+    };
+    dispatch(getAllCartSuccess(DATA));
   };
 
   return (
@@ -345,7 +174,7 @@ export function CartScreen({
           iconShow
           crossHandler={() => {
             crossHandler();
-            dispatch(getUserDetailSuccess([]));
+            // dispatch(getUserDetailSuccess([]));
           }}
         />
 
@@ -357,7 +186,7 @@ export function CartScreen({
                 style={styles.backProScreen}
                 onPress={() => {
                   crossHandler();
-                  dispatch(getUserDetailSuccess([]));
+                  // dispatch(getUserDetailSuccess([]));
                 }}
               >
                 <Image source={rightBack} style={styles.arrowStyle} />
@@ -365,23 +194,27 @@ export function CartScreen({
                   {strings.posRetail.backProdscreen}
                 </Text>
               </TouchableOpacity>
-              <View style={styles.barcodeInputWraper}>
+              <View style={[styles.barcodeInputWraper, styles.cartSearchInputWraper]}>
                 <View style={styles.displayRow}>
                   <View>
-                    <Image
-                      source={search_light}
-                      style={styles.sideSearchStyle}
-                    />
+                    <Image source={search_light} style={styles.sideSearchStyle} />
                   </View>
                   <TextInput
                     placeholder="Search by Barcode, SKU, Name"
-                    style={styles.sideBarsearchInput}
-                    // value={search}
-                    // onChangeText={search => (
-                    //   setSearch(search), onChangeFun(search)
-                    // )}
+                    style={[styles.sideBarsearchInput, styles.searchCartInput]}
+                    value={cartSearch}
+                    onChangeText={setCartSearch}
                     placeholderTextColor={COLORS.gerySkies}
                   />
+                  {cartSearch?.length > 0 ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setCartSearch(''), Keyboard.dismiss();
+                      }}
+                    >
+                      <Image source={cross} style={[styles.sideSearchStyle, styles.crossStyling]} />
+                    </TouchableOpacity>
+                  ) : null}
                 </View>
               </View>
             </View>
@@ -389,11 +222,7 @@ export function CartScreen({
             <View style={styles.blueListHeader}>
               <View style={styles.displayflex}>
                 <View style={[styles.tableListSide, styles.listLeft]}>
-                  <Text
-                    style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}
-                  >
-                    #
-                  </Text>
+                  <Text style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}>#</Text>
                   <Text style={styles.cashLabelWhite}>Item</Text>
                 </View>
                 <View style={[styles.tableListSide, styles.tableListSide2]}>
@@ -410,12 +239,7 @@ export function CartScreen({
                   <View style={styles.blueListData} key={ind}>
                     <View style={styles.displayflex}>
                       <View style={[styles.tableListSide, styles.listLeft]}>
-                        <Text
-                          style={[
-                            styles.blueListDataText,
-                            styles.cashLabelWhiteHash,
-                          ]}
-                        >
+                        <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
                           {ind + 1}
                         </Text>
                         <View
@@ -430,29 +254,18 @@ export function CartScreen({
                           />
                           <View style={{ marginLeft: 10 }}>
                             <Text
-                              style={[
-                                styles.blueListDataText,
-                                { width: SW(80) },
-                              ]}
+                              style={[styles.blueListDataText, { width: SW(80) }]}
                               numberOfLines={1}
                             >
                               {data.product_details?.name}
                             </Text>
-                            <Text style={styles.sukNumber}>
-                              SUK: {data?.product_details?.sku}
-                            </Text>
+                            <Text style={styles.sukNumber}>SUK: {data?.product_details?.sku}</Text>
                           </View>
                         </View>
                       </View>
-                      <View
-                        style={[styles.tableListSide, styles.tableListSide2]}
-                      >
+                      <View style={[styles.tableListSide, styles.tableListSide2]}>
                         <Text style={styles.blueListDataText}>
-                          $
-                          {
-                            data?.product_details?.supply?.supply_prices
-                              ?.selling_price
-                          }
+                          ${data?.product_details?.supply?.supply_prices?.selling_price}
                         </Text>
                         <View style={styles.listCountCon}>
                           <TouchableOpacity
@@ -460,17 +273,12 @@ export function CartScreen({
                               width: SW(10),
                               alignItems: 'center',
                             }}
-                            onPress={() =>
-                              updateQuantity(item?.id, data?.id, '-',ind)
-                            }
+                            onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
                           >
                             <Image source={minus} style={styles.minus} />
                           </TouchableOpacity>
                           {isLoading ? (
-                            <ActivityIndicator
-                              size="small"
-                              color={COLORS.primary}
-                            />
+                            <ActivityIndicator size="small" color={COLORS.primary} />
                           ) : (
                             <Text>{data.qty}</Text>
                           )}
@@ -479,9 +287,7 @@ export function CartScreen({
                               width: SW(10),
                               alignItems: 'center',
                             }}
-                            onPress={() =>
-                              updateQuantity(item?.id, data?.id, '+',ind)
-                            }
+                            onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
                           >
                             <Image source={plus} style={styles.minus} />
                           </TouchableOpacity>
@@ -489,8 +295,7 @@ export function CartScreen({
                         <Text style={styles.blueListDataText}>
                           $
                           {(
-                            data.product_details?.supply?.supply_prices
-                              ?.selling_price * data?.qty
+                            data.product_details?.supply?.supply_prices?.selling_price * data?.qty
                           ).toFixed(2)}
                         </Text>
                         <TouchableOpacity
@@ -500,12 +305,9 @@ export function CartScreen({
                             justifyContent: 'center',
                             alignItems: 'center',
                           }}
-                          onPress={() => removeOneCartHandler(data.id,ind)}
+                          onPress={() => removeOneCartHandler(data.id, ind)}
                         >
-                          <Image
-                            source={borderCross}
-                            style={styles.borderCross}
-                          />
+                          <Image source={borderCross} style={styles.borderCross} />
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -530,36 +332,22 @@ export function CartScreen({
               >
                 <Image source={holdCart} style={styles.pause} />
 
-                <Text style={styles.holdCart}>
-                  {strings.dashboard.holdCart}
-                </Text>
+                <Text style={styles.holdCart}>{strings.dashboard.holdCart}</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.holdCartCon}
-                onPress={clearCartHandler}
-              >
-                <Image
-                  source={eraser}
-                  style={[styles.pause, { tintColor: COLORS.dark_grey }]}
-                />
-                <Text style={styles.holdCart}>
-                  {strings.dashboard.clearcart}
-                </Text>
+              <TouchableOpacity style={styles.holdCartCon} onPress={clearCartHandler}>
+                <Image source={eraser} style={[styles.pause, { tintColor: COLORS.dark_grey }]} />
+                <Text style={styles.holdCart}>{strings.dashboard.clearcart}</Text>
               </TouchableOpacity>
             </View>
             <Spacer space={SH(10)} />
             <View>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
-                  <Text style={[styles.holdCart, { color: COLORS.white }]}>
-                    Available Offer
-                  </Text>
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
                 </View>
                 {[1, 2, 3].map((item, index) => (
                   <View style={styles.avaliableOferBodyCon}>
-                    <View
-                      style={{ flexDirection: 'row', alignItems: 'center' }}
-                    >
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <View style={{ borderRadius: 4 }}>
                         <Image source={clothes} style={styles.offerImage} />
                       </View>
@@ -578,20 +366,11 @@ export function CartScreen({
 
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
-                <TouchableOpacity
-                  style={styles.addDiscountCon}
-                  onPress={addDiscountHandler}
-                >
-                  <Image
-                    source={addDiscountPic}
-                    style={styles.addDiscountPic}
-                  />
+                <TouchableOpacity style={styles.addDiscountCon} onPress={addDiscountHandler}>
+                  <Image source={addDiscountPic} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Discount</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.addDiscountCon}
-                  onPress={addNotesHandler}
-                >
+                <TouchableOpacity style={styles.addDiscountCon} onPress={addNotesHandler}>
                   <Image source={notess} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Notes</Text>
                 </TouchableOpacity>
@@ -599,8 +378,7 @@ export function CartScreen({
               <Spacer space={SH(10)} />
               <View style={styles.totalItemCon}>
                 <Text style={styles.totalItem}>
-                  {strings.dashboard.totalItem}{' '}
-                  {cartData?.poscart_products?.length}
+                  {strings.dashboard.totalItem} {cartData?.poscart_products?.length}
                 </Text>
               </View>
               <Spacer space={SH(5)} />
@@ -646,13 +424,8 @@ export function CartScreen({
               </View>
             </View>
             <View style={{ flex: 1 }} />
-            <TouchableOpacity
-              style={[styles.checkoutButtonSideBar]}
-              onPress={onPressPayNow}
-            >
-              <Text style={styles.checkoutText}>
-                {strings.posRetail.payNow}
-              </Text>
+            <TouchableOpacity style={[styles.checkoutButtonSideBar]} onPress={onPressPayNow}>
+              <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>
           </View>

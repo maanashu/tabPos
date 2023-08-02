@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
   },
   _boxView: {
     height: ms(110),
-    width: ms(120),
+    width: Platform.OS === 'ios' ? ms(103) : ms(120),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
     justifyContent: 'center',
@@ -119,7 +119,7 @@ export const styles = StyleSheet.create({
   },
   _inputMain: {
     marginTop: ms(15),
-    width: ms(380),
+    width: Platform.OS === 'ios' ? ms(325) : ms(380),
   },
   _inputSubView: {
     flexDirection: 'row',
@@ -197,8 +197,8 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(125),
-    width: Platform.OS === 'ios' ? ms(135) : ms(157),
-    margin: ms(3),
+    width: Platform.OS === 'ios' ? ms(122) : ms(157),
+    marginHorizontal: ms(3),
     borderRadius: ms(6),
     // justifyContent: 'center',
     alignItems: 'center',
@@ -317,16 +317,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: SW(2),
   },
-  barcodeInputWraper: {
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    backgroundColor: COLORS.textInputBackground,
-    borderRadius: 7,
-    width: windowWidth * 0.41,
-    height: SH(45),
-    marginRight: 8,
-    justifyContent: 'center',
-  },
+
   allProduct: {
     color: COLORS.solid_grey,
     fontSize: SF(13),
@@ -534,7 +525,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    width: windowWidth * 0.123,
+    width: windowWidth * 0.12,
     justifyContent: 'center',
     paddingHorizontal: moderateScale(10),
     marginTop: verticalScale(5),
@@ -1279,7 +1270,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: moderateScale(7),
-    marginHorizontal: moderateVerticalScale(8),
+    marginHorizontal: moderateVerticalScale(5),
   },
   chooseCat: {
     color: COLORS.black,
@@ -1297,6 +1288,10 @@ export const styles = StyleSheet.create({
     height: SH(45),
     justifyContent: 'center',
   },
+  cartSearchInputWraper: {
+    width: windowWidth * 0.42,
+    paddingHorizontal: ms(5),
+  },
   sideSearchStyle: {
     width: SW(6),
     height: SW(6),
@@ -1305,13 +1300,20 @@ export const styles = StyleSheet.create({
     marginRight: moderateScale(5),
     tintColor: COLORS.gerySkies,
   },
+  crossStyling: {
+    width: SW(4),
+    height: SW(4),
+  },
   sideBarsearchInput: {
     borderRadius: 7,
-    width: windowWidth * 0.24,
+    width: windowWidth * 0.14,
     fontFamily: Fonts.Italic,
     fontSize: SF(11),
     color: COLORS.solid_grey,
     height: SH(40),
+  },
+  searchCartInput: {
+    width: windowWidth * 0.35,
   },
   allProduct: {
     color: COLORS.solid_grey,
@@ -1328,7 +1330,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   productCon: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.108 : windowWidth * 0.11,
+    width: Platform.OS === 'ios' ? windowWidth * 0.105 : windowWidth * 0.11,
     height: Platform.OS === 'ios' ? windowHeight * 0.23 : windowHeight * 0.26,
     backgroundColor: COLORS.white,
     borderRadius: 5,
@@ -1340,7 +1342,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   categoryshoes: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.106 : windowWidth * 0.1,
+    width: Platform.OS === 'ios' ? windowWidth * 0.104 : windowWidth * 0.1,
     height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',
@@ -1361,8 +1363,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   addToCart: {
-    width: SW(12),
-    height: SW(12),
+    width: ms(28),
+    height: ms(28),
     resizeMode: 'contain',
   },
   sideAddToCart: {
@@ -1372,12 +1374,12 @@ export const styles = StyleSheet.create({
   },
   bucketBadge: {
     borderWidth: 2,
-    width: ms(13),
-    height: ms(13),
+    width: Platform.OS === 'ios' ? ms(11) : ms(13),
+    height: Platform.OS === 'ios' ? ms(11) : ms(13),
     borderRadius: ms(10),
     position: 'absolute',
-    right: 8,
-    bottom: 7,
+    right: Platform.OS === 'ios' ? 7 : 8,
+    bottom: Platform.OS === 'ios' ? 6 : 7,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: COLORS.dark_grey,
@@ -1436,8 +1438,8 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(50),
-    width: Platform.OS === 'ios' ? ms(100) : ms(116),
-    margin: ms(3),
+    width: Platform.OS === 'ios' ? ms(90) : ms(116),
+    marginHorizontal: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
     alignItems: 'center',
@@ -1462,7 +1464,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(45),
-    width: Platform.OS === 'ios' ? ms(135) : ms(157),
+    width: Platform.OS === 'ios' ? ms(122) : ms(157),
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
@@ -1661,17 +1663,16 @@ export const styles = StyleSheet.create({
 
   //PHONE POPUP
   calendarSettingModalContainer: {
-    width: windowWidth * 0.35,
+    width: windowWidth * 0.4,
     height: windowHeight * 0.84,
     backgroundColor: 'white',
     alignSelf: 'center',
     borderRadius: 7,
     alignItems: 'center',
     borderWidth: 1,
-    paddingHorizontal: moderateVerticalScale(10),
+    paddingHorizontal: moderateVerticalScale(7),
     paddingVertical: verticalScale(15),
     position: 'absolute',
-    top: -40,
   },
   _btnContainer: {
     flexDirection: 'row',
@@ -1751,7 +1752,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     height: windowHeight * 0.08,
-    width: windowWidth * 0.3,
+    width: windowWidth * 0.33,
     borderWidth: 1,
     borderColor: '#D8D8D8',
     borderRadius: 5,

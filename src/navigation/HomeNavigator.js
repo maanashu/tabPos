@@ -4,9 +4,7 @@ import { NAVIGATION } from '@/constants';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { COLORS, SW } from '@/theme';
 import {
-  Retails,
   DeliveryOrder,
-  ShippingOrders,
   Wallet,
   Management,
   Customers,
@@ -17,17 +15,16 @@ import {
   Reward,
   Setting,
   DashBoard,
-  PosRetail,
   PosRetail2,
   ShippingOrder2,
   Analytics2,
   DeliveryOrders2,
+  PosRetail3,
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
-import { CartAmountTips } from '@/screens/PosRetail/Components';
+import { CartAmountTips } from '@/screens/PosRetail2/Components';
 import NotificationsList from '@/screens/Notifications/NotificationsList';
-import { OrderDetail } from '@/screens/DeliveryOrders2/OrderDetail/OrderDetail';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -51,11 +48,6 @@ export function HomeNavigator() {
       <Drawer.Screen
         component={DashBoard}
         name={NAVIGATION.dashBoard}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        component={Retails}
-        name={NAVIGATION.retails}
         options={{ headerShown: false }}
       />
       <Drawer.Screen
@@ -96,11 +88,6 @@ export function HomeNavigator() {
         options={{ headerShown: false }}
       />
       <Drawer.Screen
-        component={PosRetail}
-        name={NAVIGATION.posRetail}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
         component={CartAmountTips}
         name={NAVIGATION.CartAmountTips}
         options={{ headerShown: false }}
@@ -128,6 +115,11 @@ export function HomeNavigator() {
       <Drawer.Screen
         component={DeliveryOrders2}
         name={NAVIGATION.deliveryOrders2}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        component={PosRetail3}
+        name={NAVIGATION.posRetail3}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

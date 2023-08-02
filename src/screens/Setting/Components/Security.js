@@ -2,13 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import {
@@ -23,12 +17,7 @@ import {
 } from '@/assets';
 import { getSetting } from '@/selectors/SettingSelector';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getGoogleCode,
-  getSettings,
-  upadteApi,
-  verifyGoogleCode,
-} from '@/actions/SettingAction';
+import { getGoogleCode, getSettings, upadteApi, verifyGoogleCode } from '@/actions/SettingAction';
 import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
@@ -52,23 +41,20 @@ export function Security() {
     setValue,
   });
 
-  const googleAuthenticator =
-    getSettingData?.getSetting?.google_authenticator_status;
+  const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status;
   const googleCode = getSettingData?.getGoogleCode;
   const [twoStepModal, setTwoStepModal] = useState(false);
   const [googleAuthStart, setGoogleAuthStart] = useState(false);
   const [googleAuthScan, setGoogleAuthScan] = useState(false);
   const [sixDigit, setSixDigit] = useState(false);
   const [googleAuthicator, setGoogleAuthicator] = useState(googleAuthenticator);
-  const qrCodeLoad = useSelector(state =>
-    isLoadingSelector([TYPES.GET_GOOGLE_CODE], state)
-  );
+  const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
+
+  // console.log('googleAuthenticator', getSettingData);
 
   useEffect(() => {
     if (getSettingData?.getSetting) {
-      setGoogleAuthicator(
-        getSettingData?.getSetting?.google_authenticator_status
-      );
+      setGoogleAuthicator(getSettingData?.getSetting?.google_authenticator_status);
     }
   }, [getSettingData?.getSetting]);
 
@@ -151,14 +137,8 @@ export function Security() {
             keyboardType="number-pad"
             textContentType="oneTimeCode"
             renderCell={({ index, symbol, isFocused }) => (
-              <View
-                onLayout={getCellOnLayoutHandler(index)}
-                key={index}
-                style={styles.cellRoot}
-              >
-                <Text style={styles.cellText}>
-                  {symbol || (isFocused ? <Cursor /> : null)}
-                </Text>
+              <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
+                <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
               </View>
             )}
           />
@@ -176,27 +156,19 @@ export function Security() {
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={securityLogo} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>
-                  {strings.settings.twoStepVerifiCon}
-                </Text>
+                <Text style={styles.twoStepText}>{strings.settings.twoStepVerifiCon}</Text>
                 <Spacer space={SH(10)} />
-                <Text style={styles.securitysubhead}>
-                  {strings.settings.securitysubhead}
-                </Text>
+                <Text style={styles.securitysubhead}>{strings.settings.securitysubhead}</Text>
                 <Spacer space={SH(20)} />
                 <View style={styles.twoStepMemberCon}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
                       <Image source={teamMember} style={styles.teamMember} />
                       <View style={styles.marginLeft}>
-                        <Text
-                          style={[styles.twoStepText, { fontSize: SF(14) }]}
-                        >
+                        <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                           {strings.settings.teamMemeber}
                         </Text>
-                        <Text
-                          style={[styles.securitysubhead, { fontSize: SF(12) }]}
-                        >
+                        <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
                           {strings.settings.memeberEnable}
                         </Text>
                       </View>
@@ -218,11 +190,7 @@ export function Security() {
         </View>
       )}
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        isVisible={twoStepModal || googleAuthScan}
-      >
+      <Modal animationType="fade" transparent={true} isVisible={twoStepModal || googleAuthScan}>
         {googleAuthScan ? (
           <View style={styles.modalMainView}>
             <View style={styles.modalHeaderCon}>
@@ -249,18 +217,12 @@ export function Security() {
                 {qrCodeLoad ? (
                   <ActivityIndicator size="large" color={COLORS.primary} />
                 ) : (
-                  <Image
-                    source={{ uri: googleCode?.qrCode }}
-                    style={styles.scurityScan}
-                  />
+                  <Image source={{ uri: googleCode?.qrCode }} style={styles.scurityScan} />
                 )}
               </View>
               <Spacer space={SH(30)} />
               <TouchableOpacity
-                style={[
-                  styles.checkoutButton,
-                  { backgroundColor: COLORS.primary },
-                ]}
+                style={[styles.checkoutButton, { backgroundColor: COLORS.primary }]}
                 onPress={() => {
                   setTwoStepModal(false);
                   setGoogleAuthScan(false);
@@ -301,26 +263,15 @@ export function Security() {
               </Text>
               <Spacer space={SH(50)} />
               <TouchableOpacity
-                style={
-                  googleAuthStart
-                    ? styles.googleAuthConSel
-                    : styles.googleAuthCon
-                }
+                style={googleAuthStart ? styles.googleAuthConSel : styles.googleAuthCon}
                 onPress={() => setGoogleAuthStart(!googleAuthStart)}
               >
                 <View style={styles.dispalyRow}>
                   <Image source={googleAuth} style={styles.googleAuth} />
                   <View style={styles.marginLeft}>
-                    <Text style={styles.googleAuthText}>
-                      {strings.settings.googleAuth}
-                    </Text>
+                    <Text style={styles.googleAuthText}>{strings.settings.googleAuth}</Text>
                     <Spacer space={SH(5)} />
-                    <Text
-                      style={[
-                        styles.firstDownloader,
-                        { fontSize: SF(11), width: SW(120) },
-                      ]}
-                    >
+                    <Text style={[styles.firstDownloader, { fontSize: SF(11), width: SW(120) }]}>
                       {strings.settings.instead}
                     </Text>
                   </View>
@@ -338,15 +289,10 @@ export function Security() {
                 <TouchableOpacity
                   style={
                     googleAuthStart
-                      ? [
-                          styles.checkoutButton,
-                          { backgroundColor: COLORS.primary },
-                        ]
+                      ? [styles.checkoutButton, { backgroundColor: COLORS.primary }]
                       : styles.checkoutButton
                   }
-                  onPress={() => (
-                    setGoogleAuthStart(false), setGoogleAuthScan(true)
-                  )}
+                  onPress={() => (setGoogleAuthStart(false), setGoogleAuthScan(true))}
                 >
                   <Text
                     style={

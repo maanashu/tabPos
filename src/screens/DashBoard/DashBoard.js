@@ -243,7 +243,7 @@ export function DashBoard({ navigation }) {
   const startSellingHandler = async (id) => {
     if (id === 1) {
       dispatch(addSellingSelection(id));
-      navigate(NAVIGATION.posRetail);
+      navigate(NAVIGATION.posRetail2);
     } else if (id === 2) {
       dispatch(addSellingSelection(id));
       navigate(NAVIGATION.deliveryOrder);

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
+import { FlatList, Keyboard, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
@@ -7,9 +7,12 @@ import { Spacer } from '@/components';
 import { styles } from '@/screens/PosRetail2/PosRetail2.styles';
 import {
   addToCart,
+  addToCartBlue,
   bucket,
   categoryMenu,
+  cross,
   holdCart,
+  keyboard,
   search_light,
   sideArrow,
   sideEarser,
@@ -45,6 +48,7 @@ import {
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { CartListModal } from './CartListModal';
+import { log } from 'react-native-reanimated';
 
 export function MainScreen({
   cartScreenHandler,
@@ -70,12 +74,18 @@ export function MainScreen({
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
   const [cartProduct, setCartProoduct] = useState([]);
+  const [search, setSearch] = useState('');
 
   const [showProductsFrom, setshowProductsFrom] = useState();
 
   const mainProductArray = getRetailData?.getMainProduct?.data;
   const bulkCreateData = getRetailData?.getAllCart;
   const cartProductLength = bulkCreateData?.poscart_products?.length;
+
+  const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
+    product_id: obj.product_id,
+    qty: obj.qty,
+  }));
 
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
@@ -96,6 +106,18 @@ export function MainScreen({
   useEffect(() => {
     dispatch(getMainProduct());
   }, []);
+
+  const onChangeFun = (search) => {
+    setSearch(search);
+    if (search?.length > 3) {
+      const searchName = {
+        search: search,
+      };
+      dispatch(getMainProduct(searchName));
+    } else if (search?.length >= 3) {
+      dispatch(getMainProduct());
+    }
+  };
   const isProductLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state)
   );
@@ -282,53 +304,57 @@ export function MainScreen({
     );
   };
 
-  const Item = ({ item }) => (
-    <TouchableOpacity
-      style={styles.productCon}
-      onPress={() => productFun(item.id)}
-      activeOpacity={0.7}
-    >
-      {/* <Image source={{ uri: item.image }} style={styles.categoryshoes} /> */}
+  const Item = ({ item }) => {
+    const isProductMatchArray = cartmatchId?.find((data) => data.product_id === item.id);
+    const cartAddQty = isProductMatchArray?.qty;
+    return (
+      <TouchableOpacity
+        style={styles.productCon}
+        onPress={() => productFun(item.id)}
+        activeOpacity={0.7}
+      >
+        {/* <Image source={{ uri: item.image }} style={styles.categoryshoes} /> */}
 
-      <FastImage
-        source={{
-          uri: item.image,
-          priority: FastImage.priority.normal,
-        }}
-        style={styles.categoryshoes}
-        resizeMode={FastImage.resizeMode.contain}
-      />
-      <Spacer space={SH(10)} />
-      <Text numberOfLines={1} style={styles.productDes}>
-        {item.name}
-      </Text>
-      <Text numberOfLines={1} style={styles.productDes}>
-        short cardigan
-      </Text>
-      <Spacer space={SH(6)} />
-      <Text numberOfLines={1} style={styles.productSubHead}>
-        {item.sub_category?.name}
-      </Text>
-      <Spacer space={SH(6)} />
-      <TouchableOpacity style={styles.displayflex}>
-        <Text numberOfLines={1} style={styles.productPrice}>
-          ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+        <FastImage
+          source={{
+            uri: item.image,
+            priority: FastImage.priority.normal,
+          }}
+          style={styles.categoryshoes}
+          resizeMode={FastImage.resizeMode.contain}
+        />
+        <Spacer space={SH(10)} />
+        <Text numberOfLines={2} style={styles.productDes}>
+          {item.name}
         </Text>
-        {/* addToCartBlue */}
-        <TouchableOpacity onPress={() => onClickAddCart(item)}>
-          {/* <Image source={addToCart} style={styles.addToCart} /> */}
-          <FastImage
-            source={addToCart}
-            style={styles.addToCart}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-          {/* <View style={styles.productBadge}>
-            <Text style={styles.productBadgeText}>{item.id}</Text>
-          </View> */}
+        {/* <Text numberOfLines={1} style={styles.productDes}>
+        short cardigan
+      </Text> */}
+        <Spacer space={SH(6)} />
+        <Text numberOfLines={1} style={styles.productSubHead}>
+          {item.sub_category?.name}
+        </Text>
+        <Spacer space={SH(6)} />
+        <TouchableOpacity style={styles.displayflex}>
+          <Text numberOfLines={1} style={styles.productPrice}>
+            ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+          </Text>
+          {/* addToCartBlue */}
+          <TouchableOpacity onPress={() => onClickAddCart(item)}>
+            <Image
+              source={isProductMatchArray ? addToCartBlue : addToCart}
+              style={styles.addToCart}
+            />
+            {isProductMatchArray ? (
+              <View style={styles.productBadge}>
+                <Text style={styles.productBadgeText}>{cartAddQty}</Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
         </TouchableOpacity>
       </TouchableOpacity>
-    </TouchableOpacity>
-  );
+    );
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -366,12 +392,19 @@ export function MainScreen({
                   <TextInput
                     placeholder="Search by Barcode, SKU, Name"
                     style={styles.sideBarsearchInput}
-                    // value={search}
-                    // onChangeText={search => (
-                    //   setSearch(search), onChangeFun(search)
-                    // )}
+                    value={search}
+                    onChangeText={(search) => onChangeFun(search)}
                     placeholderTextColor={COLORS.gerySkies}
                   />
+                  {search?.length > 0 ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSearch(''), dispatch(getMainProduct()), Keyboard.dismiss();
+                      }}
+                    >
+                      <Image source={cross} style={[styles.sideSearchStyle, styles.crossStyling]} />
+                    </TouchableOpacity>
+                  ) : null}
                 </View>
               </View>
             </View>
@@ -391,6 +424,7 @@ export function MainScreen({
                 numColumns={7}
                 contentContainerStyle={{
                   flexGrow: 1,
+                  justifyContent: 'space-between',
                 }}
                 scrollEnabled={true}
                 ListEmptyComponent={() => (
@@ -543,6 +577,7 @@ export function MainScreen({
                       category_ids: selectedCat.id,
                     };
                     dispatch(getMainProduct(categoryID));
+                    setSearch(''); // Clear the search input product
 
                     setisFilterDataSeclectedOfIndex(0);
                     setfilterMenuTitle((prevData) => {
@@ -585,6 +620,7 @@ export function MainScreen({
                       sub_category_ids: selectedSubCat.id,
                     };
                     dispatch(getMainProduct(subCategoryID));
+                    setSearch(''); // Clear the search input product
                     setselectedSubCatID(selectedSubCat.id);
                     setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
 
@@ -628,6 +664,7 @@ export function MainScreen({
                       brand_id: selectedBrand.id,
                     };
                     dispatch(getMainProduct(brandID));
+                    setSearch(''); // Clear the search input product
                     setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
 
                     setfilterMenuTitle((prevData) => {

@@ -48,7 +48,9 @@ export function CustomHeader({ crossHandler, iconShow }) {
           <TouchableOpacity onPress={crossHandler}>
             <Image source={crossButton} style={styles.crossBg} />
           </TouchableOpacity>
-        ) : null}
+        ) : (
+          <View></View>
+        )}
       </View>
     </View>
   );

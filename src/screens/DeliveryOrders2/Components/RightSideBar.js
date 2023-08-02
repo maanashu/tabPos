@@ -1,22 +1,14 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import { View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
 import ReactNativeModal from 'react-native-modal';
-import { ms, verticalScale } from 'react-native-size-matters';
 
 import { strings } from '@/localization';
-import { COLORS, SF, SW } from '@/theme';
-import { deliveryBox, Fonts, returnDeliveryBox } from '@/assets';
-import { rightSideDeliveryDrawer, deliveryDrawer } from '@/constants/staticData';
+import { deliveryDrawer } from '@/constants/staticData';
+import { deliveryBox, returnDeliveryBox } from '@/assets';
 
-const windowWidth = Dimensions.get('window').width;
+import styles from '../styles';
+import { COLORS } from '@/theme';
+import { ms } from 'react-native-size-matters';
 
 const RightSideBar = ({
   openShippingOrders,
@@ -28,7 +20,7 @@ const RightSideBar = ({
 }) => {
   return (
     <>
-      {openShippingOrders ? (
+      {/* {openShippingOrders ? (
         <>
           <ReactNativeModal
             animationIn={'slideInRight'}
@@ -56,68 +48,45 @@ const RightSideBar = ({
                     </View>
                   </View>
                 )}
-                keyExtractor={(item, index) => item.key.toString()}
+                keyExtractor={(item) => item.key.toString()}
               />
             </View>
           </ReactNativeModal>
+          <View style={{ width: 90 }} />
         </>
-      ) : null}
+      ) : ( */}
+      <View style={styles.rightSideView}>
+        <FlatList
+          data={deliveryDrawer}
+          renderItem={renderDrawer}
+          ListHeaderComponent={() => (
+            <TouchableOpacity
+              onPress={() => {
+                setOpenShippingOrders('0');
+                setIsOpenSideBarDrawer(true);
+              }}
+              style={[
+                styles.firstIconStyle,
+                {
+                  backgroundColor:
+                    openShippingOrders === '0' ? COLORS.textInputBackground : COLORS.transparent,
+                },
+              ]}
+            >
+              <View style={styles.bucketBackgorund}>
+                <Image source={deliveryBox} style={styles.sideBarImage} />
+              </View>
+            </TouchableOpacity>
+          )}
+          contentContainerStyle={{
+            height: Dimensions.get('window').height - 90,
+          }}
+          keyExtractor={(item) => item.key.toString()}
+        />
+      </View>
+      {/* )} */}
     </>
   );
 };
 
 export default RightSideBar;
-
-const styles = StyleSheet.create({
-  modalStyle: {
-    flex: 1,
-  },
-  shippingOrderViewStyle: {
-    position: 'absolute',
-    zIndex: 99,
-    backgroundColor: COLORS.white,
-    right: -50,
-    top: -50,
-    bottom: -50,
-    width: ms(180),
-    borderRadius: 10,
-  },
-  shippingOrderHeader: {
-    paddingTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  shippingOrderHeading: {
-    fontFamily: Fonts.MaisonBold,
-    fontSize: SF(16),
-    color: COLORS.dark_grey,
-    paddingLeft: SW(6),
-  },
-  rightSideView: {
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
-    width: windowWidth * 0.06,
-    paddingVertical: verticalScale(6),
-    alignItems: 'center',
-    // flex: 1,
-    // position: 'absolute',
-    // top: 15,
-    // right: 20,
-  },
-  firstIconStyle: {
-    alignSelf: 'center',
-    width: SW(13),
-    height: SW(13),
-    alignSelf: 'center',
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.textInputBackground,
-  },
-  sideBarImage: {
-    width: SW(9),
-    height: SW(9),
-    resizeMode: 'contain',
-  },
-});

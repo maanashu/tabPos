@@ -1,7 +1,4 @@
 import {
-  jbrCoin,
-  cash,
-  card2,
   newCustomer,
   returnCustomer,
   onlineCutomer,
@@ -11,19 +8,18 @@ import {
   pinLight,
   plan,
   invoiceSett,
-  tax,
   walletSett,
   shipping,
   langu,
   work,
   policy,
   dropScan,
-  sellingBucket,
-  productBasket,
   cloth,
-  onlineMan,
   clay,
   staffIcon,
+  product,
+  filter,
+  services,
 } from '@/assets';
 import { COLORS } from '@/theme';
 
@@ -314,13 +310,7 @@ export const TransactionTableData = [
   '$2562',
   'Completed',
 ];
-export const UserTableHeading = [
-  '#',
-  'Name',
-  'Total orders',
-  'Total Products',
-  'Lifetime spent',
-];
+export const UserTableHeading = ['#', 'Name', 'Total orders', 'Total Products', 'Lifetime spent'];
 export const UserTableData = [
   ['1', 'Curtis M. Wheeler  , 2022', '60 ', '481', '$6,850.00'],
   ['1', 'Curtis M. Wheeler, 2022', '60 ', '481', '$6,850.00'],
@@ -337,26 +327,8 @@ export const ProfileTableHeading = [
   'Sales type',
 ];
 export const ProfileTableData = [
-  [
-    '1',
-    '362501',
-    'Jun 11, 2022',
-    'Maimi',
-    'DHL',
-    '3 times',
-    '$6,850.00',
-    'Shipping',
-  ],
-  [
-    '1',
-    '362501',
-    'Jun 11, 2022',
-    'Maimi',
-    'DHL',
-    '3 times',
-    '$6,850.00',
-    'Store',
-  ],
+  ['1', '362501', 'Jun 11, 2022', 'Maimi', 'DHL', '3 times', '$6,850.00', 'Shipping'],
+  ['1', '362501', 'Jun 11, 2022', 'Maimi', 'DHL', '3 times', '$6,850.00', 'Store'],
 ];
 export const cartData = [
   {
@@ -380,26 +352,8 @@ export const sessionHistoryTableHeading = [
   'Session Ended',
 ];
 export const sessionHistoryTableData = [
-  [
-    '1',
-    'Jun 21, 2022',
-    'Allein ',
-    '$0.00',
-    '$6,850.00',
-    '$1,350.00',
-    '$1,350.00',
-    '-$40.00',
-  ],
-  [
-    '1',
-    'Jun 21, 2022',
-    'Allein ',
-    '$0.00',
-    '$6,850.00',
-    '$1,350.00',
-    '$1,350.00',
-    '-$40.00',
-  ],
+  ['1', 'Jun 21, 2022', 'Allein ', '$0.00', '$6,850.00', '$1,350.00', '$1,350.00', '-$40.00'],
+  ['1', 'Jun 21, 2022', 'Allein ', '$0.00', '$6,850.00', '$1,350.00', '$1,350.00', '-$40.00'],
 ];
 export const newCustomerDataLoader = [
   {
@@ -1030,5 +984,22 @@ export const catTypeData = [
   {
     id: 3,
     name: 'Choose Brand',
+  },
+];
+export const productServiceFilter = [
+  {
+    id: 1,
+    title: 'Products',
+    image: product,
+  },
+  {
+    id: 2,
+    title: 'Services',
+    image: services,
+  },
+  {
+    id: 3,
+    title: 'Filter',
+    image: filter,
   },
 ];

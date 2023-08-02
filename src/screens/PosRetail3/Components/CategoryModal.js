@@ -5,44 +5,32 @@ import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
-import { styles } from '@/screens/PosRetail/PosRetail.styles';
+import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { cloth, crossButton, search_light } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { getRetail } from '@/selectors/RetailSelectors';
-import { useSelector } from 'react-redux';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { useSelector } from 'react-redux';
 import { TYPES } from '@/Types/Types';
 
-export function SubCatModal({ crossHandler, onSelectSubCategory }) {
+export function CategoryModal({ crossHandler, categoryArray, onSelectCategory, cancelCategory }) {
   const [selectedId, setSelectedId] = useState();
 
-  const getRetailData = useSelector(getRetail);
-  const subCatgories = getRetailData?.subCategories;
-
-  const isLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_SUB_CATEGORY], state)
-  );
+  const categoryLoad = useSelector((state) => isLoadingSelector([TYPES.GET_CATEGORY], state));
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
     const color = item.id === selectedId ? 'white' : 'black';
 
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
+    return <Item item={item} backgroundColor={backgroundColor} textColor={color} />;
   };
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity
       onPress={() => {
-        onSelectSubCategory(item);
+        setSelectedId(item.id);
+        onSelectCategory(item);
       }}
       style={styles.catProArrayCon}
     >
@@ -56,7 +44,7 @@ export function SubCatModal({ crossHandler, onSelectSubCategory }) {
   const ListEmptyComponent = () => {
     return (
       <View style={{ marginTop: 50 }}>
-        <Text style={styles.categoryEmptyList}>Sub-Category Not Found</Text>
+        <Text style={styles.categoryEmptyList}>Category Not Found</Text>
       </View>
     );
   };
@@ -64,13 +52,10 @@ export function SubCatModal({ crossHandler, onSelectSubCategory }) {
     <View style={styles.categoryModalCon}>
       <Spacer space={SH(20)} />
       <View style={styles.displayflex}>
-        <Text style={styles.categories}>{strings.posRetail.subCategories}</Text>
+        <Text style={styles.categories}>{strings.posRetail.categories}</Text>
         <View style={[styles.displayRow]}>
-          <TouchableOpacity
-            style={styles.cancelCatCon}
-            onPress={() => alert('in Progress')}
-          >
-            <Text style={styles.catCancelText}>Cancel</Text>
+          <TouchableOpacity style={styles.cancelCatCon} onPress={cancelCategory}>
+            <Text style={styles.catCancelText}>Clear</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={crossHandler}>
             <Image source={crossButton} style={styles.crossButton} />
@@ -92,17 +77,18 @@ export function SubCatModal({ crossHandler, onSelectSubCategory }) {
       </View>
 
       <Spacer space={SH(15)} />
+
       <View style={styles.categoryflatlistHeight}>
-        {isLoading ? (
+        {categoryLoad ? (
           <View style={{ marginTop: 50 }}>
             <ActivityIndicator size="large" color={COLORS.primary} />
           </View>
         ) : (
           <FlatList
-            data={subCatgories}
+            data={categoryArray}
             renderItem={renderItem}
-            keyExtractor={item => item.id}
-            extraData={subCatgories}
+            keyExtractor={(item) => item.id}
+            extraData={categoryArray}
             numColumns={4}
             ListEmptyComponent={ListEmptyComponent}
           />

@@ -1216,41 +1216,6 @@ export const DeliveryDrawer = [
   },
 ];
 
-export const rightSideDeliveryDrawer = [
-  {
-    key: '1',
-    image: task,
-  },
-  {
-    key: '2',
-    image: deliveryorderProducts,
-  },
-  {
-    key: '3',
-    image: timer,
-  },
-  {
-    key: '4',
-    image: deliveryParcel,
-  },
-  {
-    key: '5',
-    image: deliveryDriver,
-  },
-  {
-    key: '6',
-    image: shipping,
-  },
-  {
-    key: '7',
-    image: NoCard,
-  },
-  {
-    key: '8',
-    image: returnShipping,
-  },
-];
-
 export const deliveryDrawer = [
   {
     key: '1',
@@ -1291,7 +1256,7 @@ export const deliveryDrawer = [
   {
     key: '7',
     image: NoCard,
-    title: 'Rejected/ Cancelled',
+    title: 'Rejected',
     count: '9',
   },
   {
@@ -1299,5 +1264,28 @@ export const deliveryDrawer = [
     image: returnShipping,
     title: 'Cancelled',
     count: '23',
+  },
+];
+
+export const graphOptions = [
+  {
+    key: '1',
+    title: 'In Coming Orders',
+    checked: true,
+  },
+  {
+    key: '2',
+    title: 'Cancelled Orders',
+    checked: true,
+  },
+  {
+    key: '3',
+    title: 'Returned Orders',
+    checked: true,
+  },
+  {
+    key: '4',
+    title: 'Delivered Orders',
+    checked: true,
   },
 ];

@@ -17,9 +17,6 @@ client.interceptors.request.use(async function (config) {
   const user = store.getState().user?.posLoginData?.token;
   const fcmToken = await getDeviceToken();
 
-  console.log('merchant token: ' + register);
-  console.log('user token: ' + user);
-
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
    * @returns Token for api call
@@ -55,7 +52,7 @@ client.interceptors.response.use(
     if (error.response) {
       if (error.response.data.msg === 'invalid_token') {
         // Show an alert in React Native
-        Alert.alert('Invalid Token', 'Please login again.', [
+        Alert.alert('Session activated from another device, please login again to continue', [
           {
             text: 'Ok',
             onPress: () => {
