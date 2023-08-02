@@ -1306,8 +1306,14 @@ export const styles = StyleSheet.create({
     height: SW(7),
     resizeMode: 'contain',
     marginHorizontal: ms(4),
-
     tintColor: COLORS.darkGray,
+  },
+  productImageStyleBlue: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    marginHorizontal: ms(4),
+    tintColor: COLORS.primary,
   },
   crossStyling: {
     width: SW(4),
@@ -1315,7 +1321,8 @@ export const styles = StyleSheet.create({
   },
   sideBarsearchInput: {
     borderRadius: 7,
-    width: windowWidth * 0.14,
+    width: windowWidth * 0.32,
+    // width: Platform.OS === 'android' ? windowWidth * 0.38 : windowWidth * 0.3,
     fontFamily: Fonts.Italic,
     fontSize: SF(11),
     color: COLORS.solid_grey,
@@ -1948,7 +1955,7 @@ export const styles = StyleSheet.create({
   },
   prouductAndServiceCon: {
     borderWidth: 1,
-    width: Platform.OS === 'ios' ? windowWidth * 0.11 : windowWidth * 0.01,
+    width: Platform.OS === 'ios' ? windowWidth * 0.11 : windowWidth * 0.09,
     height: SH(45),
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
@@ -1991,12 +1998,11 @@ export const styles = StyleSheet.create({
   categoryFilterCon: {
     zIndex: 999,
     position: 'absolute',
-    right: 10,
+    right: 0,
     top: 72,
     borderRadius: 5,
     width: windowWidth * 0.3,
     height: windowHeight * 0.8,
-    // height: ms(100),
     backgroundColor: COLORS.textInputBackground,
   },
 });

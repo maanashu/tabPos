@@ -39,9 +39,7 @@ export function MerchantPasscode({ route }) {
   const country_code = getData?.phoneData?.countryCode;
   const { posuser, from } = route.params;
 
-  const isLoading = useSelector(state =>
-    isLoadingSelector([TYPES.MERCHANT_LOGIN], state)
-  );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.MERCHANT_LOGIN], state));
 
   const passcodeHandler = async () => {
     if (!value) {
@@ -75,9 +73,9 @@ export function MerchantPasscode({ route }) {
         pin: value,
       };
       const res = await dispatch(merchantLogin(data));
-      if (res?.type === 'LOGIN_ERROR') {
+      if (res?.type === 'MERCHANT_LOGIN_ERROR') {
         setValue('');
-      } else if (res?.type === 'LOGIN_SUCCESS') {
+      } else if (res?.type === 'MERCHANT_LOGIN_SUCCESS') {
         setValue('');
         navigate(NAVIGATION.posUsers);
       }
@@ -105,14 +103,8 @@ export function MerchantPasscode({ route }) {
             keyboardType="number-pad"
             textContentType="oneTimeCode"
             renderCell={({ index, symbol, isFocused }) => (
-              <View
-                onLayout={getCellOnLayoutHandler(index)}
-                key={index}
-                style={styles.cellRoot}
-              >
-                <Text style={styles.cellText}>
-                  {symbol || (isFocused ? <Cursor /> : null)}
-                </Text>
+              <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
+                <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
               </View>
             )}
           />

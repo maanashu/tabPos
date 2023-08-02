@@ -14,20 +14,20 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { login, verifyPhone } from '@/actions/AuthActions';
 import { TYPES } from '@/Types/Types';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
+import { settingClear } from '@/actions/SettingAction';
 
 export function VerifyPhone() {
   const dispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
-  const onChangePhoneNumber = phone => {
+  const onChangePhoneNumber = (phone) => {
     setPhoneNumber(phone);
   };
-  const isLoading = useSelector(state =>
-    isLoadingSelector([TYPES.VERIFY_PHONE], state)
-  );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.VERIFY_PHONE], state));
   useEffect(() => {
     clearInput();
+    dispatch(settingClear());
   }, []);
   const clearInput = () => {
     setPhoneNumber('');
@@ -72,13 +72,11 @@ export function VerifyPhone() {
           <View></View>
           <Text style={styles.header}>{strings.verifyPhone.heading}</Text>
           <Spacer space={SH(6)} />
-          <Text style={styles.subHeading}>
-            {strings.verifyPhone.subHeading}
-          </Text>
+          <Text style={styles.subHeading}>{strings.verifyPhone.subHeading}</Text>
           <Spacer space={SH(6)} />
           <View style={styles.textInputView}>
             <CountryPicker
-              onSelect={code => {
+              onSelect={(code) => {
                 setFlag(code.cca2);
                 if (code.callingCode !== []) {
                   setCountryCode('+' + code.callingCode.flat());

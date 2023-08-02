@@ -13,7 +13,7 @@ const INITIALSTATE = {
   notifications: [],
 };
 
-export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
+export const settingReducer = (state = INITIALSTATE, { payload, type }) => {
   switch (type) {
     case TYPES.GET_SETTING_SUCCESS:
       return {
@@ -95,6 +95,10 @@ export const settingReducer = (state = { INITIALSTATE }, { payload, type }) => {
         ...state,
         notifications: [...payload],
       };
+
+    case TYPES.SETTING_CLEAR_STORE:
+      return INITIALSTATE;
+
     default:
       return state;
   }

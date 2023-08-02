@@ -16,6 +16,7 @@ client.interceptors.request.use(async function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
   const user = store.getState().user?.posLoginData?.token;
   const fcmToken = await getDeviceToken();
+  console.log('Merchant token', register);
 
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
@@ -50,6 +51,7 @@ client.interceptors.response.use(
       : response.data,
   (error) => {
     if (error.response) {
+      console.log('error.response.data.msgerror.response.data.msg', error.response.data.msg);
       if (error.response.data.msg === 'invalid_token') {
         // Show an alert in React Native
         Alert.alert('Session activated from another device, please login again to continue', [

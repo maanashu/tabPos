@@ -13,11 +13,13 @@ import {
   cloth,
   clothes,
   cross,
+  filter,
   holdCart,
   keyboard,
   multipleImag,
   product,
   search_light,
+  services,
   sideArrow,
   sideEarser,
   sideKeyboard,
@@ -138,6 +140,10 @@ export function MainScreen({
   const [userAdd, setUserAdd] = useState('');
 
   const [page, setPage] = useState(1);
+
+  const [productCon, setProductCon] = useState(true);
+  const [serviceCon, setServiceCon] = useState(false);
+  const [filterCon, setFilterCon] = useState(false);
 
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -350,6 +356,18 @@ export function MainScreen({
     }
   };
 
+  const productHandler = () => {
+    setProductCon(true);
+    setServiceCon(false);
+  };
+  const serviceHandler = () => {
+    setServiceCon(true);
+    setProductCon(false);
+  };
+  const filterHandler = () => {
+    setFilterCon(!filterCon);
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.homeScreenCon}>
@@ -362,7 +380,7 @@ export function MainScreen({
                 justifyContent: 'space-between',
               }}
             >
-              {productServiceType === 1 ? (
+              {productCon ? (
                 <View style={styles.allProductSection}>
                   <Text style={styles.allProduct}>{strings.posRetail.allProduct}</Text>
                   <Text style={styles.productCount}>
@@ -409,7 +427,7 @@ export function MainScreen({
                 </View>
               </View>
               <View>
-                <FlatList
+                {/* <FlatList
                   data={productServiceFilter}
                   keyExtractor={(item) => item.id}
                   horizontal
@@ -427,14 +445,57 @@ export function MainScreen({
                       />
                     );
                   }}
-                />
-                {/* {cateoryView ? <View style={styles.categoryFilterCon}></View> : null} */}
+                /> */}
+                <View style={styles.displayflex}>
+                  <TouchableOpacity
+                    style={
+                      productCon
+                        ? [styles.prouductAndServiceCon, { borderColor: COLORS.primary }]
+                        : styles.prouductAndServiceCon
+                    }
+                    onPress={productHandler}
+                  >
+                    <Image
+                      source={product}
+                      style={productCon ? styles.productImageStyleBlue : styles.productImageStyle}
+                    />
+                    <Text style={styles.productText}>{'Products'}</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={
+                      serviceCon
+                        ? [styles.prouductAndServiceCon, { borderColor: COLORS.primary }]
+                        : styles.prouductAndServiceCon
+                    }
+                    onPress={serviceHandler}
+                  >
+                    <Image
+                      source={services}
+                      style={serviceCon ? styles.productImageStyleBlue : styles.productImageStyle}
+                    />
+                    <Text style={styles.productText}>{'Services'}</Text>
+                  </TouchableOpacity>
+
+                  <View>
+                    <TouchableOpacity style={styles.prouductAndServiceCon} onPress={filterHandler}>
+                      <Text style={styles.productText}>{'Filter'}</Text>
+                      <Image source={filter} style={styles.productImageStyle} />
+                    </TouchableOpacity>
+                    {filterCon ? (
+                      <View style={styles.categoryFilterCon}>
+                        <Text>In progress</Text>
+                      </View>
+                    ) : null}
+                  </View>
+                </View>
               </View>
             </View>
             <Spacer space={SH(10)} />
             {/* <View style={styles.hr} /> */}
             <Spacer space={SH(10)} />
-            {productServiceType === 1 ? (
+
+            {productCon ? (
               isProductLoading ? (
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
@@ -508,10 +569,10 @@ export function MainScreen({
                         <TouchableOpacity>
                           <Image source={addToCart} style={styles.addToCart} />
                           {/* {isProductMatchArray ? (
-                        <View style={styles.productBadge}>
-                          <Text style={styles.productBadgeText}>{cartAddQty}</Text>
-                        </View>
-                      ) : null} */}
+                          <View style={styles.productBadge}>
+                            <Text style={styles.productBadgeText}>{cartAddQty}</Text>
+                          </View>
+                        ) : null} */}
                         </TouchableOpacity>
                       </TouchableOpacity>
                     </TouchableOpacity>

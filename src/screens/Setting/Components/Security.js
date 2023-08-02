@@ -41,7 +41,7 @@ export function Security() {
     setValue,
   });
 
-  const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status;
+  const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
   const googleCode = getSettingData?.getGoogleCode;
   const [twoStepModal, setTwoStepModal] = useState(false);
   const [googleAuthStart, setGoogleAuthStart] = useState(false);
@@ -50,11 +50,9 @@ export function Security() {
   const [googleAuthicator, setGoogleAuthicator] = useState(googleAuthenticator);
   const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
 
-  // console.log('googleAuthenticator', getSettingData);
-
   useEffect(() => {
     if (getSettingData?.getSetting) {
-      setGoogleAuthicator(getSettingData?.getSetting?.google_authenticator_status);
+      setGoogleAuthicator(getSettingData?.getSetting?.google_authenticator_status ?? false);
     }
   }, [getSettingData?.getSetting]);
 

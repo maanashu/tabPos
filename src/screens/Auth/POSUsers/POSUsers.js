@@ -28,7 +28,7 @@ import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { getSetting } from '@/selectors/SettingSelector';
-import { getGoogleCode, verifyGoogleCode } from '@/actions/SettingAction';
+import { getGoogleCode, getSettings, upadteApi, verifyGoogleCode } from '@/actions/SettingAction';
 
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
@@ -60,15 +60,20 @@ export function POSUsers({ navigation }) {
   const merchantData = getAuth?.merchantLoginData;
   useEffect(() => {
     if (isFocused) {
-      if (merchantData?.google_authenticator_status) {
-        setTwoFactorEnabled(true);
-        setTwoStepModal(true);
-        dispatch(getGoogleCode());
-      } else {
-        dispatch(getAllPosUsers(sellerID));
-      }
+      useEffectFun();
     }
   }, [isFocused]);
+
+  const useEffectFun = async () => {
+    const res = await dispatch(getSettings());
+    if (getSettingData?.getSetting?.google_authenticator_status ?? false) {
+      setTwoFactorEnabled(true);
+      setTwoStepModal(true);
+      dispatch(getGoogleCode());
+    } else {
+      dispatch(getAllPosUsers(sellerID));
+    }
+  };
 
   const getPosUserLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ALL_POS_USERS], state)
