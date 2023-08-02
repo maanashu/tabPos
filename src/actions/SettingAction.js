@@ -5,11 +5,11 @@ const getSettingRequest = () => ({
   type: TYPES.GET_SETTING_REQUEST,
   payload: null,
 });
-const getSettingSuccess = getSetting => ({
+const getSettingSuccess = (getSetting) => ({
   type: TYPES.GET_SETTING_SUCCESS,
   payload: { getSetting },
 });
-const getSettingError = error => ({
+const getSettingError = (error) => ({
   type: TYPES.GET_SETTING_ERROR,
   payload: { error },
 });
@@ -22,11 +22,11 @@ const upadteApiRequest = () => ({
   type: TYPES.UPDATE_API_REQUEST,
   payload: null,
 });
-const upadteApiSuccess = getSetting => ({
+const upadteApiSuccess = (getSetting) => ({
   type: TYPES.UPDATE_API_SUCCESS,
   payload: { getSetting },
 });
-const upadteApiError = error => ({
+const upadteApiError = (error) => ({
   type: TYPES.UPDATE_API_ERROR,
   payload: { error },
 });
@@ -35,11 +35,11 @@ const getShippingPickupRequest = () => ({
   type: TYPES.GET_SHIPPICK_REQUEST,
   payload: null,
 });
-const getShippingPickupSuccess = getShippingPickup => ({
+const getShippingPickupSuccess = (getShippingPickup) => ({
   type: TYPES.GET_SHIPPICK_SUCCESS,
   payload: { getShippingPickup },
 });
-const getShippingPickupError = error => ({
+const getShippingPickupError = (error) => ({
   type: TYPES.GET_SHIPPICK_ERROR,
   payload: { error },
 });
@@ -52,7 +52,7 @@ const addressUpdateByIdSuccess = () => ({
   type: TYPES.ADDRESS_UPDATE_SUCCESS,
   payload: null,
 });
-const addressUpdateByIdError = error => ({
+const addressUpdateByIdError = (error) => ({
   type: TYPES.ADDRESS_UPDATE_ERROR,
   payload: { error },
 });
@@ -61,11 +61,11 @@ const getUserAddressRequest = () => ({
   type: TYPES.GET_USER_ADD_REQUEST,
   payload: null,
 });
-const getUserAddressSuccess = getUserAddress => ({
+const getUserAddressSuccess = (getUserAddress) => ({
   type: TYPES.GET_USER_ADD_SUCCESS,
   payload: { getUserAddress },
 });
-const getUserAddressError = error => ({
+const getUserAddressError = (error) => ({
   type: TYPES.GET_USER_ADD_ERROR,
   payload: { error },
 });
@@ -78,11 +78,11 @@ const getCountriesRequest = () => ({
   type: TYPES.GET_COUNTRIES_REQUEST,
   payload: null,
 });
-const getCountriesSuccess = getCountries => ({
+const getCountriesSuccess = (getCountries) => ({
   type: TYPES.GET_COUNTRIES_SUCCESS,
   payload: { getCountries },
 });
-const getCountriesError = error => ({
+const getCountriesError = (error) => ({
   type: TYPES.GET_COUNTRIES_ERROR,
   payload: { error },
 });
@@ -95,11 +95,11 @@ const getStateRequest = () => ({
   type: TYPES.GET_STATE_REQUEST,
   payload: null,
 });
-const getStateSuccess = getState => ({
+const getStateSuccess = (getState) => ({
   type: TYPES.GET_STATE_SUCCESS,
   payload: { getState },
 });
-const getStateError = error => ({
+const getStateError = (error) => ({
   type: TYPES.GET_STATE_ERROR,
   payload: { error },
 });
@@ -112,11 +112,11 @@ const staffDetailRequest = () => ({
   type: TYPES.STAFF_DETAIL_REQUEST,
   payload: null,
 });
-const staffDetailSuccess = staffDetail => ({
+const staffDetailSuccess = (staffDetail) => ({
   type: TYPES.STAFF_DETAIL_SUCCESS,
   payload: { staffDetail },
 });
-const staffDetailError = error => ({
+const staffDetailError = (error) => ({
   type: TYPES.STAFF_DETAIL_ERROR,
   payload: { error },
 });
@@ -129,11 +129,11 @@ const getTaxRequest = () => ({
   type: TYPES.GET_TAX_REQUEST,
   payload: null,
 });
-const getTaxSuccess = getTax => ({
+const getTaxSuccess = (getTax) => ({
   type: TYPES.GET_TAX_SUCCESS,
   payload: { getTax },
 });
-const getTaxError = error => ({
+const getTaxError = (error) => ({
   type: TYPES.GET_TAX_ERROR,
   payload: { error },
 });
@@ -146,11 +146,11 @@ const getTaxTrueRequest = () => ({
   type: TYPES.GET_TAX_TRUE_REQUEST,
   payload: null,
 });
-const getTaxTrueSuccess = getTaxTrue => ({
+const getTaxTrueSuccess = (getTaxTrue) => ({
   type: TYPES.GET_TAX_TRUE_SUCCESS,
   payload: { getTaxTrue },
 });
-const getTaxTrueError = error => ({
+const getTaxTrueError = (error) => ({
   type: TYPES.GET_TAX_TRUE_ERROR,
   payload: { error },
 });
@@ -163,11 +163,11 @@ const getGoogleCodeRequest = () => ({
   type: TYPES.GET_GOOGLE_CODE_REQUEST,
   payload: null,
 });
-const getGoogleCodeSuccess = getGoogleCode => ({
+const getGoogleCodeSuccess = (getGoogleCode) => ({
   type: TYPES.GET_GOOGLE_CODE_SUCCESS,
   payload: { getGoogleCode },
 });
-const getGoogleCodeError = error => ({
+const getGoogleCodeError = (error) => ({
   type: TYPES.GET_GOOGLE_CODE_ERROR,
   payload: { error },
 });
@@ -176,11 +176,11 @@ const verifyGoogleCodeRequest = () => ({
   type: TYPES.VERIFY_GOOGLE_CODE_REQUEST,
   payload: null,
 });
-const verifyGoogleCodeSuccess = getGoogleCode => ({
+const verifyGoogleCodeSuccess = (getGoogleCode) => ({
   type: TYPES.VERIFY_GOOGLE_CODE_SUCCESS,
   payload: { getGoogleCode },
 });
-const verifyGoogleCodeError = error => ({
+const verifyGoogleCodeError = (error) => ({
   type: TYPES.VERIFY_GOOGLE_CODE_ERROR,
   payload: { error },
 });
@@ -189,11 +189,11 @@ const taxPayerRequest = () => ({
   type: TYPES.TAX_PAYER_REQUEST,
   payload: null,
 });
-const taxPayerSuccess = taxPayer => ({
+const taxPayerSuccess = (taxPayer) => ({
   type: TYPES.TAX_PAYER_SUCCESS,
   payload: { taxPayer },
 });
-const taxPayerError = error => ({
+const taxPayerError = (error) => ({
   type: TYPES.TAX_PAYER_ERROR,
   payload: { error },
 });
@@ -203,17 +203,22 @@ const fetchAllNotificationsRequest = () => ({
   payload: null,
 });
 
-const fetchAllNotificationsSuccess = notifications => ({
+const fetchAllNotificationsSuccess = (notifications) => ({
   type: TYPES.FETCH_ALL_NOTIFICATIONS_SUCCESS,
   payload: [...notifications],
 });
 
-const fetchAllNotificationsError = err => ({
+const fetchAllNotificationsError = (err) => ({
   type: TYPES.FETCH_ALL_NOTIFICATIONS_ERROR,
   payload: { ...err },
 });
 
-export const getSettings = () => async dispatch => {
+const clearStore = () => ({
+  type: TYPES.SETTING_CLEAR_STORE,
+  payload: null,
+});
+
+export const getSettings = () => async (dispatch) => {
   dispatch(getSettingRequest());
   try {
     const res = await SettingController.getSetting();
@@ -223,7 +228,7 @@ export const getSettings = () => async dispatch => {
   }
 };
 
-export const upadteApi = data => async dispatch => {
+export const upadteApi = (data) => async (dispatch) => {
   dispatch(upadteApiRequest());
   try {
     const res = await SettingController.upadteApi(data);
@@ -234,7 +239,7 @@ export const upadteApi = data => async dispatch => {
   }
 };
 
-export const getShippingPickup = () => async dispatch => {
+export const getShippingPickup = () => async (dispatch) => {
   dispatch(getShippingPickupRequest());
   try {
     const res = await SettingController.getShippingPickup();
@@ -244,7 +249,7 @@ export const getShippingPickup = () => async dispatch => {
   }
 };
 
-export const addressUpdateById = body => async dispatch => {
+export const addressUpdateById = (body) => async (dispatch) => {
   dispatch(addressUpdateByIdRequest());
   try {
     const res = await SettingController.addressUpdateById(body);
@@ -255,7 +260,7 @@ export const addressUpdateById = body => async dispatch => {
   }
 };
 
-export const getUserAddress = () => async dispatch => {
+export const getUserAddress = () => async (dispatch) => {
   dispatch(getUserAddressRequest());
   try {
     const res = await SettingController.getUserAddress();
@@ -268,7 +273,7 @@ export const getUserAddress = () => async dispatch => {
   }
 };
 
-export const getCountries = () => async dispatch => {
+export const getCountries = () => async (dispatch) => {
   dispatch(getCountriesRequest());
   try {
     const res = await SettingController.getCountries();
@@ -280,7 +285,7 @@ export const getCountries = () => async dispatch => {
     dispatch(getCountriesError(error.message));
   }
 };
-export const getState = id => async dispatch => {
+export const getState = (id) => async (dispatch) => {
   dispatch(getStateRequest());
   try {
     const res = await SettingController.getState(id);
@@ -293,7 +298,7 @@ export const getState = id => async dispatch => {
   }
 };
 
-export const getStaffDetail = () => async dispatch => {
+export const getStaffDetail = () => async (dispatch) => {
   dispatch(staffDetailRequest());
   try {
     const res = await SettingController.staffDetail();
@@ -305,7 +310,7 @@ export const getStaffDetail = () => async dispatch => {
     dispatch(staffDetailError(error.message));
   }
 };
-export const getTax = data => async dispatch => {
+export const getTax = (data) => async (dispatch) => {
   dispatch(getTaxRequest());
   try {
     const res = await SettingController.getTax(data);
@@ -318,7 +323,7 @@ export const getTax = data => async dispatch => {
   }
 };
 
-export const getTaxTrue = data => async dispatch => {
+export const getTaxTrue = (data) => async (dispatch) => {
   dispatch(getTaxTrueRequest());
   try {
     const res = await SettingController.getTaxTrue(data);
@@ -331,7 +336,7 @@ export const getTaxTrue = data => async dispatch => {
   }
 };
 
-export const getGoogleCode = () => async dispatch => {
+export const getGoogleCode = () => async (dispatch) => {
   dispatch(getGoogleCodeRequest());
   try {
     const res = await SettingController.getGoogleCode();
@@ -341,7 +346,7 @@ export const getGoogleCode = () => async dispatch => {
   }
 };
 
-export const verifyGoogleCode = data => async dispatch => {
+export const verifyGoogleCode = (data) => async (dispatch) => {
   dispatch(verifyGoogleCodeRequest());
   try {
     const res = await SettingController.verifyGoogleCode(data);
@@ -351,7 +356,7 @@ export const verifyGoogleCode = data => async dispatch => {
   }
 };
 
-export const taxPayer = data => async dispatch => {
+export const taxPayer = (data) => async (dispatch) => {
   dispatch(taxPayerRequest());
   try {
     const res = await SettingController.taxPayer(data);
@@ -361,7 +366,7 @@ export const taxPayer = data => async dispatch => {
   }
 };
 
-export const fetchAllNotifications = () => async dispatch => {
+export const fetchAllNotifications = () => async (dispatch) => {
   dispatch(fetchAllNotificationsRequest());
   try {
     const res = await SettingController.fetchAllNotifications();
@@ -369,4 +374,8 @@ export const fetchAllNotifications = () => async dispatch => {
   } catch (error) {
     dispatch(fetchAllNotificationsError(error));
   }
+};
+
+export const settingClear = () => async (dispatch) => {
+  dispatch(clearStore());
 };

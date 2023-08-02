@@ -17,6 +17,7 @@ const OrderDetail = ({
   renderOrderProducts,
   acceptHandler,
   declineHandler,
+  openShippingOrders,
 }) => {
   return (
     <View style={styles.orderDetailView}>
@@ -155,21 +156,23 @@ const OrderDetail = ({
           </View>
 
           <Spacer space={SH(15)} />
-          <View style={styles.shippingOrdersViewStyle}>
-            <TouchableOpacity
-              onPress={() => declineHandler(userDetail?.id)}
-              style={styles.declineButtonStyle}
-            >
-              <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
-            </TouchableOpacity>
+          {openShippingOrders == 0 || openShippingOrders == 1 || openShippingOrders == 2 ? (
+            <View style={styles.shippingOrdersViewStyle}>
+              <TouchableOpacity
+                onPress={() => declineHandler(userDetail?.id)}
+                style={styles.declineButtonStyle}
+              >
+                <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => acceptHandler(userDetail?.id)}
-              style={styles.acceptButtonView}
-            >
-              <Text style={styles.acceptTextStyle}>{strings.deliveryOrders.accept}</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity
+                onPress={() => acceptHandler(userDetail?.id)}
+                style={styles.acceptButtonView}
+              >
+                <Text style={styles.acceptTextStyle}>{strings.deliveryOrders.accept}</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
         </View>
       </View>
     </View>

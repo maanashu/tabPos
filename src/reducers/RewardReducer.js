@@ -6,7 +6,7 @@ const INITIALSTATE = {
   getRewardUser: [],
 };
 
-export const rewardReducer = (state = { INITIALSTATE }, { payload, type }) => {
+export const rewardReducer = (state = INITIALSTATE, { payload, type }) => {
   switch (type) {
     case TYPES.GET_REWARD_GRAPH_SUCCESS:
       return {

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
+import ReactNativeModal from 'react-native-modal';
 import { LineChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,7 +19,6 @@ import {
   pay,
   pin,
   rightIcon,
-  firstTruck,
   clock,
   expressType,
   oneHourType,
@@ -30,10 +30,21 @@ import {
   cancelledOrders,
   returnedOrders,
   removeProduct,
+  returnDeliveryBox,
+  task,
+  deliveryorderProducts,
+  timer,
+  deliveryParcel,
+  deliveryDriver,
+  NoCard,
+  returnShipping,
+  shipping,
+  deliveryShipping,
 } from '@/assets';
 import {
   acceptOrder,
   deliOrder,
+  getGraphOrders,
   getOrderCount,
   getOrderstatistics,
   getReviewDefault,
@@ -53,10 +64,9 @@ import { getDelivery } from '@/selectors/DeliverySelector';
 import OrderConvertion from './Components/OrderConvertion';
 import TodayOrderStatus from './Components/TodayOrderStatus';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { graphOptions, labels, rightSideDrawer } from '@/constants/staticData';
+import { graphOptions, labels } from '@/constants/staticData';
 
 import styles from './styles';
-import { goBack } from '@/navigation/NavigationRef';
 
 export function DeliveryOrders2() {
   const dispatch = useDispatch();
@@ -78,12 +88,69 @@ export function DeliveryOrders2() {
   const [deliverytypes, setDeliveryTypes] = useState();
   const [graphData, setGraphData] = useState(graphOptions);
   const [viewAllOrders, setViewAllOrders] = useState(false);
-  const [openShippingOrders, setOpenShippingOrders] = useState(false);
+  const [openShippingOrders, setOpenShippingOrders] = useState(0);
   const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? '');
   const [orderDetail, setOrderDetail] = useState(
     getDeliveryData?.getReviewDef?.[0]?.order_details ?? []
   );
+
+  const deliveryDrawer = [
+    {
+      key: '0',
+      image: task,
+      title: 'Orders to Review',
+      count: getDeliveryData?.getOrderCount?.[0]?.count,
+    },
+    {
+      key: '1',
+      image: deliveryorderProducts,
+      title: 'Accepted',
+      count: getDeliveryData?.getOrderCount?.[1]?.count,
+    },
+    {
+      key: '2',
+      image: timer,
+      title: 'Order Preparing ',
+      count: getDeliveryData?.getOrderCount?.[2]?.count,
+    },
+    {
+      key: '3',
+      image: deliveryParcel,
+      title: 'Ready to Pickup',
+      count: getDeliveryData?.getOrderCount?.[3]?.count,
+    },
+    // {
+    //   key: '4',
+    //   image: deliveryDriver,
+    //   title: 'Assign to Driver',
+    //   count: 0,
+    // },
+    {
+      key: '4',
+      image: deliveryShipping,
+      title: 'Picked Up',
+      count: getDeliveryData?.getOrderCount?.[4]?.count,
+    },
+    {
+      key: '5',
+      image: deliveryorderProducts,
+      title: 'Delivered',
+      count: getDeliveryData?.getOrderCount?.[5]?.count,
+    },
+    {
+      key: '6',
+      image: NoCard,
+      title: 'Rejected/Cancelled',
+      count: getDeliveryData?.getOrderCount?.[6]?.count,
+    },
+    {
+      key: '7',
+      image: returnShipping,
+      title: 'Returned',
+      count: getDeliveryData?.getOrderCount?.[7]?.count,
+    },
+  ];
 
   useEffect(() => {
     dispatch(todayOrders(sellerID));
@@ -91,6 +158,7 @@ export function DeliveryOrders2() {
     dispatch(getOrderCount(sellerID));
     dispatch(getReviewDefault(0, sellerID));
     dispatch(getOrderstatistics(sellerID));
+    dispatch(getGraphOrders(sellerID));
 
     const deliveryTypes = [
       {
@@ -126,15 +194,17 @@ export function DeliveryOrders2() {
   }, []);
 
   useEffect(() => {
-    dispatch(getReviewDefault(0, sellerID));
+    dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID));
 
     setUserDetail(getDeliveryData?.getReviewDef?.[0]);
-    setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
-  }, [viewAllOrders]);
+    setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details);
+  }, [viewAllOrders, openShippingOrders]);
 
   const isDeliveryOrder = useSelector((state) =>
-    isLoadingSelector([TYPES.DELIVERING_ORDER], state)
+    isLoadingSelector([TYPES.DELIVERING_ORDER, TYPES.GET_GRAPH_ORDERS], state)
   );
+
+  const isOrderLoading = useSelector((state) => isLoadingSelector([TYPES.GET_REVIEW_DEF], state));
 
   const isAcceptOrder = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
 
@@ -163,18 +233,18 @@ export function DeliveryOrders2() {
             { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
           ]}
         >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>0</Text>
+          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
         </View>
       );
-    } else if (item?.title === 'Rejected') {
+    } else if (item?.title === 'Rejected/Cancelled') {
       return (
         <View
           style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
         >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>0</Text>
+          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
         </View>
       );
-    } else if (item?.title === 'Cancelled') {
+    } else if (item?.title === 'Returned') {
       return (
         <View
           style={[
@@ -185,7 +255,7 @@ export function DeliveryOrders2() {
             },
           ]}
         >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>0</Text>
+          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
         </View>
       );
     } else {
@@ -200,7 +270,7 @@ export function DeliveryOrders2() {
             },
           ]}
         >
-          <Text style={styles.badgetext}>0</Text>
+          <Text style={styles.badgetext}>{item?.count}</Text>
         </View>
       );
     }
@@ -208,13 +278,15 @@ export function DeliveryOrders2() {
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
-      onPress={() => setOpenShippingOrders(item?.key)}
+      onPress={() => {
+        setOpenShippingOrders(item?.key), dispatch(getReviewDefault(parseInt(item?.key), sellerID));
+      }}
       style={[
         styles.firstIconStyle,
         {
           backgroundColor:
             openShippingOrders === item?.key ? COLORS.textInputBackground : COLORS.transparent,
-          marginVertical: 10,
+          marginVertical: 6,
           width: SW(15),
           height: SW(15),
         },
@@ -227,101 +299,128 @@ export function DeliveryOrders2() {
     </TouchableOpacity>
   );
 
-  const renderShippingDrawer = ({ item }) => (
-    <View style={styles.shippingDrawerView}>
-      <Image source={item.image} style={styles.sideBarImage} />
-      <View style={{ paddingLeft: 15, justifyContent: 'center' }}>
-        <Text
-          style={[
-            styles.shippingDrawerCountText,
-            {
-              color:
-                item?.title === 'Delivered'
-                  ? COLORS.primary
-                  : item?.title === 'Rejected'
-                  ? COLORS.pink
-                  : item?.title === 'Cancelled'
-                  ? COLORS.yellowTweet
-                  : COLORS.solid_grey,
-            },
-          ]}
-        >
-          {item?.count}
-        </Text>
-        <Text
-          style={[
-            styles.shippingDrawerTitleText,
-            {
-              color:
-                item?.title === 'Delivered'
-                  ? COLORS.primary
-                  : item?.title === 'Rejected'
-                  ? COLORS.pink
-                  : item?.title === 'Cancelled'
-                  ? COLORS.yellowTweet
-                  : COLORS.solid_grey,
-            },
-          ]}
-        >
-          {item?.title}
-        </Text>
+  const renderShippingDrawer = ({ item }) => {
+    return (
+      <View style={styles.shippingDrawerView}>
+        <Image source={item.image} style={styles.sideBarImage} />
+        <View style={{ paddingLeft: 15, justifyContent: 'center' }}>
+          <Text
+            style={[
+              styles.shippingDrawerCountText,
+              {
+                color:
+                  item?.title === 'Delivered'
+                    ? COLORS.primary
+                    : item?.title === 'Rejected/Cancelled'
+                    ? COLORS.pink
+                    : item?.title === 'Returned'
+                    ? COLORS.yellowTweet
+                    : COLORS.solid_grey,
+              },
+            ]}
+          >
+            {item?.count}
+          </Text>
+          <Text
+            style={[
+              styles.shippingDrawerTitleText,
+              {
+                color:
+                  item?.title === 'Delivered'
+                    ? COLORS.primary
+                    : item?.title === 'Rejected/Cancelled'
+                    ? COLORS.pink
+                    : item?.title === 'Returned'
+                    ? COLORS.yellowTweet
+                    : COLORS.solid_grey,
+              },
+            ]}
+          >
+            {item?.title}
+          </Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   const renderOrderToReview = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => {
-        setUserDetail(item);
-        setOrderDetail(item?.order_details);
-      }}
-      style={viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle}
-    >
-      <View style={styles.orderDetailStyle}>
-        <Text style={styles.nameTextStyle}>
-          {item?.user_details?.firstname ? item?.user_details?.firstname : 'user name'}
-        </Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={pin} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>{item?.distance ? item?.distance : '0'}</Text>
-        </View>
-      </View>
+    <>
+      {
+        <TouchableOpacity
+          onPress={() => {
+            setUserDetail(item);
+            setOrderDetail(item?.order_details);
+          }}
+          style={viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle}
+        >
+          <View style={styles.orderDetailStyle}>
+            <Text style={styles.nameTextStyle}>
+              {item?.user_details?.firstname ? item?.user_details?.firstname : 'user name'}
+            </Text>
+            <View style={styles.locationViewStyle}>
+              <Image source={pin} style={styles.pinImageStyle} />
+              <Text style={styles.distanceTextStyle}>{item?.distance ? item?.distance : '0'}</Text>
+            </View>
+          </View>
 
-      <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
-        <Text style={styles.nameTextStyle}>
-          {item?.order_details?.length > 1
-            ? item?.order_details?.length + ' Items'
-            : item?.order_details?.length + ' Item'}
-        </Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={pay} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>
-            {item?.payable_amount ? item?.payable_amount : '00'}
-          </Text>
-        </View>
-      </View>
+          <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
+            <Text style={styles.nameTextStyle}>
+              {item?.order_details?.length > 1
+                ? item?.order_details?.length + ' Items'
+                : item?.order_details?.length + ' Item'}
+            </Text>
+            <View style={styles.locationViewStyle}>
+              <Image source={pay} style={styles.pinImageStyle} />
+              <Text style={styles.distanceTextStyle}>
+                {item?.payable_amount ? item?.payable_amount : '00'}
+              </Text>
+            </View>
+          </View>
 
-      <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
-        <Text style={styles.timeTextStyle}>{item?.delivery_details?.title}</Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={clock} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>
-            {' '}
-            {item?.preffered_delivery_start_time ? item?.preffered_delivery_start_time : '00.00'}
-            {'-'} {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00'}
-          </Text>
-        </View>
-      </View>
+          <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
+            <Text style={styles.timeTextStyle}>{item?.delivery_details?.title}</Text>
+            <View style={styles.locationViewStyle}>
+              <Image source={clock} style={styles.pinImageStyle} />
+              <Text style={styles.distanceTextStyle}>
+                {' '}
+                {item?.preffered_delivery_start_time
+                  ? item?.preffered_delivery_start_time
+                  : '00.00'}
+                {'-'}{' '}
+                {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00'}
+              </Text>
+            </View>
+          </View>
 
-      <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
-        <Image source={rightIcon} style={styles.rightIconStyle} />
-      </TouchableOpacity>
-    </TouchableOpacity>
+          <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
+            <Image source={rightIcon} style={styles.rightIconStyle} />
+          </TouchableOpacity>
+        </TouchableOpacity>
+      }
+    </>
   );
 
   const headerComponent = () => (
     <View style={styles.headingRowStyle}>
-      <Text style={styles.ordersToReviewText}>{strings.shipingOrder.orderOfReview}</Text>
+      <Text style={styles.ordersToReviewText}>
+        {openShippingOrders == 0
+          ? strings.shipingOrder.orderOfReview
+          : openShippingOrders == 1
+          ? 'Accept Orders'
+          : openShippingOrders == 2
+          ? 'Order Preparing'
+          : openShippingOrders == 3
+          ? 'Ready To Pickup'
+          : openShippingOrders == 4
+          ? 'Picked Up orders'
+          : openShippingOrders == 5
+          ? 'Delivered'
+          : openShippingOrders == 6
+          ? 'Rejected/Cancelled'
+          : openShippingOrders == 7
+          ? 'Returned'
+          : 'Orders'}
+      </Text>
 
       {getDeliveryData?.getReviewDef?.length > 0 ? (
         <TouchableOpacity onPress={() => setViewAllOrders(true)} style={styles.viewAllButtonStyle}>
@@ -398,7 +497,7 @@ export function DeliveryOrders2() {
     );
   };
 
-  const renderOrderProducts = ({ item, index }) => {
+  const renderOrderProducts = ({ item }) => {
     return (
       <View style={styles.orderproductView}>
         <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
@@ -419,42 +518,10 @@ export function DeliveryOrders2() {
     );
   };
 
-  // const getGraphData = () => {
-  //   graphData?.map((item, index) => {
-  //     if (
-  //       item?.[0]?.checked &&
-  //       item?.[1]?.checked === false &&
-  //       item?.[2]?.checked === false &&
-  //       item?.[3]?.checked === false
-  //     ) {
-  //       return (datasets = [
-  //         {
-  //           data: [32, 48, 33, 49, 94, 79, 87],
-  //           strokeWidth: 5,
-  //           color: (opacity = 1) => `rgba(31, 179, 255,${opacity})`,
-  //         },
-  //       ]);
-  //     } else if (
-  //       item?.[0]?.checked === false &&
-  //       item?.[1]?.checked &&
-  //       item?.[2]?.checked === false &&
-  //       item?.[3]?.checked === false
-  //     ) {
-  //       return (datasets = [
-  //         {
-  //           data: [19, 31, 19, 32, 71, 58, 79],
-  //           strokeWidth: 5,
-  //           color: (opacity = 1) => `rgba(39, 90, 255, ${opacity})`,
-  //         },
-  //       ]);
-  //     }
-  //   });
-  // };
-
   const acceptHandler = (id) => {
     const data = {
       orderId: id,
-      status: 1,
+      status: parseInt(openShippingOrders) + 1,
       sellerID: sellerID,
     };
     dispatch(
@@ -462,7 +529,7 @@ export function DeliveryOrders2() {
         if (res?.msg === 'Order status updated successfully!') {
           alert('Order accepted successfully');
           setViewAllOrders(false);
-          dispatch(getReviewDefault(0, sellerID));
+          dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID));
         }
       })
     );
@@ -485,6 +552,359 @@ export function DeliveryOrders2() {
     );
   };
 
+  const graphElements = () => {
+    if (
+      graphData?.[0]?.checked &&
+      !graphData?.[1]?.checked &&
+      !graphData?.[2]?.checked &&
+      !graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+          },
+        ],
+      };
+    } else if (
+      !graphData?.[0]?.checked &&
+      graphData?.[1]?.checked &&
+      !graphData?.[2]?.checked &&
+      !graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      !graphData?.[0]?.checked &&
+      !graphData?.[1]?.checked &&
+      graphData?.[2]?.checked &&
+      !graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      !graphData?.[0]?.checked &&
+      !graphData?.[1]?.checked &&
+      !graphData?.[2]?.checked &&
+      graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      graphData?.[0]?.checked &&
+      graphData?.[1]?.checked &&
+      !graphData?.[2]?.checked &&
+      !graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      graphData?.[0]?.checked &&
+      !graphData?.[1]?.checked &&
+      graphData?.[2]?.checked &&
+      !graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      graphData?.[0]?.checked &&
+      !graphData?.[1]?.checked &&
+      !graphData?.[2]?.checked &&
+      graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      !graphData?.[0]?.checked &&
+      !graphData?.[1]?.checked &&
+      graphData?.[2]?.checked &&
+      graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      !graphData?.[0]?.checked &&
+      graphData?.[1]?.checked &&
+      graphData?.[2]?.checked &&
+      !graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      graphData?.[0]?.checked &&
+      !graphData?.[1]?.checked &&
+      !graphData?.[2]?.checked &&
+      graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      graphData?.[0]?.checked &&
+      graphData?.[1]?.checked &&
+      graphData?.[2]?.checked &&
+      !graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      graphData?.[0]?.checked &&
+      graphData?.[1]?.checked &&
+      !graphData?.[2]?.checked &&
+      graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      graphData?.[0]?.checked &&
+      !graphData?.[1]?.checked &&
+      graphData?.[2]?.checked &&
+      graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      !graphData?.[0]?.checked &&
+      graphData?.[1]?.checked &&
+      graphData?.[2]?.checked &&
+      graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+          },
+        ],
+      };
+    } else if (
+      graphData?.[0]?.checked &&
+      graphData?.[1]?.checked &&
+      graphData?.[2]?.checked &&
+      graphData?.[3]?.checked &&
+      Object.keys(getDeliveryData?.graphOrders).length > 0
+    ) {
+      return {
+        labels: getDeliveryData?.graphOrders?.labels,
+        datasets: [
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+          },
+          {
+            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
+            strokeWidth: 5,
+            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+          },
+        ],
+      };
+    } else {
+      return {
+        labels: labels,
+        datasets: [
+          {
+            data: [0, 0, 0, 0, 0, 0, 0],
+          },
+        ],
+      };
+    }
+  };
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
@@ -494,64 +914,60 @@ export function DeliveryOrders2() {
 
         {viewAllOrders ? (
           <View style={styles.firstRowStyle}>
-            <View style={[styles.orderToReviewView, { paddingBottom: ms(30) }]}>
-              <FlatList
-                renderItem={renderOrderToReview}
-                showsVerticalScrollIndicator={false}
-                data={getDeliveryData?.getReviewDef ?? []}
-                ListHeaderComponent={() => (
-                  <View style={styles.headingRowStyle}>
-                    <Text style={styles.ordersToReviewText}>
-                      {strings.shipingOrder.orderOfReview}
-                    </Text>
-                  </View>
-                )}
-                contentContainerStyle={styles.contentContainerStyle}
-              />
-            </View>
-
-            <OrderDetail
-              {...{ userDetail, orderDetail, renderOrderProducts, acceptHandler, declineHandler }}
-            />
-
-            {/* {openShippingOrders ? (
+            {getDeliveryData?.getReviewDef?.length > 0 ? (
               <>
-                <ReactNativeModal
-                  animationIn={'slideInRight'}
-                  animationOut={'slideOutRight'}
-                  style={styles.modalStyle}
-                  isVisible={isOpenSideBarDrawer}
-                >
-                  <View style={styles.shippingOrderViewStyle}>
-                    <FlatList
-                      data={shippingDrawer}
-                      renderItem={renderShippingDrawer}
-                      ListHeaderComponent={() => (
-                        <View style={styles.shippingOrderHeader}>
-                          <Text style={styles.shippingOrderHeading}>
-                            {strings.deliveryOrders.shippingOrder}
-                          </Text>
+                <View style={[styles.orderToReviewView, { paddingBottom: ms(30) }]}>
+                  <FlatList
+                    renderItem={renderOrderToReview}
+                    showsVerticalScrollIndicator={false}
+                    data={getDeliveryData?.getReviewDef ?? []}
+                    ListHeaderComponent={() => (
+                      <View style={styles.headingRowStyle}>
+                        <Text style={styles.ordersToReviewText}>
+                          {openShippingOrders == 0
+                            ? strings.shipingOrder.orderOfReview
+                            : openShippingOrders == 1
+                            ? 'Accept Orders'
+                            : openShippingOrders == 2
+                            ? 'Order Preparing'
+                            : openShippingOrders == 3
+                            ? 'Ready To Pickup'
+                            : openShippingOrders == 4
+                            ? 'Picked Up orders'
+                            : openShippingOrders == 5
+                            ? 'Delivered'
+                            : openShippingOrders == 6
+                            ? 'Rejected/Cancelled'
+                            : openShippingOrders == 7
+                            ? 'Returned'
+                            : 'Orders'}
+                        </Text>
+                      </View>
+                    )}
+                    contentContainerStyle={styles.contentContainerStyle}
+                  />
+                </View>
 
-                          <View style={styles.rightSideView}>
-                            <TouchableOpacity
-                              style={styles.firstIconStyle}
-                              onPress={() => setOpenShippingOrders(!openShippingOrders)}
-                            >
-                              <Image source={flipTruck} style={styles.sideBarImage} />
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                      )}
-                      keyExtractor={(item) => item.key.toString()}
-                    />
-                  </View>
-                </ReactNativeModal>
-
-                <View style={{ width: 90 }} />
+                <OrderDetail
+                  {...{
+                    userDetail,
+                    orderDetail,
+                    renderOrderProducts,
+                    acceptHandler,
+                    declineHandler,
+                    openShippingOrders,
+                  }}
+                />
               </>
-            ) : ( */}
+            ) : (
+              <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
+              </View>
+            )}
+
             <RightSideBar
               {...{
+                deliveryDrawer,
                 openShippingOrders,
                 isOpenSideBarDrawer,
                 renderShippingDrawer,
@@ -560,7 +976,6 @@ export function DeliveryOrders2() {
                 setIsOpenSideBarDrawer,
               }}
             />
-            {/* )} */}
           </View>
         ) : (
           <View style={styles.firstRowStyle}>
@@ -588,49 +1003,38 @@ export function DeliveryOrders2() {
                   showsHorizontalScrollIndicator={false}
                 />
 
-                <LineChart
-                  bezier
-                  fromZero
-                  height={ms(185)}
-                  segments={10}
-                  withDots={false}
-                  withShadow={false}
-                  data={{
-                    labels: labels,
-                    datasets: [
-                      {
-                        data: [32, 48, 33, 49, 94, 79, 87],
-                        strokeWidth: 5,
-                        color: (opacity = 1) => `rgba(31, 179, 255,${opacity})`,
-                      },
-                      {
-                        data: [19, 31, 19, 32, 71, 58, 79],
-                        strokeWidth: 5,
-                        color: (opacity = 1) => `rgba(39, 90, 255, ${opacity})`,
-                      },
-                      {
-                        data: [15, 20, 15, 20, 35, 30, 38],
-                        strokeWidth: 5,
-                        color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`,
-                      },
-                      {
-                        data: [5, 9, 5, 8, 19, 15, 20],
-                        strokeWidth: 5,
-                        color: (opacity = 1) => `rgba(252, 186, 48, ${opacity})`,
-                      },
-                    ],
-                  }}
-                  width={Dimensions.get('window').width * 0.5}
-                  chartConfig={{
-                    decimalPlaces: 0,
-                    backgroundColor: COLORS.black,
-                    backgroundGradientFrom: COLORS.white,
-                    backgroundGradientTo: COLORS.white,
-                    propsForLabels: styles.shippingDrawerTitleText,
-                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
-                  }}
-                />
+                {isDeliveryOrder ? (
+                  <View
+                    style={{
+                      height: ms(185),
+                      backgroundColor: COLORS.white,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <ActivityIndicator size={'small'} color={COLORS.primary} />
+                  </View>
+                ) : (
+                  <LineChart
+                    bezier
+                    fromZero
+                    height={ms(185)}
+                    segments={10}
+                    withDots={false}
+                    withShadow={false}
+                    data={graphElements()}
+                    width={Dimensions.get('window').width * 0.5}
+                    chartConfig={{
+                      decimalPlaces: 0,
+                      backgroundColor: COLORS.black,
+                      backgroundGradientFrom: COLORS.white,
+                      backgroundGradientTo: COLORS.white,
+                      propsForLabels: styles.shippingDrawerTitleText,
+                      color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                      labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
+                    }}
+                  />
+                )}
               </View>
 
               <OrderReview
@@ -639,12 +1043,14 @@ export function DeliveryOrders2() {
                   emptyComponent,
                   headerComponent,
                   getDeliveryData,
+                  isOrderLoading,
                 }}
               />
             </View>
 
             <RightSideBar
               {...{
+                deliveryDrawer,
                 openShippingOrders,
                 isOpenSideBarDrawer,
                 renderShippingDrawer,
@@ -683,6 +1089,38 @@ export function DeliveryOrders2() {
           />
         </View>
       ) : null}
+
+      <ReactNativeModal
+        animationIn={'slideInRight'}
+        animationOut={'slideOutRight'}
+        style={styles.modalStyle}
+        isVisible={isOpenSideBarDrawer}
+      >
+        <View style={styles.shippingOrderViewStyle}>
+          <FlatList
+            data={deliveryDrawer}
+            renderItem={renderShippingDrawer}
+            ListHeaderComponent={() => (
+              <View style={styles.shippingOrderHeader}>
+                <Text style={styles.shippingOrderHeading}>{strings.deliveryOrders.heading}</Text>
+
+                <View style={styles.rightSideView}>
+                  <TouchableOpacity
+                    style={styles.firstIconStyle}
+                    onPress={() => {
+                      setIsOpenSideBarDrawer(!isOpenSideBarDrawer);
+                      graphElements();
+                    }}
+                  >
+                    <Image source={returnDeliveryBox} style={styles.sideBarImage} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item) => item.key.toString()}
+          />
+        </View>
+      </ReactNativeModal>
     </ScreenWrapper>
   );
 }

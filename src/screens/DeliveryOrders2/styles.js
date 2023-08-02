@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   shippingDrawerView: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: ms(10),
+    paddingVertical: ms(7),
     marginLeft: ms(15),
   },
   titleStyle: {
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   shippingOrderHeader: {
-    paddingTop: 20,
+    paddingTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

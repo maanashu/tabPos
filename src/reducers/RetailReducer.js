@@ -26,7 +26,7 @@ const INITIALSTATE = {
   bulkData: [],
 };
 
-export const retailReducer = (state = { INITIALSTATE }, { payload, type }) => {
+export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
   switch (type) {
     case TYPES.CLEAR_CHECK_STORE:
       return {

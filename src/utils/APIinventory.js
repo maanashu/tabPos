@@ -101,6 +101,8 @@ export const ApiOrderInventory = {
   bulkCreate: `poscarts/bulk-create`,
   attachCustomer: 'orders/attach/user/',
   todayOrders: 'orders/pos/today/orders-count',
+  graphOrders: 'orders/pos/graph/orders',
+  todayShipStatus: 'orders/pos/shipping/orders',
 };
 
 export const ApiWalletInventory = {

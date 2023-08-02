@@ -67,6 +67,7 @@ import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 
 import { styles } from './DashBoard.styles';
 import { getAllCart, scanProductAdd } from '@/actions/RetailAction';
+import { getSetting } from '@/selectors/SettingSelector';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -76,6 +77,8 @@ export function DashBoard({ navigation }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
+  const getSettingData = useSelector(getSetting);
+
   const getDashboardData = useSelector(getDashboard);
   const getProductListArray = getDashboardData?.searchProductList;
   const getLoginDeatil = getDashboardData?.posLoginDetail;
