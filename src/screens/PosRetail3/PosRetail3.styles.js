@@ -1969,6 +1969,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
   },
+  productTextBlue: {
+    fontSize: SF(14),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+  },
   allProductSection: {
     width: windowWidth * 0.12,
   },

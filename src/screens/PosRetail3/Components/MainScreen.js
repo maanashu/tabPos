@@ -459,7 +459,9 @@ export function MainScreen({
                       source={product}
                       style={productCon ? styles.productImageStyleBlue : styles.productImageStyle}
                     />
-                    <Text style={styles.productText}>{'Products'}</Text>
+                    <Text style={productCon ? styles.productTextBlue : styles.productText}>
+                      {'Products'}
+                    </Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
@@ -474,7 +476,9 @@ export function MainScreen({
                       source={services}
                       style={serviceCon ? styles.productImageStyleBlue : styles.productImageStyle}
                     />
-                    <Text style={styles.productText}>{'Services'}</Text>
+                    <Text style={serviceCon ? styles.productTextBlue : styles.productText}>
+                      {'Services'}
+                    </Text>
                   </TouchableOpacity>
 
                   <View>
