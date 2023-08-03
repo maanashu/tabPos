@@ -35,10 +35,8 @@ import {
   deliveryorderProducts,
   timer,
   deliveryParcel,
-  deliveryDriver,
   NoCard,
   returnShipping,
-  shipping,
   deliveryShipping,
 } from '@/assets';
 import {
@@ -76,13 +74,20 @@ export function DeliveryOrders2() {
   const todayOrderStatusData = getDeliveryData?.todayOrderStatus;
   const pieChartData = getDeliveryData?.getOrderstatistics?.data;
 
-  const widthAndHeight = 150;
+  const widthAndHeight = 140;
   const series = [
-    pieChartData?.[0]?.count,
-    pieChartData?.[1]?.count,
-    pieChartData?.[2]?.count,
-    pieChartData?.[3]?.count,
+    pieChartData?.[0]?.count ?? 0,
+    pieChartData?.[1]?.count ?? 0,
+    pieChartData?.[2]?.count ?? 0,
+    pieChartData?.[3]?.count ?? 0,
   ];
+
+  let sum = 0;
+
+  series.forEach((num) => {
+    sum += num;
+  });
+
   const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet, COLORS.lightGreen];
 
   const [deliverytypes, setDeliveryTypes] = useState();
@@ -100,55 +105,49 @@ export function DeliveryOrders2() {
       key: '0',
       image: task,
       title: 'Orders to Review',
-      count: getDeliveryData?.getOrderCount?.[0]?.count,
+      count: getDeliveryData?.getOrderCount?.[0]?.count ?? 0,
     },
     {
       key: '1',
       image: deliveryorderProducts,
       title: 'Accepted',
-      count: getDeliveryData?.getOrderCount?.[1]?.count,
+      count: getDeliveryData?.getOrderCount?.[1]?.count ?? 0,
     },
     {
       key: '2',
       image: timer,
       title: 'Order Preparing ',
-      count: getDeliveryData?.getOrderCount?.[2]?.count,
+      count: getDeliveryData?.getOrderCount?.[2]?.count ?? 0,
     },
     {
       key: '3',
       image: deliveryParcel,
       title: 'Ready to Pickup',
-      count: getDeliveryData?.getOrderCount?.[3]?.count,
+      count: getDeliveryData?.getOrderCount?.[3]?.count ?? 0,
     },
-    // {
-    //   key: '4',
-    //   image: deliveryDriver,
-    //   title: 'Assign to Driver',
-    //   count: 0,
-    // },
     {
       key: '4',
       image: deliveryShipping,
       title: 'Picked Up',
-      count: getDeliveryData?.getOrderCount?.[4]?.count,
+      count: getDeliveryData?.getOrderCount?.[4]?.count ?? 0,
     },
     {
       key: '5',
       image: deliveryorderProducts,
       title: 'Delivered',
-      count: getDeliveryData?.getOrderCount?.[5]?.count,
+      count: getDeliveryData?.getOrderCount?.[5]?.count ?? 0,
     },
     {
       key: '6',
       image: NoCard,
       title: 'Rejected/Cancelled',
-      count: getDeliveryData?.getOrderCount?.[6]?.count,
+      count: getDeliveryData?.getOrderCount?.[6]?.count ?? 0,
     },
     {
       key: '7',
       image: returnShipping,
       title: 'Returned',
-      count: getDeliveryData?.getOrderCount?.[7]?.count,
+      count: getDeliveryData?.getOrderCount?.[7]?.count ?? 0,
     },
   ];
 
@@ -156,9 +155,9 @@ export function DeliveryOrders2() {
     dispatch(todayOrders(sellerID));
     dispatch(deliOrder(sellerID));
     dispatch(getOrderCount(sellerID));
-    dispatch(getReviewDefault(0, sellerID));
-    dispatch(getOrderstatistics(sellerID));
-    dispatch(getGraphOrders(sellerID));
+    dispatch(getReviewDefault(0, sellerID, 1));
+    dispatch(getOrderstatistics(sellerID, 1));
+    dispatch(getGraphOrders(sellerID, 1));
 
     const deliveryTypes = [
       {
@@ -196,8 +195,8 @@ export function DeliveryOrders2() {
   useEffect(() => {
     dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID));
 
-    setUserDetail(getDeliveryData?.getReviewDef?.[0]);
-    setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details);
+    setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
+    setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
   }, [viewAllOrders, openShippingOrders]);
 
   const isDeliveryOrder = useSelector((state) =>
@@ -207,6 +206,10 @@ export function DeliveryOrders2() {
   const isOrderLoading = useSelector((state) => isLoadingSelector([TYPES.GET_REVIEW_DEF], state));
 
   const isAcceptOrder = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
+
+  const orderConversionLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
+  );
 
   const renderItem = ({ item }) => (
     <View style={styles.itemMainViewStyle}>
@@ -233,7 +236,7 @@ export function DeliveryOrders2() {
             { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
           ]}
         >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
+          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
         </View>
       );
     } else if (item?.title === 'Rejected/Cancelled') {
@@ -241,7 +244,7 @@ export function DeliveryOrders2() {
         <View
           style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
         >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
+          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
         </View>
       );
     } else if (item?.title === 'Returned') {
@@ -255,7 +258,7 @@ export function DeliveryOrders2() {
             },
           ]}
         >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
+          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
         </View>
       );
     } else {
@@ -270,7 +273,7 @@ export function DeliveryOrders2() {
             },
           ]}
         >
-          <Text style={styles.badgetext}>{item?.count}</Text>
+          <Text style={styles.badgetext}>{item?.count ?? 0}</Text>
         </View>
       );
     }
@@ -278,9 +281,7 @@ export function DeliveryOrders2() {
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
-      onPress={() => {
-        setOpenShippingOrders(item?.key), dispatch(getReviewDefault(parseInt(item?.key), sellerID));
-      }}
+      onPress={() => setOpenShippingOrders(item?.key)}
       style={[
         styles.firstIconStyle,
         {
@@ -293,7 +294,7 @@ export function DeliveryOrders2() {
       ]}
     >
       <View style={styles.bucketBackgorund}>
-        <Image source={item.image} style={styles.sideBarImage} />
+        <Image source={item?.image} style={styles.sideBarImage} />
         {showBadge(item)}
       </View>
     </TouchableOpacity>
@@ -302,7 +303,7 @@ export function DeliveryOrders2() {
   const renderShippingDrawer = ({ item }) => {
     return (
       <View style={styles.shippingDrawerView}>
-        <Image source={item.image} style={styles.sideBarImage} />
+        <Image source={item?.image} style={styles.sideBarImage} />
         <View style={{ paddingLeft: 15, justifyContent: 'center' }}>
           <Text
             style={[
@@ -319,7 +320,7 @@ export function DeliveryOrders2() {
               },
             ]}
           >
-            {item?.count}
+            {item?.count ?? 0}
           </Text>
           <Text
             style={[
@@ -988,10 +989,19 @@ export function DeliveryOrders2() {
 
               <Spacer space={SH(15)} />
 
-              <OrderConvertion {...{ series, sliceColor, widthAndHeight, pieChartData }} />
+              <OrderConvertion
+                {...{
+                  series,
+                  sliceColor,
+                  widthAndHeight,
+                  pieChartData,
+                  sum,
+                  orderConversionLoading,
+                }}
+              />
             </View>
 
-            <View style={{ justifyContent: 'space-between' }}>
+            <View>
               <View style={styles.graphViewStyle}>
                 <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
 
@@ -1037,6 +1047,7 @@ export function DeliveryOrders2() {
                 )}
               </View>
 
+              <Spacer space={SH(15)} />
               <OrderReview
                 {...{
                   renderOrderToReview,

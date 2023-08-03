@@ -165,6 +165,26 @@ export class ShippingController {
   static async todayShippingStatus(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
+        ORDER_URL + ApiOrderInventory.todayShipStatus + `?seller_id=${sellerID}&type=shipping`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  }
+
+  static async todayCurrentStatus(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
         ORDER_URL + ApiOrderInventory.todayShipStatus + `?seller_id=${sellerID}&type=current`;
       HttpClient.get(endpoint)
         .then((response) => {
