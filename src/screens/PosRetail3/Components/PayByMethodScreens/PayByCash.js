@@ -76,15 +76,18 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas }
     );
   };
 
-  const Item = ({ item, onPress, borderColor, textColor }) => (
-    <TouchableOpacity
-      style={[styles._boxView, { flexDirection: 'row', borderColor }]}
-      onPress={onPress}
-    >
-      <Text style={styles._usdText}>USD</Text>
-      <Text style={[styles._usdText, { color: COLORS.primary }]}> ${item.usd}</Text>
-    </TouchableOpacity>
-  );
+  const Item = ({ item, onPress, borderColor, textColor }) => {
+    const formattedNumber = (Math.round(item.usd * 100) / 100).toString();
+    return (
+      <TouchableOpacity
+        style={[styles._boxView, { flexDirection: 'row', borderColor }]}
+        onPress={onPress}
+      >
+        <Text style={styles._usdText}>USD</Text>
+        <Text style={[styles._usdText, { color: COLORS.primary }]}> {formattedNumber}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   const selectCashArray = [
     {

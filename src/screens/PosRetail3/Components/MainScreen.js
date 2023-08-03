@@ -41,11 +41,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import { TYPES } from '@/Types/Types';
 import {
+  addToServiceCart,
   addTocart,
   clearAllCart,
+  clearServiceAllCart,
   getBrand,
   getCategory,
   getMainProduct,
+  getMainServices,
   getOneProduct,
   getSubCategory,
 } from '@/actions/RetailAction';
@@ -61,6 +64,7 @@ export function MainScreen({
   categoryArray,
   sellerID,
   productArray,
+  cartServiceScreenHandler,
 }) {
   const [selectedId, setSelectedId] = useState();
 
@@ -75,6 +79,8 @@ export function MainScreen({
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
   const cartLength = cartData?.poscart_products?.length;
+  const serviceCartData = getRetailData?.getserviceCart;
+  const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
   const [search, setSearch] = useState('');
@@ -82,6 +88,7 @@ export function MainScreen({
   const [showProductsFrom, setshowProductsFrom] = useState();
 
   const mainProductArray = getRetailData?.getMainProduct?.data;
+  const mainServicesArray = getRetailData?.getMainServices?.data;
 
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
@@ -107,6 +114,7 @@ export function MainScreen({
 
   useEffect(() => {
     dispatch(getMainProduct());
+    dispatch(getMainServices());
   }, []);
 
   const onChangeFun = (search) => {
@@ -170,8 +178,17 @@ export function MainScreen({
       service_id: item?.service_id,
       qty: 1,
     };
-
     dispatch(addTocart(data));
+  };
+
+  const onClickServiceCart = (item) => {
+    const data = {
+      seller_id: sellerID,
+      supplyId: item?.supplies?.[0]?.id,
+      supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
+      product_id: item?.id,
+    };
+    dispatch(addToServiceCart(data));
   };
 
   const originalFilterData = [
@@ -390,7 +407,10 @@ export function MainScreen({
               ) : (
                 <View style={styles.allProductSection}>
                   <Text style={styles.allProduct}>{'All Services'}</Text>
-                  <Text style={styles.productCount}>({'0'})</Text>
+                  <Text style={styles.productCount}>
+                    {' '}
+                    ({getRetailData?.getMainServices?.total ?? '0'})
+                  </Text>
                 </View>
               )}
               {/* <View>
@@ -531,8 +551,8 @@ export function MainScreen({
               </View>
             ) : (
               <FlatList
-                data={[1, 2, 3, 4, 5, 6]}
-                extraData={[1, 2, 3]}
+                data={mainServicesArray}
+                extraData={mainServicesArray}
                 renderItem={({ item, index }) => {
                   return (
                     <TouchableOpacity
@@ -543,7 +563,7 @@ export function MainScreen({
                       <View style={styles.avalibleServiceCon}>
                         <FastImage
                           source={{
-                            uri: 'https://w7.pngwing.com/pngs/713/598/png-transparent-woman-lying-on-massaging-table-massage-therapy-spa-beauty-parlour-alternative-health-services-spa-massage-miscellaneous-service-medicine-thumbnail.png',
+                            uri: item.image,
                           }}
                           style={styles.categoryshoes}
                           resizeMode={FastImage.resizeMode.contain}
@@ -555,7 +575,7 @@ export function MainScreen({
                       </View>
 
                       <Text numberOfLines={2} style={styles.productDes}>
-                        Full body Massage
+                        {item.name}
                       </Text>
                       <Spacer space={SH(6)} />
                       <Text numberOfLines={1} style={styles.productSubHead}>
@@ -566,11 +586,11 @@ export function MainScreen({
                         source={multipleImag}
                         style={{ width: ms(50), height: ms(15), resizeMode: 'cover' }}
                       />
-                      <TouchableOpacity style={styles.displayflex}>
+                      <View style={styles.displayflex}>
                         <Text numberOfLines={1} style={styles.productPrice}>
-                          $10
+                          ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
                         </Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => onClickServiceCart(item)}>
                           <Image source={addToCart} style={styles.addToCart} />
                           {/* {isProductMatchArray ? (
                           <View style={styles.productBadge}>
@@ -578,7 +598,7 @@ export function MainScreen({
                           </View>
                         ) : null} */}
                         </TouchableOpacity>
-                      </TouchableOpacity>
+                      </View>
                     </TouchableOpacity>
                   );
                 }}
@@ -601,84 +621,163 @@ export function MainScreen({
               />
             )}
           </View>
-
-          <View style={styles.rightSideView}>
-            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <TouchableOpacity
-                style={styles.bucketBackgorund}
-                disabled={cartLength > 0 ? false : true}
-                onPress={() => setCartModal(true)}
-              >
-                <Image
-                  source={bucket}
-                  style={
-                    cartLength > 0
-                      ? [styles.sideBarImage, { tintColor: COLORS.primary }]
-                      : styles.sideBarImage
-                  }
-                />
-                <View
-                  style={
-                    cartLength > 0
-                      ? [styles.bucketBadge, styles.bucketBadgePrimary]
-                      : styles.bucketBadge
-                  }
+          {productCon ? (
+            <View style={styles.rightSideView}>
+              <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                <TouchableOpacity
+                  style={styles.bucketBackgorund}
+                  disabled={cartLength > 0 ? false : true}
+                  onPress={() => setCartModal(true)}
                 >
-                  <Text
+                  <Image
+                    source={bucket}
                     style={
                       cartLength > 0
-                        ? [styles.badgetext, { color: COLORS.white }]
-                        : styles.badgetext
+                        ? [styles.sideBarImage, { tintColor: COLORS.primary }]
+                        : styles.sideBarImage
+                    }
+                  />
+                  <View
+                    style={
+                      cartLength > 0
+                        ? [styles.bucketBadge, styles.bucketBadgePrimary]
+                        : styles.bucketBadge
                     }
                   >
-                    {cartLength ?? '0'}
-                  </Text>
+                    <Text
+                      style={
+                        cartLength > 0
+                          ? [styles.badgetext, { color: COLORS.white }]
+                          : styles.badgetext
+                      }
+                    >
+                      {cartLength ?? '0'}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <Spacer space={SH(25)} />
+                <Image source={sideKeyboard} style={styles.sideBarImage} />
+                <Spacer space={SH(20)} />
+                <TouchableOpacity
+                  onPress={() => dispatch(clearAllCart())}
+                  disabled={cartLength > 0 ? false : true}
+                >
+                  <Image
+                    source={sideEarser}
+                    style={
+                      cartLength > 0
+                        ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                        : styles.sideBarImage
+                    }
+                  />
+                </TouchableOpacity>
+                <Spacer space={SH(20)} />
+                <View>
+                  <Image source={holdCart} style={styles.sideBarImage} />
+                  <View style={styles.holdBadge}>
+                    <Text style={styles.holdBadgetext}>0</Text>
+                  </View>
                 </View>
-              </TouchableOpacity>
-              <Spacer space={SH(25)} />
-              <Image source={sideKeyboard} style={styles.sideBarImage} />
-              <Spacer space={SH(20)} />
+              </View>
+              <View style={{ flex: 1 }} />
               <TouchableOpacity
-                onPress={() => dispatch(clearAllCart())}
                 disabled={cartLength > 0 ? false : true}
+                onPress={cartScreenHandler}
+                style={
+                  cartLength > 0
+                    ? [styles.bucketBackgorund, { backgroundColor: COLORS.primary }]
+                    : styles.bucketBackgorund
+                }
               >
                 <Image
-                  source={sideEarser}
+                  source={sideArrow}
                   style={
                     cartLength > 0
-                      ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                      ? [styles.sideBarImage, { tintColor: COLORS.white }]
                       : styles.sideBarImage
                   }
                 />
               </TouchableOpacity>
-              <Spacer space={SH(20)} />
-              <View>
-                <Image source={holdCart} style={styles.sideBarImage} />
-                <View style={styles.holdBadge}>
-                  <Text style={styles.holdBadgetext}>0</Text>
+            </View>
+          ) : (
+            <View style={styles.rightSideView}>
+              <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                <TouchableOpacity
+                  style={styles.bucketBackgorund}
+                  disabled={serviceCartLength > 0 ? false : true}
+                  // onPress={() => setCartModal(true)}
+                >
+                  <Image
+                    source={bucket}
+                    style={
+                      serviceCartLength > 0
+                        ? [styles.sideBarImage, { tintColor: COLORS.primary }]
+                        : styles.sideBarImage
+                    }
+                  />
+                  <View
+                    style={
+                      serviceCartLength > 0
+                        ? [styles.bucketBadge, styles.bucketBadgePrimary]
+                        : styles.bucketBadge
+                    }
+                  >
+                    <Text
+                      style={
+                        serviceCartLength > 0
+                          ? [styles.badgetext, { color: COLORS.white }]
+                          : styles.badgetext
+                      }
+                    >
+                      {serviceCartLength ?? '0'}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <Spacer space={SH(25)} />
+                <Image source={sideKeyboard} style={styles.sideBarImage} />
+                <Spacer space={SH(20)} />
+                <TouchableOpacity
+                  onPress={() => dispatch(clearServiceAllCart())}
+                  disabled={cartLength > 0 ? false : true}
+                >
+                  <Image
+                    source={sideEarser}
+                    style={
+                      serviceCartLength > 0
+                        ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                        : styles.sideBarImage
+                    }
+                  />
+                </TouchableOpacity>
+                <Spacer space={SH(20)} />
+                <View>
+                  <Image source={holdCart} style={styles.sideBarImage} />
+                  <View style={styles.holdBadge}>
+                    <Text style={styles.holdBadgetext}>0</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-            <View style={{ flex: 1 }} />
-            <TouchableOpacity
-              disabled={cartLength > 0 ? false : true}
-              onPress={cartScreenHandler}
-              style={
-                cartLength > 0
-                  ? [styles.bucketBackgorund, { backgroundColor: COLORS.primary }]
-                  : styles.bucketBackgorund
-              }
-            >
-              <Image
-                source={sideArrow}
+              <View style={{ flex: 1 }} />
+              <TouchableOpacity
+                disabled={serviceCartLength > 0 ? false : true}
+                onPress={cartServiceScreenHandler}
                 style={
-                  cartLength > 0
-                    ? [styles.sideBarImage, { tintColor: COLORS.white }]
-                    : styles.sideBarImage
+                  serviceCartLength > 0
+                    ? [styles.bucketBackgorund, { backgroundColor: COLORS.primary }]
+                    : styles.bucketBackgorund
                 }
-              />
-            </TouchableOpacity>
-          </View>
+              >
+                <Image
+                  source={sideArrow}
+                  style={
+                    serviceCartLength > 0
+                      ? [styles.sideBarImage, { tintColor: COLORS.white }]
+                      : styles.sideBarImage
+                  }
+                />
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </View>
       {/* cart list modal start */}

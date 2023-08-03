@@ -22,6 +22,8 @@ const INITIALSTATE = {
   customerNumber: {},
   scanProductAdd: {},
   getMainProduct: [],
+  getMainServices: [],
+  getserviceCart: [],
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -223,6 +225,38 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getMainProduct: [],
+      };
+    case TYPES.GET_MAIN_SERVICES_SUCCESS:
+      return {
+        ...state,
+        getMainServices: payload,
+      };
+    case TYPES.GET_MAIN_SERVICES_RESET:
+      return {
+        ...state,
+        getMainServices: [],
+      };
+
+    case TYPES.GET_MAIN_SERVICES_SUCCESS:
+      return {
+        ...state,
+        getMainServices: payload,
+      };
+    case TYPES.GET_MAIN_SERVICES_RESET:
+      return {
+        ...state,
+        getMainServices: [],
+      };
+
+    case TYPES.GET_SERVICE_CART_SUCCESS:
+      return {
+        ...state,
+        getserviceCart: payload?.payload ?? [],
+      };
+    case TYPES.GET_SERVICE_CART_RESET:
+      return {
+        ...state,
+        getserviceCart: [],
       };
 
     case TYPES.CLEAR_STORE:

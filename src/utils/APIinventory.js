@@ -102,6 +102,8 @@ export const ApiOrderInventory = {
   todayOrders: 'orders/pos/today/orders-count',
   graphOrders: 'orders/pos/graph/orders',
   todayShipStatus: 'orders/pos/shipping/orders',
+  getServiceCart: 'appointment_carts/user',
+  appintment_cart: 'appointment_carts',
 };
 
 export const ApiWalletInventory = {

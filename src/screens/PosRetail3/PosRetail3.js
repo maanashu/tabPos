@@ -7,6 +7,7 @@ import {
   CartAmountPayBy,
   CartAmountTips,
   CartScreen,
+  CartServiceScreen,
   FinalPaymentScreen,
   MainScreen,
   PayByCard,
@@ -23,6 +24,7 @@ import {
   addNotescart,
   customerNumber,
   getAllCart,
+  getServiceCart,
 } from '@/actions/RetailAction';
 import { useIsFocused } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native';
@@ -91,6 +93,7 @@ export function PosRetail3() {
 
   useEffect(() => {
     dispatch(getAllCart());
+    dispatch(getServiceCart());
   }, [isFocus]);
   useEffect(() => {
     setNotes(getCart?.notes);
@@ -227,6 +230,9 @@ export function PosRetail3() {
         TYPES.ADD_DISCOUNT,
         TYPES.CHECK_SUPPLIES_VARIANT,
         TYPES.GET_TIPS,
+        TYPES.CLEAR_SERVICE_ALL_CART,
+        TYPES.GET_SERVICE_CART,
+        TYPES.ADD_SERVICE_CART,
       ],
       state
     )
@@ -246,10 +252,22 @@ export function PosRetail3() {
         onPressPayNow={() => {
           setselectedScreen('CartAmountTips');
         }}
+        cartServiceScreenHandler={() => setselectedScreen('CartServiceScreen')}
       />
     ),
     ['CartScreen']: (
       <CartScreen
+        crossHandler={() => setselectedScreen('MainScreen')}
+        onPressPayNow={() => {
+          setselectedScreen('CartAmountPayBy');
+        }}
+        addNotesHandler={addNotesHandler}
+        addDiscountHandler={addDiscountHandler}
+      />
+    ),
+
+    ['CartServiceScreen']: (
+      <CartServiceScreen
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
           setselectedScreen('CartAmountPayBy');

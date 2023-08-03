@@ -114,7 +114,6 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
     React.useCallback(() => {
       return () => {
         var arr = getRetailData?.getAllCart;
-        // console.log("RESSSPSPPSPS",JSON.stringify(arr));
         if (arr.poscart_products.length > 0) {
           const products = arr.poscart_products.map((item) => ({
             product_id: item?.product_id,

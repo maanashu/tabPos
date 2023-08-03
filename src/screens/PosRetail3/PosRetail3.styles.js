@@ -903,7 +903,7 @@ export const styles = StyleSheet.create({
   },
 
   tableListSide2: {
-    width: windowWidth * 0.29,
+    width: windowWidth * 0.4,
     paddingRight: 20,
     alignItems: 'center',
   },
@@ -914,7 +914,6 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
     marginVertical: verticalScale(2),
-    // alignContent: 'center',
   },
   blueListDataText: {
     color: COLORS.solid_grey,

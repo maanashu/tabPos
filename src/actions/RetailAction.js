@@ -139,14 +139,25 @@ const getClearAllCartRequest = () => ({
   type: TYPES.GET_CLEAR_ALL_CART_REQUEST,
   payload: null,
 });
-
 const getClearAllCartSuccess = () => ({
   type: TYPES.GET_CLEAR_ALL_CART_SUCCESS,
   payload: {},
 });
-
 const getClearAllCartError = (error) => ({
   type: TYPES.GET_CLEAR_ALL_CART_ERROR,
+  payload: { error },
+});
+
+const clearServiceAllCartRequest = () => ({
+  type: TYPES.CLEAR_SERVICE_ALL_CART_REQUEST,
+  payload: null,
+});
+const clearServiceAllCartSuccess = () => ({
+  type: TYPES.CLEAR_SERVICE_ALL_CART_SUCCESS,
+  payload: {},
+});
+const clearServiceAllCartError = (error) => ({
+  type: TYPES.CLEAR_SERVICE_ALL_CART_ERROR,
   payload: { error },
 });
 
@@ -178,14 +189,25 @@ const addTocartRequest = () => ({
   type: TYPES.ADDCART_REQUEST,
   payload: null,
 });
-
 const addTocartSuccess = () => ({
   type: TYPES.ADDCART_SUCCESS,
   payload: {},
 });
-
 const addTocartError = (error) => ({
   type: TYPES.ADDCART_ERROR,
+  payload: { error },
+});
+
+const addToServiceCartRequest = () => ({
+  type: TYPES.ADD_SERVICE_CART_REQUEST,
+  payload: null,
+});
+const addToServiceCartSuccess = () => ({
+  type: TYPES.ADD_SERVICE_CART_SUCCESS,
+  payload: {},
+});
+const addToServiceCartError = (error) => ({
+  type: TYPES.ADD_SERVICE_CART_ERROR,
   payload: { error },
 });
 
@@ -486,6 +508,26 @@ const getMainProductError = (error) => ({
   payload: { error },
 });
 
+const getMainServicesRequest = () => ({
+  type: TYPES.GET_MAIN_SERVICES_REQUEST,
+  payload: null,
+});
+
+const getMainServicesSuccess = (getMainServices) => ({
+  type: TYPES.GET_MAIN_SERVICES_SUCCESS,
+  payload: getMainServices,
+});
+
+const getMainServicesReset = () => ({
+  type: TYPES.GET_MAIN_SERVICES_RESET,
+  payload: null,
+});
+
+const getMainServicesError = (error) => ({
+  type: TYPES.GET_MAIN_SERVICES_ERROR,
+  payload: { error },
+});
+
 const attachCustomerRequest = () => ({
   type: TYPES.ATTACH_CUSTOMER_REQUEST,
   payload: null,
@@ -504,6 +546,26 @@ const attachCustomerReset = () => ({
 const attachCustomerError = (error) => ({
   type: TYPES.ATTACH_CUSTOMER_ERROR,
   payload: { error },
+});
+
+const getServiceCartRequest = () => ({
+  type: TYPES.GET_SERVICE_CART_REQUEST,
+  payload: null,
+});
+
+export const getServiceCartSuccess = (getserviceCart) => ({
+  type: TYPES.GET_SERVICE_CART_SUCCESS,
+  payload: getserviceCart,
+});
+
+const getServiceCartError = (error) => ({
+  type: TYPES.GET_SERVICE_CART_ERROR,
+  payload: { error },
+});
+
+const getServiceCartReset = () => ({
+  type: TYPES.GET_SERVICE_CART_RESET,
+  payload: null,
 });
 
 export const getCategory = (sellerID) => async (dispatch) => {
@@ -600,6 +662,19 @@ export const getAllCart = () => async (dispatch) => {
   }
 };
 
+export const getServiceCart = () => async (dispatch) => {
+  dispatch(getServiceCartRequest());
+  try {
+    const res = await RetailController.getServiceCart();
+    dispatch(getServiceCartSuccess(res));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getServiceCartReset());
+    }
+    dispatch(getServiceCartError(error.message));
+  }
+};
+
 export const clearAllCart = () => async (dispatch) => {
   dispatch(getClearAllCartRequest());
   try {
@@ -611,6 +686,17 @@ export const clearAllCart = () => async (dispatch) => {
       dispatch(getClearAllCartReset());
     }
     dispatch(getClearAllCartError(error.message));
+  }
+};
+
+export const clearServiceAllCart = () => async (dispatch) => {
+  dispatch(clearServiceAllCartRequest());
+  try {
+    const res = await RetailController.clearServiceAllCart();
+    dispatch(clearServiceAllCartSuccess(res));
+    dispatch(getServiceCart());
+  } catch (error) {
+    dispatch(clearServiceAllCartError(error.message));
   }
 };
 
@@ -638,6 +724,18 @@ export const addTocart = (data) => async (dispatch) => {
     dispatch(addTocartError(error.message));
   }
 };
+
+export const addToServiceCart = (data) => async (dispatch) => {
+  dispatch(addToServiceCartRequest());
+  try {
+    const res = await RetailController.addToServiceCart(data);
+    dispatch(addToServiceCartSuccess(res));
+    dispatch(getServiceCart());
+  } catch (error) {
+    dispatch(addToServiceCartError(error.message));
+  }
+};
+
 export const updateCartQty = (data, cartId) => async (dispatch) => {
   dispatch(updateCartQtyRequest());
   try {
@@ -833,13 +931,6 @@ export const retailclearstore = () => async (dispatch) => {
 export const getMainProduct = (productTypeId) => async (dispatch) => {
   dispatch(getMainProductRequest());
   try {
-    // const res = await RetailController.getMainProduct(
-    //   selectedId,
-    //   subSelectedId,
-    //   brandSelectedId,
-    //   sellerID
-    // );
-
     const res = await RetailController.getDynamicProducts(productTypeId);
 
     dispatch(getMainProductSuccess(res?.payload));
@@ -848,6 +939,19 @@ export const getMainProduct = (productTypeId) => async (dispatch) => {
       dispatch(getMainProductReset());
     }
     dispatch(getMainProductError(error.message));
+  }
+};
+
+export const getMainServices = (productTypeId) => async (dispatch) => {
+  dispatch(getMainServicesRequest());
+  try {
+    const res = await RetailController.getMainServices(productTypeId);
+    dispatch(getMainServicesSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getMainServicesReset());
+    }
+    dispatch(getMainServicesError(error.message));
   }
 };
 

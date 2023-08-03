@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import {
   clearAllCart,
+  clearServiceAllCart,
   getAllCartSuccess,
   getUserDetail,
   getUserDetailSuccess,
@@ -43,11 +44,16 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
 
-export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
+export function CartServiceScreen({
+  onPressPayNow,
+  crossHandler,
+  addNotesHandler,
+  addDiscountHandler,
+}) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-  const cartData = getRetailData?.getAllCart;
-  let arr = [getRetailData?.getAllCart];
+  const cartServiceData = getRetailData?.getserviceCart;
+  let arr = [getRetailData?.getserviceCart];
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
 
@@ -132,7 +138,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   };
 
   const clearCartHandler = () => {
-    dispatch(clearAllCart());
+    dispatch(clearServiceAllCart());
     crossHandler();
   };
 
@@ -226,6 +232,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                   <Text style={styles.cashLabelWhite}>Item</Text>
                 </View>
                 <View style={[styles.tableListSide, styles.tableListSide2]}>
+                  <Text style={styles.cashLabelWhite}>Staff Name</Text>
                   <Text style={styles.cashLabelWhite}>Unit Price</Text>
                   <Text style={styles.cashLabelWhite}>Quantity</Text>
                   <Text style={styles.cashLabelWhite}>Line Total</Text>
@@ -235,8 +242,8 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
             </View>
             {arr?.map((item, index) => (
               <>
-                {item?.poscart_products?.map((data, ind) => (
-                  <View style={styles.blueListData} key={ind}>
+                {item?.appointment_cart_products?.map((data, ind) => (
+                  <View style={[styles.blueListData, { height: SH(70) }]} key={ind}>
                     <View style={styles.displayflex}>
                       <View style={[styles.tableListSide, styles.listLeft]}>
                         <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
@@ -254,16 +261,23 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                           />
                           <View style={{ marginLeft: 10 }}>
                             <Text
-                              style={[styles.blueListDataText, { width: SW(50) }]}
+                              style={[styles.holdCart, { color: COLORS.dark_grey, width: SW(40) }]}
                               numberOfLines={1}
                             >
                               {data.product_details?.name}
                             </Text>
-                            <Text style={styles.sukNumber}>SUK: {data?.product_details?.sku}</Text>
+                            <Text style={styles.sukNumber}>
+                              Monday 17, 2023 @ 3.00 PM - 3:50 PM{' '}
+                            </Text>
+                            <Text style={styles.sukNumber}>Est: 45 ~ 50 min </Text>
                           </View>
                         </View>
                       </View>
                       <View style={[styles.tableListSide, styles.tableListSide2]}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image source={clothes} style={styles.offerImage} />
+                          <Text style={styles.blueListDataText}>Anna S</Text>
+                        </View>
                         <Text style={styles.blueListDataText}>
                           ${data?.product_details?.supply?.supply_prices?.selling_price}
                         </Text>
@@ -273,30 +287,29 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                               width: SW(10),
                               alignItems: 'center',
                             }}
-                            onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
+                            // onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
                           >
                             <Image source={minus} style={styles.minus} />
                           </TouchableOpacity>
                           {isLoading ? (
                             <ActivityIndicator size="small" color={COLORS.primary} />
                           ) : (
-                            <Text>{data.qty}</Text>
+                            // <Text>{data.qty}</Text>
+                            <Text>1</Text>
                           )}
                           <TouchableOpacity
                             style={{
                               width: SW(10),
                               alignItems: 'center',
                             }}
-                            onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
+                            // onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
                           >
                             <Image source={plus} style={styles.minus} />
                           </TouchableOpacity>
                         </View>
                         <Text style={styles.blueListDataText}>
                           $
-                          {(
-                            data.product_details?.supply?.supply_prices?.selling_price * data?.qty
-                          ).toFixed(2)}
+                          {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2)}
                         </Text>
                         <TouchableOpacity
                           style={{
@@ -305,7 +318,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                             justifyContent: 'center',
                             alignItems: 'center',
                           }}
-                          onPress={() => removeOneCartHandler(data.id, ind)}
+                          // onPress={() => removeOneCartHandler(data.id, ind)}
                         >
                           <Image source={borderCross} style={styles.borderCross} />
                         </TouchableOpacity>
@@ -378,14 +391,14 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
               <Spacer space={SH(10)} />
               <View style={styles.totalItemCon}>
                 <Text style={styles.totalItem}>
-                  {strings.dashboard.totalItem} {cartData?.poscart_products?.length}
+                  {strings.dashboard.totalItem} {cartServiceData?.appointment_cart_products?.length}
                 </Text>
               </View>
               <Spacer space={SH(5)} />
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Sub Total</Text>
                 <Text style={styles.subTotalDollar}>
-                  ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
+                  ${cartServiceData?.amout?.products_price.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
               <View style={[styles.displayflex2, styles.paddVertical]}>
@@ -396,18 +409,18 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                 <Text style={styles.subTotal}>Total Taxes</Text>
                 <Text style={styles.subTotalDollar}>
                   {' '}
-                  ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
+                  ${cartServiceData?.amout?.tax.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
-              <View style={[styles.displayflex2, styles.paddVertical]}>
+              {/* <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Discount</Text>
                 <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
                   ${' '}
-                  {cartData?.amount?.discount === 0
+                  {cartServiceData?.amount?.discount === 0
                     ? '0.00'
                     : cartData?.amount?.discount.toFixed(2) ?? '0.00'}
                 </Text>
-              </View>
+              </View> */}
               <View
                 style={{
                   borderWidth: 1,
@@ -419,12 +432,17 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.itemValue}>Item value</Text>
                 <Text style={[styles.subTotalDollar, styles.itemValueBold]}>
-                  ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                  ${cartServiceData?.amout?.total_amount.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
             </View>
             <View style={{ flex: 1 }} />
-            <TouchableOpacity style={[styles.checkoutButtonSideBar]} onPress={onPressPayNow}>
+            <TouchableOpacity
+              style={[styles.checkoutButtonSideBar]}
+              onPress={() => alert('Service cart flow in progress')}
+
+              // onPress={onPressPayNow}
+            >
               <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>
