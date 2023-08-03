@@ -430,7 +430,7 @@ export const getAnalyticStatistics = (sellerID) => async (dispatch) => {
   dispatch(getAnalyticStatisticsRequest());
   try {
     const res = await AnalyticsController.getAnalyticStatistics(sellerID);
-    dispatch(getAnalyticStatisticsSuccess(res));
+    dispatch(getAnalyticStatisticsSuccess(res?.payload));
   } catch (error) {
     dispatch(getAnalyticStatisticsError(error.message));
   }

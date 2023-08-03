@@ -614,7 +614,6 @@ export const getAllCart = () => async (dispatch) => {
   dispatch(getAllCartRequest());
   try {
     const res = await RetailController.getAllCart();
-    console.log('res getALL action', JSON.stringify(res));
     dispatch(getAllCartSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {

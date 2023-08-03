@@ -20,13 +20,16 @@ export function MainScreen({
 }) {
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
-  console.log('first', JSON.stringify(analyticStatistics));
   return (
     <View>
       <View style={styles.flexDirectionRow}>
         <HomeGraph
           header="Total Profit"
-          subHeader={'$' + analyticStatistics?.profit?.total_count && '0'}
+          subHeader={
+            analyticStatistics?.cost?.total_count
+              ? '$' + analyticStatistics?.profit?.total_count
+              : '0'
+          }
           analyticGraphObject={analyticStatistics}
           arrayLength={analyticStatistics?.profit?.graph_data?.datasets?.length}
           onPress={onPressProfit}
@@ -35,7 +38,11 @@ export function MainScreen({
         />
         <HomeGraph
           header="Total Revenue"
-          subHeader={'$' + analyticStatistics?.revenue?.total_count && '0'}
+          subHeader={
+            analyticStatistics?.cost?.total_count
+              ? '$' + analyticStatistics?.revenue?.total_count
+              : '0'
+          }
           analyticGraphObject={analyticStatistics}
           arrayLength={analyticStatistics?.revenue?.graph_data?.datasets?.length}
           onPress={onPressRevenue}
@@ -44,7 +51,11 @@ export function MainScreen({
         />
         <HomeGraph
           header="Total Costs"
-          subHeader={'$' + analyticStatistics?.cost?.total_count && '0'}
+          subHeader={
+            analyticStatistics?.cost?.total_count
+              ? '$' + analyticStatistics?.cost?.total_count
+              : '0'
+          }
           analyticGraphObject={analyticStatistics}
           arrayLength={analyticStatistics?.cost?.graph_data?.datasets?.length}
           onPress={onPressCost}
