@@ -771,6 +771,7 @@ export const requestMoney = (data) => async (dispatch) => {
     return dispatch(requestMoneySuccess(res?.payload));
   } catch (error) {
     dispatch(requestMoneyError(error.message));
+    throw error;
   }
 };
 

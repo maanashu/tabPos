@@ -144,7 +144,20 @@ export const CartAmountPayBy = ({
   const isLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_WALLET_PHONE, TYPES.ATTACH_CUSTOMER], state)
   );
-
+  useEffect(() => {
+    let interval;
+    if (requestStatus !== 'approved') {
+      interval = setInterval(() => {
+        const data = {
+          requestId: requestId,
+        };
+        dispatch(requestCheck(data));
+      }, 10000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, []);
   const walletInputFun = (phoneNumber) => {
     setWalletIdInp(phoneNumber);
     if (phoneNumber?.length > 9) {
@@ -164,14 +177,13 @@ export const CartAmountPayBy = ({
       wallletAdd: walletUser?.wallet_address,
     };
 
-    const res = await dispatch(requestMoney(data));
-    if (res?.type === 'REQUEST_MONEY_SUCCESS') {
+    const res = await dispatch(requestMoney(data)).then((res) => {
       setRequestId(res?.payload?._id);
       const data = {
         requestId: res?.payload?._id,
       };
       dispatch(requestCheck(data));
-    }
+    });
   };
 
   const jobrSavePercent = (value, percent) => {

@@ -546,6 +546,7 @@ export class RetailController {
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('request money response', JSON.stringify(response));
           if (response?.msg === 'Payment request sent success!') {
             Toast.show({
               text2: 'Request send successfully',
@@ -573,10 +574,11 @@ export class RetailController {
       const endpoint = WALLET_URL + ApiWalletInventory.requestCheck + `${data.requestId}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          // console.log('request check response', JSON.stringify(response));
+          console.log('request check response', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
+          console.log('errrrrrrrrr');
           reject(error);
         });
     });
