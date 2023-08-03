@@ -98,6 +98,7 @@ export const ApiOrderInventory = {
   updateCartQty: 'poscarts/change-qty',
   rescheduleAppointmentURL: `appointments/reschedule/`,
   getAnalyticStatistics: `orders/pos/analytics`,
+  bulkCreate: `poscarts/bulk-create`,
   attachCustomer: 'orders/attach/user/',
   todayOrders: 'orders/pos/today/orders-count',
   graphOrders: 'orders/pos/graph/orders',

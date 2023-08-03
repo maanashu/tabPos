@@ -528,6 +528,29 @@ const getMainServicesError = (error) => ({
   payload: { error },
 });
 
+const bulkCreateRequest = () => ({
+  type: TYPES.BULK_CREATE_REQUEST,
+  payload: null,
+});
+
+const bulkCreateSuccess = (bulkCreate) => ({
+  type: TYPES.BULK_CREATE_SUCCESS,
+  payload: { bulkCreate },
+});
+
+const bulkCreateError = (error) => ({
+  type: TYPES.BULK_CREATE_ERROR,
+  payload: { error },
+});
+export const saveBulkOrderData = (bulkData) => ({
+  type: TYPES.SAVE_BULK_DATA_SUCCESS,
+  payload: { bulkData },
+});
+export const saveBulkOrderDataReset = () => ({
+  type: TYPES.SAVE_BULK_DATA_RESET,
+  payload: null,
+});
+
 const attachCustomerRequest = () => ({
   type: TYPES.ATTACH_CUSTOMER_REQUEST,
   payload: null,

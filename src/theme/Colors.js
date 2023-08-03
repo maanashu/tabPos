@@ -41,4 +41,5 @@ export const COLORS = {
   yellowTweet: '#FCBA30',
   transparent: 'transparent',
   pink: '#FB466C',
+  violet: '#6B84D3',
 };

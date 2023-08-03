@@ -17,6 +17,7 @@ import {
   locationSales,
   totalCost,
   totalOrders,
+  filterday,
 } from '@/assets';
 import Modal from 'react-native-modal';
 import { COLORS, SH } from '@/theme';
@@ -278,6 +279,28 @@ export function Analytics2() {
                       tintColor:
                         selectedScreen === 'TopSellingProduct' ? COLORS.white : COLORS.black,
                     },
+                  ]}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.filterBackgorund,
+                  // {
+                  //   backgroundColor:
+                  //     selectedScreen === 'TopSellingProduct' ? COLORS.primary : COLORS.white,
+                  // },
+                ]}
+                // onPress={() => setselectedScreen('TopSellingProduct')}
+              >
+                <Image
+                  source={filterday}
+                  style={[
+                    styles.sideBarImage,
+                    // {
+                    //   tintColor:
+                    //     selectedScreen === 'TopSellingProduct' ? COLORS.white : COLORS.black,
+                    // },
                   ]}
                 />
               </TouchableOpacity>

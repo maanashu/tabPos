@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, Keyboard, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -36,15 +36,17 @@ import FastImage from 'react-native-fast-image';
 import { TYPES } from '@/Types/Types';
 import {
   addTocart,
+  bulkCreate,
   clearAllCart,
   getBrand,
   getCategory,
   getMainProduct,
   getOneProduct,
   getSubCategory,
+  saveBulkOrderData,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { CartListModal } from './CartListModal';
 import { log } from 'react-native-reanimated';
 
@@ -63,6 +65,7 @@ export function MainScreen({
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
+  const [addCartList, setAddCartList] = useState(getRetailData?.bulkData ?? []);
 
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
@@ -70,11 +73,14 @@ export function MainScreen({
   const cartLength = cartData?.poscart_products?.length;
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
+  const [cartProduct, setCartProoduct] = useState([]);
   const [search, setSearch] = useState('');
 
   const [showProductsFrom, setshowProductsFrom] = useState();
 
   const mainProductArray = getRetailData?.getMainProduct?.data;
+  const bulkCreateData = getRetailData?.getAllCart;
+  const cartProductLength = bulkCreateData?.poscart_products?.length;
 
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
@@ -147,20 +153,51 @@ export function MainScreen({
     }
   }, [cartLength]);
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        const data = {
+          seller_id: sellerID,
+          products: addCartList,
+        };
+        dispatch(bulkCreate(data));
+        setCartProoduct([]);
+      };
+    }, [])
+  );
+
   const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
 
-  const onClickAddCart = (item) => {
-    const data = {
-      seller_id: sellerID,
-      supplyId: item?.supplies?.[0]?.id,
-      supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
-      product_id: item?.id,
-      service_id: item?.service_id,
-      qty: 1,
-    };
+  function findProductById(productIdToFind, cartProduct) {
+    return cartProduct.find((product) => product.product_id === productIdToFind); // Corrected property name here
+  }
 
-    dispatch(addTocart(data));
+  const onClickAddCart = (item) => {
+    const productIdToFind = item.id;
+    const foundProduct = findProductById(productIdToFind, cartProduct);
+
+    if (foundProduct) {
+      const updatedCart = cartProduct.map((product) =>
+        product.product_id === productIdToFind ? { ...product, qty: product.qty + 1 } : product
+      );
+
+      setCartProoduct(updatedCart);
+      // Corrected typo in function name here
+    } else {
+      const productData = {
+        supply_id: item?.supplies?.[0]?.id || null,
+        supply_price_id: item?.supplies?.[0]?.supply_prices?.[0]?.id || null,
+        product_id: item.id,
+        qty: 1,
+      };
+      const updatedCart = [...cartProduct, productData];
+      setCartProoduct(updatedCart); // Corrected typo in function name here
+      dispatch(saveBulkOrderData(updatedCart));
+      setAddCartList([...getRetailData?.bulkData, ...updatedCart]);
+    }
   };
+  // console.log('kgkg', addCartList);
+  // Your JSX rendering code here
 
   const originalFilterData = [
     {
@@ -213,7 +250,7 @@ export function MainScreen({
             // item.isSelected === true
           ) {
             setCatTypeId(item.id);
-            dispatch(getSubCategory(sellerID));
+            dispatch(gcartProductetSubCategory(sellerID));
             setSubCategoryModal(true);
           } else if (
             item.id === 3
@@ -411,26 +448,26 @@ export function MainScreen({
                 <Image
                   source={bucket}
                   style={
-                    cartLength > 0
+                    cartProductLength > 0
                       ? [styles.sideBarImage, { tintColor: COLORS.primary }]
                       : styles.sideBarImage
                   }
                 />
                 <View
                   style={
-                    cartLength > 0
+                    cartProductLength > 0
                       ? [styles.bucketBadge, styles.bucketBadgePrimary]
                       : styles.bucketBadge
                   }
                 >
                   <Text
                     style={
-                      cartLength > 0
+                      cartProductLength > 0
                         ? [styles.badgetext, { color: COLORS.white }]
                         : styles.badgetext
                     }
                   >
-                    {cartLength ?? '0'}
+                    {cartProductLength + cartProduct.length ?? '0'}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -439,12 +476,12 @@ export function MainScreen({
               <Spacer space={SH(20)} />
               <TouchableOpacity
                 onPress={() => dispatch(clearAllCart())}
-                disabled={cartLength > 0 ? false : true}
+                disabled={cartProductLength > 0 ? false : true}
               >
                 <Image
                   source={sideEarser}
                   style={
-                    cartLength > 0
+                    cartProductLength > 0
                       ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
                       : styles.sideBarImage
                   }
@@ -463,7 +500,7 @@ export function MainScreen({
               disabled={cartLength > 0 ? false : true}
               onPress={cartScreenHandler}
               style={
-                cartLength > 0
+                cartProductLength > 0
                   ? [styles.bucketBackgorund, { backgroundColor: COLORS.primary }]
                   : styles.bucketBackgorund
               }
@@ -471,7 +508,7 @@ export function MainScreen({
               <Image
                 source={sideArrow}
                 style={
-                  cartLength > 0
+                  cartProductLength > 0
                     ? [styles.sideBarImage, { tintColor: COLORS.white }]
                     : styles.sideBarImage
                 }

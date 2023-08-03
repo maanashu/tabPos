@@ -25,7 +25,11 @@ export function MainScreen({
       <View style={styles.flexDirectionRow}>
         <HomeGraph
           header="Total Profit"
-          subHeader={analyticStatistics?.profit?.total_count ?? '0'}
+          subHeader={
+            analyticStatistics?.cost?.total_count
+              ? '$' + analyticStatistics?.profit?.total_count
+              : '0'
+          }
           analyticGraphObject={analyticStatistics}
           arrayLength={analyticStatistics?.profit?.graph_data?.datasets?.length}
           onPress={onPressProfit}
@@ -34,7 +38,11 @@ export function MainScreen({
         />
         <HomeGraph
           header="Total Revenue"
-          subHeader={analyticStatistics?.revenue?.total_count ?? '0'}
+          subHeader={
+            analyticStatistics?.cost?.total_count
+              ? '$' + analyticStatistics?.revenue?.total_count
+              : '0'
+          }
           analyticGraphObject={analyticStatistics}
           arrayLength={analyticStatistics?.revenue?.graph_data?.datasets?.length}
           onPress={onPressRevenue}
@@ -43,7 +51,11 @@ export function MainScreen({
         />
         <HomeGraph
           header="Total Costs"
-          subHeader={analyticStatistics?.cost?.total_count ?? '0'}
+          subHeader={
+            analyticStatistics?.cost?.total_count
+              ? '$' + analyticStatistics?.cost?.total_count
+              : '0'
+          }
           analyticGraphObject={analyticStatistics}
           arrayLength={analyticStatistics?.cost?.graph_data?.datasets?.length}
           onPress={onPressCost}
@@ -52,27 +64,15 @@ export function MainScreen({
         />
       </View>
       <View style={styles.flexDirectionRow}>
-        <View style={styles.totalProductCon}>
-          <Spacer space={SH(20)} />
-          <View style={styles.displayFlex}>
-            <View>
-              <Text style={styles.darkBlackText}>Total POS Orders</Text>
-              <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>$5193</Text>
-            </View>
-          </View>
-          <Spacer space={SH(5)} />
-
-          <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressPosOrder}>
-            <BarChartCom
-              barWid={Dimensions.get('window').width * 0.24}
-              barHei={Platform.OS === 'android' ? SH(135) : SH(130)}
-              barSpacing={SW(4.2)}
-              barW={SW(1.5)}
-              labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
-              initialSpacing={SH(5)}
-            />
-          </TouchableOpacity>
-        </View>
+        <HomeGraph
+          header="Total POS Orders"
+          subHeader={'20590'}
+          // productGraphObject={productGraphObject2}
+          homeGraphHandler={() => {}}
+          // arrayLength={productGraphObject2?.datasets?.length}
+          onPress={onPressPosOrder}
+          rightHeader
+        />
         <HomeGraph
           header="Total Delivery Orders"
           subHeader={'5193'}
@@ -80,6 +80,7 @@ export function MainScreen({
           homeGraphHandler={() => {}}
           // arrayLength={productGraphObject2?.datasets?.length}
           onPress={onPressDelivery}
+          rightHeader
         />
 
         <HomeGraph
@@ -89,6 +90,7 @@ export function MainScreen({
           homeGraphHandler={() => {}}
           // arrayLength={productGraphObject2?.datasets?.length}
           onPress={onPressShipping}
+          rightHeader
         />
       </View>
       <View style={styles.flexDirectionRow}>
