@@ -1,16 +1,13 @@
 import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
-
 import PieChart from 'react-native-pie-chart';
 import { ms } from 'react-native-size-matters';
-
+import { strings } from '@/localization';
 import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
-import { strings } from '@/localization';
+import styles from '../ShippingOrder2.styles';
 
-import styles from '../styles';
-
-const OrderConvertion = ({
+const OrderConversion = ({
   series,
   sliceColor,
   widthAndHeight,
@@ -43,13 +40,13 @@ const OrderConvertion = ({
         )}
         <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text>
 
-        <Spacer space={SH(10)} />
+        <Spacer space={ms(8)} />
         {orderConversionLoading ? (
           <View
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              paddingVertical: ms(30),
+              paddingVertical: ms(35),
             }}
           >
             <ActivityIndicator color={COLORS.primary} size={'small'} />
@@ -95,4 +92,4 @@ const OrderConvertion = ({
   );
 };
 
-export default OrderConvertion;
+export default OrderConversion;

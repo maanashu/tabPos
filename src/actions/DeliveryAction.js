@@ -169,10 +169,10 @@ export const getOrderCount = (status) => async (dispatch) => {
     dispatch(getOrderCountError(error.message));
   }
 };
-export const getReviewDefault = (status, sellerID) => async (dispatch) => {
+export const getReviewDefault = (status, sellerID, deliveryOption) => async (dispatch) => {
   dispatch(getReviewDefRequest());
   try {
-    const res = await DeliveryController.getReviewDefault(status, sellerID);
+    const res = await DeliveryController.getReviewDefault(status, sellerID, deliveryOption);
     dispatch(getReviewDefSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -254,20 +254,20 @@ export const todayOrders = (sellerID) => async (dispatch) => {
   }
 };
 
-export const getOrderstatistics = (sellerID) => async (dispatch) => {
+export const getOrderstatistics = (sellerID, delivery) => async (dispatch) => {
   dispatch(getOrderstatisticsRequest());
   try {
-    const res = await DeliveryController.getOrderstatistics(sellerID);
+    const res = await DeliveryController.getOrderstatistics(sellerID, delivery);
     return dispatch(getOrderstatisticsSuccess(res?.payload));
   } catch (error) {
     dispatch(getOrderstatisticsError(error.message));
   }
 };
 
-export const getGraphOrders = (sellerID) => async (dispatch) => {
+export const getGraphOrders = (sellerID, delivery) => async (dispatch) => {
   dispatch(getGraphOrdersRequest());
   try {
-    const res = await DeliveryController.getGraphOrders(sellerID);
+    const res = await DeliveryController.getGraphOrders(sellerID, delivery);
     return dispatch(getGraphOrdersSuccess(res?.payload));
   } catch (error) {
     dispatch(getGraphOrdersError(error.message));

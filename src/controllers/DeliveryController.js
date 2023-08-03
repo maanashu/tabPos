@@ -24,12 +24,12 @@ export class DeliveryController {
     });
   }
 
-  static async getReviewDefault(status, sellerID) {
+  static async getReviewDefault(status, sellerID, deliveryOption) {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
+        `?status=${status}&seller_id=${sellerID}&delivery_option=${deliveryOption}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -151,10 +151,13 @@ export class DeliveryController {
     });
   }
 
-  static async getOrderstatistics(sellerID) {
+  static async getOrderstatistics(sellerID, delivery) {
+    console.log('deliveryOption====', delivery);
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderstatistics + `?seller_id=${sellerID}&filter=week`;
+        ORDER_URL +
+        ApiOrderInventory.getOrderstatistics +
+        `?seller_id=${sellerID}&filter=week&delivery_option=${delivery}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -171,12 +174,12 @@ export class DeliveryController {
     });
   }
 
-  static async getGraphOrders(sellerID) {
+  static async getGraphOrders(sellerID, delivery) {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.graphOrders +
-        `?seller_id=${sellerID}&filter=week&delivery_option=1`;
+        `?seller_id=${sellerID}&filter=week&delivery_option=${delivery}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

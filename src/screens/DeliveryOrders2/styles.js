@@ -87,6 +87,8 @@ const styles = StyleSheet.create({
   orderConvertionView: {
     borderRadius: 10,
     backgroundColor: COLORS.white,
+    paddingBottom: 40,
+    height: Dimensions.get('window').height / 2.35,
   },
   orderTextStyle: {
     fontFamily: Fonts.MaisonBold,
@@ -106,14 +108,14 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     position: 'absolute',
     textAlign: 'center',
-    top: ms(40),
+    top: ms(35),
   },
   ordersRowView: {
     flexDirection: 'row',
     alignItems: 'center',
     width: SW(80),
     justifyContent: 'space-between',
-    paddingVertical: 8,
+    paddingVertical: 5,
   },
   orderTypeTextStyle: {
     fontFamily: Fonts.Medium,

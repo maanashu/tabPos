@@ -65,7 +65,16 @@ export const shippingReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         shippingGraph: payload.shippingGraph,
       };
-
+    case TYPES.TODAY_SHIPPING_STATUS_SUCCESS:
+      return {
+        ...state,
+        todayShippingStatus: payload?.todayShippingStatus,
+      };
+    case TYPES.TODAY_CURRENT_STATUS_SUCCESS:
+      return {
+        ...state,
+        todayCurrentStatus: payload?.todayCurrentStatus,
+      };
     default:
       return state;
   }
