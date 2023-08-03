@@ -51,7 +51,12 @@ import {
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { ScreenWrapper, Spacer } from '@/components';
-import { getGraphOrders, getOrderstatistics, getReviewDefault } from '@/actions/DeliveryAction';
+import {
+  acceptOrder,
+  getGraphOrders,
+  getOrderstatistics,
+  getReviewDefault,
+} from '@/actions/DeliveryAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getShipping } from '@/selectors/ShippingSelector';
 import { todayCurrentStatus, todayShippingStatus } from '@/actions/ShippingAction';
@@ -95,7 +100,7 @@ export function ShippingOrder2() {
   const [userDetail, setUserDetail] = useState(ordersList?.[0] ?? []);
   const [orderDetail, setOrderDetail] = useState(ordersList?.[0]?.order_details ?? []);
   const [viewAllOrders, setViewAllOrders] = useState(false);
-  const [openShippingOrders, setOpenShippingOrders] = useState(false);
+  const [openShippingOrders, setOpenShippingOrders] = useState(0);
   const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
 
   useEffect(() => {
@@ -109,12 +114,6 @@ export function ShippingOrder2() {
   useEffect(() => {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
-
-    const shippingCurrentStatus = [
-      {
-        key: '1',
-      },
-    ];
   }, [viewAllOrders]);
 
   const isDeliveryOrder = useSelector((state) =>
@@ -737,6 +736,40 @@ export function ShippingOrder2() {
     isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
   );
 
+  const acceptHandler = (id) => {
+    const data = {
+      orderId: id,
+      status: 1,
+      sellerID: sellerID,
+    };
+    dispatch(
+      acceptOrder(data, (res) => {
+        if (res?.msg === 'Order status updated successfully!') {
+          alert('Order accepted successfully');
+          setViewAllOrders(false);
+          dispatch(getReviewDefault(0, sellerID));
+        }
+      })
+    );
+  };
+
+  const declineHandler = (id) => {
+    const data = {
+      orderId: id,
+      status: 7,
+      sellerID: sellerID,
+    };
+    dispatch(
+      acceptOrder(data, (res) => {
+        if (res?.msg === 'Order status updated successfully!') {
+          alert('Order declined successfully');
+          setViewAllOrders(false);
+          dispatch(getReviewDefault(0, sellerID));
+        }
+      })
+    );
+  };
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
@@ -922,14 +955,14 @@ export function ShippingOrder2() {
                       openShippingOrders == 2 ? (
                         <View style={styles.shippingOrdersViewStyle}>
                           <TouchableOpacity
-                            // onPress={() => declineHandler(userDetail?.id)}
+                            onPress={() => declineHandler(userDetail?.id)}
                             style={styles.declineButtonStyle}
                           >
                             <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
                           </TouchableOpacity>
 
                           <TouchableOpacity
-                            // onPress={() => acceptHandler(userDetail?.id)}
+                            onPress={() => acceptHandler(userDetail?.id)}
                             style={styles.acceptButtonView}
                           >
                             <Text style={styles.acceptTextStyle}>

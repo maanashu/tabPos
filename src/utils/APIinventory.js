@@ -105,6 +105,7 @@ export const ApiOrderInventory = {
   todayShipStatus: 'orders/pos/shipping/orders',
   getServiceCart: 'appointment_carts/user',
   appintment_cart: 'appointment_carts',
+  qrCode: 'poscarts/qr-code/',
 };
 
 export const ApiWalletInventory = {
