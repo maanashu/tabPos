@@ -41,6 +41,7 @@ export function PosRetail3() {
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const cartID2 = getRetailData?.getAllCart?.id;
   const cartData = getRetailData?.getAllCart;
+
   const finalAmountForDiscount =
     cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
   const getAuth = useSelector(getAuthData);

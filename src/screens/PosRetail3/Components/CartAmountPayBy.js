@@ -44,8 +44,10 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { digits } from '@/utils/validators';
 import {
   attachCustomer,
+  getQrCodee,
   getTip,
   getWalletId,
+  requestCheck,
   requestMoney,
   walletGetByPhone,
 } from '@/actions/RetailAction';
@@ -79,6 +81,8 @@ export const CartAmountPayBy = ({
   const getRetailData = useSelector(getRetail);
 
   const cartData = getRetailData?.getAllCart;
+  const qrcodeData = useSelector(getRetail).qrKey;
+  //  console.log('qrcodeDta', JSON.stringify(qrcodeData));
   const cartProducts = cartData?.poscart_products;
 
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
@@ -97,10 +101,14 @@ export const CartAmountPayBy = ({
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
   const [walletIdInp, setWalletIdInp] = useState();
+  const [walletFlag, setWalletFlag] = useState('US');
+  const [walletCountryCode, setWalletCountryCode] = useState('+1');
   const walletUser = getRetailData?.walletGetByPhone?.[0];
   const getWalletQr = getRetailData?.getWallet?.qr_code;
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
-
+  const [requestId, setRequestId] = useState();
+  const requestStatus = getRetailData?.requestCheck;
+  console.log('stauus', requestStatus);
   const getTips = getRetailData?.getTips;
 
   const tipsArr = [
@@ -130,6 +138,7 @@ export const CartAmountPayBy = ({
   useEffect(() => {
     dispatch(getWalletId(sellerID));
     dispatch(getTip(sellerID));
+    dispatch(getQrCodee(cartData?.id));
   }, []);
 
   const isLoading = useSelector((state) =>
@@ -154,7 +163,15 @@ export const CartAmountPayBy = ({
       amount: (totalPayAmount() * 100).toFixed(0),
       wallletAdd: walletUser?.wallet_address,
     };
+
     const res = await dispatch(requestMoney(data));
+    if (res?.type === 'REQUEST_MONEY_SUCCESS') {
+      setRequestId(res?.payload?._id);
+      const data = {
+        requestId: res?.payload?._id,
+      };
+      dispatch(requestCheck(data));
+    }
   };
 
   const jobrSavePercent = (value, percent) => {
@@ -684,7 +701,7 @@ export const CartAmountPayBy = ({
                     <View style={{ margin: ms(5), alignItems: 'center' }}>
                       <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
                         <Image
-                          source={{ uri: getWalletQr }}
+                          source={{ uri: qrcodeData.qr_code }}
                           style={{ height: ms(110), width: ms(110) }}
                         />
                       </View>
@@ -701,7 +718,36 @@ export const CartAmountPayBy = ({
                             Send payment request to your wallet
                           </Text>
                           <View style={styles._inputSubView}>
-                            <TextInput
+                            <View style={styles.textInputView2}>
+                              <CountryPicker
+                                onSelect={(code) => {
+                                  setWalletFlag(code.cca2);
+                                  if (code.callingCode !== []) {
+                                    setWalletCountryCode('+' + code.callingCode.flat());
+                                  } else {
+                                    setWalletCountryCode('');
+                                  }
+                                }}
+                                countryCode={walletFlag}
+                                withFilter
+                                withCallingCode
+                              />
+                              <Image source={dropdown} style={styles.dropDownIcon} />
+                              <Text style={styles.countryCodeText}>{walletCountryCode}</Text>
+                              <TextInput
+                                maxLength={15}
+                                returnKeyType="done"
+                                keyboardType="number-pad"
+                                value={walletIdInp?.trim()}
+                                onChangeText={(walletIdInp) => walletInputFun(walletIdInp)}
+                                style={styles.textInputContainer}
+                                placeholder={strings.verifyPhone.placeHolderText}
+                                placeholderTextColor={COLORS.darkGray}
+                                showSoftInputOnFocus={false}
+                              />
+                            </View>
+
+                            {/* <TextInput
                               placeholder="803-238-2630"
                               keyboardType="number-pad"
                               style={styles._inputCashContainer}
@@ -709,7 +755,7 @@ export const CartAmountPayBy = ({
                               onChangeText={(walletIdInp) => walletInputFun(walletIdInp)}
                               placeholderTextColor={COLORS.solid_grey}
                               maxLength={10}
-                            />
+                            /> */}
                             <TouchableOpacity
                               // onPress={onPressContinue}
                               disabled={

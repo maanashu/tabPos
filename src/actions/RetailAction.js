@@ -506,6 +506,23 @@ const attachCustomerError = (error) => ({
   payload: { error },
 });
 
+const getQrCodeRequest = () => ({
+  type: TYPES.GET_QR_CODE_REQUEST,
+  payload: null,
+});
+
+const getQrCodeSuccess = (qr) => ({
+  type: TYPES.GET_QR_CODE_SUCCESS,
+  payload: { qr },
+});
+const getQrCodeError = (error) => ({
+  type: TYPES.GET_QR_CODE_ERROR,
+  payload: { error },
+});
+const getQrcodeReset = () => ({
+  type: TYPES.GET_QR_CODE_RESET,
+  payload: null,
+});
 export const getCategory = (sellerID) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -861,5 +878,15 @@ export const attachCustomer = (data) => async (dispatch) => {
       dispatch(attachCustomerReset());
     }
     dispatch(attachCustomerError(error.message));
+  }
+};
+
+export const getQrCodee = (cartId) => async (dispatch) => {
+  dispatch(getQrCodeRequest());
+  try {
+    const res = await RetailController.getQrCode(cartId);
+    return dispatch(getQrCodeSuccess(res));
+  } catch (error) {
+    dispatch(getQrCodeError(error.message));
   }
 };

@@ -208,6 +208,10 @@ export function DeliveryOrders2() {
 
   const isAcceptOrder = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
 
+  const isOrderChartLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
+  );
+
   const renderItem = ({ item }) => (
     <View style={styles.itemMainViewStyle}>
       <Image source={item?.image} style={styles.shippingTypeImage} />

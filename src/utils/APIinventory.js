@@ -102,6 +102,7 @@ export const ApiOrderInventory = {
   todayOrders: 'orders/pos/today/orders-count',
   graphOrders: 'orders/pos/graph/orders',
   todayShipStatus: 'orders/pos/shipping/orders',
+  qrCode: 'poscarts/qr-code/',
 };
 
 export const ApiWalletInventory = {

@@ -219,10 +219,16 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         getMainProduct: payload,
       };
+
     case TYPES.GET_MAIN_PRODUCT_RESET:
       return {
         ...state,
         getMainProduct: [],
+      };
+    case TYPES.GET_QR_CODE_SUCCESS:
+      return {
+        ...state,
+        qrKey: payload.qr.payload,
       };
 
     case TYPES.CLEAR_STORE:

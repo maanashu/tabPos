@@ -573,6 +573,7 @@ export class RetailController {
       const endpoint = WALLET_URL + ApiWalletInventory.requestCheck + `${data.requestId}`;
       HttpClient.get(endpoint)
         .then((response) => {
+          // console.log('request check response', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -776,6 +777,26 @@ export class RetailController {
             type: 'error_toast',
             text2: error?.msg,
             visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getQrCode(cartId) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.qrCode + `${cartId}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: 'catgory error',
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
           });
           reject(error);
         });
