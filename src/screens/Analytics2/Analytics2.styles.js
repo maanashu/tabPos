@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: windowWidth * 0.06,
-    height: Platform.OS === 'ios' ? windowHeight * 0.928 : windowHeight - SH(4),
+    height: Platform.OS === 'ios' ? windowHeight * 0.928 : windowHeight - SH(16),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
     alignSelf: 'center',
@@ -89,6 +89,16 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  filterBackgorund: {
+    width: SW(12),
+    height: SW(12),
+    borderRadius: 5,
+    backgroundColor: COLORS.textInputBackground,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: SH(10),
   },
   headerText: {
     flex: 1,
@@ -268,5 +278,17 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
     marginVertical: SH(15),
     height: SH(30),
+  },
+  bullets: {
+    height: SH(7),
+    width: SH(7),
+    borderRadius: SW(7),
+    backgroundColor: COLORS.primary,
+    marginRight: SW(3),
+  },
+  bulletText: {
+    color: COLORS.darkGray,
+    fontSize: SF(11),
+    marginRight: SW(5),
   },
 });

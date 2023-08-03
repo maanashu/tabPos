@@ -21,7 +21,12 @@ export function NewChartKit({ arrayLength, labels, data }) {
               {
                 data: [25, 40, 50, 45, 55, 45, 50],
                 strokeWidth: 2,
-                color: (opacity = 1) => `rgba(167, 167, 167, ${opacity})`, // optional
+                color: (opacity = 1) => `rgba(107, 132, 211, ${opacity})`, // optional
+              },
+              {
+                data: [25, 35, 45, 40, 50, 40, 40],
+                strokeWidth: 2,
+                color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`, // optional
               },
             ],
           }}
