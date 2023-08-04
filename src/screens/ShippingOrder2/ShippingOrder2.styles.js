@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { ms, scale, verticalScale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   shippingStatusViewStyle: {
     alignItems: 'flex-start',
     borderRadius: 10,
+    width: SW(100),
     paddingVertical: ms(10),
     backgroundColor: COLORS.white,
   },
@@ -87,6 +88,8 @@ const styles = StyleSheet.create({
   },
   orderConvertionView: {
     borderRadius: 10,
+    width: SW(100),
+
     backgroundColor: COLORS.white,
     height: Dimensions.get('window').height / 2.35,
   },
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
   ordersRowView: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: ms(200),
+    width: SW(80),
     justifyContent: 'space-between',
     paddingVertical: ms(4),
     paddingHorizontal: ms(12),
@@ -488,6 +491,19 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.43,
     paddingTop: 15,
     paddingHorizontal: ms(15),
+  },
+  emptyView: {
+    height:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').height / 3.2
+        : Dimensions.get('window').height / 2.8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noOrdersText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(22),
+    color: COLORS.primary,
   },
 });
 

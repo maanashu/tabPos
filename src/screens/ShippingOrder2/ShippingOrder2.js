@@ -775,7 +775,7 @@ export function ShippingOrder2() {
       <View style={styles.container}>
         <Header {...{ viewAllOrders, setViewAllOrders }} />
 
-        <Spacer space={ms(15)} />
+        <Spacer space={SH(20)} />
 
         {viewAllOrders ? (
           <View style={styles.firstRowStyle}>
@@ -1106,7 +1106,7 @@ export function ShippingOrder2() {
                 )}
               </View>
 
-              <Spacer space={ms(10)} />
+              <Spacer space={SH(15)} />
 
               <>
                 {isOrderLoading ? (
