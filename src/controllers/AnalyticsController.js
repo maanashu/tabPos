@@ -170,7 +170,7 @@ export class AnalyticsController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderstatistics +
-        `?seller_id=${sellerID}&filter=${orderTime}`;
+        `?seller_id=${sellerID}&filter=${orderTime}&delivery_option=1`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

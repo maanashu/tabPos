@@ -1,35 +1,21 @@
 import React, { useState } from 'react';
-import { Dimensions, FlatList, ScrollView, Text, View } from 'react-native';
+import { Dimensions, Image, ScrollView, Text, View, TouchableOpacity } from 'react-native';
+
+import { useSelector } from 'react-redux';
+import { ms } from 'react-native-size-matters';
 
 import { COLORS, SH } from '@/theme';
-import { strings } from '@/localization';
 import { Spacer } from '@/components';
-import { tinycolor } from 'tinycolor2';
+import { crossButton, userImage } from '@/assets';
+import { getRetail } from '@/selectors/RetailSelectors';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import { Fonts, cloth, crossButton, search_light, userImage } from '@/assets';
-import { TouchableOpacity } from 'react-native';
-import { Image } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { moderateScale, ms } from 'react-native-size-matters';
-import { useDispatch, useSelector } from 'react-redux';
-import { getRetail } from '@/selectors/RetailSelectors';
-import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
+
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }];
 
-export function AddServiceCartModal({ crossHandler, detailHandler, sellerID }) {
-  const dispatch = useDispatch();
+export function AddServiceCartModal({ crossHandler, detailHandler }) {
   const getRetailData = useSelector(getRetail);
-  const productDetail = getRetailData?.getOneProduct;
 
-  const sizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
-  const colorSizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
-
-  const finalSizeArray = colorSizeArray?.filter((item) => item.name === 'Size');
-  const finalColorArray = colorSizeArray?.filter((item) => item.name === 'Color');
-  const coloredArray = productDetail?.product_detail?.supplies?.[0]?.attributes?.[1]?.values;
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
   const [count, setCount] = useState(0);
@@ -45,121 +31,6 @@ export function AddServiceCartModal({ crossHandler, detailHandler, sellerID }) {
   //   let colorNamessss = color.toName();
   //   return colorNamessss;
   // };
-  const addToCartHandler = async () => {
-    alert('In progress');
-    return;
-    if (productDetail?.product_detail?.supplies?.[0]?.attributes?.length === 0) {
-      if (count === 0) {
-        alert('Please add quantity to cart');
-        return;
-      } else {
-        // const data = {
-        //   seller_id: sellerID,
-        //   service_id: productDetail?.product_detail?.service_id,
-        //   product_id: productDetail?.product_detail?.id,
-        //   qty: count,
-        //   supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-        //   supplyPriceID:
-        //     productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-        // };
-
-        //New Changes
-        var arr = getRetailData?.getAllCart;
-        const products = arr.poscart_products.map((item) => ({
-          product_id: item?.product_id,
-          qty: item?.qty,
-          supply_id: item?.supply_id,
-          supply_price_id: item?.supply_price_id,
-        }));
-
-        var existingProductIndex = products.findIndex(
-          (product) => product.product_id === productDetail?.product_detail?.id
-        );
-
-        if (existingProductIndex !== -1) {
-          // If the product already exists in the cart, increase the quantity by 1
-          products[existingProductIndex].qty += 1;
-        } else {
-          var newData = {
-            product_id: productDetail?.product_detail?.id,
-            qty: count,
-            supply_id: productDetail?.product_detail?.supplies?.[0]?.id,
-            supply_price_id: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-          };
-          products.push(newData);
-        }
-        const data = {
-          seller_id: arr?.seller_id,
-          products: products,
-        };
-
-        dispatch(addTocart(data));
-        crossHandler();
-      }
-    } else {
-      if (count === 0) {
-        alert('Please add quantity to cart');
-        return;
-      } else if (finalColorArray?.length >= 1 && colorId === null) {
-        alert('Please select the color');
-      } else if (finalSizeArray?.length >= 1 && sizeId === null) {
-        alert('Please select the Size');
-      } else {
-        const data = {
-          colorId: colorId,
-          sizeId: sizeId,
-          supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-        };
-        crossHandler();
-        const res = await dispatch(checkSuppliedVariant(data));
-        if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
-          // const data = {
-          //   seller_id: sellerID,
-          //   service_id: productDetail?.product_detail?.service_id,
-          //   product_id: productDetail?.product_detail?.id,
-          //   qty: count,
-          //   supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-          //   supplyPriceID:
-          //     productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]
-          //       ?.id,
-          //   supplyVariantId: res?.payload?.attribute_variant_id,
-          // };
-
-          //New Changes
-          var arr = getRetailData?.getAllCart;
-          const products = arr.poscart_products.map((item) => ({
-            product_id: item?.product_id,
-            qty: item?.qty,
-            supply_id: item?.supply_id,
-            supply_price_id: item?.supply_price_id,
-          }));
-          var existingProductIndex = products.findIndex(
-            (product) => product.product_id === productDetail?.product_detail?.id
-          );
-
-          if (existingProductIndex !== -1) {
-            // If the product already exists in the cart, increase the quantity by 1
-            products[existingProductIndex].qty += 1;
-          } else {
-            var newData = {
-              product_id: productDetail?.product_detail?.id,
-              qty: count,
-              supply_id: productDetail?.product_detail?.supplies?.[0]?.id,
-              supply_price_id: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-            };
-            products.push(newData);
-          }
-          const data = {
-            seller_id: sellerID,
-            products: products,
-          };
-
-          dispatch(addTocart(data));
-          // crossHandler();
-        }
-      }
-    }
-  };
 
   // useEffect(() => {
   //   setString(selectedItems.join(','));
@@ -174,64 +45,9 @@ export function AddServiceCartModal({ crossHandler, detailHandler, sellerID }) {
   //   return colorName;
   // };
   // color select list start
-  const coloredRenderItem = ({ item, index }) => {
-    const backgroundColor = item.id === colorId ? COLORS.blue_shade : 'transparent';
-    const color = item.id === colorId ? COLORS.primary : COLORS.black;
-    const borderClr = item.id === colorId ? COLORS.primary : COLORS.silver_solid;
-
-    return (
-      <ColorItem
-        item={item}
-        onPress={() => {
-          setColorId(colorId === item.id ? null : item.id);
-          setColorName(item.name);
-        }}
-        backgroundColor={backgroundColor}
-        textColor={color}
-        borderColor={borderClr}
-      />
-    );
-  };
-  const ColorItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
-    <TouchableOpacity
-      style={[styles.selectColorItem, { backgroundColor, borderColor }]}
-      onPress={onPress}
-    >
-      <Text style={[styles.colorSelectText, { color: textColor }]}>
-        {/* {getcolorName(item.name)} */}
-        {item.name}
-      </Text>
-    </TouchableOpacity>
-  );
   // color select list end
 
   // Size select list start
-  const sizeRenderItem = ({ item, index }) => {
-    const backgroundColor = item.id === sizeId ? COLORS.blue_shade : 'transparent';
-    const color = item.id === sizeId ? COLORS.primary : COLORS.black;
-    const borderClr = item.id === sizeId ? COLORS.primary : COLORS.silver_solid;
-
-    return (
-      <SizeItem
-        item={item}
-        onPress={() => {
-          setSizeId(sizeId === item.id ? null : item.id);
-          setSizeName(item.name);
-        }}
-        backgroundColor={backgroundColor}
-        textColor={color}
-        borderColor={borderClr}
-      />
-    );
-  };
-  const SizeItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
-    <TouchableOpacity
-      style={[styles.selectColorItem, { backgroundColor, borderColor }]}
-      onPress={onPress}
-    >
-      <Text style={[styles.colorSelectText, { color: textColor }]}>{item.name}</Text>
-    </TouchableOpacity>
-  );
   // Size select list end
   return (
     <View style={styles.addCartCon}>
@@ -332,7 +148,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, sellerID }) {
             }}
           >
             <ScrollView horizontal={true}>
-              {[1, 2, 3, 4]?.map(({ item, index }) => (
+              {[1, 2, 3, 4]?.map(() => (
                 <Image
                   source={userImage}
                   style={{ width: ms(45), height: ms(45), resizeMode: 'contain' }}

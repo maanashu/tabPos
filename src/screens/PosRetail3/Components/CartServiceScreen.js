@@ -166,7 +166,6 @@ export function CartServiceScreen({
     var DATA = {
       payload: arr,
     };
-    console.log('DATA', DATA);
     dispatch(getServiceCartSuccess(DATA));
   };
 
