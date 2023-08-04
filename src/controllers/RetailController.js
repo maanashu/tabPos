@@ -766,6 +766,7 @@ export class RetailController {
         delivery_options: '2',
         seller_id: sellerID,
         service_type: 'service',
+        need_pos_users: true,
       };
 
       let finalParams;

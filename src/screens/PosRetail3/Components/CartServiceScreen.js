@@ -238,7 +238,7 @@ export function CartServiceScreen({
               </View>
             </View>
             {arr?.map((item, index) => (
-              <>
+              <View key={index}>
                 {item?.appointment_cart_products?.map((data, ind) => (
                   <View style={[styles.blueListData, { height: SH(70) }]} key={ind}>
                     <View style={styles.displayflex}>
@@ -323,7 +323,7 @@ export function CartServiceScreen({
                     </View>
                   </View>
                 ))}
-              </>
+              </View>
             ))}
 
             <Spacer space={SH(7)} />

@@ -23,6 +23,7 @@ import {
   sideArrow,
   sideEarser,
   sideKeyboard,
+  userImage,
 } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
@@ -75,7 +76,6 @@ export function MainScreen({
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
-  console.log('addServiceCartModal', addServiceCartModal);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
 
   const getRetailData = useSelector(getRetail);
@@ -588,10 +588,25 @@ export function MainScreen({
                         Est: 45 ~ 50 min
                       </Text>
                       <Spacer space={SH(6)} />
-                      <Image
+                      <View>
+                        <ScrollView horizontal={true}>
+                          {[1, 2, 3, 4]?.map(({ item, index }) => (
+                            <Image
+                              source={userImage}
+                              style={{
+                                width: ms(15),
+                                height: ms(15),
+                                resizeMode: 'contain',
+                                marginRight: -1,
+                              }}
+                            />
+                          ))}
+                        </ScrollView>
+                      </View>
+                      {/* <Image
                         source={multipleImag}
                         style={{ width: ms(50), height: ms(15), resizeMode: 'cover' }}
-                      />
+                      /> */}
                       <View style={styles.displayflex}>
                         <Text numberOfLines={1} style={styles.productPrice}>
                           ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
