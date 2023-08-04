@@ -1,9 +1,4 @@
-import {
-  USER_URL,
-  PRODUCT_URL,
-  ApiProductInventory,
-  ApiUserInventory,
-} from '@/utils/APIinventory';
+import { USER_URL, PRODUCT_URL, ApiProductInventory, ApiUserInventory } from '@/utils/APIinventory';
 import { HttpClient } from './HttpClient';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
@@ -19,7 +14,7 @@ export class AuthController {
       // isAlreadyCheck: true,
     };
     await HttpClient.post(endpoint, body)
-      .then(response => {
+      .then((response) => {
         if (response.status_code === 200) {
           if (response?.payload?.is_phone_exits) {
             navigate(NAVIGATION.merchantPasscode, {
@@ -43,7 +38,7 @@ export class AuthController {
           });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         Toast.show({
           text2: error.msg,
           position: 'bottom',
@@ -68,7 +63,7 @@ export class AuthController {
           role_id: 2,
         };
     await HttpClient.post(endpoint, body)
-      .then(response => {
+      .then((response) => {
         if (response.status_code === 200) {
           Toast.show({
             type: 'success_toast',
@@ -86,7 +81,7 @@ export class AuthController {
           });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         Toast.show({
           text2: error.msg,
           position: 'bottom',
@@ -106,7 +101,7 @@ export class AuthController {
         security_pin: data.pin,
       };
       HttpClient.post(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response.status_code === 200) {
             Toast.show({
               type: 'success_toast',
@@ -124,7 +119,7 @@ export class AuthController {
             });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -141,7 +136,7 @@ export class AuthController {
       const endpoint = USER_URL + ApiUserInventory.loginPosuser;
 
       HttpClient.post(endpoint, data)
-        .then(response => {
+        .then((response) => {
           if (response.status_code === 200) {
             Toast.show({
               type: 'success_toast',
@@ -161,7 +156,7 @@ export class AuthController {
             });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -177,10 +172,10 @@ export class AuthController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getProfile + `${id}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -201,7 +196,7 @@ export class AuthController {
       otp: data.otp,
     };
     await HttpClient.post(endpoint, body)
-      .then(response => {
+      .then((response) => {
         if (response?.status_code === 200) {
           Toast.show({
             position: 'bottom',
@@ -212,7 +207,7 @@ export class AuthController {
           navigate(NAVIGATION.login);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         Toast.show({
           position: 'bottom',
           type: 'error_toast',
@@ -226,7 +221,7 @@ export class AuthController {
     return new Promise(async (resolve, reject) => {
       const endpoint = `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10&seller_id=${sellerID}`;
       await HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           if (response?.status_code === 200) {
             Toast.show({
               position: 'bottom',
@@ -237,7 +232,7 @@ export class AuthController {
             resolve(response);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });

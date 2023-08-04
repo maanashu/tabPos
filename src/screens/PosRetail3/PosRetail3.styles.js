@@ -656,6 +656,9 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.17,
     backgroundColor: '#D8D8D8',
   },
+  serviceRow: {
+    width: windowWidth * 0.14,
+  },
   selectColorItem: {
     width: SH(142),
     height: SH(60),
@@ -2019,5 +2022,10 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.3,
     height: windowHeight * 0.8,
     backgroundColor: COLORS.textInputBackground,
+  },
+  selected: {
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
   },
 });

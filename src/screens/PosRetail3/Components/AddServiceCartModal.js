@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, FlatList, Text, View } from 'react-native';
+import { Dimensions, FlatList, ScrollView, Text, View } from 'react-native';
 
 import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
@@ -7,11 +7,11 @@ import { Spacer } from '@/components';
 import { tinycolor } from 'tinycolor2';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import { Fonts, cloth, crossButton, search_light } from '@/assets';
+import { Fonts, cloth, crossButton, search_light, userImage } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
@@ -261,6 +261,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, sellerID }) {
         style={{
           width: windowWidth * 0.42,
           alignSelf: 'center',
+          borderWidth: 1,
         }}
       >
         <View style={[styles.displayflex, { marginTop: SH(10) }]}>
@@ -290,9 +291,9 @@ export function AddServiceCartModal({ crossHandler, detailHandler, sellerID }) {
             </TouchableOpacity>
           </View>
           <View style={styles.displayRow}>
-            <View style={styles.colorRow} />
-            <Text style={styles.colorText}>COLORS</Text>
-            <View style={styles.colorRow} />
+            <View style={[styles.colorRow, styles.serviceRow]} />
+            <Text style={styles.colorText}>Service Provider</Text>
+            <View style={[styles.colorRow, styles.serviceRow]} />
           </View>
           {/* <FlatList
             data={finalColorArray?.[0]?.values}
@@ -318,6 +319,39 @@ export function AddServiceCartModal({ crossHandler, detailHandler, sellerID }) {
             numColumns={4}
           />{' '}
           */}
+        </View>
+        <View>
+          <Text style={styles.selected}>
+            Selected: <Text style={{ color: COLORS.primary }}>Anna</Text>{' '}
+          </Text>
+          <Spacer space={SH(10)} />
+          <View
+            style={{
+              width: windowWidth * 0.42,
+              alignItems: 'center',
+            }}
+          >
+            <ScrollView horizontal={true}>
+              {[1, 2, 3, 4]?.map(({ item, index }) => (
+                <Image
+                  source={userImage}
+                  style={{ width: ms(45), height: ms(45), resizeMode: 'contain' }}
+                />
+              ))}
+            </ScrollView>
+          </View>
+          <Spacer space={SH(10)} />
+
+          <View style={styles.displayRow}>
+            <View style={[styles.colorRow, styles.serviceRow]} />
+            <Text style={styles.colorText}>Available slot</Text>
+            <View style={[styles.colorRow, styles.serviceRow]} />
+          </View>
+          <Spacer space={SH(10)} />
+
+          <Text style={styles.selected}>
+            Time: <Text style={{ color: COLORS.primary }}>Today @ 3:00 PM</Text>
+          </Text>
         </View>
       </View>
     </View>

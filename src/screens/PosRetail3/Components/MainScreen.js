@@ -75,6 +75,7 @@ export function MainScreen({
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
+  console.log('addServiceCartModal', addServiceCartModal);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
 
   const getRetailData = useSelector(getRetail);
@@ -562,7 +563,7 @@ export function MainScreen({
                   return (
                     <TouchableOpacity
                       style={styles.productCon}
-                      onPressIn={() => serviceFun(item.id)}
+                      onPress={() => serviceFun(item.id)}
                       activeOpacity={0.7}
                     >
                       <View style={styles.avalibleServiceCon}>

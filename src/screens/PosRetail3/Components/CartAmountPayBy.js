@@ -743,7 +743,7 @@ export const CartAmountPayBy = ({
                                 style={styles.textInputContainer}
                                 placeholder={strings.verifyPhone.placeHolderText}
                                 placeholderTextColor={COLORS.darkGray}
-                                showSoftInputOnFocus={false}
+                                // showSoftInputOnFocus={false}
                               />
                             </View>
 

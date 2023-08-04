@@ -91,6 +91,7 @@ export function DashBoard({ navigation }) {
   const todayJbrAmount = TotalSale?.[1]?.total_sale_amount.toFixed(2);
   const todayCardAmount = TotalSale?.[2]?.total_sale_amount.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  // console.log('sellerID', sellerID);
   const getDeliveryData = getDashboardData?.getOrderDeliveries;
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
 
