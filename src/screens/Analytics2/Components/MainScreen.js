@@ -20,6 +20,11 @@ export function MainScreen({
 }) {
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
+  const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
+  const totalOrder = getAnalyticsData?.getTotalOrder;
+
+  const totalInventory = getAnalyticsData?.getTotalInventory;
+
   return (
     <View>
       <View style={styles.flexDirectionRow}>
@@ -66,31 +71,51 @@ export function MainScreen({
       <View style={styles.flexDirectionRow}>
         <HomeGraph
           header="Total POS Orders"
-          subHeader={'20590'}
-          // productGraphObject={productGraphObject2}
-          homeGraphHandler={() => {}}
-          // arrayLength={productGraphObject2?.datasets?.length}
+          subHeader={
+            analyticOrderGraphs?.pos_graph?.total_count
+              ? analyticOrderGraphs?.pos_graph?.total_count
+              : '0'
+          }
+          analyticGraphObject={analyticOrderGraphs}
+          arrayLength={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.length}
           onPress={onPressPosOrder}
           rightHeader
+          labels={analyticOrderGraphs?.pos_graph?.graph_data?.labels}
+          data={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[0]?.data}
+          data1={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[1]?.data}
+          data2={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[2]?.data}
         />
         <HomeGraph
           header="Total Delivery Orders"
-          subHeader={'5193'}
-          // productGraphObject={productGraphObject2}
-          homeGraphHandler={() => {}}
-          // arrayLength={productGraphObject2?.datasets?.length}
+          subHeader={
+            analyticOrderGraphs?.delivery_graph?.total_count
+              ? analyticOrderGraphs?.delivery_graph?.total_count
+              : '0'
+          }
           onPress={onPressDelivery}
+          arrayLength={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.length}
+          labels={analyticOrderGraphs?.delivery_graph?.graph_data?.labels}
           rightHeader
+          data={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[0]?.data}
+          data1={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[1]?.data}
+          data2={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[2]?.data}
         />
 
         <HomeGraph
           header="Total Shipping Orders"
-          subHeader={'5193'}
-          // productGraphObject={productGraphObject2}
-          homeGraphHandler={() => {}}
-          // arrayLength={productGraphObject2?.datasets?.length}
+          subHeader={
+            analyticOrderGraphs?.shipping_graph?.total_count
+              ? analyticOrderGraphs?.shipping_graph?.total_count
+              : '0'
+          }
           onPress={onPressShipping}
+          arrayLength={analyticOrderGraphs?.shipping_graph?.graph_data?.datasets?.length}
+          labels={analyticOrderGraphs?.shipping_graph?.graph_data?.labels}
           rightHeader
+          data={analyticOrderGraphs?.shipping_graph?.graph_data?.datasets?.[0]?.data}
+          data1={analyticOrderGraphs?.shipping_graph?.graph_data?.datasets?.[1]?.data}
+          data2={analyticOrderGraphs?.shipping_graph?.graph_data?.datasets?.[2]?.data}
+          bulletText="Shipped"
         />
       </View>
       <View style={styles.flexDirectionRow}>
@@ -99,7 +124,23 @@ export function MainScreen({
           <View style={styles.displayFlex}>
             <View>
               <Text style={styles.darkBlackText}>Total Orders</Text>
-              <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>$5193</Text>
+              <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
+                {totalOrder?.totalAmount ? totalOrder?.totalAmount.toFixed(2) : '0'}
+              </Text>
+            </View>
+            <View>
+              <View style={styles.flexAlign}>
+                <View style={styles.bullets} />
+                <Text style={styles.bulletText}>{'POS Orders'}</Text>
+              </View>
+              <View style={styles.flexAlign}>
+                <View style={[styles.bullets, { backgroundColor: COLORS.violet }]} />
+                <Text style={styles.bulletText}>{'Online Orders'}</Text>
+              </View>
+              <View style={styles.flexAlign}>
+                <View style={[styles.bullets, { backgroundColor: COLORS.darkBlue }]} />
+                <Text style={styles.bulletText}>{'Shipping Orders'}</Text>
+              </View>
             </View>
           </View>
           <Spacer space={SH(5)} />
@@ -112,33 +153,25 @@ export function MainScreen({
               barW={SW(1.5)}
               labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
               initialSpacing={SH(5)}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.totalProductCon}>
-          <Spacer space={SH(20)} />
-          <View style={styles.displayFlex}>
-            <View>
-              <Text style={styles.darkBlackText}>{'Top Selling by Locations'}</Text>
-              <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>$5193</Text>
-            </View>
-          </View>
-          <Spacer space={SH(5)} />
-
-          <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressSellingLocations}>
-            <BarChartCom
-              barWid={Dimensions.get('window').width * 0.24}
-              barHei={Platform.OS === 'android' ? SH(135) : SH(130)}
-              barSpacing={SW(4.2)}
-              barW={SW(1.5)}
-              labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
-              initialSpacing={SH(5)}
+              revenueData={totalOrder?.graphData}
             />
           </TouchableOpacity>
         </View>
 
         <HomeGraph
-          header="Top Selling Products"
+          header="Total Inventory"
+          subHeader={
+            totalInventory?.graph_data?.total_count ? totalInventory?.graph_data?.total_count : '0'
+          }
+          onPress={onPressSellingLocations}
+          analyticGraphObject={totalInventory}
+          arrayLength={totalInventory?.graph_data?.datasets?.length}
+          labels={totalInventory?.graph_data?.labels}
+          data={totalInventory?.graph_data?.datasets?.[0]?.data}
+        />
+
+        <HomeGraph
+          header="Total Product Sold"
           subHeader={'5193'}
           // productGraphObject={productGraphObject2}
           homeGraphHandler={() => {}}

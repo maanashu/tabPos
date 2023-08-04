@@ -56,6 +56,7 @@ export const ApiProductInventory = {
   getSellerProductList: 'supplies/pos/product-list',
   getSellerInfo: 'supplies/pos/seller-info',
   getSellerProductDetails: 'supplies/pos/supplier-details',
+  getTotalInventory: 'supplies/pos/inventory_count',
 };
 
 // export const ApiSupportInventory = {
@@ -103,6 +104,8 @@ export const ApiOrderInventory = {
   todayOrders: 'orders/pos/today/orders-count',
   graphOrders: 'orders/pos/graph/orders',
   todayShipStatus: 'orders/pos/shipping/orders',
+  getAnalyticOrderGraphs: 'orders/pos/analytics/count/graph',
+  getTotalOrder: 'orders/statistics/orders/total',
 };
 
 export const ApiWalletInventory = {
