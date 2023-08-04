@@ -57,6 +57,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { CartListModal } from './CartListModal';
 import { log } from 'react-native-reanimated';
 import { ms } from 'react-native-size-matters';
+import { AddServiceCartModal } from './AddServiceCartModal';
 
 export function MainScreen({
   cartScreenHandler,
@@ -73,6 +74,7 @@ export function MainScreen({
   const [brandModal, setBrandModal] = useState(false);
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
+  const [addServiceCartModal, setAddServiceCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
 
   const getRetailData = useSelector(getRetail);
@@ -211,6 +213,9 @@ export function MainScreen({
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
     }
+  };
+  const serviceFun = () => {
+    setAddServiceCartModal(true);
   };
 
   const userInputClear = () => {
@@ -557,7 +562,7 @@ export function MainScreen({
                   return (
                     <TouchableOpacity
                       style={styles.productCon}
-                      // onPress={() => productFun(item.id)}
+                      onPressIn={() => serviceFun(item.id)}
                       activeOpacity={0.7}
                     >
                       <View style={styles.avalibleServiceCon}>
@@ -805,6 +810,15 @@ export function MainScreen({
             sellerID={sellerID}
           />
         )}
+      </Modal>
+
+      {/* cart list modal end */}
+      <Modal animationType="fade" transparent={true} isVisible={addServiceCartModal}>
+        <AddServiceCartModal
+          crossHandler={() => setAddServiceCartModal(false)}
+          // detailHandler={() => setAddCartDetailModal(true)}
+          sellerID={sellerID}
+        />
       </Modal>
 
       <Modal

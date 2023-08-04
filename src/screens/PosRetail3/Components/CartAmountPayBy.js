@@ -81,8 +81,9 @@ export const CartAmountPayBy = ({
   const getRetailData = useSelector(getRetail);
 
   const cartData = getRetailData?.getAllCart;
+  // const cartData = getRetailData?.getserviceCart;
+  console.log('cartData', cartData);
   const qrcodeData = useSelector(getRetail).qrKey;
-  //  console.log('qrcodeDta', JSON.stringify(qrcodeData));
   const cartProducts = cartData?.poscart_products;
 
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
@@ -108,7 +109,6 @@ export const CartAmountPayBy = ({
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
-  console.log('stauus', requestStatus);
   const getTips = getRetailData?.getTips;
 
   const tipsArr = [
@@ -701,7 +701,7 @@ export const CartAmountPayBy = ({
                     <View style={{ margin: ms(5), alignItems: 'center' }}>
                       <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
                         <Image
-                          source={{ uri: qrcodeData.qr_code }}
+                          source={{ uri: qrcodeData?.qr_code }}
                           style={{ height: ms(110), width: ms(110) }}
                         />
                       </View>

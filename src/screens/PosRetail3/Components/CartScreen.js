@@ -155,6 +155,8 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
 
     //Mukul code----->
 
+    return;
+
     var arr = getRetailData?.getAllCart;
     const product = arr.poscart_products[index];
     const productPrice = product.product_details.price;

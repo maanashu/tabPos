@@ -32,6 +32,7 @@ import {
   clearAllCart,
   clearServiceAllCart,
   getAllCartSuccess,
+  getServiceCartSuccess,
   getUserDetail,
   getUserDetailSuccess,
   sendInvitation,
@@ -64,26 +65,26 @@ export function CartServiceScreen({
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => {
-        var arr = getRetailData?.getAllCart;
-        if (arr.poscart_products.length > 0) {
-          const products = arr.poscart_products.map((item) => ({
-            product_id: item?.product_id,
-            qty: item?.qty,
-          }));
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return () => {
+  //       var arr = getRetailData?.getAllCart;
+  //       if (arr.poscart_products.length > 0) {
+  //         const products = arr.poscart_products.map((item) => ({
+  //           product_id: item?.product_id,
+  //           qty: item?.qty,
+  //         }));
 
-          const data = {
-            updated_products: products,
-          };
-          dispatch(updateCartQty(data, arr.id));
-        } else {
-          clearCartHandler();
-        }
-      };
-    }, [])
-  );
+  //         const data = {
+  //           updated_products: products,
+  //         };
+  //         dispatch(updateCartQty(data, arr.id));
+  //       } else {
+  //         clearCartHandler();
+  //       }
+  //     };
+  //   }, [])
+  // );
 
   const updateQuantity = (cartId, productId, operation, index) => {
     // const updatedArr = [...arr];
@@ -142,35 +143,31 @@ export function CartServiceScreen({
     crossHandler();
   };
 
-  const phoneNumberSearchFun = (customerPhoneNo) => {
-    if (customerPhoneNo?.length > 9) {
-      dispatch(getUserDetail(customerPhoneNo));
-      Keyboard.dismiss();
-    } else if (customerPhoneNo?.length < 10) {
-      dispatch(getUserDetailSuccess([]));
-    }
-  };
   const removeOneCartHandler = (productId, index) => {
     // const data = {
-    //   cartId: cartData?.id,
+    //   cartId: cartServiceData?.id,
     //   productId: productId,
     // };
+    // console.log('data', data);
+    // return;
+
     // dispatch(clearOneCart(data));
 
     //Mukul code----->
 
-    var arr = getRetailData?.getAllCart;
-    const product = arr.poscart_products[index];
+    var arr = getRetailData?.getserviceCart;
+    const product = arr.appointment_cart_products[index];
     const productPrice = product.product_details.price;
     if (product.qty > 0) {
-      arr.amount.total_amount -= productPrice * product.qty;
-      arr.amount.products_price -= productPrice * product.qty;
-      arr.poscart_products.splice(index, 1);
+      arr.amout.total_amount -= productPrice * product.qty;
+      arr.amout.products_price -= productPrice * product.qty;
+      arr.appointment_cart_products.splice(index, 1);
     }
     var DATA = {
       payload: arr,
     };
-    dispatch(getAllCartSuccess(DATA));
+    console.log('DATA', DATA);
+    dispatch(getServiceCartSuccess(DATA));
   };
 
   return (
@@ -318,7 +315,7 @@ export function CartServiceScreen({
                             justifyContent: 'center',
                             alignItems: 'center',
                           }}
-                          // onPress={() => removeOneCartHandler(data.id, ind)}
+                          onPress={() => removeOneCartHandler(data.id, ind)}
                         >
                           <Image source={borderCross} style={styles.borderCross} />
                         </TouchableOpacity>
@@ -437,12 +434,7 @@ export function CartServiceScreen({
               </View>
             </View>
             <View style={{ flex: 1 }} />
-            <TouchableOpacity
-              style={[styles.checkoutButtonSideBar]}
-              onPress={() => alert('Service cart flow in progress')}
-
-              // onPress={onPressPayNow}
-            >
+            <TouchableOpacity style={[styles.checkoutButtonSideBar]} onPress={onPressPayNow}>
               <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>
