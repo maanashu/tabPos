@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import { ms } from 'react-native-size-matters';
+import { ms, verticalScale } from 'react-native-size-matters';
 import { styles } from '../PosRetail3.styles';
 import { Button, Spacer } from '@/components';
 import BackButton from '../../../components/BackButton';
@@ -50,12 +50,14 @@ import {
   requestCheck,
   requestMoney,
   walletGetByPhone,
+  requestCheckSuccess,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useIsFocused } from '@react-navigation/native';
 moment.suppressDeprecationWarnings = true;
 
 const DATA = [
@@ -108,15 +110,18 @@ export const CartAmountPayBy = ({
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
-  console.log('stauus', requestStatus);
+  const [status, setstatus] = useState('');
   const getTips = getRetailData?.getTips;
+  const isFocused = useIsFocused();
 
+  console.log('selector status=>', requestStatus);
+  console.log('state status=>', status);
   const tipsArr = [
     getTips?.first_tips ?? 18,
     getTips?.second_tips ?? 20,
     getTips?.third_tips ?? 22,
   ];
-
+  console.log('wall, addres', walletUser?.wallet_address);
   const TIPS_DATA = [
     { title: getTips?.first_tips ?? 18, icon: cardPayment, percent: getTips?.first_tips ?? '18' },
     {
@@ -141,6 +146,10 @@ export const CartAmountPayBy = ({
     dispatch(getQrCodee(cartData?.id));
   }, []);
 
+  // useEffect(() => {
+  //   dispatch(requestCheckSuccess(''));
+  // }, []);
+
   const isLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_WALLET_PHONE, TYPES.ATTACH_CUSTOMER], state)
   );
@@ -148,16 +157,20 @@ export const CartAmountPayBy = ({
     let interval;
     if (requestStatus !== 'approved') {
       interval = setInterval(() => {
-        const data = {
-          requestId: requestId,
-        };
-        dispatch(requestCheck(data));
+        setRequestId((requestId) => {
+          const data = {
+            requestId: requestId,
+          };
+          // Alert.alert('kojojoj');
+          dispatch(requestCheck(data));
+          return requestId;
+        });
       }, 10000);
     } else {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, []);
+  }, [isFocused]);
   const walletInputFun = (phoneNumber) => {
     setWalletIdInp(phoneNumber);
     if (phoneNumber?.length > 9) {
@@ -178,6 +191,7 @@ export const CartAmountPayBy = ({
     };
 
     const res = await dispatch(requestMoney(data)).then((res) => {
+      console.log('requestId SET ----', res?.payload?._id);
       setRequestId(res?.payload?._id);
       const data = {
         requestId: res?.payload?._id,
@@ -689,7 +703,13 @@ export const CartAmountPayBy = ({
             <View style={styles.scanPopUpCon}>
               <>
                 <View style={styles.scanPopHeader}>
-                  <TouchableOpacity style={styles.crossBg} onPress={() => setQrPopUp(false)}>
+                  <TouchableOpacity
+                    style={styles.crossBg}
+                    onPress={() => {
+                      setQrPopUp(false);
+                      dispatch(requestCheckSuccess(''));
+                    }}
+                  >
                     <Image source={crossButton} style={styles.crossButton} />
                   </TouchableOpacity>
                 </View>
@@ -713,7 +733,7 @@ export const CartAmountPayBy = ({
                     <View style={{ margin: ms(5), alignItems: 'center' }}>
                       <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
                         <Image
-                          source={{ uri: qrcodeData.qr_code }}
+                          source={{ uri: qrcodeData?.qr_code }}
                           style={{ height: ms(110), width: ms(110) }}
                         />
                       </View>
@@ -724,70 +744,99 @@ export const CartAmountPayBy = ({
                           <Text style={styles._orText}>Or</Text>
                           <View style={styles._borderView} />
                         </View>
+                        {requestStatus == 'approved' ? (
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-around',
+                              marginTop: verticalScale(10),
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontSize: 40,
 
-                        <View>
-                          <Text style={styles._sendPaymentText}>
-                            Send payment request to your wallet
-                          </Text>
-                          <View style={styles._inputSubView}>
-                            <View style={styles.textInputView2}>
-                              <CountryPicker
-                                onSelect={(code) => {
-                                  setWalletFlag(code.cca2);
-                                  if (code.callingCode !== []) {
-                                    setWalletCountryCode('+' + code.callingCode.flat());
-                                  } else {
-                                    setWalletCountryCode('');
-                                  }
-                                }}
-                                countryCode={walletFlag}
-                                withFilter
-                                withCallingCode
-                              />
-                              <Image source={dropdown} style={styles.dropDownIcon} />
-                              <Text style={styles.countryCodeText}>{walletCountryCode}</Text>
-                              <TextInput
-                                maxLength={15}
-                                returnKeyType="done"
-                                keyboardType="number-pad"
-                                value={walletIdInp?.trim()}
-                                onChangeText={(walletIdInp) => walletInputFun(walletIdInp)}
-                                style={styles.textInputContainer}
-                                placeholder={strings.verifyPhone.placeHolderText}
-                                placeholderTextColor={COLORS.darkGray}
-                                showSoftInputOnFocus={false}
-                              />
-                            </View>
-
-                            {/* <TextInput
-                              placeholder="803-238-2630"
-                              keyboardType="number-pad"
-                              style={styles._inputCashContainer}
-                              value={walletIdInp}
-                              onChangeText={(walletIdInp) => walletInputFun(walletIdInp)}
-                              placeholderTextColor={COLORS.solid_grey}
-                              maxLength={10}
-                            /> */}
-                            <TouchableOpacity
-                              // onPress={onPressContinue}
-                              disabled={
-                                walletUser?.step >= 2 && walletIdInp?.length > 9 ? false : true
-                              }
-                              style={[
-                                styles._sendRequest,
-                                {
-                                  opacity:
-                                    walletUser?.step >= 2 && walletIdInp?.length > 9 ? 1 : 0.7,
-                                },
-                              ]}
-                              onPress={() => sendRequestFun(walletIdInp)}
+                                textAlign: 'center',
+                                color: 'green',
+                              }}
                             >
-                              <Text style={[styles._tipText, { color: COLORS.solid_green }]}>
-                                Send Request
+                              Payment Approved
+                            </Text>
+
+                            <TouchableOpacity
+                              style={{
+                                backgroundColor: 'blue',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: 10,
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  fontSize: 40,
+                                  color: '#FFFFFF',
+                                }}
+                              >
+                                Create Order
                               </Text>
                             </TouchableOpacity>
                           </View>
-                        </View>
+                        ) : (
+                          <View>
+                            <Text style={styles._sendPaymentText}>
+                              Send payment request to your wallet
+                            </Text>
+                            <View style={styles._inputSubView}>
+                              <View style={styles.textInputView2}>
+                                <CountryPicker
+                                  onSelect={(code) => {
+                                    setWalletFlag(code.cca2);
+                                    if (code.callingCode !== []) {
+                                      setWalletCountryCode('+' + code.callingCode.flat());
+                                    } else {
+                                      setWalletCountryCode('');
+                                    }
+                                  }}
+                                  countryCode={walletFlag}
+                                  withFilter
+                                  withCallingCode
+                                />
+                                <Image source={dropdown} style={styles.dropDownIcon} />
+                                <Text style={styles.countryCodeText}>{walletCountryCode}</Text>
+                                <TextInput
+                                  maxLength={15}
+                                  returnKeyType="done"
+                                  keyboardType="number-pad"
+                                  value={walletIdInp?.trim()}
+                                  onChangeText={(walletIdInp) => walletInputFun(walletIdInp)}
+                                  style={styles.textInputContainer}
+                                  placeholder={strings.verifyPhone.placeHolderText}
+                                  placeholderTextColor={COLORS.darkGray}
+                                  showSoftInputOnFocus={false}
+                                />
+                              </View>
+
+                              <TouchableOpacity
+                                // onPress={onPressContinue}
+                                disabled={
+                                  walletUser?.step >= 2 && walletIdInp?.length > 9 ? false : true
+                                }
+                                style={[
+                                  styles._sendRequest,
+                                  {
+                                    opacity:
+                                      walletUser?.step >= 2 && walletIdInp?.length > 9 ? 1 : 0.7,
+                                  },
+                                ]}
+                                onPress={() => sendRequestFun(walletIdInp)}
+                              >
+                                <Text style={[styles._tipText, { color: COLORS.solid_green }]}>
+                                  Send Request
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        )}
                       </View>
                     </View>
                   </View>
