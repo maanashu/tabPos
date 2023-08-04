@@ -152,7 +152,6 @@ export class DeliveryController {
   }
 
   static async getOrderstatistics(sellerID, delivery) {
-    console.log('deliveryOption====', delivery);
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +

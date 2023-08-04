@@ -313,6 +313,9 @@ export class RetailController {
         supply_price_id: data.supplyPriceID.toString(),
         product_id: data.product_id.toString(),
         app_name: 'pos',
+        date: '2023-07-26',
+        start_time: '07:00 PM',
+        end_time: '08:00 PM',
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
@@ -545,6 +548,46 @@ export class RetailController {
     });
   }
 
+  static async createServiceOrder(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.createServiceOrder;
+      const body = data?.userId
+        ? {
+            cart_id: data.cartid,
+            user_id: data.userId,
+            tips: data.tips,
+            mode_of_payment: data.modeOfPayment,
+          }
+        : {
+            cart_id: data.cartid,
+            tips: data.tips,
+            mode_of_payment: data.modeOfPayment,
+          };
+
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          if (response?.msg === 'Order placed successfully!') {
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: response?.msg,
+              visibilityTime: 2000,
+            });
+          }
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
+        });
+    });
+  }
+
   static async getWalletId(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
@@ -563,6 +606,7 @@ export class RetailController {
       const endpoint = WALLET_URL + ApiWalletInventory.walletGetByPhone + `?search=${walletIdInp}`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('wallet found response', JSON.stringify(response));
           if (response?.msg === 'api wallets found') {
             Toast.show({
               position: 'bottom',
@@ -598,6 +642,7 @@ export class RetailController {
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('request money response', JSON.stringify(response));
           if (response?.msg === 'Payment request sent success!') {
             Toast.show({
               text2: 'Request send successfully',
@@ -609,6 +654,8 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('eror sending ', JSON.stringify(error));
+          console.log('eror sending ', JSON.stringify(body));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -625,7 +672,6 @@ export class RetailController {
       const endpoint = WALLET_URL + ApiWalletInventory.requestCheck + `${data.requestId}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          // console.log('request check response', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -766,6 +812,7 @@ export class RetailController {
         delivery_options: '2',
         seller_id: sellerID,
         service_type: 'service',
+        need_pos_users: true,
       };
 
       let finalParams;
@@ -905,7 +952,6 @@ export class RetailController {
   static async getQrCode(cartId) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.qrCode + `${cartId}`;
-
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

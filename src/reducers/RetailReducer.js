@@ -202,6 +202,7 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         requestMoney: payload?.requestMoney,
       };
     case TYPES.REQUEST_CHECK_SUCCESS:
+      console.log('reducer console', state.requestCheck, payload);
       return {
         ...state,
         requestCheck: payload,

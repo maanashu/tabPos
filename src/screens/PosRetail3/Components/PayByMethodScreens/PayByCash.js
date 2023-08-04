@@ -18,15 +18,15 @@ import { styles } from '../../PosRetail3.styles';
 import { COLORS, SH } from '@/theme';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOrder } from '@/actions/RetailAction';
+import { createOrder, createServiceOrder } from '@/actions/RetailAction';
 import AddedCartItemsCard from '@/components/AddedCartItemsCard';
 
 moment.suppressDeprecationWarnings = true;
 
-export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas }) => {
+export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas ,cartType}) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-  const cartData = getRetailData?.getAllCart;
+  const cartData = cartType=="Product"?getRetailData?.getAllCart:getRetailData?.getserviceCart;
   const [amount, setAmount] = useState();
   const [selectedId, setSelectedId] = useState(1);
   const [cashRate, setCashRate] = useState();
@@ -49,8 +49,9 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas }
   const valueTwenty = '20.00';
 
   const createOrderHandler = () => {
+   if(cartType=="Product"){
     const data = {
-      cartid: getRetailData?.getAllCart?.id,
+      cartid: cartData.id,
       // userId: customer?.user_id,
       tips: amount === undefined || amount === '' ? cashRate : amount,
       modeOfPayment: 'cash',
@@ -61,6 +62,23 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas }
       }
     };
     dispatch(createOrder(data, callback));
+   }
+   else{
+    // const data = {
+    //   cartid: cartData.id,
+    //   // userId: customer?.user_id,
+    //   tips: amount === undefined || amount === '' ? cashRate : amount,
+    //   modeOfPayment: 'cash',
+    // };
+    // const callback = (response) => {
+    //   if (response) {
+    //     onPressContinue(saveCartData, data);
+    //   }
+    // };
+    // dispatch(createServiceOrder(data,callback))
+   }
+
+
   };
   const renderItem = ({ item }) => {
     const borderColor = item.id === selectedId ? COLORS.primary : COLORS.transparentBlue;

@@ -326,6 +326,21 @@ const createOrderError = (error) => ({
   payload: { error },
 });
 
+const createServiceOrderRequest = () => ({
+  type: TYPES.CREATE_SERVICE_ORDER_REQUEST,
+  payload: null,
+});
+
+const createServiceOrderSuccess = () => ({
+  type: TYPES.CREATE_SERVICE_ORDER_SUCCESS,
+  payload: {},
+});
+
+const createServiceOrderError = (error) => ({
+  type: TYPES.CREATE_SERVICE_ORDER_ERROR,
+  payload: { error },
+});
+
 const clearRetailStore = () => ({
   type: TYPES.CLEAR_RETAIL_STORE,
   payload: null,
@@ -853,9 +868,23 @@ export const createOrder = (data, callback) => async (dispatch) => {
     dispatch(createOrderSuccess(res));
     dispatch(clearAllCart());
     dispatch(getAllCart());
+
     callback && callback(res);
   } catch (error) {
     dispatch(createOrderError(error.message));
+  }
+};
+
+export const createServiceOrder = (data, callback) => async (dispatch) => {
+  dispatch(createServiceOrderRequest());
+  try {
+    const res = await RetailController.createServiceOrder(data);
+    dispatch(createServiceOrderSuccess(res));
+    dispatch(clearServiceAllCart());
+    dispatch(getServiceCart());
+    callback && callback(res);
+  } catch (error) {
+    dispatch(createServiceOrderError(error.message));
   }
 };
 
@@ -892,6 +921,7 @@ export const requestMoney = (data) => async (dispatch) => {
     return dispatch(requestMoneySuccess(res?.payload));
   } catch (error) {
     dispatch(requestMoneyError(error.message));
+    throw error;
   }
 };
 
@@ -943,8 +973,10 @@ export const requestCheck = (data) => async (dispatch) => {
   dispatch(requestCheckRequest());
   try {
     const res = await RetailController.requestCheck(data);
+    console.log('res in action', res);
     return dispatch(requestCheckSuccess(res?.payload?.status));
   } catch (error) {
+    console.log('error in action', error);
     dispatch(requestCheckError(error.message));
   }
 };

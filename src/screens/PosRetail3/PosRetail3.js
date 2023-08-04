@@ -58,6 +58,8 @@ export function PosRetail3() {
   const [addDiscount, setAddDiscount] = useState(false);
   const [page, setPage] = useState(1);
   const [tipAmount, selectTipAmount] = useState();
+  const [fromWhichCart, setFromWhichCart] = useState("Product");
+  const [comingScreen, setComingScreen] = useState();
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
   const getCart = getRetailData?.getAllCart;
@@ -260,7 +262,9 @@ export function PosRetail3() {
       <CartScreen
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
-          setselectedScreen('CartAmountPayBy');
+          setFromWhichCart("Product")
+          setselectedScreen('CartAmountPayBy'),
+          setComingScreen('CartScreen');
         }}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
@@ -271,7 +275,10 @@ export function PosRetail3() {
       <CartServiceScreen
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
-          setselectedScreen('CartAmountPayBy');
+          setFromWhichCart("Service")
+          setselectedScreen('CartAmountPayBy'),
+          setComingScreen('CartServiceScreen');
+
         }}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
@@ -285,12 +292,13 @@ export function PosRetail3() {
           setselectedScreen('CartAmountPayBy');
         }}
         sellerID={sellerID}
+        cartType={fromWhichCart}
         onPressNoTips={() => setselectedScreen('CartAmountPayBy')}
       />
     ),
     ['CartAmountPayBy']: (
       <CartAmountPayBy
-        onPressBack={() => setselectedScreen('CartScreen')}
+        onPressBack={() => comingScreen ==='CartScreen' ?  setselectedScreen('CartScreen') : setselectedScreen('CartServiceScreen')}
         tipAmount={tipAmount}
         onPressPaymentMethod={(item) => {
           if (item.index === 0) {
@@ -305,6 +313,7 @@ export function PosRetail3() {
           selectTipAmount(tip);
         }}
         cartid={cartID2}
+        cartType={fromWhichCart}
       />
     ),
     ['PayByCard']: (
@@ -317,6 +326,7 @@ export function PosRetail3() {
         //   setpaymentMethod('Card');
         //   setselectedScreen('FinalPaymentScreen');
         // }}
+        cartType={fromWhichCart}
       />
     ),
     ['PayByCash']: (
@@ -332,6 +342,7 @@ export function PosRetail3() {
           setCashPayDetail(data);
         }}
         cartDatas={savedTempCartData}
+        cartType={fromWhichCart}
       />
     ),
     // ['PayByJBRCoins']: (
@@ -355,6 +366,7 @@ export function PosRetail3() {
         paymentMethod={paymentMethod}
         cartData={savedTempCartData}
         payDetail={cashPayDetail}
+        cartType={fromWhichCart}
       />
     ),
   };

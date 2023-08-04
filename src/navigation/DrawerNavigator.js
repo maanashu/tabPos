@@ -189,7 +189,7 @@ export function DrawerNavigator(props) {
           )}
         />
 
-        <DrawerItem
+        {/* <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
           focused={active === 'para' ? true : false}
@@ -201,7 +201,7 @@ export function DrawerNavigator(props) {
           icon={({ focused, color, size }) => (
             <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
           )}
-        />
+        /> */}
 
         <DrawerItem
           label={''}
@@ -217,7 +217,7 @@ export function DrawerNavigator(props) {
           )}
         />
 
-        <DrawerItem
+        {/* <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
           focused={active === 'analytics' ? true : false}
@@ -229,7 +229,7 @@ export function DrawerNavigator(props) {
           icon={({ focused, color, size }) => (
             <Image source={focused ? blueanalytics : analytics} style={styles.iconStyle} />
           )}
-        />
+        /> */}
 
         <DrawerItem
           label={''}

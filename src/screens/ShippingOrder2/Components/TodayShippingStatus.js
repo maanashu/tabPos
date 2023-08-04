@@ -33,12 +33,12 @@ const TodayShippingStatus = ({ todayStatus }) => {
       ) : (
         <>
           <View style={styles.shippingOrdersViewStyle}>
-            <Text style={styles.shippedOrderText}>{strings.analytics.deliveryOrder}</Text>
+            <Text style={styles.shippedOrderText}>{strings.shippingOrder.shippingOrders}</Text>
             <Text style={styles.shippedOrderText}>{todayStatus?.[0]?.count ?? '0'}</Text>
           </View>
 
           <View style={styles.shippingOrdersViewStyle}>
-            <Text style={styles.shippedOrderText}>{strings.deliveryOrders2.pickupOrders}</Text>
+            <Text style={styles.shippedOrderText}>{strings.shippingOrder.shippedOrder}</Text>
             <Text style={styles.shippedOrderText}>{todayStatus?.[1]?.count ?? '0'}</Text>
           </View>
         </>

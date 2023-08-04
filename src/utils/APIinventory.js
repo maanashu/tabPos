@@ -56,6 +56,7 @@ export const ApiProductInventory = {
   getSellerProductList: 'supplies/pos/product-list',
   getSellerInfo: 'supplies/pos/seller-info',
   getSellerProductDetails: 'supplies/pos/supplier-details',
+  getTotalInventory: 'supplies/pos/inventory_count',
 };
 
 // export const ApiSupportInventory = {
@@ -72,6 +73,7 @@ export const ApiOrderInventory = {
   getOrders: 'orders',
   acceptOrder: 'orders/status',
   createOrder: 'orders/pos',
+  createServiceOrder: 'orders/pos',
   getOrderCount: 'orders/pos/statistics',
   totalProGraph: 'orders/pos/statistics/products',
   totalOrderGraph: 'orders/pos/statistics/orders',
@@ -103,8 +105,13 @@ export const ApiOrderInventory = {
   todayOrders: 'orders/pos/today/orders-count',
   graphOrders: 'orders/pos/graph/orders',
   todayShipStatus: 'orders/pos/shipping/orders',
+
   getServiceCart: 'appointment_carts/user',
   appintment_cart: 'appointment_carts',
+  qrCode: 'poscarts/qr-code/',
+  getAnalyticOrderGraphs: 'orders/pos/analytics/count/graph',
+  getTotalOrder: 'orders/statistics/orders/total',
+
   qrCode: 'poscarts/qr-code/',
 };
 

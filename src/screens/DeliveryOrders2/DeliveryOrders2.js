@@ -983,11 +983,11 @@ export function DeliveryOrders2() {
             <View>
               <TodayOrderStatus {...{ todayOrderStatusData }} />
 
-              <Spacer space={SH(15)} />
+              <Spacer space={ms(10)} />
 
               <CurrentStatus {...{ deliverytypes, renderItem }} />
 
-              <Spacer space={SH(15)} />
+              <Spacer space={ms(10)} />
 
               <OrderConvertion
                 {...{

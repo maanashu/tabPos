@@ -42,6 +42,7 @@ import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
   const dispatch = useDispatch();
@@ -50,6 +51,8 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   let arr = [getRetailData?.getAllCart];
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData;
 
   console.log('getRetailData?.getAllCart', getRetailData?.getAllCart?.id);
 
@@ -64,8 +67,8 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     React.useCallback(() => {
       return () => {
         var arr = getRetailData?.getAllCart;
-        if (arr.poscart_products.length > 0) {
-          const products = arr.poscart_products.map((item) => ({
+        if (arr?.poscart_products.length > 0) {
+          const products = arr?.poscart_products.map((item) => ({
             product_id: item?.product_id,
             qty: item?.qty,
           }));
@@ -110,7 +113,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     //Mukul code----->
 
     var arr = getRetailData?.getAllCart;
-    const product = arr.poscart_products[index];
+    const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
 
     if (operation === '+') {
@@ -120,7 +123,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     } else if (operation === '-') {
       if (product.qty > 0) {
         if (product.qty == 1) {
-          arr.poscart_products.splice(index, 1);
+          arr?.poscart_products.splice(index, 1);
         }
         product.qty -= 1;
         arr.amount.total_amount -= productPrice;
@@ -158,12 +161,12 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     return;
 
     var arr = getRetailData?.getAllCart;
-    const product = arr.poscart_products[index];
+    const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
     if (product.qty > 0) {
       arr.amount.total_amount -= productPrice * product.qty;
       arr.amount.products_price -= productPrice * product.qty;
-      arr.poscart_products.splice(index, 1);
+      arr?.poscart_products.splice(index, 1);
     }
     var DATA = {
       payload: arr,
