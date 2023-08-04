@@ -53,6 +53,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData;
+
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAdd, setUserAdd] = useState('');

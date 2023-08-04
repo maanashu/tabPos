@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { ms, scale, verticalScale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
@@ -13,12 +13,13 @@ const styles = StyleSheet.create({
   },
   firstRowStyle: {
     flexDirection: 'row',
-    paddingHorizontal: ms(15),
+    paddingHorizontal: ms(10),
     justifyContent: 'space-between',
   },
   shippingStatusViewStyle: {
     alignItems: 'flex-start',
     borderRadius: 10,
+    width: SW(100),
     paddingVertical: ms(10),
     backgroundColor: COLORS.white,
   },
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: COLORS.white,
     paddingVertical: ms(9),
-    width: ms(200),
+    width: SW(100),
     height: Dimensions.get('window').height / 3.3,
   },
   currentStatusText: {
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
   itemMainViewStyle: {
     borderWidth: 1,
     marginHorizontal: ms(12),
-    marginVertical: ms(4),
+    marginVertical: ms(2),
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.white,
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
   shippingTypeDetails: {
     justifyContent: 'center',
     marginHorizontal: ms(10),
-    paddingVertical: ms(2),
+    paddingVertical: ms(1),
   },
   shippingTypeText: {
     fontFamily: Fonts.SemiBold,
@@ -86,8 +87,9 @@ const styles = StyleSheet.create({
     paddingTop: ms(3),
   },
   orderConvertionView: {
-    width: ms(200),
     borderRadius: 10,
+    width: SW(100),
+
     backgroundColor: COLORS.white,
     height: Dimensions.get('window').height / 2.35,
   },
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
   ordersRowView: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: ms(200),
+    width: SW(80),
     justifyContent: 'space-between',
     paddingVertical: ms(4),
     paddingHorizontal: ms(12),
@@ -292,7 +294,7 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     flexGrow: 1,
-    paddingBottom: ms(30),
+    paddingBottom: ms(20),
   },
   headingRowStyle: {
     flexDirection: 'row',
@@ -309,7 +311,7 @@ const styles = StyleSheet.create({
   graphViewStyle: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: Dimensions.get('window').width * 0.57,
+    width: Dimensions.get('window').width * 0.56,
     paddingHorizontal: ms(12),
   },
   numberOrdersText: {
@@ -489,6 +491,19 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.43,
     paddingTop: 15,
     paddingHorizontal: ms(15),
+  },
+  emptyView: {
+    height:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').height / 3.2
+        : Dimensions.get('window').height / 2.8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noOrdersText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(22),
+    color: COLORS.primary,
   },
 });
 

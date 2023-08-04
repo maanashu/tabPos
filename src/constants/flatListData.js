@@ -1003,3 +1003,98 @@ export const productServiceFilter = [
     image: filter,
   },
 ];
+
+export const weekData = [
+  {
+    key: '1',
+    day: 'MON',
+    date: 'Today',
+  },
+  {
+    key: '2',
+    day: 'TUE',
+    date: '23',
+  },
+  {
+    key: '3',
+    day: 'WED',
+    date: '24',
+  },
+  {
+    key: '4',
+    day: 'THU',
+    date: '25',
+  },
+  {
+    key: '5',
+    day: 'FRI',
+    date: '26',
+  },
+];
+
+export const slotData = [
+  {
+    key: '1',
+    time: '9:00a-10:00a',
+  },
+  {
+    key: '2',
+    time: '11:00a-12:00p',
+  },
+  {
+    key: '3',
+    time: '12:00p-1:00p',
+  },
+  {
+    key: '4',
+    time: '1:00p-2:00p',
+  },
+  {
+    key: '5',
+    time: '2:00p-3:00p',
+  },
+  {
+    key: '6',
+    time: '3:00p-4:00p',
+  },
+  {
+    key: '7',
+    time: '4:00p-5:00p',
+  },
+  {
+    key: '8',
+    time: '5:00p-6:00p',
+  },
+  {
+    key: '9',
+    time: '6:00p-7:00p',
+  },
+  {
+    key: '10',
+    time: '7:00p-8:00p',
+  },
+  {
+    key: '11',
+    time: '8:00p-9:00p',
+  },
+  {
+    key: '12',
+    time: '9:00p-10:00p',
+  },
+  {
+    key: '13',
+    time: '10:00p-11:00p',
+  },
+  {
+    key: '14',
+    time: '11:00p-12:00a',
+  },
+  {
+    key: '15',
+    time: '11:00p-12:00a',
+  },
+  {
+    key: '16',
+    time: '12:00a-1:00a',
+  },
+];

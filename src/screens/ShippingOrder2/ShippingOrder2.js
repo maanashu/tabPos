@@ -775,7 +775,7 @@ export function ShippingOrder2() {
       <View style={styles.container}>
         <Header {...{ viewAllOrders, setViewAllOrders }} />
 
-        <Spacer space={ms(15)} />
+        <Spacer space={SH(20)} />
 
         {viewAllOrders ? (
           <View style={styles.firstRowStyle}>
@@ -1106,7 +1106,7 @@ export function ShippingOrder2() {
                 )}
               </View>
 
-              <Spacer space={ms(10)} />
+              <Spacer space={SH(15)} />
 
               <>
                 {isOrderLoading ? (
@@ -1125,30 +1125,29 @@ export function ShippingOrder2() {
                   <View
                     style={[
                       styles.orderToReviewView,
-                      { height: Dimensions.get('window').height / 2.35 },
+                      { height: Dimensions.get('window').height / 2.35, paddingBottom: ms(10) },
                     ]}
                   >
+                    <View style={styles.headingRowStyle}>
+                      <Text style={styles.ordersToReviewText}>
+                        {strings.shipingOrder.orderOfReview}
+                      </Text>
+
+                      <TouchableOpacity
+                        onPress={() => setViewAllOrders(true)}
+                        style={styles.viewAllButtonStyle}
+                      >
+                        <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
+                      </TouchableOpacity>
+                    </View>
+
                     <FlatList
-                      scrollEnabled={ordersList?.length > 0 ? true : false}
+                      data={ordersList?.slice(0, 4)}
                       renderItem={renderOrderToReview}
                       ListEmptyComponent={emptyComponent}
-                      ListHeaderComponent={() => (
-                        <View style={styles.headingRowStyle}>
-                          <Text style={styles.ordersToReviewText}>
-                            {strings.shipingOrder.orderOfReview}
-                          </Text>
-
-                          <TouchableOpacity
-                            onPress={() => setViewAllOrders(true)}
-                            style={styles.viewAllButtonStyle}
-                          >
-                            <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
-                          </TouchableOpacity>
-                        </View>
-                      )}
                       showsVerticalScrollIndicator={false}
-                      data={ordersList?.slice(0, 4)}
                       contentContainerStyle={styles.contentContainerStyle}
+                      scrollEnabled={ordersList?.length > 0 ? true : false}
                     />
                   </View>
                 )}
