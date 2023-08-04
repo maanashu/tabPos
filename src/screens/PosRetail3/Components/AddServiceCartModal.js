@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
-import { COLORS, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
-import { crossButton, userImage } from '@/assets';
+import { crossButton, Fonts, userImage } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
+import { slotData, weekData } from '@/constants/flatListData';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -49,6 +58,38 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
 
   // Size select list start
   // Size select list end
+
+  const renderWeekItem = ({ item, index }) => (
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: SW(31.5),
+        height: SH(60),
+      }}
+    >
+      <Text style={{ fontFamily: Fonts.Regular, fontSize: SF(14) }}>{item?.day}</Text>
+      <Text style={{ fontFamily: Fonts.SemiBold, fontSize: SF(18) }}>{item?.date}</Text>
+    </View>
+  );
+
+  const renderSlotItem = ({ item, index }) => (
+    <View
+      style={{
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: SH(140),
+        height: SH(42),
+        borderColor: COLORS.solidGrey,
+      }}
+    >
+      <Text style={{ fontFamily: Fonts.Regular, fontSize: SF(14), color: COLORS.dark_grey }}>
+        {item?.time}
+      </Text>
+    </View>
+  );
+
   return (
     <View style={styles.addCartCon}>
       <View style={styles.addCartConHeader}>
@@ -77,7 +118,6 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
         style={{
           width: windowWidth * 0.42,
           alignSelf: 'center',
-          borderWidth: 1,
         }}
       >
         <View style={[styles.displayflex, { marginTop: SH(10) }]}>
@@ -88,6 +128,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
           </View>
           <Text style={styles.colimbiaText}>$6.80</Text>
         </View>
+
         <View style={{ alignItems: 'center' }}>
           <View style={styles.counterCon}>
             <TouchableOpacity
@@ -136,6 +177,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
           />{' '}
           */}
         </View>
+
         <View>
           <Text style={styles.selected}>
             Selected: <Text style={{ color: COLORS.primary }}>Anna</Text>{' '}
@@ -168,6 +210,12 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
           <Text style={styles.selected}>
             Time: <Text style={{ color: COLORS.primary }}>Today @ 3:00 PM</Text>
           </Text>
+        </View>
+
+        <View style={{ marginTop: SH(15), borderWidth: 1, borderColor: COLORS.solidGrey }}>
+          <FlatList scrollEnabled={false} horizontal data={weekData} renderItem={renderWeekItem} />
+
+          <FlatList numColumns={4} renderItem={renderSlotItem} data={slotData} />
         </View>
       </View>
     </View>

@@ -545,7 +545,7 @@ export function MainScreen({
                   ListEmptyComponent={() => (
                     <View style={styles.noProductText}>
                       <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
-                        {strings.valiadtion.noProduct}
+                        {strings.valiadtion.noData}
                       </Text>
                     </View>
                   )}
@@ -619,7 +619,7 @@ export function MainScreen({
                 ListEmptyComponent={() => (
                   <View style={styles.noProductText}>
                     <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
-                      {strings.valiadtion.noProduct}
+                      {strings.valiadtion.noData}
                     </Text>
                   </View>
                 )}
