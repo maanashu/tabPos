@@ -83,7 +83,8 @@ export const CartAmountPayBy = ({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
 
-  const cartData = getRetailData?.getAllCart;
+  const cartData =
+    cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
   const qrcodeData = useSelector(getRetail).qrKey;
   //  console.log('qrcodeDta', JSON.stringify(qrcodeData));
   const cartProducts = cartData?.poscart_products;
