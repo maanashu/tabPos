@@ -68,7 +68,7 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
     //Mukul code----->
 
     var arr = getRetailData?.getAllCart;
-    const product = arr.poscart_products[index];
+    const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
 
     if (operation === '+') {
@@ -78,7 +78,7 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
     } else if (operation === '-') {
       if (product.qty > 0) {
         if (product.qty == 1) {
-          arr.poscart_products.splice(index, 1);
+          arr?.poscart_products.splice(index, 1);
         }
         product.qty -= 1;
         arr.amount.total_amount -= productPrice;
@@ -98,12 +98,12 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
     // dispatch(clearOneCart(data));
 
     var arr = getRetailData?.getAllCart;
-    const product = arr.poscart_products[index];
+    const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
     if (product.qty > 0) {
       arr.amount.total_amount -= productPrice * product.qty;
       arr.amount.products_price -= productPrice * product.qty;
-      arr.poscart_products.splice(index, 1);
+      arr?.poscart_products.splice(index, 1);
     }
     var DATA = {
       payload: arr,
@@ -114,8 +114,8 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
     React.useCallback(() => {
       return () => {
         var arr = getRetailData?.getAllCart;
-        if (arr.poscart_products.length > 0) {
-          const products = arr.poscart_products.map((item) => ({
+        if (arr?.poscart_products.length > 0) {
+          const products = arr?.poscart_products.map((item) => ({
             product_id: item?.product_id,
             qty: item?.qty,
           }));

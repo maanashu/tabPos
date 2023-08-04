@@ -76,12 +76,12 @@ export const CartAmountPayBy = ({
   payDetail,
   payNowByphone,
   cartid,
+  cartType
 }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-
-  const cartData = getRetailData?.getAllCart;
-  // const cartData = getRetailData?.getserviceCart;
+  // const cartData = getRetailData?.getAllCart;
+  const cartData = cartType =="Product"?getRetailData?.getAllCart:getRetailData?.getserviceCart;
   console.log('cartData', cartData);
   const qrcodeData = useSelector(getRetail).qrKey;
   const cartProducts = cartData?.poscart_products;
@@ -106,7 +106,8 @@ export const CartAmountPayBy = ({
   const [walletCountryCode, setWalletCountryCode] = useState('+1');
   const walletUser = getRetailData?.walletGetByPhone?.[0];
   const getWalletQr = getRetailData?.getWallet?.qr_code;
-  const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
   const getTips = getRetailData?.getTips;
@@ -138,7 +139,7 @@ export const CartAmountPayBy = ({
   useEffect(() => {
     dispatch(getWalletId(sellerID));
     dispatch(getTip(sellerID));
-    dispatch(getQrCodee(cartData?.id));
+     dispatch(getQrCodee(cartData?.id));
   }, []);
 
   const isLoading = useSelector((state) =>
@@ -502,7 +503,7 @@ export const CartAmountPayBy = ({
 
             <View style={styles._flatListContainer}>
               <FlatList
-                data={cartData?.poscart_products}
+                data={cartType=="Product"?cartData.poscart_products:cartData?.appointment_cart_products}
                 style={{ width: '100%' }}
                 renderItem={({ item, index }) => <AddedCartItemsCard item={item} index={index} />}
               />
