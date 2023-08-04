@@ -606,6 +606,7 @@ export class RetailController {
       const endpoint = WALLET_URL + ApiWalletInventory.walletGetByPhone + `?search=${walletIdInp}`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('wallet found response', JSON.stringify(response));
           if (response?.msg === 'api wallets found') {
             Toast.show({
               position: 'bottom',
@@ -641,6 +642,7 @@ export class RetailController {
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('request money response', JSON.stringify(response));
           if (response?.msg === 'Payment request sent success!') {
             Toast.show({
               text2: 'Request send successfully',
@@ -652,6 +654,8 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('eror sending ', JSON.stringify(error));
+          console.log('eror sending ', JSON.stringify(body));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -668,7 +672,6 @@ export class RetailController {
       const endpoint = WALLET_URL + ApiWalletInventory.requestCheck + `${data.requestId}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          // console.log('request check response', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

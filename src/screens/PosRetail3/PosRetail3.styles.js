@@ -1781,7 +1781,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     height: windowHeight * 0.08,
-    width: windowWidth * 0.3,
+    width: windowWidth * 0.25,
     borderWidth: 1,
     borderColor: '#D8D8D8',
     borderRadius: 5,

@@ -921,6 +921,7 @@ export const requestMoney = (data) => async (dispatch) => {
     return dispatch(requestMoneySuccess(res?.payload));
   } catch (error) {
     dispatch(requestMoneyError(error.message));
+    throw error;
   }
 };
 
@@ -972,8 +973,10 @@ export const requestCheck = (data) => async (dispatch) => {
   dispatch(requestCheckRequest());
   try {
     const res = await RetailController.requestCheck(data);
+    console.log('res in action', res);
     return dispatch(requestCheckSuccess(res?.payload?.status));
   } catch (error) {
+    console.log('error in action', error);
     dispatch(requestCheckError(error.message));
   }
 };
