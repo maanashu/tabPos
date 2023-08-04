@@ -589,15 +589,18 @@ export function MainScreen({
                       </Text>
                       <Spacer space={SH(6)} />
                       <View>
-                        <ScrollView horizontal={true}>
-                          {[1, 2, 3, 4]?.map(({ item, index }) => (
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                          {item?.pos_users?.map((data, index) => (
                             <Image
-                              source={userImage}
+                              source={
+                                { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
+                              }
                               style={{
                                 width: ms(15),
                                 height: ms(15),
                                 resizeMode: 'contain',
                                 marginRight: -1,
+                                borderRadius: 50,
                               }}
                             />
                           ))}
