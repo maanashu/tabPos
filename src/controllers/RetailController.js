@@ -313,6 +313,9 @@ export class RetailController {
         supply_price_id: data.supplyPriceID.toString(),
         product_id: data.product_id.toString(),
         app_name: 'pos',
+        date: '2023-07-26',
+        start_time: '07:00 PM',
+        end_time: '08:00 PM',
       };
       HttpClient.post(endpoint, body)
         .then((response) => {

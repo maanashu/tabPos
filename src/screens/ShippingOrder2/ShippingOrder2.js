@@ -1133,12 +1133,14 @@ export function ShippingOrder2() {
                         {strings.shipingOrder.orderOfReview}
                       </Text>
 
-                      <TouchableOpacity
-                        onPress={() => setViewAllOrders(true)}
-                        style={styles.viewAllButtonStyle}
-                      >
-                        <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
-                      </TouchableOpacity>
+                      {ordersList?.length > 0 ? (
+                        <TouchableOpacity
+                          onPress={() => setViewAllOrders(true)}
+                          style={styles.viewAllButtonStyle}
+                        >
+                          <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
+                        </TouchableOpacity>
+                      ) : null}
                     </View>
 
                     <FlatList

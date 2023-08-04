@@ -866,10 +866,9 @@ export const createOrder = (data, callback) => async (dispatch) => {
   try {
     const res = await RetailController.createOrder(data);
     dispatch(createOrderSuccess(res));
-      dispatch(clearAllCart());
-      dispatch(getAllCart());
-  
-   
+    dispatch(clearAllCart());
+    dispatch(getAllCart());
+
     callback && callback(res);
   } catch (error) {
     dispatch(createOrderError(error.message));
@@ -880,10 +879,10 @@ export const createServiceOrder = (data, callback) => async (dispatch) => {
   dispatch(createServiceOrderRequest());
   try {
     const res = await RetailController.createServiceOrder(data);
-       dispatch(createServiceOrderSuccess(res));
-      dispatch(clearServiceAllCart());
-      dispatch(getServiceCart());
-     callback && callback(res);
+    dispatch(createServiceOrderSuccess(res));
+    dispatch(clearServiceAllCart());
+    dispatch(getServiceCart());
+    callback && callback(res);
   } catch (error) {
     dispatch(createServiceOrderError(error.message));
   }
