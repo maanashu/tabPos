@@ -39,6 +39,11 @@ import {
   checkedCheckboxSquare,
   clock,
   userImage,
+  task,
+  drawerdeliveryTruck,
+  timer,
+  Group,
+  Delivery,
 } from '@/assets';
 import {
   orderToReview,
@@ -59,7 +64,11 @@ import {
 } from '@/actions/DeliveryAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getShipping } from '@/selectors/ShippingSelector';
-import { todayCurrentStatus, todayShippingStatus } from '@/actions/ShippingAction';
+import {
+  orderStatusCount,
+  todayCurrentStatus,
+  todayShippingStatus,
+} from '@/actions/ShippingAction';
 
 import styles from './ShippingOrder2.styles';
 import { getDelivery } from '@/selectors/DeliverySelector';
@@ -79,6 +88,7 @@ export function ShippingOrder2() {
   const ordersList = getGraphOrderData?.getReviewDef;
   const pieChartData = getGraphOrderData?.getOrderstatistics?.data;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const orderStatusCountData = todayStatus?.orderStatus;
 
   const widthAndHeight = 140;
   const series = [
@@ -103,12 +113,64 @@ export function ShippingOrder2() {
   const [openShippingOrders, setOpenShippingOrders] = useState(0);
   const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
 
+  const statusCount = [
+    {
+      key: '0',
+      image: task,
+      title: 'Orders to Review',
+      count: orderStatusCountData?.[0]?.count,
+    },
+    {
+      key: '1',
+      image: drawerdeliveryTruck,
+      title: 'Accepted',
+      count: orderStatusCountData?.[1]?.count,
+    },
+    {
+      key: '2',
+      image: timer,
+      title: 'Order Preparing ',
+      count: orderStatusCountData?.[2]?.count,
+    },
+    {
+      key: '3',
+      image: Group,
+      title: 'Printing Label',
+      count: orderStatusCountData?.[3]?.count,
+    },
+    {
+      key: '4',
+      image: Delivery,
+      title: 'Shipped',
+      count: orderStatusCountData?.[4]?.count,
+    },
+    {
+      key: '5',
+      image: Cart,
+      title: 'Delivered',
+      count: orderStatusCountData?.[5]?.count,
+    },
+    {
+      key: '6',
+      image: NoCard,
+      title: 'Rejected/ Cancelled',
+      count: orderStatusCountData?.[6]?.count,
+    },
+    {
+      key: '7',
+      image: ReturnTruck,
+      title: 'Returned',
+      count: orderStatusCountData?.[7]?.count,
+    },
+  ];
+
   useEffect(() => {
     dispatch(todayShippingStatus(sellerID));
     dispatch(todayCurrentStatus(sellerID));
     dispatch(getReviewDefault(0, sellerID, 4));
     dispatch(getGraphOrders(sellerID, 4));
     dispatch(getOrderstatistics(sellerID, 4));
+    dispatch(orderStatusCount(sellerID));
   }, []);
 
   useEffect(() => {
@@ -133,8 +195,8 @@ export function ShippingOrder2() {
     </View>
   );
 
-  const showBadge = (image) => {
-    if (image === Cart) {
+  const showBadge = (item) => {
+    if (item?.image === Cart) {
       return (
         <View
           style={[
@@ -142,18 +204,18 @@ export function ShippingOrder2() {
             { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
           ]}
         >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>0</Text>
+          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
         </View>
       );
-    } else if (image === NoCard) {
+    } else if (item?.image === NoCard) {
       return (
         <View
           style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
         >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>0</Text>
+          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
         </View>
       );
-    } else if (image === ReturnTruck) {
+    } else if (item?.image === ReturnTruck) {
       return (
         <View
           style={[
@@ -164,7 +226,7 @@ export function ShippingOrder2() {
             },
           ]}
         >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>0</Text>
+          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
         </View>
       );
     } else {
@@ -179,7 +241,7 @@ export function ShippingOrder2() {
             },
           ]}
         >
-          <Text style={styles.badgetext}>0</Text>
+          <Text style={styles.badgetext}>{item?.count}</Text>
         </View>
       );
     }
@@ -189,7 +251,7 @@ export function ShippingOrder2() {
     <View style={styles.drawerIconView}>
       <View style={styles.bucketBackgorund}>
         <Image source={item.image} style={styles.sideBarImage} />
-        {showBadge(item?.image)}
+        {showBadge(item)}
       </View>
     </View>
   );
@@ -220,7 +282,9 @@ export function ShippingOrder2() {
             </Text>
             <View style={styles.locationViewStyle}>
               <Image source={pin} style={styles.pinImageStyle} />
-              <Text style={styles.distanceTextStyle}>{item?.distance ? item?.distance : '0'}</Text>
+              <Text style={styles.distanceTextStyle}>
+                {item?.distance ? item?.distance : '{item?.count}'}
+              </Text>
             </View>
           </View>
 
@@ -1166,7 +1230,7 @@ export function ShippingOrder2() {
                 >
                   <View style={styles.shippingOrderViewStyle}>
                     <FlatList
-                      data={shippingDrawer}
+                      data={statusCount}
                       renderItem={renderShippingDrawer}
                       ListHeaderComponent={() => (
                         <View style={styles.shippingOrderHeader}>
@@ -1194,7 +1258,7 @@ export function ShippingOrder2() {
             ) : (
               <View style={styles.rightSideView}>
                 <FlatList
-                  data={rightSideDrawer}
+                  data={statusCount}
                   renderItem={renderDrawer}
                   ListHeaderComponent={() => (
                     <TouchableOpacity

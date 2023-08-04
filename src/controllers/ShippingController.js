@@ -201,4 +201,23 @@ export class ShippingController {
         });
     });
   }
+
+  static async orderStatusCount(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.orderStatusCount + `?seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  }
 }

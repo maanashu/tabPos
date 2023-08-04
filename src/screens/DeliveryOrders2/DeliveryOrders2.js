@@ -193,7 +193,7 @@ export function DeliveryOrders2() {
   }, []);
 
   useEffect(() => {
-    dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID));
+    dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID, 1));
 
     setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
     setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
