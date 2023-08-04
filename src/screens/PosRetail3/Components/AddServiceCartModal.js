@@ -65,7 +65,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, sellerID }) {
 
         //New Changes
         var arr = getRetailData?.getAllCart;
-        const products = arr.poscart_products.map((item) => ({
+        const products = arr?.poscart_products.map((item) => ({
           product_id: item?.product_id,
           qty: item?.qty,
           supply_id: item?.supply_id,
@@ -127,7 +127,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, sellerID }) {
 
           //New Changes
           var arr = getRetailData?.getAllCart;
-          const products = arr.poscart_products.map((item) => ({
+          const products = arr?.poscart_products.map((item) => ({
             product_id: item?.product_id,
             qty: item?.qty,
             supply_id: item?.supply_id,

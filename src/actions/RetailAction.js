@@ -326,6 +326,21 @@ const createOrderError = (error) => ({
   payload: { error },
 });
 
+const createServiceOrderRequest = () => ({
+  type: TYPES.CREATE_SERVICE_ORDER_REQUEST,
+  payload: null,
+});
+
+const createServiceOrderSuccess = () => ({
+  type: TYPES.CREATE_SERVICE_ORDER_SUCCESS,
+  payload: {},
+});
+
+const createServiceOrderError = (error) => ({
+  type: TYPES.CREATE_SERVICE_ORDER_ERROR,
+  payload: { error },
+});
+
 const clearRetailStore = () => ({
   type: TYPES.CLEAR_RETAIL_STORE,
   payload: null,
@@ -851,11 +866,26 @@ export const createOrder = (data, callback) => async (dispatch) => {
   try {
     const res = await RetailController.createOrder(data);
     dispatch(createOrderSuccess(res));
-    dispatch(clearAllCart());
-    dispatch(getAllCart());
+      dispatch(clearAllCart());
+      dispatch(getAllCart());
+  
+   
     callback && callback(res);
   } catch (error) {
     dispatch(createOrderError(error.message));
+  }
+};
+
+export const createServiceOrder = (data, callback) => async (dispatch) => {
+  dispatch(createServiceOrderRequest());
+  try {
+    const res = await RetailController.createServiceOrder(data);
+       dispatch(createServiceOrderSuccess(res));
+      dispatch(clearServiceAllCart());
+      dispatch(getServiceCart());
+     callback && callback(res);
+  } catch (error) {
+    dispatch(createServiceOrderError(error.message));
   }
 };
 

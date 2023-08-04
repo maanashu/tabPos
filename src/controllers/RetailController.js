@@ -545,6 +545,46 @@ export class RetailController {
     });
   }
 
+  static async createServiceOrder(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.createServiceOrder;
+      const body = data?.userId
+        ? {
+            cart_id: data.cartid,
+            user_id: data.userId,
+            tips: data.tips,
+            mode_of_payment: data.modeOfPayment,
+          }
+        : {
+            cart_id: data.cartid,
+            tips: data.tips,
+            mode_of_payment: data.modeOfPayment,
+          };
+
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          if (response?.msg === 'Order placed successfully!') {
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: response?.msg,
+              visibilityTime: 2000,
+            });
+          }
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
+        });
+    });
+  }
+
   static async getWalletId(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = WALLET_URL + ApiWalletInventory.getWallet + `${sellerID}`;
@@ -905,7 +945,6 @@ export class RetailController {
   static async getQrCode(cartId) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.qrCode + `${cartId}`;
-
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

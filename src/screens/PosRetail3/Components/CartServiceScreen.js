@@ -44,6 +44,7 @@ import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -115,7 +116,7 @@ export function CartServiceScreen({
     //Mukul code----->
 
     var arr = getRetailData?.getAllCart;
-    const product = arr.poscart_products[index];
+    const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
 
     if (operation === '+') {
@@ -125,7 +126,7 @@ export function CartServiceScreen({
     } else if (operation === '-') {
       if (product.qty > 0) {
         if (product.qty == 1) {
-          arr.poscart_products.splice(index, 1);
+          arr?.poscart_products.splice(index, 1);
         }
         product.qty -= 1;
         arr.amount.total_amount -= productPrice;
@@ -159,8 +160,8 @@ export function CartServiceScreen({
     const product = arr.appointment_cart_products[index];
     const productPrice = product.product_details.price;
     if (product.qty > 0) {
-      arr.amout.total_amount -= productPrice * product.qty;
-      arr.amout.products_price -= productPrice * product.qty;
+      arr.amount.total_amount -= productPrice * product.qty;
+      arr.amount.products_price -= productPrice * product.qty;
       arr.appointment_cart_products.splice(index, 1);
     }
     var DATA = {
@@ -395,7 +396,7 @@ export function CartServiceScreen({
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Sub Total</Text>
                 <Text style={styles.subTotalDollar}>
-                  ${cartServiceData?.amout?.products_price.toFixed(2) ?? '0.00'}
+                  ${cartServiceData?.amount?.products_price.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
               <View style={[styles.displayflex2, styles.paddVertical]}>
@@ -406,7 +407,7 @@ export function CartServiceScreen({
                 <Text style={styles.subTotal}>Total Taxes</Text>
                 <Text style={styles.subTotalDollar}>
                   {' '}
-                  ${cartServiceData?.amout?.tax.toFixed(2) ?? '0.00'}
+                  ${cartServiceData?.amount?.tax.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
               {/* <View style={[styles.displayflex2, styles.paddVertical]}>
@@ -429,7 +430,7 @@ export function CartServiceScreen({
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.itemValue}>Item value</Text>
                 <Text style={[styles.subTotalDollar, styles.itemValueBold]}>
-                  ${cartServiceData?.amout?.total_amount.toFixed(2) ?? '0.00'}
+                  ${cartServiceData?.amount?.total_amount.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
             </View>

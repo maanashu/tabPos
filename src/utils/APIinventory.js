@@ -72,6 +72,7 @@ export const ApiOrderInventory = {
   getOrders: 'orders',
   acceptOrder: 'orders/status',
   createOrder: 'orders/pos',
+  createServiceOrder: 'orders/pos',
   getOrderCount: 'orders/pos/statistics',
   totalProGraph: 'orders/pos/statistics/products',
   totalOrderGraph: 'orders/pos/statistics/orders',
