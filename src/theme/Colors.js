@@ -42,4 +42,5 @@ export const COLORS = {
   transparent: 'transparent',
   pink: '#FB466C',
   violet: '#6B84D3',
+  darkBlue: '#102773',
 };

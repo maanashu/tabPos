@@ -18,6 +18,9 @@ const INITIALSTATE = {
   getSellerInfo: [],
   getSellerProductDetails: {},
   getAnalyticStatistics: {},
+  getAnalyticOrderGraphs: {},
+  getTotalOrder: {},
+  getTotalInventory: {},
 };
 
 export const analyticsReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -134,6 +137,21 @@ export const analyticsReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getAnalyticStatistics: payload?.getAnalyticStatistics,
+      };
+    case TYPES.GET_ANALYTIC_ORDER_GRAPHS_SUCCESS:
+      return {
+        ...state,
+        getAnalyticOrderGraphs: payload?.getAnalyticOrderGraphs,
+      };
+    case TYPES.GET_TOTAL_ORDER_SUCCESS:
+      return {
+        ...state,
+        getTotalOrder: payload?.getTotalOrder,
+      };
+    case TYPES.GET_TOTAL_INVENTORY_SUCCESS:
+      return {
+        ...state,
+        getTotalInventory: payload?.getTotalInventory,
       };
     default:
       return state;

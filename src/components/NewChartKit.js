@@ -4,7 +4,7 @@ import React from 'react';
 import { StyleSheet, View, Dimensions, Platform } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
-export function NewChartKit({ arrayLength, labels, data }) {
+export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
   return (
     <View>
       {data === undefined ? (
@@ -18,16 +18,16 @@ export function NewChartKit({ arrayLength, labels, data }) {
                 strokeWidth: 2,
                 color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
               },
-              {
-                data: [25, 40, 50, 45, 55, 45, 50],
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(107, 132, 211, ${opacity})`, // optional
-              },
-              {
-                data: [25, 35, 45, 40, 50, 40, 40],
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`, // optional
-              },
+              // {
+              //   data: [25, 40, 50, 45, 55, 45, 50],
+              //   strokeWidth: 2,
+              //   color: (opacity = 1) => `rgba(107, 132, 211, ${opacity})`, // optional
+              // },
+              // {
+              //   data: [25, 35, 45, 40, 50, 40, 40],
+              //   strokeWidth: 2,
+              //   color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`, // optional
+              // },
             ],
           }}
           width={
@@ -64,14 +64,25 @@ export function NewChartKit({ arrayLength, labels, data }) {
           withShadow={false}
           fromZero
         />
-      ) : arrayLength === 2 ? (
+      ) : arrayLength === 3 ? (
         <LineChart
           data={{
-            labels: ['Monday', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            labels: labels,
             datasets: [
               {
-                data: [0, 0, 100, 40, 30, 50, 60],
+                data: data,
                 strokeWidth: 2,
+                color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
+              },
+              {
+                data: data1,
+                strokeWidth: 2,
+                color: (opacity = 1) => `rgba(107, 132, 211, ${opacity})`, // optional
+              },
+              {
+                data: data2,
+                strokeWidth: 2,
+                color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`, // optional
               },
             ],
           }}

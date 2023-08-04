@@ -30,7 +30,12 @@ import { TotalOrders } from './Components/TotalOrders';
 import { TopSellingLocation } from './Components/TopSellingLocation';
 import { TotalPosOrder } from './Components/TotalPosOrder';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
+import {
+  getAnalyticOrderGraphs,
+  getAnalyticStatistics,
+  getTotalInventory,
+  getTotalOrder,
+} from '@/actions/AnalyticsAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
@@ -44,6 +49,9 @@ export function Analytics2() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAnalyticStatistics(sellerID));
+    dispatch(getAnalyticOrderGraphs(sellerID));
+    dispatch(getTotalOrder(sellerID));
+    dispatch(getTotalInventory(sellerID));
   }, []);
 
   const goBack = () => {
