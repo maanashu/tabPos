@@ -315,6 +315,12 @@ export function PosRetail3() {
         }}
         cartid={cartID2}
         cartType={fromWhichCart}
+        onPressContinue={(cartData, data) => {
+          setpaymentMethod('Jbr');
+          setSavedTempCartData(cartData?.getAllCart);
+          setselectedScreen('FinalPaymentScreen');
+          setCashPayDetail(data);
+        }}
       />
     ),
     ['PayByCard']: (
@@ -344,7 +350,6 @@ export function PosRetail3() {
           setCashPayDetail(data);
         }}
         onPressServiceContinue={(cartData, data) => {
-          // console.log("CART__DATA_SERVICE",JSON.stringify(cartData.getserviceCart));
           setpaymentMethod('Cash');
           setSavedTempCartData(cartData?.getserviceCart);
           setselectedScreen('FinalPaymentScreen');

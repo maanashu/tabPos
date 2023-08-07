@@ -51,6 +51,7 @@ import {
   requestMoney,
   walletGetByPhone,
   requestCheckSuccess,
+  createOrder,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -79,6 +80,7 @@ export const CartAmountPayBy = ({
   payNowByphone,
   cartid,
   cartType,
+  onPressContinue,
 }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
@@ -86,8 +88,8 @@ export const CartAmountPayBy = ({
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
   const qrcodeData = useSelector(getRetail).qrKey;
-  //  console.log('qrcodeDta', JSON.stringify(qrcodeData));
   const cartProducts = cartData?.poscart_products;
+  const saveCartData = { ...getRetailData };
 
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
@@ -288,6 +290,21 @@ export const CartAmountPayBy = ({
       alert(strings.valiadtion.enterPhone);
       return;
     }
+  };
+
+  const createOrderHandler = () => {
+    const data = {
+      cartid: cartData.id,
+      tips: (totalPayAmount() * 100).toFixed(0),
+      modeOfPayment: 'jbr',
+    };
+    const callback = (response) => {
+      if (response) {
+        onPressContinue(saveCartData, data);
+        setQrPopUp(false);
+      }
+    };
+    dispatch(createOrder(data, callback));
   };
 
   return (
@@ -744,6 +761,9 @@ export const CartAmountPayBy = ({
                           <View style={styles._borderView} />
                           <Text style={styles._orText}>Or</Text>
                           <View style={styles._borderView} />
+                          <TouchableOpacity onPress={createOrderHandler}>
+                            <Text>fghjklghj</Text>
+                          </TouchableOpacity>
                         </View>
                         {requestStatus == 'approved' ? (
                           <View
@@ -765,6 +785,7 @@ export const CartAmountPayBy = ({
                             </Text>
 
                             <TouchableOpacity
+                              onPress={createOrderHandler}
                               style={{
                                 backgroundColor: 'blue',
                                 justifyContent: 'center',

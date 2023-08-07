@@ -172,11 +172,9 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('1111111111', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('222222', error);
           reject(error);
         });
     });
