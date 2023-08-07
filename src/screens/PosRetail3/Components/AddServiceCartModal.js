@@ -87,7 +87,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         alignItems: 'center',
         justifyContent: 'center',
         width: '25.1%',
-        height: ms(32),
+        height: ms(24),
         borderColor: COLORS.solidGrey,
         backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
       }}
