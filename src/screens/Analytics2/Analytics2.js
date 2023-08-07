@@ -25,9 +25,7 @@ import { Revenue } from './Components/Revenue';
 import { TotalCost } from './Components/TotalCost';
 import { TotalDeliveryOrders } from './Components/TotalDeliveryOrders';
 import { TotalShippingOrders } from './Components/TotalShippingOrders';
-import { TopSellingProduct } from './Components/TopSellingProduct';
 import { TotalOrders } from './Components/TotalOrders';
-import { TopSellingLocation } from './Components/TopSellingLocation';
 import { TotalPosOrder } from './Components/TotalPosOrder';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -38,6 +36,8 @@ import {
 } from '@/actions/AnalyticsAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TotalProductSold } from './Components/TotalProductSold';
+import { TotalInventory } from './Components/TotalInventory';
 
 export function Analytics2() {
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
@@ -66,9 +66,9 @@ export function Analytics2() {
         onPressCost={() => setselectedScreen('TotalCost')}
         onPressDelivery={() => setselectedScreen('TotalDeliveryOrders')}
         onPressShipping={() => setselectedScreen('TotalShippingOrders')}
-        onPressProducts={() => setselectedScreen('TopSellingProduct')}
+        onPressProducts={() => setselectedScreen('TotalProductSold')}
         onPressOrders={() => setselectedScreen('TotalOrders')}
-        onPressSellingLocations={() => setselectedScreen('TopSellingLocation')}
+        onPressInventory={() => setselectedScreen('TotalInventory')}
         onPressPosOrder={() => setselectedScreen('TotalPosOrder')}
       />
     ),
@@ -77,10 +77,10 @@ export function Analytics2() {
     ['TotalCost']: <TotalCost onPress={goBack} />,
     ['TotalDeliveryOrders']: <TotalDeliveryOrders onPress={goBack} />,
     ['TotalShippingOrders']: <TotalShippingOrders onPress={goBack} />,
-    ['TopSellingProduct']: <TopSellingProduct onPress={goBack} />,
+    ['TotalProductSold']: <TotalProductSold onPress={goBack} />,
     ['TotalOrders']: <TotalOrders onPress={goBack} />,
     ['TotalPosOrder']: <TotalPosOrder onPress={goBack} />,
-    ['TopSellingLocation']: <TopSellingLocation onPress={goBack} />,
+    ['TotalInventory']: <TotalInventory onPress={goBack} />,
   };
 
   const screenChangeView = () => {
@@ -252,18 +252,17 @@ export function Analytics2() {
                   styles.bucketBackgorund,
                   {
                     backgroundColor:
-                      selectedScreen === 'TopSellingLocation' ? COLORS.primary : COLORS.white,
+                      selectedScreen === 'TotalInventory' ? COLORS.primary : COLORS.white,
                   },
                 ]}
-                onPress={() => setselectedScreen('TopSellingLocation')}
+                onPress={() => setselectedScreen('TotalInventory')}
               >
                 <Image
                   source={locationSales}
                   style={[
                     styles.sideBarImage,
                     {
-                      tintColor:
-                        selectedScreen === 'TopSellingLocation' ? COLORS.white : COLORS.black,
+                      tintColor: selectedScreen === 'TotalInventory' ? COLORS.white : COLORS.black,
                     },
                   ]}
                 />
@@ -274,10 +273,10 @@ export function Analytics2() {
                   styles.bucketBackgorund,
                   {
                     backgroundColor:
-                      selectedScreen === 'TopSellingProduct' ? COLORS.primary : COLORS.white,
+                      selectedScreen === 'TotalProductSold' ? COLORS.primary : COLORS.white,
                   },
                 ]}
-                onPress={() => setselectedScreen('TopSellingProduct')}
+                onPress={() => setselectedScreen('TotalProductSold')}
               >
                 <Image
                   source={productSelling}
@@ -285,7 +284,7 @@ export function Analytics2() {
                     styles.sideBarImage,
                     {
                       tintColor:
-                        selectedScreen === 'TopSellingProduct' ? COLORS.white : COLORS.black,
+                        selectedScreen === 'TotalProductSold' ? COLORS.white : COLORS.black,
                     },
                   ]}
                 />

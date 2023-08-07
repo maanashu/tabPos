@@ -21,7 +21,7 @@ export function TotalCost({ onPress }) {
         <Image source={backArrow2} style={styles.backImageStyle} />
         <Text style={styles.currentStatusText}>{'Back'}</Text>
       </TouchableOpacity>
-      <Text style={styles.graphTitle}> {'Total Cost'}</Text>
+      <Text style={styles.graphTitle}> {'Total Costs'}</Text>
 
       <View style={styles.flexDirectionRow}>
         <View style={styles.headerView}>
