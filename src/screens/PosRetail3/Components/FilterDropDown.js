@@ -8,12 +8,14 @@ import { COLORS, SF, SH } from '@/theme';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getBrand, getCategory, getSubCategory } from '@/actions/RetailAction';
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
+import { strings } from '@/localization';
 
 export const FilterDropDown = ({ data, sellerid }) => {
   const retailData = useSelector(getRetail);
   const dispatch = useDispatch();
   const [newDropData, setNewData] = useState();
   const [subItems, setSubItems] = useState();
+  const [openDropDown, setOpenDropDown] = useState(false);
 
   useEffect(() => {
     dispatch(getCategory(sellerid));
@@ -25,28 +27,34 @@ export const FilterDropDown = ({ data, sellerid }) => {
         key: '1',
         name: 'Category',
         subItems:
-          retailData?.categoryList?.map((item) => Object.assign({}, item, { isChecked: false })) ??
-          [],
+          retailData?.categoryList?.length > 0
+            ? retailData?.categoryList?.map((item) => Object.assign({}, item, { isChecked: false }))
+            : [],
         isExpand: false,
       },
       {
         key: '2',
         name: 'Sub Category',
         subItems:
-          retailData?.subCategories?.map((item) => Object.assign({}, item, { isChecked: false })) ??
-          [],
+          retailData?.subCategories?.length > 0
+            ? retailData?.subCategories?.map((item) =>
+                Object.assign({}, item, { isChecked: false })
+              )
+            : [],
         isExpand: false,
       },
       {
         key: '3',
         name: 'Brand',
         subItems:
-          retailData?.brands?.map((item) => Object.assign({}, item, { isChecked: false })) ?? [],
+          retailData?.brands?.length > 0
+            ? retailData?.brands?.map((item) => Object.assign({}, item, { isChecked: false }))
+            : [],
         isExpand: false,
       },
     ];
     setNewData(getArray);
-  }, []);
+  }, [openDropDown]);
 
   const changeDropdown = (index) => {
     const newData = [...newDropData];
@@ -78,13 +86,26 @@ export const FilterDropDown = ({ data, sellerid }) => {
           <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
         </View>
       ));
+    } else {
+      return (
+        <View>
+          <Text style={{ paddingLeft: ms(20), fontFamily: Fonts.SemiBold, color: COLORS.primary }}>
+            {strings.valiadtion.noData}
+          </Text>
+        </View>
+      );
     }
   };
 
   const renderItem = ({ item, index }) => {
     return (
       <>
-        <TouchableOpacity style={styles.categoryViewStyle} onPress={() => changeDropdown(index)}>
+        <TouchableOpacity
+          style={styles.categoryViewStyle}
+          onPress={() => {
+            setOpenDropDown(true), changeDropdown(index);
+          }}
+        >
           <Text style={styles.itemNameTextStyle}>{item?.name}</Text>
 
           {item?.isExpand ? (
@@ -115,6 +136,7 @@ export const FilterDropDown = ({ data, sellerid }) => {
       renderItem={renderItem}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingBottom: ms(30) }}
+      keyExtractor={(item, index) => item.key.toString()}
     />
   );
 };
