@@ -761,9 +761,6 @@ export const CartAmountPayBy = ({
                           <View style={styles._borderView} />
                           <Text style={styles._orText}>Or</Text>
                           <View style={styles._borderView} />
-                          <TouchableOpacity onPress={createOrderHandler}>
-                            <Text>fghjklghj</Text>
-                          </TouchableOpacity>
                         </View>
                         {requestStatus == 'approved' ? (
                           <View

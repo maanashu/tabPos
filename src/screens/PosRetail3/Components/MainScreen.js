@@ -380,7 +380,7 @@ export function MainScreen({
     setProductCon(false);
   };
   const filterHandler = () => {
-    setFilterCon(!filterCon);
+    // setFilterCon(!filterCon);
   };
 
   return (
