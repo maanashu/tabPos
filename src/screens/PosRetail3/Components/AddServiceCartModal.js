@@ -40,7 +40,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
   const [providerDetail, setProviderDetail] = useState();
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
-  const [selectedDate, setselectedDate] = useState('');
+  const [selectedDate, setselectedDate] = useState('Today');
 
   const onClickServiceProvider = (item) => {
     setServiceProId(item.id);
