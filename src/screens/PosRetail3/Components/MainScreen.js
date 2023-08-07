@@ -548,6 +548,7 @@ export function MainScreen({
                   contentContainerStyle={{
                     flexGrow: 1,
                     justifyContent: 'space-between',
+                    zIndex: -99,
                   }}
                   scrollEnabled={true}
                   ListEmptyComponent={() => (

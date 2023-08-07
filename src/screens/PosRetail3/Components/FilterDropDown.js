@@ -24,23 +24,24 @@ export const FilterDropDown = ({ data, sellerid }) => {
       {
         key: '1',
         name: 'Category',
-        subItems: retailData?.categoryList?.map((item) =>
-          Object.assign({}, item, { isChecked: false })
-        ),
+        subItems:
+          retailData?.categoryList?.map((item) => Object.assign({}, item, { isChecked: false })) ??
+          [],
         isExpand: false,
       },
       {
         key: '2',
         name: 'Sub Category',
-        subItems: retailData?.subCategories?.map((item) =>
-          Object.assign({}, item, { isChecked: false })
-        ),
+        subItems:
+          retailData?.subCategories?.map((item) => Object.assign({}, item, { isChecked: false })) ??
+          [],
         isExpand: false,
       },
       {
         key: '3',
         name: 'Brand',
-        subItems: retailData?.brands?.map((item) => Object.assign({}, item, { isChecked: false })),
+        subItems:
+          retailData?.brands?.map((item) => Object.assign({}, item, { isChecked: false })) ?? [],
         isExpand: false,
       },
     ];
@@ -109,14 +110,12 @@ export const FilterDropDown = ({ data, sellerid }) => {
   };
 
   return (
-    <View>
-      <FlatList
-        data={newDropData}
-        renderItem={renderItem}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: ms(30) }}
-      />
-    </View>
+    <FlatList
+      data={newDropData}
+      renderItem={renderItem}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingBottom: ms(30) }}
+    />
   );
 };
 
