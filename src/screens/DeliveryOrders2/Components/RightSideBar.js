@@ -11,7 +11,7 @@ const RightSideBar = ({
   openShippingOrders,
   setOpenShippingOrders,
   renderDrawer,
-  setIsOpenSideBarDrawer,
+  // setIsOpenSideBarDrawer,
 }) => {
   return (
     <View style={styles.rightSideView}>
@@ -19,11 +19,11 @@ const RightSideBar = ({
         data={deliveryDrawer}
         renderItem={renderDrawer}
         ListHeaderComponent={() => (
-          <TouchableOpacity
-            onPress={() => {
-              setOpenShippingOrders('0');
-              setIsOpenSideBarDrawer(true);
-            }}
+          <View
+            // onPress={() => {
+            //   setOpenShippingOrders('0');
+            //   setIsOpenSideBarDrawer(true);
+            // }}
             style={[
               styles.firstIconStyle,
               {
@@ -35,7 +35,7 @@ const RightSideBar = ({
             <View style={styles.bucketBackgorund}>
               <Image source={deliveryBox} style={styles.sideBarImage} />
             </View>
-          </TouchableOpacity>
+          </View>
         )}
         contentContainerStyle={{
           height: Dimensions.get('window').height - 90,

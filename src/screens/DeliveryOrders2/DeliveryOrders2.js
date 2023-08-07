@@ -5,8 +5,8 @@ import {
   Text,
   Image,
   FlatList,
-  TouchableOpacity,
   Dimensions,
+  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 
@@ -18,26 +18,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   pay,
   pin,
-  rightIcon,
   clock,
+  rightIcon,
   expressType,
   oneHourType,
   twoHourType,
   customType,
   blankCheckBox,
-  checkedCheckboxSquare,
   incomingOrders,
   cancelledOrders,
-  returnedOrders,
-  removeProduct,
-  returnDeliveryBox,
   task,
-  deliveryorderProducts,
   timer,
-  deliveryParcel,
   NoCard,
+  removeProduct,
+  returnedOrders,
+  deliveryParcel,
   returnShipping,
   deliveryShipping,
+  returnDeliveryBox,
+  checkedCheckboxSquare,
+  deliveryorderProducts,
 } from '@/assets';
 import {
   acceptOrder,
@@ -285,11 +285,12 @@ export function DeliveryOrders2() {
       style={[
         styles.firstIconStyle,
         {
-          backgroundColor:
-            openShippingOrders === item?.key ? COLORS.textInputBackground : COLORS.transparent,
+          backgroundColor: openShippingOrders === item?.key ? COLORS.lineGrey : COLORS.transparent,
           marginVertical: 6,
           width: SW(15),
           height: SW(15),
+          borderRadius: 5,
+          justifyContent: 'center',
         },
       ]}
     >
@@ -1063,11 +1064,11 @@ export function DeliveryOrders2() {
               {...{
                 deliveryDrawer,
                 openShippingOrders,
-                isOpenSideBarDrawer,
+                // isOpenSideBarDrawer,
                 renderShippingDrawer,
                 setOpenShippingOrders,
                 renderDrawer,
-                setIsOpenSideBarDrawer,
+                // setIsOpenSideBarDrawer,
               }}
             />
           </View>
@@ -1101,7 +1102,7 @@ export function DeliveryOrders2() {
         </View>
       ) : null}
 
-      <ReactNativeModal
+      {/* <ReactNativeModal
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
         style={styles.modalStyle}
@@ -1131,7 +1132,7 @@ export function DeliveryOrders2() {
             keyExtractor={(item) => item.key.toString()}
           />
         </View>
-      </ReactNativeModal>
+      </ReactNativeModal> */}
     </ScreenWrapper>
   );
 }

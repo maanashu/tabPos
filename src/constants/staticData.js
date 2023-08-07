@@ -1244,3 +1244,117 @@ export const graphOptions = [
     checked: true,
   },
 ];
+
+export const items = [
+  {
+    name: 'Category',
+    id: 0,
+    isExpand: false,
+    subItems: [
+      {
+        name: 'Featured Styles',
+        id: 1,
+        isChecked: false,
+      },
+      {
+        name: 'Straight',
+        id: 2,
+        isChecked: false,
+      },
+      {
+        name: 'Loose',
+        id: 3,
+        isChecked: false,
+      },
+      {
+        name: 'Skinny',
+        id: 4,
+        isChecked: false,
+      },
+      {
+        name: 'Bootcut',
+        id: 5,
+        isChecked: false,
+      },
+      {
+        name: 'Flare',
+        id: 6,
+        isChecked: false,
+      },
+    ],
+  },
+  {
+    name: 'Sub Category',
+    id: 1,
+    isExpand: false,
+    subItems: [
+      {
+        name: 'Featured Styles',
+        id: 1,
+        isChecked: false,
+      },
+      {
+        name: 'Straight',
+        id: 2,
+        isChecked: false,
+      },
+      {
+        name: 'Loose',
+        id: 3,
+        isChecked: false,
+      },
+      {
+        name: 'Skinny',
+        id: 4,
+        isChecked: false,
+      },
+      {
+        name: 'Bootcut',
+        id: 5,
+        isChecked: false,
+      },
+      {
+        name: 'Flare',
+        id: 6,
+        isChecked: false,
+      },
+    ],
+  },
+  {
+    name: 'Brand',
+    id: 2,
+    isExpand: false,
+    subItems: [
+      {
+        name: 'Featured Styles',
+        id: 1,
+        isChecked: false,
+      },
+      {
+        name: 'Straight',
+        id: 2,
+        isChecked: false,
+      },
+      {
+        name: 'Loose',
+        id: 3,
+        isChecked: false,
+      },
+      {
+        name: 'Skinny',
+        id: 4,
+        isChecked: false,
+      },
+      {
+        name: 'Bootcut',
+        id: 5,
+        isChecked: false,
+      },
+      {
+        name: 'Flare',
+        id: 6,
+        isChecked: false,
+      },
+    ],
+  },
+];

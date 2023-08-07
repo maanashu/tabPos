@@ -14,10 +14,10 @@ import NetInfo from '@react-native-community/netinfo';
 import { configureMessaging, getDeviceToken, requestPermission } from './utils/Notifications';
 
 import RNLockTask from 'react-native-lock-task';
-Platform.OS === 'android' && RNLockTask.startLockTask();
+// Platform.OS === 'android' && RNLockTask.startLockTask();
 
 import SystemNavigationBar from 'react-native-system-navigation-bar';
-SystemNavigationBar.stickyImmersive();
+// SystemNavigationBar.stickyImmersive();
 enableScreens();
 
 const toastConfig = {

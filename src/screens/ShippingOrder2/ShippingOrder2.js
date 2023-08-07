@@ -111,7 +111,6 @@ export function ShippingOrder2() {
   const [orderDetail, setOrderDetail] = useState(ordersList?.[0]?.order_details ?? []);
   const [viewAllOrders, setViewAllOrders] = useState(false);
   const [openShippingOrders, setOpenShippingOrders] = useState(0);
-  const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
 
   const statusCount = [
     {
@@ -132,35 +131,35 @@ export function ShippingOrder2() {
       title: 'Order Preparing ',
       count: orderStatusCountData?.[2]?.count,
     },
-    {
-      key: '3',
-      image: Group,
-      title: 'Printing Label',
-      count: orderStatusCountData?.[3]?.count,
-    },
+    // {
+    //   key: '3',
+    //   image: Group,
+    //   title: 'Printing Label',
+    //   count: orderStatusCountData?.[3]?.count,
+    // },
     {
       key: '4',
       image: Delivery,
       title: 'Shipped',
-      count: orderStatusCountData?.[4]?.count,
+      count: orderStatusCountData?.[3]?.count,
     },
     {
       key: '5',
       image: Cart,
       title: 'Delivered',
-      count: orderStatusCountData?.[5]?.count,
-    },
-    {
-      key: '6',
-      image: NoCard,
-      title: 'Rejected/ Cancelled',
-      count: orderStatusCountData?.[6]?.count,
+      count: orderStatusCountData?.[4]?.count,
     },
     {
       key: '7',
+      image: NoCard,
+      title: 'Rejected/ Cancelled',
+      count: orderStatusCountData?.[5]?.count,
+    },
+    {
+      key: '9',
       image: ReturnTruck,
       title: 'Returned',
-      count: orderStatusCountData?.[7]?.count,
+      count: orderStatusCountData?.[6]?.count,
     },
   ];
 
@@ -177,6 +176,10 @@ export function ShippingOrder2() {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
   }, [viewAllOrders]);
+
+  useEffect(() => {
+    dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
+  }, [openShippingOrders]);
 
   const isDeliveryOrder = useSelector((state) =>
     isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state)
@@ -248,12 +251,25 @@ export function ShippingOrder2() {
   };
 
   const renderDrawer = ({ item, index }) => (
-    <View style={styles.drawerIconView}>
+    <TouchableOpacity
+      style={[
+        styles.drawerIconView,
+        {
+          backgroundColor: openShippingOrders === item?.key ? COLORS.lineGrey : COLORS.transparent,
+          marginVertical: 6,
+          width: SW(15),
+          height: SW(15),
+          borderRadius: 5,
+          justifyContent: 'center',
+        },
+      ]}
+      onPress={() => setOpenShippingOrders(item?.key)}
+    >
       <View style={styles.bucketBackgorund}>
         <Image source={item.image} style={styles.sideBarImage} />
         {showBadge(item)}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   const renderShippingDrawer = ({ item, index }) => (
@@ -1045,7 +1061,7 @@ export function ShippingOrder2() {
               </View>
             )}
 
-            {openShippingOrders ? (
+            {/* {openShippingOrders ? (
               <>
                 <ReactNativeModal
                   animationIn={'slideInRight'}
@@ -1080,26 +1096,26 @@ export function ShippingOrder2() {
 
                 <View style={{ width: 90 }} />
               </>
-            ) : (
-              <View style={styles.rightSideView}>
-                <FlatList
-                  data={rightSideDrawer}
-                  renderItem={renderDrawer}
-                  ListHeaderComponent={() => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setOpenShippingOrders(!openShippingOrders);
-                        setIsOpenSideBarDrawer(true);
-                      }}
-                      style={styles.firstIconStyle}
-                    >
-                      <Image source={firstTruck} style={styles.sideBarImage} />
-                    </TouchableOpacity>
-                  )}
-                  keyExtractor={(item, index) => item.key.toString()}
-                />
-              </View>
-            )}
+            ) : ( */}
+            <View style={styles.rightSideView}>
+              <FlatList
+                data={statusCount}
+                renderItem={renderDrawer}
+                ListHeaderComponent={() => (
+                  <View
+                    // onPress={() => {
+                    //   setOpenShippingOrders(!openShippingOrders);
+                    //   setIsOpenSideBarDrawer(true);
+                    // }}
+                    style={styles.firstIconStyle}
+                  >
+                    <Image source={firstTruck} style={styles.sideBarImage} />
+                  </View>
+                )}
+                keyExtractor={(item, index) => item.key.toString()}
+              />
+            </View>
+            {/* )} */}
           </View>
         ) : (
           <View style={styles.firstRowStyle}>
@@ -1220,7 +1236,7 @@ export function ShippingOrder2() {
               </>
             </View>
 
-            {openShippingOrders ? (
+            {/* {openShippingOrders ? (
               <>
                 <ReactNativeModal
                   animationIn={'slideInRight'}
@@ -1255,26 +1271,26 @@ export function ShippingOrder2() {
 
                 <View style={{ width: 90 }} />
               </>
-            ) : (
-              <View style={styles.rightSideView}>
-                <FlatList
-                  data={statusCount}
-                  renderItem={renderDrawer}
-                  ListHeaderComponent={() => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setOpenShippingOrders(!openShippingOrders);
-                        setIsOpenSideBarDrawer(true);
-                      }}
-                      style={styles.firstIconStyle}
-                    >
-                      <Image source={firstTruck} style={styles.sideBarImage} />
-                    </TouchableOpacity>
-                  )}
-                  keyExtractor={(item, index) => item.key.toString()}
-                />
-              </View>
-            )}
+            ) : ( */}
+            <View style={styles.rightSideView}>
+              <FlatList
+                data={statusCount}
+                renderItem={renderDrawer}
+                ListHeaderComponent={() => (
+                  <View
+                    // onPress={() => {
+                    //   setOpenShippingOrders(!openShippingOrders);
+                    //   setIsOpenSideBarDrawer(true);
+                    // }}
+                    style={styles.firstIconStyle}
+                  >
+                    <Image source={firstTruck} style={styles.sideBarImage} />
+                  </View>
+                )}
+                keyExtractor={(item, index) => item.key.toString()}
+              />
+            </View>
+            {/* )} */}
           </View>
         )}
       </View>
