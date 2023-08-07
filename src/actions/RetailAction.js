@@ -152,7 +152,7 @@ const clearServiceAllCartRequest = () => ({
   type: TYPES.CLEAR_SERVICE_ALL_CART_REQUEST,
   payload: null,
 });
-const clearServiceAllCartSuccess = () => ({
+export const clearServiceAllCartSuccess = () => ({
   type: TYPES.CLEAR_SERVICE_ALL_CART_SUCCESS,
   payload: {},
 });
@@ -879,7 +879,6 @@ export const createServiceOrder = (data, callback) => async (dispatch) => {
   dispatch(createServiceOrderRequest());
   try {
     const res = await RetailController.createServiceOrder(data);
-    console.log('----------res', res);
     dispatch(createServiceOrderSuccess(res));
     // dispatch(clearServiceAllCart());
     // dispatch(getServiceCart());

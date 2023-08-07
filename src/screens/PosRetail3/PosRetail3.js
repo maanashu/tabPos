@@ -337,14 +337,16 @@ export function PosRetail3() {
           setselectedScreen('CartAmountPayBy');
         }}
         onPressContinue={(cartData, data) => {
+          // console.log("CART__DATA",cartData);
           setpaymentMethod('Cash');
           setSavedTempCartData(cartData?.getAllCart);
           setselectedScreen('FinalPaymentScreen');
           setCashPayDetail(data);
         }}
         onPressServiceContinue={(cartData, data) => {
+          // console.log("CART__DATA_SERVICE",JSON.stringify(cartData.getserviceCart));
           setpaymentMethod('Cash');
-          setSavedTempCartData(cartData?.getServiceCart);
+          setSavedTempCartData(cartData?.getserviceCart);
           setselectedScreen('FinalPaymentScreen');
           setCashPayDetail(data);
         }}

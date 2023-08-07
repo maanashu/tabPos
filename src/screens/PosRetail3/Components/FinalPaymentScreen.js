@@ -14,6 +14,9 @@ import BackButton from '../../../components/BackButton';
 import { Fonts, barcode } from '@/assets';
 import moment from 'moment';
 import AddedCartItemsCard from '../../../components/AddedCartItemsCard';
+import { useFocusEffect } from '@react-navigation/native';
+import { clearServiceAllCart, getServiceCart } from '@/actions/RetailAction';
+import { useDispatch } from 'react-redux';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -27,18 +30,28 @@ export const FinalPaymentScreen = ({
 }) => {
   console.log('==============', cartType);
   console.log('cartData', cartData);
+  console.log('pay_details', payDetail);
   const cartProducts =
     cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
-    return totalPayment.toFixed(2);
+     return totalPayment.toFixed(2);
   };
+
   const payAmount = totalPayAmount();
   const ActualPayAmount = payDetail?.tips;
   const changeDue = parseFloat(ActualPayAmount) - parseFloat(payAmount);
-
+  const dispatch = useDispatch();
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        dispatch(clearServiceAllCart());
+        dispatch(getServiceCart());
+      };
+    }, [])
+  );
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View style={styles.displayflex}>
