@@ -155,6 +155,7 @@ export function MainScreen({
   const [productCon, setProductCon] = useState(true);
   const [serviceCon, setServiceCon] = useState(false);
   const [filterCon, setFilterCon] = useState(false);
+  const [serviceItemSave, setServiceItemSave] = useState();
 
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -184,16 +185,6 @@ export function MainScreen({
     dispatch(addTocart(data));
   };
 
-  const onClickServiceCart = (item) => {
-    const data = {
-      seller_id: sellerID,
-      supplyId: item?.supplies?.[0]?.id,
-      supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
-      product_id: item?.id,
-    };
-    dispatch(addToServiceCart(data));
-  };
-
   const originalFilterData = [
     {
       id: 1,
@@ -215,7 +206,8 @@ export function MainScreen({
       setAddCartModal(true);
     }
   };
-  const serviceFun = () => {
+  const serviceFun = (item) => {
+    setServiceItemSave(item);
     setAddServiceCartModal(true);
   };
 
@@ -563,14 +555,15 @@ export function MainScreen({
                   return (
                     <TouchableOpacity
                       style={styles.productCon}
-                      onPress={() => serviceFun(item.id)}
+                      onPress={() => serviceFun(item)}
                       activeOpacity={0.7}
                     >
                       <View style={styles.avalibleServiceCon}>
                         <FastImage
-                          source={{
-                            uri: item.image,
-                          }}
+                          // source={{
+                          //   uri: item.image,
+                          // }}
+                          source={userImage}
                           style={styles.categoryshoes}
                           resizeMode={FastImage.resizeMode.contain}
                         />
@@ -592,9 +585,10 @@ export function MainScreen({
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                           {item?.pos_users?.map((data, index) => (
                             <Image
-                              source={
-                                { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
-                              }
+                              // source={
+                              //   { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
+                              // }
+                              soure={userImage}
                               style={{
                                 width: ms(15),
                                 height: ms(15),
@@ -614,14 +608,14 @@ export function MainScreen({
                         <Text numberOfLines={1} style={styles.productPrice}>
                           ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
                         </Text>
-                        <TouchableOpacity onPress={() => onClickServiceCart(item)}>
+                        <View>
                           <Image source={addToCart} style={styles.addToCart} />
                           {/* {isProductMatchArray ? (
                           <View style={styles.productBadge}>
                             <Text style={styles.productBadgeText}>{cartAddQty}</Text>
                           </View>
                         ) : null} */}
-                        </TouchableOpacity>
+                        </View>
                       </View>
                     </TouchableOpacity>
                   );
@@ -837,6 +831,7 @@ export function MainScreen({
           crossHandler={() => setAddServiceCartModal(false)}
           // detailHandler={() => setAddCartDetailModal(true)}
           sellerID={sellerID}
+          itemData={serviceItemSave}
         />
       </Modal>
 
