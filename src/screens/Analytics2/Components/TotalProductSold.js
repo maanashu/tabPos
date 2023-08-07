@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
-import { BarChartCom, ScreenWrapper } from '@/components';
+import { View, Text, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import { ScreenWrapper } from '@/components';
 import { styles } from '../Analytics2.styles';
 import { Fonts, backArrow2, calendar, clay, dropdown } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -16,7 +8,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { LineChart } from 'react-native-chart-kit';
 import { DataTable } from 'react-native-paper';
 
-export function TopSellingLocation({ onPress }) {
+export function TotalProductSold({ onPress }) {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
   const [channelItem, setChannelItem] = useState([
@@ -29,7 +21,7 @@ export function TopSellingLocation({ onPress }) {
         <Image source={backArrow2} style={styles.backImageStyle} />
         <Text style={styles.currentStatusText}>{'Back'}</Text>
       </TouchableOpacity>
-      <Text style={styles.graphTitle}> {'Top Selling by Locations'}</Text>
+      <Text style={styles.graphTitle}> {'Total Proucts Sold'}</Text>
 
       <View style={styles.flexDirectionRow}>
         <View style={styles.headerView}>
@@ -59,17 +51,8 @@ export function TopSellingLocation({ onPress }) {
 
       <View style={styles.graphHeaderView}>
         <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
-        <View style={{ alignSelf: 'center', height: SH(210) }}>
-          <BarChartCom
-            barWid={Dimensions.get('window').width - SW(110)}
-            barHei={SH(140)}
-            barSpacing={SW(30)}
-            barW={7}
-            labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
-            initialSpacing={SW(20)}
-          />
-        </View>
-        {/* <LineChart
+
+        <LineChart
           bezier
           data={{
             labels: [
@@ -91,7 +74,7 @@ export function TopSellingLocation({ onPress }) {
             ],
           }}
           width={Dimensions.get('window').width - SW(80)}
-          height={260}
+          height={SH(210)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -117,7 +100,7 @@ export function TopSellingLocation({ onPress }) {
           withShadow={false}
           fromZero
           withVerticalLines={false}
-        /> */}
+        />
       </View>
 
       <View style={styles.tableMainView}>

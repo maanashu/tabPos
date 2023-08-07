@@ -15,7 +15,7 @@ export function MainScreen({
   onPressDelivery,
   onPressShipping,
   onPressOrders,
-  onPressSellingLocations,
+  onPressInventory,
   onPressProducts,
 }) {
   const getAnalyticsData = useSelector(getAnalytics);
@@ -160,10 +160,8 @@ export function MainScreen({
 
         <HomeGraph
           header="Total Inventory"
-          subHeader={
-            totalInventory?.graph_data?.total_count ? totalInventory?.graph_data?.total_count : '0'
-          }
-          onPress={onPressSellingLocations}
+          subHeader={totalInventory?.total_count ? totalInventory?.total_count : '0'}
+          onPress={onPressInventory}
           analyticGraphObject={totalInventory}
           arrayLength={totalInventory?.graph_data?.datasets?.length}
           labels={totalInventory?.graph_data?.labels}
