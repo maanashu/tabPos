@@ -551,19 +551,10 @@ export class RetailController {
   static async createServiceOrder(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.createServiceOrder;
-      const body = data?.userId
-        ? {
-            cart_id: data.cartid,
-            user_id: data.userId,
-            tips: data.tips,
-            mode_of_payment: data.modeOfPayment,
-          }
-        : {
-            cart_id: data.cartid,
-            tips: data.tips,
-            mode_of_payment: data.modeOfPayment,
-          };
-
+      const body = {
+        cart_id: data?.serviceCartId,
+        mode_of_payment: data?.modeOfPayment,
+      };
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response?.msg === 'Order placed successfully!') {

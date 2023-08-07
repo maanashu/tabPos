@@ -23,8 +23,12 @@ export const FinalPaymentScreen = ({
   tipAmount,
   cartData,
   payDetail,
+  cartType,
 }) => {
-  const cartProducts = cartData?.poscart_products;
+  console.log('==============', cartType);
+  console.log('cartData', cartData);
+  const cartProducts =
+    cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';

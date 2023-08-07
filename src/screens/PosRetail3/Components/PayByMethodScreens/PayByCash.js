@@ -23,10 +23,19 @@ import AddedCartItemsCard from '@/components/AddedCartItemsCard';
 
 moment.suppressDeprecationWarnings = true;
 
-export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas ,cartType}) => {
+export const PayByCash = ({
+  onPressBack,
+  onPressContinue,
+  onPressServiceContinue,
+  tipAmount,
+  cartDatas,
+  cartType,
+}) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-  const cartData = cartType=="Product"?getRetailData?.getAllCart:getRetailData?.getserviceCart;
+  const cartData =
+    cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+  console.log('cartDatacartDatacartDatacartDatacartDatacartDatacartDatacartData', cartData);
   const [amount, setAmount] = useState();
   const [selectedId, setSelectedId] = useState(1);
   const [cashRate, setCashRate] = useState();
@@ -49,36 +58,30 @@ export const PayByCash = ({ onPressBack, onPressContinue, tipAmount, cartDatas ,
   const valueTwenty = '20.00';
 
   const createOrderHandler = () => {
-   if(cartType=="Product"){
-    const data = {
-      cartid: cartData.id,
-      // userId: customer?.user_id,
-      tips: amount === undefined || amount === '' ? cashRate : amount,
-      modeOfPayment: 'cash',
-    };
-    const callback = (response) => {
-      if (response) {
-        onPressContinue(saveCartData, data);
-      }
-    };
-    dispatch(createOrder(data, callback));
-   }
-   else{
-    // const data = {
-    //   cartid: cartData.id,
-    //   // userId: customer?.user_id,
-    //   tips: amount === undefined || amount === '' ? cashRate : amount,
-    //   modeOfPayment: 'cash',
-    // };
-    // const callback = (response) => {
-    //   if (response) {
-    //     onPressContinue(saveCartData, data);
-    //   }
-    // };
-    // dispatch(createServiceOrder(data,callback))
-   }
-
-
+    if (cartType == 'Product') {
+      const data = {
+        cartid: cartData.id,
+        tips: amount === undefined || amount === '' ? cashRate : amount,
+        modeOfPayment: 'cash',
+      };
+      const callback = (response) => {
+        if (response) {
+          onPressContinue(saveCartData, data);
+        }
+      };
+      dispatch(createOrder(data, callback));
+    } else {
+      const data = {
+        serviceCartId: cartData.id,
+        modeOfPayment: 'cash',
+      };
+      const callback = (response) => {
+        if (response) {
+          onPressServiceContinue(saveCartData, data);
+        }
+      };
+      dispatch(createServiceOrder(data, callback));
+    }
   };
   const renderItem = ({ item }) => {
     const borderColor = item.id === selectedId ? COLORS.primary : COLORS.transparentBlue;

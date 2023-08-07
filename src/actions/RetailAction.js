@@ -879,9 +879,10 @@ export const createServiceOrder = (data, callback) => async (dispatch) => {
   dispatch(createServiceOrderRequest());
   try {
     const res = await RetailController.createServiceOrder(data);
+    console.log('----------res', res);
     dispatch(createServiceOrderSuccess(res));
-    dispatch(clearServiceAllCart());
-    dispatch(getServiceCart());
+    // dispatch(clearServiceAllCart());
+    // dispatch(getServiceCart());
     callback && callback(res);
   } catch (error) {
     dispatch(createServiceOrderError(error.message));
