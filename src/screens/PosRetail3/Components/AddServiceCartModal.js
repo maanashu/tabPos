@@ -39,13 +39,16 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
   const [servicerProId, setServiceProId] = useState();
   const [providerDetail, setProviderDetail] = useState();
 
+  const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
+  const [selectedDate, setselectedDate] = useState('');
+
   const onClickServiceProvider = (item) => {
     setServiceProId(item.id);
     setProviderDetail(item?.user);
   };
 
   const renderWeekItem = ({ item, index }) => (
-    <View
+    <TouchableOpacity
       style={{
         alignItems: 'center',
         justifyContent: 'center',
@@ -53,26 +56,52 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         height: SH(60),
       }}
     >
-      <Text style={{ fontFamily: Fonts.Regular, fontSize: SF(14) }}>{item?.day}</Text>
-      <Text style={{ fontFamily: Fonts.SemiBold, fontSize: SF(18) }}>{item?.date}</Text>
-    </View>
+      <Text
+        style={{
+          fontFamily: Fonts.Regular,
+          fontSize: SF(14),
+          color: item.key === '1' ? COLORS.primary : COLORS.dark_grey,
+        }}
+      >
+        {item?.day}
+      </Text>
+      <Text
+        style={{
+          fontFamily: Fonts.SemiBold,
+          fontSize: SF(18),
+          color: item.key === '1' ? COLORS.primary : COLORS.black,
+        }}
+      >
+        {item?.date}
+      </Text>
+    </TouchableOpacity>
   );
 
   const renderSlotItem = ({ item, index }) => (
-    <View
+    <TouchableOpacity
       style={{
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        width: SH(140),
-        height: SH(42),
+        width: '25.1%',
+        height: ms(32),
         borderColor: COLORS.solidGrey,
+        backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
+      }}
+      onPress={() => {
+        setselectedTimeSlotIndex(index);
       }}
     >
-      <Text style={{ fontFamily: Fonts.Regular, fontSize: SF(14), color: COLORS.dark_grey }}>
+      <Text
+        style={{
+          fontFamily: Fonts.Regular,
+          fontSize: SF(14),
+          color: selectedTimeSlotIndex === index ? COLORS.white : COLORS.dark_grey,
+        }}
+      >
         {item?.time}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 
   const ServiceProviderItem = ({ item, onPress, borderColor }) => (
@@ -216,10 +245,17 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
           </Text>
         </View>
 
-        <View style={{ marginTop: SH(15), borderWidth: 1, borderColor: COLORS.solidGrey }}>
-          <FlatList scrollEnabled={false} horizontal data={weekData} renderItem={renderWeekItem} />
+        <View
+          style={{
+            marginTop: SH(15),
+            borderWidth: 1,
+            borderColor: COLORS.solidGrey,
+            width: '100%',
+          }}
+        >
+          <FlatList horizontal data={weekData} renderItem={renderWeekItem} />
 
-          <FlatList numColumns={4} renderItem={renderSlotItem} data={slotData} />
+          <FlatList data={slotData} numColumns={4} renderItem={renderSlotItem} />
         </View>
       </View>
     </View>

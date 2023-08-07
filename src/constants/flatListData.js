@@ -1030,6 +1030,16 @@ export const weekData = [
     day: 'FRI',
     date: '26',
   },
+  {
+    key: '6',
+    day: 'FRI',
+    date: '26',
+  },
+  {
+    key: '7',
+    day: 'FRI',
+    date: '26',
+  },
 ];
 
 export const slotData = [
