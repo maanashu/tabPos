@@ -115,15 +115,11 @@ export const CartAmountPayBy = ({
   const [status, setstatus] = useState('');
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
-
-  console.log('selector status=>', requestStatus);
-  console.log('state status=>', status);
   const tipsArr = [
     getTips?.first_tips ?? 18,
     getTips?.second_tips ?? 20,
     getTips?.third_tips ?? 22,
   ];
-  console.log('wall, addres', walletUser?.wallet_address);
   const TIPS_DATA = [
     { title: getTips?.first_tips ?? 18, icon: cardPayment, percent: getTips?.first_tips ?? '18' },
     {
@@ -193,7 +189,6 @@ export const CartAmountPayBy = ({
     };
 
     const res = await dispatch(requestMoney(data)).then((res) => {
-      console.log('requestId SET ----', res?.payload?._id);
       setRequestId(res?.payload?._id);
       const data = {
         requestId: res?.payload?._id,

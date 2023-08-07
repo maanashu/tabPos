@@ -2028,4 +2028,10 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
   },
+  imageSelectedBorder: {
+    borderWidth: 5,
+    marginHorizontal: moderateScale(5),
+    borderRadius: 100,
+    borderColor: COLORS.primary,
+  },
 });

@@ -28,16 +28,13 @@ export const FinalPaymentScreen = ({
   payDetail,
   cartType,
 }) => {
-  console.log('==============', cartType);
-  console.log('cartData', cartData);
-  console.log('pay_details', payDetail);
   const cartProducts =
     cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
-     return totalPayment.toFixed(2);
+    return totalPayment.toFixed(2);
   };
 
   const payAmount = totalPayAmount();

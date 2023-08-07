@@ -16,7 +16,7 @@ client.interceptors.request.use(async function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
   const user = store.getState().user?.posLoginData?.token;
   const fcmToken = await getDeviceToken();
-  // console.log('register', register);
+  console.log('register', register);
 
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
@@ -50,7 +50,6 @@ client.interceptors.response.use(
       ? Promise.reject({ error: 'emptyContent', statusCode: 204 })
       : response.data,
   (error) => {
-    console.log(JSON.stringify(error));
     if (error.response) {
       if (error?.response?.data?.msg === 'invalid_token') {
         // Show an alert in React Native

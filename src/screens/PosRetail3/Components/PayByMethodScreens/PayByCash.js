@@ -35,7 +35,6 @@ export const PayByCash = ({
   const getRetailData = useSelector(getRetail);
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
-  // console.log('cartDatacartDatacartDatacartDatacartDatacartDatacartDatacartData', cartData);
   const [amount, setAmount] = useState();
   const [selectedId, setSelectedId] = useState(1);
   const [cashRate, setCashRate] = useState();

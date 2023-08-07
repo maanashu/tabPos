@@ -956,6 +956,16 @@ export const getOneProduct = (sellerID, productId) => async (dispatch) => {
   }
 };
 
+export const getOneAppoinment = (sellerID, productId) => async (dispatch) => {
+  dispatch(getOneProductRequest());
+  try {
+    const res = await RetailController.getOneProduct(sellerID, productId);
+    return dispatch(getOneProductSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getOneProductError(error.message));
+  }
+};
+
 export const checkSuppliedVariant = (data) => async (dispatch) => {
   dispatch(checkSuppliedVariantRequest());
   try {
@@ -973,10 +983,8 @@ export const requestCheck = (data) => async (dispatch) => {
   dispatch(requestCheckRequest());
   try {
     const res = await RetailController.requestCheck(data);
-    console.log('res in action', res);
     return dispatch(requestCheckSuccess(res?.payload?.status));
   } catch (error) {
-    console.log('error in action', error);
     dispatch(requestCheckError(error.message));
   }
 };
