@@ -1032,13 +1032,13 @@ export const weekData = [
   },
   {
     key: '6',
-    day: 'FRI',
-    date: '26',
+    day: 'SAT',
+    date: '27',
   },
   {
     key: '7',
-    day: 'FRI',
-    date: '26',
+    day: 'SUN',
+    date: '28',
   },
 ];
 

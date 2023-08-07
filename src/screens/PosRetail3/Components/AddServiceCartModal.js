@@ -55,12 +55,15 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         width: SW(31.5),
         height: SH(60),
       }}
+      onPress={() => {
+        setselectedDate(item.date);
+      }}
     >
       <Text
         style={{
           fontFamily: Fonts.Regular,
           fontSize: SF(14),
-          color: item.key === '1' ? COLORS.primary : COLORS.dark_grey,
+          color: item.date === selectedDate ? COLORS.primary : COLORS.dark_grey,
         }}
       >
         {item?.day}
@@ -69,7 +72,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         style={{
           fontFamily: Fonts.SemiBold,
           fontSize: SF(18),
-          color: item.key === '1' ? COLORS.primary : COLORS.black,
+          color: item.date === selectedDate ? COLORS.primary : COLORS.black,
         }}
       >
         {item?.date}
