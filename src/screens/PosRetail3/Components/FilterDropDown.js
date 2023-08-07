@@ -92,7 +92,18 @@ export const FilterDropDown = ({ data, sellerid }) => {
             <Image source={down} style={styles.dropdownIconStyle} />
           )}
         </TouchableOpacity>
-        {item?.isExpand ? showDetailedCategories(item) : null}
+        {item?.isExpand ? (
+          <View
+            style={{
+              backgroundColor: COLORS.white,
+              borderRadius: 10,
+              marginHorizontal: ms(10),
+              marginVertical: ms(5),
+            }}
+          >
+            {showDetailedCategories(item)}
+          </View>
+        ) : null}
       </>
     );
   };
