@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, TextInput } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,17 +10,19 @@ import { getBrand, getCategory, getSubCategory } from '@/actions/RetailAction';
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
 import { strings } from '@/localization';
 
-export const FilterDropDown = ({ data, sellerid }) => {
+export const FilterDropDown = ({ sellerid }) => {
   const retailData = useSelector(getRetail);
   const dispatch = useDispatch();
   const [newDropData, setNewData] = useState();
   const [subItems, setSubItems] = useState();
   const [openDropDown, setOpenDropDown] = useState(false);
+  const [search, setSearch] = useState('');
+  console.log('retailData====', retailData?.categoryList);
 
   useEffect(() => {
-    dispatch(getCategory(sellerid));
-    dispatch(getSubCategory(sellerid));
-    dispatch(getBrand(sellerid));
+    // dispatch(getCategory(sellerid));
+    // dispatch(getSubCategory(sellerid));
+    // dispatch(getBrand(sellerid));
 
     const getArray = [
       {
@@ -70,31 +72,101 @@ export const FilterDropDown = ({ data, sellerid }) => {
   };
 
   const showDetailedCategories = (item) => {
-    if (item?.subItems?.length > 0) {
-      return item?.subItems?.map((item, index) => (
-        <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
-          {item?.isChecked ? (
-            <TouchableOpacity onPress={() => changeCheckInput(index)}>
-              <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={() => changeCheckInput(index)}>
-              <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
-            </TouchableOpacity>
-          )}
-
-          <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
-        </View>
-      ));
-    } else {
+    if (item?.key === '1' && item?.name === 'Category') {
       return (
+        // if (item?.subItems?.length > 0) {
+        //   return item?.subItems?.map((item, index) => (
+        //     <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+        //       {item?.isChecked ? (
+        //         <TouchableOpacity onPress={() => changeCheckInput(index)}>
+        //           <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
+        //         </TouchableOpacity>
+        //       ) : (
+        //         <TouchableOpacity onPress={() => changeCheckInput(index)}>
+        //           <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
+        //         </TouchableOpacity>
+        //       )}
+
+        //       <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
+        //     </View>
+        //   ));
+        // } else {
+        //   return (
+        //     <View>
+        //       <Text style={{ paddingLeft: ms(20), fontFamily: Fonts.SemiBold, color: COLORS.primary }}>
+        //         {strings.valiadtion.noData}
+        //       </Text>
+        //     </View>
+        //   );
+        // }
+
+        // <FlatList
+        //   data={item?.subItems ?? []}
+        //   renderItem={renderDetailCategories}
+        //   contentContainerStyle={{ height: ms(50), borderWidth: 1, borderColor: 'red' }}
+        // />
+
         <View>
-          <Text style={{ paddingLeft: ms(20), fontFamily: Fonts.SemiBold, color: COLORS.primary }}>
-            {strings.valiadtion.noData}
-          </Text>
+          <TextInput
+            value={search}
+            style={styles.textInputStyle}
+            placeholder={
+              item?.name === 'Category'
+                ? strings.posRetail.searchCategory
+                : item?.name === 'Sub Category'
+                ? strings.posRetail.searchSubCategory
+                : strings.posRetail.searchBrand
+            }
+            onChangeText={(text) => {
+              setSearch(text);
+              setOpenDropDown(true);
+              if (search?.length > 2) {
+                dispatch(getCategory(sellerid, search));
+              }
+            }}
+          />
+
+          <FlatList data={newDropData?.subItems} renderItem={renderDetailCategories} />
         </View>
       );
+    } else {
+      return (
+        <>
+          {item?.subItems?.map((item, index) => (
+            <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+              {item?.isChecked ? (
+                <TouchableOpacity onPress={() => changeCheckInput(index)}>
+                  <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => changeCheckInput(index)}>
+                  <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
+                </TouchableOpacity>
+              )}
+
+              <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
+            </View>
+          ))}
+        </>
+      );
     }
+  };
+
+  const renderDetailCategories = ({ item, index }) => {
+    return (
+      <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+        {item?.isChecked ? (
+          <TouchableOpacity onPress={() => changeCheckInput(index)}>
+            <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => changeCheckInput(index)}>
+            <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
+          </TouchableOpacity>
+        )}
+        <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
+      </View>
+    );
   };
 
   const renderItem = ({ item, index }) => {
@@ -136,7 +208,7 @@ export const FilterDropDown = ({ data, sellerid }) => {
       renderItem={renderItem}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingBottom: ms(30) }}
-      keyExtractor={(item, index) => item.key.toString()}
+      keyExtractor={(item) => item.key.toString()}
     />
   );
 };
@@ -158,5 +230,15 @@ const styles = StyleSheet.create({
     paddingVertical: ms(10),
     paddingHorizontal: ms(15),
     justifyContent: 'space-between',
+  },
+  textInputStyle: {
+    borderWidth: 1,
+    marginHorizontal: ms(10),
+    marginVertical: ms(8),
+    height: ms(30),
+    borderRadius: 8,
+    borderColor: COLORS.solidGrey,
+    fontFamily: Fonts.Italic,
+    paddingLeft: 10,
   },
 });

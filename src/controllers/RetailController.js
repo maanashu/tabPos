@@ -14,10 +14,12 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { store } from '@/store';
 
 export class RetailController {
-  static async getCategory(sellerID) {
+  static async getCategory(sellerID, search) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        PRODUCT_URL + ApiProductInventory.getCategory + `?seller_id=${sellerID}&main_category=true`;
+        PRODUCT_URL +
+        ApiProductInventory.getCategory +
+        `?seller_id=${sellerID}&main_category=true&search=${search}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -282,7 +284,6 @@ export class RetailController {
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -294,7 +295,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -821,7 +821,6 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

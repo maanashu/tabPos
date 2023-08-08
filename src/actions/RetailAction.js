@@ -623,10 +623,10 @@ const getQrcodeReset = () => ({
   type: TYPES.GET_QR_CODE_RESET,
   payload: null,
 });
-export const getCategory = (sellerID) => async (dispatch) => {
+export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
-    const res = await RetailController.getCategory(sellerID);
+    const res = await RetailController.getCategory(sellerID, search);
     dispatch(getCategorySuccess(res?.payload?.data));
   } catch (error) {
     if (error?.statusCode === 204) {

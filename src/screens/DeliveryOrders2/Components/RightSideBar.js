@@ -1,42 +1,14 @@
 import React from 'react';
-import { View, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
-
-import { COLORS } from '@/theme';
-import { deliveryBox } from '@/assets';
+import { View, FlatList, Dimensions } from 'react-native';
 
 import styles from '../styles';
 
-const RightSideBar = ({
-  deliveryDrawer,
-  openShippingOrders,
-  setOpenShippingOrders,
-  renderDrawer,
-  // setIsOpenSideBarDrawer,
-}) => {
+const RightSideBar = ({ deliveryDrawer, renderDrawer }) => {
   return (
     <View style={styles.rightSideView}>
       <FlatList
         data={deliveryDrawer}
         renderItem={renderDrawer}
-        ListHeaderComponent={() => (
-          <View
-            // onPress={() => {
-            //   setOpenShippingOrders('0');
-            //   setIsOpenSideBarDrawer(true);
-            // }}
-            style={[
-              styles.firstIconStyle,
-              {
-                backgroundColor:
-                  openShippingOrders === '0' ? COLORS.textInputBackground : COLORS.transparent,
-              },
-            ]}
-          >
-            <View style={styles.bucketBackgorund}>
-              <Image source={deliveryBox} style={styles.sideBarImage} />
-            </View>
-          </View>
-        )}
         contentContainerStyle={{
           height: Dimensions.get('window').height - 90,
         }}
