@@ -705,7 +705,6 @@ export const en = {
     localOff: 'Local Drop-off',
     shippingText: 'Shipping',
   },
-
   Languages: {
     languages: 'Languages',
     Publishedlanguages: 'Published languages',
@@ -727,6 +726,9 @@ export const en = {
     backProdscreen: 'Back to Product Screen',
     // new design  en
     allProduct: 'All Products',
+    searchCategory: 'Search Categories',
+    searchSubCategory: 'Search Sub-catgories',
+    searchBrand: 'Search Brands',
   },
   Staff: {
     Staff: 'Staff',
@@ -768,5 +770,19 @@ export const en = {
     orderStatus: 'Today’s Order Status',
     pickupOrders: 'Pickup Orders',
     noOrdersFound: 'No orders found',
+  },
+  orderStatus: {
+    reviewOrders: 'Orders to review',
+    acceptOrder: 'Orders to accept',
+    prepareOrder: 'Orders to prepare',
+    shipOrder: 'Shipped Orders',
+    deliveryOrder: 'Delivered Orders',
+    cancelledOrder: 'Rejected/ Cancelled Orders',
+    returnedOrders: 'Returned Orders',
+  },
+  buttonStatus: {
+    reviewButton: 'Accept Order',
+    acceptedButton: 'Order Prepared',
+    prepareButton: 'Ready to Pickup',
   },
 };

@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  Dimensions,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
-import ReactNativeModal from 'react-native-modal';
-import { LineChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -35,7 +25,6 @@ import {
   deliveryParcel,
   returnShipping,
   deliveryShipping,
-  returnDeliveryBox,
   checkedCheckboxSquare,
   deliveryorderProducts,
 } from '@/assets';
@@ -48,6 +37,7 @@ import {
   getReviewDefault,
   todayOrders,
 } from '@/actions/DeliveryAction';
+import Graph from './Components/Graph';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
 import Header from './Components/Header';
@@ -93,7 +83,7 @@ export function DeliveryOrders2() {
   const [deliverytypes, setDeliveryTypes] = useState();
   const [graphData, setGraphData] = useState(graphOptions);
   const [viewAllOrders, setViewAllOrders] = useState(false);
-  const [openShippingOrders, setOpenShippingOrders] = useState(0);
+  const [openShippingOrders, setOpenShippingOrders] = useState('0');
   const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? '');
   const [orderDetail, setOrderDetail] = useState(
@@ -285,7 +275,7 @@ export function DeliveryOrders2() {
       style={[
         styles.firstIconStyle,
         {
-          backgroundColor: openShippingOrders === item?.key ? COLORS.lineGrey : COLORS.transparent,
+          backgroundColor: openShippingOrders === item?.key ? COLORS.solidGrey : COLORS.transparent,
           marginVertical: 6,
           width: SW(15),
           height: SW(15),
@@ -1003,50 +993,14 @@ export function DeliveryOrders2() {
             </View>
 
             <View>
-              <View style={styles.graphViewStyle}>
-                <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
-
-                <FlatList
-                  horizontal
-                  data={graphData}
-                  scrollEnabled={false}
-                  renderItem={renderGraphItem}
-                  showsHorizontalScrollIndicator={false}
-                />
-
-                {isDeliveryOrder ? (
-                  <View
-                    style={{
-                      height: ms(185),
-                      backgroundColor: COLORS.white,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <ActivityIndicator size={'small'} color={COLORS.primary} />
-                  </View>
-                ) : (
-                  <LineChart
-                    bezier
-                    fromZero
-                    height={ms(185)}
-                    segments={10}
-                    withDots={false}
-                    withShadow={false}
-                    data={graphElements()}
-                    width={Dimensions.get('window').width * 0.5}
-                    chartConfig={{
-                      decimalPlaces: 0,
-                      backgroundColor: COLORS.black,
-                      backgroundGradientFrom: COLORS.white,
-                      backgroundGradientTo: COLORS.white,
-                      propsForLabels: styles.shippingDrawerTitleText,
-                      color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                      labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
-                    }}
-                  />
-                )}
-              </View>
+              <Graph
+                {...{
+                  graphData,
+                  renderGraphItem,
+                  isDeliveryOrder,
+                  graphElements,
+                }}
+              />
 
               <Spacer space={SH(15)} />
               <OrderReview
@@ -1064,11 +1018,9 @@ export function DeliveryOrders2() {
               {...{
                 deliveryDrawer,
                 openShippingOrders,
-                // isOpenSideBarDrawer,
                 renderShippingDrawer,
                 setOpenShippingOrders,
                 renderDrawer,
-                // setIsOpenSideBarDrawer,
               }}
             />
           </View>
@@ -1101,38 +1053,6 @@ export function DeliveryOrders2() {
           />
         </View>
       ) : null}
-
-      {/* <ReactNativeModal
-        animationIn={'slideInRight'}
-        animationOut={'slideOutRight'}
-        style={styles.modalStyle}
-        isVisible={isOpenSideBarDrawer}
-      >
-        <View style={styles.shippingOrderViewStyle}>
-          <FlatList
-            data={deliveryDrawer}
-            renderItem={renderShippingDrawer}
-            ListHeaderComponent={() => (
-              <View style={styles.shippingOrderHeader}>
-                <Text style={styles.shippingOrderHeading}>{strings.deliveryOrders.heading}</Text>
-
-                <View style={styles.rightSideView}>
-                  <TouchableOpacity
-                    style={styles.firstIconStyle}
-                    onPress={() => {
-                      setIsOpenSideBarDrawer(!isOpenSideBarDrawer);
-                      graphElements();
-                    }}
-                  >
-                    <Image source={returnDeliveryBox} style={styles.sideBarImage} />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item) => item.key.toString()}
-          />
-        </View>
-      </ReactNativeModal> */}
     </ScreenWrapper>
   );
 }

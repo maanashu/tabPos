@@ -2,9 +2,9 @@ import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { ms, scale, verticalScale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 
-const windowWidth = Dimensions.get('window').width;
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     paddingVertical: ms(9),
     width: SW(100),
-    height: Dimensions.get('window').height / 3.3,
+    height: height / 3.3,
   },
   currentStatusText: {
     fontFamily: Fonts.SemiBold,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     width: SW(100),
 
     backgroundColor: COLORS.white,
-    height: Dimensions.get('window').height / 2.35,
+    height: height / 2.35,
   },
   orderTextStyle: {
     fontFamily: Fonts.MaisonBold,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   rightSideView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: windowWidth * 0.06,
+    width: width * 0.06,
     paddingVertical: verticalScale(6),
     alignItems: 'center',
   },
@@ -216,6 +216,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     paddingVertical: 5,
+    marginVertical: 6,
+    width: SW(15),
+    height: SW(15),
+    borderRadius: 5,
+    justifyContent: 'center',
   },
   firstIconStyle: {
     alignSelf: 'center',
@@ -290,7 +295,7 @@ const styles = StyleSheet.create({
   orderToReviewView: {
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    height: Dimensions.get('window').height - 120,
+    height: height - 120,
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -311,7 +316,7 @@ const styles = StyleSheet.create({
   graphViewStyle: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: Dimensions.get('window').width * 0.56,
+    width: width * 0.56,
     paddingHorizontal: ms(12),
   },
   numberOrdersText: {
@@ -372,8 +377,8 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: Dimensions.get('window').width * 0.43,
-    height: Dimensions.get('window').height - 120,
+    width: width * 0.43,
+    height: height - 120,
     marginBottom: 90,
   },
   userDetailView: {
@@ -395,7 +400,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     borderRadius: 10,
     marginTop: 20,
-    width: Dimensions.get('window').width / 2.4,
+    width: width / 2.4,
     backgroundColor: COLORS.textInputBackground,
   },
   userImageStyle: {
@@ -488,15 +493,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     alignSelf: 'center',
-    width: Dimensions.get('window').width * 0.43,
+    width: width * 0.43,
     paddingTop: 15,
     paddingHorizontal: ms(15),
   },
   emptyView: {
-    height:
-      Platform.OS === 'ios'
-        ? Dimensions.get('window').height / 3.2
-        : Dimensions.get('window').height / 2.8,
+    height: Platform.OS === 'ios' ? height / 3.2 : height / 2.8,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -504,6 +506,26 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(22),
     color: COLORS.primary,
+  },
+  noOrderView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  orderLoader: {
+    height: height / 2.35,
+    backgroundColor: COLORS.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
   },
 });
 

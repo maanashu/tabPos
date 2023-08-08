@@ -14,10 +14,12 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { store } from '@/store';
 
 export class RetailController {
-  static async getCategory(sellerID) {
+  static async getCategory(sellerID, search) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        PRODUCT_URL + ApiProductInventory.getCategory + `?seller_id=${sellerID}&main_category=true`;
+        PRODUCT_URL +
+        ApiProductInventory.getCategory +
+        `?seller_id=${sellerID}&main_category=true&search=${search}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
