@@ -26,6 +26,7 @@ const INITIALSTATE = {
   getserviceCart: [],
   bulkCreate: {},
   bulkData: [],
+  getAllProductCart: [],
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -281,6 +282,17 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         qrKey: payload.qr.payload,
+      };
+
+    case TYPES.GET_ALL_PRODUCT_CART_SUCCESS:
+      return {
+        ...state,
+        getAllProductCart: payload,
+      };
+    case TYPES.GET_ALL_PRODUCT_CART_RESET:
+      return {
+        ...state,
+        getAllProductCart: [],
       };
 
     case TYPES.CLEAR_STORE:

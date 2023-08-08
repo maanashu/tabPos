@@ -64,6 +64,7 @@ export const ApiProductInventory = {
 // }
 
 export const ApiOrderInventory = {
+  posCarts: 'poscarts',
   addTocart: 'poscarts',
   getAllCart: 'poscarts/user',
   clearAllCart: 'poscarts',
@@ -112,6 +113,7 @@ export const ApiOrderInventory = {
   getTotalOrder: 'orders/statistics/orders/total',
   qrCode: 'poscarts/qr-code/',
   orderStatusCount: 'orders/pos/seller/multi-status/orders-count',
+  changeStatusProductCart: 'poscarts/change-hold-status',
 };
 
 export const ApiWalletInventory = {

@@ -45,6 +45,7 @@ import { TYPES } from '@/Types/Types';
 import {
   addToServiceCart,
   addTocart,
+  changeStatusProductCart,
   clearAllCart,
   clearServiceAllCart,
   getBrand,
@@ -72,7 +73,6 @@ export function MainScreen({
   cartServiceScreenHandler,
 }) {
   const [selectedId, setSelectedId] = useState();
-
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
   const [brandModal, setBrandModal] = useState(false);
@@ -84,6 +84,9 @@ export function MainScreen({
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
+  const productCartArray = getRetailData?.getAllProductCart;
+  const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
+  console.log('holdProductArray', holdProductArray);
   const cartLength = cartData?.poscart_products?.length;
   const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
@@ -102,6 +105,20 @@ export function MainScreen({
   }));
   const [productServiceType, setProductServiceType] = useState(1);
   const [cateoryView, setCateoryView] = useState(false);
+
+  const cartStatusHandler = () => {
+    const data =
+      holdProductArray?.length > 0
+        ? {
+            status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdProductArray?.[0]?.id,
+          }
+        : {
+            status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getAllCart?.id,
+          };
+    dispatch(changeStatusProductCart(data));
+  };
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
     setisFilterDataSeclectedOfIndex(null);
@@ -134,9 +151,6 @@ export function MainScreen({
       dispatch(getMainProduct());
     }
   };
-  const isProductLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state)
-  );
 
   const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
 
@@ -526,36 +540,26 @@ export function MainScreen({
             <Spacer space={SH(10)} />
 
             {productCon ? (
-              isProductLoading ? (
-                <View style={{ marginTop: 100 }}>
-                  <ActivityIndicator size="large" color={COLORS.indicator} />
-                </View>
-              ) : (
-                <FlatList
-                  data={mainProductArray}
-                  extraData={mainProductArray}
-                  renderItem={renderItem}
-                  keyExtractor={(item, index) => index}
-                  numColumns={7}
-                  contentContainerStyle={{
-                    flexGrow: 1,
-                    justifyContent: 'space-between',
-                    zIndex: -99,
-                  }}
-                  scrollEnabled={true}
-                  ListEmptyComponent={() => (
-                    <View style={styles.noProductText}>
-                      <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
-                        {strings.valiadtion.noData}
-                      </Text>
-                    </View>
-                  )}
-                />
-              )
-            ) : isProductLoading ? (
-              <View style={{ marginTop: 100 }}>
-                <ActivityIndicator size="large" color={COLORS.indicator} />
-              </View>
+              <FlatList
+                data={mainProductArray}
+                extraData={mainProductArray}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index}
+                numColumns={7}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  justifyContent: 'space-between',
+                  zIndex: -99,
+                }}
+                scrollEnabled={true}
+                ListEmptyComponent={() => (
+                  <View style={styles.noProductText}>
+                    <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                      {strings.valiadtion.noData}
+                    </Text>
+                  </View>
+                )}
+              />
             ) : (
               <FlatList
                 data={mainServicesArray}
@@ -697,12 +701,22 @@ export function MainScreen({
                   />
                 </TouchableOpacity>
                 <Spacer space={SH(20)} />
-                <View>
-                  <Image source={holdCart} style={styles.sideBarImage} />
+                <TouchableOpacity
+                  onPress={cartStatusHandler}
+                  // disabled={holdProductArray?.length > 0 ? false : true}
+                >
+                  <Image
+                    source={holdCart}
+                    style={
+                      holdProductArray?.length > 0
+                        ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                        : styles.sideBarImage
+                    }
+                  />
                   <View style={styles.holdBadge}>
-                    <Text style={styles.holdBadgetext}>0</Text>
+                    <Text style={styles.holdBadgetext}>{holdProductArray?.length}</Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               </View>
               <View style={{ flex: 1 }} />
               <TouchableOpacity

@@ -193,6 +193,19 @@ export class RetailController {
     });
   }
 
+  static async getAllProductCart() {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.posCarts + `/`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
   static async clearAllCart() {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.clearAllCart;
@@ -282,7 +295,6 @@ export class RetailController {
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -294,7 +306,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -821,7 +832,6 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -951,6 +961,62 @@ export class RetailController {
         .catch((error) => {
           Toast.show({
             text2: 'catgory error',
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async changeStatusProductCart(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.changeStatusProductCart + `/${data.cartId}`;
+      const body = {
+        status: data.status,
+      };
+      HttpClient.put(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error?.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 3000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async addServiceNotescart(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart + `/${data.cartId}`;
+      const body = {
+        notes: data.notes,
+      };
+      console.log('endpoint', endpoint);
+      console.log('body', body);
+      HttpClient.put(endpoint, body)
+        .then((response) => {
+          console.log('response', response);
+          if (response?.msg === 'Appointment detail updated!') {
+            Toast.show({
+              text2: 'Notes add succesfully',
+              position: 'bottom',
+              type: 'success_toast',
+              visibilityTime: 1500,
+            });
+            resolve(response);
+          }
+        })
+        .catch((error) => {
+          console.log('error', error);
+          Toast.show({
+            text2: error.msg,
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,

@@ -29,6 +29,7 @@ import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import {
+  changeStatusProductCart,
   clearAllCart,
   getAllCartSuccess,
   getUserDetail,
@@ -53,6 +54,8 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData;
+  const productCartArray = getRetailData?.getAllProductCart;
+  const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
 
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -60,6 +63,20 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const [cartSearch, setCartSearch] = useState('');
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+
+  const cartStatusHandler = () => {
+    const data =
+      holdProductArray?.length > 0
+        ? {
+            status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdProductArray?.[0]?.id,
+          }
+        : {
+            status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getAllCart?.id,
+          };
+    dispatch(changeStatusProductCart(data));
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -331,10 +348,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
               >
                 <Image source={sideKeyboard} style={styles.keyboardIcon} />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.holdCartCon}
-                //   onPress={() => setProductdetailModal(true)}
-              >
+              <TouchableOpacity style={styles.holdCartCon} onPress={cartStatusHandler}>
                 <Image source={holdCart} style={styles.pause} />
 
                 <Text style={styles.holdCart}>{strings.dashboard.holdCart}</Text>

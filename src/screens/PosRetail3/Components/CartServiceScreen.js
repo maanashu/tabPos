@@ -254,11 +254,11 @@ export function CartServiceScreen({
                         >
                           <Image
                             source={{ uri: data.product_details?.image }}
-                            style={styles.columbiaMen}
+                            style={styles.cartItemImage}
                           />
                           <View style={{ marginLeft: 10 }}>
                             <Text
-                              style={[styles.holdCart, { color: COLORS.dark_grey, width: SW(40) }]}
+                              style={[styles.holdCart, { color: COLORS.dark_grey, width: SW(30) }]}
                               numberOfLines={1}
                             >
                               {data.product_details?.name}
@@ -276,34 +276,11 @@ export function CartServiceScreen({
                           <Text style={styles.blueListDataText}>Anna S</Text>
                         </View>
                         <Text style={styles.blueListDataText}>
-                          ${data?.product_details?.supply?.supply_prices?.selling_price}
+                          $
+                          {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2)}
                         </Text>
-                        <View style={styles.listCountCon}>
-                          <TouchableOpacity
-                            style={{
-                              width: SW(10),
-                              alignItems: 'center',
-                            }}
-                            // onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
-                          >
-                            <Image source={minus} style={styles.minus} />
-                          </TouchableOpacity>
-                          {isLoading ? (
-                            <ActivityIndicator size="small" color={COLORS.primary} />
-                          ) : (
-                            // <Text>{data.qty}</Text>
-                            <Text>1</Text>
-                          )}
-                          <TouchableOpacity
-                            style={{
-                              width: SW(10),
-                              alignItems: 'center',
-                            }}
-                            // onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
-                          >
-                            <Image source={plus} style={styles.minus} />
-                          </TouchableOpacity>
-                        </View>
+                        <Text style={styles.blueListDataText}>1</Text>
+
                         <Text style={styles.blueListDataText}>
                           $
                           {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2)}

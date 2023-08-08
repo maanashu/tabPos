@@ -22,8 +22,10 @@ import Modal from 'react-native-modal';
 import {
   addDiscountToCart,
   addNotescart,
+  addServiceNotescart,
   customerNumber,
   getAllCart,
+  getAllProductCart,
   getServiceCart,
 } from '@/actions/RetailAction';
 import { useIsFocused } from '@react-navigation/native';
@@ -42,12 +44,15 @@ export function PosRetail3() {
   const getRetailData = useSelector(getRetail);
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const cartID2 = getRetailData?.getAllCart?.id;
+  const servicCartId = getRetailData?.getserviceCart?.id;
+  console.log('getRetailData?.getserviceCart', getRetailData?.getserviceCart);
   const cartData = getRetailData?.getAllCart;
 
   const finalAmountForDiscount =
     cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  console.log('sellerID', sellerID);
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
@@ -55,11 +60,13 @@ export function PosRetail3() {
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
+  const [serviceNotes, setServiceNotes] = useState(getRetailData?.getserviceCart?.notes);
   const [addDiscount, setAddDiscount] = useState(false);
   const [page, setPage] = useState(1);
   const [tipAmount, selectTipAmount] = useState();
   const [fromWhichCart, setFromWhichCart] = useState('Product');
   const [comingScreen, setComingScreen] = useState();
+  const [addServiceNotes, setAddServiceNotes] = useState(false);
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
   const getCart = getRetailData?.getAllCart;
@@ -95,8 +102,13 @@ export function PosRetail3() {
   const [cashPayDetail, setCashPayDetail] = useState();
 
   useEffect(() => {
+    setServiceNotes(getRetailData?.getserviceCart?.notes);
+  }, [getRetailData?.getserviceCart]);
+
+  useEffect(() => {
     dispatch(getAllCart());
     dispatch(getServiceCart());
+    dispatch(getAllProductCart());
   }, [isFocus]);
   useEffect(() => {
     setNotes(getCart?.notes);
@@ -236,6 +248,8 @@ export function PosRetail3() {
         TYPES.CLEAR_SERVICE_ALL_CART,
         TYPES.GET_SERVICE_CART,
         TYPES.ADD_SERVICE_CART,
+        TYPES.CHANGE_STATUS_PRODUCT_CART,
+        TYPES.GET_MAIN_PRODUCT,
       ],
       state
     )
@@ -277,8 +291,8 @@ export function PosRetail3() {
           setFromWhichCart('Service');
           setselectedScreen('CartAmountPayBy'), setComingScreen('CartServiceScreen');
         }}
-        addNotesHandler={addNotesHandler}
-        addDiscountHandler={addDiscountHandler}
+        addNotesHandler={() => setAddServiceNotes(true)}
+        addDiscountHandler={() => alert('coming soon')}
       />
     ),
     ['CartAmountTips']: (
@@ -451,8 +465,6 @@ export function PosRetail3() {
                   </TouchableOpacity>
                 </View>
                 <Spacer space={SH(15)} />
-                {/* <Text style={styles.addNotes}>Add notes</Text>
-          <Spacer space={SH(6)} /> */}
                 <TextInput
                   style={styles.addNotesInput}
                   onChangeText={setNotes}
@@ -469,6 +481,53 @@ export function PosRetail3() {
                 </TouchableOpacity>
               </View>
             )}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </Modal>
+
+      <Modal animationType="fade" transparent={true} isVisible={addServiceNotes}>
+        <KeyboardAvoidingView
+        // style={{ flex: 1 }}
+        // behavior={Platform.OS === 'ios' ? 'padding' : 100}
+        // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
+        >
+          <ScrollView>
+            <View style={[styles.addNotesCon, styles.addNotesCon2]}>
+              <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
+                <Text style={styles.jacketName}>Add Notes</Text>
+                <TouchableOpacity onPress={() => setAddServiceNotes(false)}>
+                  <Image source={crossButton} style={styles.crossBg} />
+                </TouchableOpacity>
+              </View>
+              <Spacer space={SH(15)} />
+              <TextInput
+                style={styles.addNotesInput}
+                onChangeText={setServiceNotes}
+                value={serviceNotes}
+                placeholder="Add Notes"
+                multiline={true}
+              />
+              <Spacer space={SH(15)} />
+              <TouchableOpacity
+                style={[styles.holdCartCon, styles.addNotesBtn]}
+                // onPress={() => saveServiceNotesHandler()}
+                onPress={() => {
+                  if (!serviceNotes) {
+                    alert(strings.posSale.pleaseAddNotes);
+                  } else {
+                    const data = {
+                      cartId: servicCartId,
+                      notes: serviceNotes,
+                    };
+                    dispatch(addServiceNotescart(data));
+                    setServiceNotes('');
+                    setAddServiceNotes(false);
+                  }
+                }}
+              >
+                <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </Modal>

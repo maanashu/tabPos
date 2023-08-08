@@ -928,6 +928,11 @@ export const styles = StyleSheet.create({
     height: SW(6),
     resizeMode: 'contain',
   },
+  cartItemImage: {
+    width: SW(15),
+    height: SW(15),
+    resizeMode: 'contain',
+  },
   minus: {
     width: SW(5),
     height: SW(5),
@@ -935,7 +940,7 @@ export const styles = StyleSheet.create({
   },
   sukNumber: {
     color: COLORS.darkGray,
-    fontSize: SF(11),
+    fontSize: SF(10),
     fontFamily: Fonts.Regular,
   },
   listCountCon: {

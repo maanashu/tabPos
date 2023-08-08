@@ -606,6 +606,26 @@ const getServiceCartReset = () => ({
   payload: null,
 });
 
+const getAllProductCartRequest = () => ({
+  type: TYPES.GET_ALL_PRODUCT_CART_REQUEST,
+  payload: null,
+});
+
+export const getAllProductCartSuccess = (getAllProductCart) => ({
+  type: TYPES.GET_ALL_PRODUCT_CART_SUCCESS,
+  payload: getAllProductCart,
+});
+
+const getAllProductCartError = (error) => ({
+  type: TYPES.GET_ALL_PRODUCT_CART_ERROR,
+  payload: { error },
+});
+
+const getAllProductCartReset = () => ({
+  type: TYPES.GET_ALL_PRODUCT_CART_RESET,
+  payload: null,
+});
+
 const getQrCodeRequest = () => ({
   type: TYPES.GET_QR_CODE_REQUEST,
   payload: null,
@@ -623,6 +643,35 @@ const getQrcodeReset = () => ({
   type: TYPES.GET_QR_CODE_RESET,
   payload: null,
 });
+
+const changeStatusProductCartRequest = () => ({
+  type: TYPES.CHANGE_STATUS_PRODUCT_CART_REQUEST,
+  payload: null,
+});
+
+const changeStatusProductCartSuccess = () => ({
+  type: TYPES.CHANGE_STATUS_PRODUCT_CART_SUCCESS,
+  payload: {},
+});
+const changeStatusProductCartError = (error) => ({
+  type: TYPES.CHANGE_STATUS_PRODUCT_CART_ERROR,
+  payload: { error },
+});
+
+const addServiceNotescartRequest = () => ({
+  type: TYPES.ADD_SERVICE_NOTES_CART_REQUEST,
+  payload: null,
+});
+
+const addServiceNotescartSuccess = () => ({
+  type: TYPES.ADD_SERVICE_NOTES_CART_SUCCESS,
+  payload: {},
+});
+const addServiceNotescartError = (error) => ({
+  type: TYPES.ADD_SERVICE_NOTES_CART_ERROR,
+  payload: { error },
+});
+
 export const getCategory = (sellerID) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -727,6 +776,19 @@ export const getServiceCart = () => async (dispatch) => {
       dispatch(getServiceCartReset());
     }
     dispatch(getServiceCartError(error.message));
+  }
+};
+
+export const getAllProductCart = () => async (dispatch) => {
+  dispatch(getAllProductCartRequest());
+  try {
+    const res = await RetailController.getAllProductCart();
+    dispatch(getAllProductCartSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getAllProductCartReset());
+    }
+    dispatch(getAllProductCartError(error.message));
   }
 };
 
@@ -1055,5 +1117,28 @@ export const getQrCodee = (cartId) => async (dispatch) => {
     return dispatch(getQrCodeSuccess(res));
   } catch (error) {
     dispatch(getQrCodeError(error.message));
+  }
+};
+
+export const changeStatusProductCart = (data) => async (dispatch) => {
+  dispatch(changeStatusProductCartRequest());
+  try {
+    const res = await RetailController.changeStatusProductCart(data);
+    dispatch(changeStatusProductCartSuccess(res));
+    dispatch(getAllCart());
+    dispatch(getAllProductCart());
+  } catch (error) {
+    dispatch(changeStatusProductCartError(error.message));
+  }
+};
+
+export const addServiceNotescart = (data) => async (dispatch) => {
+  dispatch(addServiceNotescartRequest());
+  try {
+    const res = await RetailController.addServiceNotescart(data);
+    dispatch(addServiceNotescartSuccess(res));
+    dispatch(getServiceCart());
+  } catch (error) {
+    dispatch(addServiceNotescartError(error.message));
   }
 };
