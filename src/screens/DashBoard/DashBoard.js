@@ -106,6 +106,7 @@ export function DashBoard({ navigation }) {
   const [page, setpage] = useState(1);
   const [sku, setSku] = useState('');
   const [scan, setScan] = useState(false);
+
   useEffect(() => {
     setScan(false);
   }, []);
@@ -192,6 +193,7 @@ export function DashBoard({ navigation }) {
   const orderTime = (estimateTime) => {
     const currentDateTime = new Date();
     const givenTimestamp = new Date(estimateTime);
+    console.log("dddd",givenTimestamp);
     const timeDifference = givenTimestamp.getTime() - currentDateTime.getTime();
     const hours = Math.floor(timeDifference / (1000 * 60 * 60));
     const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
@@ -240,16 +242,16 @@ export function DashBoard({ navigation }) {
   );
 
   const getSessionLoad = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION], state)
+    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION, DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
   );
 
   const startSellingHandler = async (id) => {
     if (id === 1) {
       dispatch(addSellingSelection(id));
-      navigate(NAVIGATION.posRetail2);
+      navigate(NAVIGATION.posRetail3);
     } else if (id === 2) {
       dispatch(addSellingSelection(id));
-      navigate(NAVIGATION.deliveryOrder);
+      navigate(NAVIGATION.deliveryOrders2);
     }
   };
 
@@ -579,11 +581,7 @@ export function DashBoard({ navigation }) {
             <View>
               <Text style={styles.deliveries}>{strings.dashboard.deliveries}</Text>
             </View>
-            {orderDelveriesLoading ? (
-              <View style={{ marginTop: 50 }}>
-                <ActivityIndicator size="large" color={COLORS.indicator} />
-              </View>
-            ) : getDeliveryData2?.length === 0 || getDeliveryData2 === undefined ? (
+            {getDeliveryData2?.length === 0 || getDeliveryData2 === undefined ? (
               <View>
                 <Text style={styles.requestNotFound}>Orders not found</Text>
               </View>

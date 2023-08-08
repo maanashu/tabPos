@@ -21,6 +21,7 @@ export function VerifySucess() {
    const crossHandler = () => {
     navigate(NAVIGATION.passcode)
    }
+  
   return (
     <View style={styles.bodyCon}>
        <View style={styles.popupContainer}>

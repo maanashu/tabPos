@@ -35,8 +35,10 @@ export const ApiUserInventory = {
   getDrawer: (status) => `drawer_management/drawer-session/history?drawer_id=${status}`,
   staffDetail: 'user_settings/staff/transactions',
   getTax: 'tax',
-  getGoogleCode: 'users/2fa/qr-code',
+  // getGoogleCode: 'users/2fa/qr-code',
+  getGoogleCode:'users/2fa/generate-qr-code',
   verifyGoogleCode: 'users/2fa/verify',
+  configureGoogleCode:'users/2fa/configure-qr-code',
   notifications: 'notifications',
 };
 

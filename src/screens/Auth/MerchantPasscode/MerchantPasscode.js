@@ -72,7 +72,7 @@ export function MerchantPasscode({ route }) {
         country_code: country_code,
         pin: value,
       };
-      const res = await dispatch(merchantLogin(data));
+      const res = await (merchantLogin(data))(dispatch);
       if (res?.type === 'MERCHANT_LOGIN_ERROR') {
         setValue('');
       } else if (res?.type === 'MERCHANT_LOGIN_SUCCESS') {

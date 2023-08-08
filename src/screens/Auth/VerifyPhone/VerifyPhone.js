@@ -35,7 +35,7 @@ export function VerifyPhone() {
 
   const verifyPhoneHandler = () => {
     if (phoneNumber && phoneNumber.length > 5 && digits.test(phoneNumber)) {
-      dispatch(verifyPhone(phoneNumber, countryCode));
+       dispatch(verifyPhone(phoneNumber, countryCode));
     } else if (phoneNumber && phoneNumber.length < 5) {
       Toast.show({
         position: 'bottom',
