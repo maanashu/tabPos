@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
+  FlatList,
 } from 'react-native';
 import { BarChartCom, ScreenWrapper, Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
@@ -15,6 +16,9 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { LineChart } from 'react-native-chart-kit';
 import { DataTable } from 'react-native-paper';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 export function TotalPosOrder({ onPress }) {
   const [channel, setChannel] = useState(false);
@@ -23,6 +27,54 @@ export function TotalPosOrder({ onPress }) {
     { label: 'Innova', value: 'Innova' },
     { label: 'Maruti', value: 'Maruti' },
   ]);
+
+  const getAnalyticsData = useSelector(getAnalytics);
+  const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
+  console.log(
+    'first',
+    JSON.stringify(analyticOrderGraphs?.pos_graph?.orderListData[0]?.deliverd_data_list)
+  );
+
+  const getPOSOrderList = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexDirectionRow}>
+          <Text>{index + 1 + '   '}</Text>
+          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>3</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$23,000</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$560</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>0</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$560</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$23.50</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$450</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$2300</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText2}>$19,666.50</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText2}>$19,666.50</Text>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
   return (
     <View>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
@@ -59,7 +111,7 @@ export function TotalPosOrder({ onPress }) {
 
       <View style={styles.graphHeaderView}>
         <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
-        <View style={{ alignSelf: 'center', height: SH(210) }}>
+        {/* <View style={{ alignSelf: 'center', height: SH(210) }}>
           <BarChartCom
             barWid={Dimensions.get('window').width - SW(110)}
             barHei={SH(140)}
@@ -68,31 +120,40 @@ export function TotalPosOrder({ onPress }) {
             labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
             initialSpacing={SW(20)}
           />
-        </View>
+        </View> */}
 
-        {/* <LineChart
+        <LineChart
           bezier
           data={{
-            labels: [
-              '',
-              'Monday',
-              'Tuesday',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-              'Saturday',
-              'Sunday',
-            ],
+            labels: analyticOrderGraphs?.pos_graph?.graph_data?.labels
+              ? analyticOrderGraphs?.pos_graph?.graph_data?.labels
+              : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {
-                data: [12, 20, 12, 30, 42, 40, 50, 40],
+                data: analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[0]?.data
+                  ? analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[0]?.data
+                  : [12, 20, 12, 30, 60, 40, 50],
                 strokeWidth: 2,
                 color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
+              },
+              {
+                data: analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[1]?.data
+                  ? analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[1]?.data
+                  : [11, 15, 10, 25, 55, 35, 45],
+                strokeWidth: 2,
+                color: (opacity = 1) => `rgba(107, 132, 211, ${opacity})`, // optional
+              },
+              {
+                data: analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[2]?.data
+                  ? analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[2]?.data
+                  : [8, 10, 8, 20, 50, 30, 40],
+                strokeWidth: 2,
+                color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`, // optional
               },
             ],
           }}
           width={Dimensions.get('window').width - SW(80)}
-          height={260}
+          height={SH(250)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -118,7 +179,7 @@ export function TotalPosOrder({ onPress }) {
           withShadow={false}
           fromZero
           withVerticalLines={false}
-        /> */}
+        />
       </View>
 
       <View style={styles.tableMainView}>
@@ -170,50 +231,37 @@ export function TotalPosOrder({ onPress }) {
               </DataTable.Title>
             </DataTable.Header>
 
-            {/* <FlatList
-                        data={getOrderListData}
-                        renderItem={getOrderListShipping}
-                        keyExtractor={item => item.id}
-                        showsHorizontalScrollIndicator={false}
-                      /> */}
-            <View style={styles.bottomTableView}>
-              <DataTable.Row>
-                <DataTable.Cell style={styles.dateTablealignStart}>
-                  <View>
-                    <Text style={styles.revenueDataText}>Oct 23, 2023</Text>
-                  </View>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>3</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$23,000</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$560</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>0</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$560</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$23.50</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$450</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$2300</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText2}>$19,666.50</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText2}>$19,666.50</Text>
-                </DataTable.Cell>
-              </DataTable.Row>
+            <View style={{ height: SH(380), zIndex: -99 }}>
+              {analyticOrderGraphs?.pos_graph?.orderListData[0]?.cancelled_data_list?.length &&
+              analyticOrderGraphs?.pos_graph?.orderListData[0]?.deliverd_data_list?.length &&
+              analyticOrderGraphs?.pos_graph?.orderListData[0]?.returned_data_list?.length === 0 ? (
+                <View style={[styles.listLoader]}>
+                  <Text
+                    style={{
+                      fontSize: SF(20),
+                      color: COLORS.black,
+                    }}
+                  >
+                    {'No data found'}
+                  </Text>
+                </View>
+              ) : (
+                <View style={{ height: SH(250) }}>
+                  <FlatList
+                    style={{ backgroundColor: COLORS.white }}
+                    data={
+                      analyticOrderGraphs?.pos_graph?.orderListData[0]?.deliverd_data_list ||
+                      analyticOrderGraphs?.pos_graph?.orderListData[0]?.returned_data_list ||
+                      analyticOrderGraphs?.pos_graph?.orderListData[0]?.cancelled_data_list
+                    }
+                    renderItem={getPOSOrderList}
+                    keyExtractor={(item) => item.id}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    bounces={false}
+                  />
+                </View>
+              )}
             </View>
           </DataTable>
         </ScrollView>

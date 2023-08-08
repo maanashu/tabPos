@@ -318,7 +318,7 @@ export class AnalyticsController {
   static async getAnalyticStatistics(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getAnalyticStatistics + `?seller_id=${sellerID}`;
+        ORDER_URL + ApiOrderInventory.getAnalyticStatistics + `?seller_id=${sellerID}&filter=week`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -338,7 +338,7 @@ export class AnalyticsController {
   static async getAnalyticOrderGraphs(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getAnalyticOrderGraphs + `?seller_id=${sellerID}`;
+        ORDER_URL + ApiOrderInventory.getAnalyticOrderGraphs + `?seller_id=${sellerID}&filter=week`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -379,7 +379,7 @@ export class AnalyticsController {
     return new Promise((resolve, reject) => {
       const endpoint = `${
         PRODUCT_URL + ApiProductInventory.getTotalInventory
-      }?seller_id=${sellerID}`;
+      }?seller_id=${sellerID}&filter=week`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

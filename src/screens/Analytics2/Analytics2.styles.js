@@ -291,4 +291,9 @@ export const styles = StyleSheet.create({
     fontSize: SF(11),
     marginRight: SW(5),
   },
+  listLoader: {
+    marginTop: SH(140),
+    marginLeft: SW(150),
+    alignItems: 'flex-start',
+  },
 });

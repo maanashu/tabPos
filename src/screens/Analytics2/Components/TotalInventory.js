@@ -121,7 +121,9 @@ export function TotalInventory({ onPress }) {
         <LineChart
           bezier
           data={{
-            labels: totalInventory?.graph_data?.labels,
+            labels: totalInventory?.graph_data?.labels
+              ? totalInventory?.graph_data?.labels
+              : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {
                 data: totalInventory?.graph_data?.datasets?.[0]?.data
@@ -133,7 +135,7 @@ export function TotalInventory({ onPress }) {
             ],
           }}
           width={Dimensions.get('window').width - SW(80)}
-          height={260}
+          height={SH(250)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -225,7 +227,7 @@ export function TotalInventory({ onPress }) {
                   </Text>
                 </View>
               ) : (
-                <View>
+                <View style={{ height: SH(250) }}>
                   <FlatList
                     style={{ backgroundColor: COLORS.white }}
                     data={totalInventory?.productData}
@@ -233,6 +235,7 @@ export function TotalInventory({ onPress }) {
                     keyExtractor={(item) => item.id}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
+                    bounces={false}
                   />
                 </View>
               )}
