@@ -21,6 +21,7 @@ const OrderDetail = ({
   declineHandler,
   acceptHandler,
 }) => {
+  console.log('orderStatus====', openShippingOrders);
   return (
     <>
       <View style={styles.orderToReviewView}>
@@ -202,7 +203,12 @@ const OrderDetail = ({
                 openShippingOrders === '1' ||
                 openShippingOrders === '2' ? (
                   <TouchableOpacity
-                    onPress={() => acceptHandler(userDetail?.id)}
+                    onPress={() =>
+                      acceptHandler(
+                        userDetail?.id,
+                        openShippingOrders === '0' ? 1 : openShippingOrders === '1' ? 2 : 3
+                      )
+                    }
                     style={styles.acceptButtonView}
                   >
                     <Text style={styles.acceptTextStyle}>

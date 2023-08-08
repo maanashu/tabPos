@@ -1640,7 +1640,7 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     position: 'absolute',
-    top: -40,
+    top: 0,
     right: -50,
     borderRadius: 10,
     padding: 18,
