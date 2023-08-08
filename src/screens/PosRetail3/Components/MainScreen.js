@@ -40,6 +40,7 @@ import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { TYPES } from '@/Types/Types';
 import {
   addToServiceCart,
@@ -59,6 +60,8 @@ import { CartListModal } from './CartListModal';
 import { log } from 'react-native-reanimated';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
+import { items, subItems } from '@/constants/staticData';
+import { FilterDropDown } from './FilterDropDown';
 
 export function MainScreen({
   cartScreenHandler,
@@ -155,6 +158,8 @@ export function MainScreen({
   const [productCon, setProductCon] = useState(true);
   const [serviceCon, setServiceCon] = useState(false);
   const [filterCon, setFilterCon] = useState(false);
+  const [serviceItemSave, setServiceItemSave] = useState();
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -184,16 +189,6 @@ export function MainScreen({
     dispatch(addTocart(data));
   };
 
-  const onClickServiceCart = (item) => {
-    const data = {
-      seller_id: sellerID,
-      supplyId: item?.supplies?.[0]?.id,
-      supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
-      product_id: item?.id,
-    };
-    dispatch(addToServiceCart(data));
-  };
-
   const originalFilterData = [
     {
       id: 1,
@@ -215,7 +210,8 @@ export function MainScreen({
       setAddCartModal(true);
     }
   };
-  const serviceFun = () => {
+  const serviceFun = (item) => {
+    setServiceItemSave(item);
     setAddServiceCartModal(true);
   };
 
@@ -391,6 +387,10 @@ export function MainScreen({
     setFilterCon(!filterCon);
   };
 
+  const onSelectedItemsChange = (selectedItems) => {
+    setSelectedItems(selectedItems);
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.homeScreenCon}>
@@ -514,7 +514,7 @@ export function MainScreen({
                     </TouchableOpacity>
                     {filterCon ? (
                       <View style={styles.categoryFilterCon}>
-                        <Text>In progress</Text>
+                        <FilterDropDown data={items} sellerid={sellerID} />
                       </View>
                     ) : null}
                   </View>
@@ -540,6 +540,7 @@ export function MainScreen({
                   contentContainerStyle={{
                     flexGrow: 1,
                     justifyContent: 'space-between',
+                    zIndex: -99,
                   }}
                   scrollEnabled={true}
                   ListEmptyComponent={() => (
@@ -563,7 +564,7 @@ export function MainScreen({
                   return (
                     <TouchableOpacity
                       style={styles.productCon}
-                      onPress={() => serviceFun(item.id)}
+                      onPress={() => serviceFun(item)}
                       activeOpacity={0.7}
                     >
                       <View style={styles.avalibleServiceCon}>
@@ -614,14 +615,14 @@ export function MainScreen({
                         <Text numberOfLines={1} style={styles.productPrice}>
                           ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
                         </Text>
-                        <TouchableOpacity onPress={() => onClickServiceCart(item)}>
+                        <View>
                           <Image source={addToCart} style={styles.addToCart} />
                           {/* {isProductMatchArray ? (
                           <View style={styles.productBadge}>
                             <Text style={styles.productBadgeText}>{cartAddQty}</Text>
                           </View>
                         ) : null} */}
-                        </TouchableOpacity>
+                        </View>
                       </View>
                     </TouchableOpacity>
                   );
@@ -837,6 +838,7 @@ export function MainScreen({
           crossHandler={() => setAddServiceCartModal(false)}
           // detailHandler={() => setAddCartDetailModal(true)}
           sellerID={sellerID}
+          itemData={serviceItemSave}
         />
       </Modal>
 

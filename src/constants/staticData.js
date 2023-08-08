@@ -1165,57 +1165,6 @@ export const deliveryTypes = [
   },
 ];
 
-export const DeliveryDrawer = [
-  {
-    key: '1',
-    image: task,
-    title: 'Orders to Review',
-    count: '49',
-  },
-  {
-    key: '2',
-    image: drawerdeliveryTruck,
-    title: 'Accepted',
-    count: '23',
-  },
-  {
-    key: '3',
-    image: timer,
-    title: 'Order Preparing ',
-    count: '15',
-  },
-  {
-    key: '4',
-    image: Group,
-    title: 'Printing Label',
-    count: '9',
-  },
-  {
-    key: '5',
-    image: Delivery,
-    title: 'Shipped',
-    count: '49',
-  },
-  {
-    key: '6',
-    image: Cart,
-    title: 'Delivered',
-    count: '15',
-  },
-  {
-    key: '7',
-    image: NoCard,
-    title: 'Rejected/ Cancelled',
-    count: '9',
-  },
-  {
-    key: '8',
-    image: ReturnTruck,
-    title: 'Cancelled',
-    count: '23',
-  },
-];
-
 export const deliveryDrawer = [
   {
     key: '1',
@@ -1293,5 +1242,119 @@ export const graphOptions = [
     key: '4',
     title: 'Delivered Orders',
     checked: true,
+  },
+];
+
+export const items = [
+  {
+    name: 'Category',
+    id: 0,
+    isExpand: false,
+    subItems: [
+      {
+        name: 'Featured Styles',
+        id: 1,
+        isChecked: false,
+      },
+      {
+        name: 'Straight',
+        id: 2,
+        isChecked: false,
+      },
+      {
+        name: 'Loose',
+        id: 3,
+        isChecked: false,
+      },
+      {
+        name: 'Skinny',
+        id: 4,
+        isChecked: false,
+      },
+      {
+        name: 'Bootcut',
+        id: 5,
+        isChecked: false,
+      },
+      {
+        name: 'Flare',
+        id: 6,
+        isChecked: false,
+      },
+    ],
+  },
+  {
+    name: 'Sub Category',
+    id: 1,
+    isExpand: false,
+    subItems: [
+      {
+        name: 'Featured Styles',
+        id: 1,
+        isChecked: false,
+      },
+      {
+        name: 'Straight',
+        id: 2,
+        isChecked: false,
+      },
+      {
+        name: 'Loose',
+        id: 3,
+        isChecked: false,
+      },
+      {
+        name: 'Skinny',
+        id: 4,
+        isChecked: false,
+      },
+      {
+        name: 'Bootcut',
+        id: 5,
+        isChecked: false,
+      },
+      {
+        name: 'Flare',
+        id: 6,
+        isChecked: false,
+      },
+    ],
+  },
+  {
+    name: 'Brand',
+    id: 2,
+    isExpand: false,
+    subItems: [
+      {
+        name: 'Featured Styles',
+        id: 1,
+        isChecked: false,
+      },
+      {
+        name: 'Straight',
+        id: 2,
+        isChecked: false,
+      },
+      {
+        name: 'Loose',
+        id: 3,
+        isChecked: false,
+      },
+      {
+        name: 'Skinny',
+        id: 4,
+        isChecked: false,
+      },
+      {
+        name: 'Bootcut',
+        id: 5,
+        isChecked: false,
+      },
+      {
+        name: 'Flare',
+        id: 6,
+        isChecked: false,
+      },
+    ],
   },
 ];

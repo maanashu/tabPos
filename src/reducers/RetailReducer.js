@@ -108,7 +108,7 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.GET_ALL_CART_SUCCESS:
       return {
         ...state,
-        getAllCart: payload?.payload ?? [],
+        getAllCart: payload?.payload,
       };
     case TYPES.GET_ALL_CART_RESET:
       return {
@@ -202,7 +202,6 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         requestMoney: payload?.requestMoney,
       };
     case TYPES.REQUEST_CHECK_SUCCESS:
-      console.log('reducer console', state.requestCheck, payload);
       return {
         ...state,
         requestCheck: payload,

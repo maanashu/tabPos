@@ -9,7 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -19,10 +19,12 @@ import { getRetail } from '@/selectors/RetailSelectors';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { slotData, weekData } from '@/constants/flatListData';
+import { addToServiceCart } from '@/actions/RetailAction';
 
 const windowWidth = Dimensions.get('window').width;
 
-export function AddServiceCartModal({ crossHandler, detailHandler }) {
+export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sellerID }) {
+  const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
 
   const [colorId, setColorId] = useState(null);
@@ -34,61 +36,117 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
   const [selectedItems, setSelectedItems] = useState([]);
   const [string, setString] = useState();
 
-  // const getcolorName = colorCode => {
-  //   console.log('colorCode', colorCode);
-  //   const color = tinycolor(colorCode);
-  //   let colorNamessss = color.toName();
-  //   return colorNamessss;
-  // };
+  const [servicerProId, setServiceProId] = useState();
+  const [providerDetail, setProviderDetail] = useState();
 
-  // useEffect(() => {
-  //   setString(selectedItems.join(','));
-  // }, [selectedItems]);
+  const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
+  const [selectedDate, setselectedDate] = useState('Today');
 
-  // const getColorName = colorCode => {
-  //   console.log('colorCode', colorCode);
-  //   const color = tinycolor(colorCode);
-  //   let colorName = color.toName();
-  //   colorName = colorName.charAt(0).toUpperCase() + colorName.slice(1);
-  //   setColors(colorName);
-  //   return colorName;
-  // };
-  // color select list start
-  // color select list end
-
-  // Size select list start
-  // Size select list end
+  const onClickServiceProvider = (item) => {
+    setServiceProId(item.id);
+    setProviderDetail(item?.user);
+  };
 
   const renderWeekItem = ({ item, index }) => (
-    <View
+    <TouchableOpacity
       style={{
         alignItems: 'center',
         justifyContent: 'center',
         width: SW(31.5),
         height: SH(60),
       }}
+      onPress={() => {
+        setselectedDate(item.date);
+      }}
     >
-      <Text style={{ fontFamily: Fonts.Regular, fontSize: SF(14) }}>{item?.day}</Text>
-      <Text style={{ fontFamily: Fonts.SemiBold, fontSize: SF(18) }}>{item?.date}</Text>
-    </View>
+      <Text
+        style={{
+          fontFamily: Fonts.Regular,
+          fontSize: SF(14),
+          color: item.date === selectedDate ? COLORS.primary : COLORS.dark_grey,
+        }}
+      >
+        {item?.day}
+      </Text>
+      <Text
+        style={{
+          fontFamily: Fonts.SemiBold,
+          fontSize: SF(18),
+          color: item.date === selectedDate ? COLORS.primary : COLORS.black,
+        }}
+      >
+        {item?.date}
+      </Text>
+    </TouchableOpacity>
   );
 
   const renderSlotItem = ({ item, index }) => (
-    <View
+    <TouchableOpacity
       style={{
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        width: SH(140),
-        height: SH(42),
+        width: '25.1%',
+        height: ms(24),
         borderColor: COLORS.solidGrey,
+        backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
+      }}
+      onPress={() => {
+        setselectedTimeSlotIndex(index);
       }}
     >
-      <Text style={{ fontFamily: Fonts.Regular, fontSize: SF(14), color: COLORS.dark_grey }}>
+      <Text
+        style={{
+          fontFamily: Fonts.Regular,
+          fontSize: SF(14),
+          color: selectedTimeSlotIndex === index ? COLORS.white : COLORS.dark_grey,
+        }}
+      >
         {item?.time}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
+
+  const ServiceProviderItem = ({ item, onPress, borderColor }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.imageSelectedBorder, { borderColor }]}>
+      <Image
+        source={userImage}
+        style={{
+          width: ms(45),
+          height: ms(45),
+          resizeMode: 'contain',
+          borderRadius: 100,
+        }}
+      />
+    </TouchableOpacity>
+  );
+
+  const renderServiceProviderItem = ({ item }) => {
+    const borderColor = item.id === servicerProId ? COLORS.primary : 'transparent';
+
+    return (
+      <ServiceProviderItem
+        item={item}
+        onPress={() => onClickServiceProvider(item)}
+        borderColor={borderColor}
+      />
+    );
+  };
+
+  const addToServiceCartHandler = () => {
+    const data = {
+      supplyId: itemData?.supplies?.[0]?.id,
+      supplyPriceID: itemData?.supplies?.[0]?.supply_prices[0]?.id,
+      product_id: itemData?.id,
+      appName: 'pos',
+      date: '2023-07-26',
+      startTime: '07:00 PM',
+      endTime: '08:00 PM',
+      // posUserId : ""
+    };
+    dispatch(addToServiceCart(data));
+    crossHandler();
+  };
 
   return (
     <View style={styles.addCartCon}>
@@ -104,11 +162,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
           <TouchableOpacity style={styles.continueBtnCon} onPress={detailHandler}>
             <Text style={styles.detailBtnCon}>Details</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.addToCartCon}
-
-            // onPress={addToCartHandler}
-          >
+          <TouchableOpacity style={styles.addToCartCon} onPress={addToServiceCartHandler}>
             <Text style={styles.addTocartText}>Add to Cart</Text>
           </TouchableOpacity>
         </View>
@@ -122,11 +176,13 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
       >
         <View style={[styles.displayflex, { marginTop: SH(10) }]}>
           <View style={styles.detailLeftDetail}>
-            <Text style={styles.colimbiaText}>Full body Massage</Text>
+            <Text style={styles.colimbiaText}>{itemData?.name}</Text>
 
             <Text style={styles.sizeAndColor}>Est: 45 ~ 50 min </Text>
           </View>
-          <Text style={styles.colimbiaText}>$6.80</Text>
+          <Text style={styles.colimbiaText}>
+            ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+          </Text>
         </View>
 
         <View style={{ alignItems: 'center' }}>
@@ -152,35 +208,14 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
             <Text style={styles.colorText}>Service Provider</Text>
             <View style={[styles.colorRow, styles.serviceRow]} />
           </View>
-          {/* <FlatList
-            data={finalColorArray?.[0]?.values}
-            renderItem={coloredRenderItem}
-            keyExtractor={(item) => item.id}
-            extraData={finalColorArray?.[0]?.values}
-            numColumns={4}
-          />
-          <Spacer space={SH(15)} />
-          {finalSizeArray[0]?.values?.length >= 1 ? (
-            <View style={styles.displayRow}>
-              <View style={styles.colorRow} />
-              <Text style={styles.colorText}>SIZE</Text>
-              <View style={styles.colorRow} />
-            </View>
-          ) : null}
-          <Spacer space={SH(15)} />
-          <FlatList
-            data={finalSizeArray[0]?.values}
-            renderItem={sizeRenderItem}
-            keyExtractor={(item) => item.id}
-            extraData={finalSizeArray[0]?.values}
-            numColumns={4}
-          />{' '}
-          */}
         </View>
 
         <View>
           <Text style={styles.selected}>
-            Selected: <Text style={{ color: COLORS.primary }}>Anna</Text>{' '}
+            Selected:{' '}
+            <Text style={{ color: COLORS.primary }}>
+              {providerDetail?.user_profiles?.firstname}
+            </Text>
           </Text>
           <Spacer space={SH(10)} />
           <View
@@ -189,14 +224,14 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
               alignItems: 'center',
             }}
           >
-            <ScrollView horizontal={true}>
-              {[1, 2, 3, 4]?.map(() => (
-                <Image
-                  source={userImage}
-                  style={{ width: ms(45), height: ms(45), resizeMode: 'contain' }}
-                />
-              ))}
-            </ScrollView>
+            <FlatList
+              data={itemData?.pos_users}
+              extraData={itemData?.pos_users}
+              renderItem={renderServiceProviderItem}
+              keyExtractor={(item) => item.id}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
           </View>
           <Spacer space={SH(10)} />
 
@@ -212,10 +247,17 @@ export function AddServiceCartModal({ crossHandler, detailHandler }) {
           </Text>
         </View>
 
-        <View style={{ marginTop: SH(15), borderWidth: 1, borderColor: COLORS.solidGrey }}>
-          <FlatList scrollEnabled={false} horizontal data={weekData} renderItem={renderWeekItem} />
+        <View
+          style={{
+            marginTop: SH(15),
+            borderWidth: 1,
+            borderColor: COLORS.solidGrey,
+            width: '100%',
+          }}
+        >
+          <FlatList horizontal data={weekData} renderItem={renderWeekItem} />
 
-          <FlatList numColumns={4} renderItem={renderSlotItem} data={slotData} />
+          <FlatList data={slotData} numColumns={4} renderItem={renderSlotItem} />
         </View>
       </View>
     </View>

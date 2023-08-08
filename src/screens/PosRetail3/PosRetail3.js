@@ -58,7 +58,7 @@ export function PosRetail3() {
   const [addDiscount, setAddDiscount] = useState(false);
   const [page, setPage] = useState(1);
   const [tipAmount, selectTipAmount] = useState();
-  const [fromWhichCart, setFromWhichCart] = useState("Product");
+  const [fromWhichCart, setFromWhichCart] = useState('Product');
   const [comingScreen, setComingScreen] = useState();
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
@@ -262,9 +262,8 @@ export function PosRetail3() {
       <CartScreen
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
-          setFromWhichCart("Product")
-          setselectedScreen('CartAmountPayBy'),
-          setComingScreen('CartScreen');
+          setFromWhichCart('Product');
+          setselectedScreen('CartAmountPayBy'), setComingScreen('CartScreen');
         }}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
@@ -275,10 +274,8 @@ export function PosRetail3() {
       <CartServiceScreen
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
-          setFromWhichCart("Service")
-          setselectedScreen('CartAmountPayBy'),
-          setComingScreen('CartServiceScreen');
-
+          setFromWhichCart('Service');
+          setselectedScreen('CartAmountPayBy'), setComingScreen('CartServiceScreen');
         }}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
@@ -298,7 +295,11 @@ export function PosRetail3() {
     ),
     ['CartAmountPayBy']: (
       <CartAmountPayBy
-        onPressBack={() => comingScreen ==='CartScreen' ?  setselectedScreen('CartScreen') : setselectedScreen('CartServiceScreen')}
+        onPressBack={() =>
+          comingScreen === 'CartScreen'
+            ? setselectedScreen('CartScreen')
+            : setselectedScreen('CartServiceScreen')
+        }
         tipAmount={tipAmount}
         onPressPaymentMethod={(item) => {
           if (item.index === 0) {
@@ -314,6 +315,12 @@ export function PosRetail3() {
         }}
         cartid={cartID2}
         cartType={fromWhichCart}
+        onPressContinue={(cartData, data) => {
+          setpaymentMethod('Jbr');
+          setSavedTempCartData(cartData?.getAllCart);
+          setselectedScreen('FinalPaymentScreen');
+          setCashPayDetail(data);
+        }}
       />
     ),
     ['PayByCard']: (
@@ -336,8 +343,15 @@ export function PosRetail3() {
           setselectedScreen('CartAmountPayBy');
         }}
         onPressContinue={(cartData, data) => {
+          // console.log("CART__DATA",cartData);
           setpaymentMethod('Cash');
           setSavedTempCartData(cartData?.getAllCart);
+          setselectedScreen('FinalPaymentScreen');
+          setCashPayDetail(data);
+        }}
+        onPressServiceContinue={(cartData, data) => {
+          setpaymentMethod('Cash');
+          setSavedTempCartData(cartData?.getserviceCart);
           setselectedScreen('FinalPaymentScreen');
           setCashPayDetail(data);
         }}

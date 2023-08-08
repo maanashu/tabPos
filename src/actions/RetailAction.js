@@ -152,7 +152,7 @@ const clearServiceAllCartRequest = () => ({
   type: TYPES.CLEAR_SERVICE_ALL_CART_REQUEST,
   payload: null,
 });
-const clearServiceAllCartSuccess = () => ({
+export const clearServiceAllCartSuccess = () => ({
   type: TYPES.CLEAR_SERVICE_ALL_CART_SUCCESS,
   payload: {},
 });
@@ -880,8 +880,8 @@ export const createServiceOrder = (data, callback) => async (dispatch) => {
   try {
     const res = await RetailController.createServiceOrder(data);
     dispatch(createServiceOrderSuccess(res));
-    dispatch(clearServiceAllCart());
-    dispatch(getServiceCart());
+    // dispatch(clearServiceAllCart());
+    // dispatch(getServiceCart());
     callback && callback(res);
   } catch (error) {
     dispatch(createServiceOrderError(error.message));
@@ -956,6 +956,16 @@ export const getOneProduct = (sellerID, productId) => async (dispatch) => {
   }
 };
 
+export const getOneAppoinment = (sellerID, productId) => async (dispatch) => {
+  dispatch(getOneProductRequest());
+  try {
+    const res = await RetailController.getOneProduct(sellerID, productId);
+    return dispatch(getOneProductSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getOneProductError(error.message));
+  }
+};
+
 export const checkSuppliedVariant = (data) => async (dispatch) => {
   dispatch(checkSuppliedVariantRequest());
   try {
@@ -973,10 +983,8 @@ export const requestCheck = (data) => async (dispatch) => {
   dispatch(requestCheckRequest());
   try {
     const res = await RetailController.requestCheck(data);
-    console.log('res in action', res);
     return dispatch(requestCheckSuccess(res?.payload?.status));
   } catch (error) {
-    console.log('error in action', error);
     dispatch(requestCheckError(error.message));
   }
 };

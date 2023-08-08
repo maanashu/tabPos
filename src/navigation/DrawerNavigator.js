@@ -130,7 +130,24 @@ export function DrawerNavigator(props) {
             <Image style={styles.iconStyle} source={focused ? logo_icon : logo_icon} />
           )}
         />
+
         <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'posRetail3' ? true : false}
+          onPress={() => {
+            setActive('posRetail3');
+            navigate(NAVIGATION.posRetail3);
+            // dispatch(addSellingSelection());
+            // dispatch(cartScreenTrue({ state: false }));
+            // dispatch(getUserDetailSuccess([]));
+          }}
+          icon={({ focused, color, size }) => (
+            <Image source={focused ? retail : greyRetail} style={styles.iconStyle} />
+          )}
+        />
+
+        {/* <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
           focused={active === 'posRetail2' ? true : false}
@@ -144,7 +161,7 @@ export function DrawerNavigator(props) {
           icon={({ focused, color, size }) => (
             <Image source={focused ? retail : greyRetail} style={styles.iconStyle} />
           )}
-        />
+        /> */}
 
         {/* <DrawerItem
           label={''}
@@ -287,22 +304,6 @@ export function DrawerNavigator(props) {
               source={focused ? blueSetting : settings}
               style={focused ? styles.iconStyle2 : styles.iconStyle}
             />
-          )}
-        />
-
-        <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'posRetail3' ? true : false}
-          onPress={() => {
-            setActive('posRetail3');
-            navigate(NAVIGATION.posRetail3);
-            // dispatch(addSellingSelection());
-            // dispatch(cartScreenTrue({ state: false }));
-            // dispatch(getUserDetailSuccess([]));
-          }}
-          icon={({ focused, color, size }) => (
-            <Image source={focused ? retail : greyRetail} style={styles.iconStyle} />
           )}
         />
 

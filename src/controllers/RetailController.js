@@ -282,6 +282,7 @@ export class RetailController {
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response', response);
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -293,6 +294,7 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -306,16 +308,18 @@ export class RetailController {
 
   static async addToServiceCart(data) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart;
       const body = {
-        seller_id: data.seller_id,
+        seller_id: sellerID,
         supply_id: data.supplyId.toString(),
         supply_price_id: data.supplyPriceID.toString(),
         product_id: data.product_id.toString(),
-        app_name: 'pos',
-        date: '2023-07-26',
-        start_time: '07:00 PM',
-        end_time: '08:00 PM',
+        app_name: data?.appName,
+        date: data?.date,
+        start_time: data?.startTime,
+        end_time: data?.endTime,
+        // "pos_user_id": data?.posUserId
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
@@ -551,19 +555,10 @@ export class RetailController {
   static async createServiceOrder(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.createServiceOrder;
-      const body = data?.userId
-        ? {
-            cart_id: data.cartid,
-            user_id: data.userId,
-            tips: data.tips,
-            mode_of_payment: data.modeOfPayment,
-          }
-        : {
-            cart_id: data.cartid,
-            tips: data.tips,
-            mode_of_payment: data.modeOfPayment,
-          };
-
+      const body = {
+        cart_id: data?.serviceCartId,
+        mode_of_payment: data?.modeOfPayment,
+      };
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response?.msg === 'Order placed successfully!') {
@@ -606,7 +601,6 @@ export class RetailController {
       const endpoint = WALLET_URL + ApiWalletInventory.walletGetByPhone + `?search=${walletIdInp}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('wallet found response', JSON.stringify(response));
           if (response?.msg === 'api wallets found') {
             Toast.show({
               position: 'bottom',
@@ -642,7 +636,6 @@ export class RetailController {
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('request money response', JSON.stringify(response));
           if (response?.msg === 'Payment request sent success!') {
             Toast.show({
               text2: 'Request send successfully',
@@ -654,8 +647,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('eror sending ', JSON.stringify(error));
-          console.log('eror sending ', JSON.stringify(body));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -830,6 +821,7 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
