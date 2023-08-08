@@ -193,7 +193,6 @@ export function DashBoard({ navigation }) {
   const orderTime = (estimateTime) => {
     const currentDateTime = new Date();
     const givenTimestamp = new Date(estimateTime);
-    console.log("dddd",givenTimestamp);
     const timeDifference = givenTimestamp.getTime() - currentDateTime.getTime();
     const hours = Math.floor(timeDifference / (1000 * 60 * 60));
     const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);

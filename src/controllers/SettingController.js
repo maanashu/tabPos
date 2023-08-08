@@ -220,7 +220,6 @@ export class SettingController {
   static async verifyGoogleCode(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.verifyGoogleCode;
-
       HttpClient.post(endpoint, data)
         .then((response) => {
           resolve(response);
@@ -243,7 +242,6 @@ export class SettingController {
   static async configureGoogleCode(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.configureGoogleCode;
-
       HttpClient.post(endpoint, data)
         .then((response) => {
           resolve(response);
