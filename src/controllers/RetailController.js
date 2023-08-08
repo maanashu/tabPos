@@ -998,11 +998,8 @@ export class RetailController {
       const body = {
         notes: data.notes,
       };
-      console.log('endpoint', endpoint);
-      console.log('body', body);
       HttpClient.put(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           if (response?.msg === 'Appointment detail updated!') {
             Toast.show({
               text2: 'Notes add succesfully',
@@ -1014,7 +1011,6 @@ export class RetailController {
           }
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',

@@ -28,7 +28,13 @@ import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { getSetting } from '@/selectors/SettingSelector';
-import { configureGoogleCode, getGoogleCode, getSettings, upadteApi, verifyGoogleCode } from '@/actions/SettingAction';
+import {
+  configureGoogleCode,
+  getGoogleCode,
+  getSettings,
+  upadteApi,
+  verifyGoogleCode,
+} from '@/actions/SettingAction';
 
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
@@ -42,7 +48,7 @@ export function POSUsers({ navigation }) {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const posUserArray = getAuth?.getAllPosUsers;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const TWO_FACTOR=getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled
+  const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
   const refSix = useBlurOnFulfill({ value, cellCount: CELL_COUNT_SIX });
   const [twoStepModal, setTwoStepModal] = useState(false);
   const [googleAuthStart, setGoogleAuthStart] = useState(false);
@@ -76,14 +82,13 @@ export function POSUsers({ navigation }) {
     //   dispatch(getAllPosUsers(sellerID));
     // }
     if (TWO_FACTOR) {
-        setSixDigit(true)
-        setTwoFactorEnabled(true);
-        setTwoStepModal(true);
-        // dispatch(getGoogleCode());
-      } else {
-        dispatch(getAllPosUsers(sellerID));
-      }
-
+      setSixDigit(true);
+      setTwoFactorEnabled(true);
+      setTwoStepModal(true);
+      // dispatch(getGoogleCode());
+    } else {
+      dispatch(getAllPosUsers(sellerID));
+    }
   };
 
   const getPosUserLoading = useSelector((state) =>
@@ -132,23 +137,20 @@ export function POSUsers({ navigation }) {
       });
       return;
     } else {
-
-    // const data = {
+      // const data = {
       //   token: value,
       //   status: true,
       // };
-      const data={
-        code:value
-      }
+      const data = {
+        code: value,
+      };
       const verificationFunction = TWO_FACTOR ? verifyGoogleCode : configureGoogleCode;
 
       const res = await verificationFunction(data)(dispatch);
-      console.log("response", res);
-      
+
       if (res?.msg === 'Code verified successfully') {
         var updatedData = merchantData;
         updatedData.user.user_profiles.is_two_fa_enabled = false;
-        console.log("sdsdsd",JSON.stringify(updatedData));
         dispatch(merchantLoginSuccess(updatedData));
         setValue('');
         setTwoFactorEnabled(false);
@@ -248,8 +250,8 @@ export function POSUsers({ navigation }) {
         </View>
       ) : (
         <View style={styles.containerSix}>
-          {sixDigit&& 
-                 <View style={styles.verifyContainerSix}>
+          {sixDigit && (
+            <View style={styles.verifyContainerSix}>
               <Spacer space={SH(25)} />
               <View style={[styles.flexRowSix, styles.flexWidthSix]}>
                 <Text>{''}</Text>
@@ -292,7 +294,8 @@ export function POSUsers({ navigation }) {
                 setEnteredValue={setValue}
                 onPressContinueButton={passcodeHandlerSix}
               />
-            </View>}
+            </View>
+          )}
           {/* {sixDigit ? (
             <View style={styles.verifyContainerSix}>
               <Spacer space={SH(25)} />
