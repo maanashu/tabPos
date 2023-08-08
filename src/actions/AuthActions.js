@@ -116,6 +116,7 @@ export const merchantLogin = data => async dispatch => {
   dispatch(merchantLoginRequest());
   try {
     const res = await AuthController.merchantLogin(data);
+    console.log("LOGIN_REPOMNSE",JSON.stringify(res));
     return dispatch(merchantLoginSuccess(res?.payload));
   } catch (error) {
     return dispatch(merchantLoginError(error));

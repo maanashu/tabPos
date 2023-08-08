@@ -184,7 +184,18 @@ const verifyGoogleCodeError = (error) => ({
   type: TYPES.VERIFY_GOOGLE_CODE_ERROR,
   payload: { error },
 });
-
+const configureGoogleCodeRequest = () => ({
+  type: TYPES.CONFIGURE_GOOGLE_CODE_REQUEST,
+  payload: null,
+});
+const configureGoogleCodeSuccess = (getGoogleCode) => ({
+  type: TYPES.CONFIGURE_GOOGLE_CODE_SUCCESS,
+  payload: { getGoogleCode },
+});
+const configureGoogleCodeError = (error) => ({
+  type: TYPES.CONFIGURE_OOGLE_CODE_ERROR,
+  payload: { error },
+});
 const taxPayerRequest = () => ({
   type: TYPES.TAX_PAYER_REQUEST,
   payload: null,
@@ -223,6 +234,7 @@ export const getSettings = () => async (dispatch) => {
   try {
     const res = await SettingController.getSetting();
     dispatch(getSettingSuccess(res?.payload));
+    return res.payload
   } catch (error) {
     dispatch(getSettingError(error.message));
   }
@@ -350,9 +362,23 @@ export const verifyGoogleCode = (data) => async (dispatch) => {
   dispatch(verifyGoogleCodeRequest());
   try {
     const res = await SettingController.verifyGoogleCode(data);
-    return dispatch(verifyGoogleCodeSuccess(res));
+    dispatch(verifyGoogleCodeSuccess(res));
+    return res
   } catch (error) {
     dispatch(verifyGoogleCodeError(error.message));
+    return error
+  }
+};
+
+export const configureGoogleCode = (data) => async (dispatch) => {
+  dispatch(configureGoogleCodeRequest());
+  try {
+    const res = await SettingController.configureGoogleCode(data);
+    dispatch(configureGoogleCodeSuccess(res));
+    return res
+  } catch (error) {
+    dispatch(configureGoogleCodeError(error.message));
+    return error
   }
 };
 

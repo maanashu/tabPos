@@ -100,6 +100,7 @@ export class AuthController {
         phone_number: data.phone_no,
         security_pin: data.pin,
       };
+     
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response.status_code === 200) {
