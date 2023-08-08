@@ -39,13 +39,13 @@ export function TotalDeliveryOrders({ onPress }) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>3</Text>
+        <Text style={styles.revenueDataText}>{item?.id}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>$23,000</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$560</Text>
+        <Text style={styles.revenueDataText}>${item?.discount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>0</Text>
@@ -60,13 +60,13 @@ export function TotalDeliveryOrders({ onPress }) {
         <Text style={styles.revenueDataText}>$450</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2300</Text>
+        <Text style={styles.revenueDataText}>${item?.tax}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>$19,666.50</Text>
+        <Text style={styles.revenueDataText2}>${item?.total_sale_price}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>$19,666.50</Text>
+        <Text style={styles.revenueDataText2}>${item?.revenue}</Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
@@ -189,7 +189,7 @@ export function TotalDeliveryOrders({ onPress }) {
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Orders</Text>
+                <Text style={styles.revenueText}>Id</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Gross Sales</Text>
