@@ -121,7 +121,9 @@ export function TotalInventory({ onPress }) {
         <LineChart
           bezier
           data={{
-            labels: totalInventory?.graph_data?.labels,
+            labels: totalInventory?.graph_data?.labels
+              ? totalInventory?.graph_data?.labels
+              : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {
                 data: totalInventory?.graph_data?.datasets?.[0]?.data

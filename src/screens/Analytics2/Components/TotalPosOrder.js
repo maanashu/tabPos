@@ -59,7 +59,7 @@ export function TotalPosOrder({ onPress }) {
 
       <View style={styles.graphHeaderView}>
         <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
-        <View style={{ alignSelf: 'center', height: SH(210) }}>
+        {/* <View style={{ alignSelf: 'center', height: SH(210) }}>
           <BarChartCom
             barWid={Dimensions.get('window').width - SW(110)}
             barHei={SH(140)}
@@ -68,9 +68,9 @@ export function TotalPosOrder({ onPress }) {
             labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
             initialSpacing={SW(20)}
           />
-        </View>
+        </View> */}
 
-        {/* <LineChart
+        <LineChart
           bezier
           data={{
             labels: [
@@ -118,7 +118,7 @@ export function TotalPosOrder({ onPress }) {
           withShadow={false}
           fromZero
           withVerticalLines={false}
-        /> */}
+        />
       </View>
 
       <View style={styles.tableMainView}>

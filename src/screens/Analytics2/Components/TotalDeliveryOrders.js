@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import { ScreenWrapper } from '@/components';
 import { styles } from '../Analytics2.styles';
 import { Fonts, backArrow2, calendar, clay, dropdown } from '@/assets';
@@ -7,6 +15,8 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { LineChart } from 'react-native-chart-kit';
 import { DataTable } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 export function TotalDeliveryOrders({ onPress }) {
   const [channel, setChannel] = useState(false);
@@ -15,6 +25,49 @@ export function TotalDeliveryOrders({ onPress }) {
     { label: 'Innova', value: 'Innova' },
     { label: 'Maruti', value: 'Maruti' },
   ]);
+
+  const getAnalyticsData = useSelector(getAnalytics);
+  const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
+
+  const getDeliveryOrderList = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View>
+          <Text style={styles.revenueDataText}>Oct 23, 2023</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>3</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$23,000</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$560</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>0</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$560</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$23.50</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$450</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>$2300</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText2}>$19,666.50</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText2}>$19,666.50</Text>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
   return (
     <View>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
@@ -55,21 +108,30 @@ export function TotalDeliveryOrders({ onPress }) {
         <LineChart
           bezier
           data={{
-            labels: [
-              '',
-              'Monday',
-              'Tuesday',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-              'Saturday',
-              'Sunday',
-            ],
+            labels: analyticOrderGraphs?.delivery_graph?.graph_data?.labels
+              ? analyticOrderGraphs?.delivery_graph?.graph_data?.labels
+              : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {
-                data: [12, 20, 12, 30, 42, 40, 50, 40],
+                data: analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[0]?.data
+                  ? analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[0]?.data
+                  : [12, 20, 12, 30, 60, 40, 50],
                 strokeWidth: 2,
                 color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
+              },
+              {
+                data: analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[1]?.data
+                  ? analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[1]?.data
+                  : [11, 15, 10, 25, 55, 35, 45],
+                strokeWidth: 2,
+                color: (opacity = 1) => `rgba(107, 132, 211, ${opacity})`, // optional
+              },
+              {
+                data: analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[2]?.data
+                  ? analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[2]?.data
+                  : [8, 10, 8, 20, 50, 30, 40],
+                strokeWidth: 2,
+                color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`, // optional
               },
             ],
           }}
@@ -152,50 +214,31 @@ export function TotalDeliveryOrders({ onPress }) {
               </DataTable.Title>
             </DataTable.Header>
 
-            {/* <FlatList
-                        data={getOrderListData}
-                        renderItem={getOrderListShipping}
-                        keyExtractor={item => item.id}
-                        showsHorizontalScrollIndicator={false}
-                      /> */}
-            <View style={styles.bottomTableView}>
-              <DataTable.Row>
-                <DataTable.Cell style={styles.dateTablealignStart}>
-                  <View>
-                    <Text style={styles.revenueDataText}>Oct 23, 2023</Text>
-                  </View>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>3</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$23,000</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$560</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>0</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$560</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$23.50</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$450</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$2300</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText2}>$19,666.50</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText2}>$19,666.50</Text>
-                </DataTable.Cell>
-              </DataTable.Row>
+            <View style={{ height: SH(380), zIndex: -99 }}>
+              {analyticOrderGraphs?.delivery_graph?.orderListData?.cancelled_data_list?.length ===
+              0 ? (
+                <View style={styles.listLoader}>
+                  <Text
+                    style={{
+                      fontSize: SF(20),
+                      color: COLORS.red,
+                    }}
+                  >
+                    {'No data found'}
+                  </Text>
+                </View>
+              ) : (
+                <View>
+                  <FlatList
+                    style={{ backgroundColor: COLORS.white }}
+                    data={analyticOrderGraphs?.delivery_graph?.productData}
+                    renderItem={getDeliveryOrderList}
+                    keyExtractor={(item) => item.id}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                  />
+                </View>
+              )}
             </View>
           </DataTable>
         </ScrollView>
