@@ -40,6 +40,7 @@ import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { TYPES } from '@/Types/Types';
 import {
   addToServiceCart,
@@ -59,6 +60,8 @@ import { CartListModal } from './CartListModal';
 import { log } from 'react-native-reanimated';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
+import { items, subItems } from '@/constants/staticData';
+import { FilterDropDown } from './FilterDropDown';
 
 export function MainScreen({
   cartScreenHandler,
@@ -156,6 +159,7 @@ export function MainScreen({
   const [serviceCon, setServiceCon] = useState(false);
   const [filterCon, setFilterCon] = useState(false);
   const [serviceItemSave, setServiceItemSave] = useState();
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -380,7 +384,11 @@ export function MainScreen({
     setProductCon(false);
   };
   const filterHandler = () => {
-    // setFilterCon(!filterCon);
+    setFilterCon(!filterCon);
+  };
+
+  const onSelectedItemsChange = (selectedItems) => {
+    setSelectedItems(selectedItems);
   };
 
   return (
@@ -506,7 +514,7 @@ export function MainScreen({
                     </TouchableOpacity>
                     {filterCon ? (
                       <View style={styles.categoryFilterCon}>
-                        <Text>In progress</Text>
+                        <FilterDropDown data={items} sellerid={sellerID} />
                       </View>
                     ) : null}
                   </View>
@@ -532,6 +540,7 @@ export function MainScreen({
                   contentContainerStyle={{
                     flexGrow: 1,
                     justifyContent: 'space-between',
+                    zIndex: -99,
                   }}
                   scrollEnabled={true}
                   ListEmptyComponent={() => (

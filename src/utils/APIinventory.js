@@ -105,14 +105,13 @@ export const ApiOrderInventory = {
   todayOrders: 'orders/pos/today/orders-count',
   graphOrders: 'orders/pos/graph/orders',
   todayShipStatus: 'orders/pos/shipping/orders',
-
   getServiceCart: 'appointment_carts/user',
   appintment_cart: 'appointment_carts',
   qrCode: 'poscarts/qr-code/',
   getAnalyticOrderGraphs: 'orders/pos/analytics/count/graph',
   getTotalOrder: 'orders/statistics/orders/total',
-
   qrCode: 'poscarts/qr-code/',
+  orderStatusCount: 'orders/pos/seller/multi-status/orders-count',
 };
 
 export const ApiWalletInventory = {

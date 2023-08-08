@@ -144,7 +144,7 @@ const todayShippingStatusError = (error) => ({
 });
 
 const todayCurrentStatusRequest = () => ({
-  type: TYPES.TODAY_CURRENT_STATUS_REQUEST,
+  type: TYPES.ORDER_STATUS_COUNT_REQUEST,
   payload: null,
 });
 const todayCurrentStatusSuccess = (todayCurrentStatus) => ({
@@ -153,6 +153,19 @@ const todayCurrentStatusSuccess = (todayCurrentStatus) => ({
 });
 const todayCurrentStatusError = (error) => ({
   type: TYPES.TODAY_CURRENT_STATUS_ERROR,
+  payload: { error },
+});
+
+const orderStatusCountRequest = () => ({
+  type: TYPES.ORDER_STATUS_COUNT_REQUEST,
+  payload: null,
+});
+const orderStatusCountSuccess = (orderStatusCount) => ({
+  type: TYPES.ORDER_STATUS_COUNT_SUCCESS,
+  payload: { orderStatusCount },
+});
+const orderStatusCountError = (error) => ({
+  type: TYPES.ORDER_STATUS_COUNT_ERROR,
   payload: { error },
 });
 
@@ -263,5 +276,15 @@ export const todayCurrentStatus = (sellerID) => async (dispatch) => {
     dispatch(todayCurrentStatusSuccess(res?.payload));
   } catch (error) {
     dispatch(todayCurrentStatusError(error.message));
+  }
+};
+
+export const orderStatusCount = (sellerID) => async (dispatch) => {
+  dispatch(orderStatusCountRequest());
+  try {
+    const res = await ShippingController.orderStatusCount(sellerID);
+    dispatch(orderStatusCountSuccess(res?.payload));
+  } catch (error) {
+    dispatch(orderStatusCountError(error.message));
   }
 };

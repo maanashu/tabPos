@@ -332,6 +332,9 @@ export { default as incomingOrders } from '@/assets/icons/deliveryOrdersNew/inco
 export { default as cancelledOrders } from '@/assets/icons/deliveryOrdersNew/cancelledOrders.png';
 export { default as returnedOrders } from '@/assets/icons/deliveryOrdersNew/returnedOrders.png';
 
+export { default as up } from '@/assets/icons/ic_posRetail/up.png';
+export { default as down } from '@/assets/icons/ic_posRetail/down.png';
+
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',
