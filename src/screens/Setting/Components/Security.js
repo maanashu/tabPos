@@ -45,6 +45,7 @@ export function Security() {
   const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
   const googleCode = getSettingData?.getGoogleCode;
   const [twoStepModal, setTwoStepModal] = useState(false);
+  const [factorEnable, setFactorEnable] = useState(null);
   const [googleAuthStart, setGoogleAuthStart] = useState(false);
   const [googleAuthScan, setGoogleAuthScan] = useState(false);
   const [sixDigit, setSixDigit] = useState(false);
@@ -94,14 +95,15 @@ export function Security() {
       const data={
         code:value
       }
-
       const verificationFunction = googleAuthicator? verifyGoogleCode : configureGoogleCode;
       const res = await verificationFunction(data)(dispatch);
-      console.log("response", res);
-      
-      console.log("response", res);  
       if (res?.msg === 'Code verified successfully') {
         setValue('');
+        const data={
+          "app_name": "pos",
+          "google_authenticator_status":factorEnable,
+        }
+        dispatch(upadteApi(data))
         dispatch(getSettings());
         setSixDigit(false);
       } else if (res === undefined) {
@@ -112,10 +114,12 @@ export function Security() {
 
   const toggleBtnHandler = () => {
     if (googleAuthicator === false) {
+      setFactorEnable(true)
       setTwoStepModal(true), 
       dispatch(getGoogleCode());
     } else {
       setSixDigit(true)
+      setFactorEnable(false)
       // setGoogleAuthScan(true);
       // dispatch(getGoogleCode());
     }
@@ -304,7 +308,7 @@ export function Security() {
                       ? [styles.checkoutButton, { backgroundColor: COLORS.primary }]
                       : styles.checkoutButton
                   }
-                  onPress={() => (setGoogleAuthStart(false), setGoogleAuthScan(false))}
+                  onPress={() => (setGoogleAuthStart(false), setGoogleAuthScan(true))}
                 >
                   <Text
                     style={

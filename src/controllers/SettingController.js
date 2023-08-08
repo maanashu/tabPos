@@ -7,14 +7,11 @@ export class SettingController {
   static async getSetting() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getSetting + `?app_name=pos`;
-      console.log("ENDPOPOO",endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
-          console.log("response",response);
         })
         .catch((error) => {
-          console.log("erroror",error);
           if (error.statusCode !== 204) {
             Toast.show({
               text2: error.msg,
@@ -33,6 +30,7 @@ export class SettingController {
       const endpoint = USER_URL + ApiUserInventory.getSetting;
       HttpClient.patch(endpoint, data)
         .then((response) => {
+   
           resolve(response);
         })
         .catch((error) => {
@@ -223,17 +221,11 @@ export class SettingController {
   static async verifyGoogleCode(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.verifyGoogleCode;
-      console.log("Enddd",endpoint);
-      console.log("DATAA",data);
-
       HttpClient.post(endpoint, data)
         .then((response) => {
-        console.log("response--verify",response);
           resolve(response);
         })
         .catch((error) => {
-      console.log("errror",error);
-
           if (error?.msg === 'Invalid code.') {
             Toast.show({
               text2: 'Token Code Expire',
@@ -251,16 +243,11 @@ export class SettingController {
   static async configureGoogleCode(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.configureGoogleCode;
-      console.log("Enddd",endpoint);
-      console.log("DATAA",data);
-
       HttpClient.post(endpoint, data)
         .then((response) => {
-        console.log("response configure",response);
           resolve(response);
         })
         .catch((error) => {
-        console.log("errror",error);
           if (error?.msg === 'Invalid code.') {
             Toast.show({
               text2: 'Token Code Expire',
