@@ -623,6 +623,25 @@ const getQrcodeReset = () => ({
   type: TYPES.GET_QR_CODE_RESET,
   payload: null,
 });
+
+//Get time slots
+const getTimeSlotsRequest = () => ({
+  type: TYPES.GET_TIME_SLOTS_REQUEST,
+  payload: null,
+});
+
+const getTimeSlotsSuccess = (data) => ({
+  type: TYPES.GET_TIME_SLOTS_SUCCESS,
+  payload: { data },
+});
+const getTimeSlotsError = (error) => ({
+  type: TYPES.GET_TIME_SLOTS_ERROR,
+  payload: { error },
+});
+const getTimeSlotsReset = () => ({
+  type: TYPES.GET_TIME_SLOTS_RESET,
+  payload: null,
+});
 export const getCategory = (sellerID) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -1055,5 +1074,17 @@ export const getQrCodee = (cartId) => async (dispatch) => {
     return dispatch(getQrCodeSuccess(res));
   } catch (error) {
     dispatch(getQrCodeError(error.message));
+  }
+};
+export const getTimeSlots = (params) => async (dispatch) => {
+  dispatch(getTimeSlotsRequest());
+  try {
+    const res = await RetailController.getTimeSlotsAPI(params);
+    return dispatch(getTimeSlotsSuccess(res));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getTimeSlotsReset());
+    }
+    dispatch(getTimeSlotsError(error.message));
   }
 };

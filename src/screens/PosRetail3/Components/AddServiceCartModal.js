@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Dimensions,
-  Image,
-  ScrollView,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
-
+import { Dimensions, Image, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
@@ -18,8 +9,10 @@ import { crossButton, Fonts, userImage } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import { slotData, weekData } from '@/constants/flatListData';
-import { addToServiceCart } from '@/actions/RetailAction';
+import { weekData } from '@/constants/flatListData';
+import { addToServiceCart, getTimeSlots } from '@/actions/RetailAction';
+import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker';
+import { useEffect } from 'react';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -27,22 +20,27 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
 
-  const [colorId, setColorId] = useState(null);
-  const [sizeId, setSizeId] = useState(null);
-  const [count, setCount] = useState(0);
-  const [colors, setColors] = useState();
-  const [colorName, setColorName] = useState();
-  const [sizeName, setSizeName] = useState();
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [string, setString] = useState();
+  const timeSlotsData = getRetailData?.timeSlots;
 
   const [servicerProId, setServiceProId] = useState();
+  const [posUserId, setposUserId] = useState(null);
   const [providerDetail, setProviderDetail] = useState();
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedDate, setselectedDate] = useState('Today');
+  useEffect(() => {
+    const params = {
+      seller_id: sellerID,
+      product_id: itemData?.id,
+      date: '2023-08-07',
+      pos_user_id: posUserId,
+    };
+    console.log('check slots params: ', params);
+    dispatch(getTimeSlots(params));
+  }, [posUserId]);
 
   const onClickServiceProvider = (item) => {
+    setposUserId(item?.user?.unique_uuid);
     setServiceProId(item.id);
     setProviderDetail(item?.user);
   };
@@ -82,6 +80,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
 
   const renderSlotItem = ({ item, index }) => (
     <TouchableOpacity
+      disabled={!item?.is_available}
       style={{
         borderWidth: 1,
         alignItems: 'center',
@@ -98,11 +97,15 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
       <Text
         style={{
           fontFamily: Fonts.Regular,
-          fontSize: SF(14),
-          color: selectedTimeSlotIndex === index ? COLORS.white : COLORS.dark_grey,
+          fontSize: ms(6.2),
+          color: !item?.is_available
+            ? COLORS.row_grey
+            : selectedTimeSlotIndex === index
+            ? COLORS.white
+            : COLORS.dark_grey,
         }}
       >
-        {item?.time}
+        {item?.start_time + ' - ' + item?.end_time}
       </Text>
     </TouchableOpacity>
   );
@@ -187,23 +190,6 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         </View>
 
         <View style={{ alignItems: 'center' }}>
-          <View style={styles.counterCon}>
-            <TouchableOpacity
-              style={styles.minusBtnCon}
-              // onPress={() => (count > 0 ? setCount(count - 1) : null)}
-            >
-              <Text style={styles.counterText}>-</Text>
-            </TouchableOpacity>
-            <View style={styles.minusBtnCon}>
-              <Text style={styles.counterText}>{count}</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.minusBtnCon}
-              //  onPress={() => setCount(count + 1)}
-            >
-              <Text style={styles.counterText}>+</Text>
-            </TouchableOpacity>
-          </View>
           <View style={styles.displayRow}>
             <View style={[styles.colorRow, styles.serviceRow]} />
             <Text style={styles.colorText}>Service Provider</Text>
@@ -246,6 +232,20 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
           <Text style={styles.selected}>
             Time: <Text style={{ color: COLORS.primary }}>Today @ 3:00 PM</Text>
           </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}
+          >
+            <MonthYearPicker
+              dateType={DATE_TYPE.MONTH}
+              placeholder={'Select Month'}
+              containerStyle={{ marginRight: 10 }}
+            />
+            <MonthYearPicker dateType={DATE_TYPE.YEAR} placeholder={'Select Year'} />
+          </View>
         </View>
 
         <View
@@ -258,7 +258,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         >
           <FlatList horizontal data={weekData} renderItem={renderWeekItem} />
 
-          <FlatList data={slotData} numColumns={4} renderItem={renderSlotItem} />
+          <FlatList data={timeSlotsData || []} numColumns={4} renderItem={renderSlotItem} />
         </View>
       </View>
     </View>

@@ -160,7 +160,7 @@ export function MainScreen({
           seller_id: sellerID,
           products: addCartList,
         };
-        dispatch(bulkCreate(data));
+        // dispatch(bulkCreate(data));
         setCartProoduct([]);
       };
     }, [])

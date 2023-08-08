@@ -961,4 +961,25 @@ export class RetailController {
         });
     });
   }
+
+  static async getTimeSlotsAPI(params) {
+    return new Promise((resolve, reject) => {
+      const convertToQueryParam = new URLSearchParams(params).toString();
+      const endpoint = ORDER_URL + ApiOrderInventory.slots + '?' + convertToQueryParam;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: 'catgory error',
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
 }

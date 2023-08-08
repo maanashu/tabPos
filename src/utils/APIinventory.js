@@ -113,6 +113,7 @@ export const ApiOrderInventory = {
   getTotalOrder: 'orders/statistics/orders/total',
 
   qrCode: 'poscarts/qr-code/',
+  slots: 'slots/pos/service-appointment-slots',
 };
 
 export const ApiWalletInventory = {
