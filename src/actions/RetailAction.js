@@ -672,6 +672,25 @@ const addServiceNotescartError = (error) => ({
   payload: { error },
 });
 
+//Get time slots
+const getTimeSlotsRequest = () => ({
+  type: TYPES.GET_TIME_SLOTS_REQUEST,
+  payload: null,
+});
+
+const getTimeSlotsSuccess = (data) => ({
+  type: TYPES.GET_TIME_SLOTS_SUCCESS,
+  payload: { data },
+});
+const getTimeSlotsError = (error) => ({
+  type: TYPES.GET_TIME_SLOTS_ERROR,
+  payload: { error },
+});
+const getTimeSlotsReset = () => ({
+  type: TYPES.GET_TIME_SLOTS_RESET,
+  payload: null,
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -1140,5 +1159,17 @@ export const addServiceNotescart = (data) => async (dispatch) => {
     dispatch(getServiceCart());
   } catch (error) {
     dispatch(addServiceNotescartError(error.message));
+  }
+};
+export const getTimeSlots = (params) => async (dispatch) => {
+  dispatch(getTimeSlotsRequest());
+  try {
+    const res = await RetailController.getTimeSlotsAPI(params);
+    return dispatch(getTimeSlotsSuccess(res));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getTimeSlotsReset());
+    }
+    dispatch(getTimeSlotsError(error.message));
   }
 };

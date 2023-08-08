@@ -36,9 +36,9 @@ export const ApiUserInventory = {
   staffDetail: 'user_settings/staff/transactions',
   getTax: 'tax',
   // getGoogleCode: 'users/2fa/qr-code',
-  getGoogleCode:'users/2fa/generate-qr-code',
+  getGoogleCode: 'users/2fa/generate-qr-code',
   verifyGoogleCode: 'users/2fa/verify',
-  configureGoogleCode:'users/2fa/configure-qr-code',
+  configureGoogleCode: 'users/2fa/configure-qr-code',
   notifications: 'notifications',
 };
 
@@ -116,6 +116,7 @@ export const ApiOrderInventory = {
   qrCode: 'poscarts/qr-code/',
   orderStatusCount: 'orders/pos/seller/multi-status/orders-count',
   changeStatusProductCart: 'poscarts/change-hold-status',
+  slots: 'slots/pos/service-appointment-slots',
 };
 
 export const ApiWalletInventory = {

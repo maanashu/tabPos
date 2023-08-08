@@ -27,6 +27,7 @@ const INITIALSTATE = {
   bulkCreate: {},
   bulkData: [],
   getAllProductCart: [],
+  timeSlots: [],
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -282,6 +283,16 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         qrKey: payload.qr.payload,
+      };
+    case TYPES.GET_TIME_SLOTS_SUCCESS:
+      return {
+        ...state,
+        timeSlots: payload.data?.payload,
+      };
+    case TYPES.GET_TIME_SLOTS_RESET:
+      return {
+        ...state,
+        timeSlots: payload.data?.payload,
       };
 
     case TYPES.GET_ALL_PRODUCT_CART_SUCCESS:
