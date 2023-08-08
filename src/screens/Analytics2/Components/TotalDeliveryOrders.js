@@ -26,10 +26,9 @@ export function TotalDeliveryOrders({ onPress }) {
     { label: 'Innova', value: 'Innova' },
     { label: 'Maruti', value: 'Maruti' },
   ]);
-
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
-  // console.log('first', JSON.stringify(analyticOrderGraphs));
+  const deliveryGraph = analyticOrderGraphs?.delivery_graph?.orderListData[0];
 
   const getDeliveryOrderList = ({ item, index }) => (
     <DataTable.Row>
@@ -71,6 +70,12 @@ export function TotalDeliveryOrders({ onPress }) {
       </DataTable.Cell>
     </DataTable.Row>
   );
+  const data =
+    deliveryGraph?.deliverd_data_list?.length > 0
+      ? deliveryGraph?.deliverd_data_list
+      : deliveryGraph?.returned_data_list?.length > 0
+      ? deliveryGraph?.returned_data_list
+      : deliveryGraph?.cancelled_data_list;
   return (
     <View>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
@@ -218,10 +223,9 @@ export function TotalDeliveryOrders({ onPress }) {
             </DataTable.Header>
 
             <View style={{ height: SH(380), zIndex: -99 }}>
-              {analyticOrderGraphs?.delivery_graph?.orderListData[0]?.cancelled_data_list?.length ||
-              analyticOrderGraphs?.delivery_graph?.orderListData[0]?.deliverd_data_list?.length ||
-              analyticOrderGraphs?.delivery_graph?.orderListData[0]?.returned_data_list?.length ===
-                0 ? (
+              {deliveryGraph?.cancelled_data_list?.length &&
+              deliveryGraph?.deliverd_data_list?.length &&
+              deliveryGraph?.returned_data_list?.length === 0 ? (
                 <View style={[styles.listLoader]}>
                   <Text
                     style={{
@@ -236,11 +240,7 @@ export function TotalDeliveryOrders({ onPress }) {
                 <View style={{ height: SH(250) }}>
                   <FlatList
                     style={{ backgroundColor: COLORS.white }}
-                    data={
-                      analyticOrderGraphs?.delivery_graph?.orderListData[0]?.deliverd_data_list ||
-                      analyticOrderGraphs?.delivery_graph?.orderListData[0]?.returned_data_list ||
-                      analyticOrderGraphs?.delivery_graph?.orderListData[0]?.cancelled_data_list
-                    }
+                    data={data}
                     renderItem={getDeliveryOrderList}
                     keyExtractor={(item) => item.id}
                     showsHorizontalScrollIndicator={false}
