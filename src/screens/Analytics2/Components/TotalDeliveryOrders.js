@@ -17,6 +17,7 @@ import { LineChart } from 'react-native-chart-kit';
 import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import moment from 'moment';
 
 export function TotalDeliveryOrders({ onPress }) {
   const [channel, setChannel] = useState(false);
@@ -28,12 +29,14 @@ export function TotalDeliveryOrders({ onPress }) {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
+  // console.log('first', JSON.stringify(analyticOrderGraphs));
 
   const getDeliveryOrderList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
-        <View>
-          <Text style={styles.revenueDataText}>Oct 23, 2023</Text>
+        <View style={styles.flexDirectionRow}>
+          <Text>{index + 1 + '   '}</Text>
+          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -215,27 +218,34 @@ export function TotalDeliveryOrders({ onPress }) {
             </DataTable.Header>
 
             <View style={{ height: SH(380), zIndex: -99 }}>
-              {analyticOrderGraphs?.delivery_graph?.orderListData?.cancelled_data_list?.length ===
-              0 ? (
-                <View style={styles.listLoader}>
+              {analyticOrderGraphs?.delivery_graph?.orderListData[0]?.cancelled_data_list?.length ||
+              analyticOrderGraphs?.delivery_graph?.orderListData[0]?.deliverd_data_list?.length ||
+              analyticOrderGraphs?.delivery_graph?.orderListData[0]?.returned_data_list?.length ===
+                0 ? (
+                <View style={[styles.listLoader]}>
                   <Text
                     style={{
                       fontSize: SF(20),
-                      color: COLORS.red,
+                      color: COLORS.black,
                     }}
                   >
                     {'No data found'}
                   </Text>
                 </View>
               ) : (
-                <View>
+                <View style={{ height: SH(250) }}>
                   <FlatList
                     style={{ backgroundColor: COLORS.white }}
-                    data={analyticOrderGraphs?.delivery_graph?.productData}
+                    data={
+                      analyticOrderGraphs?.delivery_graph?.orderListData[0]?.deliverd_data_list ||
+                      analyticOrderGraphs?.delivery_graph?.orderListData[0]?.returned_data_list ||
+                      analyticOrderGraphs?.delivery_graph?.orderListData[0]?.cancelled_data_list
+                    }
                     renderItem={getDeliveryOrderList}
                     keyExtractor={(item) => item.id}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
+                    bounces={false}
                   />
                 </View>
               )}
