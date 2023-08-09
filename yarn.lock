@@ -6614,6 +6614,14 @@ react-native-lock-task@^1.2.0:
   resolved "https://registry.yarnpkg.com/react-native-lock-task/-/react-native-lock-task-1.2.0.tgz#0a0d2eafed1768034f5910cd61134668810966e2"
   integrity sha512-Uz3iD1n0oUGXKlmxqilfJXwzZam2vMuyzcI10t+LZfHD91WnG2axqBX1KV+4VofMomhBFo/MM5foN1/pwTOD8g==
 
+react-native-maps-directions@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps-directions/-/react-native-maps-directions-1.9.0.tgz#63ae8e8b36499042a658e43cd4836ac89aab8b7d"
+  integrity sha512-68SrMOUg4WQ5PmpS9sNOTZaYtdyVYJnnjQOOhABrgiKnb5BXCZRU2gDoS11gYf23hjUBjq8JXzgfn37WcINLwA==
+  dependencies:
+    lodash.isequal "^4.5.0"
+    prop-types "^15.6.0"
+
 react-native-maps@^1.3.2:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.7.1.tgz#e0b9d68542b4b59b5ca3df375ada7c860fb41f2e"

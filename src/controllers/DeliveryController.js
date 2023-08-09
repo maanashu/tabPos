@@ -32,9 +32,11 @@ export class DeliveryController {
         `?status=${status}&seller_id=${sellerID}&delivery_option=${deliveryOption}`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response ======', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error ======', error);
           reject(error);
         });
     });

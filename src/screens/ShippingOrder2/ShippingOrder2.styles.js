@@ -527,6 +527,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
   },
+  map: {
+    width: '100%',
+    height: '100%',
+    alignSelf: 'center',
+    borderRadius: 6,
+  },
 });
 
 export default styles;

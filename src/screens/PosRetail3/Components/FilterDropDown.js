@@ -80,7 +80,7 @@ export const FilterDropDown = ({ sellerid }) => {
     searchBrand,
   ]);
 
-  console.log('categoryData-----', categoryData);
+  console.log('retailData?.brands-----', retailData?.brands);
 
   useEffect(() => {
     let finalParams = {};

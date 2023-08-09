@@ -782,6 +782,7 @@ export const getBrand = (sellerID, search) => async (dispatch) => {
   dispatch(getBrandRequest());
   try {
     const res = await RetailController.getBrand(sellerID, search);
+    console.log('brandList====', res);
     dispatch(getBrandSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {

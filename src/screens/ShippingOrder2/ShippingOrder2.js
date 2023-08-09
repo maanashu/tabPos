@@ -62,6 +62,8 @@ import styles from './ShippingOrder2.styles';
 import RightDrawer from './Components/RightDrawer';
 import Orders from './Components/Orders';
 import Graph from './Components/Graph';
+import { getOrderData } from '@/actions/AnalyticsAction';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -70,6 +72,7 @@ export function ShippingOrder2() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const todayStatus = useSelector(getShipping);
+  const oneOrderDetail = useSelector(getAnalytics);
   const getGraphOrderData = useSelector(getDelivery);
   const ordersList = getGraphOrderData?.getReviewDef;
   const pieChartData = getGraphOrderData?.getOrderstatistics?.data;
@@ -85,7 +88,6 @@ export function ShippingOrder2() {
   ];
 
   let sum = 0;
-
   series.forEach((num) => {
     sum += num;
   });
@@ -98,6 +100,7 @@ export function ShippingOrder2() {
   const [viewAllOrders, setViewAllOrders] = useState(false);
   const [openShippingOrders, setOpenShippingOrders] = useState('0');
   const [getOrderDetail, setGetOrderDetail] = useState('');
+  const [orderId, setOrderId] = useState(ordersList?.[0]?.id);
 
   const statusCount = [
     {
@@ -154,6 +157,16 @@ export function ShippingOrder2() {
   }, []);
 
   useEffect(() => {
+    if (ordersList?.length > 0) {
+      const interval = setInterval(() => {
+        dispatch(getOrderData(orderId || ordersList?.[0]?.id));
+      }, 30000);
+
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  useEffect(() => {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
   }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
@@ -161,7 +174,7 @@ export function ShippingOrder2() {
   useEffect(() => {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
-    dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
+    // dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
   }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
 
   const isDeliveryOrder = useSelector((state) =>
@@ -262,13 +275,17 @@ export function ShippingOrder2() {
         setViewAllOrders(true);
         setUserDetail(item);
         setOrderDetail(item?.order_details);
+        dispatch(getOrderData(item?.id));
       }}
       style={[
         viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
         {
           backgroundColor:
-            viewAllOrders && item === userDetail ? COLORS.textInputBackground : COLORS.transparent,
-          borderColor: viewAllOrders && item === userDetail ? COLORS.primary : COLORS.blue_shade,
+            viewAllOrders && item?.id === userDetail?.id
+              ? COLORS.textInputBackground
+              : COLORS.transparent,
+          borderColor:
+            viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
         },
       ]}
     >
@@ -323,13 +340,18 @@ export function ShippingOrder2() {
         setUserDetail(item);
         setOrderDetail(item?.order_details);
         setGetOrderDetail('MainScreen');
+        dispatch(getOrderData(item?.id));
+        setOrderId(item?.id);
       }}
       style={[
         viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
         {
           backgroundColor:
-            viewAllOrders && item === userDetail ? COLORS.textInputBackground : COLORS.transparent,
-          borderColor: viewAllOrders && item === userDetail ? COLORS.primary : COLORS.blue_shade,
+            viewAllOrders && item?.id === userDetail?.id
+              ? COLORS.textInputBackground
+              : COLORS.transparent,
+          borderColor:
+            viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
         },
       ]}
     >
@@ -827,6 +849,7 @@ export function ShippingOrder2() {
         if (res?.msg === 'Order status updated successfully!') {
           alert('Order accepted successfully');
           dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
+          dispatch(orderStatusCount(sellerID));
           setGetOrderDetail('ViewAllScreen');
           setUserDetail(ordersList?.[0] ?? []);
           setViewAllOrders(true);
