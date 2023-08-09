@@ -55,8 +55,18 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { graphOptions, labels } from '@/constants/staticData';
 
 import styles from './styles';
+import { useFocusEffect } from '@react-navigation/native';
 
-export function DeliveryOrders2() {
+export function DeliveryOrders2({route}) {
+  var isViewAll;
+  var ORDER_DETAIL;
+  if (route.params && route.params.isViewAll) {
+    isViewAll = route.params.isViewAll;
+    ORDER_DETAIL = route.params.ORDER_DETAIL
+  } else {
+    isViewAll=false
+    ORDER_DETAIL=null
+  }
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getDeliveryData = useSelector(getDelivery);
@@ -82,14 +92,35 @@ export function DeliveryOrders2() {
 
   const [deliverytypes, setDeliveryTypes] = useState();
   const [graphData, setGraphData] = useState(graphOptions);
-  const [viewAllOrders, setViewAllOrders] = useState(false);
+  const [viewAllOrders, setViewAllOrders] = useState(isViewAll);
   const [openShippingOrders, setOpenShippingOrders] = useState('0');
   const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
+  const [selectedProductId,setSelectedProductId]=useState(null)
+  const [isBack,setIsBack]=useState(null)
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? '');
   const [orderDetail, setOrderDetail] = useState(
     getDeliveryData?.getReviewDef?.[0]?.order_details ?? []
   );
 
+  useFocusEffect(
+    React.useCallback(() => {
+      if(ORDER_DETAIL!==null){
+        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id)
+        setUserDetail(ORDER_DETAIL);
+        setOrderDetail(ORDER_DETAIL?.order_details)
+      }
+      if(!isBack){
+        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id)
+        setViewAllOrders(isViewAll);
+      }
+      return()=>{
+       setIsBack(false)
+       setViewAllOrders(false)
+       setOrderDetail([])
+       setSelectedProductId(null)
+      }
+    }, [isViewAll, ORDER_DETAIL])
+  );
   const deliveryDrawer = [
     {
       key: '0',
@@ -140,7 +171,6 @@ export function DeliveryOrders2() {
       count: getDeliveryData?.getOrderCount?.[7]?.count ?? 0,
     },
   ];
-
   useEffect(() => {
     dispatch(todayOrders(sellerID));
     dispatch(deliOrder(sellerID));
@@ -184,9 +214,17 @@ export function DeliveryOrders2() {
 
   useEffect(() => {
     dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID, 1));
-
-    setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
-    setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
+    let selectedOrderDetail;
+      if(ORDER_DETAIL==null || isBack){
+        setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
+        selectedOrderDetail = getDeliveryData?.getReviewDef?.[0]?.order_details ?? [];
+      }
+      else{ 
+        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id)
+        setUserDetail(ORDER_DETAIL);
+        selectedOrderDetail = ORDER_DETAIL?.order_details
+      }
+    setOrderDetail(selectedOrderDetail);
   }, [viewAllOrders, openShippingOrders]);
 
   const isDeliveryOrder = useSelector((state) =>
@@ -334,16 +372,20 @@ export function DeliveryOrders2() {
       </View>
     );
   };
-
-  const renderOrderToReview = ({ item }) => (
+  const renderOrderToReview = ({ item ,index}) => (
     <>
       {
         <TouchableOpacity
+
           onPress={() => {
+            setSelectedProductId(item?.order_details[0]?.id)
             setUserDetail(item);
             setOrderDetail(item?.order_details);
+            setViewAllOrders(true)
+            
+            
           }}
-          style={viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle}
+          style={viewAllOrders ? [styles.showAllOrdersView,{borderColor:selectedProductId==item?.order_details[0]?.id ?  COLORS.blueLight: COLORS.blue_shade}] : styles.orderRowStyle}
         >
           <View style={styles.orderDetailStyle}>
             <Text style={styles.nameTextStyle}>
@@ -384,7 +426,14 @@ export function DeliveryOrders2() {
             </View>
           </View>
 
-          <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
+          <TouchableOpacity 
+          onPress={() => {
+            setUserDetail(item);
+            setOrderDetail(item?.order_details);
+            setViewAllOrders(true)
+          }}
+          
+          style={[styles.orderDetailStyle, { width: SH(24) }]}>
             <Image source={rightIcon} style={styles.rightIconStyle} />
           </TouchableOpacity>
         </TouchableOpacity>
@@ -900,7 +949,7 @@ export function DeliveryOrders2() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <Header {...{ viewAllOrders, setViewAllOrders }} />
+        <Header {...{ viewAllOrders, setViewAllOrders,setIsBack}} />
 
         <Spacer space={SH(20)} />
 

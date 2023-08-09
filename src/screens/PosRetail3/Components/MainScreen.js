@@ -90,6 +90,7 @@ export function MainScreen({
 
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
+
   const cartLength = cartData?.poscart_products?.length;
   const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
