@@ -39,7 +39,6 @@ import { useIsFocused } from '@react-navigation/native';
 import CustomEventCell from './Components/CustomEventCell';
 import CustomHoursCell from './Components/CustomHoursCell';
 import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
-import ScheduleDetailModal from './Components/ScheduleDetailModal';
 import EventItemCard from './Components/EventItemCard';
 import CalendarSettingModal from './Components/CalendarSettingModal';
 import { navigate } from '@/navigation/NavigationRef';
@@ -222,19 +221,6 @@ export function Calender(props) {
   const renderLoader = () => {
     // Render the loader component when loading more data is in progress.
     return isRequestLoading ? <ActivityIndicator size="large" color="#000000" /> : null;
-  };
-
-  const schduleDetailModal = () => {
-    return (
-      <ScheduleDetailModal
-        {...{
-          schduleDetail,
-          setSchduleDetail,
-          storeItem,
-          data,
-        }}
-      />
-    );
   };
 
   const customHeader = () => {
@@ -503,8 +489,6 @@ export function Calender(props) {
         <EventDetailModal
           {...{ eventData, showEventDetailModal, setshowEventDetailModal, dispatch }}
         />
-
-        {schduleDetailModal()}
       </View>
     </ScreenWrapper>
   );

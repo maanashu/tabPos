@@ -13,6 +13,7 @@ import { addToServiceCart, getTimeSlots } from '@/actions/RetailAction';
 import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker';
 import { useEffect } from 'react';
 import moment from 'moment';
+import { getDaysAndDates } from '@/utils/GlobalMethods';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -48,19 +49,6 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
     const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
-
-  function getDaysAndDates(year = new Date().getFullYear(), month = new Date().getMonth() + 1) {
-    const daysInMonth = new Date(year, month, 0).getDate();
-    const daysAndDates = [];
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(year, month - 1, day);
-      const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
-      daysAndDates.push({ day: dayOfWeek, date: date.getDate() });
-    }
-
-    return daysAndDates;
-  }
 
   const onClickServiceProvider = (item) => {
     setposUserId(item?.user?.unique_uuid);
