@@ -53,6 +53,7 @@ import {
   requestCheckSuccess,
   createOrder,
   attachServiceCustomer,
+  updateCartByTip,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -91,6 +92,7 @@ export const CartAmountPayBy = ({
   const qrcodeData = useSelector(getRetail).qrKey;
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
+  const serviceCartId = getRetailData?.getserviceCart?.id;
 
   const servicCartId = getRetailData?.getserviceCart?.id;
 
@@ -143,10 +145,38 @@ export const CartAmountPayBy = ({
     return totalPayment.toFixed(2);
   };
 
+  const getTipPress = async () => {
+    if (cartType == 'Product') {
+      const data = {
+        tip: selectedTipAmount.toString(),
+        cartId: cartData.id,
+      };
+      const res = await dispatch(updateCartByTip(data));
+
+      if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+        dispatch(getQrCodee(cartData?.id));
+        setQrPopUp(true);
+      }
+    } else {
+      const data = {
+        tip: selectedTipAmount.toString(),
+        cartId: serviceCartId,
+        services: 'sevices',
+      };
+      const res = await dispatch(updateCartByTip(data));
+
+      if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+        const ss = {
+          services: 'services',
+        };
+        dispatch(getQrCodee(serviceCartId, ss));
+        setQrPopUp(true);
+      }
+    }
+  };
   useEffect(() => {
     dispatch(getWalletId(sellerID));
     dispatch(getTip(sellerID));
-    dispatch(getQrCodee(cartData?.id));
   }, []);
 
   // useEffect(() => {
@@ -164,7 +194,6 @@ export const CartAmountPayBy = ({
           const data = {
             requestId: requestId,
           };
-          // Alert.alert('kojojoj');
           dispatch(requestCheck(data));
           return requestId;
         });
@@ -550,7 +579,12 @@ export const CartAmountPayBy = ({
             )}
 
             {selectedPaymentIndex == 1 && (
-              <TouchableOpacity style={styles.jobrSaveView} onPress={() => setQrPopUp(true)}>
+              <TouchableOpacity
+                style={styles.jobrSaveView}
+                onPress={() => {
+                  getTipPress();
+                }}
+              >
                 <Text style={styles.youSave}>You save</Text>
                 <View style={styles.jbrContainer}>
                   <Text style={styles.jbrText}>JBR</Text>

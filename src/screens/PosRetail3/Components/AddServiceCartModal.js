@@ -124,7 +124,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
   const ServiceProviderItem = ({ item, onPress, borderColor }) => (
     <TouchableOpacity onPress={onPress} style={[styles.imageSelectedBorder, { borderColor }]}>
       <Image
-        source={userImage}
+        source={{ uri: item?.user?.user_profiles?.profile_photo }}
         style={{
           width: ms(45),
           height: ms(45),

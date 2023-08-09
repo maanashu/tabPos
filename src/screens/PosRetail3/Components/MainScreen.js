@@ -591,10 +591,9 @@ export function MainScreen({
                     >
                       <View style={styles.avalibleServiceCon}>
                         <FastImage
-                          // source={{
-                          //   uri: item.image,
-                          // }}
-                          source={userImage}
+                          source={{
+                            uri: item.image,
+                          }}
                           style={styles.categoryshoes}
                           resizeMode={FastImage.resizeMode.contain}
                         />
@@ -616,10 +615,9 @@ export function MainScreen({
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                           {item?.pos_users?.map((data, index) => (
                             <Image
-                              // source={
-                              //   { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
-                              // }
-                              source={userImage}
+                              source={
+                                { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
+                              }
                               style={{
                                 width: ms(15),
                                 height: ms(15),
