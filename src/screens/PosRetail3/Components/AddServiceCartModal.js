@@ -9,10 +9,10 @@ import { crossButton, Fonts, userImage } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import { weekData } from '@/constants/flatListData';
 import { addToServiceCart, getTimeSlots } from '@/actions/RetailAction';
 import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker';
 import { useEffect } from 'react';
+import moment from 'moment';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -22,26 +22,48 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
 
   const timeSlotsData = getRetailData?.timeSlots;
 
-  const [servicerProId, setServiceProId] = useState();
-  const [posUserId, setposUserId] = useState(null);
-  const [providerDetail, setProviderDetail] = useState();
+  const [posUserId, setposUserId] = useState(itemData?.pos_users[0].user?.unique_uuid);
+  const [providerDetail, setProviderDetail] = useState(itemData?.pos_users[0].user);
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
-  const [selectedDate, setselectedDate] = useState('Today');
+  const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
+  const [selectedDate, setselectedDate] = useState(moment(new Date()).format('MM/DD/YY'));
+
+  const [selectedMonthData, setselectedMonthData] = useState(null);
+  const [selectedYearData, setselectedYearData] = useState(null);
+
+  const [monthDays, setmonthDays] = useState([]);
+
   useEffect(() => {
     const params = {
       seller_id: sellerID,
       product_id: itemData?.id,
-      date: '2023-08-07',
+      date: moment(selectedDate).format('YYYY-MM-DD'),
       pos_user_id: posUserId,
     };
-    console.log('check slots params: ', params);
     dispatch(getTimeSlots(params));
-  }, [posUserId]);
+  }, [posUserId, selectedDate]);
+
+  useEffect(() => {
+    const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
+    setmonthDays(daysArray);
+  }, [selectedMonthData, selectedYearData]);
+
+  function getDaysAndDates(year = new Date().getFullYear(), month = new Date().getMonth() + 1) {
+    const daysInMonth = new Date(year, month, 0).getDate();
+    const daysAndDates = [];
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month - 1, day);
+      const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+      daysAndDates.push({ day: dayOfWeek, date: date.getDate() });
+    }
+
+    return daysAndDates;
+  }
 
   const onClickServiceProvider = (item) => {
     setposUserId(item?.user?.unique_uuid);
-    setServiceProId(item.id);
     setProviderDetail(item?.user);
   };
 
@@ -54,26 +76,26 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         height: SH(60),
       }}
       onPress={() => {
-        setselectedDate(item.date);
+        setselectedDate(item?.day);
       }}
     >
       <Text
         style={{
           fontFamily: Fonts.Regular,
           fontSize: SF(14),
-          color: item.date === selectedDate ? COLORS.primary : COLORS.dark_grey,
+          color: item?.day === selectedDate ? COLORS.primary : COLORS.dark_grey,
         }}
       >
-        {item?.day}
+        {moment(item?.day).format('ddd').toUpperCase()}
       </Text>
       <Text
         style={{
           fontFamily: Fonts.SemiBold,
           fontSize: SF(18),
-          color: item.date === selectedDate ? COLORS.primary : COLORS.black,
+          color: item?.day === selectedDate ? COLORS.primary : COLORS.black,
         }}
       >
-        {item?.date}
+        {item?.day === moment(new Date()).format('MM/DD/YY') ? 'Today' : item?.date}
       </Text>
     </TouchableOpacity>
   );
@@ -92,6 +114,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
       }}
       onPress={() => {
         setselectedTimeSlotIndex(index);
+        setSelectedTimeSlotData(item);
       }}
     >
       <Text
@@ -125,7 +148,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
   );
 
   const renderServiceProviderItem = ({ item }) => {
-    const borderColor = item.id === servicerProId ? COLORS.primary : 'transparent';
+    const borderColor = item?.user?.unique_uuid === posUserId ? COLORS.primary : 'transparent';
 
     return (
       <ServiceProviderItem
@@ -137,15 +160,19 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
   };
 
   const addToServiceCartHandler = () => {
+    if (!selectedTimeSlotData) {
+      alert('Please select a time slot for the service');
+      return;
+    }
     const data = {
       supplyId: itemData?.supplies?.[0]?.id,
       supplyPriceID: itemData?.supplies?.[0]?.supply_prices[0]?.id,
       product_id: itemData?.id,
       appName: 'pos',
-      date: '2023-07-26',
-      startTime: '07:00 PM',
-      endTime: '08:00 PM',
-      // posUserId : ""
+      date: moment(selectedDate).format('YYYY-MM-DD'),
+      startTime: selectedTimeSlotData?.start_time,
+      endTime: selectedTimeSlotData?.end_time,
+      posUserId: posUserId,
     };
     dispatch(addToServiceCart(data));
     crossHandler();
@@ -242,8 +269,19 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
               dateType={DATE_TYPE.MONTH}
               placeholder={'Select Month'}
               containerStyle={{ marginRight: 10 }}
+              defaultValue={moment().month() + 1}
+              onSelect={(monthData) => {
+                setselectedMonthData(monthData);
+              }}
             />
-            <MonthYearPicker dateType={DATE_TYPE.YEAR} placeholder={'Select Year'} />
+            <MonthYearPicker
+              dateType={DATE_TYPE.YEAR}
+              placeholder={'Select Year'}
+              defaultValue={moment().year()}
+              onSelect={(yearData) => {
+                setselectedYearData(yearData);
+              }}
+            />
           </View>
         </View>
 
@@ -255,7 +293,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
             width: '100%',
           }}
         >
-          <FlatList horizontal data={weekData} renderItem={renderWeekItem} />
+          <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
 
           <FlatList data={timeSlotsData || []} numColumns={4} renderItem={renderSlotItem} />
         </View>
