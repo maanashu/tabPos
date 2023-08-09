@@ -22,7 +22,7 @@ export function MainScreen({
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
   const totalOrder = getAnalyticsData?.getTotalOrder;
-
+  const soldProduct = getAnalyticsData?.getSoldProduct;
   const totalInventory = getAnalyticsData?.getTotalInventory;
 
   return (
@@ -153,7 +153,7 @@ export function MainScreen({
               barW={SW(1.5)}
               labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
               initialSpacing={SH(5)}
-              revenueData={totalOrder?.graphData}
+              data={totalOrder?.graphData}
             />
           </TouchableOpacity>
         </View>
@@ -170,11 +170,12 @@ export function MainScreen({
 
         <HomeGraph
           header="Total Product Sold"
-          subHeader={'5193'}
-          // productGraphObject={productGraphObject2}
-          homeGraphHandler={() => {}}
-          // arrayLength={productGraphObject2?.datasets?.length}
+          subHeader={soldProduct?.total_count ? soldProduct?.total_count : '0'}
           onPress={onPressProducts}
+          analyticGraphObject={soldProduct}
+          arrayLength={soldProduct?.graph_data?.datasets?.length}
+          labels={soldProduct?.graph_data?.labels}
+          data={soldProduct?.graph_data?.datasets?.[0]?.data}
         />
       </View>
     </View>

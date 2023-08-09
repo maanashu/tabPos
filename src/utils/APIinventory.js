@@ -119,6 +119,7 @@ export const ApiOrderInventory = {
   slots: 'slots/pos/service-appointment-slots',
   changeStatusServiceCart: 'appointment_carts/change-hold-status',
   attachServiceCustomer: 'appointment_carts/attach/user/',
+  getSoldProduct: 'order_details/pos/product_count/sold',
 };
 
 export const ApiWalletInventory = {

@@ -293,6 +293,19 @@ const getTotalInventoryError = (error) => ({
   payload: { error },
 });
 
+const getSoldProductRequest = () => ({
+  type: TYPES.GET_SOLD_PRODUCT_REQUEST,
+  payload: null,
+});
+const getSoldProductSuccess = (getSoldProduct) => ({
+  type: TYPES.GET_SOLD_PRODUCT_SUCCESS,
+  payload: { getSoldProduct },
+});
+const getSoldProductError = (error) => ({
+  type: TYPES.GET_SOLD_PRODUCT_ERROR,
+  payload: { error },
+});
+
 export const totalProGraph = (sellerID) => async (dispatch) => {
   dispatch(getTotalProGraphRequest());
   try {
@@ -467,42 +480,52 @@ export const getSellerProductDetails = (sellerID) => async (dispatch) => {
   }
 };
 
-export const getAnalyticStatistics = (sellerID) => async (dispatch) => {
+export const getAnalyticStatistics = (sellerID, filter) => async (dispatch) => {
   dispatch(getAnalyticStatisticsRequest());
   try {
-    const res = await AnalyticsController.getAnalyticStatistics(sellerID);
+    const res = await AnalyticsController.getAnalyticStatistics(sellerID, filter);
     dispatch(getAnalyticStatisticsSuccess(res?.payload));
   } catch (error) {
     dispatch(getAnalyticStatisticsError(error.message));
   }
 };
 
-export const getAnalyticOrderGraphs = (sellerID) => async (dispatch) => {
+export const getAnalyticOrderGraphs = (sellerID, filter) => async (dispatch) => {
   dispatch(getAnalyticOrderGraphsRequest());
   try {
-    const res = await AnalyticsController.getAnalyticOrderGraphs(sellerID);
+    const res = await AnalyticsController.getAnalyticOrderGraphs(sellerID, filter);
     dispatch(getAnalyticOrderGraphsSuccess(res?.payload));
   } catch (error) {
     dispatch(getAnalyticOrderGraphsError(error.message));
   }
 };
 
-export const getTotalOrder = (sellerID) => async (dispatch) => {
+export const getTotalOrder = (sellerID, filter) => async (dispatch) => {
   dispatch(getTotalOrderRequest());
   try {
-    const res = await AnalyticsController.getTotalOrder(sellerID);
+    const res = await AnalyticsController.getTotalOrder(sellerID, filter);
     dispatch(getTotalOrderSuccess(res?.payload));
   } catch (error) {
     dispatch(getTotalOrderError(error.message));
   }
 };
 
-export const getTotalInventory = (sellerID) => async (dispatch) => {
+export const getTotalInventory = (sellerID, filter) => async (dispatch) => {
   dispatch(getTotalInventoryRequest());
   try {
-    const res = await AnalyticsController.getTotalInventory(sellerID);
+    const res = await AnalyticsController.getTotalInventory(sellerID, filter);
     dispatch(getTotalInventorySuccess(res?.payload));
   } catch (error) {
     dispatch(getTotalInventoryError(error.message));
+  }
+};
+
+export const getSoldProduct = (sellerID, filter) => async (dispatch) => {
+  dispatch(getSoldProductRequest());
+  try {
+    const res = await AnalyticsController.getSoldProduct(sellerID, filter);
+    dispatch(getSoldProductSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getSoldProductError(error.message));
   }
 };

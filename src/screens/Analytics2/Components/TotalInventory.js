@@ -40,34 +40,20 @@ export function TotalInventory({ onPress }) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.product_id}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.products?.name}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$23,000</Text>
+        <Text style={styles.revenueDataText}>{item?.total_quantity}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$560</Text>
+        <Text style={styles.revenueDataText}>{item?.products?.item_number}</Text>
       </DataTable.Cell>
+
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>0</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$560</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$23.50</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$450</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2300</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>$19,666.50</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>$19,666.50</Text>
+        <Text style={styles.revenueDataText2}>${item?.products?.price}</Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
@@ -180,36 +166,22 @@ export function TotalInventory({ onPress }) {
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Products</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Gross Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Discount</Text>
+                <Text style={styles.revenueText}>Id</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Returns</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Net Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Shipping/Delivery</Text>
+                <Text style={styles.revenueText}>Product Name</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Other Fees</Text>
+                <Text style={styles.revenueText}>Total Quatity</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Tax</Text>
+                <Text style={styles.revenueText}>Product Number</Text>
               </DataTable.Title>
+
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Revenue</Text>
+                <Text style={styles.revenueText}>Total Amount</Text>
               </DataTable.Title>
             </DataTable.Header>
 

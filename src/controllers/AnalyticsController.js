@@ -315,10 +315,12 @@ export class AnalyticsController {
     });
   }
 
-  static async getAnalyticStatistics(sellerID) {
+  static async getAnalyticStatistics(sellerID, filter) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getAnalyticStatistics + `?seller_id=${sellerID}&filter=week`;
+        ORDER_URL +
+        ApiOrderInventory.getAnalyticStatistics +
+        `?seller_id=${sellerID}&filter=${filter}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -335,10 +337,12 @@ export class AnalyticsController {
     });
   }
 
-  static async getAnalyticOrderGraphs(sellerID) {
+  static async getAnalyticOrderGraphs(sellerID, filter) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getAnalyticOrderGraphs + `?seller_id=${sellerID}&filter=week`;
+        ORDER_URL +
+        ApiOrderInventory.getAnalyticOrderGraphs +
+        `?seller_id=${sellerID}&filter=${filter}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -355,10 +359,10 @@ export class AnalyticsController {
     });
   }
 
-  static async getTotalOrder(sellerID) {
+  static async getTotalOrder(sellerID, filter) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getTotalOrder + `?seller_id=${sellerID}&filter=week`;
+        ORDER_URL + ApiOrderInventory.getTotalOrder + `?seller_id=${sellerID}&filter=${filter}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -375,11 +379,26 @@ export class AnalyticsController {
     });
   }
 
-  static async getTotalInventory(sellerID) {
+  static async getTotalInventory(sellerID, filter) {
     return new Promise((resolve, reject) => {
       const endpoint = `${
         PRODUCT_URL + ApiProductInventory.getTotalInventory
-      }?seller_id=${sellerID}&filter=week`;
+      }?seller_id=${sellerID}&filter=${filter}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getSoldProduct(sellerID, filter) {
+    return new Promise((resolve, reject) => {
+      const endpoint = `${
+        ORDER_URL + ApiOrderInventory.getSoldProduct
+      }?seller_id=${sellerID}&filter=${filter}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

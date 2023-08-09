@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import { ScreenWrapper } from '@/components';
 import { styles } from '../Analytics2.styles';
 import { Fonts, backArrow2, calendar, clay, dropdown } from '@/assets';
@@ -7,6 +15,9 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { LineChart } from 'react-native-chart-kit';
 import { DataTable } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import moment from 'moment';
 
 export function Revenue({ onPress }) {
   const [channel, setChannel] = useState(false);
@@ -15,6 +26,34 @@ export function Revenue({ onPress }) {
     { label: 'Innova', value: 'Innova' },
     { label: 'Maruti', value: 'Maruti' },
   ]);
+  const getAnalyticsData = useSelector(getAnalytics);
+  const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
+  const getRevenueList = ({ item, index }) => (
+    <DataTable.Row>
+      <DataTable.Cell style={styles.dateTablealignStart}>
+        <View style={styles.flexDirectionRow}>
+          <Text>{index + 1 + '   '}</Text>
+          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
+        </View>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.id}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{'Anan'}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.revenue}</Text>
+      </DataTable.Cell>
+
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText2}>${item?.payable_amount}</Text>
+      </DataTable.Cell>
+    </DataTable.Row>
+  );
   return (
     <View>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
@@ -55,19 +94,12 @@ export function Revenue({ onPress }) {
         <LineChart
           bezier
           data={{
-            labels: [
-              '',
-              'Monday',
-              'Tuesday',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-              'Saturday',
-              'Sunday',
-            ],
+            labels: analyticStatistics?.revenue?.graph_data?.labels
+              ? analyticStatistics?.revenue?.graph_data?.labels
+              : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {
-                data: [12, 20, 12, 30, 42, 40, 50, 40],
+                data: analyticStatistics?.revenue?.graph_data?.datasets?.[0]?.data,
                 strokeWidth: 2,
                 color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
               },
@@ -119,83 +151,50 @@ export function Revenue({ onPress }) {
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Orders</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Gross Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Discount</Text>
+                <Text style={styles.revenueText}>Id</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Returns</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Net Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Shipping/Delivery</Text>
+                <Text style={styles.revenueText}>Byer Name</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Other Fees</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Tax</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Sales</Text>
+                <Text style={styles.revenueText}>Total Quatity</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Total Revenue</Text>
               </DataTable.Title>
+
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Total Amount</Text>
+              </DataTable.Title>
             </DataTable.Header>
 
-            {/* <FlatList
-                        data={getOrderListData}
-                        renderItem={getOrderListShipping}
-                        keyExtractor={item => item.id}
-                        showsHorizontalScrollIndicator={false}
-                      /> */}
-            <View style={styles.bottomTableView}>
-              <DataTable.Row>
-                <DataTable.Cell style={styles.dateTablealignStart}>
-                  <View>
-                    <Text style={styles.revenueDataText}>Oct 23, 2023</Text>
-                  </View>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>3</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$23,000</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$560</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>0</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$560</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$23.50</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$450</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText}>$2300</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText2}>$19,666.50</Text>
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.dateTableSetting}>
-                  <Text style={styles.revenueDataText2}>$19,666.50</Text>
-                </DataTable.Cell>
-              </DataTable.Row>
+            <View style={{ height: SH(380), zIndex: -99 }}>
+              {analyticStatistics?.orderData?.length === 0 ? (
+                <View style={styles.listLoader}>
+                  <Text
+                    style={{
+                      fontSize: SF(20),
+                      color: COLORS.red,
+                    }}
+                  >
+                    {'No data found'}
+                  </Text>
+                </View>
+              ) : (
+                <View style={{ height: SH(250) }}>
+                  <FlatList
+                    style={{ backgroundColor: COLORS.white }}
+                    data={analyticStatistics?.orderData}
+                    renderItem={getRevenueList}
+                    keyExtractor={(item) => item.id}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    bounces={false}
+                  />
+                </View>
+              )}
             </View>
           </DataTable>
         </ScrollView>
