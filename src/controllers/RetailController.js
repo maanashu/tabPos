@@ -965,7 +965,7 @@ export class RetailController {
         })
         .catch((error) => {
           Toast.show({
-            text2: 'catgory error11111111111111111111111',
+            text2: 'catgory error',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
