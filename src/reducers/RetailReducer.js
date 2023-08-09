@@ -28,6 +28,7 @@ const INITIALSTATE = {
   bulkData: [],
   getAllProductCart: [],
   timeSlots: [],
+  getAllServiceCart: [],
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -304,6 +305,17 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getAllProductCart: [],
+      };
+
+    case TYPES.GET_ALL_SERVICE_CART_SUCCESS:
+      return {
+        ...state,
+        getAllServiceCart: payload,
+      };
+    case TYPES.GET_ALL_SERVICE_CART_RESET:
+      return {
+        ...state,
+        getAllServiceCart: [],
       };
 
     case TYPES.CLEAR_STORE:

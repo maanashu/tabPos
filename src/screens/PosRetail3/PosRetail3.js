@@ -26,6 +26,7 @@ import {
   customerNumber,
   getAllCart,
   getAllProductCart,
+  getAllServiceCart,
   getServiceCart,
 } from '@/actions/RetailAction';
 import { useIsFocused } from '@react-navigation/native';
@@ -109,6 +110,7 @@ export function PosRetail3() {
     dispatch(getAllCart());
     dispatch(getServiceCart());
     dispatch(getAllProductCart());
+    dispatch(getAllServiceCart());
   }, [isFocus]);
   useEffect(() => {
     setNotes(getCart?.notes);
@@ -250,6 +252,8 @@ export function PosRetail3() {
         TYPES.ADD_SERVICE_CART,
         TYPES.CHANGE_STATUS_PRODUCT_CART,
         TYPES.GET_MAIN_PRODUCT,
+        TYPES.GET_ALL_SERVICE_CART,
+        TYPES.CHANGE_STATUS_SERVICE_CART,
       ],
       state
     )

@@ -610,19 +610,33 @@ const getAllProductCartRequest = () => ({
   type: TYPES.GET_ALL_PRODUCT_CART_REQUEST,
   payload: null,
 });
-
 export const getAllProductCartSuccess = (getAllProductCart) => ({
   type: TYPES.GET_ALL_PRODUCT_CART_SUCCESS,
   payload: getAllProductCart,
 });
-
 const getAllProductCartError = (error) => ({
   type: TYPES.GET_ALL_PRODUCT_CART_ERROR,
   payload: { error },
 });
-
 const getAllProductCartReset = () => ({
   type: TYPES.GET_ALL_PRODUCT_CART_RESET,
+  payload: null,
+});
+
+const getAllServiceCartRequest = () => ({
+  type: TYPES.GET_ALL_SERVICE_CART_REQUEST,
+  payload: null,
+});
+export const getAllServiceCartSuccess = (getAllServiceCart) => ({
+  type: TYPES.GET_ALL_SERVICE_CART_SUCCESS,
+  payload: getAllServiceCart,
+});
+const getAllServiceCartError = (error) => ({
+  type: TYPES.GET_ALL_SERVICE_CART_ERROR,
+  payload: { error },
+});
+const getAllServiceCartReset = () => ({
+  type: TYPES.GET_ALL_SERVICE_CART_RESET,
   payload: null,
 });
 
@@ -648,7 +662,6 @@ const changeStatusProductCartRequest = () => ({
   type: TYPES.CHANGE_STATUS_PRODUCT_CART_REQUEST,
   payload: null,
 });
-
 const changeStatusProductCartSuccess = () => ({
   type: TYPES.CHANGE_STATUS_PRODUCT_CART_SUCCESS,
   payload: {},
@@ -669,6 +682,19 @@ const addServiceNotescartSuccess = () => ({
 });
 const addServiceNotescartError = (error) => ({
   type: TYPES.ADD_SERVICE_NOTES_CART_ERROR,
+  payload: { error },
+});
+
+const changeStatusServiceCartRequest = () => ({
+  type: TYPES.CHANGE_STATUS_SERVICE_CART_REQUEST,
+  payload: null,
+});
+const changeStatusServiceCartSuccess = () => ({
+  type: TYPES.CHANGE_STATUS_SERVICE_CART_SUCCESS,
+  payload: {},
+});
+const changeStatusServiceCartError = (error) => ({
+  type: TYPES.CHANGE_STATUS_SERVICE_CART_ERROR,
   payload: { error },
 });
 
@@ -808,6 +834,19 @@ export const getAllProductCart = () => async (dispatch) => {
       dispatch(getAllProductCartReset());
     }
     dispatch(getAllProductCartError(error.message));
+  }
+};
+
+export const getAllServiceCart = () => async (dispatch) => {
+  dispatch(getAllServiceCartRequest());
+  try {
+    const res = await RetailController.getAllServiceCart();
+    dispatch(getAllServiceCartSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getAllServiceCartReset());
+    }
+    dispatch(getAllServiceCartError(error.message));
   }
 };
 
@@ -1148,6 +1187,18 @@ export const changeStatusProductCart = (data) => async (dispatch) => {
     dispatch(getAllProductCart());
   } catch (error) {
     dispatch(changeStatusProductCartError(error.message));
+  }
+};
+
+export const changeStatusServiceCart = (data) => async (dispatch) => {
+  dispatch(changeStatusServiceCartRequest());
+  try {
+    const res = await RetailController.changeStatusServiceCart(data);
+    dispatch(changeStatusServiceCartSuccess(res));
+    dispatch(getServiceCart());
+    dispatch(getAllServiceCart());
+  } catch (error) {
+    dispatch(changeStatusServiceCartError(error.message));
   }
 };
 

@@ -46,6 +46,7 @@ import {
   addToServiceCart,
   addTocart,
   changeStatusProductCart,
+  changeStatusServiceCart,
   clearAllCart,
   clearServiceAllCart,
   getBrand,
@@ -85,8 +86,10 @@ export function MainScreen({
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
   const productCartArray = getRetailData?.getAllProductCart;
+  const serviceCartArray = getRetailData?.getAllServiceCart;
+
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
-  console.log('holdProductArray', holdProductArray);
+  const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
   const cartLength = cartData?.poscart_products?.length;
   const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
@@ -119,6 +122,20 @@ export function MainScreen({
           };
     dispatch(changeStatusProductCart(data));
   };
+  const serviceCartStatusHandler = () => {
+    const data =
+      holdServiceArray?.length > 0
+        ? {
+            status: holdServiceArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdServiceArray?.[0]?.id,
+          }
+        : {
+            status: getRetailData?.getserviceCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getserviceCart?.id,
+          };
+    dispatch(changeStatusServiceCart(data));
+  };
+
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
     setisFilterDataSeclectedOfIndex(null);
@@ -573,9 +590,10 @@ export function MainScreen({
                     >
                       <View style={styles.avalibleServiceCon}>
                         <FastImage
-                          source={{
-                            uri: item.image,
-                          }}
+                          // source={{
+                          //   uri: item.image,
+                          // }}
+                          source={userImage}
                           style={styles.categoryshoes}
                           resizeMode={FastImage.resizeMode.contain}
                         />
@@ -597,9 +615,10 @@ export function MainScreen({
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                           {item?.pos_users?.map((data, index) => (
                             <Image
-                              source={
-                                { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
-                              }
+                              // source={
+                              //   { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
+                              // }
+                              source={userImage}
                               style={{
                                 width: ms(15),
                                 height: ms(15),
@@ -789,12 +808,19 @@ export function MainScreen({
                   />
                 </TouchableOpacity>
                 <Spacer space={SH(20)} />
-                <View>
-                  <Image source={holdCart} style={styles.sideBarImage} />
+                <TouchableOpacity onPress={serviceCartStatusHandler}>
+                  <Image
+                    source={holdCart}
+                    style={
+                      holdServiceArray?.length > 0
+                        ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                        : styles.sideBarImage
+                    }
+                  />
                   <View style={styles.holdBadge}>
-                    <Text style={styles.holdBadgetext}>0</Text>
+                    <Text style={styles.holdBadgetext}>{holdServiceArray?.length}</Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               </View>
               <View style={{ flex: 1 }} />
               <TouchableOpacity
