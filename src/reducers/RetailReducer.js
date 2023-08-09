@@ -3,7 +3,7 @@ import { TYPES } from '@/Types/Types';
 const INITIALSTATE = {
   categoryList: [],
   subCategories: [],
-  brands: {},
+  brands: [],
   products: [],
   SeaProductList: [],
   getAllCart: [],

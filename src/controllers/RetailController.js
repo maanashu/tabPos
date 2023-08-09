@@ -15,11 +15,24 @@ import { store } from '@/store';
 
 export class RetailController {
   static async getCategory(sellerID, search) {
+    const getUrl = (sellerid, search) => {
+      if (sellerid && search) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getCategory +
+          `?seller_id=${sellerid}&main_category=true&search=${search}`
+        );
+      } else {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getCategory +
+          `?seller_id=${sellerid}&main_category=true`
+        );
+      }
+    };
+
     return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.getCategory +
-        `?seller_id=${sellerID}&main_category=true&search=${search}`;
+      const endpoint = getUrl(sellerID, search);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -36,32 +49,48 @@ export class RetailController {
     });
   }
 
-  static async getSubCategory(sellerID) {
+  static async getSubCategory(sellerID, search) {
+    const getUrl = (sellerid, search) => {
+      if (sellerid && search) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getSubCategory +
+          `?seller_id=${sellerid}&search=${search}`
+        );
+      } else {
+        return PRODUCT_URL + ApiProductInventory.getSubCategory + `?seller_id=${sellerid}`;
+      }
+    };
     return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.getSubCategory +
-        `?seller_id=${sellerID}&main_category=false&need_subcategory=true`;
-
+      const endpoint = getUrl(sellerID, search);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: 'Sub-Category not found',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'Sub-Category not found',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
   }
 
-  static async getBrand(sellerID) {
+  static async getBrand(sellerID, search) {
+    const getUrl = (sellerid, search) => {
+      if (sellerid && search) {
+        return (
+          PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerid}&search=${search}`
+        );
+      } else {
+        return PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerid}`;
+      }
+    };
     return new Promise((resolve, reject) => {
-      const endpoint = PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerID}`;
+      const endpoint = getUrl(sellerID, search);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

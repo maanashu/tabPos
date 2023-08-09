@@ -159,8 +159,10 @@ export function ShippingOrder2() {
   }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
 
   useEffect(() => {
+    setUserDetail(ordersList?.[0] ?? []);
+    setOrderDetail(ordersList?.[0]?.order_details ?? []);
     dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
-  }, [openShippingOrders]);
+  }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
 
   const isDeliveryOrder = useSelector((state) =>
     isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state)
@@ -821,7 +823,7 @@ export function ShippingOrder2() {
       sellerID: sellerID,
     };
     dispatch(
-      acceptOrder(data, (res) => {
+      acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg === 'Order status updated successfully!') {
           alert('Order accepted successfully');
           dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
