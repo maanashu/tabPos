@@ -17,7 +17,6 @@ export const FilterDropDown = ({ sellerid }) => {
   const [subItems, setSubItems] = useState();
   const [openDropDown, setOpenDropDown] = useState(false);
   const [search, setSearch] = useState('');
-  console.log('retailData====', retailData?.categoryList);
 
   useEffect(() => {
     // dispatch(getCategory(sellerid));

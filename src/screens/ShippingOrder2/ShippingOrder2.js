@@ -76,8 +76,6 @@ export function ShippingOrder2() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const orderStatusCountData = todayStatus?.orderStatus;
 
-  console.log('count---', orderStatusCountData);
-
   const widthAndHeight = 140;
   const series = [
     pieChartData?.[0]?.count ?? 0,

@@ -30,7 +30,6 @@ export function TotalInventory({ onPress }) {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const totalInventory = getAnalyticsData?.getTotalInventory;
-  // console.log('first', totalInventory?.productData);
 
   const getProductList = ({ item, index }) => (
     <DataTable.Row>

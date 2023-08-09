@@ -21,7 +21,6 @@ const OrderDetail = ({
   declineHandler,
   acceptHandler,
 }) => {
-  console.log('orderStatus====', openShippingOrders);
   return (
     <>
       <View style={styles.orderToReviewView}>
