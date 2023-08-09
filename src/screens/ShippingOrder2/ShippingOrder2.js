@@ -62,6 +62,8 @@ import styles from './ShippingOrder2.styles';
 import RightDrawer from './Components/RightDrawer';
 import Orders from './Components/Orders';
 import Graph from './Components/Graph';
+import { getOrderData } from '@/actions/AnalyticsAction';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -70,13 +72,14 @@ export function ShippingOrder2() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const todayStatus = useSelector(getShipping);
+  const oneOrderDetail = useSelector(getAnalytics);
   const getGraphOrderData = useSelector(getDelivery);
   const ordersList = getGraphOrderData?.getReviewDef;
   const pieChartData = getGraphOrderData?.getOrderstatistics?.data;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const orderStatusCountData = todayStatus?.orderStatus;
 
-  console.log('count---', orderStatusCountData);
+  console.log('count---', ordersList?.[0]?.id);
 
   const widthAndHeight = 140;
   const series = [
@@ -87,7 +90,6 @@ export function ShippingOrder2() {
   ];
 
   let sum = 0;
-
   series.forEach((num) => {
     sum += num;
   });
@@ -100,6 +102,9 @@ export function ShippingOrder2() {
   const [viewAllOrders, setViewAllOrders] = useState(false);
   const [openShippingOrders, setOpenShippingOrders] = useState('0');
   const [getOrderDetail, setGetOrderDetail] = useState('');
+  const [orderId, setOrderId] = useState(ordersList?.[0]?.id);
+
+  console.log('orderStatusCount====', orderStatusCountData);
 
   const statusCount = [
     {
@@ -153,6 +158,14 @@ export function ShippingOrder2() {
     dispatch(getGraphOrders(sellerID, 4));
     dispatch(getOrderstatistics(sellerID, 4));
     dispatch(orderStatusCount(sellerID));
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(getOrderData(orderId || ordersList?.[0]?.id));
+    }, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -262,13 +275,17 @@ export function ShippingOrder2() {
         setViewAllOrders(true);
         setUserDetail(item);
         setOrderDetail(item?.order_details);
+        dispatch(getOrderData(item?.id));
       }}
       style={[
         viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
         {
           backgroundColor:
-            viewAllOrders && item === userDetail ? COLORS.textInputBackground : COLORS.transparent,
-          borderColor: viewAllOrders && item === userDetail ? COLORS.primary : COLORS.blue_shade,
+            viewAllOrders && item?.id === userDetail?.id
+              ? COLORS.textInputBackground
+              : COLORS.transparent,
+          borderColor:
+            viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
         },
       ]}
     >
@@ -323,13 +340,18 @@ export function ShippingOrder2() {
         setUserDetail(item);
         setOrderDetail(item?.order_details);
         setGetOrderDetail('MainScreen');
+        dispatch(getOrderData(item?.id));
+        setOrderId(item?.id);
       }}
       style={[
         viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
         {
           backgroundColor:
-            viewAllOrders && item === userDetail ? COLORS.textInputBackground : COLORS.transparent,
-          borderColor: viewAllOrders && item === userDetail ? COLORS.primary : COLORS.blue_shade,
+            viewAllOrders && item?.id === userDetail?.id
+              ? COLORS.textInputBackground
+              : COLORS.transparent,
+          borderColor:
+            viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
         },
       ]}
     >
@@ -827,6 +849,7 @@ export function ShippingOrder2() {
         if (res?.msg === 'Order status updated successfully!') {
           alert('Order accepted successfully');
           dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
+          dispatch(orderStatusCount(sellerID));
           setGetOrderDetail('ViewAllScreen');
           setUserDetail(ordersList?.[0] ?? []);
           setViewAllOrders(true);
