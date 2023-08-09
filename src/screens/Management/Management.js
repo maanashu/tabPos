@@ -133,6 +133,7 @@ export function Management() {
     },
   ];
 
+
   const Item = ({ item, onPress, borderColor, color }) => (
     <TouchableOpacity
       onPress={onPress}
