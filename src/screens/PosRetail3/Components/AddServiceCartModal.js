@@ -35,7 +35,6 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
       date: '2023-08-07',
       pos_user_id: posUserId,
     };
-    console.log('check slots params: ', params);
     dispatch(getTimeSlots(params));
   }, [posUserId]);
 

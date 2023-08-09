@@ -30,10 +30,6 @@ export function TotalPosOrder({ onPress }) {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
-  console.log(
-    'first',
-    JSON.stringify(analyticOrderGraphs?.pos_graph?.orderListData[0]?.deliverd_data_list)
-  );
 
   const getPOSOrderList = ({ item, index }) => (
     <DataTable.Row>
