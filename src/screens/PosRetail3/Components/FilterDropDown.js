@@ -50,7 +50,7 @@ export const FilterDropDown = ({ sellerid }) => {
   const [selectedSubCategoryArray, setSelectedSubCategoryArray] = useState([]);
 
   // brand search
-  const [brandData, setBrandData] = useState();
+  const [brandData, setBrandData] = useState([]);
   const [searchBrand, setSearchBrand] = useState('');
   const debouncedBrandValue = useDebounce(searchBrand, 300);
   const [brandOpenDropDown, setBrandOpenDropDown] = useState(false);
@@ -60,17 +60,6 @@ export const FilterDropDown = ({ sellerid }) => {
     dispatch(getCategory(sellerid, search));
     dispatch(getSubCategory(sellerid, searchSubCategory));
     dispatch(getBrand(sellerid, searchBrand));
-    setCategoryData(
-      retailData?.categoryList?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    );
-
-    setSubCategoryData(
-      retailData?.subCategories?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    );
-
-    setBrandData(
-      retailData?.brands?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    );
   }, [
     debouncedValue,
     debouncedSubValue,
@@ -80,7 +69,19 @@ export const FilterDropDown = ({ sellerid }) => {
     searchBrand,
   ]);
 
-  console.log('retailData?.brands-----', retailData?.brands);
+  useEffect(() => {
+    setCategoryData(
+      retailData?.categoryList //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+    );
+
+    setSubCategoryData(
+      retailData?.subCategories //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+    );
+
+    setBrandData(
+      retailData?.brands //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+    );
+  }, [retailData]);
 
   useEffect(() => {
     let finalParams = {};
@@ -110,17 +111,17 @@ export const FilterDropDown = ({ sellerid }) => {
     dispatch(getCategory(sellerid));
     dispatch(getSubCategory(sellerid));
     dispatch(getBrand(sellerid));
-    setCategoryData(
-      retailData?.categoryList?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    );
+    // setCategoryData(
+    //   retailData?.categoryList?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+    // );
 
-    setSubCategoryData(
-      retailData?.subCategories?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    );
+    // setSubCategoryData(
+    //   retailData?.subCategories?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+    // );
 
-    setBrandData(
-      retailData?.brands?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    );
+    // setBrandData(
+    //   retailData?.brands?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+    // );
   }, [!search, !searchSubCategory, !searchBrand]);
 
   const isOrderLoading = useSelector((state) =>

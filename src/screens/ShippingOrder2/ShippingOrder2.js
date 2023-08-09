@@ -260,7 +260,10 @@ export function ShippingOrder2() {
           backgroundColor: openShippingOrders === item?.key ? COLORS.solidGrey : COLORS.transparent,
         },
       ]}
-      onPress={() => setOpenShippingOrders(item?.key)}
+      onPress={() => {
+        setOpenShippingOrders(item?.key),
+          dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
+      }}
     >
       <View style={styles.bucketBackgorund}>
         <Image source={item.image} style={styles.sideBarImage} />
