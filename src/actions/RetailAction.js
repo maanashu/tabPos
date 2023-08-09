@@ -691,6 +691,25 @@ const getTimeSlotsReset = () => ({
   payload: null,
 });
 
+//updateCartByTip
+const updateCartByTipRequest = () => ({
+  type: TYPES.UPDATE_CART_BY_TIP_REQUEST,
+  payload: null,
+});
+
+const updateCartByTipSuccess = (data) => ({
+  type: TYPES.UPDATE_CART_BY_TIP_SUCCESS,
+  payload: { data },
+});
+const updateCartByTipError = (error) => ({
+  type: TYPES.UPDATE_CART_BY_TIP_ERROR,
+  payload: { error },
+});
+const updateCartByTipReset = () => ({
+  type: TYPES.UPDATE_CART_BY_TIP_RESET,
+  payload: null,
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -1129,13 +1148,23 @@ export const attachCustomer = (data) => async (dispatch) => {
   }
 };
 
-export const getQrCodee = (cartId) => async (dispatch) => {
+export const getQrCodee = (cartId, ss) => async (dispatch) => {
   dispatch(getQrCodeRequest());
   try {
-    const res = await RetailController.getQrCode(cartId);
+    const res = await RetailController.getQrCode(cartId, ss);
     return dispatch(getQrCodeSuccess(res));
   } catch (error) {
     dispatch(getQrCodeError(error.message));
+  }
+};
+
+export const updateCartByTip = (data) => async (dispatch) => {
+  dispatch(updateCartByTipRequest());
+  try {
+    const res = await RetailController.getTip(data);
+    return dispatch(updateCartByTipSuccess(res));
+  } catch (error) {
+    dispatch(updateCartByTipError(error.message));
   }
 };
 

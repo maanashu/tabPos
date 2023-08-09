@@ -111,12 +111,15 @@ export const ApiOrderInventory = {
   getServiceCart: 'appointment_carts/user',
   appintment_cart: 'appointment_carts',
   qrCode: 'poscarts/qr-code/',
+  qrcodeServices: 'appointment_carts/qr-code/',
   getAnalyticOrderGraphs: 'orders/pos/analytics/count/graph',
   getTotalOrder: 'orders/statistics/orders/total',
   qrCode: 'poscarts/qr-code/',
   orderStatusCount: 'orders/pos/seller/multi-status/orders-count',
   changeStatusProductCart: 'poscarts/change-hold-status',
   slots: 'slots/pos/service-appointment-slots',
+  tip: 'poscarts/',
+  serviceTip: 'appointment_carts/',
 };
 
 export const ApiWalletInventory = {
