@@ -22,6 +22,7 @@ import Modal from 'react-native-modal';
 import {
   addDiscountToCart,
   addNotescart,
+  addServiceDiscountToCart,
   addServiceNotescart,
   customerNumber,
   getAllCart,
@@ -43,16 +44,24 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 export function PosRetail3() {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+  const getAuth = useSelector(getAuthData);
   const getCartAmount = getRetailData?.getAllCart?.amount;
+
   const cartID2 = getRetailData?.getAllCart?.id;
   const servicCartId = getRetailData?.getserviceCart?.id;
   const cartData = getRetailData?.getAllCart;
+  const getCart = getRetailData?.getAllCart;
+  const getServicecart = getRetailData?.getserviceCart;
+  const getServiceCartAmount = getRetailData?.getserviceCart?.amount;
+
+  // console.log('----------------------', getRetailData?.getserviceCart);
 
   const finalAmountForDiscount =
     cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
-  const getAuth = useSelector(getAuthData);
+
+  const finalServiceAmountForDiscount =
+    getServicecart?.amount?.products_price.toFixed(2) - getServicecart?.amount?.tax.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  console.log('sellerID', sellerID);
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
@@ -62,6 +71,7 @@ export function PosRetail3() {
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
   const [serviceNotes, setServiceNotes] = useState(getRetailData?.getserviceCart?.notes);
   const [addDiscount, setAddDiscount] = useState(false);
+  const [addServiceDiscount, setAddServiceDiscount] = useState(false);
   const [page, setPage] = useState(1);
   const [tipAmount, selectTipAmount] = useState();
   const [fromWhichCart, setFromWhichCart] = useState('Product');
@@ -69,7 +79,115 @@ export function PosRetail3() {
   const [addServiceNotes, setAddServiceNotes] = useState(false);
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
-  const getCart = getRetailData?.getAllCart;
+
+  const [cashPayDetail, setCashPayDetail] = useState();
+
+  // service Add discount start
+
+  const [serviceAmountDis, setServiceAmountDis] = useState(
+    getServicecart?.discount_flag === 'amount' ? getServicecart?.discount_value : ''
+  );
+
+  const [servicePercentDis, setServicePercentDis] = useState(
+    getServicecart?.discount_flag === 'percentage' ? getServicecart?.discount_value : ''
+  );
+  const [serviceDiscountCode, setServiceDiscountCode] = useState(
+    getServicecart?.discount_flag === 'code' ? getServicecart?.discount_value : ''
+  );
+  const [serviceDescriptionDis, setServiceDescriptionDis] = useState(getServicecart?.discount_desc);
+  const [serviceValue, setServiceValue] = useState(
+    getServicecart?.discount_flag === 'amount'
+      ? 'amount'
+      : getServicecart?.discount_flag === 'percentage'
+      ? 'percentage'
+      : getServicecart?.discount_flag === 'code'
+      ? 'code'
+      : ''
+  );
+  const [serviceAmountCheck, setServiceAmountCheck] = useState(
+    getServicecart?.discount_flag === 'amount' ? true : false
+  );
+  const [servicePercentageCheck, setServicePercentageCheck] = useState(
+    getServicecart?.discount_flag === 'percentage' ? true : false
+  );
+  const [serviceDiscountCheck, setServiceDiscountCheck] = useState(
+    getServicecart?.discount_flag === 'code' ? true : false
+  );
+
+  useEffect(() => {
+    setServiceNotes(getServicecart?.notes);
+    setServiceDescriptionDis(getServicecart?.discount_desc);
+    setServicePercentageCheck(getServicecart?.discount_flag === 'percentage' ? true : false);
+    setServiceAmountCheck(getServicecart?.discount_flag === 'amount' ? true : false);
+    setServiceDiscountCheck(getServicecart?.discount_flag === 'code' ? true : false);
+    setServiceAmountDis(
+      getServicecart?.discount_flag === 'amount' ? getServicecart?.discount_value : ''
+    );
+    setServicePercentDis(
+      getServicecart?.discount_flag === 'percentage' ? getServicecart?.discount_value : ''
+    );
+    setServiceDiscountCode(
+      getServicecart?.discount_flag === 'code' ? getServicecart?.discount_value : ''
+    );
+    setServiceValue(
+      getServicecart?.discount_flag === 'amount'
+        ? 'amount'
+        : getServicecart?.discount_flag === 'percentage'
+        ? 'percentage'
+        : getServicecart?.discount_flag === 'code'
+        ? 'code'
+        : ''
+    );
+  }, [getRetailData?.getserviceCart]);
+
+  const clearServiceInput = () => {
+    setServiceNotes('');
+    setServiceAmountDis('');
+    setServicePercentDis('');
+    setServiceDiscountCode('');
+    setServiceValue('');
+    setServiceDescriptionDis('');
+    if (serviceAmountCheck) {
+      setServiceAmountCheck(false);
+    } else if (servicePercentageCheck) {
+      setServicePercentageCheck(false);
+    } else if (serviceDiscountCheck) {
+      setServiceDiscountCheck(false);
+    }
+  };
+
+  const saveServiceDiscountHandler = () => {
+    if (
+      serviceAmountDis > finalServiceAmountForDiscount ||
+      percentDis > finalServiceAmountForDiscount
+    ) {
+      alert('Please enter discount less then total amount');
+    } else if (!getRetailData?.getserviceCart?.id) {
+      alert(strings.posSale.addItemCart);
+    } else if (serviceValue === '') {
+      alert(strings.posSale.discountType);
+    } else if (!serviceAmountDis && !servicePercentDis && !serviceDiscountCode) {
+      alert(strings.posSale.enterfield);
+    } else if (!serviceDescriptionDis) {
+      alert(strings.posSale.selectDisTitle);
+    } else {
+      const data = {
+        amountDis: serviceAmountDis,
+        percentDis: servicePercentDis,
+        discountCode: serviceDiscountCode,
+        value: serviceValue,
+        cartId: getRetailData?.getserviceCart?.id,
+        orderAmount: getServiceCartAmount?.total_amount,
+        descriptionDis: serviceDescriptionDis,
+      };
+
+      dispatch(addServiceDiscountToCart(data));
+      clearServiceInput();
+      setAddServiceDiscount(false);
+    }
+  };
+
+  // service Add discount end
 
   const [amountDis, setAmountDis] = useState(
     getCart?.discount_flag === 'amount' ? getCart?.discount_value : ''
@@ -99,11 +217,6 @@ export function PosRetail3() {
   const [discountCheck, setDiscountCheck] = useState(
     getCart?.discount_flag === 'code' ? true : false
   );
-  const [cashPayDetail, setCashPayDetail] = useState();
-
-  useEffect(() => {
-    setServiceNotes(getRetailData?.getserviceCart?.notes);
-  }, [getRetailData?.getserviceCart]);
 
   useEffect(() => {
     dispatch(getAllCart());
@@ -253,6 +366,7 @@ export function PosRetail3() {
         TYPES.GET_MAIN_PRODUCT,
         TYPES.GET_ALL_SERVICE_CART,
         TYPES.CHANGE_STATUS_SERVICE_CART,
+        TYPES.ADD_SERVICE_DISCOUNT,
       ],
       state
     )
@@ -295,7 +409,7 @@ export function PosRetail3() {
           setselectedScreen('CartAmountPayBy'), setComingScreen('CartServiceScreen');
         }}
         addNotesHandler={() => setAddServiceNotes(true)}
-        addDiscountHandler={() => alert('coming soon')}
+        addDiscountHandler={() => setAddServiceDiscount(true)}
       />
     ),
     ['CartAmountTips']: (
@@ -360,7 +474,6 @@ export function PosRetail3() {
           setselectedScreen('CartAmountPayBy');
         }}
         onPressContinue={(cartData, data) => {
-          // console.log("CART__DATA",cartData);
           setpaymentMethod('Cash');
           setSavedTempCartData(cartData?.getAllCart);
           setselectedScreen('FinalPaymentScreen');
@@ -488,49 +601,91 @@ export function PosRetail3() {
         </KeyboardAvoidingView>
       </Modal>
 
-      <Modal animationType="fade" transparent={true} isVisible={addServiceNotes}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={addServiceNotes || addServiceDiscount}
+      >
         <KeyboardAvoidingView
         // style={{ flex: 1 }}
         // behavior={Platform.OS === 'ios' ? 'padding' : 100}
         // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
         >
           <ScrollView>
-            <View style={[styles.addNotesCon, styles.addNotesCon2]}>
-              <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
-                <Text style={styles.jacketName}>Add Notes</Text>
-                <TouchableOpacity onPress={() => setAddServiceNotes(false)}>
-                  <Image source={crossButton} style={styles.crossBg} />
+            {addServiceDiscount ? (
+              <View style={[styles.addNotesCon, styles.addDiscountConPop]}>
+                <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
+                  <Text style={styles.jacketName}>Add Discount</Text>
+                  <TouchableOpacity onPress={() => setAddServiceDiscount(false)}>
+                    <Image source={crossButton} style={styles.crossBg} />
+                  </TouchableOpacity>
+                </View>
+                <Spacer space={SH(15)} />
+                <AddDiscountToCart
+                  amountDis={serviceAmountDis}
+                  setAmountDis={setServiceAmountDis}
+                  percentDis={servicePercentDis}
+                  setPercentDis={setServicePercentDis}
+                  discountCode={serviceDiscountCode}
+                  setDiscountCode={setServiceDiscountCode}
+                  descriptionDis={serviceDescriptionDis}
+                  setDescriptionDis={setServiceDescriptionDis}
+                  setValue={setServiceValue}
+                  value={serviceValue}
+                  clearInput={clearServiceInput}
+                  amountCheck={serviceAmountCheck}
+                  setAmountCheck={setServiceAmountCheck}
+                  percentageCheck={servicePercentageCheck}
+                  setPercentageCheck={setServicePercentageCheck}
+                  discountCheck={serviceDiscountCheck}
+                  setDiscountCheck={setServiceDiscountCheck}
+                />
+                <Spacer space={SH(10)} />
+                <TouchableOpacity
+                  style={[styles.holdCartCon, styles.addNotesBtn]}
+                  onPress={() => saveServiceDiscountHandler()}
+                >
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
                 </TouchableOpacity>
               </View>
-              <Spacer space={SH(15)} />
-              <TextInput
-                style={styles.addNotesInput}
-                onChangeText={setServiceNotes}
-                value={serviceNotes}
-                placeholder="Add Notes"
-                multiline={true}
-              />
-              <Spacer space={SH(15)} />
-              <TouchableOpacity
-                style={[styles.holdCartCon, styles.addNotesBtn]}
-                // onPress={() => saveServiceNotesHandler()}
-                onPress={() => {
-                  if (!serviceNotes) {
-                    alert(strings.posSale.pleaseAddNotes);
-                  } else {
-                    const data = {
-                      cartId: servicCartId,
-                      notes: serviceNotes,
-                    };
-                    dispatch(addServiceNotescart(data));
-                    setServiceNotes('');
-                    setAddServiceNotes(false);
-                  }
-                }}
-              >
-                <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
-              </TouchableOpacity>
-            </View>
+            ) : (
+              <View style={[styles.addNotesCon, styles.addNotesCon2]}>
+                <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
+                  <Text style={styles.jacketName}>Add Notes</Text>
+                  <TouchableOpacity onPress={() => setAddServiceNotes(false)}>
+                    <Image source={crossButton} style={styles.crossBg} />
+                  </TouchableOpacity>
+                </View>
+                <Spacer space={SH(15)} />
+                <TextInput
+                  style={styles.addNotesInput}
+                  onChangeText={setServiceNotes}
+                  value={serviceNotes}
+                  placeholder="Add Notes"
+                  multiline={true}
+                />
+                <Spacer space={SH(15)} />
+                <TouchableOpacity
+                  style={[styles.holdCartCon, styles.addNotesBtn]}
+                  // onPress={() => saveServiceNotesHandler()}
+                  onPress={() => {
+                    if (!serviceNotes) {
+                      alert(strings.posSale.pleaseAddNotes);
+                    } else {
+                      const data = {
+                        cartId: servicCartId,
+                        notes: serviceNotes,
+                      };
+                      dispatch(addServiceNotescart(data));
+                      setServiceNotes('');
+                      setAddServiceNotes(false);
+                    }
+                  }}
+                >
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </ScrollView>
         </KeyboardAvoidingView>
       </Modal>

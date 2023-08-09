@@ -52,6 +52,7 @@ import {
   walletGetByPhone,
   requestCheckSuccess,
   createOrder,
+  attachServiceCustomer,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -90,6 +91,8 @@ export const CartAmountPayBy = ({
   const qrcodeData = useSelector(getRetail).qrKey;
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
+
+  const servicCartId = getRetailData?.getserviceCart?.id;
 
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
@@ -236,7 +239,7 @@ export const CartAmountPayBy = ({
   const attachUserByPhone = async (customerNo) => {
     if (customerNo === '') {
       alert('Please Enter Phone Number');
-    } else {
+    } else if (cartType == 'Product') {
       const data = {
         cartId: cartid,
         phoneNo: customerNo,
@@ -249,19 +252,45 @@ export const CartAmountPayBy = ({
         });
         setPhonePopVisible(false);
       }
+    } else {
+      const data = {
+        cartId: servicCartId,
+        phoneNo: customerNo,
+      };
+      const res = await dispatch(attachServiceCustomer(data));
+      if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
+        onPressPaymentMethod({
+          method: 'PayBy' + selectedPaymentMethod,
+          index: selectedPaymentIndex,
+        });
+        setPhonePopVisible(false);
+      }
     }
   };
 
   const attachUserByEmail = async (customerEmail) => {
     if (customerEmail === '') {
       alert('Please Enter Email');
-    } else {
+    } else if (cartType == 'Product') {
       const data = {
         cartId: cartid,
         phoneEmail: customerEmail,
       };
       const res = await dispatch(attachCustomer(data));
       if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+        onPressPaymentMethod({
+          method: 'PayBy' + selectedPaymentMethod,
+          index: selectedPaymentIndex,
+        });
+        setEmailModal(false);
+      }
+    } else {
+      const data = {
+        cartId: servicCartId,
+        phoneEmail: customerEmail,
+      };
+      const res = await dispatch(attachServiceCustomer(data));
+      if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
         onPressPaymentMethod({
           method: 'PayBy' + selectedPaymentMethod,
           index: selectedPaymentIndex,
@@ -594,7 +623,7 @@ export const CartAmountPayBy = ({
             </View>
             <Text style={styles._commonPayTitle}>Wed 26 Apr , 2023 6:27 AM</Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
-            <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
+            {/* <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text> */}
             <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
             <Spacer space={SH(10)} />

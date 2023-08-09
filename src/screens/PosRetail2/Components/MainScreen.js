@@ -196,9 +196,6 @@ export function MainScreen({
       setAddCartList([...getRetailData?.bulkData, ...updatedCart]);
     }
   };
-  // console.log('kgkg', addCartList);
-  // Your JSX rendering code here
-
   const originalFilterData = [
     {
       id: 1,

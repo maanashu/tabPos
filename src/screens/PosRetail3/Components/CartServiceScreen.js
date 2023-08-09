@@ -21,6 +21,7 @@ import {
   rightBack,
   search_light,
   sideKeyboard,
+  userImage,
 } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
@@ -292,7 +293,7 @@ export function CartServiceScreen({
                       </View>
                       <View style={[styles.tableListSide, styles.tableListSide2]}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <Image source={clothes} style={styles.offerImage} />
+                          <Image source={userImage} style={styles.offerImage} />
                           <Text style={styles.blueListDataText}>Anna S</Text>
                         </View>
                         <Text style={styles.blueListDataText}>

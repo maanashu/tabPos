@@ -470,6 +470,45 @@ export class RetailController {
     });
   }
 
+  static async addServiceDiscountToCart(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart + `/${data.cartId}`;
+      const orderAmountstrfy = JSON.stringify(data.orderAmount);
+      const discountInput = data.amountDis
+        ? data.amountDis
+        : data.percentDis
+        ? data.percentDis
+        : data.discountCode;
+      const body = {
+        discount_value: discountInput,
+        discount_flag: data.value,
+        order_amount: orderAmountstrfy,
+        // discount_desc: data.descriptionDis,
+      };
+      HttpClient.put(endpoint, body)
+        .then((response) => {
+          if (response?.msg === 'Appointment detail updated!') {
+            Toast.show({
+              text2: 'Discount add succesfully',
+              position: 'bottom',
+              type: 'success_toast',
+              visibilityTime: 1500,
+            });
+            resolve(response);
+          }
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
   static async getProductBundle(id) {
     return new Promise((resolve, reject) => {
       const endpoint = PRODUCT_URL + ApiOrderInventory.getProductBundle + '?product_id=' + `${id}`;
@@ -950,8 +989,39 @@ export class RetailController {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
 
-            text2: error.msg,
+  static async attachServiceCustomer(data) {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.attachServiceCustomer + `${data.cartId}`;
+      const body = data?.phoneNo
+        ? {
+            phone_no: data?.phoneNo,
+          }
+        : {
+            email: data?.phoneEmail,
+          };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: response?.msg,
+            visibilityTime: 2000,
+          });
+
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
             text2: error?.msg,
             visibilityTime: 2000,
           });

@@ -256,6 +256,21 @@ const addDiscountError = (error) => ({
   payload: { error },
 });
 
+const addServiceDiscountToCartRequest = () => ({
+  type: TYPES.ADD_SERVICE_DISCOUNT_REQUEST,
+  payload: null,
+});
+
+const addServiceDiscountToCartSuccess = () => ({
+  type: TYPES.ADD_SERVICE_DISCOUNT_SUCCESS,
+  payload: {},
+});
+
+const addServiceDiscountToCartError = (error) => ({
+  type: TYPES.ADD_SERVICE_DISCOUNT_ERROR,
+  payload: { error },
+});
+
 const getProductBundleRequest = () => ({
   type: TYPES.GET_BUNDLEOFFER_REQUEST,
   payload: null,
@@ -583,6 +598,26 @@ const attachCustomerReset = () => ({
 
 const attachCustomerError = (error) => ({
   type: TYPES.ATTACH_CUSTOMER_ERROR,
+  payload: { error },
+});
+
+const attachServiceCustomerRequest = () => ({
+  type: TYPES.ATTACH_SERVICE_CUSTOMER_REQUEST,
+  payload: null,
+});
+
+const attachServiceCustomerSuccess = () => ({
+  type: TYPES.ATTACH_SERVICE_CUSTOMER_SUCCESS,
+  payload: {},
+});
+
+const attachServiceCustomerReset = () => ({
+  type: TYPES.ATTACH_SERVICE_CUSTOMER_RESET,
+  payload: null,
+});
+
+const attachServiceCustomerError = (error) => ({
+  type: TYPES.ATTACH_SERVICE_CUSTOMER_ERROR,
   payload: { error },
 });
 
@@ -945,6 +980,18 @@ export const addDiscountToCart = (data) => async (dispatch) => {
   }
 };
 
+export const addServiceDiscountToCart = (data) => async (dispatch) => {
+  dispatch(addServiceDiscountToCartRequest());
+  try {
+    const res = await RetailController.addServiceDiscountToCart(data);
+    dispatch(addServiceDiscountToCartSuccess(res));
+    dispatch(getServiceCart());
+  } catch (error) {
+    dispatch(getServiceCart());
+    dispatch(addServiceDiscountToCartError(error.message));
+  }
+};
+
 export const getProductBundle = (id) => async (dispatch) => {
   dispatch(getProductBundleRequest());
   try {
@@ -1165,6 +1212,19 @@ export const attachCustomer = (data) => async (dispatch) => {
       dispatch(attachCustomerReset());
     }
     dispatch(attachCustomerError(error.message));
+  }
+};
+
+export const attachServiceCustomer = (data) => async (dispatch) => {
+  dispatch(attachServiceCustomerRequest());
+  try {
+    const res = await RetailController.attachServiceCustomer(data);
+    return dispatch(attachServiceCustomerSuccess(res));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(attachServiceCustomerReset());
+    }
+    dispatch(attachServiceCustomerError(error.message));
   }
 };
 
