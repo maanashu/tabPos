@@ -257,7 +257,11 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
           <Spacer space={SH(10)} />
 
           <Text style={styles.selected}>
-            Time: <Text style={{ color: COLORS.primary }}>Today @ 3:00 PM</Text>
+            Time:{' '}
+            <Text style={{ color: COLORS.primary }}>
+              {selectedDate === moment(new Date()).format('MM/DD/YY') ? `Today` : `${selectedDate}`}
+              {selectedTimeSlotData && ` @ ${selectedTimeSlotData?.start_time}`}
+            </Text>
           </Text>
           <View
             style={{
