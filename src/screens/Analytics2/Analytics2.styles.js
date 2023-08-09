@@ -97,8 +97,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    bottom: SH(10),
+    // position: 'absolute',
+    // bottom: SH(10),
   },
   headerText: {
     flex: 1,

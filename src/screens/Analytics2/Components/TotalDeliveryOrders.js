@@ -29,6 +29,11 @@ export function TotalDeliveryOrders({ onPress }) {
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
   const deliveryGraph = analyticOrderGraphs?.delivery_graph?.orderListData[0];
+  const data = [
+    ...deliveryGraph?.deliverd_data_list,
+    ...deliveryGraph?.returned_data_list,
+    ...deliveryGraph?.cancelled_data_list,
+  ];
 
   const getDeliveryOrderList = ({ item, index }) => (
     <DataTable.Row>
@@ -42,40 +47,21 @@ export function TotalDeliveryOrders({ onPress }) {
         <Text style={styles.revenueDataText}>{item?.id}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$23,000</Text>
+        <Text style={styles.revenueDataText}>{'Anan'}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.discount}</Text>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>0</Text>
+        <Text style={styles.revenueDataText}>{item?.profit}</Text>
       </DataTable.Cell>
+
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$560</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$23.50</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$450</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.tax}</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.total_sale_price}</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.revenue}</Text>
+        <Text style={styles.revenueDataText2}>${item?.payable_amount}</Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
-  const data =
-    deliveryGraph?.deliverd_data_list?.length > 0
-      ? deliveryGraph?.deliverd_data_list
-      : deliveryGraph?.returned_data_list?.length > 0
-      ? deliveryGraph?.returned_data_list
-      : deliveryGraph?.cancelled_data_list;
+
   return (
     <View>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
@@ -191,40 +177,26 @@ export function TotalDeliveryOrders({ onPress }) {
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Id</Text>
               </DataTable.Title>
+
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Gross Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Discount</Text>
+                <Text style={styles.revenueText}>Byer Name</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Returns</Text>
+                <Text style={styles.revenueText}>Total Quatity</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Net Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Shipping/Delivery</Text>
+                <Text style={styles.revenueText}>Total Profit</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Other Fees</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Tax</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Revenue</Text>
+                <Text style={styles.revenueText}>Total Amount</Text>
               </DataTable.Title>
             </DataTable.Header>
 
             <View style={{ height: SH(380), zIndex: -99 }}>
-              {deliveryGraph?.cancelled_data_list?.length &&
-              deliveryGraph?.deliverd_data_list?.length &&
+              {deliveryGraph?.cancelled_data_list?.length === 0 &&
+              deliveryGraph?.deliverd_data_list?.length === 0 &&
               deliveryGraph?.returned_data_list?.length === 0 ? (
                 <View style={[styles.listLoader]}>
                   <Text

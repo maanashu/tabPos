@@ -5440,7 +5440,7 @@ export function Analytics(props) {
                     barSpacing={Platform.OS === 'android' ? 30 : 18}
                     barW={Platform.OS === 'android' ? 10 : 7}
                     labelTextSty={{ color: COLORS.gerySkies, fontSize: 11 }}
-                    revenueData={revenueGraphObject}
+                    data={revenueGraphObject}
                   />
                 </View>
               )}

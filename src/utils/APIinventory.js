@@ -112,6 +112,7 @@ export const ApiOrderInventory = {
   getTotalOrder: 'orders/statistics/orders/total',
   qrCode: 'poscarts/qr-code/',
   orderStatusCount: 'orders/pos/seller/multi-status/orders-count',
+  getSoldProduct: 'order_details/pos/product_count/sold',
 };
 
 export const ApiWalletInventory = {
