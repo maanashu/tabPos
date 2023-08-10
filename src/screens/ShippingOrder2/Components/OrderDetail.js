@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import { Spacer } from '@/components';
@@ -21,7 +22,6 @@ import styles from '../ShippingOrder2.styles';
 import ShipmentTracking from './ShipmentTracking';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';

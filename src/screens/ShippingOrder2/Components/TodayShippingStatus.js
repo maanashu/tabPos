@@ -1,14 +1,15 @@
 import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 
+import { useSelector } from 'react-redux';
+import { ms } from 'react-native-size-matters';
+
+import { COLORS } from '@/theme';
 import { strings } from '@/localization';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import styles from '../ShippingOrder2.styles';
-import { useSelector } from 'react-redux';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { ms } from 'react-native-size-matters';
-import { COLORS } from '@/theme';
 
 const TodayShippingStatus = ({ todayStatus }) => {
   const orderStatusLoading = useSelector((state) =>
