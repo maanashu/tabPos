@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
-import { LineChart } from 'react-native-chart-kit';
+import { BarChart } from 'react-native-chart-kit';
 
 import { COLORS } from '@/theme';
 import { strings } from '@/localization';
@@ -34,8 +34,8 @@ const Graph = ({ graphData, renderGraphItem, isDeliveryOrder, graphElements, wid
           <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
-        <LineChart
-          bezier
+        <BarChart
+          // bezier
           fromZero
           height={ms(185)}
           segments={10}

@@ -325,7 +325,7 @@ export const FilterDropDown = ({ sellerid }) => {
   };
 
   return (
-    <>
+    <View>
       {/* category view */}
       <View>
         <TouchableOpacity
@@ -394,7 +394,7 @@ export const FilterDropDown = ({ sellerid }) => {
           <View style={styles.dropdowMainView}>{showDetailedBrands()}</View>
         ) : null}
       </View>
-    </>
+    </View>
   );
 };
 

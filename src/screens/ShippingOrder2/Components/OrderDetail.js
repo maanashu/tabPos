@@ -21,47 +21,93 @@ const OrderDetail = ({
   declineHandler,
   acceptHandler,
 }) => {
+  const user = useSelector(getAuthData);
+  const location = user?.merchantLoginData?.user?.user_profiles?.current_address;
+  const oneOrderDetail = useSelector(getAnalytics);
+
+  const sourceCoordinate = {
+    latitude: location?.latitude,
+    longitude: location?.longitude,
+  };
+  const destinationCoordinate = {
+    latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
+    longitude: oneOrderDetail?.getOrderData?.coordinates?.[1],
+  };
+
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
+
   return (
     <>
-      <View style={styles.orderToReviewView}>
-        <FlatList
-          renderItem={renderAllOrdersToReview}
-          showsVerticalScrollIndicator={false}
-          data={ordersList ?? []}
-          ListHeaderComponent={() => (
-            <View style={styles.headingRowStyle}>
-              <Text style={styles.ordersToReviewText}>
-                {openShippingOrders === '0'
-                  ? strings.orderStatus.reviewOrders
-                  : openShippingOrders === '1'
-                  ? strings.orderStatus.acceptOrder
-                  : openShippingOrders === '2'
-                  ? strings.orderStatus.prepareOrder
-                  : openShippingOrders === '3'
-                  ? strings.orderStatus.shipOrder
-                  : openShippingOrders === '5'
-                  ? strings.orderStatus.deliveryOrder
-                  : openShippingOrders === '7'
-                  ? strings.orderStatus.cancelledOrder
-                  : strings.orderStatus.returnedOrders}
-              </Text>
+      {openShippingOrders >= '3' ? (
+        <View style={{ flex: 1 }}>
+          {isLoading ? (
+            <View style={[styles.loader, { backgroundColor: 'transparent' }]}>
+              <ActivityIndicator size={'large'} style={styles.loader} color={COLORS.primary} />
             </View>
+          ) : (
+            <>
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                showCompass
+                region={{
+                  latitude: location?.latitude,
+                  longitude: location?.longitude,
+                  latitudeDelta: 0.0992,
+                  longitudeDelta: 0.0421,
+                }}
+                style={styles.map}
+              >
+                <MapViewDirections
+                  key={location?.latitude}
+                  origin={{
+                    latitude: location?.latitude,
+                    longitude: location?.longitude,
+                  }}
+                  destination={{
+                    latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
+                    longitude: oneOrderDetail?.getOrderData?.coordinates?.[1],
+                  }}
+                  apikey={GOOGLE_MAP.API_KEYS}
+                  strokeWidth={10}
+                  strokeColor={COLORS.primary}
+                />
+                <Marker coordinate={sourceCoordinate}>
+                  <View>
+                    <Image
+                      source={storeTracker}
+                      style={{ height: ms(50), width: ms(50) }}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </Marker>
+                <Marker coordinate={destinationCoordinate}>
+                  <View>
+                    <Image
+                      source={deliveryHomeIcon}
+                      style={{ height: ms(50), width: ms(50) }}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </Marker>
+              </MapView>
+              <ShipmentTracking
+                props={{ status: oneOrderDetail?.getOrderData?.status, data: '' }}
+              />
+            </>
           )}
-          contentContainerStyle={styles.contentContainerStyle}
-        />
-      </View>
-
-      <View style={styles.orderDetailView}>
-        <View style={styles.orderDetailViewStyle}>
-          <View style={[styles.locationViewStyle, { width: ms(140) }]}>
-            <Image
-              source={
-                userDetail?.user_details?.profile_photo
-                  ? { uri: userDetail?.user_details?.profile_photo }
-                  : userImage
-              }
-              style={styles.userImageStyle}
-            />
+        </View>
+      ) : (
+        <View style={styles.orderDetailView}>
+          <View style={styles.orderDetailViewStyle}>
+            <View style={[styles.locationViewStyle, { width: ms(140) }]}>
+              <Image
+                source={
+                  userDetail?.user_details?.profile_photo
+                    ? { uri: userDetail?.user_details?.profile_photo }
+                    : userImage
+                }
+                style={styles.userImageStyle}
+              />
 
             <View style={styles.userNameView}>
               <Text style={[styles.totalTextStyle, { padding: 0 }]}>
@@ -131,15 +177,15 @@ const OrderDetail = ({
               <Text style={styles.itemCountText}>{userDetail?.total_items}</Text>
             </View>
 
-            <Spacer space={SH(15)} />
-            <View>
-              <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                {strings.shippingOrder.orderDate}
-              </Text>
-              <Text style={styles.itemCountText}>
-                {moment(userDetail?.date).format('DD/MM/YYYY')}
-              </Text>
-            </View>
+              <Spacer space={SH(15)} />
+              <View>
+                <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+                  {strings.shippingOrder.orderDate}
+                </Text>
+                <Text style={styles.itemCountText}>
+                  {moment(userDetail?.date).format('DD/MM/YYYY')}
+                </Text>
+              </View>
 
             <Spacer space={SH(15)} />
             <View>

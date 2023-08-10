@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: ms(12),
     paddingHorizontal: ms(7),
-    width: ms(285),
+    width: SW(130),
     borderColor: COLORS.blue_shade,
   },
   rightIconStyle: {
