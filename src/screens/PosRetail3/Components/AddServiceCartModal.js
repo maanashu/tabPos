@@ -28,7 +28,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
-  const [selectedDate, setselectedDate] = useState(moment(new Date()).format('MM/DD/YY'));
+  const [selectedDate, setselectedDate] = useState(moment(new Date()).format('YYYY-MM-DD'));
 
   const [selectedMonthData, setselectedMonthData] = useState(null);
   const [selectedYearData, setselectedYearData] = useState(null);
@@ -39,7 +39,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
     const params = {
       seller_id: sellerID,
       product_id: itemData?.id,
-      date: moment(selectedDate).format('YYYY-MM-DD'),
+      date: selectedDate,
       pos_user_id: posUserId,
     };
     dispatch(getTimeSlots(params));
@@ -64,14 +64,14 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         height: SH(60),
       }}
       onPress={() => {
-        setselectedDate(item?.day);
+        setselectedDate(item?.completeDate);
       }}
     >
       <Text
         style={{
           fontFamily: Fonts.Regular,
           fontSize: SF(14),
-          color: item?.day === selectedDate ? COLORS.primary : COLORS.dark_grey,
+          color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.dark_grey,
         }}
       >
         {item?.day}
@@ -80,10 +80,10 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         style={{
           fontFamily: Fonts.SemiBold,
           fontSize: SF(18),
-          color: item?.day === selectedDate ? COLORS.primary : COLORS.black,
+          color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.black,
         }}
       >
-        {item?.day === moment(new Date()).format('MM/DD/YY') ? 'Today' : item?.date}
+        {item?.completeDate === moment(new Date()).format('YYYY-MM-DD') ? 'Today' : item?.date}
       </Text>
     </TouchableOpacity>
   );
@@ -157,7 +157,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
       supplyPriceID: itemData?.supplies?.[0]?.supply_prices[0]?.id,
       product_id: itemData?.id,
       appName: 'pos',
-      date: moment(selectedDate).format('YYYY-MM-DD'),
+      date: selectedDate,
       startTime: selectedTimeSlotData?.start_time,
       endTime: selectedTimeSlotData?.end_time,
       posUserId: posUserId,
@@ -246,7 +246,9 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
           <Text style={styles.selected}>
             Time:{' '}
             <Text style={{ color: COLORS.primary }}>
-              {selectedDate === moment(new Date()).format('MM/DD/YY') ? `Today` : `${selectedDate}`}
+              {selectedDate === moment(new Date()).format('YYYY-MM-DD')
+                ? `Today`
+                : `${moment(selectedDate).format('ll')}`}
               {selectedTimeSlotData && ` @ ${selectedTimeSlotData?.start_time}`}
             </Text>
           </Text>
