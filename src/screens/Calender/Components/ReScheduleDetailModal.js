@@ -61,7 +61,6 @@ export function ReScheduleDetailModal({
 
   useEffect(() => {
     const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
-    console.log(daysArray);
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
 
@@ -227,6 +226,7 @@ export function ReScheduleDetailModal({
                 placeholder={'Select Month'}
                 containerStyle={{ marginRight: 10 }}
                 defaultValue={moment().month() + 1}
+                defaultYear={selectedYearData?.value ?? moment().year()}
                 onSelect={(monthData) => {
                   setselectedMonthData(monthData);
                 }}

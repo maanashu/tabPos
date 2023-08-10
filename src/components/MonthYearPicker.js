@@ -17,6 +17,7 @@ const MonthYearPicker = ({
   dateType,
   onSelect,
   defaultValue = null,
+  defaultYear = null,
 }) => {
   const currentYear = moment().year();
   const years = Array.from({ length: 10 }, (_, index) => currentYear + index);
@@ -36,6 +37,11 @@ const MonthYearPicker = ({
     { label: 'November', value: 11 },
     { label: 'December', value: 12 },
   ];
+
+  if (dateType === DATE_TYPE.MONTH && defaultYear === currentYear) {
+    const currentMonth = moment().month() + 1;
+    monthsData.splice(0, currentMonth - 1);
+  }
 
   const [value, setValue] = useState(defaultValue);
   const [isFocus, setIsFocus] = useState(false);

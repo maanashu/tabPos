@@ -264,6 +264,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
               placeholder={'Select Month'}
               containerStyle={{ marginRight: 10 }}
               defaultValue={moment().month() + 1}
+              defaultYear={selectedYearData?.value ?? moment().year()}
               onSelect={(monthData) => {
                 setselectedMonthData(monthData);
               }}
