@@ -60,6 +60,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useIsFocused } from '@react-navigation/native';
+
 moment.suppressDeprecationWarnings = true;
 
 const DATA = [
@@ -85,7 +86,8 @@ export const CartAmountPayBy = ({
 }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-
+  // const [loading, setloading] = useState(false);
+  const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
   const qrcodeData = useSelector(getRetail).qrKey;
@@ -551,18 +553,26 @@ export const CartAmountPayBy = ({
 
             {selectedPaymentIndex == 1 && (
               <TouchableOpacity
+                isLoading={true}
                 style={styles.jobrSaveView}
                 onPress={() => {
                   getTipPress();
                 }}
               >
-                <Text style={styles.youSave}>You save</Text>
-                <View style={styles.jbrContainer}>
-                  <Text style={styles.jbrText}>JBR</Text>
-                  <Text style={styles.savePercent}>
-                    {jobrSavePercent(cartData?.amount?.total_amount ?? '0.00', 1)}
-                  </Text>
-                </View>
+                {tipLoading ? (
+                  <ActivityIndicator color={COLORS.primary} size="large"></ActivityIndicator>
+                ) : (
+                  <View>
+                    <Text style={styles.youSave}>You save</Text>
+
+                    <View style={styles.jbrContainer}>
+                      <Text style={styles.jbrText}>JBR</Text>
+                      <Text style={styles.savePercent}>
+                        {jobrSavePercent(cartData?.amount?.total_amount ?? '0.00', 1)}
+                      </Text>
+                    </View>
+                  </View>
+                )}
               </TouchableOpacity>
             )}
           </View>
