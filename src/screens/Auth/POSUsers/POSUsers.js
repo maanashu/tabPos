@@ -61,13 +61,15 @@ export function POSUsers({ navigation }) {
   });
   const getSettingData = useSelector(getSetting);
   const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
-  const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status;
+  const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
   const googleCode = getSettingData?.getGoogleCode;
 
   const merchantData = getAuth?.merchantLoginData;
   useEffect(() => {
     if (isFocused) {
+      dispatch(getSettings());
       useEffectFun();
+     
     }
   }, [isFocused]);
 
@@ -106,16 +108,29 @@ export function POSUsers({ navigation }) {
       {
         text: 'OK',
         onPress: () => {
-          // console.log("dssasd",merchantData);
-          setTwoFactorEnabled(true)
-          setSixDigit(true)
-          setIsLogout(true)
+          confirmLogout()
           // dispatch(logoutFunction());
         },
       },
     ]);
   };
+const confirmLogout=()=>{
+   if(googleAuthenticator){
+    setTwoFactorEnabled(true)
+    setSixDigit(true)
+    setIsLogout(true)
+  }
+  else{
+    dispatch(logoutFunction())
+    setIsLogout(false)
+    setValue('');
+    setTwoFactorEnabled(false);
+    setTwoStepModal(false);
+    setGoogleAuthScan(false);
+    setSixDigit(false);
+  }
 
+}
   const passcodeHandlerSix = async () => {
     if (!value) {
       Toast.show({
