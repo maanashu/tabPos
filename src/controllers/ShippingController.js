@@ -203,7 +203,6 @@ export class ShippingController {
   }
 
   static async orderStatusCount(sellerID) {
-    console.log('sellerID', sellerID);
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.orderStatusCount + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
