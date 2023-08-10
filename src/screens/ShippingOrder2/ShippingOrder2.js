@@ -4,14 +4,13 @@ import {
   View,
   Text,
   Image,
-  FlatList,
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
-import { LineChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -174,8 +173,10 @@ export function ShippingOrder2() {
   }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
 
   useEffect(() => {
+    setUserDetail(ordersList?.[0] ?? []);
+    setOrderDetail(ordersList?.[0]?.order_details ?? []);
     dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
-  }, [openShippingOrders]);
+  }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
 
   const isDeliveryOrder = useSelector((state) =>
     isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state)
@@ -260,7 +261,9 @@ export function ShippingOrder2() {
           backgroundColor: openShippingOrders === item?.key ? COLORS.solidGrey : COLORS.transparent,
         },
       ]}
-      onPress={() => setOpenShippingOrders(item?.key)}
+      onPress={() => {
+        setOpenShippingOrders(item?.key), dispatch(getReviewDefault(item?.key, sellerID, 4));
+      }}
     >
       <View style={styles.bucketBackgorund}>
         <Image source={item.image} style={styles.sideBarImage} />
@@ -845,7 +848,7 @@ export function ShippingOrder2() {
       sellerID: sellerID,
     };
     dispatch(
-      acceptOrder(data, (res) => {
+      acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg === 'Order status updated successfully!') {
           alert('Order accepted successfully');
           dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
@@ -886,18 +889,48 @@ export function ShippingOrder2() {
         {viewAllOrders ? (
           <View style={styles.firstRowStyle}>
             {ordersList?.length > 0 ? (
-              <OrderDetail
-                {...{
-                  renderAllOrdersToReview,
-                  ordersList,
-                  openShippingOrders,
-                  userDetail,
-                  orderDetail,
-                  renderOrderProducts,
-                  declineHandler,
-                  acceptHandler,
-                }}
-              />
+              <>
+                <View style={styles.orderToReviewView}>
+                  <FlatList
+                    renderItem={renderAllOrdersToReview}
+                    showsVerticalScrollIndicator={false}
+                    data={ordersList ?? []}
+                    ListHeaderComponent={() => (
+                      <View style={styles.headingRowStyle}>
+                        <Text style={styles.ordersToReviewText}>
+                          {openShippingOrders === '0'
+                            ? strings.orderStatus.reviewOrders
+                            : openShippingOrders === '1'
+                            ? strings.orderStatus.acceptOrder
+                            : openShippingOrders === '2'
+                            ? strings.orderStatus.prepareOrder
+                            : openShippingOrders === '3'
+                            ? strings.orderStatus.shipOrder
+                            : openShippingOrders === '5'
+                            ? strings.orderStatus.deliveryOrder
+                            : openShippingOrders === '7'
+                            ? strings.orderStatus.cancelledOrder
+                            : strings.orderStatus.returnedOrders}
+                        </Text>
+                      </View>
+                    )}
+                    contentContainerStyle={styles.contentContainerStyle}
+                  />
+                </View>
+
+                <OrderDetail
+                  {...{
+                    renderAllOrdersToReview,
+                    ordersList,
+                    openShippingOrders,
+                    userDetail,
+                    orderDetail,
+                    renderOrderProducts,
+                    declineHandler,
+                    acceptHandler,
+                  }}
+                />
+              </>
             ) : (
               <View style={styles.noOrderView}>
                 <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>

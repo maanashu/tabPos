@@ -89,6 +89,8 @@ export function DeliveryOrders2() {
   const [orderDetail, setOrderDetail] = useState(
     getDeliveryData?.getReviewDef?.[0]?.order_details ?? []
   );
+  const [getOrderDetail, setGetOrderDetail] = useState('');
+  const [orderId, setOrderId] = useState(getDeliveryData?.getReviewDef?.[0]?.id);
 
   const deliveryDrawer = [
     {
@@ -557,8 +559,11 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -574,8 +579,11 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -591,8 +599,11 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -608,8 +619,11 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -625,13 +639,19 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -647,13 +667,19 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -669,13 +695,19 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -691,13 +723,19 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -713,13 +751,19 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -735,13 +779,19 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -757,18 +807,27 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -784,18 +843,27 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -811,18 +879,27 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -838,18 +915,27 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -865,23 +951,35 @@ export function DeliveryOrders2() {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -900,7 +998,7 @@ export function DeliveryOrders2() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <Header {...{ viewAllOrders, setViewAllOrders }} />
+        <Header {...{ viewAllOrders, setViewAllOrders, setIsBack }} />
 
         <Spacer space={SH(20)} />
 

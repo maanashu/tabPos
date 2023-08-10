@@ -86,7 +86,6 @@ export function MainScreen({
   const cartData = getRetailData?.getAllCart;
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
-  console.log('holdProductArray', holdProductArray);
   const cartLength = cartData?.poscart_products?.length;
   const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
@@ -559,6 +558,7 @@ export function MainScreen({
                     </Text>
                   </View>
                 )}
+                style={{ zIndex: -99 }}
               />
             ) : (
               <FlatList

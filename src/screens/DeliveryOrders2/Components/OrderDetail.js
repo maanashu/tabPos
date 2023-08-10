@@ -60,7 +60,7 @@ const OrderDetail = ({
                 color: COLORS.primary,
               }}
             >
-              {userDetail?.delivery_details?.title ?? 'ghfgh'}
+              {userDetail?.delivery_details?.title ?? ''}
             </Text>
             <Text
               style={{
@@ -106,7 +106,7 @@ const OrderDetail = ({
               {strings.shippingOrder.orderDate}
             </Text>
             <Text style={styles.itemCountText}>
-              {moment(userDetail?.date).format('DD/MM/YYYY')}
+              {userDetail?.date ? moment(userDetail?.date).format('DD/MM/YYYY') : '00:00'}
             </Text>
           </View>
 
