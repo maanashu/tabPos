@@ -290,8 +290,10 @@ export function Management() {
     setdifferentState(false);
   };
 
-  const tableTouchHandler = () => {
-    setSessionHistory(false), setSummaryHistory(true);
+  const tableTouchHandler = (item) => {
+   setUserHistory(item)
+    setSessionHistory(false),
+    setSummaryHistory(true);
   };
   const emailButtonHandler = () => {
     dispatch(logoutUserFunction());
@@ -815,7 +817,7 @@ export function Management() {
           tableTouchHandler={tableTouchHandler}
           tableDataArray={sessionHistoryArray}
           sessionHistoryLoad={sessionHistoryLoad}
-          oneItemSend={setUserHistory}
+          // oneItemSend={setUserHistory}
           setSessionHistoryArray={setSessionHistoryArray}
         />
       );
