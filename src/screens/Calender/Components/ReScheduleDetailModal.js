@@ -19,12 +19,11 @@ import CustomAlert from '@/components/CustomAlert';
 import { strings } from '@/localization';
 import { changeAppointmentStatus, rescheduleAppointment } from '@/actions/AppointmentAction';
 import { APPOINTMENT_STATUS } from '@/constants/status';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 const windowWidth = Dimensions.get('window').width;
 
 export function ReScheduleDetailModal({
-  itemData,
-  sellerID,
   showRecheduleModal,
   setShowRescheduleModal,
   appointmentData,
@@ -33,11 +32,11 @@ export function ReScheduleDetailModal({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const timeSlotsData = getRetailData?.timeSlots;
-
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const appointmentDetail = appointmentData?.appointment_details[0];
-
-  const [posUserId, setposUserId] = useState(itemData?.pos_users[0].user?.unique_uuid);
-  const [providerDetail, setProviderDetail] = useState(itemData?.pos_users[0].user);
+  const posUserDetails = appointmentData?.pos_user_details;
+  const posUserId = posUserDetails?.user?.unique_uuid;
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
@@ -53,7 +52,7 @@ export function ReScheduleDetailModal({
   useEffect(() => {
     const params = {
       seller_id: sellerID,
-      product_id: itemData?.id,
+      product_id: appointmentDetail?.product_id,
       date: moment(selectedDate).format('YYYY-MM-DD'),
       pos_user_id: posUserId,
     };
