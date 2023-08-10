@@ -25,7 +25,7 @@ const Orders = ({
             ? strings.orderStatus.prepareOrder
             : openShippingOrders === '3'
             ? strings.orderStatus.shipOrder
-            : openShippingOrders === '5'
+            : openShippingOrders === '4'
             ? strings.orderStatus.deliveryOrder
             : openShippingOrders === '7'
             ? strings.orderStatus.cancelledOrder

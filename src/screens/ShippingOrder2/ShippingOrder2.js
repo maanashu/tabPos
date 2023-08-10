@@ -4,14 +4,13 @@ import {
   View,
   Text,
   Image,
-  FlatList,
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
-import { LineChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -43,9 +42,11 @@ import {
   getReviewDefault,
   getOrderstatistics,
 } from '@/actions/DeliveryAction';
+import Graph from './Components/Graph';
 import Header from './Components/Header';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
+import Orders from './Components/Orders';
 import OrderDetail from './Components/OrderDetail';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { ScreenWrapper, Spacer } from '@/components';
@@ -60,8 +61,6 @@ import CurrentShippingStatus from './Components/CurrentShippingStatus';
 
 import styles from './ShippingOrder2.styles';
 import RightDrawer from './Components/RightDrawer';
-import Orders from './Components/Orders';
-import Graph from './Components/Graph';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
@@ -122,7 +121,7 @@ export function ShippingOrder2() {
       count: orderStatusCountData?.[2]?.count,
     },
     {
-      key: '3',
+      key: '4',
       image: Delivery,
       title: 'Shipped',
       count: orderStatusCountData?.[3]?.count,
@@ -174,7 +173,6 @@ export function ShippingOrder2() {
   useEffect(() => {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
-    // dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
   }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
 
   const isDeliveryOrder = useSelector((state) =>
@@ -284,11 +282,11 @@ export function ShippingOrder2() {
         viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
         {
           backgroundColor:
-            viewAllOrders && item?.id === userDetail?.id
+            viewAllOrders && item?.id === orderDetail?.id
               ? COLORS.textInputBackground
               : COLORS.transparent,
           borderColor:
-            viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
+            viewAllOrders && item?.id === orderDetail?.id ? COLORS.primary : COLORS.blue_shade,
         },
       ]}
     >
@@ -889,18 +887,48 @@ export function ShippingOrder2() {
         {viewAllOrders ? (
           <View style={styles.firstRowStyle}>
             {ordersList?.length > 0 ? (
-              <OrderDetail
-                {...{
-                  renderAllOrdersToReview,
-                  ordersList,
-                  openShippingOrders,
-                  userDetail,
-                  orderDetail,
-                  renderOrderProducts,
-                  declineHandler,
-                  acceptHandler,
-                }}
-              />
+              <>
+                <View style={styles.orderToReviewView}>
+                  <FlatList
+                    renderItem={renderAllOrdersToReview}
+                    showsVerticalScrollIndicator={false}
+                    data={ordersList ?? []}
+                    ListHeaderComponent={() => (
+                      <View style={styles.headingRowStyle}>
+                        <Text style={styles.ordersToReviewText}>
+                          {openShippingOrders === '0'
+                            ? strings.orderStatus.reviewOrders
+                            : openShippingOrders === '1'
+                            ? strings.orderStatus.acceptOrder
+                            : openShippingOrders === '2'
+                            ? strings.orderStatus.prepareOrder
+                            : openShippingOrders === '3'
+                            ? strings.orderStatus.shipOrder
+                            : openShippingOrders === '4'
+                            ? strings.orderStatus.deliveryOrder
+                            : openShippingOrders === '7'
+                            ? strings.orderStatus.cancelledOrder
+                            : strings.orderStatus.returnedOrders}
+                        </Text>
+                      </View>
+                    )}
+                    contentContainerStyle={styles.contentContainerStyle}
+                  />
+                </View>
+
+                <OrderDetail
+                  {...{
+                    renderAllOrdersToReview,
+                    ordersList,
+                    openShippingOrders,
+                    userDetail,
+                    orderDetail,
+                    renderOrderProducts,
+                    declineHandler,
+                    acceptHandler,
+                  }}
+                />
+              </>
             ) : (
               <View style={styles.noOrderView}>
                 <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>

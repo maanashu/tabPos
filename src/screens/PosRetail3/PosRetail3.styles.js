@@ -1203,12 +1203,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
   },
-
-  displayflex: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   displayRow: {
     flexDirection: 'row',
     alignItems: 'center',

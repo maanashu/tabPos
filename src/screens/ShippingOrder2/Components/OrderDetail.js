@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import { Spacer } from '@/components';
@@ -21,7 +22,6 @@ import styles from '../ShippingOrder2.styles';
 import ShipmentTracking from './ShipmentTracking';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -38,8 +38,6 @@ const OrderDetail = ({
   declineHandler,
   acceptHandler,
 }) => {
-  // console.log('orderStatus====', openShippingOrders);
-  // console.log('detail====', ordersList?.[0]?.coordinates?.[0]);
   const user = useSelector(getAuthData);
   const location = user?.merchantLoginData?.user?.user_profiles?.current_address;
   const oneOrderDetail = useSelector(getAnalytics);
@@ -57,33 +55,6 @@ const OrderDetail = ({
 
   return (
     <>
-      <View style={styles.orderToReviewView}>
-        <FlatList
-          renderItem={renderAllOrdersToReview}
-          showsVerticalScrollIndicator={false}
-          data={ordersList ?? []}
-          ListHeaderComponent={() => (
-            <View style={styles.headingRowStyle}>
-              <Text style={styles.ordersToReviewText}>
-                {openShippingOrders === '0'
-                  ? strings.orderStatus.reviewOrders
-                  : openShippingOrders === '1'
-                  ? strings.orderStatus.acceptOrder
-                  : openShippingOrders === '2'
-                  ? strings.orderStatus.prepareOrder
-                  : openShippingOrders === '3'
-                  ? strings.orderStatus.shipOrder
-                  : openShippingOrders === '5'
-                  ? strings.orderStatus.deliveryOrder
-                  : openShippingOrders === '7'
-                  ? strings.orderStatus.cancelledOrder
-                  : strings.orderStatus.returnedOrders}
-              </Text>
-            </View>
-          )}
-          contentContainerStyle={styles.contentContainerStyle}
-        />
-      </View>
       {openShippingOrders >= '3' ? (
         <View style={{ flex: 1 }}>
           {isLoading ? (
@@ -279,9 +250,7 @@ const OrderDetail = ({
               </View>
 
               <Spacer space={ms(10)} />
-              {openShippingOrders == '0' ||
-              openShippingOrders == '1' ||
-              openShippingOrders == '2' ? (
+              {openShippingOrders == 0 || openShippingOrders == 1 || openShippingOrders == 2 ? (
                 <View style={styles.shippingOrdersViewStyle}>
                   {openShippingOrders === '0' ? (
                     <TouchableOpacity

@@ -56,16 +56,17 @@ import { graphOptions, labels } from '@/constants/staticData';
 
 import styles from './styles';
 import { useFocusEffect } from '@react-navigation/native';
+import { getOrderData } from '@/actions/AnalyticsAction';
 
-export function DeliveryOrders2({route}) {
+export function DeliveryOrders2({ route }) {
   var isViewAll;
   var ORDER_DETAIL;
   if (route.params && route.params.isViewAll) {
     isViewAll = route.params.isViewAll;
-    ORDER_DETAIL = route.params.ORDER_DETAIL
+    ORDER_DETAIL = route.params.ORDER_DETAIL;
   } else {
-    isViewAll=false
-    ORDER_DETAIL=null
+    isViewAll = false;
+    ORDER_DETAIL = null;
   }
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -95,30 +96,30 @@ export function DeliveryOrders2({route}) {
   const [viewAllOrders, setViewAllOrders] = useState(isViewAll);
   const [openShippingOrders, setOpenShippingOrders] = useState('0');
   const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
-  const [selectedProductId,setSelectedProductId]=useState(null)
-  const [isBack,setIsBack]=useState(null)
-  const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? '');
+  const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? []);
   const [orderDetail, setOrderDetail] = useState(
     getDeliveryData?.getReviewDef?.[0]?.order_details ?? []
   );
+  const [getOrderDetail, setGetOrderDetail] = useState('');
+  const [orderId, setOrderId] = useState(getDeliveryData?.getReviewDef?.[0]?.id);
 
   useFocusEffect(
     React.useCallback(() => {
-      if(ORDER_DETAIL!==null){
-        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id)
+      if (ORDER_DETAIL !== null) {
+        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id);
         setUserDetail(ORDER_DETAIL);
-        setOrderDetail(ORDER_DETAIL?.order_details)
+        setOrderDetail(ORDER_DETAIL?.order_details);
       }
-      if(!isBack){
-        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id)
+      if (!isBack) {
+        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id);
         setViewAllOrders(isViewAll);
       }
-      return()=>{
-       setIsBack(false)
-       setViewAllOrders(false)
-       setOrderDetail([])
-       setSelectedProductId(null)
-      }
+      return () => {
+        setIsBack(false);
+        setViewAllOrders(false);
+        setOrderDetail([]);
+        setSelectedProductId(null);
+      };
     }, [isViewAll, ORDER_DETAIL])
   );
   const deliveryDrawer = [
@@ -213,19 +214,14 @@ export function DeliveryOrders2({route}) {
   }, []);
 
   useEffect(() => {
-    dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID, 1));
-    let selectedOrderDetail;
-      if(ORDER_DETAIL==null || isBack){
-        setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
-        selectedOrderDetail = getDeliveryData?.getReviewDef?.[0]?.order_details ?? [];
-      }
-      else{ 
-        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id)
-        setUserDetail(ORDER_DETAIL);
-        selectedOrderDetail = ORDER_DETAIL?.order_details
-      }
-    setOrderDetail(selectedOrderDetail);
-  }, [viewAllOrders, openShippingOrders]);
+    setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
+    setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
+  }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
+
+  useEffect(() => {
+    setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
+    setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
+  }, [openShippingOrders, viewAllOrders, getDeliveryData?.getReviewDef]);
 
   const isDeliveryOrder = useSelector((state) =>
     isLoadingSelector([TYPES.DELIVERING_ORDER, TYPES.GET_GRAPH_ORDERS], state)
@@ -309,7 +305,9 @@ export function DeliveryOrders2({route}) {
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
-      onPress={() => setOpenShippingOrders(item?.key)}
+      onPress={() => {
+        setOpenShippingOrders(item?.key), dispatch(getReviewDefault(item?.key, sellerID, 1));
+      }}
       style={[
         styles.firstIconStyle,
         {
@@ -372,20 +370,42 @@ export function DeliveryOrders2({route}) {
       </View>
     );
   };
-  const renderOrderToReview = ({ item ,index}) => (
+  const renderOrderToReview = ({ item, index }) => (
     <>
       {
         <TouchableOpacity
-
           onPress={() => {
-            setSelectedProductId(item?.order_details[0]?.id)
+            setViewAllOrders(true);
+            setSelectedProductId(item?.order_details[0]?.id);
             setUserDetail(item);
             setOrderDetail(item?.order_details);
-            setViewAllOrders(true)
-            
-            
+            dispatch(getOrderData(item?.id));
+            setViewAllOrders(true);
           }}
-          style={viewAllOrders ? [styles.showAllOrdersView,{borderColor:selectedProductId==item?.order_details[0]?.id ?  COLORS.blueLight: COLORS.blue_shade}] : styles.orderRowStyle}
+          style={[
+            viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
+            {
+              backgroundColor:
+                viewAllOrders && item?.id === userDetail?.id
+                  ? COLORS.textInputBackground
+                  : COLORS.transparent,
+              borderColor:
+                viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
+            },
+          ]}
+          style={
+            viewAllOrders
+              ? [
+                  styles.showAllOrdersView,
+                  {
+                    borderColor:
+                      selectedProductId == item?.order_details[0]?.id
+                        ? COLORS.blueLight
+                        : COLORS.blue_shade,
+                  },
+                ]
+              : styles.orderRowStyle
+          }
         >
           <View style={styles.orderDetailStyle}>
             <Text style={styles.nameTextStyle}>
@@ -412,7 +432,9 @@ export function DeliveryOrders2({route}) {
           </View>
 
           <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
-            <Text style={styles.timeTextStyle}>{item?.delivery_details?.title}</Text>
+            <Text style={styles.timeTextStyle}>
+              {item?.delivery_details?.title ? item?.delivery_details?.title : ''}
+            </Text>
             <View style={styles.locationViewStyle}>
               <Image source={clock} style={styles.pinImageStyle} />
               <Text style={styles.distanceTextStyle}>
@@ -426,14 +448,14 @@ export function DeliveryOrders2({route}) {
             </View>
           </View>
 
-          <TouchableOpacity 
-          onPress={() => {
-            setUserDetail(item);
-            setOrderDetail(item?.order_details);
-            setViewAllOrders(true)
-          }}
-          
-          style={[styles.orderDetailStyle, { width: SH(24) }]}>
+          <TouchableOpacity
+            onPress={() => {
+              setUserDetail(item);
+              setOrderDetail(item?.order_details);
+              setViewAllOrders(true);
+            }}
+            style={[styles.orderDetailStyle, { width: SH(24) }]}
+          >
             <Image source={rightIcon} style={styles.rightIconStyle} />
           </TouchableOpacity>
         </TouchableOpacity>
@@ -444,23 +466,21 @@ export function DeliveryOrders2({route}) {
   const headerComponent = () => (
     <View style={styles.headingRowStyle}>
       <Text style={styles.ordersToReviewText}>
-        {openShippingOrders == 0
+        {openShippingOrders == '0'
           ? strings.shipingOrder.orderOfReview
-          : openShippingOrders == 1
+          : openShippingOrders == '1'
           ? 'Accept Orders'
-          : openShippingOrders == 2
+          : openShippingOrders == '2'
           ? 'Order Preparing'
-          : openShippingOrders == 3
+          : openShippingOrders == '3'
           ? 'Ready To Pickup'
-          : openShippingOrders == 4
+          : openShippingOrders == '4'
           ? 'Picked Up orders'
-          : openShippingOrders == 5
+          : openShippingOrders == '5'
           ? 'Delivered'
-          : openShippingOrders == 6
+          : openShippingOrders == '6'
           ? 'Rejected/Cancelled'
-          : openShippingOrders == 7
-          ? 'Returned'
-          : 'Orders'}
+          : 'Returned'}
       </Text>
 
       {getDeliveryData?.getReviewDef?.length > 0 ? (
@@ -548,13 +568,13 @@ export function DeliveryOrders2({route}) {
             <Text style={styles.varientTextStyle}>{'Box'}</Text>
           </View>
         </View>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-        <Image
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price ?? '0'}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty ?? '0'}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price ?? '0'}</Text>
+        {/* <Image
           source={removeProduct}
           style={[styles.removeProductImageStyle, { marginRight: 10 }]}
-        />
+        /> */}
       </View>
     );
   };
@@ -606,8 +626,11 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -623,8 +646,11 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -640,8 +666,11 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -657,8 +686,11 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -674,13 +706,19 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -696,13 +734,19 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -718,13 +762,19 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -740,13 +790,19 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -762,13 +818,19 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -784,13 +846,19 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -806,18 +874,27 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -833,18 +910,27 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -860,18 +946,27 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -887,18 +982,27 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -914,23 +1018,35 @@ export function DeliveryOrders2({route}) {
         datasets: [
           {
             data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
           {
             data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
+            colors: [
+              (opacity = 1) => `red`,
+              (opacity = 1) => `#ff00ff`,
+              (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+            ],
           },
         ],
       };
@@ -949,7 +1065,7 @@ export function DeliveryOrders2({route}) {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <Header {...{ viewAllOrders, setViewAllOrders,setIsBack}} />
+        <Header {...{ viewAllOrders, setViewAllOrders, setIsBack }} />
 
         <Spacer space={SH(20)} />
 
@@ -965,23 +1081,21 @@ export function DeliveryOrders2({route}) {
                     ListHeaderComponent={() => (
                       <View style={styles.headingRowStyle}>
                         <Text style={styles.ordersToReviewText}>
-                          {openShippingOrders == 0
+                          {openShippingOrders == '0'
                             ? strings.shipingOrder.orderOfReview
-                            : openShippingOrders == 1
+                            : openShippingOrders == '1'
                             ? 'Accept Orders'
-                            : openShippingOrders == 2
+                            : openShippingOrders == '2'
                             ? 'Order Preparing'
-                            : openShippingOrders == 3
+                            : openShippingOrders == '3'
                             ? 'Ready To Pickup'
-                            : openShippingOrders == 4
+                            : openShippingOrders == '4'
                             ? 'Picked Up orders'
-                            : openShippingOrders == 5
+                            : openShippingOrders == '5'
                             ? 'Delivered'
-                            : openShippingOrders == 6
+                            : openShippingOrders == '6'
                             ? 'Rejected/Cancelled'
-                            : openShippingOrders == 7
-                            ? 'Returned'
-                            : 'Orders'}
+                            : 'Returned'}
                         </Text>
                       </View>
                     )}
