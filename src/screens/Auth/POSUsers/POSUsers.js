@@ -54,6 +54,7 @@ export function POSUsers({ navigation }) {
   const [googleAuthStart, setGoogleAuthStart] = useState(false);
   const [googleAuthScan, setGoogleAuthScan] = useState(false);
   const [sixDigit, setSixDigit] = useState(false);
+  const [isLogout, setIsLogout] = useState(false);
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -105,7 +106,11 @@ export function POSUsers({ navigation }) {
       {
         text: 'OK',
         onPress: () => {
-          dispatch(logoutFunction());
+          // console.log("dssasd",merchantData);
+          setTwoFactorEnabled(true)
+          setSixDigit(true)
+          setIsLogout(true)
+          // dispatch(logoutFunction());
         },
       },
     ]);
@@ -149,6 +154,11 @@ export function POSUsers({ navigation }) {
       const res = await verificationFunction(data)(dispatch);
 
       if (res?.msg === 'Code verified successfully') {
+        if(isLogout){
+          dispatch(logoutFunction())
+          setIsLogout(false)
+        }
+        else{
         var updatedData = merchantData;
         updatedData.user.user_profiles.is_two_fa_enabled = false;
         dispatch(merchantLoginSuccess(updatedData));
@@ -158,6 +168,7 @@ export function POSUsers({ navigation }) {
         setGoogleAuthScan(false);
         setSixDigit(false);
         dispatch(getAllPosUsers(sellerID));
+        }
       } else if (res === undefined) {
         setValue('');
       }
@@ -168,6 +179,16 @@ export function POSUsers({ navigation }) {
   //       dispatch(getGoogleCode());
   // }
 
+  const crossHandler=()=>{
+    if(isLogout){
+      setTwoFactorEnabled(false)
+      setSixDigit(false)
+      setIsLogout(false)
+    }
+    else{
+      dispatch(logoutFunction())
+    }
+  }
   return (
     <ScreenWrapper>
       {!twoFactorEnabled ? (
@@ -258,7 +279,8 @@ export function POSUsers({ navigation }) {
                 <Text style={styles.subHeadingSix}>{'Enter 6-Digit code'}</Text>
                 <TouchableOpacity
                   onPress={() => {
-                    dispatch(logoutFunction()), setSixDigit(false);
+                   crossHandler()
+                   
                   }}
                 >
                   <Image source={crossButton} style={styles.crossSix} />
