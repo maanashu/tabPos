@@ -31,6 +31,7 @@ import {
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { digits } from '@/utils/validators';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { merchantLoginSuccess } from '@/actions/AuthActions';
 
 export function Security() {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ export function Security() {
   const [googleAuthStart, setGoogleAuthStart] = useState(false);
   const [googleAuthScan, setGoogleAuthScan] = useState(false);
   const [sixDigit, setSixDigit] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
   const [googleAuthicator, setGoogleAuthicator] = useState(googleAuthenticator);
   const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
   const getAuth = useSelector(getAuthData);
@@ -106,6 +108,7 @@ export function Security() {
         dispatch(upadteApi(data))
         dispatch(getSettings());
         setSixDigit(false);
+       
       } else if (res === undefined) {
         setValue('');
       }
@@ -117,7 +120,9 @@ export function Security() {
       setFactorEnable(true)
       setTwoStepModal(true), 
       dispatch(getGoogleCode());
+      setIsDisable(false)
     } else {
+      setIsDisable(true)
       setSixDigit(true)
       setFactorEnable(false)
       // setGoogleAuthScan(true);
