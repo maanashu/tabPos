@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, Platform, FlatList, TouchableOpacity } from 'react-native';
 
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import { Spacer } from '@/components';

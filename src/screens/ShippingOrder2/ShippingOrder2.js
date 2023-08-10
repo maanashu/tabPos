@@ -42,9 +42,12 @@ import {
   getReviewDefault,
   getOrderstatistics,
 } from '@/actions/DeliveryAction';
+import Graph from './Components/Graph';
 import Header from './Components/Header';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
+import Orders from './Components/Orders';
+import RightDrawer from './Components/RightDrawer';
 import OrderDetail from './Components/OrderDetail';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { ScreenWrapper, Spacer } from '@/components';
@@ -58,9 +61,7 @@ import TodayShippingStatus from './Components/TodayShippingStatus';
 import CurrentShippingStatus from './Components/CurrentShippingStatus';
 
 import styles from './ShippingOrder2.styles';
-import RightDrawer from './Components/RightDrawer';
-import Orders from './Components/Orders';
-import Graph from './Components/Graph';
+import { getOrderData } from '@/actions/AnalyticsAction';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -118,7 +119,7 @@ export function ShippingOrder2() {
       count: orderStatusCountData?.[2]?.count,
     },
     {
-      key: '3',
+      key: '4',
       image: Delivery,
       title: 'Shipped',
       count: orderStatusCountData?.[3]?.count,
@@ -160,7 +161,6 @@ export function ShippingOrder2() {
   useEffect(() => {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
-    dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
   }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
 
   const isDeliveryOrder = useSelector((state) =>
@@ -269,11 +269,11 @@ export function ShippingOrder2() {
         viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
         {
           backgroundColor:
-            viewAllOrders && item?.id === userDetail?.id
+            viewAllOrders && item?.id === orderDetail?.id
               ? COLORS.textInputBackground
               : COLORS.transparent,
           borderColor:
-            viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
+            viewAllOrders && item?.id === orderDetail?.id ? COLORS.primary : COLORS.blue_shade,
         },
       ]}
     >
@@ -890,7 +890,7 @@ export function ShippingOrder2() {
                             ? strings.orderStatus.prepareOrder
                             : openShippingOrders === '3'
                             ? strings.orderStatus.shipOrder
-                            : openShippingOrders === '5'
+                            : openShippingOrders === '4'
                             ? strings.orderStatus.deliveryOrder
                             : openShippingOrders === '7'
                             ? strings.orderStatus.cancelledOrder

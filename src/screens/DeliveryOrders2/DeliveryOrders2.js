@@ -55,6 +55,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { graphOptions, labels } from '@/constants/staticData';
 
 import styles from './styles';
+import { getOrderData } from '@/actions/AnalyticsAction';
 
 export function DeliveryOrders2() {
   const dispatch = useDispatch();
@@ -85,7 +86,7 @@ export function DeliveryOrders2() {
   const [viewAllOrders, setViewAllOrders] = useState(false);
   const [openShippingOrders, setOpenShippingOrders] = useState('0');
   const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
-  const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? '');
+  const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? []);
   const [orderDetail, setOrderDetail] = useState(
     getDeliveryData?.getReviewDef?.[0]?.order_details ?? []
   );
@@ -185,11 +186,14 @@ export function DeliveryOrders2() {
   }, []);
 
   useEffect(() => {
-    dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID, 1));
-
     setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
     setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
-  }, [viewAllOrders, openShippingOrders]);
+  }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
+
+  useEffect(() => {
+    setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
+    setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
+  }, [openShippingOrders, viewAllOrders, getDeliveryData?.getReviewDef]);
 
   const isDeliveryOrder = useSelector((state) =>
     isLoadingSelector([TYPES.DELIVERING_ORDER, TYPES.GET_GRAPH_ORDERS], state)
@@ -273,7 +277,9 @@ export function DeliveryOrders2() {
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
-      onPress={() => setOpenShippingOrders(item?.key)}
+      onPress={() => {
+        setOpenShippingOrders(item?.key), dispatch(getReviewDefault(item?.key, sellerID, 1));
+      }}
       style={[
         styles.firstIconStyle,
         {
@@ -342,10 +348,22 @@ export function DeliveryOrders2() {
       {
         <TouchableOpacity
           onPress={() => {
+            setViewAllOrders(true);
             setUserDetail(item);
             setOrderDetail(item?.order_details);
+            dispatch(getOrderData(item?.id));
           }}
-          style={viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle}
+          style={[
+            viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
+            {
+              backgroundColor:
+                viewAllOrders && item?.id === userDetail?.id
+                  ? COLORS.textInputBackground
+                  : COLORS.transparent,
+              borderColor:
+                viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
+            },
+          ]}
         >
           <View style={styles.orderDetailStyle}>
             <Text style={styles.nameTextStyle}>
@@ -372,7 +390,9 @@ export function DeliveryOrders2() {
           </View>
 
           <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
-            <Text style={styles.timeTextStyle}>{item?.delivery_details?.title}</Text>
+            <Text style={styles.timeTextStyle}>
+              {item?.delivery_details?.title ? item?.delivery_details?.title : ''}
+            </Text>
             <View style={styles.locationViewStyle}>
               <Image source={clock} style={styles.pinImageStyle} />
               <Text style={styles.distanceTextStyle}>
@@ -397,23 +417,21 @@ export function DeliveryOrders2() {
   const headerComponent = () => (
     <View style={styles.headingRowStyle}>
       <Text style={styles.ordersToReviewText}>
-        {openShippingOrders == 0
+        {openShippingOrders == '0'
           ? strings.shipingOrder.orderOfReview
-          : openShippingOrders == 1
+          : openShippingOrders == '1'
           ? 'Accept Orders'
-          : openShippingOrders == 2
+          : openShippingOrders == '2'
           ? 'Order Preparing'
-          : openShippingOrders == 3
+          : openShippingOrders == '3'
           ? 'Ready To Pickup'
-          : openShippingOrders == 4
+          : openShippingOrders == '4'
           ? 'Picked Up orders'
-          : openShippingOrders == 5
+          : openShippingOrders == '5'
           ? 'Delivered'
-          : openShippingOrders == 6
+          : openShippingOrders == '6'
           ? 'Rejected/Cancelled'
-          : openShippingOrders == 7
-          ? 'Returned'
-          : 'Orders'}
+          : 'Returned'}
       </Text>
 
       {getDeliveryData?.getReviewDef?.length > 0 ? (
@@ -501,13 +519,13 @@ export function DeliveryOrders2() {
             <Text style={styles.varientTextStyle}>{'Box'}</Text>
           </View>
         </View>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-        <Image
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price ?? '0'}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty ?? '0'}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price ?? '0'}</Text>
+        {/* <Image
           source={removeProduct}
           style={[styles.removeProductImageStyle, { marginRight: 10 }]}
-        />
+        /> */}
       </View>
     );
   };
@@ -998,7 +1016,7 @@ export function DeliveryOrders2() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <Header {...{ viewAllOrders, setViewAllOrders, setIsBack }} />
+        <Header {...{ viewAllOrders, setViewAllOrders }} />
 
         <Spacer space={SH(20)} />
 
@@ -1014,23 +1032,21 @@ export function DeliveryOrders2() {
                     ListHeaderComponent={() => (
                       <View style={styles.headingRowStyle}>
                         <Text style={styles.ordersToReviewText}>
-                          {openShippingOrders == 0
+                          {openShippingOrders == '0'
                             ? strings.shipingOrder.orderOfReview
-                            : openShippingOrders == 1
+                            : openShippingOrders == '1'
                             ? 'Accept Orders'
-                            : openShippingOrders == 2
+                            : openShippingOrders == '2'
                             ? 'Order Preparing'
-                            : openShippingOrders == 3
+                            : openShippingOrders == '3'
                             ? 'Ready To Pickup'
-                            : openShippingOrders == 4
+                            : openShippingOrders == '4'
                             ? 'Picked Up orders'
-                            : openShippingOrders == 5
+                            : openShippingOrders == '5'
                             ? 'Delivered'
-                            : openShippingOrders == 6
+                            : openShippingOrders == '6'
                             ? 'Rejected/Cancelled'
-                            : openShippingOrders == 7
-                            ? 'Returned'
-                            : 'Orders'}
+                            : 'Returned'}
                         </Text>
                       </View>
                     )}

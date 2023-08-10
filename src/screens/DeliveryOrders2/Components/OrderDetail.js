@@ -156,23 +156,37 @@ const OrderDetail = ({
           </View>
 
           <Spacer space={SH(15)} />
-          {openShippingOrders == 0 || openShippingOrders == 1 || openShippingOrders == 2 ? (
-            <View style={styles.shippingOrdersViewStyle}>
+
+          <View style={styles.shippingOrdersViewStyle}>
+            {openShippingOrders == '0' ? (
               <TouchableOpacity
                 onPress={() => declineHandler(userDetail?.id)}
                 style={styles.declineButtonStyle}
               >
                 <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
               </TouchableOpacity>
+            ) : null}
 
+            {openShippingOrders === '0' ||
+            openShippingOrders === '1' ||
+            openShippingOrders === '2' ? (
               <TouchableOpacity
                 onPress={() => acceptHandler(userDetail?.id)}
                 style={styles.acceptButtonView}
               >
-                <Text style={styles.acceptTextStyle}>{strings.deliveryOrders.accept}</Text>
+                <Text style={styles.acceptTextStyle}>
+                  {' '}
+                  {openShippingOrders === '0'
+                    ? strings.buttonStatus.reviewButton
+                    : openShippingOrders === '1'
+                    ? strings.buttonStatus.acceptedButton
+                    : openShippingOrders === '2'
+                    ? strings.buttonStatus.prepareButton
+                    : ''}
+                </Text>
               </TouchableOpacity>
-            </View>
-          ) : null}
+            ) : null}
+          </View>
         </View>
       </View>
     </View>
