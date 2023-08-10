@@ -1279,10 +1279,10 @@ export const attachServiceCustomer = (data) => async (dispatch) => {
   }
 };
 
-export const getQrCodee = (cartId) => async (dispatch) => {
+export const getQrCodee = (cartId, data) => async (dispatch) => {
   dispatch(getQrCodeRequest());
   try {
-    const res = await RetailController.getQrCode(cartId, ss);
+    const res = await RetailController.getQrCode(cartId, data);
     return dispatch(getQrCodeSuccess(res));
   } catch (error) {
     dispatch(getQrCodeError(error.message));

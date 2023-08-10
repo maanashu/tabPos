@@ -1103,8 +1103,10 @@ export class RetailController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
+          console.log('response of qr code', JSON.stringify(response));
         })
         .catch((error) => {
+          console.log('error of qr code', error);
           Toast.show({
             text2: 'catgory error',
             position: 'bottom',
