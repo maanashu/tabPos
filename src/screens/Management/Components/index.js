@@ -47,7 +47,6 @@ export function SessionHistoryTable({
   const [date, setDate] = useState(new Date());
   const [dateformat, setDateformat] = useState('');
   const [show, setShow] = useState(false);
-
   const onChangeDate = selectedDate => {
     setSessionHistoryArray([]);
     const currentDate = moment().format('MM/DD/YYYY');

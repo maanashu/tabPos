@@ -157,6 +157,11 @@ export function POSUsers({ navigation }) {
         if(isLogout){
           dispatch(logoutFunction())
           setIsLogout(false)
+          setValue('');
+          setTwoFactorEnabled(false);
+          setTwoStepModal(false);
+          setGoogleAuthScan(false);
+          setSixDigit(false);
         }
         else{
         var updatedData = merchantData;
