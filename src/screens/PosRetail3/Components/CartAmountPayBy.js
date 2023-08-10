@@ -121,10 +121,8 @@ export const CartAmountPayBy = ({
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
-  console.log('requeststatussssss', requestStatus);
   const [status, setstatus] = useState('');
   const [sendRequest, setsendRequest] = useState(false);
-  console.log('sendre0', sendRequest);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
   const tipsArr = [
@@ -195,8 +193,6 @@ export const CartAmountPayBy = ({
     let interval;
 
     if (requestStatus !== 'approved') {
-      console.log('requestt1', requestStatus);
-      console.lo;
       interval = setInterval(() => {
         setRequestId((requestId) => {
           const data = {
@@ -208,7 +204,6 @@ export const CartAmountPayBy = ({
         });
       }, 10000);
     } else if (requestStatus == 'approved') {
-      console.log('requestt2', requestStatus);
       createOrderHandler();
       clearInterval(interval);
     }
