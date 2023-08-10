@@ -110,13 +110,11 @@ export function DrawerNavigator(props) {
   return (
     <DrawerContentScrollView
       {...props}
-      vertical
-      horizontal={false}
       showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.contentContainerStyle}
+      contentContainerStyle={styles.container}
+      bounces={false}
     >
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
@@ -335,8 +333,8 @@ export function DrawerNavigator(props) {
             <Image source={focused ? blueanalytics : analytics} style={styles.iconStyle} />
           )}
         />
-
-        {/* {getUserData?.posLoginData?.id != getAuth?.merchantLoginData?.id ? null : (
+      </ScrollView>
+      {/* {getUserData?.posLoginData?.id != getAuth?.merchantLoginData?.id ? null : (
           <View style={styles.endSessionViewStyle}>
             <DrawerItem
               label={''}
@@ -345,7 +343,6 @@ export function DrawerNavigator(props) {
             />
           </View>
         )} */}
-      </ScrollView>
     </DrawerContentScrollView>
   );
 }

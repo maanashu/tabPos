@@ -998,7 +998,7 @@ export function DeliveryOrders2() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <Header {...{ viewAllOrders, setViewAllOrders, setIsBack }} />
+        <Header {...{ viewAllOrders, setViewAllOrders }} />
 
         <Spacer space={SH(20)} />
 

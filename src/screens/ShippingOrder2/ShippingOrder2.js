@@ -78,7 +78,7 @@ export function ShippingOrder2() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const orderStatusCountData = todayStatus?.orderStatus;
 
-  console.log('count---', ordersList?.[0]?.id);
+  // console.log('count---', sellerID);
 
   const widthAndHeight = 140;
   const series = [
@@ -175,7 +175,7 @@ export function ShippingOrder2() {
   useEffect(() => {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
-    dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
+    // dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
   }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
 
   const isDeliveryOrder = useSelector((state) =>
