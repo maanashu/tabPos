@@ -274,7 +274,7 @@ export function Calender(props) {
                   source={{
                     uri: userProfile?.profile_photo,
                   }}
-                  style={styles.headerEmployeeImage}
+                  style={[styles.headerEmployeeImage, { borderColor: item?.color_code }]}
                 />
                 <View style={{ marginLeft: ms(5) }}>
                   <Text style={styles.headerEmployeeName}>
@@ -339,6 +339,7 @@ export function Calender(props) {
               />
             </View>
           </View>
+          {/* Right tab container */}
           <View style={styles.rightTabContainer}>
             <TouchableOpacity
               onPress={() => {
