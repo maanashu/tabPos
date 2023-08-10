@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import { ms, verticalScale } from 'react-native-size-matters';
+import { moderateScale, ms, verticalScale } from 'react-native-size-matters';
 import { styles } from '../PosRetail3.styles';
 import { Button, Spacer } from '@/components';
 import BackButton from '../../../components/BackButton';
@@ -121,7 +121,10 @@ export const CartAmountPayBy = ({
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
+  console.log('requeststatussssss', requestStatus);
   const [status, setstatus] = useState('');
+  const [sendRequest, setsendRequest] = useState(false);
+  console.log('sendre0', sendRequest);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
   const tipsArr = [
@@ -163,15 +166,15 @@ export const CartAmountPayBy = ({
       const data = {
         tip: selectedTipAmount.toString(),
         cartId: serviceCartId,
-        services: 'sevices',
+        services: 'services',
       };
       const res = await dispatch(updateCartByTip(data));
 
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
-        const ss = {
+        const data = {
           services: 'services',
         };
-        dispatch(getQrCodee(serviceCartId, ss));
+        dispatch(getQrCodee(serviceCartId, data));
         setQrPopUp(true);
       }
     }
@@ -181,30 +184,36 @@ export const CartAmountPayBy = ({
     dispatch(getTip(sellerID));
   }, []);
 
-  // useEffect(() => {
-  //   dispatch(requestCheckSuccess(''));
-  // }, []);
+  useEffect(() => {
+    dispatch(requestCheckSuccess(''));
+  }, []);
 
   const isLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_WALLET_PHONE, TYPES.ATTACH_CUSTOMER], state)
+    isLoadingSelector([TYPES.GET_WALLET_PHONE, TYPES.ATTACH_CUSTOMER, TYPES.CREATE_ORDER], state)
   );
   useEffect(() => {
     let interval;
+
     if (requestStatus !== 'approved') {
+      console.log('requestt1', requestStatus);
+      console.lo;
       interval = setInterval(() => {
         setRequestId((requestId) => {
           const data = {
             requestId: requestId,
           };
           dispatch(requestCheck(data));
+          // createOrderHandler();
           return requestId;
         });
       }, 10000);
-    } else {
+    } else if (requestStatus == 'approved') {
+      console.log('requestt2', requestStatus);
+      createOrderHandler();
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isFocused]);
+  }, [isFocused, requestStatus == 'approved']);
   const walletInputFun = (phoneNumber) => {
     setWalletIdInp(phoneNumber);
     if (phoneNumber?.length > 9) {
@@ -219,6 +228,7 @@ export const CartAmountPayBy = ({
   };
 
   const sendRequestFun = async () => {
+    setsendRequest(true);
     const data = {
       amount: (totalPayAmount() * 100).toFixed(0),
       wallletAdd: walletUser?.wallet_address,
@@ -365,6 +375,8 @@ export const CartAmountPayBy = ({
       }
     };
     dispatch(createOrder(data, callback));
+    dispatch(requestCheckSuccess(''));
+    setsendRequest(false);
   };
 
   return (
@@ -841,11 +853,12 @@ export const CartAmountPayBy = ({
                               flexDirection: 'row',
                               justifyContent: 'space-around',
                               marginTop: verticalScale(10),
+                              alignItems: 'center',
                             }}
                           >
                             <Text
                               style={{
-                                fontSize: 40,
+                                fontSize: 20,
 
                                 textAlign: 'center',
                                 color: 'green',
@@ -860,12 +873,13 @@ export const CartAmountPayBy = ({
                                 backgroundColor: 'blue',
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                padding: 10,
+                                padding: moderateScale(5),
+                                borderRadius: moderateScale(5),
                               }}
                             >
                               <Text
                                 style={{
-                                  fontSize: 40,
+                                  fontSize: moderateScale(10),
                                   color: '#FFFFFF',
                                 }}
                               >
@@ -910,20 +924,27 @@ export const CartAmountPayBy = ({
 
                               <TouchableOpacity
                                 // onPress={onPressContinue}
+
                                 disabled={
-                                  walletUser?.step >= 2 && walletIdInp?.length > 9 ? false : true
+                                  walletUser?.step >= 2 && walletIdInp?.length > 9 && !sendRequest
+                                    ? false
+                                    : true
                                 }
                                 style={[
                                   styles._sendRequest,
                                   {
                                     opacity:
-                                      walletUser?.step >= 2 && walletIdInp?.length > 9 ? 1 : 0.7,
+                                      walletUser?.step >= 2 &&
+                                      walletIdInp?.length > 9 &&
+                                      !sendRequest
+                                        ? 1
+                                        : 0.7,
                                   },
                                 ]}
                                 onPress={() => sendRequestFun(walletIdInp)}
                               >
                                 <Text style={[styles._tipText, { color: COLORS.solid_green }]}>
-                                  Send Request
+                                  {sendRequest ? 'Request Sent' : 'Send Request'}
                                 </Text>
                               </TouchableOpacity>
                             </View>

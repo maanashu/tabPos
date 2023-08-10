@@ -1071,6 +1071,7 @@ export class RetailController {
           console.log('response of qr code', JSON.stringify(response));
         })
         .catch((error) => {
+          console.log('error of qr code', error);
           Toast.show({
             text2: 'catgory error',
             position: 'bottom',
