@@ -20,6 +20,25 @@ const getCategoryReset = () => ({
   payload: null,
 });
 
+const getServiceCategoryRequest = () => ({
+  type: TYPES.GET_SERVICE_CATEGORY_REQUEST,
+  payload: null,
+});
+
+const getServiceCategorySuccess = (serviceCategoryList) => ({
+  type: TYPES.GET_SERVICE_CATEGORY_SUCCESS,
+  payload: { serviceCategoryList },
+});
+
+const getServiceCategoryError = (error) => ({
+  type: TYPES.GET_SERVICE_CATEGORY_ERROR,
+  payload: { error },
+});
+const getServiceCategoryReset = () => ({
+  type: TYPES.GET_SERVICE_CATEGORY_RESET,
+  payload: null,
+});
+
 const getSubCategoryRequest = () => ({
   type: TYPES.GET_SUB_CATEGORY_REQUEST,
   payload: null,
@@ -784,6 +803,19 @@ export const getCategory = (sellerID, search) => async (dispatch) => {
   }
 };
 
+export const getServiceCategory = (sellerID, search) => async (dispatch) => {
+  dispatch(getServiceCategoryRequest());
+  try {
+    const res = await RetailController.getServiceCategory(sellerID, search);
+    dispatch(getServiceCategorySuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getServiceCategoryReset());
+    }
+    dispatch(getServiceCategoryError(error.message));
+  }
+};
+
 export const getSubCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getSubCategoryRequest());
   try {
@@ -801,7 +833,6 @@ export const getBrand = (sellerID, search) => async (dispatch) => {
   dispatch(getBrandRequest());
   try {
     const res = await RetailController.getBrand(sellerID, search);
-    console.log('brandList====', res);
     dispatch(getBrandSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {

@@ -74,7 +74,6 @@ export function ReScheduleDetailModal({
         height: SH(60),
       }}
       onPress={() => {
-        console.log(item?.day);
         setselectedDate(item?.day);
       }}
     >

@@ -76,6 +76,7 @@ export function PosRetail3() {
   const [tipAmount, selectTipAmount] = useState();
   const [fromWhichCart, setFromWhichCart] = useState('Product');
   const [comingScreen, setComingScreen] = useState();
+  const [mainBackscreen, setMainBackScreen] = useState();
   const [addServiceNotes, setAddServiceNotes] = useState(false);
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);

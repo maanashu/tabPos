@@ -2,6 +2,7 @@ import { TYPES } from '@/Types/Types';
 
 const INITIALSTATE = {
   categoryList: [],
+  serviceCategoryList: {},
   subCategories: [],
   brands: [],
   products: [],
@@ -42,6 +43,17 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         categoryList: payload?.categoryList,
+      };
+
+    case TYPES.GET_SERVICE_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        serviceCategoryList: payload?.serviceCategoryList,
+      };
+    case TYPES.GET_SERVICE_CATEGORY_RESET:
+      return {
+        ...state,
+        serviceCategoryList: [],
       };
     case TYPES.SAVE_BULK_DATA_SUCCESS:
       return {

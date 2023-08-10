@@ -49,6 +49,41 @@ export class RetailController {
     });
   }
 
+  static async getServiceCategory(sellerID, search) {
+    const getUrl = (sellerid, search) => {
+      if (sellerid && search) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getCategory +
+          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service`
+        );
+      } else {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getCategory +
+          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service`
+        );
+      }
+    };
+
+    return new Promise((resolve, reject) => {
+      const endpoint = getUrl(sellerID, search);
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: 'catgory error',
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
   static async getSubCategory(sellerID, search) {
     const getUrl = (sellerid, search) => {
       if (sellerid && search) {
@@ -1086,17 +1121,14 @@ export class RetailController {
       const endpoint = data.services
         ? ORDER_URL + ApiOrderInventory.serviceTip + `${data?.cartId}`
         : ORDER_URL + ApiOrderInventory.tip + `${data?.cartId}`;
-      console.log('endpoint', endpoint);
       const body = {
         tip: data?.tip,
       };
       HttpClient.put(endpoint, body)
         .then((response) => {
           resolve(response);
-          console.log('response of tip', JSON.stringify(response));
         })
         .catch((error) => {
-          console.log('error in tip', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

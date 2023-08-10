@@ -91,6 +91,7 @@ export function DashBoard({ navigation }) {
   const todayJbrAmount = TotalSale?.[1]?.total_sale_amount.toFixed(2);
   const todayCardAmount = TotalSale?.[2]?.total_sale_amount.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  console.log(sellerID);
   const getDeliveryData = getDashboardData?.getOrderDeliveries;
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
 
@@ -255,14 +256,12 @@ export function DashBoard({ navigation }) {
   };
 
   const tableListItem = ({ item }) => (
-
-    <TouchableOpacity 
-    
-    onPress={()=>
-       navigation.navigate(NAVIGATION.deliveryOrders2,{isViewAll:true,"ORDER_DETAIL":item})
-    
-    }
-    style={[styles.reviewRenderView]}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate(NAVIGATION.deliveryOrders2, { isViewAll: true, ORDER_DETAIL: item })
+      }
+      style={[styles.reviewRenderView]}
+    >
       <View style={{ width: SW(20) }}>
         <Text style={styles.hashNumber}>#{item.id}</Text>
       </View>
