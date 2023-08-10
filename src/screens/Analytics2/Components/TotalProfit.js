@@ -19,6 +19,36 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 
+const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
+  const labelInterval = Math.ceil(dataLabels?.length / daysLength);
+  const dayLabels = Array.from(
+    { length: Math.ceil(dataLabels?.length / labelInterval) },
+    (_, index) => {
+      const labelValue = (index + 1) * labelInterval;
+      return labelValue <= maxLabel ? labelValue.toString() : maxLabel.toString();
+    }
+  );
+
+  const filterMonthsByInterval = (monthsArray) => {
+    if (interval <= 0) {
+      throw new Error('Interval must be a positive integer.');
+    }
+
+    return monthsArray?.filter((_, index) => index % interval === 0);
+  };
+
+  const outputMonths = filterMonthsByInterval(dataLabels);
+  const shortMonthNames = outputMonths?.map((month) => month);
+
+  if (dataLabels?.length > 12) {
+    return dayLabels;
+  } else if (dataLabels?.length === 12) {
+    return shortMonthNames;
+  } else {
+    return dataLabels;
+  }
+};
+
 export function TotalProfit({ onPress }) {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
@@ -28,6 +58,12 @@ export function TotalProfit({ onPress }) {
   ]);
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
+  const interval = 1;
+  const maxLabel = 31;
+  const daysLength = 31;
+
+  const dataLabelsProfit = analyticStatistics?.profit?.graph_data?.labels;
+  const labelsProfit = generateLabels(dataLabelsProfit, interval, maxLabel, daysLength);
   const getProfitList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
@@ -95,7 +131,7 @@ export function TotalProfit({ onPress }) {
           bezier
           data={{
             labels: analyticStatistics?.profit?.graph_data?.labels
-              ? analyticStatistics?.profit?.graph_data?.labels
+              ? labelsProfit
               : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {

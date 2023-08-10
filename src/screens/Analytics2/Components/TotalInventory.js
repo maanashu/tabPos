@@ -20,6 +20,36 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 
+const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
+  const labelInterval = Math.ceil(dataLabels?.length / daysLength);
+  const dayLabels = Array.from(
+    { length: Math.ceil(dataLabels?.length / labelInterval) },
+    (_, index) => {
+      const labelValue = (index + 1) * labelInterval;
+      return labelValue <= maxLabel ? labelValue.toString() : maxLabel.toString();
+    }
+  );
+
+  const filterMonthsByInterval = (monthsArray) => {
+    if (interval <= 0) {
+      throw new Error('Interval must be a positive integer.');
+    }
+
+    return monthsArray?.filter((_, index) => index % interval === 0);
+  };
+
+  const outputMonths = filterMonthsByInterval(dataLabels);
+  const shortMonthNames = outputMonths?.map((month) => month);
+
+  if (dataLabels?.length > 12) {
+    return dayLabels;
+  } else if (dataLabels?.length === 12) {
+    return shortMonthNames;
+  } else {
+    return dataLabels;
+  }
+};
+
 export function TotalInventory({ onPress }) {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
@@ -31,6 +61,13 @@ export function TotalInventory({ onPress }) {
   const getAnalyticsData = useSelector(getAnalytics);
   const totalInventory = getAnalyticsData?.getTotalInventory;
 
+  const interval = 1;
+  const maxLabel = 31;
+  const daysLength = 31;
+
+  const dataLabelsInventory = totalInventory?.graph_data?.labels;
+  const labelsInvetory = generateLabels(dataLabelsInventory, interval, maxLabel, daysLength);
+
   const getProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
@@ -40,16 +77,14 @@ export function TotalInventory({ onPress }) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.product_id}</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.products?.name}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.total_quantity}</Text>
+        <Text style={styles.revenueDataText}>{item?.rest_quantity}</Text>
       </DataTable.Cell>
+
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.products?.item_number}</Text>
+        <Text style={styles.revenueDataText}>{item?.products?.upc}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -107,7 +142,7 @@ export function TotalInventory({ onPress }) {
           bezier
           data={{
             labels: totalInventory?.graph_data?.labels
-              ? totalInventory?.graph_data?.labels
+              ? labelsInvetory
               : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {
@@ -120,7 +155,7 @@ export function TotalInventory({ onPress }) {
             ],
           }}
           width={Dimensions.get('window').width - SW(80)}
-          height={SH(250)}
+          height={SH(210)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -165,23 +200,20 @@ export function TotalInventory({ onPress }) {
               <DataTable.Title style={styles.dateTablealignStart}>
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Id</Text>
-              </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Product Name</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Quatity</Text>
+                <Text style={styles.revenueText}>Inventory Left</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Product Number</Text>
+                <Text style={styles.revenueText}>UPC</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Amount</Text>
+                <Text style={styles.revenueText}>Price</Text>
               </DataTable.Title>
             </DataTable.Header>
 

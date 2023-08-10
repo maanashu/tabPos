@@ -20,6 +20,36 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 
+const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
+  const labelInterval = Math.ceil(dataLabels?.length / daysLength);
+  const dayLabels = Array.from(
+    { length: Math.ceil(dataLabels?.length / labelInterval) },
+    (_, index) => {
+      const labelValue = (index + 1) * labelInterval;
+      return labelValue <= maxLabel ? labelValue.toString() : maxLabel.toString();
+    }
+  );
+
+  const filterMonthsByInterval = (monthsArray) => {
+    if (interval <= 0) {
+      throw new Error('Interval must be a positive integer.');
+    }
+
+    return monthsArray?.filter((_, index) => index % interval === 0);
+  };
+
+  const outputMonths = filterMonthsByInterval(dataLabels);
+  const shortMonthNames = outputMonths?.map((month) => month);
+
+  if (dataLabels?.length > 12) {
+    return dayLabels;
+  } else if (dataLabels?.length === 12) {
+    return shortMonthNames;
+  } else {
+    return dataLabels;
+  }
+};
+
 export function TotalPosOrder({ onPress }) {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
@@ -37,6 +67,13 @@ export function TotalPosOrder({ onPress }) {
     ...posGraph?.returned_data_list,
     ...posGraph?.cancelled_data_list,
   ];
+
+  const interval = 1;
+  const maxLabel = 31;
+  const daysLength = 31;
+
+  const dataLabelsPOS = analyticOrderGraphs?.pos_graph?.graph_data?.labels;
+  const labelsPOS = generateLabels(dataLabelsPOS, interval, maxLabel, daysLength);
 
   const getPOSOrderList = ({ item, index }) => (
     <DataTable.Row>
@@ -115,7 +152,7 @@ export function TotalPosOrder({ onPress }) {
           bezier
           data={{
             labels: analyticOrderGraphs?.pos_graph?.graph_data?.labels
-              ? analyticOrderGraphs?.pos_graph?.graph_data?.labels
+              ? labelsPOS
               : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {
@@ -142,7 +179,7 @@ export function TotalPosOrder({ onPress }) {
             ],
           }}
           width={Dimensions.get('window').width - SW(80)}
-          height={SH(250)}
+          height={SH(210)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,

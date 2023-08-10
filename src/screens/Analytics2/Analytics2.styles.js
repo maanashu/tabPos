@@ -276,7 +276,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(20),
     color: COLORS.black,
-    marginVertical: SH(15),
+    marginVertipaddvcal: SH(15),
     height: SH(30),
   },
   bullets: {

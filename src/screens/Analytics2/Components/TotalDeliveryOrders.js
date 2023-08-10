@@ -19,6 +19,36 @@ import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 
+const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
+  const labelInterval = Math.ceil(dataLabels?.length / daysLength);
+  const dayLabels = Array.from(
+    { length: Math.ceil(dataLabels?.length / labelInterval) },
+    (_, index) => {
+      const labelValue = (index + 1) * labelInterval;
+      return labelValue <= maxLabel ? labelValue.toString() : maxLabel.toString();
+    }
+  );
+
+  const filterMonthsByInterval = (monthsArray) => {
+    if (interval <= 0) {
+      throw new Error('Interval must be a positive integer.');
+    }
+
+    return monthsArray?.filter((_, index) => index % interval === 0);
+  };
+
+  const outputMonths = filterMonthsByInterval(dataLabels);
+  const shortMonthNames = outputMonths?.map((month) => month);
+
+  if (dataLabels?.length > 12) {
+    return dayLabels;
+  } else if (dataLabels?.length === 12) {
+    return shortMonthNames;
+  } else {
+    return dataLabels;
+  }
+};
+
 export function TotalDeliveryOrders({ onPress }) {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
@@ -34,6 +64,13 @@ export function TotalDeliveryOrders({ onPress }) {
     ...deliveryGraph?.returned_data_list,
     ...deliveryGraph?.cancelled_data_list,
   ];
+
+  const interval = 1;
+  const maxLabel = 31;
+  const daysLength = 31;
+
+  const dataLabelsDelivery = analyticOrderGraphs?.delivery_graph?.graph_data?.labels;
+  const labelsDelivery = generateLabels(dataLabelsDelivery, interval, maxLabel, daysLength);
 
   const getDeliveryOrderList = ({ item, index }) => (
     <DataTable.Row>
@@ -103,7 +140,7 @@ export function TotalDeliveryOrders({ onPress }) {
           bezier
           data={{
             labels: analyticOrderGraphs?.delivery_graph?.graph_data?.labels
-              ? analyticOrderGraphs?.delivery_graph?.graph_data?.labels
+              ? labelsDelivery
               : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {
