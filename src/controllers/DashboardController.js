@@ -50,7 +50,6 @@ export class DashboardController {
       const body = {
         amount: amountStringy,
       };
-
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response?.msg === 'PosCart created successfully') {

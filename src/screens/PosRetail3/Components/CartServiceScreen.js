@@ -21,6 +21,7 @@ import {
   rightBack,
   search_light,
   sideKeyboard,
+  userImage,
 } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
@@ -29,6 +30,7 @@ import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import {
+  changeStatusServiceCart,
   clearAllCart,
   clearServiceAllCart,
   getAllCartSuccess,
@@ -45,6 +47,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
+import moment from 'moment';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -58,6 +61,9 @@ export function CartServiceScreen({
   let arr = [getRetailData?.getserviceCart];
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
+  const serviceCartArray = getRetailData?.getAllServiceCart;
+  console.log('getRetailData?.getAllServiceCart', JSON.stringify(getRetailData?.getAllServiceCart));
+  const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
 
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -65,6 +71,20 @@ export function CartServiceScreen({
   const [cartSearch, setCartSearch] = useState('');
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+
+  const serviceCartStatusHandler = () => {
+    const data =
+      holdServiceArray?.length > 0
+        ? {
+            status: holdServiceArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdServiceArray?.[0]?.id,
+          }
+        : {
+            status: getRetailData?.getserviceCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getserviceCart?.id,
+          };
+    dispatch(changeStatusServiceCart(data));
+  };
 
   // useFocusEffect(
   //   React.useCallback(() => {
@@ -264,7 +284,8 @@ export function CartServiceScreen({
                               {data.product_details?.name}
                             </Text>
                             <Text style={styles.sukNumber}>
-                              Monday 17, 2023 @ 3.00 PM - 3:50 PM{' '}
+                              {moment(data?.date).format('LL')} @
+                              {data?.start_time + '-' + data?.end_time}
                             </Text>
                             <Text style={styles.sukNumber}>Est: 45 ~ 50 min </Text>
                           </View>
@@ -272,7 +293,7 @@ export function CartServiceScreen({
                       </View>
                       <View style={[styles.tableListSide, styles.tableListSide2]}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <Image source={clothes} style={styles.offerImage} />
+                          <Image source={userImage} style={styles.offerImage} />
                           <Text style={styles.blueListDataText}>Anna S</Text>
                         </View>
                         <Text style={styles.blueListDataText}>
@@ -313,10 +334,7 @@ export function CartServiceScreen({
               >
                 <Image source={sideKeyboard} style={styles.keyboardIcon} />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.holdCartCon}
-                //   onPress={() => setProductdetailModal(true)}
-              >
+              <TouchableOpacity style={styles.holdCartCon} onPress={serviceCartStatusHandler}>
                 <Image source={holdCart} style={styles.pause} />
 
                 <Text style={styles.holdCart}>{strings.dashboard.holdCart}</Text>

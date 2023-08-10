@@ -18,9 +18,11 @@ import {
   totalCost,
   totalOrders,
   filterday,
+  crossButton,
+  cross,
 } from '@/assets';
 import Modal from 'react-native-modal';
-import { COLORS, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { Revenue } from './Components/Revenue';
 import { TotalCost } from './Components/TotalCost';
 import { TotalDeliveryOrders } from './Components/TotalDeliveryOrders';
@@ -31,6 +33,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getAnalyticOrderGraphs,
   getAnalyticStatistics,
+  getSoldProduct,
   getTotalInventory,
   getTotalOrder,
 } from '@/actions/AnalyticsAction';
@@ -43,16 +46,19 @@ export function Analytics2() {
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [flag, setFlag] = useState('profits');
   const [showModal, setShowModal] = useState(false);
+  const [filter, setFilter] = useState('week');
+  const [showFilterModal, setShowFilterModal] = useState(false);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAnalyticStatistics(sellerID));
-    dispatch(getAnalyticOrderGraphs(sellerID));
-    dispatch(getTotalOrder(sellerID));
-    dispatch(getTotalInventory(sellerID));
-  }, []);
+    dispatch(getAnalyticStatistics(sellerID, filter));
+    dispatch(getAnalyticOrderGraphs(sellerID, filter));
+    dispatch(getTotalOrder(sellerID, filter));
+    dispatch(getTotalInventory(sellerID, filter));
+    dispatch(getSoldProduct(sellerID, filter));
+  }, [filter]);
 
   const goBack = () => {
     setselectedScreen('MainScreen');
@@ -298,7 +304,7 @@ export function Analytics2() {
                   //     selectedScreen === 'TopSellingProduct' ? COLORS.primary : COLORS.white,
                   // },
                 ]}
-                // onPress={() => setselectedScreen('TopSellingProduct')}
+                onPress={() => setShowFilterModal(!showFilterModal)}
               >
                 <Image
                   source={filterday}
@@ -314,7 +320,10 @@ export function Analytics2() {
             </View>
           </View>
         </View>
-        <Modal isVisible={showModal} statusBarTranslucent>
+        <Modal
+          // isVisible={showModal}
+          statusBarTranslucent
+        >
           <View style={styles.modalView}>
             <View style={styles.flexAlign}>
               <Text style={styles.headerText}>{'Analytics Reports'}</Text>
@@ -410,6 +419,73 @@ export function Analytics2() {
                 <Text style={styles.subTitle}>{'Total Costs'}</Text>
               </View>
             </View>
+          </View>
+        </Modal>
+
+        <Modal
+          isVisible={showFilterModal}
+          statusBarTranslucent
+          animationIn={'slideInRight'}
+          animationInTiming={600}
+          animationOutTiming={300}
+        >
+          <View style={styles.modalView}>
+            <View style={[styles.flexAlign, { alignSelf: 'flex-end' }]}>
+              {/* <Text style={styles.headerText}>{'Filter'}</Text> */}
+              <TouchableOpacity style={styles.imageView} onPress={() => setShowFilterModal(false)}>
+                <Image source={cross} style={styles.headerImage} />
+              </TouchableOpacity>
+            </View>
+            <Spacer space={SH(20)} />
+            <TouchableOpacity
+              onPress={() => {
+                setFilter('week');
+                setShowFilterModal(false);
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: SF(20),
+                  marginHorizontal: SW(5),
+                  color: filter === 'week' ? COLORS.primary : COLORS.black,
+                }}
+              >
+                {'Week'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setFilter('month');
+                setShowFilterModal(false);
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: SF(20),
+                  marginHorizontal: SW(5),
+                  color: filter === 'month' ? COLORS.primary : COLORS.black,
+                  marginVertical: SH(10),
+                }}
+              >
+                {'Month'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setFilter('year');
+                setShowFilterModal(false);
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: SF(20),
+                  marginHorizontal: SW(5),
+                  color: filter === 'year' ? COLORS.primary : COLORS.black,
+                }}
+              >
+                {'Year'}
+              </Text>
+            </TouchableOpacity>
           </View>
         </Modal>
       </View>

@@ -30,10 +30,13 @@ export function TotalPosOrder({ onPress }) {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
-  console.log(
-    'first',
-    JSON.stringify(analyticOrderGraphs?.pos_graph?.orderListData[0]?.deliverd_data_list)
-  );
+
+  const posGraph = analyticOrderGraphs?.pos_graph?.orderListData[0];
+  const data = [
+    ...posGraph?.deliverd_data_list,
+    ...posGraph?.returned_data_list,
+    ...posGraph?.cancelled_data_list,
+  ];
 
   const getPOSOrderList = ({ item, index }) => (
     <DataTable.Row>
@@ -44,34 +47,20 @@ export function TotalPosOrder({ onPress }) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>3</Text>
+        <Text style={styles.revenueDataText}>{item?.id}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$23,000</Text>
+        <Text style={styles.revenueDataText}>{'Anan'}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$560</Text>
+        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>0</Text>
+        <Text style={styles.revenueDataText}>{item?.profit}</Text>
       </DataTable.Cell>
+
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$560</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$23.50</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$450</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>$2300</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>$19,666.50</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>$19,666.50</Text>
+        <Text style={styles.revenueDataText2}>${item?.payable_amount}</Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
@@ -198,43 +187,29 @@ export function TotalPosOrder({ onPress }) {
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Orders</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Gross Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Discount</Text>
+                <Text style={styles.revenueText}>Id</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Returns</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Net Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Shipping/Delivery</Text>
+                <Text style={styles.revenueText}>Byer Name</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Other Fees</Text>
+                <Text style={styles.revenueText}>Total Quatity</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Tax</Text>
+                <Text style={styles.revenueText}>Total Profit</Text>
               </DataTable.Title>
+
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Sales</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Revenue</Text>
+                <Text style={styles.revenueText}>Total Amount</Text>
               </DataTable.Title>
             </DataTable.Header>
 
             <View style={{ height: SH(380), zIndex: -99 }}>
-              {analyticOrderGraphs?.pos_graph?.orderListData[0]?.cancelled_data_list?.length &&
-              analyticOrderGraphs?.pos_graph?.orderListData[0]?.deliverd_data_list?.length &&
-              analyticOrderGraphs?.pos_graph?.orderListData[0]?.returned_data_list?.length === 0 ? (
+              {posGraph?.cancelled_data_list?.length === 0 &&
+              posGraph?.deliverd_data_list?.length === 0 &&
+              posGraph?.returned_data_list?.length === 0 ? (
                 <View style={[styles.listLoader]}>
                   <Text
                     style={{
@@ -249,11 +224,7 @@ export function TotalPosOrder({ onPress }) {
                 <View style={{ height: SH(250) }}>
                   <FlatList
                     style={{ backgroundColor: COLORS.white }}
-                    data={
-                      analyticOrderGraphs?.pos_graph?.orderListData[0]?.deliverd_data_list ||
-                      analyticOrderGraphs?.pos_graph?.orderListData[0]?.returned_data_list ||
-                      analyticOrderGraphs?.pos_graph?.orderListData[0]?.cancelled_data_list
-                    }
+                    data={data}
                     renderItem={getPOSOrderList}
                     keyExtractor={(item) => item.id}
                     showsHorizontalScrollIndicator={false}

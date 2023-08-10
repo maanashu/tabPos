@@ -72,8 +72,8 @@ const EventItemCard = ({ item, index, onPressAccept = () => {}, onPressReject = 
         <View style={styles.serviceChargeSub}>
           <Text style={styles.totalTile}>Total</Text>
           <Text style={styles.totalTile}>
-            {item?.mode_of_payment.toUpperCase() === 'JBR'
-              ? item?.mode_of_payment.toUpperCase() + ' '
+            {item?.mode_of_payment?.toUpperCase() === 'JBR'
+              ? item?.mode_of_payment?.toUpperCase() + ' '
               : '$'}
 
             {item?.payable_amount}

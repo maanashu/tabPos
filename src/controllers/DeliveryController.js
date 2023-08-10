@@ -25,9 +25,6 @@ export class DeliveryController {
   }
 
   static async getReviewDefault(status, sellerID, deliveryOption) {
-    console.log('status-----', status);
-    console.log('sellerID-----', sellerID);
-    console.log('deliveryOption-----', deliveryOption);
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
@@ -35,10 +32,11 @@ export class DeliveryController {
         `?status=${status}&seller_id=${sellerID}&delivery_option=${deliveryOption}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response-----', JSON.stringify(response));
+          console.log('response ======', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error ======', error);
           reject(error);
         });
     });

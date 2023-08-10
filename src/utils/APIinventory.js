@@ -104,7 +104,7 @@ export const ApiOrderInventory = {
   rescheduleAppointmentURL: `appointments/reschedule/`,
   getAnalyticStatistics: `orders/pos/analytics`,
   bulkCreate: `poscarts/bulk-create`,
-  attachCustomer: 'orders/attach/user/',
+  attachCustomer: 'poscarts/attach/user/',
   todayOrders: 'orders/pos/today/orders-count',
   graphOrders: 'orders/pos/graph/orders',
   todayShipStatus: 'orders/pos/shipping/orders',
@@ -118,6 +118,9 @@ export const ApiOrderInventory = {
   orderStatusCount: 'orders/pos/seller/multi-status/orders-count',
   changeStatusProductCart: 'poscarts/change-hold-status',
   slots: 'slots/pos/service-appointment-slots',
+  changeStatusServiceCart: 'appointment_carts/change-hold-status',
+  attachServiceCustomer: 'appointment_carts/attach/user/',
+  getSoldProduct: 'order_details/pos/product_count/sold',
   tip: 'poscarts/',
   serviceTip: 'appointment_carts/',
 };

@@ -15,11 +15,24 @@ import { store } from '@/store';
 
 export class RetailController {
   static async getCategory(sellerID, search) {
+    const getUrl = (sellerid, search) => {
+      if (sellerid && search) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getCategory +
+          `?seller_id=${sellerid}&main_category=true&search=${search}`
+        );
+      } else {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getCategory +
+          `?seller_id=${sellerid}&main_category=true`
+        );
+      }
+    };
+
     return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.getCategory +
-        `?seller_id=${sellerID}&main_category=true&search=${search}`;
+      const endpoint = getUrl(sellerID, search);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -36,32 +49,48 @@ export class RetailController {
     });
   }
 
-  static async getSubCategory(sellerID) {
+  static async getSubCategory(sellerID, search) {
+    const getUrl = (sellerid, search) => {
+      if (sellerid && search) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getSubCategory +
+          `?seller_id=${sellerid}&search=${search}`
+        );
+      } else {
+        return PRODUCT_URL + ApiProductInventory.getSubCategory + `?seller_id=${sellerid}`;
+      }
+    };
     return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.getSubCategory +
-        `?seller_id=${sellerID}&main_category=false&need_subcategory=true`;
-
+      const endpoint = getUrl(sellerID, search);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: 'Sub-Category not found',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'Sub-Category not found',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
   }
 
-  static async getBrand(sellerID) {
+  static async getBrand(sellerID, search) {
+    const getUrl = (sellerid, search) => {
+      if (sellerid && search) {
+        return (
+          PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerid}&search=${search}`
+        );
+      } else {
+        return PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerid}`;
+      }
+    };
     return new Promise((resolve, reject) => {
-      const endpoint = PRODUCT_URL + ApiProductInventory.getBrand + `?seller_id=${sellerID}`;
+      const endpoint = getUrl(sellerID, search);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -107,12 +136,12 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: 'Product not found',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'Product not found',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
@@ -198,6 +227,19 @@ export class RetailController {
   static async getAllProductCart() {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.posCarts + `/`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getAllServiceCart() {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart + `/`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -453,6 +495,45 @@ export class RetailController {
             visibilityTime: 1500,
           });
           reject(error.msg);
+        });
+    });
+  }
+
+  static async addServiceDiscountToCart(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart + `/${data.cartId}`;
+      const orderAmountstrfy = JSON.stringify(data.orderAmount);
+      const discountInput = data.amountDis
+        ? data.amountDis
+        : data.percentDis
+        ? data.percentDis
+        : data.discountCode;
+      const body = {
+        discount_value: discountInput,
+        discount_flag: data.value,
+        order_amount: orderAmountstrfy,
+        // discount_desc: data.descriptionDis,
+      };
+      HttpClient.put(endpoint, body)
+        .then((response) => {
+          if (response?.msg === 'Appointment detail updated!') {
+            Toast.show({
+              text2: 'Discount add succesfully',
+              position: 'bottom',
+              type: 'success_toast',
+              visibilityTime: 1500,
+            });
+            resolve(response);
+          }
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
         });
     });
   }
@@ -797,12 +878,12 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
-            text2: 'Product not found',
-            visibilityTime: 2000,
-          });
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   text2: 'Product not found',
+          //   visibilityTime: 2000,
+          // });
           reject(error);
         });
     });
@@ -839,12 +920,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
-            text2: 'Product not found',
-            visibilityTime: 2000,
-          });
           reject(error);
         });
     });
@@ -885,12 +960,12 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
-            text2: 'Product not found',
-            visibilityTime: 2000,
-          });
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   text2: 'Product not found',
+          //   visibilityTime: 2000,
+          // });
           reject(error);
         });
     });
@@ -943,8 +1018,39 @@ export class RetailController {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
 
-            text2: error.msg,
+  static async attachServiceCustomer(data) {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.attachServiceCustomer + `${data.cartId}`;
+      const body = data?.phoneNo
+        ? {
+            phone_no: data?.phoneNo,
+          }
+        : {
+            email: data?.phoneEmail,
+          };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: response?.msg,
+            visibilityTime: 2000,
+          });
+
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
             text2: error?.msg,
             visibilityTime: 2000,
           });
@@ -1008,6 +1114,28 @@ export class RetailController {
   static async changeStatusProductCart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.changeStatusProductCart + `/${data.cartId}`;
+      const body = {
+        status: data.status,
+      };
+      HttpClient.put(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error?.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 3000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async changeStatusServiceCart(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.changeStatusServiceCart + `/${data.cartId}`;
       const body = {
         status: data.status,
       };

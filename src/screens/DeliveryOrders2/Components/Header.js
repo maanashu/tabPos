@@ -6,11 +6,12 @@ import { strings } from '@/localization';
 
 import styles from '../styles';
 
-const Header = ({ viewAllOrders, setViewAllOrders }) => {
+const Header = ({ viewAllOrders, setViewAllOrders,setIsBack }) => {
   return (
     <>
       {viewAllOrders ? (
-        <TouchableOpacity onPress={() => setViewAllOrders(false)} style={styles.backView}>
+        <TouchableOpacity onPress={() => {
+          setViewAllOrders(false),setIsBack(true)}} style={styles.backView}>
           <Image source={backArrow2} style={styles.backImageStyle} />
           <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
             {strings.deliveryOrders.back}
