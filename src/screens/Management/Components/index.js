@@ -34,7 +34,7 @@ export function SessionHistoryTable({
   tableTouchHandler,
   tableDataArray,
   sessionHistoryLoad,
-  oneItemSend,
+  // oneItemSend,
   setSessionHistoryArray,
 }) {
   const dispatch = useDispatch();
@@ -67,8 +67,8 @@ export function SessionHistoryTable({
     dispatch(getSessionHistory());
   };
 
-  const tableDataArrayReverse = tableDataArray?.reverse();
-
+  // const tableDataArrayReverse = tableDataArray?.reverse();
+  const tableDataArrayReverse = tableDataArray?.slice().reverse();
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
@@ -146,7 +146,12 @@ export function SessionHistoryTable({
                 tableDataArrayReverse?.map((item, index) => (
                   <TouchableOpacity
                     style={styles.tableDataCon}
-                    onPress={() => (tableTouchHandler(), oneItemSend(item))}
+                    onPress={() => (
+                      tableTouchHandler(item)
+                      
+                      // ,oneItemSend(item)
+                      
+                      )}
                     key={index}
                   >
                     <View style={styles.displayFlex}>
@@ -296,7 +301,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     //                 break;
     // }
   };
-
+console.log("ARRRAYAYAYA",JSON.stringify(sessionHistoryArray));
   return (
     <View style={historyHeader ? styles.bodyContainer : styles.bodyContainer2}>
       <ScrollView showsVerticalScrollIndicator={false}>

@@ -10,24 +10,25 @@ const CustomAlert = ({
   onNoPress = () => {},
   yesButtonTitle = 'Yes',
   noButtonTitle = 'No',
+  showSingleButton = false,
 }) => {
-  Alert.alert(
-    title,
-    description,
-    [
-      {
-        text: noButtonTitle,
-        onPress: onNoPress,
-        style: 'cancel',
-      },
-      {
-        text: yesButtonTitle,
-        onPress: onYesPress,
-        style: 'default',
-      },
-    ],
-    { cancelable: false }
-  );
+  const buttons = [];
+
+  if (!showSingleButton) {
+    buttons.push({
+      text: noButtonTitle,
+      onPress: onNoPress,
+      style: 'cancel',
+    });
+  }
+
+  buttons.push({
+    text: yesButtonTitle,
+    onPress: onYesPress,
+    style: 'default',
+  });
+
+  Alert.alert(title, description, buttons, { cancelable: false });
 };
 
 export default CustomAlert;

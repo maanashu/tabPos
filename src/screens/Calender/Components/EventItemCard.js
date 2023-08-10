@@ -17,6 +17,7 @@ const EventItemCard = ({ item, index, onPressAccept = () => {}, onPressReject = 
   const userDetails = item?.user_details;
   const userAddress = userDetails?.current_address;
   const appointmentDetail = item?.appointment_details[0];
+
   return (
     <View style={styles.eventItemContainer}>
       <View style={styles.customerDetailContainer}>

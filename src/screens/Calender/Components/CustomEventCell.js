@@ -10,7 +10,11 @@ const CustomEventCell = (event, touchableOpacityProps) => {
   return (
     <TouchableOpacity
       {...touchableOpacityProps}
-      style={[...touchableOpacityProps.style, styles.eventContainer]}
+      style={[
+        ...touchableOpacityProps.style,
+        styles.eventContainer,
+        { borderLeftColor: colorCode },
+      ]}
     >
       <View style={{}}>
         {staffDetails?.profile_photo && (

@@ -44,11 +44,12 @@ const windowHeight = Dimensions.get('window').height;
 export function DrawerNavigator(props) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
+  const posUserArray = getAuth?.getAllPosUsers;
   const getUserData = useSelector(getUser);
+
   const getDashboardData = useSelector(getDashboard);
   const getSessionObj = getDashboardData?.getSesssion;
   const selection = getDashboardData?.selection;
-
   const [active, setActive] = useState('dashBoard');
 
   const profileObj = {
@@ -289,23 +290,25 @@ export function DrawerNavigator(props) {
             <Image source={focused ? blueusers : users} style={styles.iconStyle} />
           )}
         />
-
-        <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'setting' ? true : false}
-          onPress={() => {
-            setActive('setting');
-            navigate(NAVIGATION.setting);
-            dispatch(addSellingSelection());
-          }}
-          icon={({ focused, color, size }) => (
-            <Image
-              source={focused ? blueSetting : settings}
-              style={focused ? styles.iconStyle2 : styles.iconStyle}
+            {getUserData?.posLoginData?.user_roles.length === 0 &&
+            <DrawerItem
+            label={''}
+            activeBackgroundColor={COLORS.transparent}
+            focused={active === 'setting' ? true : false}
+            onPress={() => {
+              setActive('setting');
+              navigate(NAVIGATION.setting);
+              dispatch(addSellingSelection());
+            }}
+            icon={({ focused, color, size }) => (
+              <Image
+                source={focused ? blueSetting : settings}
+                style={focused ? styles.iconStyle2 : styles.iconStyle}
+              />
+            )}
             />
-          )}
-        />
+            }
+       
 
         <DrawerItem
           label={''}

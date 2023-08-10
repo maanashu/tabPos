@@ -297,7 +297,7 @@ export const styles = StyleSheet.create({
   eventContainer: {
     backgroundColor: 'white',
     elevation: 0,
-    borderLeftColor: '#A179F2',
+    borderLeftColor: COLORS.dark_grey,
     borderLeftWidth: ms(1),
     borderStyle: 'solid',
     borderRadius: ms(1),

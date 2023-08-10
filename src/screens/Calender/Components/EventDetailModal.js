@@ -17,6 +17,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const appointmentDetail = completeData?.appointment_details[0];
   const posUserDetails = completeData?.pos_user_details?.user?.user_profiles;
   const posUserRole = completeData?.pos_user_details?.user?.user_roles[0]?.role?.name || 'NULL';
+  const colorCode = completeData?.pos_user_details?.color_code;
 
   const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
 
@@ -76,7 +77,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
           <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
             <ProfileImage
               source={{ uri: posUserDetails?.profile_photo }}
-              style={styles.customerUserProfile}
+              style={[styles.customerUserProfile, { borderColor: colorCode, borderWidth: 1.5 }]}
             />
             <View style={{ marginLeft: ms(6) }}>
               <Text style={styles.customerName}>
