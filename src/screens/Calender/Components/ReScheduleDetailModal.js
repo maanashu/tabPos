@@ -19,12 +19,11 @@ import CustomAlert from '@/components/CustomAlert';
 import { strings } from '@/localization';
 import { changeAppointmentStatus, rescheduleAppointment } from '@/actions/AppointmentAction';
 import { APPOINTMENT_STATUS } from '@/constants/status';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 const windowWidth = Dimensions.get('window').width;
 
 export function ReScheduleDetailModal({
-  itemData,
-  sellerID,
   showRecheduleModal,
   setShowRescheduleModal,
   appointmentData,
@@ -33,16 +32,16 @@ export function ReScheduleDetailModal({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const timeSlotsData = getRetailData?.timeSlots;
-
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const appointmentDetail = appointmentData?.appointment_details[0];
-
-  const [posUserId, setposUserId] = useState(itemData?.pos_users[0].user?.unique_uuid);
-  const [providerDetail, setProviderDetail] = useState(itemData?.pos_users[0].user);
+  const posUserDetails = appointmentData?.pos_user_details;
+  const posUserId = posUserDetails?.user?.unique_uuid;
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
   const [selectedDate, setselectedDate] = useState(
-    moment(appointmentData?.date).format('MM/DD/YY')
+    moment(appointmentData?.date).format('YYYY-MM-DD')
   );
 
   const [selectedMonthData, setselectedMonthData] = useState(null);
@@ -53,8 +52,8 @@ export function ReScheduleDetailModal({
   useEffect(() => {
     const params = {
       seller_id: sellerID,
-      product_id: itemData?.id,
-      date: moment(selectedDate).format('YYYY-MM-DD'),
+      product_id: appointmentDetail?.product_id,
+      date: selectedDate,
       pos_user_id: posUserId,
     };
     dispatch(getTimeSlots(params));
@@ -65,38 +64,40 @@ export function ReScheduleDetailModal({
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
 
-  const renderWeekItem = ({ item, index }) => (
-    <TouchableOpacity
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: SW(31.5),
-        height: SH(60),
-      }}
-      onPress={() => {
-        setselectedDate(item?.day);
-      }}
-    >
-      <Text
+  const renderWeekItem = ({ item, index }) => {
+    return (
+      <TouchableOpacity
         style={{
-          fontFamily: Fonts.Regular,
-          fontSize: SF(14),
-          color: item?.day === selectedDate ? COLORS.primary : COLORS.dark_grey,
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: SW(31.5),
+          height: SH(60),
+        }}
+        onPress={() => {
+          setselectedDate(item?.completeDate);
         }}
       >
-        {moment(item?.day).format('ddd').toUpperCase()}
-      </Text>
-      <Text
-        style={{
-          fontFamily: Fonts.SemiBold,
-          fontSize: SF(18),
-          color: item?.day === selectedDate ? COLORS.primary : COLORS.black,
-        }}
-      >
-        {item?.day === moment(new Date()).format('MM/DD/YY') ? 'Today' : item?.date}
-      </Text>
-    </TouchableOpacity>
-  );
+        <Text
+          style={{
+            fontFamily: Fonts.Regular,
+            fontSize: SF(14),
+            color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.dark_grey,
+          }}
+        >
+          {item?.day.toUpperCase()}
+        </Text>
+        <Text
+          style={{
+            fontFamily: Fonts.SemiBold,
+            fontSize: SF(18),
+            color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.black,
+          }}
+        >
+          {item?.completeDate === moment(new Date()).format('YYYY-MM-DD') ? 'Today' : item?.date}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   const renderSlotItem = ({ item, index }) => (
     <TouchableOpacity
@@ -138,7 +139,7 @@ export function ReScheduleDetailModal({
     }
 
     const params = {
-      date: moment(selectedDate).format('YYYY-MM-DD'),
+      date: selectedDate,
       start_time: selectedTimeSlotData?.start_time,
       end_time: selectedTimeSlotData?.end_time,
     };
@@ -193,7 +194,7 @@ export function ReScheduleDetailModal({
             <Text style={styles.selected}>
               Service Time:{' '}
               <Text style={{ color: COLORS.primary }}>
-                {selectedDate === moment(new Date()).format('MM/DD/YY')
+                {selectedDate === moment(new Date()).format('YYYY-MM-DD')
                   ? `Today`
                   : moment(selectedDate).format('ll')}{' '}
                 {`@ ${
@@ -225,6 +226,7 @@ export function ReScheduleDetailModal({
                 placeholder={'Select Month'}
                 containerStyle={{ marginRight: 10 }}
                 defaultValue={moment().month() + 1}
+                defaultYear={selectedYearData?.value ?? moment().year()}
                 onSelect={(monthData) => {
                   setselectedMonthData(monthData);
                 }}
