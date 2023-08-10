@@ -140,7 +140,7 @@ export function ReScheduleDetailModal({
     }
 
     const params = {
-      date: moment(selectedDate).format('YYYY-MM-DD'),
+      date: selectedDate,
       start_time: selectedTimeSlotData?.start_time,
       end_time: selectedTimeSlotData?.end_time,
     };
