@@ -393,19 +393,19 @@ export function DeliveryOrders2({ route }) {
                 viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
             },
           ]}
-          style={
-            viewAllOrders
-              ? [
-                  styles.showAllOrdersView,
-                  {
-                    borderColor:
-                      selectedProductId == item?.order_details[0]?.id
-                        ? COLORS.blueLight
-                        : COLORS.blue_shade,
-                  },
-                ]
-              : styles.orderRowStyle
-          }
+          // style={
+          //   viewAllOrders
+          //     ? [
+          //         styles.showAllOrdersView,
+          //         {
+          //           borderColor:
+          //             selectedProductId == item?.order_details[0]?.id
+          //               ? COLORS.blueLight
+          //               : COLORS.blue_shade,
+          //         },
+          //       ]
+          //     : styles.orderRowStyle
+          // }
         >
           <View style={styles.orderDetailStyle}>
             <Text style={styles.nameTextStyle}>

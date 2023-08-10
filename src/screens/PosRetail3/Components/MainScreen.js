@@ -616,6 +616,7 @@ export function MainScreen({
                       <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>Loading...</Text>
                     </View>
                   )}
+                  style={{ zIndex: -99 }}
                 />
               ) : (
                 <FlatList
