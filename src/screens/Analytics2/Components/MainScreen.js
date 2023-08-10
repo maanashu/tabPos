@@ -249,6 +249,7 @@ export function MainScreen({
               labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
               initialSpacing={SH(5)}
               data={totalOrder?.graphData}
+              spacing={SW(10)}
             />
           </TouchableOpacity>
         </View>

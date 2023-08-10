@@ -102,11 +102,24 @@ export function TotalOrders({ onPress }) {
           <BarChartCom
             barWid={Dimensions.get('window').width - SW(110)}
             barHei={SH(140)}
-            barSpacing={SW(30)}
+            barSpacing={SW(40)}
             barW={7}
             labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
-            initialSpacing={SW(20)}
+            initialSpacing={
+              totalOrder?.graphData?.labels?.length > 12
+                ? SW(5)
+                : totalOrder?.graphData?.labels?.length === 12
+                ? SW(15)
+                : SW(20)
+            }
             data={totalOrder?.graphData}
+            spacing={
+              totalOrder?.graphData?.labels?.length > 12
+                ? SW(6)
+                : totalOrder?.graphData?.labels?.length === 12
+                ? SW(20)
+                : SW(35)
+            }
           />
         </View>
       </View>

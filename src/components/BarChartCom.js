@@ -1,8 +1,43 @@
 import { Fonts } from '@/assets';
-import { COLORS, SH } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import React from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
+
+const transformData = (data, spacing) => {
+  const transformedData = [];
+  const dynamicLabels = data.labels.filter((label, index) => (index + 1) % 5 === 0); // Generate labels every 5th day
+  for (let i = 0; i < data.labels.length; i++) {
+    const totalValue = data.datasets.reduce((sum, dataset) => sum + dataset.data[i], 0);
+    const dataPoint = {
+      value: totalValue,
+      spacing: spacing,
+      label: data.labels[i],
+      labelWidth: SW(70), // You can adjust this value as needed
+      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 }, // You can define your labelTextStyle here
+      frontColor: i === 0 ? COLORS.primary : i === 1 ? COLORS.violet : COLORS.darkBlue,
+      intialSpace: 0,
+    };
+    transformedData.push(dataPoint);
+  }
+  const transformedMonthData = data?.labels.map((label, index) => ({
+    frontColor: '#102773',
+    label: label.split(' ')[0], // Extracting only the day part
+    labelTextStyle: { color: '#626262', fontSize: 11 },
+    value: data?.datasets.reduce((sum, dataset) => sum + dataset.data[index], 0),
+    frontColor: index === 0 ? COLORS.primary : index === 1 ? COLORS.violet : COLORS.darkBlue,
+    labelWidth: SW(70),
+    spacing: spacing,
+  }));
+
+  if (data?.labels?.length > 12) {
+    return transformedMonthData;
+  } else if (data?.labels?.length === 12) {
+    return transformedData;
+  } else {
+    return transformedData;
+  }
+};
 
 export function BarChartCom({
   barWid,
@@ -12,7 +47,11 @@ export function BarChartCom({
   labelTextSty,
   data,
   initialSpacing,
+  spacing,
 }) {
+  const formattedData = transformData(data, spacing);
+  console.log('first', JSON.stringify(data));
+  console.log('formattedData', formattedData);
   const barData =
     data === undefined
       ? [
@@ -118,129 +157,129 @@ export function BarChartCom({
         ]
       : [
           {
-            value: data?.datasets?.[0].data?.[0],
-            spacing: 2,
-            frontColor: COLORS.primary,
+            // value: value,
+            // frontColor: COLORS.primary,
+            // label: label,
           },
-          {
-            value: data?.datasets?.[1]?.data?.[0],
-            spacing: 2,
-            label: data?.labels?.[0],
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.violet,
-          },
-          {
-            value: data?.datasets?.[2].data?.[0],
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: data?.datasets?.[0]?.data?.[1],
-            spacing: 2,
-            frontColor: COLORS.primary,
-          },
-          {
-            value: data?.datasets?.[1]?.data?.[1],
-            spacing: 2,
-            label: data?.labels?.[1],
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.violet,
-          },
-          {
-            value: data?.datasets?.[2].data?.[1],
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: data?.datasets?.[0]?.data?.[2],
-            spacing: 2,
-            frontColor: COLORS.primary,
-          },
-          {
-            value: data?.datasets?.[1]?.data?.[2],
-            spacing: 2,
-            label: data?.labels?.[2],
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.violet,
-          },
-          {
-            value: data?.datasets?.[2].data?.[2],
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: data?.datasets?.[0]?.data?.[3],
-            spacing: 2,
-            frontColor: COLORS.primary,
-          },
-          {
-            value: data?.datasets?.[1]?.data?.[3],
-            spacing: 2,
-            label: data?.labels?.[3],
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.violet,
-          },
-          {
-            value: data?.datasets?.[2].data?.[3],
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: data?.datasets?.[0]?.data?.[4],
-            spacing: 2,
-            frontColor: COLORS.primary,
-          },
-          {
-            value: data?.datasets?.[1]?.data?.[4],
-            spacing: 2,
-            label: data?.labels?.[4],
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.violet,
-          },
-          {
-            value: data?.datasets?.[2].data?.[4],
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: data?.datasets?.[0]?.data?.[5],
-            spacing: 2,
-            frontColor: COLORS.primary,
-          },
-          {
-            value: data?.datasets?.[1]?.data?.[5],
-            spacing: 2,
-            label: data?.labels?.[5],
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.violet,
-          },
-          {
-            value: data?.datasets?.[2].data?.[5],
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: data?.datasets?.[0]?.data?.[6],
-            spacing: 2,
-            frontColor: COLORS.primary,
-          },
-          {
-            value: data?.datasets?.[1]?.data?.[6],
-            spacing: 2,
-            label: data?.labels?.[6],
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.violet,
-          },
-          {
-            value: data?.datasets?.[2].data?.[6],
-            frontColor: COLORS.darkBlue,
-          },
+          // {
+          //   value: data?.datasets?.[1]?.data?.[0],
+          //   spacing: 2,
+          //   label: data?.labels?.[0],
+          //   labelWidth: 60,
+          //   labelTextStyle: labelTextSty,
+          //   frontColor: COLORS.violet,
+          // },
+          // {
+          //   value: data?.datasets?.[2].data?.[0],
+          //   frontColor: COLORS.darkBlue,
+          // },
+          // {
+          //   value: data?.datasets?.[0]?.data?.[1],
+          //   spacing: 2,
+          //   frontColor: COLORS.primary,
+          // },
+          // {
+          //   value: data?.datasets?.[1]?.data?.[1],
+          //   spacing: 2,
+          //   label: data?.labels?.[1],
+          //   labelWidth: 60,
+          //   labelTextStyle: labelTextSty,
+          //   frontColor: COLORS.violet,
+          // },
+          // {
+          //   value: data?.datasets?.[2].data?.[1],
+          //   frontColor: COLORS.darkBlue,
+          // },
+          // {
+          //   value: data?.datasets?.[0]?.data?.[2],
+          //   spacing: 2,
+          //   frontColor: COLORS.primary,
+          // },
+          // {
+          //   value: data?.datasets?.[1]?.data?.[2],
+          //   spacing: 2,
+          //   label: data?.labels?.[2],
+          //   labelWidth: 60,
+          //   labelTextStyle: labelTextSty,
+          //   frontColor: COLORS.violet,
+          // },
+          // {
+          //   value: data?.datasets?.[2].data?.[2],
+          //   frontColor: COLORS.darkBlue,
+          // },
+          // {
+          //   value: data?.datasets?.[0]?.data?.[3],
+          //   spacing: 2,
+          //   frontColor: COLORS.primary,
+          // },
+          // {
+          //   value: data?.datasets?.[1]?.data?.[3],
+          //   spacing: 2,
+          //   label: data?.labels?.[3],
+          //   labelWidth: 60,
+          //   labelTextStyle: labelTextSty,
+          //   frontColor: COLORS.violet,
+          // },
+          // {
+          //   value: data?.datasets?.[2].data?.[3],
+          //   frontColor: COLORS.darkBlue,
+          // },
+          // {
+          //   value: data?.datasets?.[0]?.data?.[4],
+          //   spacing: 2,
+          //   frontColor: COLORS.primary,
+          // },
+          // {
+          //   value: data?.datasets?.[1]?.data?.[4],
+          //   spacing: 2,
+          //   label: data?.labels?.[4],
+          //   labelWidth: 60,
+          //   labelTextStyle: labelTextSty,
+          //   frontColor: COLORS.violet,
+          // },
+          // {
+          //   value: data?.datasets?.[2].data?.[4],
+          //   frontColor: COLORS.darkBlue,
+          // },
+          // {
+          //   value: data?.datasets?.[0]?.data?.[5],
+          //   spacing: 2,
+          //   frontColor: COLORS.primary,
+          // },
+          // {
+          //   value: data?.datasets?.[1]?.data?.[5],
+          //   spacing: 2,
+          //   label: data?.labels?.[5],
+          //   labelWidth: 60,
+          //   labelTextStyle: labelTextSty,
+          //   frontColor: COLORS.violet,
+          // },
+          // {
+          //   value: data?.datasets?.[2].data?.[5],
+          //   frontColor: COLORS.darkBlue,
+          // },
+          // {
+          //   value: data?.datasets?.[0]?.data?.[6],
+          //   spacing: 2,
+          //   frontColor: COLORS.primary,
+          // },
+          // {
+          //   value: data?.datasets?.[1]?.data?.[6],
+          //   spacing: 2,
+          //   label: data?.labels?.[6],
+          //   labelWidth: 60,
+          //   labelTextStyle: labelTextSty,
+          //   frontColor: COLORS.violet,
+          // },
+          // {
+          //   value: data?.datasets?.[2].data?.[6],
+          //   frontColor: COLORS.darkBlue,
+          // },
         ];
   return (
     <View>
       <BarChart
-        data={barData}
+        data={formattedData}
         barWidth={barW}
         spacing={barSpacing}
         roundedTop
