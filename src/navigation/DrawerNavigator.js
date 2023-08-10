@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Alert, Image, Platform, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import {
+  View,
+  Alert,
+  Image,
+  Platform,
+  Dimensions,
+  StyleSheet,
+  ScrollView,
+  Text,
+} from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
@@ -38,6 +47,7 @@ import { getDashboard } from '@/selectors/DashboardSelector';
 import { endTrackingSession } from '@/actions/CashTrackingAction';
 import { addSellingSelection, getDrawerSessionSuccess } from '@/actions/DashboardAction';
 import { cartScreenTrue, getUserDetailSuccess } from '@/actions/RetailAction';
+import { ms } from 'react-native-size-matters';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -48,6 +58,8 @@ export function DrawerNavigator(props) {
   const getDashboardData = useSelector(getDashboard);
   const getSessionObj = getDashboardData?.getSesssion;
   const selection = getDashboardData?.selection;
+
+  console.log('getAuth====', getAuth?.merchantLoginData?.pending_orders_count);
 
   const [active, setActive] = useState('dashBoard');
 
@@ -201,9 +213,20 @@ export function DrawerNavigator(props) {
             setActive('deliveryOrders2');
             navigate(NAVIGATION.deliveryOrders2);
           }}
-          icon={({ focused, color, size }) => (
-            <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
-          )}
+          icon={({ focused, color, size }) => {
+            return getAuth?.merchantLoginData?.pending_orders_count?.delivery_count ? (
+              <View>
+                <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
+                <View style={styles.countViewStyle}>
+                  <Text style={styles.countTextStyle}>
+                    {getAuth?.merchantLoginData?.pending_orders_count?.delivery_count}
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
+            );
+          }}
         />
 
         {/* <DrawerItem
@@ -229,9 +252,20 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.calender);
             dispatch(addSellingSelection());
           }}
-          icon={({ focused, color, size }) => (
-            <Image source={focused ? blueCalender : calendar} style={styles.iconStyle} />
-          )}
+          icon={({ focused, color, size }) => {
+            return getAuth?.merchantLoginData?.pending_orders_count?.appointment_count ? (
+              <View>
+                <Image source={focused ? blueCalender : calendar} style={styles.iconStyle} />
+                <View style={styles.countViewStyle}>
+                  <Text style={styles.countTextStyle}>
+                    {getAuth?.merchantLoginData?.pending_orders_count?.appointment_count}
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <Image source={focused ? blueCalender : calendar} style={styles.iconStyle} />
+            );
+          }}
         />
 
         {/* <DrawerItem
@@ -314,13 +348,21 @@ export function DrawerNavigator(props) {
           onPress={() => {
             setActive('shippingOrder2');
             navigate(NAVIGATION.shippingOrder2);
-            // dispatch(addSellingSelection());
-            // dispatch(cartScreenTrue({ state: false }));
-            // dispatch(getUserDetailSuccess([]));
           }}
-          icon={({ focused, color, size }) => (
-            <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
-          )}
+          icon={({ focused, color, size }) => {
+            return getAuth?.merchantLoginData?.pending_orders_count?.shipping_count ? (
+              <View>
+                <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
+                <View style={styles.countViewStyle}>
+                  <Text style={styles.countTextStyle}>
+                    {getAuth?.merchantLoginData?.pending_orders_count?.shipping_count}
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
+            );
+          }}
         />
         <DrawerItem
           label={''}
@@ -395,5 +437,23 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonRegular,
     fontSize: SF(14),
     left: -25,
+  },
+  countViewStyle: {
+    width: ms(10),
+    height: ms(10),
+    borderRadius: ms(5),
+    position: 'absolute',
+    bottom: 0,
+    right: -5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.textInputBackground,
+    borderColor: COLORS.black,
+    borderWidth: 1,
+  },
+  countTextStyle: {
+    color: COLORS.dark_grey,
+    fontSize: SF(8),
+    fontFamily: Fonts.SemiBold,
   },
 });

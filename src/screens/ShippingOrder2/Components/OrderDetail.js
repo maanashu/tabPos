@@ -1,16 +1,32 @@
 import React from 'react';
-import { View, Text, Image, Platform, FlatList, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Platform,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { Fonts, scooter, userImage } from '@/assets';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
+import ShipmentTracking from './ShipmentTracking';
+import { deliveryHomeIcon, Fonts, scooter, storeTracker, userImage } from '@/assets';
 
 import styles from '../ShippingOrder2.styles';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/AnalyticsTypes';
 
 const OrderDetail = ({
   renderAllOrdersToReview,
@@ -184,7 +200,7 @@ const OrderDetail = ({
                   {strings.shippingOrder.orderDate}
                 </Text>
                 <Text style={styles.itemCountText}>
-                  {moment(userDetail?.date).format('DD/MM/YYYY')}
+                  {userDetail?.date ? moment(userDetail?.date).format('DD/MM/YYYY') : '00:00'}
                 </Text>
               </View>
 
