@@ -41,7 +41,7 @@ export function ReScheduleDetailModal({
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
   const [selectedDate, setselectedDate] = useState(
-    moment(appointmentData?.date).format('MM/DD/YY')
+    moment(appointmentData?.date).format('YYYY-MM-DD')
   );
 
   const [selectedMonthData, setselectedMonthData] = useState(null);
@@ -53,7 +53,7 @@ export function ReScheduleDetailModal({
     const params = {
       seller_id: sellerID,
       product_id: appointmentDetail?.product_id,
-      date: moment(selectedDate).format('YYYY-MM-DD'),
+      date: selectedDate,
       pos_user_id: posUserId,
     };
     dispatch(getTimeSlots(params));
@@ -61,42 +61,44 @@ export function ReScheduleDetailModal({
 
   useEffect(() => {
     const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
+    console.log(daysArray);
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
 
-  const renderWeekItem = ({ item, index }) => (
-    <TouchableOpacity
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: SW(31.5),
-        height: SH(60),
-      }}
-      onPress={() => {
-        console.log(item?.day);
-        setselectedDate(item?.day);
-      }}
-    >
-      <Text
+  const renderWeekItem = ({ item, index }) => {
+    return (
+      <TouchableOpacity
         style={{
-          fontFamily: Fonts.Regular,
-          fontSize: SF(14),
-          color: item?.day === selectedDate ? COLORS.primary : COLORS.dark_grey,
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: SW(31.5),
+          height: SH(60),
+        }}
+        onPress={() => {
+          setselectedDate(item?.completeDate);
         }}
       >
-        {moment(item?.day).format('ddd').toUpperCase()}
-      </Text>
-      <Text
-        style={{
-          fontFamily: Fonts.SemiBold,
-          fontSize: SF(18),
-          color: item?.day === selectedDate ? COLORS.primary : COLORS.black,
-        }}
-      >
-        {item?.day === moment(new Date()).format('MM/DD/YY') ? 'Today' : item?.date}
-      </Text>
-    </TouchableOpacity>
-  );
+        <Text
+          style={{
+            fontFamily: Fonts.Regular,
+            fontSize: SF(14),
+            color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.dark_grey,
+          }}
+        >
+          {item?.day.toUpperCase()}
+        </Text>
+        <Text
+          style={{
+            fontFamily: Fonts.SemiBold,
+            fontSize: SF(18),
+            color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.black,
+          }}
+        >
+          {item?.completeDate === moment(new Date()).format('YYYY-MM-DD') ? 'Today' : item?.date}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   const renderSlotItem = ({ item, index }) => (
     <TouchableOpacity
@@ -193,7 +195,7 @@ export function ReScheduleDetailModal({
             <Text style={styles.selected}>
               Service Time:{' '}
               <Text style={{ color: COLORS.primary }}>
-                {selectedDate === moment(new Date()).format('MM/DD/YY')
+                {selectedDate === moment(new Date()).format('YYYY-MM-DD')
                   ? `Today`
                   : moment(selectedDate).format('ll')}{' '}
                 {`@ ${

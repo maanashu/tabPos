@@ -74,7 +74,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
           color: item?.day === selectedDate ? COLORS.primary : COLORS.dark_grey,
         }}
       >
-        {moment(item?.day).format('ddd').toUpperCase()}
+        {item?.day}
       </Text>
       <Text
         style={{

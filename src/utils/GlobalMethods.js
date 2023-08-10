@@ -183,13 +183,14 @@ function calculateDuration(start_time, end_time) {
 }
 
 function getDaysAndDates(year = new Date().getFullYear(), month = new Date().getMonth() + 1) {
-  const daysInMonth = new Date(year, month, 0).getDate();
+  const daysInMonth = moment(`${year}-${month}`, 'YYYY-MM').daysInMonth();
   const daysAndDates = [];
 
   for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(year, month - 1, day);
-    const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
-    daysAndDates.push({ day: dayOfWeek, date: date.getDate() });
+    const date = moment({ year, month: month - 1, day });
+    const dayOfWeek = date.format('ddd').toUpperCase();
+    const completeDate = date.format('YYYY-MM-DD');
+    daysAndDates.push({ day: dayOfWeek, date: date.date(), completeDate: completeDate });
   }
 
   return daysAndDates;
