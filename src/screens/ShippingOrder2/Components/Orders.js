@@ -24,10 +24,12 @@ const Orders = ({
             : openShippingOrders === '2'
             ? strings.orderStatus.prepareOrder
             : openShippingOrders === '3'
-            ? strings.orderStatus.shipOrder
+            ? 'Printing Labels'
             : openShippingOrders === '4'
+            ? strings.orderStatus.shipOrder
+            : openShippingOrders === '5'
             ? strings.orderStatus.deliveryOrder
-            : openShippingOrders === '7'
+            : openShippingOrders === '7,8'
             ? strings.orderStatus.cancelledOrder
             : strings.orderStatus.returnedOrders}
         </Text>

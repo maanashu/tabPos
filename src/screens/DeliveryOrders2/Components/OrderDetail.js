@@ -138,9 +138,7 @@ const OrderDetail = ({
 
           <View style={styles.orderDetailsView}>
             <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
-            <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-              {strings.deliveryOrders.subTotalValue}
-            </Text>
+            <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'0'}</Text>
           </View>
 
           <View style={styles.orderDetailsView}>

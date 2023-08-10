@@ -331,8 +331,6 @@ export { default as returnDeliveryBox } from '@/assets/icons/deliveryOrdersNew/r
 export { default as incomingOrders } from '@/assets/icons/deliveryOrdersNew/incomingOrders.png';
 export { default as cancelledOrders } from '@/assets/icons/deliveryOrdersNew/cancelledOrders.png';
 export { default as returnedOrders } from '@/assets/icons/deliveryOrdersNew/returnedOrders.png';
-export { default as dashedUpArrow } from '@/assets/icons/ic_shipingOrder/dashedUpArrow.png';
-export { default as radioCheckFill } from '@/assets/icons/ic_shipingOrder/radioCheckFill.png';
 export { default as deliveryHomeIcon } from '@/assets/icons/ic_shipingOrder/deliveryHomeIcon.png';
 
 export { default as up } from '@/assets/icons/ic_posRetail/up.png';
