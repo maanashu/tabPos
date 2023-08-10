@@ -276,7 +276,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                           />
                           <View style={{ marginLeft: 10 }}>
                             <Text
-                              style={[styles.blueListDataText, { width: SW(50) }]}
+                              style={[styles.blueListDataText, { width: SW(40) }]}
                               numberOfLines={1}
                             >
                               {data.product_details?.name}
@@ -286,7 +286,10 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                         </View>
                       </View>
                       <View style={[styles.tableListSide, styles.tableListSide2]}>
-                        <Text style={styles.blueListDataText}>
+                        <Text
+                          style={[styles.blueListDataText, { width: SW(20) }]}
+                          numberOfLines={1}
+                        >
                           ${data?.product_details?.supply?.supply_prices?.selling_price}
                         </Text>
                         <View style={styles.listCountCon}>
