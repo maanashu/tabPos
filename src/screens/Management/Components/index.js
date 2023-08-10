@@ -41,7 +41,6 @@ export function SessionHistoryTable({
   const [date, setDate] = useState(new Date());
   const [dateformat, setDateformat] = useState('');
   const [show, setShow] = useState(false);
-
   const onChangeDate = (selectedDate) => {
     setSessionHistoryArray([]);
     const currentDate = moment().format('MM/DD/YYYY');
@@ -146,12 +145,11 @@ export function SessionHistoryTable({
                 tableDataArrayReverse?.map((item, index) => (
                   <TouchableOpacity
                     style={styles.tableDataCon}
-                    onPress={() => (
+                    onPress={() =>
                       tableTouchHandler(item)
-                      
+
                       // ,oneItemSend(item)
-                      
-                      )}
+                    }
                     key={index}
                   >
                     <View style={styles.displayFlex}>
@@ -301,7 +299,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     //                 break;
     // }
   };
-console.log("ARRRAYAYAYA",JSON.stringify(sessionHistoryArray));
+  console.log('ARRRAYAYAYA', JSON.stringify(sessionHistoryArray));
   return (
     <View style={historyHeader ? styles.bodyContainer : styles.bodyContainer2}>
       <ScrollView showsVerticalScrollIndicator={false}>
