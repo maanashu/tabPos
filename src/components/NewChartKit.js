@@ -11,10 +11,12 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
         <LineChart
           bezier
           data={{
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            labels: [],
+            // labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             datasets: [
               {
-                data: [25, 50, 80, 55, 95, 75, 100],
+                data: [0, 0, 0, 0, 0, 0, 0],
+                // data: [25, 50, 80, 55, 95, 75, 100],
                 strokeWidth: 2,
                 color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
               },
@@ -39,8 +41,8 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
-            backgroundGradientFrom: COLORS.white,
-            backgroundGradientTo: COLORS.white,
+            backgroundGradientFrom: COLORS.mid_grey,
+            backgroundGradientTo: COLORS.mid_grey,
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             style: {

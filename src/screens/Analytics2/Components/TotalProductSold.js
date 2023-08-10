@@ -19,6 +19,36 @@ import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 
+const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
+  const labelInterval = Math.ceil(dataLabels?.length / daysLength);
+  const dayLabels = Array.from(
+    { length: Math.ceil(dataLabels?.length / labelInterval) },
+    (_, index) => {
+      const labelValue = (index + 1) * labelInterval;
+      return labelValue <= maxLabel ? labelValue.toString() : maxLabel.toString();
+    }
+  );
+
+  const filterMonthsByInterval = (monthsArray) => {
+    if (interval <= 0) {
+      throw new Error('Interval must be a positive integer.');
+    }
+
+    return monthsArray?.filter((_, index) => index % interval === 0);
+  };
+
+  const outputMonths = filterMonthsByInterval(dataLabels);
+  const shortMonthNames = outputMonths?.map((month) => month);
+
+  if (dataLabels?.length > 12) {
+    return dayLabels;
+  } else if (dataLabels?.length === 12) {
+    return shortMonthNames;
+  } else {
+    return dataLabels;
+  }
+};
+
 export function TotalProductSold({ onPress }) {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
@@ -29,6 +59,13 @@ export function TotalProductSold({ onPress }) {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const soldProduct = getAnalyticsData?.getSoldProduct;
+
+  const interval = 1;
+  const maxLabel = 31;
+  const daysLength = 31;
+
+  const dataLabelsProductSold = soldProduct?.graph_data?.labels;
+  const labelsProductSold = generateLabels(dataLabelsProductSold, interval, maxLabel, daysLength);
 
   const getSoldProductList = ({ item, index }) => (
     <DataTable.Row>
@@ -43,6 +80,16 @@ export function TotalProductSold({ onPress }) {
         <Text style={styles.revenueDataText} numberOfLines={1}>
           {item?.product_name}
         </Text>
+      </DataTable.Cell>
+
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText} numberOfLines={1}>
+          {item?.upc}
+        </Text>
+      </DataTable.Cell>
+
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText2}>{item?.order?.sold_quantity}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -92,7 +139,7 @@ export function TotalProductSold({ onPress }) {
           bezier
           data={{
             labels: soldProduct?.graph_data?.labels
-              ? soldProduct?.graph_data?.labels
+              ? labelsProductSold
               : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {
@@ -134,7 +181,7 @@ export function TotalProductSold({ onPress }) {
 
       <View style={styles.tableMainView}>
         <ScrollView
-          // horizontal
+          horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
         >
@@ -143,7 +190,7 @@ export function TotalProductSold({ onPress }) {
               zIndex: -99,
             }}
           >
-            <DataTable.Header style={[styles.tableListHeader, { width: SW(310) }]}>
+            <DataTable.Header style={[styles.tableListHeader]}>
               <DataTable.Title style={styles.dateTablealignStart}>
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
@@ -153,7 +200,15 @@ export function TotalProductSold({ onPress }) {
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Amount</Text>
+                <Text style={styles.revenueText}>UPC</Text>
+              </DataTable.Title>
+
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Sold Quantity</Text>
+              </DataTable.Title>
+
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Price</Text>
               </DataTable.Title>
             </DataTable.Header>
 

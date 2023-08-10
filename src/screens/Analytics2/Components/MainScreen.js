@@ -6,6 +6,37 @@ import { useSelector } from 'react-redux';
 import { styles } from '../Analytics2.styles';
 import { HomeGraph } from '.';
 import { COLORS, SF, SH, SW } from '@/theme';
+import { getUser } from '@/selectors/UserSelectors';
+
+const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
+  const labelInterval = Math.ceil(dataLabels?.length / daysLength);
+  const dayLabels = Array.from(
+    { length: Math.ceil(dataLabels?.length / labelInterval) },
+    (_, index) => {
+      const labelValue = (index + 1) * labelInterval;
+      return labelValue <= maxLabel ? labelValue.toString() : maxLabel.toString();
+    }
+  );
+
+  const filterMonthsByInterval = (monthsArray) => {
+    if (interval <= 0) {
+      throw new Error('Interval must be a positive integer.');
+    }
+
+    return monthsArray?.filter((_, index) => index % interval === 0);
+  };
+
+  const outputMonths = filterMonthsByInterval(dataLabels);
+  const shortMonthNames = outputMonths?.map((month) => month?.substr(0, 3));
+
+  if (dataLabels?.length > 12) {
+    return dayLabels;
+  } else if (dataLabels?.length === 12) {
+    return shortMonthNames;
+  } else {
+    return dataLabels;
+  }
+};
 
 export function MainScreen({
   onPressProfit,
@@ -24,49 +55,113 @@ export function MainScreen({
   const totalOrder = getAnalyticsData?.getTotalOrder;
   const soldProduct = getAnalyticsData?.getSoldProduct;
   const totalInventory = getAnalyticsData?.getTotalInventory;
+  const getUserData = useSelector(getUser);
+  const getPosUser = getUserData?.posLoginData;
+
+  const interval = 2;
+  const maxLabel = 31;
+  const daysLength = 7;
+
+  const dataLabelsProfit = analyticStatistics?.profit?.graph_data?.labels;
+  const labelsProfit = generateLabels(dataLabelsProfit, interval, maxLabel, daysLength);
+
+  const dataLabelsRevenue = analyticStatistics?.revenue?.graph_data?.labels;
+  const labelsRevenue = generateLabels(dataLabelsRevenue, interval, maxLabel, daysLength);
+
+  const dataLabelsCost = analyticStatistics?.cost?.graph_data?.labels;
+  const labelsCost = generateLabels(dataLabelsCost, interval, maxLabel, daysLength);
+
+  const dataLabelsPOS = analyticOrderGraphs?.pos_graph?.graph_data?.labels;
+  const labelsPOS = generateLabels(dataLabelsPOS, interval, maxLabel, daysLength);
+
+  const dataLabelsDelivery = analyticOrderGraphs?.delivery_graph?.graph_data?.labels;
+  const labelsDelivery = generateLabels(dataLabelsDelivery, interval, maxLabel, daysLength);
+
+  const dataLabelsShipping = analyticOrderGraphs?.shipping_graph?.graph_data?.labels;
+  const labelsShipping = generateLabels(dataLabelsShipping, interval, maxLabel, daysLength);
+
+  const dataLabelsInventory = totalInventory?.graph_data?.labels;
+  const labelsInvetory = generateLabels(dataLabelsInventory, interval, maxLabel, daysLength);
+
+  const dataLabelsProductSold = soldProduct?.graph_data?.labels;
+  const labelsProductSold = generateLabels(dataLabelsProductSold, interval, maxLabel, daysLength);
 
   return (
     <View>
       <View style={styles.flexDirectionRow}>
-        <HomeGraph
-          header="Total Profit"
-          subHeader={
-            analyticStatistics?.cost?.total_count
-              ? '$' + analyticStatistics?.profit?.total_count
-              : '0'
-          }
-          analyticGraphObject={analyticStatistics}
-          arrayLength={analyticStatistics?.profit?.graph_data?.datasets?.length}
-          onPress={onPressProfit}
-          labels={analyticStatistics?.profit?.graph_data?.labels}
-          data={analyticStatistics?.profit?.graph_data?.datasets?.[0]?.data}
-        />
-        <HomeGraph
-          header="Total Revenue"
-          subHeader={
-            analyticStatistics?.cost?.total_count
-              ? '$' + analyticStatistics?.revenue?.total_count
-              : '0'
-          }
-          analyticGraphObject={analyticStatistics}
-          arrayLength={analyticStatistics?.revenue?.graph_data?.datasets?.length}
-          onPress={onPressRevenue}
-          labels={analyticStatistics?.revenue?.graph_data?.labels}
-          data={analyticStatistics?.revenue?.graph_data?.datasets?.[0]?.data}
-        />
-        <HomeGraph
-          header="Total Costs"
-          subHeader={
-            analyticStatistics?.cost?.total_count
-              ? '$' + analyticStatistics?.cost?.total_count
-              : '0'
-          }
-          analyticGraphObject={analyticStatistics}
-          arrayLength={analyticStatistics?.cost?.graph_data?.datasets?.length}
-          onPress={onPressCost}
-          labels={analyticStatistics?.cost?.graph_data?.labels}
-          data={analyticStatistics?.cost?.graph_data?.datasets?.[0]?.data}
-        />
+        {getPosUser?.user_roles?.length > 0 ? (
+          <View>
+            <HomeGraph
+              header="Total Profit"
+              subHeader={'0'}
+              disabled
+              style={{ backgroundColor: COLORS.mid_grey }}
+            />
+          </View>
+        ) : (
+          <HomeGraph
+            header="Total Profit"
+            subHeader={
+              analyticStatistics?.profit?.total_count
+                ? '$' + analyticStatistics?.profit?.total_count
+                : '0'
+            }
+            analyticGraphObject={analyticStatistics}
+            arrayLength={analyticStatistics?.profit?.graph_data?.datasets?.length}
+            onPress={onPressProfit}
+            labels={labelsProfit}
+            data={analyticStatistics?.profit?.graph_data?.datasets?.[0]?.data}
+          />
+        )}
+
+        {getPosUser?.user_roles?.length > 0 ? (
+          <View>
+            <HomeGraph
+              header="Total Revenue"
+              subHeader={'0'}
+              disabled
+              style={{ backgroundColor: COLORS.mid_grey }}
+            />
+          </View>
+        ) : (
+          <HomeGraph
+            header="Total Revenue"
+            subHeader={
+              analyticStatistics?.revenue?.total_count
+                ? '$' + analyticStatistics?.revenue?.total_count
+                : '0'
+            }
+            analyticGraphObject={analyticStatistics}
+            arrayLength={analyticStatistics?.revenue?.graph_data?.datasets?.length}
+            onPress={onPressRevenue}
+            labels={labelsRevenue}
+            data={analyticStatistics?.revenue?.graph_data?.datasets?.[0]?.data}
+          />
+        )}
+        {getPosUser?.user_roles?.length > 0 ? (
+          <View>
+            <HomeGraph
+              header="Total Costs"
+              subHeader={'0'}
+              disabled
+              style={{ backgroundColor: COLORS.mid_grey }}
+            />
+          </View>
+        ) : (
+          <HomeGraph
+            header="Total Costs"
+            subHeader={
+              analyticStatistics?.cost?.total_count
+                ? '$' + analyticStatistics?.cost?.total_count
+                : '0'
+            }
+            analyticGraphObject={analyticStatistics}
+            arrayLength={analyticStatistics?.cost?.graph_data?.datasets?.length}
+            onPress={onPressCost}
+            labels={labelsCost}
+            data={analyticStatistics?.cost?.graph_data?.datasets?.[0]?.data}
+          />
+        )}
       </View>
       <View style={styles.flexDirectionRow}>
         <HomeGraph
@@ -80,7 +175,7 @@ export function MainScreen({
           arrayLength={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.length}
           onPress={onPressPosOrder}
           rightHeader
-          labels={analyticOrderGraphs?.pos_graph?.graph_data?.labels}
+          labels={labelsPOS}
           data={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[0]?.data}
           data1={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[1]?.data}
           data2={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[2]?.data}
@@ -94,7 +189,7 @@ export function MainScreen({
           }
           onPress={onPressDelivery}
           arrayLength={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.length}
-          labels={analyticOrderGraphs?.delivery_graph?.graph_data?.labels}
+          labels={labelsDelivery}
           rightHeader
           data={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[0]?.data}
           data1={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[1]?.data}
@@ -110,7 +205,7 @@ export function MainScreen({
           }
           onPress={onPressShipping}
           arrayLength={analyticOrderGraphs?.shipping_graph?.graph_data?.datasets?.length}
-          labels={analyticOrderGraphs?.shipping_graph?.graph_data?.labels}
+          labels={labelsShipping}
           rightHeader
           data={analyticOrderGraphs?.shipping_graph?.graph_data?.datasets?.[0]?.data}
           data1={analyticOrderGraphs?.shipping_graph?.graph_data?.datasets?.[1]?.data}
@@ -164,7 +259,7 @@ export function MainScreen({
           onPress={onPressInventory}
           analyticGraphObject={totalInventory}
           arrayLength={totalInventory?.graph_data?.datasets?.length}
-          labels={totalInventory?.graph_data?.labels}
+          labels={labelsInvetory}
           data={totalInventory?.graph_data?.datasets?.[0]?.data}
         />
 
@@ -174,7 +269,7 @@ export function MainScreen({
           onPress={onPressProducts}
           analyticGraphObject={soldProduct}
           arrayLength={soldProduct?.graph_data?.datasets?.length}
-          labels={soldProduct?.graph_data?.labels}
+          labels={labelsProductSold}
           data={soldProduct?.graph_data?.datasets?.[0]?.data}
         />
       </View>

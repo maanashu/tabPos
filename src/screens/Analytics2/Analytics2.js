@@ -38,7 +38,6 @@ import {
   getTotalOrder,
 } from '@/actions/AnalyticsAction';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TotalProductSold } from './Components/TotalProductSold';
 import { TotalInventory } from './Components/TotalInventory';
 
@@ -102,13 +101,13 @@ export function Analytics2() {
 
             <View style={styles.rightSideView}>
               <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={styles.bucketBackgorund}
                   onPress={() => setShowModal(!showModal)}
                 >
                   <Image source={analyticsReport} style={styles.sideBarImage} />
                 </TouchableOpacity>
-                <Spacer space={SH(25)} />
+                <Spacer space={SH(25)} /> */}
                 <TouchableOpacity
                   style={[
                     styles.bucketBackgorund,

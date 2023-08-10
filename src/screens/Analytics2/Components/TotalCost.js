@@ -19,6 +19,36 @@ import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 
+const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
+  const labelInterval = Math.ceil(dataLabels?.length / daysLength);
+  const dayLabels = Array.from(
+    { length: Math.ceil(dataLabels?.length / labelInterval) },
+    (_, index) => {
+      const labelValue = (index + 1) * labelInterval;
+      return labelValue <= maxLabel ? labelValue.toString() : maxLabel.toString();
+    }
+  );
+
+  const filterMonthsByInterval = (monthsArray) => {
+    if (interval <= 0) {
+      throw new Error('Interval must be a positive integer.');
+    }
+
+    return monthsArray?.filter((_, index) => index % interval === 0);
+  };
+
+  const outputMonths = filterMonthsByInterval(dataLabels);
+  const shortMonthNames = outputMonths?.map((month) => month);
+
+  if (dataLabels?.length > 12) {
+    return dayLabels;
+  } else if (dataLabels?.length === 12) {
+    return shortMonthNames;
+  } else {
+    return dataLabels;
+  }
+};
+
 export function TotalCost({ onPress }) {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
@@ -28,6 +58,14 @@ export function TotalCost({ onPress }) {
   ]);
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
+
+  const interval = 1;
+  const maxLabel = 31;
+  const daysLength = 31;
+
+  const dataLabelsCost = analyticStatistics?.cost?.graph_data?.labels;
+  const labelsCost = generateLabels(dataLabelsCost, interval, maxLabel, daysLength);
+
   const getCostList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
@@ -95,7 +133,7 @@ export function TotalCost({ onPress }) {
           bezier
           data={{
             labels: analyticStatistics?.cost?.graph_data?.labels
-              ? analyticStatistics?.cost?.graph_data?.labels
+              ? labelsCost
               : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [
               {

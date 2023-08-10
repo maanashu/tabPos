@@ -16,9 +16,11 @@ export function HomeGraph({
   data1,
   data2,
   bulletText,
+  disabled,
+  style,
 }) {
   return (
-    <View style={styles.totalProductCon}>
+    <View style={[styles.totalProductCon, style]}>
       <Spacer space={SH(20)} />
       <View style={styles.displayFlex}>
         <View>
@@ -42,7 +44,7 @@ export function HomeGraph({
           </View>
         )}
       </View>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onPress} disabled={disabled}>
         <NewChartKit
           data={data}
           arrayLength={arrayLength}

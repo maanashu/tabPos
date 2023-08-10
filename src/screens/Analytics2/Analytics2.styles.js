@@ -97,8 +97,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
-    // position: 'absolute',
-    // bottom: SH(10),
+    position: 'absolute',
+    bottom: SH(10),
   },
   headerText: {
     flex: 1,
@@ -276,7 +276,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(20),
     color: COLORS.black,
-    marginVertical: SH(15),
+    marginVertipaddvcal: SH(15),
     height: SH(30),
   },
   bullets: {
