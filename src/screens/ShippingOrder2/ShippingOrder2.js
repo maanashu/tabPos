@@ -477,7 +477,6 @@ export function ShippingOrder2() {
         ? COLORS.yellowTweet
         : COLORS.primary,
   }));
-
   const renderGraphItem = ({ item, index }) => {
     return (
       <View style={styles.shippingDrawerView}>

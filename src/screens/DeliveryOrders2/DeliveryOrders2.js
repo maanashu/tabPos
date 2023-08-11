@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import { View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  Platform,
+} from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
@@ -1000,6 +1008,37 @@ export function DeliveryOrders2({ route }) {
       };
     }
   };
+  const checkedIndices = graphData
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => parseInt(checkbox.key) - 1);
+
+  // Initialize an array to store the summed values
+  const summedValues = Array(getDeliveryData?.graphOrders?.labels?.length).fill(0);
+
+  // Sum the values from checked datasets for each day
+  for (const index of checkedIndices) {
+    const dataset = getDeliveryData?.graphOrders?.datasets?.[index].data;
+    for (let i = 0; i < dataset?.length; i++) {
+      summedValues[i] += dataset[i];
+    }
+  }
+
+  // Transform the summed values into the desired format with labels
+  const outputData = summedValues.map((value, index) => ({
+    label: getDeliveryData?.graphOrders?.labels?.[index],
+    value,
+    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11, fontFamily: Fonts.Regular },
+    spacing: Platform.OS == 'ios' ? 38 : 62,
+    initialSpace: 0,
+    frontColor:
+      index === 0
+        ? COLORS.bluish_green
+        : index === 1
+        ? COLORS.pink
+        : index === 2
+        ? COLORS.yellowTweet
+        : COLORS.primary,
+  }));
 
   return (
     <ScreenWrapper>
@@ -1104,7 +1143,7 @@ export function DeliveryOrders2({ route }) {
                       graphData,
                       renderGraphItem,
                       isDeliveryOrder,
-                      graphElements,
+                      outputData,
                     }}
                   />
 
