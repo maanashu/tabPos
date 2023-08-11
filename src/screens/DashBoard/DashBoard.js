@@ -106,6 +106,7 @@ export function DashBoard({ navigation }) {
   const [page, setpage] = useState(1);
   const [sku, setSku] = useState('');
   const [scan, setScan] = useState(false);
+
   useEffect(() => {
     setScan(false);
   }, []);
@@ -240,21 +241,26 @@ export function DashBoard({ navigation }) {
   );
 
   const getSessionLoad = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION], state)
+    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION, DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
   );
 
   const startSellingHandler = async (id) => {
     if (id === 1) {
       dispatch(addSellingSelection(id));
-      navigate(NAVIGATION.posRetail2);
+      navigate(NAVIGATION.posRetail3);
     } else if (id === 2) {
       dispatch(addSellingSelection(id));
-      navigate(NAVIGATION.deliveryOrder);
+      navigate(NAVIGATION.deliveryOrders2);
     }
   };
 
   const tableListItem = ({ item }) => (
-    <TouchableOpacity style={[styles.reviewRenderView]}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate(NAVIGATION.deliveryOrders2, { isViewAll: true, ORDER_DETAIL: item })
+      }
+      style={[styles.reviewRenderView]}
+    >
       <View style={{ width: SW(20) }}>
         <Text style={styles.hashNumber}>#{item.id}</Text>
       </View>
@@ -579,11 +585,7 @@ export function DashBoard({ navigation }) {
             <View>
               <Text style={styles.deliveries}>{strings.dashboard.deliveries}</Text>
             </View>
-            {orderDelveriesLoading ? (
-              <View style={{ marginTop: 50 }}>
-                <ActivityIndicator size="large" color={COLORS.indicator} />
-              </View>
-            ) : getDeliveryData2?.length === 0 || getDeliveryData2 === undefined ? (
+            {getDeliveryData2?.length === 0 || getDeliveryData2 === undefined ? (
               <View>
                 <Text style={styles.requestNotFound}>Orders not found</Text>
               </View>
@@ -600,7 +602,6 @@ export function DashBoard({ navigation }) {
       </View>
     </View>
   );
-
   return (
     <ScreenWrapper>
       <View style={styles.container}>

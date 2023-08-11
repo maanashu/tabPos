@@ -182,6 +182,25 @@ function calculateDuration(start_time, end_time) {
   return `${hours} HR ${minutes} Min`;
 }
 
+function getDaysAndDates(year = new Date().getFullYear(), month = new Date().getMonth() + 1) {
+  const currentDate = moment();
+  const daysInMonth = currentDate.daysInMonth();
+
+  const daysAndDates = [];
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = moment({ year, month: month - 1, day });
+
+    if (date.isSameOrAfter(currentDate, 'day')) {
+      const dayOfWeek = date.format('ddd').toUpperCase();
+      const completeDate = date.format('YYYY-MM-DD');
+      daysAndDates.push({ day: dayOfWeek, date: date.date(), completeDate: completeDate });
+    }
+  }
+
+  return daysAndDates;
+}
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -196,4 +215,5 @@ export {
   orderDeliveryTime,
   getStartEndFormattedDate,
   calculateDuration,
+  getDaysAndDates,
 };

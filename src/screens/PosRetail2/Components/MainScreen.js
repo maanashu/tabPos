@@ -160,7 +160,7 @@ export function MainScreen({
           seller_id: sellerID,
           products: addCartList,
         };
-        dispatch(bulkCreate(data));
+        // dispatch(bulkCreate(data));
         setCartProoduct([]);
       };
     }, [])
@@ -196,9 +196,6 @@ export function MainScreen({
       setAddCartList([...getRetailData?.bulkData, ...updatedCart]);
     }
   };
-  // console.log('kgkg', addCartList);
-  // Your JSX rendering code here
-
   const originalFilterData = [
     {
       id: 1,

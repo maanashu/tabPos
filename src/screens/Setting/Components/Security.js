@@ -17,7 +17,7 @@ import {
 } from '@/assets';
 import { getSetting } from '@/selectors/SettingSelector';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGoogleCode, getSettings, upadteApi, verifyGoogleCode } from '@/actions/SettingAction';
+import { configureGoogleCode, getGoogleCode, getSettings, upadteApi, verifyGoogleCode } from '@/actions/SettingAction';
 import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
@@ -30,6 +30,8 @@ import {
 } from 'react-native-confirmation-code-field';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { digits } from '@/utils/validators';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { merchantLoginSuccess } from '@/actions/AuthActions';
 
 export function Security() {
   const dispatch = useDispatch();
@@ -44,12 +46,15 @@ export function Security() {
   const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
   const googleCode = getSettingData?.getGoogleCode;
   const [twoStepModal, setTwoStepModal] = useState(false);
+  const [factorEnable, setFactorEnable] = useState(null);
   const [googleAuthStart, setGoogleAuthStart] = useState(false);
   const [googleAuthScan, setGoogleAuthScan] = useState(false);
   const [sixDigit, setSixDigit] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
   const [googleAuthicator, setGoogleAuthicator] = useState(googleAuthenticator);
   const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
-
+  const getAuth = useSelector(getAuthData);
+  const TWO_FACTOR=getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled
   useEffect(() => {
     if (getSettingData?.getSetting) {
       setGoogleAuthicator(getSettingData?.getSetting?.google_authenticator_status ?? false);
@@ -82,16 +87,28 @@ export function Security() {
       });
       return;
     } else {
-      const data = {
-        token: value,
-        status: googleAuthicator ? false : true,
-      };
+      // const data = {
+      //   token: value,
+      //   status: googleAuthicator ? false : true,
+      // };
+      // const res = await dispatch(verifyGoogleCode(data));
 
-      const res = await dispatch(verifyGoogleCode(data));
-      if (res?.type === 'VERIFY_GOOGLE_CODE_SUCCESS') {
+
+      const data={
+        code:value
+      }
+      const verificationFunction = googleAuthicator? verifyGoogleCode : configureGoogleCode;
+      const res = await verificationFunction(data)(dispatch);
+      if (res?.msg === 'Code verified successfully') {
         setValue('');
+        const data={
+          "app_name": "pos",
+          "google_authenticator_status":factorEnable,
+        }
+        dispatch(upadteApi(data))
         dispatch(getSettings());
         setSixDigit(false);
+       
       } else if (res === undefined) {
         setValue('');
       }
@@ -100,10 +117,16 @@ export function Security() {
 
   const toggleBtnHandler = () => {
     if (googleAuthicator === false) {
-      setTwoStepModal(true), dispatch(getGoogleCode());
-    } else {
-      setGoogleAuthScan(true);
+      setFactorEnable(true)
+      setTwoStepModal(true), 
       dispatch(getGoogleCode());
+      setIsDisable(false)
+    } else {
+      setIsDisable(true)
+      setSixDigit(true)
+      setFactorEnable(false)
+      // setGoogleAuthScan(true);
+      // dispatch(getGoogleCode());
     }
   };
 
@@ -119,7 +142,7 @@ export function Security() {
           <View style={[styles.flexRow, styles.flexWidth]}>
             <Text>{''}</Text>
             <Text style={styles.subHeading}>{'Enter 6-Digit code'}</Text>
-            <TouchableOpacity onPress={() => setSixDigit(false)}>
+            <TouchableOpacity onPress={() => {setSixDigit(false),setValue('')}}>
               <Image source={crossButton} style={styles.cross} />
             </TouchableOpacity>
           </View>

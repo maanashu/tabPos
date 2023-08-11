@@ -1,5 +1,6 @@
 import { DeliveryController } from '@/controllers';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { orderStatusCount } from './ShippingAction';
 
 const getOrderCountRequest = () => ({
   type: TYPES.GET_ORDER_COUNT_REQUEST,
@@ -192,14 +193,15 @@ export const getOrders = (status, sellerID) => async (dispatch) => {
   }
 };
 
-export const acceptOrder = (data, callback) => async (dispatch) => {
+export const acceptOrder = (data, openShippingOrders, delivery, callback) => async (dispatch) => {
   dispatch(acceptOrderRequest());
   try {
     const res = await DeliveryController.acceptOrder(data);
     callback && callback(res);
     dispatch(acceptOrderSuccess(res));
     dispatch(getOrderCount(data.sellerID));
-    dispatch(getReviewDefault(0, sellerID));
+    dispatch(orderStatusCount(data.sellerID));
+    dispatch(getReviewDefault(openShippingOrders, sellerID, delivery));
   } catch (error) {
     dispatch(acceptOrderError(error.message));
   }

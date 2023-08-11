@@ -7,54 +7,19 @@ import Modal from 'react-native-modal';
 import moment from 'moment';
 import { calculateDuration } from '@/utils/GlobalMethods';
 import ProfileImage from '@/components/ProfileImage';
-import { changeAppointmentStatus, rescheduleAppointment } from '@/actions/AppointmentAction';
-import { APPOINTMENT_STATUS } from '@/constants/status';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useState } from 'react';
-import CustomAlert from '@/components/CustomAlert';
-import { strings } from '@/localization';
+import { ReScheduleDetailModal } from './ReScheduleDetailModal';
 
-const DATE_TIME_OPTION = {
-  SELECTED_DATE_OPTION: 'SELECTED_DATE_OPTION',
-  SELECTED_START_TIME_OPTION: 'SELECTED_START_TIME_OPTION',
-  SELECTED_END_TIME_OPTION: 'SELECTED_END_TIME_OPTION',
-};
-
-const EventDetailModal = ({
-  showEventDetailModal,
-  setshowEventDetailModal,
-  eventData,
-  dispatch,
-}) => {
+const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, eventData }) => {
   const { completeData } = eventData;
   const userDetails = completeData?.user_details;
   const userAddress = userDetails?.current_address;
   const appointmentDetail = completeData?.appointment_details[0];
   const posUserDetails = completeData?.pos_user_details?.user?.user_profiles;
   const posUserRole = completeData?.pos_user_details?.user?.user_roles[0]?.role?.name || 'NULL';
+  const colorCode = completeData?.pos_user_details?.color_code;
 
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
   const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
-  const [optionSelected, setoptionSelected] = useState('');
-
-  const [rescheduleAppointmentDate, setRescheduleAppointmentDate] = useState('');
-  const [rescheduleAppointmentStartTime, setRescheduleAppointmentStartTime] = useState('');
-  const [rescheduleAppointmentEndTime, setRescheduleAppointmentEndTime] = useState('');
-
-  const handleCancelAppointment = () => {
-    const appointmentID = appointmentDetail?.appointment_id ?? '';
-    dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
-    clearDateTimeFromModal(); //clear date time states
-    setshowRescheduleTimeModal(false);
-    setshowEventDetailModal(false);
-  };
-
-  const clearDateTimeFromModal = () => {
-    setRescheduleAppointmentDate('');
-    setRescheduleAppointmentStartTime('');
-    setRescheduleAppointmentEndTime('');
-  };
 
   return (
     <Modal isVisible={showEventDetailModal}>
@@ -112,7 +77,7 @@ const EventDetailModal = ({
           <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
             <ProfileImage
               source={{ uri: posUserDetails?.profile_photo }}
-              style={styles.customerUserProfile}
+              style={[styles.customerUserProfile, { borderColor: colorCode, borderWidth: 1.5 }]}
             />
             <View style={{ marginLeft: ms(6) }}>
               <Text style={styles.customerName}>
@@ -183,140 +148,12 @@ const EventDetailModal = ({
           <Text style={styles.invoiceTxt}>Invoice # V364899978</Text>
         </View>
       </View>
-      <Modal isVisible={showRescheduleTimeModal}>
-        <View style={styles.reschuduleModalContainer}>
-          <Text style={styles.recheduleTitle}>Reschedule Appointment</Text>
-
-          <TouchableOpacity
-            onPress={() => {
-              clearDateTimeFromModal(); //clear date time states
-              setshowRescheduleTimeModal(false);
-            }}
-            style={styles.crossEventDetailModal}
-          >
-            <Image source={crossButton} style={styles.crossStl} />
-          </TouchableOpacity>
-          <View style={styles.rescheduleTimeContainer}>
-            <View style={styles.rescheduleSubContainer}>
-              <Text style={styles.rescheduleSelectTimetitle}>Select Date</Text>
-              <TouchableOpacity
-                style={styles.rescheduleTimeTextContainer}
-                onPress={() => {
-                  setShowDatePicker(true);
-                  setoptionSelected(DATE_TIME_OPTION.SELECTED_DATE_OPTION);
-                }}
-              >
-                <Text style={styles.rescheduleTimeText}>{`${
-                  rescheduleAppointmentDate === ''
-                    ? moment(completeData?.date).format('ll')
-                    : rescheduleAppointmentDate
-                }`}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.rescheduleSubContainer}>
-              <Text style={styles.rescheduleSelectTimetitle}>Select Start Time</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setShowTimePicker(true);
-                  setoptionSelected(DATE_TIME_OPTION.SELECTED_START_TIME_OPTION);
-                }}
-                style={styles.rescheduleTimeTextContainer}
-              >
-                <Text style={styles.rescheduleTimeText}>{`${
-                  rescheduleAppointmentStartTime === ''
-                    ? completeData?.start_time
-                    : rescheduleAppointmentStartTime
-                }`}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.rescheduleSubContainer}>
-              <Text style={styles.rescheduleSelectTimetitle}>Select End Time</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setShowTimePicker(true);
-                  setoptionSelected(DATE_TIME_OPTION.SELECTED_END_TIME_OPTION);
-                }}
-                style={styles.rescheduleTimeTextContainer}
-              >
-                <Text style={styles.rescheduleTimeText}>{`${
-                  rescheduleAppointmentEndTime === ''
-                    ? completeData?.end_time
-                    : rescheduleAppointmentEndTime
-                }`}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <View style={styles.rescheduleBtnContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                const params = {
-                  date:
-                    rescheduleAppointmentDate === ''
-                      ? moment(completeData?.date).format('YYYY-MM-DD')
-                      : moment(rescheduleAppointmentDate).format('YYYY-MM-DD'),
-                  start_time:
-                    rescheduleAppointmentStartTime === ''
-                      ? completeData?.start_time
-                      : rescheduleAppointmentStartTime,
-                  end_time:
-                    rescheduleAppointmentEndTime === ''
-                      ? completeData?.end_time
-                      : rescheduleAppointmentEndTime,
-                };
-
-                const appointmentId = completeData?.id;
-                dispatch(rescheduleAppointment(appointmentId, params));
-                clearDateTimeFromModal(); //clear date time states
-                setshowRescheduleTimeModal(false);
-                setshowEventDetailModal(false);
-              }}
-              style={styles.rescheduleBtn}
-            >
-              <Text style={styles.rescheduleBtnText}>Reschedule</Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity
-            style={styles.cancelAppointmentBtn}
-            onPress={() => {
-              CustomAlert({
-                title: strings.calender.cancelAppointment,
-                onYesPress: handleCancelAppointment,
-              });
-            }}
-          >
-            <Text style={styles.cancelAppointmentText}>Cancel Appointment</Text>
-          </TouchableOpacity>
-
-          <DateTimePickerModal
-            mode={'date'}
-            minimumDate={new Date()}
-            isVisible={showDatePicker}
-            onConfirm={(date) => {
-              const formattedDate = moment(date).format('LL');
-              setRescheduleAppointmentDate(formattedDate);
-              setShowDatePicker(false);
-            }}
-            onCancel={() => setShowDatePicker(false)}
-          />
-
-          <DateTimePickerModal
-            mode={'time'}
-            isVisible={showTimePicker}
-            onConfirm={(date) => {
-              const formattedTime = moment(date).format('hh:mm A');
-              if (optionSelected === DATE_TIME_OPTION.SELECTED_START_TIME_OPTION) {
-                setRescheduleAppointmentStartTime(formattedTime);
-              } else if (optionSelected === DATE_TIME_OPTION.SELECTED_END_TIME_OPTION) {
-                setRescheduleAppointmentEndTime(formattedTime);
-              }
-              setShowTimePicker(false);
-            }}
-            onCancel={() => setShowTimePicker(false)}
-          />
-        </View>
-      </Modal>
+      <ReScheduleDetailModal
+        showRecheduleModal={showRescheduleTimeModal}
+        setShowRescheduleModal={setshowRescheduleTimeModal}
+        appointmentData={completeData}
+        setshowEventDetailModal={setshowEventDetailModal}
+      />
     </Modal>
   );
 };

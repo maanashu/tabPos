@@ -17,6 +17,7 @@ const EventItemCard = ({ item, index, onPressAccept = () => {}, onPressReject = 
   const userDetails = item?.user_details;
   const userAddress = userDetails?.current_address;
   const appointmentDetail = item?.appointment_details[0];
+
   return (
     <View style={styles.eventItemContainer}>
       <View style={styles.customerDetailContainer}>
@@ -72,8 +73,8 @@ const EventItemCard = ({ item, index, onPressAccept = () => {}, onPressReject = 
         <View style={styles.serviceChargeSub}>
           <Text style={styles.totalTile}>Total</Text>
           <Text style={styles.totalTile}>
-            {item?.mode_of_payment.toUpperCase() === 'JBR'
-              ? item?.mode_of_payment.toUpperCase() + ' '
+            {item?.mode_of_payment?.toUpperCase() === 'JBR'
+              ? item?.mode_of_payment?.toUpperCase() + ' '
               : '$'}
 
             {item?.payable_amount}

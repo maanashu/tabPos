@@ -21,6 +21,7 @@ import {
   rightBack,
   search_light,
   sideKeyboard,
+  userImage,
 } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
@@ -29,6 +30,7 @@ import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import {
+  changeStatusServiceCart,
   clearAllCart,
   clearServiceAllCart,
   getAllCartSuccess,
@@ -45,6 +47,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
+import moment from 'moment';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -58,6 +61,8 @@ export function CartServiceScreen({
   let arr = [getRetailData?.getserviceCart];
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
+  const serviceCartArray = getRetailData?.getAllServiceCart;
+  const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
 
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -65,6 +70,20 @@ export function CartServiceScreen({
   const [cartSearch, setCartSearch] = useState('');
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+
+  const serviceCartStatusHandler = () => {
+    const data =
+      holdServiceArray?.length > 0
+        ? {
+            status: holdServiceArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdServiceArray?.[0]?.id,
+          }
+        : {
+            status: getRetailData?.getserviceCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getserviceCart?.id,
+          };
+    dispatch(changeStatusServiceCart(data));
+  };
 
   // useFocusEffect(
   //   React.useCallback(() => {
@@ -224,16 +243,26 @@ export function CartServiceScreen({
             <Spacer space={SH(10)} />
             <View style={styles.blueListHeader}>
               <View style={styles.displayflex}>
-                <View style={[styles.tableListSide, styles.listLeft]}>
+                <View style={styles.cartHeaderLeftSide}>
                   <Text style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}>#</Text>
-                  <Text style={styles.cashLabelWhite}>Item</Text>
+                  <Text style={styles.ItemHeader}>Item</Text>
                 </View>
-                <View style={[styles.tableListSide, styles.tableListSide2]}>
-                  <Text style={styles.cashLabelWhite}>Staff Name</Text>
-                  <Text style={styles.cashLabelWhite}>Unit Price</Text>
-                  <Text style={styles.cashLabelWhite}>Quantity</Text>
-                  <Text style={styles.cashLabelWhite}>Line Total</Text>
-                  <Text style={{ color: COLORS.primary }}>1</Text>
+                <View style={styles.cartHeaderRightSide}>
+                  <Text style={styles.cartHeaderBodyRightSide} numberOfLines={1}>
+                    Staff Name
+                  </Text>
+                  <Text style={styles.cartHeaderBodyRightSide} numberOfLines={1}>
+                    Unit Price
+                  </Text>
+                  <Text style={styles.cartHeaderBodyRightSide} numberOfLines={1}>
+                    Quantity
+                  </Text>
+                  <Text style={styles.cartHeaderBodyRightSide} numberOfLines={1}>
+                    Line Total
+                  </Text>
+                  <Text style={styles.cartHeaderBodyRightSide} numberOfLines={1}>
+                    {null}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -242,19 +271,19 @@ export function CartServiceScreen({
                 {item?.appointment_cart_products?.map((data, ind) => (
                   <View style={[styles.blueListData, { height: SH(70) }]} key={ind}>
                     <View style={styles.displayflex}>
-                      <View style={[styles.tableListSide, styles.listLeft]}>
+                      <View style={styles.cartHeaderLeftSide}>
                         <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
                           {ind + 1}
                         </Text>
                         <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                          }}
+                          style={[
+                            styles.ItemHeader,
+                            { flexDirection: 'row', alignItems: 'center' },
+                          ]}
                         >
                           <Image
                             source={{ uri: data.product_details?.image }}
-                            style={styles.columbiaMen}
+                            style={styles.cartItemImage}
                           />
                           <View style={{ marginLeft: 10 }}>
                             <Text
@@ -263,58 +292,47 @@ export function CartServiceScreen({
                             >
                               {data.product_details?.name}
                             </Text>
-                            <Text style={styles.sukNumber}>
-                              Monday 17, 2023 @ 3.00 PM - 3:50 PM{' '}
+                            <Text style={[styles.sukNumber, { width: SW(50) }]} numberOfLines={1}>
+                              {moment(data?.date).format('LL')} @
+                              {data?.start_time + '-' + data?.end_time}
                             </Text>
                             <Text style={styles.sukNumber}>Est: 45 ~ 50 min </Text>
                           </View>
                         </View>
                       </View>
-                      <View style={[styles.tableListSide, styles.tableListSide2]}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <Image source={clothes} style={styles.offerImage} />
-                          <Text style={styles.blueListDataText}>Anna S</Text>
+                      <View style={styles.cartHeaderRightSide}>
+                        <View
+                          style={[
+                            styles.cartBodyRightSide,
+                            { flexDirection: 'row', alignItems: 'center' },
+                          ]}
+                        >
+                          <Image
+                            source={
+                              { uri: data?.pos_user_details?.user?.user_profiles?.profile_photo } ??
+                              userImage
+                            }
+                            style={styles.offerImage}
+                          />
+                          <Text
+                            style={[styles.blueListDataText, { marginLeft: 3, width: SW(20) }]}
+                            numberOfLines={1}
+                          >
+                            {data?.pos_user_details?.user?.user_profiles?.firstname}
+                          </Text>
                         </View>
-                        <Text style={styles.blueListDataText}>
-                          ${data?.product_details?.supply?.supply_prices?.selling_price}
+                        <Text style={[styles.cartBodyRightSide]} numberOfLines={1}>
+                          $
+                          {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2)}
                         </Text>
-                        <View style={styles.listCountCon}>
-                          <TouchableOpacity
-                            style={{
-                              width: SW(10),
-                              alignItems: 'center',
-                            }}
-                            // onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
-                          >
-                            <Image source={minus} style={styles.minus} />
-                          </TouchableOpacity>
-                          {isLoading ? (
-                            <ActivityIndicator size="small" color={COLORS.primary} />
-                          ) : (
-                            // <Text>{data.qty}</Text>
-                            <Text>1</Text>
-                          )}
-                          <TouchableOpacity
-                            style={{
-                              width: SW(10),
-                              alignItems: 'center',
-                            }}
-                            // onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
-                          >
-                            <Image source={plus} style={styles.minus} />
-                          </TouchableOpacity>
-                        </View>
-                        <Text style={styles.blueListDataText}>
+                        <Text style={styles.cartBodyRightSide}>1</Text>
+
+                        <Text style={styles.cartBodyRightSide} numberOfLines={1}>
                           $
                           {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2)}
                         </Text>
                         <TouchableOpacity
-                          style={{
-                            width: SW(8),
-                            height: SH(40),
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
+                          style={[styles.cartBodyRightSide, { alignItems: 'center' }]}
                           onPress={() => removeOneCartHandler(data.id, ind)}
                         >
                           <Image source={borderCross} style={styles.borderCross} />
@@ -336,10 +354,7 @@ export function CartServiceScreen({
               >
                 <Image source={sideKeyboard} style={styles.keyboardIcon} />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.holdCartCon}
-                //   onPress={() => setProductdetailModal(true)}
-              >
+              <TouchableOpacity style={styles.holdCartCon} onPress={serviceCartStatusHandler}>
                 <Image source={holdCart} style={styles.pause} />
 
                 <Text style={styles.holdCart}>{strings.dashboard.holdCart}</Text>

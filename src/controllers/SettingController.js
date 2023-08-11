@@ -225,7 +225,29 @@ export class SettingController {
           resolve(response);
         })
         .catch((error) => {
-          if (error?.msg === 'Invalid token code.') {
+          if (error?.msg === 'Invalid code.') {
+            Toast.show({
+              text2: 'Token Code Expire',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
+
+          reject(error);
+        });
+    });
+  }
+
+  static async configureGoogleCode(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.configureGoogleCode;
+      HttpClient.post(endpoint, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          if (error?.msg === 'Invalid code.') {
             Toast.show({
               text2: 'Token Code Expire',
               position: 'bottom',

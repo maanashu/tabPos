@@ -39,7 +39,6 @@ import { useIsFocused } from '@react-navigation/native';
 import CustomEventCell from './Components/CustomEventCell';
 import CustomHoursCell from './Components/CustomHoursCell';
 import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
-import ScheduleDetailModal from './Components/ScheduleDetailModal';
 import EventItemCard from './Components/EventItemCard';
 import CalendarSettingModal from './Components/CalendarSettingModal';
 import { navigate } from '@/navigation/NavigationRef';
@@ -224,19 +223,6 @@ export function Calender(props) {
     return isRequestLoading ? <ActivityIndicator size="large" color="#000000" /> : null;
   };
 
-  const schduleDetailModal = () => {
-    return (
-      <ScheduleDetailModal
-        {...{
-          schduleDetail,
-          setSchduleDetail,
-          storeItem,
-          data,
-        }}
-      />
-    );
-  };
-
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -288,7 +274,7 @@ export function Calender(props) {
                   source={{
                     uri: userProfile?.profile_photo,
                   }}
-                  style={styles.headerEmployeeImage}
+                  style={[styles.headerEmployeeImage, { borderColor: item?.color_code }]}
                 />
                 <View style={{ marginLeft: ms(5) }}>
                   <Text style={styles.headerEmployeeName}>
@@ -353,6 +339,7 @@ export function Calender(props) {
               />
             </View>
           </View>
+          {/* Right tab container */}
           <View style={styles.rightTabContainer}>
             <TouchableOpacity
               onPress={() => {
@@ -503,8 +490,6 @@ export function Calender(props) {
         <EventDetailModal
           {...{ eventData, showEventDetailModal, setshowEventDetailModal, dispatch }}
         />
-
-        {schduleDetailModal()}
       </View>
     </ScreenWrapper>
   );

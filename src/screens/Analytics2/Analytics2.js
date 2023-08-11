@@ -100,33 +100,33 @@ export function Analytics2() {
             <View style={styles.container}>{screenChangeView()}</View>
 
             <View style={styles.rightSideView}>
-              <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                {/* <TouchableOpacity
+              {/* <TouchableOpacity
                   style={styles.bucketBackgorund}
                   onPress={() => setShowModal(!showModal)}
                 >
                   <Image source={analyticsReport} style={styles.sideBarImage} />
                 </TouchableOpacity>
                 <Spacer space={SH(25)} /> */}
-                <TouchableOpacity
+              <Spacer space={SH(10)} />
+              <TouchableOpacity
+                style={[
+                  styles.bucketBackgorund,
+                  {
+                    backgroundColor:
+                      selectedScreen === 'TotalProfit' ? COLORS.primary : COLORS.white,
+                  },
+                ]}
+                onPress={() => setselectedScreen('TotalProfit')}
+              >
+                <Image
+                  source={profit}
                   style={[
-                    styles.bucketBackgorund,
-                    {
-                      backgroundColor:
-                        selectedScreen === 'TotalProfit' ? COLORS.primary : COLORS.white,
-                    },
+                    styles.sideBarImage,
+                    { tintColor: selectedScreen === 'TotalProfit' ? COLORS.white : COLORS.black },
                   ]}
-                  onPress={() => setselectedScreen('TotalProfit')}
-                >
-                  <Image
-                    source={profit}
-                    style={[
-                      styles.sideBarImage,
-                      { tintColor: selectedScreen === 'TotalProfit' ? COLORS.white : COLORS.black },
-                    ]}
-                  />
-                </TouchableOpacity>
-              </View>
+                />
+              </TouchableOpacity>
+
               <Spacer space={SH(25)} />
               <TouchableOpacity
                 style={[

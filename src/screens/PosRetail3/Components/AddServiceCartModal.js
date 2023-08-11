@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Dimensions,
-  Image,
-  ScrollView,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
-
+import { Dimensions, Image, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
@@ -18,8 +9,11 @@ import { crossButton, Fonts, userImage } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import { slotData, weekData } from '@/constants/flatListData';
-import { addToServiceCart } from '@/actions/RetailAction';
+import { addToServiceCart, getTimeSlots } from '@/actions/RetailAction';
+import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker';
+import { useEffect } from 'react';
+import moment from 'moment';
+import { getDaysAndDates } from '@/utils/GlobalMethods';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -27,23 +21,37 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
 
-  const [colorId, setColorId] = useState(null);
-  const [sizeId, setSizeId] = useState(null);
-  const [count, setCount] = useState(0);
-  const [colors, setColors] = useState();
-  const [colorName, setColorName] = useState();
-  const [sizeName, setSizeName] = useState();
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [string, setString] = useState();
+  const timeSlotsData = getRetailData?.timeSlots;
 
-  const [servicerProId, setServiceProId] = useState();
-  const [providerDetail, setProviderDetail] = useState();
+  const [posUserId, setposUserId] = useState(itemData?.pos_users[0].user?.unique_uuid);
+  const [providerDetail, setProviderDetail] = useState(itemData?.pos_users[0].user);
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
-  const [selectedDate, setselectedDate] = useState('Today');
+  const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
+  const [selectedDate, setselectedDate] = useState(moment(new Date()).format('YYYY-MM-DD'));
+
+  const [selectedMonthData, setselectedMonthData] = useState(null);
+  const [selectedYearData, setselectedYearData] = useState(null);
+
+  const [monthDays, setmonthDays] = useState([]);
+
+  useEffect(() => {
+    const params = {
+      seller_id: sellerID,
+      product_id: itemData?.id,
+      date: selectedDate,
+      pos_user_id: posUserId,
+    };
+    dispatch(getTimeSlots(params));
+  }, [posUserId, selectedDate]);
+
+  useEffect(() => {
+    const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
+    setmonthDays(daysArray);
+  }, [selectedMonthData, selectedYearData]);
 
   const onClickServiceProvider = (item) => {
-    setServiceProId(item.id);
+    setposUserId(item?.user?.unique_uuid);
     setProviderDetail(item?.user);
   };
 
@@ -56,14 +64,14 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         height: SH(60),
       }}
       onPress={() => {
-        setselectedDate(item.date);
+        setselectedDate(item?.completeDate);
       }}
     >
       <Text
         style={{
           fontFamily: Fonts.Regular,
           fontSize: SF(14),
-          color: item.date === selectedDate ? COLORS.primary : COLORS.dark_grey,
+          color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.dark_grey,
         }}
       >
         {item?.day}
@@ -72,16 +80,17 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         style={{
           fontFamily: Fonts.SemiBold,
           fontSize: SF(18),
-          color: item.date === selectedDate ? COLORS.primary : COLORS.black,
+          color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.black,
         }}
       >
-        {item?.date}
+        {item?.completeDate === moment(new Date()).format('YYYY-MM-DD') ? 'Today' : item?.date}
       </Text>
     </TouchableOpacity>
   );
 
   const renderSlotItem = ({ item, index }) => (
     <TouchableOpacity
+      disabled={!item?.is_available}
       style={{
         borderWidth: 1,
         alignItems: 'center',
@@ -93,16 +102,21 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
       }}
       onPress={() => {
         setselectedTimeSlotIndex(index);
+        setSelectedTimeSlotData(item);
       }}
     >
       <Text
         style={{
           fontFamily: Fonts.Regular,
-          fontSize: SF(14),
-          color: selectedTimeSlotIndex === index ? COLORS.white : COLORS.dark_grey,
+          fontSize: ms(6.2),
+          color: !item?.is_available
+            ? COLORS.row_grey
+            : selectedTimeSlotIndex === index
+            ? COLORS.white
+            : COLORS.dark_grey,
         }}
       >
-        {item?.time}
+        {item?.start_time + ' - ' + item?.end_time}
       </Text>
     </TouchableOpacity>
   );
@@ -110,7 +124,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
   const ServiceProviderItem = ({ item, onPress, borderColor }) => (
     <TouchableOpacity onPress={onPress} style={[styles.imageSelectedBorder, { borderColor }]}>
       <Image
-        source={userImage}
+        source={{ uri: item?.user?.user_profiles?.profile_photo }}
         style={{
           width: ms(45),
           height: ms(45),
@@ -122,7 +136,7 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
   );
 
   const renderServiceProviderItem = ({ item }) => {
-    const borderColor = item.id === servicerProId ? COLORS.primary : 'transparent';
+    const borderColor = item?.user?.unique_uuid === posUserId ? COLORS.primary : 'transparent';
 
     return (
       <ServiceProviderItem
@@ -134,15 +148,19 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
   };
 
   const addToServiceCartHandler = () => {
+    if (!selectedTimeSlotData) {
+      alert('Please select a time slot for the service');
+      return;
+    }
     const data = {
       supplyId: itemData?.supplies?.[0]?.id,
       supplyPriceID: itemData?.supplies?.[0]?.supply_prices[0]?.id,
       product_id: itemData?.id,
       appName: 'pos',
-      date: '2023-07-26',
-      startTime: '07:00 PM',
-      endTime: '08:00 PM',
-      // posUserId : ""
+      date: selectedDate,
+      startTime: selectedTimeSlotData?.start_time,
+      endTime: selectedTimeSlotData?.end_time,
+      posUserId: posUserId,
     };
     dispatch(addToServiceCart(data));
     crossHandler();
@@ -186,23 +204,6 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
         </View>
 
         <View style={{ alignItems: 'center' }}>
-          <View style={styles.counterCon}>
-            <TouchableOpacity
-              style={styles.minusBtnCon}
-              // onPress={() => (count > 0 ? setCount(count - 1) : null)}
-            >
-              <Text style={styles.counterText}>-</Text>
-            </TouchableOpacity>
-            <View style={styles.minusBtnCon}>
-              <Text style={styles.counterText}>{count}</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.minusBtnCon}
-              //  onPress={() => setCount(count + 1)}
-            >
-              <Text style={styles.counterText}>+</Text>
-            </TouchableOpacity>
-          </View>
           <View style={styles.displayRow}>
             <View style={[styles.colorRow, styles.serviceRow]} />
             <Text style={styles.colorText}>Service Provider</Text>
@@ -243,8 +244,40 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
           <Spacer space={SH(10)} />
 
           <Text style={styles.selected}>
-            Time: <Text style={{ color: COLORS.primary }}>Today @ 3:00 PM</Text>
+            Time:{' '}
+            <Text style={{ color: COLORS.primary }}>
+              {selectedDate === moment(new Date()).format('YYYY-MM-DD')
+                ? `Today`
+                : `${moment(selectedDate).format('ll')}`}
+              {selectedTimeSlotData && ` @ ${selectedTimeSlotData?.start_time}`}
+            </Text>
           </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}
+          >
+            <MonthYearPicker
+              dateType={DATE_TYPE.MONTH}
+              placeholder={'Select Month'}
+              containerStyle={{ marginRight: 10 }}
+              defaultValue={moment().month() + 1}
+              defaultYear={selectedYearData?.value ?? moment().year()}
+              onSelect={(monthData) => {
+                setselectedMonthData(monthData);
+              }}
+            />
+            <MonthYearPicker
+              dateType={DATE_TYPE.YEAR}
+              placeholder={'Select Year'}
+              defaultValue={moment().year()}
+              onSelect={(yearData) => {
+                setselectedYearData(yearData);
+              }}
+            />
+          </View>
         </View>
 
         <View
@@ -255,9 +288,9 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
             width: '100%',
           }}
         >
-          <FlatList horizontal data={weekData} renderItem={renderWeekItem} />
+          <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
 
-          <FlatList data={slotData} numColumns={4} renderItem={renderSlotItem} />
+          <FlatList data={timeSlotsData || []} numColumns={4} renderItem={renderSlotItem} />
         </View>
       </View>
     </View>

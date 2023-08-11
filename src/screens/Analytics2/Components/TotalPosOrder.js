@@ -60,6 +60,7 @@ export function TotalPosOrder({ onPress }) {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
+
   const posGraph = analyticOrderGraphs?.pos_graph?.orderListData[0];
   const data = [
     ...posGraph?.deliverd_data_list,

@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import {
   addTocart,
+  changeStatusProductCart,
   clearAllCart,
   clearOneCart,
   getAllCartSuccess,
@@ -39,6 +40,23 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
   const cartData = getRetailData?.getAllCart;
   let arr = [getRetailData?.getAllCart];
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+
+  const productCartArray = getRetailData?.getAllProductCart;
+  const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
+
+  const cartStatusHandler = () => {
+    const data =
+      holdProductArray?.length > 0
+        ? {
+            status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdProductArray?.[0]?.id,
+          }
+        : {
+            status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getAllCart?.id,
+          };
+    dispatch(changeStatusProductCart(data));
+  };
 
   const updateQuantity = (cartId, productId, operation, index) => {
     // const updatedArr = [...arr];
@@ -268,15 +286,22 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
               />
             </TouchableOpacity>
             <Spacer space={SH(20)} />
-            <View>
+            <TouchableOpacity
+              onPress={cartStatusHandler}
+              // disabled={getRetailData?.getAllCart?.id === 'undefined' ? false : true}
+            >
               <Image
                 source={holdCart}
-                style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
+                style={
+                  holdProductArray?.length > 0
+                    ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                    : styles.sideBarImage
+                }
               />
               <View style={styles.holdBadge}>
-                <Text style={styles.holdBadgetext}>0</Text>
+                <Text style={styles.holdBadgetext}>{holdProductArray?.length}</Text>
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

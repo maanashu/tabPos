@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  Dimensions,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
-import ReactNativeModal from 'react-native-modal';
-import { LineChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -35,7 +25,6 @@ import {
   deliveryParcel,
   returnShipping,
   deliveryShipping,
-  returnDeliveryBox,
   checkedCheckboxSquare,
   deliveryorderProducts,
 } from '@/assets';
@@ -48,6 +37,7 @@ import {
   getReviewDefault,
   todayOrders,
 } from '@/actions/DeliveryAction';
+import Graph from './Components/Graph';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
 import Header from './Components/Header';
@@ -65,8 +55,19 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { graphOptions, labels } from '@/constants/staticData';
 
 import styles from './styles';
+import { useFocusEffect } from '@react-navigation/native';
+import { getOrderData } from '@/actions/AnalyticsAction';
 
-export function DeliveryOrders2() {
+export function DeliveryOrders2({ route }) {
+  var isViewAll;
+  var ORDER_DETAIL;
+  if (route.params && route.params.isViewAll) {
+    isViewAll = route.params.isViewAll;
+    ORDER_DETAIL = route.params.ORDER_DETAIL;
+  } else {
+    isViewAll = false;
+    ORDER_DETAIL = null;
+  }
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getDeliveryData = useSelector(getDelivery);
@@ -92,14 +93,37 @@ export function DeliveryOrders2() {
 
   const [deliverytypes, setDeliveryTypes] = useState();
   const [graphData, setGraphData] = useState(graphOptions);
-  const [viewAllOrders, setViewAllOrders] = useState(false);
-  const [openShippingOrders, setOpenShippingOrders] = useState(0);
+  const [viewAllOrders, setViewAllOrders] = useState(isViewAll);
+  const [openShippingOrders, setOpenShippingOrders] = useState('0');
   const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
-  const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? '');
+  const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? []);
+  const [isBack, setIsBack] = useState();
+  const [selectedProductId, setSelectedProductId] = useState();
   const [orderDetail, setOrderDetail] = useState(
     getDeliveryData?.getReviewDef?.[0]?.order_details ?? []
   );
+  const [getOrderDetail, setGetOrderDetail] = useState('');
+  const [orderId, setOrderId] = useState(getDeliveryData?.getReviewDef?.[0]?.id);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      if (ORDER_DETAIL !== null) {
+        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id);
+        setUserDetail(ORDER_DETAIL);
+        setOrderDetail(ORDER_DETAIL?.order_details);
+      }
+      if (!isBack) {
+        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id);
+        setViewAllOrders(isViewAll);
+      }
+      return () => {
+        setIsBack(false);
+        setViewAllOrders(false);
+        setOrderDetail([]);
+        setSelectedProductId(null);
+      };
+    }, [isViewAll, ORDER_DETAIL])
+  );
   const deliveryDrawer = [
     {
       key: '0',
@@ -150,7 +174,6 @@ export function DeliveryOrders2() {
       count: getDeliveryData?.getOrderCount?.[7]?.count ?? 0,
     },
   ];
-
   useEffect(() => {
     dispatch(todayOrders(sellerID));
     dispatch(deliOrder(sellerID));
@@ -193,11 +216,14 @@ export function DeliveryOrders2() {
   }, []);
 
   useEffect(() => {
-    dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID, 1));
-
     setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
     setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
-  }, [viewAllOrders, openShippingOrders]);
+  }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
+
+  useEffect(() => {
+    setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
+    setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
+  }, [openShippingOrders, viewAllOrders, getDeliveryData?.getReviewDef]);
 
   const isDeliveryOrder = useSelector((state) =>
     isLoadingSelector([TYPES.DELIVERING_ORDER, TYPES.GET_GRAPH_ORDERS], state)
@@ -285,7 +311,7 @@ export function DeliveryOrders2() {
       style={[
         styles.firstIconStyle,
         {
-          backgroundColor: openShippingOrders === item?.key ? COLORS.lineGrey : COLORS.transparent,
+          backgroundColor: openShippingOrders === item?.key ? COLORS.solidGrey : COLORS.transparent,
           marginVertical: 6,
           width: SW(15),
           height: SW(15),
@@ -344,16 +370,42 @@ export function DeliveryOrders2() {
       </View>
     );
   };
-
-  const renderOrderToReview = ({ item }) => (
+  const renderOrderToReview = ({ item, index }) => (
     <>
       {
         <TouchableOpacity
           onPress={() => {
+            setViewAllOrders(true);
+            setSelectedProductId(item?.order_details[0]?.id);
             setUserDetail(item);
             setOrderDetail(item?.order_details);
+            dispatch(getOrderData(item?.id));
+            setViewAllOrders(true);
           }}
-          style={viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle}
+          style={[
+            viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
+            {
+              backgroundColor:
+                viewAllOrders && item?.id === userDetail?.id
+                  ? COLORS.textInputBackground
+                  : COLORS.transparent,
+              borderColor:
+                viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
+            },
+          ]}
+          // style={
+          //   viewAllOrders
+          //     ? [
+          //         styles.showAllOrdersView,
+          //         {
+          //           borderColor:
+          //             selectedProductId == item?.order_details[0]?.id
+          //               ? COLORS.blueLight
+          //               : COLORS.blue_shade,
+          //         },
+          //       ]
+          //     : styles.orderRowStyle
+          // }
         >
           <View style={styles.orderDetailStyle}>
             <Text style={styles.nameTextStyle}>
@@ -380,7 +432,9 @@ export function DeliveryOrders2() {
           </View>
 
           <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
-            <Text style={styles.timeTextStyle}>{item?.delivery_details?.title}</Text>
+            <Text style={styles.timeTextStyle}>
+              {item?.delivery_details?.title ? item?.delivery_details?.title : ''}
+            </Text>
             <View style={styles.locationViewStyle}>
               <Image source={clock} style={styles.pinImageStyle} />
               <Text style={styles.distanceTextStyle}>
@@ -394,7 +448,14 @@ export function DeliveryOrders2() {
             </View>
           </View>
 
-          <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
+          <TouchableOpacity
+            onPress={() => {
+              setUserDetail(item);
+              setOrderDetail(item?.order_details);
+              setViewAllOrders(true);
+            }}
+            style={[styles.orderDetailStyle, { width: SH(24) }]}
+          >
             <Image source={rightIcon} style={styles.rightIconStyle} />
           </TouchableOpacity>
         </TouchableOpacity>
@@ -405,23 +466,21 @@ export function DeliveryOrders2() {
   const headerComponent = () => (
     <View style={styles.headingRowStyle}>
       <Text style={styles.ordersToReviewText}>
-        {openShippingOrders == 0
+        {openShippingOrders == '0'
           ? strings.shipingOrder.orderOfReview
-          : openShippingOrders == 1
+          : openShippingOrders == '1'
           ? 'Accept Orders'
-          : openShippingOrders == 2
+          : openShippingOrders == '2'
           ? 'Order Preparing'
-          : openShippingOrders == 3
+          : openShippingOrders == '3'
           ? 'Ready To Pickup'
-          : openShippingOrders == 4
+          : openShippingOrders == '4'
           ? 'Picked Up orders'
-          : openShippingOrders == 5
+          : openShippingOrders == '5'
           ? 'Delivered'
-          : openShippingOrders == 6
+          : openShippingOrders == '6'
           ? 'Rejected/Cancelled'
-          : openShippingOrders == 7
-          ? 'Returned'
-          : 'Orders'}
+          : 'Returned'}
       </Text>
 
       {getDeliveryData?.getReviewDef?.length > 0 ? (
@@ -910,7 +969,7 @@ export function DeliveryOrders2() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <Header {...{ viewAllOrders, setViewAllOrders }} />
+        <Header {...{ viewAllOrders, setViewAllOrders, setIsBack }} />
 
         <Spacer space={SH(20)} />
 
@@ -926,23 +985,21 @@ export function DeliveryOrders2() {
                     ListHeaderComponent={() => (
                       <View style={styles.headingRowStyle}>
                         <Text style={styles.ordersToReviewText}>
-                          {openShippingOrders == 0
+                          {openShippingOrders == '0'
                             ? strings.shipingOrder.orderOfReview
-                            : openShippingOrders == 1
+                            : openShippingOrders == '1'
                             ? 'Accept Orders'
-                            : openShippingOrders == 2
+                            : openShippingOrders == '2'
                             ? 'Order Preparing'
-                            : openShippingOrders == 3
+                            : openShippingOrders == '3'
                             ? 'Ready To Pickup'
-                            : openShippingOrders == 4
+                            : openShippingOrders == '4'
                             ? 'Picked Up orders'
-                            : openShippingOrders == 5
+                            : openShippingOrders == '5'
                             ? 'Delivered'
-                            : openShippingOrders == 6
+                            : openShippingOrders == '6'
                             ? 'Rejected/Cancelled'
-                            : openShippingOrders == 7
-                            ? 'Returned'
-                            : 'Orders'}
+                            : 'Returned'}
                         </Text>
                       </View>
                     )}
@@ -1003,50 +1060,14 @@ export function DeliveryOrders2() {
             </View>
 
             <View>
-              <View style={styles.graphViewStyle}>
-                <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
-
-                <FlatList
-                  horizontal
-                  data={graphData}
-                  scrollEnabled={false}
-                  renderItem={renderGraphItem}
-                  showsHorizontalScrollIndicator={false}
-                />
-
-                {isDeliveryOrder ? (
-                  <View
-                    style={{
-                      height: ms(185),
-                      backgroundColor: COLORS.white,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <ActivityIndicator size={'small'} color={COLORS.primary} />
-                  </View>
-                ) : (
-                  <LineChart
-                    bezier
-                    fromZero
-                    height={ms(185)}
-                    segments={10}
-                    withDots={false}
-                    withShadow={false}
-                    data={graphElements()}
-                    width={Dimensions.get('window').width * 0.5}
-                    chartConfig={{
-                      decimalPlaces: 0,
-                      backgroundColor: COLORS.black,
-                      backgroundGradientFrom: COLORS.white,
-                      backgroundGradientTo: COLORS.white,
-                      propsForLabels: styles.shippingDrawerTitleText,
-                      color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                      labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
-                    }}
-                  />
-                )}
-              </View>
+              <Graph
+                {...{
+                  graphData,
+                  renderGraphItem,
+                  isDeliveryOrder,
+                  graphElements,
+                }}
+              />
 
               <Spacer space={SH(15)} />
               <OrderReview
@@ -1064,11 +1085,9 @@ export function DeliveryOrders2() {
               {...{
                 deliveryDrawer,
                 openShippingOrders,
-                // isOpenSideBarDrawer,
                 renderShippingDrawer,
                 setOpenShippingOrders,
                 renderDrawer,
-                // setIsOpenSideBarDrawer,
               }}
             />
           </View>
@@ -1101,38 +1120,6 @@ export function DeliveryOrders2() {
           />
         </View>
       ) : null}
-
-      {/* <ReactNativeModal
-        animationIn={'slideInRight'}
-        animationOut={'slideOutRight'}
-        style={styles.modalStyle}
-        isVisible={isOpenSideBarDrawer}
-      >
-        <View style={styles.shippingOrderViewStyle}>
-          <FlatList
-            data={deliveryDrawer}
-            renderItem={renderShippingDrawer}
-            ListHeaderComponent={() => (
-              <View style={styles.shippingOrderHeader}>
-                <Text style={styles.shippingOrderHeading}>{strings.deliveryOrders.heading}</Text>
-
-                <View style={styles.rightSideView}>
-                  <TouchableOpacity
-                    style={styles.firstIconStyle}
-                    onPress={() => {
-                      setIsOpenSideBarDrawer(!isOpenSideBarDrawer);
-                      graphElements();
-                    }}
-                  >
-                    <Image source={returnDeliveryBox} style={styles.sideBarImage} />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item) => item.key.toString()}
-          />
-        </View>
-      </ReactNativeModal> */}
     </ScreenWrapper>
   );
 }

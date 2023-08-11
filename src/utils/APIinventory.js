@@ -35,8 +35,10 @@ export const ApiUserInventory = {
   getDrawer: (status) => `drawer_management/drawer-session/history?drawer_id=${status}`,
   staffDetail: 'user_settings/staff/transactions',
   getTax: 'tax',
-  getGoogleCode: 'users/2fa/qr-code',
+  // getGoogleCode: 'users/2fa/qr-code',
+  getGoogleCode: 'users/2fa/generate-qr-code',
   verifyGoogleCode: 'users/2fa/verify',
+  configureGoogleCode: 'users/2fa/configure-qr-code',
   notifications: 'notifications',
 };
 
@@ -64,6 +66,7 @@ export const ApiProductInventory = {
 // }
 
 export const ApiOrderInventory = {
+  posCarts: 'poscarts',
   addTocart: 'poscarts',
   getAllCart: 'poscarts/user',
   clearAllCart: 'poscarts',
@@ -101,18 +104,25 @@ export const ApiOrderInventory = {
   rescheduleAppointmentURL: `appointments/reschedule/`,
   getAnalyticStatistics: `orders/pos/analytics`,
   bulkCreate: `poscarts/bulk-create`,
-  attachCustomer: 'orders/attach/user/',
+  attachCustomer: 'poscarts/attach/user/',
   todayOrders: 'orders/pos/today/orders-count',
   graphOrders: 'orders/pos/graph/orders',
   todayShipStatus: 'orders/pos/shipping/orders',
   getServiceCart: 'appointment_carts/user',
   appintment_cart: 'appointment_carts',
   qrCode: 'poscarts/qr-code/',
+  qrcodeServices: 'appointment_carts/qr-code/',
   getAnalyticOrderGraphs: 'orders/pos/analytics/count/graph',
   getTotalOrder: 'orders/statistics/orders/total',
   qrCode: 'poscarts/qr-code/',
   orderStatusCount: 'orders/pos/seller/multi-status/orders-count',
+  changeStatusProductCart: 'poscarts/change-hold-status',
+  slots: 'slots/pos/service-appointment-slots',
+  changeStatusServiceCart: 'appointment_carts/change-hold-status',
+  attachServiceCustomer: 'appointment_carts/attach/user/',
   getSoldProduct: 'order_details/pos/product_count/sold',
+  tip: 'poscarts/',
+  serviceTip: 'appointment_carts/',
 };
 
 export const ApiWalletInventory = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 import { BarChart } from 'react-native-chart-kit';
@@ -7,9 +7,9 @@ import { BarChart } from 'react-native-chart-kit';
 import { COLORS } from '@/theme';
 import { strings } from '@/localization';
 
-import styles from '../styles';
+import styles from '../ShippingOrder2.styles';
 
-const Graph = ({ graphData, renderGraphItem, isDeliveryOrder, graphElements }) => {
+const Graph = ({ graphData, renderGraphItem, isDeliveryOrder, graphElements, width }) => {
   return (
     <View style={styles.graphViewStyle}>
       <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
@@ -35,14 +35,14 @@ const Graph = ({ graphData, renderGraphItem, isDeliveryOrder, graphElements }) =
         </View>
       ) : (
         <BarChart
-          bezier
+          // bezier
           fromZero
           height={ms(185)}
           segments={10}
           withDots={false}
           withShadow={false}
           data={graphElements()}
-          width={Dimensions.get('window').width * 0.5}
+          width={width * 0.5}
           chartConfig={{
             decimalPlaces: 0,
             backgroundColor: COLORS.black,

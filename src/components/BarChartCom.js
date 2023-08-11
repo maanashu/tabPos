@@ -6,9 +6,9 @@ import { BarChart } from 'react-native-gifted-charts';
 
 const transformData = (data, spacing) => {
   const transformedData = [];
-  const dynamicLabels = data.labels.filter((label, index) => (index + 1) % 5 === 0); // Generate labels every 5th day
-  for (let i = 0; i < data.labels.length; i++) {
-    const totalValue = data.datasets.reduce((sum, dataset) => sum + dataset.data[i], 0);
+  const dynamicLabels = data?.labels.filter((label, index) => (index + 1) % 5 === 0); // Generate labels every 5th day
+  for (let i = 0; i < data?.labels.length; i++) {
+    const totalValue = data?.datasets.reduce((sum, dataset) => sum + dataset?.data[i], 0);
     const dataPoint = {
       value: totalValue,
       spacing: spacing,
@@ -24,7 +24,7 @@ const transformData = (data, spacing) => {
     frontColor: '#102773',
     label: label.split(' ')[0], // Extracting only the day part
     labelTextStyle: { color: '#626262', fontSize: 11 },
-    value: data?.datasets.reduce((sum, dataset) => sum + dataset.data[index], 0),
+    value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
     frontColor: index === 0 ? COLORS.primary : index === 1 ? COLORS.violet : COLORS.darkBlue,
     labelWidth: SW(70),
     spacing: spacing,

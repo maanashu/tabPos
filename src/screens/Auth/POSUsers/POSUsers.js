@@ -28,7 +28,13 @@ import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { getSetting } from '@/selectors/SettingSelector';
-import { getGoogleCode, getSettings, upadteApi, verifyGoogleCode } from '@/actions/SettingAction';
+import {
+  configureGoogleCode,
+  getGoogleCode,
+  getSettings,
+  upadteApi,
+  verifyGoogleCode,
+} from '@/actions/SettingAction';
 
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
@@ -42,34 +48,47 @@ export function POSUsers({ navigation }) {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const posUserArray = getAuth?.getAllPosUsers;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-
+  const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
   const refSix = useBlurOnFulfill({ value, cellCount: CELL_COUNT_SIX });
   const [twoStepModal, setTwoStepModal] = useState(false);
   const [googleAuthStart, setGoogleAuthStart] = useState(false);
   const [googleAuthScan, setGoogleAuthScan] = useState(false);
   const [sixDigit, setSixDigit] = useState(false);
+  const [isLogout, setIsLogout] = useState(false);
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
   const getSettingData = useSelector(getSetting);
   const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
-  const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status;
+  const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
   const googleCode = getSettingData?.getGoogleCode;
 
   const merchantData = getAuth?.merchantLoginData;
   useEffect(() => {
     if (isFocused) {
+      dispatch(getSettings());
       useEffectFun();
+     
     }
   }, [isFocused]);
 
   const useEffectFun = async () => {
-    const res = await dispatch(getSettings());
-    if (getSettingData?.getSetting?.google_authenticator_status ?? false) {
+    // const res = await dispatch(getSettings());
+
+    // console.log("RESU:LTTT",res);
+    // if (res?.google_authenticator_status ?? false) {
+    //   setTwoFactorEnabled(true);
+    //   setTwoStepModal(true);
+    //   dispatch(getGoogleCode());
+    // } else {
+    //   dispatch(getAllPosUsers(sellerID));
+    // }
+    if (TWO_FACTOR) {
+      setSixDigit(true);
       setTwoFactorEnabled(true);
       setTwoStepModal(true);
-      dispatch(getGoogleCode());
+      // dispatch(getGoogleCode());
     } else {
       dispatch(getAllPosUsers(sellerID));
     }
@@ -89,12 +108,29 @@ export function POSUsers({ navigation }) {
       {
         text: 'OK',
         onPress: () => {
-          dispatch(logoutFunction());
+          confirmLogout()
+          // dispatch(logoutFunction());
         },
       },
     ]);
   };
+const confirmLogout=()=>{
+   if(googleAuthenticator){
+    setTwoFactorEnabled(true)
+    setSixDigit(true)
+    setIsLogout(true)
+  }
+  else{
+    dispatch(logoutFunction())
+    setIsLogout(false)
+    setValue('');
+    setTwoFactorEnabled(false);
+    setTwoStepModal(false);
+    setGoogleAuthScan(false);
+    setSixDigit(false);
+  }
 
+}
   const passcodeHandlerSix = async () => {
     if (!value) {
       Toast.show({
@@ -121,14 +157,30 @@ export function POSUsers({ navigation }) {
       });
       return;
     } else {
+      // const data = {
+      //   token: value,
+      //   status: true,
+      // };
       const data = {
-        token: value,
-        status: true,
+        code: value,
       };
-      const res = await dispatch(verifyGoogleCode(data));
-      if (res?.type === 'VERIFY_GOOGLE_CODE_SUCCESS') {
+      const verificationFunction = TWO_FACTOR ? verifyGoogleCode : configureGoogleCode;
+
+      const res = await verificationFunction(data)(dispatch);
+
+      if (res?.msg === 'Code verified successfully') {
+        if(isLogout){
+          dispatch(logoutFunction())
+          setIsLogout(false)
+          setValue('');
+          setTwoFactorEnabled(false);
+          setTwoStepModal(false);
+          setGoogleAuthScan(false);
+          setSixDigit(false);
+        }
+        else{
         var updatedData = merchantData;
-        updatedData.google_authenticator_status = false;
+        updatedData.user.user_profiles.is_two_fa_enabled = false;
         dispatch(merchantLoginSuccess(updatedData));
         setValue('');
         setTwoFactorEnabled(false);
@@ -136,6 +188,7 @@ export function POSUsers({ navigation }) {
         setGoogleAuthScan(false);
         setSixDigit(false);
         dispatch(getAllPosUsers(sellerID));
+        }
       } else if (res === undefined) {
         setValue('');
       }
@@ -146,6 +199,16 @@ export function POSUsers({ navigation }) {
   //       dispatch(getGoogleCode());
   // }
 
+  const crossHandler=()=>{
+    if(isLogout){
+      setTwoFactorEnabled(false)
+      setSixDigit(false)
+      setIsLogout(false)
+    }
+    else{
+      dispatch(logoutFunction())
+    }
+  }
   return (
     <ScreenWrapper>
       {!twoFactorEnabled ? (
@@ -228,7 +291,54 @@ export function POSUsers({ navigation }) {
         </View>
       ) : (
         <View style={styles.containerSix}>
-          {sixDigit ? (
+          {sixDigit && (
+            <View style={styles.verifyContainerSix}>
+              <Spacer space={SH(25)} />
+              <View style={[styles.flexRowSix, styles.flexWidthSix]}>
+                <Text>{''}</Text>
+                <Text style={styles.subHeadingSix}>{'Enter 6-Digit code'}</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                   crossHandler()
+                   
+                  }}
+                >
+                  <Image source={crossButton} style={styles.crossSix} />
+                </TouchableOpacity>
+              </View>
+              <Spacer space={SH(40)} />
+              <CodeField
+                ref={refSix}
+                {...prop}
+                value={value}
+                onChangeText={setValue}
+                cellCount={CELL_COUNT_SIX}
+                rootStyle={[styles.alignSelfCenterSix]}
+                showSoftInputOnFocus={false}
+                keyboardType="number-pad"
+                textContentType="oneTimeCode"
+                renderCell={({ index, symbol, isFocused }) => (
+                  <View
+                    onLayout={getCellOnLayoutHandler(index)}
+                    key={index}
+                    style={styles.cellRootSix}
+                  >
+                    <Text style={styles.cellTextSix}>
+                      {symbol || (isFocused ? <Cursor /> : null)}
+                    </Text>
+                  </View>
+                )}
+              />
+
+              <VirtualKeyBoard
+                maxCharLength={6}
+                enteredValue={value}
+                setEnteredValue={setValue}
+                onPressContinueButton={passcodeHandlerSix}
+              />
+            </View>
+          )}
+          {/* {sixDigit ? (
             <View style={styles.verifyContainerSix}>
               <Spacer space={SH(25)} />
               <View style={[styles.flexRowSix, styles.flexWidthSix]}>
@@ -412,7 +522,7 @@ export function POSUsers({ navigation }) {
                 </View>
               )}
             </Modal>
-          )}
+          )} */}
         </View>
       )}
     </ScreenWrapper>

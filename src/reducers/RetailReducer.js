@@ -2,8 +2,9 @@ import { TYPES } from '@/Types/Types';
 
 const INITIALSTATE = {
   categoryList: [],
+  serviceCategoryList: {},
   subCategories: [],
-  brands: {},
+  brands: [],
   products: [],
   SeaProductList: [],
   getAllCart: [],
@@ -26,6 +27,9 @@ const INITIALSTATE = {
   getserviceCart: [],
   bulkCreate: {},
   bulkData: [],
+  getAllProductCart: [],
+  timeSlots: [],
+  getAllServiceCart: [],
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -39,6 +43,17 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         categoryList: payload?.categoryList,
+      };
+
+    case TYPES.GET_SERVICE_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        serviceCategoryList: payload?.serviceCategoryList,
+      };
+    case TYPES.GET_SERVICE_CATEGORY_RESET:
+      return {
+        ...state,
+        serviceCategoryList: [],
       };
     case TYPES.SAVE_BULK_DATA_SUCCESS:
       return {
@@ -281,6 +296,38 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         qrKey: payload.qr.payload,
+      };
+    case TYPES.GET_TIME_SLOTS_SUCCESS:
+      return {
+        ...state,
+        timeSlots: payload.data?.payload,
+      };
+    case TYPES.GET_TIME_SLOTS_RESET:
+      return {
+        ...state,
+        timeSlots: payload.data?.payload,
+      };
+
+    case TYPES.GET_ALL_PRODUCT_CART_SUCCESS:
+      return {
+        ...state,
+        getAllProductCart: payload,
+      };
+    case TYPES.GET_ALL_PRODUCT_CART_RESET:
+      return {
+        ...state,
+        getAllProductCart: [],
+      };
+
+    case TYPES.GET_ALL_SERVICE_CART_SUCCESS:
+      return {
+        ...state,
+        getAllServiceCart: payload,
+      };
+    case TYPES.GET_ALL_SERVICE_CART_RESET:
+      return {
+        ...state,
+        getAllServiceCart: [],
       };
 
     case TYPES.CLEAR_STORE:

@@ -93,7 +93,7 @@ export function TotalInventory({ onPress }) {
     </DataTable.Row>
   );
   return (
-    <View>
+    <View style={styles.flex1}>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
         <Image source={backArrow2} style={styles.backImageStyle} />
         <Text style={styles.currentStatusText}>{'Back'}</Text>

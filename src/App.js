@@ -19,7 +19,7 @@ if (!__DEV__) {
 }
 
 import SystemNavigationBar from 'react-native-system-navigation-bar';
-// SystemNavigationBar.stickyImmersive();
+SystemNavigationBar.stickyImmersive();
 enableScreens();
 
 const toastConfig = {

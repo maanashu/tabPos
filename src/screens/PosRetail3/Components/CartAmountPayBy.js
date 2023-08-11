@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import { ms, verticalScale } from 'react-native-size-matters';
+import { moderateScale, ms, verticalScale } from 'react-native-size-matters';
 import { styles } from '../PosRetail3.styles';
 import { Button, Spacer } from '@/components';
 import BackButton from '../../../components/BackButton';
@@ -52,6 +52,8 @@ import {
   walletGetByPhone,
   requestCheckSuccess,
   createOrder,
+  attachServiceCustomer,
+  updateCartByTip,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -59,6 +61,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useIsFocused } from '@react-navigation/native';
+
 moment.suppressDeprecationWarnings = true;
 
 const DATA = [
@@ -84,12 +87,16 @@ export const CartAmountPayBy = ({
 }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-
+  // const [loading, setloading] = useState(false);
+  const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
   const qrcodeData = useSelector(getRetail).qrKey;
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
+  const serviceCartId = getRetailData?.getserviceCart?.id;
+
+  const servicCartId = getRetailData?.getserviceCart?.id;
 
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
@@ -115,6 +122,7 @@ export const CartAmountPayBy = ({
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
   const [status, setstatus] = useState('');
+  const [sendRequest, setsendRequest] = useState(false);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
   const tipsArr = [
@@ -140,37 +148,67 @@ export const CartAmountPayBy = ({
     return totalPayment.toFixed(2);
   };
 
+  const getTipPress = async () => {
+    if (cartType == 'Product') {
+      const data = {
+        tip: selectedTipAmount.toString(),
+        cartId: cartData.id,
+      };
+      const res = await dispatch(updateCartByTip(data));
+
+      if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+        dispatch(getQrCodee(cartData?.id));
+        setQrPopUp(true);
+      }
+    } else {
+      const data = {
+        tip: selectedTipAmount.toString(),
+        cartId: serviceCartId,
+        services: 'services',
+      };
+      const res = await dispatch(updateCartByTip(data));
+
+      if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+        const data = {
+          services: 'services',
+        };
+        dispatch(getQrCodee(serviceCartId, data));
+        setQrPopUp(true);
+      }
+    }
+  };
   useEffect(() => {
     dispatch(getWalletId(sellerID));
     dispatch(getTip(sellerID));
-    dispatch(getQrCodee(cartData?.id));
   }, []);
 
-  // useEffect(() => {
-  //   dispatch(requestCheckSuccess(''));
-  // }, []);
+  useEffect(() => {
+    dispatch(requestCheckSuccess(''));
+  }, []);
 
   const isLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_WALLET_PHONE, TYPES.ATTACH_CUSTOMER], state)
+    isLoadingSelector([TYPES.GET_WALLET_PHONE, TYPES.ATTACH_CUSTOMER, TYPES.CREATE_ORDER], state)
   );
   useEffect(() => {
     let interval;
+
     if (requestStatus !== 'approved') {
       interval = setInterval(() => {
         setRequestId((requestId) => {
           const data = {
             requestId: requestId,
           };
-          // Alert.alert('kojojoj');
           dispatch(requestCheck(data));
+          // createOrderHandler();
           return requestId;
         });
       }, 10000);
-    } else {
+    } else if (requestStatus == 'approved') {
+      createOrderHandler();
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isFocused]);
+  }, [isFocused, requestStatus == 'approved']);
   const walletInputFun = (phoneNumber) => {
     setWalletIdInp(phoneNumber);
     if (phoneNumber?.length > 9) {
@@ -185,6 +223,7 @@ export const CartAmountPayBy = ({
   };
 
   const sendRequestFun = async () => {
+    setsendRequest(true);
     const data = {
       amount: (totalPayAmount() * 100).toFixed(0),
       wallletAdd: walletUser?.wallet_address,
@@ -236,7 +275,7 @@ export const CartAmountPayBy = ({
   const attachUserByPhone = async (customerNo) => {
     if (customerNo === '') {
       alert('Please Enter Phone Number');
-    } else {
+    } else if (cartType == 'Product') {
       const data = {
         cartId: cartid,
         phoneNo: customerNo,
@@ -249,19 +288,45 @@ export const CartAmountPayBy = ({
         });
         setPhonePopVisible(false);
       }
+    } else {
+      const data = {
+        cartId: servicCartId,
+        phoneNo: customerNo,
+      };
+      const res = await dispatch(attachServiceCustomer(data));
+      if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
+        onPressPaymentMethod({
+          method: 'PayBy' + selectedPaymentMethod,
+          index: selectedPaymentIndex,
+        });
+        setPhonePopVisible(false);
+      }
     }
   };
 
   const attachUserByEmail = async (customerEmail) => {
     if (customerEmail === '') {
       alert('Please Enter Email');
-    } else {
+    } else if (cartType == 'Product') {
       const data = {
         cartId: cartid,
         phoneEmail: customerEmail,
       };
       const res = await dispatch(attachCustomer(data));
       if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+        onPressPaymentMethod({
+          method: 'PayBy' + selectedPaymentMethod,
+          index: selectedPaymentIndex,
+        });
+        setEmailModal(false);
+      }
+    } else {
+      const data = {
+        cartId: servicCartId,
+        phoneEmail: customerEmail,
+      };
+      const res = await dispatch(attachServiceCustomer(data));
+      if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
         onPressPaymentMethod({
           method: 'PayBy' + selectedPaymentMethod,
           index: selectedPaymentIndex,
@@ -305,6 +370,8 @@ export const CartAmountPayBy = ({
       }
     };
     dispatch(createOrder(data, callback));
+    dispatch(requestCheckSuccess(''));
+    setsendRequest(false);
   };
 
   return (
@@ -521,14 +588,27 @@ export const CartAmountPayBy = ({
             )}
 
             {selectedPaymentIndex == 1 && (
-              <TouchableOpacity style={styles.jobrSaveView} onPress={() => setQrPopUp(true)}>
-                <Text style={styles.youSave}>You save</Text>
-                <View style={styles.jbrContainer}>
-                  <Text style={styles.jbrText}>JBR</Text>
-                  <Text style={styles.savePercent}>
-                    {jobrSavePercent(cartData?.amount?.total_amount ?? '0.00', 1)}
-                  </Text>
-                </View>
+              <TouchableOpacity
+                isLoading={true}
+                style={styles.jobrSaveView}
+                onPress={() => {
+                  getTipPress();
+                }}
+              >
+                {tipLoading ? (
+                  <ActivityIndicator color={COLORS.primary} size="large"></ActivityIndicator>
+                ) : (
+                  <View>
+                    <Text style={styles.youSave}>You save</Text>
+
+                    <View style={styles.jbrContainer}>
+                      <Text style={styles.jbrText}>JBR</Text>
+                      <Text style={styles.savePercent}>
+                        {jobrSavePercent(cartData?.amount?.total_amount ?? '0.00', 1)}
+                      </Text>
+                    </View>
+                  </View>
+                )}
               </TouchableOpacity>
             )}
           </View>
@@ -594,7 +674,7 @@ export const CartAmountPayBy = ({
             </View>
             <Text style={styles._commonPayTitle}>Wed 26 Apr , 2023 6:27 AM</Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
-            <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
+            {/* <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text> */}
             <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
             <Spacer space={SH(10)} />
@@ -768,11 +848,12 @@ export const CartAmountPayBy = ({
                               flexDirection: 'row',
                               justifyContent: 'space-around',
                               marginTop: verticalScale(10),
+                              alignItems: 'center',
                             }}
                           >
                             <Text
                               style={{
-                                fontSize: 40,
+                                fontSize: 20,
 
                                 textAlign: 'center',
                                 color: 'green',
@@ -787,12 +868,13 @@ export const CartAmountPayBy = ({
                                 backgroundColor: 'blue',
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                padding: 10,
+                                padding: moderateScale(5),
+                                borderRadius: moderateScale(5),
                               }}
                             >
                               <Text
                                 style={{
-                                  fontSize: 40,
+                                  fontSize: moderateScale(10),
                                   color: '#FFFFFF',
                                 }}
                               >
@@ -837,20 +919,27 @@ export const CartAmountPayBy = ({
 
                               <TouchableOpacity
                                 // onPress={onPressContinue}
+
                                 disabled={
-                                  walletUser?.step >= 2 && walletIdInp?.length > 9 ? false : true
+                                  walletUser?.step >= 2 && walletIdInp?.length > 9 && !sendRequest
+                                    ? false
+                                    : true
                                 }
                                 style={[
                                   styles._sendRequest,
                                   {
                                     opacity:
-                                      walletUser?.step >= 2 && walletIdInp?.length > 9 ? 1 : 0.7,
+                                      walletUser?.step >= 2 &&
+                                      walletIdInp?.length > 9 &&
+                                      !sendRequest
+                                        ? 1
+                                        : 0.7,
                                   },
                                 ]}
                                 onPress={() => sendRequestFun(walletIdInp)}
                               >
                                 <Text style={[styles._tipText, { color: COLORS.solid_green }]}>
-                                  Send Request
+                                  {sendRequest ? 'Request Sent' : 'Send Request'}
                                 </Text>
                               </TouchableOpacity>
                             </View>
