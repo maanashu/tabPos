@@ -4,15 +4,15 @@ import React from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 
-const transformData = (data, spacing) => {
+const transformData = (data, spacing, interval, dateInterval) => {
   const transformedData = [];
-  const dynamicLabels = data?.labels.filter((label, index) => (index + 1) % 5 === 0); // Generate labels every 5th day
-  for (let i = 0; i < data?.labels.length; i++) {
-    const totalValue = data?.datasets.reduce((sum, dataset) => sum + dataset?.data[i], 0);
+  const dynamicLabels = data?.labels?.filter((label, index) => (index + 1) % interval === 0);
+  for (let i = 0; i < dynamicLabels?.length; i++) {
+    const totalValue = data?.datasets?.reduce((sum, dataset) => sum + dataset?.data[i], 1);
     const dataPoint = {
       value: totalValue,
       spacing: spacing,
-      label: data.labels[i],
+      label: dynamicLabels[i],
       labelWidth: SW(70), // You can adjust this value as needed
       labelTextStyle: { color: COLORS.darkGray, fontSize: 11 }, // You can define your labelTextStyle here
       frontColor: i === 0 ? COLORS.primary : i === 1 ? COLORS.violet : COLORS.darkBlue,
@@ -20,9 +20,22 @@ const transformData = (data, spacing) => {
     };
     transformedData.push(dataPoint);
   }
-  const transformedMonthData = data?.labels.map((label, index) => ({
+  const dynamicDateLabels = data?.labels?.filter(
+    (label, index) => (index + 1) % dateInterval === 0
+  );
+  const transformedMonthData = dynamicDateLabels?.map((label, index) => ({
     frontColor: '#102773',
-    label: label.split(' ')[0], // Extracting only the day part
+    label: label?.split(' ')[0], // Extracting only the day part
+    labelTextStyle: { color: '#626262', fontSize: 11 },
+    value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
+    frontColor: index === 0 ? COLORS.primary : index === 1 ? COLORS.violet : COLORS.darkBlue,
+    labelWidth: SW(70),
+    spacing: spacing,
+  }));
+
+  const transformedWeekData = data?.labels?.map((label, index) => ({
+    frontColor: '#102773',
+    label: label?.split(' ')[0], // Extracting only the day part
     labelTextStyle: { color: '#626262', fontSize: 11 },
     value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
     frontColor: index === 0 ? COLORS.primary : index === 1 ? COLORS.violet : COLORS.darkBlue,
@@ -35,7 +48,7 @@ const transformData = (data, spacing) => {
   } else if (data?.labels?.length === 12) {
     return transformedData;
   } else {
-    return transformedData;
+    return transformedWeekData;
   }
 };
 
@@ -48,8 +61,10 @@ export function BarChartCom({
   data,
   initialSpacing,
   spacing,
+  interval,
+  dateInterval,
 }) {
-  const formattedData = transformData(data, spacing);
+  const formattedData = transformData(data, spacing, interval, dateInterval);
   console.log('first', JSON.stringify(data));
   console.log('formattedData', formattedData);
   const barData =

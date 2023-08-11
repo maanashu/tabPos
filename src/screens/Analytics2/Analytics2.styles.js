@@ -71,11 +71,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: windowWidth * 0.06,
-    height: Platform.OS === 'ios' ? windowHeight * 0.928 : windowHeight - ms(8),
+    height: Platform.OS === 'ios' ? windowHeight * 0.928 : windowHeight - ms(12),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: Platform.OS === 'ios' ? SH(6) : SH(0),
+    marginTop: Platform.OS === 'ios' ? SH(6) : ms(5),
   },
   sideBarImage: {
     width: SW(7),
@@ -195,8 +195,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: SW(6),
     marginRight: SW(10),
     zIndex: -9,
-    borderTopRightRadius: SW(4),
-    borderTopLeftRadius: SW(4),
+    borderRadius: SW(4),
     overflow: 'hidden',
   },
   revenueDataText: {
