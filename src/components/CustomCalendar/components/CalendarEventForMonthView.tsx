@@ -1,28 +1,30 @@
-import dayjs from 'dayjs'
-import * as React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import dayjs from 'dayjs';
+import * as React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
-import { u } from '../commonStyles'
-import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
-import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
-import { useTheme } from '../theme/ThemeContext'
-import { getEventSpanningInfo } from '../utils/datetime'
-import { typedMemo } from '../utils/react'
+import { u } from '../commonStyles';
+import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps';
+import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces';
+import { useTheme } from '../theme/ThemeContext';
+import { getEventSpanningInfo } from '../utils/datetime';
+import { typedMemo } from '../utils/react';
 
 interface CalendarEventProps<T extends ICalendarEventBase> {
-  event: T
-  onPressEvent?: (event: T) => void
-  eventCellStyle?: EventCellStyle<T>
-  renderEvent?: EventRenderer<T>
-  date: dayjs.Dayjs
-  dayOfTheWeek: number
-  calendarWidth: number
-  isRTL: boolean
-  eventMinHeightForMonthView: number
-  showAdjacentMonths: boolean
+  allEvents: T;
+  event: T;
+  onPressEvent?: (event: T) => void;
+  eventCellStyle?: EventCellStyle<T>;
+  renderEvent?: EventRenderer<T>;
+  date: dayjs.Dayjs;
+  dayOfTheWeek: number;
+  calendarWidth: number;
+  isRTL: boolean;
+  eventMinHeightForMonthView: number;
+  showAdjacentMonths: boolean;
 }
 
 function _CalendarEventForMonthView<T extends ICalendarEventBase>({
+  allEvents,
   event,
   onPressEvent,
   eventCellStyle,
@@ -34,14 +36,15 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
   eventMinHeightForMonthView,
   showAdjacentMonths,
 }: CalendarEventProps<T>) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   const { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration } = React.useMemo(
     () => getEventSpanningInfo(event, date, dayOfTheWeek, calendarWidth, showAdjacentMonths),
-    [date, dayOfTheWeek, event, calendarWidth, showAdjacentMonths],
-  )
+    [date, dayOfTheWeek, event, calendarWidth, showAdjacentMonths]
+  );
 
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
+    allEvents,
     event,
     eventCellStyle,
     onPressEvent,
@@ -56,8 +59,9 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
         : {},
       isRTL ? { right: 0 } : { left: 0 },
       u['mt-2'],
+      { paddingVertical: 28 },
     ],
-  })
+  });
 
   return (
     <TouchableOpacity
@@ -67,7 +71,7 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
       {(!isMultipleDays && date.isSame(event.start, 'day')) ||
       (isMultipleDays && isMultipleDaysStart) ? (
         renderEvent ? (
-          renderEvent(event, touchableOpacityProps)
+          renderEvent(event, touchableOpacityProps, allEvents)
         ) : (
           <View {...touchableOpacityProps}>
             <Text
@@ -85,7 +89,7 @@ function _CalendarEventForMonthView<T extends ICalendarEventBase>({
         )
       ) : null}
     </TouchableOpacity>
-  )
+  );
 }
 
-export const CalendarEventForMonthView = typedMemo(_CalendarEventForMonthView)
+export const CalendarEventForMonthView = typedMemo(_CalendarEventForMonthView);

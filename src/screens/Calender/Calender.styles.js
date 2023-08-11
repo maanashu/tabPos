@@ -666,7 +666,7 @@ export const styles = StyleSheet.create({
     height: ms(12),
     width: ms(12),
     borderRadius: ms(6),
-    borderWidth: ms(0.5),
+    borderWidth: ms(1),
     borderColor: `#A179F2`,
     alignItems: 'center',
     justifyContent: 'center',

@@ -44,6 +44,8 @@ import CalendarSettingModal from './Components/CalendarSettingModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import EventDetailModal from './Components/EventDetailModal';
+import { getSettings, upadteApi } from '@/actions/SettingAction';
+import { getSetting } from '@/selectors/SettingSelector';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -53,6 +55,7 @@ export function Calender(props) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
+  const getSettingData = useSelector(getSetting);
   const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
   const getAppointmentByStaffIdList = getCalenderData?.geAppointmentById;
@@ -65,10 +68,11 @@ export function Calender(props) {
   const [showEmployeeHeader, setshowEmployeeHeader] = useState(false);
   const [showEventDetailModal, setshowEventDetailModal] = useState(false);
   const [eventData, setEventData] = useState({});
-  const [schduleDetail, setSchduleDetail] = useState(false);
+
   const [week, setWeek] = useState(true);
   const [month, setMonth] = useState(false);
   const [day, setDay] = useState(false);
+  const [isAMPM, setisAMPM] = useState(true);
 
   const [calendarDate, setCalendarDate] = useState(moment());
   const [calendarMode, setCalendarMode] = useState(CALENDAR_MODES.WEEK);
@@ -127,6 +131,7 @@ export function Calender(props) {
   useEffect(() => {
     if (isFocused) {
       dispatch(getStaffUsersList());
+      dispatch(getSettings());
     }
   }, [isFocused]);
 
@@ -312,7 +317,7 @@ export function Calender(props) {
 
             <View style={styles._calendarContainer}>
               <Calendar
-                ampm
+                ampm={isAMPM}
                 swipeEnabled={false}
                 date={calendarDate}
                 mode={calendarMode}
@@ -333,9 +338,15 @@ export function Calender(props) {
                 hourComponent={CustomHoursCell}
                 onPressEvent={(event) => {
                   setEventData(event);
-                  setshowEventDetailModal(true);
+                  if (calendarMode === CALENDAR_MODES.MONTH) {
+                    dayHandler();
+                  } else {
+                    setshowEventDetailModal(true);
+                  }
                 }}
-                renderEvent={CustomEventCell}
+                renderEvent={(event, touchableOpacityProps, allEvents) =>
+                  CustomEventCell(event, touchableOpacityProps, allEvents, calendarMode)
+                }
               />
             </View>
           </View>
@@ -485,6 +496,15 @@ export function Calender(props) {
         <CalendarSettingModal
           isVisible={isCalendarSettingModalVisible}
           setIsVisible={setisCalendarSettingModalVisible}
+          onPressSave={(calendarPreferences) => {
+            console.log('Check saved Calendar Preferences', JSON.stringify(calendarPreferences));
+            setisAMPM(calendarPreferences?.defaultTimeFormat);
+
+            // const data ={
+
+            // }
+            // dispatch(upadteApi(data))
+          }}
         />
 
         <EventDetailModal
