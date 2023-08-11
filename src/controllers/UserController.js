@@ -3,6 +3,8 @@ import {
   PRODUCT_URL,
   ApiProductInventory,
   ApiUserInventory,
+  ORDER_URL,
+  ApiOrderInventory,
 } from '@/utils/APIinventory';
 import { HttpClient } from './HttpClient';
 import Toast from 'react-native-toast-message';
@@ -13,7 +15,7 @@ export class UserController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.loginPosuser;
       HttpClient.post(endpoint, data)
-        .then(response => {
+        .then((response) => {
           if (response.status_code === 200) {
             Toast.show({
               type: 'success_toast',
@@ -32,7 +34,7 @@ export class UserController {
             });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',

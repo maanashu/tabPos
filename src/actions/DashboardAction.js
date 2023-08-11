@@ -5,11 +5,11 @@ const getOrderDeliveriesRequest = () => ({
   type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_REQUEST,
   payload: null,
 });
-const getOrderDeliveriesSuccess = getOrderDeliveries => ({
+const getOrderDeliveriesSuccess = (getOrderDeliveries) => ({
   type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_SUCCESS,
   payload: { getOrderDeliveries },
 });
-const getOrderDeliveriesError = error => ({
+const getOrderDeliveriesError = (error) => ({
   type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_ERROR,
   payload: { error },
 });
@@ -22,11 +22,11 @@ const getDrawerSessionRequest = () => ({
   type: DASHBOARDTYPE.GET_DRAWER_SESSION_REQUEST,
   payload: null,
 });
-export const getDrawerSessionSuccess = getSesssion => ({
+export const getDrawerSessionSuccess = (getSesssion) => ({
   type: DASHBOARDTYPE.GET_DRAWER_SESSION_SUCCESS,
   payload: { getSesssion },
 });
-const getDrawerSessionError = error => ({
+const getDrawerSessionError = (error) => ({
   type: DASHBOARDTYPE.GET_DRAWER_SESSION_ERROR,
   payload: { error },
 });
@@ -43,7 +43,7 @@ const getDrawerSessionPostSuccess = () => ({
   type: DASHBOARDTYPE.GET_DRAWER_SESSION_POST_SUCCESS,
   payload: {},
 });
-const getDrawerSessionPostError = error => ({
+const getDrawerSessionPostError = (error) => ({
   type: DASHBOARDTYPE.GET_DRAWER_SESSION_POST_ERROR,
   payload: { error },
 });
@@ -60,7 +60,7 @@ const startstarckingSessionSuccess = () => ({
   type: DASHBOARDTYPE.START_TRACKING_SESSION_SUCCESS,
   payload: {},
 });
-const startstarckingSessionError = error => ({
+const startstarckingSessionError = (error) => ({
   type: DASHBOARDTYPE.START_TRACKING_SESSION_ERROR,
   payload: { error },
 });
@@ -69,11 +69,11 @@ const getTotalSaleRequest = () => ({
   type: DASHBOARDTYPE.GET_TOTAL_SALE_REQUEST,
   payload: null,
 });
-const getTotalSaleSuccess = getTotalSale => ({
+const getTotalSaleSuccess = (getTotalSale) => ({
   type: DASHBOARDTYPE.GET_TOTAL_SALE_SUCCESS,
   payload: { getTotalSale },
 });
-const getTotalSaleError = error => ({
+const getTotalSaleError = (error) => ({
   type: DASHBOARDTYPE.GET_TOTAL_SALE_ERROR,
   payload: { error },
 });
@@ -86,11 +86,11 @@ const posLoginDetailRequest = () => ({
   type: DASHBOARDTYPE.POS_LOGIN_DETAIL_REQUEST,
   payload: null,
 });
-const posLoginDetailSuccess = posLoginDetail => ({
+const posLoginDetailSuccess = (posLoginDetail) => ({
   type: DASHBOARDTYPE.POS_LOGIN_DETAIL_SUCCESS,
   payload: { posLoginDetail },
 });
-const posLoginDetailError = error => ({
+const posLoginDetailError = (error) => ({
   type: DASHBOARDTYPE.POS_LOGIN_DETAIL_ERROR,
   payload: { error },
 });
@@ -103,11 +103,11 @@ const searchProductListRequest = () => ({
   type: DASHBOARDTYPE.SEARCH_PRODUCT_LIST_REQUEST,
   payload: null,
 });
-const searchProductListSuccess = searchProductList => ({
+const searchProductListSuccess = (searchProductList) => ({
   type: DASHBOARDTYPE.SEARCH_PRODUCT_LIST_SUCCESS,
   payload: { searchProductList },
 });
-const searchProductListError = error => ({
+const searchProductListError = (error) => ({
   type: DASHBOARDTYPE.SEARCH_PRODUCT_LIST_ERROR,
   payload: { error },
 });
@@ -120,11 +120,11 @@ const addSellingSelectionRequest = () => ({
   type: DASHBOARDTYPE.ADD_SELLING_SELECTION_REQUEST,
   payload: null,
 });
-const addSellingSelectionSuccess = selection => ({
+const addSellingSelectionSuccess = (selection) => ({
   type: DASHBOARDTYPE.ADD_SELLING_SELECTION_SUCCESS,
   payload: { selection },
 });
-const addSellingSelectionError = error => ({
+const addSellingSelectionError = (error) => ({
   type: DASHBOARDTYPE.ADD_SELLING_SELECTION_ERROR,
   payload: { error },
 });
@@ -133,16 +133,29 @@ const onLineOrdersRequest = () => ({
   type: DASHBOARDTYPE.ONLINE_ORDERS_REQUEST,
   payload: null,
 });
-const onLineOrdersSuccess = onLineOrders => ({
+const onLineOrdersSuccess = (onLineOrders) => ({
   type: DASHBOARDTYPE.ONLINE_ORDERS_SUCCESS,
   payload: { onLineOrders },
 });
-const onLineOrdersError = error => ({
+const onLineOrdersError = (error) => ({
   type: DASHBOARDTYPE.ONLINE_ORDERS_ERROR,
   payload: { error },
 });
 
-export const getOrderDeliveries = (sellerID, page) => async dispatch => {
+const getPendingOrdersRequest = () => ({
+  type: DASHBOARDTYPE.PENDING_ORDERS_REQUEST,
+  payload: null,
+});
+const getPendingOrdersSuccess = (pendingOrders) => ({
+  type: DASHBOARDTYPE.PENDING_ORDERS_SUCCESS,
+  payload: { pendingOrders },
+});
+const getPendingOrdersError = (error) => ({
+  type: DASHBOARDTYPE.PENDING_ORDERS_ERROR,
+  payload: { error },
+});
+
+export const getOrderDeliveries = (sellerID, page) => async (dispatch) => {
   dispatch(getOrderDeliveriesRequest());
   try {
     const res = await DashboardController.getOrderDeliveries(sellerID, page);
@@ -154,7 +167,7 @@ export const getOrderDeliveries = (sellerID, page) => async dispatch => {
     dispatch(getOrderDeliveriesError(error.message));
   }
 };
-export const getDrawerSession = () => async dispatch => {
+export const getDrawerSession = () => async (dispatch) => {
   dispatch(getDrawerSessionRequest());
   try {
     const res = await DashboardController.getDrawerSession();
@@ -166,7 +179,7 @@ export const getDrawerSession = () => async dispatch => {
     dispatch(getDrawerSessionError(error.message));
   }
 };
-export const getDrawerSessionPost = data => async dispatch => {
+export const getDrawerSessionPost = (data) => async (dispatch) => {
   dispatch(getDrawerSessionPostRequest());
   try {
     const res = await DashboardController.getDrawerSessionPost(data);
@@ -187,7 +200,7 @@ export const getDrawerSessionPost = data => async dispatch => {
   }
 };
 
-export const startstarckingSession = resData => async dispatch => {
+export const startstarckingSession = (resData) => async (dispatch) => {
   dispatch(startstarckingSessionRequest());
   try {
     const res = await DashboardController.startstarckingSession(resData);
@@ -198,7 +211,7 @@ export const startstarckingSession = resData => async dispatch => {
   }
 };
 
-export const getTotalSaleAction = sellerID => async dispatch => {
+export const getTotalSaleAction = (sellerID) => async (dispatch) => {
   dispatch(getTotalSaleRequest());
   try {
     const res = await DashboardController.getTotalSale(sellerID);
@@ -211,7 +224,7 @@ export const getTotalSaleAction = sellerID => async dispatch => {
   }
 };
 
-export const posLoginDetail = () => async dispatch => {
+export const posLoginDetail = () => async (dispatch) => {
   dispatch(posLoginDetailRequest());
   try {
     const res = await DashboardController.posLoginDetail();
@@ -224,7 +237,7 @@ export const posLoginDetail = () => async dispatch => {
   }
 };
 
-export const searchProductList = (search, sellerID) => async dispatch => {
+export const searchProductList = (search, sellerID) => async (dispatch) => {
   dispatch(searchProductListRequest());
   try {
     const res = await DashboardController.searchProductList(search, sellerID);
@@ -237,7 +250,7 @@ export const searchProductList = (search, sellerID) => async dispatch => {
   }
 };
 
-export const addSellingSelection = data => async dispatch => {
+export const addSellingSelection = (data) => async (dispatch) => {
   dispatch(addSellingSelectionRequest());
   try {
     dispatch(addSellingSelectionSuccess(data));
@@ -246,12 +259,22 @@ export const addSellingSelection = data => async dispatch => {
   }
 };
 
-export const onLineOrders = sellerID => async dispatch => {
+export const onLineOrders = (sellerID) => async (dispatch) => {
   dispatch(onLineOrdersRequest());
   try {
     const res = await DashboardController.onLineOrders(sellerID);
     dispatch(onLineOrdersSuccess(res?.payload));
   } catch (error) {
     dispatch(onLineOrdersError(error.message));
+  }
+};
+
+export const getPendingOrders = (sellerID) => async (dispatch) => {
+  dispatch(getPendingOrdersRequest());
+  try {
+    const res = await DashboardController.getPendingOrders(sellerID);
+    dispatch(getPendingOrdersSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getPendingOrdersError(error.message));
   }
 };

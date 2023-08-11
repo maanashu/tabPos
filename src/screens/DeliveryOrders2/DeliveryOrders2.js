@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import { View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  Platform,
+} from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,6 +35,10 @@ import {
   deliveryShipping,
   checkedCheckboxSquare,
   deliveryorderProducts,
+  storeTracker,
+  backArrow,
+  deliveryHomeIcon,
+  Fonts,
 } from '@/assets';
 import {
   acceptOrder,
@@ -44,6 +56,8 @@ import Header from './Components/Header';
 import OrderDetail from './Components/OrderDetail';
 import OrderReview from './Components/OrderReview';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { TYPES as ANALYTICSTYPES } from '@/Types/AnalyticsTypes';
+
 import { ScreenWrapper, Spacer } from '@/components';
 import RightSideBar from './Components/RightSideBar';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -57,6 +71,11 @@ import { graphOptions, labels } from '@/constants/staticData';
 import styles from './styles';
 import { useFocusEffect } from '@react-navigation/native';
 import { getOrderData } from '@/actions/AnalyticsAction';
+import ShipmentTracking from './Components/ShipmentTracking';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import MapViewDirections from 'react-native-maps-directions';
 
 export function DeliveryOrders2({ route }) {
   var isViewAll;
@@ -71,9 +90,14 @@ export function DeliveryOrders2({ route }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getDeliveryData = useSelector(getDelivery);
+  const oneOrderDetail = useSelector(getAnalytics);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const todayOrderStatusData = getDeliveryData?.todayOrderStatus;
   const pieChartData = getDeliveryData?.getOrderstatistics?.data;
+  const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
+  const isProductDetailLoading = useSelector((state) =>
+    isLoadingSelector([ANALYTICSTYPES.GET_ORDER_DATA], state)
+  );
 
   const widthAndHeight = 140;
   const series = [
@@ -88,6 +112,14 @@ export function DeliveryOrders2({ route }) {
   series.forEach((num) => {
     sum += num;
   });
+  const sourceCoordinate = {
+    latitude: location?.latitude,
+    longitude: location?.longitude,
+  };
+  const destinationCoordinate = {
+    latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
+    longitude: oneOrderDetail?.getOrderData?.coordinates?.[1],
+  };
 
   const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet, COLORS.lightGreen];
 
@@ -104,6 +136,9 @@ export function DeliveryOrders2({ route }) {
   );
   const [getOrderDetail, setGetOrderDetail] = useState('');
   const [orderId, setOrderId] = useState(getDeliveryData?.getReviewDef?.[0]?.id);
+  const [trackingView, setTrackingView] = useState(false);
+
+  console.log('orderDetail', JSON.stringify(orderDetail));
 
   useFocusEffect(
     React.useCallback(() => {
@@ -252,6 +287,11 @@ export function DeliveryOrders2({ route }) {
       )}
     </View>
   );
+  const trackHandler = () => {
+    // alert('track order');
+    setTrackingView(true);
+    // <ShipmentTracking />;
+  };
 
   const showBadge = (item) => {
     if (item?.title === 'Delivered') {
@@ -307,7 +347,10 @@ export function DeliveryOrders2({ route }) {
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
-      onPress={() => setOpenShippingOrders(item?.key)}
+      onPress={() => {
+        setOpenShippingOrders(item?.key);
+        dispatch(getReviewDefault(item?.key, sellerID, 1));
+      }}
       style={[
         styles.firstIconStyle,
         {
@@ -965,161 +1008,260 @@ export function DeliveryOrders2({ route }) {
       };
     }
   };
+  const checkedIndices = graphData
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => parseInt(checkbox.key) - 1);
+
+  // Initialize an array to store the summed values
+  const summedValues = Array(getDeliveryData?.graphOrders?.labels?.length).fill(0);
+
+  // Sum the values from checked datasets for each day
+  for (const index of checkedIndices) {
+    const dataset = getDeliveryData?.graphOrders?.datasets?.[index].data;
+    for (let i = 0; i < dataset?.length; i++) {
+      summedValues[i] += dataset[i];
+    }
+  }
+
+  // Transform the summed values into the desired format with labels
+  const outputData = summedValues.map((value, index) => ({
+    label: getDeliveryData?.graphOrders?.labels?.[index],
+    value,
+    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11, fontFamily: Fonts.Regular },
+    spacing: Platform.OS == 'ios' ? 38 : 62,
+    initialSpace: 0,
+    frontColor:
+      index === 0
+        ? COLORS.bluish_green
+        : index === 1
+        ? COLORS.pink
+        : index === 2
+        ? COLORS.yellowTweet
+        : COLORS.primary,
+  }));
 
   return (
     <ScreenWrapper>
-      <View style={styles.container}>
-        <Header {...{ viewAllOrders, setViewAllOrders, setIsBack }} />
+      {!trackingView ? (
+        <>
+          <View style={styles.container}>
+            <Header {...{ viewAllOrders, setViewAllOrders, setIsBack }} />
 
-        <Spacer space={SH(20)} />
+            <Spacer space={SH(20)} />
 
-        {viewAllOrders ? (
-          <View style={styles.firstRowStyle}>
-            {getDeliveryData?.getReviewDef?.length > 0 ? (
-              <>
-                <View style={[styles.orderToReviewView, { paddingBottom: ms(30) }]}>
-                  <FlatList
-                    renderItem={renderOrderToReview}
-                    showsVerticalScrollIndicator={false}
-                    data={getDeliveryData?.getReviewDef ?? []}
-                    ListHeaderComponent={() => (
-                      <View style={styles.headingRowStyle}>
-                        <Text style={styles.ordersToReviewText}>
-                          {openShippingOrders == '0'
-                            ? strings.shipingOrder.orderOfReview
-                            : openShippingOrders == '1'
-                            ? 'Accept Orders'
-                            : openShippingOrders == '2'
-                            ? 'Order Preparing'
-                            : openShippingOrders == '3'
-                            ? 'Ready To Pickup'
-                            : openShippingOrders == '4'
-                            ? 'Picked Up orders'
-                            : openShippingOrders == '5'
-                            ? 'Delivered'
-                            : openShippingOrders == '6'
-                            ? 'Rejected/Cancelled'
-                            : 'Returned'}
-                        </Text>
-                      </View>
-                    )}
-                    contentContainerStyle={styles.contentContainerStyle}
+            {viewAllOrders ? (
+              <View style={styles.firstRowStyle}>
+                {getDeliveryData?.getReviewDef?.length > 0 ? (
+                  <>
+                    <View style={[styles.orderToReviewView, { paddingBottom: ms(30) }]}>
+                      <FlatList
+                        renderItem={renderOrderToReview}
+                        showsVerticalScrollIndicator={false}
+                        data={getDeliveryData?.getReviewDef ?? []}
+                        ListHeaderComponent={() => (
+                          <View style={styles.headingRowStyle}>
+                            <Text style={styles.ordersToReviewText}>
+                              {openShippingOrders == '0'
+                                ? strings.shipingOrder.orderOfReview
+                                : openShippingOrders == '1'
+                                ? 'Accept Orders'
+                                : openShippingOrders == '2'
+                                ? 'Order Preparing'
+                                : openShippingOrders == '3'
+                                ? 'Ready To Pickup'
+                                : openShippingOrders == '4'
+                                ? 'Picked Up orders'
+                                : openShippingOrders == '5'
+                                ? 'Delivered'
+                                : openShippingOrders == '6'
+                                ? 'Rejected/Cancelled'
+                                : 'Returned'}
+                            </Text>
+                          </View>
+                        )}
+                        contentContainerStyle={styles.contentContainerStyle}
+                      />
+                    </View>
+
+                    <OrderDetail
+                      {...{
+                        userDetail,
+                        orderDetail,
+                        renderOrderProducts,
+                        acceptHandler,
+                        declineHandler,
+                        openShippingOrders,
+                        trackHandler,
+                        isProductDetailLoading,
+                      }}
+                    />
+                  </>
+                ) : (
+                  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
+                  </View>
+                )}
+
+                <RightSideBar
+                  {...{
+                    deliveryDrawer,
+                    openShippingOrders,
+                    isOpenSideBarDrawer,
+                    renderShippingDrawer,
+                    setOpenShippingOrders,
+                    renderDrawer,
+                    setIsOpenSideBarDrawer,
+                  }}
+                />
+              </View>
+            ) : (
+              <View style={styles.firstRowStyle}>
+                <View>
+                  <TodayOrderStatus {...{ todayOrderStatusData }} />
+
+                  <Spacer space={ms(10)} />
+
+                  <CurrentStatus {...{ deliverytypes, renderItem }} />
+
+                  <Spacer space={ms(10)} />
+
+                  <OrderConvertion
+                    {...{
+                      series,
+                      sliceColor,
+                      widthAndHeight,
+                      pieChartData,
+                      sum,
+                      orderConversionLoading,
+                    }}
                   />
                 </View>
 
-                <OrderDetail
+                <View>
+                  <Graph
+                    {...{
+                      graphData,
+                      renderGraphItem,
+                      isDeliveryOrder,
+                      outputData,
+                    }}
+                  />
+
+                  <Spacer space={SH(15)} />
+                  <OrderReview
+                    {...{
+                      renderOrderToReview,
+                      emptyComponent,
+                      headerComponent,
+                      getDeliveryData,
+                      isOrderLoading,
+                    }}
+                  />
+                </View>
+
+                <RightSideBar
                   {...{
-                    userDetail,
-                    orderDetail,
-                    renderOrderProducts,
-                    acceptHandler,
-                    declineHandler,
+                    deliveryDrawer,
                     openShippingOrders,
+                    renderShippingDrawer,
+                    setOpenShippingOrders,
+                    renderDrawer,
                   }}
                 />
-              </>
-            ) : (
-              <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
               </View>
             )}
-
-            <RightSideBar
-              {...{
-                deliveryDrawer,
-                openShippingOrders,
-                isOpenSideBarDrawer,
-                renderShippingDrawer,
-                setOpenShippingOrders,
-                renderDrawer,
-                setIsOpenSideBarDrawer,
-              }}
-            />
           </View>
-        ) : (
-          <View style={styles.firstRowStyle}>
-            <View>
-              <TodayOrderStatus {...{ todayOrderStatusData }} />
 
-              <Spacer space={ms(10)} />
-
-              <CurrentStatus {...{ deliverytypes, renderItem }} />
-
-              <Spacer space={ms(10)} />
-
-              <OrderConvertion
-                {...{
-                  series,
-                  sliceColor,
-                  widthAndHeight,
-                  pieChartData,
-                  sum,
-                  orderConversionLoading,
+          {isAcceptOrder ? (
+            <View
+              style={{
+                position: 'absolute',
+                alignSelf: 'center',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                backgroundColor: 'rgba(0,0,0, 0.3)',
+              }}
+            >
+              <ActivityIndicator
+                color={COLORS.primary}
+                size={'small'}
+                style={{
+                  position: 'absolute',
+                  alignSelf: 'center',
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
                 }}
               />
             </View>
-
-            <View>
-              <Graph
-                {...{
-                  graphData,
-                  renderGraphItem,
-                  isDeliveryOrder,
-                  graphElements,
-                }}
-              />
-
-              <Spacer space={SH(15)} />
-              <OrderReview
-                {...{
-                  renderOrderToReview,
-                  emptyComponent,
-                  headerComponent,
-                  getDeliveryData,
-                  isOrderLoading,
-                }}
-              />
-            </View>
-
-            <RightSideBar
-              {...{
-                deliveryDrawer,
-                openShippingOrders,
-                renderShippingDrawer,
-                setOpenShippingOrders,
-                renderDrawer,
+          ) : null}
+        </>
+      ) : (
+        <>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity
+              onPress={() => {
+                setViewAllOrders(true);
+                setTrackingView(false);
               }}
-            />
+              style={styles.backButtonView}
+            >
+              <View style={styles.rowView}>
+                <Image source={backArrow} resizeMode="contain" style={styles.backIconStyle} />
+                <Text style={styles.backTextStyle}>{'Back'}</Text>
+              </View>
+            </TouchableOpacity>
+            <MapView
+              provider={PROVIDER_GOOGLE}
+              showCompass
+              region={{
+                latitude: location?.latitude,
+                longitude: location?.longitude,
+                latitudeDelta: 0.0992,
+                longitudeDelta: 0.0421,
+              }}
+              style={styles.map}
+            >
+              <MapViewDirections
+                key={location?.latitude}
+                origin={{
+                  latitude: location?.latitude,
+                  longitude: location?.longitude,
+                }}
+                destination={{
+                  latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
+                  longitude: oneOrderDetail?.getOrderData?.coordinates?.[1],
+                }}
+                apikey={GOOGLE_MAP.API_KEYS}
+                strokeWidth={6}
+                strokeColor={COLORS.primary}
+              />
+              <Marker coordinate={sourceCoordinate}>
+                <View>
+                  <Image
+                    source={storeTracker}
+                    style={{ height: ms(50), width: ms(50) }}
+                    resizeMode="contain"
+                  />
+                </View>
+              </Marker>
+              <Marker coordinate={destinationCoordinate}>
+                <View>
+                  <Image
+                    source={deliveryHomeIcon}
+                    style={{ height: ms(50), width: ms(50) }}
+                    resizeMode="contain"
+                  />
+                </View>
+              </Marker>
+            </MapView>
+            <ShipmentTracking props={{ status: oneOrderDetail?.getOrderData?.status, data: '' }} />
           </View>
-        )}
-      </View>
-
-      {isAcceptOrder ? (
-        <View
-          style={{
-            position: 'absolute',
-            alignSelf: 'center',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: 'rgba(0,0,0, 0.3)',
-          }}
-        >
-          <ActivityIndicator
-            color={COLORS.primary}
-            size={'small'}
-            style={{
-              position: 'absolute',
-              alignSelf: 'center',
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-            }}
-          />
-        </View>
-      ) : null}
+        </>
+      )}
     </ScreenWrapper>
   );
 }

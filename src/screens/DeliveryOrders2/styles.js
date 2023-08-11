@@ -509,6 +509,36 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: ms(30),
   },
+  map: {
+    height: Dimensions.get('screen').height,
+    height: '100%',
+    width: '100%',
+  },
+  backButtonView: {
+    position: 'absolute',
+    width: ms(55),
+    backgroundColor: COLORS.darkGray,
+    borderRadius: ms(5),
+    height: ms(25),
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: ms(10),
+    left: ms(20),
+    zIndex: 9999,
+  },
+  backIconStyle: {
+    height: ms(17),
+    width: ms(17),
+    tintColor: COLORS.white,
+  },
+  backTextStyle: {
+    color: COLORS.white,
+    fontFamily: Fonts.SemiBold,
+  },
+  rowView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 
 export default styles;

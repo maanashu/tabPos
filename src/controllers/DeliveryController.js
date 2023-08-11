@@ -75,6 +75,7 @@ export class DeliveryController {
           resolve(response);
         })
         .catch((error) => {
+          console.log(error);
           reject(error);
         });
     });

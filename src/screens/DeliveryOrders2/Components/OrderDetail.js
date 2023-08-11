@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Platform,
+  ActivityIndicator,
+} from 'react-native';
 
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
@@ -18,7 +26,10 @@ const OrderDetail = ({
   acceptHandler,
   declineHandler,
   openShippingOrders,
+  trackHandler,
+  isProductDetailLoading,
 }) => {
+  console.log('userdetial', userDetail);
   return (
     <View style={styles.orderDetailView}>
       <View style={styles.orderDetailViewStyle}>
@@ -184,6 +195,23 @@ const OrderDetail = ({
                 </Text>
               </TouchableOpacity>
             ) : null}
+
+            {openShippingOrders >= '3' && (
+              <TouchableOpacity
+                onPress={() => trackHandler()}
+                style={[styles.acceptButtonView, { width: ms(100) }]}
+              >
+                {isProductDetailLoading ? (
+                  <ActivityIndicator
+                    size={'small'}
+                    //  style={styles.loader}
+                    color={COLORS.white}
+                  />
+                ) : (
+                  <Text style={styles.acceptTextStyle}>{strings.buttonStatus.trackOrder}</Text>
+                )}
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
