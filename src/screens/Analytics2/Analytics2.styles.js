@@ -71,11 +71,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: windowWidth * 0.06,
-    height: Platform.OS === 'ios' ? windowHeight * 0.928 : windowHeight - ms(12),
+    height: Platform.OS === 'ios' ? windowHeight * 0.934 : windowHeight - ms(12),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: Platform.OS === 'ios' ? SH(6) : ms(5),
+    marginTop: Platform.OS === 'ios' ? ms(7) : ms(5),
   },
   sideBarImage: {
     width: SW(7),
