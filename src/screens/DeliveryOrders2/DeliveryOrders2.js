@@ -632,8 +632,7 @@ export function DeliveryOrders2({ route }) {
     };
     dispatch(
       acceptOrder(data, (res) => {
-        if (res?.msg === 'Order status updated successfully!') {
-          alert('Order accepted successfully');
+        if (res?.msg) {
           setViewAllOrders(false);
           dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID));
         }

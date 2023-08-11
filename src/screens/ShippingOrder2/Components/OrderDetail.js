@@ -37,10 +37,12 @@ const OrderDetail = ({
   renderOrderProducts,
   declineHandler,
   acceptHandler,
+  trackOrderHandler,
 }) => {
   const user = useSelector(getAuthData);
   const location = user?.merchantLoginData?.user?.user_profiles?.current_address;
   const oneOrderDetail = useSelector(getAnalytics);
+  const getTrackingInfo = oneOrderDetail?.getOrderData?.tracking_info;
 
   const sourceCoordinate = {
     latitude: location?.latitude,
@@ -211,6 +213,32 @@ const OrderDetail = ({
               </Text>
               <Text style={styles.itemCountText}>{userDetail?.id}</Text>
             </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: 10,
+              }}
+            >
+              <Text
+                style={[
+                  styles.invoiceText,
+                  { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
+                ]}
+              >
+                {'Tracking ID - '}
+              </Text>
+              <Text
+                style={[
+                  styles.invoiceText,
+                  { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
+                ]}
+              >
+                {getTrackingInfo?.track_id}
+              </Text>
+            </View>
           </View>
 
           <View style={{ paddingHorizontal: 10 }}>
@@ -250,7 +278,7 @@ const OrderDetail = ({
             </View>
 
             <Spacer space={ms(10)} />
-            {openShippingOrders == 0 || openShippingOrders == 1 || openShippingOrders == 2 ? (
+            {openShippingOrders == '0' || openShippingOrders == '1' || openShippingOrders == '2' ? (
               <View style={styles.shippingOrdersViewStyle}>
                 {openShippingOrders === '0' ? (
                   <TouchableOpacity
@@ -283,13 +311,16 @@ const OrderDetail = ({
                         : ''}
                     </Text>
                   </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity style={styles.acceptButtonView}>
-                    <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
-                  </TouchableOpacity>
-                )}
+                ) : null}
               </View>
-            ) : null}
+            ) : (
+              <TouchableOpacity
+                onPress={() => trackOrderHandler(getTrackingInfo)}
+                style={styles.acceptButtonView}
+              >
+                <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>

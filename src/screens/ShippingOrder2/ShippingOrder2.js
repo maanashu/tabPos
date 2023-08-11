@@ -32,6 +32,7 @@ import {
   checkedCheckboxSquare,
   Group,
   Fonts,
+  backArrow2,
 } from '@/assets';
 import {
   orderStatusCount,
@@ -64,6 +65,8 @@ import TodayShippingStatus from './Components/TodayShippingStatus';
 import CurrentShippingStatus from './Components/CurrentShippingStatus';
 
 import styles from './ShippingOrder2.styles';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import WebView from 'react-native-webview';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -77,6 +80,7 @@ export function ShippingOrder2() {
   const pieChartData = getGraphOrderData?.getOrderstatistics?.data;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const orderStatusCountData = todayStatus?.orderStatus;
+  const getAnalyticsData = useSelector(getAnalytics);
 
   const widthAndHeight = 140;
   const series = [
@@ -100,6 +104,7 @@ export function ShippingOrder2() {
   const [openShippingOrders, setOpenShippingOrders] = useState('0');
   const [getOrderDetail, setGetOrderDetail] = useState('');
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id);
+  const [openWebView, setOpenWebView] = useState(false);
 
   const statusCount = [
     {
@@ -280,7 +285,6 @@ export function ShippingOrder2() {
     return (
       <TouchableOpacity
         onPress={() => {
-          console.log('item====', item);
           setViewAllOrders(true);
           setUserDetail(item);
           setOrderDetail(item?.order_details);
@@ -433,8 +437,6 @@ export function ShippingOrder2() {
       <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.quantity}</Text>
 
       <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.totalprice}</Text>
-
-      {/* <Image source={removeProduct} style={[styles.removeProductImageStyle, { marginRight: 10 }]} /> */}
     </View>
   );
 
@@ -551,8 +553,7 @@ export function ShippingOrder2() {
     };
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
-        if (res?.msg === 'Order status updated successfully!') {
-          alert('Order accepted successfully');
+        if (res?.msg) {
           dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
           dispatch(orderStatusCount(sellerID));
           setGetOrderDetail('ViewAllScreen');
@@ -581,127 +582,163 @@ export function ShippingOrder2() {
     );
   };
 
+  const trackOrderHandler = (info) => {
+    if (info) {
+      setOpenWebView(true);
+    }
+  };
+
   return (
     <ScreenWrapper>
-      <View style={styles.container}>
-        <Header {...{ viewAllOrders, setViewAllOrders }} />
+      {!openWebView ? (
+        <View style={styles.container}>
+          <Header {...{ viewAllOrders, setViewAllOrders }} />
 
-        <Spacer space={SH(20)} />
-
-        {viewAllOrders ? (
-          <View style={styles.firstRowStyle}>
-            {ordersList?.length > 0 ? (
-              <>
-                <View style={styles.orderToReviewView}>
-                  <FlatList
-                    renderItem={renderAllOrdersToReview}
-                    showsVerticalScrollIndicator={false}
-                    data={ordersList ?? []}
-                    ListHeaderComponent={() => (
-                      <View style={styles.headingRowStyle}>
-                        <Text style={styles.ordersToReviewText}>
-                          {openShippingOrders === '0'
-                            ? strings.orderStatus.reviewOrders
-                            : openShippingOrders === '1'
-                            ? strings.orderStatus.acceptOrder
-                            : openShippingOrders === '2'
-                            ? strings.orderStatus.prepareOrder
-                            : openShippingOrders === '3'
-                            ? strings.orderStatus.shipOrder
-                            : openShippingOrders === '4'
-                            ? strings.orderStatus.deliveryOrder
-                            : openShippingOrders === '7'
-                            ? strings.orderStatus.cancelledOrder
-                            : strings.orderStatus.returnedOrders}
-                        </Text>
-                      </View>
-                    )}
-                    contentContainerStyle={styles.contentContainerStyle}
-                  />
-                </View>
-
-                <OrderDetail
-                  {...{
-                    renderAllOrdersToReview,
-                    ordersList,
-                    openShippingOrders,
-                    userDetail,
-                    orderDetail,
-                    renderOrderProducts,
-                    declineHandler,
-                    acceptHandler,
-                  }}
-                />
-              </>
-            ) : (
-              <View style={styles.noOrderView}>
-                <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
-              </View>
-            )}
-
-            <RightDrawer {...{ height, statusCount, renderDrawer }} />
-          </View>
-        ) : (
-          <View style={styles.firstRowStyle}>
-            <View>
-              <TodayShippingStatus {...{ todayStatus }} />
-
-              <Spacer space={ms(10)} />
-
-              <CurrentShippingStatus {...{ todayStatus, renderItem }} />
-
-              <Spacer space={ms(10)} />
-
-              <OrderConversion
-                {...{
-                  series,
-                  sliceColor,
-                  widthAndHeight,
-                  pieChartData,
-                  sum,
-                  orderConversionLoading,
-                }}
-              />
-            </View>
-
-            <View>
-              <Graph
-                {...{
-                  graphData,
-                  renderGraphItem,
-                  isDeliveryOrder,
-                  width,
-                  outputData,
-                }}
-              />
-
-              <Spacer space={SH(15)} />
-
-              <>
-                {isOrderLoading ? (
-                  <View style={styles.orderLoader}>
-                    <ActivityIndicator size={'small'} color={COLORS.primary} />
+          <Spacer space={SH(20)} />
+          {viewAllOrders ? (
+            <View style={styles.firstRowStyle}>
+              {ordersList?.length > 0 ? (
+                <>
+                  <View style={styles.orderToReviewView}>
+                    <FlatList
+                      renderItem={renderAllOrdersToReview}
+                      showsVerticalScrollIndicator={false}
+                      data={ordersList ?? []}
+                      ListHeaderComponent={() => (
+                        <View style={styles.headingRowStyle}>
+                          <Text style={styles.ordersToReviewText}>
+                            {openShippingOrders === '0'
+                              ? strings.orderStatus.reviewOrders
+                              : openShippingOrders === '1'
+                              ? strings.orderStatus.acceptOrder
+                              : openShippingOrders === '2'
+                              ? strings.orderStatus.prepareOrder
+                              : openShippingOrders === '3'
+                              ? 'Printing Labels'
+                              : openShippingOrders === '4'
+                              ? strings.orderStatus.shipOrder
+                              : openShippingOrders === '5'
+                              ? strings.orderStatus.deliveryOrder
+                              : openShippingOrders === '7,8'
+                              ? strings.orderStatus.cancelledOrder
+                              : strings.orderStatus.returnedOrders}
+                          </Text>
+                        </View>
+                      )}
+                      contentContainerStyle={styles.contentContainerStyle}
+                    />
                   </View>
-                ) : (
-                  <Orders
+
+                  <OrderDetail
                     {...{
-                      height,
-                      openShippingOrders,
+                      renderAllOrdersToReview,
                       ordersList,
-                      setViewAllOrders,
-                      setGetOrderDetail,
-                      renderOrderToReview,
-                      emptyComponent,
+                      openShippingOrders,
+                      userDetail,
+                      orderDetail,
+                      renderOrderProducts,
+                      declineHandler,
+                      acceptHandler,
+                      trackOrderHandler,
                     }}
                   />
-                )}
-              </>
-            </View>
+                </>
+              ) : (
+                <View style={styles.noOrderView}>
+                  <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
+                </View>
+              )}
 
-            <RightDrawer {...{ height, statusCount, renderDrawer }} />
-          </View>
-        )}
-      </View>
+              <RightDrawer {...{ height, statusCount, renderDrawer }} />
+            </View>
+          ) : (
+            <View style={styles.firstRowStyle}>
+              <View>
+                <TodayShippingStatus {...{ todayStatus }} />
+
+                <Spacer space={ms(10)} />
+
+                <CurrentShippingStatus {...{ todayStatus, renderItem }} />
+
+                <Spacer space={ms(10)} />
+
+                <OrderConversion
+                  {...{
+                    series,
+                    sliceColor,
+                    widthAndHeight,
+                    pieChartData,
+                    sum,
+                    orderConversionLoading,
+                  }}
+                />
+              </View>
+
+              <View>
+                <Graph
+                  {...{
+                    graphData,
+                    renderGraphItem,
+                    isDeliveryOrder,
+                    width,
+                    outputData,
+                  }}
+                />
+
+                <Spacer space={SH(15)} />
+
+                <>
+                  {isOrderLoading ? (
+                    <View style={styles.orderLoader}>
+                      <ActivityIndicator size={'small'} color={COLORS.primary} />
+                    </View>
+                  ) : (
+                    <Orders
+                      {...{
+                        height,
+                        openShippingOrders,
+                        ordersList,
+                        setViewAllOrders,
+                        setGetOrderDetail,
+                        renderOrderToReview,
+                        emptyComponent,
+                      }}
+                    />
+                  )}
+                </>
+              </View>
+
+              <RightDrawer {...{ height, statusCount, renderDrawer }} />
+            </View>
+          )}
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(getReviewDefault(openShippingOrders, sellerID, 4)), setOpenWebView(false);
+            }}
+            style={styles.backView}
+          >
+            <Image source={backArrow2} style={styles.backImageStyle} />
+            <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
+              {strings.deliveryOrders.back}
+            </Text>
+          </TouchableOpacity>
+          <Spacer space={SH(20)} />
+
+          <WebView
+            source={{ uri: getAnalyticsData?.getOrderData?.tracking_info?.url }}
+            style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}
+            startInLoadingState
+            renderLoading={() => (
+              <View style={styles.loader}>
+                <ActivityIndicator size={'large'} color={COLORS.primary} style={styles.loader} />
+              </View>
+            )}
+          />
+        </View>
+      )}
 
       {isAcceptOrder ? (
         <View
