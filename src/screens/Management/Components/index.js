@@ -10,13 +10,7 @@ import {
 } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { moderateScale } from 'react-native-size-matters';
-import {
-  allien,
-  calendar1,
-  dropdown2,
-  roundCalender,
-  userImage,
-} from '@/assets';
+import { allien, calendar1, dropdown2, roundCalender, userImage } from '@/assets';
 import { strings } from '@/localization';
 import { styles } from '@/screens/Management/Management.styles';
 import { Spacer, TableDropdown } from '@/components';
@@ -40,15 +34,14 @@ export function SessionHistoryTable({
   tableTouchHandler,
   tableDataArray,
   sessionHistoryLoad,
-  oneItemSend,
+  // oneItemSend,
   setSessionHistoryArray,
 }) {
   const dispatch = useDispatch();
   const [date, setDate] = useState(new Date());
   const [dateformat, setDateformat] = useState('');
   const [show, setShow] = useState(false);
-
-  const onChangeDate = selectedDate => {
+  const onChangeDate = (selectedDate) => {
     setSessionHistoryArray([]);
     const currentDate = moment().format('MM/DD/YYYY');
     const selected = moment(selectedDate).format('MM/DD/YYYY');
@@ -73,20 +66,15 @@ export function SessionHistoryTable({
     dispatch(getSessionHistory());
   };
 
-  const tableDataArrayReverse = tableDataArray?.reverse();
-
+  // const tableDataArrayReverse = tableDataArray?.reverse();
+  const tableDataArrayReverse = tableDataArray?.slice().reverse();
   return (
     <View style={{ flex: 1 }}>
-      <Text style={styles.sessionHistory}>
-        {strings.management.sessionHistory}
-      </Text>
+      <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
       <Spacer space={SH(20)} />
       <View style={styles.datePickerContainer}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity
-            style={styles.datePickerCon}
-            onPress={() => setShow(!show)}
-          >
+          <TouchableOpacity style={styles.datePickerCon} onPress={() => setShow(!show)}>
             <Image source={calendar1} style={styles.calendarStyle} />
             <TextInput
               value={date}
@@ -139,9 +127,7 @@ export function SessionHistoryTable({
                 <Text style={styles.historyHeaderText}>Added cash</Text>
                 <Text style={styles.historyHeaderText}>Removed cash</Text>
                 <Text style={styles.historyHeaderText}>Counted cash</Text>
-                <Text style={[styles.historyHeaderText, { paddingRight: 25 }]}>
-                  Session Ended
-                </Text>
+                <Text style={[styles.historyHeaderText, { paddingRight: 25 }]}>Session Ended</Text>
               </View>
             </View>
           </View>
@@ -159,7 +145,11 @@ export function SessionHistoryTable({
                 tableDataArrayReverse?.map((item, index) => (
                   <TouchableOpacity
                     style={styles.tableDataCon}
-                    onPress={() => (tableTouchHandler(), oneItemSend(item))}
+                    onPress={() =>
+                      tableTouchHandler(item)
+
+                      // ,oneItemSend(item)
+                    }
                     key={index}
                   >
                     <View style={styles.displayFlex}>
@@ -169,24 +159,14 @@ export function SessionHistoryTable({
                           width: windowWidth * 0.22,
                         }}
                       >
-                        <Text
-                          style={[
-                            styles.usertableRowText,
-                            { textAlign: 'left' },
-                          ]}
-                        >
+                        <Text style={[styles.usertableRowText, { textAlign: 'left' }]}>
                           {index + 1}
                         </Text>
                         <View style={{ paddingHorizontal: moderateScale(10) }}>
                           <Text style={styles.usertableRowText}>
                             {moment(item.created_at).format('LL') ?? ''}
                           </Text>
-                          <Text
-                            style={[
-                              styles.usertableRowText,
-                              { textAlign: 'left' },
-                            ]}
-                          >
+                          <Text style={[styles.usertableRowText, { textAlign: 'left' }]}>
                             {moment(item.created_at).format('h : mm A')}
                           </Text>
                         </View>
@@ -203,16 +183,12 @@ export function SessionHistoryTable({
                         >
                           <Image
                             source={{
-                              uri: item.seller_details?.user_profiles
-                                ?.profile_photo,
+                              uri: item.seller_details?.user_profiles?.profile_photo,
                             }}
                             style={[styles.allienpic, { marginRight: 4 }]}
                           />
                           <Text
-                            style={[
-                              styles.usertableRowText,
-                              { width: windowWidth * 0.09 },
-                            ]}
+                            style={[styles.usertableRowText, { width: windowWidth * 0.09 }]}
                             numberOfLines={1}
                           >
                             {item.seller_details?.user_profiles?.firstname}
@@ -239,9 +215,7 @@ export function SessionHistoryTable({
                             styles.historydataText,
                             {
                               color:
-                                item.end_tracking_session < 0
-                                  ? COLORS.orange
-                                  : COLORS.solid_grey,
+                                item.end_tracking_session < 0 ? COLORS.orange : COLORS.solid_grey,
                             },
                           ]}
                           numberOfLines={1}
@@ -266,25 +240,19 @@ export function SessionHistoryTable({
 }
 export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
   const finalCashInArray = sessionHistoryArray?.drawer_activites.filter(
-    item => item.mode_of_cash === 'cash_in'
+    (item) => item.mode_of_cash === 'cash_in'
   );
-  const sessionCashCount = finalCashInArray?.map(item => item.amount);
-  const sessionCashSum = sessionCashCount?.reduce(
-    (partialSum, a) => partialSum + a,
-    0
-  );
+  const sessionCashCount = finalCashInArray?.map((item) => item.amount);
+  const sessionCashSum = sessionCashCount?.reduce((partialSum, a) => partialSum + a, 0);
   const finalCashOutArray = sessionHistoryArray?.drawer_activites.filter(
-    item => item.mode_of_cash === 'cash_out'
+    (item) => item.mode_of_cash === 'cash_out'
   );
-  const sessionCashOutCount = finalCashOutArray?.map(item => item.amount);
-  const sessionCashOutSum = sessionCashOutCount?.reduce(
-    (partialSum, a) => partialSum + a,
-    0
-  );
+  const sessionCashOutCount = finalCashOutArray?.map((item) => item.amount);
+  const sessionCashOutSum = sessionCashOutCount?.reduce((partialSum, a) => partialSum + a, 0);
 
   const reverseArray = sessionHistoryArray?.drawer_activites.reverse();
 
-  const correctWay = transaction_type => {
+  const correctWay = (transaction_type) => {
     if (transaction_type === 'start_tracking_session') {
       return 'Start tracking session';
     } else if (transaction_type === 'manual_cash_in') {
@@ -331,7 +299,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     //                 break;
     // }
   };
-
+  console.log('ARRRAYAYAYA', JSON.stringify(sessionHistoryArray));
   return (
     <View style={historyHeader ? styles.bodyContainer : styles.bodyContainer2}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -339,9 +307,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
         <Text style={styles.allCashText}>{strings.management.allCash}</Text>
         <View>
           <View style={styles.totalCashHeader}>
-            <Text style={styles.sectionListHeader}>
-              {strings.management.totalCashIn}
-            </Text>
+            <Text style={styles.sectionListHeader}>{strings.management.totalCashIn}</Text>
             <Text style={styles.sectionListHeader}>
               {strings.management.usd}
               {sessionCashSum ?? '0'}
@@ -363,9 +329,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
           ))}
 
           <View style={styles.totalCashHeader}>
-            <Text style={styles.sectionListHeader}>
-              {strings.management.totalCashOut}
-            </Text>
+            <Text style={styles.sectionListHeader}>{strings.management.totalCashOut}</Text>
             <Text style={styles.sectionListHeader}>
               {strings.management.usd}
               {sessionCashOutSum ?? '0'}
@@ -374,9 +338,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
           </View>
           {finalCashOutArray?.map((item, index) => (
             <View style={styles.totalCashData} key={index}>
-              <Text style={styles.sectionListData}>
-                {correctWay(item.transaction_type)}
-              </Text>
+              <Text style={styles.sectionListData}>{correctWay(item.transaction_type)}</Text>
               <Text style={styles.sectionListData}>
                 {strings.management.usd}
                 {item.amount}
@@ -386,9 +348,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
           ))}
 
           <View style={styles.netPaymentHeader}>
-            <Text style={styles.sectionListHeader}>
-              {strings.management.netPayment}
-            </Text>
+            <Text style={styles.sectionListHeader}>{strings.management.netPayment}</Text>
             <Text style={styles.sectionListHeader}>
               {strings.management.totalCash}
               {sessionHistoryArray?.cash_balance}
@@ -396,16 +356,12 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             </Text>
           </View>
           <Spacer space={SH(60)} />
-          <Text style={styles.cashActivity}>
-            {strings.management.cashActivity}
-          </Text>
+          <Text style={styles.cashActivity}>{strings.management.cashActivity}</Text>
           <Spacer space={SH(20)} />
           {reverseArray?.map((item, index) => (
             <View style={styles.cashActivityCon} key={index}>
               <View style={styles.displayFlex}>
-                <Text style={styles.cashActivityDarkText}>
-                  {correctWay(item.transaction_type)}
-                </Text>
+                <Text style={styles.cashActivityDarkText}>{correctWay(item.transaction_type)}</Text>
                 <Text style={styles.cashActivityDarkText}>
                   {strings.management.usd}
                   {item.amount}
@@ -414,9 +370,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
               </View>
               {item.discrepency_amount === null ? null : (
                 <View style={styles.displayFlex}>
-                  <Text style={styles.cashActivityRedText}>
-                    {strings.management.discrepancy}
-                  </Text>
+                  <Text style={styles.cashActivityRedText}>{strings.management.discrepancy}</Text>
                   <Text style={styles.cashActivityRedText}>
                     {strings.management.removeusd}
                     {item.discrepency_amount}
@@ -427,23 +381,16 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
               <Spacer space={SH(4)} />
               <View style={styles.displayFlex}>
                 <Text style={styles.cashActivityLightText}>
-                  {
-                    sessionHistoryArray?.seller_details?.user_profiles
-                      ?.firstname
-                  }
+                  {sessionHistoryArray?.seller_details?.user_profiles?.firstname}
                 </Text>
                 <Text style={styles.cashActivityLightText}>
-                  {moment(item.created_at).format(
-                    'dddd, MMMM Do YYYY | h:mm A'
-                  )}
+                  {moment(item.created_at).format('dddd, MMMM Do YYYY | h:mm A')}
                 </Text>
               </View>
               <Spacer space={SH(4)} />
               {item.note === null ? null : (
                 <View style={styles.displayFlex}>
-                  <Text style={styles.cashActivityLightText}>
-                    Note : {item.note}
-                  </Text>
+                  <Text style={styles.cashActivityLightText}>Note : {item.note}</Text>
                   <Text style={styles.cashActivityLightText}>{null}</Text>
                 </View>
               )}
@@ -598,17 +545,12 @@ export function TransactionDropDown({ selected }) {
   return (
     <DropDownPicker
       dropDownDirection="BOTTOM"
-      ArrowUpIconComponent={({ style }) => (
-        <Image source={dropdown2} style={styles.dropDownIcon} />
-      )}
+      ArrowUpIconComponent={({ style }) => <Image source={dropdown2} style={styles.dropDownIcon} />}
       ArrowDownIconComponent={({ style }) => (
         <Image source={dropdown2} style={styles.dropDownIcon} />
       )}
       style={styles.dropdown}
-      containerStyle={[
-        styles.containerStyle,
-        { zIndex: Platform.OS === 'ios' ? 100 : 2 },
-      ]}
+      containerStyle={[styles.containerStyle, { zIndex: Platform.OS === 'ios' ? 100 : 2 }]}
       listMode="SCROLLVIEW"
       // scrollViewProps={{
       //   nestedScrollEnabled: true,
@@ -625,7 +567,7 @@ export function TransactionDropDown({ selected }) {
       setItems={setCityItems}
       placeholder={strings.management.transactionType}
       placeholderStyle={{ color: '#A7A7A7' }}
-      onSelectItem={item => selected(item.value)}
+      onSelectItem={(item) => selected(item.value)}
     />
   );
 }

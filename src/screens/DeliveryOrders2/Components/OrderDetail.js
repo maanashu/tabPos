@@ -60,7 +60,7 @@ const OrderDetail = ({
                 color: COLORS.primary,
               }}
             >
-              {userDetail?.delivery_details?.title ?? 'ghfgh'}
+              {userDetail?.delivery_details?.title ?? ''}
             </Text>
             <Text
               style={{
@@ -106,7 +106,7 @@ const OrderDetail = ({
               {strings.shippingOrder.orderDate}
             </Text>
             <Text style={styles.itemCountText}>
-              {moment(userDetail?.date).format('DD/MM/YYYY')}
+              {userDetail?.date ? moment(userDetail?.date).format('DD/MM/YYYY') : '00:00'}
             </Text>
           </View>
 
@@ -138,9 +138,7 @@ const OrderDetail = ({
 
           <View style={styles.orderDetailsView}>
             <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
-            <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-              {strings.deliveryOrders.subTotalValue}
-            </Text>
+            <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'0'}</Text>
           </View>
 
           <View style={styles.orderDetailsView}>
@@ -156,23 +154,37 @@ const OrderDetail = ({
           </View>
 
           <Spacer space={SH(15)} />
-          {openShippingOrders == 0 || openShippingOrders == 1 || openShippingOrders == 2 ? (
-            <View style={styles.shippingOrdersViewStyle}>
+
+          <View style={styles.shippingOrdersViewStyle}>
+            {openShippingOrders == '0' ? (
               <TouchableOpacity
                 onPress={() => declineHandler(userDetail?.id)}
                 style={styles.declineButtonStyle}
               >
                 <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
               </TouchableOpacity>
+            ) : null}
 
+            {openShippingOrders === '0' ||
+            openShippingOrders === '1' ||
+            openShippingOrders === '2' ? (
               <TouchableOpacity
                 onPress={() => acceptHandler(userDetail?.id)}
                 style={styles.acceptButtonView}
               >
-                <Text style={styles.acceptTextStyle}>{strings.deliveryOrders.accept}</Text>
+                <Text style={styles.acceptTextStyle}>
+                  {' '}
+                  {openShippingOrders === '0'
+                    ? strings.buttonStatus.reviewButton
+                    : openShippingOrders === '1'
+                    ? strings.buttonStatus.acceptedButton
+                    : openShippingOrders === '2'
+                    ? strings.buttonStatus.prepareButton
+                    : ''}
+                </Text>
               </TouchableOpacity>
-            </View>
-          ) : null}
+            ) : null}
+          </View>
         </View>
       </View>
     </View>

@@ -97,6 +97,7 @@ export function Management() {
   const [addCashInput, setAddCashInput] = useState();
   const [mergedDataa, setMergedData] = useState();
   const [userHistory, setUserHistory] = useState();
+  const [isCashIn, setIsCashIn] = useState( null);
   const SessionData = {
     id: drawerData?.getDrawerSession?.id,
     cashBalance: drawerData?.getDrawerSession?.cash_balance ?? '0',
@@ -213,15 +214,19 @@ export function Management() {
       alert('Please enter valid amount');
     } else if (addCashInput <= 0) {
       alert('Please enter valid amount');
-    } else if (!addCashDropDown) {
-      alert('Please Select Transaction type');
-    } else {
+    } 
+    // else if (!addCashDropDown) {
+    //   alert('Please Select Transaction type');
+    // }
+    
+    else {
       const data = differentState
         ? {
             drawerId: SessionData?.id,
             amount: addCashInput,
             notes: trackNotes,
-            transactionType: addCashDropDown,
+            // transactionType: addCashDropDown,
+            transactionType:"manual_cash_in",
             modeOfcash: 'cash_in',
           }
         : {
@@ -229,6 +234,7 @@ export function Management() {
             amount: addCashInput,
             notes: trackNotes,
             transactionType: addCashDropDown,
+            transactionType: "manual_cash_out",
             modeOfcash: 'cash_out',
           };
       const res = await dispatch(trackSessionSave(data));
@@ -284,8 +290,10 @@ export function Management() {
     setdifferentState(false);
   };
 
-  const tableTouchHandler = () => {
-    setSessionHistory(false), setSummaryHistory(true);
+  const tableTouchHandler = (item) => {
+   setUserHistory(item)
+    setSessionHistory(false),
+    setSummaryHistory(true);
   };
   const emailButtonHandler = () => {
     dispatch(logoutUserFunction());
@@ -443,6 +451,7 @@ export function Management() {
 
             <TouchableOpacity
               onPress={() => {
+                setAddCashInput('')
                 setAddCash(false), setdifferentState(false);
               }}
               style={{ width: SW(10) }}
@@ -493,7 +502,18 @@ export function Management() {
                 {strings.management.transactionType}
               </Text>
               <View style={styles.addCashDrop}>
-                <TransactionDropDown selected={addCashValue} />
+                {/* <TransactionDropDown 
+                isCashIn={true}
+                selected={addCashValue} /> */}
+                 <TextInput
+                 editable={false}
+                // placeholder={"Manual Cash In"}
+                style={styles.noteInputStyle}
+                placeholderTextColor={COLORS.gerySkies}
+                value={removeCash?"Manual Cash Out":"Manual Cash In"}
+                // onChangeText={setTrackNotes}
+              />
+
               </View>
             </View>
           </View>
@@ -797,7 +817,7 @@ export function Management() {
           tableTouchHandler={tableTouchHandler}
           tableDataArray={sessionHistoryArray}
           sessionHistoryLoad={sessionHistoryLoad}
-          oneItemSend={setUserHistory}
+          // oneItemSend={setUserHistory}
           setSessionHistoryArray={setSessionHistoryArray}
         />
       );

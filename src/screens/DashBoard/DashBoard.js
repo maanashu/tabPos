@@ -255,14 +255,12 @@ export function DashBoard({ navigation }) {
   };
 
   const tableListItem = ({ item }) => (
-
-    <TouchableOpacity 
-    
-    onPress={()=>
-       navigation.navigate(NAVIGATION.deliveryOrders2,{isViewAll:true,"ORDER_DETAIL":item})
-    
-    }
-    style={[styles.reviewRenderView]}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate(NAVIGATION.deliveryOrders2, { isViewAll: true, ORDER_DETAIL: item })
+      }
+      style={[styles.reviewRenderView]}
+    >
       <View style={{ width: SW(20) }}>
         <Text style={styles.hashNumber}>#{item.id}</Text>
       </View>

@@ -64,14 +64,14 @@ export class ShippingController {
       };
       HttpClient.put(endpoint, body)
         .then((response) => {
-          if (response?.msg === 'Order status updated successfully!') {
-            Toast.show({
-              position: 'bottom',
-              type: 'success_toast',
-              text2: response?.msg,
-              visibilityTime: 2000,
-            });
-          }
+          // if (response?.msg === 'Order status updated successfully!') {
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: response?.msg,
+            visibilityTime: 2000,
+          });
+          // }
           resolve(response);
         })
         .catch((error) => {
@@ -207,9 +207,11 @@ export class ShippingController {
       const endpoint = ORDER_URL + ApiOrderInventory.orderStatusCount + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response -----', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error -----', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',

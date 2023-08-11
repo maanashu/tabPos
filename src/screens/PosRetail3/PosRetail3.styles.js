@@ -558,7 +558,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     width: windowWidth * 0.5,
-    height: windowHeight * 0.9,
+    paddingTop: ms(5),
+    paddingBottom: ms(10),
     position: 'absolute',
     alignSelf: 'center',
   },
@@ -1203,12 +1204,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
   },
-
-  displayflex: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   displayRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -1616,9 +1611,10 @@ export const styles = StyleSheet.create({
     paddingVertical: verticalScale(7),
   },
   offerImage: {
-    width: SW(11),
-    height: SW(11),
+    width: SW(10),
+    height: SW(10),
     resizeMode: 'contain',
+    borderRadius: 100,
   },
   offerText: {
     color: COLORS.dark_grey,
@@ -2038,5 +2034,44 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(5),
     borderRadius: 100,
     borderColor: COLORS.primary,
+  },
+
+  cartHeaderLeftSide: {
+    flexDirection: 'row',
+    width: windowWidth * 0.22,
+  },
+  cartHeaderRightSide: {
+    flexDirection: 'row',
+    width: windowWidth * 0.43,
+  },
+  cartHeaderBodyRightSide: {
+    color: COLORS.white,
+    fontSize: SF(14),
+    fontFamily: Fonts.Medium,
+    width: windowWidth * 0.09,
+  },
+  ItemHeader: {
+    color: COLORS.white,
+    fontSize: SF(14),
+    fontFamily: Fonts.Medium,
+    width: windowWidth * 0.18,
+  },
+  cartBodyRightSide: {
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    fontFamily: Fonts.Regular,
+    width: windowWidth * 0.09,
+    textAlignVertical: 'center',
+  },
+
+  noProductAndService: {
+    color: COLORS.red,
+    fontSize: SF(20),
+    fontFamily: Fonts.MaisonRegular,
+  },
+  noproductServiceCon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: ms(50),
   },
 });

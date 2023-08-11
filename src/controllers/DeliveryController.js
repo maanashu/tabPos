@@ -32,11 +32,9 @@ export class DeliveryController {
         `?status=${status}&seller_id=${sellerID}&delivery_option=${deliveryOption}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response ======', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error ======', error);
           reject(error);
         });
     });
@@ -66,14 +64,14 @@ export class DeliveryController {
       };
       HttpClient.put(endpoint, body)
         .then((response) => {
-          if (response?.msg === 'Order status updated successfully!') {
-            Toast.show({
-              position: 'bottom',
-              type: 'success_toast',
-              text2: response?.msg,
-              visibilityTime: 2000,
-            });
-          }
+          // if (response?.msg === 'Order status updated successfully!') {
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: response?.msg,
+            visibilityTime: 2000,
+          });
+          // }
           resolve(response);
         })
         .catch((error) => {

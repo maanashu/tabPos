@@ -16,9 +16,7 @@ client.interceptors.request.use(async function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
   const user = store.getState().user?.posLoginData?.token;
   const fcmToken = await getDeviceToken();
-
-  // console.log('register', register);
-
+  console.log('register', register);
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
    * @returns Token for api call
@@ -52,10 +50,7 @@ client.interceptors.response.use(
       : response.data,
   (error) => {
     if (error.response) {
-      console.log('check error mesage', JSON.stringify(error.response.data));
-      const statusCode = error.response?.data?.status_code;
-
-      if (statusCode === 401) {
+      if (error.response.status === 401) {
         // Handle 401 Unauthorized scenario here
         CustomAlert({
           title: 'Alert',
@@ -69,7 +64,6 @@ client.interceptors.response.use(
           },
         });
       }
-
       return Promise.reject(error.response.data);
     } else if (error.request) {
       return Promise.reject({ error: strings.common.connectionError });
@@ -78,7 +72,6 @@ client.interceptors.response.use(
     }
   }
 );
-
 const setAuthorization = (token) => {
   client.defaults.headers.common.authorization = token;
 };

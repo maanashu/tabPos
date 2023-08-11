@@ -24,12 +24,13 @@ import {
   getCategory,
   getMainProduct,
   getProductsUsingFilters,
+  getServiceCategory,
   getSubCategory,
 } from '@/actions/RetailAction';
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-export const FilterDropDown = ({ sellerid }) => {
+export const ServiceFilterDropDown = ({ sellerid }) => {
   const retailData = useSelector(getRetail);
   const dispatch = useDispatch();
 
@@ -106,7 +107,7 @@ export const FilterDropDown = ({ sellerid }) => {
   }, [selectedCategoryArray, selectedBrandArray, selectedSubCategoryArray]);
 
   useEffect(() => {
-    dispatch(getCategory(sellerid));
+    dispatch(getServiceCategory(sellerid));
     dispatch(getSubCategory(sellerid));
     dispatch(getBrand(sellerid));
     // setCategoryData(
@@ -328,16 +329,17 @@ export const FilterDropDown = ({ sellerid }) => {
   };
 
   return (
-    <View>
+    <>
       {/* category view */}
       <View>
         <TouchableOpacity
           style={styles.categoryViewStyle}
-          onPress={() => {
-            setCategoryOpenDropDown(!categoryOpenDropDown);
-            setSubCategoryOpenDropDown(false);
-            setBrandOpenDropDown(false);
-          }}
+          // onPress={() => {
+          //   setCategoryOpenDropDown(!categoryOpenDropDown);
+          //   setSubCategoryOpenDropDown(false);
+          //   setBrandOpenDropDown(false);
+          // }}
+          onPress={() => alert('Inprogress')}
         >
           <Text style={styles.itemNameTextStyle}>{strings.posSale.category}</Text>
 
@@ -356,11 +358,12 @@ export const FilterDropDown = ({ sellerid }) => {
       <View>
         <TouchableOpacity
           style={styles.categoryViewStyle}
-          onPress={() => {
-            setSubCategoryOpenDropDown(!subCategoryOpenDropDown);
-            setCategoryOpenDropDown(false);
-            setBrandOpenDropDown(false);
-          }}
+          // onPress={() => {
+          //   setSubCategoryOpenDropDown(!subCategoryOpenDropDown);
+          //   setCategoryOpenDropDown(false);
+          //   setBrandOpenDropDown(false);
+          // }}
+          onPress={() => alert('Inprogress')}
         >
           <Text style={styles.itemNameTextStyle}>{'Sub Category'}</Text>
 
@@ -379,13 +382,14 @@ export const FilterDropDown = ({ sellerid }) => {
       <View>
         <TouchableOpacity
           style={styles.categoryViewStyle}
-          onPress={() => {
-            setBrandOpenDropDown(!brandOpenDropDown);
-            setCategoryOpenDropDown(false);
-            setSubCategoryOpenDropDown(false);
-          }}
+          // onPress={() => {
+          //   setBrandOpenDropDown(!brandOpenDropDown);
+          //   setCategoryOpenDropDown(false);
+          //   setSubCategoryOpenDropDown(false);
+          // }}
+          onPress={() => alert('Inprogress')}
         >
-          <Text style={styles.itemNameTextStyle}>{'Brand'}</Text>
+          <Text style={styles.itemNameTextStyle}>{'Staff'}</Text>
 
           {brandOpenDropDown ? (
             <Image source={up} style={styles.dropdownIconStyle} />
@@ -397,7 +401,7 @@ export const FilterDropDown = ({ sellerid }) => {
           <View style={styles.dropdowMainView}>{showDetailedBrands()}</View>
         ) : null}
       </View>
-    </View>
+    </>
   );
 };
 
