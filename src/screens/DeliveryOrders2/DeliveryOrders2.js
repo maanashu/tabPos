@@ -95,9 +95,21 @@ export function DeliveryOrders2({ route }) {
   const todayOrderStatusData = getDeliveryData?.todayOrderStatus;
   const pieChartData = getDeliveryData?.getOrderstatistics?.data;
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
+
+  const ordersList = getDeliveryData?.getReviewDef;
   const isProductDetailLoading = useSelector((state) =>
     isLoadingSelector([ANALYTICSTYPES.GET_ORDER_DATA], state)
   );
+
+  useEffect(() => {
+    if (ordersList?.length > 0) {
+      const interval = setInterval(() => {
+        dispatch(getOrderData(orderId || ordersList?.[0]?.id));
+      }, 30000);
+
+      return () => clearInterval(interval);
+    }
+  }, []);
 
   const widthAndHeight = 140;
   const series = [
@@ -426,6 +438,7 @@ export function DeliveryOrders2({ route }) {
             setOrderDetail(item?.order_details);
             dispatch(getOrderData(item?.id));
             setViewAllOrders(true);
+            setOrderId(item?.id);
           }}
           style={[
             viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
