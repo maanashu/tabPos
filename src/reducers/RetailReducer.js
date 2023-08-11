@@ -354,6 +354,11 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         availableOffer: [],
       };
 
+    case TYPES.UPDATE_CART_BY_TIP_SUCCESS:
+      return {
+        ...state,
+        tipKey: payload.data,
+      };
     case TYPES.CLEAR_STORE:
       return {};
     default:

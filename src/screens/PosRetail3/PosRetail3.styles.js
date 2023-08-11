@@ -124,6 +124,7 @@ export const styles = StyleSheet.create({
   _inputSubView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   _inputContainer: {
     height: ms(40),

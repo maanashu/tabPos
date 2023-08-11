@@ -54,6 +54,8 @@ import {
   createOrder,
   attachServiceCustomer,
   updateCartByTip,
+  getServiceCart,
+  createServiceOrder,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -84,13 +86,16 @@ export const CartAmountPayBy = ({
   cartid,
   cartType,
   onPressContinue,
+  onPressServiceContinue,
 }) => {
   const dispatch = useDispatch();
+
   const getRetailData = useSelector(getRetail);
   // const [loading, setloading] = useState(false);
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+
   const qrcodeData = useSelector(getRetail).qrKey;
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
@@ -121,8 +126,13 @@ export const CartAmountPayBy = ({
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
+
   const [status, setstatus] = useState('');
   const [sendRequest, setsendRequest] = useState(false);
+
+  const [duration, setDuration] = useState(120);
+
+  const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
   const tipsArr = [
@@ -141,10 +151,16 @@ export const CartAmountPayBy = ({
     { title: '', icon: cardPayment, percent: 'No Tip' },
   ];
 
+  function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     const totalPayment =
       parseFloat(cartAmount) + parseFloat(selectedTipAmount === '' ? '0.0' : selectedTipAmount);
+
     return totalPayment.toFixed(2);
   };
 
@@ -177,6 +193,19 @@ export const CartAmountPayBy = ({
       }
     }
   };
+
+  useEffect(() => {
+    let timer;
+
+    if (sendRequest && duration > 0) {
+      timer = setInterval(() => setDuration(duration - 1), 1000);
+    } else if (duration == 0) {
+      setsendRequest(false);
+      setDuration(120);
+    }
+    return () => clearInterval(timer);
+  }, [sendRequest, duration]);
+
   useEffect(() => {
     dispatch(getWalletId(sellerID));
     dispatch(getTip(sellerID));
@@ -204,7 +233,7 @@ export const CartAmountPayBy = ({
         });
       }, 10000);
     } else if (requestStatus == 'approved') {
-      createOrderHandler();
+      cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
       clearInterval(interval);
     }
     return () => clearInterval(interval);
@@ -370,6 +399,25 @@ export const CartAmountPayBy = ({
       }
     };
     dispatch(createOrder(data, callback));
+    dispatch(requestCheckSuccess(''));
+    setsendRequest(false);
+  };
+
+  const serviceOrderHandler = () => {
+    const data = {
+      serviceCartId: cartData?.id,
+      modeOfPayment: 'jbr',
+      tipsAddAnount: (totalPayAmount() * 100).toFixed(0),
+    };
+    console.log('data in function of service', data);
+    const callback = (response) => {
+      if (response) {
+        onPressServiceContinue(saveCartData, data);
+        setQrPopUp(false);
+      }
+    };
+
+    dispatch(createServiceOrder(data, callback));
     dispatch(requestCheckSuccess(''));
     setsendRequest(false);
   };
@@ -942,6 +990,18 @@ export const CartAmountPayBy = ({
                                   {sendRequest ? 'Request Sent' : 'Send Request'}
                                 </Text>
                               </TouchableOpacity>
+                              {sendRequest ? (
+                                <Text
+                                  style={{
+                                    fontSize: moderateScale(10),
+                                    textAlign: 'center',
+                                    fontFamily: Fonts.MaisonBold,
+                                    color: '#8F8E93',
+                                  }}
+                                >
+                                  {formatTime(duration)}
+                                </Text>
+                              ) : null}
                             </View>
                           </View>
                         )}

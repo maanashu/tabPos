@@ -16,7 +16,8 @@ import moment from 'moment';
 import AddedCartItemsCard from '../../../components/AddedCartItemsCard';
 import { useFocusEffect } from '@react-navigation/native';
 import { clearServiceAllCart, getServiceCart } from '@/actions/RetailAction';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -28,13 +29,16 @@ export const FinalPaymentScreen = ({
   payDetail,
   cartType,
 }) => {
+  const tipData = useSelector(getRetail).tipKey?.payload?.tip;
+  const tipamount = Number(tipData);
+
   const cartProducts =
     cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
-    const totalPayment = tipAmount
-      ? parseFloat(cartAmount) + parseFloat(tipAmount)
+    const totalPayment = tipamount
+      ? parseFloat(cartAmount) + parseFloat(tipamount)
       : parseFloat(cartAmount);
     return totalPayment.toFixed(2);
   };
@@ -74,7 +78,11 @@ export const FinalPaymentScreen = ({
                 <Text style={[styles._dollarSymbol, { fontSize: ms(15) }]}>
                   {paymentMethod === 'Card' || paymentMethod === 'Cash' ? '$' : 'JBR'}
                 </Text>
-                <Text style={styles._amount}>{payDetail?.tips}</Text>
+                {cartType == 'Service' ? (
+                  <Text style={styles._amount}>{payDetail?.tipsAddAnount}</Text>
+                ) : (
+                  <Text style={styles._amount}>{payDetail?.tips}</Text>
+                )}
               </View>
               {paymentMethod === 'Cash' && (
                 <>
@@ -121,7 +129,7 @@ export const FinalPaymentScreen = ({
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Tips</Text>
-              <Text style={styles._subTotalPrice}>${tipAmount}</Text>
+              <Text style={styles._subTotalPrice}>${tipamount}</Text>
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>

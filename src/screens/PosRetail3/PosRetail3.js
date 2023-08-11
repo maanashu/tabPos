@@ -453,6 +453,12 @@ export function PosRetail3() {
           setselectedScreen('FinalPaymentScreen');
           setCashPayDetail(data);
         }}
+        onPressServiceContinue={(cartData, data) => {
+          setpaymentMethod('Jbr');
+          setSavedTempCartData(cartData?.getserviceCart);
+          setselectedScreen('FinalPaymentScreen');
+          setCashPayDetail(data);
+        }}
       />
     ),
     ['PayByCard']: (
