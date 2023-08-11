@@ -41,8 +41,8 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
-            backgroundGradientFrom: COLORS.mid_grey,
-            backgroundGradientTo: COLORS.mid_grey,
+            backgroundGradientFrom: COLORS.white,
+            backgroundGradientTo: COLORS.white,
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             style: {

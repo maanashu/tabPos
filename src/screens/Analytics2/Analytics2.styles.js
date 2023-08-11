@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
-import { verticalScale, moderateScale } from 'react-native-size-matters';
+import { verticalScale, moderateScale, ms } from 'react-native-size-matters';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
 
   homeMainContainer: {
     paddingHorizontal: moderateScale(5),
-    paddingBottom: Platform.OS === 'ios' ? 30 : 60,
+    paddingBottom: Platform.OS === 'ios' ? ms(10) : ms(20),
     flex: 1,
   },
 
@@ -71,11 +71,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: windowWidth * 0.06,
-    height: Platform.OS === 'ios' ? windowHeight * 0.928 : windowHeight - SH(16),
+    height: Platform.OS === 'ios' ? windowHeight * 0.928 : windowHeight - ms(12),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: Platform.OS === 'ios' ? SH(6) : SH(0),
+    marginTop: Platform.OS === 'ios' ? SH(6) : ms(5),
   },
   sideBarImage: {
     width: SW(7),
@@ -195,8 +195,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: SW(6),
     marginRight: SW(10),
     zIndex: -9,
-    borderTopRightRadius: SW(4),
-    borderTopLeftRadius: SW(4),
+    borderRadius: SW(4),
     overflow: 'hidden',
   },
   revenueDataText: {
@@ -226,7 +225,7 @@ export const styles = StyleSheet.create({
     color: COLORS.text,
   },
   goBack: {
-    marginTop: 10,
+    marginTop: ms(10),
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 12,
@@ -276,7 +275,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(20),
     color: COLORS.black,
-    marginVertipaddvcal: SH(15),
+    marginVertical: ms(5),
     height: SH(30),
   },
   bullets: {
@@ -295,5 +294,8 @@ export const styles = StyleSheet.create({
     marginTop: SH(140),
     marginLeft: SW(150),
     alignItems: 'flex-start',
+  },
+  flex1: {
+    flex: 1,
   },
 });

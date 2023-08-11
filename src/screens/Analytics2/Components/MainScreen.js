@@ -1,5 +1,12 @@
 import React from 'react';
-import { Platform, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import {
+  Platform,
+  View,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import { BarChartCom, ScreenWrapper, Spacer } from '@/components';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
@@ -7,6 +14,8 @@ import { styles } from '../Analytics2.styles';
 import { HomeGraph } from '.';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { getUser } from '@/selectors/UserSelectors';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -59,7 +68,7 @@ export function MainScreen({
   const getPosUser = getUserData?.posLoginData;
 
   const interval = 2;
-  const maxLabel = 31;
+  const maxLabel = 30;
   const daysLength = 7;
 
   const dataLabelsProfit = analyticStatistics?.profit?.graph_data?.labels;
@@ -85,6 +94,10 @@ export function MainScreen({
 
   const dataLabelsProductSold = soldProduct?.graph_data?.labels;
   const labelsProductSold = generateLabels(dataLabelsProductSold, interval, maxLabel, daysLength);
+
+  const profitStatisticsLoader = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
+  );
 
   return (
     <View>
@@ -249,6 +262,9 @@ export function MainScreen({
               labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
               initialSpacing={SH(5)}
               data={totalOrder?.graphData}
+              spacing={SW(10)}
+              interval={2}
+              dateInterval={5}
             />
           </TouchableOpacity>
         </View>

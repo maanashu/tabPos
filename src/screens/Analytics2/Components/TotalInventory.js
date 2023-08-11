@@ -19,6 +19,7 @@ import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
+import { ms } from 'react-native-size-matters';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -71,29 +72,28 @@ export function TotalInventory({ onPress }) {
   const getProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
-        <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '   '}</Text>
-          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
-        </View>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text>{index + 1 + '   '}</Text>
+
         <Text style={styles.revenueDataText}>{item?.products?.name}</Text>
       </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.products?.upc}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.products?.price}</Text>
+      </DataTable.Cell>
+
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.rest_quantity}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.products?.upc}</Text>
-      </DataTable.Cell>
-
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.products?.price}</Text>
+        <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
   return (
-    <View>
+    <View style={styles.flex1}>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
         <Image source={backArrow2} style={styles.backImageStyle} />
         <Text style={styles.currentStatusText}>{'Back'}</Text>
@@ -196,18 +196,11 @@ export function TotalInventory({ onPress }) {
               zIndex: -99,
             }}
           >
-            <DataTable.Header style={styles.tableListHeader}>
+            <DataTable.Header style={[styles.tableListHeader]}>
               <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Date</Text>
-              </DataTable.Title>
-
-              <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Product Name</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Inventory Left</Text>
-              </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>UPC</Text>
               </DataTable.Title>
@@ -215,9 +208,22 @@ export function TotalInventory({ onPress }) {
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Price</Text>
               </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Inventory Left</Text>
+              </DataTable.Title>
+
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Last sold date</Text>
+              </DataTable.Title>
             </DataTable.Header>
 
-            <View style={{ height: SH(380), zIndex: -99 }}>
+            <View
+              style={{
+                zIndex: -99,
+                // width: Dimensions.get('window').width - ms(20),
+                // backgroundColor: 'red',
+              }}
+            >
               {totalInventory?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text
@@ -230,7 +236,12 @@ export function TotalInventory({ onPress }) {
                   </Text>
                 </View>
               ) : (
-                <View style={{ height: SH(250) }}>
+                <View
+                  style={{
+                    height: ms(210),
+                    width: Dimensions.get('window').width - ms(140),
+                  }}
+                >
                   <FlatList
                     style={{ backgroundColor: COLORS.white }}
                     data={totalInventory?.productData}
