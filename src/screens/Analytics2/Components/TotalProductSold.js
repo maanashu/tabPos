@@ -221,7 +221,7 @@ export function TotalProductSold({ onPress }) {
                   </Text>
                 </View>
               ) : (
-                <View style={{ height: ms(210), width: Dimensions.get('window').width - ms(120) }}>
+                <View style={{ height: ms(210), width: Dimensions.get('window').width - ms(150) }}>
                   <FlatList
                     style={{ backgroundColor: COLORS.white }}
                     data={soldProduct?.totalProductSoldList}

@@ -178,7 +178,7 @@ export function TotalProfit({ onPress }) {
 
       <View style={styles.tableMainView}>
         <ScrollView
-          horizontal
+          // horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
         >
@@ -224,7 +224,7 @@ export function TotalProfit({ onPress }) {
                   </Text>
                 </View>
               ) : (
-                <View style={{ height: ms(210) }}>
+                <View style={{ height: ms(210), width: Dimensions.get('window').width - ms(150) }}>
                   <FlatList
                     style={{ backgroundColor: COLORS.white }}
                     data={analyticStatistics?.orderData}

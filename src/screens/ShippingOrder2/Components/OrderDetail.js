@@ -214,31 +214,35 @@ const OrderDetail = ({
               <Text style={styles.itemCountText}>{userDetail?.id}</Text>
             </View>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingVertical: 10,
-              }}
-            >
-              <Text
-                style={[
-                  styles.invoiceText,
-                  { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
-                ]}
+            {openShippingOrders == '0' ||
+            openShippingOrders == '1' ||
+            openShippingOrders == '2' ? null : (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingVertical: 10,
+                }}
               >
-                {'Tracking ID - '}
-              </Text>
-              <Text
-                style={[
-                  styles.invoiceText,
-                  { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
-                ]}
-              >
-                {getTrackingInfo?.track_id}
-              </Text>
-            </View>
+                <Text
+                  style={[
+                    styles.invoiceText,
+                    { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
+                  ]}
+                >
+                  {'Tracking ID - '}
+                </Text>
+                <Text
+                  style={[
+                    styles.invoiceText,
+                    { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
+                  ]}
+                >
+                  {getTrackingInfo?.track_id}
+                </Text>
+              </View>
+            )}
           </View>
 
           <View style={{ paddingHorizontal: 10 }}>

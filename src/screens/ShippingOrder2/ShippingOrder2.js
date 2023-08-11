@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
+  Platform,
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
@@ -468,7 +469,7 @@ export function ShippingOrder2() {
     label: getGraphOrderData?.graphOrders?.labels?.[index],
     value,
     labelTextStyle: { color: COLORS.gerySkies, fontSize: 11, fontFamily: Fonts.Regular },
-    spacing: 62,
+    spacing: Platform.OS == 'ios' ? 38 : 62,
     initialSpace: 0,
     frontColor:
       index === 0
@@ -573,11 +574,9 @@ export function ShippingOrder2() {
     };
     dispatch(
       acceptOrder(data, (res) => {
-        if (res?.msg === 'Order status updated successfully!') {
-          alert('Order declined successfully');
-          setViewAllOrders(false);
-          dispatch(getReviewDefault(0, sellerID, 4));
-        }
+        alert('Order declined successfully');
+        setViewAllOrders(false);
+        dispatch(getReviewDefault(0, sellerID, 4));
       })
     );
   };

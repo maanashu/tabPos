@@ -76,6 +76,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import MapViewDirections from 'react-native-maps-directions';
+import { orderStatusCount } from '@/actions/ShippingAction';
 
 export function DeliveryOrders2({ route }) {
   var isViewAll;
@@ -105,7 +106,7 @@ export function DeliveryOrders2({ route }) {
     if (ordersList?.length > 0) {
       const interval = setInterval(() => {
         dispatch(getOrderData(orderId || ordersList?.[0]?.id));
-      }, 30000);
+      }, 60000);
 
       return () => clearInterval(interval);
     }
@@ -152,6 +153,7 @@ export function DeliveryOrders2({ route }) {
   const [getOrderDetail, setGetOrderDetail] = useState('');
   const [orderId, setOrderId] = useState(getDeliveryData?.getReviewDef?.[0]?.id);
   const [trackingView, setTrackingView] = useState(false);
+  const [viewAllOrder, setViewAllOrder] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -267,12 +269,12 @@ export function DeliveryOrders2({ route }) {
   useEffect(() => {
     setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
     setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
-  }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
+  }, [viewAllOrder && getOrderDetail === 'ViewAllScreen']);
 
   useEffect(() => {
     setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
     setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
-  }, [openShippingOrders, viewAllOrders, getDeliveryData?.getReviewDef]);
+  }, [openShippingOrders, viewAllOrder, getDeliveryData?.getReviewDef]);
 
   const isDeliveryOrder = useSelector((state) =>
     isLoadingSelector([TYPES.DELIVERING_ORDER, TYPES.GET_GRAPH_ORDERS], state)
@@ -432,23 +434,22 @@ export function DeliveryOrders2({ route }) {
       {
         <TouchableOpacity
           onPress={() => {
-            setViewAllOrders(true);
+            setViewAllOrder(true);
             setSelectedProductId(item?.order_details[0]?.id);
             setUserDetail(item);
             setOrderDetail(item?.order_details);
             dispatch(getOrderData(item?.id));
-            setViewAllOrders(true);
             setOrderId(item?.id);
           }}
           style={[
-            viewAllOrders ? styles.showAllOrdersView : styles.orderRowStyle,
+            viewAllOrder ? styles.showAllOrdersView : styles.orderRowStyle,
             {
               backgroundColor:
-                viewAllOrders && item?.id === userDetail?.id
+                viewAllOrder && item?.id === userDetail?.id
                   ? COLORS.textInputBackground
                   : COLORS.transparent,
               borderColor:
-                viewAllOrders && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
+                viewAllOrder && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
             },
           ]}
           // style={
@@ -510,7 +511,7 @@ export function DeliveryOrders2({ route }) {
             onPress={() => {
               setUserDetail(item);
               setOrderDetail(item?.order_details);
-              setViewAllOrders(true);
+              setViewAllOrder(true);
             }}
             style={[styles.orderDetailStyle, { width: SH(24) }]}
           >
@@ -542,7 +543,7 @@ export function DeliveryOrders2({ route }) {
       </Text>
 
       {getDeliveryData?.getReviewDef?.length > 0 ? (
-        <TouchableOpacity onPress={() => setViewAllOrders(true)} style={styles.viewAllButtonStyle}>
+        <TouchableOpacity onPress={() => setViewAllOrder(true)} style={styles.viewAllButtonStyle}>
           <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
         </TouchableOpacity>
       ) : (
@@ -644,10 +645,14 @@ export function DeliveryOrders2({ route }) {
       sellerID: sellerID,
     };
     dispatch(
-      acceptOrder(data, (res) => {
+      acceptOrder(data, openShippingOrders, 1, (res) => {
         if (res?.msg) {
-          setViewAllOrders(false);
-          dispatch(getReviewDefault(parseInt(openShippingOrders), sellerID));
+          dispatch(getReviewDefault(openShippingOrders, sellerID, 1));
+          dispatch(orderStatusCount(sellerID));
+          setGetOrderDetail('ViewAllScreen');
+          setUserDetail(ordersList?.[0] ?? []);
+          setViewAllOrder(true);
+          setOrderDetail(ordersList?.[0]?.order_details ?? []);
         }
       })
     );
@@ -661,11 +666,8 @@ export function DeliveryOrders2({ route }) {
     };
     dispatch(
       acceptOrder(data, (res) => {
-        if (res?.msg === 'Order status updated successfully!') {
-          alert('Order declined successfully');
-          setViewAllOrders(false);
-          dispatch(getReviewDefault(0, sellerID));
-        }
+        setViewAllOrder(false);
+        dispatch(getReviewDefault(0, sellerID));
       })
     );
   };
@@ -1059,11 +1061,11 @@ export function DeliveryOrders2({ route }) {
       {!trackingView ? (
         <>
           <View style={styles.container}>
-            <Header {...{ viewAllOrders, setViewAllOrders, setIsBack }} />
+            <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
 
             <Spacer space={SH(20)} />
 
-            {viewAllOrders ? (
+            {viewAllOrder ? (
               <View style={styles.firstRowStyle}>
                 {getDeliveryData?.getReviewDef?.length > 0 ? (
                   <>
@@ -1218,7 +1220,7 @@ export function DeliveryOrders2({ route }) {
           <View style={{ flex: 1 }}>
             <TouchableOpacity
               onPress={() => {
-                setViewAllOrders(true);
+                setViewAllOrder(true);
                 setTrackingView(false);
               }}
               style={styles.backButtonView}

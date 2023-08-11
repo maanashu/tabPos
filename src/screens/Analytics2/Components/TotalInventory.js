@@ -187,7 +187,7 @@ export function TotalInventory({ onPress }) {
 
       <View style={styles.tableMainView}>
         <ScrollView
-          horizontal
+          // horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
         >
@@ -239,7 +239,7 @@ export function TotalInventory({ onPress }) {
                 <View
                   style={{
                     height: ms(210),
-                    width: Dimensions.get('window').width - ms(140),
+                    width: Dimensions.get('window').width - ms(150),
                   }}
                 >
                   <FlatList
