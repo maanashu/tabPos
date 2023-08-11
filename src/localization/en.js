@@ -729,6 +729,7 @@ export const en = {
     searchCategory: 'Search Categories',
     searchSubCategory: 'Search Sub-catgories',
     searchBrand: 'Search Brands',
+    searchStaff: 'Search Staffs',
   },
   Staff: {
     Staff: 'Staff',

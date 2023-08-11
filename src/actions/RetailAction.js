@@ -43,19 +43,33 @@ const getSubCategoryRequest = () => ({
   type: TYPES.GET_SUB_CATEGORY_REQUEST,
   payload: null,
 });
-
 const getSubCategorySuccess = (subCategoryList) => ({
   type: TYPES.GET_SUB_CATEGORY_SUCCESS,
   payload: { subCategoryList },
 });
-
 const getSubCategoryError = (error) => ({
   type: TYPES.GET_SUB_CATEGORY_ERROR,
   payload: { error },
 });
-
 const getSubCategoryReset = () => ({
   type: TYPES.GET_SUB_CATEGORY_RESET,
+  payload: null,
+});
+
+const getServiceSubCategoryRequest = () => ({
+  type: TYPES.GET_SERVICE_SUB_CATEGORY_REQUEST,
+  payload: null,
+});
+const getServiceSubCategorySuccess = (serviceSubCategoryList) => ({
+  type: TYPES.GET_SERVICE_SUB_CATEGORY_SUCCESS,
+  payload: { serviceSubCategoryList },
+});
+const getServiceSubCategoryError = (error) => ({
+  type: TYPES.GET_SERVICE_SUB_CATEGORY_ERROR,
+  payload: { error },
+});
+const getServiceSubCategoryReset = () => ({
+  type: TYPES.GET_SERVICE_SUB_CATEGORY_RESET,
   payload: null,
 });
 
@@ -790,6 +804,24 @@ const updateCartByTipReset = () => ({
   payload: null,
 });
 
+//Get Available offer
+const getAvailableOfferRequest = () => ({
+  type: TYPES.GET_AVAILABLE_OFFER_REQUEST,
+  payload: null,
+});
+const getAvailableOfferSuccess = (availableOffer) => ({
+  type: TYPES.GET_AVAILABLE_OFFER_SUCCESS,
+  payload: { availableOffer },
+});
+const getAvailableOfferError = (error) => ({
+  type: TYPES.GET_AVAILABLE_OFFER_ERROR,
+  payload: { error },
+});
+const getAvailableOfferReset = () => ({
+  type: TYPES.GET_AVAILABLE_OFFER_RESET,
+  payload: null,
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -807,7 +839,7 @@ export const getServiceCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getServiceCategoryRequest());
   try {
     const res = await RetailController.getServiceCategory(sellerID, search);
-    dispatch(getServiceCategorySuccess(res?.payload));
+    dispatch(getServiceCategorySuccess(res?.payload?.data));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getServiceCategoryReset());
@@ -826,6 +858,19 @@ export const getSubCategory = (sellerID, search) => async (dispatch) => {
       dispatch(getSubCategoryReset());
     }
     dispatch(getSubCategoryError(error.message));
+  }
+};
+
+export const getServiceSubCategory = (sellerID, search) => async (dispatch) => {
+  dispatch(getServiceSubCategoryRequest());
+  try {
+    const res = await RetailController.getServiceSubCategory(sellerID, search);
+    dispatch(getServiceSubCategorySuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getServiceSubCategoryReset());
+    }
+    dispatch(getServiceSubCategoryError(error.message));
   }
 };
 
@@ -1343,5 +1388,18 @@ export const getTimeSlots = (params) => async (dispatch) => {
       dispatch(getTimeSlotsReset());
     }
     dispatch(getTimeSlotsError(error.message));
+  }
+};
+
+export const getAvailableOffer = (data) => async (dispatch) => {
+  dispatch(getAvailableOfferRequest());
+  try {
+    const res = await RetailController.getAvailableOffer(data);
+    dispatch(getAvailableOfferSuccess(res?.payload?.data));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getAvailableOfferReset());
+    }
+    dispatch(getAvailableOfferError(error.message));
   }
 };

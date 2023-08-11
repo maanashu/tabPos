@@ -305,7 +305,7 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
             numColumns={4}
           />
           <Spacer space={SH(15)} />
-          {finalSizeArray[0]?.values?.length >= 1 ? (
+          {finalSizeArray?.[0]?.values?.length >= 1 ? (
             <View style={styles.displayRow}>
               <View style={styles.colorRow} />
               <Text style={styles.colorText}>SIZE</Text>
@@ -315,10 +315,10 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
 
           <Spacer space={SH(15)} />
           <FlatList
-            data={finalSizeArray[0]?.values}
+            data={finalSizeArray?.[0]?.values}
             renderItem={sizeRenderItem}
             keyExtractor={(item) => item.id}
-            extraData={finalSizeArray[0]?.values}
+            extraData={finalSizeArray?.[0]?.values}
             numColumns={4}
           />
         </View>

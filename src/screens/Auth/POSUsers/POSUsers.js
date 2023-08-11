@@ -1,9 +1,3 @@
-import { getAllPosUsers, logoutFunction, merchantLoginSuccess } from '@/actions/AuthActions';
-import { checkArrow, powerAuth, userImage } from '@/assets';
-import { NAVIGATION } from '@/constants';
-import { strings } from '@/localization';
-import { COLORS, SH, SW, SF } from '@/theme';
-import moment from 'moment';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -18,6 +12,12 @@ import { ScreenWrapper, Spacer } from '@/components';
 import Modal from 'react-native-modal';
 import { useIsFocused } from '@react-navigation/native';
 import { checkboxSec, crossButton, googleAuth } from '@/assets';
+import { getAllPosUsers, logoutFunction, merchantLoginSuccess } from '@/actions/AuthActions';
+import { checkArrow, powerAuth, userImage } from '@/assets';
+import { NAVIGATION } from '@/constants';
+import { strings } from '@/localization';
+import { COLORS, SH, SW, SF } from '@/theme';
+import moment from 'moment';
 import {
   CodeField,
   useBlurOnFulfill,
@@ -69,7 +69,6 @@ export function POSUsers({ navigation }) {
     if (isFocused) {
       dispatch(getSettings());
       useEffectFun();
-     
     }
   }, [isFocused]);
 
@@ -108,29 +107,27 @@ export function POSUsers({ navigation }) {
       {
         text: 'OK',
         onPress: () => {
-          confirmLogout()
+          confirmLogout();
           // dispatch(logoutFunction());
         },
       },
     ]);
   };
-const confirmLogout=()=>{
-   if(googleAuthenticator){
-    setTwoFactorEnabled(true)
-    setSixDigit(true)
-    setIsLogout(true)
-  }
-  else{
-    dispatch(logoutFunction())
-    setIsLogout(false)
-    setValue('');
-    setTwoFactorEnabled(false);
-    setTwoStepModal(false);
-    setGoogleAuthScan(false);
-    setSixDigit(false);
-  }
-
-}
+  const confirmLogout = () => {
+    if (googleAuthenticator) {
+      setTwoFactorEnabled(true);
+      setSixDigit(true);
+      setIsLogout(true);
+    } else {
+      dispatch(logoutFunction());
+      setIsLogout(false);
+      setValue('');
+      setTwoFactorEnabled(false);
+      setTwoStepModal(false);
+      setGoogleAuthScan(false);
+      setSixDigit(false);
+    }
+  };
   const passcodeHandlerSix = async () => {
     if (!value) {
       Toast.show({
@@ -169,25 +166,24 @@ const confirmLogout=()=>{
       const res = await verificationFunction(data)(dispatch);
 
       if (res?.msg === 'Code verified successfully') {
-        if(isLogout){
-          dispatch(logoutFunction())
-          setIsLogout(false)
+        if (isLogout) {
+          dispatch(logoutFunction());
+          setIsLogout(false);
           setValue('');
           setTwoFactorEnabled(false);
           setTwoStepModal(false);
           setGoogleAuthScan(false);
           setSixDigit(false);
-        }
-        else{
-        var updatedData = merchantData;
-        updatedData.user.user_profiles.is_two_fa_enabled = false;
-        dispatch(merchantLoginSuccess(updatedData));
-        setValue('');
-        setTwoFactorEnabled(false);
-        setTwoStepModal(false);
-        setGoogleAuthScan(false);
-        setSixDigit(false);
-        dispatch(getAllPosUsers(sellerID));
+        } else {
+          var updatedData = merchantData;
+          updatedData.user.user_profiles.is_two_fa_enabled = false;
+          dispatch(merchantLoginSuccess(updatedData));
+          setValue('');
+          setTwoFactorEnabled(false);
+          setTwoStepModal(false);
+          setGoogleAuthScan(false);
+          setSixDigit(false);
+          dispatch(getAllPosUsers(sellerID));
         }
       } else if (res === undefined) {
         setValue('');
@@ -199,16 +195,15 @@ const confirmLogout=()=>{
   //       dispatch(getGoogleCode());
   // }
 
-  const crossHandler=()=>{
-    if(isLogout){
-      setTwoFactorEnabled(false)
-      setSixDigit(false)
-      setIsLogout(false)
+  const crossHandler = () => {
+    if (isLogout) {
+      setTwoFactorEnabled(false);
+      setSixDigit(false);
+      setIsLogout(false);
+    } else {
+      dispatch(logoutFunction());
     }
-    else{
-      dispatch(logoutFunction())
-    }
-  }
+  };
   return (
     <ScreenWrapper>
       {!twoFactorEnabled ? (
@@ -299,8 +294,7 @@ const confirmLogout=()=>{
                 <Text style={styles.subHeadingSix}>{'Enter 6-Digit code'}</Text>
                 <TouchableOpacity
                   onPress={() => {
-                   crossHandler()
-                   
+                    crossHandler();
                   }}
                 >
                   <Image source={crossButton} style={styles.crossSix} />

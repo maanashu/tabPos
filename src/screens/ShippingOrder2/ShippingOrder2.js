@@ -206,7 +206,6 @@ export function ShippingOrder2() {
   );
 
   const showBadge = (item) => {
-    console.log(item);
     if (item?.image === Cart) {
       return (
         <View

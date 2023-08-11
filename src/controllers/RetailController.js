@@ -55,7 +55,7 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service`
+          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service&search=${search}`
         );
       } else {
         return (
@@ -65,7 +65,6 @@ export class RetailController {
         );
       }
     };
-
     return new Promise((resolve, reject) => {
       const endpoint = getUrl(sellerID, search);
       HttpClient.get(endpoint)
@@ -94,6 +93,40 @@ export class RetailController {
         );
       } else {
         return PRODUCT_URL + ApiProductInventory.getSubCategory + `?seller_id=${sellerid}`;
+      }
+    };
+    return new Promise((resolve, reject) => {
+      const endpoint = getUrl(sellerID, search);
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // Toast.show({
+          //   text2: 'Sub-Category not found',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
+        });
+    });
+  }
+
+  static async getServiceSubCategory(sellerID, search) {
+    const getUrl = (sellerid, search) => {
+      if (sellerid && search) {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getSubCategory +
+          `?seller_id=${sellerid}&search=${search}&service_type=service&need_subcategory=true`
+        );
+      } else {
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getSubCategory +
+          `?seller_id=${sellerid}&service_type=service&need_subcategory=true`
+        );
       }
     };
     return new Promise((resolve, reject) => {
@@ -1232,6 +1265,30 @@ export class RetailController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
+          reject(error);
+        });
+    });
+  }
+
+  static async getAvailableOffer(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.availableOffer +
+        `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${data?.seller_id}&service_type=${data?.servicetype}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // console.log('error', error);
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });

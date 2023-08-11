@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Keyboard, Text, View } from 'react-native';
+import { Keyboard, ScrollView, Text, View } from 'react-native';
 
 import { COLORS, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -29,11 +29,13 @@ import { TextInput } from 'react-native-gesture-handler';
 import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
+import Modal, { ReactNativeModal } from 'react-native-modal';
 import {
   changeStatusServiceCart,
   clearAllCart,
   clearServiceAllCart,
   getAllCartSuccess,
+  getAvailableOffer,
   getServiceCartSuccess,
   getUserDetail,
   getUserDetailSuccess,
@@ -48,6 +50,10 @@ import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import moment from 'moment';
+import { dummyService } from '@/constants/staticData';
+import { ms } from 'react-native-size-matters';
+import { AddServiceCartModal } from './AddServiceCartModal';
+import { useEffect } from 'react';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -57,6 +63,7 @@ export function CartServiceScreen({
 }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+  const getAuth = useSelector(getAuthData);
   const cartServiceData = getRetailData?.getserviceCart;
   let arr = [getRetailData?.getserviceCart];
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
@@ -64,12 +71,30 @@ export function CartServiceScreen({
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
 
+  const [addServiceCartModal, setAddServiceCartModal] = useState(false);
+  const [serviceItemSave, setServiceItemSave] = useState();
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const availableOfferArray = getRetailData?.availableOffer;
+
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAdd, setUserAdd] = useState('');
   const [cartSearch, setCartSearch] = useState('');
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+
+  const serviceFun = (item) => {
+    setServiceItemSave(item);
+    setAddServiceCartModal(true);
+  };
+
+  useEffect(() => {
+    const data = {
+      seller_id: sellerID,
+      servicetype: 'service',
+    };
+    dispatch(getAvailableOffer(data));
+  }, []);
 
   const serviceCartStatusHandler = () => {
     const data =
@@ -370,23 +395,50 @@ export function CartServiceScreen({
                 <View style={styles.avaliableOfferCon}>
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
                 </View>
-                {[1, 2, 3].map((item, index) => (
-                  <View style={styles.avaliableOferBodyCon}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <View style={{ borderRadius: 4 }}>
-                        <Image source={clothes} style={styles.offerImage} />
+                <ScrollView nestedScrollEnabled={true}>
+                  <View style={styles.availbleOfferScroll}>
+                    {availableOfferArray?.length === 0 ? (
+                      <View>
+                        <Text style={styles.noDataText}>No Data</Text>
                       </View>
-                      <View style={{ marginLeft: 4 }}>
-                        <Text style={styles.offerText}>Marbolo red pack</Text>
-                        <Text style={styles.offerPrice}>White/S</Text>
-                        <Text style={styles.offerPrice}>
-                          $6.56 <Text style={styles.offerPriceDark}>$6.56</Text>
-                        </Text>
-                      </View>
-                    </View>
-                    <Image source={addToCart} style={styles.sideAddToCart} />
+                    ) : (
+                      availableOfferArray?.map((item, index) => (
+                        <TouchableOpacity
+                          style={styles.avaliableOferBodyCon}
+                          key={index}
+                          onPress={() => serviceFun(item)}
+                        >
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ borderRadius: 4 }}>
+                              <Image
+                                source={{ uri: item.product?.image }}
+                                style={styles.offerImage}
+                              />
+                            </View>
+                            <View style={{ marginLeft: 4 }}>
+                              <Text
+                                style={[styles.offerText, [{ width: ms(110) }]]}
+                                numberOfLines={1}
+                              >
+                                {item.product?.name}
+                              </Text>
+                              <Text style={styles.offerPrice}>White/S</Text>
+                              <View style={{ flexDirection: 'row' }}>
+                                <Text style={[styles.offerPrice, styles.lineTrought]}>
+                                  ${item.actual_price_per_pack}
+                                </Text>
+                                <Text style={styles.offerPriceDark}>
+                                  ${item.offer_price_per_pack}
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                          <Image source={addToCart} style={styles.sideAddToCart} />
+                        </TouchableOpacity>
+                      ))
+                    )}
                   </View>
-                ))}
+                </ScrollView>
               </View>
 
               <Spacer space={SH(10)} />
@@ -456,6 +508,15 @@ export function CartServiceScreen({
           </View>
         </View>
       </View>
+
+      <Modal animationType="fade" transparent={true} isVisible={addServiceCartModal}>
+        <AddServiceCartModal
+          crossHandler={() => setAddServiceCartModal(false)}
+          // detailHandler={() => setAddCartDetailModal(true)}
+          sellerID={sellerID}
+          itemData={serviceItemSave}
+        />
+      </Modal>
     </View>
   );
 }

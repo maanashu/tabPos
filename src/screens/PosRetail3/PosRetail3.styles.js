@@ -408,6 +408,9 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: COLORS.white,
   },
+  availbleOfferScroll: {
+    height: Platform.OS === 'android' ? windowHeight * 0.34 : windowHeight * 0.35,
+  },
   avaliableOfferCon: {
     height: windowHeight * 0.05,
     borderTopEndRadius: 5,
@@ -1626,10 +1629,14 @@ export const styles = StyleSheet.create({
     fontSize: SF(9),
     fontFamily: Fonts.Regular,
   },
+  lineTrought: {
+    textDecorationLine: 'line-through',
+  },
   offerPriceDark: {
     color: COLORS.dark_grey,
     fontSize: SF(9),
     fontFamily: Fonts.SemiBold,
+    textDecorationLine: 'none',
   },
   cartListModalView: {
     width: windowWidth * 0.43,
@@ -2073,5 +2080,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: ms(50),
+  },
+  noDataText: {
+    fontFamily: Fonts.Regular,
+    textAlign: 'center',
+    color: COLORS.primary,
+    marginTop: ms(10),
   },
 });
