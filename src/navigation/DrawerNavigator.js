@@ -42,7 +42,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import { navigate } from '@/navigation/NavigationRef';
 import { logoutFunction } from '@/actions/AuthActions';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { logoutUserFunction } from '@/actions/UserActions';
+import { getPendingOrders, logoutUserFunction } from '@/actions/UserActions';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { endTrackingSession } from '@/actions/CashTrackingAction';
 import { addSellingSelection, getDrawerSessionSuccess } from '@/actions/DashboardAction';
@@ -56,6 +56,7 @@ export function DrawerNavigator(props) {
   const getAuth = useSelector(getAuthData);
   const posUserArray = getAuth?.getAllPosUsers;
   const getUserData = useSelector(getUser);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const getDashboardData = useSelector(getDashboard);
   const getSessionObj = getDashboardData?.getSesssion;
@@ -211,12 +212,12 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.deliveryOrders2);
           }}
           icon={({ focused, color, size }) => {
-            return getAuth?.merchantLoginData?.pending_orders_count?.delivery_count ? (
+            return getDashboardData?.pendingOrders?.delivery_count ? (
               <View>
                 <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
                 <View style={styles.countViewStyle}>
                   <Text style={styles.countTextStyle}>
-                    {getAuth?.merchantLoginData?.pending_orders_count?.delivery_count}
+                    {getDashboardData?.pendingOrders?.delivery_count}
                   </Text>
                 </View>
               </View>
@@ -250,12 +251,12 @@ export function DrawerNavigator(props) {
             dispatch(addSellingSelection());
           }}
           icon={({ focused, color, size }) => {
-            return getAuth?.merchantLoginData?.pending_orders_count?.appointment_count ? (
+            return getDashboardData?.pendingOrders?.appointment_count ? (
               <View>
                 <Image source={focused ? blueCalender : calendar} style={styles.iconStyle} />
                 <View style={styles.countViewStyle}>
                   <Text style={styles.countTextStyle}>
-                    {getAuth?.merchantLoginData?.pending_orders_count?.appointment_count}
+                    {getDashboardData?.pendingOrders?.appointment_count}
                   </Text>
                 </View>
               </View>
@@ -348,12 +349,12 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.shippingOrder2);
           }}
           icon={({ focused, color, size }) => {
-            return getAuth?.merchantLoginData?.pending_orders_count?.shipping_count ? (
+            return getDashboardData?.pendingOrders?.shipping_count ? (
               <View>
                 <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
                 <View style={styles.countViewStyle}>
                   <Text style={styles.countTextStyle}>
-                    {getAuth?.merchantLoginData?.pending_orders_count?.shipping_count}
+                    {getDashboardData?.pendingOrders?.shipping_count}
                   </Text>
                 </View>
               </View>

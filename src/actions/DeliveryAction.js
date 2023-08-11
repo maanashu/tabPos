@@ -1,5 +1,6 @@
 import { DeliveryController } from '@/controllers';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { getPendingOrders } from './DashboardAction';
 import { orderStatusCount } from './ShippingAction';
 
 const getOrderCountRequest = () => ({
@@ -175,6 +176,7 @@ export const getReviewDefault = (status, sellerID, deliveryOption) => async (dis
   try {
     const res = await DeliveryController.getReviewDefault(status, sellerID, deliveryOption);
     dispatch(getReviewDefSuccess(res));
+    dispatch(getPendingOrders(sellerID));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getReviewDefReset());
@@ -202,6 +204,7 @@ export const acceptOrder = (data, openShippingOrders, delivery, callback) => asy
     dispatch(getOrderCount(data.sellerID));
     dispatch(orderStatusCount(data.sellerID));
     dispatch(getReviewDefault(openShippingOrders, sellerID, delivery));
+    dispatch(getPendingOrders(data.sellerID));
   } catch (error) {
     dispatch(acceptOrderError(error.message));
   }

@@ -318,6 +318,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: width * 0.56,
     paddingHorizontal: ms(12),
+    paddingBottom: 30,
   },
   numberOrdersText: {
     color: COLORS.dark_grey,
