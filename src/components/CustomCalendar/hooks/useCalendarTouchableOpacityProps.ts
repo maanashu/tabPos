@@ -1,18 +1,20 @@
-import dayjs from 'dayjs'
-import React from 'react'
-import { ViewStyle } from 'react-native'
+import dayjs from 'dayjs';
+import React from 'react';
+import { ViewStyle } from 'react-native';
 
-import { eventCellCss } from '../commonStyles'
-import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEventBase } from '../interfaces'
+import { eventCellCss } from '../commonStyles';
+import { CalendarTouchableOpacityProps, EventCellStyle, ICalendarEventBase } from '../interfaces';
 
 interface UseCalendarTouchableOpacityPropsProps<T extends ICalendarEventBase> {
-  event: T
-  eventCellStyle?: EventCellStyle<T>
-  onPressEvent?: (event: T) => void
-  injectedStyles?: ViewStyle[]
+  allEvents: T;
+  event: T;
+  eventCellStyle?: EventCellStyle<T>;
+  onPressEvent?: (event: T) => void;
+  injectedStyles?: ViewStyle[];
 }
 
 export function useCalendarTouchableOpacityProps<T extends ICalendarEventBase>({
+  allEvents,
   event,
   eventCellStyle,
   injectedStyles = [],
@@ -20,21 +22,22 @@ export function useCalendarTouchableOpacityProps<T extends ICalendarEventBase>({
 }: UseCalendarTouchableOpacityPropsProps<T>) {
   const getEventStyle = React.useMemo(
     () => (typeof eventCellStyle === 'function' ? eventCellStyle : () => eventCellStyle),
-    [eventCellStyle],
-  )
+    [eventCellStyle]
+  );
 
   const plainJsEvent = React.useMemo(
     () => ({
       ...event,
+      ...allEvents,
       start: dayjs(event.start).toDate(),
       end: dayjs(event.end).toDate(),
     }),
-    [event],
-  )
+    [event]
+  );
 
   const _onPress = React.useCallback(() => {
-    onPressEvent && onPressEvent(plainJsEvent)
-  }, [onPressEvent, plainJsEvent])
+    onPressEvent && onPressEvent(plainJsEvent);
+  }, [onPressEvent, plainJsEvent]);
 
   const touchableOpacityProps: CalendarTouchableOpacityProps = {
     delayPressIn: 20,
@@ -42,7 +45,7 @@ export function useCalendarTouchableOpacityProps<T extends ICalendarEventBase>({
     style: [eventCellCss.style, ...injectedStyles, getEventStyle(plainJsEvent)],
     onPress: _onPress,
     disabled: !onPressEvent,
-  }
+  };
 
-  return touchableOpacityProps
+  return touchableOpacityProps;
 }

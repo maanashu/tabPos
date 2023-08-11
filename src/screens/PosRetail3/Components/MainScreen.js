@@ -668,6 +668,7 @@ export function MainScreen({
                           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                             {item?.pos_users?.map((data, index) => (
                               <Image
+                                key={index}
                                 source={
                                   { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
                                 }

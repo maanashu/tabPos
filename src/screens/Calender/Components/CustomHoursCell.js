@@ -4,13 +4,11 @@ import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
 import { ms } from 'react-native-size-matters';
 
-const CustomHoursCell = formattedHours => {
+const CustomHoursCell = (formattedHours) => {
   const [hours, ampm] = formattedHours.split(' ');
   return (
     <View style={styles.hourContainer}>
-      <Text style={styles.timeText}>
-        {hours + `${hours !== '' ? '.00' : ''}`}
-      </Text>
+      <Text style={styles.timeText}>{hours + `${hours !== '' ? (ampm ? '.00' : '') : ''}`}</Text>
       <Text style={styles.ampmText}>{ampm}</Text>
     </View>
   );

@@ -11,15 +11,12 @@ import {
   EMPLOYEES_COLOR_SET_MODE,
 } from '@/constants/enums';
 
-const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
-  const [defaultCalendarMode, setDefaultCalendarMode] = useState(
-    CALENDAR_MODES.WEEK
+const CalendarSettingModal = ({ isVisible, setIsVisible, onPressSave = () => {} }) => {
+  const [defaultCalendarMode, setDefaultCalendarMode] = useState(CALENDAR_MODES.WEEK);
+  const [defaultTimeFormat, setDefaultTimeFormat] = useState(CALENDAR_TIME_FORMAT.TWELVE_HOUR);
+  const [defaultAppointmentRequestMode, setDefaultAppointmentRequestMode] = useState(
+    APPOINTMENT_REQUEST_MODE.MANUAL
   );
-  const [defaultTimeFormat, setDefaultTimeFormat] = useState(
-    CALENDAR_TIME_FORMAT.TWELVE_HOUR
-  );
-  const [defaultAppointmentRequestMode, setDefaultAppointmentRequestMode] =
-    useState(APPOINTMENT_REQUEST_MODE.MANUAL);
   const [defaultEmployeesColorSet, setDefaultEmployeesColorSet] = useState(
     EMPLOYEES_COLOR_SET_MODE.DEFAULT
   );
@@ -38,11 +35,7 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
               style={styles.checkboxContainer}
             >
               <Image
-                source={
-                  defaultCalendarMode === CALENDAR_MODES.DAY
-                    ? radioSelect
-                    : radioUnSelect
-                }
+                source={defaultCalendarMode === CALENDAR_MODES.DAY ? radioSelect : radioUnSelect}
                 style={styles.checkboxIcon}
               />
               <Text style={styles.checkboxTitle}>Day View</Text>
@@ -52,11 +45,7 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
               style={styles.checkboxContainer}
             >
               <Image
-                source={
-                  defaultCalendarMode === CALENDAR_MODES.WEEK
-                    ? radioSelect
-                    : radioUnSelect
-                }
+                source={defaultCalendarMode === CALENDAR_MODES.WEEK ? radioSelect : radioUnSelect}
                 style={styles.checkboxIcon}
               />
               <Text style={styles.checkboxTitle}>Week View</Text>
@@ -66,11 +55,7 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
               style={styles.checkboxContainer}
             >
               <Image
-                source={
-                  defaultCalendarMode === CALENDAR_MODES.MONTH
-                    ? radioSelect
-                    : radioUnSelect
-                }
+                source={defaultCalendarMode === CALENDAR_MODES.MONTH ? radioSelect : radioUnSelect}
                 style={styles.checkboxIcon}
               />
               <Text style={styles.checkboxTitle}>Month View</Text>
@@ -82,9 +67,7 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
 
           <View style={styles.subContainerCheckBox}>
             <TouchableOpacity
-              onPress={() =>
-                setDefaultTimeFormat(CALENDAR_TIME_FORMAT.TWELVE_HOUR)
-              }
+              onPress={() => setDefaultTimeFormat(CALENDAR_TIME_FORMAT.TWELVE_HOUR)}
               style={styles.checkboxContainer}
             >
               <Image
@@ -98,9 +81,7 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
               <Text style={styles.checkboxTitle}>12 Hours(AM/PM)</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() =>
-                setDefaultTimeFormat(CALENDAR_TIME_FORMAT.TWENTY_FOUR_HOURS)
-              }
+              onPress={() => setDefaultTimeFormat(CALENDAR_TIME_FORMAT.TWENTY_FOUR_HOURS)}
               style={styles.checkboxContainer}
             >
               <Image
@@ -120,17 +101,12 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
 
           <View style={styles.subContainerCheckBox}>
             <TouchableOpacity
-              onPress={() =>
-                setDefaultAppointmentRequestMode(
-                  APPOINTMENT_REQUEST_MODE.MANUAL
-                )
-              }
+              onPress={() => setDefaultAppointmentRequestMode(APPOINTMENT_REQUEST_MODE.MANUAL)}
               style={styles.checkboxContainer}
             >
               <Image
                 source={
-                  defaultAppointmentRequestMode ===
-                  APPOINTMENT_REQUEST_MODE.MANUAL
+                  defaultAppointmentRequestMode === APPOINTMENT_REQUEST_MODE.MANUAL
                     ? radioSelect
                     : radioUnSelect
                 }
@@ -139,17 +115,12 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
               <Text style={styles.checkboxTitle}>Accept Manually</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() =>
-                setDefaultAppointmentRequestMode(
-                  APPOINTMENT_REQUEST_MODE.AUTOMATIC
-                )
-              }
+              onPress={() => setDefaultAppointmentRequestMode(APPOINTMENT_REQUEST_MODE.AUTOMATIC)}
               style={styles.checkboxContainer}
             >
               <Image
                 source={
-                  defaultAppointmentRequestMode ===
-                  APPOINTMENT_REQUEST_MODE.AUTOMATIC
+                  defaultAppointmentRequestMode === APPOINTMENT_REQUEST_MODE.AUTOMATIC
                     ? radioSelect
                     : radioUnSelect
                 }
@@ -164,9 +135,7 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
 
           <View style={styles.subContainerCheckBox}>
             <TouchableOpacity
-              onPress={() =>
-                setDefaultEmployeesColorSet(EMPLOYEES_COLOR_SET_MODE.DEFAULT)
-              }
+              onPress={() => setDefaultEmployeesColorSet(EMPLOYEES_COLOR_SET_MODE.DEFAULT)}
               style={styles.checkboxContainer}
             >
               <Image
@@ -180,9 +149,7 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
               <Text style={styles.checkboxTitle}>Default</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() =>
-                setDefaultEmployeesColorSet(EMPLOYEES_COLOR_SET_MODE.MANUAL)
-              }
+              onPress={() => setDefaultEmployeesColorSet(EMPLOYEES_COLOR_SET_MODE.MANUAL)}
               style={styles.checkboxContainer}
             >
               <Image
@@ -216,6 +183,7 @@ const CalendarSettingModal = ({ isVisible, setIsVisible }) => {
                 defaultAppointmentRequestMode: defaultAppointmentRequestMode,
                 defaultEmployeesColorSet: defaultEmployeesColorSet,
               };
+              onPressSave(calendatSettings);
               setIsVisible(false);
             }}
             style={[styles.acceptbtnContainer]}
