@@ -25,13 +25,16 @@ export const FinalPaymentScreen = ({
   payDetail,
 }) => {
   const cartProducts = cartData?.poscart_products;
+  const tipData = useSelector(getRetail).tipKey?.payload?.tip;
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
+
     const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
     return totalPayment.toFixed(2);
   };
   const payAmount = totalPayAmount();
+
   const ActualPayAmount = payDetail?.tips;
   const changeDue = parseFloat(ActualPayAmount) - parseFloat(payAmount);
 

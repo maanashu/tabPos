@@ -653,9 +653,11 @@ export class RetailController {
         cart_id: data?.serviceCartId,
         mode_of_payment: data?.modeOfPayment,
       };
+      console.log('endpoint', endpoint);
+      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
-          if (response?.msg === 'Order placed successfully!') {
+          if (response?.msg === 'Appointment created successfully!') {
             Toast.show({
               position: 'bottom',
               type: 'success_toast',
@@ -664,8 +666,10 @@ export class RetailController {
             });
           }
           resolve(response);
+          console.log('chek statement', JSON.stringify(response));
         })
         .catch((error) => {
+          console.log('error in statement', JSON.stringify(error));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
