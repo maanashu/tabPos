@@ -107,14 +107,17 @@ export function DeliveryOrders2({ route }) {
     pieChartData?.[3]?.count ?? 0,
   ];
 
+  const latitude = parseFloat(location?.latitude);
+  const longitude = parseFloat(location?.longitude);
+
   let sum = 0;
 
   series.forEach((num) => {
     sum += num;
   });
   const sourceCoordinate = {
-    latitude: location?.latitude,
-    longitude: location?.longitude,
+    latitude: latitude,
+    longitude: longitude,
   };
   const destinationCoordinate = {
     latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
@@ -138,8 +141,6 @@ export function DeliveryOrders2({ route }) {
   const [orderId, setOrderId] = useState(getDeliveryData?.getReviewDef?.[0]?.id);
   const [trackingView, setTrackingView] = useState(false);
 
-  console.log('orderDetail', JSON.stringify(orderDetail));
-
   useFocusEffect(
     React.useCallback(() => {
       if (ORDER_DETAIL !== null) {
@@ -159,6 +160,7 @@ export function DeliveryOrders2({ route }) {
       };
     }, [isViewAll, ORDER_DETAIL])
   );
+  console.log('stst', oneOrderDetail?.getOrderData?.status);
   const deliveryDrawer = [
     {
       key: '0',
@@ -1218,8 +1220,14 @@ export function DeliveryOrders2({ route }) {
               provider={PROVIDER_GOOGLE}
               showCompass
               region={{
-                latitude: location?.latitude,
-                longitude: location?.longitude,
+                latitude: latitude,
+                longitude: longitude,
+                latitudeDelta: 0.0992,
+                longitudeDelta: 0.0421,
+              }}
+              initialRegion={{
+                latitude: latitude ?? 0.0,
+                longitude: longitude ?? 0.0,
                 latitudeDelta: 0.0992,
                 longitudeDelta: 0.0421,
               }}
@@ -1228,8 +1236,8 @@ export function DeliveryOrders2({ route }) {
               <MapViewDirections
                 key={location?.latitude}
                 origin={{
-                  latitude: location?.latitude,
-                  longitude: location?.longitude,
+                  latitude: latitude,
+                  longitude: longitude,
                 }}
                 destination={{
                   latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],

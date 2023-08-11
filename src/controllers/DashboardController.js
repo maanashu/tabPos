@@ -193,7 +193,6 @@ export class DashboardController {
   }
 
   static async getPendingOrders(sellerID) {
-    console.log(sellerID);
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.pendingOrders + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
@@ -201,7 +200,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log(error, 'error in pending orders');
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
