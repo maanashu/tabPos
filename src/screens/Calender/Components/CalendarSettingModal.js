@@ -11,9 +11,15 @@ import {
   EMPLOYEES_COLOR_SET_MODE,
 } from '@/constants/enums';
 
-const CalendarSettingModal = ({ isVisible, setIsVisible, onPressSave = () => {} }) => {
-  const [defaultCalendarMode, setDefaultCalendarMode] = useState(CALENDAR_MODES.WEEK);
-  const [defaultTimeFormat, setDefaultTimeFormat] = useState(CALENDAR_TIME_FORMAT.TWELVE_HOUR);
+const CalendarSettingModal = ({
+  isVisible,
+  setIsVisible,
+  currentCalendarMode,
+  currentTimeFormat,
+  onPressSave = () => {},
+}) => {
+  const [defaultCalendarMode, setDefaultCalendarMode] = useState(currentCalendarMode);
+  const [defaultTimeFormat, setDefaultTimeFormat] = useState(currentTimeFormat);
   const [defaultAppointmentRequestMode, setDefaultAppointmentRequestMode] = useState(
     APPOINTMENT_REQUEST_MODE.MANUAL
   );

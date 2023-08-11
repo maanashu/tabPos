@@ -162,19 +162,19 @@ export function Calender(props) {
 
   const weekHandler = () => {
     setCalendarMode(CALENDAR_MODES.WEEK);
-    setWeek(!week);
+    setWeek(true);
     setMonth(false);
     setDay(false);
   };
   const monthHandler = () => {
     setCalendarMode(CALENDAR_MODES.MONTH);
-    setMonth(!month);
+    setMonth(true);
     setWeek(false);
     setDay(false);
   };
   const dayHandler = () => {
     setCalendarMode(CALENDAR_MODES.DAY);
-    setDay(!day);
+    setDay(true);
     setMonth(false);
     setWeek(false);
   };
@@ -496,12 +496,22 @@ export function Calender(props) {
         <CalendarSettingModal
           isVisible={isCalendarSettingModalVisible}
           setIsVisible={setisCalendarSettingModalVisible}
+          currentCalendarMode={calendarMode}
+          currentTimeFormat={isAMPM}
           onPressSave={(calendarPreferences) => {
             console.log('Check saved Calendar Preferences', JSON.stringify(calendarPreferences));
+
+            if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.DAY) {
+              dayHandler();
+            } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.WEEK) {
+              weekHandler();
+            } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.MONTH) {
+              monthHandler();
+            }
             setisAMPM(calendarPreferences?.defaultTimeFormat);
 
+            //TODO: Implement Update settings api here
             // const data ={
-
             // }
             // dispatch(upadteApi(data))
           }}
