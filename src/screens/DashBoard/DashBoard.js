@@ -43,6 +43,7 @@ import {
   getDrawerSessionPost,
   getDrawerSessionSuccess,
   getOrderDeliveries,
+  getPendingOrders,
   getTotalSaleAction,
   onLineOrders,
   posLoginDetail,
@@ -109,6 +110,7 @@ export function DashBoard({ navigation }) {
 
   useEffect(() => {
     setScan(false);
+    dispatch(getPendingOrders(sellerID));
   }, []);
   useEffect(() => {
     if (scan) {

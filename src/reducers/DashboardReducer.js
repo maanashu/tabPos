@@ -8,6 +8,7 @@ const INITIALSTATE = {
   searchProductList: [],
   onLineOrders: {},
   selection: {},
+  pendingOrders: {},
 };
 
 export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -22,7 +23,6 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         getOrderDeliveries: [],
       };
-
     case DASHBOARDTYPE.GET_DRAWER_SESSION_SUCCESS:
       return {
         ...state,
@@ -38,7 +38,6 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         getSesssion: {},
       };
-
     case DASHBOARDTYPE.GET_TOTAL_SALE_SUCCESS:
       return {
         ...state,
@@ -49,7 +48,6 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         getTotalSale: [],
       };
-
     case DASHBOARDTYPE.POS_LOGIN_DETAIL_SUCCESS:
       return {
         ...state,
@@ -60,7 +58,6 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         posLoginDetail: {},
       };
-
     case DASHBOARDTYPE.SEARCH_PRODUCT_LIST_SUCCESS:
       return {
         ...state,
@@ -76,7 +73,11 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         onLineOrders: payload,
       };
-
+    case DASHBOARDTYPE.PENDING_ORDERS_SUCCESS:
+      return {
+        ...state,
+        pendingOrders: payload?.pendingOrders,
+      };
     default:
       return state;
   }

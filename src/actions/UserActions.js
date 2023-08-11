@@ -7,13 +7,26 @@ const loginPosUserRequest = () => ({
   type: TYPES.LOGIN_POS_USER_REQUEST,
   payload: null,
 });
-const loginPosUserError = error => ({
+const loginPosUserError = (error) => ({
   type: TYPES.LOGIN_POS_USER_ERROR,
   payload: { error },
 });
-const loginPosUserSuccess = posLoginData => ({
+const loginPosUserSuccess = (posLoginData) => ({
   type: TYPES.LOGIN_POS_USER_SUCCESS,
   payload: { posLoginData },
+});
+
+const getPendingOrdersRequest = () => ({
+  type: TYPES.PENDING_ORDERS_REQUEST,
+  payload: null,
+});
+const getPendingOrdersSuccess = (pendingOrders) => ({
+  type: TYPES.PENDING_ORDERS_SUCCESS,
+  payload: { pendingOrders },
+});
+const getPendingOrdersError = (error) => ({
+  type: TYPES.PENDING_ORDERS_ERROR,
+  payload: { error },
 });
 
 const clearStore = () => ({
@@ -21,7 +34,7 @@ const clearStore = () => ({
   payload: null,
 });
 
-export const loginPosUser = data => async dispatch => {
+export const loginPosUser = (data) => async (dispatch) => {
   dispatch(loginPosUserRequest());
   try {
     const res = await UserController.loginPosUser(data);
@@ -31,6 +44,6 @@ export const loginPosUser = data => async dispatch => {
   }
 };
 
-export const logoutUserFunction = () => async dispatch => {
+export const logoutUserFunction = () => async (dispatch) => {
   dispatch(clearStore());
 };
