@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Platform,
 } from 'react-native';
 import { ScreenWrapper } from '@/components';
 import { styles } from '../Analytics2.styles';
@@ -18,6 +19,7 @@ import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
+import { ms } from 'react-native-size-matters';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -59,6 +61,7 @@ export function TotalProductSold({ onPress }) {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const soldProduct = getAnalyticsData?.getSoldProduct;
+  console.log('first', soldProduct?.totalProductSoldList[0]);
 
   const interval = 1;
   const maxLabel = 31;
@@ -70,36 +73,30 @@ export function TotalProductSold({ onPress }) {
   const getSoldProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
-        <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '   '}</Text>
-          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
-        </View>
+        <Text style={styles.revenueDataText}>{index + 1 + '.  '}</Text>
+
+        <Text style={styles.revenueDataText}>{item?.product_name}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText} numberOfLines={1}>
-          {item?.product_name}
-        </Text>
+        <Text style={styles.revenueDataText}>{item?.upc}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>${item?.price}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText} numberOfLines={1}>
-          {item?.upc}
-        </Text>
+        <Text style={styles.revenueDataText2}>{item?.order?.total_items}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>{item?.order?.sold_quantity}</Text>
-      </DataTable.Cell>
-
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.price}</Text>
+        <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
 
   return (
-    <View>
+    <View style={styles.flex1}>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
         <Image source={backArrow2} style={styles.backImageStyle} />
         <Text style={styles.currentStatusText}>{'Back'}</Text>
@@ -188,14 +185,11 @@ export function TotalProductSold({ onPress }) {
           <DataTable
             style={{
               zIndex: -99,
+              // width: Dimensions.get('window').width - ms(150),
             }}
           >
             <DataTable.Header style={[styles.tableListHeader]}>
               <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Date</Text>
-              </DataTable.Title>
-
-              <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Product Name</Text>
               </DataTable.Title>
 
@@ -204,15 +198,18 @@ export function TotalProductSold({ onPress }) {
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Price</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Sold Quantity</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Price</Text>
+                <Text style={styles.revenueText}>Last sold date</Text>
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={{ height: SH(380), zIndex: -99, width: SW(320) }}>
+            <View style={{ zIndex: -99 }}>
               {soldProduct?.totalProductSoldList?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text
@@ -225,7 +222,15 @@ export function TotalProductSold({ onPress }) {
                   </Text>
                 </View>
               ) : (
-                <View style={{ height: SH(250) }}>
+                <View
+                  style={{
+                    height: Platform.OS === 'ios' ? ms(202) : ms(210),
+                    width:
+                      Platform.OS === 'ios'
+                        ? Dimensions.get('window').width - ms(80)
+                        : Dimensions.get('window').width - ms(150),
+                  }}
+                >
                   <FlatList
                     style={{ backgroundColor: COLORS.white }}
                     data={soldProduct?.totalProductSoldList}

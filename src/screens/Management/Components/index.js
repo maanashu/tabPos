@@ -145,8 +145,8 @@ export function SessionHistoryTable({
                 tableDataArrayReverse?.map((item, index) => (
                   <TouchableOpacity
                     style={styles.tableDataCon}
-                    onPress={() =>
-                      tableTouchHandler(item)
+                    onPress={
+                      () => tableTouchHandler(item)
 
                       // ,oneItemSend(item)
                     }
@@ -299,7 +299,6 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     //                 break;
     // }
   };
-  console.log('ARRRAYAYAYA', JSON.stringify(sessionHistoryArray));
   return (
     <View style={historyHeader ? styles.bodyContainer : styles.bodyContainer2}>
       <ScrollView showsVerticalScrollIndicator={false}>

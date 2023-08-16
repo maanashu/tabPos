@@ -729,6 +729,7 @@ export const en = {
     searchCategory: 'Search Categories',
     searchSubCategory: 'Search Sub-catgories',
     searchBrand: 'Search Brands',
+    searchStaff: 'Search Staffs',
   },
   Staff: {
     Staff: 'Staff',
@@ -784,5 +785,6 @@ export const en = {
     reviewButton: 'Accept Order',
     acceptedButton: 'Order Prepared',
     prepareButton: 'Ready to Pickup',
+    trackOrder: 'Track Order',
   },
 };

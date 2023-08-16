@@ -40,6 +40,7 @@ import {
 import { getAuthData } from '@/selectors/AuthSelector';
 import { TotalProductSold } from './Components/TotalProductSold';
 import { TotalInventory } from './Components/TotalInventory';
+import { getUser } from '@/selectors/UserSelectors';
 
 export function Analytics2() {
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
@@ -49,6 +50,8 @@ export function Analytics2() {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const getUserData = useSelector(getUser);
+  const getPosUser = getUserData?.posLoginData;
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -100,39 +103,50 @@ export function Analytics2() {
             <View style={styles.container}>{screenChangeView()}</View>
 
             <View style={styles.rightSideView}>
-              <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                {/* <TouchableOpacity
+              {/* <TouchableOpacity
                   style={styles.bucketBackgorund}
                   onPress={() => setShowModal(!showModal)}
                 >
                   <Image source={analyticsReport} style={styles.sideBarImage} />
                 </TouchableOpacity>
                 <Spacer space={SH(25)} /> */}
-                <TouchableOpacity
-                  style={[
-                    styles.bucketBackgorund,
-                    {
-                      backgroundColor:
-                        selectedScreen === 'TotalProfit' ? COLORS.primary : COLORS.white,
-                    },
-                  ]}
-                  onPress={() => setselectedScreen('TotalProfit')}
-                >
-                  <Image
-                    source={profit}
-                    style={[
-                      styles.sideBarImage,
-                      { tintColor: selectedScreen === 'TotalProfit' ? COLORS.white : COLORS.black },
-                    ]}
-                  />
-                </TouchableOpacity>
-              </View>
-              <Spacer space={SH(25)} />
+              <Spacer space={SH(10)} />
               <TouchableOpacity
+                disabled={getPosUser?.user_roles?.length > 0 ? true : false}
                 style={[
                   styles.bucketBackgorund,
                   {
-                    backgroundColor: selectedScreen === 'Revenue' ? COLORS.primary : COLORS.white,
+                    backgroundColor:
+                      selectedScreen === 'TotalProfit'
+                        ? COLORS.primary
+                        : getPosUser?.user_roles?.length > 0
+                        ? COLORS.mid_grey
+                        : COLORS.white,
+                  },
+                ]}
+                onPress={() => setselectedScreen('TotalProfit')}
+              >
+                <Image
+                  source={profit}
+                  style={[
+                    styles.sideBarImage,
+                    { tintColor: selectedScreen === 'TotalProfit' ? COLORS.white : COLORS.black },
+                  ]}
+                />
+              </TouchableOpacity>
+
+              <Spacer space={SH(25)} />
+              <TouchableOpacity
+                disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+                style={[
+                  styles.bucketBackgorund,
+                  {
+                    backgroundColor:
+                      selectedScreen === 'Revenue'
+                        ? COLORS.primary
+                        : getPosUser?.user_roles?.length > 0
+                        ? COLORS.mid_grey
+                        : COLORS.white,
                   },
                 ]}
                 onPress={() => setselectedScreen('Revenue')}
@@ -147,10 +161,16 @@ export function Analytics2() {
               </TouchableOpacity>
               <Spacer space={SH(25)} />
               <TouchableOpacity
+                disabled={getPosUser?.user_roles?.length > 0 ? true : false}
                 style={[
                   styles.bucketBackgorund,
                   {
-                    backgroundColor: selectedScreen === 'TotalCost' ? COLORS.primary : COLORS.white,
+                    backgroundColor:
+                      selectedScreen === 'TotalCost'
+                        ? COLORS.primary
+                        : getPosUser?.user_roles?.length > 0
+                        ? COLORS.mid_grey
+                        : COLORS.white,
                   },
                 ]}
                 onPress={() => setselectedScreen('TotalCost')}

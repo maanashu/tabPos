@@ -2,6 +2,7 @@ import { TYPES } from '@/Types/Types';
 
 const INITIALSTATE = {
   posLoginData: {},
+  pendingOrders: {},
 };
 
 export const userReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -11,7 +12,6 @@ export const userReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         posLoginData: payload.posLoginData,
       };
-
     case TYPES.POS_USER_CLEAR_STORE:
       return INITIALSTATE;
     default:

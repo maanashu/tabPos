@@ -2,8 +2,9 @@ import { TYPES } from '@/Types/Types';
 
 const INITIALSTATE = {
   categoryList: [],
-  serviceCategoryList: {},
+  serviceCategoryList: [],
   subCategories: [],
+  serviceSubCategoryList: [],
   brands: [],
   products: [],
   SeaProductList: [],
@@ -30,6 +31,7 @@ const INITIALSTATE = {
   getAllProductCart: [],
   timeSlots: [],
   getAllServiceCart: [],
+  availableOffer: [],
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -80,6 +82,17 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         subCategories: [],
+      };
+
+    case TYPES.GET_SERVICE_SUB_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        serviceSubCategoryList: payload.serviceSubCategoryList,
+      };
+    case TYPES.GET_SERVICE_SUB_CATEGORY_RESET:
+      return {
+        ...state,
+        serviceSubCategoryList: [],
       };
 
     case TYPES.GET_BRAND_SUCCESS:
@@ -330,6 +343,22 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         getAllServiceCart: [],
       };
 
+    case TYPES.GET_AVAILABLE_OFFER_SUCCESS:
+      return {
+        ...state,
+        availableOffer: payload?.availableOffer,
+      };
+    case TYPES.GET_AVAILABLE_OFFER_RESET:
+      return {
+        ...state,
+        availableOffer: [],
+      };
+
+    case TYPES.UPDATE_CART_BY_TIP_SUCCESS:
+      return {
+        ...state,
+        tipKey: payload.data,
+      };
     case TYPES.CLEAR_STORE:
       return {};
     default:

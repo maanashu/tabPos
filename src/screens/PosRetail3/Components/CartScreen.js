@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Keyboard, Text, View } from 'react-native';
+import { Keyboard, ScrollView, Text, View } from 'react-native';
 
 import { COLORS, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -32,6 +32,8 @@ import {
   changeStatusProductCart,
   clearAllCart,
   getAllCartSuccess,
+  getAvailableOffer,
+  getOneProduct,
   getUserDetail,
   getUserDetailSuccess,
   sendInvitation,
@@ -44,6 +46,11 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { ms } from 'react-native-size-matters';
+import { AddCartDetailModal } from './AddCartDetailModal';
+import { AddCartModal } from './AddCartModal';
+import Modal, { ReactNativeModal } from 'react-native-modal';
+import { useEffect } from 'react';
 
 export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
   const dispatch = useDispatch();
@@ -53,14 +60,17 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const [customerPhoneNo, setCustomerPhoneNo] = useState();
   const getAuth = useSelector(getAuthData);
-  const sellerID = getAuth?.merchantLoginData;
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
+  const availableOfferArray = getRetailData?.availableOffer;
 
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAdd, setUserAdd] = useState('');
   const [cartSearch, setCartSearch] = useState('');
+  const [addCartModal, setAddCartModal] = useState(false);
+  const [addCartDetailModal, setAddCartDetailModal] = useState(false);
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
@@ -77,6 +87,13 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
           };
     dispatch(changeStatusProductCart(data));
   };
+  useEffect(() => {
+    const data = {
+      seller_id: sellerID,
+      servicetype: 'product',
+    };
+    dispatch(getAvailableOffer(data));
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -98,6 +115,13 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       };
     }, [])
   );
+
+  const productFun = async (productId) => {
+    const res = await dispatch(getOneProduct(sellerID, productId));
+    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+      setAddCartModal(true);
+    }
+  };
 
   const updateQuantity = (cartId, productId, operation, index) => {
     // const updatedArr = [...arr];
@@ -365,25 +389,55 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
             <View>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
-                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>
+                    Available Offer{availableOfferArray?.length}
+                  </Text>
                 </View>
-                {[1, 2, 3].map((item, index) => (
-                  <View style={styles.avaliableOferBodyCon}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <View style={{ borderRadius: 4 }}>
-                        <Image source={clothes} style={styles.offerImage} />
+
+                <ScrollView nestedScrollEnabled={true}>
+                  <View style={styles.availbleOfferScroll}>
+                    {availableOfferArray?.length === 0 ? (
+                      <View>
+                        <Text style={styles.noDataText}>No Data</Text>
                       </View>
-                      <View style={{ marginLeft: 4 }}>
-                        <Text style={styles.offerText}>Marbolo red pack</Text>
-                        <Text style={styles.offerPrice}>White/S</Text>
-                        <Text style={styles.offerPrice}>
-                          $6.56 <Text style={styles.offerPriceDark}>$6.56</Text>
-                        </Text>
-                      </View>
-                    </View>
-                    <Image source={addToCart} style={styles.sideAddToCart} />
+                    ) : (
+                      availableOfferArray?.map((item, index) => (
+                        <TouchableOpacity
+                          style={styles.avaliableOferBodyCon}
+                          key={index}
+                          onPress={() => productFun(item.id)}
+                        >
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ borderRadius: 4 }}>
+                              <Image
+                                source={{ uri: item.product?.image }}
+                                style={styles.offerImage}
+                              />
+                            </View>
+                            <View style={{ marginLeft: 4 }}>
+                              <Text
+                                style={[styles.offerText, { width: ms(110) }]}
+                                numberOfLines={1}
+                              >
+                                {item.product?.name}
+                              </Text>
+                              <Text style={styles.offerPrice}>White/S</Text>
+                              <View style={{ flexDirection: 'row' }}>
+                                <Text style={[styles.offerPrice, styles.lineTrought]}>
+                                  ${item.actual_price_per_pack}
+                                </Text>
+                                <Text style={styles.offerPriceDark}>
+                                  ${item.offer_price_per_pack}
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                          <Image source={addToCart} style={styles.sideAddToCart} />
+                        </TouchableOpacity>
+                      ))
+                    )}
                   </View>
-                ))}
+                </ScrollView>
               </View>
 
               <Spacer space={SH(10)} />
@@ -453,6 +507,18 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
           </View>
         </View>
       </View>
+
+      <Modal animationType="fade" transparent={true} isVisible={addCartModal || addCartDetailModal}>
+        {addCartDetailModal ? (
+          <AddCartDetailModal crossHandler={() => setAddCartDetailModal(false)} />
+        ) : (
+          <AddCartModal
+            crossHandler={() => setAddCartModal(false)}
+            detailHandler={() => setAddCartDetailModal(true)}
+            sellerID={sellerID}
+          />
+        )}
+      </Modal>
     </View>
   );
 }

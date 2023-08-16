@@ -101,6 +101,7 @@ export function MainScreen({
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
   const [search, setSearch] = useState('');
+  const [serviceSearch, setServiceSearch] = useState('');
 
   const [showProductsFrom, setshowProductsFrom] = useState();
 
@@ -169,8 +170,19 @@ export function MainScreen({
         search: search,
       };
       dispatch(getMainProduct(searchName));
-    } else if (search?.length >= 3) {
+    } else if (search?.length === 0) {
       dispatch(getMainProduct());
+    }
+  };
+  const onServiceFind = (search) => {
+    setServiceSearch(search);
+    if (search?.length > 3) {
+      const searchName = {
+        search: search,
+      };
+      dispatch(getMainServices(searchName));
+    } else if (search?.length === 0) {
+      dispatch(getMainServices());
     }
   };
 
@@ -463,62 +475,63 @@ export function MainScreen({
                     </Text>
                   </View>
                 )}
-                {/* <View>
-                <FlatList
-                  data={filterMenuTitle}
-                  extraData={filterMenuTitle}
-                  renderItem={catTypeRenderItem}
-                  keyExtractor={(item) => item.id}
-                  horizontal
-                  // contentContainerStyle={styles.contentContainer}
-                />
-              </View> */}
-                <View style={styles.barcodeInputWraper}>
-                  <View style={styles.displayRow}>
-                    <View>
-                      <Image source={search_light} style={styles.sideSearchStyle} />
-                    </View>
-                    <TextInput
-                      placeholder="Search by Barcode, SKU, Name"
-                      style={styles.sideBarsearchInput}
-                      value={search}
-                      onChangeText={(search) => onChangeFun(search)}
-                      placeholderTextColor={COLORS.gerySkies}
-                    />
-                    {search?.length > 0 ? (
-                      <TouchableOpacity
-                        onPress={() => {
-                          setSearch(''), dispatch(getMainProduct()), Keyboard.dismiss();
-                        }}
-                      >
-                        <Image
-                          source={cross}
-                          style={[styles.sideSearchStyle, styles.crossStyling]}
-                        />
-                      </TouchableOpacity>
-                    ) : null}
-                  </View>
-                </View>
-                <View>
-                  {/* <FlatList
-                  data={productServiceFilter}
-                  keyExtractor={(item) => item.id}
-                  horizontal
-                  renderItem={({ item, index }) => {
-                    const color = item.id === productServiceType ? COLORS.primary : COLORS.darkGray;
-
-                    return (
-                      <ProductServiceItem
-                        item={item}
-                        onPress={() => {
-                          setProductServiceType(item.id), prouductServiceFun(index);
-                        }}
-                        color={color}
-                        index={index}
+                {productCon && getMerchantService?.is_product_exist === true ? (
+                  <View style={styles.barcodeInputWraper}>
+                    <View style={styles.displayRow}>
+                      <View>
+                        <Image source={search_light} style={styles.sideSearchStyle} />
+                      </View>
+                      <TextInput
+                        placeholder="Search by Barcode, SKU, Name"
+                        style={styles.sideBarsearchInput}
+                        value={search}
+                        onChangeText={(search) => onChangeFun(search)}
+                        placeholderTextColor={COLORS.gerySkies}
                       />
-                    );
-                  }}
-                /> */}
+                      {search?.length > 0 ? (
+                        <TouchableOpacity
+                          onPress={() => {
+                            setSearch(''), dispatch(getMainProduct()), Keyboard.dismiss();
+                          }}
+                        >
+                          <Image
+                            source={cross}
+                            style={[styles.sideSearchStyle, styles.crossStyling]}
+                          />
+                        </TouchableOpacity>
+                      ) : null}
+                    </View>
+                  </View>
+                ) : (
+                  <View style={styles.barcodeInputWraper}>
+                    <View style={styles.displayRow}>
+                      <View>
+                        <Image source={search_light} style={styles.sideSearchStyle} />
+                      </View>
+                      <TextInput
+                        placeholder="Search by Barcode, SKU, Name"
+                        style={styles.sideBarsearchInput}
+                        value={serviceSearch}
+                        onChangeText={(serviceSearch) => onServiceFind(serviceSearch)}
+                        placeholderTextColor={COLORS.gerySkies}
+                      />
+                      {serviceSearch?.length > 0 ? (
+                        <TouchableOpacity
+                          onPress={() => {
+                            setServiceSearch(''), dispatch(getMainServices()), Keyboard.dismiss();
+                          }}
+                        >
+                          <Image
+                            source={cross}
+                            style={[styles.sideSearchStyle, styles.crossStyling]}
+                          />
+                        </TouchableOpacity>
+                      ) : null}
+                    </View>
+                  </View>
+                )}
+
+                <View>
                   <View style={styles.displayflex}>
                     {getMerchantService?.is_product_exist ? (
                       <TouchableOpacity
@@ -693,7 +706,7 @@ export function MainScreen({
                   keyExtractor={(item, index) => index}
                   numColumns={7}
                   contentContainerStyle={{
-                    flexGrow: 1,
+                    // flexGrow: 1,
                     justifyContent: 'space-between',
                     zIndex: -99,
                   }}

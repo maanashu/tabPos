@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Platform,
 } from 'react-native';
 import { ScreenWrapper } from '@/components';
 import { styles } from '../Analytics2.styles';
@@ -18,6 +19,7 @@ import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
+import { ms } from 'react-native-size-matters';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -78,29 +80,30 @@ export function TotalShippingOrders({ onPress }) {
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
           <Text>{index + 1 + '   '}</Text>
-          <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
+          <Text style={styles.revenueDataText}>{item?.user_details?.user_profiles?.firstname}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.id}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.user_details?.user_profiles?.full_phone_number}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{'Anan'}</Text>
+        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.profit}</Text>
-      </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.payable_amount}</Text>
+        <Text style={styles.revenueDataText}>
+          {moment(item?.user_details?.user_profiles?.updated_at).format('LL')}
+        </Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
   return (
-    <View>
+    <View style={styles.flex1}>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
         <Image source={backArrow2} style={styles.backImageStyle} />
         <Text style={styles.currentStatusText}>{'Back'}</Text>
@@ -209,29 +212,26 @@ export function TotalShippingOrders({ onPress }) {
           >
             <DataTable.Header style={styles.tableListHeader}>
               <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Date</Text>
+                <Text style={styles.revenueText}>Byer Name</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Id</Text>
+                <Text style={styles.revenueText}>Phone Number</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Byer Name</Text>
+                <Text style={styles.revenueText}>Price</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Total Quatity</Text>
               </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Profit</Text>
-              </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Amount</Text>
+                <Text style={styles.revenueText}>Last Sold Date</Text>
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={{ height: SH(380), zIndex: -99 }}>
+            <View style={{ zIndex: -99 }}>
               {shippingGraph?.cancelled_data_list?.length === 0 &&
               shippingGraph?.deliverd_data_list?.length === 0 &&
               shippingGraph?.returned_data_list?.length === 0 ? (
@@ -246,7 +246,15 @@ export function TotalShippingOrders({ onPress }) {
                   </Text>
                 </View>
               ) : (
-                <View style={{ height: SH(250) }}>
+                <View
+                  style={{
+                    height: Platform.OS === 'ios' ? ms(202) : ms(210),
+                    width:
+                      Platform.OS === 'ios'
+                        ? Dimensions.get('window').width - ms(80)
+                        : Dimensions.get('window').width - ms(150),
+                  }}
+                >
                   <FlatList
                     style={{ backgroundColor: COLORS.white }}
                     data={data}

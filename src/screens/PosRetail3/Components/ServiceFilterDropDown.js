@@ -23,15 +23,19 @@ import {
   getBrand,
   getCategory,
   getMainProduct,
+  getMainServices,
   getProductsUsingFilters,
   getServiceCategory,
+  getServiceSubCategory,
   getSubCategory,
 } from '@/actions/RetailAction';
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 export const ServiceFilterDropDown = ({ sellerid }) => {
   const retailData = useSelector(getRetail);
+  const getAuth = useSelector(getAuthData);
   const dispatch = useDispatch();
 
   // category search
@@ -56,8 +60,8 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
   const [selectedBrandArray, setSelectedBrandArray] = useState([]);
 
   useEffect(() => {
-    dispatch(getCategory(sellerid, search));
-    dispatch(getSubCategory(sellerid, searchSubCategory));
+    dispatch(getServiceCategory(sellerid, search));
+    dispatch(getServiceSubCategory(sellerid, searchSubCategory));
     dispatch(getBrand(sellerid, searchBrand));
   }, [
     debouncedValue,
@@ -70,17 +74,17 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
 
   useEffect(() => {
     setCategoryData(
-      retailData?.categoryList //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+      retailData?.serviceCategoryList //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
     );
 
     setSubCategoryData(
-      retailData?.subCategories //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+      retailData?.serviceSubCategoryList //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
     );
 
     setBrandData(
-      retailData?.brands //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+      getAuth?.getAllPosUsers //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
     );
-  }, [retailData]);
+  }, [retailData, getAuth]);
 
   useEffect(() => {
     let finalParams = {};
@@ -102,13 +106,13 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
       selectedBrandArray?.length > 0 ||
       selectedSubCategoryArray?.length > 0
     ) {
-      dispatch(getMainProduct(finalParams));
+      dispatch(getMainServices(finalParams));
     }
   }, [selectedCategoryArray, selectedBrandArray, selectedSubCategoryArray]);
 
   useEffect(() => {
     dispatch(getServiceCategory(sellerid));
-    dispatch(getSubCategory(sellerid));
+    dispatch(getServiceSubCategory(sellerid));
     dispatch(getBrand(sellerid));
     // setCategoryData(
     //   retailData?.categoryList?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
@@ -124,7 +128,10 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
   }, [!search, !searchSubCategory, !searchBrand]);
 
   const isOrderLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_CATEGORY, TYPES.GET_SUB_CATEGORY, TYPES.GET_BRAND], state)
+    isLoadingSelector(
+      [TYPES.GET_SERVICE_CATEGORY, TYPES.GET_SERVICE_SUB_CATEGORY, TYPES.GET_BRAND],
+      state
+    )
   );
 
   // category
@@ -191,7 +198,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
     const categoryID = {
       category_ids: ids.join(','),
     };
-    dispatch(getMainProduct(categoryID));
+    dispatch(getMainServices(categoryID));
   };
 
   // sub category
@@ -258,7 +265,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
     const subCategoryID = {
       sub_category_ids: ids.join(','),
     };
-    dispatch(getMainProduct(subCategoryID));
+    dispatch(getMainServices(subCategoryID));
   };
 
   // Brands
@@ -268,11 +275,12 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
         <TextInput
           value={searchBrand}
           style={styles.textInputStyle}
-          placeholder={strings.posRetail.searchBrand}
+          placeholder={strings.posRetail.searchStaff}
           onChangeText={(text) => {
             setSearchBrand(text);
             setBrandOpenDropDown(true);
           }}
+          editable={false}
         />
 
         {isOrderLoading ? (
@@ -302,15 +310,24 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
     return (
       <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => changeCheckBrandInput(index)}>
+          <TouchableOpacity
+          //  onPress={() => changeCheckBrandInput(index)}
+          >
             <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => changeCheckBrandInput(index)}>
+          <TouchableOpacity
+          // onPress={() => changeCheckBrandInput(index)}
+          >
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
           </TouchableOpacity>
         )}
-        <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
+        <Text
+          style={[styles.itemNameTextStyle, { paddingLeft: 10, width: ms(180) }]}
+          numberOfLines={1}
+        >
+          {item?.user?.user_profiles?.firstname + ' ' + item?.user?.user_profiles?.lastname}
+        </Text>
       </View>
     );
   };
@@ -325,7 +342,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
     const brandID = {
       brand_id: ids.join(','),
     };
-    dispatch(getMainProduct(brandID));
+    dispatch(getMainServices(brandID));
   };
 
   return (
@@ -334,12 +351,11 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
       <View>
         <TouchableOpacity
           style={styles.categoryViewStyle}
-          // onPress={() => {
-          //   setCategoryOpenDropDown(!categoryOpenDropDown);
-          //   setSubCategoryOpenDropDown(false);
-          //   setBrandOpenDropDown(false);
-          // }}
-          onPress={() => alert('Inprogress')}
+          onPress={() => {
+            setCategoryOpenDropDown(!categoryOpenDropDown);
+            setSubCategoryOpenDropDown(false);
+            setBrandOpenDropDown(false);
+          }}
         >
           <Text style={styles.itemNameTextStyle}>{strings.posSale.category}</Text>
 
@@ -358,12 +374,11 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
       <View>
         <TouchableOpacity
           style={styles.categoryViewStyle}
-          // onPress={() => {
-          //   setSubCategoryOpenDropDown(!subCategoryOpenDropDown);
-          //   setCategoryOpenDropDown(false);
-          //   setBrandOpenDropDown(false);
-          // }}
-          onPress={() => alert('Inprogress')}
+          onPress={() => {
+            setSubCategoryOpenDropDown(!subCategoryOpenDropDown);
+            setCategoryOpenDropDown(false);
+            setBrandOpenDropDown(false);
+          }}
         >
           <Text style={styles.itemNameTextStyle}>{'Sub Category'}</Text>
 
@@ -382,12 +397,11 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
       <View>
         <TouchableOpacity
           style={styles.categoryViewStyle}
-          // onPress={() => {
-          //   setBrandOpenDropDown(!brandOpenDropDown);
-          //   setCategoryOpenDropDown(false);
-          //   setSubCategoryOpenDropDown(false);
-          // }}
-          onPress={() => alert('Inprogress')}
+          onPress={() => {
+            setBrandOpenDropDown(!brandOpenDropDown);
+            setCategoryOpenDropDown(false);
+            setSubCategoryOpenDropDown(false);
+          }}
         >
           <Text style={styles.itemNameTextStyle}>{'Staff'}</Text>
 

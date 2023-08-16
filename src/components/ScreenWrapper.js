@@ -1,12 +1,6 @@
 import React, { useMemo } from 'react';
 
-import {
-  StyleSheet,
-  View,
-  StatusBar,
-  SafeAreaView,
-  Platform,
-} from 'react-native';
+import { StyleSheet, View, StatusBar, SafeAreaView, Platform } from 'react-native';
 
 import { COLORS, SW } from '@/theme';
 

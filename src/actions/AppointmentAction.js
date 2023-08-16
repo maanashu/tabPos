@@ -2,6 +2,8 @@ import { APPOINTMENT_STATUS } from '@/constants/status';
 import { AppointmentController } from '@/controllers';
 import { TYPES } from '@/Types/AppointmentTypes';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { getPendingOrders } from './DashboardAction';
+import { store } from '@/store';
 
 // get all appointments
 const getAppointmentRequest = () => ({
@@ -92,12 +94,14 @@ const resheduleAppointmentError = (error) => ({
 export const getAppointment = (pageNumber) => async (dispatch) => {
   dispatch(getAppointmentRequest());
   try {
+    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
     const res = await AppointmentController.getAppointment(pageNumber);
 
     const currentPages = res?.payload?.current_page;
     const totalPages = res?.payload?.total_pages;
     const pages = { currentPages: currentPages, totalPages: totalPages };
     dispatch(getAppointmentSuccess(res?.payload?.data, pages));
+    dispatch(getPendingOrders(sellerId));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAppointmentReset());
