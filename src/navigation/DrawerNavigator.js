@@ -228,6 +228,30 @@ export function DrawerNavigator(props) {
           }}
         />
 
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'shippingOrder2' ? true : false}
+          onPress={() => {
+            setActive('shippingOrder2');
+            navigate(NAVIGATION.shippingOrder2);
+          }}
+          icon={({ focused, color, size }) => {
+            return getDashboardData?.pendingOrders?.shipping_count ? (
+              <View>
+                <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
+                <View style={styles.countViewStyle}>
+                  <Text style={styles.countTextStyle}>
+                    {getDashboardData?.pendingOrders?.shipping_count}
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
+            );
+          }}
+        />
+
         {/* <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
@@ -341,29 +365,6 @@ export function DrawerNavigator(props) {
           />
         )}
 
-        <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'shippingOrder2' ? true : false}
-          onPress={() => {
-            setActive('shippingOrder2');
-            navigate(NAVIGATION.shippingOrder2);
-          }}
-          icon={({ focused, color, size }) => {
-            return getDashboardData?.pendingOrders?.shipping_count ? (
-              <View>
-                <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
-                <View style={styles.countViewStyle}>
-                  <Text style={styles.countTextStyle}>
-                    {getDashboardData?.pendingOrders?.shipping_count}
-                  </Text>
-                </View>
-              </View>
-            ) : (
-              <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
-            );
-          }}
-        />
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}

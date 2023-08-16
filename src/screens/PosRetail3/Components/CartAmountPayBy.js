@@ -409,7 +409,6 @@ export const CartAmountPayBy = ({
       modeOfPayment: 'jbr',
       tipsAddAnount: (totalPayAmount() * 100).toFixed(0),
     };
-    console.log('data in function of service', data);
     const callback = (response) => {
       if (response) {
         onPressServiceContinue(saveCartData, data);

@@ -10,14 +10,7 @@ import styles from '../ShippingOrder2.styles';
 import { BarChart } from 'react-native-gifted-charts';
 import { Spacer } from '@/components';
 
-const Graph = ({
-  graphData,
-  renderGraphItem,
-  isDeliveryOrder,
-  graphElements,
-  width,
-  outputData,
-}) => {
+const Graph = ({ graphData, renderGraphItem, isDeliveryOrder, outputData }) => {
   return (
     <View style={styles.graphViewStyle}>
       <View>
@@ -37,7 +30,7 @@ const Graph = ({
       {isDeliveryOrder ? (
         <View
           style={{
-            height: ms(170),
+            height: ms(150),
             backgroundColor: COLORS.white,
             alignItems: 'center',
             justifyContent: 'center',
@@ -51,15 +44,13 @@ const Graph = ({
             data={outputData}
             noOfSections={7}
             roundedTop
-            // hideRules
             xAxisThickness={1}
             yAxisThickness={1}
             xAxisType={'dashed'}
             yAxisType={'dashed'}
             yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
             yAxisLength={350}
-            isAnimated
-            height={ms(135)}
+            height={ms(130)}
             width={Dimensions.get('window').width * 0.5}
           />
         </View>

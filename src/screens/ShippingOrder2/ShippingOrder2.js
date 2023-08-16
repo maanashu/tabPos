@@ -331,7 +331,7 @@ export function ShippingOrder2() {
         </View>
 
         <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
-          <Text style={styles.timeTextStyle}>{item?.delivery_details?.title}</Text>
+          <Text style={styles.timeTextStyle}>{item?.invoice?.delivery_date ?? ''}</Text>
           <View style={styles.locationViewStyle}>
             <Image source={clock} style={styles.pinImageStyle} />
             <Text style={styles.distanceTextStyle}>
@@ -399,7 +399,7 @@ export function ShippingOrder2() {
       </View>
 
       <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
-        <Text style={styles.timeTextStyle}>{item?.delivery_details?.title}</Text>
+        <Text style={styles.timeTextStyle}>{item?.invoice?.delivery_date}</Text>
         <View style={styles.locationViewStyle}>
           <Image source={clock} style={styles.pinImageStyle} />
           <Text style={styles.distanceTextStyle}>

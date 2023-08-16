@@ -4,8 +4,8 @@ import {
   Text,
   Image,
   FlatList,
-  TouchableOpacity,
   Platform,
+  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 
@@ -70,7 +70,7 @@ const OrderDetail = ({
                 color: COLORS.primary,
               }}
             >
-              {userDetail?.delivery_details?.title ?? ''}
+              {userDetail?.invoice?.delivery_date ?? ''}
             </Text>
             <Text
               style={{
@@ -201,11 +201,7 @@ const OrderDetail = ({
                 style={[styles.acceptButtonView, { width: ms(100) }]}
               >
                 {isProductDetailLoading ? (
-                  <ActivityIndicator
-                    size={'small'}
-                    //  style={styles.loader}
-                    color={COLORS.white}
-                  />
+                  <ActivityIndicator size={'small'} color={COLORS.white} />
                 ) : (
                   <Text style={styles.acceptTextStyle}>{strings.buttonStatus.trackOrder}</Text>
                 )}

@@ -39,6 +39,7 @@ import {
   backArrow,
   deliveryHomeIcon,
   Fonts,
+  scooter,
 } from '@/assets';
 import {
   acceptOrder,
@@ -428,98 +429,90 @@ export function DeliveryOrders2({ route }) {
       </View>
     );
   };
-  const renderOrderToReview = ({ item, index }) => (
-    <>
-      {
-        <TouchableOpacity
-          onPress={() => {
-            setViewAllOrder(true);
-            setSelectedProductId(item?.order_details[0]?.id);
-            setUserDetail(item);
-            setOrderDetail(item?.order_details);
-            dispatch(getOrderData(item?.id));
-            setOrderId(item?.id);
-          }}
-          style={[
-            viewAllOrder ? styles.showAllOrdersView : styles.orderRowStyle,
-            {
-              backgroundColor:
-                viewAllOrder && item?.id === userDetail?.id
-                  ? COLORS.textInputBackground
-                  : COLORS.transparent,
-              borderColor:
-                viewAllOrder && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
-            },
-          ]}
-          // style={
-          //   viewAllOrders
-          //     ? [
-          //         styles.showAllOrdersView,
-          //         {
-          //           borderColor:
-          //             selectedProductId == item?.order_details[0]?.id
-          //               ? COLORS.blueLight
-          //               : COLORS.blue_shade,
-          //         },
-          //       ]
-          //     : styles.orderRowStyle
-          // }
-        >
-          <View style={styles.orderDetailStyle}>
-            <Text style={styles.nameTextStyle}>
-              {item?.user_details?.firstname ? item?.user_details?.firstname : 'user name'}
-            </Text>
-            <View style={styles.locationViewStyle}>
-              <Image source={pin} style={styles.pinImageStyle} />
-              <Text style={styles.distanceTextStyle}>{item?.distance ? item?.distance : '0'}</Text>
-            </View>
-          </View>
 
-          <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
-            <Text style={styles.nameTextStyle}>
-              {item?.order_details?.length > 1
-                ? item?.order_details?.length + ' Items'
-                : item?.order_details?.length + ' Item'}
-            </Text>
-            <View style={styles.locationViewStyle}>
-              <Image source={pay} style={styles.pinImageStyle} />
-              <Text style={styles.distanceTextStyle}>
-                {item?.payable_amount ? item?.payable_amount : '00'}
-              </Text>
-            </View>
-          </View>
-
-          <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
-            <Text style={styles.timeTextStyle}>
-              {item?.delivery_details?.title ? item?.delivery_details?.title : ''}
-            </Text>
-            <View style={styles.locationViewStyle}>
-              <Image source={clock} style={styles.pinImageStyle} />
-              <Text style={styles.distanceTextStyle}>
-                {' '}
-                {item?.preffered_delivery_start_time
-                  ? item?.preffered_delivery_start_time
-                  : '00.00'}
-                {'-'}{' '}
-                {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00'}
-              </Text>
-            </View>
-          </View>
-
+  const renderOrderToReview = ({ item }) => {
+    return (
+      <>
+        {
           <TouchableOpacity
             onPress={() => {
+              setViewAllOrder(true);
+              setSelectedProductId(item?.order_details[0]?.id);
               setUserDetail(item);
               setOrderDetail(item?.order_details);
-              setViewAllOrder(true);
+              dispatch(getOrderData(item?.id));
+              setOrderId(item?.id);
             }}
-            style={[styles.orderDetailStyle, { width: SH(24) }]}
+            style={[
+              viewAllOrder ? styles.showAllOrdersView : styles.orderRowStyle,
+              {
+                backgroundColor:
+                  viewAllOrder && item?.id === userDetail?.id
+                    ? COLORS.textInputBackground
+                    : COLORS.transparent,
+                borderColor:
+                  viewAllOrder && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
+              },
+            ]}
           >
-            <Image source={rightIcon} style={styles.rightIconStyle} />
+            <View style={styles.orderDetailStyle}>
+              <Text style={styles.nameTextStyle}>
+                {item?.user_details?.firstname ? item?.user_details?.firstname : 'user name'}
+              </Text>
+              <View style={styles.locationViewStyle}>
+                <Image source={pin} style={styles.pinImageStyle} />
+                <Text style={styles.distanceTextStyle}>
+                  {item?.distance ? item?.distance : '0'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
+              <Text style={styles.nameTextStyle}>
+                {item?.order_details?.length > 1
+                  ? item?.order_details?.length + ' Items'
+                  : item?.order_details?.length + ' Item'}
+              </Text>
+              <View style={styles.locationViewStyle}>
+                <Image source={pay} style={styles.pinImageStyle} />
+                <Text style={styles.distanceTextStyle}>
+                  {item?.payable_amount ? item?.payable_amount : '00'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
+              <Text style={styles.timeTextStyle}>
+                {item?.invoice?.delivery_date ? item?.invoice?.delivery_date : ''}
+              </Text>
+              <View style={styles.locationViewStyle}>
+                <Image source={clock} style={styles.pinImageStyle} />
+                <Text style={styles.distanceTextStyle}>
+                  {' '}
+                  {item?.preffered_delivery_start_time
+                    ? item?.preffered_delivery_start_time
+                    : '00.00'}
+                  {'-'}{' '}
+                  {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00'}
+                </Text>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              onPress={() => {
+                setUserDetail(item);
+                setOrderDetail(item?.order_details);
+                setViewAllOrder(true);
+              }}
+              style={[styles.orderDetailStyle, { width: SH(24) }]}
+            >
+              <Image source={rightIcon} style={styles.rightIconStyle} />
+            </TouchableOpacity>
           </TouchableOpacity>
-        </TouchableOpacity>
-      }
-    </>
-  );
+        }
+      </>
+    );
+  };
 
   const headerComponent = () => (
     <View style={styles.headingRowStyle}>
@@ -527,9 +520,9 @@ export function DeliveryOrders2({ route }) {
         {openShippingOrders == '0'
           ? strings.shipingOrder.orderOfReview
           : openShippingOrders == '1'
-          ? 'Accept Orders'
+          ? 'Orders to Accepted'
           : openShippingOrders == '2'
-          ? 'Order Preparing'
+          ? 'Orders to Prepared'
           : openShippingOrders == '3'
           ? 'Ready To Pickup'
           : openShippingOrders == '4'
@@ -616,26 +609,20 @@ export function DeliveryOrders2({ route }) {
     );
   };
 
-  const renderOrderProducts = ({ item }) => {
-    return (
-      <View style={styles.orderproductView}>
-        <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
-          <Image source={{ uri: item?.product_image }} style={styles.userImageStyle} />
-          <View style={{ paddingLeft: 10, width: ms(100) }}>
-            <Text style={styles.nameTextStyle}>{item?.product_name}</Text>
-            <Text style={styles.varientTextStyle}>{'Box'}</Text>
-          </View>
+  const renderOrderProducts = ({ item }) => (
+    <View style={styles.orderproductView}>
+      <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
+        <Image source={{ uri: item?.product_image }} style={styles.userImageStyle} />
+        <View style={{ paddingLeft: 10, width: ms(100) }}>
+          <Text style={styles.nameTextStyle}>{item?.product_name}</Text>
+          <Text style={styles.varientTextStyle}>{'Box'}</Text>
         </View>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-        <Image
-          source={removeProduct}
-          style={[styles.removeProductImageStyle, { marginRight: 10 }]}
-        />
       </View>
-    );
-  };
+      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
+      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
+      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
+    </View>
+  );
 
   const acceptHandler = (id) => {
     const data = {
@@ -664,365 +651,13 @@ export function DeliveryOrders2({ route }) {
       sellerID: sellerID,
     };
     dispatch(
-      acceptOrder(data, (res) => {
+      acceptOrder(data, () => {
         setViewAllOrder(false);
         dispatch(getReviewDefault(0, sellerID));
       })
     );
   };
 
-  const graphElements = () => {
-    if (
-      graphData?.[0]?.checked &&
-      !graphData?.[1]?.checked &&
-      !graphData?.[2]?.checked &&
-      !graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
-          },
-        ],
-      };
-    } else if (
-      !graphData?.[0]?.checked &&
-      graphData?.[1]?.checked &&
-      !graphData?.[2]?.checked &&
-      !graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      !graphData?.[0]?.checked &&
-      !graphData?.[1]?.checked &&
-      graphData?.[2]?.checked &&
-      !graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      !graphData?.[0]?.checked &&
-      !graphData?.[1]?.checked &&
-      !graphData?.[2]?.checked &&
-      graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      graphData?.[0]?.checked &&
-      graphData?.[1]?.checked &&
-      !graphData?.[2]?.checked &&
-      !graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      graphData?.[0]?.checked &&
-      !graphData?.[1]?.checked &&
-      graphData?.[2]?.checked &&
-      !graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      graphData?.[0]?.checked &&
-      !graphData?.[1]?.checked &&
-      !graphData?.[2]?.checked &&
-      graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      !graphData?.[0]?.checked &&
-      !graphData?.[1]?.checked &&
-      graphData?.[2]?.checked &&
-      graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      !graphData?.[0]?.checked &&
-      graphData?.[1]?.checked &&
-      graphData?.[2]?.checked &&
-      !graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      graphData?.[0]?.checked &&
-      !graphData?.[1]?.checked &&
-      !graphData?.[2]?.checked &&
-      graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      graphData?.[0]?.checked &&
-      graphData?.[1]?.checked &&
-      graphData?.[2]?.checked &&
-      !graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      graphData?.[0]?.checked &&
-      graphData?.[1]?.checked &&
-      !graphData?.[2]?.checked &&
-      graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      graphData?.[0]?.checked &&
-      !graphData?.[1]?.checked &&
-      graphData?.[2]?.checked &&
-      graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      !graphData?.[0]?.checked &&
-      graphData?.[1]?.checked &&
-      graphData?.[2]?.checked &&
-      graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[2]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
-          },
-        ],
-      };
-    } else if (
-      graphData?.[0]?.checked &&
-      graphData?.[1]?.checked &&
-      graphData?.[2]?.checked &&
-      graphData?.[3]?.checked &&
-      Object.keys(getDeliveryData?.graphOrders).length > 0
-    ) {
-      return {
-        labels: getDeliveryData?.graphOrders?.labels,
-        datasets: [
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[0]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(31, 179, 255,${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[1]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(251, 70, 108, ${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(252, 186, 48, ${2})`,
-          },
-          {
-            data: getDeliveryData?.graphOrders?.datasets?.[3]?.data,
-            strokeWidth: 5,
-            color: (opacity = 1) => `rgba(39, 90, 255, ${2})`,
-          },
-        ],
-      };
-    } else {
-      return {
-        labels: labels,
-        datasets: [
-          {
-            data: [0, 0, 0, 0, 0, 0, 0],
-          },
-        ],
-      };
-    }
-  };
   const checkedIndices = graphData
     .filter((checkbox) => checkbox.checked)
     .map((checkbox) => parseInt(checkbox.key) - 1);
@@ -1079,9 +714,9 @@ export function DeliveryOrders2({ route }) {
                               {openShippingOrders == '0'
                                 ? strings.shipingOrder.orderOfReview
                                 : openShippingOrders == '1'
-                                ? 'Accept Orders'
+                                ? 'Orders to Accepted'
                                 : openShippingOrders == '2'
-                                ? 'Order Preparing'
+                                ? 'Orders to Prepared'
                                 : openShippingOrders == '3'
                                 ? 'Ready To Pickup'
                                 : openShippingOrders == '4'
@@ -1263,9 +898,8 @@ export function DeliveryOrders2({ route }) {
               <Marker coordinate={sourceCoordinate}>
                 <View>
                   <Image
-                    source={storeTracker}
-                    style={{ height: ms(50), width: ms(50) }}
-                    resizeMode="contain"
+                    source={scooter}
+                    style={{ height: ms(30), width: ms(30), resizeMode: 'contain' }}
                   />
                 </View>
               </Marker>
@@ -1273,8 +907,7 @@ export function DeliveryOrders2({ route }) {
                 <View>
                   <Image
                     source={deliveryHomeIcon}
-                    style={{ height: ms(50), width: ms(50) }}
-                    resizeMode="contain"
+                    style={{ height: ms(30), width: ms(30), resizeMode: 'contain' }}
                   />
                 </View>
               </Marker>
