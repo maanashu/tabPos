@@ -44,7 +44,7 @@ import CalendarSettingModal from './Components/CalendarSettingModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import EventDetailModal from './Components/EventDetailModal';
-import { getSettings } from '@/actions/SettingAction';
+import { getSettings, upadteApi } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
 
 moment.suppressDeprecationWarnings = true;
