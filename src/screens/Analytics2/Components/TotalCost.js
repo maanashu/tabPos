@@ -72,8 +72,8 @@ export function TotalCost({ onPress }) {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '   '}</Text>
-          <Text style={styles.revenueDataText}>{item?.user_details?.user_profiles?.firstname}</Text>
+          <Text>{index + 1 + '.         '}</Text>
+          <Text style={styles.revenueDataText}>{item?.payable_amount}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -81,7 +81,7 @@ export function TotalCost({ onPress }) {
           {item?.user_details?.user_profiles?.full_phone_number}
         </Text>
       </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
+      {/* <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -89,7 +89,7 @@ export function TotalCost({ onPress }) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.revenue}</Text>
-      </DataTable.Cell>
+      </DataTable.Cell> */}
 
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
@@ -133,7 +133,7 @@ export function TotalCost({ onPress }) {
       </View>
 
       <View style={styles.graphHeaderView}>
-        <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
+        {/* <Text style={styles.graphHeaderText}>{'Total Profits'}</Text> */}
 
         <LineChart
           bezier
@@ -192,17 +192,17 @@ export function TotalCost({ onPress }) {
           >
             <DataTable.Header style={styles.tableListHeader}>
               <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Byer Name</Text>
+                <Text style={styles.revenueText}>Cost of Goods Sold</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Phone Number</Text>
-              </DataTable.Title>
-
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Price</Text>
+                <Text style={styles.revenueText}>Labor Cost</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Operational Expenses</Text>
+              </DataTable.Title>
+
+              {/* <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Total Quatity</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
@@ -211,7 +211,7 @@ export function TotalCost({ onPress }) {
 
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Last Sold Date</Text>
-              </DataTable.Title>
+              </DataTable.Title> */}
             </DataTable.Header>
 
             <View style={{ zIndex: -99 }}>
@@ -240,7 +240,7 @@ export function TotalCost({ onPress }) {
                     style={{ backgroundColor: COLORS.white }}
                     data={analyticStatistics?.orderData}
                     renderItem={getCostList}
-                    keyExtractor={(item) => item.id}
+                    // keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     bounces={false}

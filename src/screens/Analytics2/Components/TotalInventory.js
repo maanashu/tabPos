@@ -127,7 +127,7 @@ export function TotalInventory({ onPress }) {
       </View>
 
       <View style={styles.graphHeaderView}>
-        <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
+        {/* <Text style={styles.graphHeaderText}>{'Total Profits'}</Text> */}
         {/* <View style={{ alignSelf: 'center', height: SH(210) }}>
           <BarChartCom
             barWid={Dimensions.get('window').width - SW(110)}
@@ -190,6 +190,7 @@ export function TotalInventory({ onPress }) {
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
+          scrollEnabled={false}
         >
           <DataTable
             style={{
@@ -224,12 +225,12 @@ export function TotalInventory({ onPress }) {
                 // backgroundColor: 'red',
               }}
             >
-              {totalInventory?.length === 0 ? (
+              {totalInventory?.productData?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text
                     style={{
                       fontSize: SF(20),
-                      color: COLORS.red,
+                      color: COLORS.black,
                     }}
                   >
                     {'No data found'}
@@ -249,7 +250,7 @@ export function TotalInventory({ onPress }) {
                     style={{ backgroundColor: COLORS.white }}
                     data={totalInventory?.productData}
                     renderItem={getProductList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     bounces={false}

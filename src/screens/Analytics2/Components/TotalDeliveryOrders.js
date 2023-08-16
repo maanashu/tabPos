@@ -78,8 +78,8 @@ export function TotalDeliveryOrders({ onPress }) {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '   '}</Text>
-          <Text style={styles.revenueDataText}>{item?.user_details?.user_profiles?.firstname}</Text>
+          <Text>{index + 1 + '.            '}</Text>
+          <Text style={styles.revenueDataText}>{item?.total_items}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -90,7 +90,7 @@ export function TotalDeliveryOrders({ onPress }) {
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
       </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
+      {/* <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.total_items}</Text>
       </DataTable.Cell>
 
@@ -98,7 +98,7 @@ export function TotalDeliveryOrders({ onPress }) {
         <Text style={styles.revenueDataText}>
           {moment(item?.user_details?.user_profiles?.updated_at).format('LL')}
         </Text>
-      </DataTable.Cell>
+      </DataTable.Cell> */}
     </DataTable.Row>
   );
 
@@ -137,7 +137,7 @@ export function TotalDeliveryOrders({ onPress }) {
       </View>
 
       <View style={styles.graphHeaderView}>
-        <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
+        {/* <Text style={styles.graphHeaderText}>{'Total Profits'}</Text> */}
 
         <LineChart
           bezier
@@ -170,7 +170,7 @@ export function TotalDeliveryOrders({ onPress }) {
             ],
           }}
           width={Dimensions.get('window').width - SW(80)}
-          height={SH(210)}
+          height={SH(245)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -192,6 +192,7 @@ export function TotalDeliveryOrders({ onPress }) {
           style={{
             marginLeft: SW(-3),
             alignSelf: 'center',
+            marginTop: SH(10),
           }}
           withShadow={false}
           fromZero
@@ -212,23 +213,23 @@ export function TotalDeliveryOrders({ onPress }) {
           >
             <DataTable.Header style={styles.tableListHeader}>
               <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Byer Name</Text>
+                <Text style={styles.revenueText}>Total Number</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Phone Number</Text>
+                <Text style={styles.revenueText}>Delivery Time</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Price</Text>
+                <Text style={styles.revenueText}>Top Delivery Zip</Text>
               </DataTable.Title>
-
+              {/* 
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Total Quatity</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Last Sold Date</Text>
-              </DataTable.Title>
+              </DataTable.Title> */}
             </DataTable.Header>
 
             <View style={{ zIndex: -99 }}>
@@ -259,7 +260,7 @@ export function TotalDeliveryOrders({ onPress }) {
                     style={{ backgroundColor: COLORS.white }}
                     data={data}
                     renderItem={getDeliveryOrderList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     bounces={false}

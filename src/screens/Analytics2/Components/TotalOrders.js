@@ -36,12 +36,14 @@ export function TotalOrders({ onPress }) {
     ...totalOrder?.posOrdersData,
     ...totalOrder?.shippingOrdersData,
   ];
+  // console.log('first', totalOrder);
+  // return false;
   const getTotalOrderList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '   '}</Text>
-          <Text style={styles.revenueDataText}>{item?.user_details?.user_profiles?.firstname}</Text>
+          <Text>{index + 1 + '.           '}</Text>
+          <Text style={styles.revenueDataText}>{item?.total_items}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -99,7 +101,7 @@ export function TotalOrders({ onPress }) {
       </View>
 
       <View style={styles.graphHeaderView}>
-        <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
+        {/* <Text style={styles.graphHeaderText}>{'Total Profits'}</Text> */}
         <View style={{ alignSelf: 'center', height: SH(210) }}>
           <BarChartCom
             barWid={Dimensions.get('window').width - SW(110)}
@@ -135,22 +137,22 @@ export function TotalOrders({ onPress }) {
           >
             <DataTable.Header style={styles.tableListHeader}>
               <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Byer Name</Text>
+                <Text style={styles.revenueText}>Total Order</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Phone Number</Text>
-              </DataTable.Title>
-
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Price</Text>
+                <Text style={styles.revenueText}>Order By Type</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Quatity</Text>
+                <Text style={styles.revenueText}>Payment Method</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Last Sold Date</Text>
+                <Text style={styles.revenueText}>Customer (New/ Returning)</Text>
+              </DataTable.Title>
+
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Order Status</Text>
               </DataTable.Title>
             </DataTable.Header>
 
@@ -182,7 +184,7 @@ export function TotalOrders({ onPress }) {
                     style={{ backgroundColor: COLORS.white }}
                     data={data}
                     renderItem={getTotalOrderList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     bounces={false}

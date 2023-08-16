@@ -76,7 +76,7 @@ export function TotalPosOrder({ onPress }) {
   const dataLabelsPOS = analyticOrderGraphs?.pos_graph?.graph_data?.labels;
   const labelsPOS = generateLabels(dataLabelsPOS, interval, maxLabel, daysLength);
 
-  console.log('first', JSON.stringify(posGraph));
+  // console.log('first', JSON.stringify(posGraph));
 
   const getPOSOrderList = ({ item, index }) => (
     <DataTable.Row>
@@ -225,22 +225,26 @@ export function TotalPosOrder({ onPress }) {
           >
             <DataTable.Header style={styles.tableListHeader}>
               <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Byer Name</Text>
+                <Text style={styles.revenueText}>Total Number of POS Orders</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Phone Number</Text>
-              </DataTable.Title>
-
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Price</Text>
+                <Text style={styles.revenueText}>Average </Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Quatity</Text>
+                <Text style={styles.revenueText}>Order Value</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Last Sold Date</Text>
+                <Text style={styles.revenueText}>Top Products Sold</Text>
+              </DataTable.Title>
+
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Order Frequency</Text>
+              </DataTable.Title>
+
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Peak Order Hours</Text>
               </DataTable.Title>
             </DataTable.Header>
 
@@ -272,7 +276,7 @@ export function TotalPosOrder({ onPress }) {
                     style={{ backgroundColor: COLORS.white }}
                     data={data}
                     renderItem={getPOSOrderList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     bounces={false}

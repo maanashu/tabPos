@@ -132,7 +132,7 @@ export function Revenue({ onPress }) {
       </View>
 
       <View style={styles.graphHeaderView}>
-        <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
+        {/* <Text style={styles.graphHeaderText}>{'Total Profits'}</Text> */}
 
         <LineChart
           bezier

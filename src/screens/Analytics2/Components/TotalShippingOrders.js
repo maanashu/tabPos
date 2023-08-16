@@ -79,7 +79,7 @@ export function TotalShippingOrders({ onPress }) {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '   '}</Text>
+          <Text>{index + 1 + '.   '}</Text>
           <Text style={styles.revenueDataText}>{item?.user_details?.user_profiles?.firstname}</Text>
         </View>
       </DataTable.Cell>
@@ -137,7 +137,7 @@ export function TotalShippingOrders({ onPress }) {
       </View>
 
       <View style={styles.graphHeaderView}>
-        <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
+        {/* <Text style={styles.graphHeaderText}>{'Total Profits'}</Text> */}
 
         <LineChart
           bezier
@@ -212,22 +212,22 @@ export function TotalShippingOrders({ onPress }) {
           >
             <DataTable.Header style={styles.tableListHeader}>
               <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Byer Name</Text>
+                <Text style={styles.revenueText}>Total Number</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Phone Number</Text>
-              </DataTable.Title>
-
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Price</Text>
+                <Text style={styles.revenueText}>Shipping Cost</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Quatity</Text>
+                <Text style={styles.revenueText}>Shipping Method</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Last Sold Date</Text>
+                <Text style={styles.revenueText}>Order Size</Text>
+              </DataTable.Title>
+
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Shipping Time</Text>
               </DataTable.Title>
             </DataTable.Header>
 
@@ -259,7 +259,7 @@ export function TotalShippingOrders({ onPress }) {
                     style={{ backgroundColor: COLORS.white }}
                     data={data}
                     renderItem={getShippingOrderList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     bounces={false}

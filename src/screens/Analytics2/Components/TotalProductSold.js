@@ -61,7 +61,7 @@ export function TotalProductSold({ onPress }) {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const soldProduct = getAnalyticsData?.getSoldProduct;
-  console.log('first', soldProduct?.totalProductSoldList[0]);
+  // console.log('first', soldProduct?.totalProductSoldList[0]);
 
   const interval = 1;
   const maxLabel = 31;
@@ -130,7 +130,7 @@ export function TotalProductSold({ onPress }) {
       </View>
 
       <View style={styles.graphHeaderView}>
-        <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
+        {/* <Text style={styles.graphHeaderText}>{'Total Profits'}</Text> */}
 
         <LineChart
           bezier
@@ -215,7 +215,7 @@ export function TotalProductSold({ onPress }) {
                   <Text
                     style={{
                       fontSize: SF(20),
-                      color: COLORS.red,
+                      color: COLORS.black,
                     }}
                   >
                     {'No data found'}
@@ -235,7 +235,7 @@ export function TotalProductSold({ onPress }) {
                     style={{ backgroundColor: COLORS.white }}
                     data={soldProduct?.totalProductSoldList}
                     renderItem={getSoldProductList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     bounces={false}

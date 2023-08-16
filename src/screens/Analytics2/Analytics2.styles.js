@@ -177,7 +177,7 @@ export const styles = StyleSheet.create({
   revenueText: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.solid_grey,
-    fontSize: SF(13),
+    fontSize: SF(14),
     textAlign: 'center',
     letterSpacing: -1,
     // paddingHorizontal:moderateScale(40)
@@ -187,7 +187,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   dateTablealignStart: {
-    width: SH(185),
+    // width: SH(185),
+    width: ms(125),
     justifyContent: 'flex-start',
   },
   tableMainView: {
