@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { leftlight, rightlight } from '@/assets';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { leftlight, newCalendar, rightlight } from '@/assets';
 import { strings } from '@/localization';
 import { styles } from '@/screens/Calender/Calender.styles';
+import { ms } from 'react-native-size-matters';
 
 const CalendarHeaderWithOptions = ({
   prevMonth,
@@ -14,6 +15,7 @@ const CalendarHeaderWithOptions = ({
   weekHandler,
   month,
   monthHandler,
+  onPressCalendarIcon = () => {},
 }) => {
   return (
     <View style={styles.calenderHeader}>
@@ -23,11 +25,12 @@ const CalendarHeaderWithOptions = ({
             <TouchableOpacity style={styles.arrowButtonStl} onPress={prevMonth}>
               <Image source={leftlight} style={styles.leftLight} />
             </TouchableOpacity>
-            <Text style={styles.monthlySchduleDate}>
-              {`${getFormattedHeaderDate()}`}
-            </Text>
+            <Text style={styles.monthlySchduleDate}>{`${getFormattedHeaderDate()}`}</Text>
             <TouchableOpacity style={styles.arrowButtonStl} onPress={nextMonth}>
               <Image source={rightlight} style={styles.leftLight} />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginLeft: ms(8) }} onPress={onPressCalendarIcon}>
+              <Image source={newCalendar} style={styles.calendarIcon} />
             </TouchableOpacity>
           </View>
         </View>

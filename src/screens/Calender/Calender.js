@@ -42,6 +42,7 @@ import { NAVIGATION } from '@/constants';
 import EventDetailModal from './Components/EventDetailModal';
 import { getSettings, upadteApi } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -78,6 +79,8 @@ export function Calender(props) {
 
   const [selectedStaffEmployeeId, setSelectedStaffEmployeeId] = useState(null);
   const [selectedStaffData, setSelectedStaffData] = useState(null);
+
+  const [showMiniCalendar, setshowMiniCalendar] = useState(false);
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
@@ -314,6 +317,9 @@ export function Calender(props) {
                 month,
                 monthHandler,
               }}
+              onPressCalendarIcon={() => {
+                setshowMiniCalendar(true);
+              }}
             />
 
             <View style={styles._calendarContainer}>
@@ -507,6 +513,19 @@ export function Calender(props) {
 
         <EventDetailModal
           {...{ eventData, showEventDetailModal, setshowEventDetailModal, dispatch }}
+        />
+
+        <DateTimePicker
+          isVisible={showMiniCalendar}
+          date={new Date()}
+          display="inline"
+          onConfirm={(date) => {
+            setCalendarDate(moment(date));
+            setshowMiniCalendar(false);
+          }}
+          onCancel={() => {
+            setshowMiniCalendar(false);
+          }}
         />
       </View>
     </ScreenWrapper>
