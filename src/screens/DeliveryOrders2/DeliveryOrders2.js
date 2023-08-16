@@ -174,7 +174,6 @@ export function DeliveryOrders2({ route }) {
       };
     }, [isViewAll, ORDER_DETAIL])
   );
-  console.log('stst', oneOrderDetail?.getOrderData?.status);
   const deliveryDrawer = [
     {
       key: '0',

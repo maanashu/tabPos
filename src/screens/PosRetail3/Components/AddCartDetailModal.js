@@ -14,6 +14,7 @@ const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 export function AddCartDetailModal({ crossHandler }) {
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
+  console.log('productDetail', JSON.stringify(productDetail));
 
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options.split(',');
@@ -145,7 +146,9 @@ export function AddCartDetailModal({ crossHandler }) {
             </View>
             <View style={styles.skuConBody}>
               <Text style={styles.sku}>Unit Type</Text>
-              <Text style={styles.sku}>{productDetail?.type} </Text>
+              <Text style={[styles.sku, { textTransform: 'capitalize' }]}>
+                {productDetail?.type}{' '}
+              </Text>
             </View>
             <View style={styles.skuConBody}>
               <Text style={styles.sku}>Unit Weight</Text>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Keyboard, ScrollView, Text, View } from 'react-native';
+import { FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
 
-import { COLORS, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
@@ -280,7 +280,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
               </View>
             </View>
             {arr?.map((item, index) => (
-              <>
+              <View key={index}>
                 {item?.poscart_products?.map((data, ind) => (
                   <View style={styles.blueListData} key={ind}>
                     <View style={styles.displayflex}>
@@ -305,7 +305,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                             >
                               {data.product_details?.name}
                             </Text>
-                            <Text style={styles.sukNumber}>SUK: {data?.product_details?.sku}</Text>
+                            <Text style={styles.sukNumber}>UPC: {data?.product_details?.upc}</Text>
                           </View>
                         </View>
                       </View>
@@ -362,7 +362,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                     </View>
                   </View>
                 ))}
-              </>
+              </View>
             ))}
 
             <Spacer space={SH(7)} />
@@ -389,19 +389,21 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
             <View>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
-                  <Text style={[styles.holdCart, { color: COLORS.white }]}>
-                    Available Offer{availableOfferArray?.length}
-                  </Text>
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
                 </View>
 
-                <ScrollView nestedScrollEnabled={true}>
-                  <View style={styles.availbleOfferScroll}>
+                {/* <View style={[styles.availbleOfferScroll, { borderWidth: 1 }]}>
+                  <ScrollView
+                    scrollEnabled={true}
+                    nestedScrollEnabled={true}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                  >
                     {availableOfferArray?.length === 0 ? (
                       <View>
                         <Text style={styles.noDataText}>No Data</Text>
                       </View>
                     ) : (
-                      availableOfferArray?.map((item, index) => (
+                      [1, 2, 3, 4, 5, 6]?.map((item, index) => (
                         <TouchableOpacity
                           style={styles.avaliableOferBodyCon}
                           key={index}
@@ -436,8 +438,56 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                         </TouchableOpacity>
                       ))
                     )}
-                  </View>
-                </ScrollView>
+                    availableOfferArray
+                  </ScrollView>
+                </View> */}
+                <FlatList
+                  data={availableOfferArray}
+                  extraData={availableOfferArray}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <TouchableOpacity
+                        style={styles.avaliableOferBodyCon}
+                        key={index}
+                        onPress={() => productFun(item.id)}
+                      >
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <View style={{ borderRadius: 4 }}>
+                            <Image
+                              source={{ uri: item.product?.image }}
+                              style={styles.offerImage}
+                            />
+                          </View>
+                          <View style={{ marginLeft: 4 }}>
+                            <Text style={[styles.offerText, { width: ms(90) }]} numberOfLines={1}>
+                              {item.product?.name}
+                            </Text>
+                            <Text style={styles.offerPrice}>White/S</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                              <Text style={[styles.offerPrice, styles.lineTrought]}>
+                                ${item.actual_price_per_pack}
+                              </Text>
+                              <Text style={styles.offerPriceDark}>
+                                ${item.offer_price_per_pack}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                        <Image source={addToCart} style={styles.sideAddToCart} />
+                      </TouchableOpacity>
+                    );
+                  }}
+                  keyExtractor={(item, index) => index}
+                  contentContainerStyle={styles.availbleOfferScroll}
+                  scrollEnabled={true}
+                  ListEmptyComponent={() => (
+                    <View style={styles.noProductText}>
+                      <Text style={[styles.emptyListText, { fontSize: SF(16) }]}>
+                        {strings.valiadtion.noData}
+                      </Text>
+                    </View>
+                  )}
+                />
               </View>
 
               <Spacer space={SH(10)} />
@@ -464,10 +514,10 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                   ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
-              <View style={[styles.displayflex2, styles.paddVertical]}>
+              {/* <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Total VAT</Text>
                 <Text style={styles.subTotalDollar}>$0.00</Text>
-              </View>
+              </View> */}
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Total Taxes</Text>
                 <Text style={styles.subTotalDollar}>

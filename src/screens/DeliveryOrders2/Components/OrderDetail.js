@@ -29,7 +29,6 @@ const OrderDetail = ({
   trackHandler,
   isProductDetailLoading,
 }) => {
-  console.log('userdetial', userDetail);
   return (
     <View style={styles.orderDetailView}>
       <View style={styles.orderDetailViewStyle}>

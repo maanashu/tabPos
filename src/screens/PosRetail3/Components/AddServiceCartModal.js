@@ -17,14 +17,20 @@ import { getDaysAndDates } from '@/utils/GlobalMethods';
 
 const windowWidth = Dimensions.get('window').width;
 
-export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sellerID }) {
+export function AddServiceCartModal({
+  crossHandler,
+  detailHandler,
+  itemData,
+  sellerID,
+  backToCartHandler,
+}) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-
+  const cartServiceData = getRetailData?.getserviceCart;
   const timeSlotsData = getRetailData?.timeSlots;
 
-  const [posUserId, setposUserId] = useState(itemData?.pos_users[0].user?.unique_uuid);
-  const [providerDetail, setProviderDetail] = useState(itemData?.pos_users[0].user);
+  const [posUserId, setposUserId] = useState(itemData?.pos_users?.[0]?.user?.unique_uuid);
+  const [providerDetail, setProviderDetail] = useState(itemData?.pos_users?.[0]?.user);
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
@@ -173,9 +179,27 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
           <Image source={crossButton} style={styles.crossBg} />
         </TouchableOpacity>
         <View style={{ flexDirection: 'row' }}>
-          <View style={styles.backTocartCon}>
+          <TouchableOpacity
+            style={[
+              styles.backTocartCon,
+              {
+                opacity:
+                  cartServiceData?.length == 0 ||
+                  cartServiceData?.appointment_cart_products === 'undefined'
+                    ? 0.4
+                    : 1,
+              },
+            ]}
+            onPress={backToCartHandler}
+            disabled={
+              cartServiceData?.length == 0 ||
+              cartServiceData?.appointment_cart_products === 'undefined'
+                ? true
+                : false
+            }
+          >
             <Text style={styles.backTocartText}>Back to Cart</Text>
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity style={styles.continueBtnCon} onPress={detailHandler}>
             <Text style={styles.detailBtnCon}>Details</Text>

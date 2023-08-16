@@ -57,6 +57,10 @@ export function DrawerNavigator(props) {
   const posUserArray = getAuth?.getAllPosUsers;
   const getUserData = useSelector(getUser);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const getPosUser = getUserData?.posLoginData;
+
+  console.log('getAuth?.merchantLoginData', JSON.stringify(getAuth?.merchantLoginData?.id));
+  console.log('getUserData?.posLoginData', getUserData?.posLoginData?.id);
 
   const getDashboardData = useSelector(getDashboard);
   const getSessionObj = getDashboardData?.getSesssion;
@@ -377,15 +381,15 @@ export function DrawerNavigator(props) {
           )}
         />
       </ScrollView>
-      {/* {getUserData?.posLoginData?.id != getAuth?.merchantLoginData?.id ? null : (
-          <View style={styles.endSessionViewStyle}>
-            <DrawerItem
-              label={''}
-              onPress={() => merchantEndSesion()}
-              icon={({ focused, color, size }) => <Image source={power} style={styles.iconStyle} />}
-            />
-          </View>
-        )} */}
+      {/* {getAuth?.merchantLoginData?.id === getUserData?.posLoginData?.id ? (
+        <View style={styles.endSessionViewStyle}>
+          <DrawerItem
+            label={''}
+            onPress={() => merchantEndSesion()}
+            icon={({ focused, color, size }) => <Image source={power} style={styles.iconStyle} />}
+          />
+        </View>
+      ) : null} */}
     </DrawerContentScrollView>
   );
 }
