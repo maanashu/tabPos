@@ -59,9 +59,6 @@ export function DrawerNavigator(props) {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getPosUser = getUserData?.posLoginData;
 
-  console.log('getAuth?.merchantLoginData', JSON.stringify(getAuth?.merchantLoginData?.id));
-  console.log('getUserData?.posLoginData', getUserData?.posLoginData?.id);
-
   const getDashboardData = useSelector(getDashboard);
   const getSessionObj = getDashboardData?.getSesssion;
   const selection = getDashboardData?.selection;

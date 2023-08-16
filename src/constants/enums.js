@@ -16,10 +16,10 @@ export const CALENDAR_TIME_FORMAT = {
 };
 
 export const APPOINTMENT_REQUEST_MODE = {
-  MANUAL: 'MANUAL',
-  AUTOMATIC: 'AUTOMATIC',
+  MANUAL: 'manually',
+  AUTOMATIC: 'automatically',
 };
 export const EMPLOYEES_COLOR_SET_MODE = {
-  DEFAULT: 'DEFAULT',
-  MANUAL: 'MANUAL',
+  DEFAULT: 'default',
+  MANUAL: 'manual',
 };

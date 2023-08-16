@@ -28,9 +28,8 @@ export function AddServiceCartModal({
   const getRetailData = useSelector(getRetail);
   const cartServiceData = getRetailData?.getserviceCart;
   const timeSlotsData = getRetailData?.timeSlots;
-
-  const [posUserId, setposUserId] = useState(itemData?.pos_users?.[0]?.user?.unique_uuid);
-  const [providerDetail, setProviderDetail] = useState(itemData?.pos_users?.[0]?.user);
+  const [posUserId, setposUserId] = useState(itemData?.pos_staff[0]?.user?.unique_uuid);
+  const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff[0]?.user);
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
@@ -250,8 +249,8 @@ export function AddServiceCartModal({
             }}
           >
             <FlatList
-              data={itemData?.pos_users}
-              extraData={itemData?.pos_users}
+              data={itemData?.pos_staff}
+              extraData={itemData?.pos_staff}
               renderItem={renderServiceProviderItem}
               keyExtractor={(item) => item.id}
               horizontal={true}
