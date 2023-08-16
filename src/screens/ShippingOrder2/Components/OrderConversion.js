@@ -24,13 +24,18 @@ const OrderConversion = ({
     <Spacer space={ms(6)} />
     <View style={styles.piechartViewStyle}>
       {sum > 0 ? (
-        <PieChart
-          series={series}
-          coverRadius={0.7}
-          sliceColor={sliceColor}
-          coverFill={COLORS.white}
-          widthAndHeight={widthAndHeight}
-        />
+        <View>
+          <PieChart
+            series={series}
+            coverRadius={0.7}
+            sliceColor={sliceColor}
+            coverFill={COLORS.white}
+            widthAndHeight={widthAndHeight}
+          />
+          <View style={styles.percentageView}>
+            <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text>
+          </View>
+        </View>
       ) : (
         <PieChart
           series={[100]}
@@ -40,7 +45,6 @@ const OrderConversion = ({
           widthAndHeight={140}
         />
       )}
-      <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text>
 
       <Spacer space={ms(8)} />
       {orderConversionLoading ? (

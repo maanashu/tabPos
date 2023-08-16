@@ -156,7 +156,7 @@ const OrderDetail = ({
                   color: COLORS.primary,
                 }}
               >
-                {userDetail?.delivery_details?.title ?? ''}
+                {userDetail?.invoice?.delivery_date ?? ''}
               </Text>
               <Text
                 style={{

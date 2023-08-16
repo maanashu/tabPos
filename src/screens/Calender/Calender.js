@@ -499,8 +499,6 @@ export function Calender(props) {
           currentCalendarMode={calendarMode}
           currentTimeFormat={isAMPM}
           onPressSave={(calendarPreferences) => {
-            console.log('Check saved Calendar Preferences', JSON.stringify(calendarPreferences));
-
             if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.DAY) {
               dayHandler();
             } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.WEEK) {

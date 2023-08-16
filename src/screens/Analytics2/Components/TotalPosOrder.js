@@ -76,8 +76,6 @@ export function TotalPosOrder({ onPress }) {
   const dataLabelsPOS = analyticOrderGraphs?.pos_graph?.graph_data?.labels;
   const labelsPOS = generateLabels(dataLabelsPOS, interval, maxLabel, daysLength);
 
-  console.log('first', JSON.stringify(posGraph));
-
   const getPOSOrderList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
