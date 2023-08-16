@@ -341,6 +341,7 @@ export function Calender(props) {
                   setEventData(event);
                   if (calendarMode === CALENDAR_MODES.MONTH) {
                     dayHandler();
+                    setCalendarDate(moment(event.start));
                   } else {
                     setshowEventDetailModal(true);
                   }
