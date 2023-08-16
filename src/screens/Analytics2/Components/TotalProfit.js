@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Platform,
 } from 'react-native';
 import { ScreenWrapper } from '@/components';
 import { styles } from '../Analytics2.styles';
@@ -178,7 +179,7 @@ export function TotalProfit({ onPress }) {
 
       <View style={styles.tableMainView}>
         <ScrollView
-          // horizontal
+          horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
         >
@@ -224,7 +225,15 @@ export function TotalProfit({ onPress }) {
                   </Text>
                 </View>
               ) : (
-                <View style={{ height: ms(210), width: Dimensions.get('window').width - ms(150) }}>
+                <View
+                  style={{
+                    height: Platform.OS === 'ios' ? ms(202) : ms(210),
+                    width:
+                      Platform.OS === 'ios'
+                        ? Dimensions.get('window').width - ms(80)
+                        : Dimensions.get('window').width - ms(150),
+                  }}
+                >
                   <FlatList
                     style={{ backgroundColor: COLORS.white }}
                     data={analyticStatistics?.orderData}
