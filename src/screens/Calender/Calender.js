@@ -44,7 +44,7 @@ import CalendarSettingModal from './Components/CalendarSettingModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import EventDetailModal from './Components/EventDetailModal';
-import { getSettings, upadteApi } from '@/actions/SettingAction';
+import { getSettings } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
 
 moment.suppressDeprecationWarnings = true;
@@ -178,6 +178,25 @@ export function Calender(props) {
     setMonth(false);
     setWeek(false);
   };
+
+  function onPressSaveCalendarSettings(calendarPreferences) {
+    if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.DAY) {
+      dayHandler();
+    } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.WEEK) {
+      weekHandler();
+    } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.MONTH) {
+      monthHandler();
+    }
+    setisAMPM(calendarPreferences?.defaultTimeFormat);
+
+    const data = {
+      calender_view: calendarMode,
+      time_format: isAMPM ? '12' : '24',
+      accept_appointment_request: calendarPreferences?.defaultAppointmentRequestMode,
+      employee_color_set: calendarPreferences?.defaultEmployeesColorSet,
+    };
+    dispatch(upadteApi(data));
+  }
 
   const getFormattedHeaderDate = () => {
     if (calendarMode === CALENDAR_MODES.MONTH || calendarMode === CALENDAR_MODES.WEEK) {
@@ -499,21 +518,7 @@ export function Calender(props) {
           currentCalendarMode={calendarMode}
           currentTimeFormat={isAMPM}
           onPressSave={(calendarPreferences) => {
-            console.log('Check saved Calendar Preferences', JSON.stringify(calendarPreferences));
-
-            if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.DAY) {
-              dayHandler();
-            } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.WEEK) {
-              weekHandler();
-            } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.MONTH) {
-              monthHandler();
-            }
-            setisAMPM(calendarPreferences?.defaultTimeFormat);
-
-            //TODO: Implement Update settings api here
-            // const data ={
-            // }
-            // dispatch(upadteApi(data))
+            onPressSaveCalendarSettings(calendarPreferences);
           }}
         />
 

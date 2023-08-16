@@ -183,13 +183,13 @@ const CalendarSettingModal = ({
 
           <TouchableOpacity
             onPress={() => {
-              const calendatSettings = {
+              const calendarSettings = {
                 defaultCalendarMode: defaultCalendarMode,
                 defaultTimeFormat: defaultTimeFormat,
                 defaultAppointmentRequestMode: defaultAppointmentRequestMode,
                 defaultEmployeesColorSet: defaultEmployeesColorSet,
               };
-              onPressSave(calendatSettings);
+              onPressSave(calendarSettings);
               setIsVisible(false);
             }}
             style={[styles.acceptbtnContainer]}

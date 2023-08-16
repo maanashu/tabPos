@@ -409,7 +409,7 @@ export class RetailController {
         date: data?.date,
         start_time: data?.startTime,
         end_time: data?.endTime,
-        // "pos_user_id": data?.posUserId
+        pos_user_id: data?.posUserId,
       };
       HttpClient.post(endpoint, body)
         .then((response) => {

@@ -23,8 +23,8 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
 
   const timeSlotsData = getRetailData?.timeSlots;
 
-  const [posUserId, setposUserId] = useState(itemData?.pos_users[0].user?.unique_uuid);
-  const [providerDetail, setProviderDetail] = useState(itemData?.pos_users[0].user);
+  const [posUserId, setposUserId] = useState(itemData?.pos_users[0]?.user?.unique_uuid);
+  const [providerDetail, setProviderDetail] = useState(itemData?.pos_users[0]?.user);
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
