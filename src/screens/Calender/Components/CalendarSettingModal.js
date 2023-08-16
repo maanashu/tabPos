@@ -10,6 +10,8 @@ import {
   CALENDAR_TIME_FORMAT,
   EMPLOYEES_COLOR_SET_MODE,
 } from '@/constants/enums';
+import { useSelector } from 'react-redux';
+import { getSetting } from '@/selectors/SettingSelector';
 
 const CalendarSettingModal = ({
   isVisible,
@@ -18,13 +20,15 @@ const CalendarSettingModal = ({
   currentTimeFormat,
   onPressSave = () => {},
 }) => {
+  const getSettingData = useSelector(getSetting);
+  const defaultSettingsForCalendar = getSettingData?.getSetting;
   const [defaultCalendarMode, setDefaultCalendarMode] = useState(currentCalendarMode);
   const [defaultTimeFormat, setDefaultTimeFormat] = useState(currentTimeFormat);
   const [defaultAppointmentRequestMode, setDefaultAppointmentRequestMode] = useState(
-    APPOINTMENT_REQUEST_MODE.MANUAL
+    defaultSettingsForCalendar?.accept_appointment_request ?? APPOINTMENT_REQUEST_MODE.MANUAL
   );
   const [defaultEmployeesColorSet, setDefaultEmployeesColorSet] = useState(
-    EMPLOYEES_COLOR_SET_MODE.DEFAULT
+    defaultSettingsForCalendar?.employee_color_set ?? EMPLOYEES_COLOR_SET_MODE.DEFAULT
   );
   return (
     <Modal isVisible={isVisible}>
