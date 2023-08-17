@@ -1966,8 +1966,8 @@ export const styles = StyleSheet.create({
 
   // jbrcoin modal popup
   scanPopUpCon: {
-    width: ms(360),
-    height: ms(365),
+    width: ms(460),
+    height: ms(460),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: 10,

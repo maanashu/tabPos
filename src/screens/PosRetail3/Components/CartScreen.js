@@ -112,34 +112,15 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     }
   };
 
+  function calculatePercentageValue(value, percentage) {
+    if (percentage == '') {
+      return '';
+    }
+    const percentageValue = (percentage / 100) * parseFloat(value);
+    return percentageValue.toFixed(2) ?? 0.0;
+  }
+
   const updateQuantity = (cartId, productId, operation, index) => {
-    // const updatedArr = [...arr];
-
-    // const cartItem = updatedArr
-    //   .find(item => item.id === cartId)
-    //   ?.poscart_products.find(product => product.id === productId);
-
-    //   if (cartItem) {
-    //   if (operation === '+') {
-    //     cartItem.qty += 1;
-    //   } else if (operation === '-') {
-    //     cartItem.qty -= 1;
-    //   }
-    //   const data = {
-    //     seller_id: cartItem?.product_details?.supply?.seller_id,
-    //     supplyId: cartItem?.supply_id,
-    //     supplyPriceID: cartItem?.supply_price_id,
-    //     product_id: cartItem?.product_id,
-    //     service_id: cartItem?.service_id,
-    //     qty: cartItem?.qty,
-    //   };
-
-    //   dispatch(addTocart(data));
-    //   // dispatch(createCartAction(withoutVariantObject));
-    // }
-
-    //Mukul code----->
-
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
@@ -148,16 +129,34 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       product.qty += 1;
       arr.amount.total_amount += productPrice;
       arr.amount.products_price += productPrice;
+
+      const totalAmount = arr.amount.products_price;
+      // console.log('Total Amount:', totalAmount);
+
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      //  console.log('TAX:', TAX);
+
+      arr.amount.tax = parseFloat(TAX); // Update tax value
+      arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
     } else if (operation === '-') {
       if (product.qty > 0) {
-        if (product.qty == 1) {
+        if (product.qty === 1) {
           arr?.poscart_products.splice(index, 1);
         }
         product.qty -= 1;
-        arr.amount.total_amount -= productPrice;
+
         arr.amount.products_price -= productPrice;
+        const totalAmount = arr.amount.products_price;
+        console.log('Total Amount:', totalAmount);
+
+        const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+        console.log('TAX:', TAX);
+
+        arr.amount.tax = parseFloat(TAX); // Update tax value
+        arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
       }
     }
+    console.log('ARRARA', JSON.stringify(arr));
     var DATA = {
       payload: arr,
     };

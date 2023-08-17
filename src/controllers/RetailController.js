@@ -474,7 +474,7 @@ export class RetailController {
     });
   }
 
-  static async updateCartQty(data, cartId) {
+  static async updateCartQtyy(data, cartId) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.updateCartQty + `/${cartId}`;
       // const body = {
@@ -489,6 +489,7 @@ export class RetailController {
 
       HttpClient.put(endpoint, data)
         .then((response) => {
+          console.log('response of update quantity', JSON.stringify(response));
           // if (response?.msg === 'PosCart updated!') {
           //   Toast.show({
           //     text2: 'Notes add succesfully',
@@ -496,17 +497,17 @@ export class RetailController {
           //     type: 'success_toast',
           //     visibilityTime: 1500,
           //   });
-          //   resolve(response);
           // }
+          resolve(response);
         })
         .catch((error) => {
           Toast.show({
-            text2: error.msg,
+            text2: error?.msg || 'Unknown error occured',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(error.msg);
+          reject(error);
         });
     });
   }
@@ -1152,6 +1153,7 @@ export class RetailController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
+          console.log('response of qr code', JSON.stringify(response));
         })
         .catch((error) => {
           Toast.show({
@@ -1176,6 +1178,7 @@ export class RetailController {
       HttpClient.put(endpoint, body)
         .then((response) => {
           resolve(response);
+          console.log('update tip', JSON.stringify(response));
         })
         .catch((error) => {
           Toast.show({
