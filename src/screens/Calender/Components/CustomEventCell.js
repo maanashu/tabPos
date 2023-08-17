@@ -18,11 +18,12 @@ const CustomEventCell = (event, touchableOpacityProps, allEvents = [], calendarM
         styles.eventContainer,
         { borderLeftColor: colorCode },
       ]}
+      activeOpacity={0.7}
     >
       {calendarMode === CALENDAR_MODES.MONTH ? (
         <View>
           <View style={{ flexDirection: 'row' }}>
-            {allEvents.map((eventItem, index) => {
+            {allEvents?.map((eventItem, index) => {
               return (
                 <View key={index} style={{ margin: 1 }}>
                   {eventItem?.completeData?.pos_user_details?.user?.user_profiles
@@ -54,14 +55,64 @@ const CustomEventCell = (event, touchableOpacityProps, allEvents = [], calendarM
           <Text style={styles.eventTitle}>{`Booked: ${bookedSlots ?? 0}`}</Text>
         </View>
       ) : (
-        <View style={{}}>
-          {staffDetails?.profile_photo && (
-            <View style={[styles.profilePicContainer, { borderColor: colorCode }]}>
-              <Image source={{ uri: staffDetails?.profile_photo }} style={styles.eventProfilePic} />
-            </View>
+        <View>
+          {allEvents?.length > 1 ? (
+            <>
+              <View style={{ flexDirection: 'row' }}>
+                {allEvents?.map((eventItem, index) => {
+                  return (
+                    <View key={index}>
+                      {eventItem?.completeData?.pos_user_details?.user?.user_profiles
+                        ?.profile_photo && (
+                        <View
+                          style={[
+                            styles.profilePicContainer,
+                            {
+                              borderColor: colorCode,
+                              flexDirection: 'row',
+                              marginLeft: index === 0 ? 0 : -8,
+                            },
+                          ]}
+                        >
+                          <Image
+                            source={{
+                              uri: eventItem?.completeData?.pos_user_details?.user?.user_profiles
+                                ?.profile_photo,
+                            }}
+                            style={styles.eventProfilePic}
+                          />
+                        </View>
+                      )}
+                    </View>
+                  );
+                })}
+              </View>
+              <Text style={styles.startEndDate}>{getStartEndFormattedDate(event.start)}</Text>
+              <View style={{ flexDirection: 'row' }}>
+                {allEvents?.map((eventItem, index) => {
+                  const isLast = index === allEvents?.length - 1;
+                  return (
+                    <Text key={index} numberOfLines={1} style={styles.eventTitle}>
+                      {eventItem?.title + (isLast ? '' : ', ')}
+                    </Text>
+                  );
+                })}
+              </View>
+            </>
+          ) : (
+            <>
+              {staffDetails?.profile_photo && (
+                <View style={[styles.profilePicContainer, { borderColor: colorCode }]}>
+                  <Image
+                    source={{ uri: staffDetails?.profile_photo }}
+                    style={styles.eventProfilePic}
+                  />
+                </View>
+              )}
+              <Text style={styles.startEndDate}>{getStartEndFormattedDate(event.start)}</Text>
+              <Text style={styles.eventTitle}>{event.title}</Text>
+            </>
           )}
-          <Text style={styles.startEndDate}>{getStartEndFormattedDate(event.start)}</Text>
-          <Text style={styles.eventTitle}>{event.title}</Text>
         </View>
       )}
     </TouchableOpacity>

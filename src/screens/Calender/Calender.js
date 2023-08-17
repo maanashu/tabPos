@@ -343,6 +343,7 @@ export function Calender(props) {
                 }}
                 dayHeaderHighlightColor={COLORS.dayHighlight}
                 hourComponent={CustomHoursCell}
+                isEventOrderingEnabled={false}
                 onPressEvent={(event) => {
                   setEventData(event);
                   if (calendarMode === CALENDAR_MODES.MONTH) {
