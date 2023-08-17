@@ -1,12 +1,10 @@
 import { Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { ms } from 'react-native-size-matters';
-import { Button } from '@/components';
-import { Fonts, cardPayment, crossButton } from '@/assets';
+import { cardPayment } from '@/assets';
 import moment from 'moment';
 import BackButton from '@/components/BackButton';
 import { styles } from '../../PosRetail3.styles';
-import { COLORS } from '@/theme';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useSelector } from 'react-redux';
 

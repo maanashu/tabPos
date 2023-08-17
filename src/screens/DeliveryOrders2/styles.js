@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 15,
-    width: Dimensions.get('window').width / ms(1.26),
+    width: Dimensions.get('window').width / ms(1.42),
     paddingVertical: 10,
     borderColor: COLORS.blue_shade,
   },

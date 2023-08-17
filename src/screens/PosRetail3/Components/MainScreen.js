@@ -10,8 +10,6 @@ import {
   addToCartBlue,
   bucket,
   categoryMenu,
-  cloth,
-  clothes,
   cross,
   filter,
   holdCart,
@@ -36,12 +34,8 @@ import { catTypeData, productServiceFilter } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
 import { AddCartModal } from './AddCartModal';
 import { AddCartDetailModal } from './AddCartDetailModal';
-import { ActivityIndicator } from 'react-native';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
-import SectionedMultiSelect from 'react-native-sectioned-multi-select';
-import { TYPES } from '@/Types/Types';
 import {
   addToServiceCart,
   addTocart,
@@ -59,13 +53,13 @@ import {
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import { CartListModal } from './CartListModal';
-import { log } from 'react-native-reanimated';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
 import { items, subItems } from '@/constants/staticData';
 import { FilterDropDown } from './FilterDropDown';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ServiceFilterDropDown } from './ServiceFilterDropDown';
+import { NumericPad } from './NumericPad';
 
 export function MainScreen({
   cartScreenHandler,
@@ -84,17 +78,16 @@ export function MainScreen({
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const getAuthdata = useSelector(getAuthData);
+  const [numPadModal, setNumPadModal] = useState(false);
+  const [serviceNumPadModal, setServiceNumPadModal] = useState(false);
   const getMerchantService = getAuthdata?.merchantLoginData?.product_existance_status;
-
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
   const productCartArray = getRetailData?.getAllProductCart;
   const serviceCartArray = getRetailData?.getAllServiceCart;
-
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
-
   const cartLength = cartData?.poscart_products?.length;
   const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
@@ -102,12 +95,9 @@ export function MainScreen({
   const [cartModal, setCartModal] = useState(false);
   const [search, setSearch] = useState('');
   const [serviceSearch, setServiceSearch] = useState('');
-
   const [showProductsFrom, setshowProductsFrom] = useState();
-
   const mainProductArray = getRetailData?.getMainProduct?.data;
   const mainServicesArray = getRetailData?.getMainServices?.data;
-
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
     qty: obj.qty,
@@ -274,66 +264,6 @@ export function MainScreen({
     setCartModal(false);
   };
 
-  //  categoryType -----start
-  const catTypeRenderItem = ({ item }) => {
-    const backgroundColor = item.id === catTypeId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === catTypeId ? 'white' : 'black';
-
-    return (
-      <CatTypeItem
-        item={item}
-        onPress={() => {
-          if (item.id === 1) {
-            setCatTypeId(item.id);
-            setCategoryModal(true);
-            dispatch(getCategory(sellerID));
-          } else if (
-            item.id === 2
-            // && isFilterDataSeclectedOfIndex === 0) ||
-            // item.isSelected === true
-          ) {
-            setCatTypeId(item.id);
-            dispatch(getSubCategory(sellerID));
-            setSubCategoryModal(true);
-          } else if (
-            item.id === 3
-            //  && isFilterDataSeclectedOfIndex === 1
-          ) {
-            setBrandModal(true);
-            setCatTypeId(item.id);
-            dispatch(getBrand(sellerID));
-          }
-        }}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
-  };
-  const CatTypeItem = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity
-      style={styles.chooseCategoryCon}
-      onPress={onPress}
-      //   onPress={() => setCategoryModal(true)}
-    >
-      <View style={{ flexDirection: 'column' }}>
-        <Text style={styles.chooseCat} numberOfLines={1}>
-          {item.name}
-        </Text>
-        <Text style={styles.listed}>{'0'} listed</Text>
-      </View>
-
-      <FastImage
-        source={categoryMenu}
-        style={[
-          styles.categoryMenu,
-          { tintColor: item.isSelected ? COLORS.solid_green : COLORS.black },
-        ]}
-        resizeMode={FastImage.resizeMode.contain}
-      />
-    </TouchableOpacity>
-  );
-  //  categoryType -----end
-
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
     const color = item.id === selectedId ? 'white' : 'black';
@@ -396,31 +326,6 @@ export function MainScreen({
     );
   };
 
-  const ProductServiceItem = ({ item, color, onPress, index }) => (
-    <TouchableOpacity
-      style={[styles.prouductAndServiceCon, { borderColor: color }]}
-      onPress={onPress}
-    >
-      {index === 2 ? (
-        <>
-          <Text style={[styles.productText, { color: color }]}>{item.title}</Text>
-          <Image source={item.image} style={[styles.productImageStyle, { tintColor: color }]} />
-        </>
-      ) : (
-        <>
-          <Image source={item.image} style={[styles.productImageStyle, { tintColor: color }]} />
-          <Text style={[styles.productText, { color: color }]}>{item.title}</Text>
-        </>
-      )}
-    </TouchableOpacity>
-  );
-
-  const prouductServiceFun = (index) => {
-    if (index === 2) {
-      setCateoryView(!cateoryView);
-    }
-  };
-
   const productHandler = () => {
     setProductCon(true);
     setServiceCon(false);
@@ -433,10 +338,6 @@ export function MainScreen({
   const filterHandler = () => {
     setFilterCon(!filterCon);
     setServiceFilterCon(false);
-  };
-
-  const onSelectedItemsChange = (selectedItems) => {
-    setSelectedItems(selectedItems);
   };
 
   return (
@@ -576,32 +477,70 @@ export function MainScreen({
                     {productCon && getMerchantService?.is_product_exist === true ? (
                       <View>
                         <TouchableOpacity
-                          style={styles.prouductAndServiceCon}
+                          style={
+                            filterCon
+                              ? [styles.prouductAndServiceCon, { borderColor: COLORS.primary }]
+                              : styles.prouductAndServiceCon
+                          }
                           onPress={filterHandler}
                         >
-                          <Text style={styles.productText}>{'Filter'}</Text>
-                          <Image source={filter} style={styles.productImageStyle} />
+                          <Text
+                            style={
+                              filterCon
+                                ? [styles.productText, { color: COLORS.primary }]
+                                : styles.productText
+                            }
+                          >
+                            {'Filter'}
+                          </Text>
+                          <Image
+                            source={filter}
+                            style={
+                              filterCon
+                                ? [styles.productImageStyle, { tintColor: COLORS.primary }]
+                                : styles.productImageStyle
+                            }
+                          />
                         </TouchableOpacity>
                         {filterCon ? (
-                          <View style={styles.categoryFilterCon}>
-                            <FilterDropDown data={items} sellerid={sellerID} />
-                          </View>
-                        ) : null}
+                          // <View style={styles.categoryFilterCon}>
+                          <FilterDropDown data={items} sellerid={sellerID} />
+                        ) : // </View>
+                        null}
                       </View>
                     ) : (
                       <View>
                         <TouchableOpacity
-                          style={styles.prouductAndServiceCon}
+                          style={
+                            serviceFilterCon
+                              ? [styles.prouductAndServiceCon, { borderColor: COLORS.primary }]
+                              : styles.prouductAndServiceCon
+                          }
                           onPress={() => setServiceFilterCon(!serviceFilterCon)}
                         >
-                          <Text style={styles.productText}>{'Filter'}</Text>
-                          <Image source={filter} style={styles.productImageStyle} />
+                          <Text
+                            style={
+                              serviceFilterCon
+                                ? [styles.productText, { color: COLORS.primary }]
+                                : styles.productText
+                            }
+                          >
+                            {'Filter'}
+                          </Text>
+                          <Image
+                            source={filter}
+                            style={
+                              serviceFilterCon
+                                ? [styles.productImageStyle, { tintColor: COLORS.primary }]
+                                : styles.productImageStyle
+                            }
+                          />
                         </TouchableOpacity>
                         {serviceFilterCon ? (
-                          <View style={styles.categoryFilterCon}>
-                            <ServiceFilterDropDown data={items} sellerid={sellerID} />
-                          </View>
-                        ) : null}
+                          // <View style={styles.categoryFilterCon}>
+                          <ServiceFilterDropDown data={items} sellerid={sellerID} />
+                        ) : // </View>
+                        null}
                       </View>
                     )}
                   </View>
@@ -655,7 +594,7 @@ export function MainScreen({
                             <Text style={styles.availableTime}>Available: Tue @ 2:00 pm </Text>
                           </View>
                         </View>
-
+                        <Spacer space={SH(5)} />
                         <Text numberOfLines={2} style={styles.productDes}>
                           {item.name}
                         </Text>
@@ -757,7 +696,39 @@ export function MainScreen({
                     </View>
                   </TouchableOpacity>
                   <Spacer space={SH(25)} />
-                  <Image source={sideKeyboard} style={styles.sideBarImage} />
+                  <View>
+                    <TouchableOpacity onPress={() => setNumPadModal(!numPadModal)}>
+                      <Image
+                        source={sideKeyboard}
+                        style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
+                      />
+                    </TouchableOpacity>
+                    {numPadModal ? (
+                      <View
+                        style={{
+                          width: ms(300),
+                          height: ms(280),
+                          position: 'absolute',
+                          right: 60,
+                          top: -20,
+                          backgroundColor: COLORS.textInputBackground,
+                          borderRadius: 5,
+                        }}
+                      >
+                        <NumericPad
+                          maxCharLength={15}
+                          enteredValue={search}
+                          setEnteredValue={setSearch}
+                          // onClosePress={closeHandler}
+                          // onPayNowPress={() => {
+                          //   // payNowHandler();
+                          //   payNowByphone(selectedTipAmount);
+                          //   attachUserByPhone(phoneNumber);
+                          // }}
+                        />
+                      </View>
+                    ) : null}
+                  </View>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
                     onPress={() => dispatch(clearAllCart())}
@@ -781,12 +752,26 @@ export function MainScreen({
                       source={holdCart}
                       style={
                         holdProductArray?.length > 0
-                          ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                          ? [styles.sideBarImage, { tintColor: COLORS.primary }]
                           : styles.sideBarImage
                       }
                     />
-                    <View style={styles.holdBadge}>
-                      <Text style={styles.holdBadgetext}>{holdProductArray?.length}</Text>
+                    <View
+                      style={
+                        holdProductArray?.length > 0
+                          ? [styles.holdBadge, styles.holdBadgePrimary]
+                          : styles.holdBadge
+                      }
+                    >
+                      <Text
+                        style={
+                          holdProductArray?.length > 0
+                            ? [styles.holdBadgetext, { color: COLORS.white }]
+                            : styles.holdBadgetext
+                        }
+                      >
+                        {holdProductArray?.length}
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -845,7 +830,39 @@ export function MainScreen({
                     </View>
                   </TouchableOpacity>
                   <Spacer space={SH(25)} />
-                  <Image source={sideKeyboard} style={styles.sideBarImage} />
+                  <View>
+                    <TouchableOpacity onPress={() => setServiceNumPadModal(!serviceNumPadModal)}>
+                      <Image
+                        source={sideKeyboard}
+                        style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
+                      />
+                    </TouchableOpacity>
+                    {serviceNumPadModal ? (
+                      <View
+                        style={{
+                          width: ms(300),
+                          height: ms(280),
+                          position: 'absolute',
+                          right: 60,
+                          top: -20,
+                          backgroundColor: COLORS.textInputBackground,
+                          borderRadius: 5,
+                        }}
+                      >
+                        <NumericPad
+                          maxCharLength={15}
+                          enteredValue={serviceSearch}
+                          setEnteredValue={setServiceSearch}
+                          // onClosePress={closeHandler}
+                          // onPayNowPress={() => {
+                          //   // payNowHandler();
+                          //   payNowByphone(selectedTipAmount);
+                          //   attachUserByPhone(phoneNumber);
+                          // }}
+                        />
+                      </View>
+                    ) : null}
+                  </View>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
                     onPress={() => dispatch(clearServiceAllCart())}
@@ -866,12 +883,26 @@ export function MainScreen({
                       source={holdCart}
                       style={
                         holdServiceArray?.length > 0
-                          ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                          ? [styles.sideBarImage, { tintColor: COLORS.primary }]
                           : styles.sideBarImage
                       }
                     />
-                    <View style={styles.holdBadge}>
-                      <Text style={styles.holdBadgetext}>{holdServiceArray?.length}</Text>
+                    <View
+                      style={
+                        holdServiceArray?.length > 0
+                          ? [styles.holdBadge, styles.holdBadgePrimary]
+                          : styles.holdBadge
+                      }
+                    >
+                      <Text
+                        style={
+                          holdServiceArray?.length > 0
+                            ? [styles.holdBadgetext, { color: COLORS.white }]
+                            : styles.holdBadgetext
+                        }
+                      >
+                        {holdServiceArray?.length}
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -923,6 +954,7 @@ export function MainScreen({
             crossHandler={() => setAddCartModal(false)}
             detailHandler={() => setAddCartDetailModal(true)}
             sellerID={sellerID}
+            backToCartHandler={() => cartScreenHandler()}
           />
         )}
       </Modal>
@@ -934,6 +966,7 @@ export function MainScreen({
           // detailHandler={() => setAddCartDetailModal(true)}
           sellerID={sellerID}
           itemData={serviceItemSave}
+          backToCartHandler={() => cartServiceScreenHandler()}
         />
       </Modal>
 

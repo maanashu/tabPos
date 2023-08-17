@@ -2,29 +2,31 @@ import React, { useState } from 'react';
 import { Dimensions, Image, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
-
 import { COLORS, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
-import { crossButton, Fonts, userImage } from '@/assets';
+import { crossButton, Fonts } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
-
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { addToServiceCart, getTimeSlots } from '@/actions/RetailAction';
 import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker';
 import { useEffect } from 'react';
 import moment from 'moment';
 import { getDaysAndDates } from '@/utils/GlobalMethods';
-
 const windowWidth = Dimensions.get('window').width;
 
-export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sellerID }) {
+export function AddServiceCartModal({
+  crossHandler,
+  detailHandler,
+  itemData,
+  sellerID,
+  backToCartHandler,
+}) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-
+  const cartServiceData = getRetailData?.getserviceCart;
   const timeSlotsData = getRetailData?.timeSlots;
-
-  const [posUserId, setposUserId] = useState(itemData?.pos_users[0].user?.unique_uuid);
-  const [providerDetail, setProviderDetail] = useState(itemData?.pos_users[0].user);
+  const [posUserId, setposUserId] = useState(itemData?.pos_staff[0]?.user?.unique_uuid);
+  const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff[0]?.user);
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
@@ -65,6 +67,9 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
       }}
       onPress={() => {
         setselectedDate(item?.completeDate);
+        //Clear previous day selected time slot values
+        setselectedTimeSlotIndex(null);
+        setSelectedTimeSlotData('');
       }}
     >
       <Text
@@ -173,9 +178,27 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
           <Image source={crossButton} style={styles.crossBg} />
         </TouchableOpacity>
         <View style={{ flexDirection: 'row' }}>
-          <View style={styles.backTocartCon}>
+          <TouchableOpacity
+            style={[
+              styles.backTocartCon,
+              {
+                opacity:
+                  cartServiceData?.length == 0 ||
+                  cartServiceData?.appointment_cart_products === 'undefined'
+                    ? 0.4
+                    : 1,
+              },
+            ]}
+            onPress={backToCartHandler}
+            disabled={
+              cartServiceData?.length == 0 ||
+              cartServiceData?.appointment_cart_products === 'undefined'
+                ? true
+                : false
+            }
+          >
             <Text style={styles.backTocartText}>Back to Cart</Text>
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity style={styles.continueBtnCon} onPress={detailHandler}>
             <Text style={styles.detailBtnCon}>Details</Text>
@@ -226,8 +249,8 @@ export function AddServiceCartModal({ crossHandler, detailHandler, itemData, sel
             }}
           >
             <FlatList
-              data={itemData?.pos_users}
-              extraData={itemData?.pos_users}
+              data={itemData?.pos_staff}
+              extraData={itemData?.pos_staff}
               renderItem={renderServiceProviderItem}
               keyExtractor={(item) => item.id}
               horizontal={true}

@@ -104,7 +104,7 @@ export const PayByCash = ({
         style={[styles._boxView, { flexDirection: 'row', borderColor }]}
         onPress={onPress}
       >
-        <Text style={styles._usdText}>USD</Text>
+        <Text style={styles._usdText}>$</Text>
         <Text style={[styles._usdText, { color: COLORS.primary }]}> {formattedNumber}</Text>
       </TouchableOpacity>
     );
@@ -178,7 +178,7 @@ export const PayByCash = ({
                 <View style={styles._inputMain}>
                   <View style={styles._inputSubView}>
                     <TextInput
-                      placeholder="Other amount"
+                      placeholder="Other Amount"
                       keyboardType="number-pad"
                       style={styles._inputCashContainer}
                       value={amount}

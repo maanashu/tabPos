@@ -145,7 +145,9 @@ export function AddCartDetailModal({ crossHandler }) {
             </View>
             <View style={styles.skuConBody}>
               <Text style={styles.sku}>Unit Type</Text>
-              <Text style={styles.sku}>{productDetail?.type} </Text>
+              <Text style={[styles.sku, { textTransform: 'capitalize' }]}>
+                {productDetail?.type}{' '}
+              </Text>
             </View>
             <View style={styles.skuConBody}>
               <Text style={styles.sku}>Unit Weight</Text>

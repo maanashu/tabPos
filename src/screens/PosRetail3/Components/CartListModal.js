@@ -9,7 +9,6 @@ import {
   borderCross,
   bucket,
   checkArrow,
-  cross,
   crossButton,
   holdCart,
   minus,
@@ -160,7 +159,7 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
             </Text>
           </View>
         </TouchableOpacity>
-        <Text style={styles.carttoAdd}>Cart to add</Text>
+        <Text style={styles.carttoAdd}>Cart</Text>
         <TouchableOpacity style={styles.crossView} onPress={() => CloseCartModal()}>
           <Image source={crossButton} style={[styles.crossImage]} />
         </TouchableOpacity>
@@ -294,12 +293,26 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
                 source={holdCart}
                 style={
                   holdProductArray?.length > 0
-                    ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                    ? [styles.sideBarImage, { tintColor: COLORS.primary }]
                     : styles.sideBarImage
                 }
               />
-              <View style={styles.holdBadge}>
-                <Text style={styles.holdBadgetext}>{holdProductArray?.length}</Text>
+              <View
+                style={
+                  holdProductArray?.length > 0
+                    ? [styles.holdBadge, styles.holdBadgePrimary]
+                    : styles.holdBadge
+                }
+              >
+                <Text
+                  style={
+                    holdProductArray?.length > 0
+                      ? [styles.holdBadgetext, { color: COLORS.white }]
+                      : styles.holdBadgetext
+                  }
+                >
+                  {holdProductArray?.length}
+                </Text>
               </View>
             </TouchableOpacity>
           </View>

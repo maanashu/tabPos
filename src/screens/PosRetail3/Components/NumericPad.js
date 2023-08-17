@@ -1,16 +1,19 @@
-import React from 'react';
 import { Dimensions, FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { KeyPadButton } from './KeyPadButton';
+import { strings } from '@/localization';
+import { Spacer } from './Spacer';
+import { Button } from './Button';
 import { COLORS, SF, SH } from '@/theme';
 import { Fonts } from '@/assets';
-import PhonePopUp from './PhonePopUp';
-import { ms } from 'react-native-size-matters';
-export const CustomKeyboard = ({
+import PhonePopUp from '@/screens/PosRetail3/PhonePopUp';
+import { moderateScale, ms } from 'react-native-size-matters';
+export const NumericPad = ({
   maxCharLength,
   enteredValue,
   setEnteredValue,
   onClosePress = () => {},
   onPayNowPress = () => {},
-  footer,
 }) => {
   const KEYBOARD_DATA = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'cross', '0', 'deleteBack'];
   return (
@@ -45,32 +48,32 @@ export const CustomKeyboard = ({
             }}
           />
         )}
-        ListFooterComponent={() => (
-          <View style={styles._btnContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                onClosePress();
-              }}
-              style={styles.declineBtnContainer}
-            >
-              <Text style={styles.declineText}>Close</Text>
-            </TouchableOpacity>
+        // ListFooterComponent={() => (
+        //   <View style={styles._btnContainer}>
+        //     <TouchableOpacity
+        //       onPress={() => {
+        //         onClosePress();
+        //       }}
+        //       style={styles.declineBtnContainer}
+        //     >
+        //       <Text style={styles.declineText}>Close</Text>
+        //     </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => {
-                onPayNowPress();
-              }}
-              style={[
-                styles.acceptbtnContainer,
-                {
-                  backgroundColor: enteredValue.length > 0 ? COLORS.primary : COLORS.darkGray,
-                },
-              ]}
-            >
-              <Text style={[styles.approveText]}>Pay Now</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        //     <TouchableOpacity
+        //       onPress={() => {
+        //         onPayNowPress();
+        //       }}
+        //       style={[
+        //         styles.acceptbtnContainer,
+        //         {
+        //           backgroundColor: enteredValue.length > 0 ? COLORS.primary : COLORS.darkGray,
+        //         },
+        //       ]}
+        //     >
+        //       <Text style={[styles.approveText]}>Pay Now</Text>
+        //     </TouchableOpacity>
+        //   </View>
+        // )}
       />
     </View>
   );

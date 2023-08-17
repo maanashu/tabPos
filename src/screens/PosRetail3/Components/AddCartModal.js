@@ -2,33 +2,37 @@ import React, { useState } from 'react';
 import { Dimensions, FlatList, Text, View } from 'react-native';
 
 import { COLORS, SH } from '@/theme';
-import { strings } from '@/localization';
 import { Spacer } from '@/components';
-import { tinycolor } from 'tinycolor2';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import { Fonts, cloth, crossButton, search_light } from '@/assets';
+import { crossButton } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { moderateScale } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }];
 
-export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
+export function AddCartModal({
+  crossHandler,
+  detailHandler,
+  sellerID,
+  backToCartHandler,
+  offerId,
+}) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+
+  const cartData = getRetailData?.getAllCart;
   const productDetail = getRetailData?.getOneProduct;
 
   const sizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const colorSizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
 
-  const finalSizeArray = colorSizeArray?.filter((item) => item.name === 'Size');
-  const finalColorArray = colorSizeArray?.filter((item) => item.name === 'Color');
+  // const finalSizeArray = colorSizeArray?.filter((item) => item.name === 'Size');
+  // const finalColorArray = colorSizeArray?.filter((item) => item.name === 'Color');
+  const finalColorArray = [1, 2, 3, 4];
+  const finalSizeArray = [1, 2, 3, 4];
   const coloredArray = productDetail?.product_detail?.supplies?.[0]?.attributes?.[1]?.values;
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
@@ -58,6 +62,7 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
           qty: count,
           supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
           supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+          offerId: offerId,
         };
 
         //New Changes
@@ -89,7 +94,6 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
         //   seller_id: arr?.seller_id,
         //   products: products,
         // };
-
         dispatch(addTocart(data));
         crossHandler();
       }
@@ -234,10 +238,23 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
         <TouchableOpacity onPress={crossHandler}>
           <Image source={crossButton} style={styles.crossBg} />
         </TouchableOpacity>
+        {/* disable */}
         <View style={{ flexDirection: 'row' }}>
-          <View style={styles.backTocartCon}>
+          <TouchableOpacity
+            style={[
+              styles.backTocartCon,
+              {
+                opacity:
+                  cartData?.length == 0 || cartData?.poscart_products === 'undefined' ? 0.4 : 1,
+              },
+            ]}
+            onPress={backToCartHandler}
+            disabled={
+              cartData?.length == 0 || cartData?.poscart_products === 'undefined' ? true : false
+            }
+          >
             <Text style={styles.backTocartText}>Back to Cart</Text>
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity style={styles.continueBtnCon} onPress={detailHandler}>
             <Text style={styles.detailBtnCon}>Details</Text>

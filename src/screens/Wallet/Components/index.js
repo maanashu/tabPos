@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  Dimensions,
-} from 'react-native';
+import { Text, TouchableOpacity, View, Image, Dimensions } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import {
@@ -46,30 +40,25 @@ export function OrderList({
 }) {
   const payableTotal = parseFloat(orderData?.payable_amount) + orderData?.tips;
   const userProfile = orderData?.user_details;
-
   const renderJbrItem = ({ item }) => (
     <View style={styles.jbrListCon}>
       <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
         <View style={{ flexDirection: 'row', width: SW(60) }}>
-          <Image
-            source={{ uri: item.product_image }}
-            style={styles.ashtonStyle}
-          />
+          <Image source={{ uri: item.product_image }} style={styles.ashtonStyle} />
           <View style={{ paddingHorizontal: moderateScale(10) }}>
-            <Text style={[styles.jfrText, { color: COLORS.black }]}>
-              {item.product_name}
-            </Text>
+            <Text style={[styles.jfrText, { color: COLORS.black }]}>{item?.product_name}</Text>
             <Text style={styles.boxText}>Box</Text>
           </View>
         </View>
         <Text style={styles.onexstyle}>
           {' '}
-          <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>{' '}
-          {item.qty}
+          <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text> {item?.qty}
         </Text>
-        <Text style={[styles.jfrText, { color: COLORS.black }]}>
-          ${item.price}
-        </Text>
+        <View style={{ flexDirection: 'column', width: SF(100) }}>
+          <Text style={[styles.jfrText, { color: COLORS.black, textAlign: 'right' }]}>
+            ${item?.price}
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -82,29 +71,23 @@ export function OrderList({
             <TouchableOpacity onPress={orderModelBackHandler}>
               <Image source={leftBack} style={styles.leftBackStyle} />
             </TouchableOpacity>
-            <Text style={styles.orderNoStyle}>{strings.wallet.orderNo}</Text>
-            <View style={styles.completedButton}>
+            <Text style={styles.orderNoStyle}>
+              {strings.wallet.orderNo}
+              {orderData?.id}{' '}
+            </Text>
+            {/* <View >
               <Text style={styles.completedText}>{orderHeadStatus}</Text>
-            </View>
+            </View> */}
           </View>
           <Spacer space={SH(20)} />
-          <View
-            style={[
-              styles.displayFlex,
-              { paddingHorizontal: moderateScale(10) },
-            ]}
-          >
+          <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
             <View style={styles.flexAlign}>
-              <Text style={styles.listItemStyle}>
-                {strings.wallet.listOfItem}
-              </Text>
+              <Text style={styles.listItemStyle}>{strings.wallet.listOfItem}</Text>
               <Text style={styles.itemStyle}>
                 {listOfItemArray?.length} {strings.wallet.item}
               </Text>
             </View>
-            <Text style={styles.rewardPointStyle}>
-              {strings.wallet.rewardPoint} 5.00
-            </Text>
+            <Text style={styles.rewardPointStyle}>{strings.wallet.point} 5.00</Text>
           </View>
           <Spacer space={SH(20)} />
           <View style={{ paddingHorizontal: moderateScale(10) }}>
@@ -112,7 +95,7 @@ export function OrderList({
               data={listOfItemArray}
               extraData={listOfItemArray}
               renderItem={renderJbrItem}
-              keyExtractor={item => item.id}
+              keyExtractor={(item) => item.id}
             />
           </View>
         </View>
@@ -122,49 +105,46 @@ export function OrderList({
           <Spacer space={SH(15)} />
           <View style={{ paddingHorizontal: moderateScale(10) }}>
             <View style={styles.displayFlex}>
-              <Text style={styles.paymentHeader}>
-                {strings.wallet.PaymentDetails}
-              </Text>
+              <Text style={styles.paymentHeader}>{strings.wallet.PaymentDetails}</Text>
               <TouchableOpacity onPress={orderModelBackHandler}>
                 <Image source={crossButton} style={styles.crossButtonStyle} />
               </TouchableOpacity>
             </View>
             <Spacer space={SH(20)} />
-            <Text
+            {/* <Text
               style={[
                 styles.payDoneText,
                 { fontSize: SF(17), alignSelf: 'center' },
               ]}
             >
               {strings.posSale.paymenttdone}
-            </Text>
+            </Text> */}
             <Spacer space={SH(10)} />
             <View style={styles.paymentDone}>
-              <View
-                style={[
-                  styles.displayFlex,
-                  { paddingHorizontal: moderateScale(10) },
-                ]}
-              >
+              <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
                 <View>
                   <Text style={styles.payDoneText}>
                     Payable ${orderData?.payable_amount ?? '0'}
                   </Text>
                   <Spacer space={SH(10)} />
-                  <Text style={styles.payDoneText}>
-                    Tips ${orderData?.tips ?? '0'}
-                  </Text>
+                  <Text style={styles.payDoneText}>Tips ${orderData?.tips ?? '0'}</Text>
                 </View>
                 <Text style={styles.darkPricestyle}>
-                  ${payableTotal ?? '0'}
+                  ${parseInt(payableTotal)?.toFixed(2) ?? '0'}
                 </Text>
               </View>
             </View>
             <Spacer space={SH(10)} />
             <Text style={styles.jbrWalllettext}>
+              <Text style={styles.viaText}>Payment Type </Text>
+              {orderData?.mode_of_payment == 'jbr'
+                ? 'JOBR Coin'
+                : orderData?.mode_of_payment ?? null}
+            </Text>
+            {/* <Text style={styles.jbrWalllettext}>
               <Text style={styles.viaText}>Via </Text>
               {orderData?.mode_of_payment}
-            </Text>
+            </Text> */}
             <Spacer space={SH(15)} />
             <View style={styles.customerCon}>
               <Spacer space={SH(10)} />
@@ -177,11 +157,7 @@ export function OrderList({
                 }}
               >
                 <Image
-                  source={
-                    userProfile
-                      ? { uri: userProfile?.profile_photo }
-                      : userImage
-                  }
+                  source={userProfile ? { uri: userProfile?.profile_photo } : userImage}
                   style={styles.jbrCustomer}
                 />
                 <View style={{ paddingHorizontal: moderateScale(15) }}>
@@ -189,9 +165,7 @@ export function OrderList({
                     {userProfile?.firstname}
                   </Text>
                   <Spacer space={SH(8)} />
-                  <Text style={styles.cusAddText}>
-                    {userProfile?.phone_number}
-                  </Text>
+                  <Text style={styles.cusAddText}>{userProfile?.phone_number}</Text>
                   <Spacer space={SH(5)} />
                   <Text style={styles.cusAddText}>{userProfile?.email}</Text>
                   <Spacer space={SH(8)} />
@@ -201,9 +175,7 @@ export function OrderList({
               <View style={styles.walletIdButtonCon}>
                 <Text style={styles.walletIdcontent}>Wallet Id</Text>
                 <Spacer space={SH(5)} />
-                <Text style={[styles.cusAddText, { color: COLORS.primary }]}>
-                  509 236 2365
-                </Text>
+                <Text style={[styles.cusAddText, { color: COLORS.primary }]}>509 236 2365</Text>
               </View>
             </View>
             <Spacer space={SH(30)} />
@@ -213,46 +185,41 @@ export function OrderList({
             <Spacer space={SH(8)} />
             <View style={styles.bottomSubCon}>
               <Text style={styles.smalldarkText}>Sub Total</Text>
+              <Text style={styles.smallLightText}>${orderData?.actual_amount ?? '0.00'}</Text>
+            </View>
+            <Spacer space={SH(8)} />
+            <View style={styles.bottomSubCon}>
               <Text style={styles.smallLightText}>
-                ${orderData?.actual_amount ?? '0.00'}
+                {listOfItemArray?.length > 1 ? 'Items' : 'Item'}
               </Text>
+              <Text style={styles.smallLightText}>{listOfItemArray?.length}</Text>
             </View>
             <Spacer space={SH(8)} />
             <View style={styles.bottomSubCon}>
               <Text style={styles.smallLightText}>Discount</Text>
               <Text style={styles.smallLightText}>
-                -${orderData?.discount ?? '0.00'}
+                {orderData?.discount > 0 ? '-$' : '$'}
+                {orderData?.discount ?? '0.00'}
               </Text>
             </View>
             <Spacer space={SH(8)} />
             <View style={styles.bottomSubCon}>
               <Text style={styles.smallLightText}>Tax</Text>
-              <Text style={styles.smallLightText}>
-                ${orderData?.tax ?? '0.00'}
-              </Text>
+              <Text style={styles.smallLightText}>${orderData?.tax ?? '0.00'}</Text>
             </View>
             <Spacer space={SH(8)} />
             <View style={styles.hr}></View>
             <Spacer space={SH(6)} />
             <View style={styles.bottomSubCon}>
-              <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>
-                Total
-              </Text>
+              <Text style={[styles.smalldarkText, { fontSize: SF(18) }]}>Total</Text>
               <Text style={[styles.smalldarkText, { fontSize: SF(20) }]}>
                 ${orderData?.payable_amount ?? '0.00'}
               </Text>
             </View>
             <Spacer space={SH(4)} />
-            <View style={styles.bottomSubCon}>
-              <Text style={styles.smallLightText}>
-                {listOfItemArray?.length} item
-              </Text>
-            </View>
+
             <Spacer space={SH(8)} />
-            <TouchableOpacity
-              style={styles.checkoutButton}
-              onPress={checkOutHandler}
-            >
+            <TouchableOpacity style={styles.checkoutButton} onPress={checkOutHandler}>
               <Text style={styles.checkoutText}>Checkout</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>
@@ -271,7 +238,7 @@ export function DetailShipping({
 }) {
   const sellerProfile = orderData?.seller_details;
   const invoiceData = orderData?.invoice;
-  
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <Spacer space={SH(7)} />
@@ -302,18 +269,14 @@ export function DetailShipping({
               <View style={{ flexDirection: 'row' }}>
                 <Image
                   source={
-                    sellerProfile?.profile_photo
-                      ? { uri: sellerProfile?.profile_photo }
-                      : userImage
+                    sellerProfile?.profile_photo ? { uri: sellerProfile?.profile_photo } : userImage
                   }
                   style={styles.angelaPic}
                 />
                 <View style={{ flexDirection: 'column' }}>
                   <Text style={styles.angela}>{sellerProfile?.username}</Text>
                   <Spacer space={SH(10)} />
-                  <Text style={styles.angelaAddress}>
-                    {strings.wallet.angelaAddress1}
-                  </Text>
+                  <Text style={styles.angelaAddress}>{strings.wallet.angelaAddress1}</Text>
                   <Text style={styles.angelaAddress}>
                     {strings.wallet.angelaAddress2}
                     {sellerProfile?.phone_number}
@@ -325,15 +288,11 @@ export function DetailShipping({
             </View>
             <View style={styles.invoiceCon}>
               <Spacer space={SH(5)} />
-              <Text style={styles.invoiceDetail}>
-                {strings.wallet.invoiceDetails}
-              </Text>
+              <Text style={styles.invoiceDetail}>{strings.wallet.invoiceDetails}</Text>
               <Spacer space={SH(6)} />
               <Text style={styles.invoiceId}>
                 {strings.wallet.invoiceIdLabel}{' '}
-                <Text style={{ color: COLORS.solid_grey }}>
-                {invoiceData?.invoice_id ?? null}
-                </Text>
+                <Text style={{ color: COLORS.solid_grey }}>{invoiceData?.invoice_id ?? null}</Text>
               </Text>
               <Spacer space={SH(4)} />
               <Text style={styles.invoiceId}>
@@ -345,14 +304,11 @@ export function DetailShipping({
               <Spacer space={SH(4)} />
               <Text style={styles.invoiceId}>
                 {strings.wallet.dueDateLabel}{' '}
-                <Text style={{ color: COLORS.solid_grey }}>
-                 {invoiceData?.due_date ?? null}
-                </Text>
+                <Text style={{ color: COLORS.solid_grey }}>{invoiceData?.due_date ?? null}</Text>
               </Text>
               <Spacer space={SH(4)} />
               <Text style={styles.deliveryDate}>
-                {strings.wallet.deliveryDate}{' '}
-                <Text>{invoiceData?.delivery_date ?? null}</Text>
+                {strings.wallet.deliveryDate} <Text>{invoiceData?.delivery_date ?? null}</Text>
               </Text>
               <View style={styles.pointCon}>
                 <Text style={styles.pointText}>{strings.wallet.point}</Text>
@@ -366,16 +322,12 @@ export function DetailShipping({
                 <View style={styles.displayFlex}>
                   <View style={styles.tableHeaderLeft}>
                     <Text style={styles.tableTextHeaFirst}>#</Text>
-                    <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>
-                      Descriptions
-                    </Text>
+                    <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>Descriptions</Text>
                   </View>
                   <View style={styles.tableHeaderRightOrder}>
                     <Text style={styles.tableTextHea}>No. of Items</Text>
                     <Text style={styles.tableTextHea}>Rate</Text>
-                    <Text style={[styles.tableTextHea, { marginRight: -35 }]}>
-                      Amount
-                    </Text>
+                    <Text style={[styles.tableTextHea, { marginRight: -35 }]}>Amount</Text>
                   </View>
                 </View>
               </View>
@@ -386,25 +338,16 @@ export function DetailShipping({
                       <View style={styles.displayFlex}>
                         <View style={styles.tableHeaderLeft}>
                           <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
-                          <View
-                            style={{ flexDirection: 'row', marginLeft: 30}}
-                          >
+                          <View style={{ flexDirection: 'row', marginLeft: 30 }}>
                             <Image
                               source={{ uri: item.product_image }}
                               style={styles.orderCigrate}
                             />
-                            <View
-                              style={{ flexDirection: 'column', marginLeft: 8 }}
-                            >
+                            <View style={{ flexDirection: 'column', marginLeft: 8 }}>
                               <Text style={styles.tableTextData} numberOfLines={1}>
                                 {item.product_name}
                               </Text>
-                              <Text
-                                style={[
-                                  styles.tableTextData,
-                                  { color: COLORS.gerySkies },
-                                ]}
-                              >
+                              <Text style={[styles.tableTextData, { color: COLORS.gerySkies }]}>
                                 Box of {item.qty}
                               </Text>
                             </View>
@@ -413,9 +356,7 @@ export function DetailShipping({
                         <View style={styles.tableHeaderRightOrder}>
                           <Text style={styles.tableTextData}>{item.qty}</Text>
                           <Text style={styles.tableTextData}>{item.price}</Text>
-                          <Text
-                            style={[styles.tableTextData, { marginRight: -35 }]}
-                          >
+                          <Text style={[styles.tableTextData, { marginRight: -35 }]}>
                             ${item.qty * item.price}
                           </Text>
                         </View>
@@ -427,66 +368,39 @@ export function DetailShipping({
             </Table>
 
             <Spacer space={SH(15)} />
-            <View
-              style={[
-                styles.displayFlex,
-                { marginHorizontal: moderateScale(10) },
-              ]}
-            >
+            <View style={[styles.displayFlex, { marginHorizontal: moderateScale(10) }]}>
               <View style={styles.textInputStyle}>
-                <Text style={styles.textInputNote}>
-                  Note : {orderData?.notes}{' '}
-                </Text>
+                <Text style={styles.textInputNote}>Note : {orderData?.notes} </Text>
               </View>
               <View style={styles.noteContainer}>
                 <Spacer space={SH(5)} />
                 <View style={styles.tablesubTotal}>
-                  <Text style={styles.tablesubTotalLabel}>
-                    {strings.wallet.subtotal}
-                  </Text>
+                  <Text style={styles.tablesubTotalLabel}>{strings.wallet.subtotal}</Text>
                   <Text style={styles.tablesubTotalText}>
                     ${orderData?.actual_amount ?? '0.00'}
                   </Text>
                 </View>
                 <View style={styles.subtotalHr}></View>
                 <View style={styles.tablesubTotal}>
-                  <Text style={styles.tablesubTotalLabel}>
-                    {strings.wallet.serviceCharge}
-                  </Text>
-                  <Text style={styles.tablesubTotalText}>
-                    ${orderData?.tax ?? '0.00'}
-                  </Text>
+                  <Text style={styles.tablesubTotalLabel}>{strings.wallet.serviceCharge}</Text>
+                  <Text style={styles.tablesubTotalText}>${orderData?.tax ?? '0.00'}</Text>
                 </View>
                 <View style={styles.subtotalHr}></View>
                 <View style={styles.tablesubTotal}>
-                  <Text style={styles.tablesubTotalLabel}>
-                    {strings.wallet.discount}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.tablesubTotalText,
-                      { color: COLORS.roseRed },
-                    ]}
-                  >
+                  <Text style={styles.tablesubTotalLabel}>{strings.wallet.discount}</Text>
+                  <Text style={[styles.tablesubTotalText, { color: COLORS.roseRed }]}>
                     ${orderData?.discount ?? '0.00'}
                   </Text>
                 </View>
                 <View style={styles.subtotalHr}></View>
                 <View style={styles.tablesubTotal}>
-                  <Text style={styles.tablesubTotalLabel}>
-                    {strings.wallet.shippingCharge}
-                  </Text>
+                  <Text style={styles.tablesubTotalLabel}>{strings.wallet.shippingCharge}</Text>
                   <Text style={styles.tablesubTotalText}>${'0'}</Text>
                 </View>
                 <View style={styles.subtotalHr}></View>
                 <View style={styles.tablesubTotal}>
                   <View style={styles.flexAlign}>
-                    <Text
-                      style={[
-                        styles.tablesubTotalLabel,
-                        { fontFamily: Fonts.SemiBold },
-                      ]}
-                    >
+                    <Text style={[styles.tablesubTotalLabel, { fontFamily: Fonts.SemiBold }]}>
                       {strings.wallet.total}
                     </Text>
                     <View style={styles.paidContainer}>
@@ -504,9 +418,7 @@ export function DetailShipping({
           </View>
           <Spacer space={SH(5)} />
           <View>
-            <Text style={styles.shippingDetail}>
-              {strings.wallet.shippingDetail}
-            </Text>
+            <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
           </View>
           <Spacer space={SH(5)} />
           <View style={styles.trackingCon}>
@@ -515,23 +427,14 @@ export function DetailShipping({
                 <Image source={willis} style={styles.willis} />
                 <View>
                   <Text style={styles.willisName}>{strings.wallet.willis}</Text>
-                  <Text style={styles.trackingNumber}>
-                    {strings.wallet.trackingNo}
-                  </Text>
+                  <Text style={styles.trackingNumber}>{strings.wallet.trackingNo}</Text>
                 </View>
               </View>
               <View style={{ flexDirection: 'row' }}>
-                <View
-                  style={[
-                    styles.deliverBtnCon,
-                    { marginHorizontal: moderateScale(8) },
-                  ]}
-                >
+                <View style={[styles.deliverBtnCon, { marginHorizontal: moderateScale(8) }]}>
                   <View style={styles.deliverTextCon}>
                     <Image source={deliverCheck} style={styles.deliveryCheck} />
-                    <Text style={styles.deliveredText}>
-                      {strings.wallet.delivered}
-                    </Text>
+                    <Text style={styles.deliveredText}>{strings.wallet.delivered}</Text>
                   </View>
                 </View>
                 <TouchableOpacity
@@ -540,9 +443,7 @@ export function DetailShipping({
                 >
                   <View style={styles.deliverTextCon}>
                     <Image source={track} style={styles.deliveryCheck} />
-                    <Text style={styles.deliveredText}>
-                      {strings.wallet.tracking}
-                    </Text>
+                    <Text style={styles.deliveredText}>{strings.wallet.tracking}</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -555,341 +456,265 @@ export function DetailShipping({
   );
 }
 
-export function TrackingModule({ trackignBackHandler,OrderHeaderStatus, orderData, orderStatus }) {
-     const sellerProfile = orderData?.seller_details;
+export function TrackingModule({ trackignBackHandler, OrderHeaderStatus, orderData, orderStatus }) {
+  const sellerProfile = orderData?.seller_details;
 
-    const statusVise = orderStatus => {
-          if(orderStatus === 6){
-            return 'Delivered'
-          }else if (orderStatus === 7){
-            return 'Cancelled'
-          }
+  const statusVise = (orderStatus) => {
+    if (orderStatus === 6) {
+      return 'Delivered';
+    } else if (orderStatus === 7) {
+      return 'Cancelled';
     }
+  };
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <Spacer space={SH(10)} />
       <View style={styles.onlinedeliveryCon}>
-        <View
-          style={[styles.displayFlex, { paddingHorizontal: moderateScale(10)}]}
-        >
+        <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
           <View style={styles.flexAlign}>
             <TouchableOpacity onPress={trackignBackHandler}>
               <Image source={leftBack} style={styles.leftBackStyle} />
             </TouchableOpacity>
-            <Text style={styles.orderNoStyle}>
-              {strings.trackingNumber.trackingNo}
-            </Text>
+            <Text style={styles.orderNoStyle}>{strings.trackingNumber.trackingNo}</Text>
             <View style={styles.completedButton}>
-              <Text style={styles.completedText}>
-                 {OrderHeaderStatus}
-              </Text>
+              <Text style={styles.completedText}>{OrderHeaderStatus}</Text>
             </View>
           </View>
           <TouchableOpacity onPress={trackignBackHandler}>
             <Image source={crossButton} style={styles.leftBackStyle} />
           </TouchableOpacity>
         </View>
-        </View>
-        <Spacer space={SH(12)} />
-        <View style={styles.trackingNoBody}>
-          <View>
-            <Spacer space={SH(10)} />
-            <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
-              <View style={[styles.mapContainer, styles.mapConatinerHeight]}>
-                <View style={[styles.costoContainer]}>
-                  <Spacer space={SH(10)} />
-                  <View style={{ flexDirection: 'row' }}>
-                    <Image source={sellerProfile?.profile_photo ? {uri : sellerProfile?.profile_photo } :  userImage} style={styles.trackingAngela} />
-                    <View>
-                      <Text style={styles.costoName}>{sellerProfile?.username ?? null}</Text>
-                      <Spacer space={SH(7)} />
-                      <View style={styles.flexAlign}>
-                        <Image source={location} style={styles.Phonelight} />
-                        <Text style={styles.costoAdd}>
-                          {strings.customers.costoAdd}
-                        </Text>
-                      </View>
-                      <View style={styles.costoHr}></View>
-                      <View style={styles.flexAlign}>
-                        <View style={styles.costoPayCon}>
-                          <View style={styles.flexAlign}>
-                            <Image source={ticket} style={styles.ticketImage} />
-                            <Text style={styles.ciagrtext}>${orderData?.payable_amount ?? '0'}</Text>
-                          </View>
-                        </View>
-                        <View
-                          style={[styles.costoPayCon, { alignItems: 'center' }]}
-                        >
-                          <View style={styles.flexAlign}>
-                            <Image source={box} style={styles.ticketImage} />
-                            <Text style={styles.ciagrtext}>4 boxes Cigar</Text>
-                          </View>
-                        </View>
-                        <View style={styles.flexAlign}>
-                          <Text style={styles.detailText}>
-                            {strings.customers.detail}
-                          </Text>
-                          <Image source={dropRight} style={styles.dropRight} />
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-                <Spacer space={SH(5)} />
-                <View style={{ paddingHorizontal: moderateScale(18) }}>
-                  <Text style={styles.orderStatus}>
-                    {strings.customers.orderStatus}
-                  </Text>
-                  <Text
-                    style={[styles.orderStatus, { fontFamily: Fonts.Regular }]}
-                  >
-                    {strings.customers.assignDriver}
-                  </Text>
-                  <View
-                    style={[
-                      styles.costoHr,
-                      { marginVertical: verticalScale(4) },
-                    ]}
+      </View>
+      <Spacer space={SH(12)} />
+      <View style={styles.trackingNoBody}>
+        <View>
+          <Spacer space={SH(10)} />
+          <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
+            <View style={[styles.mapContainer, styles.mapConatinerHeight]}>
+              <View style={[styles.costoContainer]}>
+                <Spacer space={SH(10)} />
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    source={
+                      sellerProfile?.profile_photo
+                        ? { uri: sellerProfile?.profile_photo }
+                        : userImage
+                    }
+                    style={styles.trackingAngela}
                   />
-                  <Spacer space={SH(3)} />
-                  <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flexDirection: 'column' }}>
-                    <View style={styles.greyRadioCon}>
-                        <Image
-                          source={
-                            orderStatus >= 6 ? radioArrBlue : greyRadioArr
-                          }
-                          style={styles.greyRadioArr}
-                        />
-                        <View style={styles.greyRadioBody}>
-                          <Text style={
-                                orderStatus >= 6 ||  orderStatus >= 7
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
-                              }>
-                            {statusVise(orderStatus)}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.greyRadioCon}>
-                        <Image
-                          source={
-                            orderStatus >= 5 ? radioArrBlue : greyRadioArr
-                          }
-                          style={styles.greyRadioArr}
-                        />
-                        <View style={styles.greyRadioBody}>
-                          <Text style={
-                                orderStatus >= 5
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
-                              }>
-                         
-                          {strings.customers.productPick}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.greyRadioCon}>
-                        <Image
-                         source={
-                          orderStatus >= 4 ? radioArrBlue : greyRadioArr
-                        }
-                          style={styles.greyRadioArr}
-                        />
-                        <View style={styles.greyRadioBody}>
-                          <Text style={
-                                orderStatus >= 4
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
-                              }>
-                        
-                          {strings.customers.assignDriver}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.greyRadioCon}>
-                        <Image
-                           source={
-                            orderStatus >= 3 ? radioArrBlue : greyRadioArr
-                          }
-                          style={styles.greyRadioArr}
-                        />
-                        <View style={styles.greyRadioBody}>
-                          <Text style={
-                                orderStatus >= 3
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
-                              }>
-                        
-                          {strings.customers.readyPickup} 
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.greyRadioCon}>
-                        <Image
-                         source={
-                          orderStatus >= 2 ? radioArrBlue : greyRadioArr
-                        }
-                          style={styles.greyRadioArr}
-                        />
-                        <View style={styles.greyRadioBody}>
-                          <Text style={
-                                orderStatus >= 1
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
-                              }>
-                          {strings.customers.orderPrepare}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.greyRadioCon}>
-                        <Image
-                          source={
-                            orderStatus >= 1 ? radioArrBlue : greyRadioArr
-                          }
-                          style={styles.greyRadioArr}
-                        />
-                        <View style={styles.greyRadioBody}>
-                          <Text style={
-                                orderStatus >= 1
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
-                              }>
-                          {strings.customers.orderAccepted}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.greyRadioCon}>
-                        <Image
-                          source={
-                            orderStatus >= 0 ? radioArrBlue : greyRadioArr
-                          }
-                          style={styles.greyRadioArr}
-                        />
-                        <View style={styles.greyRadioBody}>
-                          <Text style={
-                                orderStatus >= 0
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
-                              }>
-                          {strings.customers.orderReview}
-                          </Text>
-                          <Spacer space={SH(5)} />
-                          <Text style={styles.waitMinuteLight}>
-                            {strings.customers.waitMinute}
-                          </Text>
-                        </View>
-                      </View>
-
+                  <View>
+                    <Text style={styles.costoName}>{sellerProfile?.username ?? null}</Text>
+                    <Spacer space={SH(7)} />
+                    <View style={styles.flexAlign}>
+                      <Image source={location} style={styles.Phonelight} />
+                      <Text style={styles.costoAdd}>{strings.customers.costoAdd}</Text>
                     </View>
-                  </View>
-                  <Spacer space={SH(10)} />
-                  {/* <View style={{ flex: 1 }} /> */}
-                  <View style={styles.carriarCon}>
-                    <Spacer space={SH(5)} />
-                    <Text
-                      style={[styles.verifyTextLight, { color: COLORS.black }]}
-                    >
-                      {strings.customers.carriar}
-                    </Text>
-                    <Spacer space={SH(8)} />
-                    <View style={styles.displayFlex}>
+                    <View style={styles.costoHr}></View>
+                    <View style={styles.flexAlign}>
+                      <View style={styles.costoPayCon}>
+                        <View style={styles.flexAlign}>
+                          <Image source={ticket} style={styles.ticketImage} />
+                          <Text style={styles.ciagrtext}>${orderData?.payable_amount ?? '0'}</Text>
+                        </View>
+                      </View>
+                      <View style={[styles.costoPayCon, { alignItems: 'center' }]}>
+                        <View style={styles.flexAlign}>
+                          <Image source={box} style={styles.ticketImage} />
+                          <Text style={styles.ciagrtext}>4 boxes Cigar</Text>
+                        </View>
+                      </View>
                       <View style={styles.flexAlign}>
-                        <Image
-                          source={angela2}
-                          style={styles.tracking2Angela}
-                        />
-                        <Text style={styles.gredoName}>
-                          {strings.customers.geredo}
-                        </Text>
-                      </View>
-                      <View style={styles.contactButton}>
-                        <View
-                          style={[
-                            styles.flexAlign,
-                            { paddingHorizontal: moderateScale(12) },
-                          ]}
-                        >
-                          <Image source={contact} style={styles.contactStyle} />
-                          <Text style={styles.contactText}>
-                            {strings.customers.contact}
-                          </Text>
-                        </View>
+                        <Text style={styles.detailText}>{strings.customers.detail}</Text>
+                        <Image source={dropRight} style={styles.dropRight} />
                       </View>
                     </View>
-                    <Spacer space={SH(8)} />
                   </View>
                 </View>
               </View>
-
-              <View style={styles.mapContainer2}>
-                <MapView
-                  provider={PROVIDER_GOOGLE}
-                  showCompass
-                  region={{
-                    latitude: orderData?.seller_details?.seller_location?.[0],
-                    longitude: orderData?.seller_details?.seller_location?.[1],
-                    latitudeDelta: 0.09,
-                    longitudeDelta: 0.09,
-                  }}
-                  style={styles.map}
-                >
-                  <Marker
-                      coordinate={{
-                        latitude: orderData?.seller_details?.seller_location?.[0]
-                          ? orderData?.seller_details?.seller_location?.[0]
-                          : 0,
-                        longitude: orderData?.seller_details?.seller_location?.[1]
-                          ? orderData?.seller_details?.seller_location?.[1]
-                          : 0,
-                      }}
-                      image={shop_light}
-                      style={{ width: 8, height: 8 }}
-                    ></Marker>
-                  <Marker
-                      coordinate={{
-                        latitude: orderData?.coordinates?.[0]
-                          ? orderData?.coordinates?.[0]
-                          : 0,
-                        longitude: orderData?.coordinates?.[1]
-                          ? orderData?.coordinates?.[1]
-                          : 0,
-                      }}
-                      
-                      image={blueLocation}
-                      style={{ width: 8, height: 8 }}
-                    >
-                    </Marker>
-                </MapView>
+              <Spacer space={SH(5)} />
+              <View style={{ paddingHorizontal: moderateScale(18) }}>
+                <Text style={styles.orderStatus}>{strings.customers.orderStatus}</Text>
+                <Text style={[styles.orderStatus, { fontFamily: Fonts.Regular }]}>
+                  {strings.customers.assignDriver}
+                </Text>
+                <View style={[styles.costoHr, { marginVertical: verticalScale(4) }]} />
+                <Spacer space={SH(3)} />
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'column' }}>
+                    <View style={styles.greyRadioCon}>
+                      <Image
+                        source={orderStatus >= 6 ? radioArrBlue : greyRadioArr}
+                        style={styles.greyRadioArr}
+                      />
+                      <View style={styles.greyRadioBody}>
+                        <Text
+                          style={
+                            orderStatus >= 6 || orderStatus >= 7
+                              ? styles.verifyTextDark
+                              : styles.verifyTextLight
+                          }
+                        >
+                          {statusVise(orderStatus)}
+                        </Text>
+                        <Spacer space={SH(5)} />
+                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.greyRadioCon}>
+                      <Image
+                        source={orderStatus >= 5 ? radioArrBlue : greyRadioArr}
+                        style={styles.greyRadioArr}
+                      />
+                      <View style={styles.greyRadioBody}>
+                        <Text
+                          style={orderStatus >= 5 ? styles.verifyTextDark : styles.verifyTextLight}
+                        >
+                          {strings.customers.productPick}
+                        </Text>
+                        <Spacer space={SH(5)} />
+                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.greyRadioCon}>
+                      <Image
+                        source={orderStatus >= 4 ? radioArrBlue : greyRadioArr}
+                        style={styles.greyRadioArr}
+                      />
+                      <View style={styles.greyRadioBody}>
+                        <Text
+                          style={orderStatus >= 4 ? styles.verifyTextDark : styles.verifyTextLight}
+                        >
+                          {strings.customers.assignDriver}
+                        </Text>
+                        <Spacer space={SH(5)} />
+                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.greyRadioCon}>
+                      <Image
+                        source={orderStatus >= 3 ? radioArrBlue : greyRadioArr}
+                        style={styles.greyRadioArr}
+                      />
+                      <View style={styles.greyRadioBody}>
+                        <Text
+                          style={orderStatus >= 3 ? styles.verifyTextDark : styles.verifyTextLight}
+                        >
+                          {strings.customers.readyPickup}
+                        </Text>
+                        <Spacer space={SH(5)} />
+                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.greyRadioCon}>
+                      <Image
+                        source={orderStatus >= 2 ? radioArrBlue : greyRadioArr}
+                        style={styles.greyRadioArr}
+                      />
+                      <View style={styles.greyRadioBody}>
+                        <Text
+                          style={orderStatus >= 1 ? styles.verifyTextDark : styles.verifyTextLight}
+                        >
+                          {strings.customers.orderPrepare}
+                        </Text>
+                        <Spacer space={SH(5)} />
+                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.greyRadioCon}>
+                      <Image
+                        source={orderStatus >= 1 ? radioArrBlue : greyRadioArr}
+                        style={styles.greyRadioArr}
+                      />
+                      <View style={styles.greyRadioBody}>
+                        <Text
+                          style={orderStatus >= 1 ? styles.verifyTextDark : styles.verifyTextLight}
+                        >
+                          {strings.customers.orderAccepted}
+                        </Text>
+                        <Spacer space={SH(5)} />
+                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.greyRadioCon}>
+                      <Image
+                        source={orderStatus >= 0 ? radioArrBlue : greyRadioArr}
+                        style={styles.greyRadioArr}
+                      />
+                      <View style={styles.greyRadioBody}>
+                        <Text
+                          style={orderStatus >= 0 ? styles.verifyTextDark : styles.verifyTextLight}
+                        >
+                          {strings.customers.orderReview}
+                        </Text>
+                        <Spacer space={SH(5)} />
+                        <Text style={styles.waitMinuteLight}>{strings.customers.waitMinute}</Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+                <Spacer space={SH(10)} />
+                {/* <View style={{ flex: 1 }} /> */}
+                <View style={styles.carriarCon}>
+                  <Spacer space={SH(5)} />
+                  <Text style={[styles.verifyTextLight, { color: COLORS.black }]}>
+                    {strings.customers.carriar}
+                  </Text>
+                  <Spacer space={SH(8)} />
+                  <View style={styles.displayFlex}>
+                    <View style={styles.flexAlign}>
+                      <Image source={angela2} style={styles.tracking2Angela} />
+                      <Text style={styles.gredoName}>{strings.customers.geredo}</Text>
+                    </View>
+                    <View style={styles.contactButton}>
+                      <View style={[styles.flexAlign, { paddingHorizontal: moderateScale(12) }]}>
+                        <Image source={contact} style={styles.contactStyle} />
+                        <Text style={styles.contactText}>{strings.customers.contact}</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <Spacer space={SH(8)} />
+                </View>
               </View>
             </View>
-            <Spacer space={SH(12)} />
+
+            <View style={styles.mapContainer2}>
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                showCompass
+                region={{
+                  latitude: orderData?.seller_details?.seller_location?.[0],
+                  longitude: orderData?.seller_details?.seller_location?.[1],
+                  latitudeDelta: 0.09,
+                  longitudeDelta: 0.09,
+                }}
+                style={styles.map}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: orderData?.seller_details?.seller_location?.[0]
+                      ? orderData?.seller_details?.seller_location?.[0]
+                      : 0,
+                    longitude: orderData?.seller_details?.seller_location?.[1]
+                      ? orderData?.seller_details?.seller_location?.[1]
+                      : 0,
+                  }}
+                  image={shop_light}
+                  style={{ width: 8, height: 8 }}
+                ></Marker>
+                <Marker
+                  coordinate={{
+                    latitude: orderData?.coordinates?.[0] ? orderData?.coordinates?.[0] : 0,
+                    longitude: orderData?.coordinates?.[1] ? orderData?.coordinates?.[1] : 0,
+                  }}
+                  image={blueLocation}
+                  style={{ width: 8, height: 8 }}
+                ></Marker>
+              </MapView>
+            </View>
           </View>
+          <Spacer space={SH(12)} />
         </View>
+      </View>
       {/* </View> */}
     </View>
   );

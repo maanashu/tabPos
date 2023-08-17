@@ -20,13 +20,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?seller_id=${sellerid}&main_category=true&search=${search}`
+          `?seller_id=${sellerid}&main_category=true&search=${search}&service_type=product`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?seller_id=${sellerid}&main_category=true`
+          `?seller_id=${sellerid}&main_category=true&service_type=product`
         );
       }
     };
@@ -89,10 +89,14 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&search=${search}`
+          `?seller_id=${sellerid}&search=${search}&service_type=product`
         );
       } else {
-        return PRODUCT_URL + ApiProductInventory.getSubCategory + `?seller_id=${sellerid}`;
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getSubCategory +
+          `?seller_id=${sellerid}&service_type=product`
+        );
       }
     };
     return new Promise((resolve, reject) => {
@@ -387,7 +391,17 @@ export class RetailController {
       // let supplyID = data.supplyId.toString();
       // let supplyPriceID = data.supplyPriceID.toString();
       // let variantId = data.supplyVariantId.toString();
-      const body = data?.supplyVariantId
+      const body = data?.offerId
+        ? {
+            seller_id: data.seller_id,
+            service_id: data.service_id,
+            product_id: data.product_id,
+            qty: data.qty,
+            supply_id: data.supplyId.toString(),
+            supply_price_id: data.supplyPriceID.toString(),
+            offer_id: data.offerId,
+          }
+        : data?.supplyVariantId
         ? {
             seller_id: data.seller_id,
             service_id: data.service_id,
@@ -442,7 +456,7 @@ export class RetailController {
         date: data?.date,
         start_time: data?.startTime,
         end_time: data?.endTime,
-        // "pos_user_id": data?.posUserId
+        pos_user_id: data?.posUserId,
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
@@ -460,7 +474,7 @@ export class RetailController {
     });
   }
 
-  static async updateCartQty(data, cartId) {
+  static async updateCartQtyy(data, cartId) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.updateCartQty + `/${cartId}`;
       // const body = {
@@ -482,17 +496,17 @@ export class RetailController {
           //     type: 'success_toast',
           //     visibilityTime: 1500,
           //   });
-          //   resolve(response);
           // }
+          resolve(response);
         })
         .catch((error) => {
           Toast.show({
-            text2: error.msg,
+            text2: error?.msg || 'Unknown error occured',
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(error.msg);
+          reject(error);
         });
     });
   }
@@ -1282,7 +1296,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          // console.log('error', error);
           // Toast.show({
           //   text2: error?.msg,
           //   position: 'bottom',

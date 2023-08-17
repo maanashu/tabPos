@@ -249,9 +249,9 @@ const updateCartQtyRequest = () => ({
   payload: null,
 });
 
-const updateCartQtySuccess = () => ({
+const updateCartQtySuccess = (data) => ({
   type: TYPES.UPDATE_CART_QTY_SUCCESS,
-  payload: {},
+  payload: { data },
 });
 
 const updateCartQtyError = (error) => ({
@@ -1045,11 +1045,13 @@ export const addToServiceCart = (data) => async (dispatch) => {
 export const updateCartQty = (data, cartId) => async (dispatch) => {
   dispatch(updateCartQtyRequest());
   try {
-    const res = await RetailController.updateCartQty(data, cartId);
+    const res = await RetailController.updateCartQtyy(data, cartId);
+
     dispatch(updateCartQtySuccess(res));
+
     // dispatch(getAllCart());
   } catch (error) {
-    dispatch(updateCartQtyError(error.message));
+    dispatch(updateCartQtyError(error));
   }
 };
 

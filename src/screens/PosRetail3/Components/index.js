@@ -21,3 +21,4 @@ export { AddCartDetailModal } from '@/screens/PosRetail3/Components/AddCartDetai
 export { SideCartDet } from '@/screens/PosRetail3/Components/SideCartDet';
 export { CartListModal } from '@/screens/PosRetail3/Components/CartListModal';
 export { CartServiceScreen } from '@/screens/PosRetail3/Components/CartServiceScreen';
+export { NumericPad } from '@/screens/PosRetail3/Components/NumericPad';

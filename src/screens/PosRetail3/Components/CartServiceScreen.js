@@ -11,7 +11,6 @@ import {
   addToCart,
   borderCross,
   checkArrow,
-  clothes,
   cross,
   eraser,
   holdCart,
@@ -37,20 +36,11 @@ import {
   getAllCartSuccess,
   getAvailableOffer,
   getServiceCartSuccess,
-  getUserDetail,
-  getUserDetailSuccess,
-  sendInvitation,
-  updateCartQty,
 } from '@/actions/RetailAction';
-import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { emailReg } from '@/utils/validators';
-import { useFocusEffect } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import moment from 'moment';
-import { dummyService } from '@/constants/staticData';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
 import { useEffect } from 'react';
@@ -66,8 +56,6 @@ export function CartServiceScreen({
   const getAuth = useSelector(getAuthData);
   const cartServiceData = getRetailData?.getserviceCart;
   let arr = [getRetailData?.getserviceCart];
-  const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
-  const [customerPhoneNo, setCustomerPhoneNo] = useState();
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
 
@@ -75,10 +63,6 @@ export function CartServiceScreen({
   const [serviceItemSave, setServiceItemSave] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const availableOfferArray = getRetailData?.availableOffer;
-
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAdd, setUserAdd] = useState('');
   const [cartSearch, setCartSearch] = useState('');
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
@@ -238,7 +222,7 @@ export function CartServiceScreen({
               >
                 <Image source={rightBack} style={styles.arrowStyle} />
                 <Text style={[styles.holdCart, { color: COLORS.dark_grey }]}>
-                  {strings.posRetail.backProdscreen}
+                  {strings.posRetail.backServicescreen}
                 </Text>
               </TouchableOpacity>
               <View style={[styles.barcodeInputWraper, styles.cartSearchInputWraper]}>
@@ -357,7 +341,10 @@ export function CartServiceScreen({
                           {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2)}
                         </Text>
                         <TouchableOpacity
-                          style={[styles.cartBodyRightSide, { alignItems: 'center' }]}
+                          style={[
+                            styles.cartBodyRightSide,
+                            { alignItems: 'center', justifyContent: 'center' },
+                          ]}
                           onPress={() => removeOneCartHandler(data.id, ind)}
                         >
                           <Image source={borderCross} style={styles.borderCross} />
@@ -417,7 +404,7 @@ export function CartServiceScreen({
                             </View>
                             <View style={{ marginLeft: 4 }}>
                               <Text
-                                style={[styles.offerText, [{ width: ms(110) }]]}
+                                style={[styles.offerText, [{ width: ms(90) }]]}
                                 numberOfLines={1}
                               >
                                 {item.product?.name}
@@ -465,10 +452,10 @@ export function CartServiceScreen({
                   ${cartServiceData?.amount?.products_price.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
-              <View style={[styles.displayflex2, styles.paddVertical]}>
+              {/* <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Total VAT</Text>
                 <Text style={styles.subTotalDollar}>$0.00</Text>
-              </View>
+              </View> */}
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Total Taxes</Text>
                 <Text style={styles.subTotalDollar}>
@@ -476,15 +463,16 @@ export function CartServiceScreen({
                   ${cartServiceData?.amount?.tax.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
-              {/* <View style={[styles.displayflex2, styles.paddVertical]}>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Discount</Text>
                 <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                  ${' '}
+                  ($
                   {cartServiceData?.amount?.discount === 0
                     ? '0.00'
                     : cartData?.amount?.discount.toFixed(2) ?? '0.00'}
+                  )
                 </Text>
-              </View> */}
+              </View>
               <View
                 style={{
                   borderWidth: 1,
