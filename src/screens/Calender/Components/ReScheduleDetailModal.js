@@ -75,6 +75,9 @@ export function ReScheduleDetailModal({
         }}
         onPress={() => {
           setselectedDate(item?.completeDate);
+          //Clear previous day selected time slot values
+          setselectedTimeSlotIndex(null);
+          setSelectedTimeSlotData('');
         }}
       >
         <Text
