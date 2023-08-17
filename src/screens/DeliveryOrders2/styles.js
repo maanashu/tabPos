@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 15,
-    width: Dimensions.get('window').width / ms(1.26),
+    width: Dimensions.get('window').width / ms(1.42),
     paddingVertical: 10,
     borderColor: COLORS.blue_shade,
   },
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     borderRadius: 10,
     marginTop: 20,
-    width: Dimensions.get('window').width / ms(1.68),
+    width: Dimensions.get('window').width / ms(1.9),
     backgroundColor: COLORS.textInputBackground,
   },
   userImageStyle: {
