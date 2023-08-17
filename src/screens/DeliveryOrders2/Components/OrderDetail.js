@@ -32,7 +32,7 @@ const OrderDetail = ({
   return (
     <View style={styles.orderDetailView}>
       <View style={styles.orderDetailViewStyle}>
-        <View style={[styles.locationViewStyle, { width: ms(120) }]}>
+        <View style={[styles.locationViewStyle, { flex: 1 }]}>
           <Image
             source={
               userDetail?.user_details?.profile_photo
@@ -54,19 +54,15 @@ const OrderDetail = ({
           </View>
         </View>
 
-        <View
-          style={[
-            styles.locationViewStyle,
-            { width: ms(80), right: Platform.OS === 'ios' ? 20 : 15 },
-          ]}
-        >
+        <View style={[styles.locationViewStyle, { flex: 0.5 }]}>
           <Image source={scooter} style={styles.scooterImageStyle} />
 
           <View style={[styles.userNameView, { paddingLeft: 5 }]}>
             <Text
+              numberOfLines={1}
               style={{
                 fontFamily: Fonts.Bold,
-                fontSize: SF(14),
+                fontSize: ms(6),
                 color: COLORS.primary,
               }}
             >
@@ -75,7 +71,7 @@ const OrderDetail = ({
             <Text
               style={{
                 fontFamily: Fonts.Medium,
-                fontSize: SF(11),
+                fontSize: ms(5.7),
                 color: COLORS.dark_grey,
               }}
             >

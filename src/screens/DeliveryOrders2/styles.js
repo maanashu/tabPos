@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
+    fontSize: ms(7.2),
     color: COLORS.solid_grey,
     paddingTop: ms(2),
   },
@@ -277,8 +277,9 @@ const styles = StyleSheet.create({
   },
   badgetext: {
     color: COLORS.dark_grey,
-    fontSize: SF(11),
+    fontSize: ms(5.5),
     fontFamily: Fonts.SemiBold,
+    marginTop: ms(2),
   },
   holdBadge: {
     borderWidth: 2,
@@ -418,8 +419,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingVertical: 30,
     borderRadius: 10,
-    marginTop: 20,
-    width: Dimensions.get('window').width / ms(1.68),
+    marginTop: ms(10),
     backgroundColor: COLORS.textInputBackground,
   },
   userImageStyle: {
@@ -435,6 +435,7 @@ const styles = StyleSheet.create({
   },
   userNameView: {
     paddingLeft: 10,
+    flex: 1,
   },
   orderproductView: {
     borderWidth: 1,
