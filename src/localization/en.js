@@ -786,5 +786,6 @@ export const en = {
     acceptedButton: 'Order Prepared',
     prepareButton: 'Ready to Pickup',
     trackOrder: 'Track Order',
+    preparedButton: 'Prepared',
   },
 };
