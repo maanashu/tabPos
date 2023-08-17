@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Dimensions,
+  Platform,
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
@@ -502,10 +503,10 @@ const styles = StyleSheet.create({
     zIndex: 999,
     position: 'absolute',
     right: 0,
-    top: 60,
+    top: 70,
     borderRadius: 5,
     width: windowWidth * 0.3,
-    height: windowHeight * 0.76,
+    height: Platform.OS === 'android' ? windowHeight * 0.76 : windowHeight * 0.8,
     backgroundColor: COLORS.textInputBackground,
     paddingBottom: ms(10),
   },
@@ -518,7 +519,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.gerySkies,
     borderRadius: 5,
-    width: ms(110),
+    width: Platform.OS === 'ios' ? ms(90) : ms(110),
     height: ms(32),
     justifyContent: 'center',
     alignItems: 'center',
@@ -534,7 +535,7 @@ const styles = StyleSheet.create({
   ApplyButton: {
     borderColor: COLORS.gerySkies,
     borderRadius: 5,
-    width: ms(110),
+    width: Platform.OS === 'ios' ? ms(90) : ms(110),
     height: ms(32),
     justifyContent: 'center',
     alignItems: 'center',
