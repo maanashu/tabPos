@@ -44,6 +44,9 @@ export function ReScheduleDetailModal({
     moment(appointmentData?.date).format('YYYY-MM-DD')
   );
 
+  const [preSelectedStartTime, setpreSelectedStartTime] = useState(appointmentData?.start_time);
+  const [preSelectedEndTime, setpreSelectedEndTime] = useState(appointmentData?.end_time);
+
   const [selectedMonthData, setselectedMonthData] = useState(null);
   const [selectedYearData, setselectedYearData] = useState(null);
 
@@ -78,6 +81,8 @@ export function ReScheduleDetailModal({
           //Clear previous day selected time slot values
           setselectedTimeSlotIndex(null);
           setSelectedTimeSlotData('');
+          setpreSelectedStartTime('');
+          setpreSelectedEndTime('');
         }}
       >
         <Text
@@ -199,14 +204,17 @@ export function ReScheduleDetailModal({
               <Text style={{ color: COLORS.primary }}>
                 {selectedDate === moment(new Date()).format('YYYY-MM-DD')
                   ? `Today`
-                  : moment(selectedDate).format('ll')}{' '}
-                {`@ ${
-                  selectedTimeSlotData
-                    ? selectedTimeSlotData?.start_time
-                    : appointmentData?.start_time
-                } - ${
-                  selectedTimeSlotData ? selectedTimeSlotData?.end_time : appointmentData?.end_time
-                }`}
+                  : moment(selectedDate).format('ll')}
+                {selectedTimeSlotData || (preSelectedStartTime && preSelectedEndTime) ? (
+                  <>
+                    {' '}
+                    @{' '}
+                    {selectedTimeSlotData
+                      ? selectedTimeSlotData?.start_time
+                      : preSelectedStartTime}{' '}
+                    - {selectedTimeSlotData ? selectedTimeSlotData?.end_time : preSelectedEndTime}
+                  </>
+                ) : null}
               </Text>
             </Text>
             <Spacer space={SH(15)} />
