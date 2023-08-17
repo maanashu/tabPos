@@ -67,6 +67,9 @@ export function AddServiceCartModal({
       }}
       onPress={() => {
         setselectedDate(item?.completeDate);
+        //Clear previous day selected time slot values
+        setselectedTimeSlotIndex(null);
+        setSelectedTimeSlotData('');
       }}
     >
       <Text

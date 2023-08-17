@@ -1,29 +1,29 @@
-import dayjs from 'dayjs'
-import * as React from 'react'
-import { Platform, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import dayjs from 'dayjs';
+import * as React from 'react';
+import { Platform, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 
-import { u } from '../commonStyles'
-import { useNow } from '../hooks/useNow'
-import { usePanResponder } from '../hooks/usePanResponder'
+import { u } from '../commonStyles';
+import { useNow } from '../hooks/useNow';
+import { usePanResponder } from '../hooks/usePanResponder';
 import {
   CalendarCellStyle,
   EventCellStyle,
   EventRenderer,
   HorizontalDirection,
   ICalendarEventBase,
-} from '../interfaces'
-import { useTheme } from '../theme/ThemeContext'
+} from '../interfaces';
+import { useTheme } from '../theme/ThemeContext';
 import {
   getCountOfEventsAtEvent,
   getOrderOfEvent,
   getRelativeTopInDay,
   hours,
   isToday,
-} from '../utils/datetime'
-import { typedMemo } from '../utils/react'
-import { CalendarEvent } from './CalendarEvent'
-import { HourGuideCell } from './HourGuideCell'
-import { HourGuideColumn } from './HourGuideColumn'
+} from '../utils/datetime';
+import { typedMemo } from '../utils/react';
+import { CalendarEvent } from './CalendarEvent';
+import { HourGuideCell } from './HourGuideCell';
+import { HourGuideColumn } from './HourGuideColumn';
 
 const styles = StyleSheet.create({
   nowIndicator: {
@@ -32,31 +32,31 @@ const styles = StyleSheet.create({
     height: 2,
     width: '100%',
   },
-})
+});
 
 interface CalendarBodyProps<T extends ICalendarEventBase> {
-  cellHeight: number
-  containerHeight: number
-  dateRange: dayjs.Dayjs[]
-  events: T[]
-  scrollOffsetMinutes: number
-  ampm: boolean
-  showTime: boolean
-  style: ViewStyle
-  eventCellStyle?: EventCellStyle<T>
-  calendarCellStyle?: CalendarCellStyle
-  hideNowIndicator?: boolean
-  overlapOffset?: number
-  onPressCell?: (date: Date) => void
-  onPressEvent?: (event: T) => void
-  onSwipeHorizontal?: (d: HorizontalDirection) => void
-  renderEvent?: EventRenderer<T>
-  headerComponent?: React.ReactElement | null
-  headerComponentStyle?: ViewStyle
-  hourStyle?: TextStyle
+  cellHeight: number;
+  containerHeight: number;
+  dateRange: dayjs.Dayjs[];
+  events: T[];
+  scrollOffsetMinutes: number;
+  ampm: boolean;
+  showTime: boolean;
+  style: ViewStyle;
+  eventCellStyle?: EventCellStyle<T>;
+  calendarCellStyle?: CalendarCellStyle;
+  hideNowIndicator?: boolean;
+  overlapOffset?: number;
+  onPressCell?: (date: Date) => void;
+  onPressEvent?: (event: T) => void;
+  onSwipeHorizontal?: (d: HorizontalDirection) => void;
+  renderEvent?: EventRenderer<T>;
+  headerComponent?: React.ReactElement | null;
+  headerComponentStyle?: ViewStyle;
+  hourStyle?: TextStyle;
   hourComponent?: (formattedHour: string) => React.ReactNode;
-  hideHours?: Boolean
-  isEventOrderingEnabled?: boolean
+  hideHours?: Boolean;
+  isEventOrderingEnabled?: boolean;
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -83,11 +83,11 @@ function _CalendarBody<T extends ICalendarEventBase>({
   hideHours = false,
   isEventOrderingEnabled = true,
 }: CalendarBodyProps<T>) {
-  const scrollView = React.useRef<ScrollView>(null)
-  const { now } = useNow(!hideNowIndicator)
+  const scrollView = React.useRef<ScrollView>(null);
+  const { now } = useNow(!hideNowIndicator);
 
   React.useEffect(() => {
-    let timeout: NodeJS.Timeout
+    let timeout: NodeJS.Timeout;
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
       // We add delay here to work correct on React Native
       // see: https://stackoverflow.com/questions/33208477/react-native-android-scrollview-scrollto-not-working
@@ -97,35 +97,41 @@ function _CalendarBody<T extends ICalendarEventBase>({
             scrollView.current.scrollTo({
               y: (cellHeight * scrollOffsetMinutes) / 60,
               animated: false,
-            })
+            });
           }
         },
-        Platform.OS === 'web' ? 0 : 10,
-      )
+        Platform.OS === 'web' ? 0 : 10
+      );
     }
     return () => {
       if (timeout) {
-        clearTimeout(timeout)
+        clearTimeout(timeout);
       }
-    }
-  }, [scrollView, scrollOffsetMinutes, cellHeight])
+    };
+  }, [scrollView, scrollOffsetMinutes, cellHeight]);
 
   const panResponder = usePanResponder({
     onSwipeHorizontal,
-  })
+  });
 
   const _onPressCell = React.useCallback(
     (date: dayjs.Dayjs) => {
-      onPressCell && onPressCell(date.toDate())
+      onPressCell && onPressCell(date.toDate());
     },
-    [onPressCell],
-  )
+    [onPressCell]
+  );
 
   const _renderMappedEvent = React.useCallback(
     (event: T, index: number) => {
+      const eventsListWithSameStartEndTime = events.filter(
+        (e) =>
+          dayjs(event.start).isBetween(e.start, e.end, 'minute', '[)') ||
+          dayjs(e.start).isBetween(event.start, event.end, 'minute', '[)')
+      );
       return (
         <CalendarEvent
           key={`${index}${event.start}${event.title}${event.end}`}
+          allEvents={eventsListWithSameStartEndTime}
           event={event}
           onPressEvent={onPressEvent}
           eventCellStyle={eventCellStyle}
@@ -136,7 +142,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
           renderEvent={renderEvent}
           ampm={ampm}
         />
-      )
+      );
     },
     [
       ampm,
@@ -147,10 +153,10 @@ function _CalendarBody<T extends ICalendarEventBase>({
       overlapOffset,
       renderEvent,
       showTime,
-    ],
-  )
+    ]
+  );
 
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <React.Fragment>
@@ -207,7 +213,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
               {/*       S-E             */}
               {events
                 .filter(({ start }) =>
-                  dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+                  dayjs(start).isBetween(date.startOf('day'), date.endOf('day'), null, '[)')
                 )
                 .map(_renderMappedEvent)}
 
@@ -218,7 +224,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                 .filter(
                   ({ start, end }) =>
                     dayjs(start).isBefore(date.startOf('day')) &&
-                    dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)'),
+                    dayjs(end).isBetween(date.startOf('day'), date.endOf('day'), null, '[)')
                 )
                 .map((event) => ({
                   ...event,
@@ -233,7 +239,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
                 .filter(
                   ({ start, end }) =>
                     dayjs(start).isBefore(date.startOf('day')) &&
-                    dayjs(end).isAfter(date.endOf('day')),
+                    dayjs(end).isAfter(date.endOf('day'))
                 )
                 .map((event) => ({
                   ...event,
@@ -256,7 +262,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
         </View>
       </ScrollView>
     </React.Fragment>
-  )
+  );
 }
 
-export const CalendarBody = typedMemo(_CalendarBody)
+export const CalendarBody = typedMemo(_CalendarBody);

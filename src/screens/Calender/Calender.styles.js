@@ -788,4 +788,10 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
   },
+  calendarIcon: {
+    height: ms(15),
+    width: ms(15),
+    resizeMode: 'contain',
+    tintColor: COLORS.darkGray,
+  },
 });
