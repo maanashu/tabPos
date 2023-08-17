@@ -54,8 +54,6 @@ export function PosRetail3() {
   const getServicecart = getRetailData?.getserviceCart;
   const getServiceCartAmount = getRetailData?.getserviceCart?.amount;
 
-  // console.log('----------------------', getRetailData?.getserviceCart);
-
   const finalAmountForDiscount =
     cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
 

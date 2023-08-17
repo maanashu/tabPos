@@ -13,22 +13,24 @@ import { Spacer } from '@/components';
 const Graph = ({ graphData, renderGraphItem, isDeliveryOrder, outputData }) => {
   return (
     <View style={styles.graphViewStyle}>
-      <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
+      <View>
+        <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
 
-      <FlatList
-        horizontal
-        data={graphData}
-        scrollEnabled={false}
-        renderItem={renderGraphItem}
-        showsHorizontalScrollIndicator={false}
-      />
+        <FlatList
+          horizontal
+          data={graphData}
+          scrollEnabled={false}
+          renderItem={renderGraphItem}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
 
-      <Spacer space={SH(30)} />
+      <Spacer space={SH(20)} />
 
       {isDeliveryOrder ? (
         <View
           style={{
-            height: ms(185),
+            height: ms(150),
             backgroundColor: COLORS.white,
             alignItems: 'center',
             justifyContent: 'center',
@@ -39,21 +41,18 @@ const Graph = ({ graphData, renderGraphItem, isDeliveryOrder, outputData }) => {
       ) : (
         <View>
           <BarChart
-            data={outputData}
-            noOfSections={7}
             roundedTop
-            // hideRules
+            noOfSections={7}
+            data={outputData}
             xAxisThickness={1}
             yAxisThickness={1}
             xAxisType={'dashed'}
             yAxisType={'dashed'}
             yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
             yAxisLength={350}
-            isAnimated
-            height={ms(118)}
-            width={Dimensions.get('window').width * 0.49}
+            height={ms(130)}
+            width={Dimensions.get('window').width * 0.5}
           />
-          <Spacer space={SH(10)} />
         </View>
       )}
     </View>

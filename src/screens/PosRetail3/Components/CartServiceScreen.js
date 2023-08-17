@@ -238,7 +238,7 @@ export function CartServiceScreen({
               >
                 <Image source={rightBack} style={styles.arrowStyle} />
                 <Text style={[styles.holdCart, { color: COLORS.dark_grey }]}>
-                  {strings.posRetail.backProdscreen}
+                  {strings.posRetail.backServicescreen}
                 </Text>
               </TouchableOpacity>
               <View style={[styles.barcodeInputWraper, styles.cartSearchInputWraper]}>
@@ -357,7 +357,10 @@ export function CartServiceScreen({
                           {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2)}
                         </Text>
                         <TouchableOpacity
-                          style={[styles.cartBodyRightSide, { alignItems: 'center' }]}
+                          style={[
+                            styles.cartBodyRightSide,
+                            { alignItems: 'center', justifyContent: 'center' },
+                          ]}
                           onPress={() => removeOneCartHandler(data.id, ind)}
                         >
                           <Image source={borderCross} style={styles.borderCross} />
@@ -417,7 +420,7 @@ export function CartServiceScreen({
                             </View>
                             <View style={{ marginLeft: 4 }}>
                               <Text
-                                style={[styles.offerText, [{ width: ms(110) }]]}
+                                style={[styles.offerText, [{ width: ms(90) }]]}
                                 numberOfLines={1}
                               >
                                 {item.product?.name}
@@ -465,10 +468,10 @@ export function CartServiceScreen({
                   ${cartServiceData?.amount?.products_price.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
-              <View style={[styles.displayflex2, styles.paddVertical]}>
+              {/* <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Total VAT</Text>
                 <Text style={styles.subTotalDollar}>$0.00</Text>
-              </View>
+              </View> */}
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Total Taxes</Text>
                 <Text style={styles.subTotalDollar}>
@@ -476,15 +479,16 @@ export function CartServiceScreen({
                   ${cartServiceData?.amount?.tax.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
-              {/* <View style={[styles.displayflex2, styles.paddVertical]}>
+              <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Discount</Text>
                 <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                  ${' '}
+                  ($
                   {cartServiceData?.amount?.discount === 0
                     ? '0.00'
                     : cartData?.amount?.discount.toFixed(2) ?? '0.00'}
+                  )
                 </Text>
-              </View> */}
+              </View>
               <View
                 style={{
                   borderWidth: 1,

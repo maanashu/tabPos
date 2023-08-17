@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import { COLORS, SH, SF } from '@/theme';
+import { COLORS, SH, SF, SW } from '@/theme';
 import { styles } from '@/screens/Wallet/Wallet.styles';
 import { strings } from '@/localization';
 import {
@@ -46,6 +46,7 @@ import { OrderList, DetailShipping, TrackingModule } from './Components';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {
   getTotakTraDetail,
   getTotalTra,
@@ -57,6 +58,7 @@ import { TYPES } from '@/Types/WalletTypes';
 import moment from 'moment';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import { capitalizeFirstLetter } from '@/utils/GlobalMethods';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -107,40 +109,58 @@ export function Wallet() {
 
   const aboutTransactionData = [
     {
+      aboutTransaction: 'ALL',
+      price: getTotalTraData?.jbr ?? '0',
+      img: null,
+      id: '1',
+    },
+    {
       aboutTransaction: 'JBR COIN',
       price: getTotalTraData?.jbr ?? '0',
       img: jbrCoin,
       id: '1',
     },
-    {
-      aboutTransaction: 'CASH',
-      price: getTotalTraData?.cash ?? '0',
-      img: cash,
-      id: '2',
-    },
-    {
-      aboutTransaction: 'CARD',
-      price: getTotalTraData?.card ?? '0',
-      img: card2,
-      id: '3',
-    },
+    // {
+    //   aboutTransaction: 'CASH',
+    //   price: getTotalTraData?.cash ?? '0',
+    //   img: cash,
+    //   id: '2',
+    // },
+    // {
+    //   aboutTransaction: 'CARD',
+    //   price: getTotalTraData?.card ?? '0',
+    //   img: card2,
+    //   id: '3',
+    // },
   ];
   const tipsData = [
     {
-      heading: 'Tips',
-      price: getTotalTraData?.tips ?? '0',
-      id: '1',
-    },
-    {
-      heading: 'Delivery Charge',
-      price: getTotalTraData?.delivery_charge ?? '0',
+      heading: 'CREDIT',
+      price: getTotalTraData?.card ?? '0',
+      img: card2,
       id: '2',
     },
     {
-      heading: 'Shipping Charge',
-      price: getTotalTraData?.shipping_charge ?? '0',
+      heading: 'CASH',
+      price: getTotalTraData?.cash ?? '0',
+      img: cash,
       id: '3',
     },
+    // {
+    //   heading: 'Tips',
+    //   price: getTotalTraData?.tips ?? '0',
+    //   id: '1',
+    // },
+    // {
+    //   heading: 'Delivery Charge',
+    //   price: getTotalTraData?.delivery_charge ?? '0',
+    //   id: '2',
+    // },
+    // {
+    //   heading: 'Shipping Charge',
+    //   price: getTotalTraData?.shipping_charge ?? '0',
+    //   id: '3',
+    // },
   ];
 
   useEffect(() => {
@@ -208,9 +228,36 @@ export function Wallet() {
     setDetailShipping(false);
     setOrderModel(true);
   };
+
+  const [date, setDate] = useState(new Date());
+  const [dateformat, setDateformat] = useState('');
+  const [show, setShow] = useState(false);
+  const onChangeDate = (selectedDate) => {
+    const currentDate = moment().format('MM/DD/YYYY');
+    const selected = moment(selectedDate).format('MM/DD/YYYY');
+    setShow(false);
+    const month = selectedDate.getMonth() + 1;
+    const selectedMonth = month < 10 ? '0' + month : month;
+    const day = selectedDate.getDate();
+    const selectedDay = day < 10 ? '0' + day : day;
+    const year = selectedDate.getFullYear();
+    const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
+    const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
+    setDateformat(newDateFormat);
+    setDate(fullDate);
+  
+  };
+  const onCancelFun = () => {
+    setShow(false);
+    setDateformat('');
+    setDate(new Date());
+  };
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
+         
+        
+    
         {weeklyTransaction ? (
           <TouchableOpacity
             style={styles.backButtonCon}
@@ -221,8 +268,8 @@ export function Wallet() {
           </TouchableOpacity>
         ) : (
           <View style={styles.deliveryView}>
-            <Image source={wallet2} style={styles.truckStyle} />
-            <Text style={styles.deliveryText}>{strings.wallet.wallet}</Text>
+            {/* <Image source={wallet2} style={styles.truckStyle} /> */}
+            <Text style={styles.deliveryText}>{strings.wallet.transactionHistory}</Text>
           </View>
         )}
 
@@ -392,6 +439,7 @@ export function Wallet() {
                   {getTotalTraData?.total?.toFixed(2) ?? '0'}
                 </Text>
               </Text>
+              
               <View>
                 <DaySelector
                   onPresFun={onPresFun2}
@@ -506,21 +554,21 @@ export function Wallet() {
                     </Text>
                   </View>
                   <View style={styles.tableHeaderRight}>
-                    <Text style={styles.tableTextHea}>Transection Id</Text>
+                    <Text style={styles.tableTextHea}>Transaction ID</Text>
 
                     <View style={styles.flexAlign}>
-                      <Text style={styles.tableTextHea}>Transection type</Text>
+                      <Text style={styles.tableTextHea}>Transaction type</Text>
                       <Image source={tableArrow} style={styles.tableArrow} />
                     </View>
                     <View style={styles.flexAlign}>
-                      <Text style={styles.tableTextHea}>Mode of payment</Text>
+                      <Text style={styles.tableTextHea}>Payment Method</Text>
                       <Image source={tableArrow} style={styles.tableArrow} />
                     </View>
 
-                    <Text style={styles.tableTextHea}>Cash In</Text>
-                    <Text style={styles.tableTextHea}>Cash Out</Text>
+                    <Text style={styles.tableTextHea}>Amount</Text>
+                    <Text style={styles.tableTextHea}>Refunded</Text>
                     <Text style={[styles.tableTextHea, { marginRight: -2 }]}>
-                      Status
+                      
                     </Text>
                   </View>
                 </View>
@@ -571,7 +619,7 @@ export function Wallet() {
                                 ]}
                               >
                                 {item.created_at
-                                  ? moment(item.created_at).format('h : mm')
+                                  ? moment(item.created_at).format('h:mm A')
                                   : 'date not found'}
                               </Text>
                             </View>
@@ -587,16 +635,17 @@ export function Wallet() {
                               {item.transaction_id ?? null}
                             </Text>
                             <Text style={styles.tableTextData}>
-                              {item.mode_of_payment ?? null}
+                              {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null}
                             </Text>
                             <Text style={styles.tableTextData}>
-                              {item.mode_of_payment ?? null}
+                            {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null}
                             </Text>
                             <Text style={styles.tableTextData}>
                               ${item.payable_amount ?? '0'}
                             </Text>
+                           
                             <Text style={styles.tableTextData}>{'$0'}</Text>
-                            <View>
+                            <View style={{width:SF(90)}}>
                               <Text style={styles.tableTextDataCom}>
                                 {statusFun(item.status)}
                               </Text>
@@ -625,7 +674,31 @@ export function Wallet() {
                 <Text style={styles.trancationHeading}>
                   {strings.wallet.totalTransections}
                 </Text>
+                
                 <View>
+                <View style={{ flexDirection: 'row', alignItems: 'center',position:"absolute",left:SW(-50)}}>
+                  <TouchableOpacity style={styles.datePickerCon} onPress={() => setShow(!show)}>
+                  <Image source={calendar1} style={styles.calendarStyle} />
+                  <TextInput
+                  value={date}
+                  returnKeyType={'done'}
+                  pointerEvents={'none'}
+                  autoCapitalize={'none'}
+                  editable={false}
+                  placeholder="Date"
+                  placeholderTextColor={COLORS.gerySkies}
+                  style={styles.txtInput}
+                  />
+                   </TouchableOpacity>
+                <DateTimePickerModal
+                  mode={'date'}
+                  isVisible={show}
+                  onConfirm={onChangeDate}
+                  onCancel={() => onCancelFun()}
+                  maximumDate={new Date()}
+                />
+        
+                </View>
                   <DaySelector
                     onPresFun={onPresFun1}
                     selectId={selectId}

@@ -27,7 +27,10 @@ const OrderReview = ({
         </View>
       ) : (
         <View
-          style={[styles.orderToReviewView, { height: Dimensions.get('window').height / 2.35 }]}
+          style={[
+            styles.orderToReviewView,
+            { height: Dimensions.get('window').height / 2.35, paddingBottom: ms(10) },
+          ]}
         >
           <FlatList
             scrollEnabled={getDeliveryData?.getReviewDef?.length > 0 ? true : false}

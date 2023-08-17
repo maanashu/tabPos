@@ -576,11 +576,30 @@ export function MainScreen({
                     {productCon && getMerchantService?.is_product_exist === true ? (
                       <View>
                         <TouchableOpacity
-                          style={styles.prouductAndServiceCon}
+                          style={
+                            filterCon
+                              ? [styles.prouductAndServiceCon, { borderColor: COLORS.primary }]
+                              : styles.prouductAndServiceCon
+                          }
                           onPress={filterHandler}
                         >
-                          <Text style={styles.productText}>{'Filter'}</Text>
-                          <Image source={filter} style={styles.productImageStyle} />
+                          <Text
+                            style={
+                              filterCon
+                                ? [styles.productText, { color: COLORS.primary }]
+                                : styles.productText
+                            }
+                          >
+                            {'Filter'}
+                          </Text>
+                          <Image
+                            source={filter}
+                            style={
+                              filterCon
+                                ? [styles.productImageStyle, { tintColor: COLORS.primary }]
+                                : styles.productImageStyle
+                            }
+                          />
                         </TouchableOpacity>
                         {filterCon ? (
                           <View style={styles.categoryFilterCon}>
@@ -591,11 +610,30 @@ export function MainScreen({
                     ) : (
                       <View>
                         <TouchableOpacity
-                          style={styles.prouductAndServiceCon}
+                          style={
+                            serviceFilterCon
+                              ? [styles.prouductAndServiceCon, { borderColor: COLORS.primary }]
+                              : styles.prouductAndServiceCon
+                          }
                           onPress={() => setServiceFilterCon(!serviceFilterCon)}
                         >
-                          <Text style={styles.productText}>{'Filter'}</Text>
-                          <Image source={filter} style={styles.productImageStyle} />
+                          <Text
+                            style={
+                              serviceFilterCon
+                                ? [styles.productText, { color: COLORS.primary }]
+                                : styles.productText
+                            }
+                          >
+                            {'Filter'}
+                          </Text>
+                          <Image
+                            source={filter}
+                            style={
+                              serviceFilterCon
+                                ? [styles.productImageStyle, { tintColor: COLORS.primary }]
+                                : styles.productImageStyle
+                            }
+                          />
                         </TouchableOpacity>
                         {serviceFilterCon ? (
                           <View style={styles.categoryFilterCon}>
@@ -655,7 +693,7 @@ export function MainScreen({
                             <Text style={styles.availableTime}>Available: Tue @ 2:00 pm </Text>
                           </View>
                         </View>
-
+                        <Spacer space={SH(5)} />
                         <Text numberOfLines={2} style={styles.productDes}>
                           {item.name}
                         </Text>
@@ -781,12 +819,26 @@ export function MainScreen({
                       source={holdCart}
                       style={
                         holdProductArray?.length > 0
-                          ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                          ? [styles.sideBarImage, { tintColor: COLORS.primary }]
                           : styles.sideBarImage
                       }
                     />
-                    <View style={styles.holdBadge}>
-                      <Text style={styles.holdBadgetext}>{holdProductArray?.length}</Text>
+                    <View
+                      style={
+                        holdProductArray?.length > 0
+                          ? [styles.holdBadge, styles.holdBadgePrimary]
+                          : styles.holdBadge
+                      }
+                    >
+                      <Text
+                        style={
+                          holdProductArray?.length > 0
+                            ? [styles.holdBadgetext, { color: COLORS.white }]
+                            : styles.holdBadgetext
+                        }
+                      >
+                        {holdProductArray?.length}
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -866,12 +918,26 @@ export function MainScreen({
                       source={holdCart}
                       style={
                         holdServiceArray?.length > 0
-                          ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
+                          ? [styles.sideBarImage, { tintColor: COLORS.primary }]
                           : styles.sideBarImage
                       }
                     />
-                    <View style={styles.holdBadge}>
-                      <Text style={styles.holdBadgetext}>{holdServiceArray?.length}</Text>
+                    <View
+                      style={
+                        holdServiceArray?.length > 0
+                          ? [styles.holdBadge, styles.holdBadgePrimary]
+                          : styles.holdBadge
+                      }
+                    >
+                      <Text
+                        style={
+                          holdServiceArray?.length > 0
+                            ? [styles.holdBadgetext, { color: COLORS.white }]
+                            : styles.holdBadgetext
+                        }
+                      >
+                        {holdServiceArray?.length}
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -923,6 +989,7 @@ export function MainScreen({
             crossHandler={() => setAddCartModal(false)}
             detailHandler={() => setAddCartDetailModal(true)}
             sellerID={sellerID}
+            backToCartHandler={() => cartScreenHandler()}
           />
         )}
       </Modal>
@@ -934,6 +1001,7 @@ export function MainScreen({
           // detailHandler={() => setAddCartDetailModal(true)}
           sellerID={sellerID}
           itemData={serviceItemSave}
+          backToCartHandler={() => cartServiceScreenHandler()}
         />
       </Modal>
 

@@ -160,7 +160,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
             showsVerticalScrollIndicator={false}
             style={{
               paddingBottom: ms(20),
-              height: retailData?.categoryList?.length > 0 ? ms(150) : 0,
+              height: retailData?.serviceCategoryList?.length > 0 ? ms(150) : 0,
             }}
             ListEmptyComponent={() => (
               <Text style={styles.noDataText}>{strings.valiadtion.noData}</Text>
@@ -227,7 +227,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
             showsVerticalScrollIndicator={false}
             style={{
               paddingBottom: ms(20),
-              height: retailData?.subCategories?.length > 0 ? ms(150) : 0,
+              height: retailData?.serviceSubCategoryList?.length > 0 ? ms(150) : 0,
             }}
             ListEmptyComponent={() => (
               <Text style={styles.noDataText}>{strings.valiadtion.noData}</Text>
@@ -295,7 +295,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
             showsVerticalScrollIndicator={false}
             style={{
               paddingBottom: ms(20),
-              height: retailData?.brands?.length > 0 ? ms(150) : 0,
+              height: getAuth?.getAllPosUsers?.length > 0 ? ms(150) : 0,
             }}
             ListEmptyComponent={() => (
               <Text style={styles.noDataText}>{strings.valiadtion.noData}</Text>

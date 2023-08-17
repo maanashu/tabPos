@@ -20,13 +20,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?seller_id=${sellerid}&main_category=true&search=${search}`
+          `?seller_id=${sellerid}&main_category=true&search=${search}&service_type=product`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?seller_id=${sellerid}&main_category=true`
+          `?seller_id=${sellerid}&main_category=true&service_type=product`
         );
       }
     };
@@ -89,10 +89,14 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&search=${search}`
+          `?seller_id=${sellerid}&search=${search}&service_type=product`
         );
       } else {
-        return PRODUCT_URL + ApiProductInventory.getSubCategory + `?seller_id=${sellerid}`;
+        return (
+          PRODUCT_URL +
+          ApiProductInventory.getSubCategory +
+          `?seller_id=${sellerid}&service_type=product`
+        );
       }
     };
     return new Promise((resolve, reject) => {

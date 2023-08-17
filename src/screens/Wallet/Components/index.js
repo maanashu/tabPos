@@ -46,7 +46,7 @@ export function OrderList({
 }) {
   const payableTotal = parseFloat(orderData?.payable_amount) + orderData?.tips;
   const userProfile = orderData?.user_details;
-
+console.log("Order_details",JSON.stringify(orderData));
   const renderJbrItem = ({ item }) => (
     <View style={styles.jbrListCon}>
       <View style={[styles.displayFlex, { paddingVertical: verticalScale(5) }]}>
@@ -57,7 +57,7 @@ export function OrderList({
           />
           <View style={{ paddingHorizontal: moderateScale(10) }}>
             <Text style={[styles.jfrText, { color: COLORS.black }]}>
-              {item.product_name}
+              {item?.product_name}
             </Text>
             <Text style={styles.boxText}>Box</Text>
           </View>
@@ -65,11 +65,13 @@ export function OrderList({
         <Text style={styles.onexstyle}>
           {' '}
           <Text style={styles.onlyxstyle}>{strings.posSale.onlyx}</Text>{' '}
-          {item.qty}
+          {item?.qty}
         </Text>
-        <Text style={[styles.jfrText, { color: COLORS.black }]}>
-          ${item.price}
+       <View style={{flexDirection:"column",width:SF(100)}}>
+         <Text style={[styles.jfrText, { color: COLORS.black,textAlign:"right" }]}>
+          ${item?.price}
         </Text>
+        </View>
       </View>
     </View>
   );
@@ -82,10 +84,10 @@ export function OrderList({
             <TouchableOpacity onPress={orderModelBackHandler}>
               <Image source={leftBack} style={styles.leftBackStyle} />
             </TouchableOpacity>
-            <Text style={styles.orderNoStyle}>{strings.wallet.orderNo}</Text>
-            <View style={styles.completedButton}>
+            <Text style={styles.orderNoStyle}>{strings.wallet.orderNo}{orderData?.id} </Text>
+            {/* <View >
               <Text style={styles.completedText}>{orderHeadStatus}</Text>
-            </View>
+            </View> */}
           </View>
           <Spacer space={SH(20)} />
           <View
@@ -103,7 +105,7 @@ export function OrderList({
               </Text>
             </View>
             <Text style={styles.rewardPointStyle}>
-              {strings.wallet.rewardPoint} 5.00
+              {strings.wallet.point} 5.00
             </Text>
           </View>
           <Spacer space={SH(20)} />
@@ -130,14 +132,14 @@ export function OrderList({
               </TouchableOpacity>
             </View>
             <Spacer space={SH(20)} />
-            <Text
+            {/* <Text
               style={[
                 styles.payDoneText,
                 { fontSize: SF(17), alignSelf: 'center' },
               ]}
             >
               {strings.posSale.paymenttdone}
-            </Text>
+            </Text> */}
             <Spacer space={SH(10)} />
             <View style={styles.paymentDone}>
               <View
@@ -156,15 +158,19 @@ export function OrderList({
                   </Text>
                 </View>
                 <Text style={styles.darkPricestyle}>
-                  ${payableTotal ?? '0'}
+                  ${parseInt(payableTotal)?.toFixed(2)?? '0'}
                 </Text>
               </View>
             </View>
             <Spacer space={SH(10)} />
             <Text style={styles.jbrWalllettext}>
+              <Text style={styles.viaText}>Payment Type </Text>
+              {orderData?.mode_of_payment=="jbr"?"JOBR Coin":orderData?.mode_of_payment?? null}
+            </Text>
+            {/* <Text style={styles.jbrWalllettext}>
               <Text style={styles.viaText}>Via </Text>
               {orderData?.mode_of_payment}
-            </Text>
+            </Text> */}
             <Spacer space={SH(15)} />
             <View style={styles.customerCon}>
               <Spacer space={SH(10)} />
@@ -219,9 +225,19 @@ export function OrderList({
             </View>
             <Spacer space={SH(8)} />
             <View style={styles.bottomSubCon}>
+              <Text style={styles.smallLightText}>
+                {listOfItemArray?.length>1?"Items":"Item"}
+                 </Text>
+                 <Text style={styles.smallLightText}>
+                {listOfItemArray?.length}
+  
+              </Text>
+            </View>
+            <Spacer space={SH(8)} />
+            <View style={styles.bottomSubCon}>
               <Text style={styles.smallLightText}>Discount</Text>
               <Text style={styles.smallLightText}>
-                -${orderData?.discount ?? '0.00'}
+                {orderData?.discount>0?"-$":"$"}{orderData?.discount ?? '0.00'}
               </Text>
             </View>
             <Spacer space={SH(8)} />
@@ -243,11 +259,7 @@ export function OrderList({
               </Text>
             </View>
             <Spacer space={SH(4)} />
-            <View style={styles.bottomSubCon}>
-              <Text style={styles.smallLightText}>
-                {listOfItemArray?.length} item
-              </Text>
-            </View>
+            
             <Spacer space={SH(8)} />
             <TouchableOpacity
               style={styles.checkoutButton}

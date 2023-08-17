@@ -12,7 +12,8 @@ const Header = ({ viewAllOrder, setViewAllOrder, setIsBack }) => {
       {viewAllOrder ? (
         <TouchableOpacity
           onPress={() => {
-            setViewAllOrder(false), setIsBack(true);
+            setViewAllOrder(false);
+            setIsBack(true);
           }}
           style={styles.backView}
         >

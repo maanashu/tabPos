@@ -102,13 +102,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  percentageView: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
+  },
   percentageTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.black,
-    position: 'absolute',
     textAlign: 'center',
-    top: ms(35),
   },
   ordersRowView: {
     flexDirection: 'row',
@@ -288,6 +295,7 @@ const styles = StyleSheet.create({
   },
   orderToReviewView: {
     borderRadius: 10,
+    // marginTop: ms(30),
     backgroundColor: COLORS.white,
   },
   contentContainerStyle: {
@@ -311,6 +319,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: Dimensions.get('window').width * 0.56,
     paddingHorizontal: 20,
+    paddingBottom: 30,
   },
   numberOrdersText: {
     color: COLORS.dark_grey,
@@ -374,6 +383,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 12,
+    width: Dimensions.get('window').width - 250,
   },
   backImageStyle: {
     width: SW(10),
@@ -385,6 +395,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: Dimensions.get('window').width * 0.43,
     marginBottom: ms(45),
+    // marginTop: ms(30),
   },
   userDetailView: {
     flex: 1,
@@ -430,7 +441,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
     paddingVertical: 6,
     borderColor: COLORS.blue_shade,
   },
@@ -529,6 +540,7 @@ const styles = StyleSheet.create({
   backIconStyle: {
     height: ms(17),
     width: ms(17),
+    resizeMode: 'contain',
     tintColor: COLORS.white,
   },
   backTextStyle: {
