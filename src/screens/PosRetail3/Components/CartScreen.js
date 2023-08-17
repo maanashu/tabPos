@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
+import { FlatList, Keyboard, Text, View } from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -11,7 +11,6 @@ import {
   addToCart,
   borderCross,
   checkArrow,
-  clothes,
   cross,
   eraser,
   holdCart,
@@ -34,22 +33,16 @@ import {
   getAllCartSuccess,
   getAvailableOffer,
   getOneProduct,
-  getUserDetail,
-  getUserDetailSuccess,
-  sendInvitation,
   updateCartQty,
 } from '@/actions/RetailAction';
-import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ms } from 'react-native-size-matters';
 import { AddCartDetailModal } from './AddCartDetailModal';
 import { AddCartModal } from './AddCartModal';
-import Modal, { ReactNativeModal } from 'react-native-modal';
+import Modal from 'react-native-modal';
 import { useEffect } from 'react';
 
 export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
@@ -57,20 +50,15 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   let arr = [getRetailData?.getAllCart];
-  const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
-  const [customerPhoneNo, setCustomerPhoneNo] = useState();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const availableOfferArray = getRetailData?.availableOffer;
-
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAdd, setUserAdd] = useState('');
   const [cartSearch, setCartSearch] = useState('');
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
+  const [offerId, setOfferId] = useState();
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
@@ -116,8 +104,9 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     }, [])
   );
 
-  const productFun = async (productId) => {
-    const res = await dispatch(getOneProduct(sellerID, productId));
+  const productFun = async (item) => {
+    setOfferId(item?.product?.id);
+    const res = await dispatch(getOneProduct(sellerID, item?.product?.id));
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
     }
@@ -179,15 +168,6 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     dispatch(clearAllCart());
     crossHandler();
   };
-
-  const phoneNumberSearchFun = (customerPhoneNo) => {
-    if (customerPhoneNo?.length > 9) {
-      dispatch(getUserDetail(customerPhoneNo));
-      Keyboard.dismiss();
-    } else if (customerPhoneNo?.length < 10) {
-      dispatch(getUserDetailSuccess([]));
-    }
-  };
   const removeOneCartHandler = (productId, index) => {
     // const data = {
     //   cartId: cartData?.id,
@@ -196,8 +176,6 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     // dispatch(clearOneCart(data));
 
     //Mukul code----->
-
-    return;
 
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
@@ -326,11 +304,12 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                           >
                             <Image source={minus} style={styles.minus} />
                           </TouchableOpacity>
-                          {isLoading ? (
+                          {/* {isLoading ? (
                             <ActivityIndicator size="small" color={COLORS.primary} />
                           ) : (
                             <Text>{data.qty}</Text>
-                          )}
+                          )} */}
+                          <Text>{data.qty}</Text>
                           <TouchableOpacity
                             style={{
                               width: SW(10),
@@ -449,7 +428,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                       <TouchableOpacity
                         style={styles.avaliableOferBodyCon}
                         key={index}
-                        onPress={() => productFun(item.id)}
+                        onPress={() => productFun(item)}
                       >
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <View style={{ borderRadius: 4 }}>
@@ -566,6 +545,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
             crossHandler={() => setAddCartModal(false)}
             detailHandler={() => setAddCartDetailModal(true)}
             sellerID={sellerID}
+            offerId={offerId}
           />
         )}
       </Modal>

@@ -391,7 +391,17 @@ export class RetailController {
       // let supplyID = data.supplyId.toString();
       // let supplyPriceID = data.supplyPriceID.toString();
       // let variantId = data.supplyVariantId.toString();
-      const body = data?.supplyVariantId
+      const body = data?.offerId
+        ? {
+            seller_id: data.seller_id,
+            service_id: data.service_id,
+            product_id: data.product_id,
+            qty: data.qty,
+            supply_id: data.supplyId.toString(),
+            supply_price_id: data.supplyPriceID.toString(),
+            offer_id: data.offerId,
+          }
+        : data?.supplyVariantId
         ? {
             seller_id: data.seller_id,
             service_id: data.service_id,
@@ -945,6 +955,7 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -987,6 +998,7 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      console.log('mainServiceEndPoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1286,7 +1298,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          // console.log('error', error);
           // Toast.show({
           //   text2: error?.msg,
           //   position: 'bottom',

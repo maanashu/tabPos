@@ -9,7 +9,6 @@ import {
   borderCross,
   bucket,
   checkArrow,
-  cross,
   crossButton,
   holdCart,
   minus,
@@ -160,7 +159,7 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
             </Text>
           </View>
         </TouchableOpacity>
-        <Text style={styles.carttoAdd}>Add to Cart</Text>
+        <Text style={styles.carttoAdd}>Cart</Text>
         <TouchableOpacity style={styles.crossView} onPress={() => CloseCartModal()}>
           <Image source={crossButton} style={[styles.crossImage]} />
         </TouchableOpacity>

@@ -11,7 +11,6 @@ import {
   addToCart,
   borderCross,
   checkArrow,
-  clothes,
   cross,
   eraser,
   holdCart,
@@ -37,20 +36,11 @@ import {
   getAllCartSuccess,
   getAvailableOffer,
   getServiceCartSuccess,
-  getUserDetail,
-  getUserDetailSuccess,
-  sendInvitation,
-  updateCartQty,
 } from '@/actions/RetailAction';
-import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { emailReg } from '@/utils/validators';
-import { useFocusEffect } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import moment from 'moment';
-import { dummyService } from '@/constants/staticData';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
 import { useEffect } from 'react';
@@ -66,8 +56,6 @@ export function CartServiceScreen({
   const getAuth = useSelector(getAuthData);
   const cartServiceData = getRetailData?.getserviceCart;
   let arr = [getRetailData?.getserviceCart];
-  const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
-  const [customerPhoneNo, setCustomerPhoneNo] = useState();
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
 
@@ -75,10 +63,6 @@ export function CartServiceScreen({
   const [serviceItemSave, setServiceItemSave] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const availableOfferArray = getRetailData?.availableOffer;
-
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAdd, setUserAdd] = useState('');
   const [cartSearch, setCartSearch] = useState('');
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));

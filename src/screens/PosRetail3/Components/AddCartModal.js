@@ -13,7 +13,13 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
 const windowWidth = Dimensions.get('window').width;
 
-export function AddCartModal({ crossHandler, detailHandler, sellerID, backToCartHandler }) {
+export function AddCartModal({
+  crossHandler,
+  detailHandler,
+  sellerID,
+  backToCartHandler,
+  offerId,
+}) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
 
@@ -23,8 +29,10 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID, backToCart
   const sizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const colorSizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
 
-  const finalSizeArray = colorSizeArray?.filter((item) => item.name === 'Size');
-  const finalColorArray = colorSizeArray?.filter((item) => item.name === 'Color');
+  // const finalSizeArray = colorSizeArray?.filter((item) => item.name === 'Size');
+  // const finalColorArray = colorSizeArray?.filter((item) => item.name === 'Color');
+  const finalColorArray = [1, 2, 3, 4];
+  const finalSizeArray = [1, 2, 3, 4];
   const coloredArray = productDetail?.product_detail?.supplies?.[0]?.attributes?.[1]?.values;
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
@@ -54,6 +62,7 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID, backToCart
           qty: count,
           supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
           supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+          offerId: offerId,
         };
 
         //New Changes
@@ -85,7 +94,6 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID, backToCart
         //   seller_id: arr?.seller_id,
         //   products: products,
         // };
-
         dispatch(addTocart(data));
         crossHandler();
       }

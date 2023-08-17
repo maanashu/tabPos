@@ -46,24 +46,20 @@ export function PosRetail3() {
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const getCartAmount = getRetailData?.getAllCart?.amount;
-
   const cartID2 = getRetailData?.getAllCart?.id;
   const servicCartId = getRetailData?.getserviceCart?.id;
   const cartData = getRetailData?.getAllCart;
   const getCart = getRetailData?.getAllCart;
   const getServicecart = getRetailData?.getserviceCart;
   const getServiceCartAmount = getRetailData?.getserviceCart?.amount;
-
   const finalAmountForDiscount =
     cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
-
   const finalServiceAmountForDiscount =
     getServicecart?.amount?.products_price.toFixed(2) - getServicecart?.amount?.tax.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
-
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);

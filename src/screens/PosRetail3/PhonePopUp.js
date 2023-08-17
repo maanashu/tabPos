@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-  Dimensions,
-} from 'react-native';
-import { Fonts, radioSelect, radioUnSelect, cross, deleteBack, dropdown } from '@/assets';
+import { Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { Fonts, cross, deleteBack } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { moderateScale, ms } from 'react-native-size-matters';
 

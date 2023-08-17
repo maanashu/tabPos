@@ -8,11 +8,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 import { useDebounce } from 'use-lodash-debounce';
 import { useDispatch, useSelector } from 'react-redux';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 import { TYPES } from '@/Types/Types';
 import { COLORS, SF, SH } from '@/theme';
@@ -94,7 +97,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
     }
 
     if (selectedBrandArray && selectedBrandArray.length > 0) {
-      finalParams.brand_id = selectedBrandArray.join(',');
+      finalParams.pos_staff_ids = selectedBrandArray.join(',');
     }
 
     if (selectedSubCategoryArray && selectedSubCategoryArray.length > 0) {
@@ -137,7 +140,8 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
   // category
   const showDetailedCategories = () => {
     return (
-      <KeyboardAwareScrollView>
+      <View>
+        {/* <KeyboardAwareScrollView> */}
         <TextInput
           value={search}
           style={styles.textInputStyle}
@@ -147,7 +151,6 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
             setCategoryOpenDropDown(true);
           }}
         />
-
         {isOrderLoading ? (
           <View style={{ paddingVertical: ms(10) }}>
             <ActivityIndicator color={COLORS.primary} size={'small'} />
@@ -167,7 +170,8 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
             )}
           />
         )}
-      </KeyboardAwareScrollView>
+        {/* </KeyboardAwareScrollView> */}
+      </View>
     );
   };
 
@@ -308,19 +312,18 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
 
   const renderDetailBrands = ({ item, index }) => {
     return (
-      <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+      <TouchableOpacity
+        style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}
+        onPress={() => changeCheckBrandInput(index)}
+      >
         {item?.isChecked ? (
-          <TouchableOpacity
-          //  onPress={() => changeCheckBrandInput(index)}
-          >
+          <View>
             <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         ) : (
-          <TouchableOpacity
-          // onPress={() => changeCheckBrandInput(index)}
-          >
+          <View>
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         )}
         <Text
           style={[styles.itemNameTextStyle, { paddingLeft: 10, width: ms(180) }]}
@@ -328,7 +331,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
         >
           {item?.user?.user_profiles?.firstname + ' ' + item?.user?.user_profiles?.lastname}
         </Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -340,82 +343,99 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
     const ids = filteredCategories.map((item, index) => item?.id);
     setSelectedBrandArray(ids);
     const brandID = {
-      brand_id: ids.join(','),
+      pos_staff_ids: ids.join(','),
     };
     dispatch(getMainServices(brandID));
   };
 
   return (
-    <>
-      {/* category view */}
+    <View style={styles.filterDropDownBackGround}>
       <View>
-        <TouchableOpacity
-          style={styles.categoryViewStyle}
-          onPress={() => {
-            setCategoryOpenDropDown(!categoryOpenDropDown);
-            setSubCategoryOpenDropDown(false);
-            setBrandOpenDropDown(false);
-          }}
-        >
-          <Text style={styles.itemNameTextStyle}>{strings.posSale.category}</Text>
+        {/* category view */}
+        <View>
+          <TouchableOpacity
+            style={styles.categoryViewStyle}
+            onPress={() => {
+              setCategoryOpenDropDown(!categoryOpenDropDown);
+              setSubCategoryOpenDropDown(false);
+              setBrandOpenDropDown(false);
+            }}
+          >
+            <Text style={styles.itemNameTextStyle}>{strings.posSale.category}</Text>
 
+            {categoryOpenDropDown ? (
+              <Image source={up} style={styles.dropdownIconStyle} />
+            ) : (
+              <Image source={down} style={styles.dropdownIconStyle} />
+            )}
+          </TouchableOpacity>
           {categoryOpenDropDown ? (
-            <Image source={up} style={styles.dropdownIconStyle} />
-          ) : (
-            <Image source={down} style={styles.dropdownIconStyle} />
-          )}
-        </TouchableOpacity>
-        {categoryOpenDropDown ? (
-          <View style={styles.dropdowMainView}>{showDetailedCategories()}</View>
-        ) : null}
-      </View>
+            <View style={styles.dropdowMainView}>{showDetailedCategories()}</View>
+          ) : null}
+        </View>
 
-      {/* subcategory view */}
-      <View>
-        <TouchableOpacity
-          style={styles.categoryViewStyle}
-          onPress={() => {
-            setSubCategoryOpenDropDown(!subCategoryOpenDropDown);
-            setCategoryOpenDropDown(false);
-            setBrandOpenDropDown(false);
-          }}
-        >
-          <Text style={styles.itemNameTextStyle}>{'Sub Category'}</Text>
+        {/* subcategory view */}
+        <View>
+          <TouchableOpacity
+            style={styles.categoryViewStyle}
+            onPress={() => {
+              setSubCategoryOpenDropDown(!subCategoryOpenDropDown);
+              setCategoryOpenDropDown(false);
+              setBrandOpenDropDown(false);
+            }}
+          >
+            <Text style={styles.itemNameTextStyle}>{'Sub Category'}</Text>
 
+            {subCategoryOpenDropDown ? (
+              <Image source={up} style={styles.dropdownIconStyle} />
+            ) : (
+              <Image source={down} style={styles.dropdownIconStyle} />
+            )}
+          </TouchableOpacity>
           {subCategoryOpenDropDown ? (
-            <Image source={up} style={styles.dropdownIconStyle} />
-          ) : (
-            <Image source={down} style={styles.dropdownIconStyle} />
-          )}
-        </TouchableOpacity>
-        {subCategoryOpenDropDown ? (
-          <View style={styles.dropdowMainView}>{showDetailedSubCategories()}</View>
-        ) : null}
-      </View>
+            <View style={styles.dropdowMainView}>{showDetailedSubCategories()}</View>
+          ) : null}
+        </View>
 
-      {/* brand view */}
-      <View>
-        <TouchableOpacity
-          style={styles.categoryViewStyle}
-          onPress={() => {
-            setBrandOpenDropDown(!brandOpenDropDown);
-            setCategoryOpenDropDown(false);
-            setSubCategoryOpenDropDown(false);
-          }}
-        >
-          <Text style={styles.itemNameTextStyle}>{'Staff'}</Text>
+        {/* Staff view */}
+        <View>
+          <TouchableOpacity
+            style={styles.categoryViewStyle}
+            onPress={() => {
+              setBrandOpenDropDown(!brandOpenDropDown);
+              setCategoryOpenDropDown(false);
+              setSubCategoryOpenDropDown(false);
+            }}
+          >
+            <Text style={styles.itemNameTextStyle}>{'Staff'}</Text>
 
+            {brandOpenDropDown ? (
+              <Image source={up} style={styles.dropdownIconStyle} />
+            ) : (
+              <Image source={down} style={styles.dropdownIconStyle} />
+            )}
+          </TouchableOpacity>
           {brandOpenDropDown ? (
-            <Image source={up} style={styles.dropdownIconStyle} />
-          ) : (
-            <Image source={down} style={styles.dropdownIconStyle} />
-          )}
-        </TouchableOpacity>
-        {brandOpenDropDown ? (
-          <View style={styles.dropdowMainView}>{showDetailedBrands()}</View>
-        ) : null}
+            <View style={styles.dropdowMainView}>{showDetailedBrands()}</View>
+          ) : null}
+        </View>
       </View>
-    </>
+      <View style={{ flex: 1 }} />
+      <View style={styles.applyFilterCon}>
+        <TouchableOpacity
+          style={styles.clearFilterButton}
+          onPress={() => alert('Clear filter and apply filter work in progress')}
+        >
+          <Text style={styles.clearFilterText}>Clear Filter</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.ApplyButton}
+          onPress={() => alert('Clear filter and apply filter work in progress')}
+        >
+          <Text style={styles.ApplyText}>Apply</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
@@ -457,5 +477,49 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: ms(10),
     marginVertical: ms(5),
+  },
+  filterDropDownBackGround: {
+    zIndex: 999,
+    position: 'absolute',
+    right: 0,
+    top: 70,
+    borderRadius: 5,
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.76,
+    backgroundColor: COLORS.textInputBackground,
+    paddingBottom: ms(10),
+  },
+  applyFilterCon: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: ms(10),
+  },
+  clearFilterButton: {
+    borderWidth: 1,
+    borderColor: COLORS.gerySkies,
+    borderRadius: 5,
+    width: ms(110),
+    height: ms(32),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  clearFilterText: {
+    color: COLORS.gerySkies,
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(8),
+  },
+  ApplyButton: {
+    borderColor: COLORS.gerySkies,
+    borderRadius: 5,
+    width: ms(110),
+    height: ms(32),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.gerySkies,
+  },
+  ApplyText: {
+    color: COLORS.white,
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(8),
   },
 });

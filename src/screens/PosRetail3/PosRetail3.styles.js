@@ -397,7 +397,7 @@ export const styles = StyleSheet.create({
   },
   addNotesBtn: {
     backgroundColor: COLORS.primary,
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
   },
   nameAddCon: {
     height: Platform.OS === 'android' ? windowHeight * 0.38 : windowHeight * 0.37,
@@ -557,10 +557,12 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     width: windowWidth * 0.5,
+    height: windowHeight * 0.85,
     paddingTop: ms(5),
     paddingBottom: ms(10),
     position: 'absolute',
     alignSelf: 'center',
+    borderWidth: 1,
   },
 
   addCartConHeader: {

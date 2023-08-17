@@ -2,19 +2,16 @@ import React, { useState } from 'react';
 import { Dimensions, Image, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
-
 import { COLORS, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
-import { crossButton, Fonts, userImage } from '@/assets';
+import { crossButton, Fonts } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
-
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { addToServiceCart, getTimeSlots } from '@/actions/RetailAction';
 import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker';
 import { useEffect } from 'react';
 import moment from 'moment';
 import { getDaysAndDates } from '@/utils/GlobalMethods';
-
 const windowWidth = Dimensions.get('window').width;
 
 export function AddServiceCartModal({
