@@ -84,11 +84,17 @@ const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     paddingTop: ms(2),
   },
+  totalTextStyle2: {
+    paddingTop: 0,
+    fontSize: SF(12),
+    lineHeight: ms(8),
+    color: COLORS.darkGray,
+  },
   orderConvertionView: {
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    paddingBottom: 40,
-    height: Dimensions.get('window').height / 2.35,
+    paddingBottom: ms(10),
+    height: Dimensions.get('window').height / ms(1.18),
   },
   orderTextStyle: {
     fontFamily: Fonts.MaisonBold,
@@ -153,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 15,
-    width: SW(130),
+    width: Dimensions.get('window').width / ms(1.26),
     paddingVertical: 10,
     borderColor: COLORS.blue_shade,
   },
@@ -221,13 +227,12 @@ const styles = StyleSheet.create({
   },
   firstIconStyle: {
     alignSelf: 'center',
-    width: SW(13),
-    height: SW(13),
-    alignSelf: 'center',
+    alignItems: 'center',
+    marginVertical: 6,
+    width: SW(15),
+    height: SW(15),
     borderRadius: 5,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.textInputBackground,
   },
   shippingDrawerView: {
     flexDirection: 'row',
@@ -393,9 +398,7 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: Dimensions.get('window').width * 0.43,
-    marginBottom: ms(45),
-    // marginTop: ms(30),
+    width: Dimensions.get('window').width * 0.36,
   },
   userDetailView: {
     flex: 1,
@@ -416,7 +419,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     borderRadius: 10,
     marginTop: 20,
-    width: Dimensions.get('window').width / 2.4,
+    width: Dimensions.get('window').width / ms(1.68),
     backgroundColor: COLORS.textInputBackground,
   },
   userImageStyle: {
@@ -457,7 +460,7 @@ const styles = StyleSheet.create({
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(28),
+    fontSize: SF(24),
     color: COLORS.dark_grey,
   },
   totalText: {
@@ -471,8 +474,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
     backgroundColor: COLORS.primary,
-    marginLeft: 10,
+    // marginLeft: 10,
     paddingHorizontal: 10,
+    flex: 1,
   },
   acceptTextStyle: {
     textAlign: 'center',
@@ -503,13 +507,13 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   orderandPriceView: {
-    justifyContent: 'space-between',
+    // justifyContent: 'space-around',
     flexDirection: 'row',
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     position: 'absolute',
-    bottom: 0,
+    bottom: ms(10),
     alignSelf: 'center',
-    width: Dimensions.get('window').width * 0.43,
+    width: Dimensions.get('window').width * 0.36,
     paddingTop: 15,
     paddingHorizontal: 10,
   },
@@ -550,6 +554,15 @@ const styles = StyleSheet.create({
   rowView: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  subTotalView: {
+    paddingHorizontal: ms(5),
+    backgroundColor: COLORS.textInputBackground,
+    paddingVertical: ms(8),
+    width: ms(150),
+  },
+  flexDirectionRow: {
+    flexDirection: 'row',
   },
 });
 
