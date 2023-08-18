@@ -26,11 +26,7 @@ import { Calendar } from '@/components/CustomCalendar';
 import { CALENDAR_MODES } from '@/constants/enums';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getAppointment,
-  getAppointmentByStaffId,
-  getStaffUsersList,
-} from '@/actions/AppointmentAction';
+import { getAppointment, getStaffUsersList } from '@/actions/AppointmentAction';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -46,6 +42,7 @@ import { NAVIGATION } from '@/constants';
 import EventDetailModal from './Components/EventDetailModal';
 import { getSettings, upadteApi } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -56,6 +53,7 @@ export function Calender(props) {
   const dispatch = useDispatch();
 
   const getSettingData = useSelector(getSetting);
+  const defaultSettingsForCalendar = getSettingData?.getSetting;
   const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
   const getAppointmentByStaffIdList = getCalenderData?.geAppointmentById;
@@ -72,13 +70,17 @@ export function Calender(props) {
   const [week, setWeek] = useState(true);
   const [month, setMonth] = useState(false);
   const [day, setDay] = useState(false);
-  const [isAMPM, setisAMPM] = useState(true);
+  const [isAMPM, setisAMPM] = useState(defaultSettingsForCalendar?.time_format === '12' ?? true);
 
   const [calendarDate, setCalendarDate] = useState(moment());
-  const [calendarMode, setCalendarMode] = useState(CALENDAR_MODES.WEEK);
+  const [calendarMode, setCalendarMode] = useState(
+    defaultSettingsForCalendar?.calender_view ?? CALENDAR_MODES.WEEK
+  );
 
   const [selectedStaffEmployeeId, setSelectedStaffEmployeeId] = useState(null);
   const [selectedStaffData, setSelectedStaffData] = useState(null);
+
+  const [showMiniCalendar, setshowMiniCalendar] = useState(false);
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
@@ -116,12 +118,6 @@ export function Calender(props) {
     }
   }, [isFocused, pageNumber, showRequestsView]);
 
-  // useEffect(() => {
-  //   if (selectedStaffEmployeeId) {
-  //     dispatch(getAppointmentByStaffId(1, selectedStaffEmployeeId));
-  //   }
-  // }, [selectedStaffEmployeeId]);
-
   useEffect(() => {
     if (selectedStaffEmployeeId) {
       getAppointmentsForSelectedStaff();
@@ -134,6 +130,16 @@ export function Calender(props) {
       dispatch(getSettings());
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.DAY) {
+      dayHandler();
+    } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.WEEK) {
+      weekHandler();
+    } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.MONTH) {
+      monthHandler();
+    }
+  }, [defaultSettingsForCalendar]);
 
   useEffect(() => {
     if (getApprovedAppointments) {
@@ -179,6 +185,25 @@ export function Calender(props) {
     setWeek(false);
   };
 
+  const onPressSaveCalendarSettings = (calendarPreferences) => {
+    if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.DAY) {
+      dayHandler();
+    } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.WEEK) {
+      weekHandler();
+    } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.MONTH) {
+      monthHandler();
+    }
+    setisAMPM(calendarPreferences?.defaultTimeFormat);
+
+    const data = {
+      calender_view: calendarPreferences?.defaultCalendarMode,
+      time_format: calendarPreferences?.defaultTimeFormat ? '12' : '24',
+      accept_appointment_request: calendarPreferences?.defaultAppointmentRequestMode,
+      employee_color_set: calendarPreferences?.defaultEmployeesColorSet,
+    };
+    dispatch(upadteApi(data));
+  };
+
   const getFormattedHeaderDate = () => {
     if (calendarMode === CALENDAR_MODES.MONTH || calendarMode === CALENDAR_MODES.WEEK) {
       return calendarDate.format('MMM YYYY');
@@ -190,29 +215,8 @@ export function Calender(props) {
     isLoadingSelector([TYPES.GET_APPOINTMENTS], state)
   );
 
-  const isAppointmentStatusChangedLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.CHANGE_APPOINTMENT_STATUS], state)
-  );
-
   const eventItem = ({ item, index }) => {
-    return (
-      <EventItemCard
-        item={item}
-        index={index}
-        onPressAccept={() => {
-          setTimeout(() => {
-            selectedStaffEmployeeId &&
-              dispatch(getAppointmentByStaffId(1, selectedStaffEmployeeId));
-          }, 1000);
-        }}
-        onPressReject={() => {
-          setTimeout(() => {
-            selectedStaffEmployeeId &&
-              dispatch(getAppointmentByStaffId(1, selectedStaffEmployeeId));
-          }, 1000);
-        }}
-      />
-    );
+    return <EventItemCard item={item} index={index} />;
   };
 
   const handleEndReached = () => {
@@ -313,6 +317,9 @@ export function Calender(props) {
                 month,
                 monthHandler,
               }}
+              onPressCalendarIcon={() => {
+                setshowMiniCalendar(true);
+              }}
             />
 
             <View style={styles._calendarContainer}>
@@ -336,10 +343,12 @@ export function Calender(props) {
                 }}
                 dayHeaderHighlightColor={COLORS.dayHighlight}
                 hourComponent={CustomHoursCell}
+                isEventOrderingEnabled={false}
                 onPressEvent={(event) => {
                   setEventData(event);
                   if (calendarMode === CALENDAR_MODES.MONTH) {
                     dayHandler();
+                    setCalendarDate(moment(event.start));
                   } else {
                     setshowEventDetailModal(true);
                   }
@@ -499,26 +508,25 @@ export function Calender(props) {
           currentCalendarMode={calendarMode}
           currentTimeFormat={isAMPM}
           onPressSave={(calendarPreferences) => {
-            console.log('Check saved Calendar Preferences', JSON.stringify(calendarPreferences));
-
-            if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.DAY) {
-              dayHandler();
-            } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.WEEK) {
-              weekHandler();
-            } else if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.MONTH) {
-              monthHandler();
-            }
-            setisAMPM(calendarPreferences?.defaultTimeFormat);
-
-            //TODO: Implement Update settings api here
-            // const data ={
-            // }
-            // dispatch(upadteApi(data))
+            onPressSaveCalendarSettings(calendarPreferences);
           }}
         />
 
         <EventDetailModal
           {...{ eventData, showEventDetailModal, setshowEventDetailModal, dispatch }}
+        />
+
+        <DateTimePicker
+          isVisible={showMiniCalendar}
+          date={new Date()}
+          display="inline"
+          onConfirm={(date) => {
+            setCalendarDate(moment(date));
+            setshowMiniCalendar(false);
+          }}
+          onCancel={() => {
+            setshowMiniCalendar(false);
+          }}
         />
       </View>
     </ScreenWrapper>

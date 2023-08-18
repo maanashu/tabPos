@@ -146,8 +146,9 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(10),
-    width: windowWidth * 0.28,
-    height: windowHeight * 0.17,
+    width: windowWidth * 0.40,
+    height: windowHeight * 0.23,
+    margin:moderateScale(10)
   },
   jbrCoinCon2: {
     height: windowHeight * 0.12,
@@ -174,8 +175,9 @@ export const styles = StyleSheet.create({
     fontSize: SF(20),
   },
   contentContainer: {
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     flex: 1,
+    
   },
   transactionChartStyle: {
     width: windowWidth * 0.83,
@@ -250,11 +252,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: moderateScale(7),
     flexDirection: 'row',
+    justifyContent:"center"
   },
   calendarStyle: {
     width: SW(5),
     height: SW(5),
     resizeMode: 'contain',
+    alignSelf:"center"
+
   },
   datePlaceholder: {
     fontFamily: Fonts.Regular,
@@ -398,7 +403,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(12),
     textAlign: 'center',
-    color: COLORS.white,
+    color: COLORS.darkGray,
   },
 
   numpadContainer: {
@@ -434,7 +439,7 @@ export const styles = StyleSheet.create({
   },
   jfrText: {
     fontSize: SF(16),
-    color: COLORS.primary,
+     color: COLORS.primary,
     fontFamily: Fonts.Regular,
   },
   boxText: {
@@ -518,7 +523,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   darkPricestyle: {
-    fontSize: SF(28),
+    fontSize: SF(26),
     fontFamily: Fonts.SemiBold,
     color: COLORS.primary,
   },
@@ -534,8 +539,8 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   viaText: {
-    fontSize: SF(10),
-    fontFamily: Fonts.Italic,
+    fontSize: SF(12),
+    fontFamily: Fonts.MaisonRegular,
     color: COLORS.black,
   },
   customerCon: {
@@ -559,8 +564,8 @@ export const styles = StyleSheet.create({
     borderBottomLeftRadius: 5,
     position: 'absolute',
     bottom: 0,
-    right: 0,
-    width: SW(104),
+    // right: 1,
+    width: SW(105),
     backgroundColor: COLORS.solidGrey,
     justifyContent: 'center',
     alignItems: 'center',
@@ -890,12 +895,15 @@ export const styles = StyleSheet.create({
   },
   tableHeaderLeft: {
     flexDirection: 'row',
-    width: windowWidth * 0.15,
+    width: windowWidth * 0.16,
+
   },
   tableHeaderRight: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: windowWidth * 0.72,
+    alignContent:"center",alignItems:"center",
+   
     // paddingRight: Platform.OS === 'ios' ? 40 : 0,
   },
   tableTextHea: {
@@ -910,12 +918,13 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     width: windowWidth * 0.1,
+    marginTop:SF(2)
   },
   tableTextDataCom: {
     backgroundColor: COLORS.bluish_green,
     paddingHorizontal: moderateScale(4),
     paddingVertical: verticalScale(1),
-    marginRight: 40,
+    marginRight: SF(30),
     fontSize: SF(14),
     color: COLORS.white,
     borderRadius: 3,
@@ -925,6 +934,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(14),
     letterSpacing: -1,
+
     width: windowWidth * 0.01,
   },
   tableTextDataFirst: {
@@ -933,6 +943,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     letterSpacing: -1,
     width: windowWidth * 0.01,
+    
   },
   tableTextCenter: {
     alignSelf: 'center',
@@ -956,6 +967,8 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
+
+    alignItems:"center",
     paddingHorizontal: moderateScale(20),
   },
   indicatorstyle: {
@@ -1206,5 +1219,45 @@ export const styles = StyleSheet.create({
   },
   tableHeight: {
     height: windowHeight * 0.53,
+  },
+
+  //Date Picker style 
+
+
+  datePickerContainer: {
+    height: SH(63),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(12),
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
+  datepickerConatiner: {
+    borderWidth: 1,
+    height: SH(35),
+    width: SW(45),
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    paddingHorizontal: moderateScale(7),
+    justifyContent: 'center',
+  },
+  calendarStyle: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+    tintColor: COLORS.darkGray,
+  },
+  datePlaceholder: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+    paddingHorizontal: moderateScale(5),
+  },
+  txtInput: {
+    flex: 1,
+    justifyContent: 'center',
+    fontSize: SF(11),
+    top: 2,
+    color: COLORS.solid_grey,
   },
 });

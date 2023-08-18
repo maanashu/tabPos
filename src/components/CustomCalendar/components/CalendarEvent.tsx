@@ -1,36 +1,38 @@
-import dayjs from 'dayjs'
-import * as React from 'react'
+import dayjs from 'dayjs';
+import * as React from 'react';
 
-import { OVERLAP_OFFSET, u } from '../commonStyles'
-import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps'
-import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
-import { useTheme } from '../theme/ThemeContext'
-import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent } from '../utils/datetime'
-import { typedMemo } from '../utils/react'
-import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
+import { OVERLAP_OFFSET, u } from '../commonStyles';
+import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableOpacityProps';
+import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces';
+import { useTheme } from '../theme/ThemeContext';
+import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent } from '../utils/datetime';
+import { typedMemo } from '../utils/react';
+import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer';
 
 const getEventCellPositionStyle = (start: Date, end: Date) => {
-  const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute')
-  const relativeTop = getRelativeTopInDay(dayjs(start))
+  const relativeHeight = 100 * (1 / DAY_MINUTES) * dayjs(end).diff(start, 'minute');
+  const relativeTop = getRelativeTopInDay(dayjs(start));
   return {
     height: `${relativeHeight}%`,
     top: `${relativeTop}%`,
-  }
-}
+  };
+};
 
 interface CalendarEventProps<T extends ICalendarEventBase> {
-  event: T
-  onPressEvent?: (event: T) => void
-  eventCellStyle?: EventCellStyle<T>
-  showTime: boolean
-  eventCount?: number
-  eventOrder?: number
-  overlapOffset?: number
-  renderEvent?: EventRenderer<T>
-  ampm: boolean
+  allEvents: T;
+  event: T;
+  onPressEvent?: (event: T) => void;
+  eventCellStyle?: EventCellStyle<T>;
+  showTime: boolean;
+  eventCount?: number;
+  eventOrder?: number;
+  overlapOffset?: number;
+  renderEvent?: EventRenderer<T>;
+  ampm: boolean;
 }
 
 function _CalendarEvent<T extends ICalendarEventBase>({
+  allEvents,
   event,
   onPressEvent,
   eventCellStyle,
@@ -41,14 +43,15 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   renderEvent,
   ampm,
 }: CalendarEventProps<T>) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   const palettes = React.useMemo(
     () => [theme.palette.primary, ...theme.eventCellOverlappings],
-    [theme],
-  )
+    [theme]
+  );
 
   const touchableOpacityProps = useCalendarTouchableOpacityProps({
+    allEvents,
     event,
     eventCellStyle,
     onPressEvent,
@@ -59,15 +62,15 @@ function _CalendarEvent<T extends ICalendarEventBase>({
       u['mt-2'],
       u['mx-3'],
     ],
-  })
+  });
 
   const textColor = React.useMemo(() => {
-    const fgColors = palettes.map((p) => p.contrastText)
-    return fgColors[eventCount % fgColors.length] || fgColors[0]
-  }, [eventCount, palettes])
+    const fgColors = palettes.map((p) => p.contrastText);
+    return fgColors[eventCount % fgColors.length] || fgColors[0];
+  }, [eventCount, palettes]);
 
   if (renderEvent) {
-    return renderEvent(event, touchableOpacityProps)
+    return renderEvent(event, touchableOpacityProps, allEvents);
   }
 
   return (
@@ -78,7 +81,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
       touchableOpacityProps={touchableOpacityProps}
       textColor={textColor}
     />
-  )
+  );
 }
 
-export const CalendarEvent = typedMemo(_CalendarEvent)
+export const CalendarEvent = typedMemo(_CalendarEvent);

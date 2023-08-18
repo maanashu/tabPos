@@ -534,7 +534,7 @@ export function DashBoard({ navigation }) {
               </View>
               {scan ? (
                 <TextInput
-                  placeholder="scan product"
+                  placeholder="Scan Product"
                   style={styles.searchInput}
                   // editable={false}
                   value={sku}
@@ -545,7 +545,7 @@ export function DashBoard({ navigation }) {
                 />
               ) : (
                 <TextInput
-                  placeholder="search product here"
+                  placeholder="Search"
                   style={styles.searchInput}
                   value={search}
                   onChangeText={(search) => {

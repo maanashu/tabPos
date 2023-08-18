@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Keyboard, ScrollView, Text, View } from 'react-native';
+import { FlatList, Keyboard, Text, View } from 'react-native';
 
-import { COLORS, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
@@ -11,7 +11,6 @@ import {
   addToCart,
   borderCross,
   checkArrow,
-  clothes,
   cross,
   eraser,
   holdCart,
@@ -34,22 +33,16 @@ import {
   getAllCartSuccess,
   getAvailableOffer,
   getOneProduct,
-  getUserDetail,
-  getUserDetailSuccess,
-  sendInvitation,
   updateCartQty,
 } from '@/actions/RetailAction';
-import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ms } from 'react-native-size-matters';
 import { AddCartDetailModal } from './AddCartDetailModal';
 import { AddCartModal } from './AddCartModal';
-import Modal, { ReactNativeModal } from 'react-native-modal';
+import Modal from 'react-native-modal';
 import { useEffect } from 'react';
 
 export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
@@ -57,20 +50,15 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   let arr = [getRetailData?.getAllCart];
-  const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
-  const [customerPhoneNo, setCustomerPhoneNo] = useState();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const availableOfferArray = getRetailData?.availableOffer;
-
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAdd, setUserAdd] = useState('');
   const [cartSearch, setCartSearch] = useState('');
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
+  const [offerId, setOfferId] = useState();
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
@@ -116,41 +104,23 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     }, [])
   );
 
-  const productFun = async (productId) => {
-    const res = await dispatch(getOneProduct(sellerID, productId));
+  const productFun = async (item) => {
+    setOfferId(item?.product?.id);
+    const res = await dispatch(getOneProduct(sellerID, item?.product?.id));
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
     }
   };
 
+  function calculatePercentageValue(value, percentage) {
+    if (percentage == '') {
+      return '';
+    }
+    const percentageValue = (percentage / 100) * parseFloat(value);
+    return percentageValue.toFixed(2) ?? 0.0;
+  }
+
   const updateQuantity = (cartId, productId, operation, index) => {
-    // const updatedArr = [...arr];
-
-    // const cartItem = updatedArr
-    //   .find(item => item.id === cartId)
-    //   ?.poscart_products.find(product => product.id === productId);
-
-    //   if (cartItem) {
-    //   if (operation === '+') {
-    //     cartItem.qty += 1;
-    //   } else if (operation === '-') {
-    //     cartItem.qty -= 1;
-    //   }
-    //   const data = {
-    //     seller_id: cartItem?.product_details?.supply?.seller_id,
-    //     supplyId: cartItem?.supply_id,
-    //     supplyPriceID: cartItem?.supply_price_id,
-    //     product_id: cartItem?.product_id,
-    //     service_id: cartItem?.service_id,
-    //     qty: cartItem?.qty,
-    //   };
-
-    //   dispatch(addTocart(data));
-    //   // dispatch(createCartAction(withoutVariantObject));
-    // }
-
-    //Mukul code----->
-
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
@@ -159,14 +129,29 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       product.qty += 1;
       arr.amount.total_amount += productPrice;
       arr.amount.products_price += productPrice;
+
+      const totalAmount = arr.amount.products_price;
+      // console.log('Total Amount:', totalAmount);
+
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      //  console.log('TAX:', TAX);
+
+      arr.amount.tax = parseFloat(TAX); // Update tax value
+      arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
     } else if (operation === '-') {
       if (product.qty > 0) {
-        if (product.qty == 1) {
+        if (product.qty === 1) {
           arr?.poscart_products.splice(index, 1);
         }
         product.qty -= 1;
-        arr.amount.total_amount -= productPrice;
+
         arr.amount.products_price -= productPrice;
+        const totalAmount = arr.amount.products_price;
+
+        const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+
+        arr.amount.tax = parseFloat(TAX); // Update tax value
+        arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
       }
     }
     var DATA = {
@@ -179,15 +164,6 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     dispatch(clearAllCart());
     crossHandler();
   };
-
-  const phoneNumberSearchFun = (customerPhoneNo) => {
-    if (customerPhoneNo?.length > 9) {
-      dispatch(getUserDetail(customerPhoneNo));
-      Keyboard.dismiss();
-    } else if (customerPhoneNo?.length < 10) {
-      dispatch(getUserDetailSuccess([]));
-    }
-  };
   const removeOneCartHandler = (productId, index) => {
     // const data = {
     //   cartId: cartData?.id,
@@ -196,8 +172,6 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     // dispatch(clearOneCart(data));
 
     //Mukul code----->
-
-    return;
 
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
@@ -280,7 +254,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
               </View>
             </View>
             {arr?.map((item, index) => (
-              <>
+              <View key={index}>
                 {item?.poscart_products?.map((data, ind) => (
                   <View style={styles.blueListData} key={ind}>
                     <View style={styles.displayflex}>
@@ -305,7 +279,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                             >
                               {data.product_details?.name}
                             </Text>
-                            <Text style={styles.sukNumber}>SUK: {data?.product_details?.sku}</Text>
+                            <Text style={styles.sukNumber}>UPC: {data?.product_details?.upc}</Text>
                           </View>
                         </View>
                       </View>
@@ -326,11 +300,12 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                           >
                             <Image source={minus} style={styles.minus} />
                           </TouchableOpacity>
-                          {isLoading ? (
+                          {/* {isLoading ? (
                             <ActivityIndicator size="small" color={COLORS.primary} />
                           ) : (
                             <Text>{data.qty}</Text>
-                          )}
+                          )} */}
+                          <Text>{data.qty}</Text>
                           <TouchableOpacity
                             style={{
                               width: SW(10),
@@ -362,7 +337,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                     </View>
                   </View>
                 ))}
-              </>
+              </View>
             ))}
 
             <Spacer space={SH(7)} />
@@ -389,19 +364,21 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
             <View>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
-                  <Text style={[styles.holdCart, { color: COLORS.white }]}>
-                    Available Offer{availableOfferArray?.length}
-                  </Text>
+                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
                 </View>
 
-                <ScrollView nestedScrollEnabled={true}>
-                  <View style={styles.availbleOfferScroll}>
+                {/* <View style={[styles.availbleOfferScroll, { borderWidth: 1 }]}>
+                  <ScrollView
+                    scrollEnabled={true}
+                    nestedScrollEnabled={true}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                  >
                     {availableOfferArray?.length === 0 ? (
                       <View>
                         <Text style={styles.noDataText}>No Data</Text>
                       </View>
                     ) : (
-                      availableOfferArray?.map((item, index) => (
+                      [1, 2, 3, 4, 5, 6]?.map((item, index) => (
                         <TouchableOpacity
                           style={styles.avaliableOferBodyCon}
                           key={index}
@@ -436,8 +413,56 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                         </TouchableOpacity>
                       ))
                     )}
-                  </View>
-                </ScrollView>
+                    availableOfferArray
+                  </ScrollView>
+                </View> */}
+                <FlatList
+                  data={availableOfferArray}
+                  extraData={availableOfferArray}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <TouchableOpacity
+                        style={styles.avaliableOferBodyCon}
+                        key={index}
+                        onPress={() => productFun(item)}
+                      >
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <View style={{ borderRadius: 4 }}>
+                            <Image
+                              source={{ uri: item.product?.image }}
+                              style={styles.offerImage}
+                            />
+                          </View>
+                          <View style={{ marginLeft: 4 }}>
+                            <Text style={[styles.offerText, { width: ms(90) }]} numberOfLines={1}>
+                              {item.product?.name}
+                            </Text>
+                            <Text style={styles.offerPrice}>White/S</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                              <Text style={[styles.offerPrice, styles.lineTrought]}>
+                                ${item.actual_price_per_pack}
+                              </Text>
+                              <Text style={styles.offerPriceDark}>
+                                ${item.offer_price_per_pack}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                        <Image source={addToCart} style={styles.sideAddToCart} />
+                      </TouchableOpacity>
+                    );
+                  }}
+                  keyExtractor={(item, index) => index}
+                  contentContainerStyle={styles.availbleOfferScroll}
+                  scrollEnabled={true}
+                  ListEmptyComponent={() => (
+                    <View style={styles.noProductText}>
+                      <Text style={[styles.emptyListText, { fontSize: SF(16) }]}>
+                        {strings.valiadtion.noData}
+                      </Text>
+                    </View>
+                  )}
+                />
               </View>
 
               <Spacer space={SH(10)} />
@@ -464,10 +489,10 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                   ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
-              <View style={[styles.displayflex2, styles.paddVertical]}>
+              {/* <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Total VAT</Text>
                 <Text style={styles.subTotalDollar}>$0.00</Text>
-              </View>
+              </View> */}
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Total Taxes</Text>
                 <Text style={styles.subTotalDollar}>
@@ -516,6 +541,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
             crossHandler={() => setAddCartModal(false)}
             detailHandler={() => setAddCartDetailModal(true)}
             sellerID={sellerID}
+            offerId={offerId}
           />
         )}
       </Modal>

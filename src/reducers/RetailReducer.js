@@ -359,6 +359,11 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         tipKey: payload.data,
       };
+    case TYPES.UPDATE_CART_QTY_SUCCESS:
+      return {
+        ...state,
+        updateQuantityy: payload.data,
+      };
     case TYPES.CLEAR_STORE:
       return {};
     default:

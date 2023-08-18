@@ -16,7 +16,7 @@ const OrderReview = ({
       {isOrderLoading ? (
         <View
           style={{
-            height: Dimensions.get('window').height / 2.35,
+            height: Dimensions.get('window').height / ms(1.17),
             backgroundColor: COLORS.white,
             alignItems: 'center',
             justifyContent: 'center',
@@ -27,7 +27,10 @@ const OrderReview = ({
         </View>
       ) : (
         <View
-          style={[styles.orderToReviewView, { height: Dimensions.get('window').height / 2.35 }]}
+          style={[
+            styles.orderToReviewView,
+            { height: Dimensions.get('window').height / ms(1.17), paddingBottom: ms(10) },
+          ]}
         >
           <FlatList
             scrollEnabled={getDeliveryData?.getReviewDef?.length > 0 ? true : false}
@@ -35,7 +38,7 @@ const OrderReview = ({
             ListEmptyComponent={emptyComponent}
             ListHeaderComponent={headerComponent}
             showsVerticalScrollIndicator={false}
-            data={getDeliveryData?.getReviewDef?.slice(0, 4)}
+            data={getDeliveryData?.getReviewDef?.slice(0, 3)}
             contentContainerStyle={styles.contentContainerStyle}
           />
         </View>

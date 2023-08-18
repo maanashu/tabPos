@@ -61,7 +61,6 @@ export function TotalProductSold({ onPress }) {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const soldProduct = getAnalyticsData?.getSoldProduct;
-  // console.log('first', soldProduct?.totalProductSoldList[0]);
 
   const interval = 1;
   const maxLabel = 31;

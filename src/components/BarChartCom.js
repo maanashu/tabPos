@@ -65,8 +65,6 @@ export function BarChartCom({
   dateInterval,
 }) {
   const formattedData = transformData(data, spacing, interval, dateInterval);
-  // console.log('first', JSON.stringify(data));
-  // console.log('formattedData', formattedData);
   const barData =
     data === undefined
       ? [

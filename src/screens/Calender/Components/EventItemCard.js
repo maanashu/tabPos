@@ -12,7 +12,7 @@ import ProfileImage from '@/components/ProfileImage';
 
 moment.suppressDeprecationWarnings = true;
 
-const EventItemCard = ({ item, index, onPressAccept = () => {}, onPressReject = () => {} }) => {
+const EventItemCard = ({ item, index }) => {
   const dispatch = useDispatch();
   const userDetails = item?.user_details;
   const userAddress = userDetails?.current_address;
@@ -89,9 +89,7 @@ const EventItemCard = ({ item, index, onPressAccept = () => {}, onPressReject = 
         <TouchableOpacity
           onPress={() => {
             const appointmentID = item.appointment_details[0]?.appointment_id ?? '';
-
             dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
-            onPressReject();
           }}
           style={styles.declineBtnContainer}
         >
@@ -101,9 +99,7 @@ const EventItemCard = ({ item, index, onPressAccept = () => {}, onPressReject = 
         <TouchableOpacity
           onPress={() => {
             const appointmentID = item.appointment_details[0]?.appointment_id ?? '';
-
             dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.ACCEPTED_BY_SELLER));
-            onPressAccept();
           }}
           style={styles.acceptbtnContainer}
         >

@@ -28,11 +28,6 @@ export const styles = StyleSheet.create({
   },
 
   // main screen css start
-  homeScreenCon: {
-    flex: 1,
-    backgroundColor: COLORS.textInputBackground,
-    paddingHorizontal: Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
-  },
   searchScreenHeader: {
     height: SH(60),
     justifyContent: 'center',
@@ -402,7 +397,7 @@ export const styles = StyleSheet.create({
   },
   addNotesBtn: {
     backgroundColor: COLORS.primary,
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
   },
   nameAddCon: {
     height: Platform.OS === 'android' ? windowHeight * 0.38 : windowHeight * 0.37,
@@ -410,7 +405,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   availbleOfferScroll: {
-    height: Platform.OS === 'android' ? windowHeight * 0.34 : windowHeight * 0.35,
+    height: Platform.OS === 'android' ? windowHeight * 0.32 : windowHeight * 0.35,
   },
   avaliableOfferCon: {
     height: windowHeight * 0.05,
@@ -562,10 +557,12 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     width: windowWidth * 0.5,
+    height: windowHeight * 0.85,
     paddingTop: ms(5),
     paddingBottom: ms(10),
     position: 'absolute',
     alignSelf: 'center',
+    borderWidth: 1,
   },
 
   addCartConHeader: {
@@ -1158,6 +1155,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: ms(10),
   },
   arrowStyle: {
     width: SW(5),
@@ -1287,11 +1285,12 @@ export const styles = StyleSheet.create({
   },
 
   barcodeInputWraper: {
+    flex: 1,
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 7,
-    width: Platform.OS === 'android' ? windowWidth * 0.38 : windowWidth * 0.3,
+    // width: Platform.OS === 'android' ? windowWidth * 0.38 : windowWidth * 0.3,
     height: SH(45),
     justifyContent: 'center',
   },
@@ -1326,8 +1325,9 @@ export const styles = StyleSheet.create({
     height: SW(4),
   },
   sideBarsearchInput: {
+    flex: 1,
     borderRadius: 7,
-    width: windowWidth * 0.32,
+    // width: windowWidth * 0.32,
     // width: Platform.OS === 'android' ? windowWidth * 0.38 : windowWidth * 0.3,
     fontFamily: Fonts.Italic,
     fontSize: SF(11),
@@ -1368,6 +1368,7 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',
+    marginTop: ms(6),
   },
   productDes: {
     color: COLORS.black,
@@ -1446,6 +1447,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: COLORS.gerySkies,
     backgroundColor: COLORS.white,
+  },
+  holdBadgePrimary: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.white,
   },
   holdBadgetext: {
     color: COLORS.gerySkies,
@@ -1644,7 +1649,7 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     position: 'absolute',
-    top: 0,
+    bottom: -50,
     right: -50,
     borderRadius: 10,
     padding: 18,
@@ -1961,8 +1966,8 @@ export const styles = StyleSheet.create({
 
   // jbrcoin modal popup
   scanPopUpCon: {
-    width: ms(360),
-    height: ms(365),
+    width: ms(460),
+    height: ms(460),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: 10,

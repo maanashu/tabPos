@@ -84,11 +84,17 @@ const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     paddingTop: ms(2),
   },
+  totalTextStyle2: {
+    paddingTop: 0,
+    fontSize: SF(12),
+    lineHeight: ms(8),
+    color: COLORS.darkGray,
+  },
   orderConvertionView: {
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    paddingBottom: 40,
-    height: Dimensions.get('window').height / 2.35,
+    paddingBottom: ms(10),
+    height: Dimensions.get('window').height / ms(1.18),
   },
   orderTextStyle: {
     fontFamily: Fonts.MaisonBold,
@@ -102,13 +108,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  percentageView: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
+  },
   percentageTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.black,
-    position: 'absolute',
     textAlign: 'center',
-    top: ms(35),
   },
   ordersRowView: {
     flexDirection: 'row',
@@ -146,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 15,
-    width: SW(130),
+    width: Dimensions.get('window').width / ms(1.42),
     paddingVertical: 10,
     borderColor: COLORS.blue_shade,
   },
@@ -214,13 +227,12 @@ const styles = StyleSheet.create({
   },
   firstIconStyle: {
     alignSelf: 'center',
-    width: SW(13),
-    height: SW(13),
-    alignSelf: 'center',
+    alignItems: 'center',
+    marginVertical: 6,
+    width: SW(15),
+    height: SW(15),
     borderRadius: 5,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.textInputBackground,
   },
   shippingDrawerView: {
     flexDirection: 'row',
@@ -288,6 +300,7 @@ const styles = StyleSheet.create({
   },
   orderToReviewView: {
     borderRadius: 10,
+    // marginTop: ms(30),
     backgroundColor: COLORS.white,
   },
   contentContainerStyle: {
@@ -311,6 +324,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: Dimensions.get('window').width * 0.56,
     paddingHorizontal: 20,
+    paddingBottom: 30,
   },
   numberOrdersText: {
     color: COLORS.dark_grey,
@@ -374,6 +388,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 12,
+    width: Dimensions.get('window').width - 250,
   },
   backImageStyle: {
     width: SW(10),
@@ -383,8 +398,7 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: Dimensions.get('window').width * 0.43,
-    marginBottom: ms(45),
+    width: Dimensions.get('window').width * 0.36,
   },
   userDetailView: {
     flex: 1,
@@ -405,7 +419,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     borderRadius: 10,
     marginTop: 20,
-    width: Dimensions.get('window').width / 2.4,
+    width: Dimensions.get('window').width / ms(1.9),
     backgroundColor: COLORS.textInputBackground,
   },
   userImageStyle: {
@@ -430,7 +444,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
     paddingVertical: 6,
     borderColor: COLORS.blue_shade,
   },
@@ -446,7 +460,7 @@ const styles = StyleSheet.create({
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(28),
+    fontSize: SF(24),
     color: COLORS.dark_grey,
   },
   totalText: {
@@ -460,8 +474,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
     backgroundColor: COLORS.primary,
-    marginLeft: 10,
+    // marginLeft: 10,
     paddingHorizontal: 10,
+    flex: 1,
   },
   acceptTextStyle: {
     textAlign: 'center',
@@ -492,13 +507,13 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   orderandPriceView: {
-    justifyContent: 'space-between',
+    // justifyContent: 'space-around',
     flexDirection: 'row',
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     position: 'absolute',
-    bottom: 0,
+    bottom: ms(10),
     alignSelf: 'center',
-    width: Dimensions.get('window').width * 0.43,
+    width: Dimensions.get('window').width * 0.36,
     paddingTop: 15,
     paddingHorizontal: 10,
   },
@@ -529,6 +544,7 @@ const styles = StyleSheet.create({
   backIconStyle: {
     height: ms(17),
     width: ms(17),
+    resizeMode: 'contain',
     tintColor: COLORS.white,
   },
   backTextStyle: {
@@ -538,6 +554,15 @@ const styles = StyleSheet.create({
   rowView: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  subTotalView: {
+    paddingHorizontal: ms(5),
+    backgroundColor: COLORS.textInputBackground,
+    paddingVertical: ms(8),
+    width: ms(150),
+  },
+  flexDirectionRow: {
+    flexDirection: 'row',
   },
 });
 

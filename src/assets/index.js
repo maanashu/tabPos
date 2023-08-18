@@ -285,6 +285,7 @@ export { default as revenueTotal } from '@/assets/images/revenueTotal.png';
 export { default as editIcon } from '@/assets/images/pen.png';
 export { default as cancleIc } from '@/assets/images/multiply.png';
 export { default as filterday } from '@/assets/images/Vector.png';
+export { default as newCalendar } from '@/assets/images/newCalendar.png';
 
 // new Pos module image
 export { default as bucket } from '@/assets/icons/ic_posRetail/bucket.png';

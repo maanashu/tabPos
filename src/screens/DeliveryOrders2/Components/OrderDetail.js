@@ -4,8 +4,8 @@ import {
   Text,
   Image,
   FlatList,
-  TouchableOpacity,
   Platform,
+  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 
@@ -29,11 +29,10 @@ const OrderDetail = ({
   trackHandler,
   isProductDetailLoading,
 }) => {
-  console.log('userdetial', userDetail);
   return (
     <View style={styles.orderDetailView}>
       <View style={styles.orderDetailViewStyle}>
-        <View style={[styles.locationViewStyle, { width: ms(140) }]}>
+        <View style={[styles.locationViewStyle, { width: ms(120) }]}>
           <Image
             source={
               userDetail?.user_details?.profile_photo
@@ -58,7 +57,7 @@ const OrderDetail = ({
         <View
           style={[
             styles.locationViewStyle,
-            { width: ms(120), right: Platform.OS === 'ios' ? 20 : 15 },
+            { width: ms(80), right: Platform.OS === 'ios' ? 20 : 15 },
           ]}
         >
           <Image source={scooter} style={styles.scooterImageStyle} />
@@ -71,7 +70,25 @@ const OrderDetail = ({
                 color: COLORS.primary,
               }}
             >
-              {userDetail?.delivery_details?.title ?? ''}
+              {'Express Delivery'}
+            </Text>
+            <Text
+              style={{
+                fontFamily: Fonts.Medium,
+                fontSize: SF(11),
+                color: COLORS.dark_grey,
+              }}
+            >
+              {'Immediately'}
+            </Text>
+            {/* <Text
+              style={{
+                fontFamily: Fonts.Bold,
+                fontSize: SF(14),
+                color: COLORS.primary,
+              }}
+            >
+              {userDetail?.invoice?.delivery_date ?? ''}
             </Text>
             <Text
               style={{
@@ -87,7 +104,7 @@ const OrderDetail = ({
               {userDetail?.preffered_delivery_end_time
                 ? userDetail?.preffered_delivery_end_time
                 : '00.00'}
-            </Text>
+            </Text> */}
           </View>
         </View>
       </View>
@@ -103,7 +120,7 @@ const OrderDetail = ({
       </View>
 
       <View style={styles.orderandPriceView}>
-        <View style={{ paddingLeft: 15 }}>
+        <View style={{ paddingLeft: 15, flex: 1 }}>
           <View>
             <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
               {strings.shippingOrder.totalItem}
@@ -130,38 +147,68 @@ const OrderDetail = ({
           </View>
         </View>
 
-        <View style={{ paddingHorizontal: 10 }}>
+        <View style={styles.subTotalView}>
           <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
             <Text style={[styles.invoiceText, { color: COLORS.solid_grey }]}>
               {strings.deliveryOrders.subTotal}
             </Text>
-            <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-              {userDetail?.actual_amount ? userDetail?.actual_amount : '0'}
+            <Text style={[styles.totalTextStyle, { paddingTop: 0, fontFamily: Fonts.MaisonBold }]}>
+              ${userDetail?.actual_amount ? Number(userDetail?.actual_amount).toFixed(2) : '0'}
             </Text>
           </View>
 
           <View style={styles.orderDetailsView}>
             <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
-            <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-              {userDetail?.discount ? userDetail?.discount : '0'}
-            </Text>
+            <View style={styles.flexDirectionRow}>
+              <Text style={styles.totalTextStyle2}>{'$'}</Text>
+              <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
+                {userDetail?.discount ? Number(userDetail?.discount).toFixed(2) : '0'}
+              </Text>
+            </View>
           </View>
 
           <View style={styles.orderDetailsView}>
             <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
-            <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'0'}</Text>
+            <View style={styles.flexDirectionRow}>
+              <Text style={styles.totalTextStyle2}>{'$'}</Text>
+              <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
+                {'0.00'}
+              </Text>
+            </View>
           </View>
 
           <View style={styles.orderDetailsView}>
             <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
-            <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-              {userDetail?.tax ? userDetail?.tax : '0'}
-            </Text>
+            <View style={styles.flexDirectionRow}>
+              <Text style={styles.totalTextStyle2}>{'$'}</Text>
+              <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
+                {userDetail?.tax ? Number(userDetail?.tax).toFixed(2) : '0'}
+              </Text>
+            </View>
           </View>
-
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: COLORS.solidGrey,
+              borderStyle: 'dashed',
+              marginTop: ms(5),
+            }}
+          />
           <View style={styles.orderDetailsView}>
             <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
-            <Text style={styles.totalText}>{'$' + userDetail?.payable_amount}</Text>
+            <View style={styles.flexDirectionRow}>
+              <Text
+                style={[
+                  styles.totalTextStyle2,
+                  { fontFamily: Fonts.MaisonBold, fontSize: SF(13), color: COLORS.solid_grey },
+                ]}
+              >
+                {'$'}
+              </Text>
+              <Text style={[styles.totalText, { paddingTop: 0 }]}>
+                {Number(userDetail?.payable_amount).toFixed(2)}
+              </Text>
+            </View>
           </View>
 
           <Spacer space={SH(15)} />
@@ -188,7 +235,7 @@ const OrderDetail = ({
                   {openShippingOrders === '0'
                     ? strings.buttonStatus.reviewButton
                     : openShippingOrders === '1'
-                    ? strings.buttonStatus.acceptedButton
+                    ? strings.buttonStatus.preparedButton
                     : openShippingOrders === '2'
                     ? strings.buttonStatus.prepareButton
                     : ''}
@@ -202,13 +249,9 @@ const OrderDetail = ({
                 style={[styles.acceptButtonView, { width: ms(100) }]}
               >
                 {isProductDetailLoading ? (
-                  <ActivityIndicator
-                    size={'small'}
-                    //  style={styles.loader}
-                    color={COLORS.white}
-                  />
+                  <ActivityIndicator size={'small'} color={COLORS.white} />
                 ) : (
-                  <Text style={styles.acceptTextStyle}>{strings.buttonStatus.trackOrder}</Text>
+                  <Text style={styles.acceptTextStyle}>{strings.buttonStatus.prepareButton}</Text>
                 )}
               </TouchableOpacity>
             )}

@@ -91,12 +91,16 @@ export const CartAmountPayBy = ({
   const dispatch = useDispatch();
 
   const getRetailData = useSelector(getRetail);
+  const updateData = useSelector(getRetail).updateQuantityy;
+  //const jj = updateData.updateQuantityy;
+
   // const [loading, setloading] = useState(false);
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
 
   const qrcodeData = useSelector(getRetail).qrKey;
+
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
   const serviceCartId = getRetailData?.getserviceCart?.id;
@@ -170,6 +174,8 @@ export const CartAmountPayBy = ({
         tip: selectedTipAmount.toString(),
         cartId: cartData.id,
       };
+
+      console.log('data of tip', data);
       const res = await dispatch(updateCartByTip(data));
 
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
@@ -409,7 +415,6 @@ export const CartAmountPayBy = ({
       modeOfPayment: 'jbr',
       tipsAddAnount: (totalPayAmount() * 100).toFixed(0),
     };
-    console.log('data in function of service', data);
     const callback = (response) => {
       if (response) {
         onPressServiceContinue(saveCartData, data);
@@ -456,7 +461,7 @@ export const CartAmountPayBy = ({
                     onPress={() => {
                       // onPressPaymentMethod({ method: item.title, index: index }),
                       const tipAmount = calculatePercentageValue(
-                        cartData?.amount?.total_amount,
+                        cartData?.amount?.products_price,
                         item.title
                       );
                       {
@@ -497,7 +502,7 @@ export const CartAmountPayBy = ({
                         ]}
                       >
                         {'USD $'}
-                        {calculatePercentageValue(cartData?.amount?.total_amount, item.title)}
+                        {calculatePercentageValue(cartData?.amount?.products_price, item.title)}
                       </Text>
                     )}
                   </TouchableOpacity>
@@ -845,7 +850,7 @@ export const CartAmountPayBy = ({
           style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : 100}
         >
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.scanPopUpCon}>
               <>
                 <View style={styles.scanPopHeader}>
@@ -880,7 +885,7 @@ export const CartAmountPayBy = ({
                       <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
                         <Image
                           source={{ uri: qrcodeData?.qr_code }}
-                          style={{ height: ms(110), width: ms(110) }}
+                          style={{ height: ms(180), width: ms(180) }}
                         />
                       </View>
 

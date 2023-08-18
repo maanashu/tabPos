@@ -57,6 +57,7 @@ export function DrawerNavigator(props) {
   const posUserArray = getAuth?.getAllPosUsers;
   const getUserData = useSelector(getUser);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const getPosUser = getUserData?.posLoginData;
 
   const getDashboardData = useSelector(getDashboard);
   const getSessionObj = getDashboardData?.getSesssion;
@@ -227,6 +228,30 @@ export function DrawerNavigator(props) {
           }}
         />
 
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'shippingOrder2' ? true : false}
+          onPress={() => {
+            setActive('shippingOrder2');
+            navigate(NAVIGATION.shippingOrder2);
+          }}
+          icon={({ focused, color, size }) => {
+            return getDashboardData?.pendingOrders?.shipping_count ? (
+              <View>
+                <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
+                <View style={styles.countViewStyle}>
+                  <Text style={styles.countTextStyle}>
+                    {getDashboardData?.pendingOrders?.shipping_count}
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
+            );
+          }}
+        />
+
         {/* <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
@@ -343,29 +368,6 @@ export function DrawerNavigator(props) {
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
-          focused={active === 'shippingOrder2' ? true : false}
-          onPress={() => {
-            setActive('shippingOrder2');
-            navigate(NAVIGATION.shippingOrder2);
-          }}
-          icon={({ focused, color, size }) => {
-            return getDashboardData?.pendingOrders?.shipping_count ? (
-              <View>
-                <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
-                <View style={styles.countViewStyle}>
-                  <Text style={styles.countTextStyle}>
-                    {getDashboardData?.pendingOrders?.shipping_count}
-                  </Text>
-                </View>
-              </View>
-            ) : (
-              <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
-            );
-          }}
-        />
-        <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
           focused={active === 'analytics2' ? true : false}
           onPress={() => {
             setActive('analytics2');
@@ -377,15 +379,15 @@ export function DrawerNavigator(props) {
           )}
         />
       </ScrollView>
-      {/* {getUserData?.posLoginData?.id != getAuth?.merchantLoginData?.id ? null : (
-          <View style={styles.endSessionViewStyle}>
-            <DrawerItem
-              label={''}
-              onPress={() => merchantEndSesion()}
-              icon={({ focused, color, size }) => <Image source={power} style={styles.iconStyle} />}
-            />
-          </View>
-        )} */}
+      {/* {getAuth?.merchantLoginData?.id === getUserData?.posLoginData?.id ? (
+        <View style={styles.endSessionViewStyle}>
+          <DrawerItem
+            label={''}
+            onPress={() => merchantEndSesion()}
+            icon={({ focused, color, size }) => <Image source={power} style={styles.iconStyle} />}
+          />
+        </View>
+      ) : null} */}
     </DrawerContentScrollView>
   );
 }

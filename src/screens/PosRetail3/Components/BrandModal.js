@@ -6,7 +6,7 @@ import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import { cloth, crossButton, search_light } from '@/assets';
+import { crossButton, search_light } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';

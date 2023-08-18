@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 
 import { COLORS } from '@/theme';
-import { down, Fonts, greyRadioArr, radioArrBlue, up } from '@/assets';
 import { Spacer } from '@/components';
+import { down, Fonts, greyRadioArr, radioArrBlue, up } from '@/assets';
 
 const ShipmentTracking = ({ props }) => {
   const [isHideView, setisHideView] = useState(true);
@@ -82,7 +82,7 @@ const ShipmentTracking = ({ props }) => {
         {shipmentHeader}
         {isHideView ? (
           <View style={{ paddingHorizontal: ms(10), paddingTop: ms(10) }}>
-            {statusView('Delivery', props?.status >= 5 && true)}
+            {statusView('Delivered', props?.status >= 5 && true)}
             {statusView('Picked up', props?.status >= 4 && true)}
             {statusView('Ready to pickup', props?.status >= 3 && true)}
             {statusView('Preparing', props?.status >= 2 && true)}
