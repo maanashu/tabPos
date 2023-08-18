@@ -68,8 +68,6 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
   const multipleArrayLength =
     selectedCategoryArray?.length + selectedBrandArray?.length + selectedSubCategoryArray?.length;
 
-  console.log('multipleArrayLength', multipleArrayLength);
-
   useEffect(() => {
     dispatch(getServiceCategory(sellerid, search));
     dispatch(getServiceSubCategory(sellerid, searchSubCategory));

@@ -583,7 +583,7 @@ export function MainScreen({
                   keyExtractor={(item, index) => index}
                   numColumns={7}
                   contentContainerStyle={{
-                    flexGrow: 1,
+                    // flexGrow: 1,
                     justifyContent: 'space-between',
                     zIndex: -99,
                   }}
