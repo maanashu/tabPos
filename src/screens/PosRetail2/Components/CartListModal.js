@@ -130,7 +130,10 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
       };
     }, [])
   );
-
+  const clearCartHandler = () => {
+    dispatch(clearAllCart());
+    // crossHandler();
+  };
   return (
     <View style={styles.cartListModalView}>
       <View style={styles.displayRow}>

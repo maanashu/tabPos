@@ -72,6 +72,14 @@ export function Wallet() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getTotalTraData = getWalletData?.getTotalTra;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail;
+  // console.log("TATADADATADTDA",JSON.stringify(getTotalTraDetail));
+
+ 
+
+
+
+
+
   const transactionTypeArray = getWalletData?.getTotalTraType;
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
@@ -93,12 +101,27 @@ export function Wallet() {
   const [tracking, setTracking] = useState(false);
   const [tranAdd, setTranAdd] = useState('');
   const [transaction, setTransaction] = useState({ mode_of_payment: 'all' });
+  const [date, setDate] = useState(new Date());
+  const [dateformat, setDateformat] = useState('');
+  const [show, setShow] = useState(false);
+  const [historytype, setHistorytype] = useState("all");
   const transactionType = transaction?.mode_of_payment;
   const time = selectTime?.name;
   const time2 = selectTime2?.value;
   const time3 = transaction?.mode_of_payment;
+
+
+
+
+
+
+
+
   const onPresFun1 = value => {
-    dispatch(getTotalTra(value, sellerID));
+    setShow(false);
+    setDateformat('');
+    setDate(new Date());
+    dispatch(getTotalTra(value, sellerID,dateformat));
   };
   const onPresFun2 = value => {
     dispatch(getTotakTraDetail(value, sellerID, transactionType));
@@ -107,19 +130,23 @@ export function Wallet() {
     dispatch(getTotakTraDetail(time2, sellerID, mode_of_payment));
   };
 
+
   const aboutTransactionData = [
     {
-      aboutTransaction: 'ALL',
+      aboutTransaction: 'All',
       price: getTotalTraData?.jbr ?? '0',
       img: null,
       id: '1',
+      type:'all'
     },
     {
-      aboutTransaction: 'JBR COIN',
+      aboutTransaction: 'JOBR Coin',
       price: getTotalTraData?.jbr ?? '0',
       img: jbrCoin,
-      id: '1',
+      id: '2',
+      type:'jbr'
     },
+    
     // {
     //   aboutTransaction: 'CASH',
     //   price: getTotalTraData?.cash ?? '0',
@@ -135,16 +162,18 @@ export function Wallet() {
   ];
   const tipsData = [
     {
-      heading: 'CREDIT',
+      aboutTransaction: 'Credit',
       price: getTotalTraData?.card ?? '0',
       img: card2,
-      id: '2',
+      id: '3',
+      type:'credit'
     },
     {
-      heading: 'CASH',
+      aboutTransaction: 'Cash',
       price: getTotalTraData?.cash ?? '0',
       img: cash,
-      id: '3',
+      id: '4',
+      type:'cash'
     },
     // {
     //   heading: 'Tips',
@@ -229,10 +258,18 @@ export function Wallet() {
     setOrderModel(true);
   };
 
-  const [date, setDate] = useState(new Date());
-  const [dateformat, setDateformat] = useState('');
-  const [show, setShow] = useState(false);
+
+
+  let desiredModeOfPayment = historytype; // Replace with the desired mode_of_payment value or "all"
+  let filteredData;
+  
+  if (desiredModeOfPayment === 'all') {
+    filteredData = getTotalTraDetail;
+  } else {
+    filteredData = getTotalTraDetail.filter(item => item.mode_of_payment === desiredModeOfPayment);
+  }
   const onChangeDate = (selectedDate) => {
+    
     const currentDate = moment().format('MM/DD/YYYY');
     const selected = moment(selectedDate).format('MM/DD/YYYY');
     setShow(false);
@@ -245,12 +282,15 @@ export function Wallet() {
     const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
     setDateformat(newDateFormat);
     setDate(fullDate);
-  
+    setSelectId(0)
+    dispatch(getTotalTra(null, sellerID,newDateFormat));
   };
   const onCancelFun = () => {
     setShow(false);
     setDateformat('');
     setDate(new Date());
+    setSelectId(2)
+    dispatch(getTotalTra('week', sellerID,dateformat));
   };
   const customHeader = () => {
     return (
@@ -301,10 +341,14 @@ export function Wallet() {
       onPress={() => (
         setWeeklyTrasaction(true),
         dispatch(getTotakTraDetail('week', sellerID, transactionType)),
-        dispatch(getTotalTraType())
+        dispatch(getTotalTraType()),
+        setHistorytype(item.type)
       )}
     >
+      {item.img!==null &&
       <Image source={item.img} style={styles.jbrCoinStyle} />
+      
+      }
       <Spacer space={SH(10)} />
       <View style={styles.displayFlex}>
         <Text style={styles.jbrCoinheading}>{item.aboutTransaction}</Text>
@@ -325,11 +369,21 @@ export function Wallet() {
     </TouchableOpacity>
   );
   const tipsItem = ({ item }) => (
-    <View style={[styles.jbrCoinCon, styles.jbrCoinCon2]}>
+    <TouchableOpacity
+    onPress={() => (
+      setWeeklyTrasaction(true),
+      dispatch(getTotakTraDetail('week', sellerID, transactionType)),
+      dispatch(getTotalTraType()),
+      setHistorytype(item.type)
+    )}
+      style={[styles.jbrCoinCon, styles.jbrCoinCon2]}>
+       <Image source={item.img} style={styles.jbrCoinStyle} />
+      <Spacer space={SH(10)} />
       <View style={styles.displayFlex}>
-        <Text style={styles.jbrCoinheading}>{item.heading}</Text>
+        <Text style={styles.jbrCoinheading}>{item.aboutTransaction}</Text>
         <Image source={rightBack} style={styles.arrowStyle} />
       </View>
+      
       <Text style={styles.jbrCoinPrice}>
         {isTotalTraLoad ? null : '$'}
         {isTotalTraLoad ? (
@@ -342,7 +396,7 @@ export function Wallet() {
           item.price
         )}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 
   const TransactionSelectItem = ({
@@ -383,7 +437,7 @@ export function Wallet() {
       <TransactionSelectItem
         item={item}
         onPress={() => {
-          setTranscationTypeId(item.mode_of_payment),
+            setTranscationTypeId(item.mode_of_payment),
             setTransaction(item),
             onPresFun3(item.mode_of_payment);
         }}
@@ -433,7 +487,8 @@ export function Wallet() {
           <View style={styles.walletTranCon}>
             <View style={styles.displayFlex}>
               <Text style={styles.trancationHeading}>
-                {strings.wallet.totalTransections}
+                {historytype} {strings.wallet.transactions}
+                {/* {strings.wallet.totalTransections} */}
                 <Text style={styles.totalTranStyle}>
                   {strings.wallet.transationPrice}
                   {getTotalTraData?.total?.toFixed(2) ?? '0'}
@@ -557,15 +612,18 @@ export function Wallet() {
                     <Text style={styles.tableTextHea}>Transaction ID</Text>
 
                     <View style={styles.flexAlign}>
-                      <Text style={styles.tableTextHea}>Transaction type</Text>
-                      <Image source={tableArrow} style={styles.tableArrow} />
+                    <Text style={styles.tableTextHea}>Employee</Text>
+                      {/* <Text style={styles.tableTextHea}>Transaction type</Text> */}
+                      {/* <Image source={tableArrow} style={styles.tableArrow} /> */}
                     </View>
                     <View style={styles.flexAlign}>
-                      <Text style={styles.tableTextHea}>Payment Method</Text>
-                      <Image source={tableArrow} style={styles.tableArrow} />
+                    <Text style={styles.tableTextHea}>Customer</Text>
+
+                      {/* <Text style={styles.tableTextHea}>Payment Method</Text> */}
+                      {/* <Image source={tableArrow} style={styles.tableArrow} /> */}
                     </View>
 
-                    <Text style={styles.tableTextHea}>Amount</Text>
+                    <Text style={styles.tableTextHea}>{historytype=="jbr"?"JOBR":"Amount"}</Text>
                     <Text style={styles.tableTextHea}>Refunded</Text>
                     <Text style={[styles.tableTextHea, { marginRight: -2 }]}>
                       
@@ -583,12 +641,12 @@ export function Wallet() {
                         color={COLORS.indicator}
                       />
                     </View>
-                  ) : getTotalTraDetail?.length === 0 ? (
+                  ) : filteredData?.length === 0 ? (
                     <View style={{ marginTop: 80 }}>
                       <Text style={styles.userNotFound}>Order not found</Text>
                     </View>
                   ) : (
-                    getTotalTraDetail?.map((item, index) => (
+                    filteredData?.map((item, index) => (
                       <TouchableOpacity
                         style={[styles.tableDataCon, { zIndex: -9 }]}
                         key={index}
@@ -635,16 +693,18 @@ export function Wallet() {
                               {item.transaction_id ?? null}
                             </Text>
                             <Text style={styles.tableTextData}>
-                              {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null}
+                              {item?.seller_details?.firstname}
+                              {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
                             </Text>
                             <Text style={styles.tableTextData}>
-                            {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null}
+                            {item?.user_details?.firstname}
+                            {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
                             </Text>
                             <Text style={styles.tableTextData}>
-                              ${item.payable_amount ?? '0'}
+                              ${item.mode_of_payment ?? '0'}
                             </Text>
                            
-                            <Text style={styles.tableTextData}>{'$0'}</Text>
+                            <Text style={styles.tableTextData}>{item.refunded_amount!==null? '$'+item.refunded_amount:'$0'}</Text>
                             <View style={{width:SF(90)}}>
                               <Text style={styles.tableTextDataCom}>
                                 {statusFun(item.status)}

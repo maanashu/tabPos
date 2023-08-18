@@ -44,6 +44,8 @@ import { AddCartDetailModal } from './AddCartDetailModal';
 import { AddCartModal } from './AddCartModal';
 import Modal from 'react-native-modal';
 import { useEffect } from 'react';
+import { updateCartLength } from '@/actions/CartAction';
+import { getCartLength } from '@/selectors/CartSelector';
 
 export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
   const dispatch = useDispatch();
@@ -59,7 +61,8 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const [offerId, setOfferId] = useState();
-
+  const CART_LENGTH=useSelector(getCartLength)
+  console.log("CART__length",CART_LENGTH);
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
   const cartStatusHandler = () => {
@@ -111,7 +114,6 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       setAddCartModal(true);
     }
   };
-
   function calculatePercentageValue(value, percentage) {
     if (percentage == '') {
       return '';
@@ -119,12 +121,11 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     const percentageValue = (percentage / 100) * parseFloat(value);
     return percentageValue.toFixed(2) ?? 0.0;
   }
-
   const updateQuantity = (cartId, productId, operation, index) => {
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
-
+  
     if (operation === '+') {
       product.qty += 1;
       arr.amount.total_amount += productPrice;
@@ -142,6 +143,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       if (product.qty > 0) {
         if (product.qty === 1) {
           arr?.poscart_products.splice(index, 1);
+          dispatch(updateCartLength(CART_LENGTH - 1));
         }
         product.qty -= 1;
 
@@ -154,11 +156,14 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
         arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
       }
     }
+  console.log("ARRARA",JSON.stringify(arr));
     var DATA = {
       payload: arr,
     };
-    dispatch(getAllCartSuccess(DATA));
+     dispatch(getAllCartSuccess(DATA));
   };
+  
+
 
   const clearCartHandler = () => {
     dispatch(clearAllCart());
@@ -184,6 +189,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     var DATA = {
       payload: arr,
     };
+    dispatch(updateCartLength(CART_LENGTH - 1));
     dispatch(getAllCartSuccess(DATA));
   };
 
@@ -217,7 +223,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
               <View style={[styles.barcodeInputWraper, styles.cartSearchInputWraper]}>
                 <View style={styles.displayRow}>
                   <View>
-                    <Image source={search_light} style={styles.sideSearchStyle} />
+                  <Image source={search_light} style={styles.sideSearchStyle} />
                   </View>
                   <TextInput
                     placeholder="Search by Barcode, SKU, Name"

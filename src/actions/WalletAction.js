@@ -53,10 +53,10 @@ const getTotalTraTypeReset = () => ({
 });
 
 
-export const getTotalTra = (time, sellerID) => async dispatch => {
+export const getTotalTra = (time, sellerID,date) => async dispatch => {
   dispatch(getTotalTraRequest());
   try {
-      const res = await WalletController.getTotalTra(time, sellerID);
+      const res = await WalletController.getTotalTra(time, sellerID,date);
       dispatch(getTotalTraSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204){

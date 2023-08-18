@@ -119,6 +119,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       if (product.qty > 0) {
         if (product.qty == 1) {
           arr?.poscart_products.splice(index, 1);
+          dispatch(updateCartLength(cartLength+1))
         }
         product.qty -= 1;
         arr.amount.total_amount -= productPrice;

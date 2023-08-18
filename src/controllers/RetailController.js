@@ -275,9 +275,11 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log("CART__RESPONSE",JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
+          console.log("CART__error",JSON.stringify(error));
           reject(error);
         });
     });
@@ -955,6 +957,7 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      console.log("Endpoint",endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1053,12 +1056,14 @@ export class RetailController {
     });
   }
 
-  static async bulkCreate(data) {
+  static async createBulkCart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
-
+console.log("EndPoint",endpoint);
+console.log("DAATTTAA",JSON.stringify(data));
       HttpClient.post(endpoint, data)
         .then((response) => {
+          console.log("Disuhdisd",response);
           resolve(response);
         })
         .catch((error) => {

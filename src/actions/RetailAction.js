@@ -1,5 +1,6 @@
 import { RetailController } from '@/controllers';
 import { TYPES } from '@/Types/Types';
+import { updateCartLength } from './CartAction';
 
 const getCategoryRequest = () => ({
   type: TYPES.GET_CATEGORY_REQUEST,
@@ -556,7 +557,7 @@ const getMainProductRequest = () => ({
   payload: null,
 });
 
-const getMainProductSuccess = (getMainProduct) => ({
+export const getMainProductSuccess = (getMainProduct) => ({
   type: TYPES.GET_MAIN_PRODUCT_SUCCESS,
   payload: getMainProduct,
 });
@@ -591,18 +592,18 @@ const getMainServicesError = (error) => ({
   payload: { error },
 });
 
-const bulkCreateRequest = () => ({
-  type: TYPES.BULK_CREATE_REQUEST,
+const createBulkCartRequest = () => ({
+  type: TYPES.CREATE_BULK_CART_REQUEST,
   payload: null,
 });
 
-const bulkCreateSuccess = (bulkCreate) => ({
-  type: TYPES.BULK_CREATE_SUCCESS,
+const createBulkcartSuccess = (bulkCreate) => ({
+  type: TYPES.CREATE_BULK_CART_SUCCESS,
   payload: { bulkCreate },
 });
 
-const bulkCreateError = (error) => ({
-  type: TYPES.BULK_CREATE_ERROR,
+const createBulkCartError = (error) => ({
+  type: TYPES.CREATE_BULK_CART_ERROR,
   payload: { error },
 });
 export const saveBulkOrderData = (bulkData) => ({
@@ -933,10 +934,13 @@ export const getAllCart = () => async (dispatch) => {
   dispatch(getAllCartRequest());
   try {
     const res = await RetailController.getAllCart();
+    console.log("res=-=-=--==-",JSON.stringify(res));
     dispatch(getAllCartSuccess(res));
+    dispatch(updateCartLength(res?.payload?.poscart_products?.length))
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllCartReset());
+      dispatch(updateCartLength(0))
     }
     dispatch(getAllCartError(error.message));
   }
@@ -1001,6 +1005,7 @@ export const clearServiceAllCart = () => async (dispatch) => {
     const res = await RetailController.clearServiceAllCart();
     dispatch(clearServiceAllCartSuccess(res));
     dispatch(getServiceCart());
+    dispatch(updateCartLength(0))
   } catch (error) {
     dispatch(clearServiceAllCartError(error.message));
   }
@@ -1011,6 +1016,7 @@ export const clearOneCart = (data) => async (dispatch) => {
   try {
     const res = await RetailController.clearOneCart(data);
     dispatch(clearOneCartSuccess(res));
+    dispatch(updateCartLength(0))
     dispatch(getAllCart());
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -1028,6 +1034,17 @@ export const addTocart = (data) => async (dispatch) => {
     dispatch(getAllCart());
   } catch (error) {
     dispatch(addTocartError(error.message));
+  }
+};
+
+export const createBulkcart = (data) => async (dispatch) => {
+  dispatch(createBulkCartRequest());
+  try {
+    const res = await RetailController.createBulkCart(data);
+    dispatch(createBulkcartSuccess(res));
+     dispatch(getAllCart());
+  } catch (error) {
+    dispatch(createBulkCartError(error.message));
   }
 };
 

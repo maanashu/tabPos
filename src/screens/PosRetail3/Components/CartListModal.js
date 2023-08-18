@@ -32,6 +32,8 @@ import {
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { useFocusEffect } from '@react-navigation/native';
+import { getCartLength } from '@/selectors/CartSelector';
+import { updateCartLength } from '@/actions/CartAction';
 
 export function CartListModal({ checkOutHandler, CloseCartModal }) {
   const dispatch = useDispatch();
@@ -42,7 +44,8 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
 
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
-
+  const CART_LENGTH=useSelector(getCartLength)
+  console.log("CART__length",CART_LENGTH);
   const cartStatusHandler = () => {
     const data =
       holdProductArray?.length > 0
@@ -96,6 +99,7 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
       if (product.qty > 0) {
         if (product.qty == 1) {
           arr?.poscart_products.splice(index, 1);
+          dispatch(updateCartLength(CART_LENGTH - 1));
         }
         product.qty -= 1;
         arr.amount.total_amount -= productPrice;
@@ -125,6 +129,7 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
     var DATA = {
       payload: arr,
     };
+    dispatch(updateCartLength(CART_LENGTH - 1));
     dispatch(getAllCartSuccess(DATA));
   };
   useFocusEffect(
@@ -147,7 +152,10 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
       };
     }, [])
   );
-
+  const clearCartHandler = () => {
+    dispatch(clearAllCart());
+    // crossHandler();
+  };
   return (
     <View style={styles.cartListModalView}>
       <View style={styles.displayRow}>

@@ -49,9 +49,12 @@ import {
   getMainServices,
   getOneProduct,
   getSubCategory,
+  getMainProductSuccess,
+  createBulkcart,
+  getAllCart,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { CartListModal } from './CartListModal';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
@@ -60,6 +63,8 @@ import { FilterDropDown } from './FilterDropDown';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ServiceFilterDropDown } from './ServiceFilterDropDown';
 import { NumericPad } from './NumericPad';
+import { updateCartLength } from '@/actions/CartAction';
+import { getCartLength } from '@/selectors/CartSelector';
 
 export function MainScreen({
   cartScreenHandler,
@@ -81,6 +86,7 @@ export function MainScreen({
   const [numPadModal, setNumPadModal] = useState(false);
   const [serviceNumPadModal, setServiceNumPadModal] = useState(false);
   const getMerchantService = getAuthdata?.merchantLoginData?.product_existance_status;
+   const CART_LENGTH=useSelector(getCartLength)
   const getRetailData = useSelector(getRetail);
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
@@ -88,9 +94,12 @@ export function MainScreen({
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
+
   const cartLength = cartData?.poscart_products?.length;
+  // const cartLength = CART_LENGTH;
   const serviceCartData = getRetailData?.getserviceCart;
-  const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
+   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
+  // const serviceCartLength = CART_LENGTH;
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
   const [search, setSearch] = useState('');
@@ -104,6 +113,10 @@ export function MainScreen({
   }));
   const [productServiceType, setProductServiceType] = useState(1);
   const [cateoryView, setCateoryView] = useState(false);
+
+
+
+  const [selectedCartItem, setSelectedCartItems] = useState([]);
 
   const cartStatusHandler = () => {
     const data =
@@ -138,6 +151,7 @@ export function MainScreen({
     setTimeout(() => {
       setshowProductsFrom(productArray);
     }, 1000);
+   
   }, [isFocus]);
 
   useEffect(() => {
@@ -202,6 +216,47 @@ export function MainScreen({
 
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
+  console.log("CART_DATA",JSON.stringify(cartData));
+  useFocusEffect(
+    React.useCallback(() => {
+      // if(getRetailData?.getAllCart?.poscart_products?.length>0){
+      //   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => (
+      //     {
+      //   "product_id":obj.product_id,
+      //   "qty":obj.qty,
+      //   "supply_id":obj.supply_id,
+      //   "supply_price_id":obj.supply_price_id
+      // }
+      // ));
+      // setSelectedCartItems(cartmatchId)
+      //   for (const nestedObject of cartmatchId) {
+      //     const nestedProductId = nestedObject.product_id;
+      //     const mainArray= getRetailData?.getMainProduct;
+      //     mainArray.data.forEach((item, index) => {
+      //       if (item.id === nestedProductId) {
+      //         mainArray.data[index].cart_qty = nestedObject.qty;
+      //       }
+      //     });
+      //      dispatch(getMainProductSuccess(mainArray));
+      //   }
+      // }
+      // else{
+      //   // setSelectedCartItems([])
+      // }
+      return () => {
+        const arr= selectedCartItem
+        if (arr.length > 0) {
+          const data = {
+            "seller_id": sellerID,
+            "products":arr
+          };
+          console.log("dsapidaopsidas",data);
+         dispatch(createBulkcart(data));
+        }
+      }   
+
+    },[])
+  );
 
   useEffect(() => {
     if (selectedCatID) {
@@ -213,10 +268,35 @@ export function MainScreen({
       setCartModal(false);
     }
   }, [cartLength]);
-
   const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
 
-  const onClickAddCart = (item) => {
+  const onClickAddCart = (item, index,cartQty) => {
+    
+    // const mainProductArray = getRetailData?.getMainProduct;
+    // const cartArray = selectedCartItem;
+
+    // const existingItemIndex = cartArray.findIndex(cartItem => cartItem.product_id === item?.id);
+  
+    //   const DATA = {
+    //     "product_id": item?.id,
+    //     "qty": 1,
+    //     "supply_id": item?.supplies?.[0]?.id,
+    //     "supply_price_id": item?.supplies?.[0]?.supply_prices[0]?.id
+    //   };
+    //   if (existingItemIndex === -1) {
+    //     cartArray.push(DATA);
+    //     dispatch(updateCartLength(cartLength+1))
+    //   } else {
+    //     cartArray[existingItemIndex].qty == cartQty+ 1;
+    //   }
+    //    console.log("Before=-=-=-",JSON.stringify(cartArray));
+    //    setSelectedCartItems(cartArray);
+    //    console.log("AFter=-=-=-",JSON.stringify(cartArray));
+    //    mainProductArray.data[index].cart_qty += 1;
+    //    dispatch(getMainProductSuccess(mainProductArray));
+       
+
+     //-------------OLD_CODE------------
     const data = {
       seller_id: sellerID,
       supplyId: item?.supplies?.[0]?.id,
@@ -264,12 +344,73 @@ export function MainScreen({
     setCartModal(false);
   };
 
-  const renderItem = ({ item }) => {
+  //  categoryType -----start
+  const catTypeRenderItem = ({ item }) => {
+    const backgroundColor = item.id === catTypeId ? '#6e3b6e' : '#f9c2ff';
+    const color = item.id === catTypeId ? 'white' : 'black';
+
+    return (
+      <CatTypeItem
+        item={item}
+        onPress={() => {
+          if (item.id === 1) {
+            setCatTypeId(item.id);
+            setCategoryModal(true);
+            dispatch(getCategory(sellerID));
+          } else if (
+            item.id === 2
+            // && isFilterDataSeclectedOfIndex === 0) ||
+            // item.isSelected === true
+          ) {
+            setCatTypeId(item.id);
+            dispatch(getSubCategory(sellerID));
+            setSubCategoryModal(true);
+          } else if (
+            item.id === 3
+            //  && isFilterDataSeclectedOfIndex === 1
+          ) {
+            setBrandModal(true);
+            setCatTypeId(item.id);
+            dispatch(getBrand(sellerID));
+          }
+        }}
+        backgroundColor={backgroundColor}
+        textColor={color}
+      />
+    );
+  };
+  const CatTypeItem = ({ item, onPress, backgroundColor, textColor }) => (
+    <TouchableOpacity
+      style={styles.chooseCategoryCon}
+      onPress={onPress}
+      //   onPress={() => setCategoryModal(true)}
+    >
+      <View style={{ flexDirection: 'column' }}>
+        <Text style={styles.chooseCat} numberOfLines={1}>
+          {item.name}
+        </Text>
+        <Text style={styles.listed}>{'0'} listed</Text>
+      </View>
+
+      <FastImage
+        source={categoryMenu}
+        style={[
+          styles.categoryMenu,
+          { tintColor: item.isSelected ? COLORS.solid_green : COLORS.black },
+        ]}
+        resizeMode={FastImage.resizeMode.contain}
+      />
+    </TouchableOpacity>
+  );
+  //  categoryType -----end
+
+  const renderItem = ({ item ,index}) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
     const color = item.id === selectedId ? 'white' : 'black';
     return (
       <Item
         item={item}
+        index={index}
         onPress={() => setSelectedId(item.id)}
         backgroundColor={backgroundColor}
         textColor={color}
@@ -277,9 +418,12 @@ export function MainScreen({
     );
   };
 
-  const Item = ({ item }) => {
-    const isProductMatchArray = cartmatchId?.find((data) => data.product_id === item.id);
-    const cartAddQty = isProductMatchArray?.qty;
+  const Item = ({ item, index }) => {
+    // console.log("item",item);
+    const isProductMatchArray = cartData.poscart_products?.find((data) => data.product_id === item.id);
+    const cartAddQty = isProductMatchArray?.qty
+
+    //  const cartAddQty = isProductMatchArray?.qty ==undefined?0:isProductMatchArray?.qty;
     return (
       <TouchableOpacity
         style={styles.productCon}
@@ -310,11 +454,28 @@ export function MainScreen({
             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
           </Text>
           {/* addToCartBlue */}
-          <TouchableOpacity onPress={() => onClickAddCart(item)}>
-            <Image
-              source={isProductMatchArray ? addToCartBlue : addToCart}
-              style={styles.addToCart}
-            />
+          <TouchableOpacity 
+          // activeOpacity={1}
+          onPress={() => onClickAddCart(item,index,cartAddQty)}>
+          <FastImage
+          source={isProductMatchArray ? addToCartBlue : addToCart}
+          style={styles.addToCart}
+          resizeMode={FastImage.resizeMode.contain}
+        />
+          {/* {item?.cart_qty>0 &&
+           <View 
+           style={styles.productBadge}>
+               <Text style={styles.productBadgeText}>{item?.cart_qty}</Text>
+            </View>
+          
+          } */}
+          {/* {cartAddQty>0 &&
+           <View 
+           style={styles.productBadge}>
+               <Text style={styles.productBadgeText}>{cartAddQty}</Text>
+            </View>
+          } */}
+          
             {isProductMatchArray ? (
               <View style={styles.productBadge}>
                 <Text style={styles.productBadgeText}>{cartAddQty}</Text>
@@ -340,6 +501,9 @@ export function MainScreen({
     setServiceFilterCon(false);
   };
 
+  const onSelectedItemsChange = (selectedItems) => {
+    setSelectedItems(selectedItems);
+  };
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.homeScreenCon}>
@@ -691,6 +855,7 @@ export function MainScreen({
                             : styles.badgetext
                         }
                       >
+       
                         {cartLength ?? '0'}
                       </Text>
                     </View>

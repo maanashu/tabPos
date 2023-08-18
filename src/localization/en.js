@@ -657,6 +657,7 @@ export const en = {
       'By enabling payments through Sila, you will be accepting Stripe Services Agreement. Please refer to the list of Prohibited Businesses before registering for and opening a Stripe account',
     silaButton: 'Setup Sila',
     wallet: 'Wallet',
+    transactions: 'Transactions:',
     totalTransections: 'Total Transactions:',
     transactionHistory: 'Transaction History',
     today: 'Today',

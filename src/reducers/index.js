@@ -14,6 +14,7 @@ import { rewardReducer } from '@/reducers/RewardReducer';
 import { appointmentReducer } from '@/reducers/AppointmentReducer';
 import { dashboardReducer } from '@/reducers/DashboardReducer';
 import { settingReducer } from '@/reducers/SettingReducer';
+import { cartReducer } from './CartReducer';
 
 export const rootReducer = combineReducers({
   error: errorReducer,
@@ -31,4 +32,5 @@ export const rootReducer = combineReducers({
   appointment: appointmentReducer,
   dashboard: dashboardReducer,
   setting: settingReducer,
+  cartReducer:cartReducer
 });

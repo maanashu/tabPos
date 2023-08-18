@@ -4,12 +4,21 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class WalletController {
-  static async getTotalTra(time, sellerID) {
+  static async getTotalTra(time, sellerID,date) {
+    console.log("DATE",date);
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getTotalTra +
-        `?seller_id=${sellerID}&filter=${time}`;
+      const BASE_URL = ORDER_URL + ApiOrderInventory.getTotalTra;
+      const sellerParam = `seller_id=${sellerID}`;
+      
+      let endpoint = "";
+      
+      if (time !== null) {
+          endpoint = `${BASE_URL}?${sellerParam}&filter=${time}`;
+      } else {
+          endpoint = `${BASE_URL}?${sellerParam}&date=${date}`;
+      }
+        console.log("endpoiin",endpoint)
+
       HttpClient.get(endpoint)
         .then(response => {
           resolve(response);
@@ -38,8 +47,10 @@ export class WalletController {
     };
     return new Promise((resolve, reject) => {
       const endpoint = endpointAccTra(time, sellerID, transactionType);
+      console.log("ENDPONTSS",JSON.stringify(endpoint));
       HttpClient.get(endpoint)
         .then(response => {
+          // console.log("UDguwgdiuwgbdw",JSON.stringify(response));
           resolve(response);
         })
         .catch(error => {
