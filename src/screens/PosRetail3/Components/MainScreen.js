@@ -81,6 +81,7 @@ export function MainScreen({
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
+
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const getAuthdata = useSelector(getAuthData);
   const [numPadModal, setNumPadModal] = useState(false);
@@ -668,7 +669,9 @@ export function MainScreen({
                         </TouchableOpacity>
                         {filterCon ? (
                           // <View style={styles.categoryFilterCon}>
-                          <FilterDropDown data={items} sellerid={sellerID} />
+                          <FilterDropDown data={items} sellerid={sellerID}
+                          setFilterCount={setFilterCount}
+                          />
                         ) : // </View>
                         null}
                       </View>
