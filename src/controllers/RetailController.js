@@ -1294,10 +1294,8 @@ export class RetailController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
-          console.log('response of available offer', JSON.stringify(response));
         })
         .catch((error) => {
-          console.log('error in available offers', JSON.stringify(error));
           // Toast.show({
           //   text2: error?.msg,
           //   position: 'bottom',
@@ -1316,11 +1314,9 @@ export class RetailController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
-          console.log('response of qr payment status', JSON.stringify(response));
         })
         .catch((error) => {
           reject(error);
-          console.log('error of Qr status', JSON.stringify(error));
         });
     });
   }

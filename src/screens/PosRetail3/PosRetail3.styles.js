@@ -833,8 +833,8 @@ export const styles = StyleSheet.create({
   imageView: {
     borderWidth: 2,
     borderRadius: 5,
-    width: SW(25),
-    height: SW(25),
+    width: SW(20),
+    height: SW(20),
     marginVertical: verticalScale(3),
   },
   scrollImage: {
