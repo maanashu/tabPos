@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Image,
   Platform,
@@ -39,6 +40,7 @@ export const PayByCash = ({
   const [selectedId, setSelectedId] = useState(1);
   const [cashRate, setCashRate] = useState();
   const cartProducts = cartDatas?.poscart_products;
+  console.log('sele', selectedId, cashRate);
   useEffect(() => {
     setCashRate(selectCashArray[0].usd);
   }, []);
@@ -97,7 +99,7 @@ export const PayByCash = ({
     );
   };
 
-  const Item = ({ item, onPress, borderColor, textColor }) => {
+  const Item = ({ item, onPress, borderColor, textColor, index }) => {
     const formattedNumber = (Math.round(item.usd * 100) / 100).toString();
     return (
       <TouchableOpacity

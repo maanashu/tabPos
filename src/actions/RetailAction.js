@@ -1279,6 +1279,15 @@ export const qrcodestatus = (id) => async (dispatch) => {
   }
 };
 
+export const Servicesqrcodestatus = (id) => async (dispatch) => {
+  dispatch(qrCodeStatusRequest());
+  try {
+    const res = await RetailController.ServicesqrCodePaymentStatus(id);
+    return dispatch(qrCodeStatusSuccess(res.payload));
+  } catch (error) {
+    dispatch(qrcodestatusError(error.message));
+  }
+};
 export const scanProductAdd = (data) => async (dispatch) => {
   dispatch(scanProductAddRequest());
   try {

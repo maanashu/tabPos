@@ -58,6 +58,7 @@ import {
   createServiceOrder,
   qrcodestatus,
   qrCodeStatusSuccess,
+  Servicesqrcodestatus,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -254,7 +255,9 @@ export const CartAmountPayBy = ({
       clearInterval(interval);
     } else if (qrStatus?.status !== 'success' && qrPopUp && sendRequest == false) {
       interval = setInterval(() => {
-        dispatch(qrcodestatus(cartData.id));
+        cartType == 'Service'
+          ? dispatch(Servicesqrcodestatus(cartData.id))
+          : dispatch(qrcodestatus(cartData.id));
         // Alert.alert('3 condition', sendRequest);
       }, 5000);
     } else if (qrStatus?.status == 'success' && qrPopUp && sendRequest == false) {

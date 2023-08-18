@@ -45,6 +45,9 @@ export const FinalPaymentScreen = ({
 
   const payAmount = totalPayAmount();
   const ActualPayAmount = payDetail?.tips;
+
+  console.log('Actual Amount', ActualPayAmount);
+  console.log('payamount by customer', payAmount);
   const changeDue = parseFloat(ActualPayAmount) - parseFloat(payAmount);
   const dispatch = useDispatch();
   useFocusEffect(
@@ -79,7 +82,7 @@ export const FinalPaymentScreen = ({
                   {paymentMethod === 'Card' || paymentMethod === 'Cash' ? '$' : 'JBR'}
                 </Text>
                 {cartType == 'Service' ? (
-                  <Text style={styles._amount}>{payDetail?.tipsAddAnount}</Text>
+                  <Text style={styles._amount}>{payDetail?.tips}</Text>
                 ) : (
                   <Text style={styles._amount}>{payDetail?.tips}</Text>
                 )}
