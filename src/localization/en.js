@@ -785,7 +785,7 @@ export const en = {
     returnedOrders: 'Returned Orders',
   },
   buttonStatus: {
-    reviewButton: 'Accept Order',
+    reviewButton: 'Accept',
     acceptedButton: 'Order Prepared',
     prepareButton: 'Ready to Pickup',
     trackOrder: 'Track Order',

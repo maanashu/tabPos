@@ -8,6 +8,7 @@ import { Spacer } from '@/components';
 import { down, Fonts, greyRadioArr, radioArrBlue, up } from '@/assets';
 
 const ShipmentTracking = ({ props }) => {
+  console.log('shippingTracking====', props);
   const [isHideView, setisHideView] = useState(true);
 
   const currentStatus = (status) => {
@@ -43,6 +44,7 @@ const ShipmentTracking = ({ props }) => {
       <View style={styles.bottomLine} />
     </>
   );
+
   const statusView = (heading, stepCompleted) => (
     <>
       <View style={styles.statusMainView}>
@@ -60,6 +62,7 @@ const ShipmentTracking = ({ props }) => {
       </View>
     </>
   );
+
   const latestStatus = () => {
     return (
       <>
@@ -76,16 +79,18 @@ const ShipmentTracking = ({ props }) => {
       </>
     );
   };
+
   return (
     <>
       <View style={styles.mainContainer}>
         {shipmentHeader}
         {isHideView ? (
           <View style={{ paddingHorizontal: ms(10), paddingTop: ms(10) }}>
+            {statusView('Verify', props?.status >= 5 && true)}
             {statusView('Delivered', props?.status >= 5 && true)}
-            {statusView('Picked up', props?.status >= 4 && true)}
-            {statusView('Ready to pickup', props?.status >= 3 && true)}
-            {statusView('Preparing', props?.status >= 2 && true)}
+            {statusView('Product Pickup', props?.status >= 4 && true)}
+            {statusView('Assign Driver', props?.status >= 3 && true)}
+            {statusView('Ready to pickup', props?.status >= 2 && true)}
             {statusView('Order accepted', props?.status >= 1 && true)}
           </View>
         ) : (
@@ -103,7 +108,7 @@ const styles = StyleSheet.create({
     paddingVertical: ms(15),
     borderRadius: ms(7),
     right: ms(20),
-    bottom: ms(20),
+    bottom: ms(70),
     width: ms(180),
   },
   map: {
