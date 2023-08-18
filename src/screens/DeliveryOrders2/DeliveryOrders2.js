@@ -316,57 +316,114 @@ export function DeliveryOrders2({ route }) {
   const showBadge = (item) => {
     if (item?.title === 'Delivered') {
       return (
-        <View
-          style={[
-            styles.bucketBadge,
-            { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
-          ]}
-        >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item?.image}
+            style={[
+              styles.sideBarImage,
+              {
+                tintColor: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.bucketBadge,
+              { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
+            ]}
+          >
+            <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+          </View>
         </View>
       );
     } else if (item?.title === 'Rejected/Cancelled') {
       return (
-        <View
-          style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
-        >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item?.image}
+            style={[
+              styles.sideBarImage,
+              {
+                tintColor:
+                  item?.title === 'Rejected/Cancelled' && openShippingOrders === item?.key
+                    ? COLORS.pink
+                    : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
+          >
+            <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+          </View>
         </View>
       );
     } else if (item?.title === 'Returned') {
       return (
-        <View
-          style={[
-            styles.bucketBadge,
-            {
-              backgroundColor: COLORS.yellowTweet,
-              borderColor: COLORS.yellowTweet,
-            },
-          ]}
-        >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item?.image}
+            style={[
+              styles.sideBarImage,
+              {
+                tintColor:
+                  item?.title === 'Returned' && openShippingOrders === item?.key
+                    ? COLORS.yellowTweet
+                    : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.bucketBadge,
+              {
+                backgroundColor: COLORS.yellowTweet,
+                borderColor: COLORS.yellowTweet,
+              },
+            ]}
+          >
+            <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+          </View>
         </View>
       );
     } else {
       return (
-        <View
-          style={[
-            styles.bucketBadge,
-            {
-              backgroundColor: COLORS.white,
-              borderColor: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray,
-              borderWidth: 2,
-            },
-          ]}
-        >
-          <Text
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item?.image}
             style={[
-              styles.badgetext,
-              { color: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray },
+              styles.sideBarImage,
+              {
+                tintColor:
+                  openShippingOrders === item?.key
+                    ? COLORS.primary
+                    : item?.title === 'Rejected/Cancelled' && openShippingOrders === item?.key
+                    ? COLORS.pink
+                    : item?.title === 'Returned' && openShippingOrders === item?.key
+                    ? COLORS.yellowTweet
+                    : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.bucketBadge,
+              {
+                backgroundColor: COLORS.white,
+                borderColor: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray,
+                borderWidth: 2,
+              },
             ]}
           >
-            {item?.count ?? 0}
-          </Text>
+            <Text
+              style={[
+                styles.badgetext,
+                { color: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray },
+              ]}
+            >
+              {item?.count ?? 0}
+            </Text>
+          </View>
         </View>
       );
     }
@@ -380,25 +437,7 @@ export function DeliveryOrders2({ route }) {
       }}
       style={styles.firstIconStyle}
     >
-      <View style={styles.bucketBackgorund}>
-        <Image
-          source={item?.image}
-          style={[
-            styles.sideBarImage,
-            {
-              tintColor:
-                openShippingOrders === item?.key
-                  ? COLORS.primary
-                  : item?.title === 'Rejected/Cancelled' && openShippingOrders === item?.key
-                  ? COLORS.pink
-                  : item?.title === 'Returned' && openShippingOrders === item?.key
-                  ? COLORS.yellowTweet
-                  : COLORS.darkGray,
-            },
-          ]}
-        />
-        {showBadge(item)}
-      </View>
+      {showBadge(item)}
     </TouchableOpacity>
   );
 
