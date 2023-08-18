@@ -36,6 +36,7 @@ import {
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { getAllPosUsers } from '@/actions/AuthActions';
 
 export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
   const retailData = useSelector(getRetail);
@@ -72,7 +73,7 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
   useEffect(() => {
     dispatch(getServiceCategory(sellerid, search));
     dispatch(getServiceSubCategory(sellerid, searchSubCategory));
-    dispatch(getBrand(sellerid, searchBrand));
+    dispatch(getAllPosUsers(sellerid, searchBrand));
   }, [
     debouncedValue,
     debouncedSubValue,
@@ -99,12 +100,13 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
   const clearInput = () => {
     dispatch(getServiceCategory(sellerid));
     dispatch(getServiceSubCategory(sellerid));
+    dispatch(getAllPosUsers(sellerid));
   };
 
   useEffect(() => {
     dispatch(getServiceCategory(sellerid));
     dispatch(getServiceSubCategory(sellerid));
-    dispatch(getBrand(sellerid));
+    dispatch(getAllPosUsers(sellerid));
   }, [!search, !searchSubCategory, !searchBrand]);
 
   const isOrderLoading = useSelector((state) =>
@@ -261,7 +263,6 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
             setSearchBrand(text);
             setBrandOpenDropDown(true);
           }}
-          editable={false}
         />
 
         {isOrderLoading ? (

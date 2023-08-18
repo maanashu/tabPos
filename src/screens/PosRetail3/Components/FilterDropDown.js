@@ -42,7 +42,6 @@ export const FilterDropDown = ({ sellerid, productFilterCount }) => {
   const debouncedValue = useDebounce(search, 300);
   const [categoryOpenDropDown, setCategoryOpenDropDown] = useState(false);
   const [selectedCategoryArray, setSelectedCategoryArray] = useState([]);
-  console.log('categoryData', categoryData);
 
   // subcategory search
   const [subCategoryData, setSubCategoryData] = useState();
@@ -61,7 +60,6 @@ export const FilterDropDown = ({ sellerid, productFilterCount }) => {
   const productArrayLength = [
     selectedCategoryArray?.length + selectedSubCategoryArray?.length + selectedBrandArray?.length,
   ];
-  console.log('-----------------', productArrayLength?.[0]);
 
   const multipleArrayLength =
     selectedCategoryArray?.length > 0 ||

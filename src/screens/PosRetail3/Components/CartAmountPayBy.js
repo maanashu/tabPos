@@ -174,8 +174,6 @@ export const CartAmountPayBy = ({
         tip: selectedTipAmount.toString(),
         cartId: cartData.id,
       };
-
-      console.log('data of tip', data);
       const res = await dispatch(updateCartByTip(data));
 
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
