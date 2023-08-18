@@ -183,12 +183,12 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   orderDetailStyle: {
-    width: SW(33),
+    width: SW(30),
     justifyContent: 'center',
   },
   nameTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(12),
+    fontSize: SF(10),
     color: COLORS.solid_grey,
   },
   varientTextStyle: {
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   },
   distanceTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(11),
+    fontSize: SF(9),
     color: COLORS.dark_grey,
     paddingLeft: 5,
   },

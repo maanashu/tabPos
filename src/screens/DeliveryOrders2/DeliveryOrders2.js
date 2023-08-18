@@ -490,7 +490,7 @@ export function DeliveryOrders2({ route }) {
         </View>
       </View>
 
-      <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
+      <View style={[styles.orderDetailStyle, { width: SW(47) }]}>
         <Text style={styles.timeTextStyle}>
           {item?.invoice?.delivery_date ? item?.invoice?.delivery_date : ''}
         </Text>
