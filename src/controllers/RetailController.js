@@ -1311,4 +1311,20 @@ export class RetailController {
         });
     });
   }
+
+  static async qrCodePaymentStatus(id) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.qrstatus + `${id}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+          console.log('response of qr payment status', JSON.stringify(response));
+        })
+        .catch((error) => {
+          reject(error);
+          console.log('error of Qr status', JSON.stringify(error));
+        });
+    });
+  }
 }

@@ -56,6 +56,8 @@ import {
   updateCartByTip,
   getServiceCart,
   createServiceOrder,
+  qrcodestatus,
+  qrCodeStatusSuccess,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -130,6 +132,10 @@ export const CartAmountPayBy = ({
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
+  console.log('re', requestStatus);
+  const qrStatus = getRetailData.qrStatuskey;
+  console.log('value in selector', JSON.stringify(qrStatus));
+  console.log('vv', qrPopUp);
 
   const [status, setstatus] = useState('');
   const [sendRequest, setsendRequest] = useState(false);
@@ -219,7 +225,12 @@ export const CartAmountPayBy = ({
 
   useEffect(() => {
     dispatch(requestCheckSuccess(''));
+    dispatch(qrCodeStatusSuccess(''));
   }, []);
+
+  const qrcodePaymentstatus = () => {
+    dispatch(qrcodestatus(cartData.id));
+  };
 
   const isLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_WALLET_PHONE, TYPES.ATTACH_CUSTOMER, TYPES.CREATE_ORDER], state)
@@ -227,23 +238,37 @@ export const CartAmountPayBy = ({
   useEffect(() => {
     let interval;
 
-    if (requestStatus !== 'approved') {
+    if (requestStatus !== 'success' && sendRequest) {
       interval = setInterval(() => {
         setRequestId((requestId) => {
           const data = {
             requestId: requestId,
           };
           dispatch(requestCheck(data));
+          //Alert.alert('1  condition');
           // createOrderHandler();
+
           return requestId;
         });
       }, 10000);
-    } else if (requestStatus == 'approved') {
+    } else if (requestStatus == 'success' && sendRequest) {
       cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+      // Alert.alert('2  condition');
+      clearInterval(interval);
+    } else if (qrStatus.status !== 'success' && qrPopUp && sendRequest == false) {
+      interval = setInterval(() => {
+        dispatch(qrcodestatus(cartData.id));
+        // Alert.alert('3 condition', sendRequest);
+      }, 5000);
+    } else if (qrStatus.status == 'success' && qrPopUp && sendRequest == false) {
+      cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+
       clearInterval(interval);
     }
+
     return () => clearInterval(interval);
-  }, [isFocused, requestStatus == 'approved']);
+  }, [isFocused, requestStatus == 'success', qrStatus.status == 'success', qrPopUp, sendRequest]);
+
   const walletInputFun = (phoneNumber) => {
     setWalletIdInp(phoneNumber);
     if (phoneNumber?.length > 9) {
@@ -734,6 +759,9 @@ export const CartAmountPayBy = ({
             <Text style={styles._thankyou}>Thank You</Text>
             <Image source={barcode} style={styles._barCodeImage} />
             <Text style={styles._barCode}>ABC-abc-1234</Text>
+            <TouchableOpacity onPress={qrcodePaymentstatus}>
+              <Text>check status</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -859,6 +887,7 @@ export const CartAmountPayBy = ({
                     onPress={() => {
                       setQrPopUp(false);
                       dispatch(requestCheckSuccess(''));
+                      dispatch(qrCodeStatusSuccess(''));
                     }}
                   >
                     <Image source={crossButton} style={styles.crossButton} />
