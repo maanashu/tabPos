@@ -1277,7 +1277,6 @@ export const getMainProduct = (productTypeId) => async (dispatch) => {
   dispatch(getMainProductRequest());
   try {
     const res = await RetailController.getDynamicProducts(productTypeId);
-
     dispatch(getMainProductSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {

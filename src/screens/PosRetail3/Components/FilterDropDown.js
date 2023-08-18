@@ -31,9 +31,8 @@ import {
   getSubCategory,
 } from '@/actions/RetailAction';
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-export const FilterDropDown = ({ sellerid }) => {
+export const FilterDropDown = ({ sellerid, productFilterCount }) => {
   const retailData = useSelector(getRetail);
   const dispatch = useDispatch();
 
@@ -43,6 +42,7 @@ export const FilterDropDown = ({ sellerid }) => {
   const debouncedValue = useDebounce(search, 300);
   const [categoryOpenDropDown, setCategoryOpenDropDown] = useState(false);
   const [selectedCategoryArray, setSelectedCategoryArray] = useState([]);
+  console.log('categoryData', categoryData);
 
   // subcategory search
   const [subCategoryData, setSubCategoryData] = useState();
@@ -57,6 +57,11 @@ export const FilterDropDown = ({ sellerid }) => {
   const debouncedBrandValue = useDebounce(searchBrand, 300);
   const [brandOpenDropDown, setBrandOpenDropDown] = useState(false);
   const [selectedBrandArray, setSelectedBrandArray] = useState([]);
+
+  const productArrayLength = [
+    selectedCategoryArray?.length + selectedSubCategoryArray?.length + selectedBrandArray?.length,
+  ];
+  console.log('-----------------', productArrayLength?.[0]);
 
   const multipleArrayLength =
     selectedCategoryArray?.length > 0 ||
@@ -76,6 +81,12 @@ export const FilterDropDown = ({ sellerid }) => {
     searchBrand,
   ]);
 
+  const clearInput = () => {
+    dispatch(getCategory(sellerid));
+    dispatch(getSubCategory(sellerid));
+    dispatch(getBrand(sellerid));
+  };
+
   useEffect(() => {
     setCategoryData(
       retailData?.categoryList //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
@@ -91,44 +102,9 @@ export const FilterDropDown = ({ sellerid }) => {
   }, [retailData]);
 
   useEffect(() => {
-    let finalParams = {};
-
-    if (selectedCategoryArray && selectedCategoryArray.length > 0) {
-      finalParams.category_ids = selectedCategoryArray.join(',');
-    }
-
-    if (selectedBrandArray && selectedBrandArray.length > 0) {
-      finalParams.brand_id = selectedBrandArray.join(',');
-    }
-
-    if (selectedSubCategoryArray && selectedSubCategoryArray.length > 0) {
-      finalParams.sub_category_ids = selectedSubCategoryArray.join(',');
-    }
-
-    if (
-      selectedCategoryArray?.length > 0 ||
-      selectedBrandArray?.length > 0 ||
-      selectedSubCategoryArray?.length > 0
-    ) {
-      dispatch(getMainProduct(finalParams));
-    }
-  }, [selectedCategoryArray, selectedBrandArray, selectedSubCategoryArray]);
-
-  useEffect(() => {
     dispatch(getCategory(sellerid));
     dispatch(getSubCategory(sellerid));
     dispatch(getBrand(sellerid));
-    // setCategoryData(
-    //   retailData?.categoryList?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    // );
-
-    // setSubCategoryData(
-    //   retailData?.subCategories?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    // );
-
-    // setBrandData(
-    //   retailData?.brands?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    // );
   }, [!search, !searchSubCategory, !searchBrand]);
 
   const isOrderLoading = useSelector((state) =>
@@ -200,12 +176,13 @@ export const FilterDropDown = ({ sellerid }) => {
     newSubData[index].isChecked = !newSubData[index].isChecked;
     setCategoryData(newSubData);
     const filteredCategories = newSubData.filter((e) => e.isChecked);
-    const ids = filteredCategories.map((item, index) => item?.id);
-    setSelectedCategoryArray(ids);
-    const categoryID = {
-      category_ids: ids.join(','),
-    };
-    dispatch(getMainProduct(categoryID));
+    const catIds = filteredCategories.map((item, index) => item?.id);
+    setSelectedCategoryArray(catIds);
+    // const categoryID = {
+    //   category_ids: catIds.join(','),
+    // };
+
+    // dispatch(getMainProduct(categoryID));
   };
 
   // sub category
@@ -269,10 +246,10 @@ export const FilterDropDown = ({ sellerid }) => {
     const filteredCategories = newSubData.filter((e) => e.isChecked);
     const ids = filteredCategories.map((item, index) => item?.id);
     setSelectedSubCategoryArray(ids);
-    const subCategoryID = {
-      sub_category_ids: ids.join(','),
-    };
-    dispatch(getMainProduct(subCategoryID));
+    // const subCategoryID = {
+    //   sub_category_ids: ids.join(','),
+    // };
+    // dispatch(getMainProduct(subCategoryID));
   };
 
   // Brands
@@ -336,10 +313,10 @@ export const FilterDropDown = ({ sellerid }) => {
     const filteredCategories = newSubData.filter((e) => e.isChecked);
     const ids = filteredCategories.map((item, index) => item?.id);
     setSelectedBrandArray(ids);
-    const brandID = {
-      brand_id: ids.join(','),
-    };
-    dispatch(getMainProduct(brandID));
+    // const brandID = {
+    //   brand_id: ids.join(','),
+    // };
+    // dispatch(getMainProduct(brandID));
   };
 
   return (
@@ -414,7 +391,6 @@ export const FilterDropDown = ({ sellerid }) => {
           ) : null}
         </View>
       </View>
-
       <View style={{ flex: 1 }} />
       <View style={styles.applyFilterCon}>
         <TouchableOpacity
@@ -431,6 +407,8 @@ export const FilterDropDown = ({ sellerid }) => {
             setSubCategoryOpenDropDown(false);
             setBrandOpenDropDown(false);
             dispatch(getMainProduct());
+            clearInput();
+            productFilterCount(0);
           }}
           disabled={!multipleArrayLength ? true : false}
         >
@@ -451,7 +429,15 @@ export const FilterDropDown = ({ sellerid }) => {
               : [styles.ApplyButton, { backgroundColor: COLORS.primary }]
           }
           disabled={!multipleArrayLength ? true : false}
-          onPress={() => alert('Apply filter work in progress')}
+          onPress={() => {
+            const ids = {
+              category_ids: selectedCategoryArray.join(','),
+              sub_category_ids: selectedSubCategoryArray.join(','),
+              brand_id: selectedBrandArray.join(','),
+            };
+            dispatch(getMainProduct(ids));
+            productFilterCount(productArrayLength?.[0]);
+          }}
         >
           <Text style={styles.ApplyText}>Apply</Text>
         </TouchableOpacity>
