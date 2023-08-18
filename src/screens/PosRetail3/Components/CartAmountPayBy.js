@@ -255,19 +255,19 @@ export const CartAmountPayBy = ({
       cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
       // Alert.alert('2  condition');
       clearInterval(interval);
-    } else if (qrStatus.status !== 'success' && qrPopUp && sendRequest == false) {
+    } else if (qrStatus?.status !== 'success' && qrPopUp && sendRequest == false) {
       interval = setInterval(() => {
         dispatch(qrcodestatus(cartData.id));
         // Alert.alert('3 condition', sendRequest);
       }, 5000);
-    } else if (qrStatus.status == 'success' && qrPopUp && sendRequest == false) {
+    } else if (qrStatus?.status == 'success' && qrPopUp && sendRequest == false) {
       cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
 
       clearInterval(interval);
     }
 
     return () => clearInterval(interval);
-  }, [isFocused, requestStatus == 'success', qrStatus.status == 'success', qrPopUp, sendRequest]);
+  }, [isFocused, requestStatus == 'success', qrStatus?.status == 'success', qrPopUp, sendRequest]);
 
   const walletInputFun = (phoneNumber) => {
     setWalletIdInp(phoneNumber);
@@ -913,8 +913,13 @@ export const CartAmountPayBy = ({
                     <View style={{ margin: ms(5), alignItems: 'center' }}>
                       <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
                         <Image
+                          blurRadius={sendRequest ? 10 : 0}
                           source={{ uri: qrcodeData?.qr_code }}
-                          style={{ height: ms(180), width: ms(180) }}
+                          style={{
+                            height: ms(180),
+                            width: ms(180),
+                            // backgroundColor: 'rgba(255,255,355,0.4)',
+                          }}
                         />
                       </View>
 
