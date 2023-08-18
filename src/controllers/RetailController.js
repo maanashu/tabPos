@@ -489,7 +489,6 @@ export class RetailController {
 
       HttpClient.put(endpoint, data)
         .then((response) => {
-          console.log('response of update quantity', JSON.stringify(response));
           // if (response?.msg === 'PosCart updated!') {
           //   Toast.show({
           //     text2: 'Notes add succesfully',
@@ -956,7 +955,6 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -999,7 +997,6 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-      console.log('mainServiceEndPoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1153,7 +1150,6 @@ export class RetailController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
-          console.log('response of qr code', JSON.stringify(response));
         })
         .catch((error) => {
           Toast.show({
@@ -1178,7 +1174,6 @@ export class RetailController {
       HttpClient.put(endpoint, body)
         .then((response) => {
           resolve(response);
-          console.log('update tip', JSON.stringify(response));
         })
         .catch((error) => {
           Toast.show({

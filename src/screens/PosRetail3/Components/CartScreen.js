@@ -147,16 +147,13 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
 
         arr.amount.products_price -= productPrice;
         const totalAmount = arr.amount.products_price;
-        console.log('Total Amount:', totalAmount);
 
         const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-        console.log('TAX:', TAX);
 
         arr.amount.tax = parseFloat(TAX); // Update tax value
         arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
       }
     }
-    console.log('ARRARA', JSON.stringify(arr));
     var DATA = {
       payload: arr,
     };
