@@ -94,7 +94,6 @@ export const CartAmountPayBy = ({
 
   const getRetailData = useSelector(getRetail);
   const updateData = useSelector(getRetail).updateQuantityy;
-  //const jj = updateData.updateQuantityy;
 
   // const [loading, setloading] = useState(false);
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
@@ -132,10 +131,8 @@ export const CartAmountPayBy = ({
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
-  console.log('re', requestStatus);
+
   const qrStatus = getRetailData.qrStatuskey;
-  console.log('value in selector', JSON.stringify(qrStatus));
-  console.log('vv', qrPopUp);
 
   const [status, setstatus] = useState('');
   const [sendRequest, setsendRequest] = useState(false);
@@ -918,7 +915,6 @@ export const CartAmountPayBy = ({
                           style={{
                             height: ms(180),
                             width: ms(180),
-                            // backgroundColor: 'rgba(255,255,355,0.4)',
                           }}
                         />
                       </View>
