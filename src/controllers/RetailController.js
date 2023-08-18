@@ -1289,13 +1289,15 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.availableOffer +
-        `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${data?.seller_id}&service_type=${data?.servicetype}`;
+        `?app_name=pos&delivery_options=2&page=1&limit=10&seller_id=${data?.seller_id}&service_type=${data?.servicetype}`;
 
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
+          console.log('response of available offer', JSON.stringify(response));
         })
         .catch((error) => {
+          console.log('error in available offers', JSON.stringify(error));
           // Toast.show({
           //   text2: error?.msg,
           //   position: 'bottom',
@@ -1303,6 +1305,22 @@ export class RetailController {
           //   visibilityTime: 1500,
           // });
           reject(error);
+        });
+    });
+  }
+
+  static async qrCodePaymentStatus(id) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.qrstatus + `${id}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+          console.log('response of qr payment status', JSON.stringify(response));
+        })
+        .catch((error) => {
+          reject(error);
+          console.log('error of Qr status', JSON.stringify(error));
         });
     });
   }

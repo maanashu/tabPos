@@ -125,6 +125,7 @@ export const ApiOrderInventory = {
   tip: 'poscarts/',
   serviceTip: 'appointment_carts/',
   pendingOrders: 'orders/pos/pending-orders-count',
+  qrstatus: 'poscarts/check-payment-status/',
 };
 
 export const ApiWalletInventory = {
