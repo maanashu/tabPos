@@ -224,18 +224,24 @@ export class AuthController {
       });
   }
 
-  static async getAllPosUsers(sellerID) {
+  static async getAllPosUsers(sellerID, search) {
+    const getUrl = (sellerID, search) => {
+      if (sellerID && search) {
+        return (
+          USER_URL +
+          ApiUserInventory.getPosUsers +
+          `?page=1&limit=10&seller_id=${sellerID}&search=${search}`
+        );
+      } else {
+        return USER_URL + ApiUserInventory.getPosUsers + `?page=1&limit=10&seller_id=${sellerID}`;
+      }
+    };
     return new Promise(async (resolve, reject) => {
-      const endpoint = `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10&seller_id=${sellerID}`;
+      // const endpoint =  `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10&seller_id=${sellerID}`;
+      const endpoint = getUrl(sellerID, search);
       await HttpClient.get(endpoint)
         .then((response) => {
           if (response?.status_code === 200) {
-            Toast.show({
-              position: 'bottom',
-              type: 'success_toast',
-              text2: response?.msg,
-              visibilityTime: 2000,
-            });
             resolve(response);
           }
         })

@@ -29,14 +29,12 @@ export function AddCartModal({
   const sizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const colorSizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
 
-  // const finalSizeArray = colorSizeArray?.filter((item) => item.name === 'Size');
-  // const finalColorArray = colorSizeArray?.filter((item) => item.name === 'Color');
-  const finalColorArray = [1, 2, 3, 4];
-  const finalSizeArray = [1, 2, 3, 4];
+  const finalSizeArray = sizeArray?.filter((item) => item.name === 'Size');
+  const finalColorArray = colorSizeArray?.filter((item) => item.name === 'Color');
   const coloredArray = productDetail?.product_detail?.supplies?.[0]?.attributes?.[1]?.values;
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const [colors, setColors] = useState();
   const [colorName, setColorName] = useState();
   const [sizeName, setSizeName] = useState();

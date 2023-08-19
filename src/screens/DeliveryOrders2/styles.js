@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
+    fontSize: ms(7.2),
     color: COLORS.solid_grey,
     paddingTop: ms(2),
   },
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 15,
-    width: Dimensions.get('window').width / ms(1.42),
+    width: Dimensions.get('window').width / ms(1.6),
     paddingVertical: 10,
     borderColor: COLORS.blue_shade,
   },
@@ -183,12 +183,12 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   orderDetailStyle: {
-    width: SW(33),
+    width: SW(30),
     justifyContent: 'center',
   },
   nameTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(12),
+    fontSize: SF(10),
     color: COLORS.solid_grey,
   },
   varientTextStyle: {
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   },
   distanceTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(11),
+    fontSize: SF(9),
     color: COLORS.dark_grey,
     paddingLeft: 5,
   },
@@ -270,14 +270,14 @@ const styles = StyleSheet.create({
     height: ms(13),
     borderRadius: ms(10),
     position: 'absolute',
-    right: 8,
-    bottom: 7,
+    right: 5,
+    bottom: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
   badgetext: {
     color: COLORS.dark_grey,
-    fontSize: SF(11),
+    fontSize: ms(5.5),
     fontFamily: Fonts.SemiBold,
   },
   holdBadge: {
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
   ordersToReviewText: {
     color: COLORS.primary,
     fontSize: SF(18),
-    fontFamily: Fonts.MaisonBold,
+    fontFamily: Fonts.MaisonRegular,
   },
   graphViewStyle: {
     backgroundColor: COLORS.white,
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: Dimensions.get('window').width * 0.36,
+    width: Dimensions.get('window').width * 0.42,
   },
   userDetailView: {
     flex: 1,
@@ -418,8 +418,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingVertical: 30,
     borderRadius: 10,
-    marginTop: 20,
-    width: Dimensions.get('window').width / ms(1.9),
+    marginTop: ms(10),
     backgroundColor: COLORS.textInputBackground,
   },
   userImageStyle: {
@@ -435,6 +434,7 @@ const styles = StyleSheet.create({
   },
   userNameView: {
     paddingLeft: 10,
+    flex: 1,
   },
   orderproductView: {
     borderWidth: 1,
@@ -474,8 +474,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
     backgroundColor: COLORS.primary,
-    // marginLeft: 10,
-    paddingHorizontal: 10,
+    marginLeft: 10,
+    paddingHorizontal: ms(12),
     flex: 1,
   },
   acceptTextStyle: {
@@ -491,7 +491,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: COLORS.primary,
     borderRadius: 5,
-    paddingHorizontal: 20,
+    paddingHorizontal: ms(10),
   },
   declineTextStyle: {
     textAlign: 'center',
@@ -507,13 +507,12 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   orderandPriceView: {
-    // justifyContent: 'space-around',
     flexDirection: 'row',
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.textInputBackground,
     position: 'absolute',
-    bottom: ms(10),
+    bottom: ms(0),
     alignSelf: 'center',
-    width: Dimensions.get('window').width * 0.36,
+    width: Dimensions.get('window').width * 0.42,
     paddingTop: 15,
     paddingHorizontal: 10,
   },
@@ -525,9 +524,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(30),
   },
   map: {
-    height: Dimensions.get('screen').height,
-    height: '100%',
+    // height: Dimensions.get('screen').height,
     width: '100%',
+    height: '100%',
   },
   backButtonView: {
     position: 'absolute',
@@ -563,6 +562,21 @@ const styles = StyleSheet.create({
   },
   flexDirectionRow: {
     flexDirection: 'row',
+  },
+  expandButtonStyle: {
+    backgroundColor: COLORS.primary,
+    position: 'absolute',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5,
+    padding: 10,
+    alignSelf: 'flex-end',
+    top: 20,
+    right: 20,
+  },
+  detailMap: {
+    height: '100%',
+    width: '100%',
   },
 });
 

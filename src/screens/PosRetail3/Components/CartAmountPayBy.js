@@ -178,8 +178,6 @@ export const CartAmountPayBy = ({
         tip: selectedTipAmount.toString(),
         cartId: cartData.id,
       };
-
-      console.log('data of tip', data);
       const res = await dispatch(updateCartByTip(data));
 
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
@@ -759,9 +757,6 @@ export const CartAmountPayBy = ({
             <Text style={styles._thankyou}>Thank You</Text>
             <Image source={barcode} style={styles._barCodeImage} />
             <Text style={styles._barCode}>ABC-abc-1234</Text>
-            <TouchableOpacity onPress={qrcodePaymentstatus}>
-              <Text>check status</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </View>

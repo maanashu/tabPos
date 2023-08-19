@@ -8,6 +8,7 @@ import {
   Platform,
   TouchableOpacity,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
@@ -42,6 +43,11 @@ import {
   Fonts,
   scooter,
   deliveryDriver,
+  backArrow2,
+  barcode,
+  cross,
+  cancleIc,
+  crossButton,
 } from '@/assets';
 import {
   acceptOrder,
@@ -54,7 +60,7 @@ import {
 } from '@/actions/DeliveryAction';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
-import { COLORS, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import Header from './Components/Header';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import OrderDetail from './Components/OrderDetail';
@@ -76,6 +82,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES as ANALYTICSTYPES } from '@/Types/AnalyticsTypes';
 
 import styles from './styles';
+import moment from 'moment';
 
 export function DeliveryOrders2({ route }) {
   var isViewAll;
@@ -483,7 +490,7 @@ export function DeliveryOrders2({ route }) {
         </View>
       </View>
 
-      <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
+      <View style={[styles.orderDetailStyle, { width: SW(47) }]}>
         <Text style={styles.timeTextStyle}>
           {item?.invoice?.delivery_date ? item?.invoice?.delivery_date : ''}
         </Text>
@@ -512,23 +519,7 @@ export function DeliveryOrders2({ route }) {
 
   const headerComponent = () => (
     <View style={styles.headingRowStyle}>
-      <Text style={styles.ordersToReviewText}>
-        {openShippingOrders == '0'
-          ? strings.shipingOrder.orderOfReview
-          : openShippingOrders == '1'
-          ? 'Orders to Accepted'
-          : openShippingOrders == '2'
-          ? 'Orders to Prepared'
-          : openShippingOrders == '3'
-          ? 'Ready To Pickup'
-          : openShippingOrders == '4'
-          ? 'Picked Up orders'
-          : openShippingOrders == '5'
-          ? 'Delivered'
-          : openShippingOrders == '6'
-          ? 'Rejected/Cancelled'
-          : 'Returned'}
-      </Text>
+      <Text style={styles.ordersToReviewText}>{getHeaderText(openShippingOrders)}</Text>
 
       {getDeliveryData?.getReviewDef?.length > 0 ? (
         <TouchableOpacity onPress={() => setViewAllOrder(true)} style={styles.viewAllButtonStyle}>
@@ -697,17 +688,64 @@ export function DeliveryOrders2({ route }) {
       case '2':
         return 'Orders to Prepared';
       case '3':
-        return 'Ready To Pickup';
+        return 'Assigned Orders to driver';
       case '4':
-        return 'Picked Up orders';
+        return 'Orders Picked Up';
       case '5':
-        return 'Delivered';
+        return 'Orders Delivered';
       case '6':
-        return 'Rejected/Cancelled';
+        return 'Orders Rejected/Cancelled';
       default:
-        return 'Returned';
+        return 'Delivery Returns';
     }
   };
+
+  const changeMapState = (state) => {
+    if (state) {
+      setTrackingView(true);
+    }
+  };
+
+  const renderOrderDetailProducts = ({ item, index }) => (
+    <View
+      style={[
+        styles.orderproductView,
+        { width: Dimensions.get('window').width / 3.3, paddingVertical: ms(10) },
+      ]}
+    >
+      <Text
+        style={{
+          fontFamily: Fonts.Regular,
+          fontSize: ms(6),
+          color: COLORS.dark_grey,
+        }}
+      >
+        {item?.qty ?? '0'}
+      </Text>
+      <View>
+        <Text
+          style={{
+            fontFamily: Fonts.Regular,
+            fontSize: ms(6),
+            color: COLORS.dark_grey,
+          }}
+        >
+          {item?.product_name ?? 'jgssjdgjsdhsdsdj'}
+        </Text>
+      </View>
+
+      <Text
+        style={{
+          fontFamily: Fonts.Regular,
+          fontSize: ms(6),
+          color: COLORS.dark_grey,
+        }}
+      >
+        {item?.price ?? '00'}
+      </Text>
+    </View>
+  );
+
   return (
     <ScreenWrapper>
       {!trackingView ? (
@@ -747,6 +785,10 @@ export function DeliveryOrders2({ route }) {
                         openShippingOrders,
                         trackHandler,
                         isProductDetailLoading,
+                        latitude,
+                        longitude,
+                        oneOrderDetail,
+                        changeMapState,
                       }}
                     />
                   </>
@@ -854,71 +896,353 @@ export function DeliveryOrders2({ route }) {
           ) : null}
         </>
       ) : (
-        <>
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity
-              onPress={() => {
-                setViewAllOrder(true);
-                setTrackingView(false);
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backView}>
+            <Image source={backArrow2} style={styles.backImageStyle} />
+            <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
+              {strings.deliveryOrders.back}
+            </Text>
+          </TouchableOpacity>
+
+          <View style={styles.firstRowStyle}>
+            <View
+              style={{
+                width: Dimensions.get('window').width / 3,
+                marginTop: ms(10),
+                backgroundColor: COLORS.white,
+                borderRadius: 15,
+                paddingBottom: 80,
               }}
-              style={styles.backButtonView}
             >
-              <View style={styles.rowView}>
-                <Image source={backArrow} resizeMode="contain" style={styles.backIconStyle} />
-                <Text style={styles.backTextStyle}>{'Back'}</Text>
+              <Text
+                style={{
+                  fontFamily: Fonts.SemiBold,
+                  fontSize: ms(12),
+                  color: COLORS.dark_grey,
+                  paddingTop: ms(15),
+                  textAlign: 'center',
+                }}
+              >
+                {userDetail?.user_details?.firstname ?? 'sdfsd'}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: Fonts.Regular,
+                  fontSize: ms(9),
+                  color: COLORS.dark_grey,
+                  paddingTop: ms(5),
+                  textAlign: 'center',
+                }}
+              >
+                {userDetail?.user_details?.current_address?.street_address +
+                  ', ' +
+                  userDetail?.user_details?.current_address?.city +
+                  ', ' +
+                  userDetail?.user_details?.current_address?.country +
+                  ' ' +
+                  userDetail?.user_details?.current_address?.zipcode ?? 'sdfsd'}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: Fonts.Regular,
+                  fontSize: ms(9),
+                  color: COLORS.dark_grey,
+                  paddingTop: ms(5),
+                  textAlign: 'center',
+                }}
+              >
+                {userDetail?.user_details?.phone_number ?? 'sdfsd'}
+              </Text>
+              <Spacer space={SH(40)} />
+              <FlatList data={orderDetail} renderItem={renderOrderDetailProducts} />
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <View
+                  style={[
+                    styles.subTotalView,
+                    { backgroundColor: COLORS.white, width: Dimensions.get('window').width / 3 },
+                  ]}
+                >
+                  <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
+                    <Text style={styles.countTextStyle}>{strings.deliveryOrders.subTotal}</Text>
+                    <Text
+                      style={[
+                        styles.totalTextStyle,
+                        { paddingTop: 0, fontFamily: Fonts.MaisonBold },
+                      ]}
+                    >
+                      {userDetail?.actual_amount
+                        ? Number(userDetail?.actual_amount).toFixed(2)
+                        : '0'}
+                    </Text>
+                  </View>
+
+                  <View style={styles.orderDetailsView}>
+                    <Text style={styles.countTextStyle}>{'Discount ( MIDApril100)'}</Text>
+                    <View style={styles.flexDirectionRow}>
+                      <Text style={styles.totalTextStyle2}>{'$'}</Text>
+                      <Text
+                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                      >
+                        {userDetail?.discount ? Number(userDetail?.discount).toFixed(2) : '0'}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.orderDetailsView}>
+                    <Text style={styles.countTextStyle}>{'Shipping Charges'}</Text>
+                    <View style={styles.flexDirectionRow}>
+                      <Text style={styles.totalTextStyle2}>{'$'}</Text>
+                      <Text
+                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                      >
+                        {'0.00'}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderColor: COLORS.solidGrey,
+                      borderStyle: 'dashed',
+                      marginTop: ms(5),
+                    }}
+                  />
+                  <View style={styles.orderDetailsView}>
+                    <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
+                    <View style={styles.flexDirectionRow}>
+                      <Text
+                        style={[
+                          styles.totalTextStyle2,
+                          {
+                            fontFamily: Fonts.MaisonBold,
+                            fontSize: SF(13),
+                            color: COLORS.solid_grey,
+                          },
+                        ]}
+                      >
+                        {'$'}
+                      </Text>
+                      <Text style={[styles.totalText, { paddingTop: 0 }]}>
+                        {Number(userDetail?.payable_amount).toFixed(2)}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <Spacer space={SH(15)} />
+                </View>
               </View>
-            </TouchableOpacity>
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              showCompass
-              region={{
-                latitude: latitude,
-                longitude: longitude,
-                latitudeDelta: 0.0992,
-                longitudeDelta: 0.0421,
+
+              <View
+                style={{
+                  alignSelf: 'flex-start',
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+                  paddingLeft: 15,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: Fonts.Regular,
+                    fontSize: ms(9),
+                    color: COLORS.dark_grey,
+                  }}
+                >
+                  {'Payment Option: '}
+                </Text>
+                <Text
+                  style={{ fontFamily: Fonts.SemiBold, fontSize: ms(9), color: COLORS.dark_grey }}
+                >
+                  {userDetail?.mode_of_payment?.toUpperCase()}
+                </Text>
+              </View>
+
+              <Text
+                style={{
+                  paddingLeft: 15,
+                  fontFamily: Fonts.Regular,
+                  fontSize: ms(9),
+                  paddingTop: ms(5),
+                  color: COLORS.dark_grey,
+                }}
+              >
+                {moment(userDetail?.invoice?.delivery_date).format('llll')}
+              </Text>
+
+              <Text
+                style={{
+                  paddingLeft: 15,
+                  fontFamily: Fonts.Regular,
+                  fontSize: ms(9),
+                  paddingTop: ms(5),
+                  color: COLORS.dark_grey,
+                }}
+              >
+                {'Walk-In'}
+              </Text>
+
+              <Text
+                style={{
+                  paddingLeft: 15,
+                  fontFamily: Fonts.Regular,
+                  fontSize: ms(9),
+                  paddingTop: ms(5),
+                  color: COLORS.dark_grey,
+                }}
+              >
+                {`Invoice No. #${userDetail?.invoice?.invoice_id}`}
+              </Text>
+
+              <Text
+                style={{
+                  paddingLeft: 15,
+                  fontFamily: Fonts.Regular,
+                  fontSize: ms(9),
+                  paddingTop: ms(5),
+                  color: COLORS.dark_grey,
+                }}
+              >
+                {`POS No. #Front-CC01`}
+              </Text>
+
+              <Text
+                style={{
+                  paddingLeft: 15,
+                  fontFamily: Fonts.Regular,
+                  fontSize: ms(9),
+                  paddingTop: ms(5),
+                  color: COLORS.dark_grey,
+                }}
+              >
+                {`User ID: ****128`}
+              </Text>
+
+              <Spacer space={SH(45)} />
+              <Text
+                style={{
+                  fontFamily: Fonts.MaisonBold,
+                  fontSize: ms(16),
+                  textAlign: 'center',
+                  color: COLORS.dark_grey,
+                }}
+              >
+                {`Thank You`}
+              </Text>
+
+              <Spacer space={SH(15)} />
+              <Image source={barcode} style={{ alignSelf: 'center', height: 50 }} />
+
+              {/* <Spacer space={SH(5)} /> */}
+              <Text
+                style={{
+                  fontFamily: Fonts.Bold,
+                  fontSize: ms(16),
+                  textAlign: 'center',
+                  color: COLORS.primary,
+                }}
+              >
+                {`JOBR`}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                width: Dimensions.get('window').width / 2.2,
+                marginTop: ms(10),
+                borderRadius: 15,
               }}
-              initialRegion={{
-                latitude: latitude ?? 0.0,
-                longitude: longitude ?? 0.0,
-                latitudeDelta: 0.0992,
-                longitudeDelta: 0.0421,
-              }}
-              style={styles.map}
             >
-              <MapViewDirections
-                key={location?.latitude}
-                origin={{
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                showCompass
+                region={{
                   latitude: latitude,
                   longitude: longitude,
+                  latitudeDelta: 0.0992,
+                  longitudeDelta: 0.0421,
                 }}
-                destination={{
-                  latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
-                  longitude: oneOrderDetail?.getOrderData?.coordinates?.[1],
+                initialRegion={{
+                  latitude: latitude ?? 0.0,
+                  longitude: longitude ?? 0.0,
+                  latitudeDelta: 0.0992,
+                  longitudeDelta: 0.0421,
                 }}
-                apikey={GOOGLE_MAP.API_KEYS}
-                strokeWidth={6}
-                strokeColor={COLORS.primary}
-              />
-              <Marker coordinate={sourceCoordinate}>
-                <View>
-                  <Image
-                    source={scooter}
-                    style={{ height: ms(30), width: ms(30), resizeMode: 'contain' }}
-                  />
-                </View>
-              </Marker>
-              <Marker coordinate={destinationCoordinate}>
-                <View>
-                  <Image
-                    source={deliveryHomeIcon}
-                    style={{ height: ms(30), width: ms(30), resizeMode: 'contain' }}
-                  />
-                </View>
-              </Marker>
-            </MapView>
-            <ShipmentTracking props={{ status: oneOrderDetail?.getOrderData?.status, data: '' }} />
+                style={styles.detailMap}
+              >
+                <MapViewDirections
+                  key={location?.latitude}
+                  origin={{
+                    latitude: latitude,
+                    longitude: longitude,
+                  }}
+                  destination={{
+                    latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
+                    longitude: oneOrderDetail?.getOrderData?.coordinates?.[1],
+                  }}
+                  apikey={GOOGLE_MAP.API_KEYS}
+                  strokeWidth={6}
+                  strokeColor={COLORS.primary}
+                />
+                <Marker coordinate={sourceCoordinate}>
+                  <View>
+                    <Image
+                      source={scooter}
+                      style={{ height: ms(30), width: ms(30), resizeMode: 'contain' }}
+                    />
+                  </View>
+                </Marker>
+                <Marker coordinate={destinationCoordinate}>
+                  <View>
+                    <Image
+                      source={deliveryHomeIcon}
+                      style={{ height: ms(30), width: ms(30), resizeMode: 'contain' }}
+                    />
+                  </View>
+                </Marker>
+              </MapView>
+              <TouchableOpacity
+                onPress={() => {
+                  setTrackingView(false),
+                    dispatch(getReviewDefault(openShippingOrders, sellerID, 1));
+                }}
+                style={[
+                  styles.expandButtonStyle,
+                  { borderColor: COLORS.dark_grey, borderWidth: 1, backgroundColor: COLORS.white },
+                ]}
+              >
+                <Image source={crossButton} style={styles.rightIconStyle} />
+                <Text
+                  style={[
+                    styles.acceptTextStyle,
+                    { color: COLORS.dark_grey, paddingHorizontal: 12 },
+                  ]}
+                >
+                  {'Close'}
+                </Text>
+              </TouchableOpacity>
+
+              <ShipmentTracking props={{ status: oneOrderDetail?.getOrderData?.status }} />
+            </View>
+
+            <RightSideBar
+              {...{
+                deliveryDrawer,
+                openShippingOrders,
+                isOpenSideBarDrawer,
+                renderShippingDrawer,
+                setOpenShippingOrders,
+                renderDrawer,
+                setIsOpenSideBarDrawer,
+              }}
+            />
           </View>
-        </>
+        </View>
       )}
     </ScreenWrapper>
   );

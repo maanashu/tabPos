@@ -104,6 +104,8 @@ export function MainScreen({
   }));
   const [productServiceType, setProductServiceType] = useState(1);
   const [cateoryView, setCateoryView] = useState(false);
+  const [productFilter, setProductFilter] = useState(0);
+  const [serviceFilter, setServiceFilter] = useState(0);
 
   const cartStatusHandler = () => {
     const data =
@@ -493,18 +495,30 @@ export function MainScreen({
                           >
                             {'Filter'}
                           </Text>
-                          <Image
-                            source={filter}
-                            style={
-                              filterCon
-                                ? [styles.productImageStyle, { tintColor: COLORS.primary }]
-                                : styles.productImageStyle
-                            }
-                          />
+                          <View>
+                            <Image
+                              source={filter}
+                              style={
+                                filterCon
+                                  ? [styles.productImageStyle, { tintColor: COLORS.primary }]
+                                  : styles.productImageStyle
+                              }
+                            />
+                            {productFilter > 0 ? (
+                              <View style={styles.filterBadge}>
+                                <Text style={styles.filterBadgeText}>{productFilter}</Text>
+                              </View>
+                            ) : null}
+                          </View>
                         </TouchableOpacity>
                         {filterCon ? (
                           // <View style={styles.categoryFilterCon}>
-                          <FilterDropDown data={items} sellerid={sellerID} />
+                          <FilterDropDown
+                            data={items}
+                            sellerid={sellerID}
+                            productFilterCount={setProductFilter}
+                            // productArrayLength={() => setProductfilterLength(productfilterLength)}
+                          />
                         ) : // </View>
                         null}
                       </View>
@@ -527,18 +541,29 @@ export function MainScreen({
                           >
                             {'Filter'}
                           </Text>
-                          <Image
-                            source={filter}
-                            style={
-                              serviceFilterCon
-                                ? [styles.productImageStyle, { tintColor: COLORS.primary }]
-                                : styles.productImageStyle
-                            }
-                          />
+                          <View>
+                            <Image
+                              source={filter}
+                              style={
+                                serviceFilterCon
+                                  ? [styles.productImageStyle, { tintColor: COLORS.primary }]
+                                  : styles.productImageStyle
+                              }
+                            />
+                            {serviceFilter > 0 ? (
+                              <View style={styles.filterBadge}>
+                                <Text style={styles.filterBadgeText}>{serviceFilter}</Text>
+                              </View>
+                            ) : null}
+                          </View>
                         </TouchableOpacity>
                         {serviceFilterCon ? (
                           // <View style={styles.categoryFilterCon}>
-                          <ServiceFilterDropDown data={items} sellerid={sellerID} />
+                          <ServiceFilterDropDown
+                            data={items}
+                            sellerid={sellerID}
+                            serviceFilterCount={setServiceFilter}
+                          />
                         ) : // </View>
                         null}
                       </View>
@@ -558,14 +583,16 @@ export function MainScreen({
                   keyExtractor={(item, index) => index}
                   numColumns={7}
                   contentContainerStyle={{
-                    flexGrow: 1,
+                    // flexGrow: 1,
                     justifyContent: 'space-between',
                     zIndex: -99,
                   }}
                   scrollEnabled={true}
                   ListEmptyComponent={() => (
                     <View style={styles.noProductText}>
-                      <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>Loading...</Text>
+                      <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                        No Data found
+                      </Text>
                     </View>
                   )}
                   style={{ zIndex: -99 }}

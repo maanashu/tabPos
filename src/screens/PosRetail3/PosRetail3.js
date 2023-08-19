@@ -362,6 +362,7 @@ export function PosRetail3() {
         TYPES.GET_ALL_SERVICE_CART,
         TYPES.CHANGE_STATUS_SERVICE_CART,
         TYPES.ADD_SERVICE_DISCOUNT,
+        TYPES.GET_MAIN_SERVICES,
       ],
       state
     )
