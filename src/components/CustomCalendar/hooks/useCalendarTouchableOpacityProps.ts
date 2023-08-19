@@ -28,7 +28,7 @@ export function useCalendarTouchableOpacityProps<T extends ICalendarEventBase>({
   const plainJsEvent = React.useMemo(
     () => ({
       ...event,
-      ...allEvents,
+      allEvents,
       start: dayjs(event.start).toDate(),
       end: dayjs(event.end).toDate(),
     }),
