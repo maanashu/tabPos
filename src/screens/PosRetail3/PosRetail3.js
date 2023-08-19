@@ -553,7 +553,7 @@ export function PosRetail3() {
                 />
                 <Spacer space={SH(10)} />
                 <TouchableOpacity
-                  style={[styles.holdCartCon, styles.addNotesBtn]}
+                  style={styles.addDiscountcon}
                   onPress={() => saveDiscountHandler()}
                 >
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
@@ -576,10 +576,7 @@ export function PosRetail3() {
                   multiline={true}
                 />
                 <Spacer space={SH(15)} />
-                <TouchableOpacity
-                  style={[styles.holdCartCon, styles.addNotesBtn]}
-                  onPress={() => saveNotesHandler()}
-                >
+                <TouchableOpacity style={styles.addDiscountcon} onPress={() => saveNotesHandler()}>
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
                 </TouchableOpacity>
               </View>

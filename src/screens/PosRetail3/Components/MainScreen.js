@@ -757,7 +757,7 @@ export function MainScreen({
                     {numPadModal ? (
                       <View
                         style={{
-                          width: ms(300),
+                          width: ms(240),
                           height: ms(280),
                           position: 'absolute',
                           right: 60,
@@ -891,7 +891,7 @@ export function MainScreen({
                     {serviceNumPadModal ? (
                       <View
                         style={{
-                          width: ms(300),
+                          width: ms(240),
                           height: ms(280),
                           position: 'absolute',
                           right: 60,

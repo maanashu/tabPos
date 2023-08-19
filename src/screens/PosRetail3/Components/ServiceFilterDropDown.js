@@ -191,18 +191,21 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount, backfilter
 
   const renderDetailCategories = ({ item, index }) => {
     return (
-      <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+      <TouchableOpacity
+        style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}
+        onPress={() => changeCheckInput(index)}
+      >
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => changeCheckInput(index)}>
+          <View>
             <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         ) : (
-          <TouchableOpacity onPress={() => changeCheckInput(index)}>
+          <View>
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         )}
         <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -255,18 +258,21 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount, backfilter
 
   const renderDetailSubCategories = ({ item, index }) => {
     return (
-      <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+      <TouchableOpacity
+        style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}
+        onPress={() => changeCheckSubInput(index)}
+      >
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => changeCheckSubInput(index)}>
+          <View>
             <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         ) : (
-          <TouchableOpacity onPress={() => changeCheckSubInput(index)}>
+          <View>
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         )}
         <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -525,7 +531,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
     position: 'absolute',
     right: 0,
-    top: 70,
+    top: Platform.OS === 'ios' ? 60 : 70,
     borderRadius: 5,
     width: windowWidth * 0.3,
     height: Platform.OS === 'android' ? windowHeight * 0.76 : windowHeight * 0.8,
@@ -541,7 +547,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.gerySkies,
     borderRadius: 5,
-    width: Platform.OS === 'ios' ? ms(90) : ms(110),
+    width: Platform.OS === 'ios' ? ms(82) : ms(110),
     height: ms(32),
     justifyContent: 'center',
     alignItems: 'center',
@@ -554,7 +560,7 @@ const styles = StyleSheet.create({
   ApplyButton: {
     borderColor: COLORS.gerySkies,
     borderRadius: 5,
-    width: Platform.OS === 'ios' ? ms(90) : ms(110),
+    width: Platform.OS === 'ios' ? ms(82) : ms(110),
     height: ms(32),
     justifyContent: 'center',
     alignItems: 'center',

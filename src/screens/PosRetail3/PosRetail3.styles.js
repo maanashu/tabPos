@@ -363,6 +363,17 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
   },
+  addDiscountcon: {
+    width: windowWidth * 0.11,
+    height: SH(38),
+    borderRadius: 5,
+    backgroundColor: COLORS.white,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.primary,
+    alignSelf: 'center',
+  },
   holdCartPad: {
     width: windowWidth * 0.03,
     height: SH(38),
@@ -419,7 +430,8 @@ export const styles = StyleSheet.create({
   addDiscountCon: {
     backgroundColor: COLORS.blue_shade,
     height: Platform.OS === 'android' ? SH(40) : SH(45),
-    width: windowWidth * 0.1,
+    // width: windowWidth * 0.1,
+    width: ms(68),
     borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'center',
