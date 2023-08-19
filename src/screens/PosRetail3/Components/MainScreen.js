@@ -96,11 +96,11 @@ export function MainScreen({
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
 
-  const cartLength = cartData?.poscart_products?.length;
-  // const cartLength = CART_LENGTH;
-  const serviceCartData = getRetailData?.getserviceCart;
-   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
-  // const serviceCartLength = CART_LENGTH;
+  // const cartLength = cartData?.poscart_products?.length;
+   const cartLength = CART_LENGTH;
+   const serviceCartData = getRetailData?.getserviceCart;
+  //  const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
+   const serviceCartLength = CART_LENGTH;
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
   const [search, setSearch] = useState('');
@@ -272,7 +272,7 @@ export function MainScreen({
   const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
 
   const onClickAddCart = (item, index,cartQty) => {
-    
+      //-------------New Inprogress_CODE------------
     // const mainProductArray = getRetailData?.getMainProduct;
     // const cartArray = selectedCartItem;
 
@@ -290,9 +290,7 @@ export function MainScreen({
     //   } else {
     //     cartArray[existingItemIndex].qty == cartQty+ 1;
     //   }
-    //    console.log("Before=-=-=-",JSON.stringify(cartArray));
     //    setSelectedCartItems(cartArray);
-    //    console.log("AFter=-=-=-",JSON.stringify(cartArray));
     //    mainProductArray.data[index].cart_qty += 1;
     //    dispatch(getMainProductSuccess(mainProductArray));
        
@@ -463,6 +461,7 @@ export function MainScreen({
           style={styles.addToCart}
           resizeMode={FastImage.resizeMode.contain}
         />
+        {/* -----New_In progress_CODE------- */}
           {/* {item?.cart_qty>0 &&
            <View 
            style={styles.productBadge}>
@@ -477,6 +476,7 @@ export function MainScreen({
             </View>
           } */}
           
+           {/* -----OLD_CODE------- */}
             {isProductMatchArray ? (
               <View style={styles.productBadge}>
                 <Text style={styles.productBadgeText}>{cartAddQty}</Text>
