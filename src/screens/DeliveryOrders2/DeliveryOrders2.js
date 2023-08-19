@@ -1226,10 +1226,8 @@ export function DeliveryOrders2({ route }) {
                   {'Close'}
                 </Text>
               </TouchableOpacity>
-
               <ShipmentTracking props={{ status: oneOrderDetail?.getOrderData?.status }} />
             </View>
-
             <RightSideBar
               {...{
                 deliveryDrawer,

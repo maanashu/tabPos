@@ -89,7 +89,9 @@ export function PosRetail3() {
   const [serviceDiscountCode, setServiceDiscountCode] = useState(
     getServicecart?.discount_flag === 'code' ? getServicecart?.discount_value : ''
   );
-  const [serviceDescriptionDis, setServiceDescriptionDis] = useState(getServicecart?.discount_desc);
+  const [serviceDescriptionDis, setServiceDescriptionDis] = useState(
+    getServicecart?.discount_desc ?? 'Discount'
+  );
   const [serviceValue, setServiceValue] = useState(
     getServicecart?.discount_flag === 'amount'
       ? 'amount'
@@ -111,7 +113,9 @@ export function PosRetail3() {
 
   useEffect(() => {
     setServiceNotes(getServicecart?.notes);
-    setServiceDescriptionDis(getServicecart?.discount_desc);
+    setServiceDescriptionDis(
+      getServicecart?.discount_desc === null ? 'Discount' : getServicecart?.discount_desc
+    );
     setServicePercentageCheck(getServicecart?.discount_flag === 'percentage' ? true : false);
     setServiceAmountCheck(getServicecart?.discount_flag === 'amount' ? true : false);
     setServiceDiscountCheck(getServicecart?.discount_flag === 'code' ? true : false);
@@ -163,9 +167,11 @@ export function PosRetail3() {
       alert(strings.posSale.discountType);
     } else if (!serviceAmountDis && !servicePercentDis && !serviceDiscountCode) {
       alert(strings.posSale.enterfield);
-    } else if (!serviceDescriptionDis) {
-      alert(strings.posSale.selectDisTitle);
-    } else {
+    }
+    // else if (!serviceDescriptionDis) {
+    //   alert(strings.posSale.selectDisTitle);
+    // }
+    else {
       const data = {
         amountDis: serviceAmountDis,
         percentDis: servicePercentDis,
@@ -203,6 +209,7 @@ export function PosRetail3() {
       ? 'code'
       : ''
   );
+
   const [amountCheck, setAmountCheck] = useState(
     getCart?.discount_flag === 'amount' ? true : false
   );
@@ -221,7 +228,7 @@ export function PosRetail3() {
   }, [isFocus]);
   useEffect(() => {
     setNotes(getCart?.notes);
-    setDescriptionDis(getCart?.discount_desc);
+    setDescriptionDis(getCart?.discount_desc === null ? 'Discount' : getCart?.discount_desc);
     setPercentageCheck(getCart?.discount_flag === 'percentage' ? true : false);
     setAmountCheck(getCart?.discount_flag === 'amount' ? true : false);
     setDiscountCheck(getCart?.discount_flag === 'code' ? true : false);
@@ -256,41 +263,18 @@ export function PosRetail3() {
   };
   const saveDiscountHandler = () => {
     if (amountDis > finalAmountForDiscount || percentDis > finalAmountForDiscount) {
-      Toast.show({
-        text2: 'Please enter discount less then total amount',
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
+      alert('Please enter discount less then total amount');
     } else if (!cartID2) {
-      Toast.show({
-        text2: strings.posSale.addItemCart,
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
+      alert(Pleastrings.posSale.addItemCart);
     } else if (value === '') {
-      Toast.show({
-        text2: strings.posSale.discountType,
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
+      alert(strings.posSale.discountType);
     } else if (!amountDis && !percentDis && !discountCode) {
-      Toast.show({
-        text2: strings.posSale.enterfield,
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
-    } else if (!descriptionDis) {
-      Toast.show({
-        text2: strings.posSale.selectDisTitle,
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
-    } else {
+      alert(strings.posSale.enterfield);
+    }
+    //  else if (!descriptionDis) {
+    //   alert(strings.posSale.selectDisTitle);
+    // }
+    else {
       const data = {
         amountDis: amountDis,
         percentDis: percentDis,
@@ -569,7 +553,7 @@ export function PosRetail3() {
                 />
                 <Spacer space={SH(10)} />
                 <TouchableOpacity
-                  style={[styles.holdCartCon, styles.addNotesBtn]}
+                  style={styles.addDiscountcon}
                   onPress={() => saveDiscountHandler()}
                 >
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
@@ -592,10 +576,7 @@ export function PosRetail3() {
                   multiline={true}
                 />
                 <Spacer space={SH(15)} />
-                <TouchableOpacity
-                  style={[styles.holdCartCon, styles.addNotesBtn]}
-                  onPress={() => saveNotesHandler()}
-                >
+                <TouchableOpacity style={styles.addDiscountcon} onPress={() => saveNotesHandler()}>
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
                 </TouchableOpacity>
               </View>

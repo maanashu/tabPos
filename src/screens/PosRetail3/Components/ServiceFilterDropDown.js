@@ -38,10 +38,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
 
-export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
+export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount, backfilterValue }) => {
   const retailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const dispatch = useDispatch();
+  const [dummyState, setDummyState] = useState();
 
   // category search
   const [categoryData, setCategoryData] = useState();
@@ -65,21 +66,60 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
   const [selectedBrandArray, setSelectedBrandArray] = useState([]);
 
   // selected filter length for badge
-  const multipleArrayLength =
+  const serviceArrayLength =
     selectedCategoryArray?.length + selectedBrandArray?.length + selectedSubCategoryArray?.length;
+  console.log('serviceArrayLength', serviceArrayLength);
 
-  useEffect(() => {
-    dispatch(getServiceCategory(sellerid, search));
-    dispatch(getServiceSubCategory(sellerid, searchSubCategory));
-    dispatch(getAllPosUsers(sellerid, searchBrand));
-  }, [
-    debouncedValue,
-    debouncedSubValue,
-    debouncedBrandValue,
-    search,
-    searchSubCategory,
-    searchBrand,
-  ]);
+  const multipleArrayLength =
+    selectedCategoryArray?.length > 0 ||
+    selectedBrandArray?.length > 0 ||
+    selectedSubCategoryArray?.length > 0;
+
+  // useEffect(() => {
+  //   dispatch(getServiceCategory(sellerid, search));
+  //   dispatch(getServiceSubCategory(sellerid, searchSubCategory));
+  //   dispatch(getAllPosUsers(sellerid, searchBrand));
+  // }, [
+  //   debouncedValue,
+  //   debouncedSubValue,
+  //   debouncedBrandValue,
+  //   search,
+  //   searchSubCategory,
+  //   searchBrand,
+  // ]);
+
+  //serviceCategory search function
+  const serviceCategorySearch = (search) => {
+    setSearch(search);
+    setCategoryOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getServiceCategory(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getServiceCategory(sellerid));
+    }
+  };
+
+  //serviceSubCategory search function
+  const serviceSubCategorySearch = (search) => {
+    setSearchSubCategory(search);
+    setSubCategoryOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getServiceSubCategory(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getServiceSubCategory(sellerid));
+    }
+  };
+
+  //posUser search function
+  const brandSearch = (search) => {
+    setSearchBrand(search);
+    setBrandOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getAllPosUsers(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getAllPosUsers(sellerid));
+    }
+  };
 
   useEffect(() => {
     setCategoryData(
@@ -101,11 +141,11 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
     dispatch(getAllPosUsers(sellerid));
   };
 
-  useEffect(() => {
-    dispatch(getServiceCategory(sellerid));
-    dispatch(getServiceSubCategory(sellerid));
-    dispatch(getAllPosUsers(sellerid));
-  }, [!search, !searchSubCategory, !searchBrand]);
+  // useEffect(() => {
+  //   dispatch(getServiceCategory(sellerid));
+  //   dispatch(getServiceSubCategory(sellerid));
+  //   dispatch(getAllPosUsers(sellerid));
+  // }, [!search, !searchSubCategory, !searchBrand]);
 
   const isOrderLoading = useSelector((state) =>
     isLoadingSelector(
@@ -123,10 +163,7 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
           value={search}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchCategory}
-          onChangeText={(text) => {
-            setSearch(text);
-            setCategoryOpenDropDown(true);
-          }}
+          onChangeText={(search) => serviceCategorySearch(search)}
         />
         {isOrderLoading ? (
           <View style={{ paddingVertical: ms(10) }}>
@@ -154,18 +191,21 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
 
   const renderDetailCategories = ({ item, index }) => {
     return (
-      <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+      <TouchableOpacity
+        style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}
+        onPress={() => changeCheckInput(index)}
+      >
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => changeCheckInput(index)}>
+          <View>
             <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         ) : (
-          <TouchableOpacity onPress={() => changeCheckInput(index)}>
+          <View>
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         )}
         <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -190,10 +230,7 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
           value={searchSubCategory}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchSubCategory}
-          onChangeText={(text) => {
-            setSearchSubCategory(text);
-            setSubCategoryOpenDropDown(true);
-          }}
+          onChangeText={(search) => serviceSubCategorySearch(search)}
         />
 
         {isOrderLoading ? (
@@ -221,18 +258,21 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
 
   const renderDetailSubCategories = ({ item, index }) => {
     return (
-      <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+      <TouchableOpacity
+        style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}
+        onPress={() => changeCheckSubInput(index)}
+      >
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => changeCheckSubInput(index)}>
+          <View>
             <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         ) : (
-          <TouchableOpacity onPress={() => changeCheckSubInput(index)}>
+          <View>
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         )}
         <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -257,10 +297,7 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
           value={searchBrand}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchStaff}
-          onChangeText={(text) => {
-            setSearchBrand(text);
-            setBrandOpenDropDown(true);
-          }}
+          onChangeText={(search) => brandSearch(search)}
         />
 
         {isOrderLoading ? (
@@ -400,11 +437,11 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
       <View style={styles.applyFilterCon}>
         <TouchableOpacity
           style={
-            !multipleArrayLength
+            multipleArrayLength === false && backfilterValue == 0
               ? styles.clearFilterButton
               : [styles.clearFilterButton, styles.clearFilterButtonDark]
           }
-          disabled={!multipleArrayLength ? true : false}
+          disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
           onPress={() => {
             setSelectedCategoryArray([]);
             setSelectedBrandArray([]);
@@ -419,7 +456,7 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
         >
           <Text
             style={
-              !multipleArrayLength
+              multipleArrayLength === false && backfilterValue == 0
                 ? styles.clearFilterText
                 : [styles.clearFilterText, { color: COLORS.solid_grey }]
             }
@@ -429,11 +466,11 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={
-            !multipleArrayLength
+            multipleArrayLength === false && backfilterValue == 0
               ? styles.ApplyButton
               : [styles.ApplyButton, { backgroundColor: COLORS.primary }]
           }
-          disabled={!multipleArrayLength ? true : false}
+          disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
           onPress={() => {
             const ids = {
               category_ids: selectedCategoryArray.join(','),
@@ -441,7 +478,7 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount }) => {
               pos_staff_ids: selectedBrandArray.join(','),
             };
             dispatch(getMainServices(ids));
-            serviceFilterCount(multipleArrayLength);
+            serviceFilterCount(serviceArrayLength);
           }}
         >
           <Text style={styles.ApplyText}>Apply</Text>
@@ -494,7 +531,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
     position: 'absolute',
     right: 0,
-    top: 70,
+    top: Platform.OS === 'ios' ? 60 : 70,
     borderRadius: 5,
     width: windowWidth * 0.3,
     height: Platform.OS === 'android' ? windowHeight * 0.76 : windowHeight * 0.8,
@@ -510,7 +547,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.gerySkies,
     borderRadius: 5,
-    width: Platform.OS === 'ios' ? ms(90) : ms(110),
+    width: Platform.OS === 'ios' ? ms(82) : ms(110),
     height: ms(32),
     justifyContent: 'center',
     alignItems: 'center',
@@ -523,7 +560,7 @@ const styles = StyleSheet.create({
   ApplyButton: {
     borderColor: COLORS.gerySkies,
     borderRadius: 5,
-    width: Platform.OS === 'ios' ? ms(90) : ms(110),
+    width: Platform.OS === 'ios' ? ms(82) : ms(110),
     height: ms(32),
     justifyContent: 'center',
     alignItems: 'center',
