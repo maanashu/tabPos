@@ -48,6 +48,8 @@ import {
   getMainProduct,
   getMainServices,
   getOneProduct,
+  getServiceCategory,
+  getServiceSubCategory,
   getSubCategory,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -60,6 +62,7 @@ import { FilterDropDown } from './FilterDropDown';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ServiceFilterDropDown } from './ServiceFilterDropDown';
 import { NumericPad } from './NumericPad';
+import { getAllPosUsers } from '@/actions/AuthActions';
 
 export function MainScreen({
   cartScreenHandler,
@@ -105,6 +108,7 @@ export function MainScreen({
   const [productServiceType, setProductServiceType] = useState(1);
   const [cateoryView, setCateoryView] = useState(false);
   const [productFilter, setProductFilter] = useState(0);
+
   const [serviceFilter, setServiceFilter] = useState(0);
 
   const cartStatusHandler = () => {
@@ -133,6 +137,18 @@ export function MainScreen({
           };
     dispatch(changeStatusServiceCart(data));
   };
+
+  useEffect(() => {
+    dispatch(getCategory(sellerID));
+    dispatch(getSubCategory(sellerID));
+    dispatch(getBrand(sellerID));
+  }, []);
+
+  useEffect(() => {
+    dispatch(getServiceCategory(sellerID));
+    dispatch(getServiceSubCategory(sellerID));
+    dispatch(getAllPosUsers(sellerID));
+  }, []);
 
   useEffect(() => {
     setfilterMenuTitle(originalFilterData);
@@ -517,6 +533,13 @@ export function MainScreen({
                             data={items}
                             sellerid={sellerID}
                             productFilterCount={setProductFilter}
+                            backfilterValue={productFilter}
+                            // settleFunction={() => {
+                            //   dispatch(getCategory(sellerID));
+                            //   dispatch(getSubCategory(sellerID));
+                            //   dispatch(getBrand(sellerID));
+                            // }}
+
                             // productArrayLength={() => setProductfilterLength(productfilterLength)}
                           />
                         ) : // </View>
@@ -563,6 +586,7 @@ export function MainScreen({
                             data={items}
                             sellerid={sellerID}
                             serviceFilterCount={setServiceFilter}
+                            backfilterValue={serviceFilter}
                           />
                         ) : // </View>
                         null}

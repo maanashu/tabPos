@@ -32,9 +32,10 @@ import {
 } from '@/actions/RetailAction';
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
 
-export const FilterDropDown = ({ sellerid, productFilterCount }) => {
+export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue }) => {
   const retailData = useSelector(getRetail);
   const dispatch = useDispatch();
+  console.log('backfilterValue', backfilterValue);
 
   // category search
   const [categoryData, setCategoryData] = useState();
@@ -66,18 +67,61 @@ export const FilterDropDown = ({ sellerid, productFilterCount }) => {
     selectedBrandArray?.length > 0 ||
     selectedSubCategoryArray?.length > 0;
 
-  useEffect(() => {
-    dispatch(getCategory(sellerid, search));
-    dispatch(getSubCategory(sellerid, searchSubCategory));
-    dispatch(getBrand(sellerid, searchBrand));
-  }, [
-    debouncedValue,
-    debouncedSubValue,
-    debouncedBrandValue,
-    search,
-    searchSubCategory,
-    searchBrand,
-  ]);
+  console.log(multipleArrayLength);
+
+  console.log('selectedCategoryArray', selectedCategoryArray);
+  console.log('selectedSubCategoryArray', selectedSubCategoryArray);
+  console.log('selectedBrandArray', selectedBrandArray);
+
+  // useEffect(() => {
+  //   settleFunction();
+  // }, [backfilterValue == 0]);
+
+  // useEffect(() => {
+  //   dispatch(getCategory(sellerid, search));
+  //   dispatch(getSubCategory(sellerid, searchSubCategory));
+  //   dispatch(getBrand(sellerid, searchBrand));
+  // }, [
+  //   debouncedValue,
+  //   debouncedSubValue,
+  //   debouncedBrandValue,
+  //   search,
+  //   searchSubCategory,
+  //   searchBrand,
+  // ]);
+
+  // category search function
+  const categorySearch = (search) => {
+    setSearch(search);
+    setCategoryOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getCategory(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getCategory(sellerid));
+    }
+  };
+
+  //subCategory search function
+  const subCategorySearch = (search) => {
+    setSearchSubCategory(search);
+    setSubCategoryOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getSubCategory(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getSubCategory(sellerid));
+    }
+  };
+
+  //brandCategory search function
+  const brandSearch = (search) => {
+    setSearchBrand(search);
+    setBrandOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getBrand(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getBrand(sellerid));
+    }
+  };
 
   const clearInput = () => {
     dispatch(getCategory(sellerid));
@@ -99,11 +143,11 @@ export const FilterDropDown = ({ sellerid, productFilterCount }) => {
     );
   }, [retailData]);
 
-  useEffect(() => {
-    dispatch(getCategory(sellerid));
-    dispatch(getSubCategory(sellerid));
-    dispatch(getBrand(sellerid));
-  }, [!search, !searchSubCategory, !searchBrand]);
+  // useEffect(() => {
+  //   dispatch(getCategory(sellerid));
+  //   dispatch(getSubCategory(sellerid));
+  //   dispatch(getBrand(sellerid));
+  // }, []);
 
   const isOrderLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_CATEGORY, TYPES.GET_SUB_CATEGORY, TYPES.GET_BRAND], state)
@@ -118,10 +162,7 @@ export const FilterDropDown = ({ sellerid, productFilterCount }) => {
           value={search}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchCategory}
-          onChangeText={(text) => {
-            setSearch(text);
-            setCategoryOpenDropDown(true);
-          }}
+          onChangeText={(search) => categorySearch(search)}
         />
 
         {isOrderLoading ? (
@@ -191,10 +232,7 @@ export const FilterDropDown = ({ sellerid, productFilterCount }) => {
           value={searchSubCategory}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchSubCategory}
-          onChangeText={(text) => {
-            setSearchSubCategory(text);
-            setSubCategoryOpenDropDown(true);
-          }}
+          onChangeText={(search) => subCategorySearch(search)}
         />
 
         {isOrderLoading ? (
@@ -258,10 +296,7 @@ export const FilterDropDown = ({ sellerid, productFilterCount }) => {
           value={searchBrand}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchBrand}
-          onChangeText={(text) => {
-            setSearchBrand(text);
-            setBrandOpenDropDown(true);
-          }}
+          onChangeText={(search) => brandSearch(search)}
         />
 
         {isOrderLoading ? (
@@ -393,7 +428,7 @@ export const FilterDropDown = ({ sellerid, productFilterCount }) => {
       <View style={styles.applyFilterCon}>
         <TouchableOpacity
           style={
-            !multipleArrayLength
+            multipleArrayLength === false && backfilterValue == 0
               ? styles.clearFilterButton
               : [styles.clearFilterButton, styles.clearFilterButtonDark]
           }
@@ -408,11 +443,11 @@ export const FilterDropDown = ({ sellerid, productFilterCount }) => {
             clearInput();
             productFilterCount(0);
           }}
-          disabled={!multipleArrayLength ? true : false}
+          disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
         >
           <Text
             style={
-              !multipleArrayLength
+              multipleArrayLength === false && backfilterValue == 0
                 ? styles.clearFilterText
                 : [styles.clearFilterText, { color: COLORS.solid_grey }]
             }
@@ -422,11 +457,11 @@ export const FilterDropDown = ({ sellerid, productFilterCount }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={
-            !multipleArrayLength
+            multipleArrayLength === false && backfilterValue == 0
               ? styles.ApplyButton
               : [styles.ApplyButton, { backgroundColor: COLORS.primary }]
           }
-          disabled={!multipleArrayLength ? true : false}
+          disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
           onPress={() => {
             const ids = {
               category_ids: selectedCategoryArray.join(','),
