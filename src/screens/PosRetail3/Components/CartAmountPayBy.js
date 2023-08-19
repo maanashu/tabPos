@@ -58,6 +58,7 @@ import {
   createServiceOrder,
   qrcodestatus,
   qrCodeStatusSuccess,
+  Servicesqrcodestatus,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -99,6 +100,8 @@ export const CartAmountPayBy = ({
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+
+  //console.log('cart Data', JSON.stringify(cartData));
 
   const qrcodeData = useSelector(getRetail).qrKey;
 
@@ -240,7 +243,7 @@ export const CartAmountPayBy = ({
             requestId: requestId,
           };
           dispatch(requestCheck(data));
-          //Alert.alert('1  condition');
+          Alert.alert('1  condition');
           // createOrderHandler();
 
           return requestId;
@@ -248,16 +251,18 @@ export const CartAmountPayBy = ({
       }, 10000);
     } else if (requestStatus == 'success' && sendRequest) {
       cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
-      // Alert.alert('2  condition');
+      Alert.alert('2  condition');
       clearInterval(interval);
     } else if (qrStatus?.status !== 'success' && qrPopUp && sendRequest == false) {
       interval = setInterval(() => {
-        dispatch(qrcodestatus(cartData.id));
-        // Alert.alert('3 condition', sendRequest);
+        cartType == 'Service'
+          ? dispatch(Servicesqrcodestatus(cartData.id))
+          : dispatch(qrcodestatus(cartData.id));
+        Alert.alert('3 condition', sendRequest);
       }, 5000);
     } else if (qrStatus?.status == 'success' && qrPopUp && sendRequest == false) {
       cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
-
+      Alert.alert('4 condition');
       clearInterval(interval);
     }
 
@@ -627,10 +632,14 @@ export const CartAmountPayBy = ({
                         if (index == 0) {
                           setPhonePopVisible(true);
                           setPhoneNumber('');
+                          //getTipPress();
                         } else if (index == 1) {
                           setEmailModal(true);
+                          //getTipPress();
                         } else if (index == 2) {
-                          payNowHandler(), payNowByphone(selectedTipAmount);
+                          console.log('check', selectedTipAmount);
+
+                          getTipPress(), payNowHandler(), payNowByphone(selectedTipAmount);
                         }
                       }}
                       key={index}
@@ -712,7 +721,7 @@ export const CartAmountPayBy = ({
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Discount ( MIDApril100)</Text>
-              <Text style={styles._subTotalPrice}>$0.00</Text>
+              <Text style={styles._subTotalPrice}>${cartData?.amount?.discount}</Text>
             </View>
 
             <View style={styles._horizontalLine} />
@@ -796,6 +805,7 @@ export const CartAmountPayBy = ({
               setEnteredValue={setPhoneNumber}
               onClosePress={closeHandler}
               onPayNowPress={() => {
+                getTipPress();
                 // payNowHandler();
                 payNowByphone(selectedTipAmount);
                 attachUserByPhone(phoneNumber);
@@ -846,6 +856,7 @@ export const CartAmountPayBy = ({
                 <TouchableOpacity
                   style={styles.payNowButton}
                   onPress={() => {
+                    // getTipPress()
                     // payNowHandler(),
                     payNowByphone(selectedTipAmount);
                     attachUserByEmail(email);
