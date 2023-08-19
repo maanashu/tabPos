@@ -6,11 +6,13 @@ import {
   Image,
   FlatList,
   Platform,
+  Dimensions,
+  RefreshControl,
   TouchableOpacity,
   ActivityIndicator,
-  Dimensions,
 } from 'react-native';
 
+import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
@@ -33,20 +35,16 @@ import {
   timer,
   NoCard,
   returnedOrders,
-  deliveryParcel,
   returnShipping,
   deliveryShipping,
   checkedCheckboxSquare,
   deliveryorderProducts,
-  backArrow,
   deliveryHomeIcon,
   Fonts,
   scooter,
   deliveryDriver,
   backArrow2,
   barcode,
-  cross,
-  cancleIc,
   crossButton,
 } from '@/assets';
 import {
@@ -60,7 +58,7 @@ import {
 } from '@/actions/DeliveryAction';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import Header from './Components/Header';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import OrderDetail from './Components/OrderDetail';
@@ -82,7 +80,6 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES as ANALYTICSTYPES } from '@/Types/AnalyticsTypes';
 
 import styles from './styles';
-import moment from 'moment';
 
 export function DeliveryOrders2({ route }) {
   var isViewAll;
@@ -146,6 +143,7 @@ export function DeliveryOrders2({ route }) {
   const [orderId, setOrderId] = useState(getDeliveryData?.getReviewDef?.[0]?.id);
   const [trackingView, setTrackingView] = useState(false);
   const [viewAllOrder, setViewAllOrder] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (ordersList?.length > 0) {
@@ -156,6 +154,12 @@ export function DeliveryOrders2({ route }) {
       return () => clearInterval(interval);
     }
   }, []);
+
+  // useInterval(dispatch(getOrderCount(sellerID)), 2000);
+
+  // useInterval(() => {
+  //   dispatch(getOrderCount(sellerID));
+  // }, 2000);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -215,16 +219,16 @@ export function DeliveryOrders2({ route }) {
       count: getDeliveryData?.getOrderCount?.[5]?.count ?? 0,
     },
     {
-      key: '6',
+      key: '7,8',
       image: NoCard,
       title: 'Rejected/Cancelled',
-      count: getDeliveryData?.getOrderCount?.[6]?.count ?? 0,
+      count: getDeliveryData?.getOrderCount?.[7]?.count ?? 0,
     },
     {
-      key: '7',
+      key: '9',
       image: returnShipping,
       title: 'Returned',
-      count: getDeliveryData?.getOrderCount?.[7]?.count ?? 0,
+      count: 0,
     },
   ];
 
@@ -272,11 +276,15 @@ export function DeliveryOrders2({ route }) {
   useEffect(() => {
     setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
     setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
+    dispatch(getOrderData(getDeliveryData?.getReviewDef?.[0]?.id));
+    setOrderId(getDeliveryData?.getReviewDef?.[0]?.id);
   }, [viewAllOrder && getOrderDetail === 'ViewAllScreen']);
 
   useEffect(() => {
     setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
     setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
+    dispatch(getOrderData(getDeliveryData?.getReviewDef?.[0]?.id));
+    setOrderId(getDeliveryData?.getReviewDef?.[0]?.id);
   }, [openShippingOrders, viewAllOrder, getDeliveryData?.getReviewDef]);
 
   const isProductDetailLoading = useSelector((state) =>
@@ -316,57 +324,114 @@ export function DeliveryOrders2({ route }) {
   const showBadge = (item) => {
     if (item?.title === 'Delivered') {
       return (
-        <View
-          style={[
-            styles.bucketBadge,
-            { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
-          ]}
-        >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item?.image}
+            style={[
+              styles.sideBarImage,
+              {
+                tintColor: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.bucketBadge,
+              { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
+            ]}
+          >
+            <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+          </View>
         </View>
       );
     } else if (item?.title === 'Rejected/Cancelled') {
       return (
-        <View
-          style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
-        >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item?.image}
+            style={[
+              styles.sideBarImage,
+              {
+                tintColor:
+                  item?.title === 'Rejected/Cancelled' && openShippingOrders === item?.key
+                    ? COLORS.pink
+                    : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
+          >
+            <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+          </View>
         </View>
       );
     } else if (item?.title === 'Returned') {
       return (
-        <View
-          style={[
-            styles.bucketBadge,
-            {
-              backgroundColor: COLORS.yellowTweet,
-              borderColor: COLORS.yellowTweet,
-            },
-          ]}
-        >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item?.image}
+            style={[
+              styles.sideBarImage,
+              {
+                tintColor:
+                  item?.title === 'Returned' && openShippingOrders === item?.key
+                    ? COLORS.yellowTweet
+                    : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.bucketBadge,
+              {
+                backgroundColor: COLORS.yellowTweet,
+                borderColor: COLORS.yellowTweet,
+              },
+            ]}
+          >
+            <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
+          </View>
         </View>
       );
     } else {
       return (
-        <View
-          style={[
-            styles.bucketBadge,
-            {
-              backgroundColor: COLORS.white,
-              borderColor: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray,
-              borderWidth: 2,
-            },
-          ]}
-        >
-          <Text
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item?.image}
             style={[
-              styles.badgetext,
-              { color: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray },
+              styles.sideBarImage,
+              {
+                tintColor:
+                  openShippingOrders === item?.key
+                    ? COLORS.primary
+                    : item?.title === 'Rejected/Cancelled' && openShippingOrders === item?.key
+                    ? COLORS.pink
+                    : item?.title === 'Returned' && openShippingOrders === item?.key
+                    ? COLORS.yellowTweet
+                    : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.bucketBadge,
+              {
+                backgroundColor: COLORS.white,
+                borderColor: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray,
+                borderWidth: 2,
+              },
             ]}
           >
-            {item?.count ?? 0}
-          </Text>
+            <Text
+              style={[
+                styles.badgetext,
+                { color: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray },
+              ]}
+            >
+              {item?.count ?? 0}
+            </Text>
+          </View>
         </View>
       );
     }
@@ -377,28 +442,12 @@ export function DeliveryOrders2({ route }) {
       onPress={() => {
         setOpenShippingOrders(item?.key);
         dispatch(getReviewDefault(item?.key, sellerID, 1));
+        setTrackingView(false);
+        dispatch(getOrderCount(sellerID));
       }}
       style={styles.firstIconStyle}
     >
-      <View style={styles.bucketBackgorund}>
-        <Image
-          source={item?.image}
-          style={[
-            styles.sideBarImage,
-            {
-              tintColor:
-                openShippingOrders === item?.key
-                  ? COLORS.primary
-                  : item?.title === 'Rejected/Cancelled' && openShippingOrders === item?.key
-                  ? COLORS.pink
-                  : item?.title === 'Returned' && openShippingOrders === item?.key
-                  ? COLORS.yellowTweet
-                  : COLORS.darkGray,
-            },
-          ]}
-        />
-        {showBadge(item)}
-      </View>
+      {showBadge(item)}
     </TouchableOpacity>
   );
 
@@ -693,7 +742,7 @@ export function DeliveryOrders2({ route }) {
         return 'Orders Picked Up';
       case '5':
         return 'Orders Delivered';
-      case '6':
+      case '7,8':
         return 'Orders Rejected/Cancelled';
       default:
         return 'Delivery Returns';
@@ -706,23 +755,14 @@ export function DeliveryOrders2({ route }) {
     }
   };
 
-  const renderOrderDetailProducts = ({ item, index }) => (
-    <View
-      style={[
-        styles.orderproductView,
-        { width: Dimensions.get('window').width / 3.3, paddingVertical: ms(10) },
-      ]}
-    >
-      <Text
-        style={{
-          fontFamily: Fonts.Regular,
-          fontSize: ms(6),
-          color: COLORS.dark_grey,
-        }}
+  const renderOrderDetailProducts = ({ item, index }) => {
+    return (
+      <View
+        style={[
+          styles.orderproductView,
+          { width: Dimensions.get('window').width / 3.3, paddingVertical: ms(10) },
+        ]}
       >
-        {item?.qty ?? '0'}
-      </Text>
-      <View>
         <Text
           style={{
             fontFamily: Fonts.Regular,
@@ -730,28 +770,50 @@ export function DeliveryOrders2({ route }) {
             color: COLORS.dark_grey,
           }}
         >
-          {item?.product_name ?? 'jgssjdgjsdhsdsdj'}
+          {item?.qty ?? '0'}
+        </Text>
+        <View>
+          <Text
+            style={{
+              fontFamily: Fonts.Regular,
+              fontSize: ms(6),
+              color: COLORS.dark_grey,
+            }}
+          >
+            {item?.product_name ?? 'jgssjdgjsdhsdsdj'}
+          </Text>
+        </View>
+
+        <Text
+          style={{
+            fontFamily: Fonts.Regular,
+            fontSize: ms(6),
+            color: COLORS.dark_grey,
+          }}
+        >
+          {item?.price ?? '00'}
         </Text>
       </View>
+    );
+  };
 
-      <Text
-        style={{
-          fontFamily: Fonts.Regular,
-          fontSize: ms(6),
-          color: COLORS.dark_grey,
-        }}
-      >
-        {item?.price ?? '00'}
-      </Text>
-    </View>
-  );
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getReviewDefault(openShippingOrders, sellerID, 1));
+    dispatch(getOrderCount(sellerID));
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
 
   return (
     <ScreenWrapper>
       {!trackingView ? (
         <>
           <View style={styles.container}>
-            <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
+            <Header
+              {...{ viewAllOrder, setViewAllOrder, setIsBack, openShippingOrders, sellerID }}
+            />
 
             <Spacer space={SH(20)} />
 
@@ -771,6 +833,9 @@ export function DeliveryOrders2({ route }) {
                             </Text>
                           </View>
                         )}
+                        refreshControl={
+                          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                        }
                         contentContainerStyle={styles.contentContainerStyle}
                       />
                     </View>
@@ -904,11 +969,12 @@ export function DeliveryOrders2({ route }) {
             </Text>
           </TouchableOpacity>
 
+          <Spacer space={SH(20)} />
           <View style={styles.firstRowStyle}>
             <View
               style={{
                 width: Dimensions.get('window').width / 3,
-                marginTop: ms(10),
+                // marginTop: ms(10),
                 backgroundColor: COLORS.white,
                 borderRadius: 15,
                 paddingBottom: 80,
@@ -923,7 +989,7 @@ export function DeliveryOrders2({ route }) {
                   textAlign: 'center',
                 }}
               >
-                {userDetail?.user_details?.firstname ?? 'sdfsd'}
+                {oneOrderDetail?.getOrderData?.user_details?.firstname ?? 'sdfsd'}
               </Text>
               <Text
                 style={{
@@ -934,13 +1000,13 @@ export function DeliveryOrders2({ route }) {
                   textAlign: 'center',
                 }}
               >
-                {userDetail?.user_details?.current_address?.street_address +
+                {oneOrderDetail?.getOrderData?.user_details?.current_address?.street_address +
                   ', ' +
-                  userDetail?.user_details?.current_address?.city +
+                  oneOrderDetail?.getOrderData?.user_details?.current_address?.city +
                   ', ' +
-                  userDetail?.user_details?.current_address?.country +
+                  oneOrderDetail?.getOrderData?.user_details?.current_address?.country +
                   ' ' +
-                  userDetail?.user_details?.current_address?.zipcode ?? 'sdfsd'}
+                  oneOrderDetail?.getOrderData?.user_details?.current_address?.zipcode ?? 'sdfsd'}
               </Text>
               <Text
                 style={{
@@ -951,10 +1017,13 @@ export function DeliveryOrders2({ route }) {
                   textAlign: 'center',
                 }}
               >
-                {userDetail?.user_details?.phone_number ?? 'sdfsd'}
+                {oneOrderDetail?.getOrderData?.user_details?.phone_number ?? 'sdfsd'}
               </Text>
               <Spacer space={SH(40)} />
-              <FlatList data={orderDetail} renderItem={renderOrderDetailProducts} />
+              <FlatList
+                data={oneOrderDetail?.getOrderData?.order_details}
+                renderItem={renderOrderDetailProducts}
+              />
 
               <View
                 style={{
@@ -969,40 +1038,66 @@ export function DeliveryOrders2({ route }) {
                     { backgroundColor: COLORS.white, width: Dimensions.get('window').width / 3 },
                   ]}
                 >
-                  <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
-                    <Text style={styles.countTextStyle}>{strings.deliveryOrders.subTotal}</Text>
-                    <Text
-                      style={[
-                        styles.totalTextStyle,
-                        { paddingTop: 0, fontFamily: Fonts.MaisonBold },
-                      ]}
-                    >
-                      {userDetail?.actual_amount
-                        ? Number(userDetail?.actual_amount).toFixed(2)
-                        : '0'}
-                    </Text>
-                  </View>
-
                   <View style={styles.orderDetailsView}>
-                    <Text style={styles.countTextStyle}>{'Discount ( MIDApril100)'}</Text>
+                    <Text style={styles.countTextStyle}>{strings.deliveryOrders.subTotal}</Text>
                     <View style={styles.flexDirectionRow}>
-                      <Text style={styles.totalTextStyle2}>{'$'}</Text>
                       <Text
                         style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
                       >
-                        {userDetail?.discount ? Number(userDetail?.discount).toFixed(2) : '0'}
+                        {'$'}
+                      </Text>
+                      <Text
+                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                      >
+                        {oneOrderDetail?.getOrderData?.total_sale_price ?? '0'}
                       </Text>
                     </View>
                   </View>
 
                   <View style={styles.orderDetailsView}>
-                    <Text style={styles.countTextStyle}>{'Shipping Charges'}</Text>
+                    <Text style={styles.countTextStyle}>{'Discount ( MIDApril100)'}</Text>
                     <View style={styles.flexDirectionRow}>
-                      <Text style={styles.totalTextStyle2}>{'$'}</Text>
                       <Text
                         style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
                       >
-                        {'0.00'}
+                        {'$'}
+                      </Text>
+                      <Text
+                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                      >
+                        {oneOrderDetail?.getOrderData?.discount ?? '0'}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.orderDetailsView}>
+                    <Text style={styles.countTextStyle}>{'Tax'}</Text>
+                    <View style={styles.flexDirectionRow}>
+                      <Text
+                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                      >
+                        {'$'}
+                      </Text>
+                      <Text
+                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                      >
+                        {oneOrderDetail?.getOrderData?.tax ?? '0'}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.orderDetailsView}>
+                    <Text style={styles.countTextStyle}>{'Delivery Charges'}</Text>
+                    <View style={styles.flexDirectionRow}>
+                      <Text
+                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                      >
+                        {'$'}
+                      </Text>
+                      <Text
+                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                      >
+                        {oneOrderDetail?.getOrderData?.order_delivery?.amount}
                       </Text>
                     </View>
                   </View>
@@ -1018,19 +1113,14 @@ export function DeliveryOrders2({ route }) {
                     <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
                     <View style={styles.flexDirectionRow}>
                       <Text
-                        style={[
-                          styles.totalTextStyle2,
-                          {
-                            fontFamily: Fonts.MaisonBold,
-                            fontSize: SF(13),
-                            color: COLORS.solid_grey,
-                          },
-                        ]}
+                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
                       >
                         {'$'}
                       </Text>
-                      <Text style={[styles.totalText, { paddingTop: 0 }]}>
-                        {Number(userDetail?.payable_amount).toFixed(2)}
+                      <Text
+                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                      >
+                        {oneOrderDetail?.getOrderData?.payable_amount}
                       </Text>
                     </View>
                   </View>
@@ -1059,7 +1149,7 @@ export function DeliveryOrders2({ route }) {
                 <Text
                   style={{ fontFamily: Fonts.SemiBold, fontSize: ms(9), color: COLORS.dark_grey }}
                 >
-                  {userDetail?.mode_of_payment?.toUpperCase()}
+                  {oneOrderDetail?.getOrderData?.mode_of_payment?.toUpperCase()}
                 </Text>
               </View>
 
@@ -1072,10 +1162,10 @@ export function DeliveryOrders2({ route }) {
                   color: COLORS.dark_grey,
                 }}
               >
-                {moment(userDetail?.invoice?.delivery_date).format('llll')}
+                {moment(oneOrderDetail?.getOrderData?.invoice?.delivery_date).format('llll')}
               </Text>
 
-              <Text
+              {/* <Text
                 style={{
                   paddingLeft: 15,
                   fontFamily: Fonts.Regular,
@@ -1085,7 +1175,7 @@ export function DeliveryOrders2({ route }) {
                 }}
               >
                 {'Walk-In'}
-              </Text>
+              </Text> */}
 
               <Text
                 style={{
@@ -1096,10 +1186,10 @@ export function DeliveryOrders2({ route }) {
                   color: COLORS.dark_grey,
                 }}
               >
-                {`Invoice No. #${userDetail?.invoice?.invoice_id}`}
+                {`Invoice No. #${oneOrderDetail?.getOrderData?.invoice?.invoice_id}`}
               </Text>
 
-              <Text
+              {/* <Text
                 style={{
                   paddingLeft: 15,
                   fontFamily: Fonts.Regular,
@@ -1109,7 +1199,7 @@ export function DeliveryOrders2({ route }) {
                 }}
               >
                 {`POS No. #Front-CC01`}
-              </Text>
+              </Text> */}
 
               <Text
                 style={{
@@ -1120,7 +1210,7 @@ export function DeliveryOrders2({ route }) {
                   color: COLORS.dark_grey,
                 }}
               >
-                {`User ID: ****128`}
+                {`User ID:${oneOrderDetail?.getOrderData?.user_details?.uid}`}
               </Text>
 
               <Spacer space={SH(45)} />
@@ -1154,7 +1244,7 @@ export function DeliveryOrders2({ route }) {
             <View
               style={{
                 width: Dimensions.get('window').width / 2.2,
-                marginTop: ms(10),
+                // marginTop: ms(10),
                 borderRadius: 15,
               }}
             >
