@@ -899,7 +899,7 @@ export function MainScreen({
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
                     disabled={cartLength > 0 ? false : true}
-                    onPress={() => setCartModal(true)}
+                    onPress={() => {bulkCart(),setCartModal(true)}}
                   >
                     <Image
                       source={bucket}

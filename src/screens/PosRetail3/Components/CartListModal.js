@@ -135,7 +135,6 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
   };
   useFocusEffect(
     React.useCallback(() => {
-      dispatch(getAllCart())
       return () => {
         var arr = getRetailData?.getAllCart;
         if (arr?.poscart_products.length > 0) {
@@ -157,7 +156,9 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
   const clearCartHandler = () => {
     dispatch(clearAllCart());
     dispatch(clearLocalCart())
-    // crossHandler();
+   setTimeout(() => {
+    crossHandler();
+   }, 1500);
   };
   return (
     <View style={styles.cartListModalView}>
