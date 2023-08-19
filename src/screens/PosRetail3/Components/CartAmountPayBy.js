@@ -243,7 +243,7 @@ export const CartAmountPayBy = ({
             requestId: requestId,
           };
           dispatch(requestCheck(data));
-          Alert.alert('1  condition');
+          // Alert.alert('1  condition');
           // createOrderHandler();
 
           return requestId;
@@ -251,18 +251,18 @@ export const CartAmountPayBy = ({
       }, 10000);
     } else if (requestStatus == 'success' && sendRequest) {
       cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
-      Alert.alert('2  condition');
+      // Alert.alert('2  condition');
       clearInterval(interval);
     } else if (qrStatus?.status !== 'success' && qrPopUp && sendRequest == false) {
       interval = setInterval(() => {
         cartType == 'Service'
           ? dispatch(Servicesqrcodestatus(cartData.id))
           : dispatch(qrcodestatus(cartData.id));
-        Alert.alert('3 condition', sendRequest);
+        // Alert.alert('3 condition', sendRequest);
       }, 5000);
     } else if (qrStatus?.status == 'success' && qrPopUp && sendRequest == false) {
       cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
-      Alert.alert('4 condition');
+      // Alert.alert('4 condition');
       clearInterval(interval);
     }
 
