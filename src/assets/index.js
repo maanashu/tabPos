@@ -346,6 +346,6 @@ export const Fonts = {
   MediumItalic: 'Montserrat-MediumItalic',
   Regular: 'Montserrat-Regular',
   SemiBold: 'Montserrat-SemiBold',
-  MaisonRegular: 'Maison Mono Regular',
+  MaisonRegular: 'MaisonMono-Regular',
   MaisonBold: 'MaisonMonoTRIAL-Bold',
 };
