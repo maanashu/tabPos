@@ -1,6 +1,6 @@
 import { RetailController } from '@/controllers';
 import { TYPES } from '@/Types/Types';
-import { updateCartLength } from './CartAction';
+import { addLocalCart, clearLocalCart, updateCartLength } from './CartAction';
 
 const getCategoryRequest = () => ({
   type: TYPES.GET_CATEGORY_REQUEST,
@@ -949,7 +949,6 @@ export const getAllCart = () => async (dispatch) => {
   dispatch(getAllCartRequest());
   try {
     const res = await RetailController.getAllCart();
-    console.log("res=-=-=--==-",JSON.stringify(res));
     dispatch(getAllCartSuccess(res));
     dispatch(updateCartLength(res?.payload?.poscart_products?.length))
   } catch (error) {
@@ -979,6 +978,7 @@ export const getAllProductCart = () => async (dispatch) => {
   try {
     const res = await RetailController.getAllProductCart();
     dispatch(getAllProductCartSuccess(res?.payload));
+    
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllProductCartReset());
@@ -1006,6 +1006,8 @@ export const clearAllCart = () => async (dispatch) => {
     const res = await RetailController.clearAllCart();
     dispatch(getClearAllCartSuccess(res));
     dispatch(getAllCart());
+    dispatch(updateCartLength(0))
+    dispatch(clearLocalCart())
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getClearAllCartReset());
@@ -1021,6 +1023,7 @@ export const clearServiceAllCart = () => async (dispatch) => {
     dispatch(clearServiceAllCartSuccess(res));
     dispatch(getServiceCart());
     dispatch(updateCartLength(0))
+    dispatch(clearLocalCart())
   } catch (error) {
     dispatch(clearServiceAllCartError(error.message));
   }
@@ -1057,7 +1060,7 @@ export const createBulkcart = (data) => async (dispatch) => {
   try {
     const res = await RetailController.createBulkCart(data);
     dispatch(createBulkcartSuccess(res));
-     dispatch(getAllCart());
+    dispatch(getAllCart());
   } catch (error) {
     dispatch(createBulkCartError(error.message));
   }

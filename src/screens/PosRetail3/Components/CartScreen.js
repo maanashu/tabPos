@@ -44,7 +44,7 @@ import { AddCartDetailModal } from './AddCartDetailModal';
 import { AddCartModal } from './AddCartModal';
 import Modal from 'react-native-modal';
 import { useEffect } from 'react';
-import { updateCartLength } from '@/actions/CartAction';
+import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
 import { getCartLength } from '@/selectors/CartSelector';
 
 export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
@@ -157,18 +157,16 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
         arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
       }
     }
-  console.log("ARRARA",JSON.stringify(arr));
     var DATA = {
       payload: arr,
     };
      dispatch(getAllCartSuccess(DATA));
   };
-  
-
-
   const clearCartHandler = () => {
     dispatch(clearAllCart());
-    crossHandler();
+    setTimeout(() => {
+     crossHandler();
+    }, 1500);
   };
   const removeOneCartHandler = (productId, index) => {
     // const data = {

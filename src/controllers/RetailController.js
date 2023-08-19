@@ -275,11 +275,11 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log("CART__RESPONSE",JSON.stringify(response));
+          // console.log("CART__RESPONSE",JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
-          console.log("CART__error",JSON.stringify(error));
+          // console.log("CART__error",JSON.stringify(error));
           reject(error);
         });
     });
@@ -329,9 +329,11 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.clearAllCart;
       HttpClient.delete(endpoint)
         .then((response) => {
+          console.log("response",response)
           resolve(response);
         })
         .catch((error) => {
+          console.log("Redsdsds",error)
           reject(error);
         });
     });
@@ -1059,22 +1061,20 @@ export class RetailController {
   static async createBulkCart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
-console.log("EndPoint",endpoint);
-console.log("DAATTTAA",JSON.stringify(data));
       HttpClient.post(endpoint, data)
         .then((response) => {
-          console.log("Disuhdisd",response);
+          console.log("BulkCreate",response);
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
 
-            text2: error.msg,
-            text2: error?.msg,
-            visibilityTime: 2000,
-          });
+          //   text2: error.msg,
+          //   text2: error?.msg,
+          //   visibilityTime: 2000,
+          // });
           reject(error);
         });
     });

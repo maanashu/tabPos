@@ -12,7 +12,7 @@ export const addLocalCart = (value) => ({
   type: TYPES.ADD_LOCAL_CART_SUCCESS,
   payload: value,
 });
-export const clearLocalCart = (value) => ({
+export const clearLocalCart = () => ({
   type: TYPES.CLEAR_LOCAL_CART_SUCCESS,
   payload: null,
 });

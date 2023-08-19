@@ -42,6 +42,7 @@ import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
+import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
 
 export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
   const dispatch = useDispatch();
@@ -109,7 +110,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
 
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
+    const productPrice = product?.product_details.price;
 
     if (operation === '+') {
       product.qty += 1;
@@ -132,9 +133,10 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     dispatch(getAllCartSuccess(DATA));
   };
 
-  const clearCartHandler = () => {
-    dispatch(clearAllCart());
-    crossHandler();
+  const clearCartHandler = async() => {
+   dispatch(clearAllCart());
+   crossHandler();
+  
   };
 
   const phoneNumberSearchFun = (customerPhoneNo) => {

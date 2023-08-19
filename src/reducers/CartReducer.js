@@ -12,13 +12,11 @@ export const cartReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         cartLength: payload,
       };
-
       case TYPES.ADD_LOCAL_CART_SUCCESS:
       return {
         ...state,
         localCartArray: payload,
       };
-
       case TYPES.CLEAR_LOCAL_CART_SUCCESS:
       return {
         ...state,

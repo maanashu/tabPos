@@ -53,6 +53,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
+import { clearLocalCart } from '@/actions/CartAction';
 
 export function SideCartDet({ onPressPayNow, crossHandler }) {
   const dispatch = useDispatch();
@@ -154,6 +155,7 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
 
   const clearCartHandler = () => {
     dispatch(clearAllCart());
+    dispatch(clearLocalCart())
     crossHandler();
   };
   const userDetalLoader = useSelector((state) => isLoadingSelector([TYPES.GET_USERDETAIL], state));

@@ -3,5 +3,5 @@ export const getCartLength = state => {
   };
   
   export const getLocalCartArray = state => {
-    return  state.cartReducer.localcartArray 
+    return  state.cartReducer.localCartArray 
   };
