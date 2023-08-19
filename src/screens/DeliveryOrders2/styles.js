@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    bottom: ms(5),
   },
   currentStatusView: {
     width: SW(100),
