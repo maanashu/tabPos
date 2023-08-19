@@ -10,6 +10,7 @@ import ProfileImage from '@/components/ProfileImage';
 import { useState } from 'react';
 import { ReScheduleDetailModal } from './ReScheduleDetailModal';
 import { COLORS } from '@/theme';
+import { ChatRoom } from './ChatRoom';
 
 const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, eventData }) => {
   const { completeData, allEvents } = eventData;
@@ -19,6 +20,9 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   );
 
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(completeData);
+
+  // Show chat Modal
+  const [isShowChatModal, setisShowChatModal] = useState(false);
 
   const userDetails = selectedPosStaffCompleteData?.user_details;
   const userAddress = userDetails?.current_address;
@@ -135,7 +139,8 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    alert('message coming soon');
+                    alert('message is under development');
+                    // setisShowChatModal(true);
                   }}
                 >
                   <Image source={chatIcon} style={styles.chatIconStl} />
@@ -234,6 +239,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
         appointmentData={selectedPosStaffCompleteData}
         setshowEventDetailModal={setshowEventDetailModal}
       />
+      <ChatRoom isVisible={isShowChatModal} setIsVisible={setisShowChatModal} />
     </Modal>
   );
 };
