@@ -656,12 +656,12 @@ export const styles = StyleSheet.create({
   eventDetailModalContainer: {
     backgroundColor: COLORS.white,
     borderRadius: ms(5),
-    width: '40%',
+    width: '50%',
     alignSelf: 'center',
-    paddingVertical: ms(10),
+    flexDirection: 'row',
   },
   crossStl: { height: ms(15), width: ms(15), tintColor: COLORS.black },
-  crossEventDetailModal: { position: 'absolute', right: ms(10), top: ms(5) },
+  crossEventDetailModal: { position: 'absolute', right: ms(10), top: ms(4) },
   profilePicContainer: {
     height: ms(12),
     width: ms(12),

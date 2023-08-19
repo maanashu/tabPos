@@ -741,6 +741,7 @@ export class RetailController {
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response of appointment', JSON.stringify(response));
           if (response?.msg === 'Appointment created successfully!') {
             Toast.show({
               position: 'bottom',
@@ -1178,6 +1179,7 @@ export class RetailController {
       };
       HttpClient.put(endpoint, body)
         .then((response) => {
+          console.log('response of update tip', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -1322,6 +1324,22 @@ export class RetailController {
         })
         .catch((error) => {
           reject(error);
+        });
+    });
+  }
+
+  static async ServicesqrCodePaymentStatus(id) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.ServicesQrStatus + `${id}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+          console.log('response of Services QR status', JSON.stringify(response));
+        })
+        .catch((error) => {
+          reject(error);
+          console.log('error of  Services status', JSON.stringify(error));
         });
     });
   }

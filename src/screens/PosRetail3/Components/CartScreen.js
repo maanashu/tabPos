@@ -83,7 +83,6 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       seller_id: sellerID,
       servicetype: 'product',
     };
-
     dispatch(getAvailableOffer(data));
   }, []);
 
