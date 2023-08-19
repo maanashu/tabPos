@@ -31,6 +31,7 @@ export const FinalPaymentScreen = ({
 }) => {
   const tipData = useSelector(getRetail).tipKey?.payload?.tip;
   const tipamount = Number(tipData);
+  // console.log('tipAmount', JSON.stringify(cartData));
 
   const cartProducts =
     cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
@@ -46,8 +47,8 @@ export const FinalPaymentScreen = ({
   const payAmount = totalPayAmount();
   const ActualPayAmount = payDetail?.tips;
 
-  console.log('Actual Amount', ActualPayAmount);
-  console.log('payamount by customer', payAmount);
+  // console.log('Actual Amount', ActualPayAmount);
+  // console.log('payamount by customer', payAmount);
   const changeDue = parseFloat(ActualPayAmount) - parseFloat(payAmount);
   const dispatch = useDispatch();
   useFocusEffect(

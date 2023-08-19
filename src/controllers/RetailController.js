@@ -1174,6 +1174,7 @@ export class RetailController {
       };
       HttpClient.put(endpoint, body)
         .then((response) => {
+          console.log('response of update tip', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

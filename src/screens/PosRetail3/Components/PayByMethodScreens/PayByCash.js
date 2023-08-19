@@ -21,6 +21,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder, createServiceOrder } from '@/actions/RetailAction';
 import AddedCartItemsCard from '@/components/AddedCartItemsCard';
+import { number } from 'prop-types';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -57,7 +58,16 @@ export const PayByCash = ({
   const saveCartData = { ...getRetailData };
   const valueTen = '10.00';
   const valueTwenty = '20.00';
-
+  const roundUpValue = (value) => {
+    if (value <= 12.96) {
+      return 20;
+    } else if (value <= 15) {
+      return 20;
+    } else {
+      // Default to rounding to the nearest 10 (30 for values > 21)
+      return Math.ceil(value / 10) * 10;
+    }
+  };
   const createOrderHandler = () => {
     if (cartType == 'Product') {
       const data = {
@@ -112,6 +122,16 @@ export const PayByCash = ({
     );
   };
 
+  function findGreaterCurrencyNotes(targetValue, currencyNotes) {
+    const greaterNotes = currencyNotes.filter((note) => note > targetValue);
+    return greaterNotes;
+  }
+
+  const currencyNotes = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 5000];
+  const targetValue = totalPayAmount();
+  const greaterNotes = findGreaterCurrencyNotes(targetValue, currencyNotes);
+
+  console.log(greaterNotes[0]);
   const selectCashArray = [
     {
       id: 1,
@@ -119,11 +139,11 @@ export const PayByCash = ({
     },
     {
       id: 2,
-      usd: parseFloat(totalPayAmount()) + parseFloat(valueTen),
+      usd: greaterNotes[0],
     },
     {
       id: 3,
-      usd: parseFloat(totalPayAmount()) + parseFloat(valueTwenty),
+      usd: greaterNotes[1],
     },
   ];
 
@@ -222,7 +242,7 @@ export const PayByCash = ({
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Discount ( MIDApril100)</Text>
-              <Text style={styles._subTotalPrice}>$0.00</Text>
+              <Text style={styles._subTotalPrice}>${cartData?.amount?.discount}</Text>
             </View>
 
             <View style={styles._horizontalLine} />
