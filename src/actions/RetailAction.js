@@ -520,6 +520,21 @@ const requestCheckError = (error) => ({
   payload: { error },
 });
 
+const qrCodeStatusRequest = () => ({
+  type: TYPES.QR_CODE_STATUS_REQUEST,
+  payload: null,
+});
+
+export const qrCodeStatusSuccess = (check) => ({
+  type: TYPES.QR_CODE_STATUS_SUCCESS,
+  payload: check,
+});
+
+const qrcodestatusError = (error) => ({
+  type: TYPES.QR_CODE_STATUS_ERROR,
+  payload: { error },
+});
+
 const clearCheckStore = () => ({
   type: TYPES.CLEAR_CHECK_STORE,
   payload: null,
@@ -1271,6 +1286,16 @@ export const requestCheck = (data) => async (dispatch) => {
   }
 };
 
+export const qrcodestatus = (id) => async (dispatch) => {
+  dispatch(qrCodeStatusRequest());
+  try {
+    const res = await RetailController.qrCodePaymentStatus(id);
+    return dispatch(qrCodeStatusSuccess(res.payload));
+  } catch (error) {
+    dispatch(qrcodestatusError(error.message));
+  }
+};
+
 export const scanProductAdd = (data) => async (dispatch) => {
   dispatch(scanProductAddRequest());
   try {
@@ -1294,7 +1319,6 @@ export const getMainProduct = (productTypeId) => async (dispatch) => {
   dispatch(getMainProductRequest());
   try {
     const res = await RetailController.getDynamicProducts(productTypeId);
-
     dispatch(getMainProductSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {

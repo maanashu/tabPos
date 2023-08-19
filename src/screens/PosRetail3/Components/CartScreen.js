@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Keyboard, Text, View } from 'react-native';
+import { Alert, FlatList, Keyboard, Text, View } from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -83,6 +83,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       seller_id: sellerID,
       servicetype: 'product',
     };
+
     dispatch(getAvailableOffer(data));
   }, []);
 

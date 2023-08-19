@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   Keyboard,
@@ -7,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
 import { ms } from 'react-native-size-matters';
 import { Spacer } from '@/components';
 import { Fonts, QR, crossButton } from '@/assets';
@@ -18,7 +18,6 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { walletGetByPhone, requestCheckSuccess, requestMoneySuccess } from '@/actions/RetailAction';
-
 moment.suppressDeprecationWarnings = true;
 
 export const PayByJBRCoins = ({

@@ -1294,7 +1294,7 @@ console.log("DAATTTAA",JSON.stringify(data));
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.availableOffer +
-        `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${data?.seller_id}&service_type=${data?.servicetype}`;
+        `?app_name=pos&delivery_options=2&page=1&limit=10&seller_id=${data?.seller_id}&service_type=${data?.servicetype}`;
 
       HttpClient.get(endpoint)
         .then((response) => {
@@ -1307,6 +1307,20 @@ console.log("DAATTTAA",JSON.stringify(data));
           //   type: 'error_toast',
           //   visibilityTime: 1500,
           // });
+          reject(error);
+        });
+    });
+  }
+
+  static async qrCodePaymentStatus(id) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.qrstatus + `${id}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
           reject(error);
         });
     });

@@ -77,6 +77,7 @@ export function CartServiceScreen({
       seller_id: sellerID,
       servicetype: 'service',
     };
+
     dispatch(getAvailableOffer(data));
   }, []);
 

@@ -833,8 +833,8 @@ export const styles = StyleSheet.create({
   imageView: {
     borderWidth: 2,
     borderRadius: 5,
-    width: SW(25),
-    height: SW(25),
+    width: SW(20),
+    height: SW(20),
     marginVertical: verticalScale(3),
   },
   scrollImage: {
@@ -1448,6 +1448,20 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.gerySkies,
     backgroundColor: COLORS.white,
   },
+
+  filterBadge: {
+    borderWidth: 2,
+    width: ms(11),
+    height: ms(11),
+    borderRadius: ms(10),
+    position: 'absolute',
+    right: -5,
+    bottom: -6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.white,
+  },
   holdBadgePrimary: {
     backgroundColor: COLORS.primary,
     borderColor: COLORS.white,
@@ -1456,6 +1470,12 @@ export const styles = StyleSheet.create({
     color: COLORS.gerySkies,
     fontSize: SF(11),
     fontFamily: Fonts.SemiBold,
+  },
+  filterBadgeText: {
+    color: COLORS.primary,
+    fontSize: SF(10),
+    fontFamily: Fonts.SemiBold,
+    // textAlign: 'center',
   },
 
   //NEW DESIGN
