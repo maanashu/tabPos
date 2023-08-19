@@ -17,8 +17,6 @@ const Header = ({ viewAllOrder, setViewAllOrder, setIsBack, openShippingOrders, 
           onPress={() => {
             setViewAllOrder(false);
             setIsBack(true);
-            dispatch(getReviewDefault(openShippingOrders, sellerId, 1));
-            dispatch(getOrderCount(sellerId));
           }}
           style={styles.backView}
         >

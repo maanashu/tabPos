@@ -742,7 +742,7 @@ export function DeliveryOrders2({ route }) {
         return 'Orders Picked Up';
       case '5':
         return 'Orders Delivered';
-      case '7':
+      case '7,8':
         return 'Orders Rejected/Cancelled';
       default:
         return 'Delivery Returns';
@@ -969,11 +969,12 @@ export function DeliveryOrders2({ route }) {
             </Text>
           </TouchableOpacity>
 
+          <Spacer space={SH(20)} />
           <View style={styles.firstRowStyle}>
             <View
               style={{
                 width: Dimensions.get('window').width / 3,
-                marginTop: ms(10),
+                // marginTop: ms(10),
                 backgroundColor: COLORS.white,
                 borderRadius: 15,
                 paddingBottom: 80,
@@ -1243,7 +1244,7 @@ export function DeliveryOrders2({ route }) {
             <View
               style={{
                 width: Dimensions.get('window').width / 2.2,
-                marginTop: ms(10),
+                // marginTop: ms(10),
                 borderRadius: 15,
               }}
             >

@@ -398,7 +398,10 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: Dimensions.get('window').width * 0.42,
+    width:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').width * 0.38
+        : Dimensions.get('window').width * 0.42,
   },
   userDetailView: {
     flex: 1,
