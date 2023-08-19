@@ -178,7 +178,6 @@ export function CartServiceScreen({
     //   cartId: cartServiceData?.id,
     //   productId: productId,
     // };
-    // console.log('data', data);
     // return;
 
     // dispatch(clearOneCart(data));

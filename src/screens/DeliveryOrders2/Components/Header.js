@@ -5,8 +5,11 @@ import { backArrow2 } from '@/assets';
 import { strings } from '@/localization';
 
 import styles from '../styles';
+import { useDispatch } from 'react-redux';
+import { getOrderCount, getReviewDefault } from '@/actions/DeliveryAction';
 
-const Header = ({ viewAllOrder, setViewAllOrder, setIsBack }) => {
+const Header = ({ viewAllOrder, setViewAllOrder, setIsBack, openShippingOrders, sellerId }) => {
+  const dispatch = useDispatch();
   return (
     <>
       {viewAllOrder ? (
@@ -14,6 +17,8 @@ const Header = ({ viewAllOrder, setViewAllOrder, setIsBack }) => {
           onPress={() => {
             setViewAllOrder(false);
             setIsBack(true);
+            dispatch(getReviewDefault(openShippingOrders, sellerId, 1));
+            dispatch(getOrderCount(sellerId));
           }}
           style={styles.backView}
         >

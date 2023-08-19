@@ -38,7 +38,7 @@ const OrderReview = ({
             ListEmptyComponent={emptyComponent}
             ListHeaderComponent={headerComponent}
             showsVerticalScrollIndicator={false}
-            data={getDeliveryData?.getReviewDef?.slice(0, 3)}
+            data={getDeliveryData?.getReviewDef}
             contentContainerStyle={styles.contentContainerStyle}
           />
         </View>

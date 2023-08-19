@@ -74,8 +74,6 @@ export function POSUsers({ navigation }) {
 
   const useEffectFun = async () => {
     // const res = await dispatch(getSettings());
-
-    // console.log("RESU:LTTT",res);
     // if (res?.google_authenticator_status ?? false) {
     //   setTwoFactorEnabled(true);
     //   setTwoStepModal(true);
