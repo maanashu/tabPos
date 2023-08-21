@@ -35,8 +35,7 @@ export const appReducer = combineReducers({
 });
 
 export const rootReducer = (state, action) => {
-  if (action.type === TYPES.CLEAR_STORE) {
-    alert(action.type);
+  if (action.type === TYPES.MERCHAT_CLEAR_STORE) {
     return appReducer(undefined, action);
   }
   return appReducer(state, action);
