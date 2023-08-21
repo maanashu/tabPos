@@ -1,5 +1,5 @@
 import { strings } from '@/localization';
-import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
+import { ORDER_URL, ApiOrderInventory, USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
@@ -179,6 +179,25 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.graphOrders +
         `?seller_id=${sellerID}&filter=week&delivery_option=${delivery}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async getSellerDriverList(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getSellerDrivers + `?sellerId=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

@@ -40,6 +40,7 @@ export const ApiUserInventory = {
   verifyGoogleCode: 'users/2fa/verify',
   configureGoogleCode: 'users/2fa/configure-qr-code',
   notifications: 'notifications',
+  getSellerDrivers: 'merchant_drivers/get-drivers',
 };
 
 export const ApiProductInventory = {
