@@ -98,7 +98,7 @@ export function MainScreen({
    const CART_LENGTH= useSelector(getCartLength)
    const SERVICE_CART_LENGTH=useSelector(getServiceCartLength)
   const getRetailData = useSelector(getRetail);
-  var LOCAL_CART_ARRAY= useSelector(getLocalCartArray)
+  const LOCAL_CART_ARRAY= useSelector(getLocalCartArray)
   // console.log("-0-0-0",LOCAL_CART_ARRAY)
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
@@ -266,20 +266,16 @@ export function MainScreen({
    
   },[isFocus])
   
-  useFocusEffect(
-    React.useCallback(() => {
-      return  () => {
-        if (cartLength > 0) {
-           bulkCart()
-         }
-        };
-    },[LOCAL_CART_ARRAY])
-  );
+  useEffect(()=>{
+    return  () => {
+      if (cartLength > 0) {
+        console.log("Calll=-=-=-=-==-=-=-",isClear)
+         bulkCart()
+       }
+      };
+  },[LOCAL_CART_ARRAY])
   const bulkCart = async () => {
     const updatedLocalCartArray =[...LOCAL_CART_ARRAY] // Retrieve the updated value from Redux
-    // console.log("Arrayyy before bulkCart", JSON.stringify(isClear));
-    // console.log("bulkCart length", JSON.stringify(updatedLocalCartArray.length));
-    // console.log(" length", JSON.stringify(cartLength));
     if (updatedLocalCartArray.length > 0 && !isClear ) { 
       const dataToSend = {
         "seller_id": sellerID,
@@ -572,6 +568,7 @@ export function MainScreen({
     setSelectedItems(selectedItems);
   };
   const eraseClearCart = async () => {
+  
     setIsClear(true);
     setSelectedCartItems([]);
     dispatch(clearLocalCart());
