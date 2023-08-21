@@ -23,7 +23,7 @@ import {
 } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -161,11 +161,11 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     };
      dispatch(getAllCartSuccess(DATA));
   };
-  const clearCartHandler = () => {
-    dispatch(clearAllCart());
+  const clearCartHandler = async() => {
+   const res= await dispatch(clearAllCart());
     setTimeout(() => {
      crossHandler();
-    }, 1500);
+    }, 2000);
   };
   const removeOneCartHandler = (productId, index) => {
     // const data = {
@@ -257,6 +257,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                 </View>
               </View>
             </View>
+            <ScrollView>
             {arr?.map((item, index) => (
               <View key={index}>
                 {item?.poscart_products?.map((data, ind) => (
@@ -343,6 +344,8 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                 ))}
               </View>
             ))}
+            </ScrollView>
+         
 
             <Spacer space={SH(7)} />
           </View>

@@ -14,8 +14,24 @@ export const addLocalCart = (value) => ({
 });
 export const clearLocalCart = () => ({
   type: TYPES.CLEAR_LOCAL_CART_SUCCESS,
-  payload: null,
+  payload: [],
 });
+
+
+export const updateServiceCartLength = (value) => ({
+  type: TYPES.UPDATE_SERVICE_CART_LENGTH,
+  payload: value,
+});
+
+export const addServiceLocalCart = (value) => ({
+  type: TYPES.ADD_SERVICE_LOCAL_CART,
+  payload: value,
+});
+export const clearServiceLocalCart = () => ({
+  type: TYPES.CLEAR_SERVICE_LOCAL_CART,
+  payload: [],
+});
+
 
 // export const loginPosUser = (data) => async (dispatch) => {
 //   dispatch(loginPosUserRequest());

@@ -63,7 +63,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     React.useCallback(() => {
       return () => {
         var arr = getRetailData?.getAllCart;
-        if (arr?.poscart_products.length > 0) {
+        if (arr?.poscart_products?.length > 0) {
           const products = arr?.poscart_products.map((item) => ({
             product_id: item?.product_id,
             qty: item?.qty,

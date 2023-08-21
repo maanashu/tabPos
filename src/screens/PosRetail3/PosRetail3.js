@@ -74,6 +74,7 @@ export function PosRetail3() {
   const [addServiceNotes, setAddServiceNotes] = useState(false);
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
+  const [visitCart, setVisitCart] = useState(false);
 
   const [cashPayDetail, setCashPayDetail] = useState();
 
@@ -355,10 +356,10 @@ export function PosRetail3() {
   const renderScreen = {
     ['MainScreen']: (
       <MainScreen
-        cartScreenHandler={() => setselectedScreen('CartScreen')}
+        cartScreenHandler={() =>{setVisitCart(true) ,setselectedScreen('CartScreen')}}
         sellerID={sellerID}
         headercrossHandler={() => alert('abc')}
-        checkOutHandler={() => setselectedScreen('CartScreen')}
+        checkOutHandler={() => {setVisitCart(true),setselectedScreen('CartScreen')}}
         productArray={defaultArrayproduct}
         categoryArray={categoryArray}
         addNotesHandler={addNotesHandler}
@@ -501,8 +502,9 @@ export function PosRetail3() {
       />
     ),
   };
-
+ 
   const screenChangeView = () => {
+    
     return renderScreen[selectedScreen];
   };
 

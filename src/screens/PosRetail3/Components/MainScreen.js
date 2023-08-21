@@ -67,7 +67,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { ServiceFilterDropDown } from './ServiceFilterDropDown';
 import { NumericPad } from './NumericPad';
 import { addLocalCart, clearLocalCart, updateCartLength } from '@/actions/CartAction';
-import { getCartLength, getLocalCartArray } from '@/selectors/CartSelector';
+import { getCartLength, getLocalCartArray, getServiceCartLength } from '@/selectors/CartSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
 
 export function MainScreen({
@@ -78,6 +78,9 @@ export function MainScreen({
   productArray,
   cartServiceScreenHandler,
 }) {
+
+  const dispatch = useDispatch();
+  const isFocus = useIsFocused();
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
@@ -90,11 +93,13 @@ export function MainScreen({
   const getAuthdata = useSelector(getAuthData);
   const [numPadModal, setNumPadModal] = useState(false);
   const [serviceNumPadModal, setServiceNumPadModal] = useState(false);
+  const [goToCart, setGoToCart] = useState(false);
   const getMerchantService = getAuthdata?.merchantLoginData?.product_existance_status;
-   const CART_LENGTH=useSelector(getCartLength)
+   const CART_LENGTH= useSelector(getCartLength)
+   const SERVICE_CART_LENGTH=useSelector(getServiceCartLength)
   const getRetailData = useSelector(getRetail);
-  const LOCAL_CART_ARRAY= useSelector(getLocalCartArray)
-  console.log("-0-0-0",LOCAL_CART_ARRAY)
+  var LOCAL_CART_ARRAY= useSelector(getLocalCartArray)
+  // console.log("-0-0-0",LOCAL_CART_ARRAY)
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
   const productCartArray = getRetailData?.getAllProductCart;
@@ -129,6 +134,31 @@ export function MainScreen({
 
 
   const [selectedCartItem, setSelectedCartItems] = useState([]);
+  const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
+
+  const [filterMenuTitle, setfilterMenuTitle] = useState(filterMenuData);
+
+  const [isFilterDataSeclectedOfIndex, setisFilterDataSeclectedOfIndex] = useState();
+
+  const [selectedCatID, setselectedCatID] = useState(null);
+  const [selectedSubCatID, setselectedSubCatID] = useState(null);
+  const [selectedBrandID, setselectedBrandID] = useState(null);
+  const [isClear, setIsClear] = useState(false);
+  const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
+
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userAdd, setUserAdd] = useState('');
+
+  const [page, setPage] = useState(1);
+
+  const [productCon, setProductCon] = useState(true);
+  const [serviceCon, setServiceCon] = useState(false);
+  const [filterCon, setFilterCon] = useState(false);
+  const [serviceFilterCon, setServiceFilterCon] = useState(false);
+  const [serviceItemSave, setServiceItemSave] = useState();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
 
   const cartStatusHandler = () => {
     const data =
@@ -214,33 +244,7 @@ export function MainScreen({
     }
   };
 
-  const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
-
-  const [filterMenuTitle, setfilterMenuTitle] = useState(filterMenuData);
-
-  const [isFilterDataSeclectedOfIndex, setisFilterDataSeclectedOfIndex] = useState();
-
-  const [selectedCatID, setselectedCatID] = useState(null);
-  const [selectedSubCatID, setselectedSubCatID] = useState(null);
-  const [selectedBrandID, setselectedBrandID] = useState(null);
-  const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
-
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAdd, setUserAdd] = useState('');
-
-  const [page, setPage] = useState(1);
-
-  const [productCon, setProductCon] = useState(true);
-  const [serviceCon, setServiceCon] = useState(false);
-  const [filterCon, setFilterCon] = useState(false);
-  const [serviceFilterCon, setServiceFilterCon] = useState(false);
-  const [serviceItemSave, setServiceItemSave] = useState();
-  const [selectedItems, setSelectedItems] = useState([]);
-
-  const dispatch = useDispatch();
-  const isFocus = useIsFocused();
- 
+  
   useEffect(()=>{
     if(getRetailData?.getAllCart?.poscart_products?.length>0){
       const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => (
@@ -261,20 +265,22 @@ export function MainScreen({
     }
    
   },[isFocus])
+  
   useFocusEffect(
     React.useCallback(() => {
-      return async () => {
-         if(cartLength>0){
-          await bulkCart()
+      return  () => {
+        if (cartLength > 0) {
+           bulkCart()
          }
         };
-    },[LOCAL_CART_ARRAY,])
+    },[LOCAL_CART_ARRAY])
   );
   const bulkCart = async () => {
-    const updatedLocalCartArray = [...LOCAL_CART_ARRAY] // Retrieve the updated value from Redux
-    console.log("Arrayyy before bulkCart", JSON.stringify(updatedLocalCartArray));
-    
-    if (updatedLocalCartArray.length > 0) {
+    const updatedLocalCartArray =[...LOCAL_CART_ARRAY] // Retrieve the updated value from Redux
+    // console.log("Arrayyy before bulkCart", JSON.stringify(isClear));
+    // console.log("bulkCart length", JSON.stringify(updatedLocalCartArray.length));
+    // console.log(" length", JSON.stringify(cartLength));
+    if (updatedLocalCartArray.length > 0 && !isClear ) { 
       const dataToSend = {
         "seller_id": sellerID,
         "products": updatedLocalCartArray
@@ -298,9 +304,10 @@ export function MainScreen({
       setCartModal(false);
     }
   }, [cartLength]);
-  const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
+
+
   const onClickAddCart = (item, index, cartQty) => {
-    setHitBulk(true)
+    setIsClear(false)
     const mainProductArray = getRetailData?.getMainProduct;
       const cartArray = selectedCartItem;
 
@@ -315,7 +322,7 @@ export function MainScreen({
       if (existingItemIndex === -1) {
         cartArray.push(DATA);
         dispatch(updateCartLength(cartLength+1))
-        dispatch(addLocalCart(cartArray))
+        
       } else {
         console.log("CART_QTY",existingItemIndex)
         cartArray[existingItemIndex].qty =cartQty+1 ;
@@ -323,6 +330,7 @@ export function MainScreen({
        console.log("CART_ARRAY",JSON.stringify(cartArray))
        
        setSelectedCartItems(cartArray);
+       dispatch(addLocalCart(cartArray))
        mainProductArray.data[index].cart_qty += 1;
        dispatch(getMainProductSuccess(mainProductArray));
  
@@ -563,6 +571,18 @@ export function MainScreen({
   const onSelectedItemsChange = (selectedItems) => {
     setSelectedItems(selectedItems);
   };
+  const eraseClearCart = async () => {
+    setIsClear(true);
+    setSelectedCartItems([]);
+    dispatch(clearLocalCart());
+    dispatch(updateCartLength(0));
+    if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
+      setTimeout(() => {
+        dispatch(clearAllCart());
+      }, 100);
+    }
+  };
+  
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.homeScreenCon}>
@@ -988,7 +1008,7 @@ export function MainScreen({
                   </View>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
-                    onPress={() =>{ dispatch(clearAllCart()), dispatch(clearLocalCart())}}
+                    onPress={() =>eraseClearCart()}
                     disabled={cartLength > 0 ? false : true}
                   >
                     <Image
@@ -1135,7 +1155,7 @@ export function MainScreen({
                     />
                   </TouchableOpacity>
                   <Spacer space={SH(20)} />
-                  <TouchableOpacity onPress={serviceCartStatusHandler}>
+                  <TouchableOpacity onPress={()=>{serviceCartStatusHandler(),setGoToCart(true)}}>
                     <Image
                       source={holdCart}
                       style={
