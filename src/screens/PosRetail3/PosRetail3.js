@@ -327,6 +327,7 @@ export function PosRetail3() {
     isLoadingSelector(
       [
         TYPES.GET_ONE_PRODUCT,
+        TYPES.GET_ONE_SERVICE,
         // TYPES.ADDCART,
         TYPES.GET_CLEAR_ALL_CART,
         TYPES.GET_ALL_CART,

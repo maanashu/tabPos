@@ -14,8 +14,9 @@ import { rewardReducer } from '@/reducers/RewardReducer';
 import { appointmentReducer } from '@/reducers/AppointmentReducer';
 import { dashboardReducer } from '@/reducers/DashboardReducer';
 import { settingReducer } from '@/reducers/SettingReducer';
+import { TYPES } from '@/Types/Types';
 
-export const rootReducer = combineReducers({
+export const appReducer = combineReducers({
   error: errorReducer,
   status: statusReducer,
   user: userReducer,
@@ -32,3 +33,11 @@ export const rootReducer = combineReducers({
   dashboard: dashboardReducer,
   setting: settingReducer,
 });
+
+export const rootReducer = (state, action) => {
+  if (action.type === TYPES.CLEAR_STORE) {
+    alert(action.type);
+    return appReducer(undefined, action);
+  }
+  return appReducer(state, action);
+};

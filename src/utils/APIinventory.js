@@ -127,6 +127,7 @@ export const ApiOrderInventory = {
   pendingOrders: 'orders/pos/pending-orders-count',
   qrstatus: 'poscarts/check-payment-status/',
   ServicesQrStatus: 'appointment_carts/check-payment-status/',
+  getOneService: 'appointments',
 };
 
 export const ApiWalletInventory = {

@@ -17,12 +17,14 @@ const windowWidth = Dimensions.get('window').width;
 export function AddServiceCartModal({
   crossHandler,
   detailHandler,
-  itemData,
+  // itemData ,
+  offerId,
   sellerID,
   backToCartHandler,
 }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+  const itemData = getRetailData?.getOneService?.product_detail;
   const cartServiceData = getRetailData?.getserviceCart;
   const timeSlotsData = getRetailData?.timeSlots;
   const [posUserId, setposUserId] = useState(itemData?.pos_staff?.[0]?.user?.unique_uuid);
@@ -166,6 +168,7 @@ export function AddServiceCartModal({
       startTime: selectedTimeSlotData?.start_time,
       endTime: selectedTimeSlotData?.end_time,
       posUserId: posUserId,
+      offerId: offerId,
     };
     dispatch(addToServiceCart(data));
     crossHandler();

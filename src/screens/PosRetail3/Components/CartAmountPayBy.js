@@ -637,8 +637,6 @@ export const CartAmountPayBy = ({
                           setEmailModal(true);
                           //getTipPress();
                         } else if (index == 2) {
-                          console.log('check', selectedTipAmount);
-
                           getTipPress(), payNowHandler(), payNowByphone(selectedTipAmount);
                         }
                       }}

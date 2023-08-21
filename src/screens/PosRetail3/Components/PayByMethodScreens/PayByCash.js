@@ -41,7 +41,6 @@ export const PayByCash = ({
   const [selectedId, setSelectedId] = useState(1);
   const [cashRate, setCashRate] = useState();
   const cartProducts = cartDatas?.poscart_products;
-  console.log('sele', selectedId, cashRate);
   useEffect(() => {
     setCashRate(selectCashArray[0].usd);
   }, []);
@@ -131,7 +130,6 @@ export const PayByCash = ({
   const targetValue = totalPayAmount();
   const greaterNotes = findGreaterCurrencyNotes(targetValue, currencyNotes);
 
-  console.log(greaterNotes[0]);
   const selectCashArray = [
     {
       id: 1,

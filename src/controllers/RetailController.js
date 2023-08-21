@@ -38,12 +38,12 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: 'catgory error',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'catgory error',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
@@ -72,12 +72,12 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: 'catgory error',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'catgory error',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
@@ -168,12 +168,12 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: 'Brands not found',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'Brands not found',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
@@ -438,7 +438,7 @@ export class RetailController {
             text2: error.msg,
             visibilityTime: 2000,
           });
-          reject(error.msg);
+          reject(error);
         });
     });
   }
@@ -447,17 +447,30 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart;
-      const body = {
-        seller_id: sellerID,
-        supply_id: data.supplyId.toString(),
-        supply_price_id: data.supplyPriceID.toString(),
-        product_id: data.product_id.toString(),
-        app_name: data?.appName,
-        date: data?.date,
-        start_time: data?.startTime,
-        end_time: data?.endTime,
-        pos_user_id: data?.posUserId,
-      };
+      const body = data?.offerId
+        ? {
+            seller_id: sellerID,
+            supply_id: data.supplyId.toString(),
+            supply_price_id: data.supplyPriceID.toString(),
+            product_id: data.product_id.toString(),
+            app_name: data?.appName,
+            date: data?.date,
+            start_time: data?.startTime,
+            end_time: data?.endTime,
+            pos_user_id: data?.posUserId,
+            offer_id: data?.offerId,
+          }
+        : {
+            seller_id: sellerID,
+            supply_id: data.supplyId.toString(),
+            supply_price_id: data.supplyPriceID.toString(),
+            product_id: data.product_id.toString(),
+            app_name: data?.appName,
+            date: data?.date,
+            start_time: data?.startTime,
+            end_time: data?.endTime,
+            pos_user_id: data?.posUserId,
+          };
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
@@ -737,7 +750,6 @@ export class RetailController {
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response of appointment', JSON.stringify(response));
           if (response?.msg === 'Appointment created successfully!') {
             Toast.show({
               position: 'bottom',
@@ -882,13 +894,12 @@ export class RetailController {
         });
     });
   }
-
-  static async checkSuppliedVariant(data) {
+  static async getOneService(sellerID, serviceId) {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
-        ApiProductInventory.checkSuppliedVariant +
-        `?attribute_value_ids=${data.sizeId},${data.colorId}&supply_id=${data.supplyId}`;
+        ApiProductInventory.getProduct +
+        `/${serviceId}?app_name=pos&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -897,10 +908,34 @@ export class RetailController {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
-            text2: 'No Combination, Select Other Variant ',
+            text2: 'Service not found',
             visibilityTime: 2000,
           });
-          reject(error.msg);
+          reject(error);
+        });
+    });
+  }
+
+  static async checkSuppliedVariant(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.checkSuppliedVariant +
+        `?attribute_value_ids=${data.colorAndSizeId}&supply_id=${data.supplyId}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          alert('No Combination, Select Other Variant'),
+            Toast.show({
+              position: 'bottom',
+              type: 'error_toast',
+              text2: 'No Combination, Select Other Variant',
+              visibilityTime: 2000,
+            });
+          reject(error);
         });
     });
   }
@@ -956,6 +991,7 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1174,7 +1210,6 @@ export class RetailController {
       };
       HttpClient.put(endpoint, body)
         .then((response) => {
-          console.log('response of update tip', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -1330,11 +1365,9 @@ export class RetailController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
-          console.log('response of Services QR status', JSON.stringify(response));
         })
         .catch((error) => {
           reject(error);
-          console.log('error of  Services status', JSON.stringify(error));
         });
     });
   }

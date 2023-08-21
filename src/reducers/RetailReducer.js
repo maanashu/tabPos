@@ -16,6 +16,7 @@ const INITIALSTATE = {
   getTips: {},
   getProductDefault: [],
   getOneProduct: {},
+  getOneService: {},
   checkSuppliedVariant: [],
   requestMoney: {},
   requestCheck: {},
@@ -213,6 +214,12 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         getOneProduct: payload?.getOneProduct,
       };
 
+    case TYPES.GET_ONE_SERVICE_SUCCESS:
+      return {
+        ...state,
+        getOneService: payload?.getOneService,
+      };
+
     case TYPES.CHECK_SUPPLIES_VARIANT_SUCCESS:
       return {
         ...state,
@@ -371,8 +378,8 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         qrStatuskey: payload,
       };
 
-    case TYPES.CLEAR_STORE:
-      return {};
+    case TYPES.CLEAR_RETAIL_STORE:
+      return INITIALSTATE;
     default:
       return state;
   }
