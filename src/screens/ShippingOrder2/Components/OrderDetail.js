@@ -299,7 +299,7 @@ const OrderDetail = ({
                     }
                     style={[
                       styles.acceptButtonView,
-                      { width: openShippingOrders > '0' ? ms(170) : 0 },
+                      { width: openShippingOrders > '0' ? ms(170) : ms(80) },
                     ]}
                   >
                     <Text style={styles.acceptTextStyle}>
