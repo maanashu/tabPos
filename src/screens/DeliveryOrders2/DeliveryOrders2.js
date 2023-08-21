@@ -12,12 +12,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import MapViewDirections from 'react-native-maps-directions';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import {
   pay,
@@ -39,13 +36,8 @@ import {
   deliveryShipping,
   checkedCheckboxSquare,
   deliveryorderProducts,
-  deliveryHomeIcon,
   Fonts,
-  scooter,
   deliveryDriver,
-  backArrow2,
-  barcode,
-  crossButton,
 } from '@/assets';
 import {
   acceptOrder,
@@ -54,13 +46,13 @@ import {
   getOrderCount,
   getOrderstatistics,
   getReviewDefault,
+  getSellerDriverList,
   todayOrders,
 } from '@/actions/DeliveryAction';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
-import { COLORS, SH, SW } from '@/theme';
+import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
 import Header from './Components/Header';
-import { GOOGLE_MAP } from '@/constants/ApiKey';
 import OrderDetail from './Components/OrderDetail';
 import OrderReview from './Components/OrderReview';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
@@ -70,16 +62,17 @@ import { graphOptions } from '@/constants/staticData';
 import { getAuthData } from '@/selectors/AuthSelector';
 import CurrentStatus from './Components/CurrentStatus';
 import { getOrderData } from '@/actions/AnalyticsAction';
+import InvoiceDetails from './Components/InvoiceDetails';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import OrderConvertion from './Components/OrderConvertion';
 import { orderStatusCount } from '@/actions/ShippingAction';
 import TodayOrderStatus from './Components/TodayOrderStatus';
-import ShipmentTracking from './Components/ShipmentTracking';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES as ANALYTICSTYPES } from '@/Types/AnalyticsTypes';
 
 import styles from './styles';
+import ReactNativeModal from 'react-native-modal';
 
 export function DeliveryOrders2({ route }) {
   var isViewAll;
@@ -100,6 +93,7 @@ export function DeliveryOrders2({ route }) {
   const pieChartData = getDeliveryData?.getOrderstatistics?.data;
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const ordersList = getDeliveryData?.getReviewDef;
+  const singleOrderDetail = oneOrderDetail?.getOrderData;
   const widthAndHeight = 180;
   const series = [
     pieChartData?.[0]?.count ?? 0,
@@ -122,8 +116,8 @@ export function DeliveryOrders2({ route }) {
   };
 
   const destinationCoordinate = {
-    latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
-    longitude: oneOrderDetail?.getOrderData?.coordinates?.[1],
+    latitude: singleOrderDetail?.coordinates?.[0],
+    longitude: singleOrderDetail?.coordinates?.[1],
   };
 
   const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet];
@@ -144,6 +138,7 @@ export function DeliveryOrders2({ route }) {
   const [trackingView, setTrackingView] = useState(false);
   const [viewAllOrder, setViewAllOrder] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  // const [isEnableDriverList, setIsEnableDriverList] = useState(false);
 
   useEffect(() => {
     if (ordersList?.length > 0) {
@@ -154,12 +149,6 @@ export function DeliveryOrders2({ route }) {
       return () => clearInterval(interval);
     }
   }, []);
-
-  // useInterval(dispatch(getOrderCount(sellerID)), 2000);
-
-  // useInterval(() => {
-  //   dispatch(getOrderCount(sellerID));
-  // }, 2000);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -239,6 +228,7 @@ export function DeliveryOrders2({ route }) {
     dispatch(getReviewDefault(0, sellerID, 1));
     dispatch(getOrderstatistics(sellerID, 1));
     dispatch(getGraphOrders(sellerID, 1));
+    dispatch(getSellerDriverList(sellerID));
 
     const deliveryTypes = [
       {
@@ -663,6 +653,9 @@ export function DeliveryOrders2({ route }) {
   );
 
   const acceptHandler = (id) => {
+    // if (openShippingOrders === '2') {
+    //   setIsEnableDriverList(true);
+    // } else {
     const data = {
       orderId: id,
       status: parseInt(openShippingOrders) + 1,
@@ -680,6 +673,7 @@ export function DeliveryOrders2({ route }) {
         }
       })
     );
+    // }
   };
 
   const declineHandler = (id) => {
@@ -780,7 +774,7 @@ export function DeliveryOrders2({ route }) {
               color: COLORS.dark_grey,
             }}
           >
-            {item?.product_name ?? 'jgssjdgjsdhsdsdj'}
+            {item?.product_name ?? ''}
           </Text>
         </View>
 
@@ -805,6 +799,65 @@ export function DeliveryOrders2({ route }) {
       setRefreshing(false);
     }, 1000);
   }, []);
+
+  const renderDriverItem = ({ item, index }) => {
+    return (
+      <View
+        style={{
+          backgroundColor: COLORS.textInputBackground,
+          marginHorizontal: 20,
+          borderRadius: 15,
+          paddingVertical: 20,
+          paddingHorizontal: 10,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Image
+            source={{ uri: item?.user_profiles?.profile_photo }}
+            style={styles.driverProfileStyle}
+          />
+
+          <View style={{ paddingHorizontal: 15 }}>
+            <Text
+              style={styles.totalText}
+            >{`${item?.user_profiles?.firstname} ${item?.user_profiles?.lastname}`}</Text>
+            <Text style={[styles.viewallTextStyle, { color: COLORS.darkGray, paddingTop: 4 }]}>
+              {`${item?.user_profiles?.current_address?.street_address}, ${item?.user_profiles?.current_address?.city}, ${item?.user_profiles?.current_address?.state}, ${item?.user_profiles?.current_address?.country}, ${item?.user_profiles?.current_address?.zipcode}`}
+            </Text>
+
+            <Text
+              style={[styles.viewallTextStyle, { color: COLORS.darkGray, paddingTop: 4 }]}
+            >{`${item?.user_profiles?.full_phone_number}`}</Text>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          style={{
+            width: ms(90),
+            borderRadius: 5,
+            alignItems: 'center',
+            backgroundColor: COLORS.primary,
+            height: ms(30),
+            justifyContent: 'center',
+            alignSelf: 'flex-end',
+            marginHorizontal: 20,
+            marginTop: 20,
+          }}
+        >
+          <Text
+            style={[styles.viewallTextStyle, { fontFamily: Fonts.SemiBold, color: COLORS.white }]}
+          >
+            {'Assign'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <ScreenWrapper>
@@ -858,7 +911,7 @@ export function DeliveryOrders2({ route }) {
                     />
                   </>
                 ) : (
-                  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                  <View style={[styles.modalStyle, { justifyContent: 'center' }]}>
                     <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
                   </View>
                 )}
@@ -934,404 +987,87 @@ export function DeliveryOrders2({ route }) {
           </View>
 
           {isAcceptOrder ? (
-            <View
-              style={{
-                position: 'absolute',
-                alignSelf: 'center',
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                backgroundColor: 'rgba(0,0,0, 0.3)',
-              }}
-            >
+            <View style={[styles.percentageView, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
               <ActivityIndicator
-                color={COLORS.primary}
                 size={'small'}
-                style={{
-                  position: 'absolute',
-                  alignSelf: 'center',
-                  top: 0,
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                }}
+                color={COLORS.primary}
+                style={styles.percentageView}
               />
             </View>
           ) : null}
         </>
       ) : (
         <View style={styles.container}>
-          <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backView}>
-            <Image source={backArrow2} style={styles.backImageStyle} />
-            <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
-              {strings.deliveryOrders.back}
-            </Text>
-          </TouchableOpacity>
-
-          <Spacer space={SH(20)} />
           <View style={styles.firstRowStyle}>
-            <View
-              style={{
-                width: Dimensions.get('window').width / 3,
-                // marginTop: ms(10),
-                backgroundColor: COLORS.white,
-                borderRadius: 15,
-                paddingBottom: 80,
+            <InvoiceDetails
+              {...{
+                setTrackingView,
+                singleOrderDetail,
+                latitude,
+                longitude,
+                sourceCoordinate,
+                destinationCoordinate,
+                openShippingOrders,
+                sellerID,
+                renderOrderDetailProducts,
+                location,
               }}
-            >
-              <Text
-                style={{
-                  fontFamily: Fonts.SemiBold,
-                  fontSize: ms(12),
-                  color: COLORS.dark_grey,
-                  paddingTop: ms(15),
-                  textAlign: 'center',
-                }}
-              >
-                {oneOrderDetail?.getOrderData?.user_details?.firstname ?? 'sdfsd'}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Fonts.Regular,
-                  fontSize: ms(9),
-                  color: COLORS.dark_grey,
-                  paddingTop: ms(5),
-                  textAlign: 'center',
-                }}
-              >
-                {oneOrderDetail?.getOrderData?.user_details?.current_address?.street_address +
-                  ', ' +
-                  oneOrderDetail?.getOrderData?.user_details?.current_address?.city +
-                  ', ' +
-                  oneOrderDetail?.getOrderData?.user_details?.current_address?.country +
-                  ' ' +
-                  oneOrderDetail?.getOrderData?.user_details?.current_address?.zipcode ?? 'sdfsd'}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Fonts.Regular,
-                  fontSize: ms(9),
-                  color: COLORS.dark_grey,
-                  paddingTop: ms(5),
-                  textAlign: 'center',
-                }}
-              >
-                {oneOrderDetail?.getOrderData?.user_details?.phone_number ?? 'sdfsd'}
-              </Text>
-              <Spacer space={SH(40)} />
-              <FlatList
-                data={oneOrderDetail?.getOrderData?.order_details}
-                renderItem={renderOrderDetailProducts}
-              />
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <View
-                  style={[
-                    styles.subTotalView,
-                    { backgroundColor: COLORS.white, width: Dimensions.get('window').width / 3 },
-                  ]}
-                >
-                  <View style={styles.orderDetailsView}>
-                    <Text style={styles.countTextStyle}>{strings.deliveryOrders.subTotal}</Text>
-                    <View style={styles.flexDirectionRow}>
-                      <Text
-                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
-                      >
-                        {'$'}
-                      </Text>
-                      <Text
-                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
-                      >
-                        {oneOrderDetail?.getOrderData?.total_sale_price ?? '0'}
-                      </Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.orderDetailsView}>
-                    <Text style={styles.countTextStyle}>{'Discount ( MIDApril100)'}</Text>
-                    <View style={styles.flexDirectionRow}>
-                      <Text
-                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
-                      >
-                        {'$'}
-                      </Text>
-                      <Text
-                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
-                      >
-                        {oneOrderDetail?.getOrderData?.discount ?? '0'}
-                      </Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.orderDetailsView}>
-                    <Text style={styles.countTextStyle}>{'Tax'}</Text>
-                    <View style={styles.flexDirectionRow}>
-                      <Text
-                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
-                      >
-                        {'$'}
-                      </Text>
-                      <Text
-                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
-                      >
-                        {oneOrderDetail?.getOrderData?.tax ?? '0'}
-                      </Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.orderDetailsView}>
-                    <Text style={styles.countTextStyle}>{'Delivery Charges'}</Text>
-                    <View style={styles.flexDirectionRow}>
-                      <Text
-                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
-                      >
-                        {'$'}
-                      </Text>
-                      <Text
-                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
-                      >
-                        {oneOrderDetail?.getOrderData?.order_delivery?.amount}
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      borderWidth: 1,
-                      borderColor: COLORS.solidGrey,
-                      borderStyle: 'dashed',
-                      marginTop: ms(5),
-                    }}
-                  />
-                  <View style={styles.orderDetailsView}>
-                    <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
-                    <View style={styles.flexDirectionRow}>
-                      <Text
-                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
-                      >
-                        {'$'}
-                      </Text>
-                      <Text
-                        style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
-                      >
-                        {oneOrderDetail?.getOrderData?.payable_amount}
-                      </Text>
-                    </View>
-                  </View>
-
-                  <Spacer space={SH(15)} />
-                </View>
-              </View>
-
-              <View
-                style={{
-                  alignSelf: 'flex-start',
-                  flexDirection: 'row',
-                  alignItems: 'flex-start',
-                  paddingLeft: 15,
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: Fonts.Regular,
-                    fontSize: ms(9),
-                    color: COLORS.dark_grey,
-                  }}
-                >
-                  {'Payment Option: '}
-                </Text>
-                <Text
-                  style={{ fontFamily: Fonts.SemiBold, fontSize: ms(9), color: COLORS.dark_grey }}
-                >
-                  {oneOrderDetail?.getOrderData?.mode_of_payment?.toUpperCase()}
-                </Text>
-              </View>
-
-              <Text
-                style={{
-                  paddingLeft: 15,
-                  fontFamily: Fonts.Regular,
-                  fontSize: ms(9),
-                  paddingTop: ms(5),
-                  color: COLORS.dark_grey,
-                }}
-              >
-                {moment(oneOrderDetail?.getOrderData?.invoice?.delivery_date).format('llll')}
-              </Text>
-
-              {/* <Text
-                style={{
-                  paddingLeft: 15,
-                  fontFamily: Fonts.Regular,
-                  fontSize: ms(9),
-                  paddingTop: ms(5),
-                  color: COLORS.dark_grey,
-                }}
-              >
-                {'Walk-In'}
-              </Text> */}
-
-              <Text
-                style={{
-                  paddingLeft: 15,
-                  fontFamily: Fonts.Regular,
-                  fontSize: ms(9),
-                  paddingTop: ms(5),
-                  color: COLORS.dark_grey,
-                }}
-              >
-                {`Invoice No. #${oneOrderDetail?.getOrderData?.invoice?.invoice_id}`}
-              </Text>
-
-              {/* <Text
-                style={{
-                  paddingLeft: 15,
-                  fontFamily: Fonts.Regular,
-                  fontSize: ms(9),
-                  paddingTop: ms(5),
-                  color: COLORS.dark_grey,
-                }}
-              >
-                {`POS No. #Front-CC01`}
-              </Text> */}
-
-              <Text
-                style={{
-                  paddingLeft: 15,
-                  fontFamily: Fonts.Regular,
-                  fontSize: ms(9),
-                  paddingTop: ms(5),
-                  color: COLORS.dark_grey,
-                }}
-              >
-                {`User ID:${oneOrderDetail?.getOrderData?.user_details?.uid}`}
-              </Text>
-
-              <Spacer space={SH(45)} />
-              <Text
-                style={{
-                  fontFamily: Fonts.MaisonBold,
-                  fontSize: ms(16),
-                  textAlign: 'center',
-                  color: COLORS.dark_grey,
-                }}
-              >
-                {`Thank You`}
-              </Text>
-
-              <Spacer space={SH(15)} />
-              <Image source={barcode} style={{ alignSelf: 'center', height: 50 }} />
-
-              {/* <Spacer space={SH(5)} /> */}
-              <Text
-                style={{
-                  fontFamily: Fonts.Bold,
-                  fontSize: ms(16),
-                  textAlign: 'center',
-                  color: COLORS.primary,
-                }}
-              >
-                {`JOBR`}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                width: Dimensions.get('window').width / 2.2,
-                // marginTop: ms(10),
-                borderRadius: 15,
-              }}
-            >
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                showCompass
-                region={{
-                  latitude: latitude,
-                  longitude: longitude,
-                  latitudeDelta: 0.0992,
-                  longitudeDelta: 0.0421,
-                }}
-                initialRegion={{
-                  latitude: latitude ?? 0.0,
-                  longitude: longitude ?? 0.0,
-                  latitudeDelta: 0.0992,
-                  longitudeDelta: 0.0421,
-                }}
-                style={styles.detailMap}
-              >
-                <MapViewDirections
-                  key={location?.latitude}
-                  origin={{
-                    latitude: latitude,
-                    longitude: longitude,
-                  }}
-                  destination={{
-                    latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
-                    longitude: oneOrderDetail?.getOrderData?.coordinates?.[1],
-                  }}
-                  apikey={GOOGLE_MAP.API_KEYS}
-                  strokeWidth={6}
-                  strokeColor={COLORS.primary}
-                />
-                <Marker coordinate={sourceCoordinate}>
-                  <View>
-                    <Image
-                      source={scooter}
-                      style={{ height: ms(30), width: ms(30), resizeMode: 'contain' }}
-                    />
-                  </View>
-                </Marker>
-                <Marker coordinate={destinationCoordinate}>
-                  <View>
-                    <Image
-                      source={deliveryHomeIcon}
-                      style={{ height: ms(30), width: ms(30), resizeMode: 'contain' }}
-                    />
-                  </View>
-                </Marker>
-              </MapView>
-              <TouchableOpacity
-                onPress={() => {
-                  setTrackingView(false),
-                    dispatch(getReviewDefault(openShippingOrders, sellerID, 1));
-                }}
-                style={[
-                  styles.expandButtonStyle,
-                  { borderColor: COLORS.dark_grey, borderWidth: 1, backgroundColor: COLORS.white },
-                ]}
-              >
-                <Image source={crossButton} style={styles.rightIconStyle} />
-                <Text
-                  style={[
-                    styles.acceptTextStyle,
-                    { color: COLORS.dark_grey, paddingHorizontal: 12 },
-                  ]}
-                >
-                  {'Close'}
-                </Text>
-              </TouchableOpacity>
-              <ShipmentTracking props={{ status: oneOrderDetail?.getOrderData?.status }} />
-            </View>
+            />
             <RightSideBar
               {...{
                 deliveryDrawer,
                 openShippingOrders,
-                isOpenSideBarDrawer,
                 renderShippingDrawer,
                 setOpenShippingOrders,
                 renderDrawer,
-                setIsOpenSideBarDrawer,
               }}
             />
           </View>
         </View>
       )}
+
+      {/* {isEnableDriverList ? (
+        <ReactNativeModal
+          animationIn={'slideInUp'}
+          isVisible={isEnableDriverList}
+          style={styles.driverModalStyle}
+          onBackdropPress={() => setIsEnableDriverList(false)}
+        >
+          <FlatList
+            data={getDeliveryData?.getSellerDriverList}
+            renderItem={renderDriverItem}
+            ListHeaderComponent={() => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 20,
+                }}
+              >
+                <View />
+
+                <Text style={styles.driverListHeadingText}>
+                  {strings.deliveryOrders2.selectDriver}
+                </Text>
+
+                <TouchableOpacity onPress={() => setIsEnableDriverList(false)}>
+                  <Text
+                    style={[
+                      styles.driverListHeadingText,
+                      { fontSize: SF(18), fontFamily: Fonts.SemiBold, color: COLORS.primary },
+                    ]}
+                  >
+                    {'Skip'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        </ReactNativeModal>
+      ) : null} */}
     </ScreenWrapper>
   );
 }

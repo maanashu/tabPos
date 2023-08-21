@@ -769,11 +769,15 @@ export const en = {
     orderDateValue: '20/12/2023',
     totalItemsValue: '7',
     completed: 'Completed',
+    reviewOrders: 'Shipping Orders to Review',
+    acceptedOrders: 'Shipping Orders Accepted',
+    prepareOrders: 'Shipping Orders to Be Prepared',
   },
   deliveryOrders2: {
     orderStatus: 'Today’s Order Status',
     pickupOrders: 'Pickup Orders',
     noOrdersFound: 'No orders found',
+    selectDriver: 'Select Driver',
   },
   orderStatus: {
     reviewOrders: 'Orders to review',
@@ -790,5 +794,6 @@ export const en = {
     prepareButton: 'Ready to Pickup',
     trackOrder: 'Track Order',
     preparedButton: 'Prepared',
+    printlabel: 'Print Label',
   },
 };

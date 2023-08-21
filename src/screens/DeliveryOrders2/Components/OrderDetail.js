@@ -8,10 +8,10 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
+import ShipmentTracking from './ShipmentTracking';
 import { expand, Fonts, scooter, userImage } from '@/assets';
 
 import styles from '../styles';
-import ShipmentTracking from './ShipmentTracking';
 
 const OrderDetail = ({
   userDetail,
@@ -260,7 +260,6 @@ const OrderDetail = ({
                     style={styles.acceptButtonView}
                   >
                     <Text style={styles.acceptTextStyle}>
-                      {' '}
                       {openShippingOrders === '0'
                         ? strings.buttonStatus.reviewButton
                         : openShippingOrders === '1'

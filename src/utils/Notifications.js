@@ -26,6 +26,7 @@ const getDeviceToken = async () => {
 
 // Handle incoming push notifications when the app is in the foreground
 const onMessageReceivedForeground = async (message) => {
+  console.log('message-------------', message);
   await notifee.displayNotification({
     title: message.notification.title,
     body: message.notification.body,
@@ -37,6 +38,7 @@ const onMessageReceivedForeground = async (message) => {
 
 // Handle incoming push notifications when the app is in the background or closed
 const onMessageReceivedBackground = async (message) => {
+  console.log('message-------------', message);
   await notifee.displayNotification({
     title: message.notification.title,
     body: message.notification.body,

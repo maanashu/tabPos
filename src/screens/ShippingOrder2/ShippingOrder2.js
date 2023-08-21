@@ -4,13 +4,14 @@ import {
   View,
   Text,
   Image,
+  FlatList,
+  Platform,
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
-  FlatList,
-  Platform,
 } from 'react-native';
 
+import WebView from 'react-native-webview';
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -55,19 +56,18 @@ import RightDrawer from './Components/RightDrawer';
 import OrderDetail from './Components/OrderDetail';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { ScreenWrapper, Spacer } from '@/components';
+import { graphOptions } from '@/constants/staticData';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import OrderConversion from './Components/OrderConversion';
 import { getShipping } from '@/selectors/ShippingSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import { labels, graphOptions } from '@/constants/staticData';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import TodayShippingStatus from './Components/TodayShippingStatus';
 import CurrentShippingStatus from './Components/CurrentShippingStatus';
 
 import styles from './ShippingOrder2.styles';
-import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import WebView from 'react-native-webview';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -213,50 +213,114 @@ export function ShippingOrder2() {
   const showBadge = (item) => {
     if (item?.image === Cart) {
       return (
-        <View
-          style={[
-            styles.bucketBadge,
-            { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
-          ]}
-        >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item.image}
+            style={[
+              styles.sideBarImage,
+              {
+                tintColor: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.bucketBadge,
+              { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
+            ]}
+          >
+            <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
+          </View>
         </View>
       );
     } else if (item?.image === NoCard) {
       return (
-        <View
-          style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
-        >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item.image}
+            style={[
+              styles.sideBarImage,
+              {
+                tintColor:
+                  item?.title === 'Rejected/Cancelled' && openShippingOrders === item?.key
+                    ? COLORS.pink
+                    : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
+          >
+            <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
+          </View>
         </View>
       );
     } else if (item?.image === ReturnTruck) {
       return (
-        <View
-          style={[
-            styles.bucketBadge,
-            {
-              backgroundColor: COLORS.yellowTweet,
-              borderColor: COLORS.yellowTweet,
-            },
-          ]}
-        >
-          <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item.image}
+            style={[
+              styles.sideBarImage,
+              {
+                tintColor:
+                  item?.title === 'Returned' && openShippingOrders === item?.key
+                    ? COLORS.yellowTweet
+                    : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.bucketBadge,
+              {
+                backgroundColor: COLORS.yellowTweet,
+                borderColor: COLORS.yellowTweet,
+              },
+            ]}
+          >
+            <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count}</Text>
+          </View>
         </View>
       );
     } else {
       return (
-        <View
-          style={[
-            styles.bucketBadge,
-            {
-              backgroundColor: COLORS.solidGrey,
-              borderColor: COLORS.dark_grey,
-              borderWidth: 2,
-            },
-          ]}
-        >
-          <Text style={styles.badgetext}>{item?.count}</Text>
+        <View style={styles.bucketBackgorund}>
+          <Image
+            source={item.image}
+            style={[
+              styles.sideBarImage,
+              {
+                tintColor:
+                  openShippingOrders === item?.key
+                    ? COLORS.primary
+                    : item?.title === 'Rejected/Cancelled' && openShippingOrders === item?.key
+                    ? COLORS.pink
+                    : item?.title === 'Returned' && openShippingOrders === item?.key
+                    ? COLORS.yellowTweet
+                    : COLORS.darkGray,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.bucketBadge,
+              {
+                backgroundColor: COLORS.white,
+                borderColor: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray,
+                borderWidth: 2,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.badgetext,
+                { color: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray },
+              ]}
+            >
+              {item?.count}
+            </Text>
+          </View>
         </View>
       );
     }
@@ -264,21 +328,13 @@ export function ShippingOrder2() {
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
-      style={[
-        styles.drawerIconView,
-        {
-          backgroundColor: openShippingOrders === item?.key ? COLORS.solidGrey : COLORS.transparent,
-        },
-      ]}
+      style={styles.drawerIconView}
       onPress={() => {
         setOpenShippingOrders(item?.key);
         dispatch(getReviewDefault(item?.key, sellerID, 4));
       }}
     >
-      <View style={styles.bucketBackgorund}>
-        <Image source={item.image} style={styles.sideBarImage} />
-        {showBadge(item)}
-      </View>
+      {showBadge(item)}
     </TouchableOpacity>
   );
 
@@ -480,6 +536,7 @@ export function ShippingOrder2() {
         ? COLORS.yellowTweet
         : COLORS.primary,
   }));
+
   const renderGraphItem = ({ item, index }) => {
     return (
       <View style={styles.shippingDrawerView}>
@@ -607,11 +664,11 @@ export function ShippingOrder2() {
                         <View style={styles.headingRowStyle}>
                           <Text style={styles.ordersToReviewText}>
                             {openShippingOrders === '0'
-                              ? strings.orderStatus.reviewOrders
+                              ? strings.shippingOrder.reviewOrders
                               : openShippingOrders === '1'
-                              ? strings.orderStatus.acceptOrder
+                              ? strings.shippingOrder.acceptedOrders
                               : openShippingOrders === '2'
-                              ? strings.orderStatus.prepareOrder
+                              ? strings.shippingOrder.prepareOrders
                               : openShippingOrders === '3'
                               ? 'Printing Labels'
                               : openShippingOrders === '4'

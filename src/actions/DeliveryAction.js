@@ -162,6 +162,19 @@ const getGraphOrdersError = (error) => ({
   payload: { error },
 });
 
+const getSellerDriverListRequest = () => ({
+  type: TYPES.GET_SELLER_DRIVERS_REQUEST,
+  payload: null,
+});
+const getSellerDriverListSuccess = (getSellerDriverList) => ({
+  type: TYPES.GET_SELLER_DRIVERS_SUCCESS,
+  payload: { getSellerDriverList },
+});
+const getSellerDriverListError = (error) => ({
+  type: TYPES.GET_SELLER_DRIVERS_ERROR,
+  payload: { error },
+});
+
 export const getOrderCount = (status) => async (dispatch) => {
   dispatch(getOrderCountRequest());
   try {
@@ -276,5 +289,15 @@ export const getGraphOrders = (sellerID, delivery) => async (dispatch) => {
     return dispatch(getGraphOrdersSuccess(res?.payload));
   } catch (error) {
     dispatch(getGraphOrdersError(error.message));
+  }
+};
+
+export const getSellerDriverList = (sellerID) => async (dispatch) => {
+  dispatch(getSellerDriverListRequest());
+  try {
+    const res = await DeliveryController.getSellerDriverList(sellerID);
+    return dispatch(getSellerDriverListSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getSellerDriverListError(error.message));
   }
 };
