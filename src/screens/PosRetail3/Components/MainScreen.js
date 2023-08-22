@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Keyboard, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
@@ -56,6 +64,8 @@ import {
   createBulkcart,
   getAllCart,
   getAllCartSuccess,
+  getAllProductPaginationSuccess,
+  getMainProductPagination,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -70,6 +80,8 @@ import { NumericPad } from './NumericPad';
 import { addLocalCart, clearLocalCart, updateCartLength } from '@/actions/CartAction';
 import { getCartLength, getLocalCartArray, getServiceCartLength } from '@/selectors/CartSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 export function MainScreen({
   cartScreenHandler,
@@ -79,7 +91,6 @@ export function MainScreen({
   productArray,
   cartServiceScreenHandler,
 }) {
-
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
   const [selectedId, setSelectedId] = useState();
@@ -96,11 +107,19 @@ export function MainScreen({
   const [serviceNumPadModal, setServiceNumPadModal] = useState(false);
   const [goToCart, setGoToCart] = useState(false);
   const getMerchantService = getAuthdata?.merchantLoginData?.product_existance_status;
-   const CART_LENGTH= useSelector(getCartLength)
-   const SERVICE_CART_LENGTH=useSelector(getServiceCartLength)
+  const CART_LENGTH = useSelector(getCartLength);
+  const SERVICE_CART_LENGTH = useSelector(getServiceCartLength);
   const getRetailData = useSelector(getRetail);
-  const LOCAL_CART_ARRAY= useSelector(getLocalCartArray)
-  // console.log("-0-0-0",LOCAL_CART_ARRAY)
+  const LOCAL_CART_ARRAY = useSelector(getLocalCartArray);
+
+  const [localCartArray, setLocalCartArray] = useState(LOCAL_CART_ARRAY);
+
+  console.log('-0-0-0', CART_LENGTH);
+
+  useEffect(() => {
+    setLocalCartArray(LOCAL_CART_ARRAY);
+  }, [LOCAL_CART_ARRAY]);
+
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
   const productCartArray = getRetailData?.getAllProductCart;
@@ -109,8 +128,8 @@ export function MainScreen({
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
 
   // const cartLength = cartData?.poscart_products?.length;
-   const cartLength = CART_LENGTH;
-   const serviceCartData = getRetailData?.getserviceCart;
+  const cartLength = CART_LENGTH;
+  const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
   //  const serviceCartLength = CART_LENGTH;
   let arr = [getRetailData?.getAllCart];
@@ -131,8 +150,6 @@ export function MainScreen({
   const [serviceFilter, setServiceFilter] = useState(0);
 
   const [hitBulk, setHitBulk] = useState(true);
-
-
 
   const [selectedCartItem, setSelectedCartItems] = useState([]);
   const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
@@ -160,6 +177,7 @@ export function MainScreen({
   const [serviceItemSave, setServiceItemSave] = useState();
   const [selectedItems, setSelectedItems] = useState([]);
   const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   const cartStatusHandler = () => {
     const data =
@@ -206,7 +224,6 @@ export function MainScreen({
     setTimeout(() => {
       setshowProductsFrom(productArray);
     }, 1000);
-   
   }, [isFocus]);
 
   useEffect(() => {
@@ -220,7 +237,7 @@ export function MainScreen({
   useEffect(() => {
     dispatch(getMainProduct());
     dispatch(getMainServices());
-  }, []);
+  }, [isClear]);
 
   const onChangeFun = (search) => {
     setSearch(search);
@@ -245,52 +262,50 @@ export function MainScreen({
     }
   };
 
-  
-  useEffect(()=>{
-    if(getRetailData?.getAllCart?.poscart_products?.length>0){
-      const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => (
-        {
-      "product_id":obj.product_id,
-      "qty":obj.qty,
-      "supply_id":obj.supply_id,
-      "supply_price_id":obj.supply_price_id
+  useEffect(() => {
+    if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
+      const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
+        product_id: obj.product_id,
+        qty: obj.qty,
+        supply_id: obj.supply_id,
+        supply_price_id: obj.supply_price_id,
+      }));
+      //  dispatch(addLocalCart(cartmatchId))
+      setSelectedCartItems(cartmatchId);
+    } else {
+      dispatch(updateCartLength(0));
+      dispatch(clearLocalCart());
+      setSelectedCartItems([]);
     }
-    ));
-     dispatch(addLocalCart(cartmatchId))
-     setSelectedCartItems(cartmatchId)
-    }
-    else{
-      dispatch(updateCartLength(0))
-      dispatch(clearLocalCart())
-      setSelectedCartItems([])
-    }
-   
-  },[isFocus])
-  
-  useEffect(()=>{
-    return  () => {
-      if (cartLength > 0) {
-        console.log("Calll=-=-=-=-==-=-=-",isClear)
-         bulkCart()
-       }
-      };
-  },[LOCAL_CART_ARRAY])
+  }, [isFocus]);
+
+  // useEffect(()=>{
+  //   console.log('onfocus',localCartArray.length)
+  //   return  () => {
+  //   console.log('onblur',localCartArray.length)
+
+  //     if (localCartArray?.length > 0 && !isClear) {
+  //       console.log("Calll=-=-=-=-==-=-=-",isClear)
+  //        bulkCart()
+  //      }
+  //     };
+  // },[localCartArray])
+
   const bulkCart = async () => {
-    const updatedLocalCartArray =[...LOCAL_CART_ARRAY] // Retrieve the updated value from Redux
-    if (updatedLocalCartArray.length > 0 && !isClear ) { 
+    if (localCartArray.length > 0) {
       const dataToSend = {
-        "seller_id": sellerID,
-        "products": updatedLocalCartArray
+        seller_id: sellerID,
+        products: localCartArray,
       };
       try {
-        await (createBulkcart(dataToSend))(dispatch);
-        console.log("Bulkcart action dispatched successfully");
+        dispatch(createBulkcart(dataToSend));
+        console.log('Bulkcart action dispatched successfully');
       } catch (error) {
-        console.error("Error dispatching createBulkcart:", error);
+        console.error('Error dispatching createBulkcart:', error);
       }
     }
   };
-  
+
   useEffect(() => {
     if (selectedCatID) {
       setselectedCatID(selectedCatID);
@@ -302,60 +317,34 @@ export function MainScreen({
     }
   }, [cartLength]);
 
-
   const onClickAddCart = (item, index, cartQty) => {
-    setIsClear(false)
     const mainProductArray = getRetailData?.getMainProduct;
-      const cartArray = selectedCartItem;
+    const cartArray = selectedCartItem;
 
-     const existingItemIndex = cartArray.findIndex(cartItem => cartItem.product_id === item?.id);
-  
-      const DATA = {
-        "product_id": item?.id,
-        "qty": 1,
-        "supply_id": item?.supplies?.[0]?.id,
-        "supply_price_id": item?.supplies?.[0]?.supply_prices[0]?.id
-      };
-      if (existingItemIndex === -1) {
-        cartArray.push(DATA);
-        dispatch(updateCartLength(cartLength+1))
-        
-      } else {
-        console.log("CART_QTY",existingItemIndex)
-        cartArray[existingItemIndex].qty =cartQty+1 ;
-      }
-       
-       setSelectedCartItems(cartArray);
-       dispatch(addLocalCart(cartArray))
-       mainProductArray.data[index].cart_qty += 1;
-       dispatch(getMainProductSuccess(mainProductArray));
- 
-  
+    const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
 
-      //-------------New Inprogress_CODE------------
-    // const mainProductArray = getRetailData?.getMainProduct;
-    // const cartArray = selectedCartItem;
+    const DATA = {
+      product_id: item?.id,
+      qty: 1,
+      supply_id: item?.supplies?.[0]?.id,
+      supply_price_id: item?.supplies?.[0]?.supply_prices[0]?.id,
+    };
+    if (existingItemIndex === -1) {
+      cartArray.push(DATA);
+      dispatch(updateCartLength(cartLength + 1));
+    } else {
+      console.log('CART_QTY', existingItemIndex);
+      cartArray[existingItemIndex].qty = cartQty + 1;
+    }
+    console.log('check local cart array to push ', JSON.stringify(cartArray));
+    setSelectedCartItems(cartArray);
+    dispatch(addLocalCart(cartArray));
+    ///
 
-    // const existingItemIndex = cartArray.findIndex(cartItem => cartItem.product_id === item?.id);
-  
-    //   const DATA = {
-    //     "product_id": item?.id,
-    //     "qty": 1,
-    //     "supply_id": item?.supplies?.[0]?.id,
-    //     "supply_price_id": item?.supplies?.[0]?.supply_prices[0]?.id
-    //   };
-    //   if (existingItemIndex === -1) {
-    //     cartArray.push(DATA);
-    //     dispatch(updateCartLength(cartLength+1))
-    //   } else {
-    //     cartArray[existingItemIndex].qty == cartQty+ 1;
-    //   }
-    //    setSelectedCartItems(cartArray);
-    //    mainProductArray.data[index].cart_qty += 1;
-    //    dispatch(getMainProductSuccess(mainProductArray));
-       
+    mainProductArray.data[index].cart_qty += 1;
+    dispatch(getMainProductSuccess(mainProductArray));
 
-     //-------------OLD_CODE------------
+    //-------------OLD_CODE------------
     // const data = {
     //   seller_id: sellerID,
     //   supplyId: item?.supplies?.[0]?.id,
@@ -471,7 +460,7 @@ export function MainScreen({
   );
   //  categoryType -----end
 
-  const renderItem = ({ item ,index}) => {
+  const renderItem = ({ item, index }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
     const color = item.id === selectedId ? 'white' : 'black';
     return (
@@ -486,13 +475,15 @@ export function MainScreen({
   };
 
   const Item = ({ item, index }) => {
-    const isProductMatchArray = LOCAL_CART_ARRAY?.find((data) => data.product_id === item.id);
+    const isProductMatchArray = localCartArray?.find((data) => data.product_id === item.id);
     const cartAddQty = isProductMatchArray?.qty;
     // Create a new object with updated cart_qty value
+
     const updatedItem = { ...item };
     if (cartAddQty !== undefined) {
-        updatedItem.cart_qty = cartAddQty;
+      updatedItem.cart_qty = cartAddQty;
     }
+
     return (
       <TouchableOpacity
         style={styles.productCon}
@@ -523,30 +514,29 @@ export function MainScreen({
             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
           </Text>
           {/* addToCartBlue */}
-          <TouchableOpacity 
-          // activeOpacity={1}
-          onPress={() => onClickAddCart(item,index,cartAddQty)}>
-          <FastImage
-          source={isProductMatchArray ? addToCartBlue : addToCart}
-          style={styles.addToCart}
-          resizeMode={FastImage.resizeMode.contain}
-        />
-        {/* -----New_In progress_CODE------- */}
-          {updatedItem.cart_qty>0 &&
-           <View 
-           style={styles.productBadge}>
-               <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
-            </View>
-          
-          }
-          {/* {cartAddQty>0 &&
+          <TouchableOpacity
+            // activeOpacity={1}
+            onPress={() => onClickAddCart(item, index, cartAddQty)}
+          >
+            <FastImage
+              source={isProductMatchArray ? addToCartBlue : addToCart}
+              style={styles.addToCart}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+            {/* -----New_In progress_CODE------- */}
+            {updatedItem.cart_qty > 0 && (
+              <View style={styles.productBadge}>
+                <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
+              </View>
+            )}
+            {/* {cartAddQty>0 &&
            <View 
            style={styles.productBadge}>
                <Text style={styles.productBadgeText}>{cartAddQty}</Text>
             </View>
           } */}
-          
-           {/* -----OLD_CODE------- */}
+
+            {/* -----OLD_CODE------- */}
             {/* {isProductMatchArray ? (
               <View style={styles.productBadge}>
                 <Text style={styles.productBadgeText}>{cartAddQty}</Text>
@@ -575,22 +565,59 @@ export function MainScreen({
   const onSelectedItemsChange = (selectedItems) => {
     setSelectedItems(selectedItems);
   };
+
   const eraseClearCart = async () => {
-    setIsClear(true);
     setSelectedCartItems([]);
     dispatch(clearLocalCart());
     dispatch(updateCartLength(0));
+    dispatch(getMainProduct());
+    setLocalCartArray([]);
+    setIsClear(true);
+    console.log('check local cart reducer', localCartArray);
+
     if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
-      setTimeout(() => {
-        dispatch(clearAllCart());
-      }, 100);
+      dispatch(clearAllCart());
     }
   };
-  
+
+  const isLoadingMore = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_PRODUCT_PAGINATION], state)
+  );
+  const onLoadMoreProduct = () => {
+    console.log('Caallalllalalalalllal');
+    // if (isLoadingMore || !isScrolling) return;
+    setPage(page + 1);
+    dispatch(getMainProductPagination(page));
+  };
+
+  const renderFooterPost = () => {
+    return (
+      <View style={{}}>
+        {isLoadingMore && (
+          <ActivityIndicator
+            style={{ marginVertical: 14 }}
+            size={'large'}
+            color={COLORS.blueLight}
+          />
+        )}
+      </View>
+    );
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => dispatch(getMainProduct());
+    }, [])
+  );
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.homeScreenCon}>
-        <CustomHeader iconShow={showCart ? true : false} crossHandler={() => {setShowCart(false)}} />
+        <CustomHeader
+          iconShow={showCart ? true : false}
+          crossHandler={() => {
+            setShowCart(false);
+          }}
+        />
         {getMerchantService?.is_product_exist === false &&
         getMerchantService?.is_service_exist === false ? (
           <View style={styles.noproductServiceCon}>
@@ -830,6 +857,7 @@ export function MainScreen({
 
               {productCon && getMerchantService?.is_product_exist === true ? (
                 <FlatList
+                  //  key={localCartArray}
                   data={mainProductArray}
                   extraData={mainProductArray}
                   renderItem={renderItem}
@@ -841,6 +869,15 @@ export function MainScreen({
                     zIndex: -99,
                   }}
                   scrollEnabled={true}
+                  ListFooterComponent={renderFooterPost}
+                  // onEndReached={onLoadMoreProduct}
+                  // onEndReachedThreshold={0.5}
+                  // onMomentumScrollBegin={() => {
+                  //   setIsScrolling(true);
+                  // }}
+                  // onMomentumScrollEnd={() => {
+                  //   setIsScrolling(false);
+                  // }}
                   ListEmptyComponent={() => (
                     <View style={styles.noProductText}>
                       <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
@@ -947,7 +984,9 @@ export function MainScreen({
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
                     disabled={cartLength > 0 ? false : true}
-                    onPress={() => {bulkCart(),setCartModal(true)}}
+                    onPress={() => {
+                      bulkCart(), setCartModal(true);
+                    }}
                   >
                     <Image
                       source={bucket}
@@ -971,7 +1010,6 @@ export function MainScreen({
                             : styles.badgetext
                         }
                       >
-       
                         {cartLength ?? '0'}
                       </Text>
                     </View>
@@ -1012,7 +1050,7 @@ export function MainScreen({
                   </View>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
-                    onPress={() =>eraseClearCart()}
+                    onPress={() => eraseClearCart()}
                     disabled={cartLength > 0 ? false : true}
                   >
                     <Image
@@ -1059,7 +1097,12 @@ export function MainScreen({
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
                   disabled={cartLength > 0 ? false : true}
-                  onPress={cartScreenHandler}
+                  onPress={() => {
+                    bulkCart();
+                    setTimeout(() => {
+                      cartScreenHandler();
+                    }, 200);
+                  }}
                   style={
                     cartLength > 0
                       ? [styles.bucketBackgorund, { backgroundColor: COLORS.primary }]
@@ -1159,7 +1202,12 @@ export function MainScreen({
                     />
                   </TouchableOpacity>
                   <Spacer space={SH(20)} />
-                  <TouchableOpacity onPress={()=>{serviceCartStatusHandler(),setGoToCart(true)}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      serviceCartStatusHandler();
+                      // setGoToCart(true)
+                    }}
+                  >
                     <Image
                       source={holdCart}
                       style={
@@ -1221,6 +1269,7 @@ export function MainScreen({
         animationOut={'slideOutRight'}
       >
         <CartListModal
+          clearCart={eraseClearCart}
           checkOutHandler={checkOutHandler}
           CloseCartModal={() => setCartModal(false)}
         />

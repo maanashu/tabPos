@@ -329,11 +329,11 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.clearAllCart;
       HttpClient.delete(endpoint)
         .then((response) => {
-          console.log("response",response)
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log("Redsdsds",error)
+          console.log('Redsdsds', error);
           reject(error);
         });
     });
@@ -978,6 +978,8 @@ export class RetailController {
         delivery_options: '3',
         seller_id: sellerID,
         service_type: 'product',
+        page: 1,
+        limit: 25,
       };
 
       let finalParams;
@@ -995,7 +997,7 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-
+      console.log('ENDDD', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1012,6 +1014,49 @@ export class RetailController {
     });
   }
 
+  static async getMainProductPagination({ page, productTypeID = {} }) {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const defaultParams = {
+        app_name: 'pos',
+        delivery_options: '3',
+        seller_id: sellerID,
+        service_type: 'product',
+        page: page,
+        limit: 10,
+      };
+      console.log('Pagination', defaultParams);
+      let finalParams;
+
+      if (Object.keys(productTypeID).length !== 0) {
+        finalParams = {
+          ...defaultParams,
+          ...productTypeID,
+        };
+      } else {
+        finalParams = {
+          ...defaultParams,
+        };
+      }
+
+      const convertToQueryParam = new URLSearchParams(finalParams).toString();
+      const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      console.log('Pagination', endpoint);
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   text2: 'Product not found',
+          //   visibilityTime: 2000,
+          // });
+          reject(error);
+        });
+    });
+  }
   static async getMainServices(productTypeID = {}) {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
@@ -1099,7 +1144,7 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
       HttpClient.post(endpoint, data)
         .then((response) => {
-          console.log("BulkCreate",response);
+          console.log('BulkCreate', response);
           resolve(response);
         })
         .catch((error) => {

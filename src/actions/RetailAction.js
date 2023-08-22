@@ -853,6 +853,21 @@ const getAvailableOfferReset = () => ({
   payload: null,
 });
 
+//Product pagination
+export const getAllProductPaginationSuccess = (post) => ({
+  type: TYPES.GET_ALL_PRODUCT_PAGINATION_SUCCESS,
+  payload: { product },
+});
+const getAllProductPaginationRequest = () => ({
+  type: TYPES.GET_ALL_PRODUCT_PAGINATION_REQUEST,
+  payload: null,
+});
+
+const getAllProductPaginationError = (error) => ({
+  type: TYPES.GET_ALL_PRODUCT_PAGINATION_ERROR,
+  payload: { error },
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -950,6 +965,16 @@ export const getProductDefault = (sellerID, page) => async (dispatch) => {
   }
 };
 
+export const getMainProductPagination = (page) => async (dispatch) => {
+  dispatch(getAllProductPaginationRequest());
+  try {
+    const res = await RetailController.getMainProductPagination(page);
+    dispatch(getAllProductPaginationSuccess(res?.payload?.data));
+  } catch (error) {
+    dispatch(getAllProductPaginationError(error.message));
+  }
+};
+
 export const getSearchProduct = (search, sellerID) => async (dispatch) => {
   dispatch(getSeaProductRequest());
   try {
@@ -965,11 +990,11 @@ export const getAllCart = () => async (dispatch) => {
   try {
     const res = await RetailController.getAllCart();
     dispatch(getAllCartSuccess(res));
-    dispatch(updateCartLength(res?.payload?.poscart_products?.length))
+    dispatch(updateCartLength(res?.payload?.poscart_products?.length));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllCartReset());
-      dispatch(updateCartLength(0))
+      dispatch(updateCartLength(0));
     }
     dispatch(getAllCartError(error.message));
   }
@@ -993,8 +1018,7 @@ export const getAllProductCart = () => async (dispatch) => {
   try {
     const res = await RetailController.getAllProductCart();
     dispatch(getAllProductCartSuccess(res?.payload));
-    console.log("sdsdsdsdsdsd",res?.payload)
-    
+    console.log('sdsdsdsdsdsd', res?.payload);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllProductCartReset());
@@ -1022,8 +1046,8 @@ export const clearAllCart = () => async (dispatch) => {
     const res = await RetailController.clearAllCart();
     dispatch(getClearAllCartSuccess(res));
     dispatch(getAllCart());
-    dispatch(updateCartLength(0))
-    dispatch(clearLocalCart())
+    // dispatch(updateCartLength(0))
+    // dispatch(clearLocalCart())
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getClearAllCartReset());
@@ -1038,8 +1062,8 @@ export const clearServiceAllCart = () => async (dispatch) => {
     const res = await RetailController.clearServiceAllCart();
     dispatch(clearServiceAllCartSuccess(res));
     dispatch(getServiceCart());
-    dispatch(updateCartLength(0))
-    dispatch(clearLocalCart())
+    dispatch(updateCartLength(0));
+    dispatch(clearLocalCart());
   } catch (error) {
     dispatch(clearServiceAllCartError(error.message));
   }
@@ -1050,7 +1074,7 @@ export const clearOneCart = (data) => async (dispatch) => {
   try {
     const res = await RetailController.clearOneCart(data);
     dispatch(clearOneCartSuccess(res));
-    dispatch(updateCartLength(0))
+    dispatch(updateCartLength(0));
     dispatch(getAllCart());
   } catch (error) {
     if (error?.statusCode === 204) {

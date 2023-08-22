@@ -63,18 +63,20 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     React.useCallback(() => {
       return () => {
         var arr = getRetailData?.getAllCart;
-        if (arr?.poscart_products?.length > 0) {
-          const products = arr?.poscart_products.map((item) => ({
-            product_id: item?.product_id,
-            qty: item?.qty,
-          }));
+        if (arr?.length > 0) {
+          if (arr?.poscart_products?.length > 0) {
+            const products = arr?.poscart_products.map((item) => ({
+              product_id: item?.product_id,
+              qty: item?.qty,
+            }));
 
-          const data = {
-            updated_products: products,
-          };
-          dispatch(updateCartQty(data, arr.id));
-        } else {
-          clearCartHandler();
+            const data = {
+              updated_products: products,
+            };
+            dispatch(updateCartQty(data, arr.id));
+          } else {
+            clearCartHandler();
+          }
         }
       };
     }, [])
@@ -120,7 +122,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       if (product.qty > 0) {
         if (product.qty == 1) {
           arr?.poscart_products.splice(index, 1);
-          dispatch(updateCartLength(cartLength+1))
+          dispatch(updateCartLength(cartLength + 1));
         }
         product.qty -= 1;
         arr.amount.total_amount -= productPrice;
@@ -133,10 +135,9 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     dispatch(getAllCartSuccess(DATA));
   };
 
-  const clearCartHandler = async() => {
-   dispatch(clearAllCart());
-   crossHandler();
-  
+  const clearCartHandler = async () => {
+    dispatch(clearAllCart());
+    crossHandler();
   };
 
   const phoneNumberSearchFun = (customerPhoneNo) => {

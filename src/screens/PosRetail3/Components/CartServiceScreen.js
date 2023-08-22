@@ -158,7 +158,7 @@ export function CartServiceScreen({
 
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
+    const productPrice = product?.product_details.price;
 
     if (operation === '+') {
       product.qty += 1;
