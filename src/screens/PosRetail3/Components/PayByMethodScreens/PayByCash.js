@@ -196,6 +196,10 @@ export const PayByCash = ({
                     keyExtractor={(item) => item.id}
                     horizontal
                     scrollEnabled={false}
+                    contentContainerStyle={{
+                      flex: 1,
+                      justifyContent: 'space-between',
+                    }}
                   />
                 </View>
 
