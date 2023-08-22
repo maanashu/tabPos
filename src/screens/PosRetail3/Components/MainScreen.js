@@ -264,19 +264,21 @@ export function MainScreen({
   };
 
   useEffect(() => {
-    if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
-      const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
-        product_id: obj.product_id,
-        qty: obj.qty,
-        supply_id: obj.supply_id,
-        supply_price_id: obj.supply_price_id,
-      }));
-      //  dispatch(addLocalCart(cartmatchId))
-      setSelectedCartItems(cartmatchId);
-    } else {
-      dispatch(updateCartLength(0));
-      dispatch(clearLocalCart());
-      setSelectedCartItems([]);
+    if (isFocus) {
+      if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
+        const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
+          product_id: obj.product_id,
+          qty: obj.qty,
+          supply_id: obj.supply_id,
+          supply_price_id: obj.supply_price_id,
+        }));
+        dispatch(addLocalCart(cartmatchId));
+        setSelectedCartItems(cartmatchId);
+      } else {
+        dispatch(updateCartLength(0));
+        dispatch(clearLocalCart());
+        setSelectedCartItems([]);
+      }
     }
   }, [isFocus]);
 
