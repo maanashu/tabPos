@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
   },
   _boxView: {
     height: ms(110),
-    width: Platform.OS === 'ios' ? ms(103) : ms(120),
+    width: Platform.OS === 'ios' ? ms(103) : ms(110),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
     justifyContent: 'center',
@@ -114,7 +114,7 @@ export const styles = StyleSheet.create({
   },
   _inputMain: {
     marginTop: ms(15),
-    width: Platform.OS === 'ios' ? ms(325) : ms(380),
+    width: Platform.OS === 'ios' ? ms(325) : ms(360),
   },
   _inputSubView: {
     flexDirection: 'row',
@@ -939,8 +939,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   columbiaMen: {
-    width: SW(6),
-    height: SW(6),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
   },
   cartItemImage: {
@@ -1062,6 +1062,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: ms(6),
     marginTop: ms(5),
+    paddingHorizontal: ms(5),
   },
   _kNumber: {
     color: COLORS.dark_grey,
@@ -1246,7 +1247,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderRadius: 10,
     width: windowWidth * 0.06,
-    height: windowHeight * 0.86,
+    height: windowHeight * 0.88,
     paddingVertical: verticalScale(6),
     alignItems: 'center',
   },
@@ -1580,12 +1581,6 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(7),
-    marginTop: ms(5),
-  },
-  _kAddress: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: ms(6),
     marginTop: ms(5),
   },
   _kNumber: {

@@ -378,10 +378,29 @@ export function CartServiceScreen({
               >
                 <Image source={sideKeyboard} style={styles.keyboardIcon} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.holdCartCon} onPress={serviceCartStatusHandler}>
-                <Image source={holdCart} style={styles.pause} />
+              <TouchableOpacity
+                style={[
+                  styles.holdCartCon,
+                  { borderColor: holdServiceArray?.length > 0 ? COLORS.primary : COLORS.black },
+                ]}
+                onPress={serviceCartStatusHandler}
+              >
+                <Image
+                  source={holdCart}
+                  style={[
+                    styles.pause,
+                    { tintColor: holdServiceArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
+                  ]}
+                />
 
-                <Text style={styles.holdCart}>{strings.dashboard.holdCart}</Text>
+                <Text
+                  style={[
+                    styles.holdCart,
+                    { color: holdServiceArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
+                  ]}
+                >
+                  {strings.dashboard.holdCart}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.holdCartCon} onPress={clearCartHandler}>
                 <Image source={eraser} style={[styles.pause, { tintColor: COLORS.dark_grey }]} />

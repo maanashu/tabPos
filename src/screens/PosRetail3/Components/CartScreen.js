@@ -60,6 +60,8 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const [offerId, setOfferId] = useState();
 
+  console.log('cartData-----------', cartData);
+
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
   const cartStatusHandler = () => {
@@ -348,10 +350,29 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
               >
                 <Image source={sideKeyboard} style={styles.keyboardIcon} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.holdCartCon} onPress={cartStatusHandler}>
-                <Image source={holdCart} style={styles.pause} />
+              <TouchableOpacity
+                style={[
+                  styles.holdCartCon,
+                  { borderColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.black },
+                ]}
+                onPress={cartStatusHandler}
+              >
+                <Image
+                  source={holdCart}
+                  style={[
+                    styles.pause,
+                    { tintColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
+                  ]}
+                />
 
-                <Text style={styles.holdCart}>{strings.dashboard.holdCart}</Text>
+                <Text
+                  style={[
+                    styles.holdCart,
+                    { color: holdProductArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
+                  ]}
+                >
+                  {strings.dashboard.holdCart}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.holdCartCon} onPress={clearCartHandler}>
                 <Image source={eraser} style={[styles.pause, { tintColor: COLORS.dark_grey }]} />

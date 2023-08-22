@@ -101,8 +101,6 @@ export const CartAmountPayBy = ({
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
 
-  //console.log('cart Data', JSON.stringify(cartData));
-
   const qrcodeData = useSelector(getRetail).qrKey;
 
   const cartProducts = cartData?.poscart_products;
@@ -134,6 +132,8 @@ export const CartAmountPayBy = ({
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
+  const getAuthdata = useSelector(getAuthData);
+  const merchantDetails = getAuthdata?.merchantLoginData?.user;
 
   const qrStatus = getRetailData.qrStatuskey;
 
@@ -696,9 +696,13 @@ export const CartAmountPayBy = ({
 
         <View style={styles.rightCon}>
           <View style={[{ height: '100%', alignItems: 'center' }]}>
-            <Text style={styles._kSubCenterContainer}>Primark</Text>
-            <Text style={styles._kAddress}>63 Ivy Road, Hawkville, GA, USA 31036</Text>
-            <Text style={styles._kNumber}>+123-456-7890</Text>
+            <Text style={styles._kSubCenterContainer}>
+              {merchantDetails?.user_profiles?.organization_name}
+            </Text>
+            <Text
+              style={styles._kAddress}
+            >{`${merchantDetails?.user_profiles?.current_address?.street_address}, ${merchantDetails?.user_profiles?.current_address?.city}, ${merchantDetails?.user_profiles?.current_address?.state}, ${merchantDetails?.user_profiles?.current_address?.country}, ${merchantDetails?.user_profiles?.current_address?.zipcode}`}</Text>
+            <Text style={styles._kNumber}>{merchantDetails?.user_profiles?.full_phone_number}</Text>
 
             <View style={styles._flatListContainer}>
               <FlatList
