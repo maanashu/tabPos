@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, Dimensions, FlatList, ScrollView, Text, View } from 'react-native';
 
 import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
@@ -13,6 +13,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
+import { ms } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -287,91 +288,90 @@ export function AddCartModal({
           style={{
             width: windowWidth * 0.42,
             alignSelf: 'center',
+            height: windowHeight * 0.75,
+            paddingBottom: ms(20),
           }}
         >
-          <View style={[styles.displayflex, { marginTop: SH(10) }]}>
-            <View style={styles.detailLeftDetail}>
-              <Text style={styles.colimbiaText}>{productDetail?.product_detail?.name}</Text>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={[styles.displayflex, { marginTop: SH(10) }]}>
+              <View style={styles.detailLeftDetail}>
+                <Text style={styles.colimbiaText}>{productDetail?.product_detail?.name}</Text>
+                <Text style={styles.colimbiaText}>
+                  {productDetail?.product_detail?.category?.name}
+                </Text>
+                {colorId === null ? (
+                  <Text>{null}</Text>
+                ) : (
+                  <Text style={styles.sizeAndColor}>Color: {colorName}</Text>
+                )}
+                {sizeId === null ? (
+                  <Text>{null}</Text>
+                ) : (
+                  <Text style={styles.sizeAndColor}>Size: {sizeName}</Text>
+                )}
+              </View>
               <Text style={styles.colimbiaText}>
-                {productDetail?.product_detail?.category?.name}
+                ${productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
               </Text>
-              {colorId === null ? (
-                <Text>{null}</Text>
-              ) : (
-                <Text style={styles.sizeAndColor}>Color: {colorName}</Text>
-              )}
-              {sizeId === null ? (
-                <Text>{null}</Text>
-              ) : (
-                <Text style={styles.sizeAndColor}>Size: {sizeName}</Text>
-              )}
             </View>
-            <Text style={styles.colimbiaText}>
-              ${productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-            </Text>
-          </View>
-          <View style={{ alignItems: 'center' }}>
-            <View style={styles.counterCon}>
-              <TouchableOpacity
-                style={styles.minusBtnCon}
-                onPress={() => (count > 0 ? setCount(count - 1) : null)}
-              >
-                <Text style={styles.counterText}>-</Text>
-              </TouchableOpacity>
-              <View style={styles.minusBtnCon}>
-                <Text style={styles.counterText}>{count}</Text>
+            <View style={{ alignItems: 'center' }}>
+              <View style={styles.counterCon}>
+                <TouchableOpacity
+                  style={styles.minusBtnCon}
+                  onPress={() => (count > 0 ? setCount(count - 1) : null)}
+                >
+                  <Text style={styles.counterText}>-</Text>
+                </TouchableOpacity>
+                <View style={styles.minusBtnCon}>
+                  <Text style={styles.counterText}>{count}</Text>
+                </View>
+                <TouchableOpacity style={styles.minusBtnCon} onPress={() => setCount(count + 1)}>
+                  <Text style={styles.counterText}>+</Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.minusBtnCon} onPress={() => setCount(count + 1)}>
-                <Text style={styles.counterText}>+</Text>
-              </TouchableOpacity>
+
+              {finalColorArray?.[0]?.values?.length >= 1 ? (
+                <View style={styles.displayRow}>
+                  <View style={styles.colorRow} />
+                  <Text style={styles.colorText}>COLORS</Text>
+                  <View style={styles.colorRow} />
+                </View>
+              ) : null}
+
+              <FlatList
+                data={finalColorArray?.[0]?.values}
+                renderItem={coloredRenderItem}
+                keyExtractor={(item) => item.id}
+                extraData={finalColorArray?.[0]?.values}
+                numColumns={4}
+                // horizontal
+                // contentContainerStyle={{
+                //   borderWidth: 1,
+                //   width: windowWidth * 0.42,
+                //   height: windowHeight * 0.2,
+                // }}
+                scrollEnabled
+              />
+              <Spacer space={SH(15)} />
+              {finalSizeArray?.[0]?.values?.length >= 1 ? (
+                <View style={styles.displayRow}>
+                  <View style={styles.colorRow} />
+                  <Text style={styles.colorText}>SIZE</Text>
+                  <View style={styles.colorRow} />
+                </View>
+              ) : null}
+              <Spacer space={SH(15)} />
+              <FlatList
+                data={finalSizeArray?.[0]?.values}
+                renderItem={sizeRenderItem}
+                keyExtractor={(item) => item.id}
+                extraData={finalSizeArray?.[0]?.values}
+                numColumns={4}
+              />
             </View>
-
-            {finalColorArray?.[0]?.values?.length >= 1 ? (
-              <View style={styles.displayRow}>
-                <View style={styles.colorRow} />
-                <Text style={styles.colorText}>COLORS</Text>
-                <View style={styles.colorRow} />
-              </View>
-            ) : null}
-
-            <FlatList
-              data={finalColorArray?.[0]?.values}
-              renderItem={coloredRenderItem}
-              keyExtractor={(item) => item.id}
-              extraData={finalColorArray?.[0]?.values}
-              numColumns={4}
-              // horizontal
-              // contentContainerStyle={{
-              //   borderWidth: 1,
-              //   width: windowWidth * 0.42,
-              //   height: windowHeight * 0.2,
-              // }}
-              scrollEnabled
-            />
-            <Spacer space={SH(15)} />
-            {finalSizeArray?.[0]?.values?.length >= 1 ? (
-              <View style={styles.displayRow}>
-                <View style={styles.colorRow} />
-                <Text style={styles.colorText}>SIZE</Text>
-                <View style={styles.colorRow} />
-              </View>
-            ) : null}
-            <Spacer space={SH(15)} />
-            <FlatList
-              data={finalSizeArray?.[0]?.values}
-              renderItem={sizeRenderItem}
-              keyExtractor={(item) => item.id}
-              extraData={finalSizeArray?.[0]?.values}
-              numColumns={4}
-            />
-          </View>
+          </ScrollView>
         </View>
       </View>
-      {/* {loader ? (
-        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
-        </View>
-      ) : null} */}
     </View>
   );
 }

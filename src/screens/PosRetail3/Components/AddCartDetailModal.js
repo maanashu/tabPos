@@ -15,6 +15,7 @@ const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 export function AddCartDetailModal({ crossHandler }) {
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
+  console.log('productDetail', JSON.stringify(productDetail));
 
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options.split(',');
@@ -29,6 +30,7 @@ export function AddCartDetailModal({ crossHandler }) {
   });
   const [clothColorId, setClothColorId] = useState();
   const [clothSizeId, setClothSizeId] = useState();
+  console.log('clothSizeId', mclothSizeId);
   const [remindId, setRemindId] = useState();
 
   // cloth color select section start
@@ -176,12 +178,13 @@ export function AddCartDetailModal({ crossHandler }) {
                 <View style={styles.colorSelectArea}>
                   <FlatList
                     data={dummyData}
+                    extraData={dummyData}
                     renderItem={clothColorrenderItem}
                     keyExtractor={(item) => item.id}
-                    extraData={dummyData}
                     // contentContainerStyle={{ flexGrow: 1 }}
                     // nestedScrollEnabled
                     showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ width: ms(50) }}
                   />
                 </View>
                 <View style={styles.quantitySelectArea}>

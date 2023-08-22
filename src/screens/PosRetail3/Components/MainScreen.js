@@ -64,6 +64,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { ServiceFilterDropDown } from './ServiceFilterDropDown';
 import { NumericPad } from './NumericPad';
 import { getAllPosUsers } from '@/actions/AuthActions';
+import { json } from 'stream/consumers';
 
 export function MainScreen({
   cartScreenHandler,
@@ -102,6 +103,7 @@ export function MainScreen({
   const [showProductsFrom, setshowProductsFrom] = useState();
   const mainProductArray = getRetailData?.getMainProduct?.data;
   const mainServicesArray = getRetailData?.getMainServices?.data;
+  // console.log('mainServicesArray', JSON.stringify(mainServicesArray));
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
     qty: obj.qty,
@@ -665,7 +667,7 @@ export function MainScreen({
                         <Spacer space={SH(6)} />
                         <View>
                           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                            {item?.pos_users?.map((data, index) => (
+                            {item?.pos_staff?.map((data, index) => (
                               <Image
                                 key={index}
                                 source={

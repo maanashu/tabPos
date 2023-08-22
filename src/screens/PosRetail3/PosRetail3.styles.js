@@ -826,6 +826,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     // height: windowHeight * 0.45,
     flexDirection: 'row',
+    borderWidth: 1,
   },
   colorSelectArea: {
     // height: windowHeight * 0.45,
@@ -851,8 +852,8 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(3),
   },
   scrollImage: {
-    width: SW(23),
-    height: SW(23),
+    width: SW(18),
+    height: SW(18),
     resizeMode: 'contain',
   },
   sizeSelectItemCon: {

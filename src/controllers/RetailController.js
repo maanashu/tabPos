@@ -878,7 +878,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `/${productId}?app_name=pos&seller_id=${sellerID}`;
+        `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -899,7 +899,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `/${serviceId}?app_name=pos&seller_id=${sellerID}`;
+        `/${serviceId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
