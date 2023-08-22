@@ -1037,7 +1037,6 @@ export const getAllProductCart = () => async (dispatch) => {
   try {
     const res = await RetailController.getAllProductCart();
     dispatch(getAllProductCartSuccess(res?.payload));
-    console.log('sdsdsdsdsdsd', res?.payload);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllProductCartReset());
@@ -1154,9 +1153,7 @@ export const updateCartQty = (data, cartId) => async (dispatch) => {
   dispatch(updateCartQtyRequest());
   try {
     const res = await RetailController.updateCartQtyy(data, cartId);
-
     dispatch(updateCartQtySuccess(res));
-
     // dispatch(getAllCart());
   } catch (error) {
     dispatch(updateCartQtyError(error));

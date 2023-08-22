@@ -58,7 +58,6 @@ export function CartServiceScreen({
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const cartServiceData = getRetailData?.getserviceCart;
-  console.log('cartServiceData', cartServiceData?.appointment_cart_products?.length);
   let arr = [getRetailData?.getserviceCart];
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);

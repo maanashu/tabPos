@@ -140,7 +140,6 @@ export function MainScreen({
   const [showProductsFrom, setshowProductsFrom] = useState();
   const mainProductArray = getRetailData?.getMainProduct?.data;
   const mainServicesArray = getRetailData?.getMainServices?.data;
-  // console.log('mainServicesArray', JSON.stringify(mainServicesArray));
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
     qty: obj.qty,
@@ -301,10 +300,7 @@ export function MainScreen({
       };
       try {
         dispatch(createBulkcart(dataToSend));
-        console.log('Bulkcart action dispatched successfully');
-      } catch (error) {
-        console.error('Error dispatching createBulkcart:', error);
-      }
+      } catch (error) {}
     }
   };
 
@@ -335,10 +331,8 @@ export function MainScreen({
       cartArray.push(DATA);
       dispatch(updateCartLength(cartLength + 1));
     } else {
-      console.log('CART_QTY', existingItemIndex);
       cartArray[existingItemIndex].qty = cartQty + 1;
     }
-    console.log('check local cart array to push ', JSON.stringify(cartArray));
     setSelectedCartItems(cartArray);
     dispatch(addLocalCart(cartArray));
     ///
@@ -428,6 +422,7 @@ export function MainScreen({
 
     return (
       <TouchableOpacity
+        key={index}
         style={styles.productCon}
         onPress={() => productFun(item.id)}
         activeOpacity={0.7}
@@ -515,7 +510,6 @@ export function MainScreen({
     dispatch(getMainProduct());
     setLocalCartArray([]);
     setIsClear(true);
-    console.log('check local cart reducer', localCartArray);
 
     if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
       dispatch(clearAllCart());
@@ -526,7 +520,6 @@ export function MainScreen({
     isLoadingSelector([TYPES.GET_ALL_PRODUCT_PAGINATION], state)
   );
   const onLoadMoreProduct = () => {
-    console.log('Caallalllalalalalllal');
     // if (isLoadingMore || !isScrolling) return;
     setPage(page + 1);
     dispatch(getMainProductPagination(page));
@@ -805,7 +798,7 @@ export function MainScreen({
                   data={mainProductArray}
                   extraData={mainProductArray}
                   renderItem={renderItem}
-                  keyExtractor={(item, index) => index}
+                  keyExtractor={(_, index) => index.toString()}
                   numColumns={7}
                   contentContainerStyle={{
                     // flexGrow: 1,
@@ -892,7 +885,11 @@ export function MainScreen({
                             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
                           </Text>
                           <View>
-                            <Image source={addToCart} style={styles.addToCart} />
+                            <FastImage
+                              source={addToCart}
+                              style={styles.addToCart}
+                              resizeMode="contain"
+                            />
                             {/* {isProductMatchArray ? (
                           <View style={styles.productBadge}>
                             <Text style={styles.productBadgeText}>{cartAddQty}</Text>

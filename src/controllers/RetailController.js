@@ -275,11 +275,9 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
       HttpClient.get(endpoint)
         .then((response) => {
-          // console.log("CART__RESPONSE",JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
-          // console.log("CART__error",JSON.stringify(error));
           reject(error);
         });
     });

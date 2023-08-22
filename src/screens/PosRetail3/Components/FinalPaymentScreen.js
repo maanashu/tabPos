@@ -30,10 +30,8 @@ export const FinalPaymentScreen = ({
   payDetail,
   cartType,
 }) => {
-  console.log(payDetail);
   const tipData = useSelector(getRetail).tipKey?.payload?.tip;
   const tipamount = Number(tipData);
-  // console.log('tipAmount', JSON.stringify(cartData));
   const getAuthdata = useSelector(getAuthData);
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
 
