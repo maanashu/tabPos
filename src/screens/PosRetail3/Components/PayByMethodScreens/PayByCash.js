@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createOrder, createServiceOrder } from '@/actions/RetailAction';
 import AddedCartItemsCard from '@/components/AddedCartItemsCard';
 import { number } from 'prop-types';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -41,6 +42,9 @@ export const PayByCash = ({
   const [selectedId, setSelectedId] = useState(1);
   const [cashRate, setCashRate] = useState();
   const cartProducts = cartDatas?.poscart_products;
+  const getAuthdata = useSelector(getAuthData);
+  const merchantDetails = getAuthdata?.merchantLoginData?.user;
+
   useEffect(() => {
     setCashRate(selectCashArray[0].usd);
   }, []);
@@ -212,7 +216,17 @@ export const PayByCash = ({
                     createOrderHandler();
                   }}
                   title={'Continue'}
-                  style={{ height: ms(40), width: '98%', marginTop: ms(10) }}
+                  style={{
+                    height: ms(40),
+                    width: '98%',
+                    marginTop: ms(10),
+                    backgroundColor:
+                      amount || selectedId ? COLORS.primary : COLORS.textInputBackground,
+                  }}
+                  textStyle={{
+                    fontFamily: Fonts.SemiBold,
+                    color: amount || selectedId ? COLORS.white : COLORS.dark_grey,
+                  }}
                 />
               </View>
             </View>
@@ -221,9 +235,13 @@ export const PayByCash = ({
 
         <View style={styles.rightCon}>
           <View style={[{ height: '100%', alignItems: 'center' }]}>
-            <Text style={styles._kSubCenterContainer}>Primark</Text>
-            <Text style={styles._kAddress}>63 Ivy Road, Hawkville, GA, USA 31036</Text>
-            <Text style={styles._kNumber}>+123-456-7890</Text>
+            <Text style={styles._kSubCenterContainer}>
+              {merchantDetails?.user_profiles?.organization_name}
+            </Text>
+            <Text
+              style={styles._kAddress}
+            >{`${merchantDetails?.user_profiles?.current_address?.street_address}, ${merchantDetails?.user_profiles?.current_address?.city}, ${merchantDetails?.user_profiles?.current_address?.state}, ${merchantDetails?.user_profiles?.current_address?.country}, ${merchantDetails?.user_profiles?.current_address?.zipcode}`}</Text>
+            <Text style={styles._kNumber}>{merchantDetails?.user_profiles?.full_phone_number}</Text>
 
             <View style={styles._flatListContainer}>
               <FlatList

@@ -18,6 +18,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { clearServiceAllCart, getServiceCart } from '@/actions/RetailAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -29,9 +30,12 @@ export const FinalPaymentScreen = ({
   payDetail,
   cartType,
 }) => {
+  console.log(payDetail);
   const tipData = useSelector(getRetail).tipKey?.payload?.tip;
   const tipamount = Number(tipData);
   // console.log('tipAmount', JSON.stringify(cartData));
+  const getAuthdata = useSelector(getAuthData);
+  const merchantDetails = getAuthdata?.merchantLoginData?.user;
 
   const cartProducts =
     cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
@@ -108,9 +112,13 @@ export const FinalPaymentScreen = ({
         </View>
         <View style={styles.rightCon}>
           <View style={[{ height: '100%', alignItems: 'center' }]}>
-            <Text style={styles._kSubCenterContainer}>Primark</Text>
-            <Text style={styles._kAddress}>63 Ivy Road, Hawkville, GA, USA 31036</Text>
-            <Text style={styles._kNumber}>+123-456-7890</Text>
+            <Text style={styles._kSubCenterContainer}>
+              {merchantDetails?.user_profiles?.organization_name}
+            </Text>
+            <Text
+              style={styles._kAddress}
+            >{`${merchantDetails?.user_profiles?.current_address?.street_address}, ${merchantDetails?.user_profiles?.current_address?.city}, ${merchantDetails?.user_profiles?.current_address?.state}, ${merchantDetails?.user_profiles?.current_address?.country}, ${merchantDetails?.user_profiles?.current_address?.zipcode}`}</Text>
+            <Text style={styles._kNumber}>{merchantDetails?.user_profiles?.full_phone_number}</Text>
 
             <View style={styles._flatListContainer}>
               <FlatList
