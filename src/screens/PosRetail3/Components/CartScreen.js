@@ -168,6 +168,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     }, 2000);
   };
   const removeOneCartHandler = (productId, index) => {
+    var arr = getRetailData?.getAllCart;
     // const data = {
     //   cartId: cartData?.id,
     //   productId: productId,
@@ -175,20 +176,27 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     // dispatch(clearOneCart(data));
 
     //Mukul code----->
-
-    var arr = getRetailData?.getAllCart;
-    const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
-    if (product.qty > 0) {
-      arr.amount.total_amount -= productPrice * product.qty;
-      arr.amount.products_price -= productPrice * product.qty;
-      arr?.poscart_products.splice(index, 1);
+    // alert(arr?.poscart_products.length)
+    // alert(index)
+    if(arr?.poscart_products.length==1 && index==0){
+      clearCartHandler()
     }
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(updateCartLength(CART_LENGTH - 1));
-    dispatch(getAllCartSuccess(DATA));
+    else{
+      const product = arr?.poscart_products[index];
+      const productPrice = product.product_details.price;
+      if (product.qty > 0) {
+        arr.amount.total_amount -= productPrice * product.qty;
+        arr.amount.products_price -= productPrice * product.qty;
+        arr?.poscart_products.splice(index, 1);
+      }
+      var DATA = {
+        payload: arr,
+      };
+      dispatch(updateCartLength(CART_LENGTH - 1));
+      dispatch(getAllCartSuccess(DATA));
+    }
+
+    
   };
 
   return (

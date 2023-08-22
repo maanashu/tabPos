@@ -323,7 +323,6 @@ export function MainScreen({
         console.log("CART_QTY",existingItemIndex)
         cartArray[existingItemIndex].qty =cartQty+1 ;
       }
-       console.log("CART_ARRAY",JSON.stringify(cartArray))
        
        setSelectedCartItems(cartArray);
        dispatch(addLocalCart(cartArray))
@@ -568,7 +567,6 @@ export function MainScreen({
     setSelectedItems(selectedItems);
   };
   const eraseClearCart = async () => {
-  
     setIsClear(true);
     setSelectedCartItems([]);
     dispatch(clearLocalCart());

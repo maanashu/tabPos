@@ -41,7 +41,7 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   let arr = [getRetailData?.getAllCart];
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+  const isLoading = useSelector((state) => isLoadingSelector([ TYPES.GET_ALL_CART], state));
 
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
@@ -153,10 +153,11 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
       };
     }, [])
   );
+  
   const clearCartHandler = () => {
     dispatch(clearAllCart());
     dispatch(clearLocalCart())
-   setTimeout(() => {
+    setTimeout(() => {
     crossHandler();
    }, 1500);
   };
@@ -176,160 +177,176 @@ export function CartListModal({ checkOutHandler, CloseCartModal }) {
           <Image source={crossButton} style={[styles.crossImage]} />
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}
-      >
-        <View style={styles.shortestCartListBody}>
-          <View style={styles.shortCartListHeight}>
-            <ScrollView>
-              {arr?.map((item, index) => (
-                <View key={index}>
-                  {item?.poscart_products?.map((data, ind) => (
-                    <View style={styles.shortCartListData} key={ind}>
-                      <View style={styles.displayflex}>
-                        <View style={styles.shorttableListSide}>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}
+     
+     
+     {isLoading?
+    <ActivityIndicator
+    size={"large"}
+    animating
+    color={COLORS.primary}
+    /> :
+    <View
+    style={{
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    }}
+  >
+    <View style={styles.shortestCartListBody}>
+      <View style={styles.shortCartListHeight}>
+        <ScrollView>
+          {arr?.map((item, index) => (
+            <View key={index}>
+              {item?.poscart_products?.map((data, ind) => (
+                <View style={styles.shortCartListData} key={ind}>
+                  <View style={styles.displayflex}>
+                    <View style={styles.shorttableListSide}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Image
+                          source={{ uri: data.product_details?.image }}
+                          style={styles.columbiaMen}
+                        />
+                        <View style={{ marginLeft: 10 }}>
+                          <Text
+                            style={[styles.blueListDataText, { width: SW(35) }]}
+                            numberOfLines={1}
                           >
-                            <Image
-                              source={{ uri: data.product_details?.image }}
-                              style={styles.columbiaMen}
-                            />
-                            <View style={{ marginLeft: 10 }}>
-                              <Text
-                                style={[styles.blueListDataText, { width: SW(35) }]}
-                                numberOfLines={1}
-                              >
-                                {data.product_details?.name}
-                              </Text>
-                              <Text style={styles.sukNumber}>White/S</Text>
-                            </View>
-                          </View>
-                        </View>
-                        <View style={styles.ShorttableListSide2}>
-                          <Text style={styles.blueListDataText}>
-                            ${data?.product_details?.supply?.supply_prices?.selling_price}
+                            {data.product_details?.name}
                           </Text>
-                          <View style={styles.listCountCon}>
-                            <TouchableOpacity
-                              style={{
-                                width: SW(10),
-                                alignItems: 'center',
-                              }}
-                              onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
-                            >
-                              <Image source={minus} style={styles.minus} />
-                            </TouchableOpacity>
-                            {isLoading ? (
-                              <ActivityIndicator size="small" color={COLORS.primary} />
-                            ) : (
-                              <Text>{data.qty}</Text>
-                            )}
-                            <TouchableOpacity
-                              style={{
-                                width: SW(10),
-                                alignItems: 'center',
-                              }}
-                              onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
-                            >
-                              <Image source={plus} style={styles.minus} />
-                            </TouchableOpacity>
-                          </View>
-                          <Text style={styles.blueListDataText}>
-                            ${' '}
-                            {(
-                              data.product_details?.supply?.supply_prices?.selling_price * data?.qty
-                            ).toFixed(2)}
-                          </Text>
-                          <TouchableOpacity
-                            style={{
-                              width: SW(8),
-                              height: SH(40),
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}
-                            onPress={() => removeOneCartHandler(data.id, ind)}
-                          >
-                            <Image source={borderCross} style={styles.borderCross} />
-                          </TouchableOpacity>
+                          <Text style={styles.sukNumber}>White/S</Text>
                         </View>
                       </View>
                     </View>
-                  ))}
+                    <View style={styles.ShorttableListSide2}>
+                      <Text style={styles.blueListDataText}>
+                        ${data?.product_details?.supply?.supply_prices?.selling_price}
+                      </Text>
+                      <View style={styles.listCountCon}>
+                        <TouchableOpacity
+                          style={{
+                            width: SW(10),
+                            alignItems: 'center',
+                          }}
+                          onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
+                        >
+                          <Image source={minus} style={styles.minus} />
+                        </TouchableOpacity>
+                        <Text>{data.qty}</Text>
+                        {/* {isLoading ? (
+                          <ActivityIndicator size="small" color={COLORS.primary} />
+                        ) : (
+                          <Text>{data.qty}</Text>
+                        )} */}
+                        <TouchableOpacity
+                          style={{
+                            width: SW(10),
+                            alignItems: 'center',
+                          }}
+                          onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
+                        >
+                          <Image source={plus} style={styles.minus} />
+                        </TouchableOpacity>
+                      </View>
+                      <Text style={styles.blueListDataText}>
+                        ${' '}
+                        {(
+                          data.product_details?.supply?.supply_prices?.selling_price * data?.qty
+                        ).toFixed(2)}
+                      </Text>
+                      <TouchableOpacity
+                        style={{
+                          width: SW(8),
+                          height: SH(40),
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                        onPress={() => removeOneCartHandler(data.id, ind)}
+                      >
+                        <Image source={borderCross} style={styles.borderCross} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
               ))}
-            </ScrollView>
-          </View>
-
-          <View style={{ flex: 1 }} />
-          <View style={styles.displayflex}>
-            <View>
-              <Text style={styles.blueListDataText}>Item Value</Text>
-
-              <Text style={[styles.productPrice, { fontSize: SF(20) }]}>
-                ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
-              </Text>
             </View>
-            <TouchableOpacity style={styles.checkoutButtonSideBar} onPress={checkOutHandler}>
-              <Text style={styles.checkoutText}>Checkout</Text>
-              <Image source={checkArrow} style={styles.checkArrow} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.cartListIconBody}>
-          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <Image
-              source={sideKeyboard}
-              style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
-            />
-            <Spacer space={SH(20)} />
-            <TouchableOpacity onPress={() => dispatch(clearAllCart())}>
-              <Image
-                source={sideEarser}
-                style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
-              />
-            </TouchableOpacity>
-            <Spacer space={SH(20)} />
-            <TouchableOpacity
-              onPress={cartStatusHandler}
-              // disabled={getRetailData?.getAllCart?.id === 'undefined' ? false : true}
-            >
-              <Image
-                source={holdCart}
-                style={
-                  holdProductArray?.length > 0
-                    ? [styles.sideBarImage, { tintColor: COLORS.primary }]
-                    : styles.sideBarImage
-                }
-              />
-              <View
-                style={
-                  holdProductArray?.length > 0
-                    ? [styles.holdBadge, styles.holdBadgePrimary]
-                    : styles.holdBadge
-                }
-              >
-                <Text
-                  style={
-                    holdProductArray?.length > 0
-                      ? [styles.holdBadgetext, { color: COLORS.white }]
-                      : styles.holdBadgetext
-                  }
-                >
-                  {holdProductArray?.length}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
+          ))}
+        </ScrollView>
       </View>
+
+      <View style={{ flex: 1 }} />
+      <View style={styles.displayflex}>
+        <View>
+          <Text style={styles.blueListDataText}>Item Value</Text>
+
+          <Text style={[styles.productPrice, { fontSize: SF(20) }]}>
+            ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+          </Text>
+        </View>
+        <TouchableOpacity style={styles.checkoutButtonSideBar} onPress={checkOutHandler}>
+          <Text style={styles.checkoutText}>Checkout</Text>
+          <Image source={checkArrow} style={styles.checkArrow} />
+        </TouchableOpacity>
+      </View>
+    </View>
+
+ 
+ 
+    <View style={styles.cartListIconBody}>
+      
+      <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+        <Image
+          source={sideKeyboard}
+          style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
+        />
+        <Spacer space={SH(20)} />
+        <TouchableOpacity onPress={() => dispatch(clearAllCart())}>
+          <Image
+            source={sideEarser}
+            style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
+          />
+        </TouchableOpacity>
+        <Spacer space={SH(20)} />
+        <TouchableOpacity
+          onPress={cartStatusHandler}
+          // disabled={getRetailData?.getAllCart?.id === 'undefined' ? false : true}
+        >
+          <Image
+            source={holdCart}
+            style={
+              holdProductArray?.length > 0
+                ? [styles.sideBarImage, { tintColor: COLORS.primary }]
+                : styles.sideBarImage
+            }
+          />
+          <View
+            style={
+              holdProductArray?.length > 0
+                ? [styles.holdBadge, styles.holdBadgePrimary]
+                : styles.holdBadge
+            }
+          >
+            <Text
+              style={
+                holdProductArray?.length > 0
+                  ? [styles.holdBadgetext, { color: COLORS.white }]
+                  : styles.holdBadgetext
+              }
+            >
+              {holdProductArray?.length}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </View>
+    
+    }
+      
     </View>
   );
 }
