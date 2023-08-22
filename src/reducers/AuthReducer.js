@@ -37,7 +37,7 @@ export const authReducer = (state = INITIALSTATE, { payload, type }) => {
         getAllPosUsers: [],
       };
     case TYPES.MERCHAT_CLEAR_STORE:
-      return INITIALSTATE;
+      return {};
     default:
       return state;
   }

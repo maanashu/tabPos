@@ -11,6 +11,7 @@ const INITIALSTATE = {
   todayOrderStatus: {},
   getOrderstatistics: [],
   graphOrders: {},
+  getSellerDriverList: [],
 };
 
 export const deliveryReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -79,6 +80,11 @@ export const deliveryReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         graphOrders: payload?.getGraphOrders,
+      };
+    case TYPES.GET_SELLER_DRIVERS_SUCCESS:
+      return {
+        ...state,
+        getSellerDriverList: payload?.getSellerDriverList,
       };
     default:
       return state;

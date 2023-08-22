@@ -35,7 +35,6 @@ import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets'
 export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue }) => {
   const retailData = useSelector(getRetail);
   const dispatch = useDispatch();
-  console.log('backfilterValue', backfilterValue);
 
   // category search
   const [categoryData, setCategoryData] = useState();
@@ -66,12 +65,6 @@ export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue }
     selectedCategoryArray?.length > 0 ||
     selectedBrandArray?.length > 0 ||
     selectedSubCategoryArray?.length > 0;
-
-  console.log(multipleArrayLength);
-
-  console.log('selectedCategoryArray', selectedCategoryArray);
-  console.log('selectedSubCategoryArray', selectedSubCategoryArray);
-  console.log('selectedBrandArray', selectedBrandArray);
 
   // useEffect(() => {
   //   settleFunction();

@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
   shippingOrdersViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    // justifyContent: 'space-between',
   },
   currentStatusView: {
     borderRadius: 10,
@@ -464,7 +465,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: COLORS.primary,
     marginLeft: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    // width: ms(80),
   },
   acceptTextStyle: {
     textAlign: 'center',
@@ -480,6 +483,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary,
     borderRadius: 5,
     paddingHorizontal: 20,
+    // width: ms(80),
   },
   declineTextStyle: {
     textAlign: 'center',
@@ -497,9 +501,9 @@ const styles = StyleSheet.create({
   orderandPriceView: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     position: 'absolute',
-    bottom: 0,
+    bottom: 15,
     alignSelf: 'center',
     width: width * 0.43,
     paddingTop: 15,

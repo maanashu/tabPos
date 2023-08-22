@@ -38,13 +38,18 @@ const OrderConvertion = ({
             </View>
           </View>
         ) : (
-          <PieChart
-            series={[100]}
-            coverRadius={0.7}
-            sliceColor={[COLORS.light_sky]}
-            coverFill={COLORS.white}
-            widthAndHeight={140}
-          />
+          <View>
+            <PieChart
+              series={[100]}
+              coverRadius={0.7}
+              sliceColor={[COLORS.light_sky]}
+              coverFill={COLORS.white}
+              widthAndHeight={140}
+            />
+            <View style={styles.percentageView}>
+              <Text style={styles.percentageTextStyle}>{'0%'}</Text>
+            </View>
+          </View>
         )}
 
         <Spacer space={SH(10)} />

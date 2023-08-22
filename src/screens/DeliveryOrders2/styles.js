@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    bottom: ms(5),
   },
   currentStatusView: {
     width: SW(100),
@@ -350,6 +351,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(22),
     color: COLORS.primary,
+    textAlign: 'center',
   },
   viewAllButtonStyle: {
     width: SH(70),
@@ -398,7 +400,10 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: Dimensions.get('window').width * 0.42,
+    width:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').width * 0.38
+        : Dimensions.get('window').width * 0.42,
   },
   userDetailView: {
     flex: 1,
@@ -508,9 +513,9 @@ const styles = StyleSheet.create({
   },
   orderandPriceView: {
     flexDirection: 'row',
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     position: 'absolute',
-    bottom: ms(0),
+    bottom: ms(5),
     alignSelf: 'center',
     width: Dimensions.get('window').width * 0.42,
     paddingTop: 15,
@@ -524,7 +529,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(30),
   },
   map: {
-    // height: Dimensions.get('screen').height,
     width: '100%',
     height: '100%',
   },
@@ -555,10 +559,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subTotalView: {
-    paddingHorizontal: ms(5),
+    paddingHorizontal: ms(10),
     backgroundColor: COLORS.textInputBackground,
     paddingVertical: ms(8),
-    width: ms(150),
+    width: ms(200),
+    borderRadius: 10,
   },
   flexDirectionRow: {
     flexDirection: 'row',
@@ -577,6 +582,43 @@ const styles = StyleSheet.create({
   detailMap: {
     height: '100%',
     width: '100%',
+  },
+  addressTextStyle: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(9),
+    color: COLORS.dark_grey,
+    paddingTop: ms(5),
+    textAlign: 'center',
+  },
+  firstNameText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(12),
+    color: COLORS.dark_grey,
+    paddingTop: ms(15),
+    textAlign: 'center',
+  },
+  driverListHeadingText: {
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(20),
+    color: COLORS.dark_grey,
+    textAlign: 'center',
+    paddingVertical: ms(15),
+  },
+  driverModalStyle: {
+    height: ms(250),
+    position: 'absolute',
+    bottom: 0,
+    right: 10,
+    borderRadius: 15,
+    alignSelf: 'flex-end',
+    backgroundColor: COLORS.white,
+    width: Dimensions.get('window').width / 2.5,
+  },
+  driverProfileStyle: {
+    width: ms(36),
+    height: ms(36),
+    borderRadius: 100,
+    resizeMode: 'cover',
   },
 });
 

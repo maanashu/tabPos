@@ -48,6 +48,7 @@ import {
   getMainProduct,
   getMainServices,
   getOneProduct,
+  getOneService,
   getServiceCategory,
   getServiceSubCategory,
   getSubCategory,
@@ -387,10 +388,18 @@ export function MainScreen({
       setAddCartModal(true);
     }
   };
-  const serviceFun = (item) => {
-    setServiceItemSave(item);
-    setAddServiceCartModal(true);
+
+  const serviceFun = async (serviceId) => {
+    const res = await dispatch(getOneService(sellerID, serviceId));
+    if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
+      setAddServiceCartModal(true);
+    }
   };
+
+  // const serviceFun = (item) => {
+  //   setServiceItemSave(item);
+  //   setAddServiceCartModal(true);
+  // };
 
   const userInputClear = () => {
     setUserEmail('');
@@ -849,7 +858,7 @@ export function MainScreen({
                     return (
                       <TouchableOpacity
                         style={styles.productCon}
-                        onPress={() => serviceFun(item)}
+                        onPress={() => serviceFun(item.id)}
                         activeOpacity={0.7}
                       >
                         <View style={styles.avalibleServiceCon}>

@@ -32,9 +32,11 @@ import Modal, { ReactNativeModal } from 'react-native-modal';
 import {
   changeStatusServiceCart,
   clearAllCart,
+  clearOneCart,
   clearServiceAllCart,
   getAllCartSuccess,
   getAvailableOffer,
+  getOneService,
   getServiceCartSuccess,
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -63,13 +65,23 @@ export function CartServiceScreen({
   const [serviceItemSave, setServiceItemSave] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const availableOfferArray = getRetailData?.availableOffer;
+  console.log('availableOfferArray', JSON.stringify(availableOfferArray));
   const [cartSearch, setCartSearch] = useState('');
+  const [offerId, setOfferId] = useState();
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
-  const serviceFun = (item) => {
-    setServiceItemSave(item);
-    setAddServiceCartModal(true);
+  // const serviceFun = (item) => {
+  //   setServiceItemSave(item);
+  //   setAddServiceCartModal(true);
+  // };
+
+  const serviceFun = async (item) => {
+    setOfferId(item?.product?.id);
+    const res = await dispatch(getOneService(sellerID, item?.product?.id));
+    if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
+      setAddServiceCartModal(true);
+    }
   };
 
   useEffect(() => {
@@ -174,29 +186,27 @@ export function CartServiceScreen({
   };
 
   const removeOneCartHandler = (productId, index) => {
-    // const data = {
-    //   cartId: cartServiceData?.id,
-    //   productId: productId,
-    // };
-    // console.log('data', data);
-    // return;
-
-    // dispatch(clearOneCart(data));
+    const data = {
+      cartId: cartServiceData?.id,
+      productId: productId,
+    };
+    return;
+    dispatch(clearOneCart(data));
 
     //Mukul code----->
 
-    var arr = getRetailData?.getserviceCart;
-    const product = arr.appointment_cart_products[index];
-    const productPrice = product.product_details.price;
-    if (product.qty > 0) {
-      arr.amount.total_amount -= productPrice * product.qty;
-      arr.amount.products_price -= productPrice * product.qty;
-      arr.appointment_cart_products.splice(index, 1);
-    }
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(getServiceCartSuccess(DATA));
+    // var arr = getRetailData?.getserviceCart;
+    // const product = arr.appointment_cart_products[index];
+    // const productPrice = product.product_details.price;
+    // if (product.qty > 0) {
+    //   arr.amount.total_amount -= productPrice * product.qty;
+    //   arr.amount.products_price -= productPrice * product.qty;
+    //   arr.appointment_cart_products.splice(index, 1);
+    // }
+    // var DATA = {
+    //   payload: arr,
+    // };
+    // dispatch(getServiceCartSuccess(DATA));
   };
 
   return (
@@ -346,7 +356,8 @@ export function CartServiceScreen({
                             styles.cartBodyRightSide,
                             { alignItems: 'center', justifyContent: 'center' },
                           ]}
-                          onPress={() => removeOneCartHandler(data.id, ind)}
+                          // onPress={() => removeOneCartHandler(data.id, ind)}
+                          onPress={() => removeOneCartHandler(data.id)}
                         >
                           <Image source={borderCross} style={styles.borderCross} />
                         </TouchableOpacity>
@@ -504,6 +515,7 @@ export function CartServiceScreen({
           // detailHandler={() => setAddCartDetailModal(true)}
           sellerID={sellerID}
           itemData={serviceItemSave}
+          offerId={offerId}
         />
       </Modal>
     </View>

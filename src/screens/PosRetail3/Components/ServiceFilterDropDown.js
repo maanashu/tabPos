@@ -68,7 +68,6 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount, backfilter
   // selected filter length for badge
   const serviceArrayLength =
     selectedCategoryArray?.length + selectedBrandArray?.length + selectedSubCategoryArray?.length;
-  console.log('serviceArrayLength', serviceArrayLength);
 
   const multipleArrayLength =
     selectedCategoryArray?.length > 0 ||

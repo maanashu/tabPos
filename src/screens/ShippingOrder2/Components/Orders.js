@@ -18,11 +18,11 @@ const Orders = ({
       <View style={styles.headingRowStyle}>
         <Text style={styles.ordersToReviewText}>
           {openShippingOrders === '0'
-            ? strings.orderStatus.reviewOrders
+            ? strings.shippingOrder.reviewOrders
             : openShippingOrders === '1'
-            ? strings.orderStatus.acceptOrder
+            ? strings.shippingOrder.acceptedOrders
             : openShippingOrders === '2'
-            ? strings.orderStatus.prepareOrder
+            ? strings.shippingOrder.prepareOrders
             : openShippingOrders === '3'
             ? 'Printing Labels'
             : openShippingOrders === '4'

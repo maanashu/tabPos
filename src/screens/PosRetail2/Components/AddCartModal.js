@@ -40,7 +40,6 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   const [string, setString] = useState();
 
   // const getcolorName = colorCode => {
-  //   console.log('colorCode', colorCode);
   //   const color = tinycolor(colorCode);
   //   let colorNamessss = color.toName();
   //   return colorNamessss;
@@ -166,7 +165,6 @@ export function AddCartModal({ crossHandler, detailHandler, sellerID }) {
   // }, [selectedItems]);
 
   // const getColorName = colorCode => {
-  //   console.log('colorCode', colorCode);
   //   const color = tinycolor(colorCode);
   //   let colorName = color.toName();
   //   colorName = colorName.charAt(0).toUpperCase() + colorName.slice(1);

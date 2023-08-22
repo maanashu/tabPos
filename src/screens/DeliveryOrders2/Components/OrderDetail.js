@@ -8,10 +8,10 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
+import ShipmentTracking from './ShipmentTracking';
 import { expand, Fonts, scooter, userImage } from '@/assets';
 
 import styles from '../styles';
-import ShipmentTracking from './ShipmentTracking';
 
 const OrderDetail = ({
   userDetail,
@@ -29,7 +29,7 @@ const OrderDetail = ({
 }) => {
   return (
     <View style={styles.orderDetailView}>
-      {openShippingOrders >= '3' ? (
+      {openShippingOrders >= '3' && oneOrderDetail?.getOrderData?.status !== 7 ? (
         <>
           <MapView
             provider={PROVIDER_GOOGLE}
@@ -145,6 +145,33 @@ const OrderDetail = ({
                 </Text>
                 <Text style={styles.itemCountText}>{userDetail?.id}</Text>
               </View>
+
+              {oneOrderDetail?.getOrderData?.status === 2 && (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingVertical: 10,
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.invoiceText,
+                      { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
+                    ]}
+                  >
+                    {'OTP for Driver - '}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.invoiceText,
+                      { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
+                    ]}
+                  >
+                    {oneOrderDetail?.getOrderData?.order_delivery?.seller_otp}
+                  </Text>
+                </View>
+              )}
             </View>
 
             <View style={styles.subTotalView}>
@@ -233,7 +260,6 @@ const OrderDetail = ({
                     style={styles.acceptButtonView}
                   >
                     <Text style={styles.acceptTextStyle}>
-                      {' '}
                       {openShippingOrders === '0'
                         ? strings.buttonStatus.reviewButton
                         : openShippingOrders === '1'
@@ -245,7 +271,7 @@ const OrderDetail = ({
                   </TouchableOpacity>
                 ) : null}
 
-                {openShippingOrders >= '3' && (
+                {openShippingOrders >= '3' && oneOrderDetail?.getOrderData?.status !== 7 && (
                   <TouchableOpacity
                     onPress={() => trackHandler()}
                     style={[styles.acceptButtonView, { width: ms(100) }]}
@@ -258,6 +284,19 @@ const OrderDetail = ({
                       </Text>
                     )}
                   </TouchableOpacity>
+                )}
+
+                {oneOrderDetail?.getOrderData?.status === 7 && (
+                  <View
+                    style={[
+                      styles.acceptButtonView,
+                      { backgroundColor: COLORS.washGrey, width: ms(100) },
+                    ]}
+                  >
+                    <Text style={[styles.acceptTextStyle, { color: COLORS.darkGray }]}>
+                      {'Cancelled by User'}
+                    </Text>
+                  </View>
                 )}
               </View>
             </View>

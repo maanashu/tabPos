@@ -19,7 +19,6 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Maison Mono Regular.ttf</string>
 		<string>MaisonMonoTRIAL-Bold.otf</string>
 		<string>Montserrat-Bold.ttf</string>
 		<string>Montserrat-Italic.ttf</string>
@@ -27,6 +26,7 @@
 		<string>Montserrat-MediumItalic.ttf</string>
 		<string>Montserrat-Regular.ttf</string>
 		<string>Montserrat-SemiBold.ttf</string>
+		<string>MaisonMono-Regular.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

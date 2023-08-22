@@ -1,13 +1,13 @@
 import { strings } from '@/localization';
-import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
+import { ORDER_URL, ApiOrderInventory, USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class DeliveryController {
-  static async getOrderCount(status) {
+  static async getOrderCount(sellerId) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${status}&delivery_option=1`;
+        ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${sellerId}&delivery_option=1`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -190,6 +190,19 @@ export class DeliveryController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
+          reject(error);
+        });
+    });
+  }
+
+  static async getSellerDriverList(sellerID) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getSellerDrivers + `?sellerId=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
           reject(error);
         });
     });

@@ -485,6 +485,21 @@ const getOneProductError = (error) => ({
   payload: { error },
 });
 
+const getOneServiceRequest = () => ({
+  type: TYPES.GET_ONE_SERVICE_REQUEST,
+  payload: null,
+});
+
+const getOneServiceSuccess = (getOneService) => ({
+  type: TYPES.GET_ONE_SERVICE_SUCCESS,
+  payload: { getOneService },
+});
+
+const getOneServiceError = (error) => ({
+  type: TYPES.GET_ONE_SERVICE_ERROR,
+  payload: { error },
+});
+
 const checkSuppliedVariantRequest = () => ({
   type: TYPES.CHECK_SUPPLIES_VARIANT_REQUEST,
   payload: null,
@@ -1254,6 +1269,16 @@ export const getOneProduct = (sellerID, productId) => async (dispatch) => {
     return dispatch(getOneProductSuccess(res?.payload));
   } catch (error) {
     dispatch(getOneProductError(error.message));
+  }
+};
+
+export const getOneService = (sellerID, serviceId) => async (dispatch) => {
+  dispatch(getOneServiceRequest());
+  try {
+    const res = await RetailController.getOneService(sellerID, serviceId);
+    return dispatch(getOneServiceSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getOneServiceError(error.message));
   }
 };
 
