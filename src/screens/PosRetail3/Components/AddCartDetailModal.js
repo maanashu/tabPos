@@ -15,7 +15,23 @@ const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 export function AddCartDetailModal({ crossHandler }) {
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
-  console.log('productDetail', JSON.stringify(productDetail));
+  // console.log('productDetail', JSON.stringify(productDetail));
+
+  // const htmlText = productDetail?.description ?? '';
+  // const regex = /<[^>]+>([^<]+)<\/[^>]+>/g;
+
+  // const matches = htmlText?.match(regex);
+
+  // let extractedText = '';
+
+  // if (matches) {
+  //   matches.forEach((match) => {
+  //     const contentMatch = /<[^>]+>([^<]+)<\/[^>]+>/.exec(match);
+  //     if (contentMatch && contentMatch.length > 1) {
+  //       extractedText += contentMatch[1] + ' ';
+  //     }
+  //   });
+  // }
 
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options.split(',');
@@ -30,7 +46,6 @@ export function AddCartDetailModal({ crossHandler }) {
   });
   const [clothColorId, setClothColorId] = useState();
   const [clothSizeId, setClothSizeId] = useState();
-  console.log('clothSizeId', mclothSizeId);
   const [remindId, setRemindId] = useState();
 
   // cloth color select section start
@@ -163,7 +178,7 @@ export function AddCartDetailModal({ crossHandler }) {
           </View>
           {/* Stock on hand section start */}
           <Spacer space={SH(20)} />
-          <View style={styles.skuCon}>
+          {/* <View style={styles.skuCon}>
             <View style={styles.skuConBody}>
               <Text style={[styles.jacketName, { fontSize: SF(15) }]}>Stock on Hand</Text>
             </View>
@@ -229,7 +244,7 @@ export function AddCartDetailModal({ crossHandler }) {
               <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>Reorder Point</Text>
               <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>10</Text>
             </View>
-          </View>
+          </View> */}
 
           {/* Stock on hand section end */}
 

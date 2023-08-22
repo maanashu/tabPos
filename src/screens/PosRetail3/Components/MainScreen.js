@@ -545,6 +545,7 @@ export function MainScreen({
                             sellerid={sellerID}
                             productFilterCount={setProductFilter}
                             backfilterValue={productFilter}
+                            closeHandler={() => setFilterCon(false)}
                             // settleFunction={() => {
                             //   dispatch(getCategory(sellerID));
                             //   dispatch(getSubCategory(sellerID));
@@ -598,6 +599,7 @@ export function MainScreen({
                             sellerid={sellerID}
                             serviceFilterCount={setServiceFilter}
                             backfilterValue={serviceFilter}
+                            closeHandler={() => setServiceFilterCon(false)}
                           />
                         ) : // </View>
                         null}

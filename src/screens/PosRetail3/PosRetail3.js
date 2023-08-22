@@ -375,7 +375,6 @@ export function PosRetail3() {
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
           setFromWhichCart('Product');
-
           setselectedScreen('CartAmountPayBy'), setComingScreen('CartScreen');
         }}
         addNotesHandler={addNotesHandler}

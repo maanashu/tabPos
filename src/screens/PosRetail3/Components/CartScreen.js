@@ -60,8 +60,6 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const [offerId, setOfferId] = useState();
 
-  console.log('cartData-----------', cartData);
-
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
   const cartStatusHandler = () => {
@@ -544,7 +542,14 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
               </View>
             </View>
             <View style={{ flex: 1 }} />
-            <TouchableOpacity style={[styles.checkoutButtonSideBar]} onPress={onPressPayNow}>
+            <TouchableOpacity
+              style={[
+                styles.checkoutButtonSideBar,
+                { opacity: cartData?.poscart_products?.length > 0 ? 1 : 0.7 },
+              ]}
+              onPress={onPressPayNow}
+              disabled={cartData?.poscart_products?.length > 0 ? false : true}
+            >
               <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>

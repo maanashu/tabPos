@@ -34,11 +34,15 @@ import {
   getSubCategory,
 } from '@/actions/RetailAction';
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
 
-export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount, backfilterValue }) => {
+export const ServiceFilterDropDown = ({
+  sellerid,
+  serviceFilterCount,
+  backfilterValue,
+  closeHandler,
+}) => {
   const retailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const dispatch = useDispatch();
@@ -451,6 +455,7 @@ export const ServiceFilterDropDown = ({ sellerid, serviceFilterCount, backfilter
             dispatch(getMainServices());
             clearInput();
             serviceFilterCount(0);
+            closeHandler();
           }}
         >
           <Text

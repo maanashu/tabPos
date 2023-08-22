@@ -32,7 +32,7 @@ import {
 } from '@/actions/RetailAction';
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
 
-export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue }) => {
+export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue, closeHandler }) => {
   const retailData = useSelector(getRetail);
   const dispatch = useDispatch();
 
@@ -441,6 +441,7 @@ export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue }
             dispatch(getMainProduct());
             clearInput();
             productFilterCount(0);
+            closeHandler();
           }}
           disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
         >

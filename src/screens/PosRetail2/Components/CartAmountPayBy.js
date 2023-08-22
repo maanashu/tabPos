@@ -81,10 +81,6 @@ export const CartAmountPayBy = ({
   const cartData = getRetailData?.getAllCart;
   const cartProducts = cartData?.poscart_products;
 
-  {
-    console.log('cartdATA====', JSON.stringify(cartData));
-  }
-
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
 

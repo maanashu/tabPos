@@ -65,7 +65,6 @@ export function CartServiceScreen({
   const [serviceItemSave, setServiceItemSave] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const availableOfferArray = getRetailData?.availableOffer;
-  console.log('availableOfferArray', JSON.stringify(availableOfferArray));
   const [cartSearch, setCartSearch] = useState('');
   const [offerId, setOfferId] = useState();
 

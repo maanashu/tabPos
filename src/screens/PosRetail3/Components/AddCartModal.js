@@ -49,11 +49,6 @@ export function AddCartModal({
   const loader = useSelector((state) => isLoadingSelector([TYPES.CHECK_SUPPLIES_VARIANT], state));
   const [arraydId, setArrayId] = useState([]);
 
-  // const getcolorName = colorCode => {
-  //   const color = tinycolor(colorCode);
-  //   let colorNamessss = color.toName();
-  //   return colorNamessss;
-  // };
   const addToCartHandler = async () => {
     if (productDetail?.product_detail?.supplies?.[0]?.attributes?.length === 0) {
       if (count === 0) {

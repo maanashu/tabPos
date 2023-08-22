@@ -204,9 +204,9 @@ export function AddServiceCartModal({
             <Text style={styles.backTocartText}>Back to Cart</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.continueBtnCon} onPress={detailHandler}>
+          {/* <TouchableOpacity style={styles.continueBtnCon} onPress={detailHandler}>
             <Text style={styles.detailBtnCon}>Details</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity style={styles.addToCartCon} onPress={addToServiceCartHandler}>
             <Text style={styles.addTocartText}>Add to Cart</Text>
           </TouchableOpacity>
