@@ -16,6 +16,12 @@ export function AddCartDetailModal({ crossHandler }) {
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
 
+  // Remove HTML tags
+  const withoutHtmlTags = productDetail?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
+
+  // Remove special characters and white spaces
+  const withoutSpecialCharsAndSpaces = withoutHtmlTags.trim().replace(/[^\w\s]/gi, '');
+
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options.split(',');
   let deliveryOptionImage = deliveryOption.find((item) => {
@@ -120,10 +126,10 @@ export function AddCartDetailModal({ crossHandler }) {
             <View style={styles.profileClothDes}>
               <Text style={[styles.jacketName, { fontSize: SF(15) }]}>{productDetail?.name}</Text>
               <Text style={styles.clothProfileSubHead}>
-                {productDetail?.category?.name} {'>'} {productDetail?.category?.name}
+                {productDetail?.category?.name} {'>'} {productDetail?.sub_category?.name}
               </Text>
               <Text numberOfLines={1} style={styles.clothProfileDes}>
-                {productDetail?.description}
+                {withoutSpecialCharsAndSpaces}
               </Text>
             </View>
           </View>

@@ -60,8 +60,6 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const [offerId, setOfferId] = useState();
 
-  console.log('cartData-----------', cartData);
-
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
   const cartStatusHandler = () => {
@@ -520,7 +518,9 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                 </Text>
               </View>
               <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>Discount</Text>
+                <Text style={styles.subTotal}>{`Discount ${
+                  cartData?.discount_flag === 'percentage' ? '(%)' : ''
+                } `}</Text>
                 <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
                   ${' '}
                   {cartData?.amount?.discount === 0

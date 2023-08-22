@@ -292,7 +292,13 @@ export function CartServiceScreen({
                   <View style={[styles.blueListData, { height: SH(70) }]} key={ind}>
                     <View style={styles.displayflex}>
                       <View style={styles.cartHeaderLeftSide}>
-                        <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
+                        <Text
+                          style={[
+                            styles.blueListDataText,
+                            styles.cashLabelWhiteHash,
+                            { textAlignVertical: 'center' },
+                          ]}
+                        >
                           {ind + 1}
                         </Text>
                         <View
@@ -495,13 +501,14 @@ export function CartServiceScreen({
                 </Text>
               </View>
               <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>Discount</Text>
+                <Text style={styles.subTotal}>{`Discount ${
+                  cartServiceData?.discount_flag === 'percentage' ? '(%)' : ''
+                } `}</Text>
                 <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                  ($
+                  ${' '}
                   {cartServiceData?.amount?.discount === 0
                     ? '0.00'
-                    : cartData?.amount?.discount.toFixed(2) ?? '0.00'}
-                  )
+                    : cartServiceData?.amount?.discount.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
               <View

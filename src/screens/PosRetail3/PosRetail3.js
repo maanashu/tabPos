@@ -627,7 +627,7 @@ export function PosRetail3() {
                 />
                 <Spacer space={SH(10)} />
                 <TouchableOpacity
-                  style={[styles.holdCartCon, styles.addNotesBtn]}
+                  style={[styles.holdCartCon, styles.addNotesBtn, { borderWidth: 0 }]}
                   onPress={() => saveServiceDiscountHandler()}
                 >
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
