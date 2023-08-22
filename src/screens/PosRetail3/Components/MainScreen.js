@@ -293,12 +293,13 @@ export function MainScreen({
     setCartModal(false);
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
     const color = item.id === selectedId ? 'white' : 'black';
     return (
       <Item
         item={item}
+        index={index}
         onPress={() => setSelectedId(item.id)}
         backgroundColor={backgroundColor}
         textColor={color}
@@ -306,11 +307,12 @@ export function MainScreen({
     );
   };
 
-  const Item = ({ item }) => {
+  const Item = ({ item, index }) => {
     const isProductMatchArray = cartmatchId?.find((data) => data.product_id === item.id);
     const cartAddQty = isProductMatchArray?.qty;
     return (
       <TouchableOpacity
+        key={index}
         style={styles.productCon}
         onPress={() => productFun(item.id)}
         activeOpacity={0.7}
@@ -340,9 +342,10 @@ export function MainScreen({
           </Text>
           {/* addToCartBlue */}
           <TouchableOpacity onPress={() => onClickAddCart(item)}>
-            <Image
+            <FastImage
               source={isProductMatchArray ? addToCartBlue : addToCart}
               style={styles.addToCart}
+              resizeMode={'contain'}
             />
             {isProductMatchArray ? (
               <View style={styles.productBadge}>
@@ -615,7 +618,7 @@ export function MainScreen({
                   data={mainProductArray}
                   extraData={mainProductArray}
                   renderItem={renderItem}
-                  keyExtractor={(item, index) => index}
+                  keyExtractor={(_, index) => index.toString()}
                   numColumns={7}
                   contentContainerStyle={{
                     // flexGrow: 1,
@@ -693,7 +696,11 @@ export function MainScreen({
                             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
                           </Text>
                           <View>
-                            <Image source={addToCart} style={styles.addToCart} />
+                            <FastImage
+                              source={addToCart}
+                              style={styles.addToCart}
+                              resizeMode="contain"
+                            />
                             {/* {isProductMatchArray ? (
                           <View style={styles.productBadge}>
                             <Text style={styles.productBadgeText}>{cartAddQty}</Text>
