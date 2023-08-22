@@ -147,11 +147,11 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(10),
     width: windowWidth * 0.40,
-    height: windowHeight * 0.23,
-    margin:moderateScale(10)
+    height: windowHeight * 0.15,
+    margin:moderateScale(10),
   },
   jbrCoinCon2: {
-    height: windowHeight * 0.12,
+    height: windowHeight * 0.15,
   },
   jbrCoinStyle: {
     width: SW(12),
@@ -404,6 +404,13 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     textAlign: 'center',
     color: COLORS.darkGray,
+  },
+  orderIdText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(16),
+    textAlign: 'left',
+    color: COLORS.dark_grey,
+    marginLeft:-14
   },
 
   numpadContainer: {
@@ -892,6 +899,10 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     paddingHorizontal: moderateScale(20),
     justifyContent: 'center',
+    alignItems:"center",
+    alignContent:"center",
+    alignSelf:"center"
+
   },
   tableHeaderLeft: {
     flexDirection: 'row',
@@ -935,14 +946,14 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
     letterSpacing: -1,
 
-    width: windowWidth * 0.01,
+    // width: windowWidth * 0.01,
   },
   tableTextDataFirst: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
     letterSpacing: -1,
-    width: windowWidth * 0.01,
+    // width: windowWidth * 0.01,
     
   },
   tableTextCenter: {

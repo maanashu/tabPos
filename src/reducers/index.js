@@ -14,6 +14,7 @@ import { rewardReducer } from '@/reducers/RewardReducer';
 import { appointmentReducer } from '@/reducers/AppointmentReducer';
 import { dashboardReducer } from '@/reducers/DashboardReducer';
 import { settingReducer } from '@/reducers/SettingReducer';
+import { cartReducer } from './CartReducer';
 import { TYPES } from '@/Types/Types';
 
 export const appReducer = combineReducers({
@@ -32,6 +33,7 @@ export const appReducer = combineReducers({
   appointment: appointmentReducer,
   dashboard: dashboardReducer,
   setting: settingReducer,
+  cartReducer:cartReducer
 });
 
 export const rootReducer = (state, action) => {

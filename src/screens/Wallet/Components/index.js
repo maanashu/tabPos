@@ -249,9 +249,13 @@ export function DetailShipping({
               <Image source={leftBack} style={styles.leftBackStyle} />
             </TouchableOpacity>
             <Text style={styles.orderNoStyle}>{strings.wallet.orderNo}</Text>
-            <View style={styles.completedButton}>
-              <Text style={styles.completedText}>{orderHeadStatus}</Text>
+            <View>
+            <Text style={styles.orderIdText}>{orderData.id}</Text>
             </View>
+            
+            {/* <View style={styles.completedButton}>
+              <Text style={styles.completedText}>{orderData.id}</Text>
+            </View> */}
           </View>
           <TouchableOpacity onPress={shippingDeliverRemoveHandler}>
             <Image source={crossButton} style={styles.leftBackStyle} />

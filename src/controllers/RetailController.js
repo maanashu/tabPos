@@ -275,9 +275,11 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
       HttpClient.get(endpoint)
         .then((response) => {
+          // console.log("CART__RESPONSE",JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
+          // console.log("CART__error",JSON.stringify(error));
           reject(error);
         });
     });
@@ -363,6 +365,40 @@ export class RetailController {
       };
       HttpClient.delete(endpoint, body)
         .then((response) => {
+          if (response?.status_code === 200) {
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: response?.msg,
+              visibilityTime: 2000,
+            });
+          }
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
+        });
+    });
+  }
+
+  static async clearOneserviceCart(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.appintment_cart +
+        `/` +
+        `${data.cartId}` +
+        `/` +
+        `${data.productId}`;
+      HttpClient.delete(endpoint)
+        .then((response) => {
+          console.log('--------------------rresponsees', response);
           if (response?.status_code === 200) {
             Toast.show({
               position: 'bottom',
@@ -974,6 +1010,8 @@ export class RetailController {
         delivery_options: '3',
         seller_id: sellerID,
         service_type: 'product',
+        page: 1,
+        limit: 25,
       };
 
       let finalParams;
@@ -991,7 +1029,6 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1008,6 +1045,47 @@ export class RetailController {
     });
   }
 
+  static async getMainProductPagination({ page, productTypeID = {} }) {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const defaultParams = {
+        app_name: 'pos',
+        delivery_options: '3',
+        seller_id: sellerID,
+        service_type: 'product',
+        page: page,
+        limit: 10,
+      };
+      let finalParams;
+
+      if (Object.keys(productTypeID).length !== 0) {
+        finalParams = {
+          ...defaultParams,
+          ...productTypeID,
+        };
+      } else {
+        finalParams = {
+          ...defaultParams,
+        };
+      }
+
+      const convertToQueryParam = new URLSearchParams(finalParams).toString();
+      const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   text2: 'Product not found',
+          //   visibilityTime: 2000,
+          // });
+          reject(error);
+        });
+    });
+  }
   static async getMainServices(productTypeID = {}) {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
@@ -1090,23 +1168,22 @@ export class RetailController {
     });
   }
 
-  static async bulkCreate(data) {
+  static async createBulkCart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
-
       HttpClient.post(endpoint, data)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
 
-            text2: error.msg,
-            text2: error?.msg,
-            visibilityTime: 2000,
-          });
+          //   text2: error.msg,
+          //   text2: error?.msg,
+          //   visibilityTime: 2000,
+          // });
           reject(error);
         });
     });

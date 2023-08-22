@@ -33,6 +33,7 @@ import {
   changeStatusServiceCart,
   clearAllCart,
   clearOneCart,
+  clearOneserviceCart,
   clearServiceAllCart,
   getAllCartSuccess,
   getAvailableOffer,
@@ -57,6 +58,7 @@ export function CartServiceScreen({
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const cartServiceData = getRetailData?.getserviceCart;
+  console.log('cartServiceData', cartServiceData?.appointment_cart_products?.length);
   let arr = [getRetailData?.getserviceCart];
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
@@ -157,7 +159,7 @@ export function CartServiceScreen({
 
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
+    const productPrice = product?.product_details.price;
 
     if (operation === '+') {
       product.qty += 1;
@@ -189,8 +191,7 @@ export function CartServiceScreen({
       cartId: cartServiceData?.id,
       productId: productId,
     };
-    return;
-    dispatch(clearOneCart(data));
+    dispatch(clearOneserviceCart(data));
 
     //Mukul code----->
 
@@ -356,7 +357,7 @@ export function CartServiceScreen({
                             { alignItems: 'center', justifyContent: 'center' },
                           ]}
                           // onPress={() => removeOneCartHandler(data.id, ind)}
-                          onPress={() => removeOneCartHandler(data.id)}
+                          onPress={() => removeOneCartHandler(data.id, ind)}
                         >
                           <Image source={borderCross} style={styles.borderCross} />
                         </TouchableOpacity>
@@ -499,7 +500,7 @@ export function CartServiceScreen({
                   ($
                   {cartServiceData?.amount?.discount === 0
                     ? '0.00'
-                    : cartData?.amount?.discount.toFixed(2) ?? '0.00'}
+                    : cartServiceData?.amount?.discount.toFixed(2) ?? '0.00'}
                   )
                 </Text>
               </View>
@@ -519,7 +520,14 @@ export function CartServiceScreen({
               </View>
             </View>
             <View style={{ flex: 1 }} />
-            <TouchableOpacity style={[styles.checkoutButtonSideBar]} onPress={onPressPayNow}>
+            <TouchableOpacity
+              style={[
+                styles.checkoutButtonSideBar,
+                { opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7 },
+              ]}
+              onPress={onPressPayNow}
+              disabled={cartServiceData?.appointment_cart_products?.length > 0 ? false : true}
+            >
               <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>

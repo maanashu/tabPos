@@ -1,5 +1,6 @@
 import { RetailController } from '@/controllers';
 import { TYPES } from '@/Types/Types';
+import { addLocalCart, clearLocalCart, updateCartLength } from './CartAction';
 
 const getCategoryRequest = () => ({
   type: TYPES.GET_CATEGORY_REQUEST,
@@ -215,6 +216,25 @@ const clearOneCartError = (error) => ({
 });
 const getOneCartReset = () => ({
   type: TYPES.GET_CLEAR_ONE_CART_RESET,
+  payload: null,
+});
+
+const clearOneserviceCartRequest = () => ({
+  type: TYPES.CLEAR_ONE_SERVICE_REQUEST,
+  payload: null,
+});
+
+const clearOneserviceCartSuccess = () => ({
+  type: TYPES.CLEAR_ONE_SERVICE_SUCCESS,
+  payload: {},
+});
+
+const clearOneserviceCartError = (error) => ({
+  type: TYPES.CLEAR_ONE_SERVICE_ERROR,
+  payload: { error },
+});
+const clearOneserviceCartReset = () => ({
+  type: TYPES.CLEAR_ONE_SERVICE_RESET,
   payload: null,
 });
 
@@ -586,7 +606,7 @@ const getMainProductRequest = () => ({
   payload: null,
 });
 
-const getMainProductSuccess = (getMainProduct) => ({
+export const getMainProductSuccess = (getMainProduct) => ({
   type: TYPES.GET_MAIN_PRODUCT_SUCCESS,
   payload: getMainProduct,
 });
@@ -621,18 +641,18 @@ const getMainServicesError = (error) => ({
   payload: { error },
 });
 
-const bulkCreateRequest = () => ({
-  type: TYPES.BULK_CREATE_REQUEST,
+const createBulkCartRequest = () => ({
+  type: TYPES.CREATE_BULK_CART_REQUEST,
   payload: null,
 });
 
-const bulkCreateSuccess = (bulkCreate) => ({
-  type: TYPES.BULK_CREATE_SUCCESS,
+const createBulkcartSuccess = (bulkCreate) => ({
+  type: TYPES.CREATE_BULK_CART_SUCCESS,
   payload: { bulkCreate },
 });
 
-const bulkCreateError = (error) => ({
-  type: TYPES.BULK_CREATE_ERROR,
+const createBulkCartError = (error) => ({
+  type: TYPES.CREATE_BULK_CART_ERROR,
   payload: { error },
 });
 export const saveBulkOrderData = (bulkData) => ({
@@ -852,6 +872,21 @@ const getAvailableOfferReset = () => ({
   payload: null,
 });
 
+//Product pagination
+export const getAllProductPaginationSuccess = (post) => ({
+  type: TYPES.GET_ALL_PRODUCT_PAGINATION_SUCCESS,
+  payload: { product },
+});
+const getAllProductPaginationRequest = () => ({
+  type: TYPES.GET_ALL_PRODUCT_PAGINATION_REQUEST,
+  payload: null,
+});
+
+const getAllProductPaginationError = (error) => ({
+  type: TYPES.GET_ALL_PRODUCT_PAGINATION_ERROR,
+  payload: { error },
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -949,6 +984,16 @@ export const getProductDefault = (sellerID, page) => async (dispatch) => {
   }
 };
 
+export const getMainProductPagination = (page) => async (dispatch) => {
+  dispatch(getAllProductPaginationRequest());
+  try {
+    const res = await RetailController.getMainProductPagination(page);
+    dispatch(getAllProductPaginationSuccess(res?.payload?.data));
+  } catch (error) {
+    dispatch(getAllProductPaginationError(error.message));
+  }
+};
+
 export const getSearchProduct = (search, sellerID) => async (dispatch) => {
   dispatch(getSeaProductRequest());
   try {
@@ -964,9 +1009,11 @@ export const getAllCart = () => async (dispatch) => {
   try {
     const res = await RetailController.getAllCart();
     dispatch(getAllCartSuccess(res));
+    dispatch(updateCartLength(res?.payload?.poscart_products?.length));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllCartReset());
+      dispatch(updateCartLength(0));
     }
     dispatch(getAllCartError(error.message));
   }
@@ -990,6 +1037,7 @@ export const getAllProductCart = () => async (dispatch) => {
   try {
     const res = await RetailController.getAllProductCart();
     dispatch(getAllProductCartSuccess(res?.payload));
+    console.log('sdsdsdsdsdsd', res?.payload);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllProductCartReset());
@@ -1017,6 +1065,8 @@ export const clearAllCart = () => async (dispatch) => {
     const res = await RetailController.clearAllCart();
     dispatch(getClearAllCartSuccess(res));
     dispatch(getAllCart());
+    // dispatch(updateCartLength(0))
+    // dispatch(clearLocalCart())
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getClearAllCartReset());
@@ -1031,6 +1081,8 @@ export const clearServiceAllCart = () => async (dispatch) => {
     const res = await RetailController.clearServiceAllCart();
     dispatch(clearServiceAllCartSuccess(res));
     dispatch(getServiceCart());
+    dispatch(updateCartLength(0));
+    dispatch(clearLocalCart());
   } catch (error) {
     dispatch(clearServiceAllCartError(error.message));
   }
@@ -1041,12 +1093,27 @@ export const clearOneCart = (data) => async (dispatch) => {
   try {
     const res = await RetailController.clearOneCart(data);
     dispatch(clearOneCartSuccess(res));
+    dispatch(updateCartLength(0));
     dispatch(getAllCart());
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getOneCartReset());
     }
     dispatch(clearOneCartError(error.message));
+  }
+};
+
+export const clearOneserviceCart = (data) => async (dispatch) => {
+  dispatch(clearOneserviceCartRequest());
+  try {
+    const res = await RetailController.clearOneserviceCart(data);
+    dispatch(clearOneserviceCartSuccess(res));
+    dispatch(getServiceCart());
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(clearOneserviceCartReset());
+    }
+    dispatch(clearOneserviceCartError(error.message));
   }
 };
 
@@ -1058,6 +1125,17 @@ export const addTocart = (data) => async (dispatch) => {
     dispatch(getAllCart());
   } catch (error) {
     dispatch(addTocartError(error.message));
+  }
+};
+
+export const createBulkcart = (data) => async (dispatch) => {
+  dispatch(createBulkCartRequest());
+  try {
+    const res = await RetailController.createBulkCart(data);
+    dispatch(createBulkcartSuccess(res));
+    dispatch(getAllCart());
+  } catch (error) {
+    dispatch(createBulkCartError(error.message));
   }
 };
 

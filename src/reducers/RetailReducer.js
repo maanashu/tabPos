@@ -269,6 +269,18 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         getMainProduct: payload,
       };
 
+      case TYPES.GET_ALL_PRODUCT_PAGINATION_SUCCESS:
+        if (payload.length == 0) {
+          return {
+            ...state,
+            ...state.getMainProduct,
+          };
+        } else {
+          return {
+            ...state,
+            getMainProduct: [...state.getMainProduct, ...payload],
+          };
+        }
     case TYPES.GET_MAIN_PRODUCT_RESET:
       return {
         ...state,

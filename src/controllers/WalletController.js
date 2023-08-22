@@ -4,60 +4,67 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class WalletController {
-  static async getTotalTra(time, sellerID) {
+  static async getTotalTra(time, sellerID, date) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getTotalTra +
-        `?seller_id=${sellerID}&filter=${time}`;
+      const BASE_URL = ORDER_URL + ApiOrderInventory.getTotalTra;
+      const sellerParam = `seller_id=${sellerID}`;
+
+      let endpoint = '';
+
+      if (time !== null) {
+        endpoint = `${BASE_URL}?${sellerParam}&filter=${time}`;
+      } else {
+        endpoint = `${BASE_URL}?${sellerParam}&date=${date}`;
+      }
+
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
-  };
-
- 
+  }
 
   static async getTotakTraDetail(time, sellerID, transactionType) {
     const endpointAccTra = (time, sellerID, transactionType) => {
-         if(transactionType === 'all'){
-          return(
-            ORDER_URL + ApiOrderInventory.getTotakTraDetail +
-           `?seller_id=${sellerID}&filter_by=${time === undefined ? 'week' : time}`
-          )
-         }else{
-          return(
-            ORDER_URL+  ApiOrderInventory.getTotakTraDetail +
-            `?seller_id=${sellerID}&filter_by=${time === undefined ? 'week' : time}&transaction_type=${transactionType}`
-          )
-         }
+      if (transactionType === 'all') {
+        return (
+          ORDER_URL +
+          ApiOrderInventory.getTotakTraDetail +
+          `?seller_id=${sellerID}&filter_by=${time === undefined ? 'week' : time}`
+        );
+      } else {
+        return (
+          ORDER_URL +
+          ApiOrderInventory.getTotakTraDetail +
+          `?seller_id=${sellerID}&filter_by=${
+            time === undefined ? 'week' : time
+          }&transaction_type=${transactionType}`
+        );
+      }
     };
     return new Promise((resolve, reject) => {
       const endpoint = endpointAccTra(time, sellerID, transactionType);
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
-  };
+  }
 
   static async getTotalTraType() {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getTotalTraType ;
+      const endpoint = ORDER_URL + ApiOrderInventory.getTotalTraType;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });

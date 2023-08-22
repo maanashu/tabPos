@@ -100,7 +100,6 @@ export const CartAmountPayBy = ({
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
-
   const qrcodeData = useSelector(getRetail).qrKey;
 
   const cartProducts = cartData?.poscart_products;
