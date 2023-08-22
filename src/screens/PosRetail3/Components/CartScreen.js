@@ -529,7 +529,9 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                 </Text>
               </View>
               <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>Discount</Text>
+                <Text style={styles.subTotal}>{`Discount ${
+                  cartData?.discount_flag === 'percentage' ? '(%)' : ''
+                } `}</Text>
                 <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
                   ${' '}
                   {cartData?.amount?.discount === 0

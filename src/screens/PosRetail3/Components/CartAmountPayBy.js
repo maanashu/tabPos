@@ -755,7 +755,9 @@ export const CartAmountPayBy = ({
               <Text style={styles._payTitle}>Payment option: </Text>
               <Text style={styles._paySubTitle}>{'Cash'}</Text>
             </View>
-            <Text style={styles._commonPayTitle}>Wed 26 Apr , 2023 6:27 AM</Text>
+            <Text style={styles._commonPayTitle}>
+              {moment().format('ddd DD MMM, YYYY')} {moment().format('hh:mm A')}
+            </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
             {/* <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text> */}
             <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
