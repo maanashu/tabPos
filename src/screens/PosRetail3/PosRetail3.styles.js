@@ -114,7 +114,7 @@ export const styles = StyleSheet.create({
   },
   _inputMain: {
     marginTop: ms(15),
-    width: Platform.OS === 'ios' ? ms(325) : ms(360),
+    width: ms(360),
   },
   _inputSubView: {
     flexDirection: 'row',
@@ -144,7 +144,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: ms(10),
     borderColor: COLORS.solidGrey,
-    flex: 1,
+    flexGrow: 1,
   },
   _tipsButton: {
     height: ms(40),
