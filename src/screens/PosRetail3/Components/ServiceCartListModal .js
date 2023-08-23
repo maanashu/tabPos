@@ -22,7 +22,11 @@ import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { changeStatusServiceCart, clearOneserviceCart } from '@/actions/RetailAction';
+import {
+  changeStatusServiceCart,
+  clearOneserviceCart,
+  clearServiceAllCart,
+} from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { getCartLength } from '@/selectors/CartSelector';
@@ -241,7 +245,7 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
               <Spacer space={SH(20)} />
               <TouchableOpacity
                 onPress={() => {
-                  // eraseClearCart(),
+                  dispatch(clearServiceAllCart());
                   CloseCartModal();
                 }}
               >

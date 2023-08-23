@@ -1294,12 +1294,14 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error?.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 3000,
-          });
+          if (error?.statusCode != 204) {
+            Toast.show({
+              text2: error?.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 3000,
+            });
+          }
           reject(error);
         });
     });
@@ -1316,12 +1318,14 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error?.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 3000,
-          });
+          if (error?.statusCode != 204) {
+            Toast.show({
+              text2: error?.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 3000,
+            });
+          }
           reject(error);
         });
     });
