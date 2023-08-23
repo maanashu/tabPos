@@ -5,7 +5,17 @@ import { ms } from 'react-native-size-matters';
 
 import { COLORS } from '@/theme';
 import { Spacer } from '@/components';
-import { down, Fonts, greyRadioArr, radioArrBlue, up } from '@/assets';
+import {
+  blankCheckBox,
+  blankCircle,
+  blankRadio,
+  down,
+  fillRadio,
+  Fonts,
+  greyRadioArr,
+  radioArrBlue,
+  up,
+} from '@/assets';
 
 const ShipmentTracking = ({ props }) => {
   const [isHideView, setisHideView] = useState(true);
@@ -44,23 +54,37 @@ const ShipmentTracking = ({ props }) => {
     </>
   );
 
-  const statusView = (heading, stepCompleted) => (
-    <>
-      <View style={styles.statusMainView}>
-        <View style={{ alignItems: 'center' }}>
-          <Image
-            source={stepCompleted ? radioArrBlue : greyRadioArr}
-            style={styles.statusIconStyle}
-            resizeMode="stretch"
-          />
+  const statusView = (heading, stepCompleted) => {
+    return (
+      <>
+        <View style={styles.statusMainView}>
+          <View style={{ alignItems: 'center' }}>
+            {heading === 'Verified' ? (
+              <Image
+                source={props?.status === 5 ? fillRadio : blankRadio}
+                style={{
+                  width: ms(14),
+                  height: ms(10),
+                  resizeMode: 'contain',
+                }}
+                resizeMode="contain"
+              />
+            ) : (
+              <Image
+                source={stepCompleted ? radioArrBlue : greyRadioArr}
+                style={styles.statusIconStyle}
+                resizeMode="stretch"
+              />
+            )}
+          </View>
+          <Spacer horizontal space={ms(5)} />
+          <View style={styles.statusViewText}>
+            <Text style={styles.statusNameText}>{heading}</Text>
+          </View>
         </View>
-        <Spacer horizontal space={ms(5)} />
-        <View style={styles.statusViewText}>
-          <Text style={styles.statusNameText}>{heading}</Text>
-        </View>
-      </View>
-    </>
-  );
+      </>
+    );
+  };
 
   const latestStatus = () => {
     return (
@@ -85,10 +109,10 @@ const ShipmentTracking = ({ props }) => {
         {shipmentHeader}
         {isHideView ? (
           <View style={{ paddingHorizontal: ms(10), paddingTop: ms(10) }}>
-            {statusView('Verify', props?.status >= 5 && true)}
+            {statusView('Verified', props?.status >= 5 && true)}
             {statusView('Delivered', props?.status >= 5 && true)}
             {statusView('Product Pickup', props?.status >= 4 && true)}
-            {statusView('Assign Driver', props?.status >= 3 && true)}
+            {statusView('Driver Assigned', props?.status >= 3 && true)}
             {statusView('Ready to pickup', props?.status >= 2 && true)}
             {statusView('Order accepted', props?.status >= 1 && true)}
           </View>
@@ -106,8 +130,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     paddingVertical: ms(15),
     borderRadius: ms(7),
-    right: ms(20),
-    bottom: ms(100),
+    right: ms(10),
+    bottom: ms(50),
     width: ms(180),
   },
   map: {

@@ -274,7 +274,7 @@ const OrderDetail = ({
                 {openShippingOrders >= '3' && oneOrderDetail?.getOrderData?.status !== 7 && (
                   <TouchableOpacity
                     onPress={() => trackHandler()}
-                    style={[styles.acceptButtonView, { width: ms(100) }]}
+                    style={[styles.acceptButtonView]}
                   >
                     {isProductDetailLoading ? (
                       <ActivityIndicator size={'small'} color={COLORS.white} />
@@ -287,12 +287,7 @@ const OrderDetail = ({
                 )}
 
                 {oneOrderDetail?.getOrderData?.status === 7 && (
-                  <View
-                    style={[
-                      styles.acceptButtonView,
-                      { backgroundColor: COLORS.washGrey, width: ms(100) },
-                    ]}
-                  >
+                  <View style={[styles.acceptButtonView, { backgroundColor: COLORS.washGrey }]}>
                     <Text style={[styles.acceptTextStyle, { color: COLORS.darkGray }]}>
                       {'Cancelled by User'}
                     </Text>

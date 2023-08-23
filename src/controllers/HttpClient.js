@@ -38,6 +38,7 @@ client.interceptors.request.use(async function (config) {
   };
 
   if (fcmToken) {
+    console.log('fcmToken------', fcmToken);
     config.headers['fcm-token'] = fcmToken;
   }
 
