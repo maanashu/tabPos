@@ -12,7 +12,7 @@ import {
 import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
-
+import { useDebouncedCallback } from 'use-lodash-debounce';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   addToCart,
@@ -537,6 +537,8 @@ export function MainScreen({
     }
   };
 
+  const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
+
   const renderFooterPost = () => {
     return (
       <View style={{}}>
@@ -818,7 +820,8 @@ export function MainScreen({
                   scrollEnabled={true}
                   showsVerticalScrollIndicator={false}
                   ListFooterComponent={renderFooterPost}
-                  onEndReached={onLoadMoreProduct}
+                  onEndReached={debouncedLoadMoreProduct}
+                  // onEndReached={onLoadMoreProduct}
                   onEndReachedThreshold={1}
                   // onMomentumScrollBegin={() => {
                   //   setIsScrolling(true);
