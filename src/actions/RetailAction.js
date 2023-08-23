@@ -875,7 +875,7 @@ const getAvailableOfferReset = () => ({
 //Product pagination
 export const getAllProductPaginationSuccess = (post) => ({
   type: TYPES.GET_ALL_PRODUCT_PAGINATION_SUCCESS,
-  payload: { product },
+  payload: post,
 });
 const getAllProductPaginationRequest = () => ({
   type: TYPES.GET_ALL_PRODUCT_PAGINATION_REQUEST,
@@ -988,7 +988,7 @@ export const getMainProductPagination = (page) => async (dispatch) => {
   dispatch(getAllProductPaginationRequest());
   try {
     const res = await RetailController.getMainProductPagination(page);
-    dispatch(getAllProductPaginationSuccess(res?.payload?.data));
+    dispatch(getAllProductPaginationSuccess(res?.payload));
   } catch (error) {
     dispatch(getAllProductPaginationError(error.message));
   }

@@ -1025,7 +1025,7 @@ export class RetailController {
     });
   }
 
-  static async getMainProductPagination({ page, productTypeID = {} }) {
+  static async getMainProductPagination(productTypeID) {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const defaultParams = {
@@ -1033,11 +1033,10 @@ export class RetailController {
         delivery_options: '3',
         seller_id: sellerID,
         service_type: 'product',
-        page: page,
-        limit: 10,
+        page: productTypeID.page,
+        limit: 20,
       };
       let finalParams;
-
       if (Object.keys(productTypeID).length !== 0) {
         finalParams = {
           ...defaultParams,
@@ -1051,6 +1050,7 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

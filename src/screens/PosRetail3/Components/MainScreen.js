@@ -119,7 +119,6 @@ export function MainScreen({
       setServiceCon(true);
     }
   }, [activeCategory]);
-
   useEffect(() => {
     setLocalCartArray(LOCAL_CART_ARRAY);
   }, [LOCAL_CART_ARRAY]);
@@ -147,6 +146,7 @@ export function MainScreen({
     product_id: obj.product_id,
     qty: obj.qty,
   }));
+
   const [productServiceType, setProductServiceType] = useState(1);
   const [cateoryView, setCateoryView] = useState(false);
   const [productFilter, setProductFilter] = useState(0);
@@ -285,17 +285,18 @@ export function MainScreen({
     }
   }, [isFocus]);
 
-  // useEffect(()=>{
-  //   console.log('onfocus',localCartArray.length)
-  //   return  () => {
-  //   console.log('onblur',localCartArray.length)
-
-  //     if (localCartArray?.length > 0 && !isClear) {
-  //       console.log("Calll=-=-=-=-==-=-=-",isClear)
-  //        bulkCart()
-  //      }
-  //     };
-  // },[localCartArray])
+  const cartQtyUpdate = () => {
+    if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
+      const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
+        product_id: obj.product_id,
+        qty: obj.qty,
+        supply_id: obj.supply_id,
+        supply_price_id: obj.supply_price_id,
+      }));
+      dispatch(addLocalCart(cartmatchId));
+      setSelectedCartItems(cartmatchId);
+    }
+  };
 
   const bulkCart = async () => {
     if (localCartArray.length > 0) {
@@ -322,6 +323,7 @@ export function MainScreen({
 
   const onClickAddCart = (item, index, cartQty) => {
     const mainProductArray = getRetailData?.getMainProduct;
+
     const cartArray = selectedCartItem;
 
     const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
@@ -341,7 +343,6 @@ export function MainScreen({
     setSelectedCartItems(cartArray);
     dispatch(addLocalCart(cartArray));
     ///
-
     mainProductArray.data[index].cart_qty += 1;
     dispatch(getMainProductSuccess(mainProductArray));
 
@@ -525,9 +526,15 @@ export function MainScreen({
     isLoadingSelector([TYPES.GET_ALL_PRODUCT_PAGINATION], state)
   );
   const onLoadMoreProduct = () => {
-    // if (isLoadingMore || !isScrolling) return;
-    setPage(page + 1);
-    dispatch(getMainProductPagination(page));
+    setPage((prevPage) => prevPage + 1);
+    const totalPages = getRetailData?.getMainProduct?.total_pages;
+    if (page <= totalPages) {
+      // if (!isScrolling) return;
+      const data = {
+        page: page,
+      };
+      dispatch(getMainProductPagination(data));
+    }
   };
 
   const renderFooterPost = () => {
@@ -800,22 +807,19 @@ export function MainScreen({
 
               {productCon && getMerchantService?.is_product_exist === true ? (
                 <FlatList
-                  //  key={localCartArray}
                   data={mainProductArray}
                   extraData={mainProductArray}
                   renderItem={renderItem}
                   keyExtractor={(_, index) => index.toString()}
                   numColumns={7}
                   contentContainerStyle={{
-                    // flexGrow: 1,
                     justifyContent: 'space-between',
-                    zIndex: -99,
                   }}
                   scrollEnabled={true}
                   showsVerticalScrollIndicator={false}
                   ListFooterComponent={renderFooterPost}
-                  // onEndReached={onLoadMoreProduct}
-                  // onEndReachedThreshold={0.5}
+                  onEndReached={onLoadMoreProduct}
+                  onEndReachedThreshold={1}
                   // onMomentumScrollBegin={() => {
                   //   setIsScrolling(true);
                   // }}
@@ -829,7 +833,6 @@ export function MainScreen({
                       </Text>
                     </View>
                   )}
-                  style={{ zIndex: -99 }}
                 />
               ) : (
                 <FlatList
@@ -1218,6 +1221,7 @@ export function MainScreen({
         animationOut={'slideOutRight'}
       >
         <CartListModal
+          cartQtyUpdate={cartQtyUpdate}
           clearCart={eraseClearCart}
           checkOutHandler={checkOutHandler}
           CloseCartModal={() => setCartModal(false)}

@@ -15,7 +15,7 @@ import {
 import moment from 'moment';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import {
   cashProfile,
@@ -85,8 +85,10 @@ export function DashBoard({ navigation }) {
   const todayJbrAmount = TotalSale?.[1]?.total_sale_amount.toFixed(2);
   const todayCardAmount = TotalSale?.[2]?.total_sale_amount.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const getDeliveryData = getDashboardData?.getOrderDeliveries;
+  const getDeliveryData = getDashboardData?.getOrderDeliveries?.data;
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
+
+  // console.log('getDashboardData?.getOrderDeliveries', getDashboardData?.getOrderDeliveries);
 
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
@@ -97,9 +99,45 @@ export function DashBoard({ navigation }) {
   const [search, setSearch] = useState();
   const [productDet, setproductDet] = useState();
   const [timeChange, setTimeChange] = useState(true);
-  const [page, setpage] = useState(1);
+  const [page, setPage] = useState(1);
   const [sku, setSku] = useState('');
   const [scan, setScan] = useState(false);
+
+  console.log('page', page);
+
+  //  order delivery pagination
+
+  const onLoadMoreProduct = () => {
+    const totalPages = getDashboardData?.getOrderDeliveries?.total_pages;
+    console.log('page', page, totalPages);
+    if (page <= totalPages) {
+      setPage((prevPage) => prevPage + 1);
+      // if (!isScrolling) return;
+      dispatch(getOrderDeliveries(sellerID, page));
+    }
+  };
+
+  useEffect(() => {
+    setPage(1);
+  }, [isFocused]);
+
+  const renderFooterPost = () => {
+    return (
+      <View style={{}}>
+        {isLoading && (
+          <ActivityIndicator
+            style={{ marginVertical: 14 }}
+            size={'large'}
+            color={COLORS.blueLight}
+          />
+        )}
+      </View>
+    );
+  };
+
+  const isLoading = useSelector((state) =>
+    isLoadingSelector([DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
+  );
 
   useEffect(() => {
     setScan(false);
@@ -224,7 +262,7 @@ export function DashBoard({ navigation }) {
   };
 
   const getSessionLoad = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION, DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
+    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION], state)
   );
 
   const startSellingHandler = async (id) => {
@@ -568,16 +606,19 @@ export function DashBoard({ navigation }) {
             <View>
               <Text style={styles.deliveries}>{strings.dashboard.deliveries}</Text>
             </View>
-            {getDeliveryData2?.length === 0 || getDeliveryData2 === undefined ? (
+            {getDeliveryData?.length === 0 || getDeliveryData === undefined ? (
               <View>
                 <Text style={styles.requestNotFound}>Orders not found</Text>
               </View>
             ) : (
               <FlatList
-                data={getDeliveryData2}
-                extraData={getDeliveryData2}
+                data={getDeliveryData}
+                extraData={getDeliveryData}
                 renderItem={tableListItem}
                 keyExtractor={(item) => item.id}
+                ListFooterComponent={renderFooterPost}
+                onEndReached={onLoadMoreProduct}
+                onEndReachedThreshold={1}
               />
             )}
           </View>
