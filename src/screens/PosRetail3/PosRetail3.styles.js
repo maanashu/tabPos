@@ -416,7 +416,9 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   availbleOfferScroll: {
-    height: Platform.OS === 'android' ? windowHeight * 0.32 : windowHeight * 0.35,
+    flexGrow: 1,
+    paddingBottom: 20,
+    // height: Platform.OS === 'android' ? windowHeight * 0.32 : windowHeight * 0.35,
   },
   avaliableOfferCon: {
     height: windowHeight * 0.05,

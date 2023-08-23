@@ -812,6 +812,7 @@ export function MainScreen({
                     zIndex: -99,
                   }}
                   scrollEnabled={true}
+                  showsVerticalScrollIndicator={false}
                   ListFooterComponent={renderFooterPost}
                   // onEndReached={onLoadMoreProduct}
                   // onEndReachedThreshold={0.5}
@@ -913,6 +914,7 @@ export function MainScreen({
                     justifyContent: 'space-between',
                     zIndex: -99,
                   }}
+                  showsVerticalScrollIndicator={false}
                   scrollEnabled={true}
                   ListEmptyComponent={() => (
                     <View style={styles.noProductText}>

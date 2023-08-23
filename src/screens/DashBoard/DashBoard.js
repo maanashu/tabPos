@@ -10,7 +10,6 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  Keyboard,
 } from 'react-native';
 
 import moment from 'moment';
@@ -22,7 +21,6 @@ import {
   cashProfile,
   clock,
   crossButton,
-  keyboard,
   lockLight,
   onlineMan,
   pay,
@@ -35,8 +33,6 @@ import {
   sellingBucket,
   sessionEndBar,
 } from '@/assets';
-import { logoutFunction } from '@/actions/AuthActions';
-import { Alert } from 'react-native';
 import {
   addSellingSelection,
   getDrawerSession,
@@ -67,8 +63,6 @@ import { endTrackingSession } from '@/actions/CashTrackingAction';
 import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 
 import { styles } from './DashBoard.styles';
-import { getAllCart, scanProductAdd } from '@/actions/RetailAction';
-import { getSetting } from '@/selectors/SettingSelector';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -78,7 +72,6 @@ export function DashBoard({ navigation }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
-  const getSettingData = useSelector(getSetting);
 
   const getDashboardData = useSelector(getDashboard);
   const getProductListArray = getDashboardData?.searchProductList;
@@ -112,11 +105,13 @@ export function DashBoard({ navigation }) {
     setScan(false);
     dispatch(getPendingOrders(sellerID));
   }, []);
+
   useEffect(() => {
     if (scan) {
       textInputRef.current.focus();
     }
   }, [scan]);
+
   const onSetSkuFun = async (sku) => {
     setSku(sku);
     if (sku?.length > 3) {
@@ -125,16 +120,6 @@ export function DashBoard({ navigation }) {
         upc_code: sku,
         qty: 1,
       };
-      const res = await dispatch(scanProductAdd(data))
-        .then((res) => {
-          setSku('');
-          dispatch(getAllCart());
-          textInputRef.current.focus();
-        })
-        .catch((error) => {
-          setSku('');
-          textInputRef.current.focus();
-        });
     }
   };
 
@@ -237,10 +222,6 @@ export function DashBoard({ navigation }) {
       setTrackingSession(false);
     }
   };
-
-  const orderDelveriesLoading = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
-  );
 
   const getSessionLoad = useSelector((state) =>
     isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION, DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
@@ -414,7 +395,7 @@ export function DashBoard({ navigation }) {
           </Text>
           <Text style={styles.posCashier}>
             {getPosUser?.user_roles?.length > 0
-              ? getPosUser?.user_roles?.map((item, index) => item.role?.name)
+              ? getPosUser?.user_roles?.map((item) => item.role?.name)
               : 'admin'}
           </Text>
           <Text style={styles.cashLabel}>ID : {getPosUser?.user_profiles?.user_id ?? '0'}</Text>

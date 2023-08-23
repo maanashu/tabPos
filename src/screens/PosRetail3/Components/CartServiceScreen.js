@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Keyboard, ScrollView, Text, View } from 'react-native';
 
-import { COLORS, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
@@ -24,7 +24,7 @@ import {
 } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { FlatList, TextInput } from 'react-native-gesture-handler';
 import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -420,50 +420,47 @@ export function CartServiceScreen({
                 <View style={styles.avaliableOfferCon}>
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
                 </View>
-                <ScrollView nestedScrollEnabled={true}>
-                  <View style={styles.availbleOfferScroll}>
-                    {availableOfferArray?.length === 0 ? (
-                      <View>
-                        <Text style={styles.noDataText}>No Data</Text>
-                      </View>
-                    ) : (
-                      availableOfferArray?.map((item, index) => (
-                        <TouchableOpacity
-                          style={styles.avaliableOferBodyCon}
-                          key={index}
-                          onPress={() => serviceFun(item)}
-                        >
-                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={{ borderRadius: 4 }}>
-                              <Image
-                                source={{ uri: item.product?.image }}
-                                style={styles.offerImage}
-                              />
-                            </View>
-                            <View style={{ marginLeft: 4 }}>
-                              <Text
-                                style={[styles.offerText, [{ width: ms(90) }]]}
-                                numberOfLines={1}
-                              >
-                                {item.product?.name}
-                              </Text>
-                              <Text style={styles.offerPrice}>White/S</Text>
-                              <View style={{ flexDirection: 'row' }}>
-                                <Text style={[styles.offerPrice, styles.lineTrought]}>
-                                  ${item.actual_price_per_pack}
-                                </Text>
-                                <Text style={styles.offerPriceDark}>
-                                  ${item.offer_price_per_pack}
-                                </Text>
-                              </View>
-                            </View>
+
+                <FlatList
+                  data={availableOfferArray}
+                  extraData={availableOfferArray}
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                      style={styles.avaliableOferBodyCon}
+                      key={index}
+                      onPress={() => serviceFun(item)}
+                    >
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ borderRadius: 4 }}>
+                          <Image source={{ uri: item.product?.image }} style={styles.offerImage} />
+                        </View>
+                        <View style={{ marginLeft: 4 }}>
+                          <Text style={[styles.offerText, [{ width: ms(90) }]]} numberOfLines={1}>
+                            {item.product?.name}
+                          </Text>
+                          <Text style={styles.offerPrice}>White/S</Text>
+                          <View style={{ flexDirection: 'row' }}>
+                            <Text style={[styles.offerPrice, styles.lineTrought]}>
+                              ${item.actual_price_per_pack}
+                            </Text>
+                            <Text style={styles.offerPriceDark}>${item.offer_price_per_pack}</Text>
                           </View>
-                          <Image source={addToCart} style={styles.sideAddToCart} />
-                        </TouchableOpacity>
-                      ))
-                    )}
-                  </View>
-                </ScrollView>
+                        </View>
+                      </View>
+                      <Image source={addToCart} style={styles.sideAddToCart} />
+                    </TouchableOpacity>
+                  )}
+                  style={{ flex: 1 }}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
+                  ListEmptyComponent={() => (
+                    <View style={styles.noProductText}>
+                      <Text style={[styles.emptyListText, { fontSize: SF(16) }]}>
+                        {strings.valiadtion.noData}
+                      </Text>
+                    </View>
+                  )}
+                />
               </View>
 
               <Spacer space={SH(10)} />

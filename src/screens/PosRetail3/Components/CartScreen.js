@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Alert, FlatList, Keyboard, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Image, TextInput, Keyboard, Text, View, TouchableOpacity } from 'react-native';
 
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
@@ -9,21 +9,15 @@ import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   addDiscountPic,
   addToCart,
-  borderCross,
   checkArrow,
   cross,
   eraser,
   holdCart,
-  minus,
   notess,
-  plus,
   rightBack,
   search_light,
   sideKeyboard,
 } from '@/assets';
-import { TouchableOpacity } from 'react-native';
-import { Image } from 'react-native';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -43,9 +37,9 @@ import { ms } from 'react-native-size-matters';
 import { AddCartDetailModal } from './AddCartDetailModal';
 import { AddCartModal } from './AddCartModal';
 import Modal from 'react-native-modal';
-import { useEffect } from 'react';
-import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
+import { updateCartLength } from '@/actions/CartAction';
 import { getCartLength } from '@/selectors/CartSelector';
+import { FlatList } from 'react-native-gesture-handler';
 
 export function CartScreen({
   onPressPayNow,
@@ -265,7 +259,7 @@ export function CartScreen({
                 </View>
               </View>
             </View>
-            <ScrollView>
+            {/* <ScrollView>
               {arr?.map((item, index) => (
                 <View key={index}>
                   {item?.poscart_products?.map((data, ind) => (
@@ -315,11 +309,6 @@ export function CartScreen({
                             >
                               <Image source={minus} style={styles.minus} />
                             </TouchableOpacity>
-                            {/* {isLoading ? (
-                            <ActivityIndicator size="small" color={COLORS.primary} />
-                          ) : (
-                            <Text>{data.qty}</Text>
-                          )} */}
                             <Text>{data.qty}</Text>
                             <TouchableOpacity
                               style={{
@@ -354,7 +343,7 @@ export function CartScreen({
                   ))}
                 </View>
               ))}
-            </ScrollView>
+            </ScrollView> */}
 
             <Spacer space={SH(7)} />
           </View>
@@ -396,61 +385,12 @@ export function CartScreen({
               </TouchableOpacity>
             </View>
             <Spacer space={SH(10)} />
-            <View>
+            <View style={{ flex: 1 }}>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
                 </View>
 
-                {/* <View style={[styles.availbleOfferScroll, { borderWidth: 1 }]}>
-                  <ScrollView
-                    scrollEnabled={true}
-                    nestedScrollEnabled={true}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                  >
-                    {availableOfferArray?.length === 0 ? (
-                      <View>
-                        <Text style={styles.noDataText}>No Data</Text>
-                      </View>
-                    ) : (
-                      [1, 2, 3, 4, 5, 6]?.map((item, index) => (
-                        <TouchableOpacity
-                          style={styles.avaliableOferBodyCon}
-                          key={index}
-                          onPress={() => productFun(item.id)}
-                        >
-                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={{ borderRadius: 4 }}>
-                              <Image
-                                source={{ uri: item.product?.image }}
-                                style={styles.offerImage}
-                              />
-                            </View>
-                            <View style={{ marginLeft: 4 }}>
-                              <Text
-                                style={[styles.offerText, { width: ms(110) }]}
-                                numberOfLines={1}
-                              >
-                                {item.product?.name}
-                              </Text>
-                              <Text style={styles.offerPrice}>White/S</Text>
-                              <View style={{ flexDirection: 'row' }}>
-                                <Text style={[styles.offerPrice, styles.lineTrought]}>
-                                  ${item.actual_price_per_pack}
-                                </Text>
-                                <Text style={styles.offerPriceDark}>
-                                  ${item.offer_price_per_pack}
-                                </Text>
-                              </View>
-                            </View>
-                          </View>
-                          <Image source={addToCart} style={styles.sideAddToCart} />
-                        </TouchableOpacity>
-                      ))
-                    )}
-                    availableOfferArray
-                  </ScrollView>
-                </View> */}
                 <FlatList
                   data={availableOfferArray}
                   extraData={availableOfferArray}
@@ -464,7 +404,7 @@ export function CartScreen({
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <View style={{ borderRadius: 4 }}>
                             <Image
-                              source={{ uri: item.product?.image }}
+                              source={{ uri: item?.product?.image }}
                               style={styles.offerImage}
                             />
                           </View>
@@ -487,9 +427,11 @@ export function CartScreen({
                       </TouchableOpacity>
                     );
                   }}
-                  keyExtractor={(item, index) => index}
-                  contentContainerStyle={styles.availbleOfferScroll}
+                  style={{ flex: 1 }}
                   scrollEnabled={true}
+                  showsVerticalScrollIndicator={false}
+                  keyExtractor={(item, index) => index.toString()}
+                  contentContainerStyle={styles.availbleOfferScroll}
                   ListEmptyComponent={() => (
                     <View style={styles.noProductText}>
                       <Text style={[styles.emptyListText, { fontSize: SF(16) }]}>
@@ -501,6 +443,7 @@ export function CartScreen({
               </View>
 
               <Spacer space={SH(10)} />
+
               <View style={styles.displayflex}>
                 <TouchableOpacity style={styles.addDiscountCon} onPress={addDiscountHandler}>
                   <Image source={addDiscountPic} style={styles.addDiscountPic} />
@@ -511,13 +454,17 @@ export function CartScreen({
                   <Text style={styles.addDiscountText}>Add Notes</Text>
                 </TouchableOpacity>
               </View>
+
               <Spacer space={SH(10)} />
+
               <View style={styles.totalItemCon}>
                 <Text style={styles.totalItem}>
                   {strings.dashboard.totalItem} {cartData?.poscart_products?.length}
                 </Text>
               </View>
+
               <Spacer space={SH(5)} />
+
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Sub Total</Text>
                 <Text style={styles.subTotalDollar}>
@@ -535,6 +482,7 @@ export function CartScreen({
                   ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
+
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>{`Discount ${
                   cartData?.discount_flag === 'percentage' ? '(%)' : ''
@@ -546,6 +494,7 @@ export function CartScreen({
                     : cartData?.amount?.discount.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
+
               <View
                 style={{
                   borderWidth: 1,
@@ -553,6 +502,7 @@ export function CartScreen({
                   borderColor: COLORS.solidGrey,
                 }}
               />
+
               <Spacer space={SH(5)} />
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.itemValue}>Item value</Text>
@@ -561,7 +511,9 @@ export function CartScreen({
                 </Text>
               </View>
             </View>
+
             <View style={{ flex: 1 }} />
+
             <TouchableOpacity
               style={[
                 styles.checkoutButtonSideBar,
