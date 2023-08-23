@@ -103,7 +103,7 @@ export function AddServiceCartModal({
         alignItems: 'center',
         justifyContent: 'center',
         width: '25.1%',
-        height: ms(24),
+        height: ms(23),
         borderColor: COLORS.solidGrey,
         backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
       }}
@@ -308,7 +308,7 @@ export function AddServiceCartModal({
 
         <View
           style={{
-            marginTop: SH(15),
+            marginTop: SH(10),
             borderWidth: 1,
             borderColor: COLORS.solidGrey,
             width: '100%',
