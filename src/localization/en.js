@@ -111,6 +111,8 @@ export const en = {
     pickup: 'Pickup',
     orderReject: 'Order rejected',
     otherFees: 'Other fees',
+    deliveryCharges: 'Delivery Charges',
+    paymentOption: 'Payment Option: ',
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -779,6 +781,9 @@ export const en = {
     pickupOrders: 'Pickup Orders',
     noOrdersFound: 'No orders found',
     selectDriver: 'Select Driver',
+    close: 'Close',
+    jobr: 'JOBR',
+    thanks: 'Thank You',
   },
   orderStatus: {
     reviewOrders: 'Orders to review',

@@ -47,7 +47,13 @@ import { useEffect } from 'react';
 import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
 import { getCartLength } from '@/selectors/CartSelector';
 
-export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
+export function CartScreen({
+  onPressPayNow,
+  crossHandler,
+  addNotesHandler,
+  addDiscountHandler,
+  getScreen,
+}) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
@@ -211,6 +217,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                 style={styles.backProScreen}
                 onPress={() => {
                   crossHandler();
+                  getScreen('Product');
                   // dispatch(getUserDetailSuccess([]));
                 }}
               >

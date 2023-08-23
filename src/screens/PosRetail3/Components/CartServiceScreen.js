@@ -53,6 +53,7 @@ export function CartServiceScreen({
   crossHandler,
   addNotesHandler,
   addDiscountHandler,
+  getScreen,
 }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
@@ -227,6 +228,7 @@ export function CartServiceScreen({
                 style={styles.backProScreen}
                 onPress={() => {
                   crossHandler();
+                  getScreen('Service');
                   // dispatch(getUserDetailSuccess([]));
                 }}
               >

@@ -293,22 +293,6 @@ export function DeliveryOrders2({ route }) {
     isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
   );
 
-  const renderItem = ({ item }) => (
-    <View style={styles.itemMainViewStyle}>
-      <Image source={item?.image} style={styles.shippingTypeImage} />
-      {isDeliveryOrder ? (
-        <View style={styles.activityIndicatorStyle}>
-          <ActivityIndicator color={COLORS.primary} size={'small'} />
-        </View>
-      ) : (
-        <View style={styles.shippingTypeDetails}>
-          <Text style={styles.shippingTypeText}>{item?.delivery_type_title}</Text>
-          <Text style={styles.totalTextStyle}>{item?.count}</Text>
-        </View>
-      )}
-    </View>
-  );
-
   const trackHandler = () => setTrackingView(true);
 
   const showBadge = (item) => {

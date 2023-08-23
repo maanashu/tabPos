@@ -8,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
@@ -17,12 +17,9 @@ import {
   addToCart,
   addToCartBlue,
   bucket,
-  categoryMenu,
   cross,
   filter,
   holdCart,
-  keyboard,
-  multipleImag,
   product,
   search_light,
   services,
@@ -38,15 +35,13 @@ import Modal, { ReactNativeModal } from 'react-native-modal';
 import { CategoryModal } from './CategoryModal';
 import { SubCatModal } from './SubCatModal';
 import { BrandModal } from './BrandModal';
-import { catTypeData, productServiceFilter } from '@/constants/flatListData';
+import { catTypeData } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
 import { AddCartModal } from './AddCartModal';
 import { AddCartDetailModal } from './AddCartDetailModal';
 import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import {
-  addToServiceCart,
-  addTocart,
   changeStatusProductCart,
   changeStatusServiceCart,
   clearAllCart,
@@ -62,9 +57,6 @@ import {
   getSubCategory,
   getMainProductSuccess,
   createBulkcart,
-  getAllCart,
-  getAllCartSuccess,
-  getAllProductPaginationSuccess,
   getMainProductPagination,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -72,7 +64,7 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { CartListModal } from './CartListModal';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
-import { items, subItems } from '@/constants/staticData';
+import { items } from '@/constants/staticData';
 import { FilterDropDown } from './FilterDropDown';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ServiceFilterDropDown } from './ServiceFilterDropDown';
@@ -80,7 +72,6 @@ import { NumericPad } from './NumericPad';
 import { addLocalCart, clearLocalCart, updateCartLength } from '@/actions/CartAction';
 import { getCartLength, getLocalCartArray, getServiceCartLength } from '@/selectors/CartSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
-import { json } from 'stream/consumers';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ServiceCartListModal } from './ServiceCartListModal ';
@@ -92,6 +83,7 @@ export function MainScreen({
   sellerID,
   productArray,
   cartServiceScreenHandler,
+  activeCategory,
 }) {
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -115,6 +107,17 @@ export function MainScreen({
   const LOCAL_CART_ARRAY = useSelector(getLocalCartArray);
 
   const [localCartArray, setLocalCartArray] = useState(LOCAL_CART_ARRAY);
+
+  useEffect(() => {
+    if (activeCategory === 'Product') {
+      setProductCon(true);
+      setServiceCon(false);
+    }
+    if (activeCategory === 'Service') {
+      setProductCon(false);
+      setServiceCon(true);
+    }
+  }, [activeCategory]);
 
   useEffect(() => {
     setLocalCartArray(LOCAL_CART_ARRAY);
@@ -546,6 +549,7 @@ export function MainScreen({
       return () => dispatch(getMainProduct());
     }, [])
   );
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.homeScreenCon}>

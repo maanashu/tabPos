@@ -53,9 +53,9 @@ export function PosRetail3() {
   const getServicecart = getRetailData?.getserviceCart;
   const getServiceCartAmount = getRetailData?.getserviceCart?.amount;
   const finalAmountForDiscount =
-  cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
+    cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
   const finalServiceAmountForDiscount =
-  getServicecart?.amount?.products_price?.toFixed(2) - getServicecart?.amount?.tax?.toFixed(2);
+    getServicecart?.amount?.products_price?.toFixed(2) - getServicecart?.amount?.tax?.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
@@ -77,6 +77,7 @@ export function PosRetail3() {
   const [visitCart, setVisitCart] = useState(false);
 
   const [cashPayDetail, setCashPayDetail] = useState();
+  const [activeScreen, setActiveScreen] = useState();
 
   // service Add discount start
 
@@ -301,6 +302,11 @@ export function PosRetail3() {
     setAddDiscount(true);
   };
 
+  const getScreenFunction = (value) => {
+    console.log('value---', value);
+    setActiveScreen(value);
+  };
+
   useEffect(() => {
     dispatch(customerNumber({ number: '' }));
   }, []);
@@ -357,10 +363,14 @@ export function PosRetail3() {
   const renderScreen = {
     ['MainScreen']: (
       <MainScreen
-        cartScreenHandler={() =>{setVisitCart(true) ,setselectedScreen('CartScreen')}}
+        cartScreenHandler={() => {
+          setVisitCart(true), setselectedScreen('CartScreen');
+        }}
         sellerID={sellerID}
         headercrossHandler={() => alert('abc')}
-        checkOutHandler={() => {setVisitCart(true),setselectedScreen('CartScreen')}}
+        checkOutHandler={() => {
+          setVisitCart(true), setselectedScreen('CartScreen');
+        }}
         productArray={defaultArrayproduct}
         categoryArray={categoryArray}
         addNotesHandler={addNotesHandler}
@@ -369,6 +379,7 @@ export function PosRetail3() {
           setselectedScreen('CartAmountTips');
         }}
         cartServiceScreenHandler={() => setselectedScreen('CartServiceScreen')}
+        activeCategory={activeScreen}
       />
     ),
     ['CartScreen']: (
@@ -380,6 +391,7 @@ export function PosRetail3() {
         }}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
+        getScreen={(value) => getScreenFunction(value)}
       />
     ),
 
@@ -392,6 +404,7 @@ export function PosRetail3() {
         }}
         addNotesHandler={() => setAddServiceNotes(true)}
         addDiscountHandler={() => setAddServiceDiscount(true)}
+        getScreen={(value) => getScreenFunction(value)}
       />
     ),
     ['CartAmountTips']: (
@@ -502,9 +515,8 @@ export function PosRetail3() {
       />
     ),
   };
- 
+
   const screenChangeView = () => {
-    
     return renderScreen[selectedScreen];
   };
 

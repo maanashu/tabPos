@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
 
 import moment from 'moment';
-import { ms } from 'react-native-size-matters';
+import { useDispatch } from 'react-redux';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
@@ -12,10 +12,9 @@ import { strings } from '@/localization';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import ShipmentTracking from './ShipmentTracking';
 import { getReviewDefault } from '@/actions/DeliveryAction';
-import { deliveryHomeIcon, Fonts, scooter, backArrow2, barcode, crossButton } from '@/assets';
+import { deliveryHomeIcon, scooter, backArrow2, barcode, crossButton } from '@/assets';
 
 import styles from '../styles';
-import { useDispatch } from 'react-redux';
 
 const InvoiceDetails = ({
   setTrackingView,
@@ -30,6 +29,7 @@ const InvoiceDetails = ({
   location,
 }) => {
   const dispatch = useDispatch();
+  const userDetailData = singleOrderDetail?.user_details;
   return (
     <View>
       <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backView}>
@@ -40,51 +40,27 @@ const InvoiceDetails = ({
       </TouchableOpacity>
 
       <View style={styles.firstRowStyle}>
-        <View
-          style={{
-            width: Dimensions.get('window').width / 3,
-            marginTop: ms(10),
-            backgroundColor: COLORS.white,
-            borderRadius: 15,
-            paddingBottom: 80,
-          }}
-        >
-          <Text style={styles.firstNameText}>
-            {singleOrderDetail?.user_details?.firstname ?? ''}
-          </Text>
+        <View style={styles.storeDetailView}>
+          <Text style={styles.firstNameText}>{userDetailData?.firstname ?? ''}</Text>
           <Text style={styles.addressTextStyle}>
-            {singleOrderDetail?.user_details?.current_address?.street_address +
+            {userDetailData?.current_address?.street_address +
               ', ' +
-              singleOrderDetail?.user_details?.current_address?.city +
+              userDetailData?.current_address?.city +
               ', ' +
-              singleOrderDetail?.user_details?.current_address?.country +
+              userDetailData?.current_address?.country +
               ' ' +
-              singleOrderDetail?.user_details?.current_address?.zipcode ?? ''}
+              userDetailData?.current_address?.zipcode ?? ''}
           </Text>
-          <Text
-            style={{
-              fontFamily: Fonts.Regular,
-              fontSize: ms(9),
-              color: COLORS.dark_grey,
-              paddingTop: ms(5),
-              textAlign: 'center',
-            }}
-          >
-            {singleOrderDetail?.user_details?.phone_number ?? ''}
-          </Text>
+          <Text style={styles.storeNumberText}>{userDetailData?.phone_number ?? ''}</Text>
+
           <Spacer space={SH(40)} />
+
           <FlatList
             data={singleOrderDetail?.order_details}
             renderItem={renderOrderDetailProducts}
           />
 
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
+          <View style={[styles.shippingOrdersViewStyle, { bottom: 0 }]}>
             <View
               style={[
                 styles.subTotalView,
@@ -107,7 +83,7 @@ const InvoiceDetails = ({
               </View>
 
               <View style={styles.orderDetailsView}>
-                <Text style={styles.countTextStyle}>{'Discount ( MIDApril100)'}</Text>
+                <Text style={styles.countTextStyle}>{strings.wallet.discount}</Text>
                 <View style={styles.flexDirectionRow}>
                   <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
                     {'$'}
@@ -119,7 +95,7 @@ const InvoiceDetails = ({
               </View>
 
               <View style={styles.orderDetailsView}>
-                <Text style={styles.countTextStyle}>{'Tax'}</Text>
+                <Text style={styles.countTextStyle}>{strings.deliveryOrders.tax}</Text>
                 <View style={styles.flexDirectionRow}>
                   <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
                     {'$'}
@@ -131,7 +107,7 @@ const InvoiceDetails = ({
               </View>
 
               <View style={styles.orderDetailsView}>
-                <Text style={styles.countTextStyle}>{'Delivery Charges'}</Text>
+                <Text style={styles.countTextStyle}>{strings.deliveryOrders.deliveryCharges}</Text>
                 <View style={styles.flexDirectionRow}>
                   <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
                     {'$'}
@@ -141,14 +117,9 @@ const InvoiceDetails = ({
                   </Text>
                 </View>
               </View>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: COLORS.solidGrey,
-                  borderStyle: 'dashed',
-                  marginTop: ms(5),
-                }}
-              />
+
+              <View style={styles.dashedLineView} />
+
               <View style={styles.orderDetailsView}>
                 <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
                 <View style={styles.flexDirectionRow}>
@@ -165,104 +136,34 @@ const InvoiceDetails = ({
             </View>
           </View>
 
-          <View
-            style={{
-              alignSelf: 'flex-start',
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              paddingLeft: 15,
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: Fonts.Regular,
-                fontSize: ms(9),
-                color: COLORS.dark_grey,
-              }}
-            >
-              {'Payment Option: '}
-            </Text>
-            <Text
-              style={{
-                fontFamily: Fonts.SemiBold,
-                fontSize: ms(9),
-                color: COLORS.dark_grey,
-              }}
-            >
+          <View style={styles.paymentOptionView}>
+            <Text style={styles.paymentOptionText}>{strings.deliveryOrders.paymentOption}</Text>
+            <Text style={styles.paymentModeText}>
               {singleOrderDetail?.mode_of_payment?.toUpperCase()}
             </Text>
           </View>
 
-          <Text
-            style={{
-              paddingLeft: 15,
-              fontFamily: Fonts.Regular,
-              fontSize: ms(9),
-              paddingTop: ms(5),
-              color: COLORS.dark_grey,
-            }}
-          >
+          <Text style={styles.deliveryDateText}>
             {moment(singleOrderDetail?.invoice?.delivery_date).format('llll')}
           </Text>
 
-          <Text
-            style={{
-              paddingLeft: 15,
-              fontFamily: Fonts.Regular,
-              fontSize: ms(9),
-              paddingTop: ms(5),
-              color: COLORS.dark_grey,
-            }}
-          >
+          <Text style={styles.deliveryDateText}>
             {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}`}
           </Text>
 
-          <Text
-            style={{
-              paddingLeft: 15,
-              fontFamily: Fonts.Regular,
-              fontSize: ms(9),
-              paddingTop: ms(5),
-              color: COLORS.dark_grey,
-            }}
-          >
-            {`User ID:${singleOrderDetail?.user_details?.uid}`}
-          </Text>
+          <Text style={styles.deliveryDateText}>{`User ID:${userDetailData?.uid}`}</Text>
 
           <Spacer space={SH(45)} />
-          <Text
-            style={{
-              fontFamily: Fonts.MaisonBold,
-              fontSize: ms(16),
-              textAlign: 'center',
-              color: COLORS.dark_grey,
-            }}
-          >
-            {`Thank You`}
-          </Text>
+
+          <Text style={styles.thankYouText}>{strings.deliveryOrders2.thanks}</Text>
 
           <Spacer space={SH(15)} />
           <Image source={barcode} style={{ alignSelf: 'center', height: 50 }} />
 
-          <Text
-            style={{
-              fontFamily: Fonts.Bold,
-              fontSize: ms(16),
-              textAlign: 'center',
-              color: COLORS.primary,
-            }}
-          >
-            {`JOBR`}
-          </Text>
+          <Text style={styles.jobrTextStyle}>{strings.deliveryOrders2.jobr}</Text>
         </View>
 
-        <View
-          style={{
-            width: Dimensions.get('window').width / 2.2,
-            marginTop: ms(10),
-            borderRadius: 15,
-          }}
-        >
+        <View style={styles.mapMainView}>
           <MapView
             provider={PROVIDER_GOOGLE}
             showCompass
@@ -296,18 +197,12 @@ const InvoiceDetails = ({
             />
             <Marker coordinate={sourceCoordinate}>
               <View>
-                <Image
-                  source={scooter}
-                  style={{ height: ms(30), width: ms(30), resizeMode: 'contain' }}
-                />
+                <Image source={scooter} style={styles.mapMarkerStyle} />
               </View>
             </Marker>
             <Marker coordinate={destinationCoordinate}>
               <View>
-                <Image
-                  source={deliveryHomeIcon}
-                  style={{ height: ms(30), width: ms(30), resizeMode: 'contain' }}
-                />
+                <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
               </View>
             </Marker>
           </MapView>
@@ -330,7 +225,7 @@ const InvoiceDetails = ({
             <Text
               style={[styles.acceptTextStyle, { color: COLORS.dark_grey, paddingHorizontal: 12 }]}
             >
-              {'Close'}
+              {strings.deliveryOrders2.close}
             </Text>
           </TouchableOpacity>
 
