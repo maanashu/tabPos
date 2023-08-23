@@ -13,12 +13,12 @@ import { HttpClient } from './HttpClient';
 export class DashboardController {
   static async getOrderDeliveries(sellerID, page) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getOrderUser +
-        `?seller_id=${sellerID}&delivery_option=1&page=${page}&limit=10`;
       // const endpoint =
-      //   ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&delivery_option=1`;
+      //   ORDER_URL +
+      //   ApiOrderInventory.getOrderUser +
+      //   `?seller_id=${sellerID}&delivery_option=1&page=${page}&limit=10`;
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&delivery_option=1`;
       console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {

@@ -17,6 +17,8 @@ import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
+import { useDebouncedCallback } from 'use-lodash-debounce';
+
 import {
   cashProfile,
   clock,
@@ -107,7 +109,7 @@ export function DashBoard({ navigation }) {
 
   //  order delivery pagination
 
-  const onLoadMoreProduct = () => {
+  const onLoadMoreOrder = () => {
     const totalPages = getDashboardData?.getOrderDeliveries?.total_pages;
     console.log('page', page, totalPages);
     if (page <= totalPages) {
@@ -116,6 +118,8 @@ export function DashBoard({ navigation }) {
       dispatch(getOrderDeliveries(sellerID, page));
     }
   };
+
+  const debouncedLoadMoreOrder = useDebouncedCallback(onLoadMoreOrder, 300);
 
   useEffect(() => {
     setPage(1);
@@ -616,9 +620,9 @@ export function DashBoard({ navigation }) {
                 extraData={getDeliveryData}
                 renderItem={tableListItem}
                 keyExtractor={(item) => item.id}
-                ListFooterComponent={renderFooterPost}
-                onEndReached={onLoadMoreProduct}
-                onEndReachedThreshold={1}
+                // ListFooterComponent={renderFooterPost}
+                // onEndReached={debouncedLoadMoreOrder}
+                // onEndReachedThreshold={1}
               />
             )}
           </View>
