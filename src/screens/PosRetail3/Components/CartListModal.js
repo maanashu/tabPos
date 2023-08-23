@@ -36,7 +36,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { getCartLength } from '@/selectors/CartSelector';
 import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
 
-export function CartListModal({ checkOutHandler, CloseCartModal, clearCart }) {
+export function CartListModal({ checkOutHandler, CloseCartModal, clearCart, cartQtyUpdate }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
@@ -110,6 +110,9 @@ export function CartListModal({ checkOutHandler, CloseCartModal, clearCart }) {
       payload: arr,
     };
     dispatch(getAllCartSuccess(DATA));
+    setTimeout(() => {
+      cartQtyUpdate();
+    }, 1000);
   };
   const removeOneCartHandler = (productId, index) => {
     // const data = {
@@ -135,25 +138,26 @@ export function CartListModal({ checkOutHandler, CloseCartModal, clearCart }) {
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        var arr = getRetailData?.getAllCart;
-
-        if (arr?.poscart_products?.length > 0) {
-          const products = arr?.poscart_products.map((item) => ({
-            product_id: item?.product_id,
-            qty: item?.qty,
-          }));
-
-          const data = {
-            updated_products: products,
-          };
-          dispatch(updateCartQty(data, arr.id));
-        } else {
-          // clearCartHandler();
-        }
+        updateQty();
       };
     }, [])
   );
+  const updateQty = () => {
+    var arr = getRetailData?.getAllCart;
+    if (arr?.poscart_products?.length > 0) {
+      const products = arr?.poscart_products.map((item) => ({
+        product_id: item?.product_id,
+        qty: item?.qty,
+      }));
 
+      const data = {
+        updated_products: products,
+      };
+      dispatch(updateCartQty(data, arr.id));
+    } else {
+      // clearCartHandler();
+    }
+  };
   const clearCartHandler = () => {
     dispatch(clearAllCart());
     dispatch(clearLocalCart());
@@ -164,6 +168,10 @@ export function CartListModal({ checkOutHandler, CloseCartModal, clearCart }) {
   const eraseClearCart = async () => {
     clearCart();
     // dispatch(clearAllCart())
+  };
+  const onClosModal = () => {
+    // updateQty()
+    // CloseCartModal()
   };
   return (
     <View style={styles.cartListModalView}>

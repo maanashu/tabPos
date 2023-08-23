@@ -25,6 +25,7 @@ const INITIALSTATE = {
   customerNumber: {},
   scanProductAdd: {},
   getMainProduct: [],
+  mainProductAllData: {},
   getMainServices: [],
   getserviceCart: [],
   bulkCreate: {},
@@ -269,21 +270,21 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         getMainProduct: payload,
       };
 
-      case TYPES.GET_ALL_PRODUCT_PAGINATION_SUCCESS:
-        if (payload.length == 0) {
-          return {
-            ...state,
+    case TYPES.GET_ALL_PRODUCT_PAGINATION_SUCCESS:
+      if (payload.data.length > 0) {
+        return {
+          ...state,
+          getMainProduct: {
             ...state.getMainProduct,
-          };
-        } else {
-          return {
-            ...state,
-            getMainProduct: [...state.getMainProduct, ...payload],
-          };
-        }
+            data: [...state.getMainProduct.data, ...payload.data],
+          },
+        };
+      }
+
     case TYPES.GET_MAIN_PRODUCT_RESET:
       return {
         ...state,
+        mainProductAllData: {},
         getMainProduct: [],
       };
     case TYPES.GET_MAIN_SERVICES_SUCCESS:
