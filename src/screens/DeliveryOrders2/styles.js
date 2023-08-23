@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: ms(5),
     alignSelf: 'center',
-    width: Dimensions.get('window').width * 0.42,
+    // width: Dimensions.get('window').width * 0.42,
     paddingTop: 15,
     paddingHorizontal: 10,
   },
@@ -516,7 +516,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(10),
     backgroundColor: COLORS.textInputBackground,
     paddingVertical: ms(8),
-    width: ms(200),
+    width: ms(130),
+    // width: Dimensions.get('window').width * 0.32,
     borderRadius: 10,
   },
   flexDirectionRow: {
