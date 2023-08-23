@@ -83,6 +83,7 @@ import { getAllPosUsers } from '@/actions/AuthActions';
 import { json } from 'stream/consumers';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
+import { ServiceCartListModal } from './ServiceCartListModal ';
 
 export function MainScreen({
   cartScreenHandler,
@@ -115,8 +116,6 @@ export function MainScreen({
 
   const [localCartArray, setLocalCartArray] = useState(LOCAL_CART_ARRAY);
 
-  console.log('-0-0-0', CART_LENGTH);
-
   useEffect(() => {
     setLocalCartArray(LOCAL_CART_ARRAY);
   }, [LOCAL_CART_ARRAY]);
@@ -135,6 +134,7 @@ export function MainScreen({
   //  const serviceCartLength = CART_LENGTH;
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
+  const [serviceCartModal, setServiceCartModal] = useState(false);
   const [search, setSearch] = useState('');
   const [serviceSearch, setServiceSearch] = useState('');
   const [showProductsFrom, setshowProductsFrom] = useState();
@@ -1068,7 +1068,7 @@ export function MainScreen({
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
                     disabled={serviceCartLength > 0 ? false : true}
-                    // onPress={() => setCartModal(true)}
+                    onPress={() => setServiceCartModal(true)}
                   >
                     <Image
                       source={bucket}
@@ -1215,6 +1215,23 @@ export function MainScreen({
           clearCart={eraseClearCart}
           checkOutHandler={checkOutHandler}
           CloseCartModal={() => setCartModal(false)}
+        />
+      </ReactNativeModal>
+
+      {/* cart list modal end */}
+
+      {/* cart list modal start */}
+      <ReactNativeModal
+        animationType="fade"
+        transparent={true}
+        isVisible={serviceCartModal}
+        animationIn={'slideInRight'}
+        animationOut={'slideOutRight'}
+      >
+        <ServiceCartListModal
+          // clearCart={eraseClearCart}
+          checkOutHandler={checkOutHandler}
+          CloseCartModal={() => setServiceCartModal(false)}
         />
       </ReactNativeModal>
 

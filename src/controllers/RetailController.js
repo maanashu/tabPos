@@ -396,7 +396,6 @@ export class RetailController {
         `${data.productId}`;
       HttpClient.delete(endpoint)
         .then((response) => {
-          console.log('--------------------rresponsees', response);
           if (response?.status_code === 200) {
             Toast.show({
               position: 'bottom',
