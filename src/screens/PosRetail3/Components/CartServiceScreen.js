@@ -39,6 +39,7 @@ import {
   getAvailableOffer,
   getOneService,
   getServiceCartSuccess,
+  updateCartQty,
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
@@ -47,6 +48,9 @@ import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
 import { useEffect } from 'react';
+import { updateServiceCartLength } from '@/actions/CartAction';
+import { getServiceCartLength } from '@/selectors/CartSelector';
+import { useFocusEffect } from '@react-navigation/core';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -69,6 +73,7 @@ export function CartServiceScreen({
   const availableOfferArray = getRetailData?.availableOffer;
   const [cartSearch, setCartSearch] = useState('');
   const [offerId, setOfferId] = useState();
+  const CART_LENGTH = useSelector(getServiceCartLength);
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
@@ -111,9 +116,9 @@ export function CartServiceScreen({
   // useFocusEffect(
   //   React.useCallback(() => {
   //     return () => {
-  //       var arr = getRetailData?.getAllCart;
-  //       if (arr.poscart_products.length > 0) {
-  //         const products = arr.poscart_products.map((item) => ({
+  //       var arr = getRetailData?.getserviceCart;
+  //       if (arr.appointment_cart_products.length > 0) {
+  //         const products = arr.appointment_cart_products.map((item) => ({
   //           product_id: item?.product_id,
   //           qty: item?.qty,
   //         }));
@@ -121,70 +126,28 @@ export function CartServiceScreen({
   //         const data = {
   //           updated_products: products,
   //         };
+  //         console.log('--------------------', data);
   //         dispatch(updateCartQty(data, arr.id));
-  //       } else {
-  //         clearCartHandler();
   //       }
+  //       // else {
+  //       //   clearCartHandler();
+  //       // }
   //     };
   //   }, [])
   // );
-
-  const updateQuantity = (cartId, productId, operation, index) => {
-    // const updatedArr = [...arr];
-
-    // const cartItem = updatedArr
-    //   .find(item => item.id === cartId)
-    //   ?.poscart_products.find(product => product.id === productId);
-
-    //   if (cartItem) {
-    //   if (operation === '+') {
-    //     cartItem.qty += 1;
-    //   } else if (operation === '-') {
-    //     cartItem.qty -= 1;
-    //   }
-    //   const data = {
-    //     seller_id: cartItem?.product_details?.supply?.seller_id,
-    //     supplyId: cartItem?.supply_id,
-    //     supplyPriceID: cartItem?.supply_price_id,
-    //     product_id: cartItem?.product_id,
-    //     service_id: cartItem?.service_id,
-    //     qty: cartItem?.qty,
-    //   };
-
-    //   dispatch(addTocart(data));
-    //   // dispatch(createCartAction(withoutVariantObject));
-    // }
-
-    //Mukul code----->
-
-    var arr = getRetailData?.getAllCart;
-    const product = arr?.poscart_products[index];
-    const productPrice = product?.product_details.price;
-
-    if (operation === '+') {
-      product.qty += 1;
-      arr.amount.total_amount += productPrice;
-      arr.amount.products_price += productPrice;
-    } else if (operation === '-') {
-      if (product.qty > 0) {
-        if (product.qty == 1) {
-          arr?.poscart_products.splice(index, 1);
-        }
-        product.qty -= 1;
-        arr.amount.total_amount -= productPrice;
-        arr.amount.products_price -= productPrice;
-      }
-    }
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(getAllCartSuccess(DATA));
-  };
 
   const clearCartHandler = () => {
     dispatch(clearServiceAllCart());
     crossHandler();
   };
+
+  function calculatePercentageValue(value, percentage) {
+    if (percentage == '') {
+      return '';
+    }
+    const percentageValue = (percentage / 100) * parseFloat(value);
+    return percentageValue.toFixed(2) ?? 0.0;
+  }
 
   const removeOneCartHandler = (productId, index) => {
     const data = {
@@ -193,19 +156,22 @@ export function CartServiceScreen({
     };
     dispatch(clearOneserviceCart(data));
 
-    //Mukul code----->
-
     // var arr = getRetailData?.getserviceCart;
     // const product = arr.appointment_cart_products[index];
     // const productPrice = product.product_details.price;
+    //   const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+    //   arr.amount.tax = parseFloat(TAX); // Update tax value
+    // // console.log('-------------------', arr);
+    // // return;
     // if (product.qty > 0) {
-    //   arr.amount.total_amount -= productPrice * product.qty;
-    //   arr.amount.products_price -= productPrice * product.qty;
+    //   arr.amount.total_amount -= productPrice;
+    //   arr.amount.products_price -= productPrice;
     //   arr.appointment_cart_products.splice(index, 1);
     // }
     // var DATA = {
     //   payload: arr,
     // };
+    // dispatch(updateServiceCartLength(CART_LENGTH - 1));
     // dispatch(getServiceCartSuccess(DATA));
   };
 

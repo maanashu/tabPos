@@ -523,35 +523,18 @@ export class RetailController {
   static async updateCartQtyy(data, cartId) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.updateCartQty + `/${cartId}`;
-      // const body = {
-      //   updated_products:
-      //      [
-      //         {
-      //             "qty": 2,
-      //             "product_id": 3458
-      //         }
-      //     ]
-      // };
 
       HttpClient.put(endpoint, data)
         .then((response) => {
-          // if (response?.msg === 'PosCart updated!') {
-          //   Toast.show({
-          //     text2: 'Notes add succesfully',
-          //     position: 'bottom',
-          //     type: 'success_toast',
-          //     visibilityTime: 1500,
-          //   });
-          // }
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error?.msg || 'Unknown error occured',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });

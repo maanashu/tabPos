@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Image, TextInput, Keyboard, Text, View, TouchableOpacity } from 'react-native';
+import { Image, TextInput, Keyboard, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
 
@@ -9,11 +9,14 @@ import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   addDiscountPic,
   addToCart,
+  borderCross,
   checkArrow,
   cross,
   eraser,
   holdCart,
+  minus,
   notess,
+  plus,
   rightBack,
   search_light,
   sideKeyboard,
@@ -165,15 +168,6 @@ export function CartScreen({
   };
   const removeOneCartHandler = (productId, index) => {
     var arr = getRetailData?.getAllCart;
-    // const data = {
-    //   cartId: cartData?.id,
-    //   productId: productId,
-    // };
-    // dispatch(clearOneCart(data));
-
-    //Mukul code----->
-    // alert(arr?.poscart_products.length)
-    // alert(index)
     if (arr?.poscart_products.length == 1 && index == 0) {
       clearCartHandler();
     } else {
@@ -259,7 +253,7 @@ export function CartScreen({
                 </View>
               </View>
             </View>
-            {/* <ScrollView>
+            <ScrollView>
               {arr?.map((item, index) => (
                 <View key={index}>
                   {item?.poscart_products?.map((data, ind) => (
@@ -343,7 +337,7 @@ export function CartScreen({
                   ))}
                 </View>
               ))}
-            </ScrollView> */}
+            </ScrollView>
 
             <Spacer space={SH(7)} />
           </View>

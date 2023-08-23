@@ -572,7 +572,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     width: windowWidth * 0.5,
-    height: windowHeight * 0.85,
+    height: windowHeight * 0.92,
     paddingTop: ms(5),
     paddingBottom: ms(10),
     position: 'absolute',

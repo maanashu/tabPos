@@ -241,7 +241,8 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
               <Spacer space={SH(20)} />
               <TouchableOpacity
                 onPress={() => {
-                  eraseClearCart(), CloseCartModal();
+                  // eraseClearCart(),
+                  CloseCartModal();
                 }}
               >
                 <Image

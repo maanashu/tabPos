@@ -4,6 +4,7 @@ import {
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
+  Platform,
   ScrollView,
   Text,
   View,
@@ -134,6 +135,7 @@ export function MainScreen({
   const cartLength = CART_LENGTH;
   const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
+  // const serviceCartLength = SERVICE_CART_LENGTH;
   //  const serviceCartLength = CART_LENGTH;
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
@@ -974,7 +976,7 @@ export function MainScreen({
                     {numPadModal ? (
                       <View
                         style={{
-                          width: ms(240),
+                          width: Platform.OS === 'android' ? ms(300) : ms(240),
                           height: ms(280),
                           position: 'absolute',
                           right: 60,
@@ -1113,7 +1115,7 @@ export function MainScreen({
                     {serviceNumPadModal ? (
                       <View
                         style={{
-                          width: ms(240),
+                          width: Platform.OS === 'android' ? ms(300) : ms(240),
                           height: ms(280),
                           position: 'absolute',
                           right: 60,
@@ -1139,7 +1141,7 @@ export function MainScreen({
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
                     onPress={() => dispatch(clearServiceAllCart())}
-                    disabled={cartLength > 0 ? false : true}
+                    disabled={serviceCartLength > 0 ? false : true}
                   >
                     <Image
                       source={sideEarser}
