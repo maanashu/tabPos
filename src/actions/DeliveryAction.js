@@ -190,6 +190,11 @@ export const getReviewDefault = (status, sellerID, deliveryOption) => async (dis
     const res = await DeliveryController.getReviewDefault(status, sellerID, deliveryOption);
     dispatch(getReviewDefSuccess(res));
     dispatch(getPendingOrders(sellerID));
+    dispatch(todayOrders(sellerID));
+    dispatch(deliOrder(sellerID));
+    dispatch(getOrderCount(sellerID));
+    dispatch(getOrderstatistics(sellerID, 1));
+    dispatch(getGraphOrders(sellerID, 1));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getReviewDefReset());

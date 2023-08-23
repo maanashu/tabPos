@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';

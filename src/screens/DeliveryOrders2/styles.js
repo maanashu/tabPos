@@ -443,7 +443,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     marginLeft: 10,
     paddingHorizontal: ms(12),
-    flex: 1,
   },
   acceptTextStyle: {
     textAlign: 'center',

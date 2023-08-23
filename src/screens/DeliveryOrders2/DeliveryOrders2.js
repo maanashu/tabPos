@@ -467,78 +467,84 @@ export function DeliveryOrders2({ route }) {
     </View>
   );
 
-  const renderOrderToReview = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => {
-        setViewAllOrder(true);
-        setSelectedProductId(item?.order_details[0]?.id);
-        setUserDetail(item);
-        setOrderDetail(item?.order_details);
-        dispatch(getOrderData(item?.id));
-        setOrderId(item?.id);
-      }}
-      style={[
-        viewAllOrder ? styles.showAllOrdersView : styles.orderRowStyle,
-        {
-          backgroundColor:
-            viewAllOrder && item?.id === userDetail?.id
-              ? COLORS.textInputBackground
-              : COLORS.transparent,
-          borderColor:
-            viewAllOrder && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
-        },
-      ]}
-    >
-      <View style={styles.orderDetailStyle}>
-        <Text style={styles.nameTextStyle}>
-          {item?.user_details?.firstname ? item?.user_details?.firstname : 'user name'}
-        </Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={pin} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>{item?.distance ? item?.distance : '0'}</Text>
-        </View>
-      </View>
-
-      <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
-        <Text style={styles.nameTextStyle}>
-          {item?.order_details?.length > 1
-            ? item?.order_details?.length + ' Items'
-            : item?.order_details?.length + ' Item'}
-        </Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={pay} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>
-            {item?.payable_amount ? item?.payable_amount : '00'}
-          </Text>
-        </View>
-      </View>
-
-      <View style={[styles.orderDetailStyle, { width: SW(47) }]}>
-        <Text style={styles.timeTextStyle}>
-          {item?.invoice?.delivery_date ? item?.invoice?.delivery_date : ''}
-        </Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={clock} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>
-            {' '}
-            {item?.preffered_delivery_start_time ? item?.preffered_delivery_start_time : '00.00'}
-            {'-'} {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00'}
-          </Text>
-        </View>
-      </View>
-
+  const renderOrderToReview = ({ item }) => {
+    console.log('orderId====', item);
+    return (
       <TouchableOpacity
         onPress={() => {
+          setViewAllOrder(true);
+          setSelectedProductId(item?.order_details[0]?.id);
           setUserDetail(item);
           setOrderDetail(item?.order_details);
-          setViewAllOrder(true);
+          dispatch(getOrderData(item?.id));
+          setOrderId(item?.id);
         }}
-        style={[styles.orderDetailStyle, { width: SH(24) }]}
+        style={[
+          viewAllOrder ? styles.showAllOrdersView : styles.orderRowStyle,
+          {
+            backgroundColor:
+              viewAllOrder && item?.id === userDetail?.id
+                ? COLORS.textInputBackground
+                : COLORS.transparent,
+            borderColor:
+              viewAllOrder && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
+          },
+        ]}
       >
-        <Image source={rightIcon} style={styles.rightIconStyle} />
+        <View style={styles.orderDetailStyle}>
+          <Text style={styles.nameTextStyle}>
+            {item?.user_details?.firstname ? item?.user_details?.firstname : 'user name'}
+          </Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={pin} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>
+              {item?.distance ? `${item?.distance} miles` : '0'}
+            </Text>
+          </View>
+        </View>
+
+        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
+          <Text style={styles.nameTextStyle}>
+            {item?.order_details?.length > 1
+              ? item?.order_details?.length + ' Items'
+              : item?.order_details?.length + ' Item'}
+          </Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={pay} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>
+              {item?.payable_amount ? item?.payable_amount : '00'}
+            </Text>
+          </View>
+        </View>
+
+        <View style={[styles.orderDetailStyle, { width: SW(47) }]}>
+          <Text style={styles.timeTextStyle}>
+            {item?.invoice?.delivery_date ? item?.invoice?.delivery_date : ''}
+          </Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={clock} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>
+              {' '}
+              {item?.preffered_delivery_start_time ? item?.preffered_delivery_start_time : '00.00'}
+              {'-'}{' '}
+              {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00'}
+            </Text>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            setUserDetail(item);
+            setOrderDetail(item?.order_details);
+            setViewAllOrder(true);
+          }}
+          style={[styles.orderDetailStyle, { width: SH(24) }]}
+        >
+          <Image source={rightIcon} style={styles.rightIconStyle} />
+        </TouchableOpacity>
       </TouchableOpacity>
-    </TouchableOpacity>
-  );
+    );
+  };
 
   const headerComponent = () => (
     <View style={styles.headingRowStyle}>
@@ -919,7 +925,7 @@ export function DeliveryOrders2({ route }) {
 
                   <Spacer space={ms(10)} />
 
-                  <CurrentStatus {...{ deliverytypes, renderItem }} />
+                  <CurrentStatus {...{ deliverytypes }} />
 
                   <Spacer space={ms(10)} />
 
