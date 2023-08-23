@@ -2122,4 +2122,15 @@ export const styles = StyleSheet.create({
     color: COLORS.primary,
     marginTop: ms(10),
   },
+  shortServiceItalic: {
+    fontFamily: Fonts.Italic,
+    color: COLORS.solid_grey,
+    fontSize: ms(6),
+  },
+  serviceCartImage: {
+    width: ms(20),
+    height: ms(20),
+    resizeMode: 'contain',
+    borderRadius: 5,
+  },
 });

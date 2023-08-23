@@ -1233,7 +1233,9 @@ export function MainScreen({
         animationOut={'slideOutRight'}
       >
         <ServiceCartListModal
-          // clearCart={eraseClearCart}
+          clearCart={() => {
+            dispatch(clearServiceAllCart()), setServiceCartModal(false);
+          }}
           checkOutHandler={checkOutHandler}
           CloseCartModal={() => setServiceCartModal(false)}
         />

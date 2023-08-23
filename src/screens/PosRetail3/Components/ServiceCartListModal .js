@@ -6,6 +6,7 @@ import { Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
+  Fonts,
   borderCross,
   bucket,
   checkArrow,
@@ -21,20 +22,11 @@ import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import {
-  addTocart,
-  changeStatusProductCart,
-  clearAllCart,
-  clearOneCart,
-  getAllCart,
-  getAllCartSuccess,
-  updateCartQty,
-} from '@/actions/RetailAction';
+import { changeStatusServiceCart, clearOneserviceCart } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-import { useFocusEffect } from '@react-navigation/native';
 import { getCartLength } from '@/selectors/CartSelector';
-import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
+import moment from 'moment';
 
 export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCart }) {
   const dispatch = useDispatch();
@@ -42,128 +34,56 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
   const cartData = getRetailData?.getserviceCart;
   let arr = [getRetailData?.getserviceCart];
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
-  const productCartArray = getRetailData?.getAllProductCart;
-  const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
-  const CART_LENGTH = useSelector(getCartLength);
+  const serviceCartArray = getRetailData?.getAllServiceCart;
+  const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
   const cartStatusHandler = () => {
     const data =
-      holdProductArray?.length > 0
+      holdServiceArray?.length > 0
         ? {
-            status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
-            cartId: holdProductArray?.[0]?.id,
+            status: holdServiceArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdServiceArray?.[0]?.id,
           }
         : {
-            status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
-            cartId: getRetailData?.getAllCart?.id,
+            status: getRetailData?.getserviceCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getserviceCart?.id,
           };
-    dispatch(changeStatusProductCart(data));
-  };
 
-  const updateQuantity = (cartId, productId, operation, index) => {
-    // const updatedArr = [...arr];
-
-    // const cartItem = updatedArr
-    //   .find(item => item.id === cartId)
-    //   ?.poscart_products.find(product => product.id === productId);
-
-    // if (cartItem) {
-    //   if (operation === '+') {
-    //     cartItem.qty += 1;
-    //   } else if (operation === '-') {
-    //     cartItem.qty -= 1;
-    //   }
-    //   const data = {
-    //     seller_id: cartItem?.product_details?.supply?.seller_id,
-    //     supplyId: cartItem?.supply_id,
-    //     supplyPriceID: cartItem?.supply_price_id,
-    //     product_id: cartItem?.product_id,
-    //     service_id: cartItem?.service_id,
-    //     qty: cartItem?.qty,
-    //   };
-    //   dispatch(addTocart(data));
-    //   // dispatch(createCartAction(withoutVariantObject));
-    // }
-
-    //Mukul code----->
-
-    var arr = getRetailData?.getAllCart;
-    const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
-
-    if (operation === '+') {
-      product.qty += 1;
-      arr.amount.total_amount += productPrice;
-      arr.amount.products_price += productPrice;
-    } else if (operation === '-') {
-      if (product.qty > 0) {
-        if (product.qty == 1) {
-          arr?.poscart_products.splice(index, 1);
-          dispatch(updateCartLength(CART_LENGTH - 1));
-        }
-        product.qty -= 1;
-        arr.amount.total_amount -= productPrice;
-        arr.amount.products_price -= productPrice;
-      }
-    }
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(getAllCartSuccess(DATA));
+    dispatch(changeStatusServiceCart(data));
   };
   const removeOneCartHandler = (productId, index) => {
-    // const data = {
-    //   cartId: cartData?.id,
-    //   productId: productId,
-    // };
-    // dispatch(clearOneCart(data));
-
-    var arr = getRetailData?.getAllCart;
-    const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
-    if (product.qty > 0) {
-      arr.amount.total_amount -= productPrice * product.qty;
-      arr.amount.products_price -= productPrice * product.qty;
-      arr?.poscart_products.splice(index, 1);
-    }
-    var DATA = {
-      payload: arr,
+    const data = {
+      cartId: cartData?.id,
+      productId: productId,
     };
-    dispatch(updateCartLength(CART_LENGTH - 1));
-    dispatch(getAllCartSuccess(DATA));
+    if (index === 0) {
+      dispatch(clearOneserviceCart(data));
+      CloseCartModal();
+    } else {
+      dispatch(clearOneserviceCart(data));
+    }
   };
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => {
-        var arr = getRetailData?.getAllCart;
 
-        if (arr?.poscart_products?.length > 0) {
-          const products = arr?.poscart_products.map((item) => ({
-            product_id: item?.product_id,
-            qty: item?.qty,
-          }));
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return () => {
+  //       var arr = getRetailData?.getAllCart;
 
-          const data = {
-            updated_products: products,
-          };
-          dispatch(updateCartQty(data, arr.id));
-        } else {
-          // clearCartHandler();
-        }
-      };
-    }, [])
-  );
+  //       if (arr?.poscart_products?.length > 0) {
+  //         const products = arr?.poscart_products.map((item) => ({
+  //           product_id: item?.product_id,
+  //           qty: item?.qty,
+  //         }));
 
-  const clearCartHandler = () => {
-    dispatch(clearAllCart());
-    dispatch(clearLocalCart());
-    // setTimeout(() => {
-    //   crossHandler();
-    // }, 1500);
-  };
-  const eraseClearCart = async () => {
-    clearCart();
-    // dispatch(clearAllCart())
-  };
+  //         const data = {
+  //           updated_products: products,
+  //         };
+  //         dispatch(updateCartQty(data, arr.id));
+  //       } else {
+  //         // clearCartHandler();
+  //       }
+  //     };
+  //   }, [])
+  // );
   return (
     <View style={styles.cartListModalView}>
       <View style={styles.displayRow}>
@@ -171,7 +91,7 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
           <Image source={bucket} style={[styles.sideBarImage, { tintColor: COLORS.primary }]} />
           <View style={[styles.bucketBadge, styles.bucketBadgePrimary]}>
             <Text style={[styles.badgetext, { color: COLORS.white }]}>
-              {cartData?.poscart_products?.length ?? '0'}
+              {cartData?.appointment_cart_products?.length ?? '0'}
             </Text>
           </View>
         </TouchableOpacity>
@@ -200,19 +120,19 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
               <ScrollView>
                 {arr?.map((item, index) => (
                   <View key={index}>
-                    {item?.poscart_products?.map((data, ind) => (
-                      <View style={styles.shortCartListData} key={ind}>
+                    {item?.appointment_cart_products?.map((data, ind) => (
+                      <View style={[styles.shortCartListData, { height: SH(80) }]} key={ind}>
                         <View style={styles.displayflex}>
                           <View style={styles.shorttableListSide}>
                             <View
                               style={{
                                 flexDirection: 'row',
-                                alignItems: 'center',
+                                // alignItems: 'center',
                               }}
                             >
                               <Image
                                 source={{ uri: data.product_details?.image }}
-                                style={styles.columbiaMen}
+                                style={styles.serviceCartImage}
                               />
                               <View style={{ marginLeft: 10 }}>
                                 <Text
@@ -221,7 +141,20 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                                 >
                                   {data.product_details?.name}
                                 </Text>
-                                <Text style={styles.sukNumber}>White/S</Text>
+                                <Text
+                                  style={[styles.shortServiceItalic, { width: SW(35) }]}
+                                  numberOfLines={1}
+                                >
+                                  {moment(data?.date).format('LL')} @
+                                  {data?.start_time + '-' + data?.end_time}
+                                </Text>
+                                <Text style={styles.sukNumber}>Est: 45 ~ 50 min </Text>
+                                <Text style={styles.sukNumber}>
+                                  Staff:{' '}
+                                  <Text style={{ fontFamily: Fonts.SemiBold }}>
+                                    {data?.pos_user_details?.user?.user_profiles?.firstname}
+                                  </Text>
+                                </Text>
                               </View>
                             </View>
                           </View>
@@ -229,7 +162,8 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                             <Text style={styles.blueListDataText}>
                               ${data?.product_details?.supply?.supply_prices?.selling_price}
                             </Text>
-                            <View style={styles.listCountCon}>
+                            <Text>{data.qty}</Text>
+                            {/* <View style={styles.listCountCon}>
                               <TouchableOpacity
                                 style={{
                                   width: SW(10),
@@ -240,11 +174,11 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                                 <Image source={minus} style={styles.minus} />
                               </TouchableOpacity>
                               <Text>{data.qty}</Text>
-                              {/* {isLoading ? (
+                             {isLoading ? (
                           <ActivityIndicator size="small" color={COLORS.primary} />
                         ) : (
                           <Text>{data.qty}</Text>
-                        )} */}
+                        )} *
                               <TouchableOpacity
                                 style={{
                                   width: SW(10),
@@ -254,7 +188,7 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                               >
                                 <Image source={plus} style={styles.minus} />
                               </TouchableOpacity>
-                            </View>
+                            </View> */}
                             <Text style={styles.blueListDataText}>
                               ${' '}
                               {(
@@ -305,7 +239,11 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                 style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
               />
               <Spacer space={SH(20)} />
-              <TouchableOpacity onPress={() => eraseClearCart()}>
+              <TouchableOpacity
+                onPress={() => {
+                  eraseClearCart(), CloseCartModal();
+                }}
+              >
                 <Image
                   source={sideEarser}
                   style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
@@ -319,26 +257,26 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                 <Image
                   source={holdCart}
                   style={
-                    holdProductArray?.length > 0
+                    holdServiceArray?.length > 0
                       ? [styles.sideBarImage, { tintColor: COLORS.primary }]
                       : styles.sideBarImage
                   }
                 />
                 <View
                   style={
-                    holdProductArray?.length > 0
+                    holdServiceArray?.length > 0
                       ? [styles.holdBadge, styles.holdBadgePrimary]
                       : styles.holdBadge
                   }
                 >
                   <Text
                     style={
-                      holdProductArray?.length > 0
+                      holdServiceArray?.length > 0
                         ? [styles.holdBadgetext, { color: COLORS.white }]
                         : styles.holdBadgetext
                     }
                   >
-                    {holdProductArray?.length}
+                    {holdServiceArray?.length}
                   </Text>
                 </View>
               </TouchableOpacity>

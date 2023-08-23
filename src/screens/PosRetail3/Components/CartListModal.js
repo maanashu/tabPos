@@ -35,6 +35,7 @@ import { TYPES } from '@/Types/Types';
 import { useFocusEffect } from '@react-navigation/native';
 import { getCartLength } from '@/selectors/CartSelector';
 import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
+import { ms } from 'react-native-size-matters';
 
 export function CartListModal({ checkOutHandler, CloseCartModal, clearCart }) {
   const dispatch = useDispatch();
@@ -227,7 +228,10 @@ export function CartListModal({ checkOutHandler, CloseCartModal, clearCart }) {
                             </View>
                           </View>
                           <View style={styles.ShorttableListSide2}>
-                            <Text style={styles.blueListDataText}>
+                            <Text
+                              style={[styles.blueListDataText, { width: ms(35) }]}
+                              numberOfLines={1}
+                            >
                               ${data?.product_details?.supply?.supply_prices?.selling_price}
                             </Text>
                             <View style={styles.listCountCon}>
