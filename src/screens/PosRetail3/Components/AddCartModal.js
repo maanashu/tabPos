@@ -122,10 +122,8 @@ export function AddCartModal({
             .join(),
           supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
         };
-
         crossHandler();
         const res = await dispatch(checkSuppliedVariant(data));
-        // return;
         if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
           const data = {
             seller_id: sellerID,
@@ -134,7 +132,7 @@ export function AddCartModal({
             qty: count,
             supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
             supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-            supplyVariantId: res?.payload?.attribute_variant_id,
+            supplyVariantId: res?.payload?.id,
           };
 
           //New Changes

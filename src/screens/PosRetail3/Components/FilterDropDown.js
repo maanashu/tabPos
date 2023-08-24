@@ -43,8 +43,6 @@ export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue, 
   const [categoryOpenDropDown, setCategoryOpenDropDown] = useState(false);
   const [selectedCategoryArray, setSelectedCategoryArray] = useState([]);
 
-  console.log('selectedCategoryArray', selectedCategoryArray);
-
   // subcategory search
   const [subCategoryData, setSubCategoryData] = useState();
   const [searchSubCategory, setSearchSubCategory] = useState('');

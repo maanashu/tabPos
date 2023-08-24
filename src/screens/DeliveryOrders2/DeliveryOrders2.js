@@ -468,7 +468,6 @@ export function DeliveryOrders2({ route }) {
   );
 
   const renderOrderToReview = ({ item }) => {
-    console.log('orderId====', item);
     return (
       <TouchableOpacity
         onPress={() => {

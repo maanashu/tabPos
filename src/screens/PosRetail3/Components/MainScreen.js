@@ -22,6 +22,7 @@ import {
   filter,
   holdCart,
   product,
+  scn,
   search_light,
   services,
   sideArrow,
@@ -613,11 +614,13 @@ export function MainScreen({
                         onChangeText={(search) => onChangeFun(search)}
                         placeholderTextColor={COLORS.gerySkies}
                       />
+
                       {search?.length > 0 ? (
                         <TouchableOpacity
                           onPress={() => {
                             setSearch(''), dispatch(getMainProduct()), Keyboard.dismiss();
                           }}
+                          style={{ marginRight: ms(7) }}
                         >
                           <Image
                             source={cross}
@@ -625,6 +628,9 @@ export function MainScreen({
                           />
                         </TouchableOpacity>
                       ) : null}
+                      {/* <TouchableOpacity>
+                        <Image source={scn} style={styles.scnStyle} />
+                      </TouchableOpacity> */}
                     </View>
                   </View>
                 ) : (

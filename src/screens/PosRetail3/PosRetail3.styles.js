@@ -2135,4 +2135,9 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     borderRadius: 5,
   },
+  scnStyle: {
+    width: SW(15),
+    height: SW(16),
+    resizeMode: 'contain',
+  },
 });

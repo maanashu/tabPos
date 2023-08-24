@@ -88,22 +88,26 @@ export function CartScreen({
     dispatch(getAvailableOffer(data));
   }, []);
 
+  const beforeDiscountCartLoad = () => {
+    var arr = getRetailData?.getAllCart;
+    if (arr?.poscart_products?.length > 0) {
+      const products = arr?.poscart_products.map((item) => ({
+        product_id: item?.product_id,
+        qty: item?.qty,
+      }));
+      const data = {
+        updated_products: products,
+      };
+      dispatch(updateCartQty(data, arr.id));
+    } else {
+      // clearCartHandler();
+    }
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        var arr = getRetailData?.getAllCart;
-        if (arr?.poscart_products?.length > 0) {
-          const products = arr?.poscart_products.map((item) => ({
-            product_id: item?.product_id,
-            qty: item?.qty,
-          }));
-          const data = {
-            updated_products: products,
-          };
-          dispatch(updateCartQty(data, arr.id));
-        } else {
-          // clearCartHandler();
-        }
+        beforeDiscountCartLoad();
       };
     }, [])
   );
@@ -435,15 +439,23 @@ export function CartScreen({
                   )}
                 />
               </View>
-
               <Spacer space={SH(10)} />
-
               <View style={styles.displayflex}>
-                <TouchableOpacity style={styles.addDiscountCon} onPress={addDiscountHandler}>
+                <TouchableOpacity
+                  style={styles.addDiscountCon}
+                  onPress={() => {
+                    addDiscountHandler(), beforeDiscountCartLoad();
+                  }}
+                >
                   <Image source={addDiscountPic} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Discount</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.addDiscountCon} onPress={addNotesHandler}>
+                <TouchableOpacity
+                  style={styles.addDiscountCon}
+                  onPress={() => {
+                    addNotesHandler(), beforeDiscountCartLoad();
+                  }}
+                >
                   <Image source={notess} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Notes</Text>
                 </TouchableOpacity>

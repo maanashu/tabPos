@@ -65,6 +65,7 @@ import { endTrackingSession } from '@/actions/CashTrackingAction';
 import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 
 import { styles } from './DashBoard.styles';
+import { scanProductAdd } from '@/actions/RetailAction';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -90,8 +91,6 @@ export function DashBoard({ navigation }) {
   const getDeliveryData = getDashboardData?.getOrderDeliveries?.data;
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
 
-  // console.log('getDashboardData?.getOrderDeliveries', getDashboardData?.getOrderDeliveries);
-
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
   const [trackNotes, setTrackNotes] = useState('');
@@ -105,13 +104,10 @@ export function DashBoard({ navigation }) {
   const [sku, setSku] = useState('');
   const [scan, setScan] = useState(false);
 
-  console.log('page', page);
-
   //  order delivery pagination
 
   const onLoadMoreOrder = () => {
     const totalPages = getDashboardData?.getOrderDeliveries?.total_pages;
-    console.log('page', page, totalPages);
     if (page <= totalPages) {
       setPage((prevPage) => prevPage + 1);
       // if (!isScrolling) return;
@@ -162,6 +158,17 @@ export function DashBoard({ navigation }) {
         upc_code: sku,
         qty: 1,
       };
+      const res = await dispatch(scanProductAdd(data))
+        .then((res) => {
+          setSku('');
+          dispatch(getAllCart());
+          textInputRef.current.focus();
+        })
+        .catch((error) => {
+          // alert('error');
+          setSku('');
+          textInputRef.current.focus();
+        });
     }
   };
 
@@ -555,34 +562,35 @@ export function DashBoard({ navigation }) {
               <View>
                 <Image source={search_light} style={styles.searchStyle} />
               </View>
-              {scan ? (
-                <TextInput
-                  placeholder="Scan Product"
-                  style={styles.searchInput}
-                  // editable={false}
-                  value={sku}
-                  onChangeText={(sku) => {
-                    onSetSkuFun(sku);
-                  }}
-                  ref={textInputRef}
-                />
-              ) : (
-                <TextInput
-                  placeholder="Search"
-                  style={styles.searchInput}
-                  value={search}
-                  onChangeText={(search) => {
-                    setSearch(search);
-                    onChangeFun(search);
-                  }}
-                />
-              )}
+              {/* {scan ? ( */}
+              <TextInput
+                placeholder="Scan Product"
+                style={styles.searchInput}
+                // editable={false}
+                value={sku}
+                onChangeText={(sku) => {
+                  onSetSkuFun(sku);
+                }}
+                ref={textInputRef}
+              />
+              {/* ) : ( */}
+              {/* <TextInput
+                placeholder="Search"
+                style={styles.searchInput}
+                value={search}
+                onChangeText={(search) => {
+                  setSearch(search);
+                  onChangeFun(search);
+                }}
+              /> */}
+              {/* )} */}
             </View>
             <TouchableOpacity
-              //  onPress={() => textInputRef.current.focus()}
-              onPress={() => setScan(!scan)}
+              onPress={() => textInputRef.current.focus()}
+              // onPress={() => setScan(!scan)}
             >
-              <Image source={scan ? scanSearch : scn} style={styles.scnStyle} />
+              {/* <Image source={scan ? scanSearch : scn} style={styles.scnStyle} /> */}
+              <Image source={scn} style={styles.scnStyle} />
             </TouchableOpacity>
           </View>
           <Spacer space={SH(20)} />

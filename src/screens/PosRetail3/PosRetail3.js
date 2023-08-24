@@ -303,7 +303,6 @@ export function PosRetail3() {
   };
 
   const getScreenFunction = (value) => {
-    console.log('value---', value);
     setActiveScreen(value);
   };
 

@@ -974,8 +974,8 @@ export class RetailController {
           Toast.show({
             position: 'top',
             type: 'error_toast',
-            text2: error.msg,
-            visibilityTime: 2000,
+            text2: error?.msg,
+            visibilityTime: 3000,
           });
           reject(error);
         });
