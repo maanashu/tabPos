@@ -337,6 +337,7 @@ export { default as deliveryHomeIcon } from '@/assets/icons/ic_shipingOrder/deli
 export { default as up } from '@/assets/icons/ic_posRetail/up.png';
 export { default as down } from '@/assets/icons/ic_posRetail/down.png';
 export { default as expand } from '@/assets/icons/ic_deliveryOrder/expand.png';
+export { default as gps } from '@/assets/icons/ic_deliveryOrder/gps.png';
 
 /* Fonts */
 export const Fonts = {

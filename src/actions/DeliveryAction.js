@@ -175,26 +175,22 @@ const getSellerDriverListError = (error) => ({
   payload: { error },
 });
 
-export const getOrderCount = (status) => async (dispatch) => {
+export const getOrderCount = () => async (dispatch) => {
   dispatch(getOrderCountRequest());
   try {
-    const res = await DeliveryController.getOrderCount(status);
+    const res = await DeliveryController.getOrderCount();
     dispatch(getOrderCountSuccess(res));
   } catch (error) {
     dispatch(getOrderCountError(error.message));
   }
 };
-export const getReviewDefault = (status, sellerID, deliveryOption) => async (dispatch) => {
+export const getReviewDefault = (status, deliveryOption) => async (dispatch) => {
   dispatch(getReviewDefRequest());
   try {
-    const res = await DeliveryController.getReviewDefault(status, sellerID, deliveryOption);
+    const res = await DeliveryController.getReviewDefault(status, deliveryOption);
     dispatch(getReviewDefSuccess(res));
     dispatch(getPendingOrders(sellerID));
-    dispatch(todayOrders(sellerID));
-    dispatch(deliOrder(sellerID));
-    dispatch(getOrderCount(sellerID));
-    dispatch(getOrderstatistics(sellerID, 1));
-    dispatch(getGraphOrders(sellerID, 1));
+    dispatch(getOrderCount());
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getReviewDefReset());
@@ -203,10 +199,10 @@ export const getReviewDefault = (status, sellerID, deliveryOption) => async (dis
   }
 };
 
-export const getOrders = (status, sellerID) => async (dispatch) => {
+export const getOrders = (status) => async (dispatch) => {
   dispatch(getOrdersRequest());
   try {
-    const res = await DeliveryController.getOrders(status, sellerID);
+    const res = await DeliveryController.getOrders(status);
     return dispatch(getOrdersSuccess(res));
   } catch (error) {
     dispatch(getOrdersError(error.message));
@@ -219,9 +215,9 @@ export const acceptOrder = (data, openShippingOrders, delivery, callback) => asy
     const res = await DeliveryController.acceptOrder(data);
     callback && callback(res);
     dispatch(acceptOrderSuccess(res));
-    dispatch(getOrderCount(data.sellerID));
+    dispatch(getOrderCount());
     dispatch(orderStatusCount(data.sellerID));
-    dispatch(getReviewDefault(openShippingOrders, sellerID, delivery));
+    dispatch(getReviewDefault(openShippingOrders, delivery));
     dispatch(getPendingOrders(data.sellerID));
   } catch (error) {
     dispatch(acceptOrderError(error.message));
@@ -241,20 +237,20 @@ export const deliveryOrd = () => async (dispatch) => {
   }
 };
 
-export const deliverygraph = (sellerID) => async (dispatch) => {
+export const deliverygraph = () => async (dispatch) => {
   dispatch(deliverygraphRequest());
   try {
-    const res = await DeliveryController.deliverygraph(sellerID);
+    const res = await DeliveryController.deliverygraph();
     dispatch(deliverygraphSuccess(res?.payload));
   } catch (error) {
     dispatch(deliverygraphError(error.message));
   }
 };
 
-export const deliOrder = (sellerID) => async (dispatch) => {
+export const deliOrder = () => async (dispatch) => {
   dispatch(deliveringOrderRequest());
   try {
-    const res = await DeliveryController.deliveringOrder(sellerID);
+    const res = await DeliveryController.deliveringOrder();
     dispatch(deliveringOrderSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -264,10 +260,10 @@ export const deliOrder = (sellerID) => async (dispatch) => {
   }
 };
 
-export const todayOrders = (sellerID) => async (dispatch) => {
+export const todayOrders = () => async (dispatch) => {
   dispatch(todayOrdersRequest());
   try {
-    const res = await DeliveryController.todayOrders(sellerID);
+    const res = await DeliveryController.todayOrders();
     dispatch(todayOrdersSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -277,30 +273,30 @@ export const todayOrders = (sellerID) => async (dispatch) => {
   }
 };
 
-export const getOrderstatistics = (sellerID, delivery) => async (dispatch) => {
+export const getOrderstatistics = (delivery) => async (dispatch) => {
   dispatch(getOrderstatisticsRequest());
   try {
-    const res = await DeliveryController.getOrderstatistics(sellerID, delivery);
+    const res = await DeliveryController.getOrderstatistics(delivery);
     return dispatch(getOrderstatisticsSuccess(res?.payload));
   } catch (error) {
     dispatch(getOrderstatisticsError(error.message));
   }
 };
 
-export const getGraphOrders = (sellerID, delivery) => async (dispatch) => {
+export const getGraphOrders = (delivery) => async (dispatch) => {
   dispatch(getGraphOrdersRequest());
   try {
-    const res = await DeliveryController.getGraphOrders(sellerID, delivery);
+    const res = await DeliveryController.getGraphOrders(delivery);
     return dispatch(getGraphOrdersSuccess(res?.payload));
   } catch (error) {
     dispatch(getGraphOrdersError(error.message));
   }
 };
 
-export const getSellerDriverList = (sellerID) => async (dispatch) => {
+export const getSellerDriverList = () => async (dispatch) => {
   dispatch(getSellerDriverListRequest());
   try {
-    const res = await DeliveryController.getSellerDriverList(sellerID);
+    const res = await DeliveryController.getSellerDriverList();
     return dispatch(getSellerDriverListSuccess(res?.payload));
   } catch (error) {
     dispatch(getSellerDriverListError(error.message));

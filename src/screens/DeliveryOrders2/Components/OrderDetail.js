@@ -3,15 +3,17 @@ import { View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator } from
 
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import ShipmentTracking from './ShipmentTracking';
-import { expand, Fonts, scooter, userImage } from '@/assets';
+import { deliveryHomeIcon, expand, Fonts, gps, scooter, userImage } from '@/assets';
 
 import styles from '../styles';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
+import MapViewDirections from 'react-native-maps-directions';
 
 const OrderDetail = ({
   userDetail,
@@ -24,16 +26,19 @@ const OrderDetail = ({
   isProductDetailLoading,
   latitude,
   longitude,
-  oneOrderDetail,
+  location,
+  sourceCoordinate,
+  destinationCoordinate,
   changeMapState,
+  mapRef,
 }) => {
   return (
     <View style={styles.orderDetailView}>
-      {openShippingOrders >= '3' && oneOrderDetail?.getOrderData?.status !== 7 ? (
+      {openShippingOrders >= '3' && userDetail?.status !== 7 ? (
         <>
-          <MapView
+          {/* <MapView
             provider={PROVIDER_GOOGLE}
-            showCompass
+            showsCompass
             region={{
               latitude: latitude,
               longitude: longitude,
@@ -47,12 +52,72 @@ const OrderDetail = ({
               longitudeDelta: 0.0421,
             }}
             style={styles.map}
-          ></MapView>
+          ></MapView> */}
+
+          <MapView
+            ref={mapRef}
+            provider={PROVIDER_GOOGLE}
+            region={{
+              latitude: latitude,
+              longitude: longitude,
+              latitudeDelta: 0.0992,
+              longitudeDelta: 0.0421,
+            }}
+            initialRegion={{
+              latitude: latitude ?? 0.0,
+              longitude: longitude ?? 0.0,
+              latitudeDelta: 0.0992,
+              longitudeDelta: 0.0421,
+            }}
+            style={styles.map}
+          >
+            <MapViewDirections
+              key={location?.latitude}
+              origin={{
+                latitude: latitude,
+                longitude: longitude,
+              }}
+              destination={{
+                latitude: userDetail?.coordinates?.[0],
+                longitude: userDetail?.coordinates?.[1],
+              }}
+              apikey={GOOGLE_MAP.API_KEYS}
+              strokeWidth={6}
+              strokeColor={COLORS.primary}
+            />
+            <Marker coordinate={sourceCoordinate}>
+              <View>
+                <Image source={scooter} style={styles.mapMarkerStyle} />
+              </View>
+            </Marker>
+            <Marker coordinate={destinationCoordinate}>
+              <View>
+                <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
+              </View>
+            </Marker>
+          </MapView>
           <TouchableOpacity onPress={() => changeMapState(true)} style={styles.expandButtonStyle}>
             <Image source={expand} style={styles.rightIconStyle} />
             <Text style={[styles.acceptTextStyle, { paddingHorizontal: 12 }]}>{'Expand'}</Text>
           </TouchableOpacity>
-          <ShipmentTracking props={{ status: oneOrderDetail?.getOrderData?.status }} />
+          <ShipmentTracking props={{ status: userDetail?.status }} />
+
+          <TouchableOpacity
+            onPress={() =>
+              mapRef.current.animateToRegion(
+                {
+                  latitude: latitude,
+                  longitude: longitude,
+                  latitudeDelta: 0.001,
+                  longitudeDelta: 0.001,
+                },
+                1000
+              )
+            }
+            style={styles.gpsViewStyle}
+          >
+            <Image source={gps} style={styles.gpsImageStyle} />
+          </TouchableOpacity>
         </>
       ) : (
         <>
@@ -146,7 +211,7 @@ const OrderDetail = ({
                 <Text style={styles.itemCountText}>{userDetail?.id}</Text>
               </View>
 
-              {oneOrderDetail?.getOrderData?.status === 2 && (
+              {userDetail?.status === 2 && (
                 <View
                   style={{
                     flexDirection: 'row',
@@ -168,7 +233,7 @@ const OrderDetail = ({
                       { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
                     ]}
                   >
-                    {oneOrderDetail?.getOrderData?.order_delivery?.seller_otp}
+                    {userDetail?.order_delivery?.seller_otp}
                   </Text>
                 </View>
               )}
@@ -271,7 +336,7 @@ const OrderDetail = ({
                   </TouchableOpacity>
                 ) : null}
 
-                {openShippingOrders >= '3' && oneOrderDetail?.getOrderData?.status !== 7 && (
+                {openShippingOrders >= '3' && userDetail?.status !== 7 && (
                   <TouchableOpacity
                     onPress={() => trackHandler()}
                     style={[styles.acceptButtonView]}
@@ -286,7 +351,7 @@ const OrderDetail = ({
                   </TouchableOpacity>
                 )}
 
-                {oneOrderDetail?.getOrderData?.status === 7 && (
+                {userDetail?.status === 7 && (
                   <View style={[styles.acceptButtonView, { backgroundColor: COLORS.washGrey }]}>
                     <Text style={[styles.acceptTextStyle, { color: COLORS.darkGray }]}>
                       {'Cancelled by User'}

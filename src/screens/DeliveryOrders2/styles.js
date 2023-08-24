@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   shippingOrdersViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     bottom: ms(5),
   },
   totalTextStyle: {
@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: COLORS.primary,
     borderRadius: 5,
-    paddingHorizontal: ms(10),
+    paddingHorizontal: ms(12),
   },
   declineTextStyle: {
     textAlign: 'center',
@@ -516,8 +516,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(10),
     backgroundColor: COLORS.textInputBackground,
     paddingVertical: ms(8),
-    width: ms(130),
-    // width: Dimensions.get('window').width * 0.32,
+    width: Dimensions.get('window').width / 5,
     borderRadius: 10,
   },
   flexDirectionRow: {
@@ -624,6 +623,24 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   mapMarkerStyle: { height: ms(30), width: ms(30), resizeMode: 'contain' },
+  gpsViewStyle: {
+    top: 20,
+    left: 20,
+    opacity: 0.8,
+    width: ms(32),
+    height: ms(32),
+    borderRadius: 21,
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+  },
+  gpsImageStyle: {
+    width: ms(13),
+    height: ms(13),
+    resizeMode: 'contain',
+    // tintColor: COLORS.text,
+  },
 });
 
 export default styles;

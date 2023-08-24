@@ -161,9 +161,9 @@ export function ShippingOrder2() {
   useEffect(() => {
     dispatch(todayShippingStatus(sellerID));
     dispatch(todayCurrentStatus(sellerID));
-    dispatch(getReviewDefault(0, sellerID, 4));
-    dispatch(getGraphOrders(sellerID, 4));
-    dispatch(getOrderstatistics(sellerID, 4));
+    dispatch(getReviewDefault(0, 4));
+    dispatch(getGraphOrders(4));
+    dispatch(getOrderstatistics(4));
     dispatch(orderStatusCount(sellerID));
   }, []);
 
@@ -331,7 +331,7 @@ export function ShippingOrder2() {
       style={styles.drawerIconView}
       onPress={() => {
         setOpenShippingOrders(item?.key);
-        dispatch(getReviewDefault(item?.key, sellerID, 4));
+        dispatch(getReviewDefault(item?.key, 4));
       }}
     >
       {showBadge(item)}
@@ -612,7 +612,7 @@ export function ShippingOrder2() {
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg) {
-          dispatch(getReviewDefault(openShippingOrders, sellerID, 4));
+          dispatch(getReviewDefault(openShippingOrders, 4));
           dispatch(orderStatusCount(sellerID));
           setGetOrderDetail('ViewAllScreen');
           setUserDetail(ordersList?.[0] ?? []);
@@ -633,7 +633,7 @@ export function ShippingOrder2() {
       acceptOrder(data, (res) => {
         alert('Order declined successfully');
         setViewAllOrders(false);
-        dispatch(getReviewDefault(0, sellerID, 4));
+        dispatch(getReviewDefault(0, 4));
       })
     );
   };
@@ -772,7 +772,7 @@ export function ShippingOrder2() {
         <View style={styles.container}>
           <TouchableOpacity
             onPress={() => {
-              dispatch(getReviewDefault(openShippingOrders, sellerID, 4)), setOpenWebView(false);
+              dispatch(getReviewDefault(openShippingOrders, 4)), setOpenWebView(false);
             }}
             style={styles.backView}
           >
