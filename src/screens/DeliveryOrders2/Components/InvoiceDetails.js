@@ -42,7 +42,9 @@ const InvoiceDetails = ({
 
       <View style={styles.firstRowStyle}>
         <View style={styles.storeDetailView}>
-          <Text style={styles.firstNameText}>{userDetailData?.firstname ?? ''}</Text>
+          <Text style={styles.firstNameText}>
+            {singleOrderDetail?.seller_details?.organization_name ?? ''}
+          </Text>
           <Text style={styles.addressTextStyle}>
             {userDetailData?.current_address?.street_address +
               ', ' +
