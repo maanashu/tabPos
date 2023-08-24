@@ -179,7 +179,7 @@ export function DeliveryOrder() {
   useEffect(() => {
     if (isFocused) {
       dispatch(getOrderCount(sellerID));
-      dispatch(getReviewDefault(0, sellerID));
+      dispatch(getReviewDefault(0, 1));
       dispatch(deliveryOrd());
       dispatch(deliverygraph(sellerID));
       dispatch(deliOrder(sellerID));
@@ -758,7 +758,6 @@ export function DeliveryOrder() {
         <View style={styles.mapContainer}>
           <MapView
             provider={PROVIDER_GOOGLE}
-            showCompass
             region={{
               latitude: 27.2046,
               longitude: 77.4977,

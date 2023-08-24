@@ -12,7 +12,7 @@ import { strings } from '@/localization';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import ShipmentTracking from './ShipmentTracking';
 import { getReviewDefault } from '@/actions/DeliveryAction';
-import { deliveryHomeIcon, scooter, backArrow2, barcode, crossButton } from '@/assets';
+import { deliveryHomeIcon, scooter, backArrow2, barcode, crossButton, gps } from '@/assets';
 
 import styles from '../styles';
 
@@ -27,6 +27,7 @@ const InvoiceDetails = ({
   sellerID,
   renderOrderDetailProducts,
   location,
+  mapRef,
 }) => {
   const dispatch = useDispatch();
   const userDetailData = singleOrderDetail?.user_details;
@@ -165,6 +166,7 @@ const InvoiceDetails = ({
 
         <View style={styles.mapMainView}>
           <MapView
+            ref={mapRef}
             provider={PROVIDER_GOOGLE}
             showCompass
             region={{
@@ -208,9 +210,26 @@ const InvoiceDetails = ({
           </MapView>
 
           <TouchableOpacity
+            onPress={() =>
+              mapRef.current.animateToRegion(
+                {
+                  latitude: latitude,
+                  longitude: longitude,
+                  latitudeDelta: 0.001,
+                  longitudeDelta: 0.001,
+                },
+                1000
+              )
+            }
+            style={styles.gpsViewStyle}
+          >
+            <Image source={gps} style={styles.gpsImageStyle} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
             onPress={() => {
               setTrackingView(false);
-              dispatch(getReviewDefault(openShippingOrders, sellerID, 1));
+              dispatch(getReviewDefault(openShippingOrders, 1));
             }}
             style={[
               styles.expandButtonStyle,

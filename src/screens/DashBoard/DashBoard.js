@@ -105,13 +105,10 @@ export function DashBoard({ navigation }) {
   const [sku, setSku] = useState('');
   const [scan, setScan] = useState(false);
 
-  console.log('page', page);
-
   //  order delivery pagination
 
   const onLoadMoreOrder = () => {
     const totalPages = getDashboardData?.getOrderDeliveries?.total_pages;
-    console.log('page', page, totalPages);
     if (page <= totalPages) {
       setPage((prevPage) => prevPage + 1);
       // if (!isScrolling) return;

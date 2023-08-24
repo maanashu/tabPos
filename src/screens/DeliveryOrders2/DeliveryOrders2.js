@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import {
   View,
@@ -75,6 +75,7 @@ import styles from './styles';
 import ReactNativeModal from 'react-native-modal';
 
 export function DeliveryOrders2({ route }) {
+  const mapRef = useRef(null);
   var isViewAll;
   var ORDER_DETAIL;
   if (route.params && route.params.isViewAll) {
@@ -222,13 +223,13 @@ export function DeliveryOrders2({ route }) {
   ];
 
   useEffect(() => {
-    dispatch(todayOrders(sellerID));
-    dispatch(deliOrder(sellerID));
-    dispatch(getOrderCount(sellerID));
-    dispatch(getReviewDefault(0, sellerID, 1));
-    dispatch(getOrderstatistics(sellerID, 1));
-    dispatch(getGraphOrders(sellerID, 1));
-    dispatch(getSellerDriverList(sellerID));
+    dispatch(todayOrders());
+    dispatch(deliOrder());
+    dispatch(getOrderCount());
+    dispatch(getReviewDefault(0, 1));
+    dispatch(getOrderstatistics(1));
+    dispatch(getGraphOrders(1));
+    dispatch(getSellerDriverList());
 
     const deliveryTypes = [
       {
@@ -415,7 +416,7 @@ export function DeliveryOrders2({ route }) {
     <TouchableOpacity
       onPress={() => {
         setOpenShippingOrders(item?.key);
-        dispatch(getReviewDefault(item?.key, sellerID, 1));
+        dispatch(getReviewDefault(item?.key, 1));
         setTrackingView(false);
         dispatch(getOrderCount(sellerID));
       }}
@@ -468,7 +469,6 @@ export function DeliveryOrders2({ route }) {
   );
 
   const renderOrderToReview = ({ item }) => {
-    console.log('orderId====', item);
     return (
       <TouchableOpacity
         onPress={() => {
@@ -654,8 +654,11 @@ export function DeliveryOrders2({ route }) {
     dispatch(
       acceptOrder(data, openShippingOrders, 1, (res) => {
         if (res?.msg) {
-          dispatch(getReviewDefault(openShippingOrders, sellerID, 1));
+          dispatch(getReviewDefault(openShippingOrders, 1));
           dispatch(orderStatusCount(sellerID));
+          dispatch(todayOrders());
+          dispatch(getOrderstatistics(1));
+          dispatch(getGraphOrders(1));
           setGetOrderDetail('ViewAllScreen');
           setUserDetail(ordersList?.[0] ?? []);
           setViewAllOrder(true);
@@ -675,7 +678,7 @@ export function DeliveryOrders2({ route }) {
     dispatch(
       acceptOrder(data, () => {
         setViewAllOrder(false);
-        dispatch(getReviewDefault(0, sellerID));
+        dispatch(getReviewDefault(0, 1));
       })
     );
   };
@@ -783,7 +786,7 @@ export function DeliveryOrders2({ route }) {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(getReviewDefault(openShippingOrders, sellerID, 1));
+    dispatch(getReviewDefault(3, 1));
     dispatch(getOrderCount(sellerID));
     setTimeout(() => {
       setRefreshing(false);
@@ -895,8 +898,11 @@ export function DeliveryOrders2({ route }) {
                         isProductDetailLoading,
                         latitude,
                         longitude,
-                        oneOrderDetail,
+                        location,
+                        sourceCoordinate,
+                        destinationCoordinate,
                         changeMapState,
+                        mapRef,
                       }}
                     />
                   </>
@@ -1001,6 +1007,7 @@ export function DeliveryOrders2({ route }) {
                 sellerID,
                 renderOrderDetailProducts,
                 location,
+                mapRef,
               }}
             />
             <RightSideBar
