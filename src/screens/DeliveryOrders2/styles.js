@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    bottom: ms(5),
+    // bottom: ms(5)
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
@@ -366,6 +366,7 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios'
         ? Dimensions.get('window').width * 0.38
         : Dimensions.get('window').width * 0.42,
+    height: Platform.OS === 'ios' ? Dimensions.get('window').height - 80 : 0,
   },
   userDetailView: {
     flex: 1,
@@ -422,12 +423,12 @@ const styles = StyleSheet.create({
   },
   invoiceText: {
     fontFamily: Fonts.MaisonBold,
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.darkGray,
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(24),
+    fontSize: ms(12),
     color: COLORS.dark_grey,
   },
   totalText: {
@@ -485,6 +486,7 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: '100%',
+    borderRadius: 10,
   },
   backButtonView: {
     position: 'absolute',
@@ -516,7 +518,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(10),
     backgroundColor: COLORS.textInputBackground,
     paddingVertical: ms(8),
-    width: Dimensions.get('window').width / 5,
+    width:
+      Platform.OS === 'android'
+        ? Dimensions.get('window').width / 5
+        : Dimensions.get('window').width / 4.5,
     borderRadius: 10,
   },
   flexDirectionRow: {
@@ -536,6 +541,7 @@ const styles = StyleSheet.create({
   detailMap: {
     height: '100%',
     width: '100%',
+    borderRadius: 10,
   },
   addressTextStyle: {
     fontFamily: Fonts.Regular,
@@ -586,7 +592,7 @@ const styles = StyleSheet.create({
     marginTop: ms(10),
     backgroundColor: COLORS.white,
     borderRadius: 15,
-    paddingBottom: 80,
+    paddingBottom: 10,
   },
   dashedLineView: {
     borderWidth: 1,

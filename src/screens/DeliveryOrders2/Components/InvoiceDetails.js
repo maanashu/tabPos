@@ -15,6 +15,7 @@ import { getReviewDefault } from '@/actions/DeliveryAction';
 import { deliveryHomeIcon, scooter, backArrow2, barcode, crossButton, gps } from '@/assets';
 
 import styles from '../styles';
+import { ms } from 'react-native-size-matters';
 
 const InvoiceDetails = ({
   setTrackingView,
@@ -32,7 +33,7 @@ const InvoiceDetails = ({
   const dispatch = useDispatch();
   const userDetailData = singleOrderDetail?.user_details;
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backView}>
         <Image source={backArrow2} style={styles.backImageStyle} />
         <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
@@ -40,23 +41,22 @@ const InvoiceDetails = ({
         </Text>
       </TouchableOpacity>
 
-      <View style={styles.firstRowStyle}>
+      <View style={[styles.firstRowStyle, { height: Dimensions.get('window').height - 80 }]}>
         <View style={styles.storeDetailView}>
           <Text style={styles.firstNameText}>
             {singleOrderDetail?.seller_details?.organization_name ?? ''}
           </Text>
           <Text style={styles.addressTextStyle}>
-            {userDetailData?.current_address?.street_address +
-              ', ' +
-              userDetailData?.current_address?.city +
-              ', ' +
-              userDetailData?.current_address?.country +
-              ' ' +
-              userDetailData?.current_address?.zipcode ?? ''}
+            {`${userDetailData?.current_address?.street_address}`}
           </Text>
+          <Text style={styles.addressTextStyle}>
+            {' '}
+            {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
+          </Text>
+
           <Text style={styles.storeNumberText}>{userDetailData?.phone_number ?? ''}</Text>
 
-          <Spacer space={SH(40)} />
+          <Spacer space={SH(10)} />
 
           <FlatList
             data={singleOrderDetail?.order_details}
@@ -156,7 +156,7 @@ const InvoiceDetails = ({
 
           <Text style={styles.deliveryDateText}>{`User ID:${userDetailData?.uid}`}</Text>
 
-          <Spacer space={SH(45)} />
+          <Spacer space={SH(35)} />
 
           <Text style={styles.thankYouText}>{strings.deliveryOrders2.thanks}</Text>
 

@@ -216,7 +216,7 @@ const OrderDetail = ({
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    paddingVertical: 10,
+                    paddingVertical: 15,
                   }}
                 >
                   <Text

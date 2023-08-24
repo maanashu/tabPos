@@ -41,6 +41,7 @@ const Graph = ({ graphData, renderGraphItem, isDeliveryOrder, outputData }) => {
       ) : (
         <View>
           <BarChart
+            roundedTop
             noOfSections={7}
             data={outputData}
             xAxisThickness={1}

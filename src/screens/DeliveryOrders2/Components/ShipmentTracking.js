@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     paddingVertical: ms(15),
     borderRadius: ms(7),
     right: ms(10),
-    bottom: ms(50),
+    bottom: Platform.OS === 'android' ? ms(50) : ms(10),
     width: ms(180),
   },
   map: {
