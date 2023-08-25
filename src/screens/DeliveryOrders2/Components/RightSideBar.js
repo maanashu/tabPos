@@ -4,14 +4,27 @@ import { ms } from 'react-native-size-matters';
 
 import styles from '../styles';
 
-const RightSideBar = ({ deliveryDrawer, renderDrawer }) => {
+const RightSideBar = ({ deliveryDrawer, renderDrawer, viewAllOrder }) => {
   return (
-    <View style={styles.rightSideView}>
+    <View
+      style={[
+        styles.rightSideView,
+        {
+          height: viewAllOrder
+            ? Dimensions.get('window').height - 80
+            : Dimensions.get('window').height - 35,
+        },
+      ]}
+    >
       <FlatList
         data={deliveryDrawer}
         renderItem={renderDrawer}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
         contentContainerStyle={{
-          height: Dimensions.get('window').height - ms(60),
+          height: viewAllOrder
+            ? Dimensions.get('window').height - 80
+            : Dimensions.get('window').height - 35,
         }}
         keyExtractor={(item) => item.key.toString()}
       />

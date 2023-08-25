@@ -5,6 +5,9 @@ import { Fonts } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
+const result = Dimensions.get('window').height - 50;
+const equalPartSize = result / 3;
+const twoEqualView = result / 2;
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +24,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: ms(10),
     backgroundColor: COLORS.white,
+    height: equalPartSize - 130,
   },
   shippingStatusText: {
     fontFamily: Fonts.SemiBold,
@@ -39,7 +43,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // bottom: ms(5)
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
-    height: Dimensions.get('window').height / ms(1.18),
+    height: equalPartSize + 120,
   },
   orderTextStyle: {
     fontFamily: Fonts.MaisonBold,
@@ -265,6 +268,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     // marginTop: ms(30),
     backgroundColor: COLORS.white,
+    height: twoEqualView,
+  },
+  loaderViewStyle: {
+    height: twoEqualView,
+    backgroundColor: COLORS.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -288,6 +299,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.56,
     paddingHorizontal: 20,
     paddingBottom: 30,
+    height: twoEqualView,
   },
   numberOrdersText: {
     color: COLORS.dark_grey,
@@ -366,7 +378,7 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios'
         ? Dimensions.get('window').width * 0.38
         : Dimensions.get('window').width * 0.42,
-    height: Platform.OS === 'ios' ? Dimensions.get('window').height - 80 : 0,
+    height: Dimensions.get('window').height - 80,
   },
   userDetailView: {
     flex: 1,
@@ -593,6 +605,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 15,
     paddingBottom: 10,
+    height: Dimensions.get('window').height - 80,
   },
   dashedLineView: {
     borderWidth: 1,
@@ -621,7 +634,13 @@ const styles = StyleSheet.create({
     paddingTop: ms(5),
     color: COLORS.dark_grey,
   },
-  mapMainView: { width: Dimensions.get('window').width / 2.2, marginTop: ms(10), borderRadius: 15 },
+  mapMainView: {
+    width: Dimensions.get('window').width / 2.2,
+    marginTop: ms(10),
+    borderRadius: 10,
+    backgroundColor: COLORS.white,
+    height: Dimensions.get('window').height - 80,
+  },
   jobrTextStyle: {
     fontFamily: Fonts.Bold,
     fontSize: ms(16),

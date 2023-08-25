@@ -867,7 +867,12 @@ export function DeliveryOrders2({ route }) {
               <View style={styles.firstRowStyle}>
                 {getDeliveryData?.getReviewDef?.length > 0 ? (
                   <>
-                    <View style={[styles.orderToReviewView, { paddingBottom: ms(30) }]}>
+                    <View
+                      style={[
+                        styles.orderToReviewView,
+                        { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
+                      ]}
+                    >
                       <FlatList
                         renderItem={renderOrderToReview}
                         showsVerticalScrollIndicator={false}
@@ -915,18 +920,14 @@ export function DeliveryOrders2({ route }) {
                 <RightSideBar
                   {...{
                     deliveryDrawer,
-                    openShippingOrders,
-                    isOpenSideBarDrawer,
-                    renderShippingDrawer,
-                    setOpenShippingOrders,
                     renderDrawer,
-                    setIsOpenSideBarDrawer,
+                    viewAllOrder,
                   }}
                 />
               </View>
             ) : (
               <View style={styles.firstRowStyle}>
-                <View>
+                <View style={{ height: Dimensions.get('window').height - 80 }}>
                   <TodayOrderStatus {...{ todayOrderStatusData }} />
 
                   <Spacer space={ms(10)} />
@@ -947,7 +948,7 @@ export function DeliveryOrders2({ route }) {
                   />
                 </View>
 
-                <View>
+                <View style={{ height: Dimensions.get('window').height - 80 }}>
                   <Graph
                     {...{
                       graphData,
@@ -972,10 +973,8 @@ export function DeliveryOrders2({ route }) {
                 <RightSideBar
                   {...{
                     deliveryDrawer,
-                    openShippingOrders,
-                    renderShippingDrawer,
-                    setOpenShippingOrders,
                     renderDrawer,
+                    viewAllOrder,
                   }}
                 />
               </View>

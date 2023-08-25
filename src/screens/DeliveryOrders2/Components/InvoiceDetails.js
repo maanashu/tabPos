@@ -41,7 +41,7 @@ const InvoiceDetails = ({
         </Text>
       </TouchableOpacity>
 
-      <View style={[styles.firstRowStyle, { height: Dimensions.get('window').height - 80 }]}>
+      <View style={[styles.firstRowStyle]}>
         <View style={styles.storeDetailView}>
           <Text style={styles.firstNameText}>
             {singleOrderDetail?.seller_details?.organization_name ?? ''}
