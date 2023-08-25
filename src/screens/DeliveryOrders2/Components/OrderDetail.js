@@ -36,24 +36,6 @@ const OrderDetail = ({
     <View style={styles.orderDetailView}>
       {openShippingOrders >= '3' && userDetail?.status !== 7 ? (
         <>
-          {/* <MapView
-            provider={PROVIDER_GOOGLE}
-            showsCompass
-            region={{
-              latitude: latitude,
-              longitude: longitude,
-              latitudeDelta: 0.0992,
-              longitudeDelta: 0.0421,
-            }}
-            initialRegion={{
-              latitude: latitude ?? 0.0,
-              longitude: longitude ?? 0.0,
-              latitudeDelta: 0.0992,
-              longitudeDelta: 0.0421,
-            }}
-            style={styles.map}
-          ></MapView> */}
-
           <MapView
             ref={mapRef}
             provider={PROVIDER_GOOGLE}

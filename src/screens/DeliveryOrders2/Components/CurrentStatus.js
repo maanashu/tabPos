@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Text, Image, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
 
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
@@ -9,6 +17,9 @@ import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+
+const result = Dimensions.get('window').height - 80;
+const equalPartSize = result / 3;
 
 const CurrentStatus = ({ deliverytypes }) => {
   const isDeliveryOrder = useSelector((state) =>
@@ -48,6 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: COLORS.white,
     paddingVertical: SH(15),
+    height: equalPartSize,
   },
   currentStatusText: {
     fontFamily: Fonts.SemiBold,
