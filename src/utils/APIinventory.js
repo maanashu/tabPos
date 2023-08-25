@@ -129,6 +129,7 @@ export const ApiOrderInventory = {
   qrstatus: 'poscarts/check-payment-status/',
   ServicesQrStatus: 'appointment_carts/check-payment-status/',
   getOneService: 'appointments',
+  updateServiceCartQty: 'appointment_carts/change-qty',
 };
 
 export const ApiWalletInventory = {

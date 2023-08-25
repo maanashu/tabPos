@@ -59,6 +59,7 @@ import {
   qrcodestatus,
   qrCodeStatusSuccess,
   Servicesqrcodestatus,
+  getAllCart,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -92,7 +93,6 @@ export const CartAmountPayBy = ({
   onPressServiceContinue,
 }) => {
   const dispatch = useDispatch();
-
   const getRetailData = useSelector(getRetail);
   const updateData = useSelector(getRetail).updateQuantityy;
 
@@ -101,6 +101,8 @@ export const CartAmountPayBy = ({
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
   const qrcodeData = useSelector(getRetail).qrKey;
+
+  // console.log('getRetailData?.getAllCart', getRetailData?.getAllCart);
 
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
@@ -144,6 +146,11 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
+
+  // useEffect(() => {
+  //   dispatch(getAllCart());
+  // }, []);
+
   const tipsArr = [
     getTips?.first_tips ?? 18,
     getTips?.second_tips ?? 20,
@@ -475,7 +482,6 @@ export const CartAmountPayBy = ({
               </View>
             </View>
           </View>
-
           <View style={{ flex: 1, paddingHorizontal: ms(18) }}>
             <View style={{ marginTop: ms(10) }}>
               <Text style={styles.selectTips}>Select Tips</Text>

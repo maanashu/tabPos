@@ -26,11 +26,15 @@ import {
   changeStatusServiceCart,
   clearOneserviceCart,
   clearServiceAllCart,
+  getServiceCartSuccess,
+  updateServiceCartQty,
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-import { getCartLength } from '@/selectors/CartSelector';
+import { getCartLength, getServiceCartLength } from '@/selectors/CartSelector';
 import moment from 'moment';
+import { updateServiceCartLength } from '@/actions/CartAction';
+import { useFocusEffect } from '@react-navigation/native';
 
 export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCart }) {
   const dispatch = useDispatch();
@@ -40,6 +44,16 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
+  const CART_LENGTH = useSelector(getServiceCartLength);
+
+  function calculatePercentageValue(value, percentage) {
+    if (percentage == '') {
+      return '';
+    }
+    const percentageValue = (percentage / 100) * parseFloat(value);
+    return percentageValue.toFixed(2) ?? 0.0;
+  }
+
   const cartStatusHandler = () => {
     const data =
       holdServiceArray?.length > 0
@@ -54,17 +68,67 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
 
     dispatch(changeStatusServiceCart(data));
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        backCartLoad();
+      };
+    }, [])
+  );
+
+  const backCartLoad = () => {
+    var arr = getRetailData?.getserviceCart;
+    if (arr?.appointment_cart_products?.length > 0) {
+      const products = arr?.appointment_cart_products?.map((item) => ({
+        product_id: item?.product_id,
+        qty: item?.qty,
+      }));
+
+      const data = {
+        updated_products: products,
+      };
+      dispatch(updateServiceCartQty(data, arr.id));
+    }
+    // else {
+    //   clearCartHandler();
+    // }
+  };
+
   const removeOneCartHandler = (productId, index) => {
-    const data = {
-      cartId: cartData?.id,
-      productId: productId,
-    };
-    if (index === 0) {
-      dispatch(clearOneserviceCart(data));
+    var arr = getRetailData?.getserviceCart;
+    if (arr?.appointment_cart_products.length == 1 && index == 0) {
+      dispatch(clearServiceAllCart());
       CloseCartModal();
     } else {
-      dispatch(clearOneserviceCart(data));
+      const product = arr.appointment_cart_products[index];
+      const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+      if (product.qty > 0) {
+        // arr.amount.total_amount -= productPrice * product.qty;
+        arr.amount.products_price -= productPrice * product.qty;
+        arr.appointment_cart_products.splice(index, 1);
+      }
+      const totalAmount = arr.amount.products_price;
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      arr.amount.tax = parseFloat(TAX);
+      arr.amount.total_amount = arr.amount.products_price + arr.amount.tax;
+      var DATA = {
+        payload: arr,
+      };
+      dispatch(updateServiceCartLength(CART_LENGTH - 1));
+      dispatch(getServiceCartSuccess(DATA));
     }
+
+    // const data = {
+    //   cartId: cartData?.id,
+    //   productId: productId,
+    // };
+    // if (index === 0) {
+    //   dispatch(clearOneserviceCart(data));
+    //   CloseCartModal();
+    // } else {
+    //   dispatch(clearOneserviceCart(data));
+    // }
   };
 
   // useFocusEffect(
@@ -121,7 +185,7 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
         >
           <View style={styles.shortestCartListBody}>
             <View style={styles.shortCartListHeight}>
-              <ScrollView>
+              <ScrollView showsVerticalScrollIndicator={false}>
                 {arr?.map((item, index) => (
                   <View key={index}>
                     {item?.appointment_cart_products?.map((data, ind) => (

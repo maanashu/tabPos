@@ -385,6 +385,12 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         updateQuantityy: payload.data,
       };
 
+    case TYPES.UPDATE_SRVICE_CART_QTY_SUCCESS:
+      return {
+        ...state,
+        updateServiceQuantityy: payload.data,
+      };
+
     case TYPES.QR_CODE_STATUS_SUCCESS:
       return {
         ...state,

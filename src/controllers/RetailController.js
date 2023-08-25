@@ -540,6 +540,26 @@ export class RetailController {
     });
   }
 
+  static async updateServiceCartQty(data, cartId) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.updateServiceCartQty + `/${cartId}`;
+
+      HttpClient.put(endpoint, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
+        });
+    });
+  }
+
   static async addNotes(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.addNotes + `/${data.cartId}`;

@@ -2106,6 +2106,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     width: windowWidth * 0.09,
     textAlignVertical: 'center',
+    // borderWidth: 1,
+    paddingLeft: ms(10),
   },
 
   noProductAndService: {

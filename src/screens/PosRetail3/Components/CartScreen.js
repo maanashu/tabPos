@@ -182,6 +182,10 @@ export function CartScreen({
         arr.amount.products_price -= productPrice * product.qty;
         arr?.poscart_products.splice(index, 1);
       }
+      const totalAmount = arr.amount.products_price;
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      arr.amount.tax = parseFloat(TAX); // Update tax value
+      arr.amount.total_amount = totalAmount + parseFloat(TAX);
       var DATA = {
         payload: arr,
       };
@@ -444,7 +448,8 @@ export function CartScreen({
                 <TouchableOpacity
                   style={styles.addDiscountCon}
                   onPress={() => {
-                    addDiscountHandler(), beforeDiscountCartLoad();
+                    addDiscountHandler();
+                    beforeDiscountCartLoad();
                   }}
                 >
                   <Image source={addDiscountPic} style={styles.addDiscountPic} />
@@ -453,7 +458,8 @@ export function CartScreen({
                 <TouchableOpacity
                   style={styles.addDiscountCon}
                   onPress={() => {
-                    addNotesHandler(), beforeDiscountCartLoad();
+                    addNotesHandler();
+                    beforeDiscountCartLoad();
                   }}
                 >
                   <Image source={notess} style={styles.addDiscountPic} />

@@ -159,8 +159,8 @@ export function PosRetail3() {
 
   const saveServiceDiscountHandler = () => {
     if (
-      serviceAmountDis > finalServiceAmountForDiscount ||
-      percentDis > finalServiceAmountForDiscount
+      serviceAmountDis > finalServiceAmountForDiscount
+      //  ||percentDis > finalServiceAmountForDiscount
     ) {
       alert('Please enter discount less then total amount');
     } else if (!getRetailData?.getserviceCart?.id) {
@@ -264,7 +264,7 @@ export function PosRetail3() {
     }
   };
   const saveDiscountHandler = () => {
-    if (amountDis > finalAmountForDiscount || percentDis > finalAmountForDiscount) {
+    if (amountDis > finalAmountForDiscount) {
       alert('Please enter discount less then total amount');
     } else if (!cartID2) {
       alert(Pleastrings.posSale.addItemCart);

@@ -40,6 +40,7 @@ import {
   getOneService,
   getServiceCartSuccess,
   updateCartQty,
+  updateServiceCartQty,
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
@@ -66,7 +67,6 @@ export function CartServiceScreen({
   let arr = [getRetailData?.getserviceCart];
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
-
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
   const [serviceItemSave, setServiceItemSave] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -113,32 +113,36 @@ export function CartServiceScreen({
     dispatch(changeStatusServiceCart(data));
   };
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     return () => {
-  //       var arr = getRetailData?.getserviceCart;
-  //       if (arr.appointment_cart_products.length > 0) {
-  //         const products = arr.appointment_cart_products.map((item) => ({
-  //           product_id: item?.product_id,
-  //           qty: item?.qty,
-  //         }));
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        backCartLoad();
+      };
+    }, [])
+  );
 
-  //         const data = {
-  //           updated_products: products,
-  //         };
-  //         console.log('--------------------', data);
-  //         dispatch(updateCartQty(data, arr.id));
-  //       }
-  //       // else {
-  //       //   clearCartHandler();
-  //       // }
-  //     };
-  //   }, [])
-  // );
+  const backCartLoad = () => {
+    var arr = getRetailData?.getserviceCart;
+    if (arr?.appointment_cart_products?.length > 0) {
+      const products = arr?.appointment_cart_products?.map((item) => ({
+        product_id: item?.product_id,
+        qty: item?.qty,
+      }));
+
+      const data = {
+        updated_products: products,
+      };
+      dispatch(updateServiceCartQty(data, arr.id));
+    }
+    // else {
+    //   clearCartHandler();
+    // }
+  };
 
   const clearCartHandler = () => {
     dispatch(clearServiceAllCart());
     crossHandler();
+    getScreen('Service');
   };
 
   function calculatePercentageValue(value, percentage) {
@@ -150,29 +154,33 @@ export function CartServiceScreen({
   }
 
   const removeOneCartHandler = (productId, index) => {
-    const data = {
-      cartId: cartServiceData?.id,
-      productId: productId,
-    };
-    dispatch(clearOneserviceCart(data));
-
-    // var arr = getRetailData?.getserviceCart;
-    // const product = arr.appointment_cart_products[index];
-    // const productPrice = product.product_details.price;
-    //   const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-    //   arr.amount.tax = parseFloat(TAX); // Update tax value
-    // // console.log('-------------------', arr);
-    // // return;
-    // if (product.qty > 0) {
-    //   arr.amount.total_amount -= productPrice;
-    //   arr.amount.products_price -= productPrice;
-    //   arr.appointment_cart_products.splice(index, 1);
-    // }
-    // var DATA = {
-    //   payload: arr,
+    // const data = {
+    //   cartId: cartServiceData?.id,
+    //   productId: productId,
     // };
-    // dispatch(updateServiceCartLength(CART_LENGTH - 1));
-    // dispatch(getServiceCartSuccess(DATA));
+    // dispatch(clearOneserviceCart(data));
+
+    var arr = getRetailData?.getserviceCart;
+    if (arr?.appointment_cart_products.length == 1 && index == 0) {
+      clearCartHandler();
+    } else {
+      const product = arr.appointment_cart_products[index];
+      const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+      if (product.qty > 0) {
+        // arr.amount.total_amount -= productPrice * product.qty;
+        arr.amount.products_price -= productPrice * product.qty;
+        arr.appointment_cart_products.splice(index, 1);
+      }
+      const totalAmount = arr.amount.products_price;
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      arr.amount.tax = parseFloat(TAX);
+      arr.amount.total_amount = arr.amount.products_price + arr.amount.tax;
+      var DATA = {
+        payload: arr,
+      };
+      dispatch(updateServiceCartLength(CART_LENGTH - 1));
+      dispatch(getServiceCartSuccess(DATA));
+    }
   };
 
   return (
@@ -193,9 +201,9 @@ export function CartServiceScreen({
               <TouchableOpacity
                 style={styles.backProScreen}
                 onPress={() => {
+                  // backCartLoad();
                   crossHandler();
                   getScreen('Service');
-                  // dispatch(getUserDetailSuccess([]));
                 }}
               >
                 <Image source={rightBack} style={styles.arrowStyle} />
@@ -278,6 +286,7 @@ export function CartServiceScreen({
                             source={{ uri: data.product_details?.image }}
                             style={styles.cartItemImage}
                           />
+
                           <View style={{ marginLeft: 10 }}>
                             <Text
                               style={[styles.holdCart, { color: COLORS.dark_grey, width: SW(40) }]}
@@ -297,7 +306,7 @@ export function CartServiceScreen({
                         <View
                           style={[
                             styles.cartBodyRightSide,
-                            { flexDirection: 'row', alignItems: 'center' },
+                            { flexDirection: 'row', alignItems: 'center', paddingLeft: ms(0) },
                           ]}
                         >
                           <Image
@@ -431,11 +440,23 @@ export function CartServiceScreen({
 
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
-                <TouchableOpacity style={styles.addDiscountCon} onPress={addDiscountHandler}>
+                <TouchableOpacity
+                  style={styles.addDiscountCon}
+                  onPress={() => {
+                    addDiscountHandler();
+                    backCartLoad();
+                  }}
+                >
                   <Image source={addDiscountPic} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Discount</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.addDiscountCon} onPress={addNotesHandler}>
+                <TouchableOpacity
+                  style={styles.addDiscountCon}
+                  onPress={() => {
+                    addNotesHandler();
+                    backCartLoad();
+                  }}
+                >
                   <Image source={notess} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Notes</Text>
                 </TouchableOpacity>

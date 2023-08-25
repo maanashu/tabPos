@@ -279,6 +279,21 @@ const updateCartQtyError = (error) => ({
   payload: { error },
 });
 
+const updateServiceCartQtyRequest = () => ({
+  type: TYPES.UPDATE_SRVICE_CART_QTY_REQUEST,
+  payload: null,
+});
+
+const updateServiceCartQtySuccess = (data) => ({
+  type: TYPES.UPDATE_SRVICE_CART_QTY_SUCCESS,
+  payload: { data },
+});
+
+const updateServiceCartQtyError = (error) => ({
+  type: TYPES.UPDATE_SRVICE_CART_QTY_ERROR,
+  payload: { error },
+});
+
 const addNotesRequest = () => ({
   type: TYPES.ADDNOTES_REQUEST,
   payload: null,
@@ -1080,8 +1095,8 @@ export const clearServiceAllCart = () => async (dispatch) => {
     const res = await RetailController.clearServiceAllCart();
     dispatch(clearServiceAllCartSuccess(res));
     dispatch(getServiceCart());
-    dispatch(updateCartLength(0));
-    dispatch(clearLocalCart());
+    // dispatch(updateCartLength(0));
+    // dispatch(clearLocalCart());
   } catch (error) {
     dispatch(clearServiceAllCartError(error.message));
   }
@@ -1157,6 +1172,17 @@ export const updateCartQty = (data, cartId) => async (dispatch) => {
     // dispatch(getAllCart());
   } catch (error) {
     dispatch(updateCartQtyError(error));
+  }
+};
+
+export const updateServiceCartQty = (data, cartId) => async (dispatch) => {
+  dispatch(updateServiceCartQtyRequest());
+  try {
+    const res = await RetailController.updateServiceCartQty(data, cartId);
+    dispatch(updateServiceCartQtySuccess(res));
+    // dispatch(getAllCart());
+  } catch (error) {
+    dispatch(updateServiceCartQtyError(error));
   }
 };
 
@@ -1473,6 +1499,7 @@ export const updateCartByTip = (data) => async (dispatch) => {
   dispatch(updateCartByTipRequest());
   try {
     const res = await RetailController.getTip(data);
+    // dispatch(getAllCart());
     return dispatch(updateCartByTipSuccess(res));
   } catch (error) {
     dispatch(updateCartByTipError(error.message));
