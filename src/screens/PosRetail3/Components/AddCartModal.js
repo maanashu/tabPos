@@ -23,6 +23,9 @@ export function AddCartModal({
   sellerID,
   backToCartHandler,
   offerId,
+  addToLocalCart,
+  productIndex,
+  productItem,
 }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
@@ -64,36 +67,7 @@ export function AddCartModal({
           supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
           offerId: offerId,
         };
-
-        //New Changes
-        // var arr = getRetailData?.getAllCart;
-        // const products = arr?.poscart_products.map((item) => ({
-        //   product_id: item?.product_id,
-        //   qty: item?.qty,
-        //   supply_id: item?.supply_id,
-        //   supply_price_id: item?.supply_price_id,
-        // }));
-
-        // var existingProductIndex = products.findIndex(
-        //   (product) => product.product_id === productDetail?.product_detail?.id
-        // );
-
-        // if (existingProductIndex !== -1) {
-        //   // If the product already exists in the cart, increase the quantity by 1
-        //   products[existingProductIndex].qty += 1;
-        // } else {
-        //   var newData = {
-        //     product_id: productDetail?.product_detail?.id,
-        //     qty: count,
-        //     supply_id: productDetail?.product_detail?.supplies?.[0]?.id,
-        //     supply_price_id: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-        //   };
-        //   products.push(newData);
-        // }
-        // const data = {
-        //   seller_id: arr?.seller_id,
-        //   products: products,
-        // };
+        addToLocalCart(productItem, productIndex, count);
         dispatch(addTocart(data));
         crossHandler();
       }
@@ -163,7 +137,7 @@ export function AddCartModal({
           //   seller_id: sellerID,
           //   products: products,
           // };
-
+          addToLocalCart(productItem, productIndex, count);
           dispatch(addTocart(data));
           // crossHandler();
         }

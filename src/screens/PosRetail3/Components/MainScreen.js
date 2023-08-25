@@ -95,6 +95,8 @@ export function MainScreen({
   const [brandModal, setBrandModal] = useState(false);
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
+  const [productIndex, setProductIndex] = useState(0);
+  const [productItem, setProductItem] = useState(null);
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
 
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
@@ -374,10 +376,12 @@ export function MainScreen({
     },
   ];
 
-  const productFun = async (productId) => {
+  const productFun = async (productId, index, item) => {
     const res = await dispatch(getOneProduct(sellerID, productId));
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
+      setProductIndex(index);
+      setProductItem(item);
     }
   };
 
@@ -431,7 +435,7 @@ export function MainScreen({
       <TouchableOpacity
         key={index}
         style={styles.productCon}
-        onPress={() => productFun(item.id)}
+        onPress={() => productFun(item.id, index, item)}
         activeOpacity={0.7}
       >
         {/* <Image source={{ uri: item.image }} style={styles.categoryshoes} /> */}
@@ -828,7 +832,7 @@ export function MainScreen({
                   ListFooterComponent={renderFooterPost}
                   onEndReached={debouncedLoadMoreProduct}
                   // onEndReached={onLoadMoreProduct}
-                  onEndReachedThreshold={1}
+                  onEndReachedThreshold={0.5}
                   // onMomentumScrollBegin={() => {
                   //   setIsScrolling(true);
                   // }}
@@ -1265,6 +1269,8 @@ export function MainScreen({
             crossHandler={() => setAddCartModal(false)}
             detailHandler={() => setAddCartDetailModal(true)}
             sellerID={sellerID}
+            productIndex={productIndex}
+            addToLocalCart={onClickAddCart}
             backToCartHandler={() => cartScreenHandler()}
           />
         )}
