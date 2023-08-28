@@ -539,7 +539,7 @@ export function CartScreen({
               </View>
             </View>
 
-            <View style={{ flex: 1 }} />
+            {/* <View style={{ flex: 1 }} /> */}
 
             <TouchableOpacity
               style={[
