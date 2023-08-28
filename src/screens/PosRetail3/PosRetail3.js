@@ -582,7 +582,7 @@ export function PosRetail3() {
                 </View>
                 <Spacer space={SH(15)} />
                 <TextInput
-                  style={styles.addNotesInput}
+                  style={styles.addNotesInput1}
                   onChangeText={setNotes}
                   value={notes}
                   placeholder="Add Notes"
@@ -655,7 +655,7 @@ export function PosRetail3() {
                 </View>
                 <Spacer space={SH(15)} />
                 <TextInput
-                  style={styles.addNotesInput}
+                  style={styles.addNotesInput1}
                   onChangeText={setServiceNotes}
                   value={serviceNotes}
                   placeholder="Add Notes"

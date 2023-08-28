@@ -1151,7 +1151,7 @@ export const styles = StyleSheet.create({
   addDiscountConPop: {
     height: windowHeight * 0.55,
   },
-  addNotesInput: {
+  addNotesInput1: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 5,
     height: windowHeight * 0.27,
@@ -2161,9 +2161,9 @@ export const styles = StyleSheet.create({
     height: ms(350),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
-    // justifyContent: 'center',
     borderRadius: 10,
     padding: ms(10),
+    marginTop: ms(50),
   },
   dollarAddCon: {
     height: ms(28),
@@ -2241,14 +2241,14 @@ export const styles = StyleSheet.create({
 
   unitPriceInput: {
     backgroundColor: COLORS.solidGrey,
-    width: ms(70),
+    width: Platform.OS === 'android' ? ms(70) : ms(57),
     height: ms(20),
     padding: 0,
     margin: 0,
     textAlign: 'center',
   },
   saveButtonCon: {
-    width: ms(40),
+    width: Platform.OS === 'android' ? ms(40) : ms(30),
     height: ms(20),
     backgroundColor: COLORS.solidGrey,
     justifyContent: 'center',
