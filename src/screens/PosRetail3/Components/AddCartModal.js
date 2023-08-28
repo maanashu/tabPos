@@ -26,9 +26,12 @@ export function AddCartModal({
   addToLocalCart,
   productIndex,
   productItem,
+  openFrom,
 }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+
+  console.log('openFrom', openFrom);
 
   const cartData = getRetailData?.getAllCart;
   const productDetail = getRetailData?.getOneProduct;
@@ -67,7 +70,7 @@ export function AddCartModal({
           supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
           offerId: offerId,
         };
-        addToLocalCart(productItem, productIndex, count);
+        openFrom === 'main' && addToLocalCart(productItem, productIndex, count);
         dispatch(addTocart(data));
         crossHandler();
       }
@@ -137,7 +140,7 @@ export function AddCartModal({
           //   seller_id: sellerID,
           //   products: products,
           // };
-          addToLocalCart(productItem, productIndex, count);
+          openFrom === 'main' && addToLocalCart(productItem, productIndex, count);
           dispatch(addTocart(data));
           // crossHandler();
         }

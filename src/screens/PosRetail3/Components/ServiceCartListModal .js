@@ -302,10 +302,7 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
 
           <View style={styles.cartListIconBody}>
             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <Image
-                source={sideKeyboard}
-                style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
-              />
+              <Image source={plus} style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]} />
               <Spacer space={SH(20)} />
               <TouchableOpacity
                 onPress={() => {

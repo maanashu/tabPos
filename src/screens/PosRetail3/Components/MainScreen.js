@@ -21,6 +21,7 @@ import {
   cross,
   filter,
   holdCart,
+  plus,
   product,
   scn,
   search_light,
@@ -77,6 +78,7 @@ import { getAllPosUsers } from '@/actions/AuthActions';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ServiceCartListModal } from './ServiceCartListModal ';
+import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 
 export function MainScreen({
   cartScreenHandler,
@@ -144,7 +146,9 @@ export function MainScreen({
   const [serviceSearch, setServiceSearch] = useState('');
   const [showProductsFrom, setshowProductsFrom] = useState();
   const mainProductArray = getRetailData?.getMainProduct?.data;
+  // console.log('mainProductArray', JSON.stringify(mainProductArray?.[0]));
   const mainServicesArray = getRetailData?.getMainServices?.data;
+  // console.log('mainServicesArray', JSON.stringify(mainServicesArray?.[0]));
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
     qty: obj.qty,
@@ -980,14 +984,13 @@ export function MainScreen({
                     </View>
                   </TouchableOpacity>
                   <Spacer space={SH(25)} />
-                  <View>
-                    <TouchableOpacity onPress={() => setNumPadModal(!numPadModal)}>
-                      <Image
-                        source={sideKeyboard}
-                        style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
-                      />
-                    </TouchableOpacity>
-                    {numPadModal ? (
+                  <TouchableOpacity onPress={() => setNumPadModal(!numPadModal)}>
+                    <Image
+                      source={plus}
+                      style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
+                    />
+                  </TouchableOpacity>
+                  {/* {numPadModal ? (
                       <View
                         style={{
                           width: Platform.OS === 'android' ? ms(300) : ms(240),
@@ -1011,8 +1014,8 @@ export function MainScreen({
                           // }}
                         />
                       </View>
-                    ) : null}
-                  </View>
+                    ) : null} */}
+
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
                     onPress={() => eraseClearCart()}
@@ -1120,13 +1123,13 @@ export function MainScreen({
                   </TouchableOpacity>
                   <Spacer space={SH(25)} />
                   <View>
-                    <TouchableOpacity onPress={() => setServiceNumPadModal(!serviceNumPadModal)}>
+                    <TouchableOpacity onPress={() => setNumPadModal(!numPadModal)}>
                       <Image
-                        source={sideKeyboard}
-                        style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
+                        source={plus}
+                        style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
                       />
                     </TouchableOpacity>
-                    {serviceNumPadModal ? (
+                    {/* {serviceNumPadModal ? (
                       <View
                         style={{
                           width: Platform.OS === 'android' ? ms(300) : ms(240),
@@ -1150,7 +1153,7 @@ export function MainScreen({
                           // }}
                         />
                       </View>
-                    ) : null}
+                    ) : null} */}
                   </View>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
@@ -1272,6 +1275,7 @@ export function MainScreen({
             productIndex={productIndex}
             addToLocalCart={onClickAddCart}
             backToCartHandler={() => cartScreenHandler()}
+            openFrom="main"
           />
         )}
       </Modal>
@@ -1430,6 +1434,12 @@ export function MainScreen({
               )}
             </View>
           </ScrollView>
+        </KeyboardAvoidingView>
+      </Modal>
+
+      <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+          <CustomProductAdd crossHandler={() => setNumPadModal(false)} />
         </KeyboardAvoidingView>
       </Modal>
     </View>

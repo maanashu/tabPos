@@ -10,6 +10,7 @@ import {
   addDiscountPic,
   addToCart,
   borderCross,
+  cartEdit,
   checkArrow,
   cross,
   eraser,
@@ -119,6 +120,14 @@ export function CartScreen({
       setAddCartModal(true);
     }
   };
+
+  const cartProductedit = async (productId) => {
+    const res = await dispatch(getOneProduct(sellerID, productId));
+    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+      setAddCartModal(true);
+    }
+  };
+
   function calculatePercentageValue(value, percentage) {
     if (percentage == '') {
       return '';
@@ -135,11 +144,8 @@ export function CartScreen({
       product.qty += 1;
       arr.amount.total_amount += productPrice;
       arr.amount.products_price += productPrice;
-
       const totalAmount = arr.amount.products_price;
-
       const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-
       arr.amount.tax = parseFloat(TAX); // Update tax value
       arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
     } else if (operation === '-') {
@@ -256,8 +262,9 @@ export function CartScreen({
                 <View style={[styles.tableListSide, styles.tableListSide2]}>
                   <Text style={styles.cashLabelWhite}>Unit Price</Text>
                   <Text style={styles.cashLabelWhite}>Quantity</Text>
-                  <Text style={styles.cashLabelWhite}>Line Total</Text>
+                  <Text style={[styles.cashLabelWhite, { paddingRight: ms(10) }]}>Line Total</Text>
                   <Text style={{ color: COLORS.primary }}>1</Text>
+                  {/* <Text style={{ color: COLORS.primary }}>1</Text> */}
                 </View>
               </View>
             </View>
@@ -308,6 +315,7 @@ export function CartScreen({
                                 alignItems: 'center',
                               }}
                               onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
+                              disabled={data.qty == 1 ? true : false}
                             >
                               <Image source={minus} style={styles.minus} />
                             </TouchableOpacity>
@@ -328,17 +336,24 @@ export function CartScreen({
                               data.product_details?.supply?.supply_prices?.selling_price * data?.qty
                             ).toFixed(2)}
                           </Text>
-                          <TouchableOpacity
+                          <View
                             style={{
-                              width: SW(8),
-                              height: SH(40),
-                              justifyContent: 'center',
+                              width: ms(45),
+                              flexDirection: 'row',
+                              justifyContent: 'flex-end',
                               alignItems: 'center',
                             }}
-                            onPress={() => removeOneCartHandler(data.id, ind)}
                           >
-                            <Image source={borderCross} style={styles.borderCross} />
-                          </TouchableOpacity>
+                            <TouchableOpacity
+                              style={[styles.cartEditCon, { marginRight: ms(14) }]}
+                              onPress={() => cartProductedit(data?.product_id)}
+                            >
+                              <Image source={cartEdit} style={styles.cartEdit} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => removeOneCartHandler(data.id, ind)}>
+                              <Image source={borderCross} style={styles.borderCross} />
+                            </TouchableOpacity>
+                          </View>
                         </View>
                       </View>
                     </View>
@@ -550,6 +565,7 @@ export function CartScreen({
             detailHandler={() => setAddCartDetailModal(true)}
             sellerID={sellerID}
             offerId={offerId}
+            openFrom="cart"
           />
         )}
       </Modal>

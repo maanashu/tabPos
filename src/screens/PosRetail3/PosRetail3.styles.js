@@ -1,6 +1,7 @@
 import { Fonts } from '@/assets';
 import { COLORS, SF, SH, SW, ShadowStyles } from '@/theme';
 import { height, width } from '@/theme/ScalerDimensions';
+import { monthsShort } from 'moment';
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { Colors } from 'react-native-paper';
 import { moderateScale, verticalScale, ms, moderateVerticalScale } from 'react-native-size-matters';
@@ -2141,5 +2142,123 @@ export const styles = StyleSheet.create({
     width: SW(15),
     height: SW(16),
     resizeMode: 'contain',
+  },
+  cartEditCon: {
+    marginRight: ms(18),
+  },
+
+  cartEdit: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+  },
+
+  // custom product add modal css start
+
+  customProductCon: {
+    borderWidth: 1,
+    width: ms(550),
+    height: ms(350),
+    backgroundColor: COLORS.white,
+    alignSelf: 'center',
+    // justifyContent: 'center',
+    borderRadius: 10,
+    padding: ms(10),
+  },
+  dollarAddCon: {
+    height: ms(28),
+    borderRadius: 5,
+    backgroundColor: COLORS.textInputBackground,
+    paddingHorizontal: ms(10),
+    // justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dollar: {
+    width: ms(13),
+    height: ms(13),
+    resizeMode: 'contain',
+  },
+  dollarInput: {
+    flex: 1,
+    paddingHorizontal: ms(5),
+    fontFamily: Fonts.Medium,
+    fontSize: ms(11),
+  },
+  productNameInput: {
+    marginTop: ms(10),
+    height: ms(28),
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+    borderWidth: 1,
+    paddingHorizontal: ms(10),
+    fontSize: ms(8),
+  },
+  addNotesInput: {
+    marginTop: ms(10),
+    height: ms(55),
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+    borderWidth: 1,
+    paddingHorizontal: ms(10),
+    fontSize: ms(8),
+    textAlignVertical: 'top',
+  },
+  closeButtonCon: {
+    borderWidth: 1,
+    height: ms(42),
+    width: ms(150),
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeText: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: ms(8),
+  },
+  customAddQtyCon: {
+    height: ms(42),
+    borderWidth: 1,
+    flex: 1,
+    borderColor: COLORS.solidGrey,
+    marginHorizontal: ms(10),
+    paddingHorizontal: ms(10),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  plusButton: {
+    width: ms(18),
+    height: ms(18),
+    resizeMode: 'contain',
+  },
+  zeroText: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: ms(12),
+  },
+
+  unitPriceInput: {
+    backgroundColor: COLORS.solidGrey,
+    width: ms(70),
+    height: ms(20),
+    padding: 0,
+    margin: 0,
+    textAlign: 'center',
+  },
+  saveButtonCon: {
+    width: ms(40),
+    height: ms(20),
+    backgroundColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginRight: ms(5),
+  },
+  saveText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.darkGray,
+    fontSize: ms(7),
   },
 });

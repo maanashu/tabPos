@@ -10,12 +10,14 @@ import {
   addDiscountPic,
   addToCart,
   borderCross,
+  cartEdit,
   checkArrow,
   cross,
   eraser,
   holdCart,
   minus,
   notess,
+  pencil,
   plus,
   rightBack,
   search_light,
@@ -74,6 +76,10 @@ export function CartServiceScreen({
   const [cartSearch, setCartSearch] = useState('');
   const [offerId, setOfferId] = useState();
   const CART_LENGTH = useSelector(getServiceCartLength);
+  const [cartEditItem, setCartEditItem] = useState(false);
+  const [cartIndex, setCartIndex] = useState();
+
+  const [unitPrice, setUnitPrice] = useState();
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
@@ -82,9 +88,22 @@ export function CartServiceScreen({
   //   setAddServiceCartModal(true);
   // };
 
+  const serviceCartEdit = (data, index) => {
+    setCartIndex(index);
+    setCartEditItem(true);
+    setUnitPrice(data?.product_details?.supply?.supply_prices?.selling_price);
+  };
+
   const serviceFun = async (item) => {
     setOfferId(item?.product?.id);
     const res = await dispatch(getOneService(sellerID, item?.product?.id));
+    if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
+      setAddServiceCartModal(true);
+    }
+  };
+
+  const cartServiceEdit = async (serviceId) => {
+    const res = await dispatch(getOneService(sellerID, serviceId));
     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
       setAddServiceCartModal(true);
     }
@@ -323,26 +342,58 @@ export function CartServiceScreen({
                             {data?.pos_user_details?.user?.user_profiles?.firstname}
                           </Text>
                         </View>
-                        <Text style={[styles.cartBodyRightSide]} numberOfLines={1}>
-                          $
-                          {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2)}
-                        </Text>
-                        <Text style={styles.cartBodyRightSide}>1</Text>
 
+                        {cartIndex === ind && cartEditItem ? (
+                          <TextInput
+                            value={unitPrice.toString()}
+                            onChangeText={setUnitPrice}
+                            style={styles.unitPriceInput}
+                            keyboardType="numeric"
+                          />
+                        ) : (
+                          <Text style={[styles.cartBodyRightSide]} numberOfLines={1}>
+                            $
+                            {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
+                              2
+                            )}
+                          </Text>
+                        )}
+                        <Text style={styles.cartBodyRightSide}>1</Text>
                         <Text style={styles.cartBodyRightSide} numberOfLines={1}>
                           $
                           {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2)}
                         </Text>
-                        <TouchableOpacity
+                        <View
                           style={[
                             styles.cartBodyRightSide,
-                            { alignItems: 'center', justifyContent: 'center' },
+                            {
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              paddingLeft: ms(0),
+                            },
                           ]}
-                          // onPress={() => removeOneCartHandler(data.id, ind)}
-                          onPress={() => removeOneCartHandler(data.id, ind)}
                         >
-                          <Image source={borderCross} style={styles.borderCross} />
-                        </TouchableOpacity>
+                          {cartIndex === ind && cartEditItem ? (
+                            <TouchableOpacity
+                              style={styles.saveButtonCon}
+                              onPress={() => setCartEditItem(false)}
+                            >
+                              <Text style={styles.saveText}>Save</Text>
+                            </TouchableOpacity>
+                          ) : (
+                            <TouchableOpacity
+                              style={styles.cartEditCon}
+                              // onPress={() => cartServiceEdit(data?.product_id)}
+                              onPress={() => serviceCartEdit(data, ind)}
+                            >
+                              <Image source={cartEdit} style={styles.cartEdit} />
+                            </TouchableOpacity>
+                          )}
+
+                          <TouchableOpacity onPress={() => removeOneCartHandler(data.id, ind)}>
+                            <Image source={borderCross} style={styles.borderCross} />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
                   </View>
