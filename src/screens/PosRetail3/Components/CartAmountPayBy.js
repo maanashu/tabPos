@@ -531,7 +531,7 @@ export const CartAmountPayBy = ({
                           },
                         ]}
                       >
-                        {'USD $'}
+                        {'$'}
                         {calculatePercentageValue(cartData?.amount?.products_price, item.title)}
                       </Text>
                     )}
@@ -610,7 +610,7 @@ export const CartAmountPayBy = ({
                       />
                       {index == 1 && (
                         <View style={styles.saveView}>
-                          <Text style={styles.saveText}>Save 1%</Text>
+                          <Text style={styles.saveText1}>Save 1%</Text>
                         </View>
                       )}
                     </TouchableOpacity>

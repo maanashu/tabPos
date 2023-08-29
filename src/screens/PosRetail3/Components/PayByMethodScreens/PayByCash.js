@@ -203,17 +203,17 @@ export const PayByCash = ({
                   />
                 </View>
 
-                <View style={styles._inputMain}>
-                  <View style={styles._inputSubView}>
-                    <TextInput
-                      placeholder="Other Amount"
-                      keyboardType="number-pad"
-                      style={styles._inputCashContainer}
-                      value={amount}
-                      onChangeText={setAmount}
-                    />
-                  </View>
-                </View>
+                <TextInput
+                  placeholder="Other Amount"
+                  keyboardType="number-pad"
+                  style={styles._inputOtherAmount}
+                  value={amount}
+                  onChangeText={setAmount}
+                />
+
+                {/* <View style={[styles._inputMain, { borderWidth: 1 }]}>
+                  
+                </View> */}
                 <Button
                   onPress={() => {
                     // onPressContinue

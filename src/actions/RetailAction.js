@@ -902,6 +902,34 @@ const getAllProductPaginationError = (error) => ({
   payload: { error },
 });
 
+//Update Product price
+const productUpdatePriceRequest = () => ({
+  type: TYPES.PRODUCT_UPDATE_PRICE_REQUEST,
+  payload: null,
+});
+const productUpdatePriceSuccess = () => ({
+  type: TYPES.PRODUCT_UPDATE_PRICE_SUCCESS,
+  payload: null,
+});
+const productUpdatePriceError = (error) => ({
+  type: TYPES.PRODUCT_UPDATE_PRICE_ERROR,
+  payload: { error },
+});
+
+//Update Service price
+const serviceUpdatePriceRequest = () => ({
+  type: TYPES.SERVICE_UPDATE_PRICE_REQUEST,
+  payload: null,
+});
+const serviceUpdatePriceSuccess = () => ({
+  type: TYPES.SERVICE_UPDATE_PRICE_SUCCESS,
+  payload: null,
+});
+const serviceUpdatePriceError = (error) => ({
+  type: TYPES.SERVICE_UPDATE_PRICE_ERROR,
+  payload: { error },
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -1563,5 +1591,27 @@ export const getAvailableOffer = (data) => async (dispatch) => {
       dispatch(getAvailableOfferReset());
     }
     dispatch(getAvailableOfferError(error.message));
+  }
+};
+
+export const productUpdatePrice = (data) => async (dispatch) => {
+  dispatch(productUpdatePriceRequest());
+  try {
+    const res = await RetailController.productUpdatePrice(data);
+    dispatch(productUpdatePriceSuccess(res));
+    dispatch(getAllCart());
+  } catch (error) {
+    dispatch(productUpdatePriceError(error.message));
+  }
+};
+
+export const serviceUpdatePrice = (data) => async (dispatch) => {
+  dispatch(serviceUpdatePriceRequest());
+  try {
+    const res = await RetailController.serviceUpdatePrice(data);
+    dispatch(serviceUpdatePriceSuccess(res));
+    dispatch(getServiceCart());
+  } catch (error) {
+    dispatch(serviceUpdatePriceError(error.message));
   }
 };

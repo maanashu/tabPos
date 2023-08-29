@@ -130,6 +130,8 @@ export const ApiOrderInventory = {
   ServicesQrStatus: 'appointment_carts/check-payment-status/',
   getOneService: 'appointments',
   updateServiceCartQty: 'appointment_carts/change-qty',
+  productUpdatePrice: 'poscarts/update-price',
+  serviceUpdatePrice: 'appointment_carts/update-price',
 };
 
 export const ApiWalletInventory = {

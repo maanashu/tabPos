@@ -19,6 +19,7 @@ export function CustomProductAdd({ crossHandler }) {
   const [amount, setAmount] = useState();
   const [productName, setProductName] = useState();
   const [notes, setNotes] = useState();
+  const [count, setCount] = useState(1);
 
   return (
     <View style={styles.customProductCon}>
@@ -45,10 +46,10 @@ export function CustomProductAdd({ crossHandler }) {
       <TextInput
         placeholder="Add Notes"
         style={styles.addNotesInput}
-        placeholderTextColor={COLORS.row_grey}
-        numberOfLines={4}
+        placeholderTextColor={COLORS.darkGray}
         value={notes}
         onChangeText={setNotes}
+        numberOfLines={4}
       />
       <View style={{ flex: 1 }} />
 
@@ -57,12 +58,15 @@ export function CustomProductAdd({ crossHandler }) {
           <Text style={styles.closeText}>Close</Text>
         </TouchableOpacity>
         <View style={styles.customAddQtyCon}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setCount(count - 1)}
+            disabled={count == 1 ? true : false}
+          >
             <Image source={minus} style={styles.plusButton} />
           </TouchableOpacity>
 
-          <Text style={styles.zeroText}>0</Text>
-          <TouchableOpacity>
+          <Text style={styles.zeroText}>{count}</Text>
+          <TouchableOpacity onPress={() => setCount(count + 1)}>
             <Image source={plus} style={styles.plusButton} />
           </TouchableOpacity>
         </View>

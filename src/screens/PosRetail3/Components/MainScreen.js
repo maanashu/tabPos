@@ -71,7 +71,6 @@ import { items } from '@/constants/staticData';
 import { FilterDropDown } from './FilterDropDown';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ServiceFilterDropDown } from './ServiceFilterDropDown';
-import { NumericPad } from './NumericPad';
 import { addLocalCart, clearLocalCart, updateCartLength } from '@/actions/CartAction';
 import { getCartLength, getLocalCartArray, getServiceCartLength } from '@/selectors/CartSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
@@ -1266,7 +1265,17 @@ export function MainScreen({
       {/* cart list modal end */}
       <Modal animationType="fade" transparent={true} isVisible={addCartModal || addCartDetailModal}>
         {addCartDetailModal ? (
-          <AddCartDetailModal crossHandler={() => setAddCartDetailModal(false)} />
+          <AddCartDetailModal
+            crossHandler={() => setAddCartDetailModal(false)}
+            sellerID={sellerID}
+            openFrom="main"
+            addToLocalCart={onClickAddCart}
+            productIndex={productIndex}
+            doubleCrossHandler={() => {
+              setAddCartDetailModal(false);
+              setAddCartModal(false);
+            }}
+          />
         ) : (
           <AddCartModal
             crossHandler={() => setAddCartModal(false)}

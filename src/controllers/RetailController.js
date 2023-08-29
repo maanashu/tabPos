@@ -1452,4 +1452,54 @@ export class RetailController {
         });
     });
   }
+
+  static async productUpdatePrice(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.productUpdatePrice +
+        `/${data?.cartid}/${data?.cartProductId}`;
+      const body = {
+        price: data?.updatedPrice,
+      };
+      HttpClient.put(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
+        });
+    });
+  }
+
+  static async serviceUpdatePrice(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.serviceUpdatePrice +
+        `/${data?.cartid}/${data?.cartProductId}`;
+      const body = {
+        price: data?.updatedPrice,
+      };
+      HttpClient.put(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
+        });
+    });
+  }
 }
