@@ -1,26 +1,12 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NAVIGATION } from '@/constants';
-import {
-  Login,
-  VerifyPhone,
-  VerifyOtp,
-  Passcode,
-  VerifySucess,
-  POSUsers,
-  LoginIntial,
-  MerchantPasscode,
-  PosUserPasscode,
-} from '@/screens';
+import { POSUsers, LoginIntial, PosUserPasscode } from '@/screens';
 import { HomeNavigator } from '@/navigation/HomeNavigator';
-import { Notification } from '@/screens/Setting/Components';
-import NotificationsList from '@/screens/Notifications/NotificationsList';
 
 const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
 
-export function UserNavigator(props) {
+export function UserNavigator() {
   return (
     <Stack.Navigator initialRouteName="posUsers">
       <Stack.Screen

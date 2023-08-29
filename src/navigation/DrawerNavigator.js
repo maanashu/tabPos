@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Alert,
-  Image,
-  Platform,
-  Dimensions,
-  StyleSheet,
-  ScrollView,
-  Text,
-} from 'react-native';
+import { View, Image, Platform, Dimensions, StyleSheet, ScrollView, Text } from 'react-native';
 
+import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 
@@ -31,7 +23,6 @@ import {
   users,
   blueusers,
   settings,
-  power,
   bluetray,
   blueCalender,
   blueSetting,
@@ -40,37 +31,18 @@ import { COLORS, SF, SW } from '@/theme';
 import { NAVIGATION } from '@/constants';
 import { getUser } from '@/selectors/UserSelectors';
 import { navigate } from '@/navigation/NavigationRef';
-import { logoutFunction } from '@/actions/AuthActions';
-import { getAuthData } from '@/selectors/AuthSelector';
-import { getPendingOrders, logoutUserFunction } from '@/actions/UserActions';
 import { getDashboard } from '@/selectors/DashboardSelector';
-import { endTrackingSession } from '@/actions/CashTrackingAction';
-import { addSellingSelection, getDrawerSessionSuccess } from '@/actions/DashboardAction';
-import { cartScreenTrue, getUserDetailSuccess } from '@/actions/RetailAction';
-import { ms } from 'react-native-size-matters';
+import { addSellingSelection } from '@/actions/DashboardAction';
 
 const windowHeight = Dimensions.get('window').height;
 
 export function DrawerNavigator(props) {
   const dispatch = useDispatch();
-  const getAuth = useSelector(getAuthData);
-  const posUserArray = getAuth?.getAllPosUsers;
   const getUserData = useSelector(getUser);
-  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const getPosUser = getUserData?.posLoginData;
 
   const getDashboardData = useSelector(getDashboard);
-  const getSessionObj = getDashboardData?.getSesssion;
   const selection = getDashboardData?.selection;
   const [active, setActive] = useState('dashBoard');
-
-  const profileObj = {
-    openingBalance: getSessionObj?.opening_balance,
-    closeBalance: getSessionObj?.cash_balance,
-    profile: getSessionObj?.seller_details?.user_profiles?.profile_photo,
-    name: getSessionObj?.seller_details?.user_profiles?.firstname,
-    id: getSessionObj?.id,
-  };
 
   useEffect(() => {
     getSelectedOption();
@@ -84,40 +56,6 @@ export function DrawerNavigator(props) {
         setActive('delivery');
       }
     }
-  };
-
-  const merchantEndSesion = async () => {
-    const data = {
-      amount: parseInt(profileObj?.closeBalance),
-      drawerId: profileObj?.id,
-      transactionType: 'end_tracking_session',
-      modeOfcash: 'cash_out',
-    };
-
-    const res = await dispatch(endTrackingSession(data));
-    if (res?.type === 'END_TRACKING_SUCCESS') {
-      dispatch(getDrawerSessionSuccess(null));
-      logoutHandler();
-    } else {
-      alert('something went wrong');
-    }
-  };
-
-  const logoutHandler = () => {
-    Alert.alert('Logout', 'Are you sure you want to logout ?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: () => {
-          dispatch(logoutUserFunction());
-          dispatch(logoutFunction());
-        },
-      },
-    ]);
   };
 
   return (
@@ -137,7 +75,7 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.dashBoard);
             dispatch(addSellingSelection());
           }}
-          icon={({ focused, color, size }) => (
+          icon={({ focused }) => (
             <Image style={styles.iconStyle} source={focused ? logo_icon : logo_icon} />
           )}
         />
@@ -153,7 +91,7 @@ export function DrawerNavigator(props) {
             // dispatch(cartScreenTrue({ state: false }));
             // dispatch(getUserDetailSuccess([]));
           }}
-          icon={({ focused, color, size }) => (
+          icon={({ focused }) => (
             <Image source={focused ? retail : greyRetail} style={styles.iconStyle} />
           )}
         />
@@ -212,7 +150,7 @@ export function DrawerNavigator(props) {
             setActive('deliveryOrders2');
             navigate(NAVIGATION.deliveryOrders2);
           }}
-          icon={({ focused, color, size }) => {
+          icon={({ focused }) => {
             return getDashboardData?.pendingOrders?.delivery_count ? (
               <View>
                 <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
@@ -236,7 +174,7 @@ export function DrawerNavigator(props) {
             setActive('shippingOrder2');
             navigate(NAVIGATION.shippingOrder2);
           }}
-          icon={({ focused, color, size }) => {
+          icon={({ focused }) => {
             return getDashboardData?.pendingOrders?.shipping_count ? (
               <View>
                 <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
@@ -275,7 +213,7 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.calender);
             dispatch(addSellingSelection());
           }}
-          icon={({ focused, color, size }) => {
+          icon={({ focused }) => {
             return getDashboardData?.pendingOrders?.appointment_count ? (
               <View>
                 <Image source={focused ? blueCalender : calendar} style={styles.iconStyle} />
@@ -314,7 +252,7 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.wallet);
             dispatch(addSellingSelection());
           }}
-          icon={({ focused, color, size }) => (
+          icon={({ focused }) => (
             <Image source={focused ? bluewallet : wallet} style={styles.iconStyle} />
           )}
         />
@@ -328,7 +266,7 @@ export function DrawerNavigator(props) {
             dispatch(addSellingSelection());
             navigate(NAVIGATION.management);
           }}
-          icon={({ focused, color, size }) => (
+          icon={({ focused }) => (
             <Image source={focused ? bluetray : tray} style={styles.iconStyle} />
           )}
         />
@@ -342,7 +280,7 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.customers);
             dispatch(addSellingSelection());
           }}
-          icon={({ focused, color, size }) => (
+          icon={({ focused }) => (
             <Image source={focused ? blueusers : users} style={styles.iconStyle} />
           )}
         />
@@ -356,7 +294,7 @@ export function DrawerNavigator(props) {
               navigate(NAVIGATION.setting);
               dispatch(addSellingSelection());
             }}
-            icon={({ focused, color, size }) => (
+            icon={({ focused }) => (
               <Image
                 source={focused ? blueSetting : settings}
                 style={focused ? styles.iconStyle2 : styles.iconStyle}
@@ -374,7 +312,7 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.analytics2);
             dispatch(addSellingSelection());
           }}
-          icon={({ focused, color, size }) => (
+          icon={({ focused }) => (
             <Image source={focused ? blueanalytics : analytics} style={styles.iconStyle} />
           )}
         />

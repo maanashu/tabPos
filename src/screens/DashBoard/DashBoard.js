@@ -34,6 +34,7 @@ import {
   sellingArrow,
   sellingBucket,
   sessionEndBar,
+  productReturn,
 } from '@/assets';
 import {
   addSellingSelection,
@@ -525,7 +526,18 @@ export function DashBoard({ navigation }) {
               </Text>
             </View>
           </View>
+
           <View style={{ flex: 1 }} />
+
+          <TouchableOpacity onPress={() => alert('Coming soon')} style={styles.checkoutButton}>
+            <View style={styles.displayRow}>
+              <Image source={productReturn} style={styles.lockLight} />
+              <Text style={styles.checkoutText1}>{strings.dashboard.productReturn}</Text>
+            </View>
+          </TouchableOpacity>
+
+          <Spacer space={SH(10)} />
+
           <TouchableOpacity
             style={styles.checkoutButton}
             onPress={async () => {
@@ -593,7 +605,9 @@ export function DashBoard({ navigation }) {
               <Image source={scn} style={styles.scnStyle} />
             </TouchableOpacity>
           </View>
+
           <Spacer space={SH(20)} />
+
           <View style={styles.displayflex}>
             {STARTSELLING.map((item, index) => (
               <View style={styles.storeCardCon} key={index}>

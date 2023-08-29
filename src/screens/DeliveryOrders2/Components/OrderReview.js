@@ -1,7 +1,8 @@
 import React from 'react';
+import { View, FlatList, ActivityIndicator } from 'react-native';
+
 import { COLORS } from '@/theme';
-import { View, FlatList, Dimensions, ActivityIndicator } from 'react-native';
-import { ms } from 'react-native-size-matters';
+
 import styles from '../styles';
 
 const OrderReview = ({

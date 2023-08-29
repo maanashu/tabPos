@@ -1,15 +1,13 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NAVIGATION } from '@/constants';
-import { Login, VerifyPhone, VerifyOtp, VerifySucess, MerchantPasscode } from '@/screens';
+import { VerifyPhone, VerifyOtp, VerifySucess, MerchantPasscode } from '@/screens';
 
 const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
 
-export function AuthNavigator(props) {
+export function AuthNavigator() {
   return (
-    <Stack.Navigator initialRouteName="VerifyPhone">
+    <Stack.Navigator initialRouteName={NAVIGATION.verifyPhone}>
       <Stack.Screen
         component={VerifyPhone}
         name={NAVIGATION.verifyPhone}
@@ -25,7 +23,6 @@ export function AuthNavigator(props) {
         name={NAVIGATION.verifyOtp}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         component={VerifySucess}
         name={NAVIGATION.verifySucess}

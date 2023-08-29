@@ -19,19 +19,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(10),
     justifyContent: 'space-between',
   },
-  shippingStatusViewStyle: {
-    alignItems: 'flex-start',
-    borderRadius: 10,
-    paddingVertical: ms(10),
-    backgroundColor: COLORS.white,
-    height: equalPartSize - 130,
-  },
-  shippingStatusText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(16),
-    paddingLeft: ms(15),
-    color: COLORS.primary,
-  },
   shippedOrderText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
@@ -293,21 +280,7 @@ const styles = StyleSheet.create({
     fontSize: SF(18),
     fontFamily: Fonts.MaisonRegular,
   },
-  graphViewStyle: {
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
-    width: Dimensions.get('window').width * 0.56,
-    paddingHorizontal: 20,
-    paddingBottom: 30,
-    height: twoEqualView,
-  },
-  numberOrdersText: {
-    color: COLORS.dark_grey,
-    fontSize: SF(16),
-    fontFamily: Fonts.SemiBold,
-    paddingHorizontal: 20,
-    paddingTop: ms(10),
-  },
+
   viewallTextStyle: {
     fontFamily: Fonts.Regular,
     fontSize: SF(12),

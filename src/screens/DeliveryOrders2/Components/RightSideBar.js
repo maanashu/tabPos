@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, FlatList, Dimensions } from 'react-native';
-import { ms } from 'react-native-size-matters';
 
 import styles from '../styles';
 

@@ -10,17 +10,13 @@ export { POSUsers } from '@/screens/Auth/POSUsers/POSUsers';
 export { PosUserPasscode } from '@/screens/Auth/PosUserPasscode/PosUserPasscode';
 
 // pos sales
-export { DeliveryOrder } from '@/screens/DeliveryOrder/DeliveryOrder';
-export { ShippingOrder } from '@/screens/ShippingOrder/ShippingOrder';
 export { Wallet } from '@/screens/Wallet/Wallet';
 export { Management } from '@/screens/Management/Management';
 export { Customers } from '@/screens/Customers/Customers';
 export { Calender } from '@/screens/Calender/Calender';
-export { Analytics } from '@/screens/Analytics/Analytics';
 export { Reward } from '@/screens/Reward/Reward';
 export { Setting } from '@/screens/Setting/Setting';
 export { DashBoard } from '@/screens/DashBoard/DashBoard';
-export { PosRetail2 } from '@/screens/PosRetail2/PosRetail2';
 export { ShippingOrder2 } from '@/screens/ShippingOrder2/ShippingOrder2';
 export { Analytics2 } from '@/screens/Analytics2/Analytics2';
 export { DeliveryOrders2 } from '@/screens/DeliveryOrders2/DeliveryOrders2';
