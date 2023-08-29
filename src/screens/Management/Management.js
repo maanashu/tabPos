@@ -553,7 +553,7 @@ export function Management() {
               </View>
               <Spacer space={SH(60)} />
             </View>
-            <View style={{ flex: 1 }} />
+            {/* <View style={{ flex: 1 }} /> */}
             <Button
               style={styles.saveButton}
               textStyle={styles.buttonText}
@@ -634,7 +634,7 @@ export function Management() {
               </View>
             </View>
             <Spacer space={SH(60)} />
-            <View style={{ flex: 1 }} />
+            {/* <View style={{ flex: 1 }} /> */}
             <Button
               style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
