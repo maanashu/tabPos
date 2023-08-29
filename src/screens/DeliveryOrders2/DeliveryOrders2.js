@@ -5,7 +5,6 @@ import {
   Text,
   Image,
   FlatList,
-  Platform,
   Dimensions,
   RefreshControl,
   TouchableOpacity,
@@ -25,16 +24,11 @@ import {
   oneHourType,
   twoHourType,
   customType,
-  blankCheckBox,
-  incomingOrders,
-  cancelledOrders,
   task,
   timer,
   NoCard,
-  returnedOrders,
   returnShipping,
   deliveryShipping,
-  checkedCheckboxSquare,
   deliveryorderProducts,
   Fonts,
   deliveryDriver,
@@ -51,14 +45,13 @@ import {
 } from '@/actions/DeliveryAction';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
-import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import Header from './Components/Header';
 import OrderDetail from './Components/OrderDetail';
 import OrderReview from './Components/OrderReview';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { ScreenWrapper, Spacer } from '@/components';
 import RightSideBar from './Components/RightSideBar';
-import { graphOptions } from '@/constants/staticData';
 import { getAuthData } from '@/selectors/AuthSelector';
 import CurrentStatus from './Components/CurrentStatus';
 import { getOrderData } from '@/actions/AnalyticsAction';
@@ -72,7 +65,6 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES as ANALYTICSTYPES } from '@/Types/AnalyticsTypes';
 
 import styles from './styles';
-import ReactNativeModal from 'react-native-modal';
 
 export function DeliveryOrders2({ route }) {
   const mapRef = useRef(null);
@@ -90,7 +82,6 @@ export function DeliveryOrders2({ route }) {
   const getDeliveryData = useSelector(getDelivery);
   const oneOrderDetail = useSelector(getAnalytics);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const todayOrderStatusData = getDeliveryData?.todayOrderStatus;
   const pieChartData = getDeliveryData?.getOrderstatistics?.data;
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const ordersList = getDeliveryData?.getReviewDef;
@@ -124,10 +115,8 @@ export function DeliveryOrders2({ route }) {
   const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet];
 
   const [deliverytypes, setDeliveryTypes] = useState();
-  const [graphData, setGraphData] = useState(graphOptions);
   const [viewAllOrders, setViewAllOrders] = useState(isViewAll);
   const [openShippingOrders, setOpenShippingOrders] = useState('0');
-  const [isOpenSideBarDrawer, setIsOpenSideBarDrawer] = useState(false);
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? []);
   const [isBack, setIsBack] = useState();
   const [selectedProductId, setSelectedProductId] = useState();
@@ -280,10 +269,6 @@ export function DeliveryOrders2({ route }) {
 
   const isProductDetailLoading = useSelector((state) =>
     isLoadingSelector([ANALYTICSTYPES.GET_ORDER_DATA], state)
-  );
-
-  const isDeliveryOrder = useSelector((state) =>
-    isLoadingSelector([TYPES.DELIVERING_ORDER, TYPES.GET_GRAPH_ORDERS], state)
   );
 
   const isOrderLoading = useSelector((state) => isLoadingSelector([TYPES.GET_REVIEW_DEF], state));
@@ -469,75 +454,72 @@ export function DeliveryOrders2({ route }) {
   );
 
   const renderOrderToReview = ({ item }) => {
+    const isSelected = viewAllOrder && item?.id === userDetail?.id;
+    const orderDetails = item?.order_details || [];
+    const deliveryDate = item?.invoice?.delivery_date || '';
+    const startTime = item?.preffered_delivery_start_time || '00.00';
+    const endTime = item?.preffered_delivery_end_time || '00.00';
+    const formattedTime = `${startTime} - ${endTime}`;
+
+    const handlePress = () => {
+      setViewAllOrder(true);
+      setSelectedProductId(orderDetails[0]?.id);
+      setUserDetail(item);
+      setOrderDetail(orderDetails);
+      dispatch(getOrderData(item?.id));
+      setOrderId(item?.id);
+      alert(item?.id);
+    };
+
+    const handleExpandPress = () => {
+      setUserDetail(item);
+      setOrderDetail(orderDetails);
+      setViewAllOrder(true);
+    };
+
     return (
       <TouchableOpacity
-        onPress={() => {
-          setViewAllOrder(true);
-          setSelectedProductId(item?.order_details[0]?.id);
-          setUserDetail(item);
-          setOrderDetail(item?.order_details);
-          dispatch(getOrderData(item?.id));
-          setOrderId(item?.id);
-        }}
+        onPress={handlePress}
         style={[
           viewAllOrder ? styles.showAllOrdersView : styles.orderRowStyle,
           {
-            backgroundColor:
-              viewAllOrder && item?.id === userDetail?.id
-                ? COLORS.textInputBackground
-                : COLORS.transparent,
-            borderColor:
-              viewAllOrder && item?.id === userDetail?.id ? COLORS.primary : COLORS.blue_shade,
+            backgroundColor: isSelected ? COLORS.textInputBackground : COLORS.transparent,
+            borderColor: isSelected ? COLORS.primary : COLORS.blue_shade,
           },
         ]}
       >
         <View style={styles.orderDetailStyle}>
-          <Text style={styles.nameTextStyle}>
-            {item?.user_details?.firstname ? item?.user_details?.firstname : 'user name'}
-          </Text>
+          <Text style={styles.nameTextStyle}>{item?.user_details?.firstname || 'user name'}</Text>
           <View style={styles.locationViewStyle}>
             <Image source={pin} style={styles.pinImageStyle} />
             <Text style={styles.distanceTextStyle}>
-              {item?.distance ? `${item?.distance} miles` : '0'}
+              {item?.distance ? `${item.distance} miles` : '0'}
             </Text>
           </View>
         </View>
 
         <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
           <Text style={styles.nameTextStyle}>
-            {item?.order_details?.length > 1
-              ? item?.order_details?.length + ' Items'
-              : item?.order_details?.length + ' Item'}
+            {orderDetails.length > 1
+              ? `${orderDetails.length} Items`
+              : `${orderDetails.length} Item`}
           </Text>
           <View style={styles.locationViewStyle}>
             <Image source={pay} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>
-              {item?.payable_amount ? item?.payable_amount : '00'}
-            </Text>
+            <Text style={styles.distanceTextStyle}>{item?.payable_amount || '00'}</Text>
           </View>
         </View>
 
         <View style={[styles.orderDetailStyle, { width: SW(47) }]}>
-          <Text style={styles.timeTextStyle}>
-            {item?.invoice?.delivery_date ? item?.invoice?.delivery_date : ''}
-          </Text>
+          <Text style={styles.timeTextStyle}>{deliveryDate}</Text>
           <View style={styles.locationViewStyle}>
             <Image source={clock} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>
-              {' '}
-              {item?.preffered_delivery_start_time ? item?.preffered_delivery_start_time : '00.00'}
-              {'-'}{' '}
-              {item?.preffered_delivery_end_time ? item?.preffered_delivery_end_time : '00.00'}
-            </Text>
+            <Text style={styles.distanceTextStyle}>{formattedTime}</Text>
           </View>
         </View>
 
         <TouchableOpacity
-          onPress={() => {
-            setUserDetail(item);
-            setOrderDetail(item?.order_details);
-            setViewAllOrder(true);
-          }}
+          onPress={handleExpandPress}
           style={[styles.orderDetailStyle, { width: SH(24) }]}
         >
           <Image source={rightIcon} style={styles.rightIconStyle} />
@@ -563,63 +545,6 @@ export function DeliveryOrders2({ route }) {
   const emptyComponent = () => (
     <View style={styles.emptyView}>
       <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
-    </View>
-  );
-
-  const changeValue = (index) => {
-    setGraphData((prev) => {
-      let list = [...prev];
-      list[index].checked = !list[index].checked;
-      return list;
-    });
-  };
-
-  const renderGraphItem = ({ item, index }) => (
-    <View style={styles.shippingDrawerView}>
-      {item?.checked ? (
-        <TouchableOpacity onPress={() => changeValue(index)}>
-          <Image
-            source={
-              item?.title === 'In Coming Orders'
-                ? incomingOrders
-                : item?.title === 'Cancelled Orders'
-                ? cancelledOrders
-                : item?.title === 'Returned Orders'
-                ? returnedOrders
-                : checkedCheckboxSquare
-            }
-            style={styles.rightIconStyle}
-          />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity onPress={() => changeValue(index)}>
-          <Image
-            source={blankCheckBox}
-            style={[
-              styles.rightIconStyle,
-              {
-                tintColor:
-                  item?.title === 'In Coming Orders'
-                    ? COLORS.bluish_green
-                    : item?.title === 'Cancelled Orders'
-                    ? COLORS.pink
-                    : item?.title === 'Returned Orders'
-                    ? COLORS.yellowTweet
-                    : COLORS.primary,
-              },
-            ]}
-          />
-        </TouchableOpacity>
-      )}
-      <Text style={styles.varientTextStyle}>
-        {item?.title === 'In Coming Orders'
-          ? 'Incoming Orders'
-          : item?.title === 'Cancelled Orders'
-          ? 'Order Processing'
-          : item?.title === 'Returned Orders'
-          ? 'Ready For Pickup'
-          : 'Completed'}
-      </Text>
     </View>
   );
 
@@ -683,38 +608,6 @@ export function DeliveryOrders2({ route }) {
     );
   };
 
-  const checkedIndices = graphData
-    .filter((checkbox) => checkbox.checked)
-    .map((checkbox) => parseInt(checkbox.key) - 1);
-
-  // Initialize an array to store the summed values
-  const summedValues = Array(getDeliveryData?.graphOrders?.labels?.length).fill(0);
-
-  // Sum the values from checked datasets for each day
-  for (const index of checkedIndices) {
-    const dataset = getDeliveryData?.graphOrders?.datasets?.[index].data;
-    for (let i = 0; i < dataset?.length; i++) {
-      summedValues[i] += dataset[i];
-    }
-  }
-
-  // Transform the summed values into the desired format with labels
-  const outputData = summedValues.map((value, index) => ({
-    label: getDeliveryData?.graphOrders?.labels?.[index],
-    value,
-    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11, fontFamily: Fonts.Regular },
-    spacing: Platform.OS == 'ios' ? 38 : 62,
-    initialSpace: 0,
-    frontColor:
-      index === 0
-        ? COLORS.bluish_green
-        : index === 1
-        ? COLORS.pink
-        : index === 2
-        ? COLORS.yellowTweet
-        : COLORS.primary,
-  }));
-
   const getHeaderText = (openShippingOrders) => {
     switch (openShippingOrders) {
       case '0':
@@ -742,7 +635,7 @@ export function DeliveryOrders2({ route }) {
     }
   };
 
-  const renderOrderDetailProducts = ({ item, index }) => {
+  const renderOrderDetailProducts = ({ item }) => {
     return (
       <View
         style={[
@@ -792,65 +685,6 @@ export function DeliveryOrders2({ route }) {
       setRefreshing(false);
     }, 1000);
   }, []);
-
-  const renderDriverItem = ({ item, index }) => {
-    return (
-      <View
-        style={{
-          backgroundColor: COLORS.textInputBackground,
-          marginHorizontal: 20,
-          borderRadius: 15,
-          paddingVertical: 20,
-          paddingHorizontal: 10,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <Image
-            source={{ uri: item?.user_profiles?.profile_photo }}
-            style={styles.driverProfileStyle}
-          />
-
-          <View style={{ paddingHorizontal: 15 }}>
-            <Text
-              style={styles.totalText}
-            >{`${item?.user_profiles?.firstname} ${item?.user_profiles?.lastname}`}</Text>
-            <Text style={[styles.viewallTextStyle, { color: COLORS.darkGray, paddingTop: 4 }]}>
-              {`${item?.user_profiles?.current_address?.street_address}, ${item?.user_profiles?.current_address?.city}, ${item?.user_profiles?.current_address?.state}, ${item?.user_profiles?.current_address?.country}, ${item?.user_profiles?.current_address?.zipcode}`}
-            </Text>
-
-            <Text
-              style={[styles.viewallTextStyle, { color: COLORS.darkGray, paddingTop: 4 }]}
-            >{`${item?.user_profiles?.full_phone_number}`}</Text>
-          </View>
-        </View>
-
-        <TouchableOpacity
-          style={{
-            width: ms(90),
-            borderRadius: 5,
-            alignItems: 'center',
-            backgroundColor: COLORS.primary,
-            height: ms(30),
-            justifyContent: 'center',
-            alignSelf: 'flex-end',
-            marginHorizontal: 20,
-            marginTop: 20,
-          }}
-        >
-          <Text
-            style={[styles.viewallTextStyle, { fontFamily: Fonts.SemiBold, color: COLORS.white }]}
-          >
-            {'Assign'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
 
   return (
     <ScreenWrapper>
@@ -928,7 +762,7 @@ export function DeliveryOrders2({ route }) {
             ) : (
               <View style={styles.firstRowStyle}>
                 <View style={{ height: Dimensions.get('window').height - 80 }}>
-                  <TodayOrderStatus {...{ todayOrderStatusData }} />
+                  <TodayOrderStatus />
 
                   <Spacer space={ms(10)} />
 
@@ -949,14 +783,7 @@ export function DeliveryOrders2({ route }) {
                 </View>
 
                 <View style={{ height: Dimensions.get('window').height - 80 }}>
-                  <Graph
-                    {...{
-                      graphData,
-                      renderGraphItem,
-                      isDeliveryOrder,
-                      outputData,
-                    }}
-                  />
+                  <Graph />
 
                   <Spacer space={SH(15)} />
                   <OrderReview
@@ -1021,49 +848,6 @@ export function DeliveryOrders2({ route }) {
           </View>
         </View>
       )}
-
-      {/* {isEnableDriverList ? (
-        <ReactNativeModal
-          animationIn={'slideInUp'}
-          isVisible={isEnableDriverList}
-          style={styles.driverModalStyle}
-          onBackdropPress={() => setIsEnableDriverList(false)}
-        >
-          <FlatList
-            data={getDeliveryData?.getSellerDriverList}
-            renderItem={renderDriverItem}
-            ListHeaderComponent={() => (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingHorizontal: 20,
-                }}
-              >
-                <View />
-
-                <Text style={styles.driverListHeadingText}>
-                  {strings.deliveryOrders2.selectDriver}
-                </Text>
-
-                <TouchableOpacity onPress={() => setIsEnableDriverList(false)}>
-                  <Text
-                    style={[
-                      styles.driverListHeadingText,
-                      { fontSize: SF(18), fontFamily: Fonts.SemiBold, color: COLORS.primary },
-                    ]}
-                  >
-                    {'Skip'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 20 }}
-          />
-        </ReactNativeModal>
-      ) : null} */}
     </ScreenWrapper>
   );
 }

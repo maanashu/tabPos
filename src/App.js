@@ -1,24 +1,26 @@
-import React, { useEffect, useCallback, useRef, useState } from 'react';
-import { AppState, Image, Platform, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { AppState, Image, Platform, StyleSheet } from 'react-native';
+
+import { Provider } from 'react-redux';
 import { hide } from 'react-native-bootsplash';
+import RNLockTask from 'react-native-lock-task';
 import { enableScreens } from 'react-native-screens';
-import { Provider, useSelector } from 'react-redux';
+import NetInfo from '@react-native-community/netinfo';
+import Toast, { BaseToast } from 'react-native-toast-message';
 import { PersistGate } from 'redux-persist/integration/react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
+
 import { persistor, store } from '@/store';
 import { RootNavigator } from '@/navigation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast, { BaseToast } from 'react-native-toast-message';
-import { Fonts, success, error, toastcross, toastcheck } from '@/assets';
 import { COLORS, SF, SH, SW } from './theme';
-import NetInfo from '@react-native-community/netinfo';
+import { Fonts, toastcross, toastcheck } from '@/assets';
 import { configureMessaging, getDeviceToken, requestPermission } from './utils/Notifications';
-import RNLockTask from 'react-native-lock-task';
 
 if (!__DEV__) {
   Platform.OS === 'android' && RNLockTask.startLockTask();
 }
 
-import SystemNavigationBar from 'react-native-system-navigation-bar';
 SystemNavigationBar.stickyImmersive();
 enableScreens();
 
@@ -88,7 +90,11 @@ const unsubscribe = NetInfo.addEventListener((state) => {
     });
   }
 });
+
 export function App() {
+  const currentState = useRef(AppState.currentState);
+  const [state, setState] = useState(currentState.current);
+
   useEffect(() => {
     requestPermission();
     configureMessaging();
@@ -98,9 +104,6 @@ export function App() {
       unsubscribe();
     };
   }, []);
-
-  const currentState = useRef(AppState.currentState);
-  const [state, setState] = useState(currentState.current);
 
   useEffect(() => {
     const handleChange = AppState.addEventListener('change', (changedState) => {
@@ -112,6 +115,7 @@ export function App() {
       handleChange.remove();
     };
   }, []);
+
   useEffect(() => {
     if (state === 'background') {
     }

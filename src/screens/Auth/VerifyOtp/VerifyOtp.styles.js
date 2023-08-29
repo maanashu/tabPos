@@ -1,9 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
+
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+
 import { Fonts } from '@/assets';
+import { COLORS, SF, ShadowStyles } from '@/theme';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 
 export const styles = StyleSheet.create({
   container: {
@@ -13,18 +16,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
-    color: COLORS.black,
-  },
   verifyContainer: {
     width: windowWidth * 0.4,
     height: windowHeight * 0.7,
-    // borderWidth: 1,
     borderColor: 'grey',
     alignSelf: 'center',
     borderRadius: 15,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     ...ShadowStyles.shadow2,
   },
   header: {

@@ -1,36 +1,34 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Spacer } from '@/components';
-import { SH } from '@/theme';
-import { styles } from '@/screens/Auth/PosUserPasscode/PosUserPasscode.styles';
-import { strings } from '@/localization';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+
 import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
   Cursor,
 } from 'react-native-confirmation-code-field';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { digits } from '@/utils/validators';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { getAuthData } from '@/selectors/AuthSelector';
-import { login, loginPosUser } from '@/actions/UserActions';
-import { TYPES } from '@/Types/Types';
-import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
-
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { goBack } from '@/navigation/NavigationRef';
-import { crossButton } from '@/assets';
-import { Image } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+
+import { SH } from '@/theme';
+import { TYPES } from '@/Types/Types';
+import { Spacer } from '@/components';
+import { crossButton } from '@/assets';
+import { strings } from '@/localization';
+import { digits } from '@/utils/validators';
+import { goBack } from '@/navigation/NavigationRef';
+import { loginPosUser } from '@/actions/UserActions';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+
+import { styles } from '@/screens/Auth/PosUserPasscode/PosUserPasscode.styles';
 
 const CELL_COUNT = 4;
 
 export function PosUserPasscode({ route }) {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   const getData = useSelector(getAuthData);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -38,11 +36,9 @@ export function PosUserPasscode({ route }) {
     value,
     setValue,
   });
-  const { posuser, from } = route.params;
+  const { posuser } = route.params;
 
-  const isLoading = useSelector(state =>
-    isLoadingSelector([TYPES.LOGIN_POS_USER], state)
-  );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.LOGIN_POS_USER], state));
 
   const passcodeHandler = async () => {
     if (!value) {
@@ -75,25 +71,14 @@ export function PosUserPasscode({ route }) {
         pos_user_id: posuser.user_id.toString(),
         pos_security_pin: value,
       };
-
-      // dispatch(
-      //   loginPosUser(data, res => {
-      //     navigation.dispatch(
-      //       CommonActions.reset({
-      //         index: 0,
-      //         routes: [{ name: 'HOME' }],
-      //       })
-      //     );
-      //   })
-      // );
-
       dispatch(loginPosUser(data));
     }
   };
+
   return (
     <View
       style={{ flexGrow: 1 }}
-      keyboardShouldPersistTaps="handled"
+      keyboardShouldPersistTaps={'handled'}
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.container}>
@@ -105,27 +90,24 @@ export function PosUserPasscode({ route }) {
           >
             <Image source={crossButton} style={styles.cross} />
           </TouchableOpacity>
+
           <Text style={styles.subHeading}>{strings.passcode.heading}</Text>
+
           <Spacer space={SH(25)} />
+
           <CodeField
             ref={ref}
             {...prop}
             value={value}
             onChangeText={setValue}
             cellCount={CELL_COUNT}
-            rootStyle={[styles.alignSelfCenter]}
+            rootStyle={styles.alignSelfCenter}
             showSoftInputOnFocus={false}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
+            keyboardType={'number-pad'}
+            textContentType={'oneTimeCode'}
             renderCell={({ index, symbol, isFocused }) => (
-              <View
-                onLayout={getCellOnLayoutHandler(index)}
-                key={index}
-                style={styles.cellRoot}
-              >
-                <Text style={styles.cellText}>
-                  {symbol || (isFocused ? <Cursor /> : null)}
-                </Text>
+              <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
+                <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
               </View>
             )}
           />

@@ -339,6 +339,7 @@ export { default as up } from '@/assets/icons/ic_posRetail/up.png';
 export { default as down } from '@/assets/icons/ic_posRetail/down.png';
 export { default as expand } from '@/assets/icons/ic_deliveryOrder/expand.png';
 export { default as gps } from '@/assets/icons/ic_deliveryOrder/gps.png';
+export { default as productReturn } from '@/assets/icons/ic_dashboard/productReturn.png';
 
 /* Fonts */
 export const Fonts = {

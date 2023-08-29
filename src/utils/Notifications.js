@@ -59,6 +59,11 @@ const onMessageReceivedBackground = async (message) => {
     store.dispatch(getReviewDefault(0, 1));
     store.dispatch(getOrderCount());
   }
+
+  if (message?.data?.type === 'order_pickup') {
+    store.dispatch(getReviewDefault(4, 1));
+    store.dispatch(getOrderCount());
+  }
   await notifee.displayNotification({
     title: message.notification.title,
     body: message.notification.body,

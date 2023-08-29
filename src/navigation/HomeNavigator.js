@@ -4,18 +4,13 @@ import { NAVIGATION } from '@/constants';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { COLORS, SW } from '@/theme';
 import {
-  DeliveryOrder,
   Wallet,
   Management,
   Customers,
   Calender,
-  Analytics,
-  ShippingOrder,
-  LoginIntial,
   Reward,
   Setting,
   DashBoard,
-  PosRetail2,
   ShippingOrder2,
   Analytics2,
   DeliveryOrders2,
@@ -23,7 +18,6 @@ import {
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
-import { CartAmountTips } from '@/screens/PosRetail2/Components';
 import NotificationsList from '@/screens/Notifications/NotificationsList';
 
 const Stack = createNativeStackNavigator();
@@ -50,16 +44,6 @@ export function HomeNavigator() {
         name={NAVIGATION.dashBoard}
         options={{ headerShown: false }}
       />
-      <Drawer.Screen
-        component={DeliveryOrder}
-        name={NAVIGATION.deliveryOrder}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        component={ShippingOrder}
-        name={NAVIGATION.shippingOrder}
-        options={{ headerShown: false }}
-      />
       <Drawer.Screen component={Wallet} name={NAVIGATION.wallet} options={{ headerShown: false }} />
       <Drawer.Screen
         component={Management}
@@ -76,11 +60,6 @@ export function HomeNavigator() {
         name={NAVIGATION.calender}
         options={{ headerShown: false }}
       />
-      <Drawer.Screen
-        component={Analytics}
-        name={NAVIGATION.analytics}
-        options={{ headerShown: false }}
-      />
       <Drawer.Screen component={Reward} name={NAVIGATION.reward} options={{ headerShown: false }} />
       <Drawer.Screen
         component={Setting}
@@ -88,18 +67,8 @@ export function HomeNavigator() {
         options={{ headerShown: false }}
       />
       <Drawer.Screen
-        component={CartAmountTips}
-        name={NAVIGATION.CartAmountTips}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
         component={NotificationsList}
         name={NAVIGATION.notificationsList}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        component={PosRetail2}
-        name={NAVIGATION.posRetail2}
         options={{ headerShown: false }}
       />
       <Drawer.Screen

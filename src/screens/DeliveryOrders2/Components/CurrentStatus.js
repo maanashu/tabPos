@@ -5,8 +5,8 @@ import {
   Image,
   FlatList,
   StyleSheet,
-  ActivityIndicator,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 
 import { useSelector } from 'react-redux';
@@ -23,19 +23,19 @@ const equalPartSize = result / 3;
 
 const CurrentStatus = ({ deliverytypes }) => {
   const isDeliveryOrder = useSelector((state) =>
-    isLoadingSelector([TYPES.DELIVERING_ORDER, TYPES.GET_GRAPH_ORDERS], state)
+    isLoadingSelector([TYPES.DELIVERING_ORDER], state)
   );
 
   const renderItem = ({ item }) => (
     <View style={styles.itemMainViewStyle}>
-      <Image source={item?.image} style={styles.shippingTypeImage} />
+      <Image source={item?.image} style={styles.itemImageStyle} />
       {isDeliveryOrder ? (
         <View style={styles.activityIndicatorStyle}>
           <ActivityIndicator color={COLORS.primary} size={'small'} />
         </View>
       ) : (
-        <View style={styles.shippingTypeDetails}>
-          <Text style={styles.shippingTypeText}>{item?.delivery_type_title}</Text>
+        <View style={styles.deliveryViewStyle}>
+          <Text style={styles.deliveryTypeText}>{item?.delivery_type_title}</Text>
           <Text style={styles.totalTextStyle}>{item?.count}</Text>
         </View>
       )}
@@ -57,53 +57,53 @@ const styles = StyleSheet.create({
   currentStatusView: {
     width: SW(100),
     borderRadius: 10,
-    backgroundColor: COLORS.white,
-    paddingVertical: SH(15),
     height: equalPartSize,
+    paddingVertical: SH(15),
+    backgroundColor: COLORS.white,
   },
   currentStatusText: {
-    fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
     color: COLORS.text,
     paddingLeft: SW(6),
+    fontFamily: Fonts.SemiBold,
   },
   itemMainViewStyle: {
     borderWidth: 1,
     marginHorizontal: SW(6),
     marginVertical: SH(4),
     borderRadius: 5,
-    borderColor: COLORS.solidGrey,
-    backgroundColor: COLORS.white,
-    paddingHorizontal: 12,
     alignItems: 'center',
     flexDirection: 'row',
+    paddingHorizontal: 12,
+    borderColor: COLORS.solidGrey,
+    backgroundColor: COLORS.white,
   },
-  shippingTypeImage: {
+  itemImageStyle: {
     width: ms(15),
     height: ms(15),
-    resizeMode: 'contain',
     alignSelf: 'center',
+    resizeMode: 'contain',
   },
   activityIndicatorStyle: {
-    paddingVertical: ms(6),
-    alignItems: 'center',
-    justifyContent: 'center',
     alignSelf: 'center',
+    alignItems: 'center',
+    paddingVertical: ms(6),
+    justifyContent: 'center',
     paddingHorizontal: ms(30),
   },
-  shippingTypeDetails: {
-    justifyContent: 'center',
+  deliveryViewStyle: {
     marginHorizontal: 15,
+    justifyContent: 'center',
   },
-  shippingTypeText: {
-    fontFamily: Fonts.SemiBold,
+  deliveryTypeText: {
     fontSize: SF(11),
     color: COLORS.darkGray,
+    fontFamily: Fonts.SemiBold,
   },
   totalTextStyle: {
-    fontFamily: Fonts.SemiBold,
     fontSize: ms(7.2),
-    color: COLORS.solid_grey,
     paddingTop: ms(2),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
   },
 });

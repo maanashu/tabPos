@@ -24,17 +24,10 @@ export const en = {
     logout: 'Logout',
     message: 'This screen has the iOS native large header.',
   },
-  verifyPhone: {
-    heading: 'Verify your phone number',
-    subHeading: 'Please enter your number to phone number',
-    placeHolderText: '815-288-0329',
-    button: 'Continue',
-  },
   verifyOtp: {
     heading: 'Verify your phone number',
     subHeading: 'Enter OTP code here',
     placeHolderText: '815-288-0329',
-
     button: 'Continue',
   },
   passcode: {
@@ -129,11 +122,6 @@ export const en = {
     subHeading: 'Enter OTP code here',
     placeHolderText: '815-288-0329',
     button: 'Continue',
-  },
-  passcode: {
-    heading: 'Enter Passcode',
-    success: 'Successfully verified',
-    loginBack: 'Please login back to your email inbox and set your new password',
   },
   loginIntial: {
     heading: 'CONFIRM YOUR LOG IN',
@@ -634,6 +622,7 @@ export const en = {
     yourSessionEnd: 'Your Session Ends',
     expandOneHour: 'Expand 1 hour',
     expandTwoHour: 'Expand 2 hour',
+    productReturn: 'Product Return',
   },
   wallet: {
     config: 'Wallet Config',
@@ -793,6 +782,8 @@ export const en = {
     deliveryOrder: 'Delivered Orders',
     cancelledOrder: 'Rejected/ Cancelled Orders',
     returnedOrders: 'Returned Orders',
+    cancelledOrders: 'Cancelled Orders',
+    incomingorders: 'In Coming Orders',
   },
   buttonStatus: {
     reviewButton: 'Accept',

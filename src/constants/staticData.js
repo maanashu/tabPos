@@ -1225,22 +1225,22 @@ export const deliveryDrawer = [
 export const graphOptions = [
   {
     key: '1',
-    title: 'In Coming Orders',
+    title: 'Incoming Orders',
     checked: true,
   },
   {
     key: '2',
-    title: 'Cancelled Orders',
+    title: 'Order Processing',
     checked: true,
   },
   {
     key: '3',
-    title: 'Returned Orders',
+    title: 'Ready For Pickup',
     checked: true,
   },
   {
     key: '4',
-    title: 'Delivered Orders',
+    title: 'Completed',
     checked: true,
   },
 ];
