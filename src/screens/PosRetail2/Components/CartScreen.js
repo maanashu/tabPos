@@ -42,6 +42,7 @@ import { TYPES } from '@/Types/Types';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { emailReg } from '@/utils/validators';
 import { useFocusEffect } from '@react-navigation/native';
+import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
 
 export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
   const dispatch = useDispatch();
@@ -62,18 +63,20 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     React.useCallback(() => {
       return () => {
         var arr = getRetailData?.getAllCart;
-        if (arr?.poscart_products.length > 0) {
-          const products = arr?.poscart_products.map((item) => ({
-            product_id: item?.product_id,
-            qty: item?.qty,
-          }));
+        if (arr?.length > 0) {
+          if (arr?.poscart_products?.length > 0) {
+            const products = arr?.poscart_products.map((item) => ({
+              product_id: item?.product_id,
+              qty: item?.qty,
+            }));
 
-          const data = {
-            updated_products: products,
-          };
-          dispatch(updateCartQty(data, arr.id));
-        } else {
-          clearCartHandler();
+            const data = {
+              updated_products: products,
+            };
+            dispatch(updateCartQty(data, arr.id));
+          } else {
+            clearCartHandler();
+          }
         }
       };
     }, [])
@@ -109,7 +112,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
 
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
+    const productPrice = product?.product_details.price;
 
     if (operation === '+') {
       product.qty += 1;
@@ -119,6 +122,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       if (product.qty > 0) {
         if (product.qty == 1) {
           arr?.poscart_products.splice(index, 1);
+          dispatch(updateCartLength(cartLength + 1));
         }
         product.qty -= 1;
         arr.amount.total_amount -= productPrice;
@@ -131,7 +135,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     dispatch(getAllCartSuccess(DATA));
   };
 
-  const clearCartHandler = () => {
+  const clearCartHandler = async () => {
     dispatch(clearAllCart());
     crossHandler();
   };

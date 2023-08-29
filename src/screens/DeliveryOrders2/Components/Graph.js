@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Text, FlatList, Dimensions, ActivityIndicator } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
+import { BarChart } from 'react-native-gifted-charts';
 
 import { COLORS, SH } from '@/theme';
+import { Spacer } from '@/components';
 import { strings } from '@/localization';
 
 import styles from '../styles';
-import { BarChart } from 'react-native-gifted-charts';
-import { Spacer } from '@/components';
 
 const Graph = ({ graphData, renderGraphItem, isDeliveryOrder, outputData }) => {
   return (

@@ -16,6 +16,7 @@ const INITIALSTATE = {
   getTips: {},
   getProductDefault: [],
   getOneProduct: {},
+  getOneService: {},
   checkSuppliedVariant: [],
   requestMoney: {},
   requestCheck: {},
@@ -24,6 +25,7 @@ const INITIALSTATE = {
   customerNumber: {},
   scanProductAdd: {},
   getMainProduct: [],
+  mainProductAllData: {},
   getMainServices: [],
   getserviceCart: [],
   bulkCreate: {},
@@ -213,6 +215,12 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         getOneProduct: payload?.getOneProduct,
       };
 
+    case TYPES.GET_ONE_SERVICE_SUCCESS:
+      return {
+        ...state,
+        getOneService: payload?.getOneService,
+      };
+
     case TYPES.CHECK_SUPPLIES_VARIANT_SUCCESS:
       return {
         ...state,
@@ -262,9 +270,21 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         getMainProduct: payload,
       };
 
+    case TYPES.GET_ALL_PRODUCT_PAGINATION_SUCCESS:
+      if (payload.data.length > 0) {
+        return {
+          ...state,
+          getMainProduct: {
+            ...state.getMainProduct,
+            data: [...state.getMainProduct.data, ...payload.data],
+          },
+        };
+      }
+
     case TYPES.GET_MAIN_PRODUCT_RESET:
       return {
         ...state,
+        mainProductAllData: {},
         getMainProduct: [],
       };
     case TYPES.GET_MAIN_SERVICES_SUCCESS:
@@ -364,8 +384,21 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         updateQuantityy: payload.data,
       };
-    case TYPES.CLEAR_STORE:
-      return {};
+
+    case TYPES.UPDATE_SRVICE_CART_QTY_SUCCESS:
+      return {
+        ...state,
+        updateServiceQuantityy: payload.data,
+      };
+
+    case TYPES.QR_CODE_STATUS_SUCCESS:
+      return {
+        ...state,
+        qrStatuskey: payload,
+      };
+
+    case TYPES.CLEAR_RETAIL_STORE:
+      return INITIALSTATE;
     default:
       return state;
   }

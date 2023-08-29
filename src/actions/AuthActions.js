@@ -142,10 +142,10 @@ export const register = (data, params) => async (dispatch) => {
   }
 };
 
-export const getAllPosUsers = (sellerID) => async (dispatch) => {
+export const getAllPosUsers = (sellerID, search) => async (dispatch) => {
   dispatch(getAllPosUsersRequest());
   try {
-    const res = await AuthController.getAllPosUsers(sellerID);
+    const res = await AuthController.getAllPosUsers(sellerID, search);
     dispatch(getAllPosUsersSuccess(res?.payload?.pos_staff));
   } catch (error) {
     if (error?.statusCode === 204) {

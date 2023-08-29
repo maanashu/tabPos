@@ -38,12 +38,12 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: 'catgory error',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'catgory error',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
@@ -72,12 +72,12 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: 'catgory error',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'catgory error',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
@@ -168,12 +168,12 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: 'Brands not found',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: 'Brands not found',
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
@@ -385,6 +385,39 @@ export class RetailController {
     });
   }
 
+  static async clearOneserviceCart(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.appintment_cart +
+        `/` +
+        `${data.cartId}` +
+        `/` +
+        `${data.productId}`;
+      HttpClient.delete(endpoint)
+        .then((response) => {
+          if (response?.status_code === 200) {
+            Toast.show({
+              position: 'bottom',
+              type: 'success_toast',
+              text2: response?.msg,
+              visibilityTime: 2000,
+            });
+          }
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
+        });
+    });
+  }
+
   static async addTocart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.addTocart;
@@ -436,9 +469,9 @@ export class RetailController {
             position: 'bottom',
             type: 'error_toast',
             text2: error.msg,
-            visibilityTime: 2000,
+            visibilityTime: 5000,
           });
-          reject(error.msg);
+          reject(error);
         });
     });
   }
@@ -447,17 +480,30 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart;
-      const body = {
-        seller_id: sellerID,
-        supply_id: data.supplyId.toString(),
-        supply_price_id: data.supplyPriceID.toString(),
-        product_id: data.product_id.toString(),
-        app_name: data?.appName,
-        date: data?.date,
-        start_time: data?.startTime,
-        end_time: data?.endTime,
-        pos_user_id: data?.posUserId,
-      };
+      const body = data?.offerId
+        ? {
+            seller_id: sellerID,
+            supply_id: data.supplyId.toString(),
+            supply_price_id: data.supplyPriceID.toString(),
+            product_id: data.product_id.toString(),
+            app_name: data?.appName,
+            date: data?.date,
+            start_time: data?.startTime,
+            end_time: data?.endTime,
+            pos_user_id: data?.posUserId,
+            offer_id: data?.offerId,
+          }
+        : {
+            seller_id: sellerID,
+            supply_id: data.supplyId.toString(),
+            supply_price_id: data.supplyPriceID.toString(),
+            product_id: data.product_id.toString(),
+            app_name: data?.appName,
+            date: data?.date,
+            start_time: data?.startTime,
+            end_time: data?.endTime,
+            pos_user_id: data?.posUserId,
+          };
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
@@ -477,35 +523,38 @@ export class RetailController {
   static async updateCartQtyy(data, cartId) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.updateCartQty + `/${cartId}`;
-      // const body = {
-      //   updated_products:
-      //      [
-      //         {
-      //             "qty": 2,
-      //             "product_id": 3458
-      //         }
-      //     ]
-      // };
 
       HttpClient.put(endpoint, data)
         .then((response) => {
-          // if (response?.msg === 'PosCart updated!') {
-          //   Toast.show({
-          //     text2: 'Notes add succesfully',
-          //     position: 'bottom',
-          //     type: 'success_toast',
-          //     visibilityTime: 1500,
-          //   });
-          // }
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error?.msg || 'Unknown error occured',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
+        });
+    });
+  }
+
+  static async updateServiceCartQty(data, cartId) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.updateServiceCartQty + `/${cartId}`;
+
+      HttpClient.put(endpoint, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
@@ -865,7 +914,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.getProduct +
-        `/${productId}?app_name=pos&seller_id=${sellerID}`;
+        `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -881,13 +930,12 @@ export class RetailController {
         });
     });
   }
-
-  static async checkSuppliedVariant(data) {
+  static async getOneService(sellerID, serviceId) {
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
-        ApiProductInventory.checkSuppliedVariant +
-        `?attribute_value_ids=${data.sizeId},${data.colorId}&supply_id=${data.supplyId}`;
+        ApiProductInventory.getProduct +
+        `/${serviceId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -896,10 +944,34 @@ export class RetailController {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
-            text2: 'No Combination, Select Other Variant ',
+            text2: 'Service not found',
             visibilityTime: 2000,
           });
-          reject(error.msg);
+          reject(error);
+        });
+    });
+  }
+
+  static async checkSuppliedVariant(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.checkSuppliedVariant +
+        `?attribute_value_ids=${data.colorAndSizeId}&supply_id=${data.supplyId}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          alert('No Combination, Select Other Variant'),
+            Toast.show({
+              position: 'bottom',
+              type: 'error_toast',
+              text2: 'No Combination, Select Other Variant',
+              visibilityTime: 2000,
+            });
+          reject(error);
         });
     });
   }
@@ -922,8 +994,8 @@ export class RetailController {
           Toast.show({
             position: 'top',
             type: 'error_toast',
-            text2: error.msg,
-            visibilityTime: 2000,
+            text2: error?.msg,
+            visibilityTime: 3000,
           });
           reject(error);
         });
@@ -938,6 +1010,8 @@ export class RetailController {
         delivery_options: '3',
         seller_id: sellerID,
         service_type: 'product',
+        page: 1,
+        limit: 25,
       };
 
       let finalParams;
@@ -971,6 +1045,47 @@ export class RetailController {
     });
   }
 
+  static async getMainProductPagination(productTypeID) {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const defaultParams = {
+        app_name: 'pos',
+        delivery_options: '3',
+        seller_id: sellerID,
+        service_type: 'product',
+        page: productTypeID.page,
+        limit: 20,
+      };
+      let finalParams;
+      if (Object.keys(productTypeID).length !== 0) {
+        finalParams = {
+          ...defaultParams,
+          ...productTypeID,
+        };
+      } else {
+        finalParams = {
+          ...defaultParams,
+        };
+      }
+
+      const convertToQueryParam = new URLSearchParams(finalParams).toString();
+      const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   text2: 'Product not found',
+          //   visibilityTime: 2000,
+          // });
+          reject(error);
+        });
+    });
+  }
   static async getMainServices(productTypeID = {}) {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
@@ -1053,23 +1168,22 @@ export class RetailController {
     });
   }
 
-  static async bulkCreate(data) {
+  static async createBulkCart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
-
       HttpClient.post(endpoint, data)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'error_toast',
 
-            text2: error.msg,
-            text2: error?.msg,
-            visibilityTime: 2000,
-          });
+          //   text2: error.msg,
+          //   text2: error?.msg,
+          //   visibilityTime: 2000,
+          // });
           reject(error);
         });
     });
@@ -1200,12 +1314,14 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error?.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 3000,
-          });
+          if (error?.statusCode != 204) {
+            Toast.show({
+              text2: error?.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 3000,
+            });
+          }
           reject(error);
         });
     });
@@ -1222,12 +1338,14 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error?.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 3000,
-          });
+          if (error?.statusCode != 204) {
+            Toast.show({
+              text2: error?.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 3000,
+            });
+          }
           reject(error);
         });
     });
@@ -1289,7 +1407,7 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.availableOffer +
-        `?app_name=pos&delivery_options=3&page=1&limit=10&seller_id=${data?.seller_id}&service_type=${data?.servicetype}`;
+        `?app_name=pos&delivery_options=2&page=1&limit=10&seller_id=${data?.seller_id}&service_type=${data?.servicetype}`;
 
       HttpClient.get(endpoint)
         .then((response) => {
@@ -1302,6 +1420,34 @@ export class RetailController {
           //   type: 'error_toast',
           //   visibilityTime: 1500,
           // });
+          reject(error);
+        });
+    });
+  }
+
+  static async qrCodePaymentStatus(id) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.qrstatus + `${id}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static async ServicesqrCodePaymentStatus(id) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.ServicesQrStatus + `${id}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
           reject(error);
         });
     });

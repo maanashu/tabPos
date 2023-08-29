@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Keyboard, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
-import { COLORS, SF, SH, SW } from '@/theme';
+import {
+  ActivityIndicator,
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
+import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
-
+import { useDebouncedCallback } from 'use-lodash-debounce';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   addToCart,
   addToCartBlue,
   bucket,
-  categoryMenu,
   cross,
   filter,
   holdCart,
-  keyboard,
-  multipleImag,
+  plus,
   product,
+  scn,
   search_light,
   services,
   sideArrow,
@@ -30,15 +38,13 @@ import Modal, { ReactNativeModal } from 'react-native-modal';
 import { CategoryModal } from './CategoryModal';
 import { SubCatModal } from './SubCatModal';
 import { BrandModal } from './BrandModal';
-import { catTypeData, productServiceFilter } from '@/constants/flatListData';
+import { catTypeData } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
 import { AddCartModal } from './AddCartModal';
 import { AddCartDetailModal } from './AddCartDetailModal';
 import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import {
-  addToServiceCart,
-  addTocart,
   changeStatusProductCart,
   changeStatusServiceCart,
   clearAllCart,
@@ -48,18 +54,31 @@ import {
   getMainProduct,
   getMainServices,
   getOneProduct,
+  getOneService,
+  getServiceCategory,
+  getServiceSubCategory,
   getSubCategory,
+  getMainProductSuccess,
+  createBulkcart,
+  getMainProductPagination,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { CartListModal } from './CartListModal';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
-import { items, subItems } from '@/constants/staticData';
+import { items } from '@/constants/staticData';
 import { FilterDropDown } from './FilterDropDown';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ServiceFilterDropDown } from './ServiceFilterDropDown';
 import { NumericPad } from './NumericPad';
+import { addLocalCart, clearLocalCart, updateCartLength } from '@/actions/CartAction';
+import { getCartLength, getLocalCartArray, getServiceCartLength } from '@/selectors/CartSelector';
+import { getAllPosUsers } from '@/actions/AuthActions';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
+import { ServiceCartListModal } from './ServiceCartListModal ';
+import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 
 export function MainScreen({
   cartScreenHandler,
@@ -68,42 +87,108 @@ export function MainScreen({
   sellerID,
   productArray,
   cartServiceScreenHandler,
+  activeCategory,
 }) {
+  const dispatch = useDispatch();
+  const isFocus = useIsFocused();
   const [selectedId, setSelectedId] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
   const [brandModal, setBrandModal] = useState(false);
   const [catTypeId, setCatTypeId] = useState();
   const [addCartModal, setAddCartModal] = useState(false);
+  const [productIndex, setProductIndex] = useState(0);
+  const [productItem, setProductItem] = useState(null);
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
+
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const getAuthdata = useSelector(getAuthData);
   const [numPadModal, setNumPadModal] = useState(false);
   const [serviceNumPadModal, setServiceNumPadModal] = useState(false);
+  const [goToCart, setGoToCart] = useState(false);
   const getMerchantService = getAuthdata?.merchantLoginData?.product_existance_status;
+  const CART_LENGTH = useSelector(getCartLength);
+  const SERVICE_CART_LENGTH = useSelector(getServiceCartLength);
   const getRetailData = useSelector(getRetail);
+  const LOCAL_CART_ARRAY = useSelector(getLocalCartArray);
+
+  const [localCartArray, setLocalCartArray] = useState(LOCAL_CART_ARRAY);
+
+  useEffect(() => {
+    if (activeCategory === 'Product') {
+      setProductCon(true);
+      setServiceCon(false);
+    }
+    if (activeCategory === 'Service') {
+      setProductCon(false);
+      setServiceCon(true);
+    }
+  }, [activeCategory]);
+  useEffect(() => {
+    setLocalCartArray(LOCAL_CART_ARRAY);
+  }, [LOCAL_CART_ARRAY]);
+
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
   const productCartArray = getRetailData?.getAllProductCart;
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
-  const cartLength = cartData?.poscart_products?.length;
+  const cartLength = CART_LENGTH;
   const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
+  // const serviceCartLength = SERVICE_CART_LENGTH;
+  //  const serviceCartLength = CART_LENGTH;
   let arr = [getRetailData?.getAllCart];
   const [cartModal, setCartModal] = useState(false);
+  const [serviceCartModal, setServiceCartModal] = useState(false);
   const [search, setSearch] = useState('');
   const [serviceSearch, setServiceSearch] = useState('');
   const [showProductsFrom, setshowProductsFrom] = useState();
   const mainProductArray = getRetailData?.getMainProduct?.data;
+  // console.log('mainProductArray', JSON.stringify(mainProductArray?.[0]));
   const mainServicesArray = getRetailData?.getMainServices?.data;
+  // console.log('mainServicesArray', JSON.stringify(mainServicesArray?.[0]));
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
     qty: obj.qty,
   }));
+
   const [productServiceType, setProductServiceType] = useState(1);
   const [cateoryView, setCateoryView] = useState(false);
+  const [productFilter, setProductFilter] = useState(0);
+
+  const [serviceFilter, setServiceFilter] = useState(0);
+
+  const [hitBulk, setHitBulk] = useState(true);
+
+  const [selectedCartItem, setSelectedCartItems] = useState([]);
+  const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
+
+  const [filterMenuTitle, setfilterMenuTitle] = useState(filterMenuData);
+
+  const [isFilterDataSeclectedOfIndex, setisFilterDataSeclectedOfIndex] = useState();
+
+  const [selectedCatID, setselectedCatID] = useState(null);
+  const [selectedSubCatID, setselectedSubCatID] = useState(null);
+  const [selectedBrandID, setselectedBrandID] = useState(null);
+  const [isClear, setIsClear] = useState(false);
+  const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
+
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userAdd, setUserAdd] = useState('');
+
+  const [page, setPage] = useState(1);
+
+  const [productCon, setProductCon] = useState(true);
+  const [serviceCon, setServiceCon] = useState(false);
+  const [filterCon, setFilterCon] = useState(false);
+  const [serviceFilterCon, setServiceFilterCon] = useState(false);
+  const [serviceItemSave, setServiceItemSave] = useState();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   const cartStatusHandler = () => {
     const data =
@@ -133,6 +218,18 @@ export function MainScreen({
   };
 
   useEffect(() => {
+    dispatch(getCategory(sellerID));
+    dispatch(getSubCategory(sellerID));
+    dispatch(getBrand(sellerID));
+  }, []);
+
+  useEffect(() => {
+    dispatch(getServiceCategory(sellerID));
+    dispatch(getServiceSubCategory(sellerID));
+    dispatch(getAllPosUsers(sellerID));
+  }, []);
+
+  useEffect(() => {
     setfilterMenuTitle(originalFilterData);
     setisFilterDataSeclectedOfIndex(null);
     setTimeout(() => {
@@ -151,7 +248,7 @@ export function MainScreen({
   useEffect(() => {
     dispatch(getMainProduct());
     dispatch(getMainServices());
-  }, []);
+  }, [isClear]);
 
   const onChangeFun = (search) => {
     setSearch(search);
@@ -176,32 +273,49 @@ export function MainScreen({
     }
   };
 
-  const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
+  useEffect(() => {
+    if (isFocus) {
+      if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
+        const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
+          product_id: obj.product_id,
+          qty: obj.qty,
+          supply_id: obj.supply_id,
+          supply_price_id: obj.supply_price_id,
+        }));
+        dispatch(addLocalCart(cartmatchId));
+        setSelectedCartItems(cartmatchId);
+      } else {
+        dispatch(updateCartLength(0));
+        dispatch(clearLocalCart());
+        setSelectedCartItems([]);
+      }
+    }
+  }, [isFocus]);
 
-  const [filterMenuTitle, setfilterMenuTitle] = useState(filterMenuData);
+  const cartQtyUpdate = () => {
+    if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
+      const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
+        product_id: obj.product_id,
+        qty: obj.qty,
+        supply_id: obj.supply_id,
+        supply_price_id: obj.supply_price_id,
+      }));
+      dispatch(addLocalCart(cartmatchId));
+      setSelectedCartItems(cartmatchId);
+    }
+  };
 
-  const [isFilterDataSeclectedOfIndex, setisFilterDataSeclectedOfIndex] = useState();
-
-  const [selectedCatID, setselectedCatID] = useState(null);
-  const [selectedSubCatID, setselectedSubCatID] = useState(null);
-  const [selectedBrandID, setselectedBrandID] = useState(null);
-  const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
-
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAdd, setUserAdd] = useState('');
-
-  const [page, setPage] = useState(1);
-
-  const [productCon, setProductCon] = useState(true);
-  const [serviceCon, setServiceCon] = useState(false);
-  const [filterCon, setFilterCon] = useState(false);
-  const [serviceFilterCon, setServiceFilterCon] = useState(false);
-  const [serviceItemSave, setServiceItemSave] = useState();
-  const [selectedItems, setSelectedItems] = useState([]);
-
-  const dispatch = useDispatch();
-  const isFocus = useIsFocused();
+  const bulkCart = async () => {
+    if (localCartArray.length > 0) {
+      const dataToSend = {
+        seller_id: sellerID,
+        products: localCartArray,
+      };
+      try {
+        dispatch(createBulkcart(dataToSend));
+      } catch (error) {}
+    }
+  };
 
   useEffect(() => {
     if (selectedCatID) {
@@ -214,18 +328,41 @@ export function MainScreen({
     }
   }, [cartLength]);
 
-  const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
+  const onClickAddCart = (item, index, cartQty) => {
+    const mainProductArray = getRetailData?.getMainProduct;
 
-  const onClickAddCart = (item) => {
-    const data = {
-      seller_id: sellerID,
-      supplyId: item?.supplies?.[0]?.id,
-      supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
+    const cartArray = selectedCartItem;
+
+    const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
+
+    const DATA = {
       product_id: item?.id,
-      service_id: item?.service_id,
       qty: 1,
+      supply_id: item?.supplies?.[0]?.id,
+      supply_price_id: item?.supplies?.[0]?.supply_prices[0]?.id,
     };
-    dispatch(addTocart(data));
+    if (existingItemIndex === -1) {
+      cartArray.push(DATA);
+      dispatch(updateCartLength(cartLength + 1));
+    } else {
+      cartArray[existingItemIndex].qty = cartQty + 1;
+    }
+    setSelectedCartItems(cartArray);
+    dispatch(addLocalCart(cartArray));
+    ///
+    mainProductArray.data[index].cart_qty += 1;
+    dispatch(getMainProductSuccess(mainProductArray));
+
+    //-------------OLD_CODE------------
+    // const data = {
+    //   seller_id: sellerID,
+    //   supplyId: item?.supplies?.[0]?.id,
+    //   supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
+    //   product_id: item?.id,
+    //   service_id: item?.service_id,
+    //   qty: 1,
+    // };
+    // dispatch(addTocart(data));
   };
 
   const originalFilterData = [
@@ -243,16 +380,26 @@ export function MainScreen({
     },
   ];
 
-  const productFun = async (productId) => {
+  const productFun = async (productId, index, item) => {
     const res = await dispatch(getOneProduct(sellerID, productId));
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
+      setProductIndex(index);
+      setProductItem(item);
     }
   };
-  const serviceFun = (item) => {
-    setServiceItemSave(item);
-    setAddServiceCartModal(true);
+
+  const serviceFun = async (serviceId) => {
+    const res = await dispatch(getOneService(sellerID, serviceId));
+    if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
+      setAddServiceCartModal(true);
+    }
   };
+
+  // const serviceFun = (item) => {
+  //   setServiceItemSave(item);
+  //   setAddServiceCartModal(true);
+  // };
 
   const userInputClear = () => {
     setUserEmail('');
@@ -264,12 +411,13 @@ export function MainScreen({
     setCartModal(false);
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
     const color = item.id === selectedId ? 'white' : 'black';
     return (
       <Item
         item={item}
+        index={index}
         onPress={() => setSelectedId(item.id)}
         backgroundColor={backgroundColor}
         textColor={color}
@@ -277,13 +425,21 @@ export function MainScreen({
     );
   };
 
-  const Item = ({ item }) => {
-    const isProductMatchArray = cartmatchId?.find((data) => data.product_id === item.id);
+  const Item = ({ item, index }) => {
+    const isProductMatchArray = localCartArray?.find((data) => data.product_id === item.id);
     const cartAddQty = isProductMatchArray?.qty;
+    // Create a new object with updated cart_qty value
+
+    const updatedItem = { ...item };
+    if (cartAddQty !== undefined) {
+      updatedItem.cart_qty = cartAddQty;
+    }
+
     return (
       <TouchableOpacity
+        key={index}
         style={styles.productCon}
-        onPress={() => productFun(item.id)}
+        onPress={() => productFun(item.id, index, item)}
         activeOpacity={0.7}
       >
         {/* <Image source={{ uri: item.image }} style={styles.categoryshoes} /> */}
@@ -310,16 +466,34 @@ export function MainScreen({
             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
           </Text>
           {/* addToCartBlue */}
-          <TouchableOpacity onPress={() => onClickAddCart(item)}>
-            <Image
+          <TouchableOpacity
+            // activeOpacity={1}
+            onPress={() => onClickAddCart(item, index, cartAddQty)}
+          >
+            <FastImage
               source={isProductMatchArray ? addToCartBlue : addToCart}
               style={styles.addToCart}
+              resizeMode={FastImage.resizeMode.contain}
             />
-            {isProductMatchArray ? (
+            {/* -----New_In progress_CODE------- */}
+            {updatedItem.cart_qty > 0 && (
+              <View style={styles.productBadge}>
+                <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
+              </View>
+            )}
+            {/* {cartAddQty>0 &&
+           <View 
+           style={styles.productBadge}>
+               <Text style={styles.productBadgeText}>{cartAddQty}</Text>
+            </View>
+          } */}
+
+            {/* -----OLD_CODE------- */}
+            {/* {isProductMatchArray ? (
               <View style={styles.productBadge}>
                 <Text style={styles.productBadgeText}>{cartAddQty}</Text>
               </View>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         </TouchableOpacity>
       </TouchableOpacity>
@@ -340,10 +514,69 @@ export function MainScreen({
     setServiceFilterCon(false);
   };
 
+  const onSelectedItemsChange = (selectedItems) => {
+    setSelectedItems(selectedItems);
+  };
+
+  const eraseClearCart = async () => {
+    setSelectedCartItems([]);
+    dispatch(clearLocalCart());
+    dispatch(updateCartLength(0));
+    dispatch(getMainProduct());
+    setLocalCartArray([]);
+    setIsClear(true);
+
+    if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
+      dispatch(clearAllCart());
+    }
+  };
+
+  const isLoadingMore = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_PRODUCT_PAGINATION], state)
+  );
+  const onLoadMoreProduct = () => {
+    setPage((prevPage) => prevPage + 1);
+    const totalPages = getRetailData?.getMainProduct?.total_pages;
+    if (page <= totalPages) {
+      // if (!isScrolling) return;
+      const data = {
+        page: page,
+      };
+      dispatch(getMainProductPagination(data));
+    }
+  };
+
+  const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
+
+  const renderFooterPost = () => {
+    return (
+      <View style={{}}>
+        {isLoadingMore && (
+          <ActivityIndicator
+            style={{ marginVertical: 14 }}
+            size={'large'}
+            color={COLORS.blueLight}
+          />
+        )}
+      </View>
+    );
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => dispatch(getMainProduct());
+    }, [])
+  );
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.homeScreenCon}>
-        <CustomHeader iconShow={showCart ? true : false} crossHandler={() => setShowCart(false)} />
+        <CustomHeader
+          iconShow={showCart ? true : false}
+          crossHandler={() => {
+            setShowCart(false);
+          }}
+        />
         {getMerchantService?.is_product_exist === false &&
         getMerchantService?.is_service_exist === false ? (
           <View style={styles.noproductServiceCon}>
@@ -389,11 +622,13 @@ export function MainScreen({
                         onChangeText={(search) => onChangeFun(search)}
                         placeholderTextColor={COLORS.gerySkies}
                       />
+
                       {search?.length > 0 ? (
                         <TouchableOpacity
                           onPress={() => {
                             setSearch(''), dispatch(getMainProduct()), Keyboard.dismiss();
                           }}
+                          style={{ marginRight: ms(7) }}
                         >
                           <Image
                             source={cross}
@@ -401,6 +636,9 @@ export function MainScreen({
                           />
                         </TouchableOpacity>
                       ) : null}
+                      {/* <TouchableOpacity>
+                        <Image source={scn} style={styles.scnStyle} />
+                      </TouchableOpacity> */}
                     </View>
                   </View>
                 ) : (
@@ -493,18 +731,38 @@ export function MainScreen({
                           >
                             {'Filter'}
                           </Text>
-                          <Image
-                            source={filter}
-                            style={
-                              filterCon
-                                ? [styles.productImageStyle, { tintColor: COLORS.primary }]
-                                : styles.productImageStyle
-                            }
-                          />
+                          <View>
+                            <Image
+                              source={filter}
+                              style={
+                                filterCon
+                                  ? [styles.productImageStyle, { tintColor: COLORS.primary }]
+                                  : styles.productImageStyle
+                              }
+                            />
+                            {productFilter > 0 ? (
+                              <View style={styles.filterBadge}>
+                                <Text style={styles.filterBadgeText}>{productFilter}</Text>
+                              </View>
+                            ) : null}
+                          </View>
                         </TouchableOpacity>
                         {filterCon ? (
                           // <View style={styles.categoryFilterCon}>
-                          <FilterDropDown data={items} sellerid={sellerID} />
+                          <FilterDropDown
+                            data={items}
+                            sellerid={sellerID}
+                            productFilterCount={setProductFilter}
+                            backfilterValue={productFilter}
+                            closeHandler={() => setFilterCon(false)}
+                            // settleFunction={() => {
+                            //   dispatch(getCategory(sellerID));
+                            //   dispatch(getSubCategory(sellerID));
+                            //   dispatch(getBrand(sellerID));
+                            // }}
+
+                            // productArrayLength={() => setProductfilterLength(productfilterLength)}
+                          />
                         ) : // </View>
                         null}
                       </View>
@@ -527,18 +785,31 @@ export function MainScreen({
                           >
                             {'Filter'}
                           </Text>
-                          <Image
-                            source={filter}
-                            style={
-                              serviceFilterCon
-                                ? [styles.productImageStyle, { tintColor: COLORS.primary }]
-                                : styles.productImageStyle
-                            }
-                          />
+                          <View>
+                            <Image
+                              source={filter}
+                              style={
+                                serviceFilterCon
+                                  ? [styles.productImageStyle, { tintColor: COLORS.primary }]
+                                  : styles.productImageStyle
+                              }
+                            />
+                            {serviceFilter > 0 ? (
+                              <View style={styles.filterBadge}>
+                                <Text style={styles.filterBadgeText}>{serviceFilter}</Text>
+                              </View>
+                            ) : null}
+                          </View>
                         </TouchableOpacity>
                         {serviceFilterCon ? (
                           // <View style={styles.categoryFilterCon}>
-                          <ServiceFilterDropDown data={items} sellerid={sellerID} />
+                          <ServiceFilterDropDown
+                            data={items}
+                            sellerid={sellerID}
+                            serviceFilterCount={setServiceFilter}
+                            backfilterValue={serviceFilter}
+                            closeHandler={() => setServiceFilterCon(false)}
+                          />
                         ) : // </View>
                         null}
                       </View>
@@ -555,20 +826,30 @@ export function MainScreen({
                   data={mainProductArray}
                   extraData={mainProductArray}
                   renderItem={renderItem}
-                  keyExtractor={(item, index) => index}
+                  keyExtractor={(_, index) => index.toString()}
                   numColumns={7}
                   contentContainerStyle={{
-                    flexGrow: 1,
                     justifyContent: 'space-between',
-                    zIndex: -99,
                   }}
                   scrollEnabled={true}
+                  showsVerticalScrollIndicator={false}
+                  ListFooterComponent={renderFooterPost}
+                  onEndReached={debouncedLoadMoreProduct}
+                  // onEndReached={onLoadMoreProduct}
+                  onEndReachedThreshold={0.5}
+                  // onMomentumScrollBegin={() => {
+                  //   setIsScrolling(true);
+                  // }}
+                  // onMomentumScrollEnd={() => {
+                  //   setIsScrolling(false);
+                  // }}
                   ListEmptyComponent={() => (
                     <View style={styles.noProductText}>
-                      <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>Loading...</Text>
+                      <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                        No Data found
+                      </Text>
                     </View>
                   )}
-                  style={{ zIndex: -99 }}
                 />
               ) : (
                 <FlatList
@@ -578,7 +859,7 @@ export function MainScreen({
                     return (
                       <TouchableOpacity
                         style={styles.productCon}
-                        onPress={() => serviceFun(item)}
+                        onPress={() => serviceFun(item.id)}
                         activeOpacity={0.7}
                       >
                         <View style={styles.avalibleServiceCon}>
@@ -605,7 +886,7 @@ export function MainScreen({
                         <Spacer space={SH(6)} />
                         <View>
                           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                            {item?.pos_users?.map((data, index) => (
+                            {item?.pos_staff?.map((data, index) => (
                               <Image
                                 key={index}
                                 source={
@@ -631,7 +912,11 @@ export function MainScreen({
                             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
                           </Text>
                           <View>
-                            <Image source={addToCart} style={styles.addToCart} />
+                            <FastImage
+                              source={addToCart}
+                              style={styles.addToCart}
+                              resizeMode="contain"
+                            />
                             {/* {isProductMatchArray ? (
                           <View style={styles.productBadge}>
                             <Text style={styles.productBadgeText}>{cartAddQty}</Text>
@@ -649,6 +934,7 @@ export function MainScreen({
                     justifyContent: 'space-between',
                     zIndex: -99,
                   }}
+                  showsVerticalScrollIndicator={false}
                   scrollEnabled={true}
                   ListEmptyComponent={() => (
                     <View style={styles.noProductText}>
@@ -667,7 +953,9 @@ export function MainScreen({
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
                     disabled={cartLength > 0 ? false : true}
-                    onPress={() => setCartModal(true)}
+                    onPress={() => {
+                      bulkCart(), setCartModal(true);
+                    }}
                   >
                     <Image
                       source={bucket}
@@ -696,17 +984,16 @@ export function MainScreen({
                     </View>
                   </TouchableOpacity>
                   <Spacer space={SH(25)} />
-                  <View>
-                    <TouchableOpacity onPress={() => setNumPadModal(!numPadModal)}>
-                      <Image
-                        source={sideKeyboard}
-                        style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
-                      />
-                    </TouchableOpacity>
-                    {numPadModal ? (
+                  <TouchableOpacity onPress={() => setNumPadModal(!numPadModal)}>
+                    <Image
+                      source={plus}
+                      style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
+                    />
+                  </TouchableOpacity>
+                  {/* {numPadModal ? (
                       <View
                         style={{
-                          width: ms(300),
+                          width: Platform.OS === 'android' ? ms(300) : ms(240),
                           height: ms(280),
                           position: 'absolute',
                           right: 60,
@@ -727,11 +1014,11 @@ export function MainScreen({
                           // }}
                         />
                       </View>
-                    ) : null}
-                  </View>
+                    ) : null} */}
+
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
-                    onPress={() => dispatch(clearAllCart())}
+                    onPress={() => eraseClearCart()}
                     disabled={cartLength > 0 ? false : true}
                   >
                     <Image
@@ -778,7 +1065,12 @@ export function MainScreen({
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
                   disabled={cartLength > 0 ? false : true}
-                  onPress={cartScreenHandler}
+                  onPress={() => {
+                    bulkCart();
+                    setTimeout(() => {
+                      cartScreenHandler();
+                    }, 200);
+                  }}
                   style={
                     cartLength > 0
                       ? [styles.bucketBackgorund, { backgroundColor: COLORS.primary }]
@@ -801,7 +1093,7 @@ export function MainScreen({
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
                     disabled={serviceCartLength > 0 ? false : true}
-                    // onPress={() => setCartModal(true)}
+                    onPress={() => setServiceCartModal(true)}
                   >
                     <Image
                       source={bucket}
@@ -831,16 +1123,16 @@ export function MainScreen({
                   </TouchableOpacity>
                   <Spacer space={SH(25)} />
                   <View>
-                    <TouchableOpacity onPress={() => setServiceNumPadModal(!serviceNumPadModal)}>
+                    <TouchableOpacity onPress={() => setNumPadModal(!numPadModal)}>
                       <Image
-                        source={sideKeyboard}
-                        style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
+                        source={plus}
+                        style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
                       />
                     </TouchableOpacity>
-                    {serviceNumPadModal ? (
+                    {/* {serviceNumPadModal ? (
                       <View
                         style={{
-                          width: ms(300),
+                          width: Platform.OS === 'android' ? ms(300) : ms(240),
                           height: ms(280),
                           position: 'absolute',
                           right: 60,
@@ -861,12 +1153,12 @@ export function MainScreen({
                           // }}
                         />
                       </View>
-                    ) : null}
+                    ) : null} */}
                   </View>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
                     onPress={() => dispatch(clearServiceAllCart())}
-                    disabled={cartLength > 0 ? false : true}
+                    disabled={serviceCartLength > 0 ? false : true}
                   >
                     <Image
                       source={sideEarser}
@@ -878,7 +1170,12 @@ export function MainScreen({
                     />
                   </TouchableOpacity>
                   <Spacer space={SH(20)} />
-                  <TouchableOpacity onPress={serviceCartStatusHandler}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      serviceCartStatusHandler();
+                      // setGoToCart(true)
+                    }}
+                  >
                     <Image
                       source={holdCart}
                       style={
@@ -940,8 +1237,29 @@ export function MainScreen({
         animationOut={'slideOutRight'}
       >
         <CartListModal
+          cartQtyUpdate={cartQtyUpdate}
+          clearCart={eraseClearCart}
           checkOutHandler={checkOutHandler}
           CloseCartModal={() => setCartModal(false)}
+        />
+      </ReactNativeModal>
+
+      {/* cart list modal end */}
+
+      {/* cart list modal start */}
+      <ReactNativeModal
+        animationType="fade"
+        transparent={true}
+        isVisible={serviceCartModal}
+        animationIn={'slideInRight'}
+        animationOut={'slideOutRight'}
+      >
+        <ServiceCartListModal
+          clearCart={() => {
+            dispatch(clearServiceAllCart()), setServiceCartModal(false);
+          }}
+          checkOutHandler={checkOutHandler}
+          CloseCartModal={() => setServiceCartModal(false)}
         />
       </ReactNativeModal>
 
@@ -954,7 +1272,10 @@ export function MainScreen({
             crossHandler={() => setAddCartModal(false)}
             detailHandler={() => setAddCartDetailModal(true)}
             sellerID={sellerID}
+            productIndex={productIndex}
+            addToLocalCart={onClickAddCart}
             backToCartHandler={() => cartScreenHandler()}
+            openFrom="main"
           />
         )}
       </Modal>
@@ -1113,6 +1434,12 @@ export function MainScreen({
               )}
             </View>
           </ScrollView>
+        </KeyboardAvoidingView>
+      </Modal>
+
+      <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+          <CustomProductAdd crossHandler={() => setNumPadModal(false)} />
         </KeyboardAvoidingView>
       </Modal>
     </View>

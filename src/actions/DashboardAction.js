@@ -159,7 +159,7 @@ export const getOrderDeliveries = (sellerID, page) => async (dispatch) => {
   dispatch(getOrderDeliveriesRequest());
   try {
     const res = await DashboardController.getOrderDeliveries(sellerID, page);
-    dispatch(getOrderDeliveriesSuccess(res?.payload?.data));
+    dispatch(getOrderDeliveriesSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getOrderDeliveriesReset());

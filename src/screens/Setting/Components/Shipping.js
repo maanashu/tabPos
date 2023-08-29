@@ -2,23 +2,9 @@ import React, { useEffect } from 'react';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
-import {
-  vector,
-  localImage,
-  toggleOn,
-  jobrDelivery,
-  locationIcon,
-  vectorOff,
-} from '@/assets';
+import { vector, localImage, toggleOn, jobrDelivery, locationIcon, vectorOff } from '@/assets';
 import { verticalScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,17 +30,14 @@ export function Shipping() {
     };
     dispatch(addressUpdateById(body));
   };
-  const defaultUpdate = data => {
-    // console.log('data', data?.is_active);
+  const defaultUpdate = (data) => {
     // if (data?.is_active) {
     // }
   };
 
   const renderItem = ({ item }) => {
     return (
-      <View
-        style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}
-      >
+      <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
           <Image
             source={{ uri: item.image }}
@@ -63,21 +46,14 @@ export function Shipping() {
           <View style={styles.twoStepVerifiCon}>
             <Text style={styles.twoStepText}>{item.address_type}</Text>
             <Spacer space={SH(10)} />
-            <Text style={styles.securitysubhead}>
-              {item.pickup_instructions}
-            </Text>
+            <Text style={styles.securitysubhead}>{item.pickup_instructions}</Text>
             <Spacer space={SH(18)} />
 
             {item?.seller_addresses?.map((data, index) => (
               <View style={styles.twoStepMemberCon} key={index}>
                 <View style={styles.flexRow}>
-                  <View
-                    style={[styles.dispalyRow, { alignItems: 'flex-start' }]}
-                  >
-                    <Image
-                      source={locationIcon}
-                      style={styles.toggleSecurity}
-                    />
+                  <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
+                    <Image source={locationIcon} style={styles.toggleSecurity} />
 
                     <View style={styles.twoStepVerifiCon}>
                       <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
@@ -87,10 +63,8 @@ export function Shipping() {
                         style={[styles.securitysubhead, { fontSize: SF(12) }]}
                         numberOfLines={1}
                       >
-                        {data.current_address?.zipcode} ,
-                        {data.current_address?.street_address} ,
-                        {data.current_address?.city} ,
-                        {data.current_address?.state} ,
+                        {data.current_address?.zipcode} ,{data.current_address?.street_address} ,
+                        {data.current_address?.city} ,{data.current_address?.state} ,
                         {data.current_address?.country}
                       </Text>
                     </View>
@@ -136,7 +110,7 @@ export function Shipping() {
           data={shippingpickupData}
           extraData={shippingpickupData}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
         />
       </View>
 

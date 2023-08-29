@@ -214,25 +214,10 @@ const OrderDetail = ({
               <Text style={styles.itemCountText}>{userDetail?.id}</Text>
             </View>
 
-            {openShippingOrders == '0' ||
-            openShippingOrders == '1' ||
-            openShippingOrders == '2' ? null : (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingVertical: 10,
-                }}
-              >
-                <Text
-                  style={[
-                    styles.invoiceText,
-                    { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
-                  ]}
-                >
-                  {'Tracking ID - '}
-                </Text>
+            <Spacer space={SH(15)} />
+            {openShippingOrders > '2' && (
+              <View>
+                <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'Tracking ID'}</Text>
                 <Text
                   style={[
                     styles.invoiceText,
@@ -245,7 +230,16 @@ const OrderDetail = ({
             )}
           </View>
 
-          <View style={{ paddingHorizontal: 10 }}>
+          <View
+            style={{
+              width: ms(200),
+              paddingHorizontal: ms(20),
+              borderRadius: 10,
+              paddingVertical: 20,
+              alignSelf: 'center',
+              backgroundColor: COLORS.textInputBackground,
+            }}
+          >
             <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
               <Text style={[styles.invoiceText, { color: COLORS.solid_grey }]}>
                 {strings.deliveryOrders.subTotal}
@@ -303,7 +297,10 @@ const OrderDetail = ({
                         openShippingOrders === '0' ? 1 : openShippingOrders === '1' ? 2 : 3
                       )
                     }
-                    style={styles.acceptButtonView}
+                    style={[
+                      styles.acceptButtonView,
+                      { width: openShippingOrders > '0' ? ms(170) : ms(80) },
+                    ]}
                   >
                     <Text style={styles.acceptTextStyle}>
                       {openShippingOrders === '0'
@@ -311,19 +308,21 @@ const OrderDetail = ({
                         : openShippingOrders === '1'
                         ? strings.buttonStatus.acceptedButton
                         : openShippingOrders === '2'
-                        ? strings.buttonStatus.prepareButton
+                        ? strings.buttonStatus.printlabel
                         : ''}
                     </Text>
                   </TouchableOpacity>
                 ) : null}
               </View>
             ) : (
-              <TouchableOpacity
-                onPress={() => trackOrderHandler(getTrackingInfo)}
-                style={styles.acceptButtonView}
-              >
-                <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
-              </TouchableOpacity>
+              <View style={styles.shippingOrdersViewStyle}>
+                <TouchableOpacity
+                  onPress={() => trackOrderHandler(getTrackingInfo)}
+                  style={[styles.acceptButtonView, { width: ms(170) }]}
+                >
+                  <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
+                </TouchableOpacity>
+              </View>
             )}
           </View>
         </View>

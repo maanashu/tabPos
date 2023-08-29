@@ -34,10 +34,13 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   textInputStyle: {
-    width: SW(75),
+    height: SH(40),
+    width: SW(70),
     fontFamily: Fonts.Italic,
-    fontSize: SF(15),
+    fontSize: SF(12),
     paddingLeft: 5,
+    margin: 0,
+    padding: 0,
   },
   truckStyle: {
     width: SH(32),
@@ -57,7 +60,7 @@ export const styles = StyleSheet.create({
   },
   searchView: {
     borderWidth: 1,
-    height: SH(38),
+    height: SH(40),
     borderRadius: 30,
     borderColor: COLORS.row_grey,
     flexDirection: 'row',
@@ -656,12 +659,12 @@ export const styles = StyleSheet.create({
   eventDetailModalContainer: {
     backgroundColor: COLORS.white,
     borderRadius: ms(5),
-    width: '40%',
+    width: '50%',
     alignSelf: 'center',
-    paddingVertical: ms(10),
+    flexDirection: 'row',
   },
   crossStl: { height: ms(15), width: ms(15), tintColor: COLORS.black },
-  crossEventDetailModal: { position: 'absolute', right: ms(10), top: ms(5) },
+  crossEventDetailModal: { position: 'absolute', right: ms(10), top: ms(4) },
   profilePicContainer: {
     height: ms(12),
     width: ms(12),

@@ -38,13 +38,18 @@ const OrderConvertion = ({
             </View>
           </View>
         ) : (
-          <PieChart
-            series={[100]}
-            coverRadius={0.7}
-            sliceColor={[COLORS.light_sky]}
-            coverFill={COLORS.white}
-            widthAndHeight={140}
-          />
+          <View>
+            <PieChart
+              series={[100]}
+              coverRadius={0.7}
+              sliceColor={[COLORS.light_sky]}
+              coverFill={COLORS.white}
+              widthAndHeight={140}
+            />
+            <View style={styles.percentageView}>
+              <Text style={styles.percentageTextStyle}>{'0%'}</Text>
+            </View>
+          </View>
         )}
 
         <Spacer space={SH(10)} />
@@ -61,32 +66,36 @@ const OrderConvertion = ({
         ) : (
           <>
             <View style={styles.ordersRowView}>
-              <Text style={styles.orderTypeTextStyle}>{'Delivered Orders'}</Text>
+              <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.incomingOrders}</Text>
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[0]?.percentage)}%` ?? '0%'}
               </Text>
             </View>
 
             <View style={styles.ordersRowView}>
-              <Text style={styles.orderTypeTextStyle}>{'Cancelled Orders'}</Text>
+              <Text style={styles.orderTypeTextStyle}>
+                {strings.shippingOrder.processingOrders}
+              </Text>
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
               </Text>
             </View>
 
             <View style={styles.ordersRowView}>
-              <Text style={styles.orderTypeTextStyle}>{'Retured Order'}</Text>
+              <Text style={styles.orderTypeTextStyle}>
+                {strings.shippingOrder.readyPickupOrders}
+              </Text>
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
               </Text>
             </View>
 
-            {/* <View style={styles.ordersRowView}>
+            <View style={styles.ordersRowView}>
               <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.completed}</Text>
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[3]?.percentage)}%` ?? '0'}
               </Text>
-            </View> */}
+            </View>
           </>
         )}
         <Spacer space={ms(10)} />

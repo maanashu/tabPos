@@ -17,16 +17,18 @@ const windowWidth = Dimensions.get('window').width;
 export function AddServiceCartModal({
   crossHandler,
   detailHandler,
-  itemData,
+  // itemData ,
+  offerId,
   sellerID,
   backToCartHandler,
 }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+  const itemData = getRetailData?.getOneService?.product_detail;
   const cartServiceData = getRetailData?.getserviceCart;
   const timeSlotsData = getRetailData?.timeSlots;
-  const [posUserId, setposUserId] = useState(itemData?.pos_staff[0]?.user?.unique_uuid);
-  const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff[0]?.user);
+  const [posUserId, setposUserId] = useState(itemData?.pos_staff?.[0]?.user?.unique_uuid);
+  const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff?.[0]?.user);
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
@@ -101,7 +103,7 @@ export function AddServiceCartModal({
         alignItems: 'center',
         justifyContent: 'center',
         width: '25.1%',
-        height: ms(24),
+        height: ms(23),
         borderColor: COLORS.solidGrey,
         backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
       }}
@@ -166,6 +168,7 @@ export function AddServiceCartModal({
       startTime: selectedTimeSlotData?.start_time,
       endTime: selectedTimeSlotData?.end_time,
       posUserId: posUserId,
+      offerId: offerId,
     };
     dispatch(addToServiceCart(data));
     crossHandler();
@@ -200,9 +203,9 @@ export function AddServiceCartModal({
             <Text style={styles.backTocartText}>Back to Cart</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.continueBtnCon} onPress={detailHandler}>
+          {/* <TouchableOpacity style={styles.continueBtnCon} onPress={detailHandler}>
             <Text style={styles.detailBtnCon}>Details</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity style={styles.addToCartCon} onPress={addToServiceCartHandler}>
             <Text style={styles.addTocartText}>Add to Cart</Text>
           </TouchableOpacity>
@@ -305,7 +308,7 @@ export function AddServiceCartModal({
 
         <View
           style={{
-            marginTop: SH(15),
+            marginTop: SH(10),
             borderWidth: 1,
             borderColor: COLORS.solidGrey,
             width: '100%',

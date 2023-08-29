@@ -1,18 +1,7 @@
-import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  TextInput,
-} from 'react-native';
+import React, { useRef } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
-import {
-  moderateScale,
-  moderateVerticalScale,
-  verticalScale,
-} from 'react-native-size-matters';
+import { moderateScale, moderateVerticalScale, verticalScale } from 'react-native-size-matters';
 import { checkbox, checkedCheckbox, Fonts } from '@/assets';
 import { Spacer } from './Spacer';
 import { strings } from '@/localization';
@@ -42,30 +31,34 @@ export function AddDiscountToCart({
           {/* <Spacer space={SH(12)} />
           <Text style={styles.discountHeader}>{strings.posSale.discount}</Text>
           <Spacer space={SH(12)} /> */}
-          <View
-            style={
-              amountCheck
-                ? styles.dicountInputWraper2
-                : styles.dicountInputWraper
-            }
-          >
-            <View style={styles.displayFlex}>
-              <View style={styles.displayFlex}>
-                <TouchableOpacity
-                  onPress={() => (
-                    setAmountCheck(!amountCheck),
-                    setPercentageCheck(false),
-                    setDiscountCheck(false),
-                    setValue('amount'),
-                    setPercentDis(''),
-                    setDiscountCode('')
-                  )}
+          <View style={amountCheck ? styles.dicountInputWraper2 : styles.dicountInputWraper}>
+            <TouchableOpacity
+              style={[styles.displayFlex]}
+              onPress={() => (
+                setAmountCheck(!amountCheck),
+                setPercentageCheck(false),
+                setDiscountCheck(false),
+                setValue('amount'),
+                setPercentDis(''),
+                setDiscountCode('')
+              )}
+            >
+              <View style={[styles.displayFlex]}>
+                <View
+                // onPress={() => (
+                //   setAmountCheck(!amountCheck),
+                //   setPercentageCheck(false),
+                //   setDiscountCheck(false),
+                //   setValue('amount'),
+                //   setPercentDis(''),
+                //   setDiscountCode('')
+                // )}
                 >
                   <Image
                     source={amountCheck ? checkedCheckbox : checkbox}
                     style={styles.checkboxStyle}
                   />
-                </TouchableOpacity>
+                </View>
                 <Text
                   numberOfLines={1}
                   style={amountCheck ? styles.amountLabel2 : styles.amountLabel}
@@ -85,38 +78,31 @@ export function AddDiscountToCart({
                 editable={percentageCheck || discountCheck ? false : true}
                 placeholderTextColor={COLORS.darkGray}
               />
-            </View>
+            </TouchableOpacity>
           </View>
           <Spacer space={SH(12)} backgroundColor={COLORS.textInputBackground} />
-          <View
-            style={
-              percentageCheck
-                ? styles.dicountInputWraper2
-                : styles.dicountInputWraper
-            }
-          >
-            <View style={styles.displayFlex}>
+          <View style={percentageCheck ? styles.dicountInputWraper2 : styles.dicountInputWraper}>
+            <TouchableOpacity
+              style={styles.displayFlex}
+              onPress={() => (
+                setPercentageCheck(!percentageCheck),
+                setAmountCheck(false),
+                setDiscountCheck(false),
+                setValue('percentage'),
+                setDiscountCode(''),
+                setAmountDis('')
+              )}
+            >
               <View style={styles.displayFlex}>
-                <TouchableOpacity
-                  onPress={() => (
-                    setPercentageCheck(!percentageCheck),
-                    setAmountCheck(false),
-                    setDiscountCheck(false),
-                    setValue('percentage'),
-                    setDiscountCode(''),
-                    setAmountDis('')
-                  )}
-                >
+                <View>
                   <Image
                     source={percentageCheck ? checkedCheckbox : checkbox}
                     style={styles.checkboxStyle}
                   />
-                </TouchableOpacity>
+                </View>
                 <Text
                   numberOfLines={1}
-                  style={
-                    percentageCheck ? styles.amountLabel2 : styles.amountLabel
-                  }
+                  style={percentageCheck ? styles.amountLabel2 : styles.amountLabel}
                 >
                   {strings.retail.perDis}
                 </Text>
@@ -135,39 +121,32 @@ export function AddDiscountToCart({
                 editable={discountCheck || amountCheck ? false : true}
                 placeholderTextColor={COLORS.darkGray}
               />
-            </View>
+            </TouchableOpacity>
           </View>
 
           <Spacer space={SH(12)} backgroundColor={COLORS.textInputBackground} />
-          <View
-            style={
-              discountCheck
-                ? styles.dicountInputWraper2
-                : styles.dicountInputWraper
-            }
-          >
-            <View style={styles.displayFlex}>
+          <View style={discountCheck ? styles.dicountInputWraper2 : styles.dicountInputWraper}>
+            <TouchableOpacity
+              style={styles.displayFlex}
+              onPress={() => (
+                setDiscountCheck(!discountCheck),
+                setPercentageCheck(false),
+                setAmountCheck(false),
+                setPercentDis(''),
+                setAmountDis(''),
+                setValue('code')
+              )}
+            >
               <View style={styles.displayFlex}>
-                <TouchableOpacity
-                  onPress={() => (
-                    setDiscountCheck(!discountCheck),
-                    setPercentageCheck(false),
-                    setAmountCheck(false),
-                    setPercentDis(''),
-                    setAmountDis(''),
-                    setValue('code')
-                  )}
-                >
+                <View>
                   <Image
                     source={discountCheck ? checkedCheckbox : checkbox}
                     style={styles.checkboxStyle}
                   />
-                </TouchableOpacity>
+                </View>
                 <Text
                   numberOfLines={1}
-                  style={
-                    discountCheck ? styles.amountLabel2 : styles.amountLabel
-                  }
+                  style={discountCheck ? styles.amountLabel2 : styles.amountLabel}
                 >
                   {strings.retail.DisCode}
                 </Text>
@@ -186,7 +165,7 @@ export function AddDiscountToCart({
                 editable={percentageCheck || amountCheck ? false : true}
                 placeholderTextColor={COLORS.darkGray}
               />
-            </View>
+            </TouchableOpacity>
           </View>
 
           <Spacer space={SH(12)} backgroundColor={COLORS.textInputBackground} />

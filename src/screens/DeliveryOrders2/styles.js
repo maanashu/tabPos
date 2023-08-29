@@ -5,6 +5,9 @@ import { Fonts } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
+const result = Dimensions.get('window').height - 50;
+const equalPartSize = result / 3;
+const twoEqualView = result / 2;
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +24,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: ms(10),
     backgroundColor: COLORS.white,
+    height: equalPartSize - 130,
   },
   shippingStatusText: {
     fontFamily: Fonts.SemiBold,
@@ -38,49 +42,11 @@ const styles = StyleSheet.create({
   shippingOrdersViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  currentStatusView: {
-    width: SW(100),
-    borderRadius: 10,
-    backgroundColor: COLORS.white,
-    paddingVertical: SH(15),
-  },
-  currentStatusText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(16),
-    color: COLORS.text,
-    paddingLeft: SW(6),
-  },
-  shippingTypeImage: {
-    width: ms(15),
-    height: ms(15),
-    resizeMode: 'contain',
-    alignSelf: 'center',
-  },
-  itemMainViewStyle: {
-    borderWidth: 1,
-    marginHorizontal: SW(6),
-    marginVertical: SH(4),
-    borderRadius: 5,
-    borderColor: COLORS.solidGrey,
-    backgroundColor: COLORS.white,
-    paddingHorizontal: 12,
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  shippingTypeDetails: {
     justifyContent: 'center',
-    marginHorizontal: 15,
-  },
-  shippingTypeText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(11),
-    color: COLORS.darkGray,
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
+    fontSize: ms(7.2),
     color: COLORS.solid_grey,
     paddingTop: ms(2),
   },
@@ -94,7 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
-    height: Dimensions.get('window').height / ms(1.18),
+    height: equalPartSize + 120,
   },
   orderTextStyle: {
     fontFamily: Fonts.MaisonBold,
@@ -159,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 15,
-    width: Dimensions.get('window').width / ms(1.42),
+    width: Dimensions.get('window').width / ms(1.6),
     paddingVertical: 10,
     borderColor: COLORS.blue_shade,
   },
@@ -183,12 +149,12 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   orderDetailStyle: {
-    width: SW(33),
+    width: SW(30),
     justifyContent: 'center',
   },
   nameTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(12),
+    fontSize: SF(10),
     color: COLORS.solid_grey,
   },
   varientTextStyle: {
@@ -198,7 +164,7 @@ const styles = StyleSheet.create({
   },
   distanceTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(11),
+    fontSize: SF(9),
     color: COLORS.dark_grey,
     paddingLeft: 5,
   },
@@ -270,14 +236,14 @@ const styles = StyleSheet.create({
     height: ms(13),
     borderRadius: ms(10),
     position: 'absolute',
-    right: 8,
-    bottom: 7,
+    right: 5,
+    bottom: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
   badgetext: {
     color: COLORS.dark_grey,
-    fontSize: SF(11),
+    fontSize: ms(5.5),
     fontFamily: Fonts.SemiBold,
   },
   holdBadge: {
@@ -302,6 +268,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     // marginTop: ms(30),
     backgroundColor: COLORS.white,
+    height: twoEqualView,
+  },
+  loaderViewStyle: {
+    height: twoEqualView,
+    backgroundColor: COLORS.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -317,7 +291,7 @@ const styles = StyleSheet.create({
   ordersToReviewText: {
     color: COLORS.primary,
     fontSize: SF(18),
-    fontFamily: Fonts.MaisonBold,
+    fontFamily: Fonts.MaisonRegular,
   },
   graphViewStyle: {
     backgroundColor: COLORS.white,
@@ -325,6 +299,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.56,
     paddingHorizontal: 20,
     paddingBottom: 30,
+    height: twoEqualView,
   },
   numberOrdersText: {
     color: COLORS.dark_grey,
@@ -350,6 +325,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(22),
     color: COLORS.primary,
+    textAlign: 'center',
   },
   viewAllButtonStyle: {
     width: SH(70),
@@ -398,7 +374,11 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: Dimensions.get('window').width * 0.36,
+    width:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').width * 0.38
+        : Dimensions.get('window').width * 0.42,
+    height: Dimensions.get('window').height - 80,
   },
   userDetailView: {
     flex: 1,
@@ -418,8 +398,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingVertical: 30,
     borderRadius: 10,
-    marginTop: 20,
-    width: Dimensions.get('window').width / ms(1.9),
+    marginTop: ms(10),
     backgroundColor: COLORS.textInputBackground,
   },
   userImageStyle: {
@@ -435,6 +414,7 @@ const styles = StyleSheet.create({
   },
   userNameView: {
     paddingLeft: 10,
+    flex: 1,
   },
   orderproductView: {
     borderWidth: 1,
@@ -455,12 +435,12 @@ const styles = StyleSheet.create({
   },
   invoiceText: {
     fontFamily: Fonts.MaisonBold,
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.darkGray,
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(24),
+    fontSize: ms(12),
     color: COLORS.dark_grey,
   },
   totalText: {
@@ -474,9 +454,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
     backgroundColor: COLORS.primary,
-    // marginLeft: 10,
-    paddingHorizontal: 10,
-    flex: 1,
+    marginLeft: 10,
+    paddingHorizontal: ms(12),
   },
   acceptTextStyle: {
     textAlign: 'center',
@@ -491,7 +470,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: COLORS.primary,
     borderRadius: 5,
-    paddingHorizontal: 20,
+    paddingHorizontal: ms(12),
   },
   declineTextStyle: {
     textAlign: 'center',
@@ -507,27 +486,19 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   orderandPriceView: {
-    // justifyContent: 'space-around',
     flexDirection: 'row',
     backgroundColor: COLORS.white,
     position: 'absolute',
-    bottom: ms(10),
+    bottom: ms(5),
     alignSelf: 'center',
-    width: Dimensions.get('window').width * 0.36,
+    // width: Dimensions.get('window').width * 0.42,
     paddingTop: 15,
     paddingHorizontal: 10,
   },
-  activityIndicatorStyle: {
-    paddingVertical: ms(6),
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    paddingHorizontal: ms(30),
-  },
   map: {
-    height: Dimensions.get('screen').height,
-    height: '100%',
     width: '100%',
+    height: '100%',
+    borderRadius: 10,
   },
   backButtonView: {
     position: 'absolute',
@@ -556,13 +527,144 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subTotalView: {
-    paddingHorizontal: ms(5),
+    paddingHorizontal: ms(10),
     backgroundColor: COLORS.textInputBackground,
     paddingVertical: ms(8),
-    width: ms(150),
+    width:
+      Platform.OS === 'android'
+        ? Dimensions.get('window').width / 5
+        : Dimensions.get('window').width / 4.5,
+    borderRadius: 10,
   },
   flexDirectionRow: {
     flexDirection: 'row',
+  },
+  expandButtonStyle: {
+    backgroundColor: COLORS.primary,
+    position: 'absolute',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5,
+    padding: 10,
+    alignSelf: 'flex-end',
+    top: 20,
+    right: 20,
+  },
+  detailMap: {
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+  },
+  addressTextStyle: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(9),
+    color: COLORS.dark_grey,
+    paddingTop: ms(5),
+    textAlign: 'center',
+  },
+  firstNameText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(12),
+    color: COLORS.dark_grey,
+    paddingTop: ms(15),
+    textAlign: 'center',
+  },
+  driverListHeadingText: {
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(20),
+    color: COLORS.dark_grey,
+    textAlign: 'center',
+    paddingVertical: ms(15),
+  },
+  driverModalStyle: {
+    height: ms(250),
+    position: 'absolute',
+    bottom: 0,
+    right: 10,
+    borderRadius: 15,
+    alignSelf: 'flex-end',
+    backgroundColor: COLORS.white,
+    width: Dimensions.get('window').width / 2.5,
+  },
+  driverProfileStyle: {
+    width: ms(36),
+    height: ms(36),
+    borderRadius: 100,
+    resizeMode: 'cover',
+  },
+  storeNumberText: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(9),
+    color: COLORS.dark_grey,
+    paddingTop: ms(5),
+    textAlign: 'center',
+  },
+  storeDetailView: {
+    width: Dimensions.get('window').width / 3,
+    marginTop: ms(10),
+    backgroundColor: COLORS.white,
+    borderRadius: 15,
+    paddingBottom: 10,
+    height: Dimensions.get('window').height - 80,
+  },
+  dashedLineView: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderStyle: 'dashed',
+    marginTop: ms(5),
+  },
+  paymentModeText: { fontFamily: Fonts.SemiBold, fontSize: ms(9), color: COLORS.dark_grey },
+  paymentOptionView: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    paddingLeft: 15,
+  },
+  paymentOptionText: { fontFamily: Fonts.Regular, fontSize: ms(9), color: COLORS.dark_grey },
+  thankYouText: {
+    fontFamily: Fonts.MaisonBold,
+    fontSize: ms(16),
+    textAlign: 'center',
+    color: COLORS.dark_grey,
+  },
+  deliveryDateText: {
+    paddingLeft: 15,
+    fontFamily: Fonts.Regular,
+    fontSize: ms(9),
+    paddingTop: ms(5),
+    color: COLORS.dark_grey,
+  },
+  mapMainView: {
+    width: Dimensions.get('window').width / 2.2,
+    marginTop: ms(10),
+    borderRadius: 10,
+    backgroundColor: COLORS.white,
+    height: Dimensions.get('window').height - 80,
+  },
+  jobrTextStyle: {
+    fontFamily: Fonts.Bold,
+    fontSize: ms(16),
+    textAlign: 'center',
+    color: COLORS.primary,
+  },
+  mapMarkerStyle: { height: ms(30), width: ms(30), resizeMode: 'contain' },
+  gpsViewStyle: {
+    top: 20,
+    left: 20,
+    opacity: 0.8,
+    width: ms(32),
+    height: ms(32),
+    borderRadius: 21,
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+  },
+  gpsImageStyle: {
+    width: ms(13),
+    height: ms(13),
+    resizeMode: 'contain',
+    // tintColor: COLORS.text,
   },
 });
 

@@ -111,6 +111,8 @@ export const en = {
     pickup: 'Pickup',
     orderReject: 'Order rejected',
     otherFees: 'Other fees',
+    deliveryCharges: 'Delivery Charges',
+    paymentOption: 'Payment Option: ',
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -657,6 +659,7 @@ export const en = {
       'By enabling payments through Sila, you will be accepting Stripe Services Agreement. Please refer to the list of Prohibited Businesses before registering for and opening a Stripe account',
     silaButton: 'Setup Sila',
     wallet: 'Wallet',
+    transactions: 'Transactions:',
     totalTransections: 'Total Transactions:',
     transactionHistory: 'Transaction History',
     today: 'Today',
@@ -769,11 +772,18 @@ export const en = {
     orderDateValue: '20/12/2023',
     totalItemsValue: '7',
     completed: 'Completed',
+    reviewOrders: 'Shipping Orders to Review',
+    acceptedOrders: 'Shipping Orders Accepted',
+    prepareOrders: 'Shipping Orders to Be Prepared',
   },
   deliveryOrders2: {
     orderStatus: 'Today’s Order Status',
     pickupOrders: 'Pickup Orders',
     noOrdersFound: 'No orders found',
+    selectDriver: 'Select Driver',
+    close: 'Close',
+    jobr: 'JOBR',
+    thanks: 'Thank You',
   },
   orderStatus: {
     reviewOrders: 'Orders to review',
@@ -785,10 +795,11 @@ export const en = {
     returnedOrders: 'Returned Orders',
   },
   buttonStatus: {
-    reviewButton: 'Accept Order',
+    reviewButton: 'Accept',
     acceptedButton: 'Order Prepared',
     prepareButton: 'Ready to Pickup',
     trackOrder: 'Track Order',
     preparedButton: 'Prepared',
+    printlabel: 'Print Label',
   },
 };

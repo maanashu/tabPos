@@ -34,13 +34,19 @@ import {
   getSubCategory,
 } from '@/actions/RetailAction';
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { getAllPosUsers } from '@/actions/AuthActions';
 
-export const ServiceFilterDropDown = ({ sellerid }) => {
+export const ServiceFilterDropDown = ({
+  sellerid,
+  serviceFilterCount,
+  backfilterValue,
+  closeHandler,
+}) => {
   const retailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const dispatch = useDispatch();
+  const [dummyState, setDummyState] = useState();
 
   // category search
   const [categoryData, setCategoryData] = useState();
@@ -63,18 +69,60 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
   const [brandOpenDropDown, setBrandOpenDropDown] = useState(false);
   const [selectedBrandArray, setSelectedBrandArray] = useState([]);
 
-  useEffect(() => {
-    dispatch(getServiceCategory(sellerid, search));
-    dispatch(getServiceSubCategory(sellerid, searchSubCategory));
-    dispatch(getBrand(sellerid, searchBrand));
-  }, [
-    debouncedValue,
-    debouncedSubValue,
-    debouncedBrandValue,
-    search,
-    searchSubCategory,
-    searchBrand,
-  ]);
+  // selected filter length for badge
+  const serviceArrayLength =
+    selectedCategoryArray?.length + selectedBrandArray?.length + selectedSubCategoryArray?.length;
+
+  const multipleArrayLength =
+    selectedCategoryArray?.length > 0 ||
+    selectedBrandArray?.length > 0 ||
+    selectedSubCategoryArray?.length > 0;
+
+  // useEffect(() => {
+  //   dispatch(getServiceCategory(sellerid, search));
+  //   dispatch(getServiceSubCategory(sellerid, searchSubCategory));
+  //   dispatch(getAllPosUsers(sellerid, searchBrand));
+  // }, [
+  //   debouncedValue,
+  //   debouncedSubValue,
+  //   debouncedBrandValue,
+  //   search,
+  //   searchSubCategory,
+  //   searchBrand,
+  // ]);
+
+  //serviceCategory search function
+  const serviceCategorySearch = (search) => {
+    setSearch(search);
+    setCategoryOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getServiceCategory(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getServiceCategory(sellerid));
+    }
+  };
+
+  //serviceSubCategory search function
+  const serviceSubCategorySearch = (search) => {
+    setSearchSubCategory(search);
+    setSubCategoryOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getServiceSubCategory(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getServiceSubCategory(sellerid));
+    }
+  };
+
+  //posUser search function
+  const brandSearch = (search) => {
+    setSearchBrand(search);
+    setBrandOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getAllPosUsers(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getAllPosUsers(sellerid));
+    }
+  };
 
   useEffect(() => {
     setCategoryData(
@@ -90,46 +138,17 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
     );
   }, [retailData, getAuth]);
 
-  useEffect(() => {
-    let finalParams = {};
-
-    if (selectedCategoryArray && selectedCategoryArray.length > 0) {
-      finalParams.category_ids = selectedCategoryArray.join(',');
-    }
-
-    if (selectedBrandArray && selectedBrandArray.length > 0) {
-      finalParams.pos_staff_ids = selectedBrandArray.join(',');
-    }
-
-    if (selectedSubCategoryArray && selectedSubCategoryArray.length > 0) {
-      finalParams.sub_category_ids = selectedSubCategoryArray.join(',');
-    }
-
-    if (
-      selectedCategoryArray?.length > 0 ||
-      selectedBrandArray?.length > 0 ||
-      selectedSubCategoryArray?.length > 0
-    ) {
-      dispatch(getMainServices(finalParams));
-    }
-  }, [selectedCategoryArray, selectedBrandArray, selectedSubCategoryArray]);
-
-  useEffect(() => {
+  const clearInput = () => {
     dispatch(getServiceCategory(sellerid));
     dispatch(getServiceSubCategory(sellerid));
-    dispatch(getBrand(sellerid));
-    // setCategoryData(
-    //   retailData?.categoryList?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    // );
+    dispatch(getAllPosUsers(sellerid));
+  };
 
-    // setSubCategoryData(
-    //   retailData?.subCategories?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    // );
-
-    // setBrandData(
-    //   retailData?.brands?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    // );
-  }, [!search, !searchSubCategory, !searchBrand]);
+  // useEffect(() => {
+  //   dispatch(getServiceCategory(sellerid));
+  //   dispatch(getServiceSubCategory(sellerid));
+  //   dispatch(getAllPosUsers(sellerid));
+  // }, [!search, !searchSubCategory, !searchBrand]);
 
   const isOrderLoading = useSelector((state) =>
     isLoadingSelector(
@@ -147,10 +166,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
           value={search}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchCategory}
-          onChangeText={(text) => {
-            setSearch(text);
-            setCategoryOpenDropDown(true);
-          }}
+          onChangeText={(search) => serviceCategorySearch(search)}
         />
         {isOrderLoading ? (
           <View style={{ paddingVertical: ms(10) }}>
@@ -178,18 +194,21 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
 
   const renderDetailCategories = ({ item, index }) => {
     return (
-      <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+      <TouchableOpacity
+        style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}
+        onPress={() => changeCheckInput(index)}
+      >
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => changeCheckInput(index)}>
+          <View>
             <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         ) : (
-          <TouchableOpacity onPress={() => changeCheckInput(index)}>
+          <View>
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         )}
         <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -200,10 +219,10 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
     const filteredCategories = newSubData.filter((e) => e.isChecked);
     const ids = filteredCategories.map((item, index) => item?.id);
     setSelectedCategoryArray(ids);
-    const categoryID = {
-      category_ids: ids.join(','),
-    };
-    dispatch(getMainServices(categoryID));
+    // const categoryID = {
+    //   category_ids: ids.join(','),
+    // };
+    // dispatch(getMainServices(categoryID));
   };
 
   // sub category
@@ -214,10 +233,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
           value={searchSubCategory}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchSubCategory}
-          onChangeText={(text) => {
-            setSearchSubCategory(text);
-            setSubCategoryOpenDropDown(true);
-          }}
+          onChangeText={(search) => serviceSubCategorySearch(search)}
         />
 
         {isOrderLoading ? (
@@ -245,18 +261,21 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
 
   const renderDetailSubCategories = ({ item, index }) => {
     return (
-      <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+      <TouchableOpacity
+        style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}
+        onPress={() => changeCheckSubInput(index)}
+      >
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => changeCheckSubInput(index)}>
+          <View>
             <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         ) : (
-          <TouchableOpacity onPress={() => changeCheckSubInput(index)}>
+          <View>
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         )}
         <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -267,10 +286,10 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
     const filteredCategories = newSubData.filter((e) => e.isChecked);
     const ids = filteredCategories.map((item, index) => item?.id);
     setSelectedSubCategoryArray(ids);
-    const subCategoryID = {
-      sub_category_ids: ids.join(','),
-    };
-    dispatch(getMainServices(subCategoryID));
+    // const subCategoryID = {
+    //   sub_category_ids: ids.join(','),
+    // };
+    // dispatch(getMainServices(subCategoryID));
   };
 
   // Brands
@@ -281,11 +300,7 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
           value={searchBrand}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchStaff}
-          onChangeText={(text) => {
-            setSearchBrand(text);
-            setBrandOpenDropDown(true);
-          }}
-          editable={false}
+          onChangeText={(search) => brandSearch(search)}
         />
 
         {isOrderLoading ? (
@@ -343,10 +358,10 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
     const filteredCategories = newSubData.filter((e) => e.isChecked);
     const ids = filteredCategories.map((item, index) => item?.id);
     setSelectedBrandArray(ids);
-    const brandID = {
-      pos_staff_ids: ids.join(','),
-    };
-    dispatch(getMainServices(brandID));
+    // const brandID = {
+    //   pos_staff_ids: ids.join(','),
+    // };
+    // dispatch(getMainServices(brandID));
   };
 
   return (
@@ -424,14 +439,51 @@ export const ServiceFilterDropDown = ({ sellerid }) => {
       <View style={{ flex: 1 }} />
       <View style={styles.applyFilterCon}>
         <TouchableOpacity
-          style={styles.clearFilterButton}
-          onPress={() => alert('Clear filter and apply filter work in progress')}
+          style={
+            multipleArrayLength === false && backfilterValue == 0
+              ? styles.clearFilterButton
+              : [styles.clearFilterButton, styles.clearFilterButtonDark]
+          }
+          disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
+          onPress={() => {
+            setSelectedCategoryArray([]);
+            setSelectedBrandArray([]);
+            setSelectedSubCategoryArray([]);
+            setCategoryOpenDropDown(false);
+            setSubCategoryOpenDropDown(false);
+            setBrandOpenDropDown(false);
+            dispatch(getMainServices());
+            clearInput();
+            serviceFilterCount(0);
+            closeHandler();
+          }}
         >
-          <Text style={styles.clearFilterText}>Clear Filter</Text>
+          <Text
+            style={
+              multipleArrayLength === false && backfilterValue == 0
+                ? styles.clearFilterText
+                : [styles.clearFilterText, { color: COLORS.solid_grey }]
+            }
+          >
+            Clear Filter
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.ApplyButton}
-          onPress={() => alert('Clear filter and apply filter work in progress')}
+          style={
+            multipleArrayLength === false && backfilterValue == 0
+              ? styles.ApplyButton
+              : [styles.ApplyButton, { backgroundColor: COLORS.primary }]
+          }
+          disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
+          onPress={() => {
+            const ids = {
+              category_ids: selectedCategoryArray.join(','),
+              sub_category_ids: selectedSubCategoryArray.join(','),
+              pos_staff_ids: selectedBrandArray.join(','),
+            };
+            dispatch(getMainServices(ids));
+            serviceFilterCount(serviceArrayLength);
+          }}
         >
           <Text style={styles.ApplyText}>Apply</Text>
         </TouchableOpacity>
@@ -483,7 +535,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
     position: 'absolute',
     right: 0,
-    top: 70,
+    top: Platform.OS === 'ios' ? 60 : 70,
     borderRadius: 5,
     width: windowWidth * 0.3,
     height: Platform.OS === 'android' ? windowHeight * 0.76 : windowHeight * 0.8,
@@ -499,7 +551,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.gerySkies,
     borderRadius: 5,
-    width: Platform.OS === 'ios' ? ms(90) : ms(110),
+    width: Platform.OS === 'ios' ? ms(82) : ms(110),
     height: ms(32),
     justifyContent: 'center',
     alignItems: 'center',
@@ -512,7 +564,7 @@ const styles = StyleSheet.create({
   ApplyButton: {
     borderColor: COLORS.gerySkies,
     borderRadius: 5,
-    width: Platform.OS === 'ios' ? ms(90) : ms(110),
+    width: Platform.OS === 'ios' ? ms(82) : ms(110),
     height: ms(32),
     justifyContent: 'center',
     alignItems: 'center',
@@ -522,5 +574,8 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(8),
+  },
+  clearFilterButtonDark: {
+    borderColor: COLORS.solid_grey,
   },
 });

@@ -56,6 +56,10 @@ import {
   updateCartByTip,
   getServiceCart,
   createServiceOrder,
+  qrcodestatus,
+  qrCodeStatusSuccess,
+  Servicesqrcodestatus,
+  getAllCart,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -89,17 +93,16 @@ export const CartAmountPayBy = ({
   onPressServiceContinue,
 }) => {
   const dispatch = useDispatch();
-
   const getRetailData = useSelector(getRetail);
   const updateData = useSelector(getRetail).updateQuantityy;
-  //const jj = updateData.updateQuantityy;
 
   // const [loading, setloading] = useState(false);
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
-
   const qrcodeData = useSelector(getRetail).qrKey;
+
+  // console.log('getRetailData?.getAllCart', getRetailData?.getAllCart);
 
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
@@ -130,6 +133,10 @@ export const CartAmountPayBy = ({
   const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
+  const getAuthdata = useSelector(getAuthData);
+  const merchantDetails = getAuthdata?.merchantLoginData?.user;
+
+  const qrStatus = getRetailData.qrStatuskey;
 
   const [status, setstatus] = useState('');
   const [sendRequest, setsendRequest] = useState(false);
@@ -139,6 +146,11 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
+
+  // useEffect(() => {
+  //   dispatch(getAllCart());
+  // }, []);
+
   const tipsArr = [
     getTips?.first_tips ?? 18,
     getTips?.second_tips ?? 20,
@@ -174,8 +186,6 @@ export const CartAmountPayBy = ({
         tip: selectedTipAmount.toString(),
         cartId: cartData.id,
       };
-
-      console.log('data of tip', data);
       const res = await dispatch(updateCartByTip(data));
 
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
@@ -219,7 +229,12 @@ export const CartAmountPayBy = ({
 
   useEffect(() => {
     dispatch(requestCheckSuccess(''));
+    dispatch(qrCodeStatusSuccess(''));
   }, []);
+
+  const qrcodePaymentstatus = () => {
+    dispatch(qrcodestatus(cartData.id));
+  };
 
   const isLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_WALLET_PHONE, TYPES.ATTACH_CUSTOMER, TYPES.CREATE_ORDER], state)
@@ -227,23 +242,39 @@ export const CartAmountPayBy = ({
   useEffect(() => {
     let interval;
 
-    if (requestStatus !== 'approved') {
+    if (requestStatus !== 'success' && sendRequest) {
       interval = setInterval(() => {
         setRequestId((requestId) => {
           const data = {
             requestId: requestId,
           };
           dispatch(requestCheck(data));
+          // Alert.alert('1  condition');
           // createOrderHandler();
+
           return requestId;
         });
       }, 10000);
-    } else if (requestStatus == 'approved') {
+    } else if (requestStatus == 'success' && sendRequest) {
       cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+      // Alert.alert('2  condition');
+      clearInterval(interval);
+    } else if (qrStatus?.status !== 'success' && qrPopUp && sendRequest == false) {
+      interval = setInterval(() => {
+        cartType == 'Service'
+          ? dispatch(Servicesqrcodestatus(cartData.id))
+          : dispatch(qrcodestatus(cartData.id));
+        // Alert.alert('3 condition', sendRequest);
+      }, 5000);
+    } else if (qrStatus?.status == 'success' && qrPopUp && sendRequest == false) {
+      cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+      // Alert.alert('4 condition');
       clearInterval(interval);
     }
+
     return () => clearInterval(interval);
-  }, [isFocused, requestStatus == 'approved']);
+  }, [isFocused, requestStatus == 'success', qrStatus?.status == 'success', qrPopUp, sendRequest]);
+
   const walletInputFun = (phoneNumber) => {
     setWalletIdInp(phoneNumber);
     if (phoneNumber?.length > 9) {
@@ -451,7 +482,6 @@ export const CartAmountPayBy = ({
               </View>
             </View>
           </View>
-
           <View style={{ flex: 1, paddingHorizontal: ms(18) }}>
             <View style={{ marginTop: ms(10) }}>
               <Text style={styles.selectTips}>Select Tips</Text>
@@ -607,10 +637,12 @@ export const CartAmountPayBy = ({
                         if (index == 0) {
                           setPhonePopVisible(true);
                           setPhoneNumber('');
+                          //getTipPress();
                         } else if (index == 1) {
                           setEmailModal(true);
+                          //getTipPress();
                         } else if (index == 2) {
-                          payNowHandler(), payNowByphone(selectedTipAmount);
+                          getTipPress(), payNowHandler(), payNowByphone(selectedTipAmount);
                         }
                       }}
                       key={index}
@@ -669,9 +701,13 @@ export const CartAmountPayBy = ({
 
         <View style={styles.rightCon}>
           <View style={[{ height: '100%', alignItems: 'center' }]}>
-            <Text style={styles._kSubCenterContainer}>Primark</Text>
-            <Text style={styles._kAddress}>63 Ivy Road, Hawkville, GA, USA 31036</Text>
-            <Text style={styles._kNumber}>+123-456-7890</Text>
+            <Text style={styles._kSubCenterContainer}>
+              {merchantDetails?.user_profiles?.organization_name}
+            </Text>
+            <Text
+              style={styles._kAddress}
+            >{`${merchantDetails?.user_profiles?.current_address?.street_address}, ${merchantDetails?.user_profiles?.current_address?.city}, ${merchantDetails?.user_profiles?.current_address?.state}, ${merchantDetails?.user_profiles?.current_address?.country}, ${merchantDetails?.user_profiles?.current_address?.zipcode}`}</Text>
+            <Text style={styles._kNumber}>{merchantDetails?.user_profiles?.full_phone_number}</Text>
 
             <View style={styles._flatListContainer}>
               <FlatList
@@ -692,7 +728,7 @@ export const CartAmountPayBy = ({
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Discount ( MIDApril100)</Text>
-              <Text style={styles._subTotalPrice}>$0.00</Text>
+              <Text style={styles._subTotalPrice}>${cartData?.amount?.discount}</Text>
             </View>
 
             <View style={styles._horizontalLine} />
@@ -725,7 +761,9 @@ export const CartAmountPayBy = ({
               <Text style={styles._payTitle}>Payment option: </Text>
               <Text style={styles._paySubTitle}>{'Cash'}</Text>
             </View>
-            <Text style={styles._commonPayTitle}>Wed 26 Apr , 2023 6:27 AM</Text>
+            <Text style={styles._commonPayTitle}>
+              {moment().format('ddd DD MMM, YYYY')} {moment().format('hh:mm A')}
+            </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
             {/* <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text> */}
             <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
@@ -776,6 +814,7 @@ export const CartAmountPayBy = ({
               setEnteredValue={setPhoneNumber}
               onClosePress={closeHandler}
               onPayNowPress={() => {
+                getTipPress();
                 // payNowHandler();
                 payNowByphone(selectedTipAmount);
                 attachUserByPhone(phoneNumber);
@@ -826,6 +865,7 @@ export const CartAmountPayBy = ({
                 <TouchableOpacity
                   style={styles.payNowButton}
                   onPress={() => {
+                    // getTipPress()
                     // payNowHandler(),
                     payNowByphone(selectedTipAmount);
                     attachUserByEmail(email);
@@ -859,6 +899,7 @@ export const CartAmountPayBy = ({
                     onPress={() => {
                       setQrPopUp(false);
                       dispatch(requestCheckSuccess(''));
+                      dispatch(qrCodeStatusSuccess(''));
                     }}
                   >
                     <Image source={crossButton} style={styles.crossButton} />
@@ -884,8 +925,12 @@ export const CartAmountPayBy = ({
                     <View style={{ margin: ms(5), alignItems: 'center' }}>
                       <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
                         <Image
+                          blurRadius={sendRequest ? 10 : 0}
                           source={{ uri: qrcodeData?.qr_code }}
-                          style={{ height: ms(180), width: ms(180) }}
+                          style={{
+                            height: ms(180),
+                            width: ms(180),
+                          }}
                         />
                       </View>
 

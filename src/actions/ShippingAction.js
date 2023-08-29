@@ -207,7 +207,7 @@ export const acceptOrder = (data) => async (dispatch) => {
     const res = await ShippingController.acceptOrder(data);
     dispatch(acceptOrderSuccess(res));
     dispatch(getOrderCount(data.sellerID));
-    dispatch(getReviewDefault(0, sellerID));
+    dispatch(getReviewDefault(0, 4));
   } catch (error) {
     dispatch(acceptOrderError(error.message));
   }

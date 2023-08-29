@@ -1,11 +1,4 @@
-import {
-  Image,
-  SafeAreaView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { ms } from 'react-native-size-matters';
 import { Button } from '@/components';
@@ -19,11 +12,7 @@ import { useSelector } from 'react-redux';
 
 moment.suppressDeprecationWarnings = true;
 
-export const PayByCard = ({
-  onPressBack,
-  onPressContinue,
-  tipAmount = 0.0,
-}) => {
+export const PayByCard = ({ onPressBack, onPressContinue, tipAmount = 0.0 }) => {
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
 
@@ -58,10 +47,7 @@ export const PayByCard = ({
             <Text style={styles._amount}>{totalPayAmount()}</Text>
           </View>
         </View>
-        <TouchableOpacity
-          onPress={onPressContinue}
-          style={styles._bottomCardView}
-        >
+        <TouchableOpacity onPress={onPressContinue} style={styles._bottomCardView}>
           <Image source={cardPayment} style={styles._cardIconView} />
           <Text style={styles._cardSubtitle}>Insert or Tap your card here</Text>
         </TouchableOpacity>

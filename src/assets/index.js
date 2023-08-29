@@ -261,6 +261,7 @@ export { default as moneyIcon } from '@/assets/icons/ic_retail/moneyIcon.png';
 export { default as QR } from '@/assets/icons/ic_retail/QR.png';
 export { default as categoryMenu } from '@/assets/icons/ic_posRetail/categoryMenu.png';
 export { default as categoryshoes } from '@/assets/icons/ic_posRetail/categoryshoes.png';
+export { default as cartEdit } from '@/assets/icons/ic_posRetail/cartEdit.png';
 export { default as barcode } from '@/assets/icons/ic_posRetail/barcode.png';
 export { default as calendarIcon } from '@/assets/images/calendarIcon.png';
 export { default as todayCalendarIcon } from '@/assets/images/todayCalendar.png';
@@ -336,6 +337,8 @@ export { default as deliveryHomeIcon } from '@/assets/icons/ic_shipingOrder/deli
 
 export { default as up } from '@/assets/icons/ic_posRetail/up.png';
 export { default as down } from '@/assets/icons/ic_posRetail/down.png';
+export { default as expand } from '@/assets/icons/ic_deliveryOrder/expand.png';
+export { default as gps } from '@/assets/icons/ic_deliveryOrder/gps.png';
 
 /* Fonts */
 export const Fonts = {
@@ -345,6 +348,6 @@ export const Fonts = {
   MediumItalic: 'Montserrat-MediumItalic',
   Regular: 'Montserrat-Regular',
   SemiBold: 'Montserrat-SemiBold',
-  MaisonRegular: 'Maison Mono Regular',
+  MaisonRegular: 'MaisonMono-Regular',
   MaisonBold: 'MaisonMonoTRIAL-Bold',
 };

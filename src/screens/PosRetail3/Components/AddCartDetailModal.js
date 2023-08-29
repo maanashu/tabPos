@@ -9,11 +9,35 @@ import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
+import { ms } from 'react-native-size-matters';
 const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
 export function AddCartDetailModal({ crossHandler }) {
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
+  // console.log('productDetail', JSON.stringify(productDetail));
+
+  // const htmlText = productDetail?.description ?? '';
+  // const regex = /<[^>]+>([^<]+)<\/[^>]+>/g;
+
+  // const matches = htmlText?.match(regex);
+
+  // let extractedText = '';
+
+  // if (matches) {
+  //   matches.forEach((match) => {
+  //     const contentMatch = /<[^>]+>([^<]+)<\/[^>]+>/.exec(match);
+  //     if (contentMatch && contentMatch.length > 1) {
+  //       extractedText += contentMatch[1] + ' ';
+  //     }
+  //   });
+  // }
+
+  // Remove HTML tags
+  const withoutHtmlTags = productDetail?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
+
+  // Remove special characters and white spaces
+  const withoutSpecialCharsAndSpaces = withoutHtmlTags.trim().replace(/[^\w\s]/gi, '');
 
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options.split(',');
@@ -119,10 +143,10 @@ export function AddCartDetailModal({ crossHandler }) {
             <View style={styles.profileClothDes}>
               <Text style={[styles.jacketName, { fontSize: SF(15) }]}>{productDetail?.name}</Text>
               <Text style={styles.clothProfileSubHead}>
-                {productDetail?.category?.name} {'>'} {productDetail?.category?.name}
+                {productDetail?.category?.name} {'>'} {productDetail?.sub_category?.name}
               </Text>
               <Text numberOfLines={1} style={styles.clothProfileDes}>
-                {productDetail?.description}
+                {withoutSpecialCharsAndSpaces}
               </Text>
             </View>
           </View>
@@ -160,7 +184,7 @@ export function AddCartDetailModal({ crossHandler }) {
           </View>
           {/* Stock on hand section start */}
           <Spacer space={SH(20)} />
-          <View style={styles.skuCon}>
+          {/* <View style={styles.skuCon}>
             <View style={styles.skuConBody}>
               <Text style={[styles.jacketName, { fontSize: SF(15) }]}>Stock on Hand</Text>
             </View>
@@ -175,12 +199,13 @@ export function AddCartDetailModal({ crossHandler }) {
                 <View style={styles.colorSelectArea}>
                   <FlatList
                     data={dummyData}
+                    extraData={dummyData}
                     renderItem={clothColorrenderItem}
                     keyExtractor={(item) => item.id}
-                    extraData={dummyData}
                     // contentContainerStyle={{ flexGrow: 1 }}
                     // nestedScrollEnabled
                     showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ width: ms(50) }}
                   />
                 </View>
                 <View style={styles.quantitySelectArea}>
@@ -225,7 +250,7 @@ export function AddCartDetailModal({ crossHandler }) {
               <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>Reorder Point</Text>
               <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>10</Text>
             </View>
-          </View>
+          </View> */}
 
           {/* Stock on hand section end */}
 

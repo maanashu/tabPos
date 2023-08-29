@@ -33,12 +33,7 @@ import {
   tableArrow,
   bell,
 } from '@/assets';
-import {
-  DaySelector,
-  ScreenWrapper,
-  Spacer,
-  TableDropdown,
-} from '@/components';
+import { DaySelector, ScreenWrapper, Spacer, TableDropdown } from '@/components';
 import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
@@ -47,11 +42,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {
-  getTotakTraDetail,
-  getTotalTra,
-  getTotalTraType,
-} from '@/actions/WalletAction';
+import { getTotakTraDetail, getTotalTra, getTotalTraType } from '@/actions/WalletAction';
 import { getWallet } from '@/selectors/WalletSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/WalletTypes';
@@ -72,6 +63,7 @@ export function Wallet() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getTotalTraData = getWalletData?.getTotalTra;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail;
+
   const transactionTypeArray = getWalletData?.getTotalTraType;
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
@@ -93,33 +85,44 @@ export function Wallet() {
   const [tracking, setTracking] = useState(false);
   const [tranAdd, setTranAdd] = useState('');
   const [transaction, setTransaction] = useState({ mode_of_payment: 'all' });
+  const [date, setDate] = useState(new Date());
+  const [dateformat, setDateformat] = useState('');
+  const [show, setShow] = useState(false);
+  const [historytype, setHistorytype] = useState('all');
   const transactionType = transaction?.mode_of_payment;
   const time = selectTime?.name;
   const time2 = selectTime2?.value;
   const time3 = transaction?.mode_of_payment;
-  const onPresFun1 = value => {
-    dispatch(getTotalTra(value, sellerID));
+
+  const onPresFun1 = (value) => {
+    setShow(false);
+    setDateformat('');
+    setDate(new Date());
+    dispatch(getTotalTra(value, sellerID, dateformat));
   };
-  const onPresFun2 = value => {
+  const onPresFun2 = (value) => {
     dispatch(getTotakTraDetail(value, sellerID, transactionType));
   };
-  const onPresFun3 = mode_of_payment => {
+  const onPresFun3 = (mode_of_payment) => {
     dispatch(getTotakTraDetail(time2, sellerID, mode_of_payment));
   };
 
   const aboutTransactionData = [
     {
-      aboutTransaction: 'ALL',
+      aboutTransaction: 'All',
       price: getTotalTraData?.jbr ?? '0',
       img: null,
       id: '1',
+      type: 'all',
     },
     {
-      aboutTransaction: 'JBR COIN',
+      aboutTransaction: 'JOBR Coin',
       price: getTotalTraData?.jbr ?? '0',
       img: jbrCoin,
-      id: '1',
+      id: '2',
+      type: 'jbr',
     },
+
     // {
     //   aboutTransaction: 'CASH',
     //   price: getTotalTraData?.cash ?? '0',
@@ -135,16 +138,18 @@ export function Wallet() {
   ];
   const tipsData = [
     {
-      heading: 'CREDIT',
+      aboutTransaction: 'Credit',
       price: getTotalTraData?.card ?? '0',
       img: card2,
-      id: '2',
+      id: '3',
+      type: 'credit',
     },
     {
-      heading: 'CASH',
+      aboutTransaction: 'Cash',
       price: getTotalTraData?.cash ?? '0',
       img: cash,
-      id: '3',
+      id: '4',
+      type: 'cash',
     },
     // {
     //   heading: 'Tips',
@@ -169,16 +174,14 @@ export function Wallet() {
     }
   }, [isFocused]);
 
-  const isTotalTraLoad = useSelector(state =>
-    isLoadingSelector([TYPES.GET_TOTAL_TRA], state)
-  );
-  const isTotalTradetail = useSelector(state =>
+  const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
+  const isTotalTradetail = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state)
   );
-  const isTotalTraType = useSelector(state =>
+  const isTotalTraType = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TOTAL_TRA_TYPE], state)
   );
-  const statusFun = status => {
+  const statusFun = (status) => {
     switch (status) {
       case 0:
         return 'Review';
@@ -229,9 +232,16 @@ export function Wallet() {
     setOrderModel(true);
   };
 
-  const [date, setDate] = useState(new Date());
-  const [dateformat, setDateformat] = useState('');
-  const [show, setShow] = useState(false);
+  let desiredModeOfPayment = historytype; // Replace with the desired mode_of_payment value or "all"
+  let filteredData;
+
+  if (desiredModeOfPayment === 'all') {
+    filteredData = getTotalTraDetail;
+  } else {
+    filteredData = getTotalTraDetail.filter(
+      (item) => item.mode_of_payment === desiredModeOfPayment
+    );
+  }
   const onChangeDate = (selectedDate) => {
     const currentDate = moment().format('MM/DD/YYYY');
     const selected = moment(selectedDate).format('MM/DD/YYYY');
@@ -245,24 +255,21 @@ export function Wallet() {
     const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
     setDateformat(newDateFormat);
     setDate(fullDate);
-  
+    setSelectId(0);
+    dispatch(getTotalTra(null, sellerID, newDateFormat));
   };
   const onCancelFun = () => {
     setShow(false);
     setDateformat('');
     setDate(new Date());
+    setSelectId(2);
+    dispatch(getTotalTra('week', sellerID, dateformat));
   };
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
-         
-        
-    
         {weeklyTransaction ? (
-          <TouchableOpacity
-            style={styles.backButtonCon}
-            onPress={weeklyTraRemoveHandler}
-          >
+          <TouchableOpacity style={styles.backButtonCon} onPress={weeklyTraRemoveHandler}>
             <Image source={backArrow} style={styles.backButtonArrow} />
             <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
           </TouchableOpacity>
@@ -301,10 +308,11 @@ export function Wallet() {
       onPress={() => (
         setWeeklyTrasaction(true),
         dispatch(getTotakTraDetail('week', sellerID, transactionType)),
-        dispatch(getTotalTraType())
+        dispatch(getTotalTraType()),
+        setHistorytype(item.type)
       )}
     >
-      <Image source={item.img} style={styles.jbrCoinStyle} />
+      {item.img !== null && <Image source={item.img} style={styles.jbrCoinStyle} />}
       <Spacer space={SH(10)} />
       <View style={styles.displayFlex}>
         <Text style={styles.jbrCoinheading}>{item.aboutTransaction}</Text>
@@ -313,11 +321,7 @@ export function Wallet() {
       <Text style={styles.jbrCoinPrice}>
         {isTotalTraLoad ? null : '$'}
         {isTotalTraLoad ? (
-          <ActivityIndicator
-            size="small"
-            color={COLORS.primary}
-            style={styles.indicatorstyle}
-          />
+          <ActivityIndicator size="small" color={COLORS.primary} style={styles.indicatorstyle} />
         ) : (
           item.price
         )}
@@ -325,37 +329,35 @@ export function Wallet() {
     </TouchableOpacity>
   );
   const tipsItem = ({ item }) => (
-    <View style={[styles.jbrCoinCon, styles.jbrCoinCon2]}>
+    <TouchableOpacity
+      onPress={() => (
+        setWeeklyTrasaction(true),
+        dispatch(getTotakTraDetail('week', sellerID, transactionType)),
+        dispatch(getTotalTraType()),
+        setHistorytype(item.type)
+      )}
+      style={[styles.jbrCoinCon, styles.jbrCoinCon2]}
+    >
+      <Image source={item.img} style={styles.jbrCoinStyle} />
+      <Spacer space={SH(10)} />
       <View style={styles.displayFlex}>
-        <Text style={styles.jbrCoinheading}>{item.heading}</Text>
+        <Text style={styles.jbrCoinheading}>{item.aboutTransaction}</Text>
         <Image source={rightBack} style={styles.arrowStyle} />
       </View>
+
       <Text style={styles.jbrCoinPrice}>
         {isTotalTraLoad ? null : '$'}
         {isTotalTraLoad ? (
-          <ActivityIndicator
-            size="small"
-            color={COLORS.primary}
-            style={styles.indicatorstyle}
-          />
+          <ActivityIndicator size="small" color={COLORS.primary} style={styles.indicatorstyle} />
         ) : (
           item.price
         )}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 
-  const TransactionSelectItem = ({
-    item,
-    onPress,
-    borderColor,
-    color,
-    fontFamily,
-  }) => (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[styles.allJbrCon, { borderColor }]}
-    >
+  const TransactionSelectItem = ({ item, onPress, borderColor, color, fontFamily }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.allJbrCon, { borderColor }]}>
       {isTotalTraType ? (
         <ActivityIndicator size="small" color={COLORS.primary} />
       ) : (
@@ -368,17 +370,9 @@ export function Wallet() {
 
   const allTransactionItem = ({ item }) => {
     const borderColor =
-      item.mode_of_payment === transcationTypeId
-        ? COLORS.primary
-        : COLORS.solidGrey;
-    const color =
-      item.mode_of_payment === transcationTypeId
-        ? COLORS.primary
-        : COLORS.dark_grey;
-    const fontFamily =
-      item.mode_of_payment === transcationTypeId
-        ? Fonts.SemiBold
-        : Fonts.Regular;
+      item.mode_of_payment === transcationTypeId ? COLORS.primary : COLORS.solidGrey;
+    const color = item.mode_of_payment === transcationTypeId ? COLORS.primary : COLORS.dark_grey;
+    const fontFamily = item.mode_of_payment === transcationTypeId ? Fonts.SemiBold : Fonts.Regular;
     return (
       <TransactionSelectItem
         item={item}
@@ -398,9 +392,7 @@ export function Wallet() {
     if (tracking) {
       return (
         <TrackingModule
-          trackignBackHandler={() => (
-            setTracking(false), setDetailShipping(true)
-          )}
+          trackignBackHandler={() => (setTracking(false), setDetailShipping(true))}
           OrderHeaderStatus={statusFun(orderData?.status)}
           orderData={orderData}
           orderStatus={orderData?.status}
@@ -433,13 +425,14 @@ export function Wallet() {
           <View style={styles.walletTranCon}>
             <View style={styles.displayFlex}>
               <Text style={styles.trancationHeading}>
-                {strings.wallet.totalTransections}
+                {historytype} {strings.wallet.transactions}
+                {/* {strings.wallet.totalTransections} */}
                 <Text style={styles.totalTranStyle}>
                   {strings.wallet.transationPrice}
                   {getTotalTraData?.total?.toFixed(2) ?? '0'}
                 </Text>
               </Text>
-              
+
               <View>
                 <DaySelector
                   onPresFun={onPresFun2}
@@ -456,7 +449,7 @@ export function Wallet() {
               data={transactionTypeArray}
               extraData={transactionTypeArray}
               renderItem={allTransactionItem}
-              keyExtractor={item => item.mode_of_payment}
+              keyExtractor={(item) => item.mode_of_payment}
               horizontal
             />
           </View>
@@ -484,22 +477,14 @@ export function Wallet() {
                 alignItems: 'center',
               }}
             >
-              <Text style={[styles.paginationCount, { fontSize: 12 }]}>
-                Showing Results
-              </Text>
+              <Text style={[styles.paginationCount, { fontSize: 12 }]}>Showing Results</Text>
               <View style={{ marginHorizontal: moderateScale(10) }}>
                 <DropDownPicker
                   ArrowUpIconComponent={({ style }) => (
-                    <Image
-                      source={dropdown2}
-                      style={styles.dropDownIconPagination}
-                    />
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
                   )}
                   ArrowDownIconComponent={({ style }) => (
-                    <Image
-                      source={dropdown2}
-                      style={styles.dropDownIconPagination}
-                    />
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
                   )}
                   style={styles.dropdown}
                   containerStyle={[
@@ -526,16 +511,8 @@ export function Wallet() {
               <View style={[styles.unionCon, { marginLeft: 7 }]}>
                 <Image source={mask} style={styles.unionStyle} />
               </View>
-              <Text style={styles.paginationCount}>
-                {strings.wallet.paginationCount}
-              </Text>
-              <View
-                style={[
-                  styles.unionCon,
-                  styles.unionConWhite,
-                  { marginRight: 7 },
-                ]}
-              >
+              <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
+              <View style={[styles.unionCon, styles.unionConWhite, { marginRight: 7 }]}>
                 <Image source={maskRight} style={styles.unionStyle} />
               </View>
               <View style={[styles.unionCon, styles.unionConWhite]}>
@@ -549,27 +526,28 @@ export function Wallet() {
                 <View style={styles.displayFlex}>
                   <View style={styles.tableHeaderLeft}>
                     <Text style={styles.tableTextHeaFirst}>#</Text>
-                    <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>
-                      Date
-                    </Text>
+                    <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>Date</Text>
                   </View>
                   <View style={styles.tableHeaderRight}>
                     <Text style={styles.tableTextHea}>Transaction ID</Text>
 
                     <View style={styles.flexAlign}>
-                      <Text style={styles.tableTextHea}>Transaction type</Text>
-                      <Image source={tableArrow} style={styles.tableArrow} />
+                      <Text style={styles.tableTextHea}>Employee</Text>
+                      {/* <Text style={styles.tableTextHea}>Transaction type</Text> */}
+                      {/* <Image source={tableArrow} style={styles.tableArrow} /> */}
                     </View>
                     <View style={styles.flexAlign}>
-                      <Text style={styles.tableTextHea}>Payment Method</Text>
-                      <Image source={tableArrow} style={styles.tableArrow} />
+                      <Text style={styles.tableTextHea}>Customer</Text>
+
+                      {/* <Text style={styles.tableTextHea}>Payment Method</Text> */}
+                      {/* <Image source={tableArrow} style={styles.tableArrow} /> */}
                     </View>
 
-                    <Text style={styles.tableTextHea}>Amount</Text>
-                    <Text style={styles.tableTextHea}>Refunded</Text>
-                    <Text style={[styles.tableTextHea, { marginRight: -2 }]}>
-                      
+                    <Text style={styles.tableTextHea}>
+                      {historytype == 'jbr' ? 'JOBR' : 'Amount'}
                     </Text>
+                    <Text style={styles.tableTextHea}>Refunded</Text>
+                    <Text style={[styles.tableTextHea, { marginRight: -2 }]}></Text>
                   </View>
                 </View>
               </View>
@@ -578,29 +556,22 @@ export function Wallet() {
                 <ScrollView>
                   {isTotalTradetail ? (
                     <View style={{ marginTop: 100 }}>
-                      <ActivityIndicator
-                        size="large"
-                        color={COLORS.indicator}
-                      />
+                      <ActivityIndicator size="large" color={COLORS.indicator} />
                     </View>
-                  ) : getTotalTraDetail?.length === 0 ? (
+                  ) : filteredData?.length === 0 ? (
                     <View style={{ marginTop: 80 }}>
                       <Text style={styles.userNotFound}>Order not found</Text>
                     </View>
                   ) : (
-                    getTotalTraDetail?.map((item, index) => (
+                    filteredData?.map((item, index) => (
                       <TouchableOpacity
                         style={[styles.tableDataCon, { zIndex: -9 }]}
                         key={index}
-                        onPress={() => (
-                          setOrderModel(!orderModel), setOrderData(item)
-                        )}
+                        onPress={() => (setOrderModel(!orderModel), setOrderData(item))}
                       >
                         <View style={styles.displayFlex}>
                           <View style={styles.tableHeaderLeft}>
-                            <Text style={styles.tableTextDataFirst}>
-                              {index + 1}
-                            </Text>
+                            <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
                             <View
                               style={{
                                 flexDirection: 'column',
@@ -612,12 +583,7 @@ export function Wallet() {
                                   ? moment(item.created_at).format('ll')
                                   : 'date not found'}
                               </Text>
-                              <Text
-                                style={[
-                                  styles.tableTextData,
-                                  { color: COLORS.gerySkies },
-                                ]}
-                              >
+                              <Text style={[styles.tableTextData, { color: COLORS.gerySkies }]}>
                                 {item.created_at
                                   ? moment(item.created_at).format('h:mm A')
                                   : 'date not found'}
@@ -627,28 +593,25 @@ export function Wallet() {
                           <View style={styles.tableHeaderRight}>
                             <Text
                               numberOfLines={1}
-                              style={[
-                                styles.tableTextData,
-                                { fontSize: SF(12) },
-                              ]}
+                              style={[styles.tableTextData, { fontSize: SF(12) }]}
                             >
                               {item.transaction_id ?? null}
                             </Text>
                             <Text style={styles.tableTextData}>
-                              {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null}
+                              {item?.seller_details?.firstname}
+                              {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
                             </Text>
                             <Text style={styles.tableTextData}>
-                            {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null}
+                              {item?.user_details?.firstname}
+                              {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
                             </Text>
+                            <Text style={styles.tableTextData}>${item.mode_of_payment ?? '0'}</Text>
+
                             <Text style={styles.tableTextData}>
-                              ${item.payable_amount ?? '0'}
+                              {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
                             </Text>
-                           
-                            <Text style={styles.tableTextData}>{'$0'}</Text>
-                            <View style={{width:SF(90)}}>
-                              <Text style={styles.tableTextDataCom}>
-                                {statusFun(item.status)}
-                              </Text>
+                            <View style={{ width: SF(90) }}>
+                              <Text style={styles.tableTextDataCom}>{statusFun(item.status)}</Text>
                             </View>
                           </View>
                         </View>
@@ -671,34 +634,38 @@ export function Wallet() {
             <View style={styles.walletMainCon}>
               <Spacer space={SH(10)} />
               <View style={styles.displayFlex}>
-                <Text style={styles.trancationHeading}>
-                  {strings.wallet.totalTransections}
-                </Text>
-                
+                <Text style={styles.trancationHeading}>{strings.wallet.totalTransections}</Text>
+
                 <View>
-                <View style={{ flexDirection: 'row', alignItems: 'center',position:"absolute",left:SW(-50)}}>
-                  <TouchableOpacity style={styles.datePickerCon} onPress={() => setShow(!show)}>
-                  <Image source={calendar1} style={styles.calendarStyle} />
-                  <TextInput
-                  value={date}
-                  returnKeyType={'done'}
-                  pointerEvents={'none'}
-                  autoCapitalize={'none'}
-                  editable={false}
-                  placeholder="Date"
-                  placeholderTextColor={COLORS.gerySkies}
-                  style={styles.txtInput}
-                  />
-                   </TouchableOpacity>
-                <DateTimePickerModal
-                  mode={'date'}
-                  isVisible={show}
-                  onConfirm={onChangeDate}
-                  onCancel={() => onCancelFun()}
-                  maximumDate={new Date()}
-                />
-        
-                </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      position: 'absolute',
+                      left: SW(-50),
+                    }}
+                  >
+                    <TouchableOpacity style={styles.datePickerCon} onPress={() => setShow(!show)}>
+                      <Image source={calendar1} style={styles.calendarStyle} />
+                      <TextInput
+                        value={date}
+                        returnKeyType={'done'}
+                        pointerEvents={'none'}
+                        autoCapitalize={'none'}
+                        editable={false}
+                        placeholder="Date"
+                        placeholderTextColor={COLORS.gerySkies}
+                        style={styles.txtInput}
+                      />
+                    </TouchableOpacity>
+                    <DateTimePickerModal
+                      mode={'date'}
+                      isVisible={show}
+                      onConfirm={onChangeDate}
+                      onCancel={() => onCancelFun()}
+                      maximumDate={new Date()}
+                    />
+                  </View>
                   <DaySelector
                     onPresFun={onPresFun1}
                     selectId={selectId}
@@ -719,7 +686,7 @@ export function Wallet() {
                   data={aboutTransactionData}
                   extraData={aboutTransactionData}
                   renderItem={aboutTransactionItem}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item) => item.id}
                   horizontal
                   contentContainerStyle={styles.contentContainer}
                   scrollEnabled={false}
@@ -731,7 +698,7 @@ export function Wallet() {
                   showsHorizontalScrollIndicator={false}
                   data={tipsData}
                   renderItem={tipsItem}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item) => item.id}
                   horizontal
                   contentContainerStyle={styles.contentContainer}
                   scrollEnabled={false}
@@ -739,10 +706,7 @@ export function Wallet() {
               </View>
 
               <Spacer space={SH(10)} />
-              <Image
-                source={transactionChart}
-                style={styles.transactionChartStyle}
-              />
+              <Image source={transactionChart} style={styles.transactionChartStyle} />
             </View>
           </View>
         </View>

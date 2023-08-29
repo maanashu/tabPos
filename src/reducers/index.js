@@ -14,8 +14,10 @@ import { rewardReducer } from '@/reducers/RewardReducer';
 import { appointmentReducer } from '@/reducers/AppointmentReducer';
 import { dashboardReducer } from '@/reducers/DashboardReducer';
 import { settingReducer } from '@/reducers/SettingReducer';
+import { cartReducer } from './CartReducer';
+import { TYPES } from '@/Types/Types';
 
-export const rootReducer = combineReducers({
+export const appReducer = combineReducers({
   error: errorReducer,
   status: statusReducer,
   user: userReducer,
@@ -31,4 +33,12 @@ export const rootReducer = combineReducers({
   appointment: appointmentReducer,
   dashboard: dashboardReducer,
   setting: settingReducer,
+  cartReducer:cartReducer
 });
+
+export const rootReducer = (state, action) => {
+  if (action.type === TYPES.MERCHAT_CLEAR_STORE) {
+    return appReducer(undefined, action);
+  }
+  return appReducer(state, action);
+};

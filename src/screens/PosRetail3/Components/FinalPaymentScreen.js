@@ -18,6 +18,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { clearServiceAllCart, getServiceCart } from '@/actions/RetailAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -31,6 +32,8 @@ export const FinalPaymentScreen = ({
 }) => {
   const tipData = useSelector(getRetail).tipKey?.payload?.tip;
   const tipamount = Number(tipData);
+  const getAuthdata = useSelector(getAuthData);
+  const merchantDetails = getAuthdata?.merchantLoginData?.user;
 
   const cartProducts =
     cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
@@ -45,6 +48,9 @@ export const FinalPaymentScreen = ({
 
   const payAmount = totalPayAmount();
   const ActualPayAmount = payDetail?.tips;
+
+  // console.log('Actual Amount', ActualPayAmount);
+  // console.log('payamount by customer', payAmount);
   const changeDue = parseFloat(ActualPayAmount) - parseFloat(payAmount);
   const dispatch = useDispatch();
   useFocusEffect(
@@ -79,7 +85,7 @@ export const FinalPaymentScreen = ({
                   {paymentMethod === 'Card' || paymentMethod === 'Cash' ? '$' : 'JBR'}
                 </Text>
                 {cartType == 'Service' ? (
-                  <Text style={styles._amount}>{payDetail?.tipsAddAnount}</Text>
+                  <Text style={styles._amount}>{payDetail?.tips}</Text>
                 ) : (
                   <Text style={styles._amount}>{payDetail?.tips}</Text>
                 )}
@@ -104,9 +110,13 @@ export const FinalPaymentScreen = ({
         </View>
         <View style={styles.rightCon}>
           <View style={[{ height: '100%', alignItems: 'center' }]}>
-            <Text style={styles._kSubCenterContainer}>Primark</Text>
-            <Text style={styles._kAddress}>63 Ivy Road, Hawkville, GA, USA 31036</Text>
-            <Text style={styles._kNumber}>+123-456-7890</Text>
+            <Text style={styles._kSubCenterContainer}>
+              {merchantDetails?.user_profiles?.organization_name}
+            </Text>
+            <Text
+              style={styles._kAddress}
+            >{`${merchantDetails?.user_profiles?.current_address?.street_address}, ${merchantDetails?.user_profiles?.current_address?.city}, ${merchantDetails?.user_profiles?.current_address?.state}, ${merchantDetails?.user_profiles?.current_address?.country}, ${merchantDetails?.user_profiles?.current_address?.zipcode}`}</Text>
+            <Text style={styles._kNumber}>{merchantDetails?.user_profiles?.full_phone_number}</Text>
 
             <View style={styles._flatListContainer}>
               <FlatList
@@ -151,7 +161,9 @@ export const FinalPaymentScreen = ({
               <Text style={styles._payTitle}>Payment option: </Text>
               <Text style={styles._paySubTitle}>{payDetail?.modeOfPayment}</Text>
             </View>
-            <Text style={styles._commonPayTitle}>Wed 26 Apr , 2023 6:27 AM</Text>
+            <Text style={styles._commonPayTitle}>
+              {moment().format('ddd DD MMM, YYYY')} {moment().format('hh:mm A')}
+            </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
             <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
             <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>

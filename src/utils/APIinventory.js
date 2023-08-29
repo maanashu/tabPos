@@ -40,6 +40,7 @@ export const ApiUserInventory = {
   verifyGoogleCode: 'users/2fa/verify',
   configureGoogleCode: 'users/2fa/configure-qr-code',
   notifications: 'notifications',
+  getSellerDrivers: 'merchant_drivers/get-drivers',
 };
 
 export const ApiProductInventory = {
@@ -125,6 +126,10 @@ export const ApiOrderInventory = {
   tip: 'poscarts/',
   serviceTip: 'appointment_carts/',
   pendingOrders: 'orders/pos/pending-orders-count',
+  qrstatus: 'poscarts/check-payment-status/',
+  ServicesQrStatus: 'appointment_carts/check-payment-status/',
+  getOneService: 'appointments',
+  updateServiceCartQty: 'appointment_carts/change-qty',
 };
 
 export const ApiWalletInventory = {

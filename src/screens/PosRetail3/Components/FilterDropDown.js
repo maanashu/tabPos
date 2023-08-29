@@ -31,9 +31,8 @@ import {
   getSubCategory,
 } from '@/actions/RetailAction';
 import { blankCheckBox, checkedCheckboxSquare, down, Fonts, up } from '@/assets';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-export const FilterDropDown = ({ sellerid }) => {
+export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue, closeHandler }) => {
   const retailData = useSelector(getRetail);
   const dispatch = useDispatch();
 
@@ -58,23 +57,70 @@ export const FilterDropDown = ({ sellerid }) => {
   const [brandOpenDropDown, setBrandOpenDropDown] = useState(false);
   const [selectedBrandArray, setSelectedBrandArray] = useState([]);
 
+  const productArrayLength = [
+    selectedCategoryArray?.length + selectedSubCategoryArray?.length + selectedBrandArray?.length,
+  ];
+
   const multipleArrayLength =
     selectedCategoryArray?.length > 0 ||
     selectedBrandArray?.length > 0 ||
     selectedSubCategoryArray?.length > 0;
 
-  useEffect(() => {
-    dispatch(getCategory(sellerid, search));
-    dispatch(getSubCategory(sellerid, searchSubCategory));
-    dispatch(getBrand(sellerid, searchBrand));
-  }, [
-    debouncedValue,
-    debouncedSubValue,
-    debouncedBrandValue,
-    search,
-    searchSubCategory,
-    searchBrand,
-  ]);
+  // useEffect(() => {
+  //   settleFunction();
+  // }, [backfilterValue == 0]);
+
+  // useEffect(() => {
+  //   dispatch(getCategory(sellerid, search));
+  //   dispatch(getSubCategory(sellerid, searchSubCategory));
+  //   dispatch(getBrand(sellerid, searchBrand));
+  // }, [
+  //   debouncedValue,
+  //   debouncedSubValue,
+  //   debouncedBrandValue,
+  //   search,
+  //   searchSubCategory,
+  //   searchBrand,
+  // ]);
+
+  // category search function
+  const categorySearch = (search) => {
+    setSearch(search);
+    setCategoryOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getCategory(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getCategory(sellerid));
+    }
+  };
+
+  //subCategory search function
+  const subCategorySearch = (search) => {
+    setSearchSubCategory(search);
+    setSubCategoryOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getSubCategory(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getSubCategory(sellerid));
+    }
+  };
+
+  //brandCategory search function
+  const brandSearch = (search) => {
+    setSearchBrand(search);
+    setBrandOpenDropDown(true);
+    if (search?.length > 2) {
+      dispatch(getBrand(sellerid, search));
+    } else if (search?.length === 0) {
+      dispatch(getBrand(sellerid));
+    }
+  };
+
+  const clearInput = () => {
+    dispatch(getCategory(sellerid));
+    dispatch(getSubCategory(sellerid));
+    dispatch(getBrand(sellerid));
+  };
 
   useEffect(() => {
     setCategoryData(
@@ -90,46 +136,11 @@ export const FilterDropDown = ({ sellerid }) => {
     );
   }, [retailData]);
 
-  useEffect(() => {
-    let finalParams = {};
-
-    if (selectedCategoryArray && selectedCategoryArray.length > 0) {
-      finalParams.category_ids = selectedCategoryArray.join(',');
-    }
-
-    if (selectedBrandArray && selectedBrandArray.length > 0) {
-      finalParams.brand_id = selectedBrandArray.join(',');
-    }
-
-    if (selectedSubCategoryArray && selectedSubCategoryArray.length > 0) {
-      finalParams.sub_category_ids = selectedSubCategoryArray.join(',');
-    }
-
-    if (
-      selectedCategoryArray?.length > 0 ||
-      selectedBrandArray?.length > 0 ||
-      selectedSubCategoryArray?.length > 0
-    ) {
-      dispatch(getMainProduct(finalParams));
-    }
-  }, [selectedCategoryArray, selectedBrandArray, selectedSubCategoryArray]);
-
-  useEffect(() => {
-    dispatch(getCategory(sellerid));
-    dispatch(getSubCategory(sellerid));
-    dispatch(getBrand(sellerid));
-    // setCategoryData(
-    //   retailData?.categoryList?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    // );
-
-    // setSubCategoryData(
-    //   retailData?.subCategories?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    // );
-
-    // setBrandData(
-    //   retailData?.brands?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
-    // );
-  }, [!search, !searchSubCategory, !searchBrand]);
+  // useEffect(() => {
+  //   dispatch(getCategory(sellerid));
+  //   dispatch(getSubCategory(sellerid));
+  //   dispatch(getBrand(sellerid));
+  // }, []);
 
   const isOrderLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_CATEGORY, TYPES.GET_SUB_CATEGORY, TYPES.GET_BRAND], state)
@@ -144,10 +155,7 @@ export const FilterDropDown = ({ sellerid }) => {
           value={search}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchCategory}
-          onChangeText={(text) => {
-            setSearch(text);
-            setCategoryOpenDropDown(true);
-          }}
+          onChangeText={(search) => categorySearch(search)}
         />
 
         {isOrderLoading ? (
@@ -200,12 +208,13 @@ export const FilterDropDown = ({ sellerid }) => {
     newSubData[index].isChecked = !newSubData[index].isChecked;
     setCategoryData(newSubData);
     const filteredCategories = newSubData.filter((e) => e.isChecked);
-    const ids = filteredCategories.map((item, index) => item?.id);
-    setSelectedCategoryArray(ids);
-    const categoryID = {
-      category_ids: ids.join(','),
-    };
-    dispatch(getMainProduct(categoryID));
+    const catIds = filteredCategories.map((item, index) => item?.id);
+    setSelectedCategoryArray(catIds);
+    // const categoryID = {
+    //   category_ids: catIds.join(','),
+    // };
+
+    // dispatch(getMainProduct(categoryID));
   };
 
   // sub category
@@ -216,10 +225,7 @@ export const FilterDropDown = ({ sellerid }) => {
           value={searchSubCategory}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchSubCategory}
-          onChangeText={(text) => {
-            setSearchSubCategory(text);
-            setSubCategoryOpenDropDown(true);
-          }}
+          onChangeText={(search) => subCategorySearch(search)}
         />
 
         {isOrderLoading ? (
@@ -247,18 +253,21 @@ export const FilterDropDown = ({ sellerid }) => {
 
   const renderDetailSubCategories = ({ item, index }) => {
     return (
-      <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+      <TouchableOpacity
+        style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}
+        onPress={() => changeCheckSubInput(index)}
+      >
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => changeCheckSubInput(index)}>
+          <View>
             <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         ) : (
-          <TouchableOpacity onPress={() => changeCheckSubInput(index)}>
+          <View>
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         )}
         <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -269,10 +278,10 @@ export const FilterDropDown = ({ sellerid }) => {
     const filteredCategories = newSubData.filter((e) => e.isChecked);
     const ids = filteredCategories.map((item, index) => item?.id);
     setSelectedSubCategoryArray(ids);
-    const subCategoryID = {
-      sub_category_ids: ids.join(','),
-    };
-    dispatch(getMainProduct(subCategoryID));
+    // const subCategoryID = {
+    //   sub_category_ids: ids.join(','),
+    // };
+    // dispatch(getMainProduct(subCategoryID));
   };
 
   // Brands
@@ -283,10 +292,7 @@ export const FilterDropDown = ({ sellerid }) => {
           value={searchBrand}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchBrand}
-          onChangeText={(text) => {
-            setSearchBrand(text);
-            setBrandOpenDropDown(true);
-          }}
+          onChangeText={(search) => brandSearch(search)}
         />
 
         {isOrderLoading ? (
@@ -314,18 +320,21 @@ export const FilterDropDown = ({ sellerid }) => {
 
   const renderDetailBrands = ({ item, index }) => {
     return (
-      <View style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}>
+      <TouchableOpacity
+        style={[styles.categoryViewStyle, { justifyContent: 'flex-start' }]}
+        onPress={() => changeCheckBrandInput(index)}
+      >
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => changeCheckBrandInput(index)}>
+          <View>
             <Image source={checkedCheckboxSquare} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         ) : (
-          <TouchableOpacity onPress={() => changeCheckBrandInput(index)}>
+          <View>
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
-          </TouchableOpacity>
+          </View>
         )}
         <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -336,10 +345,10 @@ export const FilterDropDown = ({ sellerid }) => {
     const filteredCategories = newSubData.filter((e) => e.isChecked);
     const ids = filteredCategories.map((item, index) => item?.id);
     setSelectedBrandArray(ids);
-    const brandID = {
-      brand_id: ids.join(','),
-    };
-    dispatch(getMainProduct(brandID));
+    // const brandID = {
+    //   brand_id: ids.join(','),
+    // };
+    // dispatch(getMainProduct(brandID));
   };
 
   return (
@@ -414,12 +423,11 @@ export const FilterDropDown = ({ sellerid }) => {
           ) : null}
         </View>
       </View>
-
       <View style={{ flex: 1 }} />
       <View style={styles.applyFilterCon}>
         <TouchableOpacity
           style={
-            !multipleArrayLength
+            multipleArrayLength === false && backfilterValue == 0
               ? styles.clearFilterButton
               : [styles.clearFilterButton, styles.clearFilterButtonDark]
           }
@@ -431,12 +439,15 @@ export const FilterDropDown = ({ sellerid }) => {
             setSubCategoryOpenDropDown(false);
             setBrandOpenDropDown(false);
             dispatch(getMainProduct());
+            clearInput();
+            productFilterCount(0);
+            closeHandler();
           }}
-          disabled={!multipleArrayLength ? true : false}
+          disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
         >
           <Text
             style={
-              !multipleArrayLength
+              multipleArrayLength === false && backfilterValue == 0
                 ? styles.clearFilterText
                 : [styles.clearFilterText, { color: COLORS.solid_grey }]
             }
@@ -446,12 +457,20 @@ export const FilterDropDown = ({ sellerid }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={
-            !multipleArrayLength
+            multipleArrayLength === false && backfilterValue == 0
               ? styles.ApplyButton
               : [styles.ApplyButton, { backgroundColor: COLORS.primary }]
           }
-          disabled={!multipleArrayLength ? true : false}
-          onPress={() => alert('Apply filter work in progress')}
+          disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
+          onPress={() => {
+            const ids = {
+              category_ids: selectedCategoryArray.join(','),
+              sub_category_ids: selectedSubCategoryArray.join(','),
+              brand_id: selectedBrandArray.join(','),
+            };
+            dispatch(getMainProduct(ids));
+            productFilterCount(productArrayLength?.[0]);
+          }}
         >
           <Text style={styles.ApplyText}>Apply</Text>
         </TouchableOpacity>
@@ -503,7 +522,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
     position: 'absolute',
     right: 0,
-    top: 70,
+    top: Platform.OS === 'ios' ? 60 : 70,
     borderRadius: 5,
     width: windowWidth * 0.3,
     height: Platform.OS === 'android' ? windowHeight * 0.76 : windowHeight * 0.8,
@@ -519,7 +538,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.gerySkies,
     borderRadius: 5,
-    width: Platform.OS === 'ios' ? ms(90) : ms(110),
+    width: Platform.OS === 'ios' ? ms(82) : ms(110),
     height: ms(32),
     justifyContent: 'center',
     alignItems: 'center',
@@ -535,7 +554,7 @@ const styles = StyleSheet.create({
   ApplyButton: {
     borderColor: COLORS.gerySkies,
     borderRadius: 5,
-    width: Platform.OS === 'ios' ? ms(90) : ms(110),
+    width: Platform.OS === 'ios' ? ms(82) : ms(110),
     height: ms(32),
     justifyContent: 'center',
     alignItems: 'center',

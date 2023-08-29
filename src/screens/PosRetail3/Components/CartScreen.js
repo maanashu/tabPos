@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FlatList, Keyboard, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Image, TextInput, Keyboard, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -10,6 +10,7 @@ import {
   addDiscountPic,
   addToCart,
   borderCross,
+  cartEdit,
   checkArrow,
   cross,
   eraser,
@@ -21,9 +22,6 @@ import {
   search_light,
   sideKeyboard,
 } from '@/assets';
-import { TouchableOpacity } from 'react-native';
-import { Image } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -43,9 +41,17 @@ import { ms } from 'react-native-size-matters';
 import { AddCartDetailModal } from './AddCartDetailModal';
 import { AddCartModal } from './AddCartModal';
 import Modal from 'react-native-modal';
-import { useEffect } from 'react';
+import { updateCartLength } from '@/actions/CartAction';
+import { getCartLength } from '@/selectors/CartSelector';
+import { FlatList } from 'react-native-gesture-handler';
 
-export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDiscountHandler }) {
+export function CartScreen({
+  onPressPayNow,
+  crossHandler,
+  addNotesHandler,
+  addDiscountHandler,
+  getScreen,
+}) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
@@ -59,7 +65,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const [offerId, setOfferId] = useState();
-
+  const CART_LENGTH = useSelector(getCartLength);
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
   const cartStatusHandler = () => {
@@ -83,23 +89,26 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     dispatch(getAvailableOffer(data));
   }, []);
 
+  const beforeDiscountCartLoad = () => {
+    var arr = getRetailData?.getAllCart;
+    if (arr?.poscart_products?.length > 0) {
+      const products = arr?.poscart_products.map((item) => ({
+        product_id: item?.product_id,
+        qty: item?.qty,
+      }));
+      const data = {
+        updated_products: products,
+      };
+      dispatch(updateCartQty(data, arr.id));
+    } else {
+      // clearCartHandler();
+    }
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        var arr = getRetailData?.getAllCart;
-        if (arr?.poscart_products.length > 0) {
-          const products = arr?.poscart_products.map((item) => ({
-            product_id: item?.product_id,
-            qty: item?.qty,
-          }));
-
-          const data = {
-            updated_products: products,
-          };
-          dispatch(updateCartQty(data, arr.id));
-        } else {
-          clearCartHandler();
-        }
+        beforeDiscountCartLoad();
       };
     }, [])
   );
@@ -112,6 +121,13 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     }
   };
 
+  const cartProductedit = async (productId) => {
+    const res = await dispatch(getOneProduct(sellerID, productId));
+    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+      setAddCartModal(true);
+    }
+  };
+
   function calculatePercentageValue(value, percentage) {
     if (percentage == '') {
       return '';
@@ -119,7 +135,6 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     const percentageValue = (percentage / 100) * parseFloat(value);
     return percentageValue.toFixed(2) ?? 0.0;
   }
-
   const updateQuantity = (cartId, productId, operation, index) => {
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
@@ -129,19 +144,15 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
       product.qty += 1;
       arr.amount.total_amount += productPrice;
       arr.amount.products_price += productPrice;
-
       const totalAmount = arr.amount.products_price;
-      // console.log('Total Amount:', totalAmount);
-
       const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-      //  console.log('TAX:', TAX);
-
       arr.amount.tax = parseFloat(TAX); // Update tax value
       arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
     } else if (operation === '-') {
       if (product.qty > 0) {
         if (product.qty === 1) {
           arr?.poscart_products.splice(index, 1);
+          dispatch(updateCartLength(CART_LENGTH - 1));
         }
         product.qty -= 1;
 
@@ -159,32 +170,34 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
     };
     dispatch(getAllCartSuccess(DATA));
   };
-
-  const clearCartHandler = () => {
-    dispatch(clearAllCart());
-    crossHandler();
+  const clearCartHandler = async () => {
+    const res = await dispatch(clearAllCart());
+    setTimeout(() => {
+      crossHandler();
+    }, 2000);
   };
   const removeOneCartHandler = (productId, index) => {
-    // const data = {
-    //   cartId: cartData?.id,
-    //   productId: productId,
-    // };
-    // dispatch(clearOneCart(data));
-
-    //Mukul code----->
-
     var arr = getRetailData?.getAllCart;
-    const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
-    if (product.qty > 0) {
-      arr.amount.total_amount -= productPrice * product.qty;
-      arr.amount.products_price -= productPrice * product.qty;
-      arr?.poscart_products.splice(index, 1);
+    if (arr?.poscart_products.length == 1 && index == 0) {
+      clearCartHandler();
+    } else {
+      const product = arr?.poscart_products[index];
+      const productPrice = product.product_details.price;
+      if (product.qty > 0) {
+        arr.amount.total_amount -= productPrice * product.qty;
+        arr.amount.products_price -= productPrice * product.qty;
+        arr?.poscart_products.splice(index, 1);
+      }
+      const totalAmount = arr.amount.products_price;
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      arr.amount.tax = parseFloat(TAX); // Update tax value
+      arr.amount.total_amount = totalAmount + parseFloat(TAX);
+      var DATA = {
+        payload: arr,
+      };
+      dispatch(updateCartLength(CART_LENGTH - 1));
+      dispatch(getAllCartSuccess(DATA));
     }
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(getAllCartSuccess(DATA));
   };
 
   return (
@@ -206,6 +219,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                 style={styles.backProScreen}
                 onPress={() => {
                   crossHandler();
+                  getScreen('Product');
                   // dispatch(getUserDetailSuccess([]));
                 }}
               >
@@ -248,97 +262,105 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                 <View style={[styles.tableListSide, styles.tableListSide2]}>
                   <Text style={styles.cashLabelWhite}>Unit Price</Text>
                   <Text style={styles.cashLabelWhite}>Quantity</Text>
-                  <Text style={styles.cashLabelWhite}>Line Total</Text>
+                  <Text style={[styles.cashLabelWhite, { paddingRight: ms(10) }]}>Line Total</Text>
                   <Text style={{ color: COLORS.primary }}>1</Text>
+                  {/* <Text style={{ color: COLORS.primary }}>1</Text> */}
                 </View>
               </View>
             </View>
-            {arr?.map((item, index) => (
-              <View key={index}>
-                {item?.poscart_products?.map((data, ind) => (
-                  <View style={styles.blueListData} key={ind}>
-                    <View style={styles.displayflex}>
-                      <View style={[styles.tableListSide, styles.listLeft]}>
-                        <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
-                          {ind + 1}
-                        </Text>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Image
-                            source={{ uri: data.product_details?.image }}
-                            style={styles.columbiaMen}
-                          />
-                          <View style={{ marginLeft: 10 }}>
-                            <Text
-                              style={[styles.blueListDataText, { width: SW(40) }]}
-                              numberOfLines={1}
+            <ScrollView>
+              {arr?.map((item, index) => (
+                <View key={index}>
+                  {item?.poscart_products?.map((data, ind) => (
+                    <View style={styles.blueListData} key={ind}>
+                      <View style={styles.displayflex}>
+                        <View style={[styles.tableListSide, styles.listLeft]}>
+                          <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
+                            {ind + 1}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Image
+                              source={{ uri: data.product_details?.image }}
+                              style={styles.columbiaMen}
+                            />
+                            <View style={{ marginLeft: 10 }}>
+                              <Text
+                                style={[styles.blueListDataText, { width: SW(40) }]}
+                                numberOfLines={1}
+                              >
+                                {data.product_details?.name}
+                              </Text>
+                              <Text style={styles.sukNumber}>
+                                UPC: {data?.product_details?.upc}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                        <View style={[styles.tableListSide, styles.tableListSide2]}>
+                          <Text
+                            style={[styles.blueListDataText, { width: SW(20) }]}
+                            numberOfLines={1}
+                          >
+                            ${data?.product_details?.supply?.supply_prices?.selling_price}
+                          </Text>
+                          <View style={styles.listCountCon}>
+                            <TouchableOpacity
+                              style={{
+                                width: SW(10),
+                                alignItems: 'center',
+                              }}
+                              onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
+                              disabled={data.qty == 1 ? true : false}
                             >
-                              {data.product_details?.name}
-                            </Text>
-                            <Text style={styles.sukNumber}>UPC: {data?.product_details?.upc}</Text>
+                              <Image source={minus} style={styles.minus} />
+                            </TouchableOpacity>
+                            <Text>{data.qty}</Text>
+                            <TouchableOpacity
+                              style={{
+                                width: SW(10),
+                                alignItems: 'center',
+                              }}
+                              onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
+                            >
+                              <Image source={plus} style={styles.minus} />
+                            </TouchableOpacity>
+                          </View>
+                          <Text style={styles.blueListDataText}>
+                            $
+                            {(
+                              data.product_details?.supply?.supply_prices?.selling_price * data?.qty
+                            ).toFixed(2)}
+                          </Text>
+                          <View
+                            style={{
+                              width: ms(45),
+                              flexDirection: 'row',
+                              justifyContent: 'flex-end',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <TouchableOpacity
+                              style={[styles.cartEditCon, { marginRight: ms(14) }]}
+                              onPress={() => cartProductedit(data?.product_id)}
+                            >
+                              <Image source={cartEdit} style={styles.cartEdit} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => removeOneCartHandler(data.id, ind)}>
+                              <Image source={borderCross} style={styles.borderCross} />
+                            </TouchableOpacity>
                           </View>
                         </View>
                       </View>
-                      <View style={[styles.tableListSide, styles.tableListSide2]}>
-                        <Text
-                          style={[styles.blueListDataText, { width: SW(20) }]}
-                          numberOfLines={1}
-                        >
-                          ${data?.product_details?.supply?.supply_prices?.selling_price}
-                        </Text>
-                        <View style={styles.listCountCon}>
-                          <TouchableOpacity
-                            style={{
-                              width: SW(10),
-                              alignItems: 'center',
-                            }}
-                            onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
-                          >
-                            <Image source={minus} style={styles.minus} />
-                          </TouchableOpacity>
-                          {/* {isLoading ? (
-                            <ActivityIndicator size="small" color={COLORS.primary} />
-                          ) : (
-                            <Text>{data.qty}</Text>
-                          )} */}
-                          <Text>{data.qty}</Text>
-                          <TouchableOpacity
-                            style={{
-                              width: SW(10),
-                              alignItems: 'center',
-                            }}
-                            onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
-                          >
-                            <Image source={plus} style={styles.minus} />
-                          </TouchableOpacity>
-                        </View>
-                        <Text style={styles.blueListDataText}>
-                          $
-                          {(
-                            data.product_details?.supply?.supply_prices?.selling_price * data?.qty
-                          ).toFixed(2)}
-                        </Text>
-                        <TouchableOpacity
-                          style={{
-                            width: SW(8),
-                            height: SH(40),
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
-                          onPress={() => removeOneCartHandler(data.id, ind)}
-                        >
-                          <Image source={borderCross} style={styles.borderCross} />
-                        </TouchableOpacity>
-                      </View>
                     </View>
-                  </View>
-                ))}
-              </View>
-            ))}
+                  ))}
+                </View>
+              ))}
+            </ScrollView>
 
             <Spacer space={SH(7)} />
           </View>
@@ -350,10 +372,29 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
               >
                 <Image source={sideKeyboard} style={styles.keyboardIcon} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.holdCartCon} onPress={cartStatusHandler}>
-                <Image source={holdCart} style={styles.pause} />
+              <TouchableOpacity
+                style={[
+                  styles.holdCartCon,
+                  { borderColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.black },
+                ]}
+                onPress={cartStatusHandler}
+              >
+                <Image
+                  source={holdCart}
+                  style={[
+                    styles.pause,
+                    { tintColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
+                  ]}
+                />
 
-                <Text style={styles.holdCart}>{strings.dashboard.holdCart}</Text>
+                <Text
+                  style={[
+                    styles.holdCart,
+                    { color: holdProductArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
+                  ]}
+                >
+                  {strings.dashboard.holdCart}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.holdCartCon} onPress={clearCartHandler}>
                 <Image source={eraser} style={[styles.pause, { tintColor: COLORS.dark_grey }]} />
@@ -361,61 +402,12 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
               </TouchableOpacity>
             </View>
             <Spacer space={SH(10)} />
-            <View>
+            <View style={{ flex: 1 }}>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
                 </View>
 
-                {/* <View style={[styles.availbleOfferScroll, { borderWidth: 1 }]}>
-                  <ScrollView
-                    scrollEnabled={true}
-                    nestedScrollEnabled={true}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                  >
-                    {availableOfferArray?.length === 0 ? (
-                      <View>
-                        <Text style={styles.noDataText}>No Data</Text>
-                      </View>
-                    ) : (
-                      [1, 2, 3, 4, 5, 6]?.map((item, index) => (
-                        <TouchableOpacity
-                          style={styles.avaliableOferBodyCon}
-                          key={index}
-                          onPress={() => productFun(item.id)}
-                        >
-                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={{ borderRadius: 4 }}>
-                              <Image
-                                source={{ uri: item.product?.image }}
-                                style={styles.offerImage}
-                              />
-                            </View>
-                            <View style={{ marginLeft: 4 }}>
-                              <Text
-                                style={[styles.offerText, { width: ms(110) }]}
-                                numberOfLines={1}
-                              >
-                                {item.product?.name}
-                              </Text>
-                              <Text style={styles.offerPrice}>White/S</Text>
-                              <View style={{ flexDirection: 'row' }}>
-                                <Text style={[styles.offerPrice, styles.lineTrought]}>
-                                  ${item.actual_price_per_pack}
-                                </Text>
-                                <Text style={styles.offerPriceDark}>
-                                  ${item.offer_price_per_pack}
-                                </Text>
-                              </View>
-                            </View>
-                          </View>
-                          <Image source={addToCart} style={styles.sideAddToCart} />
-                        </TouchableOpacity>
-                      ))
-                    )}
-                    availableOfferArray
-                  </ScrollView>
-                </View> */}
                 <FlatList
                   data={availableOfferArray}
                   extraData={availableOfferArray}
@@ -429,7 +421,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <View style={{ borderRadius: 4 }}>
                             <Image
-                              source={{ uri: item.product?.image }}
+                              source={{ uri: item?.product?.image }}
                               style={styles.offerImage}
                             />
                           </View>
@@ -452,9 +444,11 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                       </TouchableOpacity>
                     );
                   }}
-                  keyExtractor={(item, index) => index}
-                  contentContainerStyle={styles.availbleOfferScroll}
+                  style={{ flex: 1 }}
                   scrollEnabled={true}
+                  showsVerticalScrollIndicator={false}
+                  keyExtractor={(item, index) => index.toString()}
+                  contentContainerStyle={styles.availbleOfferScroll}
                   ListEmptyComponent={() => (
                     <View style={styles.noProductText}>
                       <Text style={[styles.emptyListText, { fontSize: SF(16) }]}>
@@ -464,25 +458,40 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                   )}
                 />
               </View>
-
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
-                <TouchableOpacity style={styles.addDiscountCon} onPress={addDiscountHandler}>
+                <TouchableOpacity
+                  style={styles.addDiscountCon}
+                  onPress={() => {
+                    addDiscountHandler();
+                    beforeDiscountCartLoad();
+                  }}
+                >
                   <Image source={addDiscountPic} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Discount</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.addDiscountCon} onPress={addNotesHandler}>
+                <TouchableOpacity
+                  style={styles.addDiscountCon}
+                  onPress={() => {
+                    addNotesHandler();
+                    beforeDiscountCartLoad();
+                  }}
+                >
                   <Image source={notess} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Notes</Text>
                 </TouchableOpacity>
               </View>
+
               <Spacer space={SH(10)} />
+
               <View style={styles.totalItemCon}>
                 <Text style={styles.totalItem}>
                   {strings.dashboard.totalItem} {cartData?.poscart_products?.length}
                 </Text>
               </View>
+
               <Spacer space={SH(5)} />
+
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Sub Total</Text>
                 <Text style={styles.subTotalDollar}>
@@ -500,8 +509,11 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                   ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
+
               <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>Discount</Text>
+                <Text style={styles.subTotal}>{`Discount ${
+                  cartData?.discount_flag === 'percentage' ? '(%)' : ''
+                } `}</Text>
                 <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
                   ${' '}
                   {cartData?.amount?.discount === 0
@@ -509,6 +521,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                     : cartData?.amount?.discount.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
+
               <View
                 style={{
                   borderWidth: 1,
@@ -516,6 +529,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                   borderColor: COLORS.solidGrey,
                 }}
               />
+
               <Spacer space={SH(5)} />
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.itemValue}>Item value</Text>
@@ -524,8 +538,17 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
                 </Text>
               </View>
             </View>
-            <View style={{ flex: 1 }} />
-            <TouchableOpacity style={[styles.checkoutButtonSideBar]} onPress={onPressPayNow}>
+
+            {/* <View style={{ flex: 1 }} /> */}
+
+            <TouchableOpacity
+              style={[
+                styles.checkoutButtonSideBar,
+                { opacity: cartData?.poscart_products?.length > 0 ? 1 : 0.7 },
+              ]}
+              onPress={onPressPayNow}
+              disabled={cartData?.poscart_products?.length > 0 ? false : true}
+            >
               <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>
@@ -542,6 +565,7 @@ export function CartScreen({ onPressPayNow, crossHandler, addNotesHandler, addDi
             detailHandler={() => setAddCartDetailModal(true)}
             sellerID={sellerID}
             offerId={offerId}
+            openFrom="cart"
           />
         )}
       </Modal>

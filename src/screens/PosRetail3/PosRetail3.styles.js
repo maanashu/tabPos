@@ -1,6 +1,7 @@
 import { Fonts } from '@/assets';
 import { COLORS, SF, SH, SW, ShadowStyles } from '@/theme';
 import { height, width } from '@/theme/ScalerDimensions';
+import { monthsShort } from 'moment';
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { Colors } from 'react-native-paper';
 import { moderateScale, verticalScale, ms, moderateVerticalScale } from 'react-native-size-matters';
@@ -87,7 +88,7 @@ export const styles = StyleSheet.create({
   },
   _boxView: {
     height: ms(110),
-    width: Platform.OS === 'ios' ? ms(103) : ms(120),
+    width: Platform.OS === 'ios' ? ms(103) : ms(110),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
     justifyContent: 'center',
@@ -114,7 +115,7 @@ export const styles = StyleSheet.create({
   },
   _inputMain: {
     marginTop: ms(15),
-    width: Platform.OS === 'ios' ? ms(325) : ms(380),
+    width: ms(360),
   },
   _inputSubView: {
     flexDirection: 'row',
@@ -144,7 +145,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: ms(10),
     borderColor: COLORS.solidGrey,
-    flex: 1,
+    flexGrow: 1,
   },
   _tipsButton: {
     height: ms(40),
@@ -363,6 +364,17 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
   },
+  addDiscountcon: {
+    width: windowWidth * 0.11,
+    height: SH(38),
+    borderRadius: 5,
+    backgroundColor: COLORS.white,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.primary,
+    alignSelf: 'center',
+  },
   holdCartPad: {
     width: windowWidth * 0.03,
     height: SH(38),
@@ -405,7 +417,9 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   availbleOfferScroll: {
-    height: Platform.OS === 'android' ? windowHeight * 0.32 : windowHeight * 0.35,
+    flexGrow: 1,
+    paddingBottom: 20,
+    // height: Platform.OS === 'android' ? windowHeight * 0.32 : windowHeight * 0.35,
   },
   avaliableOfferCon: {
     height: windowHeight * 0.05,
@@ -419,16 +433,18 @@ export const styles = StyleSheet.create({
   addDiscountCon: {
     backgroundColor: COLORS.blue_shade,
     height: Platform.OS === 'android' ? SH(40) : SH(45),
-    width: windowWidth * 0.1,
+    // width: windowWidth * 0.1,
     borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: moderateScale(3),
+    paddingHorizontal: moderateScale(5),
+    flex: 1,
+    marginRight: ms(2),
   },
   addDiscountText: {
     color: COLORS.dark_grey,
-    fontSize: SF(12),
+    fontSize: ms(6.5),
     fontFamily: Fonts.MaisonRegular,
   },
   addDiscountPic: {
@@ -557,7 +573,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     width: windowWidth * 0.5,
-    height: windowHeight * 0.85,
+    height: windowHeight * 0.92,
     paddingTop: ms(5),
     paddingBottom: ms(10),
     position: 'absolute',
@@ -813,6 +829,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     // height: windowHeight * 0.45,
     flexDirection: 'row',
+    borderWidth: 1,
   },
   colorSelectArea: {
     // height: windowHeight * 0.45,
@@ -833,13 +850,13 @@ export const styles = StyleSheet.create({
   imageView: {
     borderWidth: 2,
     borderRadius: 5,
-    width: SW(25),
-    height: SW(25),
+    width: SW(20),
+    height: SW(20),
     marginVertical: verticalScale(3),
   },
   scrollImage: {
-    width: SW(23),
-    height: SW(23),
+    width: SW(18),
+    height: SW(18),
     resizeMode: 'contain',
   },
   sizeSelectItemCon: {
@@ -926,8 +943,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   columbiaMen: {
-    width: SW(6),
-    height: SW(6),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
   },
   cartItemImage: {
@@ -1049,6 +1066,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: ms(6),
     marginTop: ms(5),
+    paddingHorizontal: ms(5),
   },
   _kNumber: {
     color: COLORS.dark_grey,
@@ -1133,7 +1151,7 @@ export const styles = StyleSheet.create({
   addDiscountConPop: {
     height: windowHeight * 0.55,
   },
-  addNotesInput: {
+  addNotesInput1: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 5,
     height: windowHeight * 0.27,
@@ -1233,7 +1251,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderRadius: 10,
     width: windowWidth * 0.06,
-    height: windowHeight * 0.86,
+    height: windowHeight * 0.88,
     paddingVertical: verticalScale(6),
     alignItems: 'center',
   },
@@ -1448,6 +1466,20 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.gerySkies,
     backgroundColor: COLORS.white,
   },
+
+  filterBadge: {
+    borderWidth: 2,
+    width: ms(11),
+    height: ms(11),
+    borderRadius: ms(10),
+    position: 'absolute',
+    right: -5,
+    bottom: -6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.white,
+  },
   holdBadgePrimary: {
     backgroundColor: COLORS.primary,
     borderColor: COLORS.white,
@@ -1456,6 +1488,12 @@ export const styles = StyleSheet.create({
     color: COLORS.gerySkies,
     fontSize: SF(11),
     fontFamily: Fonts.SemiBold,
+  },
+  filterBadgeText: {
+    color: COLORS.primary,
+    fontSize: SF(10),
+    fontFamily: Fonts.SemiBold,
+    // textAlign: 'center',
   },
 
   //NEW DESIGN
@@ -1547,12 +1585,6 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(7),
-    marginTop: ms(5),
-  },
-  _kAddress: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: ms(6),
     marginTop: ms(5),
   },
   _kNumber: {
@@ -2075,6 +2107,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     width: windowWidth * 0.09,
     textAlignVertical: 'center',
+    // borderWidth: 1,
+    paddingLeft: ms(10),
   },
 
   noProductAndService: {
@@ -2092,5 +2126,139 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: COLORS.primary,
     marginTop: ms(10),
+  },
+  shortServiceItalic: {
+    fontFamily: Fonts.Italic,
+    color: COLORS.solid_grey,
+    fontSize: ms(6),
+  },
+  serviceCartImage: {
+    width: ms(20),
+    height: ms(20),
+    resizeMode: 'contain',
+    borderRadius: 5,
+  },
+  scnStyle: {
+    width: SW(15),
+    height: SW(16),
+    resizeMode: 'contain',
+  },
+  cartEditCon: {
+    marginRight: ms(18),
+  },
+
+  cartEdit: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+  },
+
+  // custom product add modal css start
+
+  customProductCon: {
+    borderWidth: 1,
+    width: ms(550),
+    height: ms(350),
+    backgroundColor: COLORS.white,
+    alignSelf: 'center',
+    borderRadius: 10,
+    padding: ms(10),
+    marginTop: ms(50),
+  },
+  dollarAddCon: {
+    height: ms(28),
+    borderRadius: 5,
+    backgroundColor: COLORS.textInputBackground,
+    paddingHorizontal: ms(10),
+    // justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dollar: {
+    width: ms(13),
+    height: ms(13),
+    resizeMode: 'contain',
+  },
+  dollarInput: {
+    flex: 1,
+    paddingHorizontal: ms(5),
+    fontFamily: Fonts.Medium,
+    fontSize: ms(11),
+  },
+  productNameInput: {
+    marginTop: ms(10),
+    height: ms(28),
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+    borderWidth: 1,
+    paddingHorizontal: ms(10),
+    fontSize: ms(8),
+  },
+  addNotesInput: {
+    marginTop: ms(10),
+    height: ms(55),
+    borderRadius: 5,
+    borderColor: COLORS.solidGrey,
+    borderWidth: 1,
+    paddingHorizontal: ms(10),
+    fontSize: ms(8),
+    textAlignVertical: 'top',
+  },
+  closeButtonCon: {
+    borderWidth: 1,
+    height: ms(42),
+    width: ms(150),
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeText: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: ms(8),
+  },
+  customAddQtyCon: {
+    height: ms(42),
+    borderWidth: 1,
+    flex: 1,
+    borderColor: COLORS.solidGrey,
+    marginHorizontal: ms(10),
+    paddingHorizontal: ms(10),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  plusButton: {
+    width: ms(18),
+    height: ms(18),
+    resizeMode: 'contain',
+  },
+  zeroText: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: ms(12),
+  },
+
+  unitPriceInput: {
+    backgroundColor: COLORS.solidGrey,
+    width: Platform.OS === 'android' ? ms(70) : ms(57),
+    height: ms(20),
+    padding: 0,
+    margin: 0,
+    textAlign: 'center',
+  },
+  saveButtonCon: {
+    width: Platform.OS === 'android' ? ms(40) : ms(30),
+    height: ms(20),
+    backgroundColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginRight: ms(5),
+  },
+  saveText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.darkGray,
+    fontSize: ms(7),
   },
 });

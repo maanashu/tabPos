@@ -74,8 +74,10 @@ export function PosRetail3() {
   const [addServiceNotes, setAddServiceNotes] = useState(false);
 
   const [savedTempCartData, setSavedTempCartData] = useState(null);
+  const [visitCart, setVisitCart] = useState(false);
 
   const [cashPayDetail, setCashPayDetail] = useState();
+  const [activeScreen, setActiveScreen] = useState();
 
   // service Add discount start
 
@@ -89,7 +91,9 @@ export function PosRetail3() {
   const [serviceDiscountCode, setServiceDiscountCode] = useState(
     getServicecart?.discount_flag === 'code' ? getServicecart?.discount_value : ''
   );
-  const [serviceDescriptionDis, setServiceDescriptionDis] = useState(getServicecart?.discount_desc);
+  const [serviceDescriptionDis, setServiceDescriptionDis] = useState(
+    getServicecart?.discount_desc ?? 'Discount'
+  );
   const [serviceValue, setServiceValue] = useState(
     getServicecart?.discount_flag === 'amount'
       ? 'amount'
@@ -111,7 +115,9 @@ export function PosRetail3() {
 
   useEffect(() => {
     setServiceNotes(getServicecart?.notes);
-    setServiceDescriptionDis(getServicecart?.discount_desc);
+    setServiceDescriptionDis(
+      getServicecart?.discount_desc === null ? 'Discount' : getServicecart?.discount_desc
+    );
     setServicePercentageCheck(getServicecart?.discount_flag === 'percentage' ? true : false);
     setServiceAmountCheck(getServicecart?.discount_flag === 'amount' ? true : false);
     setServiceDiscountCheck(getServicecart?.discount_flag === 'code' ? true : false);
@@ -153,8 +159,8 @@ export function PosRetail3() {
 
   const saveServiceDiscountHandler = () => {
     if (
-      serviceAmountDis > finalServiceAmountForDiscount ||
-      percentDis > finalServiceAmountForDiscount
+      serviceAmountDis > finalServiceAmountForDiscount
+      //  ||percentDis > finalServiceAmountForDiscount
     ) {
       alert('Please enter discount less then total amount');
     } else if (!getRetailData?.getserviceCart?.id) {
@@ -163,9 +169,11 @@ export function PosRetail3() {
       alert(strings.posSale.discountType);
     } else if (!serviceAmountDis && !servicePercentDis && !serviceDiscountCode) {
       alert(strings.posSale.enterfield);
-    } else if (!serviceDescriptionDis) {
-      alert(strings.posSale.selectDisTitle);
-    } else {
+    }
+    // else if (!serviceDescriptionDis) {
+    //   alert(strings.posSale.selectDisTitle);
+    // }
+    else {
       const data = {
         amountDis: serviceAmountDis,
         percentDis: servicePercentDis,
@@ -203,6 +211,7 @@ export function PosRetail3() {
       ? 'code'
       : ''
   );
+
   const [amountCheck, setAmountCheck] = useState(
     getCart?.discount_flag === 'amount' ? true : false
   );
@@ -221,7 +230,7 @@ export function PosRetail3() {
   }, [isFocus]);
   useEffect(() => {
     setNotes(getCart?.notes);
-    setDescriptionDis(getCart?.discount_desc);
+    setDescriptionDis(getCart?.discount_desc === null ? 'Discount' : getCart?.discount_desc);
     setPercentageCheck(getCart?.discount_flag === 'percentage' ? true : false);
     setAmountCheck(getCart?.discount_flag === 'amount' ? true : false);
     setDiscountCheck(getCart?.discount_flag === 'code' ? true : false);
@@ -255,42 +264,19 @@ export function PosRetail3() {
     }
   };
   const saveDiscountHandler = () => {
-    if (amountDis > finalAmountForDiscount || percentDis > finalAmountForDiscount) {
-      Toast.show({
-        text2: 'Please enter discount less then total amount',
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
+    if (amountDis > finalAmountForDiscount) {
+      alert('Please enter discount less then total amount');
     } else if (!cartID2) {
-      Toast.show({
-        text2: strings.posSale.addItemCart,
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
+      alert(Pleastrings.posSale.addItemCart);
     } else if (value === '') {
-      Toast.show({
-        text2: strings.posSale.discountType,
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
+      alert(strings.posSale.discountType);
     } else if (!amountDis && !percentDis && !discountCode) {
-      Toast.show({
-        text2: strings.posSale.enterfield,
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
-    } else if (!descriptionDis) {
-      Toast.show({
-        text2: strings.posSale.selectDisTitle,
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
-    } else {
+      alert(strings.posSale.enterfield);
+    }
+    //  else if (!descriptionDis) {
+    //   alert(strings.posSale.selectDisTitle);
+    // }
+    else {
       const data = {
         amountDis: amountDis,
         percentDis: percentDis,
@@ -314,6 +300,10 @@ export function PosRetail3() {
   };
   const addDiscountHandler = () => {
     setAddDiscount(true);
+  };
+
+  const getScreenFunction = (value) => {
+    setActiveScreen(value);
   };
 
   useEffect(() => {
@@ -343,6 +333,7 @@ export function PosRetail3() {
     isLoadingSelector(
       [
         TYPES.GET_ONE_PRODUCT,
+        TYPES.GET_ONE_SERVICE,
         // TYPES.ADDCART,
         TYPES.GET_CLEAR_ALL_CART,
         TYPES.GET_ALL_CART,
@@ -362,6 +353,7 @@ export function PosRetail3() {
         TYPES.GET_ALL_SERVICE_CART,
         TYPES.CHANGE_STATUS_SERVICE_CART,
         TYPES.ADD_SERVICE_DISCOUNT,
+        TYPES.GET_MAIN_SERVICES,
       ],
       state
     )
@@ -370,10 +362,14 @@ export function PosRetail3() {
   const renderScreen = {
     ['MainScreen']: (
       <MainScreen
-        cartScreenHandler={() => setselectedScreen('CartScreen')}
+        cartScreenHandler={() => {
+          setVisitCart(true), setselectedScreen('CartScreen');
+        }}
         sellerID={sellerID}
         headercrossHandler={() => alert('abc')}
-        checkOutHandler={() => setselectedScreen('CartScreen')}
+        checkOutHandler={() => {
+          setVisitCart(true), setselectedScreen('CartScreen');
+        }}
         productArray={defaultArrayproduct}
         categoryArray={categoryArray}
         addNotesHandler={addNotesHandler}
@@ -382,6 +378,7 @@ export function PosRetail3() {
           setselectedScreen('CartAmountTips');
         }}
         cartServiceScreenHandler={() => setselectedScreen('CartServiceScreen')}
+        activeCategory={activeScreen}
       />
     ),
     ['CartScreen']: (
@@ -389,11 +386,11 @@ export function PosRetail3() {
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
           setFromWhichCart('Product');
-
           setselectedScreen('CartAmountPayBy'), setComingScreen('CartScreen');
         }}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
+        getScreen={(value) => getScreenFunction(value)}
       />
     ),
 
@@ -406,6 +403,7 @@ export function PosRetail3() {
         }}
         addNotesHandler={() => setAddServiceNotes(true)}
         addDiscountHandler={() => setAddServiceDiscount(true)}
+        getScreen={(value) => getScreenFunction(value)}
       />
     ),
     ['CartAmountTips']: (
@@ -568,7 +566,7 @@ export function PosRetail3() {
                 />
                 <Spacer space={SH(10)} />
                 <TouchableOpacity
-                  style={[styles.holdCartCon, styles.addNotesBtn]}
+                  style={styles.addDiscountcon}
                   onPress={() => saveDiscountHandler()}
                 >
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
@@ -584,17 +582,14 @@ export function PosRetail3() {
                 </View>
                 <Spacer space={SH(15)} />
                 <TextInput
-                  style={styles.addNotesInput}
+                  style={styles.addNotesInput1}
                   onChangeText={setNotes}
                   value={notes}
                   placeholder="Add Notes"
                   multiline={true}
                 />
                 <Spacer space={SH(15)} />
-                <TouchableOpacity
-                  style={[styles.holdCartCon, styles.addNotesBtn]}
-                  onPress={() => saveNotesHandler()}
-                >
+                <TouchableOpacity style={styles.addDiscountcon} onPress={() => saveNotesHandler()}>
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
                 </TouchableOpacity>
               </View>
@@ -644,7 +639,7 @@ export function PosRetail3() {
                 />
                 <Spacer space={SH(10)} />
                 <TouchableOpacity
-                  style={[styles.holdCartCon, styles.addNotesBtn]}
+                  style={[styles.holdCartCon, styles.addNotesBtn, { borderWidth: 0 }]}
                   onPress={() => saveServiceDiscountHandler()}
                 >
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
@@ -660,7 +655,7 @@ export function PosRetail3() {
                 </View>
                 <Spacer space={SH(15)} />
                 <TextInput
-                  style={styles.addNotesInput}
+                  style={styles.addNotesInput1}
                   onChangeText={setServiceNotes}
                   value={serviceNotes}
                   placeholder="Add Notes"

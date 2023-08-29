@@ -17,6 +17,10 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getOrderDeliveries: payload.getOrderDeliveries,
+        // getOrderDeliveries: {
+        //   ...state.getOrderDeliveries,
+        //   data: [...state.getOrderDeliveries.data, ...payload.getOrderDeliveries.data],
+        // },
       };
     case DASHBOARDTYPE.GET_ORDER_DELIVERIES_RESET:
       return {
