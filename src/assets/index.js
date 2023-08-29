@@ -340,6 +340,8 @@ export { default as down } from '@/assets/icons/ic_posRetail/down.png';
 export { default as expand } from '@/assets/icons/ic_deliveryOrder/expand.png';
 export { default as gps } from '@/assets/icons/ic_deliveryOrder/gps.png';
 export { default as productReturn } from '@/assets/icons/ic_dashboard/productReturn.png';
+export { default as Calculator } from '@/assets/images/Calculator.png';
+export { default as CalculatorColor } from '@/assets/images/CalculatorColor.png';
 
 /* Fonts */
 export const Fonts = {

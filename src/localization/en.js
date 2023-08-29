@@ -260,8 +260,10 @@ export const en = {
     amountAdded: 'Enter amount added',
     amountRemoved: 'Enter amount removed',
     cashAmount: 'Cash amount (USD)',
+    enterAmount: 'Enter Amount',
     confirm: 'Confirm',
     endTrackingSession: 'End tracking session',
+    endCashTrackingSession: 'End Cash Tracking Session',
     next: 'Next',
     summary: 'Summary',
     allCash: 'All Cash Payments',
@@ -292,6 +294,7 @@ export const en = {
 
     selectAmountDra: 'Select amount to leave in drawer',
     otherAmountusd: 'Other amount (USD)',
+    otherAmount: 'Other amount',
     transactionType: 'Transaction type',
     transactionType: 'Transaction type',
     startSession: 'Start Session',

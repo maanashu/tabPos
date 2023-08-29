@@ -98,8 +98,16 @@ export const styles = StyleSheet.create({
   },
   trackingButtonText: {
     fontFamily: Fonts.Medium,
-    color: COLORS.white,
+    color: COLORS.black,
     fontSize: SF(12),
+    textAlign: 'left',
+  },
+  calculatorView: {
+    width: SW(110),
+    alignSelf: 'center',
+    height: windowHeight * 0.22,
+    justifyContent: 'center',
+    marginTop: SW(5),
   },
   viewSessionButtonView: {
     width: SW(50),
@@ -143,11 +151,11 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     alignSelf: 'center',
     justifyContent: 'center',
-    minHeight: windowHeight - 200,
+    minHeight: windowHeight - 150,
     // borderWidth:10
   },
   headerView: {
-    backgroundColor: COLORS.primary,
+    // backgroundColor: COLORS.primary,
     width: SW(160),
     height: SH(60),
     borderTopLeftRadius: 10,
@@ -156,12 +164,20 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    borderBottomWidth: 0.3,
+    borderBottomColor: COLORS.gerySkies,
   },
   crossIconStyle: {
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
-    tintColor: COLORS.white,
+    tintColor: COLORS.black,
+    alignSelf: 'center',
+  },
+  calculatorStyle: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
   countCashView: {
     width: SW(130),
@@ -170,12 +186,12 @@ export const styles = StyleSheet.create({
   },
   countCashText: {
     fontFamily: Fonts.MaisonBold,
-    color: COLORS.solid_grey,
+    color: COLORS.dark_grey,
     fontSize: SF(22),
   },
   amountCountedText: {
     fontFamily: Fonts.Medium,
-    color: COLORS.darkGray,
+    color: COLORS.dark_grey,
     fontSize: SF(14),
   },
   inputStyle: {
@@ -203,7 +219,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: SF(16),
-    color: COLORS.darkGray,
+    color: COLORS.white,
     textAlign: 'center',
     fontFamily: Fonts.Medium,
   },
@@ -212,6 +228,7 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.28,
     height: SH(60),
     zIndex: -999,
+    backgroundColor: COLORS.gerySkies,
   },
   sessionMainView: {
     width: windowWidth - 110,
@@ -553,7 +570,8 @@ export const styles = StyleSheet.create({
   },
   centerSw: {
     width: SW(145),
-    alignItems: 'center',
+    paddingHorizontal: SW(5),
+    // alignItems: 'center',
   },
   amountExpect: {
     fontFamily: Fonts.Regular,
