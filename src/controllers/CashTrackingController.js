@@ -8,10 +8,10 @@ export class CashTrackingController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
       HttpClient.post(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.error,
             position: 'bottom',
@@ -26,10 +26,10 @@ export class CashTrackingController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -59,7 +59,7 @@ export class CashTrackingController {
             mode_of_cash: data.modeOfcash,
           };
       HttpClient.post(endpoint, body)
-        .then(response => {
+        .then((response) => {
           if (response?.msg === 'Create drawer activity.') {
             Toast.show({
               position: 'bottom',
@@ -70,7 +70,7 @@ export class CashTrackingController {
           }
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // Toast.show({
           //   position: 'bottom',
           //   type: 'error_toast',
@@ -83,24 +83,23 @@ export class CashTrackingController {
     });
   }
   static async getSessionHistory(newDateFormat) {
-    const urlAccDate = newDateFormat => {
+    const urlAccDate = (newDateFormat) => {
       if (newDateFormat) {
-        return (
-          USER_URL +
-          ApiUserInventory.getSessionHistory +
-          `?filter_date=${newDateFormat}`
-        );
+        return USER_URL + ApiUserInventory.getSessionHistory + `?filter_date=${newDateFormat}`;
       } else {
         return USER_URL + ApiUserInventory.getSessionHistory;
       }
     };
     return new Promise((resolve, reject) => {
       const endpoint = urlAccDate(newDateFormat);
+      // console.log('Dateee', endpoint);
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
+          // console.log('JSON', JSON.stringify(response));
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
+          // console.log('Hsitory--eroorr', error);
           Toast.show({
             text2: 'History not found',
             position: 'bottom',
@@ -122,10 +121,10 @@ export class CashTrackingController {
         mode_of_cash: data.modeOfcash,
       };
       HttpClient.post(endpoint, body)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -140,17 +139,23 @@ export class CashTrackingController {
     return new Promise((resolve, reject) => {
       // const endpoint = USER_URL + ApiUserInventory.getDrawerSessionById + `?drawer_id=${status}`;
       const endpoint = USER_URL + ApiUserInventory.getDrawer(status);
+      // console.log('SESSION__HISTORY_ENDPINT', endpoint);
+
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
+          // console.log('SESSION__HISTORY', JSON.stringify(response));
           resolve(response);
         })
-        .catch(error => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+        .catch((error) => {
+          // console.log('SESSION__HISTORY_ERROR', error);
+          if (error?.statusCode !== 204) {
+            Toast.show({
+              text2: error.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
           reject(error);
         });
     });
