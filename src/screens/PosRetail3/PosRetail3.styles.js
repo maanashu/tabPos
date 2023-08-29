@@ -2277,23 +2277,23 @@ export const styles = StyleSheet.create({
     fontSize: ms(7),
   },
   productCartBodyRight: {
-    width: ms(330),
+    width: Platform.OS === 'android' ? ms(330) : ms(275),
     height: ms(20),
     flexDirection: 'row',
   },
   productCartBody: {
-    width: ms(82),
+    width: Platform.OS === 'android' ? ms(82) : ms(70),
     height: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
   },
   serviceCartRightBody: {
-    width: ms(360),
+    width: Platform.OS === 'android' ? ms(360) : ms(300),
     height: ms(20),
     flexDirection: 'row',
   },
   serviceCartBody: {
-    width: ms(71),
+    width: Platform.OS === 'android' ? ms(71) : ms(60),
     height: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
