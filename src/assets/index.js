@@ -260,6 +260,7 @@ export { default as qrCodeIcon } from '@/assets/icons/ic_retail/qr-code.png';
 export { default as moneyIcon } from '@/assets/icons/ic_retail/moneyIcon.png';
 export { default as QR } from '@/assets/icons/ic_retail/QR.png';
 export { default as categoryMenu } from '@/assets/icons/ic_posRetail/categoryMenu.png';
+export { default as logo_full } from '@/assets/icons/ic_posRetail/logo_full.png';
 export { default as categoryshoes } from '@/assets/icons/ic_posRetail/categoryshoes.png';
 export { default as cartEdit } from '@/assets/icons/ic_posRetail/cartEdit.png';
 export { default as barcode } from '@/assets/icons/ic_posRetail/barcode.png';

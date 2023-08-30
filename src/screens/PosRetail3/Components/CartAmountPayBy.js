@@ -1,6 +1,5 @@
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   Image,
   Keyboard,
@@ -15,7 +14,7 @@ import {
 import React from 'react';
 import { moderateScale, ms, verticalScale } from 'react-native-size-matters';
 import { styles } from '../PosRetail3.styles';
-import { Button, Spacer } from '@/components';
+import { Spacer } from '@/components';
 import BackButton from '../../../components/BackButton';
 import CountryPicker from 'react-native-country-picker-modal';
 import AddedCartItemsCard from '../../../components/AddedCartItemsCard';
@@ -27,20 +26,16 @@ import {
   qrCodeIcon,
   barcode,
   dropdown,
-  keyboard,
+  logo_full,
 } from '@/assets';
 import moment from 'moment';
 import { COLORS, SF, SH } from '@/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { CustomHeader } from './CustomHeader';
 import { useState } from 'react';
-import PhonePopUp from '../PhonePopUp';
 import Modal, { ReactNativeModal } from 'react-native-modal';
 import { strings } from '@/localization';
 import { CustomKeyboard } from '../CustomKeyBoard';
-import { PayByJBRCoins } from './PayByMethodScreens/PayByJBRCoins';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { digits } from '@/utils/validators';
 import {
   attachCustomer,
@@ -54,12 +49,10 @@ import {
   createOrder,
   attachServiceCustomer,
   updateCartByTip,
-  getServiceCart,
   createServiceOrder,
   qrcodestatus,
   qrCodeStatusSuccess,
   Servicesqrcodestatus,
-  getAllCart,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -102,20 +95,14 @@ export const CartAmountPayBy = ({
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
   const qrcodeData = useSelector(getRetail).qrKey;
 
-  // console.log('getRetailData?.getAllCart', getRetailData?.getAllCart);
-
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
   const serviceCartId = getRetailData?.getserviceCart?.id;
-
   const servicCartId = getRetailData?.getserviceCart?.id;
-
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
-
   const [selectedPaymentIndex, setSelectedPaymentIndex] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState(null);
   const [selectedRecipeMethod, setSelectedRecipeMethod] = useState(null);
   const [phonePopVisible, setPhonePopVisible] = useState(false);
@@ -135,14 +122,10 @@ export const CartAmountPayBy = ({
   const requestStatus = getRetailData?.requestCheck;
   const getAuthdata = useSelector(getAuthData);
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
-
   const qrStatus = getRetailData.qrStatuskey;
-
   const [status, setstatus] = useState('');
   const [sendRequest, setsendRequest] = useState(false);
-
   const [duration, setDuration] = useState(120);
-
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
@@ -151,11 +134,6 @@ export const CartAmountPayBy = ({
   //   dispatch(getAllCart());
   // }, []);
 
-  const tipsArr = [
-    getTips?.first_tips ?? 18,
-    getTips?.second_tips ?? 20,
-    getTips?.third_tips ?? 22,
-  ];
   const TIPS_DATA = [
     { title: getTips?.first_tips ?? 18, icon: cardPayment, percent: getTips?.first_tips ?? '18' },
     {
@@ -164,7 +142,7 @@ export const CartAmountPayBy = ({
       percent: getTips?.second_tips ?? '20',
     },
     { title: getTips?.third_tips ?? 22, icon: cardPayment, percent: getTips?.third_tips ?? '22' },
-    { title: '', icon: cardPayment, percent: 'No Tip' },
+    { title: '', icon: cardPayment, percent: 'No Tips' },
   ];
 
   function formatTime(seconds) {
@@ -495,7 +473,7 @@ export const CartAmountPayBy = ({
                         item.title
                       );
                       {
-                        item.percent === 'No Tip'
+                        item.percent === 'No Tips'
                           ? setSelectedTipAmount('0.00')
                           : setSelectedTipAmount(tipAmount);
                       }
@@ -520,7 +498,7 @@ export const CartAmountPayBy = ({
                       ]}
                     >
                       {item.percent}
-                      {item.percent === 'No Tip' ? '' : '%'}
+                      {item.percent === 'No Tips' ? '' : '%'}
                     </Text>
                     {index !== 3 && (
                       <Text
@@ -723,18 +701,24 @@ export const CartAmountPayBy = ({
 
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Sub-Total</Text>
-              <Text style={styles._subTotalPrice}>${cartData?.amount?.products_price}</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
+              </Text>
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Discount ( MIDApril100)</Text>
-              <Text style={styles._subTotalPrice}>${cartData?.amount?.discount}</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.discount?.toFixed(2) ?? '0.00'}
+              </Text>
             </View>
 
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Shipping Charge</Text>
-              <Text style={styles._subTotalPrice}>$0.00</Text>
+              <Text style={styles._substotalTile}>Total Taxes</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
+              </Text>
             </View>
             {/* <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
@@ -768,10 +752,10 @@ export const CartAmountPayBy = ({
             {/* <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text> */}
             <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
-            <Spacer space={SH(10)} />
+            <Spacer space={SH(5)} />
             <Text style={styles._thankyou}>Thank You</Text>
-            <Image source={barcode} style={styles._barCodeImage} />
-            <Text style={styles._barCode}>ABC-abc-1234</Text>
+            <Image source={{ uri: cartData?.barcode } ?? barcode} style={styles._barCodeImage} />
+            <Image source={logo_full} style={styles.logoFull} />
           </View>
         </View>
       </View>

@@ -97,7 +97,6 @@ export function CartServiceScreen({
         product_id: item?.product_id,
         qty: item?.qty,
       }));
-
       const data = {
         updated_products: products,
       };

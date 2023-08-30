@@ -15,6 +15,7 @@ export { Management } from '@/screens/Management/Management';
 export { Customers } from '@/screens/Customers/Customers';
 export { Calender } from '@/screens/Calender/Calender';
 export { Reward } from '@/screens/Reward/Reward';
+export { Refund } from '@/screens/Refund/Refund';
 export { Setting } from '@/screens/Setting/Setting';
 export { DashBoard } from '@/screens/DashBoard/DashBoard';
 export { ShippingOrder2 } from '@/screens/ShippingOrder2/ShippingOrder2';

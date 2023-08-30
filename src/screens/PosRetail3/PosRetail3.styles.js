@@ -1013,7 +1013,7 @@ export const styles = StyleSheet.create({
   },
 
   _paymentTitleContainer: {
-    marginTop: ms(10),
+    marginTop: ms(5),
     flexDirection: 'row',
     alignSelf: 'flex-start',
     marginLeft: ms(15),
@@ -2163,19 +2163,38 @@ export const styles = StyleSheet.create({
   },
 
   // custom product add modal css start
+  headerConCustomProduct: {
+    borderBottomWidth: 1,
+    height: ms(40),
+    borderColor: COLORS.solidGrey,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: ms(10),
+  },
+
+  addCartbtnBodyCon: {
+    marginTop: ms(15),
+    borderWidth: 1,
+    height: ms(55),
+    borderColor: COLORS.solidGrey,
+    borderRadius: ms(3),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 
   customProductCon: {
     borderWidth: 1,
     width: ms(350),
-    height: ms(350),
+    height: ms(290),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: 10,
-    padding: ms(10),
+    // padding: ms(10),
     marginTop: Platform.OS === 'android' ? ms(10) : ms(50),
   },
   dollarAddCon: {
-    height: ms(28),
+    height: ms(32),
     borderRadius: 5,
     backgroundColor: COLORS.textInputBackground,
     paddingHorizontal: ms(10),
@@ -2195,8 +2214,8 @@ export const styles = StyleSheet.create({
     fontSize: ms(11),
   },
   productNameInput: {
-    marginTop: ms(10),
-    height: ms(28),
+    marginTop: ms(15),
+    height: ms(32),
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
@@ -2214,12 +2233,14 @@ export const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   closeButtonCon: {
-    borderWidth: 1,
-    height: ms(35),
-    width: ms(100),
-    borderColor: COLORS.solidGrey,
+    height: ms(54),
+    width: ms(110),
+    borderColor: COLORS.gerySkies,
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomEndRadius: ms(3),
+    borderTopEndRadius: ms(3),
+    borderWidth: 1,
   },
   closeText: {
     fontFamily: Fonts.SemiBold,
@@ -2245,7 +2266,7 @@ export const styles = StyleSheet.create({
   zeroText: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
-    fontSize: ms(12),
+    fontSize: ms(11),
   },
 
   unitPriceInput: {
@@ -2304,5 +2325,29 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SF(14),
     fontFamily: Fonts.Medium,
+  },
+  counterMainCon: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  oneCon: {
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: COLORS.solidGrey,
+    width: ms(80),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  minusCon: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoFull: {
+    width: ms(90),
+    height: ms(30),
+    resizeMode: 'contain',
+    marginTop: ms(2),
   },
 });

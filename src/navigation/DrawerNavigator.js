@@ -96,52 +96,6 @@ export function DrawerNavigator(props) {
           )}
         />
 
-        {/* <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'posRetail2' ? true : false}
-          onPress={() => {
-            setActive('posRetail2');
-            navigate(NAVIGATION.posRetail2);
-            // dispatch(addSellingSelection());
-            // dispatch(cartScreenTrue({ state: false }));
-            // dispatch(getUserDetailSuccess([]));
-          }}
-          icon={({ focused, color, size }) => (
-            <Image source={focused ? retail : greyRetail} style={styles.iconStyle} />
-          )}
-        /> */}
-
-        {/* <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'posRetail' ? true : false}
-          onPress={() => {
-            setActive('posRetail');
-            navigate(NAVIGATION.posRetail);
-            dispatch(addSellingSelection());
-            dispatch(cartScreenTrue({ state: false }));
-            dispatch(getUserDetailSuccess([]));
-          }}
-          icon={({ focused, color, size }) => (
-            <Image source={focused ? retail : greyRetail} style={styles.iconStyle} />
-          )}
-        /> */}
-
-        {/* <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'delivery' ? true : false}
-          onPress={() => {
-            setActive('delivery');
-            dispatch(addSellingSelection());
-            navigate(NAVIGATION.deliveryOrder);
-          }}
-          icon={({ focused, color, size }) => (
-            <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
-          )}
-        /> */}
-
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
@@ -190,20 +144,6 @@ export function DrawerNavigator(props) {
           }}
         />
 
-        {/* <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'para' ? true : false}
-          onPress={() => {
-            setActive('para');
-            dispatch(addSellingSelection());
-            navigate(NAVIGATION.shippingOrder);
-          }}
-          icon={({ focused, color, size }) => (
-            <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
-          )}
-        /> */}
-
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
@@ -229,19 +169,19 @@ export function DrawerNavigator(props) {
           }}
         />
 
-        {/* <DrawerItem
+        <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
-          focused={active === 'analytics' ? true : false}
+          focused={active === 'analytics2' ? true : false}
           onPress={() => {
-            setActive('analytics');
-            navigate(NAVIGATION.analytics);
+            setActive('analytics2');
+            navigate(NAVIGATION.analytics2);
             dispatch(addSellingSelection());
           }}
-          icon={({ focused, color, size }) => (
+          icon={({ focused }) => (
             <Image source={focused ? blueanalytics : analytics} style={styles.iconStyle} />
           )}
-        /> */}
+        />
 
         <DrawerItem
           label={''}
@@ -303,19 +243,18 @@ export function DrawerNavigator(props) {
           />
         )}
 
-        <DrawerItem
+        {/* <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
-          focused={active === 'analytics2' ? true : false}
+          focused={active === 'refund' ? true : false}
           onPress={() => {
-            setActive('analytics2');
-            navigate(NAVIGATION.analytics2);
-            dispatch(addSellingSelection());
+            setActive('refund');
+            navigate(NAVIGATION.refund);
           }}
           icon={({ focused }) => (
-            <Image source={focused ? blueanalytics : analytics} style={styles.iconStyle} />
+            <Image source={focused ? blueusers : users} style={styles.iconStyle} />
           )}
-        />
+        /> */}
       </ScrollView>
       {/* {getAuth?.merchantLoginData?.id === getUserData?.posLoginData?.id ? (
         <View style={styles.endSessionViewStyle}>

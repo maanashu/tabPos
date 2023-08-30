@@ -28,4 +28,5 @@ export const NAVIGATION = {
   deliveryOrders2: 'DeliveryOrders2',
   orderDetail: 'OrderDetail',
   posRetail3: 'PosRetail3',
+  refund: 'Refund',
 };

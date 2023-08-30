@@ -8,6 +8,8 @@ import { logoutUserFunction } from '@/actions/UserActions';
 import { logoutFunction, merchantLoginSuccess } from '@/actions/AuthActions';
 import CustomAlert from '@/components/CustomAlert';
 
+let invalidTokenAlertShown = false;
+
 const getTimeZone = RNLocalize.getTimeZone();
 
 const client = axios.create({});
@@ -53,7 +55,8 @@ client.interceptors.response.use(
       : response.data,
   (error) => {
     if (error.response) {
-      if (error.response.status === 401) {
+      if (error.response.status === 401 && !invalidTokenAlertShown) {
+        invalidTokenAlertShown = true;
         // Handle 401 Unauthorized scenario here
         CustomAlert({
           title: 'Alert',
@@ -64,6 +67,7 @@ client.interceptors.response.use(
             store.dispatch(merchantLoginSuccess({}));
             store.dispatch(logoutUserFunction());
             store.dispatch(logoutFunction());
+            invalidTokenAlertShown = false;
           },
         });
       }

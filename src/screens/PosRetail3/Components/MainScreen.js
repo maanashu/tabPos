@@ -875,7 +875,7 @@ export function MainScreen({
                           </View>
                         </View>
                         <Spacer space={SH(5)} />
-                        <Text numberOfLines={2} style={styles.productDes}>
+                        <Text numberOfLines={1} style={styles.productDes}>
                           {item.name}
                         </Text>
                         <Spacer space={SH(6)} />

@@ -32,36 +32,31 @@ export function Notification() {
       key: '3',
       name: 'Order Notifications',
       value: 'order_notification_status',
-      isSelected:
-        getSettingData?.getSetting?.order_notification_status ?? false,
+      isSelected: getSettingData?.getSetting?.order_notification_status ?? false,
     },
     {
       key: '4',
       name: 'Shipping Notifications',
       value: 'shipping_notification_status',
-      isSelected:
-        getSettingData?.getSetting?.shipping_notification_status ?? false,
+      isSelected: getSettingData?.getSetting?.shipping_notification_status ?? false,
     },
     {
       key: '5',
       name: 'Services Notifications',
       value: 'service_notification_status',
-      isSelected:
-        getSettingData?.getSetting?.service_notification_status ?? false,
+      isSelected: getSettingData?.getSetting?.service_notification_status ?? false,
     },
     {
       key: '6',
       name: 'Wallet Notifications',
       value: 'wallet_notification_status',
-      isSelected:
-        getSettingData?.getSetting?.wallet_notification_status ?? false,
+      isSelected: getSettingData?.getSetting?.wallet_notification_status ?? false,
     },
     {
       key: '7',
       name: 'Account Notifications',
       value: 'account_notification_status',
-      isSelected:
-        getSettingData?.getSetting?.account_notification_status ?? false,
+      isSelected: getSettingData?.getSetting?.account_notification_status ?? false,
     },
     // {
     //   key: '3',
@@ -71,8 +66,8 @@ export function Notification() {
     // },
   ]);
 
-  const handleToggle = index => {
-    setAppNotificationArray(prevState => {
+  const handleToggle = (index) => {
+    setAppNotificationArray((prevState) => {
       const newArray = [...prevState];
       newArray[index].isSelected = !newArray[index].isSelected;
 
@@ -80,7 +75,6 @@ export function Notification() {
         [newArray[index].value]: newArray[index].isSelected,
       };
       dispatch(upadteApi(data));
-
       return newArray;
     });
   };
@@ -89,10 +83,7 @@ export function Notification() {
     <View style={styles.flexRow}>
       <Text style={styles.notificationName}>{item.name}</Text>
       <TouchableOpacity onPress={() => handleToggle(index)}>
-        <Image
-          source={item.isSelected ? vector : vectorOff}
-          style={styles.toggleSecurity}
-        />
+        <Image source={item.isSelected ? vector : vectorOff} style={styles.toggleSecurity} />
       </TouchableOpacity>
     </View>
   );
@@ -100,9 +91,7 @@ export function Notification() {
   return (
     <View>
       <View style={[styles.flexRow, { height: SW(8) }]}>
-        <Text style={styles.HeaderLabelText}>
-          {strings.settings.notification}
-        </Text>
+        <Text style={styles.HeaderLabelText}>{strings.settings.notification}</Text>
       </View>
       <Spacer space={SH(20)} />
       <View style={styles.notificationMainCon}>
@@ -110,11 +99,9 @@ export function Notification() {
           <View style={styles.horizontalRow} />
           <FlatList
             data={appNotificationArray}
-            ItemSeparatorComponent={() => (
-              <View style={{ marginVertical: verticalScale(3) }} />
-            )}
+            ItemSeparatorComponent={() => <View style={{ marginVertical: verticalScale(3) }} />}
             renderItem={renderItem}
-            keyExtractor={item => item.key}
+            keyExtractor={(item) => item.key}
           />
         </View>
       </View>

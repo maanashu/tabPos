@@ -1502,4 +1502,26 @@ export class RetailController {
         });
     });
   }
+
+  static async cartBarCode(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.cartBarCode;
+      const body = {
+        barcode: data?.barcode,
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
+        });
+    });
+  }
 }

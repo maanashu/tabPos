@@ -930,6 +930,20 @@ const serviceUpdatePriceError = (error) => ({
   payload: { error },
 });
 
+//Cart bar code
+const cartBarCodeRequest = () => ({
+  type: TYPES.CART_BAR_CODE_REQUEST,
+  payload: null,
+});
+const cartBarCodeSuccess = () => ({
+  type: TYPES.CART_BAR_CODE_SUCCESS,
+  payload: null,
+});
+const cartBarCodeError = (error) => ({
+  type: TYPES.CART_BAR_CODE_ERROR,
+  payload: { error },
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -1613,5 +1627,15 @@ export const serviceUpdatePrice = (data) => async (dispatch) => {
     dispatch(getServiceCart());
   } catch (error) {
     dispatch(serviceUpdatePriceError(error.message));
+  }
+};
+
+export const cartBarCode = (data) => async (dispatch) => {
+  dispatch(cartBarCodeRequest());
+  try {
+    const res = await RetailController.cartBarCode(data);
+    dispatch(cartBarCodeSuccess(res));
+  } catch (error) {
+    dispatch(cartBarCodeError(error.message));
   }
 };

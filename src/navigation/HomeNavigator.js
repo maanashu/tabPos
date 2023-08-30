@@ -15,6 +15,7 @@ import {
   Analytics2,
   DeliveryOrders2,
   PosRetail3,
+  Refund,
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
@@ -91,6 +92,7 @@ export function HomeNavigator() {
         name={NAVIGATION.posRetail3}
         options={{ headerShown: false }}
       />
+      <Drawer.Screen component={Refund} name={NAVIGATION.refund} options={{ headerShown: false }} />
     </Drawer.Navigator>
   );
 }
