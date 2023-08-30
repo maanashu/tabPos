@@ -42,8 +42,8 @@ const OrderDetail = ({
             ref={mapRef}
             provider={PROVIDER_GOOGLE}
             region={{
-              latitude: latitude,
-              longitude: longitude,
+              latitude: latitude ?? 0.0,
+              longitude: longitude ?? 0.0,
               latitudeDelta: 0.0992,
               longitudeDelta: 0.0421,
             }}
@@ -56,14 +56,14 @@ const OrderDetail = ({
             style={styles.map}
           >
             <MapViewDirections
-              key={location?.latitude}
+              key={location?.latitude ?? 'key'}
               origin={{
-                latitude: latitude,
-                longitude: longitude,
+                latitude: latitude ?? 0.0,
+                longitude: longitude ?? 0.0,
               }}
               destination={{
-                latitude: userDetail?.coordinates?.[0],
-                longitude: userDetail?.coordinates?.[1],
+                latitude: userDetail?.coordinates?.[0] ?? 0.0,
+                longitude: userDetail?.coordinates?.[1] ?? 0.0,
               }}
               apikey={GOOGLE_MAP.API_KEYS}
               strokeWidth={6}
@@ -90,8 +90,8 @@ const OrderDetail = ({
             onPress={() =>
               mapRef.current.animateToRegion(
                 {
-                  latitude: latitude,
-                  longitude: longitude,
+                  latitude: latitude ?? 0.0,
+                  longitude: longitude ?? 0.0,
                   latitudeDelta: 0.001,
                   longitudeDelta: 0.001,
                 },

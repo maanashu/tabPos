@@ -837,7 +837,6 @@ export function DeliveryOrders2({ route }) {
                 sourceCoordinate,
                 destinationCoordinate,
                 openShippingOrders,
-                sellerID,
                 renderOrderDetailProducts,
                 location,
                 mapRef,

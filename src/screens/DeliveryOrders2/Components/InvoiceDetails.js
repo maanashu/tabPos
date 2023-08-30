@@ -12,10 +12,9 @@ import { strings } from '@/localization';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import ShipmentTracking from './ShipmentTracking';
 import { getReviewDefault } from '@/actions/DeliveryAction';
-import { deliveryHomeIcon, scooter, backArrow2, barcode, crossButton, gps } from '@/assets';
+import { deliveryHomeIcon, scooter, barcode, crossButton, gps } from '@/assets';
 
 import styles from '../styles';
-import { ms } from 'react-native-size-matters';
 import mapCustomStyle from '@/components/MapCustomStyles';
 
 const InvoiceDetails = ({
@@ -26,7 +25,6 @@ const InvoiceDetails = ({
   sourceCoordinate,
   destinationCoordinate,
   openShippingOrders,
-  sellerID,
   renderOrderDetailProducts,
   location,
   mapRef,
@@ -167,8 +165,8 @@ const InvoiceDetails = ({
             provider={PROVIDER_GOOGLE}
             showCompass
             region={{
-              latitude: latitude,
-              longitude: longitude,
+              latitude: latitude ?? 0.0,
+              longitude: longitude ?? 0.0,
               latitudeDelta: 0.0992,
               longitudeDelta: 0.0421,
             }}
@@ -181,14 +179,14 @@ const InvoiceDetails = ({
             style={styles.detailMap}
           >
             <MapViewDirections
-              key={location?.latitude}
+              key={location?.latitude ?? 0.0}
               origin={{
-                latitude: latitude,
-                longitude: longitude,
+                latitude: latitude ?? 0.0,
+                longitude: longitude ?? 0.0,
               }}
               destination={{
-                latitude: singleOrderDetail?.coordinates?.[0],
-                longitude: singleOrderDetail?.coordinates?.[1],
+                latitude: singleOrderDetail?.coordinates?.[0] ?? 0.0,
+                longitude: singleOrderDetail?.coordinates?.[1] ?? 0.0,
               }}
               apikey={GOOGLE_MAP.API_KEYS}
               strokeWidth={6}
@@ -210,8 +208,8 @@ const InvoiceDetails = ({
             onPress={() =>
               mapRef.current.animateToRegion(
                 {
-                  latitude: latitude,
-                  longitude: longitude,
+                  latitude: latitude ?? 0.0,
+                  longitude: longitude ?? 0.0,
                   latitudeDelta: 0.001,
                   longitudeDelta: 0.001,
                 },
