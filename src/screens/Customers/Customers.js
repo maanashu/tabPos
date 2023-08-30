@@ -12,11 +12,7 @@ import {
 } from 'react-native';
 import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Customers/Customers.styles';
-import {
-  newCustomerData,
-  newCustomerDataLoader,
-} from '@/constants/flatListData';
-import { getCustomerDummy } from '@/constants/staticData';
+import { getCustomerDummy, newCustomerData, newCustomerDataLoader } from '@/constants/flatListData';
 import { strings } from '@/localization';
 import {
   bell,
@@ -50,21 +46,13 @@ import {
 } from '@/assets';
 import { BarChartCom, DaySelector, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
-import {
-  UserProfile,
-  UserDetails,
-  Users,
-} from '@/screens/Customers/Components';
+import { UserProfile, UserDetails, Users } from '@/screens/Customers/Components';
 import { Table } from 'react-native-table-component';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
-import {
-  getCustomer,
-  getOrderUser,
-  getUserOrder,
-} from '@/actions/CustomersAction';
+import { getCustomer, getOrderUser, getUserOrder } from '@/actions/CustomersAction';
 import { getCustomers } from '@/selectors/CustomersSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CustomersTypes';
@@ -107,9 +95,7 @@ export function Customers() {
   const orderStatus = orderDetail?.status;
   const [selectTime, setSelectTime] = useState({ value: 'week' });
 
-  const selected = value => (
-    setSelectedValue(value), dispatch(getUserOrder(sellerID, value))
-  );
+  const selected = (value) => (setSelectedValue(value), dispatch(getUserOrder(sellerID, value)));
 
   const newCustomerData = [
     {
@@ -144,22 +130,20 @@ export function Customers() {
     }
   }, [isFocused]);
 
-  const isSearchProLoading = useSelector(state =>
+  const isSearchProLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_USER_ORDER], state)
   );
-  const isOrderUserLoading = useSelector(state =>
+  const isOrderUserLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ORDER_USER], state)
   );
-  const isCustomerLoading = useSelector(state =>
-    isLoadingSelector([TYPES.GET_CUSTOMERS], state)
-  );
+  const isCustomerLoading = useSelector((state) => isLoadingSelector([TYPES.GET_CUSTOMERS], state));
   const userClickHandler = ({ item, sellerID }) => {
     setWeeklyUser(false);
     setUserProfile(!userProfile);
     setUserStore(item);
     dispatch(getOrderUser(item?.user_id, sellerID));
   };
-  const statusFun = status => {
+  const statusFun = (status) => {
     switch (status) {
       case 0:
         return 'Review';
@@ -242,13 +226,8 @@ export function Customers() {
             <TouchableOpacity onPress={() => setWeeklyUser(false)}>
               <Image source={leftBack} style={styles.leftBackStyle} />
             </TouchableOpacity>
-            <Image
-              source={users}
-              style={[styles.truckStyle, { marginLeft: 10 }]}
-            />
-            <Text style={[styles.deliveryText, { marginTop: 5 }]}>
-              {strings.customers.users}
-            </Text>
+            <Image source={users} style={[styles.truckStyle, { marginLeft: 10 }]} />
+            <Text style={[styles.deliveryText, { marginTop: 5 }]}>{strings.customers.users}</Text>
           </View>
         ) : (
           <View style={styles.deliveryView}>
@@ -286,14 +265,10 @@ export function Customers() {
         <Spacer space={SH(10)} />
         <View style={styles.displayFlex}>
           <View style={styles.flexAlign}>
-            <TouchableOpacity
-              onPress={() => (setUserProfile(false), setWeeklyUser(true))}
-            >
+            <TouchableOpacity onPress={() => (setUserProfile(false), setWeeklyUser(true))}>
               <Image source={leftBack} style={styles.leftBackStyle} />
             </TouchableOpacity>
-            <Text style={styles.profileHeaderText}>
-              {strings.customers.userprofile}
-            </Text>
+            <Text style={styles.profileHeaderText}>{strings.customers.userprofile}</Text>
           </View>
           <View style={styles.editButtonCon}>
             <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
@@ -309,30 +284,17 @@ export function Customers() {
         <View style={{ flex: 1, backgroundColor: COLORS.white }}>
           <Spacer space={SH(10)} />
           <View style={styles.onlinedeliveryCon}>
-            <View
-              style={[
-                styles.displayFlex,
-                { paddingHorizontal: moderateScale(10) },
-              ]}
-            >
+            <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
               <View style={styles.flexAlign}>
-                <TouchableOpacity
-                  onPress={() => (setTracking(false), setOrderModal(true))}
-                >
+                <TouchableOpacity onPress={() => (setTracking(false), setOrderModal(true))}>
                   <Image source={leftBack} style={styles.leftBackStyle} />
                 </TouchableOpacity>
-                <Text style={styles.orderNoStyle}>
-                  {strings.trackingNumber.trackingNo}
-                </Text>
+                <Text style={styles.orderNoStyle}>{strings.trackingNumber.trackingNo}</Text>
                 <View style={styles.completedButton}>
-                  <Text style={styles.completedText}>
-                    {statusFun(orderDetail?.status)}
-                  </Text>
+                  <Text style={styles.completedText}>{statusFun(orderDetail?.status)}</Text>
                 </View>
               </View>
-              <TouchableOpacity
-                onPress={() => (setTracking(false), setOrderModal(true))}
-              >
+              <TouchableOpacity onPress={() => (setTracking(false), setOrderModal(true))}>
                 <Image source={crossButton} style={styles.leftBackStyle} />
               </TouchableOpacity>
             </View>
@@ -363,44 +325,25 @@ export function Customers() {
                         <Spacer space={SH(7)} />
                         <View style={styles.flexAlign}>
                           <Image source={location} style={styles.Phonelight} />
-                          <Text style={styles.costoAdd}>
-                            {strings.customers.costoAdd}
-                          </Text>
+                          <Text style={styles.costoAdd}>{strings.customers.costoAdd}</Text>
                         </View>
                         <View style={styles.costoHr}></View>
                         <View style={styles.flexAlign}>
                           <View style={styles.costoPayCon}>
                             <View style={styles.flexAlign}>
-                              <Image
-                                source={ticket}
-                                style={styles.ticketImage}
-                              />
-                              <Text style={styles.ciagrtext}>
-                                ${orderDetail?.payable_amount}
-                              </Text>
+                              <Image source={ticket} style={styles.ticketImage} />
+                              <Text style={styles.ciagrtext}>${orderDetail?.payable_amount}</Text>
                             </View>
                           </View>
-                          <View
-                            style={[
-                              styles.costoPayCon,
-                              { alignItems: 'center' },
-                            ]}
-                          >
+                          <View style={[styles.costoPayCon, { alignItems: 'center' }]}>
                             <View style={styles.flexAlign}>
                               <Image source={box} style={styles.ticketImage} />
-                              <Text style={styles.ciagrtext}>
-                                4 boxes Cigar
-                              </Text>
+                              <Text style={styles.ciagrtext}>4 boxes Cigar</Text>
                             </View>
                           </View>
                           <View style={styles.flexAlign}>
-                            <Text style={styles.detailText}>
-                              {strings.customers.detail}
-                            </Text>
-                            <Image
-                              source={dropRight}
-                              style={styles.dropRight}
-                            />
+                            <Text style={styles.detailText}>{strings.customers.detail}</Text>
+                            <Image source={dropRight} style={styles.dropRight} />
                           </View>
                         </View>
                       </View>
@@ -408,39 +351,23 @@ export function Customers() {
                   </View>
                   <Spacer space={SH(10)} />
                   <View style={{ paddingHorizontal: moderateScale(18) }}>
-                    <Text style={styles.orderStatus}>
-                      {strings.customers.orderStatus}
-                    </Text>
-                    <Text
-                      style={[
-                        styles.orderStatus,
-                        { fontFamily: Fonts.Regular },
-                      ]}
-                    >
+                    <Text style={styles.orderStatus}>{strings.customers.orderStatus}</Text>
+                    <Text style={[styles.orderStatus, { fontFamily: Fonts.Regular }]}>
                       {strings.customers.assignDriver}
                     </Text>
-                    <View
-                      style={[
-                        styles.costoHr,
-                        { marginVertical: verticalScale(8) },
-                      ]}
-                    />
+                    <View style={[styles.costoHr, { marginVertical: verticalScale(8) }]} />
                     <Spacer space={SH(5)} />
                     <View style={{ flexDirection: 'row' }}>
                       <View style={{ flexDirection: 'column' }}>
                         <View style={styles.greyRadioCon}>
                           <Image
-                            source={
-                              orderStatus >= 6 ? radioArrBlue : greyRadioArr
-                            }
+                            source={orderStatus >= 6 ? radioArrBlue : greyRadioArr}
                             style={styles.greyRadioArr}
                           />
                           <View style={styles.greyRadioBody}>
                             <Text
                               style={
-                                orderStatus >= 6
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
+                                orderStatus >= 6 ? styles.verifyTextDark : styles.verifyTextLight
                               }
                             >
                               {strings.customers.delivery}
@@ -453,17 +380,13 @@ export function Customers() {
                         </View>
                         <View style={styles.greyRadioCon}>
                           <Image
-                            source={
-                              orderStatus >= 5 ? radioArrBlue : greyRadioArr
-                            }
+                            source={orderStatus >= 5 ? radioArrBlue : greyRadioArr}
                             style={styles.greyRadioArr}
                           />
                           <View style={styles.greyRadioBody}>
                             <Text
                               style={
-                                orderStatus >= 5
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
+                                orderStatus >= 5 ? styles.verifyTextDark : styles.verifyTextLight
                               }
                             >
                               {strings.customers.productPick}
@@ -476,17 +399,13 @@ export function Customers() {
                         </View>
                         <View style={styles.greyRadioCon}>
                           <Image
-                            source={
-                              orderStatus >= 4 ? radioArrBlue : greyRadioArr
-                            }
+                            source={orderStatus >= 4 ? radioArrBlue : greyRadioArr}
                             style={styles.greyRadioArr}
                           />
                           <View style={styles.greyRadioBody}>
                             <Text
                               style={
-                                orderStatus >= 4
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
+                                orderStatus >= 4 ? styles.verifyTextDark : styles.verifyTextLight
                               }
                             >
                               {strings.customers.assignDriver}
@@ -499,17 +418,13 @@ export function Customers() {
                         </View>
                         <View style={styles.greyRadioCon}>
                           <Image
-                            source={
-                              orderStatus >= 3 ? radioArrBlue : greyRadioArr
-                            }
+                            source={orderStatus >= 3 ? radioArrBlue : greyRadioArr}
                             style={styles.greyRadioArr}
                           />
                           <View style={styles.greyRadioBody}>
                             <Text
                               style={
-                                orderStatus >= 3
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
+                                orderStatus >= 3 ? styles.verifyTextDark : styles.verifyTextLight
                               }
                             >
                               {strings.customers.readyPickup}
@@ -522,17 +437,13 @@ export function Customers() {
                         </View>
                         <View style={styles.greyRadioCon}>
                           <Image
-                            source={
-                              orderStatus >= 1 ? radioArrBlue : greyRadioArr
-                            }
+                            source={orderStatus >= 1 ? radioArrBlue : greyRadioArr}
                             style={styles.greyRadioArr}
                           />
                           <View style={styles.greyRadioBody}>
                             <Text
                               style={
-                                orderStatus >= 1
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
+                                orderStatus >= 1 ? styles.verifyTextDark : styles.verifyTextLight
                               }
                             >
                               {strings.customers.orderAccepted}
@@ -545,17 +456,13 @@ export function Customers() {
                         </View>
                         <View style={styles.greyRadioCon}>
                           <Image
-                            source={
-                              orderStatus >= 0 ? radioArrBlue : greyRadioArr
-                            }
+                            source={orderStatus >= 0 ? radioArrBlue : greyRadioArr}
                             style={styles.greyRadioArr}
                           />
                           <View style={styles.greyRadioBody}>
                             <Text
                               style={
-                                orderStatus >= 0
-                                  ? styles.verifyTextDark
-                                  : styles.verifyTextLight
+                                orderStatus >= 0 ? styles.verifyTextDark : styles.verifyTextLight
                               }
                             >
                               {strings.customers.orderReview}
@@ -572,39 +479,21 @@ export function Customers() {
                     {/* <View style={{ flex: 1 }} /> */}
                     <View style={styles.carriarCon}>
                       <Spacer space={SH(5)} />
-                      <Text
-                        style={[
-                          styles.verifyTextLight,
-                          { color: COLORS.black },
-                        ]}
-                      >
+                      <Text style={[styles.verifyTextLight, { color: COLORS.black }]}>
                         {strings.customers.carriar}
                       </Text>
                       <Spacer space={SH(8)} />
                       <View style={styles.displayFlex}>
                         <View style={styles.flexAlign}>
-                          <Image
-                            source={angela2}
-                            style={styles.tracking2Angela}
-                          />
-                          <Text style={styles.gredoName}>
-                            {strings.customers.geredo}
-                          </Text>
+                          <Image source={angela2} style={styles.tracking2Angela} />
+                          <Text style={styles.gredoName}>{strings.customers.geredo}</Text>
                         </View>
                         <View style={styles.contactButton}>
                           <View
-                            style={[
-                              styles.flexAlign,
-                              { paddingHorizontal: moderateScale(12) },
-                            ]}
+                            style={[styles.flexAlign, { paddingHorizontal: moderateScale(12) }]}
                           >
-                            <Image
-                              source={contact}
-                              style={styles.contactStyle}
-                            />
-                            <Text style={styles.contactText}>
-                              {strings.customers.contact}
-                            </Text>
+                            <Image source={contact} style={styles.contactStyle} />
+                            <Text style={styles.contactText}>{strings.customers.contact}</Text>
                           </View>
                         </View>
                       </View>
@@ -618,8 +507,7 @@ export function Customers() {
                     showCompass
                     region={{
                       latitude: orderDetail?.seller_details?.seller_location[1],
-                      longitude:
-                        orderDetail?.seller_details?.seller_location[0],
+                      longitude: orderDetail?.seller_details?.seller_location[0],
                       latitudeDelta: 0.09,
                       longitudeDelta: 0.04,
                     }}
@@ -627,12 +515,10 @@ export function Customers() {
                   >
                     <Marker
                       coordinate={{
-                        latitude: orderDetail?.seller_details
-                          ?.seller_location[1]
+                        latitude: orderDetail?.seller_details?.seller_location[1]
                           ? orderDetail?.seller_details?.seller_location[1]
                           : 0,
-                        longitude: orderDetail?.seller_details
-                          ?.seller_location[0]
+                        longitude: orderDetail?.seller_details?.seller_location[0]
                           ? orderDetail?.seller_details?.seller_location[0]
                           : 0,
                       }}
@@ -647,9 +533,7 @@ export function Customers() {
                     </Marker>
                     <Marker
                       coordinate={{
-                        latitude: orderDetail?.coordinates?.[1]
-                          ? orderDetail?.coordinates?.[1]
-                          : 0,
+                        latitude: orderDetail?.coordinates?.[1] ? orderDetail?.coordinates?.[1] : 0,
                         longitude: orderDetail?.coordinates?.[0]
                           ? orderDetail?.coordinates?.[0]
                           : 0,
@@ -676,16 +560,9 @@ export function Customers() {
         <View style={{ flex: 1, backgroundColor: COLORS.white }}>
           <Spacer space={SH(10)} />
           <View style={styles.onlinedeliveryCon}>
-            <View
-              style={[
-                styles.displayFlex,
-                { paddingHorizontal: moderateScale(10) },
-              ]}
-            >
+            <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
               <View style={styles.flexAlign}>
-                <TouchableOpacity
-                  onPress={() => (setOrderModal(false), setUserProfile(true))}
-                >
+                <TouchableOpacity onPress={() => (setOrderModal(false), setUserProfile(true))}>
                   <Image source={leftBack} style={styles.leftBackStyle} />
                 </TouchableOpacity>
                 <Text style={styles.orderNoStyle}>
@@ -693,14 +570,10 @@ export function Customers() {
                   {orderDetail?.id}
                 </Text>
                 <View style={styles.completedButton}>
-                  <Text style={styles.completedText}>
-                    {statusFun(orderDetail?.status)}
-                  </Text>
+                  <Text style={styles.completedText}>{statusFun(orderDetail?.status)}</Text>
                 </View>
               </View>
-              <TouchableOpacity
-                onPress={() => (setOrderModal(false), setUserProfile(true))}
-              >
+              <TouchableOpacity onPress={() => (setOrderModal(false), setUserProfile(true))}>
                 <Image source={crossButton} style={styles.leftBackStyle} />
               </TouchableOpacity>
             </View>
@@ -723,16 +596,11 @@ export function Customers() {
                       style={styles.angelaPic}
                     />
                     <View style={{ flexDirection: 'column' }}>
-                      <Text style={styles.angela}>
-                        {userStore?.user_details?.firstname}
-                      </Text>
+                      <Text style={styles.angela}>{userStore?.user_details?.firstname}</Text>
                       <Spacer space={SH(5)} />
                       <Text style={styles.angelaAddress} numberOfLines={1}>
-                        {
-                          userStore?.user_details?.current_address
-                            ?.street_address
-                        }
-                        ,{userStore?.user_details?.current_address?.city},
+                        {userStore?.user_details?.current_address?.street_address},
+                        {userStore?.user_details?.current_address?.city},
                         {userStore?.user_details?.current_address?.state},
                         {userStore?.user_details?.current_address?.country},
                         {userStore?.user_details?.current_address?.postal_code},
@@ -746,9 +614,7 @@ export function Customers() {
                 </View>
                 <View style={styles.invoiceCon}>
                   <Spacer space={SH(4)} />
-                  <Text style={styles.invoiceDetail}>
-                    {strings.wallet.invoiceDetails}
-                  </Text>
+                  <Text style={styles.invoiceDetail}>{strings.wallet.invoiceDetails}</Text>
                   <Spacer space={SH(4)} />
                   <Text style={styles.invoiceId}>
                     {strings.wallet.invoiceIdLabel}
@@ -776,36 +642,23 @@ export function Customers() {
                     <Text>{orderDetail?.invoice?.delivery_date ?? null}</Text>
                   </Text>
                   <View style={styles.pointConOrder}>
-                    <Text style={styles.pointTextOrder}>
-                      {strings.wallet.point}
-                    </Text>
+                    <Text style={styles.pointTextOrder}>{strings.wallet.point}</Text>
                   </View>
                 </View>
               </View>
               <Spacer space={SH(15)} />
               <View style={styles.tableContainer}>
                 <Table>
-                  <View
-                    style={[
-                      styles.tableDataHeaderCon,
-                      styles.tableheaderRadius,
-                    ]}
-                  >
+                  <View style={[styles.tableDataHeaderCon, styles.tableheaderRadius]}>
                     <View style={styles.displayFlex}>
                       <View style={styles.tableHeaderLeft}>
                         <Text style={styles.tableTextHeaFirst}>#</Text>
-                        <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>
-                          Descriptions
-                        </Text>
+                        <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>Descriptions</Text>
                       </View>
                       <View style={styles.tableHeaderRightOrder}>
                         <Text style={styles.tableTextHea}>No. of Items</Text>
                         <Text style={styles.tableTextHea}>Rate</Text>
-                        <Text
-                          style={[styles.tableTextHea, { marginRight: -35 }]}
-                        >
-                          Amount
-                        </Text>
+                        <Text style={[styles.tableTextHea, { marginRight: -35 }]}>Amount</Text>
                       </View>
                     </View>
                   </View>
@@ -815,12 +668,8 @@ export function Customers() {
                         <View style={styles.tableDataCon} key={index}>
                           <View style={styles.displayFlex}>
                             <View style={styles.tableHeaderLeft}>
-                              <Text style={styles.tableTextDataFirst}>
-                                {index + 1}
-                              </Text>
-                              <View
-                                style={{ flexDirection: 'row', marginLeft: 30 }}
-                              >
+                              <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
+                              <View style={{ flexDirection: 'row', marginLeft: 30 }}>
                                 {item.product_image ? (
                                   <Image
                                     source={{ uri: item.product_image }}
@@ -833,36 +682,19 @@ export function Customers() {
                                     marginLeft: 8,
                                   }}
                                 >
-                                  <Text
-                                    style={styles.tableTextData}
-                                    numberOfLines={1}
-                                  >
+                                  <Text style={styles.tableTextData} numberOfLines={1}>
                                     {item.product_name}
                                   </Text>
-                                  <Text
-                                    style={[
-                                      styles.tableTextData,
-                                      { color: COLORS.gerySkies },
-                                    ]}
-                                  >
+                                  <Text style={[styles.tableTextData, { color: COLORS.gerySkies }]}>
                                     Box of {item.qty}
                                   </Text>
                                 </View>
                               </View>
                             </View>
                             <View style={styles.tableHeaderRightOrder}>
-                              <Text style={styles.tableTextData}>
-                                {item.qty} Box
-                              </Text>
-                              <Text style={styles.tableTextData}>
-                                ${item.price}
-                              </Text>
-                              <Text
-                                style={[
-                                  styles.tableTextData,
-                                  { marginRight: -35 },
-                                ]}
-                              >
+                              <Text style={styles.tableTextData}>{item.qty} Box</Text>
+                              <Text style={styles.tableTextData}>${item.price}</Text>
+                              <Text style={[styles.tableTextData, { marginRight: -35 }]}>
                                 ${item.qty * item.price}
                               </Text>
                             </View>
@@ -874,12 +706,7 @@ export function Customers() {
                 </Table>
 
                 <Spacer space={SH(10)} />
-                <View
-                  style={[
-                    styles.displayFlex,
-                    { marginHorizontal: moderateScale(10) },
-                  ]}
-                >
+                <View style={[styles.displayFlex, { marginHorizontal: moderateScale(10) }]}>
                   <TextInput
                     multiline
                     editable={false}
@@ -891,23 +718,16 @@ export function Customers() {
                   <View style={styles.noteContainer}>
                     <Spacer space={SH(12)} />
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.wallet.subtotal}
-                      </Text>
+                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.subtotal}</Text>
                       <Text style={styles.tablesubTotalText}>
-                        $
-                        {orderDetail?.actual_amount
-                          ? orderDetail?.actual_amount
-                          : '0'}
+                        ${orderDetail?.actual_amount ? orderDetail?.actual_amount : '0'}
                       </Text>
                     </View>
 
                     <View style={styles.subtotalHr}></View>
 
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.wallet.serviceCharge}
-                      </Text>
+                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.serviceCharge}</Text>
                       <Text style={styles.tablesubTotalText}>
                         ${orderDetail?.tax ? orderDetail?.tax : '0'}
                       </Text>
@@ -916,15 +736,8 @@ export function Customers() {
                     <View style={styles.subtotalHr}></View>
 
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.wallet.discount}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.tablesubTotalText,
-                          { color: COLORS.roseRed },
-                        ]}
-                      >
+                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.discount}</Text>
+                      <Text style={[styles.tablesubTotalText, { color: COLORS.roseRed }]}>
                         ${orderDetail?.discount ? orderDetail?.discount : '0'}
                       </Text>
                     </View>
@@ -932,37 +745,23 @@ export function Customers() {
                     <View style={styles.subtotalHr}></View>
 
                     <View style={styles.tablesubTotal}>
-                      <Text style={styles.tablesubTotalLabel}>
-                        {strings.wallet.shippingCharge}
-                      </Text>
+                      <Text style={styles.tablesubTotalLabel}>{strings.wallet.shippingCharge}</Text>
                       <Text style={styles.tablesubTotalText}>${'0'}</Text>
                     </View>
 
                     <View style={styles.subtotalHr}></View>
 
                     <View style={styles.tablesubTotal}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}
-                      >
-                        <Text
-                          style={[
-                            styles.tablesubTotalLabel,
-                            { fontFamily: Fonts.SemiBold },
-                          ]}
-                        >
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[styles.tablesubTotalLabel, { fontFamily: Fonts.SemiBold }]}>
                           {strings.wallet.total}
                         </Text>
                         <View style={styles.paidContainer}>
-                          <Text style={styles.paidText}>
-                            {strings.wallet.paid}
-                          </Text>
+                          <Text style={styles.paidText}>{strings.wallet.paid}</Text>
                         </View>
                       </View>
                       <Text style={styles.tablesubTotalText}>
-                        $
-                        {orderDetail?.payable_amount
-                          ? orderDetail?.payable_amount
-                          : '0'}
+                        ${orderDetail?.payable_amount ? orderDetail?.payable_amount : '0'}
                       </Text>
                     </View>
                     <Spacer space={SH(10)} />
@@ -972,9 +771,7 @@ export function Customers() {
               </View>
               <Spacer space={SH(10)} />
               <View>
-                <Text style={styles.shippingDetail}>
-                  {strings.wallet.shippingDetail}
-                </Text>
+                <Text style={styles.shippingDetail}>{strings.wallet.shippingDetail}</Text>
               </View>
               <Spacer space={SH(10)} />
               <View style={styles.trackingCon}>
@@ -982,29 +779,15 @@ export function Customers() {
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={willis} style={styles.willis} />
                     <View>
-                      <Text style={styles.willisName}>
-                        {strings.wallet.willis}
-                      </Text>
-                      <Text style={styles.trackingNumber}>
-                        {strings.wallet.trackingNo}
-                      </Text>
+                      <Text style={styles.willisName}>{strings.wallet.willis}</Text>
+                      <Text style={styles.trackingNumber}>{strings.wallet.trackingNo}</Text>
                     </View>
                   </View>
                   <View style={{ flexDirection: 'row' }}>
-                    <View
-                      style={[
-                        styles.deliverBtnCon,
-                        { marginHorizontal: moderateScale(8) },
-                      ]}
-                    >
+                    <View style={[styles.deliverBtnCon, { marginHorizontal: moderateScale(8) }]}>
                       <View style={styles.deliverTextCon}>
-                        <Image
-                          source={deliverCheck}
-                          style={styles.deliveryCheck}
-                        />
-                        <Text style={styles.deliveredText}>
-                          {strings.wallet.delivered}
-                        </Text>
+                        <Image source={deliverCheck} style={styles.deliveryCheck} />
+                        <Text style={styles.deliveredText}>{strings.wallet.delivered}</Text>
                       </View>
                     </View>
                     <TouchableOpacity
@@ -1013,9 +796,7 @@ export function Customers() {
                     >
                       <View style={styles.deliverTextCon}>
                         <Image source={track} style={styles.deliveryCheck} />
-                        <Text style={styles.deliveredText}>
-                          {strings.wallet.tracking}
-                        </Text>
+                        <Text style={styles.deliveredText}>{strings.wallet.tracking}</Text>
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1035,9 +816,7 @@ export function Customers() {
             userPhoneNumber={userStore?.user_details?.phone_number}
             userEmail={userStore?.user_details?.email}
             userAddress={userStore?.user_details?.current_address}
-            userRemoveRemoveHandler={() => (
-              setUserDetail(false), setUserProfile(true)
-            )}
+            userRemoveRemoveHandler={() => (setUserDetail(false), setUserProfile(true))}
           />
         </View>
       );
@@ -1051,9 +830,7 @@ export function Customers() {
             userPhoneNumber={userStore?.user_details?.phone_number}
             userAddress={userStore?.user_details?.current_address}
             userEmail={userStore?.user_details?.email}
-            userDetailHandler={() => (
-              setUserProfile(false), setUserDetail(true)
-            )}
+            userDetailHandler={() => (setUserProfile(false), setUserDetail(true))}
           />
           <View style={{ flex: 1 }}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -1071,16 +848,12 @@ export function Customers() {
                     key={index}
                     style={[styles.tableDataCon, { zIndex: -99 }]}
                     onPress={() => (
-                      setOrderModal(true),
-                      setUserProfile(false),
-                      setOrderDetail(item)
+                      setOrderModal(true), setUserProfile(false), setOrderDetail(item)
                     )}
                   >
                     <View style={styles.displayFlex}>
                       <View style={styles.tableHeaderLeftPro}>
-                        <Text style={styles.tableTextDataFirst}>
-                          {index + 1}
-                        </Text>
+                        <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
                       </View>
                       <View style={styles.tableHeaderRightPro}>
                         <Text style={styles.tableTextData}>{item.id}</Text>
@@ -1093,23 +866,16 @@ export function Customers() {
                         <Text style={styles.tableTextData}>
                           {item?.seller_details?.current_address?.city}
                         </Text>
-                        <Text style={styles.tableTextData}>
-                          {item?.shipping_detail?.title}
-                        </Text>
-                        <Text style={styles.tableTextData}>
-                          {item?.total_items} times
-                        </Text>
-                        <Text style={styles.tableTextData}>
-                          ${item?.payable_amount}
-                        </Text>
+                        <Text style={styles.tableTextData}>{item?.shipping_detail?.title}</Text>
+                        <Text style={styles.tableTextData}>{item?.total_items} times</Text>
+                        <Text style={styles.tableTextData}>${item?.payable_amount}</Text>
 
                         <View
                           style={[
                             styles.saleTypeView,
                             {
                               backgroundColor:
-                                item.shipping === 'Delivery' ||
-                                item.shipping === 'Shipping'
+                                item.shipping === 'Delivery' || item.shipping === 'Shipping'
                                   ? COLORS.marshmallow
                                   : COLORS.lightGreen,
                             },
@@ -1153,9 +919,7 @@ export function Customers() {
                   >
                     <View style={styles.displayFlex}>
                       <View style={styles.tableHeaderLeft}>
-                        <Text style={styles.tableTextDataFirst}>
-                          {index + 1}
-                        </Text>
+                        <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
                         <View style={[styles.flexAlign, { marginLeft: 25 }]}>
                           <Image
                             source={
@@ -1165,32 +929,20 @@ export function Customers() {
                             }
                             style={styles.lovingStyleData}
                           />
-                          <View
-                            style={{ flexDirection: 'column', marginLeft: 10 }}
-                          >
+                          <View style={{ flexDirection: 'column', marginLeft: 10 }}>
                             <Text style={styles.tableTextDataName}>
                               {item?.user_details?.firstname}
                             </Text>
                             {item?.user_details ? (
                               <Text
-                                style={[
-                                  styles.tableTextDataAdd,
-                                  { color: COLORS.gerySkies },
-                                ]}
+                                style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
                                 numberOfLines={1}
                               >
-                                {
-                                  item?.user_details?.current_address
-                                    ?.street_address
-                                }
-                                ,{item?.user_details?.current_address?.city},
+                                {item?.user_details?.current_address?.street_address},
+                                {item?.user_details?.current_address?.city},
                                 {item?.user_details?.current_address?.state},
                                 {item?.user_details?.current_address?.country},
-                                {
-                                  item?.user_details?.current_address
-                                    ?.postal_code
-                                }
-                                ,
+                                {item?.user_details?.current_address?.postal_code},
                               </Text>
                             ) : (
                               <Text></Text>
@@ -1199,12 +951,8 @@ export function Customers() {
                         </View>
                       </View>
                       <View style={styles.tableHeaderRight}>
-                        <Text style={styles.tableTextData}>
-                          {item?.total_orders}
-                        </Text>
-                        <Text style={styles.tableTextData}>
-                          {item?.total_products}
-                        </Text>
+                        <Text style={styles.tableTextData}>{item?.total_orders}</Text>
+                        <Text style={styles.tableTextData}>{item?.total_products}</Text>
                         <Text style={styles.tableTextData}>
                           {'$'}
                           {item?.life_time_spent?.toFixed(2)}
@@ -1229,7 +977,7 @@ export function Customers() {
                   <FlatList
                     data={newCustomerDataLoader}
                     renderItem={newCustomerItemLoader}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(item) => item.id}
                     horizontal
                     contentContainerStyle={styles.contentContainerStyle}
                   />
@@ -1238,7 +986,7 @@ export function Customers() {
                     data={newCustomerData}
                     extraData={newCustomerData}
                     renderItem={newCustomerItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(item) => item.id}
                     horizontal
                     contentContainerStyle={styles.contentContainerStyle}
                     scrollEnabled={false}
@@ -1247,9 +995,7 @@ export function Customers() {
               </View>
               <Spacer space={SH(15)} />
               <View style={styles.displayFlex}>
-                <Text style={styles.trancationHeading}>
-                  {strings.customers.totalCustomer}
-                </Text>
+                <Text style={styles.trancationHeading}>{strings.customers.totalCustomer}</Text>
                 <View>
                   {/* <DaySelector
 

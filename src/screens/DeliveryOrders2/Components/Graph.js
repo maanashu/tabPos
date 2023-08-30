@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import {
   View,
   Text,
@@ -27,7 +27,7 @@ import { Spacer } from '@/components';
 import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { graphOptions } from '@/constants/staticData';
+import { graphOptions } from '@/constants/flatListData';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
@@ -167,7 +167,7 @@ const Graph = () => {
   );
 };
 
-export default Graph;
+export default memo(Graph);
 
 const styles = StyleSheet.create({
   graphViewStyle: {

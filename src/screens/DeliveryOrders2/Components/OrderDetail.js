@@ -14,6 +14,7 @@ import { deliveryHomeIcon, expand, Fonts, gps, scooter, userImage } from '@/asse
 import styles from '../styles';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import MapViewDirections from 'react-native-maps-directions';
+import mapCustomStyle from '@/components/MapCustomStyles';
 
 const OrderDetail = ({
   userDetail,
@@ -37,6 +38,7 @@ const OrderDetail = ({
       {openShippingOrders >= '3' && userDetail?.status !== 7 ? (
         <>
           <MapView
+            customMapStyle={mapCustomStyle}
             ref={mapRef}
             provider={PROVIDER_GOOGLE}
             region={{
