@@ -49,7 +49,7 @@ const EventItemCard = ({ item, index }) => {
         <View style={styles.serviceTimeContainer}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image source={eventClockIcon} style={styles.evenclockIcon} />
-            <Text style={styles.eventDay}>{moment(item.date).format('dddd')}</Text>
+            <Text style={styles.eventDay}>{moment(item.date).format('ddd')}</Text>
           </View>
           <View style={styles.lineStl} />
 

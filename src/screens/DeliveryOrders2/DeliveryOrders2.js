@@ -92,6 +92,7 @@ export function DeliveryOrders2({ route }) {
     pieChartData?.[0]?.count ?? 0,
     pieChartData?.[1]?.count ?? 0,
     pieChartData?.[2]?.count ?? 0,
+    pieChartData?.[3]?.count ?? 0,
   ];
 
   const latitude = parseFloat(location?.latitude);
@@ -113,7 +114,7 @@ export function DeliveryOrders2({ route }) {
     longitude: singleOrderDetail?.coordinates?.[1],
   };
 
-  const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet];
+  const sliceColor = [COLORS.bluish_green, COLORS.pink, COLORS.yellowTweet, COLORS.primary];
 
   const [deliverytypes, setDeliveryTypes] = useState();
   const [viewAllOrders, setViewAllOrders] = useState(isViewAll);

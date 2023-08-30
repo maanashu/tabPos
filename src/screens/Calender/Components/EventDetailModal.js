@@ -29,7 +29,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const appointmentDetail = selectedPosStaffCompleteData?.appointment_details[0];
   const posUserDetails = selectedPosStaffCompleteData?.pos_user_details?.user?.user_profiles;
   const posUserRole =
-    selectedPosStaffCompleteData?.pos_user_details?.user?.user_roles[0]?.role?.name || 'NULL';
+    selectedPosStaffCompleteData?.pos_user_details?.user?.user_roles[0]?.role?.name || ' ';
   const colorCode = selectedPosStaffCompleteData?.pos_user_details?.color_code;
 
   //Update the state with initial values if it doesn't get updated while initialization of the states

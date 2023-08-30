@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
     width: Platform.OS === 'android' ? windowWidth * 0.275 : windowWidth * 0.27,
-    height: Platform.OS === 'android' ? windowHeight * 0.29 : windowHeight * 0.3,
+    height: Platform.OS === 'android' ? windowHeight * 0.29 : windowHeight * 0.28,
     resizeMode: 'contain',
     // ...ShadowStyles.shadow2,
     borderRadius: 10,
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: windowWidth * 0.06,
-    height: Platform.OS === 'ios' ? windowHeight * 0.934 : windowHeight - ms(50),
+    height: Platform.OS === 'ios' ? windowHeight * 0.875 : windowHeight - ms(50),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
     alignSelf: 'center',
@@ -334,16 +334,22 @@ export const styles = StyleSheet.create({
   },
   listStyle: {
     backgroundColor: COLORS.white,
-    width: Dimensions.get('window').width - ms(110),
+    width:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').width - ms(105)
+        : Dimensions.get('window').width - ms(110),
   },
   tableView: {
     zIndex: -99,
-    width: Dimensions.get('window').width - ms(110),
+    width:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').width - ms(105)
+        : Dimensions.get('window').width - ms(110),
   },
   mainListContainer: {
     zIndex: -99,
     backgroundColor: COLORS.white,
-    height: Platform.OS === 'ios' ? ms(202) : ms(288),
+    height: Platform.OS === 'ios' ? ms(255) : ms(288),
     borderBottomRightRadius: ms(10),
     borderBottomLeftRadius: ms(10),
   },
