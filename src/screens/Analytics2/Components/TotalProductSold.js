@@ -9,9 +9,22 @@ import {
   FlatList,
   Platform,
 } from 'react-native';
-import { ScreenWrapper } from '@/components';
+import { ScreenWrapper, Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { Fonts, backArrow2, calendar, clay, dropdown } from '@/assets';
+import {
+  Fonts,
+  averageOrder,
+  backArrow2,
+  calendar,
+  clay,
+  dropdown,
+  locationSales,
+  margin,
+  profit,
+  revenueGraph,
+  revenueTotal,
+  totalOrders,
+} from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { LineChart } from 'react-native-chart-kit';
@@ -71,7 +84,7 @@ export function TotalProductSold({ onPress }) {
 
   const getSoldProductList = ({ item, index }) => (
     <DataTable.Row>
-      <DataTable.Cell style={styles.dateTablealignStart}>
+      <DataTable.Cell style={styles.dateTablealignStart2}>
         <Text style={styles.revenueDataText}>{index + 1 + '.  '}</Text>
 
         <Text style={styles.revenueDataText}>{item?.product_name}</Text>
@@ -93,41 +106,32 @@ export function TotalProductSold({ onPress }) {
       </DataTable.Cell>
     </DataTable.Row>
   );
-
+  const HeaderView = ({ image, text, count, style }) => (
+    <View style={[styles.subContainer, style]}>
+      <Image source={image} resizeMode="contain" style={styles.imageStyle} />
+      <Text style={styles.text}>{text}</Text>
+      <Text style={styles.text2}>{count}</Text>
+    </View>
+  );
   return (
     <View style={styles.flex1}>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
         <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={styles.currentStatusText}>{'Back'}</Text>
+        <Text style={styles.graphTitle}> {'Total Proucts Sold'}</Text>
       </TouchableOpacity>
-      <Text style={styles.graphTitle}> {'Total Proucts Sold'}</Text>
 
-      <View style={styles.flexDirectionRow}>
-        <View style={styles.headerView}>
-          <Image source={calendar} style={styles.calenderImage} />
-          <Text style={styles.dateText}>{'Oct 23 - Nov 23, 2022'}</Text>
-        </View>
-        <DropDownPicker
-          ArrowDownIconComponent={({ style }) => (
-            <Image source={dropdown} style={styles.dropDownIcon} />
-          )}
-          style={styles.dropdown}
-          containerStyle={[styles.containerStyle, { zIndex: Platform.OS === 'ios' ? 100 : 2 }]}
-          open={channel}
-          value={channelValue}
-          items={channelItem}
-          setOpen={setChannel}
-          setValue={setChannelValue}
-          setItems={setChannelItem}
-          placeholder="All Channels"
-          placeholderStyle={{
-            color: '#A7A7A7',
-            fontFamily: Fonts.Regular,
-            fontSize: SF(14),
-          }}
+      <View style={styles.headerContainer}>
+        <HeaderView
+          image={locationSales}
+          text={'Unit Sold'}
+          count={'17'}
+          style={{ marginHorizontal: ms(5) }}
         />
+        <HeaderView image={revenueTotal} text={'Total Volume'} count={'$1700'} />
+        <HeaderView image={margin} text={'Profit Margin'} count={'$17'} />
+        <HeaderView image={profit} text={'Gross Profit'} count={'$17'} />
       </View>
-
+      {/* 
       <View style={styles.graphHeaderView}>
         <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
 
@@ -173,22 +177,19 @@ export function TotalProductSold({ onPress }) {
           fromZero
           withVerticalLines={false}
         />
-      </View>
+      </View> */}
+      <Spacer space={ms(15)} />
 
       <View style={styles.tableMainView}>
         <ScrollView
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
+          // scrollEnabled={false}
         >
-          <DataTable
-            style={{
-              zIndex: -99,
-              // width: Dimensions.get('window').width - ms(150),
-            }}
-          >
+          <DataTable style={styles.tableView}>
             <DataTable.Header style={[styles.tableListHeader]}>
-              <DataTable.Title style={styles.dateTablealignStart}>
+              <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Product Name</Text>
               </DataTable.Title>
 
@@ -200,7 +201,7 @@ export function TotalProductSold({ onPress }) {
                 <Text style={styles.revenueText}>Price</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Sold Quantity</Text>
+                <Text style={styles.revenueText}>In Stock</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
@@ -208,33 +209,18 @@ export function TotalProductSold({ onPress }) {
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={{ zIndex: -99 }}>
+            <View style={styles.mainListContainer}>
               {soldProduct?.totalProductSoldList?.length === 0 ? (
                 <View style={styles.listLoader}>
-                  <Text
-                    style={{
-                      fontSize: SF(20),
-                      color: COLORS.red,
-                    }}
-                  >
-                    {'No data found'}
-                  </Text>
+                  <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
               ) : (
-                <View
-                  style={{
-                    height: Platform.OS === 'ios' ? ms(202) : ms(210),
-                    width:
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('window').width - ms(80)
-                        : Dimensions.get('window').width - ms(150),
-                  }}
-                >
+                <View style={styles.listView}>
                   <FlatList
-                    style={{ backgroundColor: COLORS.white }}
+                    style={styles.listStyle}
                     data={soldProduct?.totalProductSoldList}
                     renderItem={getSoldProductList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     bounces={false}

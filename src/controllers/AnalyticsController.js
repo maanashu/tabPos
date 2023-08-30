@@ -340,6 +340,7 @@ export class AnalyticsController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
+          console.log('first', JSON.stringify(response));
         })
         .catch((error) => {
           Toast.show({

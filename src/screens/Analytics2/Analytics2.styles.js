@@ -26,14 +26,14 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
     width: Platform.OS === 'android' ? windowWidth * 0.275 : windowWidth * 0.27,
-    height: Platform.OS === 'android' ? windowHeight * 0.318 : windowHeight * 0.3,
+    height: Platform.OS === 'android' ? windowHeight * 0.29 : windowHeight * 0.3,
     resizeMode: 'contain',
     // ...ShadowStyles.shadow2,
     borderRadius: 10,
     paddingHorizontal: moderateScale(15),
     marginHorizontal: moderateScale(5),
     marginVertical: verticalScale(2),
-    marginTop: Platform.OS === 'android' ? verticalScale(3) : verticalScale(6),
+    marginTop: Platform.OS === 'android' ? verticalScale(4.5) : verticalScale(6),
   },
   rightlight: {
     width: SH(36),
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     width: windowWidth * 0.06,
-    height: Platform.OS === 'ios' ? windowHeight * 0.932 : windowHeight - ms(12),
+    height: Platform.OS === 'ios' ? windowHeight * 0.934 : windowHeight - ms(50),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
     alignSelf: 'center',
@@ -150,11 +150,14 @@ export const styles = StyleSheet.create({
     padding: SW(4),
   },
   dropdown: {
-    alignSelf: 'center',
     zIndex: Platform.OS === 'ios' ? 100 : 0,
     fontStyle: Fonts.Regular,
     fontSize: SF(14),
     borderColor: COLORS.transparent,
+    padding: 0,
+    margin: 0,
+    height: ms(10),
+    minHeight: ms(18),
   },
   dropDownIcon: {
     width: SW(7),
@@ -163,37 +166,58 @@ export const styles = StyleSheet.create({
     paddingRight: 30,
   },
   containerStyle: {
-    alignSelf: 'center',
     backgroundColor: COLORS.white,
     width: SW(50),
     borderRadius: SW(2),
     borderColor: COLORS.gerySkies,
     borderWidth: 1,
+    padding: 0,
+    margin: 0,
+    height: ms(10),
+    minHeight: ms(20),
   },
   dateTableSettingFirst: {
-    width: SH(40),
+    width: ms(60),
     justifyContent: 'center',
   },
   revenueText: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.solid_grey,
-    fontSize: SF(13),
+    fontSize: SF(14),
     textAlign: 'center',
     letterSpacing: -1,
     // paddingHorizontal:moderateScale(40)
   },
   dateTableSetting: {
-    width: SH(185),
+    // width: ms(150),
     justifyContent: 'center',
+    width: ms(70),
+  },
+  dateTableRight: {
+    // width: ms(150),
+    justifyContent: 'flex-end',
+    width: ms(90),
+    position: 'absolute',
+    right: ms(90),
   },
   dateTablealignStart: {
-    width: SH(185),
+    // width: SH(185),
+    width: ms(120),
+    justifyContent: 'flex-start',
+  },
+  dateTableSetting2: {
+    // width: ms(150),
+    justifyContent: 'center',
+    width: ms(120),
+  },
+  dateTablealignStart2: {
+    // width: SH(185),
+    width: ms(120),
     justifyContent: 'flex-start',
   },
   tableMainView: {
     backgroundColor: COLORS.transparent,
-    marginHorizontal: SW(6),
-    marginRight: SW(10),
+    left: ms(4),
     zIndex: -9,
     borderRadius: SW(4),
     overflow: 'hidden',
@@ -218,6 +242,7 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
+    top: ms(-2),
   },
   currentStatusText: {
     fontFamily: Fonts.SemiBold,
@@ -225,16 +250,17 @@ export const styles = StyleSheet.create({
     color: COLORS.text,
   },
   goBack: {
-    marginTop: ms(10),
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 12,
+    marginVertical: ms(5),
   },
   tableListHeader: {
     backgroundColor: COLORS.white,
     borderTopRightRadius: SW(4),
     borderTopLeftRadius: SW(4),
     overflow: 'hidden',
+    // width: Dimensions.get('window').width - ms(160),
   },
   graphHeaderText: {
     paddingHorizontal: SW(10),
@@ -255,15 +281,15 @@ export const styles = StyleSheet.create({
   },
   dateText: {
     marginLeft: SW(3),
-    fontSize: SF(16),
+    fontSize: SF(12),
   },
   calenderImage: {
-    height: SH(20),
+    height: SH(15),
     width: SW(6),
   },
   headerView: {
     flexDirection: 'row',
-    padding: SW(3),
+    padding: SW(2),
     alignItems: 'center',
     backgroundColor: COLORS.white,
     marginHorizontal: SW(5),
@@ -275,8 +301,9 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(20),
     color: COLORS.black,
-    marginVertical: ms(5),
+    // marginVertical: ms(5),
     height: SH(30),
+    // marginLeft: ms(5),
   },
   bullets: {
     height: SH(7),
@@ -297,5 +324,63 @@ export const styles = StyleSheet.create({
   },
   flex1: {
     flex: 1,
+  },
+  listView: {
+    height: Platform.OS === 'ios' ? ms(202) : ms(288),
+    // width:
+    //   Platform.OS === 'ios'
+    //     ? Dimensions.get('window').width - ms(80)
+    //     : Dimensions.get('window').width - ms(180),
+  },
+  listStyle: {
+    backgroundColor: COLORS.white,
+    width: Dimensions.get('window').width - ms(110),
+  },
+  tableView: {
+    zIndex: -99,
+    width: Dimensions.get('window').width - ms(110),
+  },
+  mainListContainer: {
+    zIndex: -99,
+    backgroundColor: COLORS.white,
+    height: Platform.OS === 'ios' ? ms(202) : ms(288),
+    borderBottomRightRadius: ms(10),
+    borderBottomLeftRadius: ms(10),
+  },
+  noDataFoundText: {
+    fontSize: ms(14),
+    color: COLORS.black,
+  },
+  subContainer: {
+    backgroundColor: COLORS.textInputBackground,
+    marginRight: ms(5),
+    borderRadius: ms(10),
+    flex: 1,
+    paddingHorizontal: ms(12),
+    paddingVertical: ms(10),
+  },
+  imageStyle: {
+    width: ms(20),
+    height: ms(20),
+  },
+  text: {
+    fontSize: ms(10),
+    marginTop: ms(10),
+    color: COLORS.darkGray,
+  },
+  text2: {
+    fontSize: ms(14),
+    color: COLORS.black,
+    fontFamily: Fonts.Bold,
+  },
+  headerContainer: {
+    height: ms(100),
+    backgroundColor: COLORS.white,
+    marginLeft: ms(4),
+    borderRadius: ms(10),
+    flexDirection: 'row',
+    paddingVertical: ms(8),
+    marginRight: ms(10),
+    paddingHorizontal: ms(5),
   },
 });

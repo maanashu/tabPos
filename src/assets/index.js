@@ -305,6 +305,7 @@ export { default as fedex } from '@/assets/icons/ic_analytics/fedex.png';
 export { default as dhl } from '@/assets/icons/ic_analytics/dhl.png';
 export { default as usps } from '@/assets/icons/ic_analytics/usps.png';
 export { default as fedexNew } from '@/assets/icons/ic_analytics/fedexNew.png';
+export { default as margin } from '@/assets/icons/ic_analytics/profit.png';
 
 export { default as task } from '@/assets/icons/sideBarIcons/task.png';
 export { default as drawerdeliveryTruck } from '@/assets/icons/sideBarIcons/Shipping.png';

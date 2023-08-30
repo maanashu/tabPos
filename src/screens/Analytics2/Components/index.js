@@ -21,7 +21,7 @@ export function HomeGraph({
 }) {
   return (
     <View style={[styles.totalProductCon, style]}>
-      <Spacer space={SH(20)} />
+      <Spacer space={SH(10)} />
       <View style={styles.displayFlex}>
         <View>
           <Text style={styles.darkBlackText}>{header}</Text>
