@@ -32,6 +32,7 @@ import {
   deliveryorderProducts,
   Fonts,
   deliveryDriver,
+  backArrow2,
 } from '@/assets';
 import {
   acceptOrder,
@@ -819,6 +820,13 @@ export function DeliveryOrders2({ route }) {
         </>
       ) : (
         <View style={styles.container}>
+          <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backView}>
+            <Image source={backArrow2} style={styles.backImageStyle} />
+            <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
+              {strings.deliveryOrders.back}
+            </Text>
+          </TouchableOpacity>
+
           <View style={styles.firstRowStyle}>
             <InvoiceDetails
               {...{

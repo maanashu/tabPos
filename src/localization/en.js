@@ -106,6 +106,7 @@ export const en = {
     otherFees: 'Other fees',
     deliveryCharges: 'Delivery Charges',
     paymentOption: 'Payment Option: ',
+    rejected: 'Rejected/Cancelled',
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -233,7 +234,6 @@ export const en = {
     lastname: 'Last name',
     emailAdd: 'Email address',
   },
-
   management: {
     cashTracking: 'Cash Tracking',
     cashDrawer: 'Cash Drawer',
@@ -276,7 +276,6 @@ export const en = {
     dateTime: 'Today Friday Auguest 26, 2022   | 11.04 AM',
     allein: 'Allein',
     removeCash: 'Removed cash',
-
     discrepancy: 'Discrepancy',
     breakFast: 'Note: breakfast',
     startTrackingSession: 'Stared tracking session',
@@ -291,7 +290,6 @@ export const en = {
     sessionHistory: 'Session history',
     cashSummary: 'Cash summary',
     amountexpect: 'Amount expected',
-
     selectAmountDra: 'Select amount to leave in drawer',
     otherAmountusd: 'Other amount (USD)',
     otherAmount: 'Other amount',
@@ -776,6 +774,11 @@ export const en = {
     close: 'Close',
     jobr: 'JOBR',
     thanks: 'Thank You',
+    expand: 'Expand',
+    otpForDriver: 'OTP for Driver - ',
+    cancelledByUser: 'Cancelled by User',
+    pickedUp: 'Picked Up',
+    returned: 'Returned',
   },
   orderStatus: {
     reviewOrders: 'Orders to review',

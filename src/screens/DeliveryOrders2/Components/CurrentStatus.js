@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   View,
   Text,
@@ -51,7 +51,7 @@ const CurrentStatus = ({ deliverytypes }) => {
   );
 };
 
-export default CurrentStatus;
+export default memo(CurrentStatus);
 
 const styles = StyleSheet.create({
   currentStatusView: {

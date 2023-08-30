@@ -642,6 +642,7 @@ export function DashBoard({ navigation }) {
                 extraData={getDeliveryData}
                 renderItem={tableListItem}
                 keyExtractor={(item) => item.id}
+                showsVerticalScrollIndicator={false}
                 // ListFooterComponent={renderFooterPost}
                 // onEndReached={debouncedLoadMoreOrder}
                 // onEndReachedThreshold={1}

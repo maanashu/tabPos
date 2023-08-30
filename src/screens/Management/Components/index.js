@@ -17,7 +17,6 @@ import { Spacer, TableDropdown } from '@/components';
 import { Table } from 'react-native-table-component';
 const windowWidth = Dimensions.get('window').width;
 import DropDownPicker from 'react-native-dropdown-picker';
-import { transactionDataList } from '@/constants/staticData';
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -26,6 +25,7 @@ import { DarkTheme } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { getSessionHistory } from '@/actions/CashTrackingAction';
 import { width } from '@/theme/ScalerDimensions';
+import { transactionDataList } from '@/constants/flatListData';
 const windowHeight = Dimensions.get('window').height;
 
 moment.suppressDeprecationWarnings = true;

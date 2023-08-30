@@ -16,6 +16,7 @@ import { deliveryHomeIcon, scooter, backArrow2, barcode, crossButton, gps } from
 
 import styles from '../styles';
 import { ms } from 'react-native-size-matters';
+import mapCustomStyle from '@/components/MapCustomStyles';
 
 const InvoiceDetails = ({
   setTrackingView,
@@ -34,13 +35,6 @@ const InvoiceDetails = ({
   const userDetailData = singleOrderDetail?.user_details;
   return (
     <View style={{ flex: 1 }}>
-      <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backView}>
-        <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
-          {strings.deliveryOrders.back}
-        </Text>
-      </TouchableOpacity>
-
       <View style={[styles.firstRowStyle]}>
         <View style={styles.storeDetailView}>
           <Text style={styles.firstNameText}>
@@ -168,6 +162,7 @@ const InvoiceDetails = ({
 
         <View style={styles.mapMainView}>
           <MapView
+            customMapStyle={mapCustomStyle}
             ref={mapRef}
             provider={PROVIDER_GOOGLE}
             showCompass
