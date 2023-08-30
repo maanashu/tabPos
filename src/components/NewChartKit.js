@@ -3,6 +3,7 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import React from 'react';
 import { StyleSheet, View, Dimensions, Platform } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
+import { ms } from 'react-native-size-matters';
 
 export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
   return (
@@ -90,10 +91,10 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.24
+              ? Dimensions.get('window').width * 0.26
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? SH(175) : SH(172)}
+          height={Platform.OS === 'android' ? SH(160) : SH(172)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -117,7 +118,7 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? SW(-3) : SW(-8),
+            marginLeft: Platform.OS === 'android' ? ms(-15) : SW(-8),
           }}
           withShadow={false}
           fromZero
@@ -137,10 +138,10 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.24
+              ? Dimensions.get('window').width * 0.26
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? SH(175) : SH(172)}
+          height={Platform.OS === 'android' ? SH(160) : SH(172)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -164,7 +165,7 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? SW(-3) : SW(-8),
+            marginLeft: Platform.OS === 'android' ? ms(-15) : SW(-8),
           }}
           withShadow={false}
           fromZero

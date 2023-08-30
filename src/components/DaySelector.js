@@ -1,48 +1,44 @@
-
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { COLORS, SF, SH} from '@/theme';
+import { COLORS, SF, SH } from '@/theme';
 import { Fonts } from '@/assets';
 
-const selectData =[
+const selectData = [
   {
-    id:1,
-    name:'Today',
-    value : 'today'
+    id: 1,
+    name: 'Today',
+    value: 'today',
   },
   {
-    id:2,
-    name:'Weekly',
-    value : 'week'
+    id: 2,
+    name: 'Weekly',
+    value: 'week',
   },
   {
-    id:3,
-    name:'Monthly',
-    value : 'month'
+    id: 3,
+    name: 'Monthly',
+    value: 'month',
   },
-  {
-    id:4,
-    name:'Quaterly',
-    value : 'quarter'
-  },
-  {
-    id:5,
-    name:'Yearly',
-    value : 'year'
-  },
-]
+  // {
+  //   id:4,
+  //   name:'Quaterly',
+  //   value : 'quarter'
+  // },
+  // {
+  //   id: 5,
+  //   name: 'Yearly',
+  //   value: 'year',
+  // },
+];
 
-export function DaySelector({setSelectTime, selectId, setSelectId, onPresFun}){
-
-
-
-  const ItemSelect = ({item, onPress,backgroundColor,color}) => (
+export function DaySelector({ setSelectTime, selectId, setSelectId, onPresFun }) {
+  const ItemSelect = ({ item, onPress, backgroundColor, color }) => (
     <TouchableOpacity style={[styles.selectItemConatiner, backgroundColor]} onPress={onPress}>
-    <Text style={[styles.selectText, color]}>{item.name}</Text>
-  </TouchableOpacity>
-  )
+      <Text style={[styles.selectText, color]}>{item.name}</Text>
+    </TouchableOpacity>
+  );
 
-  const selectItem = ({item}) => {
+  const selectItem = ({ item }) => {
     const backgroundColor = item.id === selectId ? COLORS.primary : 'transparent';
     const color = item.id === selectId ? COLORS.white : COLORS.dark_grey;
 
@@ -54,36 +50,32 @@ export function DaySelector({setSelectTime, selectId, setSelectId, onPresFun}){
         color={{ color }}
       />
     );
-   
-    
-  }
-  return(
+  };
+  return (
     <FlatList
-     data={selectData}
-     extraData={setSelectId}
-     renderItem={selectItem}
-     keyExtractor={item => item.id}
-     horizontal
-   />
-  )
+      data={selectData}
+      extraData={setSelectId}
+      renderItem={selectItem}
+      keyExtractor={(item) => item.id}
+      horizontal
+    />
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white
-},
-selectItemConatiner:{
-  width:SH(90),
-  height:SH(30),
-  borderRadius:3,
-  justifyContent:'center',
-  alignItems:'center',
-  
-},
-selectText:{
-  fontFamily:Fonts.Regular,
-  fontSize:SF(12)
-}
-
+    backgroundColor: COLORS.white,
+  },
+  selectItemConatiner: {
+    width: SH(90),
+    height: SH(25),
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  selectText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+  },
 });

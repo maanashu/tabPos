@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Image, Text } from 'react-native';
+import { View, TouchableOpacity, Image, Text, Platform } from 'react-native';
 
-import { ScreenWrapper, Spacer } from '@/components';
+import { DaySelector, ScreenWrapper, Spacer } from '@/components';
 
 import { styles } from './Analytics2.styles';
 import { MainScreen } from './Components/MainScreen';
@@ -20,6 +20,9 @@ import {
   filterday,
   crossButton,
   cross,
+  calendar,
+  dropdown,
+  Fonts,
 } from '@/assets';
 import Modal from 'react-native-modal';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -41,25 +44,64 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { TotalProductSold } from './Components/TotalProductSold';
 import { TotalInventory } from './Components/TotalInventory';
 import { getUser } from '@/selectors/UserSelectors';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { ms } from 'react-native-size-matters';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function Analytics2() {
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [flag, setFlag] = useState('profits');
   const [showModal, setShowModal] = useState(false);
-  const [filter, setFilter] = useState('week');
+  const [filter, setFilter] = useState({ value: 'week' });
   const [showFilterModal, setShowFilterModal] = useState(false);
+  const [channels, setChannels] = useState(false);
+  const [channelValue, setChannelValue] = useState(null);
+  const [channelItem, setChannelItem] = useState([
+    { label: 'Innova', value: 'Innova' },
+    { label: 'Maruti', value: 'Maruti' },
+  ]);
+  const [orderSelectId, setOrderSelectId] = useState(2);
+  const [backTime, setBackTime] = useState();
+
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getUserData = useSelector(getUser);
   const getPosUser = getUserData?.posLoginData;
 
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('abc', value);
+    } catch (e) {
+      // saving error
+    }
+  };
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('abc');
+      if (value !== null) {
+        setBackTime(value);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  const orderOnPress = (value) => {
+    dispatch(getAnalyticStatistics(sellerID, value));
+    dispatch(getAnalyticOrderGraphs(sellerID, value));
+    dispatch(getTotalOrder(sellerID, value));
+    dispatch(getTotalInventory(sellerID, value));
+    dispatch(getSoldProduct(sellerID, value));
+    storeData(value);
+  };
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAnalyticStatistics(sellerID, filter));
-    dispatch(getAnalyticOrderGraphs(sellerID, filter));
-    dispatch(getTotalOrder(sellerID, filter));
-    dispatch(getTotalInventory(sellerID, filter));
-    dispatch(getSoldProduct(sellerID, filter));
+    dispatch(getAnalyticStatistics(sellerID, filter?.value));
+    dispatch(getAnalyticOrderGraphs(sellerID, filter?.value));
+    dispatch(getTotalOrder(sellerID, filter?.value));
+    dispatch(getTotalInventory(sellerID, filter?.value));
+    dispatch(getSoldProduct(sellerID, filter?.value));
+    getData();
   }, [filter]);
 
   const goBack = () => {
@@ -99,6 +141,59 @@ export function Analytics2() {
     <ScreenWrapper>
       <View style={styles.container}>
         <View style={styles.homeMainContainer}>
+          <View style={styles.flexDirectionRow}>
+            <View>
+              <Spacer space={ms(10)} />
+
+              <DaySelector
+                onPresFun={orderOnPress}
+                setSelectTime={setFilter}
+                selectId={orderSelectId}
+                setSelectId={setOrderSelectId}
+              />
+            </View>
+            <View
+              style={[
+                styles.flexDirectionRow,
+                {
+                  position: 'absolute',
+                  right: ms(0),
+                  top: ms(10),
+                  height: ms(20),
+                  alignItems: 'center',
+                },
+              ]}
+            >
+              <View style={styles.headerView}>
+                <Image source={calendar} style={styles.calenderImage} />
+                <Text style={styles.dateText}>{'Oct 23 - Nov 23, 2022'}</Text>
+              </View>
+              <DropDownPicker
+                ArrowDownIconComponent={({ style }) => (
+                  <Image source={dropdown} style={styles.dropDownIcon} />
+                )}
+                style={styles.dropdown}
+                containerStyle={[
+                  styles.containerStyle,
+                  { zIndex: Platform.OS === 'ios' ? 100 : 2 },
+                ]}
+                open={channels}
+                value={channelValue}
+                items={channelItem}
+                setOpen={setChannels}
+                setValue={setChannelValue}
+                setItems={setChannelItem}
+                placeholder="All Channels"
+                placeholderStyle={{
+                  color: '#A7A7A7',
+                  fontFamily: Fonts.Regular,
+                  fontSize: ms(8),
+                }}
+              />
+            </View>
+          </View>
+          <Spacer space={ms(5)} />
+
           <View style={styles.flexDirectionRow}>
             <View style={styles.container}>{screenChangeView()}</View>
 
@@ -315,27 +410,12 @@ export function Analytics2() {
                 />
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={[
-                  styles.filterBackgorund,
-                  // {
-                  //   backgroundColor:
-                  //     selectedScreen === 'TopSellingProduct' ? COLORS.primary : COLORS.white,
-                  // },
-                ]}
+              {/* <TouchableOpacity
+                style={[styles.filterBackgorund]}
                 onPress={() => setShowFilterModal(!showFilterModal)}
               >
-                <Image
-                  source={filterday}
-                  style={[
-                    styles.sideBarImage,
-                    // {
-                    //   tintColor:
-                    //     selectedScreen === 'TopSellingProduct' ? COLORS.white : COLORS.black,
-                    // },
-                  ]}
-                />
-              </TouchableOpacity>
+                <Image source={filterday} style={[styles.sideBarImage]} />
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>
