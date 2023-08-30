@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 
 import { COLORS } from '@/theme';
@@ -35,4 +35,4 @@ const OrderReview = ({
   );
 };
 
-export default OrderReview;
+export default memo(OrderReview);

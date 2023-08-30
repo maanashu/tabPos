@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, FlatList, Dimensions } from 'react-native';
 
 import styles from '../styles';
@@ -31,4 +31,4 @@ const RightSideBar = ({ deliveryDrawer, renderDrawer, viewAllOrder }) => {
   );
 };
 
-export default RightSideBar;
+export default memo(RightSideBar);

@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import MapViewDirections from 'react-native-maps-directions';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
 import ShipmentTracking from './ShipmentTracking';
+import mapCustomStyle from '@/components/MapCustomStyles';
 import { deliveryHomeIcon, expand, Fonts, gps, scooter, userImage } from '@/assets';
 
 import styles from '../styles';
-import { GOOGLE_MAP } from '@/constants/ApiKey';
-import MapViewDirections from 'react-native-maps-directions';
-import mapCustomStyle from '@/components/MapCustomStyles';
 
 const OrderDetail = ({
   userDetail,
@@ -351,4 +351,4 @@ const OrderDetail = ({
   );
 };
 
-export default OrderDetail;
+export default memo(OrderDetail);

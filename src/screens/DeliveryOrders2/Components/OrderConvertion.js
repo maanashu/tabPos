@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 
 import PieChart from 'react-native-pie-chart';
@@ -104,4 +104,4 @@ const OrderConvertion = ({
   );
 };
 
-export default OrderConvertion;
+export default memo(OrderConvertion);

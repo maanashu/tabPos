@@ -413,48 +413,6 @@ export function DeliveryOrders2({ route }) {
     </TouchableOpacity>
   );
 
-  const renderShippingDrawer = ({ item }) => (
-    <View style={styles.shippingDrawerView}>
-      <Image source={item?.image} style={styles.sideBarImage} />
-      <View style={{ paddingLeft: 15, justifyContent: 'center' }}>
-        <Text
-          style={[
-            styles.shippingDrawerCountText,
-            {
-              color:
-                item?.title === 'Delivered'
-                  ? COLORS.primary
-                  : item?.title === 'Rejected/Cancelled'
-                  ? COLORS.pink
-                  : item?.title === 'Returned'
-                  ? COLORS.yellowTweet
-                  : COLORS.solid_grey,
-            },
-          ]}
-        >
-          {item?.count ?? 0}
-        </Text>
-        <Text
-          style={[
-            styles.shippingDrawerTitleText,
-            {
-              color:
-                item?.title === 'Delivered'
-                  ? COLORS.primary
-                  : item?.title === 'Rejected/Cancelled'
-                  ? COLORS.pink
-                  : item?.title === 'Returned'
-                  ? COLORS.yellowTweet
-                  : COLORS.solid_grey,
-            },
-          ]}
-        >
-          {item?.title}
-        </Text>
-      </View>
-    </View>
-  );
-
   const renderOrderToReview = ({ item }) => {
     const isSelected = viewAllOrder && item?.id === userDetail?.id;
     const orderDetails = item?.order_details || [];
@@ -692,9 +650,7 @@ export function DeliveryOrders2({ route }) {
       {!trackingView ? (
         <>
           <View style={styles.container}>
-            <Header
-              {...{ viewAllOrder, setViewAllOrder, setIsBack, openShippingOrders, sellerID }}
-            />
+            <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
 
             <Spacer space={SH(20)} />
 
@@ -846,10 +802,8 @@ export function DeliveryOrders2({ route }) {
             <RightSideBar
               {...{
                 deliveryDrawer,
-                openShippingOrders,
-                renderShippingDrawer,
-                setOpenShippingOrders,
                 renderDrawer,
+                viewAllOrder,
               }}
             />
           </View>

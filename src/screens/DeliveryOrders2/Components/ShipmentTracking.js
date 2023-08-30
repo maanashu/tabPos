@@ -1,21 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 
 import { COLORS } from '@/theme';
 import { Spacer } from '@/components';
-import {
-  blankCheckBox,
-  blankCircle,
-  blankRadio,
-  down,
-  fillRadio,
-  Fonts,
-  greyRadioArr,
-  radioArrBlue,
-  up,
-} from '@/assets';
+import { blankRadio, down, fillRadio, Fonts, greyRadioArr, radioArrBlue, up } from '@/assets';
 
 const ShipmentTracking = ({ props }) => {
   const [isHideView, setisHideView] = useState(true);
@@ -190,4 +180,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ShipmentTracking;
+export default memo(ShipmentTracking);
