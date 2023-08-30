@@ -149,7 +149,7 @@ export const styles = StyleSheet.create({
   _inputOtherAmount: {
     flexGrow: 1,
     marginTop: ms(10),
-    width: ms(380),
+    width: Platform.OS === 'android' ? ms(380) : ms(329),
     height: ms(40),
     borderRadius: ms(3),
     borderColor: COLORS.solidGrey,
@@ -2311,12 +2311,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   serviceCartRightBody: {
+    // borderWidth: 1,
     width: Platform.OS === 'android' ? ms(360) : ms(280),
     height: ms(20),
     flexDirection: 'row',
   },
   serviceCartBody: {
-    width: Platform.OS === 'android' ? ms(71) : ms(50),
+    // borderWidth: 1,
+    width: Platform.OS === 'android' ? ms(71) : ms(54),
     height: ms(20),
     alignItems: 'center',
     justifyContent: 'center',

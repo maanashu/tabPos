@@ -319,7 +319,7 @@ export function CartServiceScreen({
                             >
                               {data.product_details?.name}
                             </Text>
-                            <Text style={[styles.sukNumber, { width: SW(50) }]} numberOfLines={1}>
+                            <Text style={[styles.sukNumber, { width: SW(40) }]} numberOfLines={1}>
                               {moment(data?.date).format('LL')} @
                               {data?.start_time + '-' + data?.end_time}
                             </Text>
