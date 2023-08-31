@@ -346,6 +346,7 @@ export { default as gps } from '@/assets/icons/ic_deliveryOrder/gps.png';
 export { default as productReturn } from '@/assets/icons/ic_dashboard/productReturn.png';
 export { default as Calculator } from '@/assets/images/Calculator.png';
 export { default as CalculatorColor } from '@/assets/images/CalculatorColor.png';
+export { default as storeLogo } from '@/assets/icons/ic_deliveryOrder/storeLogo.png';
 
 /* Fonts */
 export const Fonts = {

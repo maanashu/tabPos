@@ -1,14 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import { COLORS, SF, SH } from '@/theme';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
 import { Fonts, backArrow, minus, plus } from '@/assets';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,28 +28,24 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
     //   supplyPriceID: productData?.supplies?.[0]?.supply_prices[0]?.id,
     // };
 
-
-    //New changes 
-    const data=   {
-      "seller_id":sellerID,
-      "products": [
+    //New changes
+    const data = {
+      seller_id: sellerID,
+      products: [
         {
           product_id: productData?.id,
           qty: item?.qty,
           supply_id: productData?.supplies?.[0]?.id,
           supply_price_id: productData?.supplies?.[0]?.supply_prices[0]?.id,
-        }
-      ]
-     }
-
+        },
+      ],
+    };
 
     dispatch(addTocart(data));
 
     alert('Product Add to cart successfully');
   };
-  const addToCartLoad = useSelector(state =>
-    isLoadingSelector([TYPES.ADDCART], state)
-  );
+  const addToCartLoad = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
   return (
     <View style={styles.productModCon2}>
       <TouchableOpacity
@@ -73,10 +63,7 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
       <Spacer space={SH(10)} />
       <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
         <View style={styles.detailImageCon}>
-          <Image
-            source={{ uri: productData?.image }}
-            style={styles.marboloPackStyle}
-          />
+          <Image source={{ uri: productData?.image }} style={styles.marboloPackStyle} />
           <Spacer space={SH(15)} />
           <View style={styles.productDescrptionCon}>
             <Spacer space={SH(10)} />
@@ -94,9 +81,7 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
             </Text>
           </View>
           <Spacer space={SH(25)} />
-          <View
-            style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
-          >
+          <View style={[styles.priceContainer, { backgroundColor: COLORS.white }]}>
             <TouchableOpacity>
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
@@ -108,37 +93,25 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
           <Spacer space={SH(20)} />
           {addToCartLoad ? (
             <View style={styles.descriptionAddCon}>
-              <Text style={styles.desAddCartText}>
-                {strings.posSale.addToCart}
-              </Text>
+              <Text style={styles.desAddCartText}>{strings.posSale.addToCart}</Text>
               <View style={{ marginLeft: 8 }}>
                 <ActivityIndicator size="small" color={COLORS.white} />
               </View>
             </View>
           ) : (
-            <TouchableOpacity
-              style={styles.descriptionAddCon}
-              onPress={() => addToCart()}
-            >
-              <Text style={styles.desAddCartText}>
-                {strings.posSale.addToCart}
-              </Text>
+            <TouchableOpacity style={styles.descriptionAddCon} onPress={() => addToCart()}>
+              <Text style={styles.desAddCartText}>{strings.posSale.addToCart}</Text>
             </TouchableOpacity>
           )}
           <Spacer space={SH(38)} />
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.unitTypeCon}>
               <Spacer space={SH(8)} />
-              <Text style={[styles.detailHeader, styles.detailHeader2]}>
-                unit Type
-              </Text>
+              <Text style={[styles.detailHeader, styles.detailHeader2]}>unit Type</Text>
               <Spacer space={SH(5)} />
               <Text
                 numberOfLines={1}
-                style={[
-                  styles.detailHeader,
-                  { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                ]}
+                style={[styles.detailHeader, { fontSize: SF(20), fontFamily: Fonts.SemiBold }]}
               >
                 {productData?.type}
               </Text>
@@ -146,32 +119,18 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
             </View>
             <View style={styles.unitTypeCon}>
               <Spacer space={SH(8)} />
-              <Text style={[styles.detailHeader, styles.detailHeader2]}>
-                Unit Weight
-              </Text>
+              <Text style={[styles.detailHeader, styles.detailHeader2]}>Unit Weight</Text>
               <Spacer space={SH(5)} />
-              <Text
-                style={[
-                  styles.detailHeader,
-                  { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                ]}
-              >
+              <Text style={[styles.detailHeader, { fontSize: SF(20), fontFamily: Fonts.SemiBold }]}>
                 {productData?.weight}
               </Text>
               <Spacer space={SH(8)} />
             </View>
             <View style={styles.unitTypeCon}>
               <Spacer space={SH(8)} />
-              <Text style={[styles.detailHeader, styles.detailHeader2]}>
-                SKU
-              </Text>
+              <Text style={[styles.detailHeader, styles.detailHeader2]}>SKU</Text>
               <Spacer space={SH(5)} />
-              <Text
-                style={[
-                  styles.detailHeader,
-                  { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                ]}
-              >
+              <Text style={[styles.detailHeader, { fontSize: SF(20), fontFamily: Fonts.SemiBold }]}>
                 {productData?.sku}
               </Text>
               <Spacer space={SH(8)} />
@@ -180,48 +139,27 @@ export function PosSearchDetailModal({ backArrowhandler, productData }) {
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.unitTypeCon}>
               <Spacer space={SH(8)} />
-              <Text style={[styles.detailHeader, styles.detailHeader2]}>
-                Barcode
-              </Text>
+              <Text style={[styles.detailHeader, styles.detailHeader2]}>Barcode</Text>
               <Spacer space={SH(5)} />
-              <Text
-                style={[
-                  styles.detailHeader,
-                  { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                ]}
-              >
+              <Text style={[styles.detailHeader, { fontSize: SF(20), fontFamily: Fonts.SemiBold }]}>
                 {productData?.barcode}
               </Text>
               <Spacer space={SH(8)} />
             </View>
             <View style={styles.unitTypeCon}>
               <Spacer space={SH(8)} />
-              <Text style={[styles.detailHeader, styles.detailHeader2]}>
-                Stock
-              </Text>
+              <Text style={[styles.detailHeader, styles.detailHeader2]}>Stock</Text>
               <Spacer space={SH(5)} />
-              <Text
-                style={[
-                  styles.detailHeader,
-                  { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                ]}
-              >
+              <Text style={[styles.detailHeader, { fontSize: SF(20), fontFamily: Fonts.SemiBold }]}>
                 {productData?.supplies?.[0]?.rest_quantity}
               </Text>
               <Spacer space={SH(8)} />
             </View>
             <View style={styles.unitTypeCon}>
               <Spacer space={SH(8)} />
-              <Text style={[styles.detailHeader, styles.detailHeader2]}>
-                Stock
-              </Text>
+              <Text style={[styles.detailHeader, styles.detailHeader2]}>Stock</Text>
               <Spacer space={SH(5)} />
-              <Text
-                style={[
-                  styles.detailHeader,
-                  { fontSize: SF(20), fontFamily: Fonts.SemiBold },
-                ]}
-              >
+              <Text style={[styles.detailHeader, { fontSize: SF(20), fontFamily: Fonts.SemiBold }]}>
                 {productData?.supplies?.[0]?.rest_quantity}
               </Text>
               <Spacer space={SH(8)} />

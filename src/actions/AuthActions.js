@@ -1,6 +1,4 @@
-import { NAVIGATION } from '@/constants';
 import { AuthController } from '@/controllers/AuthController';
-import { navigate } from '@/navigation/NavigationRef';
 import { TYPES } from '@/Types/Types';
 
 const verifyPhoneRequest = () => ({

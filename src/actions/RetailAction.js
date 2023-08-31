@@ -1,6 +1,6 @@
 import { RetailController } from '@/controllers';
 import { TYPES } from '@/Types/Types';
-import { addLocalCart, clearLocalCart, updateCartLength } from './CartAction';
+import { updateCartLength } from './CartAction';
 
 const getCategoryRequest = () => ({
   type: TYPES.GET_CATEGORY_REQUEST,

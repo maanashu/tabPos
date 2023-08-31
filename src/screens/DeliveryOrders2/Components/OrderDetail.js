@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import MapViewDirections from 'react-native-maps-directions';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
 import ShipmentTracking from './ShipmentTracking';
+import mapCustomStyle from '@/components/MapCustomStyles';
 import { deliveryHomeIcon, expand, Fonts, gps, scooter, userImage } from '@/assets';
 
 import styles from '../styles';
-import { GOOGLE_MAP } from '@/constants/ApiKey';
-import MapViewDirections from 'react-native-maps-directions';
-import mapCustomStyle from '@/components/MapCustomStyles';
 
 const OrderDetail = ({
   userDetail,
@@ -159,6 +159,7 @@ const OrderDetail = ({
               </View>
             </View>
           </View>
+
           <View style={{ height: SH(400) }}>
             <FlatList
               scrollEnabled
@@ -168,6 +169,7 @@ const OrderDetail = ({
               contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}
             />
           </View>
+
           <View style={styles.orderandPriceView}>
             <View style={{ paddingLeft: 15, flex: 1 }}>
               <View>
@@ -264,6 +266,7 @@ const OrderDetail = ({
                   </Text>
                 </View>
               </View>
+
               <View
                 style={{
                   borderWidth: 1,
@@ -272,6 +275,7 @@ const OrderDetail = ({
                   marginTop: ms(5),
                 }}
               />
+
               <View style={styles.orderDetailsView}>
                 <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
                 <View style={styles.flexDirectionRow}>
@@ -351,4 +355,4 @@ const OrderDetail = ({
   );
 };
 
-export default OrderDetail;
+export default memo(OrderDetail);

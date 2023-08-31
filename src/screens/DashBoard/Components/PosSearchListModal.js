@@ -5,7 +5,6 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import {
   View,
   Text,
-  Dimensions,
   FlatList,
   TouchableOpacity,
   Image,
@@ -13,7 +12,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Fonts, backArrow2, crossButton, minus, plus } from '@/assets';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,14 +42,12 @@ export function PosSearchListModal({
   const [selectionId, setSelectionId] = useState();
   const [selectedQuantities, setSelectedQuantities] = useState({});
   const bunndleProArray = getProductListArray?.[0]?.supplies[0]?.supply_prices;
-  const bunndleProFinal = bunndleProArray?.filter(
-    item => item.price_type === 'quantity_base'
-  );
+  const bunndleProFinal = bunndleProArray?.filter((item) => item.price_type === 'quantity_base');
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
   const [bundleData, setBundleData] = useState();
 
   const handleQuantitySelection = (item, action) => {
-    setSelectedQuantities(prevQuantities => {
+    setSelectedQuantities((prevQuantities) => {
       const currentQuantity = prevQuantities[item.id] || 0;
 
       let updatedQuantity;
@@ -71,19 +67,15 @@ export function PosSearchListModal({
   };
 
   const renderBundleItem = ({ item }) => {
-    const backgroundColor =
-      addRemoveSelectedId === item.id ? COLORS.white : COLORS.primary;
-    const color =
-      addRemoveSelectedId === item.id ? COLORS.primary : COLORS.white;
+    const backgroundColor = addRemoveSelectedId === item.id ? COLORS.white : COLORS.primary;
+    const color = addRemoveSelectedId === item.id ? COLORS.primary : COLORS.white;
     const text = addRemoveSelectedId === item.id ? 'Remove' : 'Add';
 
     return (
       <AddRemoveItemSelect
         item={item}
         onPress={() => {
-          setAddRemoveSelectedId(
-            addRemoveSelectedId === item.id ? null : item.id
-          );
+          setAddRemoveSelectedId(addRemoveSelectedId === item.id ? null : item.id);
           setBundleData(item);
         }}
         backgroundColor={{ backgroundColor }}
@@ -93,35 +85,17 @@ export function PosSearchListModal({
     );
   };
 
-  const AddRemoveItemSelect = ({
-    item,
-    onPress,
-    backgroundColor,
-    color,
-    addRemove,
-  }) => (
+  const AddRemoveItemSelect = ({ item, onPress, backgroundColor, color, addRemove }) => (
     <View style={styles.bundleOfferCon}>
-      <View
-        style={[styles.displayFlex, { paddingHorizontal: moderateScale(5) }]}
-      >
+      <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(5) }]}>
         <Text style={styles.buypackText}>
-          Buy Pack{' '}
-          <Text style={{ fontFamily: Fonts.SemiBold }}>{item?.min_qty}</Text>{' '}
-          for
+          Buy Pack <Text style={{ fontFamily: Fonts.SemiBold }}>{item?.min_qty}</Text> for
         </Text>
         <View style={styles.displayFlex}>
-          <Text
-            style={[
-              styles.buypackText,
-              { paddingHorizontal: moderateScale(15) },
-            ]}
-          >
+          <Text style={[styles.buypackText, { paddingHorizontal: moderateScale(15) }]}>
             {item?.selling_price}
           </Text>
-          <TouchableOpacity
-            style={[styles.bundleAddCon, backgroundColor]}
-            onPress={onPress}
-          >
+          <TouchableOpacity style={[styles.bundleAddCon, backgroundColor]} onPress={onPress}>
             <Text style={[styles.bundleAddText, color]}>{addRemove}</Text>
           </TouchableOpacity>
         </View>
@@ -129,11 +103,8 @@ export function PosSearchListModal({
     </View>
   );
 
-  const addToCart = item => {
-    if (
-      selectedQuantities[item.id] === undefined ||
-      selectedQuantities[item.id] === 0
-    ) {
+  const addToCart = (item) => {
+    if (selectedQuantities[item.id] === undefined || selectedQuantities[item.id] === 0) {
       alert('Please Quantity Add');
     } else {
       // const data = {
@@ -145,62 +116,44 @@ export function PosSearchListModal({
       //   supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
       // };
 
-
-     //New Changes
-      const data=   {
-        "seller_id":sellerID,
-        "products": [
+      //New Changes
+      const data = {
+        seller_id: sellerID,
+        products: [
           {
-            product_id:item.id,
-            qty:selectedQuantities[item.id],
+            product_id: item.id,
+            qty: selectedQuantities[item.id],
             supply_id: item?.supplies?.[0]?.id,
             supply_price_id: item?.supplies?.[0]?.supply_prices[0]?.id,
-          }
-        ]
-       }
+          },
+        ],
+      };
       dispatch(addTocart(data));
       setAddRemoveSelectedId(null);
     }
   };
 
-  const isSearchProLoading = useSelector(state =>
+  const isSearchProLoading = useSelector((state) =>
     isLoadingSelector([DASHBOARDTYPE.SEARCH_PRODUCT_LIST], state)
   );
-  const addToCartLoad = useSelector(state =>
-    isLoadingSelector([TYPES.ADDCART], state)
-  );
+  const addToCartLoad = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
 
-  const searchFunction = id => {
+  const searchFunction = (id) => {
     setSelectionId(id);
   };
 
   const renderSearchItem = ({ item, index }) => {
-    return (
-      <SearchItemSelect
-        item={item}
-        index={index}
-        onPress={() => searchFunction(item.id)}
-      />
-    );
+    return <SearchItemSelect item={item} index={index} onPress={() => searchFunction(item.id)} />;
   };
 
   const SearchItemSelect = ({ item, onPress, index }) => (
     <View>
       <Spacer space={SH(15)} />
-      <TouchableOpacity
-        onPress={onPress}
-        style={[styles.displayFlex, styles.padding]}
-      >
+      <TouchableOpacity onPress={onPress} style={[styles.displayFlex, styles.padding]}>
         <View style={styles.displayFlex}>
-          <Image
-            source={{ uri: item.image }}
-            style={styles.marboloRedPackStyle}
-          />
+          <Image source={{ uri: item.image }} style={styles.marboloRedPackStyle} />
           <View style={styles.locStock}>
-            <Text
-              style={[styles.marbolorRedStyle, { width: SW(145) }]}
-              numberOfLines={1}
-            >
+            <Text style={[styles.marbolorRedStyle, { width: SW(145) }]} numberOfLines={1}>
               {item.name}
             </Text>
             <Spacer space={SH(5)} />
@@ -208,9 +161,7 @@ export function PosSearchListModal({
               {item.supplies[0]?.rest_quantity}
               {strings.posSale.stock}
             </Text>
-            <Text style={styles.searchItalicText}>
-              {strings.posSale.location}
-            </Text>
+            <Text style={styles.searchItalicText}>{strings.posSale.location}</Text>
           </View>
         </View>
         <View style={{ alignItems: 'flex-end' }}>
@@ -218,10 +169,7 @@ export function PosSearchListModal({
             ${item.supplies[0]?.supply_prices[0]?.selling_price}
           </Text>
           <Spacer space={SH(5)} />
-          <TouchableOpacity
-            onPress={() => viewDetailHandler(item)}
-            style={styles.viewDetailCon}
-          >
+          <TouchableOpacity onPress={() => viewDetailHandler(item)} style={styles.viewDetailCon}>
             <Text style={[styles.stockStyle, { color: COLORS.primary }]}>
               {strings.posSale.viewDetail}
             </Text>
@@ -238,14 +186,8 @@ export function PosSearchListModal({
           <Spacer space={SH(15)} />
           <View style={styles.amountjfrContainer}>
             <View style={styles.flexAlign}>
-              <Image
-                source={{ uri: item.image }}
-                style={styles.marboloRedPackStyle}
-              />
-              <Text
-                style={[styles.jfrmaduro, { width: SW(100) }]}
-                numberOfLines={1}
-              >
+              <Image source={{ uri: item.image }} style={styles.marboloRedPackStyle} />
+              <Text style={[styles.jfrmaduro, { width: SW(100) }]} numberOfLines={1}>
                 {item.name}
               </Text>
             </View>
@@ -260,20 +202,14 @@ export function PosSearchListModal({
           </View>
           <Spacer space={SH(25)} />
 
-          <View
-            style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
-          >
-            <TouchableOpacity
-              onPress={() => handleQuantitySelection(item, 'subtract')}
-            >
+          <View style={[styles.priceContainer, { backgroundColor: COLORS.white }]}>
+            <TouchableOpacity onPress={() => handleQuantitySelection(item, 'subtract')}>
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
             <Text style={[styles.price, { fontSize: SF(24) }]}>
               {selectedQuantities[item.id] || 0}
             </Text>
-            <TouchableOpacity
-              onPress={() => handleQuantitySelection(item, 'add')}
-            >
+            <TouchableOpacity onPress={() => handleQuantitySelection(item, 'add')}>
               <Image source={plus} style={styles.plusBtn2} />
             </TouchableOpacity>
           </View>
@@ -300,21 +236,14 @@ export function PosSearchListModal({
             <View style={{ flex: 1 }} />
             {addToCartLoad ? (
               <View style={styles.addcartButtonStyle}>
-                <Text style={styles.addToCartText}>
-                  {strings.posSale.addToCart}
-                </Text>
+                <Text style={styles.addToCartText}>{strings.posSale.addToCart}</Text>
                 <View style={{ marginLeft: 5 }}>
                   <ActivityIndicator size="small" color={COLORS.white} />
                 </View>
               </View>
             ) : (
-              <TouchableOpacity
-                style={styles.addcartButtonStyle}
-                onPress={() => addToCart(item)}
-              >
-                <Text style={styles.addToCartText}>
-                  {strings.posSale.addToCart}
-                </Text>
+              <TouchableOpacity style={styles.addcartButtonStyle} onPress={() => addToCart(item)}>
+                <Text style={styles.addToCartText}>{strings.posSale.addToCart}</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -349,7 +278,7 @@ export function PosSearchListModal({
             placeholder="Search product here"
             style={styles.searchInput2}
             value={search}
-            onChangeText={search => (setSearch(search), onChangeFun(search))}
+            onChangeText={(search) => (setSearch(search), onChangeFun(search))}
           />
         </View>
         <TouchableOpacity onPress={listFalseHandler}>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { pin, eventClockIcon, userImage } from '@/assets';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { pin, eventClockIcon } from '@/assets';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import moment from 'moment';

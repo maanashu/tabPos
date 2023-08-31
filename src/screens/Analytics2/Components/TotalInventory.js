@@ -1,30 +1,8 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-  Platform,
-  FlatList,
-} from 'react-native';
-import { BarChartCom, ScreenWrapper, Spacer } from '@/components';
+import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import {
-  Fonts,
-  averageOrder,
-  backArrow2,
-  calendar,
-  clay,
-  dropdown,
-  locationSales,
-  profit,
-  totalOrders,
-} from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { LineChart } from 'react-native-chart-kit';
+import { averageOrder, backArrow2, locationSales, profit, totalOrders } from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';

@@ -9,25 +9,9 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import { COLORS, SF, SH, ShadowStyles, SW, TextStyles } from '@/theme';
-import {
-  moderateScale,
-  moderateVerticalScale,
-  scale,
-  verticalScale,
-} from 'react-native-size-matters';
-import {
-  checkbox,
-  checkedCheckbox,
-  crossButton,
-  dropdown,
-  dropdown2,
-  Fonts,
-  marboloPlus,
-  minus,
-  plus,
-  scanner,
-} from '@/assets';
+import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
+import { crossButton, dropdown, Fonts, minus, plus, scanner } from '@/assets';
 import { Spacer } from './Spacer';
 import { strings } from '@/localization';
 const windowWidth = Dimensions.get('window').width;
@@ -80,9 +64,7 @@ export function AddNewProduct({
           <Image source={scanner} style={styles.scanerStyle} />
           <Spacer space={SH(10)} />
           <View>
-            <Text style={styles.newProductLabel}>
-              {strings.posSale.scanBarcode}
-            </Text>
+            <Text style={styles.newProductLabel}>{strings.posSale.scanBarcode}</Text>
             <Spacer space={SH(10)} />
             <View style={styles.scannedbarCodeCon}>
               <Text style={styles.barCodeNumText}>0123-4567</Text>
@@ -90,30 +72,20 @@ export function AddNewProduct({
           </View>
           <Spacer space={SH(20)} />
           <View>
-            <Text style={styles.newProductLabel}>
-              {strings.posSale.productName}
-            </Text>
+            <Text style={styles.newProductLabel}>{strings.posSale.productName}</Text>
             <Spacer space={SH(10)} />
             <TextInput placeholder="Product name" style={styles.productInput} />
           </View>
           <Spacer space={SH(20)} />
           <View>
-            <Text style={styles.newProductLabel}>
-              {strings.posSale.selectCat}
-            </Text>
+            <Text style={styles.newProductLabel}>{strings.posSale.selectCat}</Text>
             <Spacer space={SH(10)} />
             <DropDownPicker
               ArrowDownIconComponent={({ style }) => (
-                <Image
-                  source={dropdown}
-                  style={styles.newProductdropDownIcon}
-                />
+                <Image source={dropdown} style={styles.newProductdropDownIcon} />
               )}
               ArrowUpIconComponent={({ style }) => (
-                <Image
-                  source={dropdown}
-                  style={styles.newProductdropDownIcon}
-                />
+                <Image source={dropdown} style={styles.newProductdropDownIcon} />
               )}
               style={styles.newProductdropdown}
               containerStyle={[
@@ -136,22 +108,14 @@ export function AddNewProduct({
           </View>
           <Spacer space={SH(20)} />
           <View>
-            <Text style={styles.newProductLabel}>
-              {strings.posSale.selectSubCat}
-            </Text>
+            <Text style={styles.newProductLabel}>{strings.posSale.selectSubCat}</Text>
             <Spacer space={SH(10)} />
             <DropDownPicker
               ArrowDownIconComponent={({ style }) => (
-                <Image
-                  source={dropdown}
-                  style={styles.newProductdropDownIcon}
-                />
+                <Image source={dropdown} style={styles.newProductdropDownIcon} />
               )}
               ArrowUpIconComponent={({ style }) => (
-                <Image
-                  source={dropdown}
-                  style={styles.newProductdropDownIcon}
-                />
+                <Image source={dropdown} style={styles.newProductdropDownIcon} />
               )}
               style={styles.newProductdropdown}
               containerStyle={[
@@ -174,22 +138,14 @@ export function AddNewProduct({
           </View>
           <Spacer space={SH(20)} />
           <View>
-            <Text style={styles.newProductLabel}>
-              {strings.posSale.selectBrand}
-            </Text>
+            <Text style={styles.newProductLabel}>{strings.posSale.selectBrand}</Text>
             <Spacer space={SH(10)} />
             <DropDownPicker
               ArrowDownIconComponent={({ style }) => (
-                <Image
-                  source={dropdown}
-                  style={styles.newProductdropDownIcon}
-                />
+                <Image source={dropdown} style={styles.newProductdropDownIcon} />
               )}
               ArrowUpIconComponent={({ style }) => (
-                <Image
-                  source={dropdown}
-                  style={styles.newProductdropDownIcon}
-                />
+                <Image source={dropdown} style={styles.newProductdropDownIcon} />
               )}
               style={styles.newProductdropdown}
               containerStyle={[
@@ -211,29 +167,18 @@ export function AddNewProduct({
             />
           </View>
           <Spacer space={SH(20)} />
-          <View
-            style={[
-              styles.priceContainer,
-              { paddingHorizontal: moderateScale(0) },
-            ]}
-          >
-            <Text style={[styles.updateprice, { fontSize: SF(14) }]}>
-              Selling Price
-            </Text>
+          <View style={[styles.priceContainer, { paddingHorizontal: moderateScale(0) }]}>
+            <Text style={[styles.updateprice, { fontSize: SF(14) }]}>Selling Price</Text>
             <View style={styles.updateAmount}>
               <Text style={styles.updateprice}>$0.00</Text>
             </View>
           </View>
           <Spacer space={SH(30)} />
-          <View
-            style={[styles.priceContainer, { backgroundColor: COLORS.white }]}
-          >
+          <View style={[styles.priceContainer, { backgroundColor: COLORS.white }]}>
             <TouchableOpacity onPress={addProMinusOnPress}>
               <Image source={minus} style={styles.plusBtn2} />
             </TouchableOpacity>
-            <Text style={[styles.price, { fontSize: SF(24) }]}>
-              {addProductCount}
-            </Text>
+            <Text style={[styles.price, { fontSize: SF(24) }]}>{addProductCount}</Text>
             <TouchableOpacity onPress={addProPlusOnPress}>
               <Image source={plus} style={styles.plusBtn2} />
             </TouchableOpacity>
@@ -241,19 +186,11 @@ export function AddNewProduct({
 
           <Spacer space={SH(30)} />
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={removeToCartOnPress}
-            >
-              <Text style={styles.removeButton}>
-                {strings.posSale.removeCart}
-              </Text>
+            <TouchableOpacity style={styles.buttonContainer} onPress={removeToCartOnPress}>
+              <Text style={styles.removeButton}>{strings.posSale.removeCart}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[
-                styles.buttonContainer,
-                { backgroundColor: COLORS.bluish_green },
-              ]}
+              style={[styles.buttonContainer, { backgroundColor: COLORS.bluish_green }]}
               onPress={updateToCartOnPress}
             >
               <Text style={[styles.removeButton, { color: COLORS.white }]}>

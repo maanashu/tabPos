@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
 
 import moment from 'moment';
@@ -11,11 +11,11 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import ShipmentTracking from './ShipmentTracking';
+import mapCustomStyle from '@/components/MapCustomStyles';
 import { getReviewDefault } from '@/actions/DeliveryAction';
 import { deliveryHomeIcon, scooter, barcode, crossButton, gps } from '@/assets';
 
 import styles from '../styles';
-import mapCustomStyle from '@/components/MapCustomStyles';
 
 const InvoiceDetails = ({
   setTrackingView,
@@ -250,4 +250,4 @@ const InvoiceDetails = ({
   );
 };
 
-export default InvoiceDetails;
+export default memo(InvoiceDetails);

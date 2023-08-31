@@ -14,7 +14,7 @@ const Graph = ({ graphData, renderGraphItem, isDeliveryOrder, outputData }) => {
   return (
     <View style={styles.graphViewStyle}>
       <View>
-        <Text style={styles.numberOrdersText}>{strings.shipingOrder.numberOfOrders}</Text>
+        <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
 
         <FlatList
           horizontal

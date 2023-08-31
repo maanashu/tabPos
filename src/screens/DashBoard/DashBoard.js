@@ -15,7 +15,7 @@ import {
 import moment from 'moment';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 import { useDebouncedCallback } from 'use-lodash-debounce';
 
@@ -28,7 +28,6 @@ import {
   pay,
   pin,
   rightIcon,
-  scanSearch,
   scn,
   search_light,
   sellingArrow,

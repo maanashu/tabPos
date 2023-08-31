@@ -24,15 +24,13 @@ import {
   oneHourType,
   twoHourType,
   customType,
-  task,
-  timer,
-  NoCard,
-  returnShipping,
-  deliveryShipping,
-  deliveryorderProducts,
   Fonts,
-  deliveryDriver,
   backArrow2,
+  scooter,
+  userImage,
+  deliveryHomeIcon,
+  expand,
+  gps,
 } from '@/assets';
 import {
   acceptOrder,
@@ -46,7 +44,7 @@ import {
 } from '@/actions/DeliveryAction';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
-import { COLORS, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import Header from './Components/Header';
 import OrderDetail from './Components/OrderDetail';
 import OrderReview from './Components/OrderReview';
@@ -66,6 +64,12 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES as ANALYTICSTYPES } from '@/Types/AnalyticsTypes';
 
 import styles from './styles';
+import { returnOrders } from '@/constants/flatListData';
+import mapCustomStyle from '@/components/MapCustomStyles';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
+import ShipmentTracking from './Components/ShipmentTracking';
+import MapViewDirections from 'react-native-maps-directions';
 
 export function DeliveryOrders2({ route }) {
   const mapRef = useRef(null);
@@ -161,57 +165,6 @@ export function DeliveryOrders2({ route }) {
       };
     }, [isViewAll, ORDER_DETAIL])
   );
-
-  const deliveryDrawer = [
-    {
-      key: '0',
-      image: task,
-      title: 'Orders to Review',
-      count: getDeliveryData?.getOrderCount?.[0]?.count ?? 0,
-    },
-    {
-      key: '1',
-      image: deliveryorderProducts,
-      title: 'Accepted',
-      count: getDeliveryData?.getOrderCount?.[1]?.count ?? 0,
-    },
-    {
-      key: '2',
-      image: timer,
-      title: 'Order Preparing ',
-      count: getDeliveryData?.getOrderCount?.[2]?.count ?? 0,
-    },
-    {
-      key: '3',
-      image: deliveryDriver,
-      title: 'Ready to Pickup',
-      count: getDeliveryData?.getOrderCount?.[3]?.count ?? 0,
-    },
-    {
-      key: '4',
-      image: deliveryShipping,
-      title: 'Picked Up',
-      count: getDeliveryData?.getOrderCount?.[4]?.count ?? 0,
-    },
-    {
-      key: '5',
-      image: deliveryorderProducts,
-      title: 'Delivered',
-      count: getDeliveryData?.getOrderCount?.[5]?.count ?? 0,
-    },
-    {
-      key: '7,8',
-      image: NoCard,
-      title: 'Rejected/Cancelled',
-      count: getDeliveryData?.getOrderCount?.[7]?.count ?? 0,
-    },
-    {
-      key: '9',
-      image: returnShipping,
-      title: 'Returned',
-      count: 0,
-    },
-  ];
 
   useEffect(() => {
     dispatch(todayOrders());
@@ -413,48 +366,6 @@ export function DeliveryOrders2({ route }) {
     </TouchableOpacity>
   );
 
-  const renderShippingDrawer = ({ item }) => (
-    <View style={styles.shippingDrawerView}>
-      <Image source={item?.image} style={styles.sideBarImage} />
-      <View style={{ paddingLeft: 15, justifyContent: 'center' }}>
-        <Text
-          style={[
-            styles.shippingDrawerCountText,
-            {
-              color:
-                item?.title === 'Delivered'
-                  ? COLORS.primary
-                  : item?.title === 'Rejected/Cancelled'
-                  ? COLORS.pink
-                  : item?.title === 'Returned'
-                  ? COLORS.yellowTweet
-                  : COLORS.solid_grey,
-            },
-          ]}
-        >
-          {item?.count ?? 0}
-        </Text>
-        <Text
-          style={[
-            styles.shippingDrawerTitleText,
-            {
-              color:
-                item?.title === 'Delivered'
-                  ? COLORS.primary
-                  : item?.title === 'Rejected/Cancelled'
-                  ? COLORS.pink
-                  : item?.title === 'Returned'
-                  ? COLORS.yellowTweet
-                  : COLORS.solid_grey,
-            },
-          ]}
-        >
-          {item?.title}
-        </Text>
-      </View>
-    </View>
-  );
-
   const renderOrderToReview = ({ item }) => {
     const isSelected = viewAllOrder && item?.id === userDetail?.id;
     const orderDetails = item?.order_details || [];
@@ -533,7 +444,7 @@ export function DeliveryOrders2({ route }) {
     <View style={styles.headingRowStyle}>
       <Text style={styles.ordersToReviewText}>{getHeaderText(openShippingOrders)}</Text>
 
-      {getDeliveryData?.getReviewDef?.length > 0 ? (
+      {getDeliveryData?.getReviewDef?.length > 0 || openShippingOrders === '9' ? (
         <TouchableOpacity onPress={() => setViewAllOrder(true)} style={styles.viewAllButtonStyle}>
           <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
         </TouchableOpacity>
@@ -612,7 +523,7 @@ export function DeliveryOrders2({ route }) {
   const getHeaderText = (openShippingOrders) => {
     switch (openShippingOrders) {
       case '0':
-        return strings.shipingOrder.orderOfReview;
+        return strings.orderStatus.reviewOrders;
       case '1':
         return 'Orders to Accepted';
       case '2':
@@ -687,74 +598,260 @@ export function DeliveryOrders2({ route }) {
     }, 1000);
   }, []);
 
+  const renderReturnOrders = ({ item, index }) => {
+    const isSelected = viewAllOrder && item?.key === userDetail?.key;
+
+    const handlePress = () => {
+      setViewAllOrder(true);
+      setUserDetail(item);
+      setOrderId(item?.key);
+    };
+
+    const handleExpandPress = () => {
+      setUserDetail(item);
+      setViewAllOrder(true);
+    };
+
+    return (
+      <TouchableOpacity
+        onPress={handlePress}
+        style={[
+          viewAllOrder
+            ? [styles.showAllOrdersView, { width: Dimensions.get('window').width / ms(1.15) }]
+            : styles.orderRowStyle,
+          {
+            backgroundColor: isSelected ? COLORS.textInputBackground : COLORS.transparent,
+            borderColor: isSelected ? COLORS.primary : COLORS.blue_shade,
+          },
+        ]}
+      >
+        <Text
+          style={[
+            styles.nameTextStyle,
+            { fontFamily: Fonts.SemiBold, textAlignVertical: 'center', paddingRight: 10 },
+          ]}
+        >
+          {item?.id}
+        </Text>
+        <View style={[styles.orderDetailStyle, { left: 10 }]}>
+          <Text style={styles.nameTextStyle}>{item?.name}</Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={pin} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>{item?.miles}</Text>
+          </View>
+        </View>
+
+        <View style={[styles.orderDetailStyle, { left: 10, paddingHorizontal: 12 }]}>
+          <Text style={styles.nameTextStyle}>{item?.items}</Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={pay} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>{item?.price}</Text>
+          </View>
+        </View>
+
+        <Image source={item?.userProfile} style={styles.userImageStyle} />
+        <View style={[styles.orderDetailStyle, { width: SW(38) }]}>
+          <Text
+            style={[styles.timeTextStyle, { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey }]}
+          >
+            {item?.deliveryType}
+          </Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={clock} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>{item?.time}</Text>
+          </View>
+        </View>
+
+        <View style={[styles.orderDetailStyle, { width: SW(38) }]}>
+          <Text
+            style={[styles.timeTextStyle, { fontFamily: Fonts.Regular, color: COLORS.solid_grey }]}
+          >
+            {item?.returnWithin}
+          </Text>
+          <View style={styles.locationViewStyle}>
+            <Image
+              source={clock}
+              style={[styles.pinImageStyle, { tintColor: COLORS.yellowTweet }]}
+            />
+            <Text style={[styles.distanceTextStyle, { color: COLORS.yellowTweet }]}>
+              {item?.returnTime}
+            </Text>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          onPress={handleExpandPress}
+          style={[styles.orderDetailStyle, { width: SH(24) }]}
+        >
+          <Image source={rightIcon} style={styles.rightIconStyle} />
+        </TouchableOpacity>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <ScreenWrapper>
       {!trackingView ? (
         <>
           <View style={styles.container}>
-            <Header
-              {...{ viewAllOrder, setViewAllOrder, setIsBack, openShippingOrders, sellerID }}
-            />
+            <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
 
             <Spacer space={SH(20)} />
 
             {viewAllOrder ? (
               <View style={styles.firstRowStyle}>
-                {getDeliveryData?.getReviewDef?.length > 0 ? (
-                  <>
-                    <View
-                      style={[
-                        styles.orderToReviewView,
-                        { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
-                      ]}
-                    >
-                      <FlatList
-                        renderItem={renderOrderToReview}
-                        showsVerticalScrollIndicator={false}
-                        data={getDeliveryData?.getReviewDef ?? []}
-                        ListHeaderComponent={() => (
-                          <View style={styles.headingRowStyle}>
-                            <Text style={styles.ordersToReviewText}>
-                              {getHeaderText(openShippingOrders)}
-                            </Text>
-                          </View>
-                        )}
-                        refreshControl={
-                          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                        }
-                        contentContainerStyle={styles.contentContainerStyle}
-                      />
-                    </View>
+                <>
+                  {openShippingOrders === '9' ? (
+                    <>
+                      <View
+                        style={[
+                          styles.orderToReviewView,
+                          { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
+                        ]}
+                      >
+                        <FlatList
+                          data={returnOrders}
+                          renderItem={renderReturnOrders}
+                          ListHeaderComponent={() => (
+                            <View style={styles.headingRowStyle}>
+                              <Text style={styles.ordersToReviewText}>
+                                {getHeaderText(openShippingOrders)}
+                              </Text>
+                            </View>
+                          )}
+                        />
+                      </View>
 
-                    <OrderDetail
-                      {...{
-                        userDetail,
-                        orderDetail,
-                        renderOrderProducts,
-                        acceptHandler,
-                        declineHandler,
-                        openShippingOrders,
-                        trackHandler,
-                        isProductDetailLoading,
-                        latitude,
-                        longitude,
-                        location,
-                        sourceCoordinate,
-                        destinationCoordinate,
-                        changeMapState,
-                        mapRef,
-                      }}
-                    />
-                  </>
-                ) : (
-                  <View style={[styles.modalStyle, { justifyContent: 'center' }]}>
-                    <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
-                  </View>
-                )}
+                      <View
+                        style={{ backgroundColor: COLORS.white, flex: 1, marginHorizontal: 20 }}
+                      >
+                        <>
+                          <MapView
+                            customMapStyle={mapCustomStyle}
+                            ref={mapRef}
+                            provider={PROVIDER_GOOGLE}
+                            region={{
+                              latitude: latitude ?? 0.0,
+                              longitude: longitude ?? 0.0,
+                              latitudeDelta: 0.0992,
+                              longitudeDelta: 0.0421,
+                            }}
+                            initialRegion={{
+                              latitude: latitude ?? 0.0,
+                              longitude: longitude ?? 0.0,
+                              latitudeDelta: 0.0992,
+                              longitudeDelta: 0.0421,
+                            }}
+                            style={styles.map}
+                          >
+                            <MapViewDirections
+                              key={location?.latitude ?? 'key'}
+                              origin={{
+                                latitude: latitude ?? 0.0,
+                                longitude: longitude ?? 0.0,
+                              }}
+                              destination={{
+                                latitude: userDetail?.coordinates?.[0] ?? 0.0,
+                                longitude: userDetail?.coordinates?.[1] ?? 0.0,
+                              }}
+                              apikey={GOOGLE_MAP.API_KEYS}
+                              strokeWidth={6}
+                              strokeColor={COLORS.primary}
+                            />
+                            <Marker coordinate={sourceCoordinate}>
+                              <View>
+                                <Image source={scooter} style={styles.mapMarkerStyle} />
+                              </View>
+                            </Marker>
+                            <Marker coordinate={destinationCoordinate}>
+                              <View>
+                                <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
+                              </View>
+                            </Marker>
+                          </MapView>
+                          <TouchableOpacity
+                            // onPress={() => changeMapState(true)}
+                            style={styles.expandButtonStyle}
+                          >
+                            <Image source={expand} style={styles.rightIconStyle} />
+                            <Text style={[styles.acceptTextStyle, { paddingHorizontal: 12 }]}>
+                              {'Expand'}
+                            </Text>
+                          </TouchableOpacity>
+                          <ShipmentTracking
+                            props={{ status: userDetail?.status, orderStatus: openShippingOrders }}
+                          />
+
+                          <TouchableOpacity
+                            onPress={() =>
+                              mapRef.current.animateToRegion(
+                                {
+                                  latitude: latitude ?? 0.0,
+                                  longitude: longitude ?? 0.0,
+                                  latitudeDelta: 0.001,
+                                  longitudeDelta: 0.001,
+                                },
+                                1000
+                              )
+                            }
+                            style={styles.gpsViewStyle}
+                          >
+                            <Image source={gps} style={styles.gpsImageStyle} />
+                          </TouchableOpacity>
+                        </>
+                      </View>
+                    </>
+                  ) : (
+                    <>
+                      <View
+                        style={[
+                          styles.orderToReviewView,
+                          { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
+                        ]}
+                      >
+                        <FlatList
+                          renderItem={renderOrderToReview}
+                          showsVerticalScrollIndicator={false}
+                          data={getDeliveryData?.getReviewDef ?? []}
+                          ListHeaderComponent={() => (
+                            <View style={styles.headingRowStyle}>
+                              <Text style={styles.ordersToReviewText}>
+                                {getHeaderText(openShippingOrders)}
+                              </Text>
+                            </View>
+                          )}
+                          refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                          }
+                          contentContainerStyle={styles.contentContainerStyle}
+                        />
+                      </View>
+
+                      <OrderDetail
+                        {...{
+                          userDetail,
+                          orderDetail,
+                          renderOrderProducts,
+                          acceptHandler,
+                          declineHandler,
+                          openShippingOrders,
+                          trackHandler,
+                          isProductDetailLoading,
+                          latitude,
+                          longitude,
+                          location,
+                          sourceCoordinate,
+                          destinationCoordinate,
+                          changeMapState,
+                          mapRef,
+                        }}
+                      />
+                    </>
+                  )}
+                </>
 
                 <RightSideBar
                   {...{
-                    deliveryDrawer,
                     renderDrawer,
                     viewAllOrder,
                   }}
@@ -787,20 +884,34 @@ export function DeliveryOrders2({ route }) {
                   <Graph />
 
                   <Spacer space={SH(15)} />
-                  <OrderReview
-                    {...{
-                      renderOrderToReview,
-                      emptyComponent,
-                      headerComponent,
-                      getDeliveryData,
-                      isOrderLoading,
-                    }}
-                  />
+                  {openShippingOrders === '9' ? (
+                    <View
+                      style={[
+                        styles.orderToReviewView,
+                        { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
+                      ]}
+                    >
+                      <FlatList
+                        data={returnOrders}
+                        renderItem={renderReturnOrders}
+                        ListHeaderComponent={headerComponent}
+                      />
+                    </View>
+                  ) : (
+                    <OrderReview
+                      {...{
+                        renderOrderToReview,
+                        emptyComponent,
+                        headerComponent,
+                        getDeliveryData,
+                        isOrderLoading,
+                      }}
+                    />
+                  )}
                 </View>
 
                 <RightSideBar
                   {...{
-                    deliveryDrawer,
                     renderDrawer,
                     viewAllOrder,
                   }}
@@ -845,11 +956,8 @@ export function DeliveryOrders2({ route }) {
             />
             <RightSideBar
               {...{
-                deliveryDrawer,
-                openShippingOrders,
-                renderShippingDrawer,
-                setOpenShippingOrders,
                 renderDrawer,
+                viewAllOrder,
               }}
             />
           </View>

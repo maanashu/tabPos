@@ -68,6 +68,7 @@ export function DrawerNavigator(props) {
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         <DrawerItem
           label={''}
+          pressColor={COLORS.transparent}
           activeBackgroundColor={COLORS.transparent}
           focused={active === 'dashBoard' ? true : false}
           onPress={() => {
@@ -82,6 +83,8 @@ export function DrawerNavigator(props) {
 
         <DrawerItem
           label={''}
+          pressColor={COLORS.transparent}
+          pressOpacity={0}
           activeBackgroundColor={COLORS.transparent}
           focused={active === 'posRetail3' ? true : false}
           onPress={() => {

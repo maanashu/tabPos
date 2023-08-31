@@ -1,6 +1,3 @@
-import { NAVIGATION } from '@/constants';
-import { UserController } from '@/controllers/UserController';
-import { navigate } from '@/navigation/NavigationRef';
 import { TYPES } from '@/Types/Types';
 
 export const updateCartLength = (value) => ({
@@ -17,7 +14,6 @@ export const clearLocalCart = () => ({
   payload: [],
 });
 
-
 export const updateServiceCartLength = (value) => ({
   type: TYPES.UPDATE_SERVICE_CART_LENGTH,
   payload: value,
@@ -32,7 +28,6 @@ export const clearServiceLocalCart = () => ({
   payload: [],
 });
 
-
 // export const loginPosUser = (data) => async (dispatch) => {
 //   dispatch(loginPosUserRequest());
 //   try {
@@ -42,4 +37,3 @@ export const clearServiceLocalCart = () => ({
 //     return dispatch(loginPosUserError(error));
 //   }
 // };
-
