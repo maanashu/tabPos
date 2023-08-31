@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Image, Text, Platform } from 'react-native';
+import { View, TouchableOpacity, Image, Text, Platform, Dimensions } from 'react-native';
 
 import { DaySelector, ScreenWrapper, Spacer } from '@/components';
 
@@ -47,10 +47,14 @@ import { getUser } from '@/selectors/UserSelectors';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ms } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CalendarPicker from 'react-native-calendar-picker';
+import CalendarPickerModal from './Components/CalendarPicker';
 
 export function Analytics2() {
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
-  const [flag, setFlag] = useState('profits');
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [filter, setFilter] = useState({ value: 'week' });
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -85,6 +89,23 @@ export function Analytics2() {
       // error reading value
     }
   };
+
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+
+  const onDateChange = (date, type) => {
+    if (type === 'END_DATE') {
+      setSelectedEndDate(date);
+    } else {
+      setSelectedStartDate(date);
+      setSelectedEndDate(null);
+    }
+  };
+
+  const minDate = new Date(2020, 1, 1); // Today
+  const maxDate = new Date(2025, 9, 3);
+  const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+  const endDate = selectedEndDate ? selectedEndDate.toString() : '';
 
   const orderOnPress = (value) => {
     dispatch(getAnalyticStatistics(sellerID, value));
@@ -136,6 +157,10 @@ export function Analytics2() {
   const screenChangeView = () => {
     return renderScreen[selectedScreen];
   };
+  const handleOnPressNext = () => {
+    // Perform actions when "Next" button is pressed
+    console.log('Next button pressed');
+  };
 
   return (
     <ScreenWrapper>
@@ -164,10 +189,13 @@ export function Analytics2() {
                 },
               ]}
             >
-              <View style={styles.headerView}>
+              <TouchableOpacity
+                onPress={() => setShowCalendarModal(!showCalendarModal)}
+                style={styles.headerView}
+              >
                 <Image source={calendar} style={styles.calenderImage} />
                 <Text style={styles.dateText}>{'Oct 23 - Nov 23, 2022'}</Text>
-              </View>
+              </TouchableOpacity>
               <DropDownPicker
                 ArrowDownIconComponent={({ style }) => (
                   <Image source={dropdown} style={styles.dropDownIcon} />
@@ -419,6 +447,27 @@ export function Analytics2() {
             </View>
           </View>
         </View>
+        <Modal
+          isVisible={showCalendarModal}
+          statusBarTranslucent
+          animationIn={'slideInRight'}
+          animationInTiming={600}
+          animationOutTiming={300}
+        >
+          <View
+            style={{
+              backgroundColor: COLORS.white,
+              width: windowWidth * 0.6,
+              height: windowHeight - SW(30),
+              alignSelf: 'center',
+              paddingVertical: SH(10),
+              paddingHorizontal: SW(5),
+              borderRadius: SW(5),
+            }}
+          >
+            <CalendarPickerModal onPress={() => setShowCalendarModal(false)} />
+          </View>
+        </Modal>
         <Modal
           // isVisible={showModal}
           statusBarTranslucent

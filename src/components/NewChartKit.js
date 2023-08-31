@@ -123,6 +123,7 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           withShadow={false}
           fromZero
           bezier
+          xLabelsOffset={ms(-2)}
         />
       ) : (
         <LineChart
@@ -141,7 +142,7 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
               ? Dimensions.get('window').width * 0.26
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? SH(160) : SH(165)}
+          height={Platform.OS === 'android' ? ms(95) : SH(165)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -168,6 +169,7 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
             marginLeft: Platform.OS === 'android' ? ms(-15) : SW(-8),
             paddingVertical: 0,
           }}
+          xLabelsOffset={ms(-2)}
           withShadow={false}
           fromZero
           bezier
