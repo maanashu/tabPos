@@ -132,7 +132,7 @@ const ShipmentTracking = ({ props, orderStatus }) => {
                 <View>
                   <Text style={styles.statusNameText}>{'Store name'}</Text>
                   <Text
-                    style={[styles.statusNameText, { fontSize: ms(7), fontFamily: Fonts.Regular }]}
+                    style={[styles.statusNameText, { fontSize: ms(5), fontFamily: Fonts.Regular }]}
                   >
                     {'1222 Tully Street,Detroit, MI 48227'}
                   </Text>
