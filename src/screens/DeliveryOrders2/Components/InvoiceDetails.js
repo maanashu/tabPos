@@ -16,7 +16,6 @@ import { getReviewDefault } from '@/actions/DeliveryAction';
 import { deliveryHomeIcon, scooter, barcode, crossButton, gps } from '@/assets';
 
 import styles from '../styles';
-import mapCustomStyle from '@/components/MapCustomStyles';
 
 const InvoiceDetails = ({
   setTrackingView,

@@ -159,6 +159,7 @@ const OrderDetail = ({
               </View>
             </View>
           </View>
+
           <View style={{ height: SH(400) }}>
             <FlatList
               scrollEnabled
@@ -168,6 +169,7 @@ const OrderDetail = ({
               contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}
             />
           </View>
+
           <View style={styles.orderandPriceView}>
             <View style={{ paddingLeft: 15, flex: 1 }}>
               <View>
@@ -264,6 +266,7 @@ const OrderDetail = ({
                   </Text>
                 </View>
               </View>
+
               <View
                 style={{
                   borderWidth: 1,
@@ -272,6 +275,7 @@ const OrderDetail = ({
                   marginTop: ms(5),
                 }}
               />
+
               <View style={styles.orderDetailsView}>
                 <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
                 <View style={styles.flexDirectionRow}>

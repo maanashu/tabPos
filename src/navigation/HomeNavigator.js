@@ -1,5 +1,4 @@
 import React from 'react';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { NAVIGATION } from '@/constants';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { COLORS, SW } from '@/theme';
@@ -21,7 +20,6 @@ import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
 import NotificationsList from '@/screens/Notifications/NotificationsList';
 
-const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export function HomeNavigator() {

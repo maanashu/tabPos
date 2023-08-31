@@ -1,11 +1,4 @@
-import {
-  USER_URL,
-  PRODUCT_URL,
-  ApiProductInventory,
-  ApiUserInventory,
-  ORDER_URL,
-  ApiOrderInventory,
-} from '@/utils/APIinventory';
+import { USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { HttpClient } from './HttpClient';
 import Toast from 'react-native-toast-message';
 import { strings } from '@/localization';

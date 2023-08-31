@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, TouchableOpacity, View, Image, ActivityIndicator } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
-import { rightlight } from '@/assets';
 import { NewChartKit, Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 

@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  TextInput,
-} from 'react-native';
-import { COLORS, SF, SH, ShadowStyles, SW, TextStyles } from '@/theme';
-import { moderateScale } from 'react-native-size-matters';
-import { card, dropdown2, Fonts, jbr_icon, money } from '@/assets';
-import { Spacer } from './Spacer';
+import { StyleSheet, Image } from 'react-native';
+import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
+import { dropdown2, Fonts } from '@/assets';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export function TableDropdown({ placeholder }) {
@@ -22,17 +13,12 @@ export function TableDropdown({ placeholder }) {
   ]);
   return (
     <DropDownPicker
-      ArrowUpIconComponent={({ style }) => (
-        <Image source={dropdown2} style={styles.dropDownIcon} />
-      )}
+      ArrowUpIconComponent={({ style }) => <Image source={dropdown2} style={styles.dropDownIcon} />}
       ArrowDownIconComponent={({ style }) => (
         <Image source={dropdown2} style={styles.dropDownIcon} />
       )}
       style={styles.dropdown}
-      containerStyle={[
-        styles.containerStyle,
-        { zIndex: Platform.OS === 'ios' ? 20 : 2 },
-      ]}
+      containerStyle={[styles.containerStyle, { zIndex: Platform.OS === 'ios' ? 20 : 2 }]}
       dropDownContainerStyle={styles.dropDownContainerStyle}
       listItemLabelStyle={styles.listItemLabelStyle}
       labelStyle={styles.labelStyle}

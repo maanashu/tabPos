@@ -1,11 +1,11 @@
 import { COLORS } from '@/theme';
-import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { TouchableOpacity, View, Image, Text, Keyboard } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import Modal from 'react-native-modal';
 import { ms } from 'react-native-size-matters';
 import { styles } from '../Calender.styles';
-import { Fonts, crossButton, keyboard } from '@/assets';
+import { Fonts, crossButton } from '@/assets';
 
 export const ChatRoom = ({ isVisible, setIsVisible }) => {
   const [messages, setMessages] = useState([]);

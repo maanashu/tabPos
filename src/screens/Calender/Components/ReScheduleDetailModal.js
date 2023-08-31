@@ -5,7 +5,7 @@ import { ms } from 'react-native-size-matters';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
-import { crossButton, Fonts, userImage } from '@/assets';
+import { crossButton, Fonts } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
 
 import { getTimeSlots } from '@/actions/RetailAction';

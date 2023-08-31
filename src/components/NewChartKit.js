@@ -1,5 +1,4 @@
-import { Fonts } from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import React from 'react';
 import { StyleSheet, View, Dimensions, Platform } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';

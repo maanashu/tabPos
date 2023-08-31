@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
 import { Fonts } from '@/assets';
-import { moderateScale, verticalScale, scale } from 'react-native-size-matters';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -695,8 +695,7 @@ export const styles = StyleSheet.create({
   subtotalHr: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    marginVertical:
-      Platform.OS === 'android' ? moderateScale(4) : moderateScale(5),
+    marginVertical: Platform.OS === 'android' ? moderateScale(4) : moderateScale(5),
   },
   textInputStyle: {
     borderWidth: 1,

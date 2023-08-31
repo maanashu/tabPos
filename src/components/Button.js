@@ -1,14 +1,9 @@
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { COLORS, ShadowStyles, TextStyles } from '@/theme';
-import { moderateScale, scale } from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 export function Button({ style, textStyle, title, pending, disable, ...rest }) {
@@ -16,34 +11,20 @@ export function Button({ style, textStyle, title, pending, disable, ...rest }) {
 
   return pending ? (
     <TouchableOpacity
-      style={[
-        styles.button,
-        { borderColor: colors.border },
-        style,
-        ShadowStyles,
-      ]}
+      style={[styles.button, { borderColor: colors.border }, style, ShadowStyles]}
       {...rest}
     >
       <Spinner visible={true} color={COLORS.primary} size="large" />
-      <Text style={[{ color: COLORS.darkGray }, TextStyles.label, textStyle]}>
-        {title}
-      </Text>
+      <Text style={[{ color: COLORS.darkGray }, TextStyles.label, textStyle]}>{title}</Text>
     </TouchableOpacity>
   ) : (
     <TouchableOpacity
       activeOpacity={0.5}
       underlayColor="#0E86D4"
-      style={[
-        styles.button,
-        { borderColor: colors.border },
-        style,
-        ShadowStyles,
-      ]}
+      style={[styles.button, { borderColor: colors.border }, style, ShadowStyles]}
       {...rest}
     >
-      <Text style={[{ color: COLORS.darkGray }, TextStyles.label, textStyle]}>
-        {title}
-      </Text>
+      <Text style={[{ color: COLORS.darkGray }, TextStyles.label, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 }

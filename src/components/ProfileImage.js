@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { Image } from 'react-native';
 import React from 'react';
 import { userImage } from '@/assets';
 

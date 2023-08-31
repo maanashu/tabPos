@@ -1,7 +1,6 @@
-import { Fonts } from '@/assets';
-import { COLORS, SH, SW } from '@/theme';
+import { COLORS, SW } from '@/theme';
 import React from 'react';
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 
 const transformData = (data, spacing, interval, dateInterval) => {
