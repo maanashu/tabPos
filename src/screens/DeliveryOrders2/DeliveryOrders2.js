@@ -9,6 +9,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
@@ -617,7 +618,16 @@ export function DeliveryOrders2({ route }) {
         onPress={handlePress}
         style={[
           viewAllOrder
-            ? [styles.showAllOrdersView, { width: Dimensions.get('window').width / ms(1.15) }]
+            ? [
+                styles.showAllOrdersView,
+                {
+                  alignItems: 'center',
+                  width:
+                    Platform.OS === 'ios'
+                      ? Dimensions.get('window').width / ms(1)
+                      : Dimensions.get('window').width / ms(1.15),
+                },
+              ]
             : styles.orderRowStyle,
           {
             backgroundColor: isSelected ? COLORS.textInputBackground : COLORS.transparent,
@@ -634,7 +644,9 @@ export function DeliveryOrders2({ route }) {
           {item?.id}
         </Text>
         <View style={[styles.orderDetailStyle, { left: 10 }]}>
-          <Text style={styles.nameTextStyle}>{item?.name}</Text>
+          <Text numberOfLines={1} style={styles.nameTextStyle}>
+            {item?.name}
+          </Text>
           <View style={styles.locationViewStyle}>
             <Image source={pin} style={styles.pinImageStyle} />
             <Text style={styles.distanceTextStyle}>{item?.miles}</Text>
@@ -650,7 +662,9 @@ export function DeliveryOrders2({ route }) {
         </View>
 
         <Image source={item?.userProfile} style={styles.userImageStyle} />
-        <View style={[styles.orderDetailStyle, { width: SW(38) }]}>
+        <View
+          style={[styles.orderDetailStyle, { width: Platform.OS === 'android' ? SW(38) : SW(25) }]}
+        >
           <Text
             style={[styles.timeTextStyle, { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey }]}
           >
@@ -662,7 +676,9 @@ export function DeliveryOrders2({ route }) {
           </View>
         </View>
 
-        <View style={[styles.orderDetailStyle, { width: SW(38) }]}>
+        <View
+          style={[styles.orderDetailStyle, { width: Platform.OS === 'android' ? SW(38) : SW(25) }]}
+        >
           <Text
             style={[styles.timeTextStyle, { fontFamily: Fonts.Regular, color: COLORS.solid_grey }]}
           >

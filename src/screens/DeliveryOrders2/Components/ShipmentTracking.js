@@ -166,7 +166,15 @@ const ShipmentTracking = ({ props, orderStatus }) => {
   return (
     <>
       {props?.orderStatus === '9' ? (
-        <View style={styles.mainContainer}>
+        <View
+          style={[
+            styles.mainContainer,
+            {
+              bottom: Platform.OS === 'android' ? ms(50) : ms(50),
+              right: Platform.OS === 'android' ? ms(10) : ms(3),
+            },
+          ]}
+        >
           <>
             <View style={styles.headerMainView}>
               <View>

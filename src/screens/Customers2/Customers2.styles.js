@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
     fontSize: ms(10),
   },
   custometrCon: {
-    width: ms(175),
+    width: Platform.OS === 'android' ? ms(175) : ms(145),
     height: SH(94),
     borderRadius: 10,
     backgroundColor: COLORS.white,
@@ -310,7 +310,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(14),
     letterSpacing: -1,
-    width: windowWidth * 0.09,
+    width: windowWidth * 0.15,
   },
   tableHeaderRight: {
     flexDirection: 'row',
