@@ -13,10 +13,10 @@ export class CustomersController {
         ApiOrderInventory.getUserOrder +
         `?seller_id=${sellerID}&type=${convertedString}&page=${1}&limit=${selectedValue}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           error?.msg &&
             Toast.show({
               text2: error.msg,
@@ -33,14 +33,12 @@ export class CustomersController {
   static async getOrderUser(status, sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getOrderUser +
-        `?seller_id=${sellerID}&user_uid=${status}`;
+        ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&user_uid=${status}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -48,20 +46,19 @@ export class CustomersController {
 
   static async getCustomers(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        ORDER_URL + ApiOrderInventory.getCustomers + `?seller_id=${sellerID}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.getCustomers + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
-        .then(response => {
+        .then((response) => {
           resolve(response);
         })
-        .catch(error => {
+        .catch((error) => {
           Toast.show({
             text2: error.msg,
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,
           });
-          reject(new Error((strings.valiadtion.error = error.msg)));
+          reject(error);
         });
     });
   }

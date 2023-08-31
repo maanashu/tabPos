@@ -100,7 +100,9 @@ export { default as orderCigrate } from '@/assets/icons/ic_wallet/orderCigrate.p
 export { default as tableArrow } from '@/assets/icons/ic_wallet/tableArrow.png';
 export { default as invoice } from '@/assets/icons/ic_customers/invoice.png';
 export { default as newCustomer } from '@/assets/icons/ic_customers/newCustomer.png';
+export { default as walkinCustomer } from '@/assets/icons/ic_customers/walkinCustomer.png';
 export { default as returnCustomer } from '@/assets/icons/ic_customers/returnCustomer.png';
+export { default as onlinecustomer } from '@/assets/icons/ic_customers/onlinecustomer.png';
 export { default as onlineCutomer } from '@/assets/icons/ic_customers/onlineCutomer.png';
 export { default as customersGraph } from '@/assets/icons/ic_customers/customersGraph.png';
 export { default as iImage } from '@/assets/icons/ic_customers/iImage.png';

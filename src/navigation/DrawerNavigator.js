@@ -224,6 +224,20 @@ export function DrawerNavigator(props) {
             <Image source={focused ? blueusers : users} style={styles.iconStyle} />
           )}
         />
+
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'customers2' ? true : false}
+          onPress={() => {
+            setActive('customers2');
+            navigate(NAVIGATION.customers2);
+            dispatch(addSellingSelection());
+          }}
+          icon={({ focused }) => (
+            <Image source={focused ? blueusers : users} style={styles.iconStyle} />
+          )}
+        />
         {getUserData?.posLoginData?.user_roles.length === 0 && (
           <DrawerItem
             label={''}
