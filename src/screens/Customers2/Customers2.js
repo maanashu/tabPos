@@ -1,71 +1,30 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-  ScrollView,
-  Platform,
-} from 'react-native';
-import { COLORS, SH, SW, SF } from '@/theme';
+import { View, Text, TextInput, Image, FlatList, TouchableOpacity } from 'react-native';
+import { COLORS } from '@/theme';
 import { styles } from '@/screens/Customers2/Customers2.styles';
-import { getCustomerDummy, newCustomerData, newCustomerDataLoader } from '@/constants/flatListData';
+import { getCustomerDummy } from '@/constants/flatListData';
 import { strings } from '@/localization';
 import {
   bell,
-  notifications,
   search_light,
-  leftBack,
-  location,
-  crossButton,
-  ticket,
-  box,
-  dropRight,
   users,
-  Fonts,
-  willis,
-  deliverCheck,
-  track,
-  angela2,
-  contact,
-  userImage,
   newCustomer,
   returnCustomer,
   onlineCutomer,
-  blueLocation,
-  shop_light,
-  greyRadioArr,
-  radioArrBlue,
-  cusBarClr,
-  customersGraph,
-  storeTracker,
-  locationTracker,
   walkinCustomer,
 } from '@/assets';
-import { BarChartCom, DaySelector, ScreenWrapper, Spacer } from '@/components';
-import { moderateScale, ms, verticalScale } from 'react-native-size-matters';
-import { UserProfile, UserDetails, Users } from '@/screens/Customers/Components';
-import { Table } from 'react-native-table-component';
+import { ScreenWrapper } from '@/components';
+import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
-import { getCustomer, getOrderUser, getUserOrder } from '@/actions/CustomersAction';
+import { getCustomer, getOrderUser } from '@/actions/CustomersAction';
 import { getCustomers } from '@/selectors/CustomersSelector';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/CustomersTypes';
-import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import moment from 'moment';
-import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { DELIVERY_MODE } from '@/constants/enums';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
 import Graph from './Components/Graph';
 import AllUsers from './Components/AllUsers';
+import UserProfile from './Components/UserProfile';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -85,6 +44,8 @@ export function Customers2() {
   }, 0);
 
   const [allUsers, setAllUsers] = useState(false);
+  const [userProfile, setUserProfile] = useState(false);
+  const [userData, setUserData] = useState();
 
   useEffect(() => {
     if (isFocused) {
@@ -120,8 +81,28 @@ export function Customers2() {
   ];
 
   const bodyView = () => {
-    if (allUsers) {
-      return <AllUsers backHandler={() => setAllUsers(false)} />;
+    if (userProfile) {
+      return (
+        <UserProfile
+          backHandler={() => {
+            setUserProfile(false);
+            setAllUsers(true);
+          }}
+          userDetail={userData}
+        />
+      );
+    } else if (allUsers) {
+      return (
+        <AllUsers
+          backHandler={() => setAllUsers(false)}
+          profileClickHandler={(item) => {
+            setAllUsers(false);
+            setUserProfile(true);
+            setUserData(item);
+            dispatch(getOrderUser(item?.user_id, sellerID));
+          }}
+        />
+      );
     } else {
       return (
         <View>
@@ -192,7 +173,9 @@ export function Customers2() {
   };
   return (
     <ScreenWrapper>
-      <View style={allUsers ? styles.containerWhite : styles.container}>{bodyView()}</View>
+      <View style={allUsers || userProfile ? styles.containerWhite : styles.container}>
+        {bodyView()}
+      </View>
     </ScreenWrapper>
   );
 }

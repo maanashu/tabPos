@@ -31,6 +31,10 @@ export const styles = StyleSheet.create({
     paddingVertical: SH(18),
     flexDirection: 'row',
   },
+  headerMianViewbottomRow: {
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
   deliveryView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -151,10 +155,16 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginRight: ms(3),
   },
+  backIconProfile: {
+    height: ms(15),
+    width: ms(15),
+    resizeMode: 'contain',
+    marginRight: ms(3),
+  },
   horizontalCustomerCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 3,
-    width: ms(110),
+    width: ms(100),
     height: ms(20),
     justifyContent: 'center',
     alignItems: 'center',
@@ -163,7 +173,7 @@ export const styles = StyleSheet.create({
   horizCustomerText: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: ms(7),
+    fontSize: ms(6),
   },
   orderTypeCon: {
     height: SH(55),
@@ -296,7 +306,8 @@ export const styles = StyleSheet.create({
   },
   tableHeaderLeft: {
     flexDirection: 'row',
-    width: windowWidth * 0.4,
+    width: windowWidth * 0.35,
+    alignItems: 'center',
   },
   tableTextHeaFirst: {
     color: COLORS.dark_grey,
@@ -315,6 +326,172 @@ export const styles = StyleSheet.create({
   tableHeaderRight: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth * 0.47,
+    width: windowWidth * 0.5,
+  },
+  tableHeaderRightInner: {
+    width: windowWidth * 0.17,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tableTextHeader: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(14),
+  },
+  tableDataCon: {
+    height: SH(55),
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(20),
+  },
+  tableTextDataFirst: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    letterSpacing: -1,
+    width: windowWidth * 0.02,
+  },
+  lovingStyleData: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+    borderRadius: 50,
+  },
+  tableTextDataName: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    width: windowWidth * 0.2,
+  },
+  tableTextDataAdd: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    width: windowWidth * 0.3,
+  },
+  tableTextData: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+  },
+  editButtonCon: {
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    borderRadius: 7,
+  },
+  editButtonText: {
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(12),
+    paddingHorizontal: moderateScale(7),
+    paddingVertical: verticalScale(2),
+  },
+
+  // userprofile module css start
+
+  profileCon: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 15,
+    height: SH(130),
+    justifyContent: 'center',
+    marginHorizontal: ms(10),
+    marginTop: ms(7),
+  },
+  lovingStyle: {
+    width: SW(25),
+    height: SW(25),
+    resizeMode: 'contain',
+    borderRadius: 50,
+  },
+  angelaText: {
+    fontFamily: Fonts.MaisonRegular,
+    fontSize: SF(24),
+    color: COLORS.dark_grey,
+  },
+  Phonelight: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+  },
+  adressText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    color: COLORS.solid_grey,
+    paddingHorizontal: moderateScale(5),
+    width: windowWidth * 0.4,
+  },
+  pointCon: {
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    borderRadius: 7,
+    height: SH(48),
+    width: SW(70),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rewardStyle: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+  },
+  pointText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(13),
+    color: COLORS.primary,
+    paddingHorizontal: moderateScale(3),
+  },
+  acceptCon: {
+    borderColor: COLORS.solidGrey,
+  },
+  toggleBtnStyle: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+  },
+  toggleBtnCon: {
+    width: SW(11),
+    height: SW(8),
+  },
+  toggleBtnStyle2: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+    tintColor: COLORS.gerySkies,
+    transform: [{ rotate: '180deg' }],
+  },
+  acceptMarketText: {
+    fontFamily: Fonts.Regular,
+    fontSize: SF(13),
+    color: COLORS.dark_grey,
+  },
+  orderTypeCon: {
+    height: SH(55),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(8),
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
+  profileheaderUnderView: {
+    flexDirection: 'row',
+  },
+  profileheaderChildView: {
+    width: ms(105),
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: ms(3),
+  },
+  userNotFound: {
+    color: COLORS.primary,
+    fontFamily: Fonts.MaisonRegular,
+    fontSize: SF(20),
+    alignSelf: 'center',
+  },
+  saleTypeButtonCon: {
+    paddingHorizontal: ms(5),
+    paddingVertical: ms(1),
+    borderRadius: 3,
   },
 });

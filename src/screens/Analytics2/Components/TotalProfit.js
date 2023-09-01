@@ -95,7 +95,6 @@ export function TotalProfit({ onPress }) {
       <Text style={styles.text2}>{count}</Text>
     </View>
   );
-  console.log('first', JSON.stringify(analyticStatistics));
   return (
     <View style={styles.flex1}>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>

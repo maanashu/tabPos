@@ -56,7 +56,6 @@ export function TotalInventory({ onPress }) {
 
   const dataLabelsInventory = totalInventory?.graph_data?.labels;
   const labelsInvetory = generateLabels(dataLabelsInventory, interval, maxLabel, daysLength);
-  // console.log('first', JSON.stringify(totalInventory?.productData));
   const getProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart2}>

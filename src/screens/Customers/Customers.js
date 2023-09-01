@@ -81,8 +81,8 @@ export function Customers() {
   }, 0);
   const getAnalyticsData = useSelector(getAnalytics);
   const revenueGraphObject = getAnalyticsData?.getRevenueGraph;
-  const userOrderArray = getCustomerData?.getUserOrder;
-  const orderUserArray = getCustomerData?.getOrderUser;
+  const userOrderArray = getCustomerData?.getUserOrder?.data;
+  const orderUserArray = getCustomerData?.getOrderUser?.data;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [weeklyUser, setWeeklyUser] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
@@ -137,6 +137,7 @@ export function Customers() {
     isLoadingSelector([TYPES.GET_ORDER_USER], state)
   );
   const isCustomerLoading = useSelector((state) => isLoadingSelector([TYPES.GET_CUSTOMERS], state));
+
   const userClickHandler = ({ item, sellerID }) => {
     setWeeklyUser(false);
     setUserProfile(!userProfile);
