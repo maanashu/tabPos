@@ -630,7 +630,7 @@ export function DeliveryOrders2({ route }) {
                   width:
                     Platform.OS === 'ios'
                       ? Dimensions.get('window').width / ms(1)
-                      : Dimensions.get('window').width / ms(1.15),
+                      : Dimensions.get('window').width / ms(1.35),
                 },
               ]
             : styles.orderRowStyle,

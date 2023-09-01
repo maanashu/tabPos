@@ -99,6 +99,8 @@ const styles = StyleSheet.create({
     height: ms(20),
     width: windowWidth * 0.4,
     fontFamily: Fonts.Italic,
+    padding: 0,
+    margin: 0,
   },
   scnStyle: {
     width: SW(16),
