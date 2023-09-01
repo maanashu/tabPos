@@ -82,10 +82,7 @@ export function Revenue({ onPress }) {
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
           <Text>{index + 1 + '.           '}</Text>
-          <Text style={styles.revenueDataText}>
-            {' '}
-            {item?.date ? moment(item?.date).format('LL') : ''}
-          </Text>
+          <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>

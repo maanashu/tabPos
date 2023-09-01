@@ -63,8 +63,9 @@ export function Analytics2() {
   const [channels, setChannels] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
   const [channelItem, setChannelItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
+    { label: 'B2B', value: 'B2B' },
+    { label: 'POS', value: 'POS' },
+    { label: 'B2C', value: 'B2C' },
   ]);
   const [orderSelectId, setOrderSelectId] = useState(2);
   const [backTime, setBackTime] = useState();
@@ -104,7 +105,7 @@ export function Analytics2() {
     console.log('Next button pressed');
   };
   const getSelectedData = () => {
-    if (filter === 'undefined') {
+    if (filter?.value === 'undefined') {
       return {
         start_date: startDated,
         end_date: endDated,
@@ -117,18 +118,15 @@ export function Analytics2() {
   };
   const data = getSelectedData();
 
-  console.log('datafdhasfdh', data);
-  console.log('filter', filter);
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAnalyticStatistics(sellerID, data));
-    dispatch(getAnalyticOrderGraphs(sellerID, filter?.value));
-    dispatch(getTotalOrder(sellerID, filter?.value));
-    dispatch(getTotalInventory(sellerID, filter?.value));
-    dispatch(getSoldProduct(sellerID, filter?.value));
+    dispatch(getAnalyticOrderGraphs(sellerID, data));
+    dispatch(getTotalOrder(sellerID, data));
+    dispatch(getTotalInventory(sellerID, data));
+    dispatch(getSoldProduct(sellerID, data));
     getData();
-  }, [filter, data]);
+  }, [filter]);
 
   const orderOnPress = (value) => {
     dispatch(getAnalyticStatistics(sellerID, value));
@@ -147,6 +145,16 @@ export function Analytics2() {
       setSelectedStartDate(Date);
       setSelectedEndDate(null);
     }
+  };
+  const onSelect = () => {
+    const body = {
+      start_date: startDate,
+      end_date: endDated,
+    };
+    dispatch(getAnalyticStatistics(sellerID, body));
+    setShowCalendarModal(false);
+    setFilter('');
+    setOrderSelectId('');
   };
 
   const goBack = () => {
@@ -217,7 +225,13 @@ export function Analytics2() {
                 ]}
               >
                 <Image source={calendar} style={styles.calenderImage} />
-                <Text style={styles.dateText}>{moment(endDate).format('YYYY-MM-DD')}</Text>
+                <Text style={styles.dateText}>
+                  {startDate
+                    ? moment(startDate).format('YYYY-MM-DD') +
+                      ' - ' +
+                      moment(endDate).format('YYYY-MM-DD')
+                    : 'Date Select'}
+                </Text>
               </TouchableOpacity>
               <DropDownPicker
                 ArrowDownIconComponent={({ style }) => (
@@ -492,12 +506,7 @@ export function Analytics2() {
               onPress={() => setShowCalendarModal(false)}
               onDateChange={onDateChange}
               handleOnPressNext={handleOnPressNext}
-              onSelectedDate={() => {
-                onDateChange, setShowCalendarModal(false);
-                setFilter('');
-                setOrderSelectId('');
-                console.log('first', startDate);
-              }}
+              onSelectedDate={onSelect}
             />
           </View>
         </Modal>

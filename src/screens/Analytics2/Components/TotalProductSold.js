@@ -85,8 +85,7 @@ export function TotalProductSold({ onPress }) {
   const getSoldProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart2}>
-        <Text style={styles.revenueDataText}>{index + 1 + '.  '}</Text>
-
+        <Text>{index + 1 + '.           '}</Text>
         <Text style={styles.revenueDataText}>{item?.product_name}</Text>
       </DataTable.Cell>
 
@@ -102,7 +101,7 @@ export function TotalProductSold({ onPress }) {
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
+        <Text style={styles.revenueDataText}>{moment(item?.created_at).format('YYYY-MM-DD')}</Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
@@ -113,6 +112,7 @@ export function TotalProductSold({ onPress }) {
       <Text style={styles.text2}>{count}</Text>
     </View>
   );
+  console.log('first', soldProduct);
   return (
     <View style={styles.flex1}>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
@@ -124,12 +124,36 @@ export function TotalProductSold({ onPress }) {
         <HeaderView
           image={locationSales}
           text={'Unit Sold'}
-          count={'17'}
+          count={
+            soldProduct?.productOverview?.totalProducts
+              ? soldProduct?.productOverview?.totalProducts
+              : 0
+          }
           style={{ marginHorizontal: ms(5) }}
         />
-        <HeaderView image={revenueTotal} text={'Total Volume'} count={'$1700'} />
-        <HeaderView image={margin} text={'Profit Margin'} count={'$17'} />
-        <HeaderView image={profit} text={'Gross Profit'} count={'$17'} />
+        <HeaderView
+          image={revenueTotal}
+          text={'Total Volume'}
+          count={
+            soldProduct?.productOverview?.totalVolume
+              ? soldProduct?.productOverview?.totalVolume
+              : 0
+          }
+        />
+        <HeaderView
+          image={margin}
+          text={'Profit Margin'}
+          count={soldProduct?.productOverview?.margin ? soldProduct?.productOverview?.margin : 0}
+        />
+        <HeaderView
+          image={profit}
+          text={'Gross Profit'}
+          count={
+            soldProduct?.productOverview?.totalProfit
+              ? soldProduct?.productOverview?.totalProfit
+              : 0
+          }
+        />
       </View>
       {/* 
       <View style={styles.graphHeaderView}>

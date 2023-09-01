@@ -47,7 +47,7 @@ export function TotalOrders({ onPress }) {
   //   ...totalOrder?.posOrdersData,
   //   ...totalOrder?.shippingOrdersData,
   // ];
-  // console.log('first', totalOrder?.ordersOverView);
+  // console.log('first', JSON.stringify(totalOrder));
   // return false;
 
   const getTotalOrderList = ({ item, index }) => (
@@ -55,7 +55,7 @@ export function TotalOrders({ onPress }) {
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
           <Text>{index + 1 + '.           '}</Text>
-          <Text style={styles.revenueDataText}>{moment(item?.date).format('LL')}</Text>
+          <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -65,7 +65,7 @@ export function TotalOrders({ onPress }) {
         <Text style={styles.revenueDataText}>${item?.new_consumer}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.consumer_returning}</Text>
+        <Text style={styles.revenueDataText}>{item?.consumer_returning?.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.amount.toFixed(2)}</Text>
