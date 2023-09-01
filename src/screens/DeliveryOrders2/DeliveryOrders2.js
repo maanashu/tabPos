@@ -1,20 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import {
   View,
   Text,
   Image,
+  Platform,
   FlatList,
   Dimensions,
   RefreshControl,
   TouchableOpacity,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
+import MapViewDirections from 'react-native-maps-directions';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import {
   pay,
@@ -28,7 +30,6 @@ import {
   Fonts,
   backArrow2,
   scooter,
-  userImage,
   deliveryHomeIcon,
   expand,
   gps,
@@ -45,8 +46,9 @@ import {
 } from '@/actions/DeliveryAction';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import Header from './Components/Header';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
 import OrderDetail from './Components/OrderDetail';
 import OrderReview from './Components/OrderReview';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
@@ -54,23 +56,23 @@ import { ScreenWrapper, Spacer } from '@/components';
 import RightSideBar from './Components/RightSideBar';
 import { getAuthData } from '@/selectors/AuthSelector';
 import CurrentStatus from './Components/CurrentStatus';
+import { returnOrders } from '@/constants/flatListData';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import InvoiceDetails from './Components/InvoiceDetails';
+import mapCustomStyle from '@/components/MapCustomStyles';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import OrderConvertion from './Components/OrderConvertion';
 import { orderStatusCount } from '@/actions/ShippingAction';
+import ShipmentTracking from './Components/ShipmentTracking';
 import TodayOrderStatus from './Components/TodayOrderStatus';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES as ANALYTICSTYPES } from '@/Types/AnalyticsTypes';
+import ReturnConfirmation from './Components/ReturnConfirmation';
 
 import styles from './styles';
-import { returnOrders } from '@/constants/flatListData';
-import mapCustomStyle from '@/components/MapCustomStyles';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { GOOGLE_MAP } from '@/constants/ApiKey';
-import ShipmentTracking from './Components/ShipmentTracking';
-import MapViewDirections from 'react-native-maps-directions';
+import RecheckConfirmation from './Components/RecheckConfirmation';
+import ReturnedOrderDetail from './Components/ReturnedOrderDetail';
 
 export function DeliveryOrders2({ route }) {
   const mapRef = useRef(null);
@@ -135,6 +137,9 @@ export function DeliveryOrders2({ route }) {
   const [trackingView, setTrackingView] = useState(false);
   const [viewAllOrder, setViewAllOrder] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
+  const [changeViewToRecheck, setChangeViewToRecheck] = useState();
+  const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
   // const [isEnableDriverList, setIsEnableDriverList] = useState(false);
 
   useEffect(() => {
@@ -705,6 +710,11 @@ export function DeliveryOrders2({ route }) {
     );
   };
 
+  const recheckHandler = useCallback(() => {
+    setChangeViewToRecheck(true);
+    setIsReturnModalVisible(false);
+  }, []);
+
   return (
     <ScreenWrapper>
       {!trackingView ? (
@@ -739,82 +749,97 @@ export function DeliveryOrders2({ route }) {
                       </View>
 
                       <View
-                        style={{ backgroundColor: COLORS.white, flex: 1, marginHorizontal: 20 }}
+                        style={{
+                          borderRadius: 10,
+                          backgroundColor: COLORS.white,
+                          flex: 1,
+                          marginHorizontal: 20,
+                        }}
                       >
-                        <>
-                          <MapView
-                            customMapStyle={mapCustomStyle}
-                            ref={mapRef}
-                            provider={PROVIDER_GOOGLE}
-                            region={{
-                              latitude: latitude ?? 0.0,
-                              longitude: longitude ?? 0.0,
-                              latitudeDelta: 0.0992,
-                              longitudeDelta: 0.0421,
-                            }}
-                            initialRegion={{
-                              latitude: latitude ?? 0.0,
-                              longitude: longitude ?? 0.0,
-                              latitudeDelta: 0.0992,
-                              longitudeDelta: 0.0421,
-                            }}
-                            style={styles.map}
-                          >
-                            <MapViewDirections
-                              key={location?.latitude ?? 'key'}
-                              origin={{
+                        {changeViewToRecheck ? (
+                          <View>
+                            <ReturnedOrderDetail
+                              doneHandler={() => setIsCheckConfirmationModalVisible(true)}
+                            />
+                          </View>
+                        ) : (
+                          <>
+                            <MapView
+                              customMapStyle={mapCustomStyle}
+                              ref={mapRef}
+                              provider={PROVIDER_GOOGLE}
+                              region={{
                                 latitude: latitude ?? 0.0,
                                 longitude: longitude ?? 0.0,
+                                latitudeDelta: 0.0992,
+                                longitudeDelta: 0.0421,
                               }}
-                              destination={{
-                                latitude: userDetail?.coordinates?.[0] ?? 0.0,
-                                longitude: userDetail?.coordinates?.[1] ?? 0.0,
+                              initialRegion={{
+                                latitude: latitude ?? 0.0,
+                                longitude: longitude ?? 0.0,
+                                latitudeDelta: 0.0992,
+                                longitudeDelta: 0.0421,
                               }}
-                              apikey={GOOGLE_MAP.API_KEYS}
-                              strokeWidth={6}
-                              strokeColor={COLORS.primary}
-                            />
-                            <Marker coordinate={sourceCoordinate}>
-                              <View>
-                                <Image source={scooter} style={styles.mapMarkerStyle} />
-                              </View>
-                            </Marker>
-                            <Marker coordinate={destinationCoordinate}>
-                              <View>
-                                <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
-                              </View>
-                            </Marker>
-                          </MapView>
-                          <TouchableOpacity
-                            // onPress={() => changeMapState(true)}
-                            style={styles.expandButtonStyle}
-                          >
-                            <Image source={expand} style={styles.rightIconStyle} />
-                            <Text style={[styles.acceptTextStyle, { paddingHorizontal: 12 }]}>
-                              {'Expand'}
-                            </Text>
-                          </TouchableOpacity>
-                          <ShipmentTracking
-                            props={{ status: userDetail?.status, orderStatus: openShippingOrders }}
-                          />
-
-                          <TouchableOpacity
-                            onPress={() =>
-                              mapRef.current.animateToRegion(
-                                {
+                              style={styles.map}
+                            >
+                              <MapViewDirections
+                                key={location?.latitude ?? 'key'}
+                                origin={{
                                   latitude: latitude ?? 0.0,
                                   longitude: longitude ?? 0.0,
-                                  latitudeDelta: 0.001,
-                                  longitudeDelta: 0.001,
-                                },
-                                1000
-                              )
-                            }
-                            style={styles.gpsViewStyle}
-                          >
-                            <Image source={gps} style={styles.gpsImageStyle} />
-                          </TouchableOpacity>
-                        </>
+                                }}
+                                destination={{
+                                  latitude: userDetail?.coordinates?.[0] ?? 0.0,
+                                  longitude: userDetail?.coordinates?.[1] ?? 0.0,
+                                }}
+                                apikey={GOOGLE_MAP.API_KEYS}
+                                strokeWidth={6}
+                                strokeColor={COLORS.primary}
+                              />
+                              <Marker coordinate={sourceCoordinate}>
+                                <View>
+                                  <Image source={scooter} style={styles.mapMarkerStyle} />
+                                </View>
+                              </Marker>
+                              <Marker coordinate={destinationCoordinate}>
+                                <View>
+                                  <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
+                                </View>
+                              </Marker>
+                            </MapView>
+                            <TouchableOpacity
+                              // onPress={() => changeMapState(true)}
+                              style={styles.expandButtonStyle}
+                            >
+                              <Image source={expand} style={styles.rightIconStyle} />
+                              <Text style={[styles.acceptTextStyle, { paddingHorizontal: 12 }]}>
+                                {'Expand'}
+                              </Text>
+                            </TouchableOpacity>
+                            <ShipmentTracking
+                              status={userDetail?.status}
+                              orderStatus={openShippingOrders}
+                              onPressShop={() => setIsReturnModalVisible(true)}
+                            />
+
+                            <TouchableOpacity
+                              onPress={() =>
+                                mapRef.current.animateToRegion(
+                                  {
+                                    latitude: latitude ?? 0.0,
+                                    longitude: longitude ?? 0.0,
+                                    latitudeDelta: 0.001,
+                                    longitudeDelta: 0.001,
+                                  },
+                                  1000
+                                )
+                              }
+                              style={styles.gpsViewStyle}
+                            >
+                              <Image source={gps} style={styles.gpsImageStyle} />
+                            </TouchableOpacity>
+                          </>
+                        )}
                       </View>
                     </>
                   ) : (
@@ -979,6 +1004,18 @@ export function DeliveryOrders2({ route }) {
           </View>
         </View>
       )}
+
+      <ReturnConfirmation
+        isVisible={isReturnModalVisible}
+        setIsVisible={setIsReturnModalVisible}
+        onPressRecheck={recheckHandler}
+      />
+
+      <RecheckConfirmation
+        isVisible={isCheckConfirmationModalVisible}
+        setIsVisible={setIsCheckConfirmationModalVisible}
+        onPress={() => setIsCheckConfirmationModalVisible(false)}
+      />
     </ScreenWrapper>
   );
 }

@@ -347,6 +347,7 @@ export { default as productReturn } from '@/assets/icons/ic_dashboard/productRet
 export { default as Calculator } from '@/assets/images/Calculator.png';
 export { default as CalculatorColor } from '@/assets/images/CalculatorColor.png';
 export { default as storeLogo } from '@/assets/icons/ic_deliveryOrder/storeLogo.png';
+export { default as research } from '@/assets/icons/ic_posRetail/research.png';
 
 /* Fonts */
 export const Fonts = {
