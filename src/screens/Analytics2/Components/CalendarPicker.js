@@ -6,27 +6,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ms } from 'react-native-size-matters';
 
-const CalendarPickerModal = ({ onPress }) => {
-  const [selectedStartDate, setSelectedStartDate] = useState(null);
-  const [selectedEndDate, setSelectedEndDate] = useState(null);
-
-  const onDateChange = (date, type) => {
-    if (type === 'END_DATE') {
-      setSelectedEndDate(date);
-    } else {
-      setSelectedStartDate(date);
-      setSelectedEndDate(null);
-    }
-  };
-
+const CalendarPickerModal = ({ onPress, onDateChange, handleOnPressNext, onSelectedDate }) => {
   const minDate = new Date(2020, 1, 1); // Today
   const maxDate = new Date(2025, 6, 3);
-  const startDate = selectedStartDate ? selectedStartDate.toString() : '';
-  const endDate = selectedEndDate ? selectedEndDate.toString() : '';
-  const handleOnPressNext = () => {
-    // Perform actions when "Next" button is pressed
-    console.log('Next button pressed');
-  };
+
   return (
     <View style={styles.container}>
       <View style={[styles.flexAlign, { alignSelf: 'flex-end', marginTop: ms(5) }]}>
@@ -54,32 +37,33 @@ const CalendarPickerModal = ({ onPress }) => {
         <Button
           onPress={onPress}
           style={{
-            backgroundColor: COLORS.primary,
-            height: ms(30),
-            width: '40%',
-            marginTop: ms(10),
-            color: COLORS.white,
-            marginHorizontal: ms(5),
-            fontFamily: Fonts.Regular,
-          }}
-          title={'Cancel'}
-          textStyle={{ color: COLORS.white, fontSize: ms(11), fontFamily: Fonts.Regular }}
-        />
-        <Button
-          style={{
             backgroundColor: COLORS.textInputBackground,
             height: ms(30),
             width: '40%',
             marginTop: ms(10),
             color: COLORS.black,
+            marginHorizontal: ms(5),
+            fontFamily: Fonts.Regular,
+          }}
+          title={'Cancel'}
+          textStyle={{ color: COLORS.darkGray, fontSize: ms(11), fontFamily: Fonts.Regular }}
+        />
+        <Button
+          style={{
+            backgroundColor: COLORS.primary,
+            height: ms(30),
+            width: '40%',
+            marginTop: ms(10),
+            color: COLORS.white,
             fontFamily: Fonts.Regular,
           }}
           title={'Apply'}
           textStyle={{
-            color: COLORS.darkGray,
+            color: COLORS.white,
             fontSize: ms(11),
             fontFamily: Fonts.Regular,
           }}
+          onPress={onSelectedDate}
         />
       </View>
     </View>

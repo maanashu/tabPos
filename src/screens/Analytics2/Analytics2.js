@@ -49,6 +49,8 @@ import { ms } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CalendarPicker from 'react-native-calendar-picker';
 import CalendarPickerModal from './Components/CalendarPicker';
+import moment from 'moment';
+import { useCallback } from 'react';
 
 export function Analytics2() {
   const windowWidth = Dimensions.get('window').width;
@@ -93,19 +95,40 @@ export function Analytics2() {
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
 
-  const onDateChange = (date, type) => {
-    if (type === 'END_DATE') {
-      setSelectedEndDate(date);
-    } else {
-      setSelectedStartDate(date);
-      setSelectedEndDate(null);
-    }
-  };
-
-  const minDate = new Date(2020, 1, 1); // Today
-  const maxDate = new Date(2025, 9, 3);
   const startDate = selectedStartDate ? selectedStartDate.toString() : '';
   const endDate = selectedEndDate ? selectedEndDate.toString() : '';
+  const startDated = moment(startDate).format('YYYY-MM-DD');
+  const endDated = moment(endDate).format('YYYY-MM-DD');
+  const handleOnPressNext = () => {
+    // Perform actions when "Next" button is pressed
+    console.log('Next button pressed');
+  };
+  const getSelectedData = () => {
+    if (filter === 'undefined') {
+      return {
+        start_date: startDated,
+        end_date: endDated,
+      };
+    } else {
+      return {
+        filter: filter?.value,
+      };
+    }
+  };
+  const data = getSelectedData();
+
+  console.log('datafdhasfdh', data);
+  console.log('filter', filter);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAnalyticStatistics(sellerID, data));
+    dispatch(getAnalyticOrderGraphs(sellerID, filter?.value));
+    dispatch(getTotalOrder(sellerID, filter?.value));
+    dispatch(getTotalInventory(sellerID, filter?.value));
+    dispatch(getSoldProduct(sellerID, filter?.value));
+    getData();
+  }, [filter, data]);
 
   const orderOnPress = (value) => {
     dispatch(getAnalyticStatistics(sellerID, value));
@@ -115,15 +138,16 @@ export function Analytics2() {
     dispatch(getSoldProduct(sellerID, value));
     storeData(value);
   };
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAnalyticStatistics(sellerID, filter?.value));
-    dispatch(getAnalyticOrderGraphs(sellerID, filter?.value));
-    dispatch(getTotalOrder(sellerID, filter?.value));
-    dispatch(getTotalInventory(sellerID, filter?.value));
-    dispatch(getSoldProduct(sellerID, filter?.value));
-    getData();
-  }, [filter]);
+
+  const onDateChange = (date, type) => {
+    const Date = moment(date).format('YYYY-MM-DD');
+    if (type === 'END_DATE') {
+      setSelectedEndDate(Date);
+    } else {
+      setSelectedStartDate(Date);
+      setSelectedEndDate(null);
+    }
+  };
 
   const goBack = () => {
     setselectedScreen('MainScreen');
@@ -157,10 +181,6 @@ export function Analytics2() {
   const screenChangeView = () => {
     return renderScreen[selectedScreen];
   };
-  const handleOnPressNext = () => {
-    // Perform actions when "Next" button is pressed
-    console.log('Next button pressed');
-  };
 
   return (
     <ScreenWrapper>
@@ -191,10 +211,13 @@ export function Analytics2() {
             >
               <TouchableOpacity
                 onPress={() => setShowCalendarModal(!showCalendarModal)}
-                style={styles.headerView}
+                style={[
+                  styles.headerView,
+                  { borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies },
+                ]}
               >
                 <Image source={calendar} style={styles.calenderImage} />
-                <Text style={styles.dateText}>{'Oct 23 - Nov 23, 2022'}</Text>
+                <Text style={styles.dateText}>{moment(endDate).format('YYYY-MM-DD')}</Text>
               </TouchableOpacity>
               <DropDownPicker
                 ArrowDownIconComponent={({ style }) => (
@@ -465,7 +488,17 @@ export function Analytics2() {
               borderRadius: SW(5),
             }}
           >
-            <CalendarPickerModal onPress={() => setShowCalendarModal(false)} />
+            <CalendarPickerModal
+              onPress={() => setShowCalendarModal(false)}
+              onDateChange={onDateChange}
+              handleOnPressNext={handleOnPressNext}
+              onSelectedDate={() => {
+                onDateChange, setShowCalendarModal(false);
+                setFilter('');
+                setOrderSelectId('');
+                console.log('first', startDate);
+              }}
+            />
           </View>
         </Modal>
         <Modal
