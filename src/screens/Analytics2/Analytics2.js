@@ -152,6 +152,10 @@ export function Analytics2() {
       end_date: endDated,
     };
     dispatch(getAnalyticStatistics(sellerID, body));
+    dispatch(getAnalyticOrderGraphs(sellerID, body));
+    dispatch(getTotalOrder(sellerID, body));
+    dispatch(getTotalInventory(sellerID, body));
+    dispatch(getSoldProduct(sellerID, body));
     setShowCalendarModal(false);
     setFilter('');
     setOrderSelectId('');

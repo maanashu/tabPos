@@ -112,7 +112,6 @@ export function TotalProductSold({ onPress }) {
       <Text style={styles.text2}>{count}</Text>
     </View>
   );
-  console.log('first', soldProduct);
   return (
     <View style={styles.flex1}>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
