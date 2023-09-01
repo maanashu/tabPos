@@ -480,10 +480,10 @@ export const getSellerProductDetails = (sellerID) => async (dispatch) => {
   }
 };
 
-export const getAnalyticStatistics = (sellerID, filter) => async (dispatch) => {
+export const getAnalyticStatistics = (sellerID, data) => async (dispatch) => {
   dispatch(getAnalyticStatisticsRequest());
   try {
-    const res = await AnalyticsController.getAnalyticStatistics(sellerID, filter);
+    const res = await AnalyticsController.getAnalyticStatistics(sellerID, data);
     dispatch(getAnalyticStatisticsSuccess(res?.payload));
   } catch (error) {
     dispatch(getAnalyticStatisticsError(error.message));
