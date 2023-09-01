@@ -230,27 +230,39 @@ const UserProfile = ({ backHandler, userDetail }) => {
                 </View>
               </View>
               <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader}>Date</Text>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Date
+                </Text>
               </View>
               <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader}>Store location</Text>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Store location
+                </Text>
               </View>
               <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader}>Responsible</Text>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Responsible
+                </Text>
               </View>
               <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader}>No. of items</Text>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  No. of items
+                </Text>
               </View>
               <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader}>Amount</Text>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Amount
+                </Text>
               </View>
               <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader}>Sales type</Text>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Sales type
+                </Text>
               </View>
             </View>
           </View>
 
-          <View style={{ height: ms(230) }}>
+          <View style={{ height: Platform.OS === 'android' ? ms(230) : ms(265) }}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
               {isOrderUserLoading ? (
                 <View style={{ marginTop: 100 }}>

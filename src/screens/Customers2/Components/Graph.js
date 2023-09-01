@@ -175,7 +175,7 @@ const Graph = () => {
             ],
           }}
           width={Dimensions.get('window').width * 0.86}
-          height={320}
+          height={450}
           chartConfig={{
             decimalPlaces: 0,
             backgroundColor: '#000',

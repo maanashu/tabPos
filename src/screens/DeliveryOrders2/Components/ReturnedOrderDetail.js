@@ -215,9 +215,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width:
       Platform.OS === 'ios'
-        ? Dimensions.get('window').width * 0.38
+        ? Dimensions.get('window').width / 3
         : Dimensions.get('window').width * 0.32,
-    height: Dimensions.get('window').height - 80,
+    height: Dimensions.get('window').height - 120,
   },
   orderDetailViewStyle: {
     alignSelf: 'center',

@@ -629,7 +629,7 @@ export function DeliveryOrders2({ route }) {
                   alignItems: 'center',
                   width:
                     Platform.OS === 'ios'
-                      ? Dimensions.get('window').width / ms(1)
+                      ? Dimensions.get('window').width / ms(1.1)
                       : Dimensions.get('window').width / ms(1.35),
                 },
               ]

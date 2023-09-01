@@ -326,10 +326,10 @@ export const styles = StyleSheet.create({
   tableHeaderRight: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth * 0.5,
+    width: Platform.OS === 'android' ? windowWidth * 0.5 : windowWidth * 0.45,
   },
   tableHeaderRightInner: {
-    width: windowWidth * 0.17,
+    width: Platform.OS === 'android' ? windowWidth * 0.17 : windowWidth * 0.14,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -478,7 +478,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   profileheaderChildView: {
-    width: ms(105),
+    width: Platform.OS === 'android' ? ms(105) : ms(83),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(3),

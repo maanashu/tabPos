@@ -1,5 +1,13 @@
 import React, { memo } from 'react';
-import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
@@ -96,7 +104,7 @@ export default memo(ReturnConfirmation);
 
 const styles = StyleSheet.create({
   modalStyle: {
-    width: width / 3.2,
+    width: Platform.OS === 'android' ? width / 3.2 : width / 3,
     borderRadius: 10,
     alignSelf: 'flex-end',
     backgroundColor: COLORS.white,
@@ -198,9 +206,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: width / 3.8,
+    width: Platform.OS === 'android' ? width / 3.8 : width / 3.3,
     alignSelf: 'center',
     paddingBottom: ms(20),
+    marginHorizontal: 10,
   },
   itemsTextStyle: {
     fontFamily: Fonts.SemiBold,
