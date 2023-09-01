@@ -43,4 +43,5 @@ export const COLORS = {
   pink: '#FB466C',
   violet: '#6B84D3',
   darkBlue: '#102773',
+  blue_shade: '#E5F0FF',
 };

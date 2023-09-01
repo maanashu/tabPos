@@ -250,9 +250,9 @@ export function DetailShipping({
             </TouchableOpacity>
             <Text style={styles.orderNoStyle}>{strings.wallet.orderNo}</Text>
             <View>
-            <Text style={styles.orderIdText}>{orderData.id}</Text>
+              <Text style={styles.orderIdText}>{orderData.id}</Text>
             </View>
-            
+
             {/* <View style={styles.completedButton}>
               <Text style={styles.completedText}>{orderData.id}</Text>
             </View> */}

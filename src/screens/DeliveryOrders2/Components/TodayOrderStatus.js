@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 
 import { useSelector } from 'react-redux';
@@ -32,7 +32,7 @@ const TodayOrderStatus = () => {
       ) : (
         <>
           <View style={styles.todayOrdersViewStyle}>
-            <Text style={styles.todayOrderText}>{strings.analytics.deliveryOrder}</Text>
+            <Text style={styles.todayOrderText}>{strings.deliveryOrders2.deliveryOrders}</Text>
             <Text style={styles.todayOrderText}>{todayOrderStatusData?.[0]?.count ?? '0'}</Text>
           </View>
 
@@ -46,7 +46,7 @@ const TodayOrderStatus = () => {
   );
 };
 
-export default TodayOrderStatus;
+export default memo(TodayOrderStatus);
 
 const styles = StyleSheet.create({
   orderStatusViewStyle: {

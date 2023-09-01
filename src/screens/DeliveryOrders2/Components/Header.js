@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 

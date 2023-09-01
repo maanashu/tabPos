@@ -1,6 +1,4 @@
-import { strings } from '@/localization';
 import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class WalletController {

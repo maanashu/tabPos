@@ -6,7 +6,6 @@ import { COLORS, SF, SH, SW } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
 const result = Dimensions.get('window').height - 50;
-const equalPartSize = result / 3;
 const twoEqualView = result / 2;
 
 const styles = StyleSheet.create({
@@ -43,24 +42,6 @@ const styles = StyleSheet.create({
     lineHeight: ms(8),
     color: COLORS.darkGray,
   },
-  orderConvertionView: {
-    borderRadius: 10,
-    backgroundColor: COLORS.white,
-    paddingBottom: ms(10),
-    height: equalPartSize + 120,
-  },
-  orderTextStyle: {
-    fontFamily: Fonts.MaisonBold,
-    fontSize: SF(18),
-    color: COLORS.solid_grey,
-    paddingLeft: ms(6),
-    paddingTop: ms(10),
-  },
-  piechartViewStyle: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   percentageView: {
     top: 0,
     left: 0,
@@ -69,24 +50,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     justifyContent: 'center',
-  },
-  percentageTextStyle: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
-    color: COLORS.black,
-    textAlign: 'center',
-  },
-  ordersRowView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: SW(80),
-    justifyContent: 'space-between',
-    paddingVertical: 5,
-  },
-  orderTypeTextStyle: {
-    fontFamily: Fonts.Medium,
-    fontSize: SF(14),
-    color: COLORS.dark_grey,
   },
   countTextStyle: {
     fontFamily: Fonts.SemiBold,
@@ -154,13 +117,6 @@ const styles = StyleSheet.create({
     fontSize: SF(9),
     color: COLORS.dark_grey,
     paddingLeft: 5,
-  },
-  rightSideView: {
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
-    width: windowWidth * 0.06,
-    paddingVertical: verticalScale(6),
-    alignItems: 'center',
   },
   shippingOrdersView: {
     backgroundColor: COLORS.white,
@@ -256,13 +212,6 @@ const styles = StyleSheet.create({
     // marginTop: ms(30),
     backgroundColor: COLORS.white,
     height: twoEqualView,
-  },
-  loaderViewStyle: {
-    height: twoEqualView,
-    backgroundColor: COLORS.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 10,
   },
   contentContainerStyle: {
     flexGrow: 1,

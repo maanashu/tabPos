@@ -31,8 +31,6 @@ export function AddCartModal({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
 
-  console.log('openFrom', openFrom);
-
   const cartData = getRetailData?.getAllCart;
   const productDetail = getRetailData?.getOneProduct;
 

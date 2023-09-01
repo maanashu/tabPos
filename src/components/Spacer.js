@@ -1,4 +1,3 @@
-import { COLORS } from '@/theme';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';

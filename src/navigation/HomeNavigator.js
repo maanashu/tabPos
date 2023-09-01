@@ -1,5 +1,4 @@
 import React from 'react';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { NAVIGATION } from '@/constants';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { COLORS, SW } from '@/theme';
@@ -16,12 +15,12 @@ import {
   DeliveryOrders2,
   PosRetail3,
   Refund,
+  Customers2,
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
 import NotificationsList from '@/screens/Notifications/NotificationsList';
 
-const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export function HomeNavigator() {
@@ -93,6 +92,11 @@ export function HomeNavigator() {
         options={{ headerShown: false }}
       />
       <Drawer.Screen component={Refund} name={NAVIGATION.refund} options={{ headerShown: false }} />
+      <Drawer.Screen
+        component={Customers2}
+        name={NAVIGATION.customers2}
+        options={{ headerShown: false }}
+      />
     </Drawer.Navigator>
   );
 }

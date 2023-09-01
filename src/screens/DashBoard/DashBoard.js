@@ -15,7 +15,7 @@ import {
 import moment from 'moment';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 import { useDebouncedCallback } from 'use-lodash-debounce';
 
@@ -28,7 +28,6 @@ import {
   pay,
   pin,
   rightIcon,
-  scanSearch,
   scn,
   search_light,
   sellingArrow,
@@ -529,7 +528,10 @@ export function DashBoard({ navigation }) {
 
           <View style={{ flex: 1 }} />
 
-          <TouchableOpacity onPress={() => alert('Coming soon')} style={styles.checkoutButton}>
+          <TouchableOpacity
+            onPress={() => navigate(NAVIGATION.refund)}
+            style={styles.checkoutButton}
+          >
             <View style={styles.displayRow}>
               <Image source={productReturn} style={styles.lockLight} />
               <Text style={styles.checkoutText1}>{strings.dashboard.productReturn}</Text>

@@ -514,7 +514,6 @@ export function CartServiceScreen({
                   )}
                 />
               </View>
-
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
                 <TouchableOpacity

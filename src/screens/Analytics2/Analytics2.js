@@ -17,8 +17,6 @@ import {
   locationSales,
   totalCost,
   totalOrders,
-  filterday,
-  crossButton,
   cross,
   calendar,
   dropdown,

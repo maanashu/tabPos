@@ -1,31 +1,8 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  Platform,
-} from 'react-native';
-import { DaySelector, ScreenWrapper, Spacer } from '@/components';
+import React from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import {
-  Fonts,
-  backArrow2,
-  calendar,
-  channel,
-  clay,
-  dropdown,
-  locationSales,
-  revenueTotal,
-  totalOrders,
-  totalSales,
-} from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { LineChart } from 'react-native-chart-kit';
+import { backArrow2, locationSales, revenueTotal, totalOrders, totalSales } from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';

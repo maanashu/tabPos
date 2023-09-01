@@ -22,3 +22,4 @@ export { ShippingOrder2 } from '@/screens/ShippingOrder2/ShippingOrder2';
 export { Analytics2 } from '@/screens/Analytics2/Analytics2';
 export { DeliveryOrders2 } from '@/screens/DeliveryOrders2/DeliveryOrders2';
 export { PosRetail3 } from '@/screens/PosRetail3/PosRetail3';
+export { Customers2 } from '@/screens/Customers2/Customers2';

@@ -144,9 +144,7 @@ export function MainScreen({
   const [serviceSearch, setServiceSearch] = useState('');
   const [showProductsFrom, setshowProductsFrom] = useState();
   const mainProductArray = getRetailData?.getMainProduct?.data;
-  // console.log('mainProductArray', JSON.stringify(mainProductArray?.[0]));
   const mainServicesArray = getRetailData?.getMainServices?.data;
-  // console.log('mainServicesArray', JSON.stringify(mainServicesArray?.[0]));
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
     qty: obj.qty,

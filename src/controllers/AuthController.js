@@ -1,11 +1,4 @@
-import {
-  USER_URL,
-  PRODUCT_URL,
-  ApiProductInventory,
-  ApiUserInventory,
-  ORDER_URL,
-  ApiOrderInventory,
-} from '@/utils/APIinventory';
+import { USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { HttpClient } from './HttpClient';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';

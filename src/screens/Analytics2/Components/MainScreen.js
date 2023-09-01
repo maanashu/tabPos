@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Platform,
-  View,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { BarChartCom, ScreenWrapper, Spacer } from '@/components';
+import { Platform, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { BarChartCom, Spacer } from '@/components';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import { styles } from '../Analytics2.styles';
