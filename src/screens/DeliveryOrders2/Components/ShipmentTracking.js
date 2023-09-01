@@ -3,25 +3,24 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react
 
 import { ms } from 'react-native-size-matters';
 
-import { COLORS } from '@/theme';
-import { Spacer } from '@/components';
-import { strings } from '@/localization';
 import {
-  blankRadio,
+  up,
   down,
-  fillRadio,
   Fonts,
+  cancleIc,
+  storeLogo,
+  fillRadio,
+  blankRadio,
   greyRadioArr,
   radioArrBlue,
-  up,
-  cancleIc,
-  movingArrow,
-  storeLogo,
   movingArrowBlue,
 } from '@/assets';
+import { Spacer } from '@/components';
+import { strings } from '@/localization';
+import { COLORS, ShadowStyles } from '@/theme';
 
-const ShipmentTracking = ({ props, orderStatus }) => {
-  const [isHideView, setisHideView] = useState(true);
+const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
+  const [isHideView, setisHideView] = useState(false);
 
   const currentStatus = (status) => {
     if (status == 1) {
@@ -37,26 +36,12 @@ const ShipmentTracking = ({ props, orderStatus }) => {
     }
   };
 
-  // const currentStatus = (status) => {
-  //   if (status == 1) {
-  //     return strings.deliveryOrders.orderAccepted;
-  //   } else if (status == 2) {
-  //     return strings.deliveryOrders.orderPrepare;
-  //   } else if (status == 3) {
-  //     return strings.deliveryOrders.readyToPickup;
-  //   } else if (status == 4) {
-  //     return strings.deliveryOrders2.pickedUp;
-  //   } else if (status == 5) {
-  //     return strings.deliveryOrders.delivered;
-  //   }
-  // };
-
   const shipmentHeader = (
     <>
       <View style={styles.headerMainView}>
         <View>
           <Text style={styles.orderStatusHeading}>{strings.deliveryOrders.orderStatus}</Text>
-          <Text style={styles.currentStatusText}>{currentStatus(props?.status)}</Text>
+          <Text style={styles.currentStatusText}>{currentStatus(status)}</Text>
         </View>
         <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
           <Image source={isHideView ? down : up} style={styles.downArrowStyle} />
@@ -74,7 +59,7 @@ const ShipmentTracking = ({ props, orderStatus }) => {
           {heading === 'Verified' ? (
             <Image
               style={styles.verifiedIconStyle}
-              source={props?.status === 5 ? fillRadio : blankRadio}
+              source={status === 5 ? fillRadio : blankRadio}
             />
           ) : (
             <Image
@@ -94,57 +79,55 @@ const ShipmentTracking = ({ props, orderStatus }) => {
   );
 
   const returnStatusView = (heading) => (
-    <>
-      <View style={styles.statusMainView}>
-        <View style={{ alignItems: 'center' }}>
-          {heading === 'Return CODE' ? (
-            <Image style={styles.verifiedIconStyle} source={blankRadio} />
-          ) : heading === strings.deliveryOrders.cancelled ? (
-            <>
-              <Image style={styles.statusIconStyle} source={movingArrowBlue} />
+    <View style={styles.statusMainView}>
+      <View style={{ alignItems: 'center' }}>
+        {heading === 'Return CODE' ? (
+          <Image style={styles.verifiedIconStyle} source={blankRadio} />
+        ) : heading === strings.deliveryOrders.cancelled ? (
+          <>
+            <Image style={styles.statusIconStyle} source={movingArrowBlue} />
+            <Image
+              style={[styles.verifiedIconStyle, { resizeMode: 'contain' }]}
+              source={cancleIc}
+            />
+          </>
+        ) : heading === strings.deliveryOrders.pickup ? (
+          <Image
+            style={[styles.statusIconStyle, { tintColor: COLORS.bluish_green }]}
+            source={radioArrBlue}
+          />
+        ) : (
+          <Image style={styles.statusIconStyle} source={radioArrBlue} />
+        )}
+      </View>
+
+      <Spacer horizontal space={ms(5)} />
+
+      <View style={styles.statusViewText}>
+        {heading === 'Return to Shop' ? (
+          <TouchableOpacity onPress={() => onPressShop(true)}>
+            <Text style={styles.statusNameText}>{heading}</Text>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
                 style={[styles.verifiedIconStyle, { resizeMode: 'contain' }]}
-                source={cancleIc}
+                source={storeLogo}
               />
-            </>
-          ) : heading === strings.deliveryOrders.pickup ? (
-            <Image
-              style={[styles.statusIconStyle, { tintColor: COLORS.bluish_green }]}
-              source={radioArrBlue}
-            />
-          ) : (
-            <Image style={styles.statusIconStyle} source={radioArrBlue} />
-          )}
-        </View>
-
-        <Spacer horizontal space={ms(5)} />
-
-        <View style={styles.statusViewText}>
-          {heading === 'Return to Shop' ? (
-            <>
-              <Text style={styles.statusNameText}>{heading}</Text>
-
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image
-                  style={[styles.verifiedIconStyle, { resizeMode: 'contain' }]}
-                  source={storeLogo}
-                />
-                <View>
-                  <Text style={styles.statusNameText}>{'Store name'}</Text>
-                  <Text
-                    style={[styles.statusNameText, { fontSize: ms(5), fontFamily: Fonts.Regular }]}
-                  >
-                    {'1222 Tully Street,Detroit, MI 48227'}
-                  </Text>
-                </View>
+              <View>
+                <Text style={styles.statusNameText}>{'Store name'}</Text>
+                <Text
+                  style={[styles.statusNameText, { fontSize: ms(5), fontFamily: Fonts.Regular }]}
+                >
+                  {'1222 Tully Street,Detroit, MI 48227'}
+                </Text>
               </View>
-            </>
-          ) : (
-            <Text style={styles.statusNameText}>{heading}</Text>
-          )}
-        </View>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <Text style={styles.statusNameText}>{heading}</Text>
+        )}
       </View>
-    </>
+    </View>
   );
 
   const latestStatus = () => (
@@ -157,7 +140,7 @@ const ShipmentTracking = ({ props, orderStatus }) => {
         <Spacer horizontal space={ms(5)} />
 
         <View style={styles.statusViewText}>
-          <Text style={styles.statusNameText}>{currentStatus(props?.status)}</Text>
+          <Text style={styles.statusNameText}>{currentStatus(status)}</Text>
         </View>
       </View>
     </>
@@ -165,7 +148,7 @@ const ShipmentTracking = ({ props, orderStatus }) => {
 
   return (
     <>
-      {props?.orderStatus === '9' ? (
+      {orderStatus === '9' ? (
         <View
           style={[
             styles.mainContainer,
@@ -208,7 +191,7 @@ const ShipmentTracking = ({ props, orderStatus }) => {
                 <Spacer horizontal space={ms(5)} />
 
                 <View style={styles.statusViewText}>
-                  {/* <Text style={styles.statusNameText}>{currentStatus(props?.status)}</Text> */}
+                  <Text style={styles.statusNameText}>{strings.deliveryOrders.cancelled}</Text>
                 </View>
               </View>
             </View>
@@ -219,12 +202,12 @@ const ShipmentTracking = ({ props, orderStatus }) => {
           {shipmentHeader}
           {isHideView ? (
             <View style={styles.statusViewStyle}>
-              {statusView(strings.settings.verified, props?.status >= 5 && true)}
-              {statusView(strings.deliveryOrders.delivered, props?.status >= 5 && true)}
-              {statusView(strings.deliveryOrders.pickup, props?.status >= 4 && true)}
-              {statusView(strings.deliveryOrders.driverAssigned, props?.status >= 3 && true)}
-              {statusView(strings.deliveryOrders.readyToPickup, props?.status >= 2 && true)}
-              {statusView(strings.deliveryOrders.orderAccepted, props?.status >= 1 && true)}
+              {statusView(strings.settings.verified, status >= 5 && true)}
+              {statusView(strings.deliveryOrders.delivered, status >= 5 && true)}
+              {statusView(strings.deliveryOrders.pickup, status >= 4 && true)}
+              {statusView(strings.deliveryOrders.driverAssigned, status >= 3 && true)}
+              {statusView(strings.deliveryOrders.readyToPickup, status >= 2 && true)}
+              {statusView(strings.deliveryOrders.orderAccepted, status >= 1 && true)}
             </View>
           ) : (
             <View style={styles.statusViewStyle}>{latestStatus()}</View>
@@ -242,6 +225,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(7),
     position: 'absolute',
     paddingVertical: ms(15),
+    ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
     bottom: Platform.OS === 'android' ? ms(50) : ms(10),
   },
@@ -286,8 +270,8 @@ const styles = StyleSheet.create({
   },
   bottomLine: {
     marginTop: ms(10),
-    borderBottomWidth: ms(0.2),
-    borderColor: COLORS.lineGrey,
+    borderBottomWidth: ms(0.3),
+    borderBottomColor: COLORS.row_grey,
   },
   statusIconStyle: {
     width: ms(15),

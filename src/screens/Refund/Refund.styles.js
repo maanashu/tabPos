@@ -10,6 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    borderWidth: 2,
     backgroundColor: COLORS.textInputBackground,
   },
   displayflex: {
@@ -22,13 +23,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bothContainerHead: {
-    borderWidth: 1,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   bodyContainer: {
-    borderWidth: 1,
-    // flex: 1,
     marginHorizontal: ms(10),
   },
 });

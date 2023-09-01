@@ -528,7 +528,10 @@ export function DashBoard({ navigation }) {
 
           <View style={{ flex: 1 }} />
 
-          <TouchableOpacity onPress={() => alert('Coming soon')} style={styles.checkoutButton}>
+          <TouchableOpacity
+            onPress={() => navigate(NAVIGATION.refund)}
+            style={styles.checkoutButton}
+          >
             <View style={styles.displayRow}>
               <Image source={productReturn} style={styles.lockLight} />
               <Text style={styles.checkoutText1}>{strings.dashboard.productReturn}</Text>
