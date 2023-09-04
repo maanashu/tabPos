@@ -151,6 +151,7 @@ export function SearchScreen() {
                     style={styles.searchInput}
                     placeholder={'Search invoice here'}
                     onChangeText={(sku) => setSku(sku)}
+                    keyboardType="number-pad"
                   />
                 </View>
                 <TouchableOpacity onPress={() => textInputRef.current.focus()}>

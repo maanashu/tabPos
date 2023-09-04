@@ -61,8 +61,8 @@ const Graph = () => {
   const data = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [
-      { data: [0, 0, 0, 0, 0, 0, 0] },
-      { data: [1, 0, 0, 0, 0, 0, 0] },
+      { data: [10, 0, 30, 0, 0, 0, 0] },
+      { data: [20, 0, 0, 0, 0, 0, 0] },
       { data: [0, 0, 0, 0, 0, 0, 0] },
     ],
   };
