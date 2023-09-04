@@ -116,7 +116,7 @@ export function TotalPosOrder({ onPress }) {
           text={'Order Frequency'}
           count={
             posGraph?.ordersOverView?.order_frequency
-              ? posGraph?.ordersOverView?.order_frequency?.toFixed(2) + '/Hour'
+              ? posGraph?.ordersOverView?.order_frequency + '/Hour'
               : 0
           }
         />

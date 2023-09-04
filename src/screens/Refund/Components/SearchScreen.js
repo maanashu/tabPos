@@ -660,7 +660,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   scanProductView: {
-    width: ms(240),
+    width: Platform.OS === 'android' ? ms(240) : ms(210),
     paddingVertical: 15,
     borderRadius: 7,
     alignItems: 'center',
@@ -671,7 +671,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     backgroundColor: COLORS.white,
     borderRadius: 7,
-    width: ms(90),
+    width: Platform.OS === 'android' ? ms(90) : ms(70),
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: COLORS.blue_shade,

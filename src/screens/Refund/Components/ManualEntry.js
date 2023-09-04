@@ -8,6 +8,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
@@ -242,7 +243,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   modalStyle: {
-    width: width / 3,
+    width: Platform.OS === 'ios' ? width / 2.5 : width / 3,
     borderRadius: 10,
     alignSelf: 'center',
     backgroundColor: COLORS.white,
@@ -363,8 +364,8 @@ const styles = StyleSheet.create({
   },
   selectColorItem: {
     marginTop: 10,
-    width: SH(90),
-    height: SH(45),
+    width: Platform.OS === 'android' ? SH(90) : SH(70),
+    height: Platform.OS === 'android' ? SH(45) : SH(40),
     borderWidth: 1,
     borderRadius: 5,
     alignItems: 'center',

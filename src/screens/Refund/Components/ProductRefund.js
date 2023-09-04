@@ -245,17 +245,19 @@ const styles = StyleSheet.create({
   applicableViewStyle: {
     flexDirection: 'row',
     paddingHorizontal: ms(8),
+    alignItems: 'center',
   },
   checkBoxIconStyle: {
-    width: scale(10),
-    height: scale(10),
+    width: scale(8),
+    height: scale(8),
     resizeMode: 'contain',
   },
   applicableTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(14),
+    fontSize: SF(11),
     color: COLORS.dark_grey,
     paddingLeft: ms(1),
+    textAlignVertical: 'center',
   },
   typeViewStyle: {
     flexDirection: 'row',

@@ -73,7 +73,7 @@ export function TotalShippingOrders({ onPress }) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          {item?.order_frequency.toFixed(2)}
+          {item?.order_frequency}
           {' Per Hour'}
         </Text>
       </DataTable.Cell>

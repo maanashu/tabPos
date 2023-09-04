@@ -267,6 +267,8 @@ export function Analytics2() {
                     fontFamily: Fonts.Regular,
                     fontSize: ms(8),
                   }}
+                  zIndex={2000}
+                  zIndexInverse={2000}
                 />
               ) : (
                 <></>
@@ -275,7 +277,7 @@ export function Analytics2() {
           </View>
           <Spacer space={ms(5)} />
 
-          <View style={styles.flexDirectionRow}>
+          <View style={[styles.flexDirectionRow, { zIndex: -999 }]}>
             <View style={styles.container}>{screenChangeView()}</View>
 
             <View style={styles.rightSideView}>
