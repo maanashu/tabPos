@@ -516,5 +516,13 @@ export const en = {
     recheckConfirmed: 'Recheck confirmed!',
     description: 'All Returned item will be adjusted with inventory',
     scanbarCode: 'Scan barcode of each item returned',
+    returnCart: 'Add to Return Cart',
+    dollar: '$',
+    percentage: '%',
+    applyRefund: 'Apply Refund',
+    applyEachItem: 'Apply for Each Item',
+    applicable: 'Applicable for All Items',
+    dollarLabel: 'dollar',
+    percentageLabel: 'percentage',
   },
 };
