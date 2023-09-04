@@ -46,7 +46,7 @@ const twoEqualView = result / 1.8;
 import { TYPES } from '@/Types/CustomersTypes';
 import { useEffect } from 'react';
 
-const UserProfile = ({ backHandler, userDetail }) => {
+const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getCustomerData = useSelector(getCustomers);
@@ -279,7 +279,11 @@ const UserProfile = ({ backHandler, userDetail }) => {
                 </View>
               ) : (
                 ordersByUser?.map((item, index) => (
-                  <TouchableOpacity key={index} style={[styles.tableDataCon, { zIndex: -99 }]}>
+                  <TouchableOpacity
+                    key={index}
+                    style={[styles.tableDataCon, { zIndex: -99 }]}
+                    onPress={orderClickHandler}
+                  >
                     <View style={styles.profileheaderUnderView}>
                       <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}>
                         <View style={{ flexDirection: 'row' }}>
