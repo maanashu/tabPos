@@ -94,7 +94,7 @@ const Graph = () => {
       <View style={{ marginTop: ms(10) }}>
         <BarChartCom
           barWid={Dimensions.get('window').width * 0.82}
-          barHei={Platform.OS === 'android' ? ms(170) : SH(160)}
+          barHei={Platform.OS === 'android' ? ms(170) : SH(270)}
           barSpacing={SW(35.2)}
           barW={SW(3.5)}
           labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
