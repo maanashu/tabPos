@@ -59,19 +59,11 @@ const Graph = () => {
   }
 
   const data = {
-    labels: [
-      '12/20/2023',
-      '12/20/2023',
-      '12/20/2023',
-      '12/20/2023',
-      '12/20/2023',
-      '12/20/2023',
-      '12/20/2023',
-    ],
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [
-      { data: [10, 40, 51, 40, 40, 19, 40] },
-      { data: [0, 4, 29, 60, 88, 7, 100] },
-      { data: [0, 40, 66, 0, 40, 100, 80] },
+      { data: [0, 0, 0, 0, 0, 0, 0] },
+      { data: [1, 0, 0, 0, 0, 0, 0] },
+      { data: [0, 0, 0, 0, 0, 0, 0] },
     ],
   };
 
@@ -99,7 +91,7 @@ const Graph = () => {
           barW={SW(3.5)}
           labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
           initialSpacing={SH(10)}
-          // data={data}
+          data={data}
           spacing={SW(45)}
           interval={2}
           dateInterval={5}

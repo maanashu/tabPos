@@ -291,7 +291,7 @@ export function BarChartCom({
   return (
     <View>
       <BarChart
-        data={barData}
+        data={formattedData}
         barWidth={barW}
         spacing={barSpacing}
         roundedTop

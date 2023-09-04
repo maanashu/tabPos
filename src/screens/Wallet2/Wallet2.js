@@ -101,6 +101,7 @@ export function Wallet2() {
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const [historytype, setHistorytype] = useState('all');
+  const [orderModel, setOrderModel] = useState(false);
 
   const [walletHome, setWalletHome] = useState(true);
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
