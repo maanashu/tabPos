@@ -11,7 +11,6 @@ import {
   ScrollView,
 } from 'react-native';
 import { ms } from 'react-native-size-matters';
-
 import {
   bell,
   search_light,
@@ -40,7 +39,6 @@ const AllUsers = ({ backHandler, profileClickHandler }) => {
   const [show, setShow] = useState(false);
   const [dateformat, setDateformat] = useState('');
   const [date, setDate] = useState(new Date());
-
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);
   const [paginationModalItems, setPaginationModalItems] = useState([

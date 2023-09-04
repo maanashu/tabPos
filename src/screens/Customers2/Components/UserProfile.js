@@ -44,6 +44,7 @@ import { DELIVERY_MODE } from '@/constants/enums';
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 import { TYPES } from '@/Types/CustomersTypes';
+import { useEffect } from 'react';
 
 const UserProfile = ({ backHandler, userDetail }) => {
   const isFocused = useIsFocused();
@@ -57,6 +58,10 @@ const UserProfile = ({ backHandler, userDetail }) => {
     total_pages: getCustomerData?.getOrderUser?.total_pages,
     per_page: getCustomerData?.getOrderUser?.per_page,
   };
+
+  useEffect(() => {
+    setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
+  }, [getCustomerData?.getOrderUser?.data]);
 
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(null);

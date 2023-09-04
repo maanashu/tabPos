@@ -59,6 +59,7 @@ export function MainScreen({
   const totalInventory = getAnalyticsData?.getTotalInventory;
   const getUserData = useSelector(getUser);
   const getPosUser = getUserData?.posLoginData;
+  console.log('=================totalOrder?.graphData', JSON.stringify(totalOrder?.graphData));
 
   const interval = 2;
   const maxLabel = 30;

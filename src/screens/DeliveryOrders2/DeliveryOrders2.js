@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-
 import {
   View,
   Text,
@@ -11,7 +10,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';

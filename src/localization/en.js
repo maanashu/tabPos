@@ -382,8 +382,8 @@ export const en = {
     byAccount:
       'By enabling payments through Sila, you will be accepting Stripe Services Agreement. Please refer to the list of Prohibited Businesses before registering for and opening a Stripe account',
     silaButton: 'Setup Sila',
-    transactions: 'Transactions:',
-    totalTransections: 'Total Transactions:',
+    transactions: 'Transactions',
+    totalTransections: 'Total Transactions',
     transactionHistory: 'Transaction History',
     transationPrice: '$',
     paginationCount: '1-20 of 10,000',
@@ -413,6 +413,8 @@ export const en = {
     listOfItem: 'List of Items',
     item: 'items',
     point: 'Points:',
+    wallet: 'Wallet',
+    searchHere: 'Search here',
   },
   shipping: {
     shipping: 'Shipping & Pickups',

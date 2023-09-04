@@ -30,4 +30,5 @@ export const NAVIGATION = {
   posRetail3: 'PosRetail3',
   refund: 'Refund',
   customers2: 'Customers2',
+  wallet2: 'Wallet2',
 };

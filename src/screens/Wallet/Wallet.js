@@ -674,6 +674,7 @@ export function Wallet() {
                   />
                 </View>
               </View>
+
               <Spacer space={SH(5)} />
               <Text style={styles.transationPrice}>
                 {strings.wallet.transationPrice}

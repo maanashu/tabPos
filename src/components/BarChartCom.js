@@ -70,8 +70,8 @@ export function BarChartCom({
           {
             value: 44,
             spacing: 2,
-            label: 'Mon',
-            labelWidth: 60,
+            label: '12/20/2023',
+            labelWidth: 70,
             labelTextStyle: labelTextSty,
             frontColor: COLORS.primary,
             intialSapce: 0,
@@ -85,8 +85,8 @@ export function BarChartCom({
           {
             value: 22,
             spacing: 2,
-            label: 'Tue',
-            labelWidth: 60,
+            label: '12/20/2023',
+            labelWidth: 70,
             labelTextStyle: labelTextSty,
             frontColor: COLORS.primary,
           },
@@ -99,8 +99,8 @@ export function BarChartCom({
           {
             value: 99,
             spacing: 2,
-            label: 'Wed',
-            labelWidth: 60,
+            label: '12/20/2023',
+            labelWidth: 70,
             labelTextStyle: labelTextSty,
             frontColor: COLORS.primary,
           },
@@ -113,8 +113,8 @@ export function BarChartCom({
           {
             value: 44,
             spacing: 2,
-            label: 'Thu',
-            labelWidth: 60,
+            label: '12/20/2023',
+            labelWidth: 70,
             labelTextStyle: labelTextSty,
             frontColor: COLORS.primary,
           },
@@ -127,8 +127,8 @@ export function BarChartCom({
           {
             value: 10,
             spacing: 2,
-            label: 'Fri',
-            labelWidth: 60,
+            label: '12/20/2023',
+            labelWidth: 70,
             labelTextStyle: labelTextSty,
             frontColor: COLORS.primary,
           },
@@ -141,8 +141,8 @@ export function BarChartCom({
           {
             value: 30,
             spacing: 2,
-            label: 'Sat',
-            labelWidth: 60,
+            label: '12/20/2023',
+            labelWidth: 70,
             labelTextStyle: labelTextSty,
             frontColor: COLORS.primary,
           },
@@ -155,8 +155,8 @@ export function BarChartCom({
           {
             value: 10,
             spacing: 2,
-            label: 'Sun',
-            labelWidth: 60,
+            label: '12/20/2023',
+            labelWidth: 70,
             labelTextStyle: labelTextSty,
             frontColor: COLORS.primary,
           },
@@ -291,7 +291,7 @@ export function BarChartCom({
   return (
     <View>
       <BarChart
-        data={formattedData}
+        data={barData}
         barWidth={barW}
         spacing={barSpacing}
         roundedTop

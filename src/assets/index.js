@@ -89,6 +89,7 @@ export { default as calendar1 } from '@/assets/icons/ic_retail/calendar.png';
 export { default as Union } from '@/assets/icons/ic_wallet/Union.png';
 export { default as mask } from '@/assets/icons/ic_wallet/mask.png';
 export { default as unionRight } from '@/assets/icons/ic_wallet/unionRight.png';
+export { default as mark } from '@/assets/icons/ic_wallet/mark.png';
 export { default as maskRight } from '@/assets/icons/ic_wallet/maskRight.png';
 export { default as leftBack } from '@/assets/icons/ic_wallet/leftBack.png';
 export { default as angela } from '@/assets/icons/ic_wallet/angela.png';
@@ -98,6 +99,10 @@ export { default as deliverCheck } from '@/assets/icons/ic_wallet/deliverCheck.p
 export { default as track } from '@/assets/icons/ic_wallet/track.png';
 export { default as orderCigrate } from '@/assets/icons/ic_wallet/orderCigrate.png';
 export { default as tableArrow } from '@/assets/icons/ic_wallet/tableArrow.png';
+export { default as cardIcon } from '@/assets/icons/ic_wallet/cardIcon.png';
+export { default as cashIcon } from '@/assets/icons/ic_wallet/cashIcon.png';
+export { default as jbricon } from '@/assets/icons/ic_wallet/jbricon.png';
+export { default as cashCheckIcon } from '@/assets/icons/ic_wallet/cashCheckIcon.png';
 export { default as invoice } from '@/assets/icons/ic_customers/invoice.png';
 export { default as newCustomer } from '@/assets/icons/ic_customers/newCustomer.png';
 export { default as walkinCustomer } from '@/assets/icons/ic_customers/walkinCustomer.png';

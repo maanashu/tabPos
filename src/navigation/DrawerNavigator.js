@@ -241,6 +241,19 @@ export function DrawerNavigator(props) {
             <Image source={focused ? blueusers : users} style={styles.iconStyle} />
           )}
         />
+
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'wallet2' ? true : false}
+          onPress={() => {
+            setActive('wallet2');
+            navigate(NAVIGATION.wallet2);
+          }}
+          icon={({ focused }) => (
+            <Image source={focused ? bluewallet : wallet} style={styles.iconStyle} />
+          )}
+        />
         {getUserData?.posLoginData?.user_roles.length === 0 && (
           <DrawerItem
             label={''}

@@ -52,17 +52,16 @@ export const styles = StyleSheet.create({
   deliveryText: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
-    fontSize: ms(11),
+    fontSize: ms(10),
     paddingLeft: SW(2),
   },
   searchView: {
-    borderWidth: 1,
-    height: SH(38),
-    borderRadius: 30,
-    borderColor: COLORS.row_grey,
+    height: SH(45),
+    borderRadius: ms(4),
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 10,
+    backgroundColor: COLORS.white,
   },
   searchImage: {
     width: SH(20),
@@ -493,5 +492,14 @@ export const styles = StyleSheet.create({
     paddingHorizontal: ms(5),
     paddingVertical: ms(1),
     borderRadius: 3,
+  },
+  scnStyle: {
+    width: SW(13),
+    height: SW(14),
+    resizeMode: 'contain',
+  },
+  walletHomeBodyCon: {
+    flex: 1,
+    borderWidth: 1,
   },
 });

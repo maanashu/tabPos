@@ -19,11 +19,11 @@ const selectData = [
     name: 'Monthly',
     value: 'month',
   },
-  // {
-  //   id:4,
-  //   name:'Quaterly',
-  //   value : 'quarter'
-  // },
+  {
+    id: 4,
+    name: 'Quaterly',
+    value: 'quarter',
+  },
   // {
   //   id: 5,
   //   name: 'Yearly',
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   selectItemConatiner: {
     width: SH(90),
-    height: SH(25),
+    height: SH(28),
     borderRadius: 3,
     justifyContent: 'center',
     alignItems: 'center',
