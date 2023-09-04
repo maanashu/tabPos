@@ -139,8 +139,8 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    alert('message is under development');
-                    // setisShowChatModal(true);
+                    // alert('message is under development');
+                    setisShowChatModal(true);
                   }}
                 >
                   <Image source={chatIcon} style={styles.chatIconStl} />
@@ -239,7 +239,11 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
         appointmentData={selectedPosStaffCompleteData}
         setshowEventDetailModal={setshowEventDetailModal}
       />
-      <ChatRoom isVisible={isShowChatModal} setIsVisible={setisShowChatModal} />
+      <ChatRoom
+        isVisible={isShowChatModal}
+        setIsVisible={setisShowChatModal}
+        recieverdata={userDetails?.firstname + ' ' + userDetails?.lastname}
+      />
     </Modal>
   );
 };
