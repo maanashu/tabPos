@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { backArrow2, locationSales, revenueTotal, totalOrders, totalSales } from '@/assets';
+import { Fonts, backArrow2, locationSales, revenueTotal, totalOrders, totalSales } from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
@@ -78,7 +78,7 @@ export function TotalProfit({ onPress }) {
         <Text style={styles.revenueDataText}>{item?.margin ? item?.margin.toFixed(2) : 0}%</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>
+        <Text style={styles.revenueDataText2}>
           ${item?.profit_sum ? item?.profit_sum.toFixed(2) : 0}
         </Text>
       </DataTable.Cell>

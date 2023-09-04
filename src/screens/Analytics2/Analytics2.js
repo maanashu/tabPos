@@ -59,11 +59,11 @@ export function Analytics2() {
   const [filter, setFilter] = useState({ value: 'week' });
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [channels, setChannels] = useState(false);
-  const [channelValue, setChannelValue] = useState(null);
+  const [channelValue, setChannelValue] = useState('pos');
   const [channelItem, setChannelItem] = useState([
-    { label: 'B2B', value: 'B2B' },
-    { label: 'POS', value: 'POS' },
-    { label: 'B2C', value: 'B2C' },
+    { label: 'B2B', value: 'b2b' },
+    { label: 'POS', value: 'pos' },
+    { label: 'B2C', value: 'b2c' },
   ]);
   const [orderSelectId, setOrderSelectId] = useState(2);
   const [backTime, setBackTime] = useState();
@@ -98,12 +98,29 @@ export function Analytics2() {
   const endDate = selectedEndDate ? selectedEndDate.toString() : '';
   const startDated = moment(startDate).format('YYYY-MM-DD');
   const endDated = moment(endDate).format('YYYY-MM-DD');
+  const [selectDate, setSelectDate] = useState('');
+
   const handleOnPressNext = () => {
     // Perform actions when "Next" button is pressed
     console.log('Next button pressed');
   };
   const getSelectedData = () => {
-    if (filter?.value === 'undefined') {
+    if (filter?.value === undefined) {
+      return {
+        start_date: startDated,
+        end_date: endDated,
+        channel: channelValue,
+      };
+    } else {
+      return {
+        filter: filter?.value,
+        channel: channelValue,
+      };
+    }
+  };
+
+  const getSelectedInventoryData = () => {
+    if (filter?.value === undefined) {
       return {
         start_date: startDated,
         end_date: endDated,
@@ -114,7 +131,7 @@ export function Analytics2() {
       };
     }
   };
-  const data = getSelectedData();
+  const data = channelValue ? getSelectedData() : getSelectedInventoryData();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -124,17 +141,18 @@ export function Analytics2() {
     dispatch(getTotalInventory(sellerID, data));
     dispatch(getSoldProduct(sellerID, data));
     getData();
-  }, [filter]);
+  }, [filter, channelValue, selectDate]);
 
   const orderOnPress = (value) => {
-    dispatch(getAnalyticStatistics(sellerID, value));
-    dispatch(getAnalyticOrderGraphs(sellerID, value));
-    dispatch(getTotalOrder(sellerID, value));
-    dispatch(getTotalInventory(sellerID, value));
-    dispatch(getSoldProduct(sellerID, value));
+    // dispatch(getAnalyticStatistics(sellerID, value));
+    // dispatch(getAnalyticOrderGraphs(sellerID, value));
+    // dispatch(getTotalOrder(sellerID, value));
+    // dispatch(getTotalInventory(sellerID, value));
+    // dispatch(getSoldProduct(sellerID, value));
     storeData(value);
+    setSelectedStartDate('');
+    setSelectedEndDate('');
   };
-
   const onDateChange = (date, type) => {
     const Date = moment(date).format('YYYY-MM-DD');
     if (type === 'END_DATE') {
@@ -145,18 +163,18 @@ export function Analytics2() {
     }
   };
   const onSelect = () => {
-    const body = {
-      start_date: startDate,
-      end_date: endDated,
-    };
-    dispatch(getAnalyticStatistics(sellerID, body));
-    dispatch(getAnalyticOrderGraphs(sellerID, body));
-    dispatch(getTotalOrder(sellerID, body));
-    dispatch(getTotalInventory(sellerID, body));
-    dispatch(getSoldProduct(sellerID, body));
+    // const body = channelValue
+    //   ? { start_date: startDate, end_date: endDated, channel: channelValue }
+    //   : { start_date: startDate, end_date: endDated };
+    // dispatch(getAnalyticStatistics(sellerID, body));
+    // dispatch(getAnalyticOrderGraphs(sellerID, body));
+    // dispatch(getTotalOrder(sellerID, body));
+    // dispatch(getTotalInventory(sellerID, body));
+    // dispatch(getSoldProduct(sellerID, body));
     setShowCalendarModal(false);
     setFilter('');
     setOrderSelectId('');
+    setSelectDate(!selectDate);
   };
 
   const goBack = () => {
@@ -207,23 +225,15 @@ export function Analytics2() {
                 setSelectId={setOrderSelectId}
               />
             </View>
-            <View
-              style={[
-                styles.flexDirectionRow,
-                {
-                  position: 'absolute',
-                  right: ms(0),
-                  top: ms(10),
-                  height: ms(20),
-                  alignItems: 'center',
-                },
-              ]}
-            >
+            <View style={styles.calendarView}>
               <TouchableOpacity
                 onPress={() => setShowCalendarModal(!showCalendarModal)}
                 style={[
                   styles.headerView,
-                  { borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies },
+                  {
+                    borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
+                    marginHorizontal: selectedScreen === 'TotalInventory' ? ms(0) : ms(5),
+                  },
                 ]}
               >
                 <Image source={calendar} style={styles.calenderImage} />
@@ -235,28 +245,32 @@ export function Analytics2() {
                     : 'Date Select'}
                 </Text>
               </TouchableOpacity>
-              <DropDownPicker
-                ArrowDownIconComponent={({ style }) => (
-                  <Image source={dropdown} style={styles.dropDownIcon} />
-                )}
-                style={styles.dropdown}
-                containerStyle={[
-                  styles.containerStyle,
-                  { zIndex: Platform.OS === 'ios' ? 100 : 2 },
-                ]}
-                open={channels}
-                value={channelValue}
-                items={channelItem}
-                setOpen={setChannels}
-                setValue={setChannelValue}
-                setItems={setChannelItem}
-                placeholder="All Channels"
-                placeholderStyle={{
-                  color: '#A7A7A7',
-                  fontFamily: Fonts.Regular,
-                  fontSize: ms(8),
-                }}
-              />
+              {selectedScreen !== 'TotalInventory' ? (
+                <DropDownPicker
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image source={dropdown} style={styles.dropDownIcon} />
+                  )}
+                  style={styles.dropdown}
+                  containerStyle={[
+                    styles.containerStyle,
+                    { zIndex: Platform.OS === 'ios' ? 100 : 2 },
+                  ]}
+                  open={channels}
+                  value={channelValue}
+                  items={channelItem}
+                  setOpen={setChannels}
+                  setValue={setChannelValue}
+                  setItems={setChannelItem}
+                  placeholder="All Channels"
+                  placeholderStyle={{
+                    color: '#A7A7A7',
+                    fontFamily: Fonts.Regular,
+                    fontSize: ms(8),
+                  }}
+                />
+              ) : (
+                <></>
+              )}
             </View>
           </View>
           <Spacer space={ms(5)} />
@@ -493,17 +507,7 @@ export function Analytics2() {
           animationInTiming={600}
           animationOutTiming={300}
         >
-          <View
-            style={{
-              backgroundColor: COLORS.white,
-              width: windowWidth * 0.6,
-              height: windowHeight - SW(30),
-              alignSelf: 'center',
-              paddingVertical: SH(10),
-              paddingHorizontal: SW(5),
-              borderRadius: SW(5),
-            }}
-          >
+          <View style={styles.calendarModalView}>
             <CalendarPickerModal
               onPress={() => setShowCalendarModal(false)}
               onDateChange={onDateChange}

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { backArrow2, channel, locationSales, totalOrders, totalSales } from '@/assets';
+import { Fonts, backArrow2, channel, locationSales, totalOrders, totalSales } from '@/assets';
 import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
@@ -72,23 +72,16 @@ export function TotalDeliveryOrders({ onPress }) {
         <Text style={styles.revenueDataText}>${item?.averageValue.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.order_frequency.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.order_frequency.toFixed(2)}
+          {' Per Hour'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.amount.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <TouchableOpacity
-          style={{
-            borderColor: COLORS.primary,
-            top: 12,
-            paddingHorizontal: ms(10),
-            paddingVertical: ms(2),
-            borderWidth: 1,
-            backgroundColor: COLORS.white,
-            borderRadius: ms(2),
-          }}
-        >
+        <TouchableOpacity style={styles.reviewView}>
           <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
             {'Review'}
           </Text>
@@ -124,7 +117,7 @@ export function TotalDeliveryOrders({ onPress }) {
           text={'Order Frequency'}
           count={
             deliveryGraph?.ordersOverView?.order_frequency
-              ? '$' + deliveryGraph?.ordersOverView?.order_frequency?.toFixed(2)
+              ? deliveryGraph?.ordersOverView?.order_frequency + '/Hour'
               : 0
           }
         />

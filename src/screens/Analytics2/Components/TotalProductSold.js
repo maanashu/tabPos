@@ -40,13 +40,6 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
 };
 
 export function TotalProductSold({ onPress }) {
-  const [channel, setChannel] = useState(false);
-  const [channelValue, setChannelValue] = useState(null);
-  const [channelItem, setChannelItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
-  ]);
-
   const getAnalyticsData = useSelector(getAnalytics);
   const soldProduct = getAnalyticsData?.getSoldProduct;
 
@@ -72,7 +65,7 @@ export function TotalProductSold({ onPress }) {
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>{item?.order?.total_items}</Text>
+        <Text style={styles.revenueDataText}>{item?.order?.total_items}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -110,21 +103,23 @@ export function TotalProductSold({ onPress }) {
           text={'Total Volume'}
           count={
             soldProduct?.productOverview?.totalVolume
-              ? soldProduct?.productOverview?.totalVolume
+              ? '$' + soldProduct?.productOverview?.totalVolume
               : 0
           }
         />
         <HeaderView
           image={margin}
           text={'Profit Margin'}
-          count={soldProduct?.productOverview?.margin ? soldProduct?.productOverview?.margin : 0}
+          count={
+            soldProduct?.productOverview?.margin ? '$' + soldProduct?.productOverview?.margin : 0
+          }
         />
         <HeaderView
           image={profit}
           text={'Gross Profit'}
           count={
             soldProduct?.productOverview?.totalProfit
-              ? soldProduct?.productOverview?.totalProfit
+              ? '$' + soldProduct?.productOverview?.totalProfit
               : 0
           }
         />

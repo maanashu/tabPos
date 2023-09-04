@@ -43,7 +43,6 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
 export function TotalPosOrder({ onPress }) {
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
-
   const posGraph = analyticOrderGraphs?.pos_graph;
   // const data = [
   //   ...posGraph?.deliverd_data_list,
@@ -70,26 +69,19 @@ export function TotalPosOrder({ onPress }) {
         <Text style={styles.revenueDataText}>{item?.count}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.averageValue.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText}>${item?.averageValue?.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.order_frequency.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.order_frequency?.toFixed(2)}
+          {' Per Hour'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.amount.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText2}>${item?.amount?.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <TouchableOpacity
-          style={{
-            borderColor: COLORS.primary,
-            top: 12,
-            paddingHorizontal: ms(10),
-            paddingVertical: ms(2),
-            borderWidth: 1,
-            backgroundColor: COLORS.white,
-            borderRadius: ms(2),
-          }}
-        >
+        <TouchableOpacity style={styles.reviewView}>
           <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
             {'Review'}
           </Text>
@@ -124,7 +116,7 @@ export function TotalPosOrder({ onPress }) {
           text={'Order Frequency'}
           count={
             posGraph?.ordersOverView?.order_frequency
-              ? '$' + posGraph?.ordersOverView?.order_frequency?.toFixed(2)
+              ? posGraph?.ordersOverView?.order_frequency?.toFixed(2) + '/Hour'
               : 0
           }
         />

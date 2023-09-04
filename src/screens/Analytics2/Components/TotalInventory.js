@@ -113,7 +113,7 @@ export function TotalInventory({ onPress }) {
           text={'Total Inventory Value'}
           count={
             totalInventory?.inventoryOverview?.totalInventoryValue
-              ? totalInventory?.inventoryOverview?.totalInventoryValue
+              ? '$' + totalInventory?.inventoryOverview?.totalInventoryValue?.toFixed(2)
               : 0
           }
         />
@@ -122,7 +122,7 @@ export function TotalInventory({ onPress }) {
           text={'Average Order Value'}
           count={
             totalInventory?.inventoryOverview?.averageOrder
-              ? totalInventory?.inventoryOverview?.averageOrder
+              ? '$' + totalInventory?.inventoryOverview?.averageOrder?.toFixed(2)
               : 0
           }
         />
@@ -131,7 +131,7 @@ export function TotalInventory({ onPress }) {
           text={'Gross Profit'}
           count={
             totalInventory?.inventoryOverview?.profit
-              ? totalInventory?.inventoryOverview?.profit
+              ? '$' + totalInventory?.inventoryOverview?.profit
               : 0
           }
         />

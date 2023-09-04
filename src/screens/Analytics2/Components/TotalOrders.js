@@ -11,12 +11,6 @@ import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 
 export function TotalOrders({ onPress }) {
-  const [channel, setChannel] = useState(false);
-  const [channelValue, setChannelValue] = useState(null);
-  const [channelItem, setChannelItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
-  ]);
   const getAnalyticsData = useSelector(getAnalytics);
   const totalOrder = getAnalyticsData?.getTotalOrder;
 
@@ -46,20 +40,10 @@ export function TotalOrders({ onPress }) {
         <Text style={styles.revenueDataText}>{item?.consumer_returning?.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.amount.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <TouchableOpacity
-          style={{
-            borderColor: COLORS.primary,
-            top: 12,
-            paddingHorizontal: ms(10),
-            paddingVertical: ms(2),
-            borderWidth: 1,
-            backgroundColor: COLORS.white,
-            borderRadius: ms(2),
-          }}
-        >
+        <TouchableOpacity style={styles.reviewView}>
           <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
             {'Review'}
           </Text>
