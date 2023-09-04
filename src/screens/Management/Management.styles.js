@@ -151,7 +151,7 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     alignSelf: 'center',
     justifyContent: 'center',
-    minHeight: windowHeight - 200,
+    minHeight: windowHeight - 150,
     // borderWidth:10
   },
   headerView: {
@@ -562,7 +562,7 @@ export const styles = StyleSheet.create({
   trackingBodyCon: {
     width: SW(110),
     alignSelf: 'center',
-    height: windowHeight * 0.4,
+    height: windowHeight * 0.62,
   },
   absoluteZero: {
     position: 'absolute',

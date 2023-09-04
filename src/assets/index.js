@@ -100,7 +100,9 @@ export { default as orderCigrate } from '@/assets/icons/ic_wallet/orderCigrate.p
 export { default as tableArrow } from '@/assets/icons/ic_wallet/tableArrow.png';
 export { default as invoice } from '@/assets/icons/ic_customers/invoice.png';
 export { default as newCustomer } from '@/assets/icons/ic_customers/newCustomer.png';
+export { default as walkinCustomer } from '@/assets/icons/ic_customers/walkinCustomer.png';
 export { default as returnCustomer } from '@/assets/icons/ic_customers/returnCustomer.png';
+export { default as onlinecustomer } from '@/assets/icons/ic_customers/onlinecustomer.png';
 export { default as onlineCutomer } from '@/assets/icons/ic_customers/onlineCutomer.png';
 export { default as customersGraph } from '@/assets/icons/ic_customers/customersGraph.png';
 export { default as iImage } from '@/assets/icons/ic_customers/iImage.png';
@@ -260,6 +262,7 @@ export { default as qrCodeIcon } from '@/assets/icons/ic_retail/qr-code.png';
 export { default as moneyIcon } from '@/assets/icons/ic_retail/moneyIcon.png';
 export { default as QR } from '@/assets/icons/ic_retail/QR.png';
 export { default as categoryMenu } from '@/assets/icons/ic_posRetail/categoryMenu.png';
+export { default as logo_full } from '@/assets/icons/ic_posRetail/logo_full.png';
 export { default as categoryshoes } from '@/assets/icons/ic_posRetail/categoryshoes.png';
 export { default as cartEdit } from '@/assets/icons/ic_posRetail/cartEdit.png';
 export { default as barcode } from '@/assets/icons/ic_posRetail/barcode.png';
@@ -304,6 +307,7 @@ export { default as fedex } from '@/assets/icons/ic_analytics/fedex.png';
 export { default as dhl } from '@/assets/icons/ic_analytics/dhl.png';
 export { default as usps } from '@/assets/icons/ic_analytics/usps.png';
 export { default as fedexNew } from '@/assets/icons/ic_analytics/fedexNew.png';
+export { default as margin } from '@/assets/icons/ic_analytics/profit.png';
 
 export { default as task } from '@/assets/icons/sideBarIcons/task.png';
 export { default as drawerdeliveryTruck } from '@/assets/icons/sideBarIcons/Shipping.png';
@@ -339,8 +343,12 @@ export { default as up } from '@/assets/icons/ic_posRetail/up.png';
 export { default as down } from '@/assets/icons/ic_posRetail/down.png';
 export { default as expand } from '@/assets/icons/ic_deliveryOrder/expand.png';
 export { default as gps } from '@/assets/icons/ic_deliveryOrder/gps.png';
+export { default as productReturn } from '@/assets/icons/ic_dashboard/productReturn.png';
 export { default as Calculator } from '@/assets/images/Calculator.png';
 export { default as CalculatorColor } from '@/assets/images/CalculatorColor.png';
+export { default as storeLogo } from '@/assets/icons/ic_deliveryOrder/storeLogo.png';
+export { default as research } from '@/assets/icons/ic_posRetail/research.png';
+
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',

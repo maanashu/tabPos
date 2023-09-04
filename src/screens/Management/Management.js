@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {
@@ -590,7 +591,10 @@ export function Management() {
             <View>
               <Text style={[styles.countCashText]}>{strings.management.cashSummary}</Text>
               <Spacer space={SH(15)} />
-              <Spacer space={SH(0.3)} backgroundColor={COLORS.gerySkies} />
+              <Spacer
+                space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
+                backgroundColor={COLORS.gerySkies}
+              />
               <Spacer space={SH(15)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
                 <Text style={styles.amountExpect}>{strings.management.amountexpect}</Text>
@@ -600,7 +604,10 @@ export function Management() {
                 </Text>
               </View>
               <Spacer space={SH(12.5)} />
-              <Spacer space={SH(0.3)} backgroundColor={COLORS.gerySkies} />
+              <Spacer
+                space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
+                backgroundColor={COLORS.gerySkies}
+              />
               <Spacer space={SH(12.5)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
                 <Text style={styles.amountExpect}>{strings.management.amountCounted}</Text>
@@ -611,7 +618,10 @@ export function Management() {
               </View>
 
               <Spacer space={SH(12.5)} />
-              <Spacer space={SH(0.3)} backgroundColor={COLORS.gerySkies} />
+              <Spacer
+                space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
+                backgroundColor={COLORS.gerySkies}
+              />
               <Spacer space={SH(12.5)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
                 <Text
@@ -634,7 +644,6 @@ export function Management() {
               </View>
             </View>
             <Spacer space={SH(60)} />
-            {/* <View style={{ flex: 1 }} /> */}
             <Button
               style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
@@ -745,7 +754,8 @@ export function Management() {
                 Amount left in drawer: USD ${endBalance?.amount}
               </Text>
             </View>
-            <View style={{ flex: 1 }} />
+
+            <View style={{ flex: 0.5 }} />
             <Button
               style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}

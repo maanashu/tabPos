@@ -1,13 +1,6 @@
 import { Fonts } from '@/assets';
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  Text,
-  Image,
-  Platform,
-} from 'react-native';
+import { StyleSheet, View, TextInput, Image } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
 import { SH, SW, COLORS, SF } from '@/theme';
 import PropTypes from 'prop-types';
@@ -38,14 +31,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function TextField({
-  label,
-  imageStyle,
-  style,
-  image,
-  secureTextEntry,
-  ...rest
-}) {
+export function TextField({ label, imageStyle, style, image, secureTextEntry, ...rest }) {
   const [showText, setVisibility] = useState(secureTextEntry);
 
   return (

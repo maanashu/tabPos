@@ -31,8 +31,6 @@ export function AddCartModal({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
 
-  console.log('openFrom', openFrom);
-
   const cartData = getRetailData?.getAllCart;
   const productDetail = getRetailData?.getOneProduct;
 
@@ -148,18 +146,6 @@ export function AddCartModal({
     }
   };
 
-  // useEffect(() => {
-  //   setString(selectedItems.join(','));
-  // }, [selectedItems]);
-
-  // const getColorName = colorCode => {
-  //   const color = tinycolor(colorCode);
-  //   let colorName = color.toName();
-  //   colorName = colorName.charAt(0).toUpperCase() + colorName.slice(1);
-  //   setColors(colorName);
-  //   return colorName;
-  // };
-  // color select list start
   const coloredRenderItem = ({ item, index }) => {
     const backgroundColor = item.id === colorId ? COLORS.blue_shade : 'transparent';
     const color = item.id === colorId ? COLORS.primary : COLORS.black;

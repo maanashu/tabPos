@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
 
 import moment from 'moment';
@@ -11,11 +11,11 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
 import ShipmentTracking from './ShipmentTracking';
+import mapCustomStyle from '@/components/MapCustomStyles';
 import { getReviewDefault } from '@/actions/DeliveryAction';
-import { deliveryHomeIcon, scooter, backArrow2, barcode, crossButton, gps } from '@/assets';
+import { deliveryHomeIcon, scooter, barcode, crossButton, gps } from '@/assets';
 
 import styles from '../styles';
-import { ms } from 'react-native-size-matters';
 
 const InvoiceDetails = ({
   setTrackingView,
@@ -25,7 +25,6 @@ const InvoiceDetails = ({
   sourceCoordinate,
   destinationCoordinate,
   openShippingOrders,
-  sellerID,
   renderOrderDetailProducts,
   location,
   mapRef,
@@ -34,13 +33,6 @@ const InvoiceDetails = ({
   const userDetailData = singleOrderDetail?.user_details;
   return (
     <View style={{ flex: 1 }}>
-      <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backView}>
-        <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
-          {strings.deliveryOrders.back}
-        </Text>
-      </TouchableOpacity>
-
       <View style={[styles.firstRowStyle]}>
         <View style={styles.storeDetailView}>
           <Text style={styles.firstNameText}>
@@ -168,12 +160,13 @@ const InvoiceDetails = ({
 
         <View style={styles.mapMainView}>
           <MapView
+            customMapStyle={mapCustomStyle}
             ref={mapRef}
             provider={PROVIDER_GOOGLE}
             showCompass
             region={{
-              latitude: latitude,
-              longitude: longitude,
+              latitude: latitude ?? 0.0,
+              longitude: longitude ?? 0.0,
               latitudeDelta: 0.0992,
               longitudeDelta: 0.0421,
             }}
@@ -186,14 +179,14 @@ const InvoiceDetails = ({
             style={styles.detailMap}
           >
             <MapViewDirections
-              key={location?.latitude}
+              key={location?.latitude ?? 0.0}
               origin={{
-                latitude: latitude,
-                longitude: longitude,
+                latitude: latitude ?? 0.0,
+                longitude: longitude ?? 0.0,
               }}
               destination={{
-                latitude: singleOrderDetail?.coordinates?.[0],
-                longitude: singleOrderDetail?.coordinates?.[1],
+                latitude: singleOrderDetail?.coordinates?.[0] ?? 0.0,
+                longitude: singleOrderDetail?.coordinates?.[1] ?? 0.0,
               }}
               apikey={GOOGLE_MAP.API_KEYS}
               strokeWidth={6}
@@ -215,8 +208,8 @@ const InvoiceDetails = ({
             onPress={() =>
               mapRef.current.animateToRegion(
                 {
-                  latitude: latitude,
-                  longitude: longitude,
+                  latitude: latitude ?? 0.0,
+                  longitude: longitude ?? 0.0,
                   latitudeDelta: 0.001,
                   longitudeDelta: 0.001,
                 },
@@ -257,4 +250,4 @@ const InvoiceDetails = ({
   );
 };
 
-export default InvoiceDetails;
+export default memo(InvoiceDetails);

@@ -1,9 +1,9 @@
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet, Text, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { COLORS, ShadowStyles, TextStyles } from '@/theme';
-import { moderateScale, scale } from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 export function Button({ style, textStyle, title, pending, disable, ...rest }) {

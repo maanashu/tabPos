@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, TouchableOpacity, View, Image, ActivityIndicator } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
-import { rightlight } from '@/assets';
 import { NewChartKit, Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 
@@ -21,7 +20,7 @@ export function HomeGraph({
 }) {
   return (
     <View style={[styles.totalProductCon, style]}>
-      <Spacer space={SH(20)} />
+      <Spacer space={SH(10)} />
       <View style={styles.displayFlex}>
         <View>
           <Text style={styles.darkBlackText}>{header}</Text>

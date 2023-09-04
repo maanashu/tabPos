@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
+import { View, Dimensions, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+
 import { COLORS } from '@/theme';
-import { View, FlatList, Dimensions, ActivityIndicator } from 'react-native';
-import { ms } from 'react-native-size-matters';
-import styles from '../styles';
+
+const result = Dimensions.get('window').height - 50;
+const twoEqualView = result / 2;
 
 const OrderReview = ({
   renderOrderToReview,
@@ -18,7 +20,7 @@ const OrderReview = ({
           <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
-        <View style={[styles.orderToReviewView]}>
+        <View style={styles.orderToReviewView}>
           <FlatList
             scrollEnabled={getDeliveryData?.getReviewDef?.length > 0 ? true : false}
             renderItem={renderOrderToReview}
@@ -34,4 +36,23 @@ const OrderReview = ({
   );
 };
 
-export default OrderReview;
+export default memo(OrderReview);
+
+const styles = StyleSheet.create({
+  loaderViewStyle: {
+    borderRadius: 10,
+    height: twoEqualView,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+  },
+  orderToReviewView: {
+    borderRadius: 10,
+    height: twoEqualView,
+    backgroundColor: COLORS.white,
+  },
+  contentContainerStyle: {
+    flexGrow: 1,
+    paddingBottom: 20,
+  },
+});

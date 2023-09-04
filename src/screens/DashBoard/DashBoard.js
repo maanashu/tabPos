@@ -15,7 +15,7 @@ import {
 import moment from 'moment';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 import { useDebouncedCallback } from 'use-lodash-debounce';
 
@@ -28,12 +28,12 @@ import {
   pay,
   pin,
   rightIcon,
-  scanSearch,
   scn,
   search_light,
   sellingArrow,
   sellingBucket,
   sessionEndBar,
+  productReturn,
 } from '@/assets';
 import {
   addSellingSelection,
@@ -525,7 +525,21 @@ export function DashBoard({ navigation }) {
               </Text>
             </View>
           </View>
+
           <View style={{ flex: 1 }} />
+
+          <TouchableOpacity
+            onPress={() => navigate(NAVIGATION.refund)}
+            style={styles.checkoutButton}
+          >
+            <View style={styles.displayRow}>
+              <Image source={productReturn} style={styles.lockLight} />
+              <Text style={styles.checkoutText1}>{strings.dashboard.productReturn}</Text>
+            </View>
+          </TouchableOpacity>
+
+          <Spacer space={SH(10)} />
+
           <TouchableOpacity
             style={styles.checkoutButton}
             onPress={async () => {
@@ -593,7 +607,9 @@ export function DashBoard({ navigation }) {
               <Image source={scn} style={styles.scnStyle} />
             </TouchableOpacity>
           </View>
+
           <Spacer space={SH(20)} />
+
           <View style={styles.displayflex}>
             {STARTSELLING.map((item, index) => (
               <View style={styles.storeCardCon} key={index}>
@@ -628,6 +644,7 @@ export function DashBoard({ navigation }) {
                 extraData={getDeliveryData}
                 renderItem={tableListItem}
                 keyExtractor={(item) => item.id}
+                showsVerticalScrollIndicator={false}
                 // ListFooterComponent={renderFooterPost}
                 // onEndReached={debouncedLoadMoreOrder}
                 // onEndReachedThreshold={1}

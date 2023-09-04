@@ -8,6 +8,8 @@ import { logoutUserFunction } from '@/actions/UserActions';
 import { logoutFunction, merchantLoginSuccess } from '@/actions/AuthActions';
 import CustomAlert from '@/components/CustomAlert';
 
+let invalidTokenAlertShown = false;
+
 const getTimeZone = RNLocalize.getTimeZone();
 
 const client = axios.create({});
@@ -16,9 +18,6 @@ client.interceptors.request.use(async function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
   const user = store.getState().user?.posLoginData?.token;
   const fcmToken = await getDeviceToken();
-
-  console.log('register', register);
-  console.log('user', user);
 
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
@@ -53,7 +52,8 @@ client.interceptors.response.use(
       : response.data,
   (error) => {
     if (error.response) {
-      if (error.response.status === 401) {
+      if (error.response.status === 401 && !invalidTokenAlertShown) {
+        invalidTokenAlertShown = true;
         // Handle 401 Unauthorized scenario here
         CustomAlert({
           title: 'Alert',
@@ -64,6 +64,7 @@ client.interceptors.response.use(
             store.dispatch(merchantLoginSuccess({}));
             store.dispatch(logoutUserFunction());
             store.dispatch(logoutFunction());
+            invalidTokenAlertShown = false;
           },
         });
       }

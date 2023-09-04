@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { pin, eventClockIcon, userImage } from '@/assets';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { pin, eventClockIcon } from '@/assets';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import moment from 'moment';
@@ -49,7 +49,7 @@ const EventItemCard = ({ item, index }) => {
         <View style={styles.serviceTimeContainer}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image source={eventClockIcon} style={styles.evenclockIcon} />
-            <Text style={styles.eventDay}>{moment(item.date).format('dddd')}</Text>
+            <Text style={styles.eventDay}>{moment(item.date).format('ddd')}</Text>
           </View>
           <View style={styles.lineStl} />
 

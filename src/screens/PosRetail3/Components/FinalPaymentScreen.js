@@ -11,7 +11,7 @@ import React from 'react';
 import { ms } from 'react-native-size-matters';
 import { styles } from '../PosRetail3.styles';
 import BackButton from '../../../components/BackButton';
-import { Fonts, barcode } from '@/assets';
+import { Fonts, barcode, logo_full } from '@/assets';
 import moment from 'moment';
 import AddedCartItemsCard from '../../../components/AddedCartItemsCard';
 import { useFocusEffect } from '@react-navigation/native';
@@ -48,9 +48,6 @@ export const FinalPaymentScreen = ({
 
   const payAmount = totalPayAmount();
   const ActualPayAmount = payDetail?.tips;
-
-  // console.log('Actual Amount', ActualPayAmount);
-  // console.log('payamount by customer', payAmount);
   const changeDue = parseFloat(ActualPayAmount) - parseFloat(payAmount);
   const dispatch = useDispatch();
   useFocusEffect(
@@ -128,18 +125,33 @@ export const FinalPaymentScreen = ({
 
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Sub-Total</Text>
-              <Text style={styles._subTotalPrice}>${cartData?.amount?.products_price}</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
+              </Text>
             </View>
 
             <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
+            {/* <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Shipping Charge</Text>
               <Text style={styles._subTotalPrice}>$0.00</Text>
+            </View> */}
+            <View style={styles._subTotalContainer}>
+              <Text style={styles._substotalTile}>Discount</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.discount?.toFixed(2) ?? '0.00'}
+              </Text>
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Tips</Text>
               <Text style={styles._subTotalPrice}>${tipamount}</Text>
+            </View>
+            <View style={styles._horizontalLine} />
+            <View style={styles._subTotalContainer}>
+              <Text style={styles._substotalTile}>Total Taxes</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.tax?.toFixed(2) ?? '0.00'}
+              </Text>
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
@@ -154,8 +166,8 @@ export const FinalPaymentScreen = ({
                 ${totalPayAmount()}
               </Text>
             </View>
-            <View style={styles._horizontalLine} />
-            <View style={[styles._horizontalLine, { height: ms(3), marginTop: ms(15) }]} />
+            {/* <View style={styles._horizontalLine} /> */}
+            <View style={[styles._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
 
             <View style={styles._paymentTitleContainer}>
               <Text style={styles._payTitle}>Payment option: </Text>
@@ -171,7 +183,8 @@ export const FinalPaymentScreen = ({
 
             <Text style={styles._thankyou}>Thank You</Text>
             <Image source={barcode} style={styles._barCodeImage} />
-            <Text style={styles._barCode}>ABC-abc-1234</Text>
+            {/* <Text style={styles._barCode}>ABC-abc-1234</Text> */}
+            <Image source={logo_full} style={styles.logoFull} />
           </View>
         </View>
       </View>

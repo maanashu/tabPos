@@ -13,7 +13,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
   },
-
   displayflex: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -146,6 +145,16 @@ export const styles = StyleSheet.create({
     paddingHorizontal: ms(10),
     borderColor: COLORS.solidGrey,
     flexGrow: 1,
+  },
+  _inputOtherAmount: {
+    flexGrow: 1,
+    marginTop: ms(10),
+    width: Platform.OS === 'android' ? ms(380) : ms(329),
+    height: ms(40),
+    borderRadius: ms(3),
+    borderColor: COLORS.solidGrey,
+    borderWidth: 1,
+    paddingHorizontal: ms(10),
   },
   _tipsButton: {
     height: ms(40),
@@ -1004,7 +1013,7 @@ export const styles = StyleSheet.create({
   },
 
   _paymentTitleContainer: {
-    marginTop: ms(10),
+    marginTop: ms(5),
     flexDirection: 'row',
     alignSelf: 'flex-start',
     marginLeft: ms(15),
@@ -1569,7 +1578,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
   },
-  saveText: {
+  saveText1: {
     fontSize: ms(8),
     fontFamily: Fonts.Medium,
   },
@@ -2154,19 +2163,38 @@ export const styles = StyleSheet.create({
   },
 
   // custom product add modal css start
+  headerConCustomProduct: {
+    borderBottomWidth: 1,
+    height: ms(40),
+    borderColor: COLORS.solidGrey,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: ms(10),
+  },
+
+  addCartbtnBodyCon: {
+    marginTop: ms(15),
+    borderWidth: 1,
+    height: ms(55),
+    borderColor: COLORS.solidGrey,
+    borderRadius: ms(3),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 
   customProductCon: {
     borderWidth: 1,
-    width: ms(550),
-    height: ms(350),
+    width: ms(350),
+    height: ms(290),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: 10,
-    padding: ms(10),
-    marginTop: ms(50),
+    // padding: ms(10),
+    marginTop: Platform.OS === 'android' ? ms(10) : ms(50),
   },
   dollarAddCon: {
-    height: ms(28),
+    height: ms(32),
     borderRadius: 5,
     backgroundColor: COLORS.textInputBackground,
     paddingHorizontal: ms(10),
@@ -2186,8 +2214,8 @@ export const styles = StyleSheet.create({
     fontSize: ms(11),
   },
   productNameInput: {
-    marginTop: ms(10),
-    height: ms(28),
+    marginTop: ms(15),
+    height: ms(32),
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
@@ -2205,12 +2233,14 @@ export const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   closeButtonCon: {
-    borderWidth: 1,
-    height: ms(42),
-    width: ms(150),
-    borderColor: COLORS.solidGrey,
+    height: ms(54),
+    width: ms(110),
+    borderColor: COLORS.gerySkies,
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomEndRadius: ms(3),
+    borderTopEndRadius: ms(3),
+    borderWidth: 1,
   },
   closeText: {
     fontFamily: Fonts.SemiBold,
@@ -2218,7 +2248,7 @@ export const styles = StyleSheet.create({
     fontSize: ms(8),
   },
   customAddQtyCon: {
-    height: ms(42),
+    height: ms(35),
     borderWidth: 1,
     flex: 1,
     borderColor: COLORS.solidGrey,
@@ -2236,21 +2266,27 @@ export const styles = StyleSheet.create({
   zeroText: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
-    fontSize: ms(12),
+    fontSize: ms(11),
   },
 
   unitPriceInput: {
     backgroundColor: COLORS.solidGrey,
-    width: Platform.OS === 'android' ? ms(70) : ms(57),
+    width: Platform.OS === 'android' ? ms(50) : ms(57),
     height: ms(20),
     padding: 0,
     margin: 0,
     textAlign: 'center',
+    color: COLORS.solid_grey,
+    fontSize: SF(13),
+    fontFamily: Fonts.Regular,
+  },
+  unitPriceInputWidth: {
+    width: Platform.OS === 'android' ? ms(44) : ms(57),
   },
   saveButtonCon: {
-    width: Platform.OS === 'android' ? ms(40) : ms(30),
+    width: Platform.OS === 'android' ? ms(37) : ms(30),
     height: ms(20),
-    backgroundColor: COLORS.solidGrey,
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
@@ -2258,7 +2294,62 @@ export const styles = StyleSheet.create({
   },
   saveText: {
     fontFamily: Fonts.Regular,
-    color: COLORS.darkGray,
+    color: COLORS.white,
     fontSize: ms(7),
+  },
+  productCartBodyRight: {
+    // borderWidth: 1,
+    width: Platform.OS === 'android' ? ms(330) : ms(255),
+    height: ms(20),
+    flexDirection: 'row',
+  },
+  productCartBody: {
+    // borderWidth: 1,
+    width: Platform.OS === 'android' ? ms(82) : ms(60),
+    height: ms(20),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  serviceCartRightBody: {
+    // borderWidth: 1,
+    width: Platform.OS === 'android' ? ms(360) : ms(280),
+    height: ms(20),
+    flexDirection: 'row',
+  },
+  serviceCartBody: {
+    // borderWidth: 1,
+    width: Platform.OS === 'android' ? ms(71) : ms(54),
+    height: ms(20),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartHeaderBodyRighSide: {
+    color: COLORS.white,
+    fontSize: SF(14),
+    fontFamily: Fonts.Medium,
+  },
+  counterMainCon: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  oneCon: {
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: COLORS.solidGrey,
+    width: ms(80),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  minusCon: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoFull: {
+    width: ms(90),
+    height: ms(30),
+    resizeMode: 'contain',
+    marginTop: ms(2),
   },
 });

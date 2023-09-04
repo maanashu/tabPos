@@ -228,22 +228,26 @@ export function AddServiceCartModal({
             ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
           </Text>
         </View>
-
-        <View style={{ alignItems: 'center' }}>
-          <View style={styles.displayRow}>
-            <View style={[styles.colorRow, styles.serviceRow]} />
-            <Text style={styles.colorText}>Service Provider</Text>
-            <View style={[styles.colorRow, styles.serviceRow]} />
+        {itemData?.pos_staff?.length > 0 ? (
+          <View style={{ alignItems: 'center' }}>
+            <View style={styles.displayRow}>
+              <View style={[styles.colorRow, styles.serviceRow]} />
+              <Text style={styles.colorText}>Service Provider</Text>
+              <View style={[styles.colorRow, styles.serviceRow]} />
+            </View>
           </View>
-        </View>
+        ) : null}
 
         <View>
-          <Text style={styles.selected}>
-            Selected:{' '}
-            <Text style={{ color: COLORS.primary }}>
-              {providerDetail?.user_profiles?.firstname}
+          {itemData?.pos_staff?.length > 0 ? (
+            <Text style={styles.selected}>
+              Selected:{' '}
+              <Text style={{ color: COLORS.primary }}>
+                {providerDetail?.user_profiles?.firstname}
+              </Text>
             </Text>
-          </Text>
+          ) : null}
+
           <Spacer space={SH(10)} />
           <View
             style={{
@@ -262,6 +266,11 @@ export function AddServiceCartModal({
           </View>
           <Spacer space={SH(10)} />
 
+          {/* <View style={styles.displayRow}>
+            <View style={[styles.colorRow, styles.serviceRow]} />
+            <Text style={styles.colorText}>Available slot</Text>
+            <View style={[styles.colorRow, styles.serviceRow]} />
+          </View> */}
           <View style={styles.displayRow}>
             <View style={[styles.colorRow, styles.serviceRow]} />
             <Text style={styles.colorText}>Available slot</Text>

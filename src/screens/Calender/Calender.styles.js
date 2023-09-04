@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { SW, SH, SF, ShadowStyles } from '@/theme';
+import { SW, SH, SF } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
 import { verticalScale, moderateScale, ms } from 'react-native-size-matters';
@@ -564,12 +564,12 @@ export const styles = StyleSheet.create({
   },
   eventDate: {
     fontFamily: Fonts.Regular,
-    fontSize: ms(7),
+    fontSize: ms(6),
     color: COLORS.solid_grey,
   },
   eventDay: {
     fontFamily: Fonts.Regular,
-    fontSize: ms(7),
+    fontSize: ms(6),
     color: COLORS.solid_grey,
     marginLeft: ms(8),
   },

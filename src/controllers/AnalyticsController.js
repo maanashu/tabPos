@@ -309,12 +309,12 @@ export class AnalyticsController {
     });
   }
 
-  static async getAnalyticStatistics(sellerID, filter) {
+  static async getAnalyticStatistics(sellerID, data) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getAnalyticStatistics +
-        `?seller_id=${sellerID}&filter=${filter}`;
+        ORDER_URL + ApiOrderInventory.getAnalyticStatistics + `?seller_id=${sellerID}&${params}`;
+
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

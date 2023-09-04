@@ -39,7 +39,7 @@ const TodayShippingStatus = ({ todayStatus }) => {
           </View>
 
           <View style={styles.shippingOrdersViewStyle}>
-            <Text style={styles.shippedOrderText}>{strings.shippingOrder.shippedOrder}</Text>
+            <Text style={styles.shippedOrderText}>{strings.orderStatus.shipOrder}</Text>
             <Text style={styles.shippedOrderText}>{todayStatus?.[1]?.count ?? '0'}</Text>
           </View>
         </>

@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Platform,
-  View,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { BarChartCom, ScreenWrapper, Spacer } from '@/components';
+import { Platform, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { BarChartCom, Spacer } from '@/components';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import { styles } from '../Analytics2.styles';
@@ -255,8 +248,8 @@ export function MainScreen({
 
           <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressOrders}>
             <BarChartCom
-              barWid={Dimensions.get('window').width * 0.24}
-              barHei={Platform.OS === 'android' ? SH(135) : SH(130)}
+              barWid={Dimensions.get('window').width * 0.22}
+              barHei={Platform.OS === 'android' ? SH(110) : SH(110)}
               barSpacing={SW(4.2)}
               barW={SW(1.5)}
               labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}

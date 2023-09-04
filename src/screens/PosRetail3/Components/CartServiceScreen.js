@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { Keyboard, ScrollView, Text, View } from 'react-native';
-
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
-
-import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   addDiscountPic,
   addToCart,
@@ -15,10 +12,7 @@ import {
   cross,
   eraser,
   holdCart,
-  minus,
   notess,
-  pencil,
-  plus,
   rightBack,
   search_light,
   sideKeyboard,
@@ -33,15 +27,11 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import Modal, { ReactNativeModal } from 'react-native-modal';
 import {
   changeStatusServiceCart,
-  clearAllCart,
-  clearOneCart,
-  clearOneserviceCart,
   clearServiceAllCart,
-  getAllCartSuccess,
   getAvailableOffer,
   getOneService,
   getServiceCartSuccess,
-  updateCartQty,
+  serviceUpdatePrice,
   updateServiceCartQty,
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -54,6 +44,7 @@ import { useEffect } from 'react';
 import { updateServiceCartLength } from '@/actions/CartAction';
 import { getServiceCartLength } from '@/selectors/CartSelector';
 import { useFocusEffect } from '@react-navigation/core';
+import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -66,6 +57,7 @@ export function CartServiceScreen({
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const cartServiceData = getRetailData?.getserviceCart;
+  const cartServiceId = getRetailData?.getserviceCart?.id;
   let arr = [getRetailData?.getserviceCart];
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
@@ -78,60 +70,18 @@ export function CartServiceScreen({
   const CART_LENGTH = useSelector(getServiceCartLength);
   const [cartEditItem, setCartEditItem] = useState(false);
   const [cartIndex, setCartIndex] = useState();
-
   const [unitPrice, setUnitPrice] = useState();
-
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
-
-  // const serviceFun = (item) => {
-  //   setServiceItemSave(item);
-  //   setAddServiceCartModal(true);
-  // };
-
-  const serviceCartEdit = (data, index) => {
-    setCartIndex(index);
-    setCartEditItem(true);
-    setUnitPrice(data?.product_details?.supply?.supply_prices?.selling_price);
-  };
-
-  const serviceFun = async (item) => {
-    setOfferId(item?.product?.id);
-    const res = await dispatch(getOneService(sellerID, item?.product?.id));
-    if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-      setAddServiceCartModal(true);
-    }
-  };
-
-  const cartServiceEdit = async (serviceId) => {
-    const res = await dispatch(getOneService(sellerID, serviceId));
-    if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-      setAddServiceCartModal(true);
-    }
-  };
+  const [cartProductId, setCartProductId] = useState();
 
   useEffect(() => {
     const data = {
       seller_id: sellerID,
       servicetype: 'service',
     };
-
     dispatch(getAvailableOffer(data));
   }, []);
 
-  const serviceCartStatusHandler = () => {
-    const data =
-      holdServiceArray?.length > 0
-        ? {
-            status: holdServiceArray?.[0]?.is_on_hold === false ? true : false,
-            cartId: holdServiceArray?.[0]?.id,
-          }
-        : {
-            status: getRetailData?.getserviceCart?.is_on_hold === false ? true : false,
-            cartId: getRetailData?.getserviceCart?.id,
-          };
-    dispatch(changeStatusServiceCart(data));
-  };
-
+  // offline  cart Remove Function
   useFocusEffect(
     React.useCallback(() => {
       return () => {
@@ -147,7 +97,6 @@ export function CartServiceScreen({
         product_id: item?.product_id,
         qty: item?.qty,
       }));
-
       const data = {
         updated_products: products,
       };
@@ -156,12 +105,6 @@ export function CartServiceScreen({
     // else {
     //   clearCartHandler();
     // }
-  };
-
-  const clearCartHandler = () => {
-    dispatch(clearServiceAllCart());
-    crossHandler();
-    getScreen('Service');
   };
 
   function calculatePercentageValue(value, percentage) {
@@ -200,6 +143,63 @@ export function CartServiceScreen({
       dispatch(updateServiceCartLength(CART_LENGTH - 1));
       dispatch(getServiceCartSuccess(DATA));
     }
+  };
+
+  // cart Update function
+  const serviceCartEdit = (data, index) => {
+    setCartProductId(data?.id);
+    setCartIndex(index);
+    setCartEditItem(true);
+    setUnitPrice((data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2));
+  };
+
+  const saveCartEditFun = () => {
+    if (!unitPrice || unitPrice == 0) {
+      Toast.show({
+        text2: 'Please Enter Amount',
+        position: 'top',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      setCartEditItem(false);
+      const data = {
+        cartid: cartServiceId,
+        cartProductId: cartProductId,
+        updatedPrice: unitPrice,
+      };
+      dispatch(serviceUpdatePrice(data));
+    }
+  };
+
+  // available Offer function
+  const serviceFun = async (item) => {
+    setOfferId(item?.product?.id);
+    const res = await dispatch(getOneService(sellerID, item?.product?.id));
+    if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
+      setAddServiceCartModal(true);
+    }
+  };
+
+  // hold cart Function
+  const serviceCartStatusHandler = () => {
+    const data =
+      holdServiceArray?.length > 0
+        ? {
+            status: holdServiceArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdServiceArray?.[0]?.id,
+          }
+        : {
+            status: getRetailData?.getserviceCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getserviceCart?.id,
+          };
+    dispatch(changeStatusServiceCart(data));
+  };
+
+  const clearCartHandler = () => {
+    dispatch(clearServiceAllCart());
+    crossHandler();
+    getScreen('Service');
   };
 
   return (
@@ -261,22 +261,28 @@ export function CartServiceScreen({
                   <Text style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}>#</Text>
                   <Text style={styles.ItemHeader}>Item</Text>
                 </View>
-                <View style={styles.cartHeaderRightSide}>
-                  <Text style={styles.cartHeaderBodyRightSide} numberOfLines={1}>
-                    Staff Name
-                  </Text>
-                  <Text style={styles.cartHeaderBodyRightSide} numberOfLines={1}>
-                    Unit Price
-                  </Text>
-                  <Text style={styles.cartHeaderBodyRightSide} numberOfLines={1}>
-                    Quantity
-                  </Text>
-                  <Text style={styles.cartHeaderBodyRightSide} numberOfLines={1}>
-                    Line Total
-                  </Text>
-                  <Text style={styles.cartHeaderBodyRightSide} numberOfLines={1}>
-                    {null}
-                  </Text>
+                <View style={styles.serviceCartRightBody}>
+                  <View style={styles.serviceCartBody}>
+                    <Text style={styles.cartHeaderBodyRighSide} numberOfLines={1}>
+                      Staff Name
+                    </Text>
+                  </View>
+                  <View style={styles.serviceCartBody}>
+                    <Text style={styles.cartHeaderBodyRighSide} numberOfLines={1}>
+                      Unit Price
+                    </Text>
+                  </View>
+                  <View style={styles.serviceCartBody}>
+                    <Text style={styles.cartHeaderBodyRighSide} numberOfLines={1}>
+                      Quantity
+                    </Text>
+                  </View>
+                  <View style={styles.serviceCartBody}>
+                    <Text style={styles.cartHeaderBodyRighSide} numberOfLines={1}>
+                      Line Total
+                    </Text>
+                  </View>
+                  <View style={styles.serviceCartBody}></View>
                 </View>
               </View>
             </View>
@@ -313,7 +319,7 @@ export function CartServiceScreen({
                             >
                               {data.product_details?.name}
                             </Text>
-                            <Text style={[styles.sukNumber, { width: SW(50) }]} numberOfLines={1}>
+                            <Text style={[styles.sukNumber, { width: SW(40) }]} numberOfLines={1}>
                               {moment(data?.date).format('LL')} @
                               {data?.start_time + '-' + data?.end_time}
                             </Text>
@@ -321,78 +327,98 @@ export function CartServiceScreen({
                           </View>
                         </View>
                       </View>
-                      <View style={styles.cartHeaderRightSide}>
-                        <View
-                          style={[
-                            styles.cartBodyRightSide,
-                            { flexDirection: 'row', alignItems: 'center', paddingLeft: ms(0) },
-                          ]}
-                        >
-                          <Image
-                            source={
-                              { uri: data?.pos_user_details?.user?.user_profiles?.profile_photo } ??
-                              userImage
-                            }
-                            style={styles.offerImage}
-                          />
-                          <Text
-                            style={[styles.blueListDataText, { marginLeft: 3, width: SW(20) }]}
-                            numberOfLines={1}
+                      <View style={styles.serviceCartRightBody}>
+                        <View style={styles.serviceCartBody}>
+                          <View
+                            style={[
+                              styles.cartBodyRightSide,
+                              {
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                paddingLeft: ms(0),
+                                opacity: cartIndex === ind && cartEditItem ? 0.3 : 1,
+                              },
+                            ]}
                           >
-                            {data?.pos_user_details?.user?.user_profiles?.firstname}
-                          </Text>
+                            <Image
+                              source={
+                                {
+                                  uri: data?.pos_user_details?.user?.user_profiles?.profile_photo,
+                                } ?? userImage
+                              }
+                              style={styles.offerImage}
+                            />
+                            <Text style={styles.blueListDataText} numberOfLines={1}>
+                              {data?.pos_user_details?.user?.user_profiles?.firstname}
+                            </Text>
+                          </View>
                         </View>
-
-                        {cartIndex === ind && cartEditItem ? (
-                          <TextInput
-                            value={unitPrice.toString()}
-                            onChangeText={setUnitPrice}
-                            style={styles.unitPriceInput}
-                            keyboardType="numeric"
-                          />
-                        ) : (
-                          <Text style={[styles.cartBodyRightSide]} numberOfLines={1}>
+                        <View style={styles.serviceCartBody}>
+                          {cartIndex === ind && cartEditItem ? (
+                            <TextInput
+                              value={unitPrice.toString()}
+                              onChangeText={setUnitPrice}
+                              style={styles.unitPriceInput}
+                              keyboardType="numeric"
+                            />
+                          ) : (
+                            <Text style={styles.blueListDataText} numberOfLines={1}>
+                              $
+                              {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
+                                2
+                              )}
+                            </Text>
+                          )}
+                        </View>
+                        <View style={styles.serviceCartBody}>
+                          <Text>1</Text>
+                        </View>
+                        <View style={styles.serviceCartBody}>
+                          <Text style={styles.blueListDataText}>
                             $
                             {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
                               2
                             )}
                           </Text>
-                        )}
-                        <Text style={styles.cartBodyRightSide}>1</Text>
-                        <Text style={styles.cartBodyRightSide} numberOfLines={1}>
-                          $
-                          {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2)}
-                        </Text>
-                        <View
-                          style={[
-                            styles.cartBodyRightSide,
-                            {
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              paddingLeft: ms(0),
-                            },
-                          ]}
-                        >
-                          {cartIndex === ind && cartEditItem ? (
-                            <TouchableOpacity
-                              style={styles.saveButtonCon}
-                              onPress={() => setCartEditItem(false)}
-                            >
-                              <Text style={styles.saveText}>Save</Text>
+                        </View>
+                        <View style={styles.serviceCartBody}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View>
+                              {cartIndex === ind && cartEditItem ? (
+                                <TouchableOpacity
+                                  style={[
+                                    styles.saveButtonCon,
+                                    {
+                                      backgroundColor: unitPrice
+                                        ? COLORS.primary
+                                        : COLORS.textInputBackground,
+                                    },
+                                  ]}
+                                  onPress={saveCartEditFun}
+                                  disabled={unitPrice ? false : true}
+                                >
+                                  <Text
+                                    style={[
+                                      styles.saveText,
+                                      { color: unitPrice ? COLORS.white : COLORS.darkGray },
+                                    ]}
+                                  >
+                                    Save
+                                  </Text>
+                                </TouchableOpacity>
+                              ) : (
+                                <TouchableOpacity
+                                  style={styles.cartEditCon}
+                                  onPress={() => serviceCartEdit(data, ind)}
+                                >
+                                  <Image source={cartEdit} style={styles.cartEdit} />
+                                </TouchableOpacity>
+                              )}
+                            </View>
+                            <TouchableOpacity onPress={() => removeOneCartHandler(data.id, ind)}>
+                              <Image source={borderCross} style={styles.borderCross} />
                             </TouchableOpacity>
-                          ) : (
-                            <TouchableOpacity
-                              style={styles.cartEditCon}
-                              // onPress={() => cartServiceEdit(data?.product_id)}
-                              onPress={() => serviceCartEdit(data, ind)}
-                            >
-                              <Image source={cartEdit} style={styles.cartEdit} />
-                            </TouchableOpacity>
-                          )}
-
-                          <TouchableOpacity onPress={() => removeOneCartHandler(data.id, ind)}>
-                            <Image source={borderCross} style={styles.borderCross} />
-                          </TouchableOpacity>
+                          </View>
                         </View>
                       </View>
                     </View>
@@ -488,7 +514,6 @@ export function CartServiceScreen({
                   )}
                 />
               </View>
-
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
                 <TouchableOpacity
@@ -497,6 +522,7 @@ export function CartServiceScreen({
                     addDiscountHandler();
                     backCartLoad();
                   }}
+                  disabled={cartServiceData?.length == 0 ? true : false}
                 >
                   <Image source={addDiscountPic} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Discount</Text>
@@ -507,6 +533,7 @@ export function CartServiceScreen({
                     addNotesHandler();
                     backCartLoad();
                   }}
+                  disabled={cartServiceData?.length == 0 ? true : false}
                 >
                   <Image source={notess} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Notes</Text>
@@ -525,10 +552,6 @@ export function CartServiceScreen({
                   ${cartServiceData?.amount?.products_price.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
-              {/* <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>Total VAT</Text>
-                <Text style={styles.subTotalDollar}>$0.00</Text>
-              </View> */}
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Total Taxes</Text>
                 <Text style={styles.subTotalDollar}>

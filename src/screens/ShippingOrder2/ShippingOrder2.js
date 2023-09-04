@@ -56,7 +56,6 @@ import RightDrawer from './Components/RightDrawer';
 import OrderDetail from './Components/OrderDetail';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { ScreenWrapper, Spacer } from '@/components';
-import { graphOptions } from '@/constants/staticData';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import OrderConversion from './Components/OrderConversion';
@@ -95,6 +94,29 @@ export function ShippingOrder2() {
   series.forEach((num) => {
     sum += num;
   });
+
+  const graphOptions = [
+    {
+      key: '1',
+      title: 'Incoming Orders',
+      checked: true,
+    },
+    {
+      key: '2',
+      title: 'Order Processing',
+      checked: true,
+    },
+    {
+      key: '3',
+      title: 'Ready For Pickup',
+      checked: true,
+    },
+    {
+      key: '4',
+      title: 'Completed',
+      checked: true,
+    },
+  ];
 
   const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet, COLORS.lightGreen];
 
@@ -547,22 +569,22 @@ export function ShippingOrder2() {
           >
             <Image
               source={
-                item?.title === 'In Coming Orders'
+                item?.title === 'Incoming Orders'
                   ? incomingOrders
-                  : item?.title === 'Cancelled Orders'
+                  : item?.title === 'Order Processing'
                   ? cancelledOrders
-                  : item?.title === 'Returned Orders'
+                  : item?.title === 'Ready For Pickup'
                   ? returnedOrders
                   : checkedCheckboxSquare
               }
               style={styles.rightIconStyle}
             />
             <Text style={styles.varientTextStyle}>
-              {item?.title === 'In Coming Orders'
+              {item?.title === 'Incoming Orders'
                 ? 'Incoming Orders'
-                : item?.title === 'Cancelled Orders'
+                : item?.title === 'Order Processing'
                 ? 'Order Processing'
-                : item?.title === 'Returned Orders'
+                : item?.title === 'Ready For Pickup'
                 ? 'Ready For Pickup'
                 : 'Completed'}
             </Text>
@@ -578,22 +600,22 @@ export function ShippingOrder2() {
                 styles.rightIconStyle,
                 {
                   tintColor:
-                    item?.title === 'In Coming Orders'
+                    item?.title === 'Incoming Orders'
                       ? COLORS.bluish_green
-                      : item?.title === 'Cancelled Orders'
+                      : item?.title === 'Order Processing'
                       ? COLORS.pink
-                      : item?.title === 'Returned Orders'
+                      : item?.title === 'Ready For Pickup'
                       ? COLORS.yellowTweet
                       : COLORS.primary,
                 },
               ]}
             />
             <Text style={styles.varientTextStyle}>
-              {item?.title === 'In Coming Orders'
+              {item?.title === 'Incoming Orders'
                 ? 'Incoming Orders'
-                : item?.title === 'Cancelled Orders'
+                : item?.title === 'Order Processing'
                 ? 'Order Processing'
-                : item?.title === 'Returned Orders'
+                : item?.title === 'Ready For Pickup'
                 ? 'Ready For Pickup'
                 : 'Completed'}
             </Text>

@@ -1,6 +1,4 @@
-import { NAVIGATION } from '@/constants';
 import { UserController } from '@/controllers/UserController';
-import { navigate } from '@/navigation/NavigationRef';
 import { TYPES } from '@/Types/Types';
 
 const loginPosUserRequest = () => ({

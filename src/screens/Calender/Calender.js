@@ -46,8 +46,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 
 moment.suppressDeprecationWarnings = true;
 
-export function Calender(props) {
-  const windowWidth = Dimensions.get('window').width;
+export function Calender() {
   const windowHeight = Dimensions.get('window').height;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -95,14 +94,6 @@ export function Calender(props) {
 
   const totalAppointmentCountOfStaff =
     getStaffUsers?.reduce((total, user) => total + user.appointment_counts, 0) || 0;
-
-  const data = {
-    zipcode: storeItem?.current_address?.zipcode,
-    street: storeItem?.current_address?.street_address,
-    city: storeItem?.current_address?.city,
-    state: storeItem?.current_address?.state,
-    country: storeItem?.current_address?.country,
-  };
 
   const getAppointmentsForSelectedStaff = () => {
     const filteredAppointments = getApprovedAppointments?.filter(
@@ -417,7 +408,7 @@ export function Calender(props) {
                 showsVerticalScrollIndicator={false}
                 style={{ marginBottom: ms(40) }}
                 keyExtractor={(_, index) => index.toString()}
-                renderItem={({ item, index }) => {
+                renderItem={({ item }) => {
                   const userProfile = item?.user?.user_profiles;
                   const posUserId = item?.user?.unique_uuid;
                   return (

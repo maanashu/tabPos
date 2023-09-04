@@ -114,8 +114,10 @@ export const ApiOrderInventory = {
   appintment_cart: 'appointment_carts',
   qrCode: 'poscarts/qr-code/',
   qrcodeServices: 'appointment_carts/qr-code/',
-  getAnalyticOrderGraphs: 'orders/pos/analytics/count/graph',
-  getTotalOrder: 'orders/statistics/orders/total',
+  getAnalyticOrderGraphs: 'orders/pos/analytics/count/graph-new',
+  // getAnalyticOrderGraphs: 'orders/pos/analytics/count/graph',
+  // getTotalOrder: 'orders/statistics/orders/total',
+  getTotalOrder: 'orders/statistics/orders/total-new',
   qrCode: 'poscarts/qr-code/',
   orderStatusCount: 'orders/pos/seller/multi-status/orders-count',
   changeStatusProductCart: 'poscarts/change-hold-status',
@@ -130,6 +132,9 @@ export const ApiOrderInventory = {
   ServicesQrStatus: 'appointment_carts/check-payment-status/',
   getOneService: 'appointments',
   updateServiceCartQty: 'appointment_carts/change-qty',
+  productUpdatePrice: 'poscarts/update-price',
+  serviceUpdatePrice: 'appointment_carts/update-price',
+  cartBarCode: 'poscarts/scan-barcode',
 };
 
 export const ApiWalletInventory = {

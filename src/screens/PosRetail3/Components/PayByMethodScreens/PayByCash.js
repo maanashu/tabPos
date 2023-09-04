@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { ms } from 'react-native-size-matters';
 import { Button, Spacer } from '@/components';
-import { Fonts, barcode } from '@/assets';
+import { Fonts, barcode, logo_full } from '@/assets';
 import moment from 'moment';
 import BackButton from '@/components/BackButton';
 import { styles } from '../../PosRetail3.styles';
@@ -203,17 +203,17 @@ export const PayByCash = ({
                   />
                 </View>
 
-                <View style={styles._inputMain}>
-                  <View style={styles._inputSubView}>
-                    <TextInput
-                      placeholder="Other Amount"
-                      keyboardType="number-pad"
-                      style={styles._inputCashContainer}
-                      value={amount}
-                      onChangeText={setAmount}
-                    />
-                  </View>
-                </View>
+                <TextInput
+                  placeholder="Other Amount"
+                  keyboardType="number-pad"
+                  style={styles._inputOtherAmount}
+                  value={amount}
+                  onChangeText={setAmount}
+                />
+
+                {/* <View style={[styles._inputMain, { borderWidth: 1 }]}>
+                  
+                </View> */}
                 <Button
                   onPress={() => {
                     // onPressContinue
@@ -257,18 +257,24 @@ export const PayByCash = ({
 
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Sub-Total</Text>
-              <Text style={styles._subTotalPrice}>${cartData?.amount?.products_price}</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
+              </Text>
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Discount ( MIDApril100)</Text>
-              <Text style={styles._subTotalPrice}>${cartData?.amount?.discount}</Text>
+              <Text style={styles._substotalTile}>Discount (MIDApril100)</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.discount?.toFixed(2) ?? '0.00'}
+              </Text>
             </View>
 
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Shipping Charge</Text>
-              <Text style={styles._subTotalPrice}>$0.00</Text>
+              <Text style={styles._substotalTile}>Total Taxes</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
+              </Text>
             </View>
             {/* <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
@@ -303,10 +309,12 @@ export const PayByCash = ({
             <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
             <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
-            <Spacer space={SH(10)} />
+            <Spacer space={SH(5)} />
             <Text style={styles._thankyou}>Thank You</Text>
-            <Image source={barcode} style={styles._barCodeImage} />
-            <Text style={styles._barCode}>ABC-abc-1234</Text>
+            {/* <Image source={barcode} style={styles._barCodeImage} />
+            <Text style={styles._barCode}>ABC-abc-1234</Text> */}
+            <Image source={{ uri: cartData?.barcode } ?? barcode} style={styles._barCodeImage} />
+            <Image source={logo_full} style={styles.logoFull} />
           </View>
         </View>
       </View>

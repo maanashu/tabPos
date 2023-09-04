@@ -31,6 +31,7 @@ import {
   getAllCartSuccess,
   getAvailableOffer,
   getOneProduct,
+  productUpdatePrice,
   updateCartQty,
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -44,6 +45,7 @@ import Modal from 'react-native-modal';
 import { updateCartLength } from '@/actions/CartAction';
 import { getCartLength } from '@/selectors/CartSelector';
 import { FlatList } from 'react-native-gesture-handler';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export function CartScreen({
   onPressPayNow,
@@ -55,6 +57,7 @@ export function CartScreen({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
+  const cartId = cartData?.id;
   let arr = [getRetailData?.getAllCart];
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -67,7 +70,20 @@ export function CartScreen({
   const [offerId, setOfferId] = useState();
   const CART_LENGTH = useSelector(getCartLength);
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+  const [unitPrice, setUnitPrice] = useState();
+  const [cartEditItem, setCartEditItem] = useState(false);
+  const [cartIndex, setCartIndex] = useState();
+  const [cartProductId, setCartProductId] = useState();
 
+  useEffect(() => {
+    const data = {
+      seller_id: sellerID,
+      servicetype: 'product',
+    };
+    dispatch(getAvailableOffer(data));
+  }, []);
+
+  // hold cart Function
   const cartStatusHandler = () => {
     const data =
       holdProductArray?.length > 0
@@ -81,14 +97,8 @@ export function CartScreen({
           };
     dispatch(changeStatusProductCart(data));
   };
-  useEffect(() => {
-    const data = {
-      seller_id: sellerID,
-      servicetype: 'product',
-    };
-    dispatch(getAvailableOffer(data));
-  }, []);
 
+  // offline cart handler function
   const beforeDiscountCartLoad = () => {
     var arr = getRetailData?.getAllCart;
     if (arr?.poscart_products?.length > 0) {
@@ -121,10 +131,31 @@ export function CartScreen({
     }
   };
 
-  const cartProductedit = async (productId) => {
-    const res = await dispatch(getOneProduct(sellerID, productId));
-    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-      setAddCartModal(true);
+  //  update cart function
+  const cartProductedit = (data, index) => {
+    beforeDiscountCartLoad();
+    setCartProductId(data?.id);
+    setCartIndex(index);
+    setCartEditItem(true);
+    setUnitPrice((data?.product_details?.supply?.supply_prices?.selling_price).toFixed(2));
+  };
+
+  const saveCartEditFun = () => {
+    if (!unitPrice || unitPrice == 0) {
+      Toast.show({
+        text2: 'Please Enter Amount',
+        position: 'top',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      setCartEditItem(false);
+      const data = {
+        cartid: cartId,
+        cartProductId: cartProductId,
+        updatedPrice: unitPrice,
+      };
+      dispatch(productUpdatePrice(data));
     }
   };
 
@@ -207,7 +238,6 @@ export function CartScreen({
           iconShow
           crossHandler={() => {
             crossHandler();
-            // dispatch(getUserDetailSuccess([]));
           }}
         />
 
@@ -259,12 +289,17 @@ export function CartScreen({
                   <Text style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}>#</Text>
                   <Text style={styles.cashLabelWhite}>Item</Text>
                 </View>
-                <View style={[styles.tableListSide, styles.tableListSide2]}>
-                  <Text style={styles.cashLabelWhite}>Unit Price</Text>
-                  <Text style={styles.cashLabelWhite}>Quantity</Text>
-                  <Text style={[styles.cashLabelWhite, { paddingRight: ms(10) }]}>Line Total</Text>
-                  <Text style={{ color: COLORS.primary }}>1</Text>
-                  {/* <Text style={{ color: COLORS.primary }}>1</Text> */}
+                <View style={styles.productCartBodyRight}>
+                  <View style={styles.productCartBody}>
+                    <Text style={styles.cashLabelWhite}>Unit Price</Text>
+                  </View>
+                  <View style={styles.productCartBody}>
+                    <Text style={styles.cashLabelWhite}>Quantity</Text>
+                  </View>
+                  <View style={styles.productCartBody}>
+                    <Text style={styles.cashLabelWhite}>Line Total</Text>
+                  </View>
+                  <View style={styles.productCartBody}></View>
                 </View>
               </View>
             </View>
@@ -301,58 +336,98 @@ export function CartScreen({
                             </View>
                           </View>
                         </View>
-                        <View style={[styles.tableListSide, styles.tableListSide2]}>
-                          <Text
-                            style={[styles.blueListDataText, { width: SW(20) }]}
-                            numberOfLines={1}
-                          >
-                            ${data?.product_details?.supply?.supply_prices?.selling_price}
-                          </Text>
-                          <View style={styles.listCountCon}>
-                            <TouchableOpacity
-                              style={{
-                                width: SW(10),
-                                alignItems: 'center',
-                              }}
-                              onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
-                              disabled={data.qty == 1 ? true : false}
-                            >
-                              <Image source={minus} style={styles.minus} />
-                            </TouchableOpacity>
-                            <Text>{data.qty}</Text>
-                            <TouchableOpacity
-                              style={{
-                                width: SW(10),
-                                alignItems: 'center',
-                              }}
-                              onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
-                            >
-                              <Image source={plus} style={styles.minus} />
-                            </TouchableOpacity>
+                        <View style={styles.productCartBodyRight}>
+                          <View style={styles.productCartBody}>
+                            {cartIndex === ind && cartEditItem ? (
+                              <TextInput
+                                value={unitPrice}
+                                onChangeText={setUnitPrice}
+                                style={[styles.unitPriceInput]}
+                                keyboardType="numeric"
+                              />
+                            ) : (
+                              <Text style={styles.blueListDataText} numberOfLines={1}>
+                                ${data?.product_details?.supply?.supply_prices?.selling_price}
+                              </Text>
+                            )}
                           </View>
-                          <Text style={styles.blueListDataText}>
-                            $
-                            {(
-                              data.product_details?.supply?.supply_prices?.selling_price * data?.qty
-                            ).toFixed(2)}
-                          </Text>
-                          <View
-                            style={{
-                              width: ms(45),
-                              flexDirection: 'row',
-                              justifyContent: 'flex-end',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <TouchableOpacity
-                              style={[styles.cartEditCon, { marginRight: ms(14) }]}
-                              onPress={() => cartProductedit(data?.product_id)}
+                          <View style={styles.productCartBody}>
+                            <View style={styles.listCountCon}>
+                              <TouchableOpacity
+                                style={{
+                                  width: SW(10),
+                                  alignItems: 'center',
+                                }}
+                                onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
+                                disabled={data.qty == 1 ? true : false}
+                              >
+                                <Image source={minus} style={styles.minus} />
+                              </TouchableOpacity>
+                              <Text>{data.qty}</Text>
+                              <TouchableOpacity
+                                style={{
+                                  width: SW(10),
+                                  alignItems: 'center',
+                                }}
+                                onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
+                              >
+                                <Image source={plus} style={styles.minus} />
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                          <View style={styles.productCartBody}>
+                            <Text style={styles.blueListDataText}>
+                              $
+                              {(
+                                data.product_details?.supply?.supply_prices?.selling_price *
+                                data?.qty
+                              ).toFixed(2)}
+                            </Text>
+                          </View>
+                          <View style={styles.productCartBody}>
+                            <View
+                              style={{
+                                width: ms(45),
+                                flexDirection: 'row',
+                                justifyContent: 'flex-end',
+                                alignItems: 'center',
+                              }}
                             >
-                              <Image source={cartEdit} style={styles.cartEdit} />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => removeOneCartHandler(data.id, ind)}>
-                              <Image source={borderCross} style={styles.borderCross} />
-                            </TouchableOpacity>
+                              {cartIndex === ind && cartEditItem ? (
+                                <TouchableOpacity
+                                  style={[
+                                    styles.saveButtonCon,
+                                    {
+                                      backgroundColor: unitPrice
+                                        ? COLORS.primary
+                                        : COLORS.textInputBackground,
+                                    },
+                                  ]}
+                                  onPress={saveCartEditFun}
+                                  disabled={unitPrice ? false : true}
+                                >
+                                  <Text
+                                    style={[
+                                      styles.saveText,
+                                      { color: unitPrice ? COLORS.white : COLORS.darkGray },
+                                    ]}
+                                  >
+                                    Save
+                                  </Text>
+                                </TouchableOpacity>
+                              ) : (
+                                <TouchableOpacity
+                                  style={[styles.cartEditCon, { marginRight: ms(14) }]}
+                                  onPress={() => cartProductedit(data, ind)}
+                                >
+                                  <Image source={cartEdit} style={styles.cartEdit} />
+                                </TouchableOpacity>
+                              )}
+
+                              <TouchableOpacity onPress={() => removeOneCartHandler(data.id, ind)}>
+                                <Image source={borderCross} style={styles.borderCross} />
+                              </TouchableOpacity>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -466,6 +541,7 @@ export function CartScreen({
                     addDiscountHandler();
                     beforeDiscountCartLoad();
                   }}
+                  disabled={cartData?.poscart_products?.length > 0 ? false : true}
                 >
                   <Image source={addDiscountPic} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Discount</Text>
@@ -476,6 +552,7 @@ export function CartScreen({
                     addNotesHandler();
                     beforeDiscountCartLoad();
                   }}
+                  disabled={cartData?.poscart_products?.length > 0 ? false : true}
                 >
                   <Image source={notess} style={styles.addDiscountPic} />
                   <Text style={styles.addDiscountText}>Add Notes</Text>
@@ -498,14 +575,9 @@ export function CartScreen({
                   ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
-              {/* <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>Total VAT</Text>
-                <Text style={styles.subTotalDollar}>$0.00</Text>
-              </View> */}
               <View style={[styles.displayflex2, styles.paddVertical]}>
                 <Text style={styles.subTotal}>Total Taxes</Text>
                 <Text style={styles.subTotalDollar}>
-                  {' '}
                   ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
@@ -538,8 +610,6 @@ export function CartScreen({
                 </Text>
               </View>
             </View>
-
-            {/* <View style={{ flex: 1 }} /> */}
 
             <TouchableOpacity
               style={[

@@ -1,7 +1,10 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
+
+import { moderateScale } from 'react-native-size-matters';
+
 import { Fonts } from '@/assets';
-import { moderateScale, verticalScale } from 'react-native-size-matters';
+import { COLORS, SW, SF, ShadowStyles } from '@/theme';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -12,18 +15,14 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     justifyContent: 'center',
   },
-  text: {
-    color: COLORS.black,
-  },
   verifyContainer: {
     width: windowWidth * 0.4,
     height: windowHeight * 0.82,
-    // borderWidth: 1,
     borderColor: 'grey',
     alignSelf: 'center',
     borderRadius: 15,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     ...ShadowStyles.shadow2,
   },
   header: {
@@ -65,21 +64,5 @@ export const styles = StyleSheet.create({
     fontSize: SF(16),
     fontFamily: Fonts.Italic,
     width: windowWidth * 0.2,
-  },
-  selectedText: {
-    color: COLORS.white,
-    paddingVertical: verticalScale(10),
-  },
-  buttonText: {
-    color: COLORS.darkGray,
-    paddingVertical: verticalScale(10),
-  },
-  submitButton: {
-    backgroundColor: COLORS.primary,
-    width: windowWidth * 0.35,
-  },
-  button: {
-    backgroundColor: COLORS.textInputBackground,
-    width: windowWidth * 0.35,
   },
 });

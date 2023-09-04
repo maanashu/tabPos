@@ -6,7 +6,6 @@ import { COLORS, SF, SH, SW } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
 const result = Dimensions.get('window').height - 50;
-const equalPartSize = result / 3;
 const twoEqualView = result / 2;
 
 const styles = StyleSheet.create({
@@ -18,19 +17,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: ms(10),
     justifyContent: 'space-between',
-  },
-  shippingStatusViewStyle: {
-    alignItems: 'flex-start',
-    borderRadius: 10,
-    paddingVertical: ms(10),
-    backgroundColor: COLORS.white,
-    height: equalPartSize - 130,
-  },
-  shippingStatusText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(16),
-    paddingLeft: ms(15),
-    color: COLORS.primary,
   },
   shippedOrderText: {
     fontFamily: Fonts.Regular,
@@ -56,24 +42,6 @@ const styles = StyleSheet.create({
     lineHeight: ms(8),
     color: COLORS.darkGray,
   },
-  orderConvertionView: {
-    borderRadius: 10,
-    backgroundColor: COLORS.white,
-    paddingBottom: ms(10),
-    height: equalPartSize + 120,
-  },
-  orderTextStyle: {
-    fontFamily: Fonts.MaisonBold,
-    fontSize: SF(18),
-    color: COLORS.solid_grey,
-    paddingLeft: ms(6),
-    paddingTop: ms(10),
-  },
-  piechartViewStyle: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   percentageView: {
     top: 0,
     left: 0,
@@ -82,24 +50,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     justifyContent: 'center',
-  },
-  percentageTextStyle: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
-    color: COLORS.black,
-    textAlign: 'center',
-  },
-  ordersRowView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: SW(80),
-    justifyContent: 'space-between',
-    paddingVertical: 5,
-  },
-  orderTypeTextStyle: {
-    fontFamily: Fonts.Medium,
-    fontSize: SF(14),
-    color: COLORS.dark_grey,
   },
   countTextStyle: {
     fontFamily: Fonts.SemiBold,
@@ -167,13 +117,6 @@ const styles = StyleSheet.create({
     fontSize: SF(9),
     color: COLORS.dark_grey,
     paddingLeft: 5,
-  },
-  rightSideView: {
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
-    width: windowWidth * 0.06,
-    paddingVertical: verticalScale(6),
-    alignItems: 'center',
   },
   shippingOrdersView: {
     backgroundColor: COLORS.white,
@@ -270,13 +213,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     height: twoEqualView,
   },
-  loaderViewStyle: {
-    height: twoEqualView,
-    backgroundColor: COLORS.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 10,
-  },
   contentContainerStyle: {
     flexGrow: 1,
     paddingBottom: 20,
@@ -293,21 +229,7 @@ const styles = StyleSheet.create({
     fontSize: SF(18),
     fontFamily: Fonts.MaisonRegular,
   },
-  graphViewStyle: {
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
-    width: Dimensions.get('window').width * 0.56,
-    paddingHorizontal: 20,
-    paddingBottom: 30,
-    height: twoEqualView,
-  },
-  numberOrdersText: {
-    color: COLORS.dark_grey,
-    fontSize: SF(16),
-    fontFamily: Fonts.SemiBold,
-    paddingHorizontal: 20,
-    paddingTop: ms(10),
-  },
+
   viewallTextStyle: {
     fontFamily: Fonts.Regular,
     fontSize: SF(12),
@@ -361,15 +283,26 @@ const styles = StyleSheet.create({
   },
   backView: {
     marginTop: 10,
+    marginLeft: 28,
+    width: ms(60),
+    borderRadius: 5,
+    height: ms(25),
+    paddingRight: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 12,
-    width: Dimensions.get('window').width - 250,
+    justifyContent: 'center',
+    backgroundColor: COLORS.gerySkies,
   },
   backImageStyle: {
-    width: SW(10),
-    height: SW(10),
+    width: SW(8),
+    height: SW(8),
+    tintColor: COLORS.white,
     resizeMode: 'contain',
+  },
+  currentStatusText: {
+    fontSize: ms(8),
+    color: COLORS.white,
+    fontFamily: Fonts.SemiBold,
   },
   orderDetailView: {
     backgroundColor: COLORS.white,

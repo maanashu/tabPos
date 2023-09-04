@@ -1,7 +1,6 @@
-import { ORDER_URL, ApiOrderInventory, USER_URL, ApiUserInventory } from '@/utils/APIinventory';
+import { USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
-import { store } from '@/store';
 
 export class SettingController {
   static async getSetting() {

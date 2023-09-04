@@ -30,13 +30,16 @@ const getDeviceToken = async () => {
 
 // Handle incoming push notifications when the app is in the foreground
 const onMessageReceivedForeground = async (message) => {
-  console.log(message);
   if (message?.data?.type === 'order_delivered') {
     store.dispatch(getReviewDefault(4, 1));
     store.dispatch(getOrderCount());
   }
   if (message?.data?.type === 'order_received') {
     store.dispatch(getReviewDefault(0, 1));
+    store.dispatch(getOrderCount());
+  }
+  if (message?.data?.type === 'order_pickup') {
+    store.dispatch(getReviewDefault(4, 1));
     store.dispatch(getOrderCount());
   }
   await notifee.displayNotification({
@@ -50,13 +53,17 @@ const onMessageReceivedForeground = async (message) => {
 
 // Handle incoming push notifications when the app is in the background or closed
 const onMessageReceivedBackground = async (message) => {
-  console.log(message);
   if (message?.data?.type === 'order_delivered') {
     store.dispatch(getReviewDefault(5, 1));
     store.dispatch(getOrderCount());
   }
   if (message?.data?.type === 'order_received') {
     store.dispatch(getReviewDefault(0, 1));
+    store.dispatch(getOrderCount());
+  }
+
+  if (message?.data?.type === 'order_pickup') {
+    store.dispatch(getReviewDefault(4, 1));
     store.dispatch(getOrderCount());
   }
   await notifee.displayNotification({

@@ -1,4 +1,3 @@
-import { strings } from '@/localization';
 import {
   ORDER_URL,
   ApiOrderInventory,

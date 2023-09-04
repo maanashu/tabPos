@@ -1,8 +1,8 @@
-import { Fonts } from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import React from 'react';
 import { StyleSheet, View, Dimensions, Platform } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
+import { ms } from 'react-native-size-matters';
 
 export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
   return (
@@ -34,20 +34,20 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.24
+              ? Dimensions.get('window').width * 0.26
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? SH(175) : SH(172)}
+          height={Platform.OS === 'android' ? SH(160) : SH(160)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
-            backgroundGradientFrom: COLORS.white,
-            backgroundGradientTo: COLORS.white,
+            backgroundGradientFrom: COLORS.mid_grey,
+            backgroundGradientTo: COLORS.mid_grey,
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             style: {
               borderRadius: 16,
-              backgroundColor: COLORS.white,
+              backgroundColor: COLORS.mid_grey,
             },
             labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
             propsForBackgroundLines: {
@@ -90,10 +90,10 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.24
+              ? Dimensions.get('window').width * 0.26
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? SH(175) : SH(172)}
+          height={Platform.OS === 'android' ? SH(160) : SH(165)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -117,11 +117,12 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? SW(-3) : SW(-8),
+            marginLeft: Platform.OS === 'android' ? ms(-15) : SW(-8),
           }}
           withShadow={false}
           fromZero
           bezier
+          xLabelsOffset={ms(-2)}
         />
       ) : (
         <LineChart
@@ -137,10 +138,10 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.24
+              ? Dimensions.get('window').width * 0.26
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? SH(175) : SH(172)}
+          height={Platform.OS === 'android' ? ms(95) : SH(165)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -164,8 +165,10 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? SW(-3) : SW(-8),
+            marginLeft: Platform.OS === 'android' ? ms(-15) : SW(-8),
+            paddingVertical: 0,
           }}
+          xLabelsOffset={ms(-2)}
           withShadow={false}
           fromZero
           bezier

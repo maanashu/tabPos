@@ -7,41 +7,34 @@ import { Fonts, bell, cloth, crossButton, toggleSecBlue, vectorOff } from '@/ass
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { ms } from 'react-native-size-matters';
+import { addTocart } from '@/actions/RetailAction';
 const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
-export function AddCartDetailModal({ crossHandler }) {
+export function AddCartDetailModal({
+  crossHandler,
+  sellerID,
+  openFrom,
+  addToLocalCart,
+  productItem,
+  productIndex,
+  doubleCrossHandler,
+}) {
+  const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
-  // console.log('productDetail', JSON.stringify(productDetail));
-
-  // const htmlText = productDetail?.description ?? '';
-  // const regex = /<[^>]+>([^<]+)<\/[^>]+>/g;
-
-  // const matches = htmlText?.match(regex);
-
-  // let extractedText = '';
-
-  // if (matches) {
-  //   matches.forEach((match) => {
-  //     const contentMatch = /<[^>]+>([^<]+)<\/[^>]+>/.exec(match);
-  //     if (contentMatch && contentMatch.length > 1) {
-  //       extractedText += contentMatch[1] + ' ';
-  //     }
-  //   });
-  // }
 
   // Remove HTML tags
   const withoutHtmlTags = productDetail?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
 
   // Remove special characters and white spaces
-  const withoutSpecialCharsAndSpaces = withoutHtmlTags.trim().replace(/[^\w\s]/gi, '');
+  const withoutSpecialCharsAndSpaces = withoutHtmlTags?.trim().replace(/[^\w\s]/gi, '');
 
   let deliveryOption =
-    getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options.split(',');
-  let deliveryOptionImage = deliveryOption.find((item) => {
+    getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options?.split(',');
+  let deliveryOptionImage = deliveryOption?.find((item) => {
     return item === '1';
   });
   let inStoreImage = deliveryOption.find((item) => {
@@ -53,6 +46,20 @@ export function AddCartDetailModal({ crossHandler }) {
   const [clothColorId, setClothColorId] = useState();
   const [clothSizeId, setClothSizeId] = useState();
   const [remindId, setRemindId] = useState();
+
+  const addToCartHandler = async () => {
+    const data = {
+      seller_id: sellerID,
+      service_id: productDetail?.service_id,
+      product_id: productDetail?.id,
+      qty: 1,
+      supplyId: productDetail?.supplies?.[0]?.id,
+      supplyPriceID: productDetail?.supplies?.[0]?.supply_prices[0]?.id,
+    };
+    openFrom === 'main' && addToLocalCart(productItem, productIndex, 1);
+    dispatch(addTocart(data));
+    doubleCrossHandler();
+  };
 
   // cloth color select section start
   const clothColorrenderItem = ({ item }) => {
@@ -131,10 +138,17 @@ export function AddCartDetailModal({ crossHandler }) {
   return (
     <View style={styles.addCartDetailCon}>
       <View style={styles.addCartDetailConHeader}>
-        <Text style={styles.jacketName}>{productDetail?.name}</Text>
-        <TouchableOpacity onPress={crossHandler}>
-          <Image source={crossButton} style={styles.crossBg} />
-        </TouchableOpacity>
+        <Text style={[styles.jacketName, { width: ms(300) }]} numberOfLines={1}>
+          {productDetail?.name}
+        </Text>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity style={[styles.backTocartCon]} onPress={crossHandler}>
+            <Text style={styles.backTocartText}>Back</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.addToCartCon} onPress={addToCartHandler}>
+            <Text style={styles.addTocartText}>Add to Cart</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.addCartDetailBody}>
         <ScrollView showsVerticalScrollIndicator={false}>

@@ -1,16 +1,15 @@
 import { CashTrackingController } from '@/controllers';
 import { TYPES } from '@/Types/CashtrackingTypes';
-import { LogBox } from 'react-native';
 
 const getDrawerSessionRequest = () => ({
   type: TYPES.GET_DRAWER_SESSION_REQUEST,
   payload: null,
 });
-const getDrawerSessionSuccess = getDrawerSession => ({
+const getDrawerSessionSuccess = (getDrawerSession) => ({
   type: TYPES.GET_DRAWER_SESSION_SUCCESS,
   payload: { getDrawerSession },
 });
-const getDrawerSessionError = error => ({
+const getDrawerSessionError = (error) => ({
   type: TYPES.GET_DRAWER_SESSION_ERROR,
   payload: { error },
 });
@@ -23,7 +22,7 @@ const trackSessionSaveSuccess = () => ({
   type: TYPES.TRACK_SESSION_SAVE_SUCCESS,
   payload: {},
 });
-const trackSessionSaveError = error => ({
+const trackSessionSaveError = (error) => ({
   type: TYPES.TRACK_SESSION_SAVE_ERROR,
   payload: { error },
 });
@@ -32,11 +31,11 @@ const getSessionHistoryRequest = () => ({
   type: TYPES.GET_SESSION_HISTORY_REQUEST,
   payload: null,
 });
-const getSessionHistorySuccess = getSessionHistory => ({
+const getSessionHistorySuccess = (getSessionHistory) => ({
   type: TYPES.GET_SESSION_HISTORY_SUCCESS,
   payload: { getSessionHistory },
 });
-const getSessionHistoryError = error => ({
+const getSessionHistoryError = (error) => ({
   type: TYPES.GET_SESSION_HISTORY_ERROR,
   payload: { error },
 });
@@ -49,11 +48,11 @@ const endTrackingSessionRequest = () => ({
   type: TYPES.END_TRACKING_REQUEST,
   payload: null,
 });
-const endTrackingSessionSuccess = getSessionHistory => ({
+const endTrackingSessionSuccess = (getSessionHistory) => ({
   type: TYPES.END_TRACKING_SUCCESS,
   payload: { getSessionHistory },
 });
-const endTrackingSessionError = error => ({
+const endTrackingSessionError = (error) => ({
   type: TYPES.END_TRACKING_ERROR,
   payload: { error },
 });
@@ -62,16 +61,16 @@ const getDrawerSessionByIdRequest = () => ({
   type: TYPES.GET_SESSION_BYID_REQUEST,
   payload: null,
 });
-const getDrawerSessionByIdSuccess = getDrawerSessionById => ({
+const getDrawerSessionByIdSuccess = (getDrawerSessionById) => ({
   type: TYPES.GET_SESSION_BYID_SUCCESS,
   payload: { getDrawerSessionById },
 });
-const getDrawerSessionByIdError = error => ({
+const getDrawerSessionByIdError = (error) => ({
   type: TYPES.GET_SESSION_BYID_ERROR,
   payload: { error },
 });
 
-export const getDrawerSessions = () => async dispatch => {
+export const getDrawerSessions = () => async (dispatch) => {
   dispatch(getDrawerSessionRequest());
   try {
     const res = await CashTrackingController.getDrawerSession();
@@ -80,7 +79,7 @@ export const getDrawerSessions = () => async dispatch => {
     dispatch(getDrawerSessionError(error.message));
   }
 };
-export const trackSessionSave = data => async dispatch => {
+export const trackSessionSave = (data) => async (dispatch) => {
   dispatch(trackSessionSaveRequest());
   try {
     const res = await CashTrackingController.trackSessionSave(data);
@@ -91,7 +90,7 @@ export const trackSessionSave = data => async dispatch => {
   }
 };
 
-export const getSessionHistory = newDateFormat => async dispatch => {
+export const getSessionHistory = (newDateFormat) => async (dispatch) => {
   dispatch(getSessionHistoryRequest());
   try {
     const res = await CashTrackingController.getSessionHistory(newDateFormat);
@@ -103,7 +102,7 @@ export const getSessionHistory = newDateFormat => async dispatch => {
     dispatch(getSessionHistoryError(error.message));
   }
 };
-export const endTrackingSession = data => async dispatch => {
+export const endTrackingSession = (data) => async (dispatch) => {
   dispatch(endTrackingSessionRequest());
   try {
     const res = await CashTrackingController.endTrackingSession(data);
@@ -113,7 +112,7 @@ export const endTrackingSession = data => async dispatch => {
   }
 };
 
-export const getDrawerSessionById = status => async dispatch => {
+export const getDrawerSessionById = (status) => async (dispatch) => {
   dispatch(getDrawerSessionByIdRequest());
   try {
     const res = await CashTrackingController.getDrawerSessionById(status);

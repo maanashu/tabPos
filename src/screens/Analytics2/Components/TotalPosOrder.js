@@ -1,20 +1,9 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-  Platform,
-  FlatList,
-} from 'react-native';
-import { BarChartCom, ScreenWrapper, Spacer } from '@/components';
+import React from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { Fonts, backArrow2, calendar, clay, dropdown } from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { LineChart } from 'react-native-chart-kit';
+import { backArrow2, channel, locationSales, totalOrders, totalSales } from '@/assets';
+import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
@@ -52,22 +41,15 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
 };
 
 export function TotalPosOrder({ onPress }) {
-  const [channel, setChannel] = useState(false);
-  const [channelValue, setChannelValue] = useState(null);
-  const [channelItem, setChannelItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
-  ]);
-
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
 
-  const posGraph = analyticOrderGraphs?.pos_graph?.orderListData[0];
-  const data = [
-    ...posGraph?.deliverd_data_list,
-    ...posGraph?.returned_data_list,
-    ...posGraph?.cancelled_data_list,
-  ];
+  const posGraph = analyticOrderGraphs?.pos_graph;
+  // const data = [
+  //   ...posGraph?.deliverd_data_list,
+  //   ...posGraph?.returned_data_list,
+  //   ...posGraph?.cancelled_data_list,
+  // ];
 
   const interval = 1;
   const maxLabel = 31;
@@ -80,197 +62,138 @@ export function TotalPosOrder({ onPress }) {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '   '}</Text>
-          <Text style={styles.revenueDataText}>{item?.user_details?.user_profiles?.firstname}</Text>
+          <Text>{index + 1 + '.           '}</Text>
+          <Text style={styles.revenueDataText}>{moment(item?.date).format('LL')}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>
-          {item?.user_details?.user_profiles?.full_phone_number}
-        </Text>
+        <Text style={styles.revenueDataText}>{item?.count}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.payable_amount}</Text>
+        <Text style={styles.revenueDataText}>${item?.averageValue.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
+        <Text style={styles.revenueDataText}>{item?.order_frequency.toFixed(2)}</Text>
       </DataTable.Cell>
-
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>
-          {moment(item?.user_details?.user_profiles?.updated_at).format('LL')}
-        </Text>
+        <Text style={styles.revenueDataText}>{item?.amount.toFixed(2)}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity
+          style={{
+            borderColor: COLORS.primary,
+            top: 12,
+            paddingHorizontal: ms(10),
+            paddingVertical: ms(2),
+            borderWidth: 1,
+            backgroundColor: COLORS.white,
+            borderRadius: ms(2),
+          }}
+        >
+          <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
+            {'Review'}
+          </Text>
+        </TouchableOpacity>
       </DataTable.Cell>
     </DataTable.Row>
   );
+
+  const HeaderView = ({ image, text, count, style }) => (
+    <View style={[styles.subContainer, style]}>
+      <Image source={image} resizeMode="contain" style={styles.imageStyle} />
+      <Text style={styles.text}>{text}</Text>
+      <Text style={styles.text2}>{count}</Text>
+    </View>
+  );
+
   return (
     <View style={styles.flex1}>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
         <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={styles.currentStatusText}>{'Back'}</Text>
+        <Text style={styles.graphTitle}> {'Total POS Orders'}</Text>
       </TouchableOpacity>
-      <Text style={styles.graphTitle}> {'Total POS Orders'}</Text>
-
-      <View style={styles.flexDirectionRow}>
-        <View style={styles.headerView}>
-          <Image source={calendar} style={styles.calenderImage} />
-          <Text style={styles.dateText}>{'Oct 23 - Nov 23, 2022'}</Text>
-        </View>
-        <DropDownPicker
-          ArrowDownIconComponent={({ style }) => (
-            <Image source={dropdown} style={styles.dropDownIcon} />
-          )}
-          style={styles.dropdown}
-          containerStyle={[styles.containerStyle, { zIndex: Platform.OS === 'ios' ? 100 : 2 }]}
-          open={channel}
-          value={channelValue}
-          items={channelItem}
-          setOpen={setChannel}
-          setValue={setChannelValue}
-          setItems={setChannelItem}
-          placeholder="All Channels"
-          placeholderStyle={{
-            color: '#A7A7A7',
-            fontFamily: Fonts.Regular,
-            fontSize: SF(14),
-          }}
+      <View style={styles.headerContainer}>
+        <HeaderView
+          image={locationSales}
+          text={'Total Orders'}
+          count={posGraph?.ordersOverView?.total_orders}
+          style={{ marginHorizontal: ms(5) }}
+        />
+        <HeaderView
+          image={channel}
+          text={'Order Frequency'}
+          count={
+            posGraph?.ordersOverView?.order_frequency
+              ? '$' + posGraph?.ordersOverView?.order_frequency?.toFixed(2)
+              : 0
+          }
+        />
+        <HeaderView
+          image={totalOrders}
+          text={'Average order value'}
+          count={
+            posGraph?.ordersOverView?.averageValue
+              ? '$' + posGraph?.ordersOverView?.averageValue?.toFixed(2)
+              : 0
+          }
+        />
+        <HeaderView
+          image={totalSales}
+          text={'Gross Profit'}
+          count={
+            posGraph?.ordersOverView?.amount
+              ? '$' + posGraph?.ordersOverView?.amount?.toFixed(2)
+              : 0
+          }
         />
       </View>
 
-      <View style={styles.graphHeaderView}>
-        <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
-        {/* <View style={{ alignSelf: 'center', height: SH(210) }}>
-          <BarChartCom
-            barWid={Dimensions.get('window').width - SW(110)}
-            barHei={SH(140)}
-            barSpacing={SW(30)}
-            barW={7}
-            labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
-            initialSpacing={SW(20)}
-          />
-        </View> */}
-
-        <LineChart
-          bezier
-          data={{
-            labels: analyticOrderGraphs?.pos_graph?.graph_data?.labels
-              ? labelsPOS
-              : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-            datasets: [
-              {
-                data: analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[0]?.data
-                  ? analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[0]?.data
-                  : [12, 20, 12, 30, 60, 40, 50],
-                strokeWidth: 2,
-                color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
-              },
-              {
-                data: analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[1]?.data
-                  ? analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[1]?.data
-                  : [11, 15, 10, 25, 55, 35, 45],
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(107, 132, 211, ${opacity})`, // optional
-              },
-              {
-                data: analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[2]?.data
-                  ? analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[2]?.data
-                  : [8, 10, 8, 20, 50, 30, 40],
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`, // optional
-              },
-            ],
-          }}
-          width={Dimensions.get('window').width - SW(80)}
-          height={SH(210)}
-          withDots={false}
-          chartConfig={{
-            backgroundColor: COLORS.red,
-            backgroundGradientFrom: COLORS.white,
-            backgroundGradientTo: COLORS.white,
-            decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-
-            labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
-            propsForBackgroundLines: {
-              strokeWidth: 1,
-              stroke: '#EFEFEF',
-            },
-            propsForDots: {
-              r: '0',
-              strokeWidth: '2',
-            },
-          }}
-          style={{
-            marginLeft: SW(-3),
-            alignSelf: 'center',
-          }}
-          withShadow={false}
-          fromZero
-          withVerticalLines={false}
-        />
-      </View>
+      <Spacer space={ms(15)} />
 
       <View style={styles.tableMainView}>
         <ScrollView
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
+          // scrollEnabled={false}
         >
-          <DataTable
-            style={{
-              zIndex: -99,
-            }}
-          >
-            <DataTable.Header style={styles.tableListHeader}>
-              <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Byer Name</Text>
+          <DataTable style={styles.tableView}>
+            <DataTable.Header style={[styles.tableListHeader]}>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Phone Number</Text>
+                <Text style={styles.revenueText}>Total POS Orders</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Price</Text>
+                <Text style={styles.revenueText}>Average Order View</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Quatity</Text>
+                <Text style={styles.revenueText}>Order Frequency</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Last Sold Date</Text>
+                <Text style={styles.revenueText}>Total Sales</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}> </Text>
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={{ zIndex: -99 }}>
-              {posGraph?.cancelled_data_list?.length === 0 &&
-              posGraph?.deliverd_data_list?.length === 0 &&
-              posGraph?.returned_data_list?.length === 0 ? (
-                <View style={[styles.listLoader]}>
-                  <Text
-                    style={{
-                      fontSize: SF(20),
-                      color: COLORS.black,
-                    }}
-                  >
-                    {'No data found'}
-                  </Text>
+            <View style={styles.mainListContainer}>
+              {posGraph?.ordersListData?.length === 0 ? (
+                <View style={styles.listLoader}>
+                  <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
               ) : (
-                <View
-                  style={{
-                    height: Platform.OS === 'ios' ? ms(202) : ms(210),
-                    width:
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('window').width - ms(80)
-                        : Dimensions.get('window').width - ms(150),
-                  }}
-                >
+                <View style={styles.listView}>
                   <FlatList
-                    style={{ backgroundColor: COLORS.white }}
-                    data={data}
+                    style={styles.listStyle}
+                    data={posGraph?.ordersListData}
                     renderItem={getPOSOrderList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     bounces={false}

@@ -38,7 +38,7 @@ import Modal, { ReactNativeModal } from 'react-native-modal';
 import { CategoryModal } from './CategoryModal';
 import { SubCatModal } from './SubCatModal';
 import { BrandModal } from './BrandModal';
-import { catTypeData } from '@/constants/flatListData';
+import { catTypeData, items } from '@/constants/flatListData';
 import { CustomHeader } from './CustomHeader';
 import { AddCartModal } from './AddCartModal';
 import { AddCartDetailModal } from './AddCartDetailModal';
@@ -67,11 +67,9 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { CartListModal } from './CartListModal';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
-import { items } from '@/constants/staticData';
 import { FilterDropDown } from './FilterDropDown';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ServiceFilterDropDown } from './ServiceFilterDropDown';
-import { NumericPad } from './NumericPad';
 import { addLocalCart, clearLocalCart, updateCartLength } from '@/actions/CartAction';
 import { getCartLength, getLocalCartArray, getServiceCartLength } from '@/selectors/CartSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
@@ -146,9 +144,7 @@ export function MainScreen({
   const [serviceSearch, setServiceSearch] = useState('');
   const [showProductsFrom, setshowProductsFrom] = useState();
   const mainProductArray = getRetailData?.getMainProduct?.data;
-  // console.log('mainProductArray', JSON.stringify(mainProductArray?.[0]));
   const mainServicesArray = getRetailData?.getMainServices?.data;
-  // console.log('mainServicesArray', JSON.stringify(mainServicesArray?.[0]));
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
     qty: obj.qty,
@@ -453,7 +449,7 @@ export function MainScreen({
           resizeMode={FastImage.resizeMode.contain}
         />
         <Spacer space={SH(10)} />
-        <Text numberOfLines={2} style={styles.productDes}>
+        <Text numberOfLines={1} style={styles.productDes}>
           {item.name}
         </Text>
         <Spacer space={SH(6)} />
@@ -876,7 +872,7 @@ export function MainScreen({
                           </View>
                         </View>
                         <Spacer space={SH(5)} />
-                        <Text numberOfLines={2} style={styles.productDes}>
+                        <Text numberOfLines={1} style={styles.productDes}>
                           {item.name}
                         </Text>
                         <Spacer space={SH(6)} />
@@ -1266,7 +1262,17 @@ export function MainScreen({
       {/* cart list modal end */}
       <Modal animationType="fade" transparent={true} isVisible={addCartModal || addCartDetailModal}>
         {addCartDetailModal ? (
-          <AddCartDetailModal crossHandler={() => setAddCartDetailModal(false)} />
+          <AddCartDetailModal
+            crossHandler={() => setAddCartDetailModal(false)}
+            sellerID={sellerID}
+            openFrom="main"
+            addToLocalCart={onClickAddCart}
+            productIndex={productIndex}
+            doubleCrossHandler={() => {
+              setAddCartDetailModal(false);
+              setAddCartModal(false);
+            }}
+          />
         ) : (
           <AddCartModal
             crossHandler={() => setAddCartModal(false)}

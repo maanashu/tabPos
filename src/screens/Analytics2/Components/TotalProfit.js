@@ -1,20 +1,8 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  Platform,
-} from 'react-native';
-import { ScreenWrapper } from '@/components';
+import React from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { Fonts, backArrow2, calendar, clay, dropdown } from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { LineChart } from 'react-native-chart-kit';
+import { backArrow2, locationSales, revenueTotal, totalOrders, totalSales } from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
@@ -52,12 +40,6 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
 };
 
 export function TotalProfit({ onPress }) {
-  const [channel, setChannel] = useState(false);
-  const [channelValue, setChannelValue] = useState(null);
-  const [channelItem, setChannelItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
-  ]);
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
   const interval = 1;
@@ -70,172 +52,142 @@ export function TotalProfit({ onPress }) {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '   '}</Text>
-          <Text style={styles.revenueDataText}>{item?.user_details?.user_profiles?.firstname}</Text>
+          <Text>{index + 1 + '.           '}</Text>
+          <Text style={styles.revenueDataText}>
+            {' '}
+            {item?.date ? moment(item?.date).format('LL') : ''}
+          </Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.total_orders}</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          {item?.user_details?.user_profiles?.full_phone_number}
+          ${item?.transaction ? item?.transaction.toFixed(2) : 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.payable_amount}</Text>
+        <Text style={styles.revenueDataText}>
+          ${item?.average_value ? item?.average_value.toFixed(2) : 0}
+        </Text>
       </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.total_items}</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.revenue}</Text>
-      </DataTable.Cell>
-
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          {moment(item?.user_details?.user_profiles?.updated_at).format('LL')}
+          ${item?.cost_sum ? item?.cost_sum.toFixed(2) : 0}
+        </Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>{item?.margin ? item?.margin.toFixed(2) : 0}%</Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>
+          ${item?.profit_sum ? item?.profit_sum.toFixed(2) : 0}
         </Text>
       </DataTable.Cell>
     </DataTable.Row>
+  );
+
+  const HeaderView = ({ image, text, count, style }) => (
+    <View style={[styles.subContainer, style]}>
+      <Image source={image} resizeMode="contain" style={styles.imageStyle} />
+      <Text style={styles.text}>{text}</Text>
+      <Text style={styles.text2}>{count}</Text>
+    </View>
   );
   return (
     <View style={styles.flex1}>
       <TouchableOpacity onPress={onPress} style={styles.goBack}>
         <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={styles.currentStatusText}>{'Back'}</Text>
+        <Text style={styles.graphTitle}> {'Gross Profit'}</Text>
       </TouchableOpacity>
-      <Text style={styles.graphTitle}> {'Total Profits'}</Text>
-
-      <View style={styles.flexDirectionRow}>
-        <View style={styles.headerView}>
-          <Image source={calendar} style={styles.calenderImage} />
-          <Text style={styles.dateText}>{'Oct 23 - Nov 23, 2022'}</Text>
-        </View>
-        <DropDownPicker
-          ArrowDownIconComponent={({ style }) => (
-            <Image source={dropdown} style={styles.dropDownIcon} />
-          )}
-          style={styles.dropdown}
-          containerStyle={[styles.containerStyle, { zIndex: Platform.OS === 'ios' ? 100 : 2 }]}
-          open={channel}
-          value={channelValue}
-          items={channelItem}
-          setOpen={setChannel}
-          setValue={setChannelValue}
-          setItems={setChannelItem}
-          placeholder="All Channels"
-          placeholderStyle={{
-            color: '#A7A7A7',
-            fontFamily: Fonts.Regular,
-            fontSize: SF(14),
-          }}
+      <View style={styles.headerContainer}>
+        <HeaderView
+          image={locationSales}
+          text={'Total Orders'}
+          count={
+            analyticStatistics?.overView?.total_orders
+              ? analyticStatistics?.overView?.total_orders
+              : 0
+          }
+          style={{ marginHorizontal: ms(5) }}
+        />
+        <HeaderView
+          image={revenueTotal}
+          text={'Total Volume'}
+          count={
+            analyticStatistics?.overView?.transaction
+              ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
+              : 0
+          }
+        />
+        <HeaderView
+          image={totalOrders}
+          text={'Average order value'}
+          count={
+            analyticStatistics?.overView?.average_value
+              ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
+              : 0
+          }
+        />
+        <HeaderView
+          image={totalSales}
+          text={'Gross Profit'}
+          count={
+            analyticStatistics?.overView?.profit_sum
+              ? '$' + analyticStatistics?.overView?.profit_sum?.toFixed(2)
+              : 0
+          }
         />
       </View>
 
-      <View style={styles.graphHeaderView}>
-        <Text style={styles.graphHeaderText}>{'Total Profits'}</Text>
-
-        <LineChart
-          bezier
-          data={{
-            labels: analyticStatistics?.profit?.graph_data?.labels
-              ? labelsProfit
-              : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-            datasets: [
-              {
-                data: analyticStatistics?.profit?.graph_data?.datasets?.[0]?.data,
-                strokeWidth: 2,
-                color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
-              },
-            ],
-          }}
-          width={Dimensions.get('window').width - SW(80)}
-          height={SH(210)}
-          withDots={false}
-          chartConfig={{
-            backgroundColor: COLORS.red,
-            backgroundGradientFrom: COLORS.white,
-            backgroundGradientTo: COLORS.white,
-            decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-
-            labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
-            propsForBackgroundLines: {
-              strokeWidth: 1,
-              stroke: '#EFEFEF',
-            },
-            propsForDots: {
-              r: '0',
-              strokeWidth: '2',
-            },
-          }}
-          style={{
-            marginLeft: SW(-3),
-            alignSelf: 'center',
-          }}
-          withShadow={false}
-          fromZero
-          withVerticalLines={false}
-        />
-      </View>
+      <Spacer space={ms(15)} />
 
       <View style={styles.tableMainView}>
         <ScrollView
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
+          // scrollEnabled={false}
         >
-          <DataTable
-            style={{
-              zIndex: -99,
-            }}
-          >
-            <DataTable.Header style={styles.tableListHeader}>
-              <DataTable.Title style={styles.dateTablealignStart}>
-                <Text style={styles.revenueText}>Byer Name</Text>
+          <DataTable style={styles.tableView}>
+            <DataTable.Header style={[styles.tableListHeader]}>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Phone Number</Text>
+                <Text style={styles.revenueText}>Total Orders</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Price</Text>
+                <Text style={styles.revenueText}>Transaction Volume</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Quatity</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Revenue</Text>
+                <Text style={styles.revenueText}>Average Order value</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Last Sold Date</Text>
+                <Text style={styles.revenueText}>Total Cost</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Margin</Text>
+              </DataTable.Title>
+
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Gross Profit</Text>
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={{ zIndex: -99 }}>
+            <View style={styles.mainListContainer}>
               {analyticStatistics?.orderData?.length === 0 ? (
                 <View style={styles.listLoader}>
-                  <Text
-                    style={{
-                      fontSize: SF(20),
-                      color: COLORS.red,
-                    }}
-                  >
-                    {'No data found'}
-                  </Text>
+                  <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
               ) : (
-                <View
-                  style={{
-                    height: Platform.OS === 'ios' ? ms(202) : ms(210),
-                    width:
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('window').width - ms(80)
-                        : Dimensions.get('window').width - ms(150),
-                  }}
-                >
+                <View style={styles.listView}>
                   <FlatList
-                    style={{ backgroundColor: COLORS.white }}
+                    style={styles.listStyle}
                     data={analyticStatistics?.orderData}
                     renderItem={getProfitList}
                     keyExtractor={(item) => item.id}

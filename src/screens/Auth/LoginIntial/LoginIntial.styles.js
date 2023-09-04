@@ -1,7 +1,8 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
+
 import { Fonts } from '@/assets';
-import { verticalScale } from 'react-native-size-matters';
+import { COLORS, SW, SH, SF, ShadowStyles } from '@/theme';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -12,13 +13,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.darkGray,
   },
-  text: {
-    color: COLORS.black,
-  },
   verifyContainer: {
     width: windowWidth * 0.35,
     height: windowHeight * 0.65,
-    // borderWidth: 1,
     borderColor: 'grey',
     alignSelf: 'center',
     borderRadius: 15,
@@ -43,8 +40,6 @@ export const styles = StyleSheet.create({
     height: SH(60),
     alignItems: 'center',
     justifyContent: 'center',
-    //  width: windowWidth * 0.30,
-    //  height: windowHeight * 0.10,
     borderRadius: 10,
   },
   profilePic: {

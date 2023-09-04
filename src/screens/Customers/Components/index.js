@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View, Image, TextInput } from 'react-native';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { moderateScale } from 'react-native-size-matters';
 import {
   calendar1,
@@ -50,12 +50,7 @@ export function UserProfile({
       <View style={{ paddingHorizontal: moderateScale(10) }}>
         <Spacer space={SH(20)} />
         <View style={styles.profileCon}>
-          <View
-            style={[
-              styles.displayFlex,
-              { paddingHorizontal: moderateScale(10) },
-            ]}
-          >
+          <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
                 source={userProfile ? { uri: userProfile } : userImage}
@@ -78,24 +73,18 @@ export function UserProfile({
                   <Image source={location} style={styles.Phonelight} />
                   {userAddress ? (
                     <Text style={styles.adressText} numberOfLines={1}>
-                      {userAddress?.street_address}, {userAddress?.city},{' '}
-                      {userAddress?.state}, {userAddress?.country},{' '}
-                      {userAddress?.postal_code}
+                      {userAddress?.street_address}, {userAddress?.city}, {userAddress?.state},{' '}
+                      {userAddress?.country}, {userAddress?.postal_code}
                     </Text>
                   ) : null}
                 </View>
               </View>
             </View>
             <View>
-              <TouchableOpacity
-                style={styles.pointCon}
-                onPress={userDetailHandler}
-              >
+              <TouchableOpacity style={styles.pointCon} onPress={userDetailHandler}>
                 <View style={styles.flexAlign}>
                   <Image source={reward2} style={styles.rewardStyle} />
-                  <Text style={styles.pointText}>
-                    {strings.customers.point}
-                  </Text>
+                  <Text style={styles.pointText}>{strings.customers.point}</Text>
                 </View>
               </TouchableOpacity>
               <Spacer space={SH(10)} />
@@ -107,14 +96,10 @@ export function UserProfile({
                   >
                     <Image
                       source={toggle}
-                      style={
-                        toggles ? styles.toggleBtnStyle : styles.toggleBtnStyle2
-                      }
+                      style={toggles ? styles.toggleBtnStyle : styles.toggleBtnStyle2}
                     />
                   </TouchableOpacity>
-                  <Text style={styles.acceptMarketText}>
-                    {strings.customers.acceptMarket}
-                  </Text>
+                  <Text style={styles.acceptMarketText}>{strings.customers.acceptMarket}</Text>
                 </View>
               </View>
             </View>
@@ -140,16 +125,10 @@ export function UserProfile({
           <View style={{ marginHorizontal: moderateScale(10) }}>
             <DropDownPicker
               ArrowUpIconComponent={({ style }) => (
-                <Image
-                  source={dropdown2}
-                  style={styles.dropDownIconPagination}
-                />
+                <Image source={dropdown2} style={styles.dropDownIconPagination} />
               )}
               ArrowDownIconComponent={({ style }) => (
-                <Image
-                  source={dropdown2}
-                  style={styles.dropDownIconPagination}
-                />
+                <Image source={dropdown2} style={styles.dropDownIconPagination} />
               )}
               style={styles.dropdown}
               containerStyle={[
@@ -176,9 +155,7 @@ export function UserProfile({
           <View style={styles.unionCon}>
             <Image source={mask} style={styles.unionStyle} />
           </View>
-          <Text style={styles.paginationCount}>
-            {strings.wallet.paginationCount}
-          </Text>
+          <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
           <View style={[styles.unionCon, { backgroundColor: COLORS.white }]}>
             <Image source={maskRight} style={styles.unionStyle} />
           </View>
@@ -244,9 +221,7 @@ export function UserDetails({
             <TouchableOpacity onPress={userRemoveRemoveHandler}>
               <Image source={leftBack} style={styles.leftBackStyle} />
             </TouchableOpacity>
-            <Text style={styles.profileHeaderText}>
-              {strings.customers.userdetail}
-            </Text>
+            <Text style={styles.profileHeaderText}>{strings.customers.userdetail}</Text>
           </View>
           <View style={styles.editButtonCon}>
             <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
@@ -256,12 +231,7 @@ export function UserDetails({
       <View style={{ paddingHorizontal: moderateScale(10) }}>
         <Spacer space={SH(20)} />
         <View style={styles.profileCon}>
-          <View
-            style={[
-              styles.displayFlex,
-              { paddingHorizontal: moderateScale(10) },
-            ]}
-          >
+          <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
                 source={userProfile ? { uri: userProfile } : userImage}
@@ -285,9 +255,8 @@ export function UserDetails({
                     <Image source={location} style={styles.Phonelight} />
 
                     <Text style={styles.adressText} numberOfLines={1}>
-                      {userAddress?.street_address}, {userAddress?.city},{' '}
-                      {userAddress?.state}, {userAddress?.country},{' '}
-                      {userAddress?.postal_code},
+                      {userAddress?.street_address}, {userAddress?.city}, {userAddress?.state},{' '}
+                      {userAddress?.country}, {userAddress?.postal_code},
                     </Text>
                   </View>
                 ) : (
@@ -299,28 +268,19 @@ export function UserDetails({
               <TouchableOpacity style={styles.pointCon}>
                 <View style={styles.flexAlign}>
                   <Image source={reward2} style={styles.rewardStyle} />
-                  <Text style={styles.pointText}>
-                    {strings.customers.point}
-                  </Text>
+                  <Text style={styles.pointText}>{strings.customers.point}</Text>
                 </View>
               </TouchableOpacity>
               <Spacer space={SH(10)} />
               <View style={[styles.pointCon, styles.acceptCon]}>
                 <View style={styles.flexAlign}>
-                  <TouchableOpacity
-                    style={styles.toggleBtnCon}
-                    onPress={() => setToglex(!toglex)}
-                  >
+                  <TouchableOpacity style={styles.toggleBtnCon} onPress={() => setToglex(!toglex)}>
                     <Image
                       source={toggle}
-                      style={
-                        toglex ? styles.toggleBtnStyle : styles.toggleBtnStyle2
-                      }
+                      style={toglex ? styles.toggleBtnStyle : styles.toggleBtnStyle2}
                     />
                   </TouchableOpacity>
-                  <Text style={styles.acceptMarketText}>
-                    {strings.customers.acceptMarket}
-                  </Text>
+                  <Text style={styles.acceptMarketText}>{strings.customers.acceptMarket}</Text>
                 </View>
               </View>
             </View>
@@ -336,16 +296,10 @@ export function UserDetails({
           <View style={{ marginHorizontal: moderateScale(10) }}>
             <DropDownPicker
               ArrowUpIconComponent={({ style }) => (
-                <Image
-                  source={dropdown2}
-                  style={styles.dropDownIconPagination}
-                />
+                <Image source={dropdown2} style={styles.dropDownIconPagination} />
               )}
               ArrowDownIconComponent={({ style }) => (
-                <Image
-                  source={dropdown2}
-                  style={styles.dropDownIconPagination}
-                />
+                <Image source={dropdown2} style={styles.dropDownIconPagination} />
               )}
               style={styles.dropdown}
               containerStyle={[
@@ -372,9 +326,7 @@ export function UserDetails({
           <View style={styles.unionCon}>
             <Image source={mask} style={styles.unionStyle} />
           </View>
-          <Text style={styles.paginationCount}>
-            {strings.wallet.paginationCount}
-          </Text>
+          <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
           <View style={[styles.unionCon, { backgroundColor: COLORS.white }]}>
             <Image source={maskRight} style={styles.unionStyle} />
           </View>
@@ -436,7 +388,7 @@ export function Users({ selectedNo }) {
 
   const [show, setShow] = useState(false);
 
-  const onChangeDate = selectedDate => {
+  const onChangeDate = (selectedDate) => {
     const currentDate = moment().format('MM/DD/YYYY');
     const selected = moment(selectedDate).format('MM/DD/YYYY');
     if (currentDate === selected) {
@@ -464,10 +416,7 @@ export function Users({ selectedNo }) {
     <View>
       <View style={styles.orderTypeCon}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity
-            style={styles.datePickerCon}
-            onPress={() => setShow(!show)}
-          >
+          <TouchableOpacity style={styles.datePickerCon} onPress={() => setShow(!show)}>
             <Image source={calendar1} style={styles.calendarStyle} />
             <TextInput
               value={date}
@@ -500,16 +449,10 @@ export function Users({ selectedNo }) {
           <View style={{ marginHorizontal: moderateScale(10) }}>
             <DropDownPicker
               ArrowUpIconComponent={({ style }) => (
-                <Image
-                  source={dropdown2}
-                  style={styles.dropDownIconPagination}
-                />
+                <Image source={dropdown2} style={styles.dropDownIconPagination} />
               )}
               ArrowDownIconComponent={({ style }) => (
-                <Image
-                  source={dropdown2}
-                  style={styles.dropDownIconPagination}
-                />
+                <Image source={dropdown2} style={styles.dropDownIconPagination} />
               )}
               style={styles.dropdown}
               containerStyle={[
@@ -528,7 +471,7 @@ export function Users({ selectedNo }) {
               setItems={setPaginationModalItems}
               placeholder="5"
               placeholderStyle={styles.placeholderStylePagination}
-              onSelectItem={item => selectedNo(item.value)}
+              onSelectItem={(item) => selectedNo(item.value)}
             />
           </View>
           <View style={styles.unionCon}>
@@ -537,9 +480,7 @@ export function Users({ selectedNo }) {
           <View style={styles.unionCon}>
             <Image source={mask} style={styles.unionStyle} />
           </View>
-          <Text style={styles.paginationCount}>
-            {strings.wallet.paginationCount}
-          </Text>
+          <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
           <View style={[styles.unionCon, { backgroundColor: COLORS.white }]}>
             <Image source={maskRight} style={styles.unionStyle} />
           </View>
@@ -559,9 +500,7 @@ export function Users({ selectedNo }) {
             <View style={styles.displayFlex}>
               <View style={styles.tableHeaderLeft}>
                 <Text style={styles.tableTextHeaFirst}>#</Text>
-                <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>
-                  Name
-                </Text>
+                <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>Name</Text>
               </View>
               <View style={styles.tableHeaderRight}>
                 <Text style={styles.tableTextHea}>Total orders</Text>

@@ -1,15 +1,16 @@
-import React from 'react';
-import { Text, Image, TouchableOpacity } from 'react-native';
+import React, { memo } from 'react';
+import { Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
-import { backArrow2 } from '@/assets';
+import { ms } from 'react-native-size-matters';
+
+import { COLORS, SW } from '@/theme';
 import { strings } from '@/localization';
-
-import styles from '../styles';
+import { backArrow2, Fonts } from '@/assets';
 
 const Header = ({ viewAllOrder, setViewAllOrder, setIsBack }) => {
   return (
     <>
-      {viewAllOrder ? (
+      {viewAllOrder && (
         <TouchableOpacity
           onPress={() => {
             setViewAllOrder(false);
@@ -22,9 +23,35 @@ const Header = ({ viewAllOrder, setViewAllOrder, setIsBack }) => {
             {strings.deliveryOrders.back}
           </Text>
         </TouchableOpacity>
-      ) : null}
+      )}
     </>
   );
 };
 
-export default Header;
+export default memo(Header);
+
+const styles = StyleSheet.create({
+  backView: {
+    marginTop: 10,
+    marginLeft: 18,
+    width: ms(60),
+    borderRadius: 5,
+    height: ms(25),
+    paddingRight: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.gerySkies,
+  },
+  backImageStyle: {
+    width: SW(8),
+    height: SW(8),
+    tintColor: COLORS.white,
+    resizeMode: 'contain',
+  },
+  currentStatusText: {
+    fontSize: ms(8),
+    color: COLORS.white,
+    fontFamily: Fonts.SemiBold,
+  },
+});
