@@ -516,3 +516,57 @@ export const productList = [
     price: '$6.56',
   },
 ];
+
+export const colorsData = [
+  {
+    key: '1',
+    title: 'Grey',
+  },
+  {
+    key: '2',
+    title: 'Red',
+  },
+  {
+    key: '3',
+    title: 'Blue',
+  },
+  {
+    key: '4',
+    title: 'Black',
+  },
+  {
+    key: '5',
+    title: 'White',
+  },
+];
+
+export const sizeData = [
+  {
+    key: '1',
+    title: 'S',
+  },
+  {
+    key: '2',
+    title: 'M',
+  },
+  {
+    key: '3',
+    title: 'L',
+  },
+  {
+    key: '4',
+    title: 'X',
+  },
+  {
+    key: '5',
+    title: 'XL',
+  },
+  {
+    key: '6',
+    title: 'XXL',
+  },
+  {
+    key: '7',
+    title: '2XL',
+  },
+];

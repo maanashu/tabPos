@@ -217,16 +217,20 @@ export function POSUsers({ navigation }) {
                 return (
                   <View style={styles.posUserCon}>
                     <Spacer space={SH(10)} />
+
                     <Image
                       source={{ uri: item.user?.user_profiles?.profile_photo } ?? userImage}
                       style={styles.profileImage}
                     />
+
                     <Text style={styles.firstName}>{item.user?.user_profiles?.firstname}</Text>
+
                     <Text style={styles.role} numberOfLines={1}>
                       {item.user?.user_roles?.length > 0
                         ? item.user?.user_roles?.map((item) => item.role?.name)
                         : 'admin'}
                     </Text>
+
                     {item.user?.api_tokens.length > 0 && (
                       <>
                         <Text style={[styles.dateTime, { marginTop: SH(10) }]}>
@@ -237,7 +241,9 @@ export function POSUsers({ navigation }) {
                         </Text>
                       </>
                     )}
+
                     <View style={{ flex: 1 }} />
+
                     <TouchableOpacity
                       style={styles.arrowButonCon}
                       onPress={() =>
