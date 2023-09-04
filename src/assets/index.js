@@ -354,6 +354,8 @@ export { default as CalculatorColor } from '@/assets/images/CalculatorColor.png'
 export { default as storeLogo } from '@/assets/icons/ic_deliveryOrder/storeLogo.png';
 export { default as research } from '@/assets/icons/ic_posRetail/research.png';
 
+export { default as messageSend } from '@/assets/icons/ic_chat/messageSend.png';
+
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',

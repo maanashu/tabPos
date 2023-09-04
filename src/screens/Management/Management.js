@@ -644,7 +644,6 @@ export function Management() {
               </View>
             </View>
             <Spacer space={SH(60)} />
-
             <Button
               style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}

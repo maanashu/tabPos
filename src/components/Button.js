@@ -30,8 +30,8 @@ export function Button({ style, textStyle, title, pending, disable, ...rest }) {
 }
 
 Button.propTypes = {
-  style: PropTypes.object,
-  textStyle: PropTypes.object,
+  style: PropTypes.object || PropTypes.array,
+  textStyle: PropTypes.object || PropTypes.array,
   title: PropTypes.string.isRequired,
 };
 

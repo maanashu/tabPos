@@ -797,4 +797,13 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
   },
+  messageSend: {
+    height: ms(25),
+    width: ms(25),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  messagesContainerStyle: {
+    paddingBottom: ms(10),
+  },
 });

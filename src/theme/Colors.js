@@ -44,4 +44,8 @@ export const COLORS = {
   violet: '#6B84D3',
   darkBlue: '#102773',
   blue_shade: '#E5F0FF',
+  placeholder: '#F5F6F7',
+  inputBorder: '#F5F6F7',
+  light_grey: '#626262',
+  placeHolder: '#F5F6F7',
 };
