@@ -60,14 +60,9 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useIsFocused } from '@react-navigation/native';
+import { DATA } from '@/constants/flatListData';
 
 moment.suppressDeprecationWarnings = true;
-
-const DATA = [
-  { title: 'Cash', icon: moneyIcon },
-  { title: 'JBR Coin', icon: qrCodeIcon },
-  { title: 'Card', icon: cardPayment },
-];
 
 const RECIPE_DATA = [
   { title: 'SMS', icon: cardPayment },
@@ -517,6 +512,7 @@ export const CartAmountPayBy = ({
                 ))}
               </View>
             </View>
+
             {selectedTipIndex !== null ? (
               <View
                 style={{
@@ -812,6 +808,7 @@ export const CartAmountPayBy = ({
           ) : null}
         </View>
       </Modal>
+
       <Modal isVisible={emailModal}>
         <KeyboardAwareScrollView
           contentContainerStyle={{

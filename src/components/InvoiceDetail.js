@@ -425,25 +425,28 @@ export function InvoiceDetail({
             </View>
 
             <View style={styles._horizontalLine} />
-            {/* <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Shipping Charge</Text>
-              <Text style={styles._subTotalPrice}>$0.00</Text>
-            </View> */}
+
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Discount</Text>
               <Text style={styles._subTotalPrice}>${'0.00'}</Text>
             </View>
+
             <View style={styles._horizontalLine} />
+
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Tips</Text>
               <Text style={styles._subTotalPrice}>${'123'}</Text>
             </View>
+
             <View style={styles._horizontalLine} />
+
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Total Taxes</Text>
               <Text style={styles._subTotalPrice}>${'0.00'}</Text>
             </View>
+
             <View style={styles._horizontalLine} />
+
             <View style={styles._subTotalContainer}>
               <Text
                 style={[styles._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
