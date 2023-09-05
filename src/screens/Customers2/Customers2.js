@@ -110,15 +110,6 @@ export function Customers2() {
       return (
         <InvoiceDetail
           {...{
-            setTrackingView,
-            singleOrderDetail,
-            latitude,
-            longitude,
-            sourceCoordinate,
-            destinationCoordinate,
-            openShippingOrders,
-            // renderOrderDetailProducts,
-            location,
             mapRef,
             closeHandler,
           }}

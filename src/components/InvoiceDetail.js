@@ -168,7 +168,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               latitudeDelta: 0.0992,
               longitudeDelta: 0.0421,
             }}
-            style={[styles.detailMap, { borderWidth: 1 }]}
+            style={[styles.detailMap]}
           >
             <MapViewDirections
               key={location?.latitude ?? 0.0}

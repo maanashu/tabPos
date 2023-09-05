@@ -355,6 +355,7 @@ export { default as storeLogo } from '@/assets/icons/ic_deliveryOrder/storeLogo.
 export { default as research } from '@/assets/icons/ic_posRetail/research.png';
 
 export { default as messageSend } from '@/assets/icons/ic_chat/messageSend.png';
+export { default as AttachIcon } from '@/assets/icons/ic_chat/Attach.png';
 
 /* Fonts */
 export const Fonts = {

@@ -663,8 +663,8 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
   },
-  crossStl: { height: ms(15), width: ms(15), tintColor: COLORS.black },
-  crossEventDetailModal: { position: 'absolute', right: ms(10), top: ms(4) },
+  crossStl: { height: ms(18), width: ms(18), tintColor: COLORS.black, alignSelf: 'center' },
+  crossEventDetailModal: { position: 'absolute', right: ms(10), top: ms(10) },
   profilePicContainer: {
     height: ms(12),
     width: ms(12),
@@ -802,6 +802,13 @@ export const styles = StyleSheet.create({
     width: ms(25),
     resizeMode: 'contain',
     alignSelf: 'center',
+  },
+  attachIcon: {
+    height: ms(18),
+    width: ms(18),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginHorizontal: ms(5),
   },
   messagesContainerStyle: {
     paddingBottom: ms(10),

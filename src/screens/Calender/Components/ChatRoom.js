@@ -3,27 +3,73 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { TouchableOpacity, View, Image, Text, Keyboard } from 'react-native';
 import { GiftedChat, Send, InputToolbar, MessageImage, Bubble } from 'react-native-gifted-chat';
 import Modal from 'react-native-modal';
-import { messageSend, attachPic, addAttachment, closeX } from '@/assets';
+import {
+  messageSend,
+  attachPic,
+  addAttachment,
+  closeX,
+  attachIcon,
+  AttachIcon,
+  pin,
+} from '@/assets';
 import { ms } from 'react-native-size-matters';
 import { styles } from '../Calender.styles';
 import { Fonts, crossButton } from '@/assets';
+import io from 'socket.io-client';
+import ProfileImage from '@/components/ProfileImage';
+import { useFocusEffect } from '@react-navigation/native';
+// const socket = io('https://apichat.jobr.com:8007/');
 
-export const ChatRoom = ({ isVisible, setIsVisible, recieverdata }) => {
+export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddress }) => {
+  console.log('UserData', JSON.stringify(customerData));
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
   const [messages, setMessages] = useState([]);
-
   const [bottomOffset, setbottomOffset] = useState(0);
   const [showView, setShowView] = useState('');
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-
+  console.log('chat render');
   const handleKeyboardDidShow = () => {
     setIsKeyboardOpen(true);
-    // Additional actions you want to perform when the keyboard is shown
   };
-
   const handleKeyboardDidHide = () => {
     setIsKeyboardOpen(false);
-    // Additional actions you want to perform when the keyboard is hidden
   };
+  const socket = io(`https://apichat.jobr.com:8007?userId=${customerData?.id}`, {
+    path: '/api/v1/connect',
+  });
+  // const socket = io('https://apichat.jobr.com:8007/');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      socket.on('connect', () => {
+        console.log('New socket', socket.id);
+        setIsSocketConnected(true);
+      });
+
+      return () => {
+        socket.on('disconnect', () => {
+          setIsSocketConnected(false);
+        });
+        // Clean up the socket connection when the component unmounts
+        socket.disconnect();
+      };
+    }, [])
+  );
+  // console.log(' socket', isSocketConnected);
+  // useEffect(() => {
+  //   socket.on('get_messages', (message) => {
+  //     console.log('object,messa', message);
+  //     setMessages((previousMessages) =>
+  //       GiftedChat.append(previousMessages, {
+  //         ...message,
+  //         createdAt: new Date(message.createdAt),
+  //       })
+  //     );
+  //   });
+  //   return () => {
+  //     socket.off('get_messages');
+  //   };
+  // }, []);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow);
@@ -50,6 +96,18 @@ export const ChatRoom = ({ isVisible, setIsVisible, recieverdata }) => {
   }, []);
 
   const onSend = useCallback((messages = []) => {
+    // const params = {
+    //   recipient_id: customerData?.id,
+    //   media_type: 'text',
+    //   business_card: 'e',
+    //   content: messages[0]?.text,
+    //   chatHeadType: 'directchat',
+    // };
+    // console.log('Params', params);
+    // socket.emit('send_message', {
+    //   ...params,
+    // });
+
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
   }, []);
 
@@ -61,10 +119,20 @@ export const ChatRoom = ({ isVisible, setIsVisible, recieverdata }) => {
           right: {
             // Styling for sender's bubble
             backgroundColor: '#007AFF',
+            shadowColor: 'rgba(0, 0, 0, 0.2)',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 1,
+            shadowRadius: 2,
+            elevation: 4,
           },
           left: {
             // Styling for recipient's bubble
-            backgroundColor: '#7C7C7C',
+            backgroundColor: '#EFEFEF',
+            shadowColor: 'rgba(0, 0, 0, 0.2)',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 1,
+            shadowRadius: 2,
+            elevation: 4,
           },
         }}
         textStyle={{
@@ -74,7 +142,7 @@ export const ChatRoom = ({ isVisible, setIsVisible, recieverdata }) => {
           },
           left: {
             // Styling for recipient's text
-            color: '#FFFFFF',
+            color: 'black',
           },
         }}
       />
@@ -106,17 +174,18 @@ export const ChatRoom = ({ isVisible, setIsVisible, recieverdata }) => {
   const renderAvatar = () => null;
   const renderCustomInputToolbar = (props) => {
     return (
-      <View style={{ bottom: isKeyboardOpen ? ms(-40) : ms(-18) }}>
+      <View style={{ bottom: isKeyboardOpen ? ms(-35) : ms(-18) }}>
         <InputToolbar
           {...props}
           containerStyle={[
             {
               borderRadius: 20,
               marginHorizontal: 15,
-              borderWidth: 0.3,
-              borderColor: COLORS.dark_grey,
+              borderTopColor: COLORS.primary,
+              borderWidth: 1,
+              borderColor: COLORS.primary,
               paddingHorizontal: 10,
-              minHeight: ms(30),
+              minHeight: ms(40),
               justifyContent: 'center',
               // position: !isKeyboardOpen ? "absolute" : undefined,
               // bottom: !isKeyboardOpen ? -70 : 0
@@ -130,17 +199,27 @@ export const ChatRoom = ({ isVisible, setIsVisible, recieverdata }) => {
           // containerStyle={tw`h-14 justify-center items-center rounded-3 mx-5 mt-2 bg-dark-green`}
 
           renderSend={(props) => (
-            <Send
-              {...props}
-              containerStyle={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignSelf: 'center',
-                marginHorizontal: 5,
-              }}
-            >
-              <Image source={messageSend} resizeMode="stretch" style={styles.messageSend} />
-            </Send>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+                style={{ alignItems: 'center', alignSelf: 'center' }}
+                onPress={() => alert('Coming soon')}
+              >
+                <Image source={AttachIcon} resizeMode="stretch" style={styles.attachIcon} />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Send
+                  {...props}
+                  containerStyle={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginHorizontal: 5,
+                  }}
+                >
+                  <Image source={messageSend} resizeMode="stretch" style={styles.messageSend} />
+                </Send>
+              </TouchableOpacity>
+            </View>
           )}
         />
       </View>
@@ -151,44 +230,71 @@ export const ChatRoom = ({ isVisible, setIsVisible, recieverdata }) => {
       <View
         style={{
           flex: 1,
-          width: '50%',
+          width: '90%',
           alignSelf: 'center',
           backgroundColor: COLORS.white,
           marginVertical: ms(20),
           borderRadius: ms(10),
           overflow: 'hidden',
+          marginTop: isKeyboardOpen ? ms(-20) : ms(0),
         }}
       >
         <TouchableOpacity
           onPress={() => setIsVisible(false)}
           style={[styles.crossEventDetailModal, { zIndex: 99 }]}
         >
-          <Image source={crossButton} style={styles.crossStl} />
+          <Image source={crossButton} style={[styles.crossStl, { tintColor: COLORS.white }]} />
         </TouchableOpacity>
         <View
           style={{
             height: ms(40),
-            backgroundColor: COLORS.textInputBackground,
+            backgroundColor: COLORS.primary,
             width: '100%',
             justifyContent: 'center',
             padding: ms(10),
           }}
         >
-          <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>{recieverdata}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: ms(5),
+              justifyContent: 'space-between',
+            }}
+          >
+            <ProfileImage
+              source={{ uri: customerData?.profile_photo }}
+              style={styles.customerUserProfile}
+            />
+            <View style={{ marginLeft: ms(6), flex: 1 }}>
+              <Text style={[styles.customerName, { color: COLORS.white }]}>
+                {customerData?.firstname + ' ' + customerData?.lastname}
+              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image
+                  source={pin}
+                  style={[styles.eventAddressIcon, { tintColor: COLORS.white, marginRight: ms(2) }]}
+                />
+                <Text style={[styles.eventAddress, { color: COLORS.white }]}>
+                  {customerAddress}
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
         <GiftedChat
+          forceGetKeyboardHeight={true}
           alwaysShowSend={true}
           keyboardShouldPersistTaps={'never'}
           scrollToBottom={true}
           isKeyboardInternallyHandled={true}
-          // bottomOffset={bottomOffset}
+          bottomOffset={bottomOffset}
           messages={messages}
           onSend={(messages) => onSend(messages)}
           renderBubble={renderBubble}
           // renderSend={renderSend}
           renderAvatar={renderAvatar}
           messagesContainerStyle={{
-            paddingBottom: ms(15),
+            paddingBottom: isKeyboardOpen ? ms(-25) : ms(25),
           }}
           user={{
             _id: 1,
