@@ -81,6 +81,7 @@ import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 export function MainScreen({
   cartScreenHandler,
   checkOutHandler,
+  checkOutServiceHandler,
   categoryArray,
   sellerID,
   productArray,
@@ -1254,7 +1255,7 @@ export function MainScreen({
           clearCart={() => {
             dispatch(clearServiceAllCart()), setServiceCartModal(false);
           }}
-          checkOutHandler={checkOutHandler}
+          checkOutHandler={checkOutServiceHandler}
           CloseCartModal={() => setServiceCartModal(false)}
         />
       </ReactNativeModal>

@@ -372,6 +372,9 @@ export function PosRetail3() {
         checkOutHandler={() => {
           setVisitCart(true), setselectedScreen('CartScreen');
         }}
+        checkOutServiceHandler={() => {
+          setVisitCart(true), setselectedScreen('CartServiceScreen');
+        }}
         productArray={defaultArrayproduct}
         categoryArray={categoryArray}
         addNotesHandler={addNotesHandler}

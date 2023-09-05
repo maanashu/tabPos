@@ -102,7 +102,6 @@ export function Analytics2() {
 
   const handleOnPressNext = () => {
     // Perform actions when "Next" button is pressed
-    console.log('Next button pressed');
   };
   const getSelectedData = () => {
     if (filter?.value === undefined) {

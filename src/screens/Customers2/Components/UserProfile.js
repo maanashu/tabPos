@@ -282,7 +282,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
                   <TouchableOpacity
                     key={index}
                     style={[styles.tableDataCon, { zIndex: -99 }]}
-                    onPress={orderClickHandler}
+                    onPress={() => orderClickHandler(item?.id)}
                   >
                     <View style={styles.profileheaderUnderView}>
                       <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}>

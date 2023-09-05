@@ -71,7 +71,6 @@ export function Wallet2() {
   const getCustomerStatitics = getCustomerData?.getCustomers;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail;
   const transactionTypeArray = getWalletData?.getTotalTraType;
-  console.log('transactionTypeArray', transactionTypeArray);
 
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const values =
