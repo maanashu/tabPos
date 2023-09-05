@@ -236,6 +236,8 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   emptyView: {
+    flex: 1,
+    alignSelf: 'center',
     height:
       Platform.OS === 'ios'
         ? Dimensions.get('window').height / 3.2
