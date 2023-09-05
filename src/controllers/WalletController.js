@@ -15,8 +15,6 @@ export class WalletController {
         endpoint = `${BASE_URL}?${sellerParam}&date=${date}`;
       }
 
-      console.log('endpoint', endpoint);
-
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

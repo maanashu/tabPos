@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,8 @@ import {
   Platform,
   FlatList,
   TouchableOpacity,
-  ActivityIndicator,
+  StyleSheet,
+  Dimensions,
 } from 'react-native';
 
 import moment from 'moment';
@@ -16,21 +17,13 @@ import { ms } from 'react-native-size-matters';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { deliveryHomeIcon, Fonts, scooter, storeTracker, userImage } from '@/assets';
-
-import styles from '../ShippingOrder2.styles';
-import ShipmentTracking from './ShipmentTracking';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
+import { Fonts, scooter, userImage } from '@/assets';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { GOOGLE_MAP } from '@/constants/ApiKey';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/AnalyticsTypes';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
-const OrderDetail = ({
-  renderAllOrdersToReview,
-  ordersList,
+const { width, height } = Dimensions.get('window');
+
+const ReturnOrderDetail = ({
   openShippingOrders,
   userDetail,
   orderDetail,
@@ -43,17 +36,6 @@ const OrderDetail = ({
   const location = user?.merchantLoginData?.user?.user_profiles?.current_address;
   const oneOrderDetail = useSelector(getAnalytics);
   const getTrackingInfo = oneOrderDetail?.getOrderData?.tracking_info;
-
-  const sourceCoordinate = {
-    latitude: location?.latitude,
-    longitude: location?.longitude,
-  };
-  const destinationCoordinate = {
-    latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
-    longitude: oneOrderDetail?.getOrderData?.coordinates?.[1],
-  };
-
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
 
   return (
     <>
@@ -75,9 +57,7 @@ const OrderDetail = ({
                   ? userDetail?.user_details?.firstname
                   : 'user name'}
               </Text>
-              <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
-                {userDetail?.address}
-              </Text>
+              <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>{location.city}</Text>
             </View>
           </View>
 
@@ -272,4 +252,50 @@ const OrderDetail = ({
   );
 };
 
-export default OrderDetail;
+export default memo(ReturnOrderDetail);
+
+const styles = StyleSheet.create({
+  orderDetailView: {
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    flex: 0.3,
+    height: height - 120,
+    marginBottom: 90,
+  },
+  userDetailView: {
+    flex: 1,
+    borderWidth: 1,
+    paddingVertical: 20,
+    borderRadius: 10,
+    height: SH(80),
+    marginVertical: 10,
+    flexDirection: 'row',
+    borderWidth: 1,
+  },
+  orderDetailViewStyle: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginHorizontal: 10,
+    paddingVertical: 30,
+    borderRadius: 10,
+    marginTop: 20,
+    width: width / 2.4,
+    backgroundColor: COLORS.textInputBackground,
+  },
+  userImageStyle: {
+    width: ms(22),
+    height: ms(22),
+    borderRadius: ms(10),
+    resizeMode: 'cover',
+  },
+  scooterImageStyle: {
+    width: SH(26),
+    height: SH(26),
+    resizeMode: 'contain',
+  },
+  userNameView: {
+    paddingLeft: 10,
+  },
+});

@@ -67,6 +67,8 @@ import TodayShippingStatus from './Components/TodayShippingStatus';
 import CurrentShippingStatus from './Components/CurrentShippingStatus';
 
 import styles from './ShippingOrder2.styles';
+import { returnOrders } from '@/constants/flatListData';
+import ReturnOrderDetail from './Components/ReturnOrderDetail';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -666,6 +668,113 @@ export function ShippingOrder2() {
     }
   };
 
+  const renderReturnOrders = ({ item, index }) => {
+    const isSelected = viewAllOrders && item?.key === userDetail?.key;
+
+    const handlePress = () => {
+      setViewAllOrders(true);
+      setUserDetail(item);
+      setOrderId(item?.key);
+    };
+
+    const handleExpandPress = () => {
+      setUserDetail(item);
+      setViewAllOrders(true);
+    };
+
+    return (
+      <TouchableOpacity
+        onPress={handlePress}
+        style={[
+          styles.showAllOrdersView,
+          {
+            alignItems: 'center',
+            width:
+              Platform.OS === 'ios'
+                ? Dimensions.get('window').width / ms(1.1)
+                : Dimensions.get('window').width / ms(1.2),
+          },
+
+          {
+            backgroundColor: isSelected ? COLORS.textInputBackground : COLORS.transparent,
+            borderColor: isSelected ? COLORS.primary : COLORS.blue_shade,
+          },
+        ]}
+      >
+        <Text
+          style={[
+            styles.nameTextStyle,
+            {
+              fontFamily: Fonts.SemiBold,
+              textAlignVertical: 'center',
+              paddingRight: 4,
+            },
+          ]}
+        >
+          {item?.id}
+        </Text>
+        <View style={[styles.orderDetailStyle, { left: 10 }]}>
+          <Text numberOfLines={1} style={styles.nameTextStyle}>
+            {item?.name}
+          </Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={pin} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>{item?.miles}</Text>
+          </View>
+        </View>
+
+        <View style={[styles.orderDetailStyle, { left: 10, paddingHorizontal: 12 }]}>
+          <Text style={styles.nameTextStyle}>{item?.items}</Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={pay} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>{item?.price}</Text>
+          </View>
+        </View>
+
+        <Image source={item?.userProfile} style={styles.userImageStyle} />
+        <View
+          style={[styles.orderDetailStyle, { width: Platform.OS === 'android' ? SW(38) : SW(25) }]}
+        >
+          <Text
+            style={[styles.timeTextStyle, { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey }]}
+          >
+            {item?.deliveryType}
+          </Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={clock} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>{item?.time}</Text>
+          </View>
+        </View>
+
+        <View
+          style={[styles.orderDetailStyle, { width: Platform.OS === 'android' ? SW(38) : SW(25) }]}
+        >
+          <Text
+            style={[styles.timeTextStyle, { fontFamily: Fonts.Regular, color: COLORS.solid_grey }]}
+          >
+            {item?.returnWithin}
+          </Text>
+          <View style={styles.locationViewStyle}>
+            <Image
+              source={clock}
+              style={[styles.pinImageStyle, { tintColor: COLORS.yellowTweet }]}
+            />
+            <Text style={[styles.distanceTextStyle, { color: COLORS.yellowTweet }]}>
+              {item?.returnTime}
+            </Text>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          onPress={handleExpandPress}
+          style={[styles.orderDetailStyle, { width: SH(20) }]}
+        >
+          <Image source={rightIcon} style={styles.rightIconStyle} />
+        </TouchableOpacity>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <ScreenWrapper>
       {!openWebView ? (
@@ -674,8 +783,57 @@ export function ShippingOrder2() {
 
           <Spacer space={SH(20)} />
           {viewAllOrders ? (
-            <View style={styles.firstRowStyle}>
-              {ordersList?.length > 0 ? (
+            <View style={[styles.firstRowStyle, { flex: 1 }]}>
+              {openShippingOrders === '9' ? (
+                <>
+                  <View
+                    style={[
+                      styles.orderToReviewView,
+                      {
+                        flex: 0.58,
+                        height: Dimensions.get('window').height - 80,
+                        paddingBottom: ms(10),
+                      },
+                    ]}
+                  >
+                    <FlatList
+                      data={returnOrders}
+                      renderItem={renderReturnOrders}
+                      ListHeaderComponent={() => (
+                        <View style={styles.headingRowStyle}>
+                          <Text style={styles.ordersToReviewText}>
+                            {openShippingOrders === '0'
+                              ? strings.shippingOrder.reviewOrders
+                              : openShippingOrders === '1'
+                              ? strings.shippingOrder.acceptedOrders
+                              : openShippingOrders === '2'
+                              ? strings.shippingOrder.prepareOrders
+                              : openShippingOrders === '3'
+                              ? 'Printing Labels'
+                              : openShippingOrders === '4'
+                              ? strings.orderStatus.shipOrder
+                              : openShippingOrders === '5'
+                              ? strings.orderStatus.deliveryOrder
+                              : openShippingOrders === '7,8'
+                              ? strings.orderStatus.cancelledOrder
+                              : 'Shipping Order Returns'}
+                          </Text>
+                        </View>
+                      )}
+                    />
+                  </View>
+
+                  {/* <View
+                    style={{
+                      flex: 0.39,
+                      borderRadius: 10,
+                      backgroundColor: COLORS.white,
+                    }}
+                  >
+                    <ReturnOrderDetail />
+                  </View> */}
+                </>
+              ) : ordersList?.length > 0 ? (
                 <>
                   <View style={styles.orderToReviewView}>
                     <FlatList
@@ -776,10 +934,13 @@ export function ShippingOrder2() {
                         height,
                         openShippingOrders,
                         ordersList,
+                        viewAllOrders,
                         setViewAllOrders,
                         setGetOrderDetail,
                         renderOrderToReview,
                         emptyComponent,
+                        setUserDetail,
+                        setOrderId,
                       }}
                     />
                   )}
