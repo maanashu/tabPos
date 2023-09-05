@@ -57,11 +57,12 @@ export const styles = StyleSheet.create({
   },
   searchView: {
     height: SH(45),
-    borderRadius: ms(4),
+    borderRadius: ms(15),
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 10,
-    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.row_grey,
   },
   searchImage: {
     width: SH(20),

@@ -13,7 +13,7 @@ import {
   onlineCutomer,
   walkinCustomer,
 } from '@/assets';
-import { ScreenWrapper } from '@/components';
+import { InvoiceDetail, ScreenWrapper } from '@/components';
 import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,10 +25,12 @@ import moment from 'moment';
 import Graph from './Components/Graph';
 import AllUsers from './Components/AllUsers';
 import UserProfile from './Components/UserProfile';
+import { useRef } from 'react';
 
 moment.suppressDeprecationWarnings = true;
 
 export function Customers2() {
+  const mapRef = useRef(null);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -46,6 +48,28 @@ export function Customers2() {
   const [allUsers, setAllUsers] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
   const [userData, setUserData] = useState();
+  const [invoiceDetail, setInvoiceDetail] = useState(false);
+  const [trackingView, setTrackingView] = useState(false);
+  const [openShippingOrders, setOpenShippingOrders] = useState('0');
+
+  const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
+  const singleOrderDetail = [];
+
+  const closeHandler = () => {
+    setInvoiceDetail(false);
+    setUserProfile(true);
+  };
+
+  const sourceCoordinate = {
+    latitude: 30.67995,
+    longitude: 76.72211,
+  };
+  const latitude = parseFloat(0.0);
+  const longitude = parseFloat(0.0);
+  const destinationCoordinate = {
+    latitude: 0.0,
+    longitude: 0.0,
+  };
 
   useEffect(() => {
     if (isFocused) {
@@ -81,7 +105,25 @@ export function Customers2() {
   ];
 
   const bodyView = () => {
-    if (userProfile) {
+    if (invoiceDetail) {
+      return (
+        <InvoiceDetail
+          {...{
+            setTrackingView,
+            singleOrderDetail,
+            latitude,
+            longitude,
+            sourceCoordinate,
+            destinationCoordinate,
+            openShippingOrders,
+            // renderOrderDetailProducts,
+            location,
+            mapRef,
+            closeHandler,
+          }}
+        />
+      );
+    } else if (userProfile) {
       return (
         <UserProfile
           backHandler={() => {
@@ -89,6 +131,10 @@ export function Customers2() {
             setAllUsers(true);
           }}
           userDetail={userData}
+          orderClickHandler={() => {
+            setUserProfile(false);
+            setInvoiceDetail(true);
+          }}
         />
       );
     } else if (allUsers) {

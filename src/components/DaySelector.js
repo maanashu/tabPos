@@ -19,11 +19,11 @@ const selectData = [
     name: 'Monthly',
     value: 'month',
   },
-  {
-    id: 4,
-    name: 'Quaterly',
-    value: 'quarter',
-  },
+  // {
+  //   id: 4,
+  //   name: 'Quaterly',
+  //   value: 'quarter',
+  // },
   // {
   //   id: 5,
   //   name: 'Yearly',

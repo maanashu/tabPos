@@ -320,64 +320,53 @@ export class AnalyticsController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          // Toast.show({
+          //   text2: error.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
   }
 
-  static async getAnalyticOrderGraphs(sellerID, filter) {
+  static async getAnalyticOrderGraphs(sellerID, data) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getAnalyticOrderGraphs +
-        `?seller_id=${sellerID}&filter=${filter}`;
+        ORDER_URL + ApiOrderInventory.getAnalyticOrderGraphs + `?seller_id=${sellerID}&${params}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
           reject(error);
         });
     });
   }
 
-  static async getTotalOrder(sellerID, filter) {
+  static async getTotalOrder(sellerID, data) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getTotalOrder + `?seller_id=${sellerID}&filter=${filter}`;
+        ORDER_URL + ApiOrderInventory.getTotalOrder + `?seller_id=${sellerID}&${params}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
           reject(error);
         });
     });
   }
 
-  static async getTotalInventory(sellerID, filter) {
+  static async getTotalInventory(sellerID, data) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
       const endpoint = `${
         PRODUCT_URL + ApiProductInventory.getTotalInventory
-      }?seller_id=${sellerID}&filter=${filter}`;
+      }?seller_id=${sellerID}&${params}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -388,11 +377,12 @@ export class AnalyticsController {
     });
   }
 
-  static async getSoldProduct(sellerID, filter) {
+  static async getSoldProduct(sellerID, data) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
       const endpoint = `${
         ORDER_URL + ApiOrderInventory.getSoldProduct
-      }?seller_id=${sellerID}&filter=${filter}`;
+      }?seller_id=${sellerID}&${params}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

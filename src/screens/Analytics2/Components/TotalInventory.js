@@ -59,8 +59,7 @@ export function TotalInventory({ onPress }) {
   const getProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart2}>
-        <Text>{index + 1 + '   '}</Text>
-
+        <Text>{index + 1 + '.           '}</Text>
         <Text style={styles.revenueDataText}>{item?.products?.name}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
@@ -78,7 +77,7 @@ export function TotalInventory({ onPress }) {
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting2}>
-        <Text style={styles.revenueDataText}>{moment(item?.created_at).format('LL')}</Text>
+        <Text style={styles.revenueDataText}>{moment(item?.created_at).format('YYYY-MM-DD')}</Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
@@ -102,12 +101,40 @@ export function TotalInventory({ onPress }) {
         <HeaderView
           image={locationSales}
           text={'Total Inventory'}
-          count={'17'}
+          count={
+            totalInventory?.inventoryOverview?.totalInventory
+              ? totalInventory?.inventoryOverview?.totalInventory
+              : 0
+          }
           style={{ marginHorizontal: ms(5) }}
         />
-        <HeaderView image={averageOrder} text={'Total Inventory Value'} count={'$1700'} />
-        <HeaderView image={totalOrders} text={'Average Order Value'} count={'$17'} />
-        <HeaderView image={profit} text={'Gross Profit'} count={'$17'} />
+        <HeaderView
+          image={averageOrder}
+          text={'Total Inventory Value'}
+          count={
+            totalInventory?.inventoryOverview?.totalInventoryValue
+              ? '$' + totalInventory?.inventoryOverview?.totalInventoryValue?.toFixed(2)
+              : 0
+          }
+        />
+        <HeaderView
+          image={totalOrders}
+          text={'Average Order Value'}
+          count={
+            totalInventory?.inventoryOverview?.averageOrder
+              ? '$' + totalInventory?.inventoryOverview?.averageOrder?.toFixed(2)
+              : 0
+          }
+        />
+        <HeaderView
+          image={profit}
+          text={'Gross Profit'}
+          count={
+            totalInventory?.inventoryOverview?.profit
+              ? '$' + totalInventory?.inventoryOverview?.profit
+              : 0
+          }
+        />
       </View>
 
       {/* <View style={styles.graphHeaderView}> */}

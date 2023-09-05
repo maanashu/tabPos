@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { backArrow2, locationSales, revenueTotal, totalOrders, totalSales } from '@/assets';
+import { Fonts, backArrow2, locationSales, revenueTotal, totalOrders, totalSales } from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
@@ -40,12 +40,6 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
 };
 
 export function Revenue({ onPress }) {
-  const [channel, setChannel] = useState(false);
-  const [channelValue, setChannelValue] = useState(null);
-  const [channelItem, setChannelItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
-  ]);
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
 
@@ -60,10 +54,7 @@ export function Revenue({ onPress }) {
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
           <Text>{index + 1 + '.           '}</Text>
-          <Text style={styles.revenueDataText}>
-            {' '}
-            {item?.date ? moment(item?.date).format('LL') : ''}
-          </Text>
+          <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -83,7 +74,7 @@ export function Revenue({ onPress }) {
         <Text style={styles.revenueDataText}>{item?.margin ? item?.margin.toFixed(2) : 0}%</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>
+        <Text style={styles.revenueDataText2}>
           ${item?.transaction ? item?.transaction.toFixed(2) : 0}
         </Text>
       </DataTable.Cell>

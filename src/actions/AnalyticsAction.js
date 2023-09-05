@@ -490,40 +490,40 @@ export const getAnalyticStatistics = (sellerID, data) => async (dispatch) => {
   }
 };
 
-export const getAnalyticOrderGraphs = (sellerID, filter) => async (dispatch) => {
+export const getAnalyticOrderGraphs = (sellerID, data) => async (dispatch) => {
   dispatch(getAnalyticOrderGraphsRequest());
   try {
-    const res = await AnalyticsController.getAnalyticOrderGraphs(sellerID, filter);
+    const res = await AnalyticsController.getAnalyticOrderGraphs(sellerID, data);
     dispatch(getAnalyticOrderGraphsSuccess(res?.payload));
   } catch (error) {
     dispatch(getAnalyticOrderGraphsError(error.message));
   }
 };
 
-export const getTotalOrder = (sellerID, filter) => async (dispatch) => {
+export const getTotalOrder = (sellerID, data) => async (dispatch) => {
   dispatch(getTotalOrderRequest());
   try {
-    const res = await AnalyticsController.getTotalOrder(sellerID, filter);
+    const res = await AnalyticsController.getTotalOrder(sellerID, data);
     dispatch(getTotalOrderSuccess(res?.payload));
   } catch (error) {
     dispatch(getTotalOrderError(error.message));
   }
 };
 
-export const getTotalInventory = (sellerID, filter) => async (dispatch) => {
+export const getTotalInventory = (sellerID, data) => async (dispatch) => {
   dispatch(getTotalInventoryRequest());
   try {
-    const res = await AnalyticsController.getTotalInventory(sellerID, filter);
+    const res = await AnalyticsController.getTotalInventory(sellerID, data);
     dispatch(getTotalInventorySuccess(res?.payload));
   } catch (error) {
     dispatch(getTotalInventoryError(error.message));
   }
 };
 
-export const getSoldProduct = (sellerID, filter) => async (dispatch) => {
+export const getSoldProduct = (sellerID, data) => async (dispatch) => {
   dispatch(getSoldProductRequest());
   try {
-    const res = await AnalyticsController.getSoldProduct(sellerID, filter);
+    const res = await AnalyticsController.getSoldProduct(sellerID, data);
     dispatch(getSoldProductSuccess(res?.payload));
   } catch (error) {
     dispatch(getSoldProductError(error.message));
