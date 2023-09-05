@@ -840,7 +840,7 @@ export function DeliveryOrders2({ route }) {
                         )}
                       </View>
                     </>
-                  ) : (
+                  ) : getDeliveryData?.getReviewDef.length > 0 ? (
                     <>
                       <View
                         style={[
@@ -886,6 +886,10 @@ export function DeliveryOrders2({ route }) {
                         }}
                       />
                     </>
+                  ) : (
+                    <View style={styles.emptyView}>
+                      <Text style={styles.noOrdersText}>{'No orders found'}</Text>
+                    </View>
                   )}
                 </>
 

@@ -16,6 +16,9 @@ import {
   dropScan,
   staffIcon,
   tableProfile,
+  moneyIcon,
+  qrCodeIcon,
+  cardPayment,
 } from '@/assets';
 
 export const newCustomerDataLoader = [
@@ -569,4 +572,16 @@ export const sizeData = [
     key: '7',
     title: '2XL',
   },
+];
+
+export const DATA = [
+  { title: 'Cash', icon: moneyIcon },
+  { title: 'JBR Coin', icon: qrCodeIcon },
+  { title: 'Card', icon: cardPayment },
+];
+
+export const RECIPE_DATA = [
+  { title: 'SMS', icon: cardPayment },
+  { title: 'Email', icon: cardPayment },
+  { title: 'No e-recipe', icon: cardPayment },
 ];

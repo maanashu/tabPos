@@ -1,40 +1,42 @@
-import { CustomHeader } from '@/screens/PosRetail3/Components';
 import React, { memo, useState } from 'react';
 import {
   View,
   Text,
   Image,
-  TouchableOpacity,
-  SafeAreaView,
-  StyleSheet,
-  Dimensions,
-  TextInput,
   FlatList,
   Platform,
+  TextInput,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
 } from 'react-native';
+
 import { moderateScale, ms, scale, verticalScale } from 'react-native-size-matters';
-import { COLORS, SH, SF, SW } from '@/theme';
+
+import { Spacer } from '@/components';
+import { strings } from '@/localization';
+import { productList } from '@/constants/flatListData';
+import { COLORS, SH, SF, SW, ShadowStyles } from '@/theme';
+import { CustomHeader } from '@/screens/PosRetail3/Components';
 import {
-  checkedCheckbox,
   blankCheckBox,
   checkedCheckboxSquare,
   Fonts,
   categoryshoes,
-  minus,
-  plus,
-  borderCross,
+  sellingArrow,
+  PaymentDone,
 } from '@/assets';
-import { ShadowStyles } from '@/theme';
-import { strings } from '@/localization';
-import { Spacer } from '@/components';
-import { productList } from '@/constants/flatListData';
+import PaymentSelection from './PaymentSelection';
 
 const { width, height } = Dimensions.get('window');
 
 const ProductRefund = () => {
+  const [amount, setAmount] = useState('');
   const [applicableIsCheck, setApplicableIsCheck] = useState(false);
   const [applyEachItem, setApplyEachItem] = useState(false);
   const [selectType, setSelectType] = useState('dollar');
+  const [buttonText, setButtonText] = useState('Apply Refund ');
+  const [changeView, setChangeView] = useState('TotalItems');
 
   const renderProductItem = ({ item, index }) => (
     <View style={styles.blueListData}>
@@ -84,142 +86,229 @@ const ProductRefund = () => {
     </View>
   );
 
+  const applyRefundHandler = () => {
+    if (applicableIsCheck && applyEachItem && amount) {
+      setButtonText('Applied');
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <CustomHeader iconShow />
+      {changeView === 'TotalItems' ? (
+        <>
+          <CustomHeader iconShow />
 
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftMainViewStyle}>
-          <View style={styles.rowStyle}>
-            <View style={styles.applicableViewStyle}>
-              {applicableIsCheck ? (
-                <TouchableOpacity onPress={() => setApplicableIsCheck(!applicableIsCheck)}>
-                  <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={() => setApplicableIsCheck(!applicableIsCheck)}>
-                  <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
-                </TouchableOpacity>
-              )}
-              <Text style={styles.applicableTextStyle}>{strings.returnOrder.applicable}</Text>
-            </View>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.leftMainViewStyle}>
+              <View style={styles.rowStyle}>
+                <View style={styles.applicableViewStyle}>
+                  {applicableIsCheck ? (
+                    <TouchableOpacity onPress={() => setApplicableIsCheck(!applicableIsCheck)}>
+                      <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => setApplicableIsCheck(!applicableIsCheck)}>
+                      <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
+                    </TouchableOpacity>
+                  )}
+                  <Text style={styles.applicableTextStyle}>{strings.returnOrder.applicable}</Text>
+                </View>
 
-            <View style={styles.applicableViewStyle}>
-              {applyEachItem ? (
-                <TouchableOpacity onPress={() => setApplyEachItem(!applyEachItem)}>
-                  <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={() => setApplyEachItem(!applyEachItem)}>
-                  <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
-                </TouchableOpacity>
-              )}
-              <Text style={styles.applicableTextStyle}>{strings.returnOrder.applyEachItem}</Text>
-            </View>
+                <View style={styles.applicableViewStyle}>
+                  {applyEachItem ? (
+                    <TouchableOpacity onPress={() => setApplyEachItem(!applyEachItem)}>
+                      <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => setApplyEachItem(!applyEachItem)}>
+                      <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
+                    </TouchableOpacity>
+                  )}
+                  <Text style={styles.applicableTextStyle}>
+                    {strings.returnOrder.applyEachItem}
+                  </Text>
+                </View>
 
-            <View style={styles.amountTypeView}>
-              <TextInput
-                keyboardType={'number-pad'}
-                style={styles.textInputStyle}
-                placeholder={selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '% 0'}
+                <View style={styles.amountTypeView}>
+                  <TextInput
+                    value={amount}
+                    keyboardType={'number-pad'}
+                    style={styles.textInputStyle}
+                    onChangeText={(text) => setAmount(text)}
+                    placeholder={selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '% 0'}
+                  />
+
+                  <View style={styles.typeViewStyle}>
+                    <TouchableOpacity
+                      onPress={() => setSelectType(strings.returnOrder.dollarLabel)}
+                      style={[
+                        styles.dollarViewStyle,
+                        {
+                          backgroundColor:
+                            selectType === strings.returnOrder.dollarLabel
+                              ? COLORS.gerySkies
+                              : COLORS.white,
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.applyRefundButtonText,
+                          {
+                            color:
+                              selectType === strings.returnOrder.dollarLabel
+                                ? COLORS.white
+                                : COLORS.dark_grey,
+                          },
+                        ]}
+                      >
+                        {strings.returnOrder.dollar}
+                      </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => setSelectType(strings.returnOrder.percentageLabel)}
+                      style={[
+                        styles.dollarViewStyle,
+                        {
+                          paddingHorizontal: 10,
+                          backgroundColor:
+                            selectType === strings.returnOrder.percentageLabel
+                              ? COLORS.gerySkies
+                              : COLORS.white,
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.applyRefundButtonText,
+                          {
+                            color:
+                              selectType === strings.returnOrder.percentageLabel
+                                ? COLORS.white
+                                : COLORS.dark_grey,
+                          },
+                        ]}
+                      >
+                        {strings.returnOrder.percentage}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                {buttonText === 'Applied' ? (
+                  <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
+                    <Image
+                      source={PaymentDone}
+                      style={[styles.checkBoxIconStyle, { tintColor: COLORS.primary }]}
+                    />
+                    <Text style={[styles.applyRefundButtonText, { color: COLORS.primary }]}>
+                      {'Applied'}
+                    </Text>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => applyRefundHandler()}
+                    style={[
+                      styles.applyRefundButton,
+                      {
+                        backgroundColor:
+                          applicableIsCheck || applyEachItem || amount
+                            ? COLORS.primary
+                            : COLORS.gerySkies,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.applyRefundButtonText}>
+                      {strings.returnOrder.applyRefund}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              <Spacer space={SH(10)} />
+
+              <View style={styles.blueListHeader}>
+                <View style={styles.displayflex}>
+                  <View style={[styles.tableListSide, styles.listLeft]}>
+                    <Text style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}>#</Text>
+                    <Text style={styles.cashLabelWhite}>Item</Text>
+                  </View>
+                  <View style={styles.productCartBodyRight}>
+                    <View style={styles.productCartBody}>
+                      <Text style={styles.cashLabelWhite}>Unit Price</Text>
+                    </View>
+                    <View style={styles.productCartBody}>
+                      <Text style={styles.cashLabelWhite}>Refund Amount</Text>
+                    </View>
+                    <View style={styles.productCartBody}>
+                      <Text style={styles.cashLabelWhite}>Quantity</Text>
+                    </View>
+                    <View style={styles.productCartBody}>
+                      <Text style={styles.cashLabelWhite}>Line Total</Text>
+                    </View>
+                    <View style={styles.productCartBody}></View>
+                  </View>
+                </View>
+              </View>
+
+              <FlatList
+                scrollEnabled
+                renderItem={renderProductItem}
+                data={productList}
+                extraData={productList}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.contentContainerStyle}
               />
-
-              <View style={styles.typeViewStyle}>
-                <TouchableOpacity
-                  onPress={() => setSelectType(strings.returnOrder.dollarLabel)}
-                  style={[
-                    styles.dollarViewStyle,
-                    {
-                      backgroundColor:
-                        selectType === strings.returnOrder.dollarLabel
-                          ? COLORS.gerySkies
-                          : COLORS.white,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.applyRefundButtonText,
-                      {
-                        color:
-                          selectType === strings.returnOrder.dollarLabel
-                            ? COLORS.white
-                            : COLORS.dark_grey,
-                      },
-                    ]}
-                  >
-                    {strings.returnOrder.dollar}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => setSelectType(strings.returnOrder.percentageLabel)}
-                  style={[
-                    styles.dollarViewStyle,
-                    {
-                      paddingHorizontal: 10,
-                      backgroundColor:
-                        selectType === strings.returnOrder.percentageLabel
-                          ? COLORS.gerySkies
-                          : COLORS.white,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.applyRefundButtonText,
-                      {
-                        color:
-                          selectType === strings.returnOrder.percentageLabel
-                            ? COLORS.white
-                            : COLORS.dark_grey,
-                      },
-                    ]}
-                  >
-                    {strings.returnOrder.percentage}
-                  </Text>
-                </TouchableOpacity>
-              </View>
             </View>
 
-            <TouchableOpacity style={styles.applyRefundButton}>
-              <Text style={styles.applyRefundButtonText}>{strings.returnOrder.applyRefund}</Text>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.billAmountViewStyle}>
+              <Text style={styles.totalItemsText}>{'Total Refund Items: 4'}</Text>
 
-          <Spacer space={SH(10)} />
-          <View style={styles.blueListHeader}>
-            <View style={styles.displayflex}>
-              <View style={[styles.tableListSide, styles.listLeft]}>
-                <Text style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}>#</Text>
-                <Text style={styles.cashLabelWhite}>Item</Text>
+              <Spacer space={SH(10)} />
+
+              <View style={styles.totalViewStyle}>
+                <Text style={styles.subTotalText}>{'Sub Total'}</Text>
+                <Text style={styles.subTotalPrice}>{'$5.65'}</Text>
               </View>
-              <View style={styles.productCartBodyRight}>
-                <View style={styles.productCartBody}>
-                  <Text style={styles.cashLabelWhite}>Unit Price</Text>
-                </View>
-                <View style={styles.productCartBody}>
-                  <Text style={styles.cashLabelWhite}>Refund Amount</Text>
-                </View>
-                <View style={styles.productCartBody}>
-                  <Text style={styles.cashLabelWhite}>Quantity</Text>
-                </View>
-                <View style={styles.productCartBody}>
-                  <Text style={styles.cashLabelWhite}>Line Total</Text>
-                </View>
-                <View style={styles.productCartBody}></View>
+
+              <Spacer space={SH(10)} />
+
+              <View style={styles.totalViewStyle}>
+                <Text style={styles.subTotalText}>{'Total Taxes'}</Text>
+                <Text style={styles.subTotalPrice}>{'$0.35'}</Text>
               </View>
+
+              <Spacer space={SH(10)} />
+
+              <View style={styles.totalViewStyle}>
+                <Text style={[styles.subTotalText, { fontFamily: Fonts.MaisonBold }]}>
+                  {'Item value'}
+                </Text>
+                <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
+                  {'$6.70'}
+                </Text>
+              </View>
+
+              <Spacer space={SH(20)} />
+
+              <TouchableOpacity
+                onPress={() => setChangeView('Payment')}
+                disabled={buttonText === 'Applied' ? false : true}
+                style={[
+                  styles.nextButtonStyle,
+                  { backgroundColor: buttonText === 'Applied' ? COLORS.primary : COLORS.gerySkies },
+                ]}
+              >
+                <Text style={styles.nextTextStyle}>{'Next'}</Text>
+                <Image source={sellingArrow} style={styles.arrowIconStyle} />
+              </TouchableOpacity>
             </View>
           </View>
-
-          <FlatList
-            data={productList?.splice(0, 5)}
-            scrollEnabled
-            renderItem={renderProductItem}
-            contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}
-          />
-        </View>
-      </View>
+        </>
+      ) : (
+        <PaymentSelection />
+      )}
     </View>
   );
 };
@@ -358,6 +447,59 @@ const styles = StyleSheet.create({
     width: ms(18),
     height: ms(18),
     resizeMode: 'contain',
+  },
+  totalItemsText: {
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.primary,
+    fontSize: SF(18),
+  },
+  arrowIconStyle: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+    tintColor: COLORS.white,
+    marginLeft: 10,
+  },
+  subTotalText: {
+    fontFamily: Fonts.MaisonRegular,
+    color: COLORS.dark_grey,
+    fontSize: SF(16),
+  },
+  subTotalPrice: {
+    fontFamily: Fonts.MaisonRegular,
+    color: COLORS.black,
+    fontSize: SF(16),
+  },
+  nextButtonStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: scale(120),
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    height: scale(25),
+    borderRadius: 5,
+    backgroundColor: COLORS.gerySkies,
+  },
+  nextTextStyle: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(16),
+    color: COLORS.white,
+  },
+  totalViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  billAmountViewStyle: {
+    justifyContent: 'flex-end',
+    paddingBottom: 100,
+    flex: 1,
+    paddingHorizontal: 50,
+  },
+  contentContainerStyle: {
+    flexGrow: 1,
+    paddingBottom: 100,
   },
 });
 
