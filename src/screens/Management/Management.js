@@ -263,7 +263,7 @@ export function Management() {
           modeOfcash: 'cash_out',
         };
 
-    const res = await dispatch(endTrackingSession(data));
+    const res = await endTrackingSession(data)(dispatch);
     setClickAmount(data?.amount);
     if (res) {
       // dispatch(getDrawerSession());

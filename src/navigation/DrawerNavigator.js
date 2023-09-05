@@ -214,7 +214,7 @@ export function DrawerNavigator(props) {
           )}
         />
 
-        <DrawerItem
+        {/* <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
           focused={active === 'users' ? true : false}
@@ -226,7 +226,7 @@ export function DrawerNavigator(props) {
           icon={({ focused }) => (
             <Image source={focused ? blueusers : users} style={styles.iconStyle} />
           )}
-        />
+        /> */}
 
         <DrawerItem
           label={''}

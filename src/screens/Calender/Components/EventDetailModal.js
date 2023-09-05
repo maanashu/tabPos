@@ -242,7 +242,8 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
       <ChatRoom
         isVisible={isShowChatModal}
         setIsVisible={setisShowChatModal}
-        recieverdata={userDetails?.firstname + ' ' + userDetails?.lastname}
+        customerData={userDetails}
+        customerAddress={userAddress?.street_address}
       />
     </Modal>
   );

@@ -44,7 +44,7 @@ import {
   tableArrow,
 } from '@/assets';
 import moment from 'moment';
-import { DaySelector, ScreenWrapper, Spacer, TableDropdown } from '@/components';
+import { DaySelector, InvoiceDetail, ScreenWrapper, Spacer, TableDropdown } from '@/components';
 import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -60,9 +60,13 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
 import { TYPES } from '@/Types/WalletTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { useRef } from 'react';
+import { getOrderData } from '@/actions/AnalyticsAction';
 const windowHeight = Dimensions.get('window').height;
 export function Wallet2() {
+  const mapRef = useRef(null);
   const isFocused = useIsFocused();
+  const [invoiceDetail, setInvoiceDetail] = useState(false);
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getWalletData = useSelector(getWallet);
@@ -71,6 +75,7 @@ export function Wallet2() {
   const getCustomerStatitics = getCustomerData?.getCustomers;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail;
   const transactionTypeArray = getWalletData?.getTotalTraType;
+  const [orderModel, setOrderModel] = useState(false);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const values =
     getCustomerStatitics === undefined
@@ -99,8 +104,6 @@ export function Wallet2() {
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const [historytype, setHistorytype] = useState('all');
-  const [orderModel, setOrderModel] = useState(false);
-
   const [walletHome, setWalletHome] = useState(true);
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const onPresFun1 = (value) => {
@@ -248,8 +251,21 @@ export function Wallet2() {
     setWeeklyTrasaction(false);
     setWalletHome(true);
   };
+  const closeHandler = () => {
+    setInvoiceDetail(false);
+    setWeeklyTrasaction(true);
+  };
   const bodyView = () => {
-    if (walletHome) {
+    if (invoiceDetail) {
+      return (
+        <InvoiceDetail
+          {...{
+            mapRef,
+            closeHandler,
+          }}
+        />
+      );
+    } else if (walletHome) {
       return (
         <>
           <View style={styles.headerMainView}>
@@ -553,7 +569,10 @@ export function Wallet2() {
                       <TouchableOpacity
                         style={[styles.tableDataCon, { zIndex: -9 }]}
                         key={index}
-                        onPress={() => (setOrderModel(!orderModel), setOrderData(item))}
+                        onPress={() => {
+                          setInvoiceDetail(true);
+                          dispatch(getOrderData(item?.id));
+                        }}
                       >
                         <View style={styles.displayFlex}>
                           <View style={styles.tableHeaderLeft}>
@@ -588,7 +607,7 @@ export function Wallet2() {
                               {item?.user_details?.firstname}
                               {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
                             </Text>
-                            <Text style={styles.tableTextData}>${item.mode_of_payment ?? '0'}</Text>
+                            <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
 
                             <Text style={styles.tableTextData}>
                               {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}

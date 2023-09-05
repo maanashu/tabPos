@@ -284,8 +284,8 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
   },
   calenderImage: {
-    height: SH(15),
-    width: SW(6),
+    height: SH(16),
+    width: SW(5),
   },
   headerView: {
     flexDirection: 'row',
@@ -337,14 +337,14 @@ export const styles = StyleSheet.create({
     width:
       Platform.OS === 'ios'
         ? Dimensions.get('window').width - ms(105)
-        : Dimensions.get('window').width - ms(110),
+        : Dimensions.get('window').width - ms(124),
   },
   tableView: {
     zIndex: -99,
     width:
       Platform.OS === 'ios'
         ? Dimensions.get('window').width - ms(105)
-        : Dimensions.get('window').width - ms(110),
+        : Dimensions.get('window').width - ms(124),
   },
   mainListContainer: {
     zIndex: -99,
