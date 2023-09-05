@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
     fontSize: ms(10),
   },
   custometrCon: {
-    width: Platform.OS === 'android' ? ms(175) : ms(145),
+    width: Platform.OS === 'android' ? ms(175) : ms(135),
     height: SH(94),
     borderRadius: 10,
     backgroundColor: COLORS.white,
