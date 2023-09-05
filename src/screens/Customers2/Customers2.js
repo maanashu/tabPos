@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, FlatList, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import { COLORS } from '@/theme';
 import { styles } from '@/screens/Customers2/Customers2.styles';
 import { getCustomerDummy } from '@/constants/flatListData';
@@ -27,8 +35,9 @@ import AllUsers from './Components/AllUsers';
 import UserProfile from './Components/UserProfile';
 import { useRef } from 'react';
 import { getOrderData } from '@/actions/AnalyticsAction';
-
-moment.suppressDeprecationWarnings = true;
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/AnalyticsTypes';
 
 export function Customers2() {
   const mapRef = useRef(null);
@@ -50,26 +59,12 @@ export function Customers2() {
   const [userProfile, setUserProfile] = useState(false);
   const [userData, setUserData] = useState();
   const [invoiceDetail, setInvoiceDetail] = useState(false);
-  const [trackingView, setTrackingView] = useState(false);
-  const [openShippingOrders, setOpenShippingOrders] = useState('0');
-
-  const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
-  const singleOrderDetail = [];
+  const [saveCustomerId, setSaveCustomerId] = useState();
+  const [saveCustomeType, setSaveCustomerType] = useState();
 
   const closeHandler = () => {
     setInvoiceDetail(false);
     setUserProfile(true);
-  };
-
-  const sourceCoordinate = {
-    latitude: 30.67995,
-    longitude: 76.72211,
-  };
-  const latitude = parseFloat(0.0);
-  const longitude = parseFloat(0.0);
-  const destinationCoordinate = {
-    latitude: 0.0,
-    longitude: 0.0,
   };
 
   useEffect(() => {
@@ -104,21 +99,13 @@ export function Customers2() {
       id: '4',
     },
   ];
+  const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
 
   const bodyView = () => {
     if (invoiceDetail) {
       return (
         <InvoiceDetail
           {...{
-            setTrackingView,
-            singleOrderDetail,
-            latitude,
-            longitude,
-            sourceCoordinate,
-            destinationCoordinate,
-            openShippingOrders,
-            // renderOrderDetailProducts,
-            location,
             mapRef,
             closeHandler,
           }}
@@ -132,18 +119,31 @@ export function Customers2() {
             setAllUsers(true);
           }}
           userDetail={userData}
-          orderClickHandler={(item) => {
-            setUserProfile(false);
-            setInvoiceDetail(true);
-            dispatch(getOrderData(item));
+          orderClickHandler={async (item) => {
+            const res = await dispatch(getOrderData(item));
+            if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
+              setUserProfile(false);
+              setInvoiceDetail(true);
+            } else {
+              Toast.show({
+                text2: 'Something went wrong',
+                position: 'bottom',
+                type: 'error_toast',
+                visibilityTime: 1500,
+              });
+            }
           }}
         />
       );
     } else if (allUsers) {
       return (
         <AllUsers
+          saveCustomerId={saveCustomerId}
+          saveCustomeType={saveCustomeType}
           backHandler={() => setAllUsers(false)}
-          profileClickHandler={(item) => {
+          profileClickHandler={(item, customerId, customerTypes) => {
+            setSaveCustomerId(customerId);
+            setSaveCustomerType(customerTypes);
             setAllUsers(false);
             setUserProfile(true);
             setUserData(item);
@@ -224,6 +224,11 @@ export function Customers2() {
       <View style={allUsers || userProfile ? styles.containerWhite : styles.container}>
         {bodyView()}
       </View>
+      {onLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
+        </View>
+      ) : null}
     </ScreenWrapper>
   );
 }

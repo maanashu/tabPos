@@ -11,7 +11,12 @@ export const customersReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.GET_USER_ORDER_SUCCESS:
       return {
         ...state,
-        getUserOrder: payload.getUserOrder.payload,
+        getUserOrder: payload.getUserOrder,
+      };
+    case TYPES.GET_USER_ORDER_RESET:
+      return {
+        ...state,
+        getUserOrder: {},
       };
     case TYPES.GET_ORDER_USER_SUCCESS:
       return {

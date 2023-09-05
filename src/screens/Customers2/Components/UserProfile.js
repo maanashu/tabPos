@@ -58,6 +58,8 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
     total_pages: getCustomerData?.getOrderUser?.total_pages,
     per_page: getCustomerData?.getOrderUser?.per_page,
   };
+  const orderPayloadLength = Object.keys(getCustomerData?.getOrderUser)?.length;
+  console.log('orderPayloadLength', orderPayloadLength);
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
@@ -167,7 +169,10 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
         </View>
       </View>
 
-      <View style={[styles.jbrTypeCon, { zIndex: -1 }]}>
+      <View
+        style={[styles.jbrTypeCon, { zIndex: -1, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
+        pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
+      >
         <View style={styles.paginationEnd}>
           <Text style={[styles.paginationCount, { fontSize: 12 }]}>
             {strings.customers.showResult}

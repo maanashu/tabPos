@@ -1,15 +1,15 @@
 import { CustomersController } from '@/controllers';
-import { TYPES } from "@/Types/CustomersTypes";
+import { TYPES } from '@/Types/CustomersTypes';
 
 const getUserOrderRequest = () => ({
   type: TYPES.GET_USER_ORDER_REQUEST,
   payload: null,
 });
-const getUserOrderSuccess = getUserOrder => ({
+const getUserOrderSuccess = (getUserOrder) => ({
   type: TYPES.GET_USER_ORDER_SUCCESS,
   payload: { getUserOrder },
 });
-const getUserOrderError = error => ({
+const getUserOrderError = (error) => ({
   type: TYPES.GET_USER_ORDER_ERROR,
   payload: { error },
 });
@@ -18,11 +18,11 @@ const getOrderUserRequest = () => ({
   type: TYPES.GET_ORDER_USER_REQUEST,
   payload: null,
 });
-const getOrderUserSuccess = getOrderUser => ({
+const getOrderUserSuccess = (getOrderUser) => ({
   type: TYPES.GET_ORDER_USER_SUCCESS,
   payload: { getOrderUser },
 });
-const getOrderUserError = error => ({
+const getOrderUserError = (error) => ({
   type: TYPES.GET_ORDER_USER_ERROR,
   payload: { error },
 });
@@ -38,53 +38,46 @@ const getCustomersRequest = () => ({
   type: TYPES.GET_CUSTOMERS_REQUEST,
   payload: null,
 });
-const getCustomersSuccess = getCustomers => ({
+const getCustomersSuccess = (getCustomers) => ({
   type: TYPES.GET_CUSTOMERS_SUCCESS,
   payload: { getCustomers },
 });
-const getCustomersError = error => ({
+const getCustomersError = (error) => ({
   type: TYPES.GET_CUSTOMERS_ERROR,
   payload: { error },
 });
 
-
-
-export const getUserOrder = (sellerID,type,selectedValue) => async dispatch => {
+export const getUserOrder = (data) => async (dispatch) => {
   dispatch(getUserOrderRequest());
   try {
-      const res = await CustomersController.getUserOrder(sellerID,type, selectedValue);
-      dispatch(getUserOrderSuccess(res));
+    const res = await CustomersController.getUserOrder(data);
+    dispatch(getUserOrderSuccess(res?.payload));
   } catch (error) {
-    if (error?.statusCode === 204){
+    if (error?.statusCode === 204) {
       dispatch(getUserOrderReset());
     }
-      dispatch(getUserOrderError(error.message));
+    dispatch(getUserOrderError(error.message));
   }
 };
 
-export const getOrderUser = (status, sellerID) => async dispatch => {
+export const getOrderUser = (status, sellerID) => async (dispatch) => {
   dispatch(getOrderUserRequest());
   try {
-      const res = await CustomersController.getOrderUser(status, sellerID);
-      dispatch(getOrderUserSuccess(res));
-    } catch (error) {
-      if (error?.statusCode === 204){
-        dispatch(getOrderUsertReset());
-      }
-        dispatch(getOrderUserError(error.message));
+    const res = await CustomersController.getOrderUser(status, sellerID);
+    dispatch(getOrderUserSuccess(res));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getOrderUsertReset());
     }
-};
-export const getCustomer = (sellerID) => async dispatch => {
-  dispatch(getCustomersRequest());
-  try {
-      const res = await CustomersController.getCustomers(sellerID);
-      dispatch(getCustomersSuccess(res?.payload));
-    } catch (error) {
-      dispatch(getCustomersError(error.message));
+    dispatch(getOrderUserError(error.message));
   }
 };
-
-
-
-
-
+export const getCustomer = (sellerID) => async (dispatch) => {
+  dispatch(getCustomersRequest());
+  try {
+    const res = await CustomersController.getCustomers(sellerID);
+    dispatch(getCustomersSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getCustomersError(error.message));
+  }
+};

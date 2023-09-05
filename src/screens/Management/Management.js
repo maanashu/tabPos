@@ -362,11 +362,9 @@ export function Management() {
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-
           <Spacer space={SH(30)} />
           <View style={styles.countCashView}>
             <Text style={styles.countCashText}>{strings.management.countCash}</Text>
-
             <Spacer space={SH(40)} />
             <View>
               <Text style={styles.amountCountedText}>{strings.management.amountCounted}</Text>

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import {
@@ -32,22 +33,66 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getUserOrder } from '@/actions/CustomersAction';
+import { getCustomers } from '@/selectors/CustomersSelector';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/CustomersTypes';
+import { PAGINATION_DATA } from '@/constants/enums';
 const result = Dimensions.get('window').height - 50;
 
-const AllUsers = ({ backHandler, profileClickHandler }) => {
-  const [selectedId, setSelectedId] = useState(1);
+const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustomeType }) => {
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const getCustomerData = useSelector(getCustomers);
+  const [selectedId, setSelectedId] = useState(saveCustomerId === undefined ? 2 : saveCustomerId);
+  const [customerType, setCustomerType] = useState(
+    saveCustomeType === undefined ? 'new_customers' : saveCustomeType
+  );
   const [show, setShow] = useState(false);
+  const customerArray = getCustomerData?.getUserOrder?.data ?? [];
+  const payloadLength = Object.keys(getCustomerData?.getUserOrder)?.length;
+
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [dateformat, setDateformat] = useState('');
   const [date, setDate] = useState(new Date());
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
-  const [paginationModalValue, setPaginationModalValue] = useState(null);
-  const [paginationModalItems, setPaginationModalItems] = useState([
-    { label: '5', value: '5' },
-    { label: '10', value: '10' },
-    { label: '15', value: '15' },
-    { label: '20', value: '20' },
-  ]);
+  const [paginationModalValue, setPaginationModalValue] = useState(10);
+  const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
+  console.log('paginationModalValue', paginationModalValue);
+  const [page, setPage] = useState(1);
 
+  const paginationData = {
+    total: getCustomerData?.getUserOrder?.total ?? '0',
+    totalPages: getCustomerData?.getUserOrder?.total_pages ?? '0',
+    perPage: getCustomerData?.getUserOrder?.per_page ?? '0',
+    currentPage: getCustomerData?.getUserOrder?.current_page ?? '0',
+  };
+
+  useEffect(() => {
+    const data = {
+      sellerID: sellerID,
+      customerType: customerType,
+      page: page,
+      limit: paginationModalValue,
+    };
+    dispatch(getUserOrder(data));
+  }, [selectedId, paginationModalValue]);
+
+  const paginationhandler = () => {
+    const data = {
+      sellerID: sellerID,
+      customerType: customerType,
+      page: page,
+      limit: paginationModalValue,
+    };
+    return;
+    dispatch(getUserOrder(data));
+  };
+
+  const isCustomerLoad = useSelector((state) => isLoadingSelector([TYPES.GET_USER_ORDER], state));
   const onChangeDate = (selectedDate) => {
     const currentDate = moment().format('MM/DD/YYYY');
     const selected = moment(selectedDate).format('MM/DD/YYYY');
@@ -76,133 +121,27 @@ const AllUsers = ({ backHandler, profileClickHandler }) => {
     {
       id: 1,
       name: 'All Customers',
+      type: 'all_customers',
     },
     {
       id: 2,
       name: 'New Customers',
+      type: 'new_customers',
     },
     {
       id: 3,
       name: 'Returning Customers',
+      type: 'returning_customers',
+    },
+    {
+      id: 4,
+      name: 'Online Customers',
+      type: 'online_customers',
     },
     {
       id: 5,
-      name: 'Online Customers',
-    },
-    {
-      id: 6,
       name: 'Walking Customers',
-    },
-  ];
-
-  const dummyUser = [
-    {
-      user_id: '7213e5a8-dd0c-470a-addf-41dd9e1cfc90',
-      seller_id: 'b169ed4d-be27-44eb-9a08-74f997bc6a2f',
-      total_orders: 8,
-      total_products: 16,
-      life_time_spent: 287.2,
-      user_details: {
-        uid: '7213e5a8-dd0c-470a-addf-41dd9e1cfc90',
-        email: 'mandeep@yopmail.com',
-        firstname: 'mandeep Singh',
-        middlename: null,
-        lastname: 'singh',
-        profile_photo:
-          'https://jobrs3bucket.s3.amazonaws.com/document/20236/profile-d74e9440-f4d8-46f2-aba5-c6ad137cf674.jpg',
-        banner_image: null,
-        username: 'mandeep',
-        current_address: {
-          city: 'Orange County',
-          state: 'FL',
-          country: 'US',
-          zipcode: '32824',
-          latitude: 28.3841579,
-          longitude: -81.3164274,
-          address_type: 'home',
-          street_address: '12340 Boggy Creek Road',
-        },
-        zipcode: null,
-        phone_number: '+18989898989',
-      },
-      seller_details: {
-        uid: 'b169ed4d-be27-44eb-9a08-74f997bc6a2f',
-        email: 'man@yopmail.com',
-        firstname: 'Galib',
-        middlename: null,
-        lastname: 'Pathan',
-        profile_photo:
-          'https://media.istockphoto.com/vectors/user-avatar-profile-icon-black-vector-illustration-on-transparent-vector-id1313958250?k=20&m=1313958250&s=612x612&w=0&h=vCvfwHB-pUpqWoB7wT2ifkKEL1qa5lhxxUPLIsgER00=',
-        banner_image:
-          'https://t3.ftcdn.net/jpg/03/35/51/06/360_F_335510693_HY7mLg3ARdLccKoXk3m66NLDpJRJh51p.jpg',
-        username: 'Pathan',
-        current_address: {
-          city: 'New York County',
-          state: 'NY',
-          country: 'US',
-          zipcode: '10013',
-          latitude: 40.7243799,
-          longitude: -74.01072719999999,
-          address_type: 'home',
-          street_address: '456 Washington Street',
-        },
-        zipcode: null,
-        phone_number: '+17038712986',
-      },
-    },
-    {
-      user_id: '65f95b0e-7010-44c0-951a-e81b836eadfc',
-      seller_id: 'b169ed4d-be27-44eb-9a08-74f997bc6a2f',
-      total_orders: 8,
-      total_products: 14,
-      life_time_spent: 270.82,
-      user_details: {
-        uid: '65f95b0e-7010-44c0-951a-e81b836eadfc',
-        email: 'idgfiasdgig@yopmail.com',
-        firstname: 'Manpreet',
-        middlename: null,
-        lastname: 'Singh',
-        profile_photo:
-          'https://jobrs3bucket.s3.amazonaws.com/document/20237/profile-2aa431af-50c4-4a19-bf80-90f959416988.jpg',
-        banner_image: null,
-        username: 'msingh',
-        current_address: {
-          city: 'Philadelphia County',
-          state: 'PA',
-          country: 'US',
-          zipcode: '19107',
-          latitude: 39.95171629999999,
-          longitude: -75.161202,
-          address_type: 'home',
-          street_address: '1234 Market Street',
-        },
-        zipcode: null,
-        phone_number: '+16162636465',
-      },
-      seller_details: {
-        uid: 'b169ed4d-be27-44eb-9a08-74f997bc6a2f',
-        email: 'man@yopmail.com',
-        firstname: 'Galib',
-        middlename: null,
-        lastname: 'Pathan',
-        profile_photo:
-          'https://media.istockphoto.com/vectors/user-avatar-profile-icon-black-vector-illustration-on-transparent-vector-id1313958250?k=20&m=1313958250&s=612x612&w=0&h=vCvfwHB-pUpqWoB7wT2ifkKEL1qa5lhxxUPLIsgER00=',
-        banner_image:
-          'https://t3.ftcdn.net/jpg/03/35/51/06/360_F_335510693_HY7mLg3ARdLccKoXk3m66NLDpJRJh51p.jpg',
-        username: 'Pathan',
-        current_address: {
-          city: 'New York County',
-          state: 'NY',
-          country: 'US',
-          zipcode: '10013',
-          latitude: 40.7243799,
-          longitude: -74.01072719999999,
-          address_type: 'home',
-          street_address: '456 Washington Street',
-        },
-        zipcode: null,
-        phone_number: '+17038712986',
-      },
+      type: 'walking_customers',
     },
   ];
 
@@ -213,7 +152,9 @@ const AllUsers = ({ backHandler, profileClickHandler }) => {
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => {
+          setSelectedId(item.id), setCustomerType(item?.type);
+        }}
         backgroundColor={backgroundColor}
         color={color}
       />
@@ -286,7 +227,10 @@ const AllUsers = ({ backHandler, profileClickHandler }) => {
       </View>
 
       {/*Calendar pagination section */}
-      <View style={[styles.jbrTypeCon, { zIndex: -1 }]}>
+      <View
+        style={[styles.jbrTypeCon, { zIndex: -1, opacity: payloadLength === 0 ? 0.4 : 1 }]}
+        pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
+      >
         <View style={styles.paginationEnd}>
           <Text style={[styles.paginationCount, { fontSize: 12 }]}>
             {strings.customers.showResult}
@@ -314,24 +258,27 @@ const AllUsers = ({ backHandler, profileClickHandler }) => {
               setOpen={() => setPaginationModalOpen(!paginationModalOpen)}
               setValue={setPaginationModalValue}
               setItems={setPaginationModalItems}
-              placeholder="5"
+              placeholder="10"
               placeholderStyle={styles.placeholderStylePagination}
               // onSelectItem={item => selectedNo(item.value)}
             />
           </View>
-          <View style={styles.unionCon}>
+          <TouchableOpacity style={styles.unionCon}>
             <Image source={Union} style={styles.unionStyle} />
-          </View>
+          </TouchableOpacity>
           <View style={styles.unionCon}>
             <Image source={mask} style={styles.unionStyle} />
           </View>
-          <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
+          <Text style={styles.paginationCount}>{`1-20 of ${paginationData?.total}`}</Text>
           <View style={[styles.unionCon, { backgroundColor: COLORS.white }]}>
             <Image source={maskRight} style={styles.unionStyle} />
           </View>
-          <View style={[styles.unionCon, { backgroundColor: COLORS.white }]}>
+          <TouchableOpacity
+            style={[styles.unionCon, { backgroundColor: COLORS.white }]}
+            onPress={paginationhandler}
+          >
             <Image source={unionRight} style={styles.unionStyle} />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -361,68 +308,77 @@ const AllUsers = ({ backHandler, profileClickHandler }) => {
               </View>
             </View>
           </View>
-
-          <View style={{ zIndex: -9, height: ms(285) }}>
+          <View style={{ zIndex: -9, height: ms(290) }}>
             <ScrollView>
-              {dummyUser?.map((item, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[styles.tableDataCon, { zIndex: -99 }]}
-                  activeOpacity={0.7}
-                  onPress={() => profileClickHandler(item)}
-                  // onPress={profileClickHandler}
-                >
-                  <View style={styles.displayFlex}>
-                    <View style={styles.tableHeaderLeft}>
-                      <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
-                      <View style={[styles.flexAlign, { marginLeft: 10 }]}>
-                        <Image
-                          source={{ uri: item?.user_details?.profile_photo ?? userImage }}
-                          style={styles.lovingStyleData}
-                        />
-                        <View style={{ flexDirection: 'column', marginLeft: 10 }}>
-                          <Text style={styles.tableTextDataName}>
-                            {item?.user_details?.firstname}
-                            rtghj
-                          </Text>
-                          {item?.user_details ? (
-                            <Text
-                              style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
-                              numberOfLines={1}
-                            >
-                              {item?.user_details?.current_address?.street_address},
-                              {item?.user_details?.current_address?.city},
-                              {item?.user_details?.current_address?.state},
-                              {item?.user_details?.current_address?.country},
-                              {item?.user_details?.current_address?.postal_code}
+              {isCustomerLoad ? (
+                <View style={{ marginTop: 100 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : customerArray?.length === 0 ? (
+                <View style={{ marginTop: 80 }}>
+                  <Text style={styles.userNotFound}>User not found</Text>
+                </View>
+              ) : (
+                customerArray?.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[styles.tableDataCon, { zIndex: -99 }]}
+                    activeOpacity={0.7}
+                    onPress={() => profileClickHandler(item, selectedId, customerType)}
+                    // onPress={profileClickHandler}
+                  >
+                    <View style={styles.displayFlex}>
+                      <View style={styles.tableHeaderLeft}>
+                        <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
+                        <View style={[styles.flexAlign, { marginLeft: 10 }]}>
+                          <Image
+                            source={{ uri: item?.user_details?.profile_photo } ?? userImage}
+                            style={styles.lovingStyleData}
+                          />
+                          <View style={{ flexDirection: 'column', marginLeft: 10 }}>
+                            <Text style={styles.tableTextDataName}>
+                              {item?.user_details?.firstname}
+                              rtghj
                             </Text>
-                          ) : (
-                            <Text></Text>
-                          )}
+                            {item?.user_details ? (
+                              <Text
+                                style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
+                                numberOfLines={1}
+                              >
+                                {item?.user_details?.current_address?.street_address},
+                                {item?.user_details?.current_address?.city},
+                                {item?.user_details?.current_address?.state},
+                                {item?.user_details?.current_address?.country},
+                                {item?.user_details?.current_address?.postal_code}
+                              </Text>
+                            ) : (
+                              <Text></Text>
+                            )}
+                          </View>
+                        </View>
+                      </View>
+                      <View style={styles.tableHeaderRight}>
+                        <View style={styles.tableHeaderRightInner}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {item?.total_orders}
+                          </Text>
+                        </View>
+                        <View style={styles.tableHeaderRightInner}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {item?.total_products}
+                          </Text>
+                        </View>
+                        <View style={styles.tableHeaderRightInner}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {'$'}
+                            {item?.life_time_spent?.toFixed(2)}
+                          </Text>
                         </View>
                       </View>
                     </View>
-                    <View style={styles.tableHeaderRight}>
-                      <View style={styles.tableHeaderRightInner}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          {item?.total_orders}
-                        </Text>
-                      </View>
-                      <View style={styles.tableHeaderRightInner}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          {item?.total_products}
-                        </Text>
-                      </View>
-                      <View style={styles.tableHeaderRightInner}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          {'$'}
-                          {item?.life_time_spent?.toFixed(2)}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              ))}
+                  </TouchableOpacity>
+                ))
+              )}
             </ScrollView>
           </View>
         </Table>

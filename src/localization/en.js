@@ -60,7 +60,7 @@ export const en = {
   },
   verifyPhone: {
     heading: 'Verify your phone number',
-    subHeading: 'Please enter your number to phone number',
+    subHeading: 'Please enter your phone number',
     placeHolderText: '815-288-0329',
     button: 'Continue',
   },

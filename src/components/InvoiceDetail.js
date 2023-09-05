@@ -32,15 +32,15 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
   const singleOrderDetail = oneOrderDetail?.getOrderData;
   const userDetailData = singleOrderDetail?.user_details;
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
-  const latitude = parseFloat(location?.latitude);
-  const longitude = parseFloat(location?.longitude);
+  const latitude = parseFloat(location?.latitude ?? 0.0);
+  const longitude = parseFloat(location?.longitude ?? 0.0);
   const sourceCoordinate = {
     latitude: latitude,
     longitude: longitude,
   };
   const destinationCoordinate = {
-    latitude: singleOrderDetail?.coordinates?.[0],
-    longitude: singleOrderDetail?.coordinates?.[1],
+    latitude: singleOrderDetail?.coordinates?.[0] ?? 0.0,
+    longitude: singleOrderDetail?.coordinates?.[1] ?? 0.0,
   };
 
   return (

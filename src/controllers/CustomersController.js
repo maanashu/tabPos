@@ -4,14 +4,15 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
 export class CustomersController {
-  static async getUserOrder(sellerID, type, selectedValue) {
-    let originalString = type;
+  static async getUserOrder(data) {
+    let originalString = data?.customerType;
     let convertedString = originalString.toLowerCase().replace(/\s+/g, '_');
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getUserOrder +
-        `?seller_id=${sellerID}&type=${convertedString}&page=${1}&limit=${selectedValue}`;
+        `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}`;
+      console.log('endpoint0000000000000', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
