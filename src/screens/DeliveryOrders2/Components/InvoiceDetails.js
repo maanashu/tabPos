@@ -243,7 +243,10 @@ const InvoiceDetails = ({
             </Text>
           </TouchableOpacity>
 
-          <ShipmentTracking props={{ status: singleOrderDetail?.status }} />
+          <ShipmentTracking
+            status={singleOrderDetail?.status}
+            // props={{ status: singleOrderDetail?.status }}
+          />
         </View>
       </View>
     </View>

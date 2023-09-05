@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     paddingVertical: ms(15),
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    bottom: Platform.OS === 'android' ? ms(50) : ms(10),
+    bottom: Platform.OS === 'android' ? ms(10) : ms(10),
   },
   map: {
     width: '100%',

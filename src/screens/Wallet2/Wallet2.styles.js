@@ -227,6 +227,8 @@ export const styles = StyleSheet.create({
     // borderWidth: 3,
     fontSize: SF(15),
     paddingLeft: 5,
+    padding: 0,
+    right: 0,
   },
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,

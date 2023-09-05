@@ -26,6 +26,7 @@ import Graph from './Components/Graph';
 import AllUsers from './Components/AllUsers';
 import UserProfile from './Components/UserProfile';
 import { useRef } from 'react';
+import { getOrderData } from '@/actions/AnalyticsAction';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -131,9 +132,10 @@ export function Customers2() {
             setAllUsers(true);
           }}
           userDetail={userData}
-          orderClickHandler={() => {
+          orderClickHandler={(item) => {
             setUserProfile(false);
             setInvoiceDetail(true);
+            dispatch(getOrderData(item));
           }}
         />
       );
