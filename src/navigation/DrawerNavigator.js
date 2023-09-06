@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, Platform, Dimensions, StyleSheet, ScrollView, Text } from 'react-native';
-
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
@@ -33,7 +32,6 @@ import { getUser } from '@/selectors/UserSelectors';
 import { navigate } from '@/navigation/NavigationRef';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { addSellingSelection } from '@/actions/DashboardAction';
-
 const windowHeight = Dimensions.get('window').height;
 
 export function DrawerNavigator(props) {

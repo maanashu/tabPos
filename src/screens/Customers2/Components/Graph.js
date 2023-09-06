@@ -37,145 +37,92 @@ const windowWidth = Dimensions.get('window').width;
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 
-const Graph = () => {
+const Graph = ({ graphDetail }) => {
   const getDeliveryData = useSelector(getDelivery);
   const [graphData, setGraphData] = useState(graphOptions);
-
-  const isGraphOrder = useSelector((state) => isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state));
-
-  const checkedIndices = graphData
-    .filter((checkbox) => checkbox.checked)
-    .map((checkbox) => parseInt(checkbox.key) - 1);
-
-  const summedValues = Array(getDeliveryData?.graphOrders?.labels?.length).fill(0);
-
-  for (const index of checkedIndices) {
-    const dataset = getDeliveryData?.graphOrders?.datasets?.[index].data;
-    for (let i = 0; i < dataset?.length; i++) {
-      summedValues[i] += dataset[i];
-    }
-  }
-
-  const outputData = summedValues.map((value, index) => ({
-    label: getDeliveryData?.graphOrders?.labels?.[index],
-    value,
-    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11, fontFamily: Fonts.Regular },
-    spacing: Platform.OS == 'ios' ? 38 : 62,
-    initialSpace: 0,
-    frontColor:
-      index === 0
-        ? COLORS.bluish_green
-        : index === 1
-        ? COLORS.pink
-        : index === 2
-        ? COLORS.yellowTweet
-        : COLORS.primary,
-  }));
-
-  const changeValue = (index) => {
-    setGraphData((prev) => {
-      let list = [...prev];
-      list[index].checked = !list[index].checked;
-      return list;
-    });
-  };
-
-  const renderGraphItem = ({ item, index }) => {
-    const getImageSource = () => {
-      if (item?.title === strings.shippingOrder.incomingOrders) return incomingOrders;
-      if (item?.title === strings.shippingOrder.processingOrders) return cancelledOrders;
-      if (item?.title === strings.shippingOrder.readyPickupOrders) return returnedOrders;
-      return checkedCheckboxSquare;
-    };
-
-    const getIconTintColor = () => {
-      switch (item?.title) {
-        case strings.shippingOrder.incomingOrders:
-          return COLORS.bluish_green;
-        case strings.shippingOrder.processingOrders:
-          return COLORS.pink;
-        case strings.shippingOrder.readyPickupOrders:
-          return COLORS.yellowTweet;
-        default:
-          return COLORS.primary;
-      }
-    };
-
-    const handlePress = () => changeValue(index);
-
-    return (
-      <View style={styles.renderItemView}>
-        <TouchableOpacity style={styles.checkboxViewStyle} onPress={handlePress}>
-          <Image
-            source={item?.checked ? getImageSource() : blankCheckBox}
-            style={[
-              styles.checkboxIconStyle,
-              { tintColor: item?.checked ? undefined : getIconTintColor() },
-            ]}
-          />
-
-          <Text style={styles.varientTextStyle}>
-            {item?.title === strings.shippingOrder.incomingOrders
-              ? strings.shippingOrder.incomingOrders
-              : item?.title === strings.shippingOrder.processingOrders
-              ? strings.shippingOrder.processingOrders
-              : item?.title === strings.shippingOrder.readyPickupOrders
-              ? strings.shippingOrder.readyPickupOrders
-              : strings.shippingOrder.completed}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  const [newCustomerCheck, setNewCustomerCheck] = useState(true);
+  const [onlineCustomerCheck, setOnlineCustomerCheck] = useState(true);
+  const [walkCustomerCheck, setWalkCustomerCheck] = useState(true);
 
   return (
     <View style={styles.graphViewStyle}>
       <View style={styles.flexRow}>
-        <View style={styles.checkboxViewStyle}>
-          <Image source={incomingOrders} style={styles.checkboxIconStyle} />
+        <TouchableOpacity
+          style={styles.checkboxViewStyle}
+          onPress={() => setWalkCustomerCheck((prev) => !prev)}
+        >
+          <Image
+            source={walkCustomerCheck ? incomingOrders : blankCheckBox}
+            style={styles.checkboxIconStyle}
+          />
           <Text style={styles.varientTextStyle}>Wallking customer</Text>
-        </View>
-        <View style={styles.checkboxViewStyle}>
-          <Image source={onlinecustomer} style={styles.checkboxIconStyle} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.checkboxViewStyle}
+          onPress={() => setOnlineCustomerCheck((prev) => !prev)}
+        >
+          <Image
+            source={onlineCustomerCheck ? onlinecustomer : blankCheckBox}
+            style={styles.checkboxIconStyle}
+          />
           <Text style={styles.varientTextStyle}>Online Customers</Text>
-        </View>
-        <View style={styles.checkboxViewStyle}>
-          <Image source={returnedOrders} style={[styles.checkboxIconStyle]} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.checkboxViewStyle}
+          onPress={() => setNewCustomerCheck((prev) => !prev)}
+        >
+          <Image
+            source={newCustomerCheck ? returnedOrders : blankCheckBox}
+            style={[styles.checkboxIconStyle]}
+          />
           <Text style={styles.varientTextStyle}>New Customers</Text>
-        </View>
+          {/* returnedOrders */}
+        </TouchableOpacity>
       </View>
       <View style={{ marginTop: ms(10) }}>
         <LineChart
           data={{
-            labels: [
-              '12/20/2023',
-              '12/20/2023',
-              '12/20/2023',
-              '12/20/2023',
-              '12/20/2023',
-              '12/20/2023',
-              '12/20/2023',
-            ],
-            datasets: [
-              {
-                data: [0, 0, 100, 40, 30, 50, 60],
-                color: () => `rgba(31, 179, 255, 1)`,
-                strokeWidth: 3,
-              },
-              {
-                data: [10, 20, 30, 40, 50, 60, 70, 80],
-                color: () => `rgba(39, 90, 255, 1)`,
-                strokeWidth: 3,
-              },
-              {
-                data: [0, 10, 20, 30, 40, 50, 60, 70],
-                color: () => `rgba(252, 186, 48, 1)`,
-                strokeWidth: 3,
-              },
-            ],
+            labels: graphDetail?.labels,
+            datasets:
+              !newCustomerCheck && !onlineCustomerCheck && !walkCustomerCheck
+                ? [
+                    {
+                      data: [0],
+                      color: () => `rgba(31, 179, 255, 1)`,
+                      strokeWidth: 3,
+                    },
+                    {
+                      data: [0],
+                      color: () => `rgba(39, 90, 255, 1)`,
+                      strokeWidth: 3,
+                    },
+                    {
+                      data: [0],
+                      color: () => `rgba(252, 186, 48, 1)`,
+                      strokeWidth: 3,
+                    },
+                  ].filter((el) => el)
+                : [
+                    walkCustomerCheck && {
+                      data: graphDetail?.datasets?.[0]?.data,
+                      color: () => `rgba(31, 179, 255, 1)`,
+                      strokeWidth: 3,
+                    },
+                    onlineCustomerCheck && {
+                      data: graphDetail?.datasets?.[1]?.data,
+                      color: () => `rgba(39, 90, 255, 1)`,
+                      strokeWidth: 3,
+                    },
+                    newCustomerCheck && {
+                      data: graphDetail?.datasets?.[2]?.data,
+                      color: () => `rgba(252, 186, 48, 1)`,
+                      strokeWidth: 3,
+                    },
+                  ].filter((el) => el),
           }}
           width={Dimensions.get('window').width * 0.86}
           height={Platform.OS === 'android' ? 320 : 390}
+          noOfSections={7}
           chartConfig={{
             decimalPlaces: 0,
             backgroundColor: '#000',

@@ -231,10 +231,10 @@ export const catTypeData = [
 ];
 
 export const getCustomerDummy = {
-  new_customers: 0,
-  online_customers: 0,
-  returning_customers: 0,
-  shipping_customers: 0,
+  newCustomer: 0,
+  onlineCustomers: 0,
+  returningCustomer: 0,
+  walkingCustomers: 0,
 };
 
 export const transactionDataList = [

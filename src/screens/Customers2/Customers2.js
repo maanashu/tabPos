@@ -21,7 +21,7 @@ import {
   onlineCutomer,
   walkinCustomer,
 } from '@/assets';
-import { InvoiceDetail, ScreenWrapper } from '@/components';
+import { DaySelector, InvoiceDetail, ScreenWrapper } from '@/components';
 import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,11 +46,12 @@ export function Customers2() {
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
   const getCustomerStatitics = getCustomerData?.getCustomers;
+  const allCustomerObject = getCustomerStatitics?.total_customers;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const values =
     getCustomerStatitics === undefined
       ? Object.values(getCustomerDummy)
-      : Object.values(getCustomerStatitics);
+      : Object.values(allCustomerObject);
   const totalCustomer = values?.reduce((accumulator, value) => {
     return accumulator + value;
   }, 0);
@@ -61,40 +62,47 @@ export function Customers2() {
   const [invoiceDetail, setInvoiceDetail] = useState(false);
   const [saveCustomerId, setSaveCustomerId] = useState();
   const [saveCustomeType, setSaveCustomerType] = useState();
+  const [selectId, setSelectId] = useState(2);
+  const [selectTime, setSelectTime] = useState({ name: 'week' });
+  const time = selectTime?.name;
 
   const closeHandler = () => {
     setInvoiceDetail(false);
     setUserProfile(true);
   };
 
+  const onPresFun = (value) => {
+    dispatch(getCustomer(value, sellerID));
+  };
+
   useEffect(() => {
     if (isFocused) {
-      dispatch(getCustomer(sellerID));
+      dispatch(getCustomer(time, sellerID));
     }
   }, [isFocused]);
 
   const newCustomerData = [
     {
       customertype: 'New Customers',
-      count: getCustomerStatitics?.new_customers_count ?? 0,
+      count: allCustomerObject?.newCustomer ?? 0,
       img: newCustomer,
       id: '1',
     },
     {
       customertype: 'Returning Customers',
-      count: getCustomerStatitics?.returning_customers_count ?? 0,
+      count: allCustomerObject?.returningCustomer ?? 0,
       img: returnCustomer,
       id: '2',
     },
     {
       customertype: 'Online Customers',
-      count: getCustomerStatitics?.online_customers_count ?? 0,
+      count: allCustomerObject?.onlineCustomers ?? 0,
       img: onlineCutomer,
       id: '3',
     },
     {
       customertype: 'Walking Customers',
-      count: getCustomerStatitics?.shipping_customers_count ?? 0,
+      count: allCustomerObject?.walkingCustomers ?? 0,
       img: walkinCustomer,
       id: '4',
     },
@@ -176,6 +184,14 @@ export function Customers2() {
           <View style={styles.homeBodyCon}>
             <View style={styles.totalCustomerCon}>
               <Text style={styles.totalCustomerFirst}>Total Customers</Text>
+              <View>
+                <DaySelector
+                  onPresFun={onPresFun}
+                  selectId={selectId}
+                  setSelectId={setSelectId}
+                  setSelectTime={setSelectTime}
+                />
+              </View>
             </View>
 
             <View>
@@ -212,7 +228,7 @@ export function Customers2() {
               </TouchableOpacity>
             </View>
             <View>
-              <Graph />
+              <Graph graphDetail={getCustomerStatitics?.graphData} />
             </View>
           </View>
         </View>

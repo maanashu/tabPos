@@ -45,9 +45,11 @@ export class CustomersController {
     });
   }
 
-  static async getCustomers(sellerID) {
+  static async getCustomers(time, sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.getCustomers + `?seller_id=${sellerID}`;
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.getCustomer + `?seller_id=${sellerID}&filter=${time}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

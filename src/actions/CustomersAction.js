@@ -72,10 +72,10 @@ export const getOrderUser = (status, sellerID) => async (dispatch) => {
     dispatch(getOrderUserError(error.message));
   }
 };
-export const getCustomer = (sellerID) => async (dispatch) => {
+export const getCustomer = (time, sellerID) => async (dispatch) => {
   dispatch(getCustomersRequest());
   try {
-    const res = await CustomersController.getCustomers(sellerID);
+    const res = await CustomersController.getCustomers(time, sellerID);
     dispatch(getCustomersSuccess(res?.payload));
   } catch (error) {
     dispatch(getCustomersError(error.message));

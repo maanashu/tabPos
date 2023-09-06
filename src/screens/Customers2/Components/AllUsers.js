@@ -61,8 +61,8 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
-  console.log('paginationModalValue', paginationModalValue);
   const [page, setPage] = useState(1);
+  const [ind, setInd] = useState(0);
 
   const paginationData = {
     total: getCustomerData?.getUserOrder?.total ?? '0',
@@ -79,17 +79,40 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
       limit: paginationModalValue,
     };
     dispatch(getUserOrder(data));
-  }, [selectedId, paginationModalValue]);
+  }, [selectedId, paginationModalValue, page]);
 
-  const paginationhandler = () => {
-    const data = {
-      sellerID: sellerID,
-      customerType: customerType,
-      page: page,
-      limit: paginationModalValue,
-    };
-    return;
-    dispatch(getUserOrder(data));
+  const paginationInchandler = () => {
+    setPage(page + 1);
+    setInd(ind + 1);
+    // if (paginationData?.currentPage <= paginationData?.totalPages) {
+    //   setPage(page + 1);
+    //   const data = {
+    //     sellerID: sellerID,
+    //     customerType: customerType,
+    //     page: page,
+    //     limit: paginationModalValue,
+    //   };
+    //   // console.log('data', data);
+    //   // return;
+    //   dispatch(getUserOrder(data));
+    // }
+  };
+
+  const paginationDechandler = () => {
+    setPage(page - 1);
+    setInd(ind - 1);
+    // if (paginationData?.currentPage < paginationData?.totalPages) {
+    //   setPage(page - 1);
+    //   const data = {
+    //     sellerID: sellerID,
+    //     customerType: customerType,
+    //     page: page,
+    //     limit: paginationModalValue,
+    //   };
+    //   console.log('data', data);
+    //   // return;
+    //   dispatch(getUserOrder(data));
+    // }
   };
 
   const isCustomerLoad = useSelector((state) => isLoadingSelector([TYPES.GET_USER_ORDER], state));
@@ -263,8 +286,26 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
               // onSelectItem={item => selectedNo(item.value)}
             />
           </View>
-          <TouchableOpacity style={styles.unionCon}>
-            <Image source={Union} style={styles.unionStyle} />
+          <TouchableOpacity
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
+              },
+            ]}
+            onPress={paginationDechandler}
+            disabled={paginationData?.currentPage == 1 ? true : false}
+          >
+            <Image
+              source={Union}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor:
+                    paginationData?.currentPage == 1 ? COLORS.gerySkies : COLORS.solid_grey,
+                },
+              ]}
+            />
           </TouchableOpacity>
           <View style={styles.unionCon}>
             <Image source={mask} style={styles.unionStyle} />
@@ -274,10 +315,30 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
             <Image source={maskRight} style={styles.unionStyle} />
           </View>
           <TouchableOpacity
-            style={[styles.unionCon, { backgroundColor: COLORS.white }]}
-            onPress={paginationhandler}
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor:
+                  paginationData?.currentPage == paginationData?.totalPages
+                    ? COLORS.washGrey
+                    : COLORS.white,
+              },
+            ]}
+            onPress={paginationInchandler}
+            disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
           >
-            <Image source={unionRight} style={styles.unionStyle} />
+            <Image
+              source={unionRight}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.gerySkies
+                      : COLORS.solid_grey,
+                },
+              ]}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -329,16 +390,19 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                   >
                     <View style={styles.displayFlex}>
                       <View style={styles.tableHeaderLeft}>
-                        <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
+                        <Text style={styles.tableTextDataFirst}>
+                          {/* {ind == 0 ? '' : ind} */}
+                          {index + 1}
+                        </Text>
                         <View style={[styles.flexAlign, { marginLeft: 10 }]}>
-                          <Image
+                          {/* <Image
                             source={{ uri: item?.user_details?.profile_photo } ?? userImage}
                             style={styles.lovingStyleData}
-                          />
+                          /> */}
+                          <Image source={userImage} style={styles.lovingStyleData} />
                           <View style={{ flexDirection: 'column', marginLeft: 10 }}>
                             <Text style={styles.tableTextDataName}>
                               {item?.user_details?.firstname}
-                              rtghj
                             </Text>
                             {item?.user_details ? (
                               <Text

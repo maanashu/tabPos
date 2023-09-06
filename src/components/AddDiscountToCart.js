@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { moderateScale, moderateVerticalScale, verticalScale } from 'react-native-size-matters';
+import { moderateScale, moderateVerticalScale, ms, verticalScale } from 'react-native-size-matters';
 import { checkbox, checkedCheckbox, Fonts } from '@/assets';
 import { Spacer } from './Spacer';
 import { strings } from '@/localization';
@@ -66,18 +66,21 @@ export function AddDiscountToCart({
                   {strings.retail.amountDis}
                 </Text>
               </View>
-              <TextInput
-                placeholder="$ 00.00"
-                keyboardType="numeric"
-                style={[
-                  styles.amountDiscountInput,
-                  { color: amountCheck ? COLORS.primary : COLORS.gerySkies },
-                ]}
-                value={amountDis}
-                onChangeText={setAmountDis}
-                editable={percentageCheck || discountCheck ? false : true}
-                placeholderTextColor={COLORS.darkGray}
-              />
+              <View style={styles.addDiscountInputCon}>
+                <Text style={styles.dollarsign}>$</Text>
+                <TextInput
+                  placeholder="00.00"
+                  keyboardType="numeric"
+                  style={[
+                    styles.amountInput,
+                    { color: amountCheck ? COLORS.primary : COLORS.dark_grey },
+                  ]}
+                  value={amountDis}
+                  onChangeText={setAmountDis}
+                  editable={percentageCheck || discountCheck ? false : true}
+                  placeholderTextColor={COLORS.darkGray}
+                />
+              </View>
             </TouchableOpacity>
           </View>
           <Spacer space={SH(12)} backgroundColor={COLORS.textInputBackground} />
@@ -107,20 +110,27 @@ export function AddDiscountToCart({
                   {strings.retail.perDis}
                 </Text>
               </View>
-              <TextInput
-                placeholder="0.00%"
-                keyboardType="numeric"
-                style={[
-                  styles.amountDiscountInput,
-                  {
-                    color: percentageCheck ? COLORS.primary : COLORS.gerySkies,
-                  },
-                ]}
-                value={percentDis}
-                onChangeText={setPercentDis}
-                editable={discountCheck || amountCheck ? false : true}
-                placeholderTextColor={COLORS.darkGray}
-              />
+
+              <View
+                style={[styles.addDiscountInputCon, { paddingLeft: ms(0), paddingRight: ms(4) }]}
+              >
+                <TextInput
+                  placeholder="0.00"
+                  keyboardType="numeric"
+                  style={[
+                    styles.amountInput,
+                    {
+                      color: percentageCheck ? COLORS.primary : COLORS.gerySkies,
+                      paddingLeft: ms(5),
+                    },
+                  ]}
+                  value={percentDis}
+                  onChangeText={setPercentDis}
+                  editable={discountCheck || amountCheck ? false : true}
+                  placeholderTextColor={COLORS.darkGray}
+                />
+                <Text style={styles.dollarsign}>%</Text>
+              </View>
             </TouchableOpacity>
           </View>
 
@@ -301,5 +311,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     paddingHorizontal: moderateScale(3),
+  },
+  addDiscountInputCon: {
+    borderWidth: 1,
+    height: SH(38),
+    width: SW(40),
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: ms(4),
+    backgroundColor: COLORS.white,
+  },
+  dollarsign: {
+    color: COLORS.dark_grey,
+    fontSize: SF(12),
+    fontFamily: Fonts.SemiBold,
+  },
+  amountInput: {
+    width: SW(35),
+    height: SH(35),
+    fontSize: SF(14),
+    fontFamily: Fonts.SemiBold,
+    backgroundColor: COLORS.white,
+    color: COLORS.dark_grey,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 0,
+    margin: 0,
   },
 });
