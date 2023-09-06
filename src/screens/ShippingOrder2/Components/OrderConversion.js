@@ -41,7 +41,7 @@ const OrderConversion = () => {
     <View style={styles.orderConvertionView}>
       <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
 
-      <Spacer space={ms(6)} />
+      <Spacer space={ms(15)} />
       <View style={styles.piechartViewStyle}>
         <View>
           <PieChart
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   orderConvertionView: {
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    height: height / 2.35,
+    paddingBottom: ms(10),
   },
   orderTextStyle: {
     fontFamily: Fonts.MaisonBold,

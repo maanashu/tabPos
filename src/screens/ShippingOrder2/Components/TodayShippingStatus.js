@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   shippingStatusViewStyle: {
     alignItems: 'flex-start',
     borderRadius: 10,
-    paddingVertical: ms(10),
+    paddingVertical: ms(12),
     backgroundColor: COLORS.white,
     marginTop: SH(15),
   },

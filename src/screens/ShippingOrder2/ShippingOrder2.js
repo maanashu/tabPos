@@ -36,6 +36,8 @@ import CurrentShippingStatus from './Components/CurrentShippingStatus';
 import styles from './ShippingOrder2.styles';
 import OrderList from './Components/OrderList';
 import Header from './Components/Header';
+import { ms } from 'react-native-size-matters';
+import OrderDetail from './Components/OrderDetail';
 
 const height = Dimensions.get('window').height;
 
@@ -88,7 +90,6 @@ export function ShippingOrder2() {
   };
 
   const onpressViewHandler = (id) => {
-    console.log('id====', id);
     setViewAllOrders(true);
   };
 
@@ -111,18 +112,12 @@ export function ShippingOrder2() {
           </View>
 
           <View style={styles.centerMainViewStyle}>
-            <View style={styles.centerDividerViewStyle}>
-              <View style={styles.graphViewStyle}>
-                <Graph />
-              </View>
+            <Graph />
 
-              <View style={styles.graphViewStyle}>
-                <Orders
-                  selectedStatus={openShippingOrders}
-                  onViewAllHandler={() => onpressViewHandler()}
-                />
-              </View>
-            </View>
+            <Orders
+              selectedStatus={openShippingOrders}
+              onViewAllHandler={() => onpressViewHandler()}
+            />
           </View>
 
           <View style={styles.drawerMainViewStyle}>
@@ -130,10 +125,30 @@ export function ShippingOrder2() {
           </View>
         </SafeAreaView>
       ) : (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, borderWidth: 3, borderColor: 'green' }}>
           <Header {...{ viewAllOrders, setViewAllOrders }} />
-          <View style={styles.orderListMainView}>
-            <OrderList selectedStatus={openShippingOrders} />
+
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+              borderWidth: 3,
+              borderColor: 'red',
+              paddingBottom: ms(10),
+              // justifyContent: 'space-between',
+            }}
+          >
+            <View style={styles.orderListMainView}>
+              <OrderList selectedStatus={openShippingOrders} />
+            </View>
+
+            <View style={styles.orderDetailMainView}>
+              <OrderDetail />
+            </View>
+
+            <View style={styles.drawerMainViewStyle}>
+              <RightDrawer {...{ onPressDrawerHandler, openShippingOrders }} />
+            </View>
           </View>
         </SafeAreaView>
       )}

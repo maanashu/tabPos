@@ -42,7 +42,6 @@ const ShipmentTracking = ({ props }) => {
       <View style={styles.bottomLine} />
     </>
   );
-
   const statusView = (heading, stepCompleted) => (
     <>
       <View style={styles.statusMainView}>

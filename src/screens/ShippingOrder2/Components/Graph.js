@@ -155,6 +155,7 @@ export default memo(Graph);
 
 const styles = StyleSheet.create({
   graphViewStyle: {
+    flex: 0.5,
     backgroundColor: COLORS.white,
     borderRadius: 10,
     paddingHorizontal: ms(12),

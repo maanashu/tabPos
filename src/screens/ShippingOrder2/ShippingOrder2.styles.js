@@ -17,13 +17,16 @@ const styles = StyleSheet.create({
     marginHorizontal: SH(15),
     justifyContent: 'space-between',
   },
-  todayShippingViewStyle: { flex: 0.2 },
+  todayShippingViewStyle: {
+    flex: 0.2,
+  },
   currentShippingViewStyle: {
     flex: 0.4,
     justifyContent: 'center',
   },
-  orderConversionViewStyle: { flex: 0.5 },
-
+  orderConversionViewStyle: {
+    flex: 0.5,
+  },
   centerMainViewStyle: {
     flex: 0.64,
     justifyContent: 'space-between',
@@ -34,12 +37,31 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between',
   },
-  graphViewStyle: { flex: 0.45 },
-  drawerMainViewStyle: { flex: 0.07, marginTop: SH(15) },
+  graphViewStyle: {
+    flex: 0.45,
+  },
+  drawerMainViewStyle: {
+    flex: 0.07,
+    marginTop: SH(15),
+    borderWidth: 3,
+    borderColor: 'blue',
+  },
   orderListMainView: {
     flex: 0.45,
     marginTop: SH(15),
     marginHorizontal: SH(15),
+    flexDirection: 'row',
+    borderWidth: 3,
+    borderColor: 'blue',
+    justifyContent: 'space-between',
+  },
+  orderDetailMainView: {
+    flex: 0.47,
+    marginTop: SH(15),
+    marginRight: SH(15),
+    flexDirection: 'row',
+    borderWidth: 3,
+    borderColor: 'blue',
     justifyContent: 'space-between',
   },
 
@@ -279,8 +301,8 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: width * 0.43,
-    height: height - 120,
+    // width: width * 0.43,
+    // height: height - 120,
     marginBottom: 90,
   },
   userDetailView: {
@@ -302,7 +324,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     borderRadius: 10,
     marginTop: 20,
-    width: width / 2.4,
+    // width: width / 2.4,
     backgroundColor: COLORS.textInputBackground,
   },
   userImageStyle: {

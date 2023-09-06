@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import {
   View,
   Text,
@@ -10,22 +10,21 @@ import {
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
+import { useDispatch, useSelector } from 'react-redux';
 import { getDelivery } from '@/selectors/DeliverySelector';
+import { useState } from 'react';
 import { getOrderData } from '@/actions/AnalyticsAction';
 
 const { height } = Dimensions.get('window');
 
-const Orders = ({ selectedStatus, onViewAllHandler }) => {
+const OrderList = ({ selectedStatus, onViewAllHandler }) => {
   const dispatch = useDispatch();
   const getOrdersData = useSelector(getDelivery);
   const ordersList = getOrdersData?.getReviewDef;
-
-  console.log('orderList=====', ordersList);
 
   const [orderDetail, setOrderDetail] = useState('');
   const [userDetail, setUserDetail] = useState('');
@@ -34,10 +33,11 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
   const renderOrderToReview = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
-        onViewAllHandler, setUserDetail(item);
-        setOrderDetail(item?.order_details);
-        dispatch(getOrderData(item?.id));
-        setOrderId(item?.id);
+        onViewAllHandler(item?.id);
+        // setUserDetail(item);
+        // setOrderDetail(item?.order_details);
+        // dispatch(getOrderData(item?.id));
+        // setOrderId(item?.id);
       }}
       style={styles.orderRowStyle}
     >
@@ -104,16 +104,10 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
             ? strings.orderStatus.cancelledOrder
             : strings.orderStatus.returnedOrders}
         </Text>
-
-        {ordersList?.length > 0 || selectedStatus === '9' ? (
-          <TouchableOpacity onPress={onViewAllHandler} style={styles.viewAllButtonStyle}>
-            <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
-          </TouchableOpacity>
-        ) : null}
       </View>
 
       <FlatList
-        data={ordersList?.slice(0, 4)}
+        data={ordersList}
         renderItem={renderOrderToReview}
         ListEmptyComponent={emptyComponent}
         showsVerticalScrollIndicator={false}
@@ -125,7 +119,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
   );
 };
 
-export default memo(Orders);
+export default memo(OrderList);
 
 const styles = StyleSheet.create({
   orderRowStyle: {
@@ -177,12 +171,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderToReviewView: {
+    flex: 1,
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    // height: height / 2.35,
     paddingBottom: ms(10),
-    flex: 0.48,
-    marginBottom: ms(10),
   },
   headingRowStyle: {
     flexDirection: 'row',
