@@ -74,7 +74,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, onPress }) => {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: ms(10) }}
       />
 
-      <View style={{ flex: 1 }} />
+      <View style={{ flex: 0.2 }} />
 
       <TouchableOpacity onPress={() => onPress()} style={styles.buttonStyle}>
         <Text style={styles.buttonTextStyle}>{'Confirm'}</Text>

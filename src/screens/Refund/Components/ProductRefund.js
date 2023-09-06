@@ -30,7 +30,7 @@ import PaymentSelection from './PaymentSelection';
 
 const { width, height } = Dimensions.get('window');
 
-const ProductRefund = () => {
+const ProductRefund = ({ backHandler }) => {
   const [amount, setAmount] = useState('');
   const [applicableIsCheck, setApplicableIsCheck] = useState(false);
   const [applyEachItem, setApplyEachItem] = useState(false);
@@ -96,7 +96,7 @@ const ProductRefund = () => {
     <View style={styles.container}>
       {changeView === 'TotalItems' ? (
         <>
-          <CustomHeader iconShow />
+          <CustomHeader iconShow crossHandler={backHandler} />
 
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.leftMainViewStyle}>
@@ -148,6 +148,8 @@ const ProductRefund = () => {
                             selectType === strings.returnOrder.dollarLabel
                               ? COLORS.gerySkies
                               : COLORS.white,
+                          borderTopLeftRadius: 5,
+                          borderBottomLeftRadius: 5,
                         },
                       ]}
                     >
@@ -176,6 +178,8 @@ const ProductRefund = () => {
                             selectType === strings.returnOrder.percentageLabel
                               ? COLORS.gerySkies
                               : COLORS.white,
+                          borderTopRightRadius: 5,
+                          borderBottomRightRadius: 5,
                         },
                       ]}
                     >
@@ -303,11 +307,13 @@ const ProductRefund = () => {
                 <Text style={styles.nextTextStyle}>{'Next'}</Text>
                 <Image source={sellingArrow} style={styles.arrowIconStyle} />
               </TouchableOpacity>
+
+              <Spacer space={SH(20)} />
             </View>
           </View>
         </>
       ) : (
-        <PaymentSelection />
+        <PaymentSelection backHandler={() => setChangeView('TotalItems')} />
       )}
     </View>
   );
@@ -337,13 +343,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkBoxIconStyle: {
-    width: scale(8),
-    height: scale(8),
+    width: scale(6),
+    height: scale(6),
     resizeMode: 'contain',
   },
   applicableTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(11),
+    fontSize: SF(9),
     color: COLORS.dark_grey,
     paddingLeft: ms(1),
     textAlignVertical: 'center',
@@ -361,11 +367,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   dollarViewStyle: {
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
     paddingHorizontal: 13,
     alignItems: 'center',
     justifyContent: 'center',
+    height: SH(28),
+    alignSelf: 'center',
   },
   applyRefundButtonText: {
     fontFamily: Fonts.Regular,
@@ -379,7 +385,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     marginHorizontal: 10,
     flexDirection: 'row',
-    width: SH(135),
+    // width: SH(135),
     alignItems: 'center',
     justifyContent: 'space-between',
   },

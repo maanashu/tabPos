@@ -511,4 +511,10 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
+  loaderView: {
+    height: ms(150),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+  },
 });

@@ -23,7 +23,7 @@ import ReturnConfirmation from './ReturnConfirmation';
 
 const { width } = Dimensions.get('window');
 
-const PaymentSelection = () => {
+const PaymentSelection = ({ backHandler }) => {
   const [selectedPaymentIndex, setSelectedPaymentIndex] = useState();
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState();
   const [isReturnConfirmation, setIsReturnConfirmation] = useState(false);
@@ -135,6 +135,7 @@ const PaymentSelection = () => {
         <View style={styles.selectTipsHeader}>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <BackButton
+              onPress={backHandler}
               title={'Back'}
               style={{
                 top: ms(10),
@@ -159,7 +160,7 @@ const PaymentSelection = () => {
           <View style={{ alignItems: 'center' }}>
             <FlatList
               horizontal
-              data={DATA}
+              data={DATA.slice(0, 1)}
               renderItem={renderPaymentMethod}
               extraData={DATA}
               contentContainerStyle={{ paddingBottom: 20 }}
@@ -301,11 +302,13 @@ const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(45),
-    width: Platform.OS === 'ios' ? ms(118) : ms(127),
+    flex: 1,
+    width: Platform.OS === 'ios' ? ms(100) : ms(127),
     marginHorizontal: ms(8),
     borderRadius: ms(6),
     justifyContent: 'center',
     alignItems: 'center',
+    // paddingHorizontal: ms(20),
   },
   _payByMethodReceipe: {
     fontFamily: Fonts.SemiBold,

@@ -46,7 +46,7 @@ export function Customers2() {
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
   const getCustomerStatitics = getCustomerData?.getCustomers;
-  const allCustomerObject = getCustomerStatitics?.total_customers;
+  const allCustomerObject = getCustomerStatitics?.total_customers ?? {};
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const values =
     getCustomerStatitics === undefined

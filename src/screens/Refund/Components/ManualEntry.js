@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, ms } from 'react-native-size-matters';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
@@ -243,7 +243,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   modalStyle: {
-    width: Platform.OS === 'ios' ? width / 2.5 : width / 3,
+    flex: 1,
+    paddingHorizontal: ms(25),
+    // width: Platform.OS === 'ios' ? width / 2.5 : width / 3,
     borderRadius: 10,
     alignSelf: 'center',
     backgroundColor: COLORS.white,

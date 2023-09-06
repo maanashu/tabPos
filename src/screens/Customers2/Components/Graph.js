@@ -4,7 +4,6 @@ import {
   Text,
   Image,
   Platform,
-  FlatList,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
@@ -13,21 +12,9 @@ import {
 
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
-import { BarChart } from 'react-native-gifted-charts';
 
-import {
-  Fonts,
-  incomingOrders,
-  returnedOrders,
-  cancelledOrders,
-  checkedCheckboxSquare,
-  blankCheckBox,
-  onlinecustomer,
-} from '@/assets';
-import { Spacer } from '@/components';
+import { Fonts, incomingOrders, returnedOrders, blankCheckBox, onlinecustomer } from '@/assets';
 import { COLORS, SF, SH } from '@/theme';
-import { strings } from '@/localization';
-import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { graphOptions } from '@/constants/flatListData';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -37,12 +24,17 @@ const windowWidth = Dimensions.get('window').width;
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 
+import { TYPES } from '@/Types/CustomersTypes';
+
 const Graph = ({ graphDetail }) => {
+  console.log('graphDetail', graphDetail);
   const getDeliveryData = useSelector(getDelivery);
   const [graphData, setGraphData] = useState(graphOptions);
   const [newCustomerCheck, setNewCustomerCheck] = useState(true);
   const [onlineCustomerCheck, setOnlineCustomerCheck] = useState(true);
   const [walkCustomerCheck, setWalkCustomerCheck] = useState(true);
+
+  const isLoad = useSelector((state) => isLoadingSelector([TYPES.GET_CUSTOMERS], state));
 
   return (
     <View style={styles.graphViewStyle}>
@@ -80,77 +72,83 @@ const Graph = ({ graphDetail }) => {
         </TouchableOpacity>
       </View>
       <View style={{ marginTop: ms(10) }}>
-        <LineChart
-          data={{
-            labels: graphDetail?.labels,
-            datasets:
-              !newCustomerCheck && !onlineCustomerCheck && !walkCustomerCheck
-                ? [
-                    {
-                      data: [0],
-                      color: () => `rgba(31, 179, 255, 1)`,
-                      strokeWidth: 3,
-                    },
-                    {
-                      data: [0],
-                      color: () => `rgba(39, 90, 255, 1)`,
-                      strokeWidth: 3,
-                    },
-                    {
-                      data: [0],
-                      color: () => `rgba(252, 186, 48, 1)`,
-                      strokeWidth: 3,
-                    },
-                  ].filter((el) => el)
-                : [
-                    walkCustomerCheck && {
-                      data: graphDetail?.datasets?.[0]?.data,
-                      color: () => `rgba(31, 179, 255, 1)`,
-                      strokeWidth: 3,
-                    },
-                    onlineCustomerCheck && {
-                      data: graphDetail?.datasets?.[1]?.data,
-                      color: () => `rgba(39, 90, 255, 1)`,
-                      strokeWidth: 3,
-                    },
-                    newCustomerCheck && {
-                      data: graphDetail?.datasets?.[2]?.data,
-                      color: () => `rgba(252, 186, 48, 1)`,
-                      strokeWidth: 3,
-                    },
-                  ].filter((el) => el),
-          }}
-          width={Dimensions.get('window').width * 0.86}
-          height={Platform.OS === 'android' ? 320 : 390}
-          noOfSections={7}
-          chartConfig={{
-            decimalPlaces: 0,
-            backgroundColor: '#000',
-            backgroundGradientFrom: '#fff',
-            backgroundGradientTo: '#fff',
-            decimalPlaces: 2,
-            color: () => `rgba(39, 90, 255, 1)`,
-            labelColor: (opacity = 1) => `rgba(98, 98, 98, ${opacity})`,
-            style: {
+        {isLoad ? (
+          <View style={styles.loaderView}>
+            <ActivityIndicator size={'small'} color={COLORS.primary} />
+          </View>
+        ) : (
+          <LineChart
+            data={{
+              labels: graphDetail?.labels ?? [],
+              datasets:
+                !newCustomerCheck && !onlineCustomerCheck && !walkCustomerCheck
+                  ? [
+                      {
+                        data: [0],
+                        color: () => `rgba(31, 179, 255, 1)`,
+                        strokeWidth: 3,
+                      },
+                      {
+                        data: [0],
+                        color: () => `rgba(39, 90, 255, 1)`,
+                        strokeWidth: 3,
+                      },
+                      {
+                        data: [0],
+                        color: () => `rgba(252, 186, 48, 1)`,
+                        strokeWidth: 3,
+                      },
+                    ].filter((el) => el)
+                  : [
+                      walkCustomerCheck && {
+                        data: graphDetail?.datasets?.[0]?.data ?? [0],
+                        color: () => `rgba(31, 179, 255, 1)`,
+                        strokeWidth: 3,
+                      },
+                      onlineCustomerCheck && {
+                        data: graphDetail?.datasets?.[1]?.data ?? [0],
+                        color: () => `rgba(39, 90, 255, 1)`,
+                        strokeWidth: 3,
+                      },
+                      newCustomerCheck && {
+                        data: graphDetail?.datasets?.[2]?.data ?? [0],
+                        color: () => `rgba(252, 186, 48, 1)`,
+                        strokeWidth: 3,
+                      },
+                    ].filter((el) => el),
+            }}
+            width={Dimensions.get('window').width * 0.86}
+            height={Platform.OS === 'android' ? 320 : 390}
+            noOfSections={7}
+            chartConfig={{
+              decimalPlaces: 0,
+              backgroundColor: '#000',
+              backgroundGradientFrom: '#fff',
+              backgroundGradientTo: '#fff',
+              decimalPlaces: 2,
+              color: () => `rgba(39, 90, 255, 1)`,
+              labelColor: (opacity = 1) => `rgba(98, 98, 98, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              propsForBackgroundLines: {
+                strokeWidth: 1,
+                stroke: '#CCCCCC',
+              },
+              propsForDots: {
+                r: '0',
+                strokeWidth: '2',
+              },
+            }}
+            bezier
+            style={{
+              marginVertical: 8,
               borderRadius: 16,
-            },
-            propsForBackgroundLines: {
-              strokeWidth: 1,
-              stroke: '#CCCCCC',
-            },
-            propsForDots: {
-              r: '0',
-              strokeWidth: '2',
-            },
-          }}
-          bezier
-          style={{
-            marginVertical: 8,
-            borderRadius: 16,
-          }}
-          withShadow={false}
-          fromZero
-        />
+            }}
+            withShadow={false}
+            fromZero
+          />
+        )}
       </View>
       {/* <FlatList
           horizontal
