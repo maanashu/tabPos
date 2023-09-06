@@ -50,35 +50,37 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, onPress }) => {
       animationIn={'slideInRight'}
       animationOut={'slideOutRight'}
     >
-      <View style={styles.headingRowStyle}>
-        <Text style={styles.headingTextStyle}>{strings.returnOrder.recheckConfirmed}</Text>
+      <View style={{ flex: 1, paddingHorizontal: ms(15) }}>
+        <View style={styles.headingRowStyle}>
+          <Text style={styles.headingTextStyle}>{strings.returnOrder.recheckConfirmed}</Text>
 
-        <TouchableOpacity onPress={() => setIsVisible(false)}>
-          <Image source={cross} style={styles.crossIconStyle} />
+          <TouchableOpacity onPress={() => setIsVisible(false)}>
+            <Image source={cross} style={styles.crossIconStyle} />
+          </TouchableOpacity>
+        </View>
+
+        <Spacer space={SH(30)} />
+        <View>
+          <Text style={styles.customerNameStyle}>{strings.returnOrder.description}</Text>
+        </View>
+
+        <Spacer space={SH(20)} />
+
+        <FlatList
+          data={productList}
+          renderItem={renderProductList}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item?.key}
+          style={{ height: ms(200) }}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: ms(10) }}
+        />
+
+        <View style={{ flex: 0.2 }} />
+
+        <TouchableOpacity onPress={() => onPress()} style={styles.buttonStyle}>
+          <Text style={styles.buttonTextStyle}>{'Confirm'}</Text>
         </TouchableOpacity>
       </View>
-
-      <Spacer space={SH(30)} />
-      <View>
-        <Text style={styles.customerNameStyle}>{strings.returnOrder.description}</Text>
-      </View>
-
-      <Spacer space={SH(20)} />
-
-      <FlatList
-        data={productList}
-        renderItem={renderProductList}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item?.key}
-        style={{ height: ms(200) }}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: ms(10) }}
-      />
-
-      <View style={{ flex: 1 }} />
-
-      <TouchableOpacity onPress={() => onPress()} style={styles.buttonStyle}>
-        <Text style={styles.buttonTextStyle}>{'Confirm'}</Text>
-      </TouchableOpacity>
     </ReactNativeModal>
   );
 };
@@ -87,7 +89,7 @@ export default memo(RecheckConfirmation);
 
 const styles = StyleSheet.create({
   modalStyle: {
-    width: width / 3.2,
+    // width: width / 3.2,
     borderRadius: 10,
     alignSelf: 'flex-end',
     backgroundColor: COLORS.white,
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
   headingRowStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: SH(30),
+    // paddingHorizontal: SH(10),
     paddingTop: ms(20),
     justifyContent: 'space-between',
   },
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: SF(13),
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
-    paddingLeft: ms(20),
+    // paddingLeft: ms(20),
   },
   itemMainViewStyle: {
     flexDirection: 'row',
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     borderColor: COLORS.washGrey,
-    marginHorizontal: ms(17),
+    marginHorizontal: ms(10),
     marginVertical: ms(4),
     paddingVertical: ms(5),
   },

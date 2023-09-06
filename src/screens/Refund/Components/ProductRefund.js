@@ -30,7 +30,7 @@ import PaymentSelection from './PaymentSelection';
 
 const { width, height } = Dimensions.get('window');
 
-const ProductRefund = () => {
+const ProductRefund = ({ backHandler }) => {
   const [amount, setAmount] = useState('');
   const [applicableIsCheck, setApplicableIsCheck] = useState(false);
   const [applyEachItem, setApplyEachItem] = useState(false);
@@ -96,7 +96,7 @@ const ProductRefund = () => {
     <View style={styles.container}>
       {changeView === 'TotalItems' ? (
         <>
-          <CustomHeader iconShow />
+          <CustomHeader iconShow crossHandler={backHandler} />
 
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.leftMainViewStyle}>
@@ -148,6 +148,8 @@ const ProductRefund = () => {
                             selectType === strings.returnOrder.dollarLabel
                               ? COLORS.gerySkies
                               : COLORS.white,
+                          borderTopLeftRadius: 5,
+                          borderBottomLeftRadius: 5,
                         },
                       ]}
                     >
@@ -176,6 +178,8 @@ const ProductRefund = () => {
                             selectType === strings.returnOrder.percentageLabel
                               ? COLORS.gerySkies
                               : COLORS.white,
+                          borderTopRightRadius: 5,
+                          borderBottomRightRadius: 5,
                         },
                       ]}
                     >
@@ -307,7 +311,7 @@ const ProductRefund = () => {
           </View>
         </>
       ) : (
-        <PaymentSelection />
+        <PaymentSelection backHandler={() => setChangeView('TotalItems')} />
       )}
     </View>
   );
@@ -327,23 +331,25 @@ const styles = StyleSheet.create({
   },
   rowStyle: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    // justifyContent: 'flex-end',
     alignItems: 'center',
     paddingVertical: ms(7),
+    paddingHorizontal: ms(10),
   },
   applicableViewStyle: {
     flexDirection: 'row',
-    paddingHorizontal: ms(8),
+    paddingLeft: ms(8),
+    paddingRight: ms(4),
     alignItems: 'center',
   },
   checkBoxIconStyle: {
-    width: scale(8),
-    height: scale(8),
+    width: scale(7),
+    height: scale(7),
     resizeMode: 'contain',
   },
   applicableTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(11),
+    fontSize: SF(10),
     color: COLORS.dark_grey,
     paddingLeft: ms(1),
     textAlignVertical: 'center',
@@ -361,11 +367,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   dollarViewStyle: {
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
     paddingHorizontal: 13,
     alignItems: 'center',
     justifyContent: 'center',
+    height: SH(28),
+    alignSelf: 'center',
   },
   applyRefundButtonText: {
     fontFamily: Fonts.Regular,
@@ -377,9 +383,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     paddingHorizontal: 8,
-    marginHorizontal: 10,
+    marginHorizontal: 7,
     flexDirection: 'row',
-    width: SH(135),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -441,6 +446,11 @@ const styles = StyleSheet.create({
   blueListDataText: {
     color: COLORS.solid_grey,
     fontSize: SF(11),
+    fontFamily: Fonts.Regular,
+  },
+  sukNumber: {
+    color: COLORS.solid_grey,
+    fontSize: SF(9),
     fontFamily: Fonts.Regular,
   },
   columbiaMen: {

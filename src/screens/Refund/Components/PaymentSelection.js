@@ -16,14 +16,14 @@ import {
   Dimensions,
   FlatList,
 } from 'react-native';
-import { moderateScale, ms, verticalScale } from 'react-native-size-matters';
+import { ms, verticalScale } from 'react-native-size-matters';
 import { COLORS } from '../../../theme/Colors';
 import InvoiceDetails from './InvoiceDetails';
 import ReturnConfirmation from './ReturnConfirmation';
 
 const { width } = Dimensions.get('window');
 
-const PaymentSelection = () => {
+const PaymentSelection = ({ backHandler }) => {
   const [selectedPaymentIndex, setSelectedPaymentIndex] = useState();
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState();
   const [isReturnConfirmation, setIsReturnConfirmation] = useState(false);
@@ -135,6 +135,7 @@ const PaymentSelection = () => {
         <View style={styles.selectTipsHeader}>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <BackButton
+              onPress={backHandler}
               title={'Back'}
               style={{
                 top: ms(10),
@@ -266,12 +267,13 @@ const styles = StyleSheet.create({
   _payBYBoxContainer: {
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
-    height: ms(120),
-    width: Platform.OS === 'ios' ? ms(118) : ms(127),
-    marginHorizontal: ms(8),
+    height: Platform.OS === 'ios' ? ms(100) : ms(120),
+    width: Platform.OS === 'ios' ? ms(95) : ms(127),
+    marginHorizontal: ms(4),
     borderRadius: ms(6),
+    justifyContent: 'center',
     alignItems: 'center',
-    padding: ms(10),
+    paddingHorizontal: 10,
   },
   _payByTitle: {
     fontFamily: Fonts.Regular,
@@ -301,8 +303,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderWidth: 1,
     height: ms(45),
-    width: Platform.OS === 'ios' ? ms(118) : ms(127),
-    marginHorizontal: ms(8),
+    width: Platform.OS === 'ios' ? ms(95) : ms(127),
+    marginHorizontal: ms(4),
     borderRadius: ms(6),
     justifyContent: 'center',
     alignItems: 'center',

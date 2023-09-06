@@ -9,136 +9,67 @@ const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'row',
     backgroundColor: COLORS.textInputBackground,
   },
+  leftMainViewStyle: {
+    flex: 0.28,
+    marginHorizontal: SH(15),
+    justifyContent: 'space-between',
+  },
+  todayShippingViewStyle: { flex: 0.2 },
+  currentShippingViewStyle: {
+    flex: 0.4,
+    justifyContent: 'center',
+  },
+  orderConversionViewStyle: { flex: 0.5 },
+
+  centerMainViewStyle: {
+    flex: 0.64,
+    justifyContent: 'space-between',
+    marginRight: 15,
+  },
+  centerDividerViewStyle: {
+    flex: 1,
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+  },
+  graphViewStyle: { flex: 0.45 },
+  drawerMainViewStyle: { flex: 0.07, marginTop: SH(15) },
+  orderListMainView: {
+    flex: 0.45,
+    marginTop: SH(15),
+    marginHorizontal: SH(15),
+    justifyContent: 'space-between',
+  },
+
   firstRowStyle: {
     flexDirection: 'row',
     paddingHorizontal: ms(10),
     justifyContent: 'space-between',
   },
-  shippingStatusViewStyle: {
-    alignItems: 'flex-start',
-    borderRadius: 10,
-    // width: SW(100),
-    paddingVertical: ms(10),
-    backgroundColor: COLORS.white,
-  },
-  shippingStatusText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(16),
-    paddingLeft: ms(15),
-    color: COLORS.primary,
-  },
-  shippedOrderText: {
-    fontFamily: Fonts.Regular,
-    fontSize: SF(14),
-    color: COLORS.solid_grey,
-    paddingLeft: ms(15),
-    paddingTop: ms(10),
-  },
+
   shippingOrdersViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     // justifyContent: 'space-between',
   },
-  currentStatusView: {
-    borderRadius: 10,
-    backgroundColor: COLORS.white,
-    paddingVertical: ms(15),
-    // width: SW(100),
-    // height: height / 3.3,
-  },
+
   currentStatusText: {
     fontFamily: Fonts.SemiBold,
     fontSize: scale(7),
     color: COLORS.text,
     paddingLeft: ms(12),
   },
-  shippingTypeImage: {
-    width: ms(16),
-    height: ms(16),
-    resizeMode: 'contain',
-  },
-  itemMainViewStyle: {
-    borderWidth: 1,
-    marginHorizontal: ms(12),
-    marginVertical: ms(1.5),
-    borderRadius: 5,
-    borderColor: COLORS.solidGrey,
-    backgroundColor: COLORS.white,
-    paddingHorizontal: ms(8),
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  shippingTypeDetails: {
-    justifyContent: 'center',
-    marginHorizontal: ms(10),
-    paddingVertical: ms(2),
-  },
-  shippingTypeText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: scale(5),
-    color: COLORS.darkGray,
-  },
+
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: scale(5),
     color: COLORS.solid_grey,
     paddingTop: ms(3),
   },
-  orderConvertionView: {
-    borderRadius: 10,
-    // width: SW(100),
 
-    backgroundColor: COLORS.white,
-    height: height / 2.35,
-  },
-  orderTextStyle: {
-    fontFamily: Fonts.MaisonBold,
-    fontSize: scale(7),
-    color: COLORS.solid_grey,
-    paddingLeft: ms(12),
-    paddingTop: ms(9),
-  },
-  piechartViewStyle: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  percentageView: {
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: 'center',
-    position: 'absolute',
-    justifyContent: 'center',
-  },
-  percentageTextStyle: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
-    color: COLORS.black,
-    textAlign: 'center',
-  },
-  ordersRowView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: SW(80),
-    justifyContent: 'space-between',
-    paddingVertical: ms(4),
-    paddingHorizontal: ms(12),
-  },
-  orderTypeTextStyle: {
-    fontFamily: Fonts.Medium,
-    fontSize: SF(14),
-    color: COLORS.dark_grey,
-  },
-  countTextStyle: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
-    color: COLORS.dark_grey,
-  },
   orderRowStyle: {
     borderWidth: 1,
     borderRadius: 5,
@@ -202,13 +133,7 @@ const styles = StyleSheet.create({
   },
 
   // -------------------
-  rightSideView: {
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
-    width: width * 0.06,
-    paddingVertical: verticalScale(6),
-    alignItems: 'center',
-  },
+
   shippingOrdersView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
@@ -220,16 +145,7 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 999,
   },
-  drawerIconView: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingVertical: 5,
-    marginVertical: 6,
-    width: SW(15),
-    height: SW(15),
-    borderRadius: 5,
-    justifyContent: 'center',
-  },
+
   firstIconStyle: {
     alignSelf: 'center',
     width: SW(13),
@@ -241,17 +157,7 @@ const styles = StyleSheet.create({
     // marginBottom: 25,
     backgroundColor: COLORS.textInputBackground,
   },
-  shippingDrawerView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: ms(10),
-    paddingHorizontal: ms(10),
-  },
-  sideBarImage: {
-    width: SW(9),
-    height: SW(9),
-    resizeMode: 'contain',
-  },
+
   shippingDrawerTitleText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(12),
@@ -321,20 +227,7 @@ const styles = StyleSheet.create({
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
   },
-  graphViewStyle: {
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
-    // width: width * 0.56,
-    paddingHorizontal: ms(12),
-    paddingBottom: 30,
-  },
-  numberOrdersText: {
-    color: COLORS.dark_grey,
-    fontSize: SF(16),
-    fontFamily: Fonts.SemiBold,
-    paddingHorizontal: ms(12),
-    paddingTop: ms(8),
-  },
+
   viewallTextStyle: {
     fontFamily: Fonts.Regular,
     fontSize: SF(12),

@@ -218,7 +218,7 @@ export function SearchScreen() {
                     data={productList}
                     renderItem={renderOrderProducts}
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}
+                    contentContainerStyle={{ flexGrow: 1, paddingBottom: 130 }}
                   />
                 </View>
 
@@ -370,7 +370,7 @@ export function SearchScreen() {
           />
         </>
       ) : (
-        <ProductRefund />
+        <ProductRefund backHandler={() => setShowProductRefund(false)} />
       )}
     </View>
   );
@@ -470,6 +470,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 10,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingVertical: 17,
@@ -660,18 +661,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   scanProductView: {
-    width: Platform.OS === 'android' ? ms(240) : ms(210),
+    // width: Platform.OS === 'android' ? ms(240) : ms(210),
     paddingVertical: 15,
     borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: ms(22),
     backgroundColor: COLORS.blue_shade,
   },
   manualView: {
     borderWidth: 3,
     backgroundColor: COLORS.white,
     borderRadius: 7,
-    width: Platform.OS === 'android' ? ms(90) : ms(70),
+    paddingHorizontal: ms(22),
+    // width: Platform.OS === 'android' ? ms(90) : ms(70),
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: COLORS.blue_shade,
