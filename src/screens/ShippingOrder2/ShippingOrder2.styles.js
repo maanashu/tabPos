@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   shippingStatusViewStyle: {
     alignItems: 'flex-start',
     borderRadius: 10,
-    width: SW(100),
+    // width: SW(100),
     paddingVertical: ms(10),
     backgroundColor: COLORS.white,
   },
@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
   currentStatusView: {
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    paddingVertical: ms(9),
-    width: SW(100),
-    height: height / 3.3,
+    paddingVertical: ms(15),
+    // width: SW(100),
+    // height: height / 3.3,
   },
   currentStatusText: {
     fontFamily: Fonts.SemiBold,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   shippingTypeDetails: {
     justifyContent: 'center',
     marginHorizontal: ms(10),
-    paddingVertical: ms(1),
+    paddingVertical: ms(2),
   },
   shippingTypeText: {
     fontFamily: Fonts.SemiBold,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
   orderConvertionView: {
     borderRadius: 10,
-    width: SW(100),
+    // width: SW(100),
 
     backgroundColor: COLORS.white,
     height: height / 2.35,
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
   graphViewStyle: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width: width * 0.56,
+    // width: width * 0.56,
     paddingHorizontal: ms(12),
     paddingBottom: 30,
   },
