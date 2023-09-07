@@ -40,7 +40,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalShippingOrders({ onPress }) {
+export function TotalShippingOrders() {
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
   const shippingGraph = analyticOrderGraphs?.shipping_graph;
@@ -100,10 +100,8 @@ export function TotalShippingOrders({ onPress }) {
 
   return (
     <View style={styles.flex1}>
-      <TouchableOpacity onPress={onPress} style={styles.goBack}>
-        <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={styles.graphTitle}> {'Total Shipping Orders'}</Text>
-      </TouchableOpacity>
+      <Text style={styles.graphTitle}> {'Total Shipping Orders'}</Text>
+
       <View style={styles.headerContainer}>
         <HeaderView
           image={locationSales}

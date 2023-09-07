@@ -39,7 +39,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalProductSold({ onPress }) {
+export function TotalProductSold() {
   const getAnalyticsData = useSelector(getAnalytics);
   const soldProduct = getAnalyticsData?.getSoldProduct;
 
@@ -82,10 +82,7 @@ export function TotalProductSold({ onPress }) {
   );
   return (
     <View style={styles.flex1}>
-      <TouchableOpacity onPress={onPress} style={styles.goBack}>
-        <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={styles.graphTitle}> {'Total Proucts Sold'}</Text>
-      </TouchableOpacity>
+      <Text style={styles.graphTitle}> {'Total Proucts Sold'}</Text>
 
       <View style={styles.headerContainer}>
         <HeaderView
@@ -103,7 +100,7 @@ export function TotalProductSold({ onPress }) {
           text={'Total Volume'}
           count={
             soldProduct?.productOverview?.totalVolume
-              ? '$' + soldProduct?.productOverview?.totalVolume
+              ? '$' + soldProduct?.productOverview?.totalVolume?.toFixed(2)
               : 0
           }
         />

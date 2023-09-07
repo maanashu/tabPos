@@ -16,7 +16,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
     { length: Math.ceil(dataLabels?.length / labelInterval) },
     (_, index) => {
       const labelValue = (index + 1) * labelInterval;
-      return labelValue <= maxLabel ? labelValue.toString() : maxLabel.toString();
+      return labelValue <= maxLabel ? labelValue : maxLabel.toString();
     }
   );
 
@@ -258,6 +258,7 @@ export function MainScreen({
               spacing={SW(10)}
               interval={2}
               dateInterval={5}
+              dateTodayInterval={4}
             />
           </TouchableOpacity>
         </View>

@@ -39,7 +39,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalProfit({ onPress }) {
+export function TotalProfit() {
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
   const interval = 1;
@@ -94,10 +94,7 @@ export function TotalProfit({ onPress }) {
   );
   return (
     <View style={styles.flex1}>
-      <TouchableOpacity onPress={onPress} style={styles.goBack}>
-        <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={styles.graphTitle}> {'Gross Profit'}</Text>
-      </TouchableOpacity>
+      <Text style={styles.graphTitle}> {'Gross Profit'}</Text>
       <View style={styles.headerContainer}>
         <HeaderView
           image={locationSales}

@@ -39,7 +39,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalCost({ onPress }) {
+export function TotalCost() {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
   const [channelItem, setChannelItem] = useState([
@@ -98,10 +98,7 @@ export function TotalCost({ onPress }) {
   );
   return (
     <View style={styles.flex1}>
-      <TouchableOpacity onPress={onPress} style={styles.goBack}>
-        <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={styles.graphTitle}> {'Total Cost'}</Text>
-      </TouchableOpacity>
+      <Text style={styles.graphTitle}> {'Total Cost'}</Text>
       <View style={styles.headerContainer}>
         <HeaderView
           image={locationSales}
