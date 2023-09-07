@@ -57,119 +57,123 @@ const Graph = () => {
       summedValues[i] += dataset[i];
     }
   }
-
-  const data = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [
-      { data: [10, 0, 30, 0, 0, 0, 0] },
-      { data: [20, 0, 0, 0, 0, 0, 0] },
-      { data: [0, 0, 0, 0, 0, 0, 0] },
-    ],
-  };
-  const dummyData = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [
-      {
-        value: 44,
-        spacing: 2,
-        label: '12/20/2023',
-        labelWidth: 70,
-        labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-        frontColor: COLORS.primary,
-        intialSapce: 0,
-      },
-      {
-        value: 56,
-        spacing: 2,
-        frontColor: COLORS.violet,
-      },
-      { value: 66, frontColor: COLORS.darkBlue },
-      {
-        value: 22,
-        spacing: 2,
-        label: '12/20/2023',
-        labelWidth: 70,
-        labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-        frontColor: COLORS.primary,
-      },
-      {
-        value: 55,
-        spacing: 2,
-        frontColor: COLORS.violet,
-      },
-      { value: 88, frontColor: COLORS.darkBlue },
-      {
-        value: 99,
-        spacing: 2,
-        label: '12/20/2023',
-        labelWidth: 70,
-        labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-        frontColor: COLORS.primary,
-      },
-      {
-        value: 22,
-        spacing: 2,
-        frontColor: COLORS.violet,
-      },
-      { value: 55, frontColor: COLORS.darkBlue },
-      {
-        value: 44,
-        spacing: 2,
-        label: '12/20/2023',
-        labelWidth: 70,
-        labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-        frontColor: COLORS.primary,
-      },
-      {
-        value: 44,
-        spacing: 2,
-        frontColor: COLORS.violet,
-      },
-      { value: 22, frontColor: COLORS.darkBlue },
-      {
-        value: 10,
-        spacing: 2,
-        label: '12/20/2023',
-        labelWidth: 70,
-        labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-        frontColor: COLORS.primary,
-      },
-      {
-        value: 10,
-        spacing: 2,
-        frontColor: COLORS.violet,
-      },
-      { value: 20, frontColor: COLORS.darkBlue },
-      {
-        value: 30,
-        spacing: 2,
-        label: '12/20/2023',
-        labelWidth: 70,
-        labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-        frontColor: COLORS.primary,
-      },
-      {
-        value: 11,
-        spacing: 2,
-        frontColor: COLORS.violet,
-      },
-      { value: 67, frontColor: COLORS.darkBlue },
-      {
-        value: 10,
-        spacing: 2,
-        label: '12/20/2023',
-        labelWidth: 70,
-        labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-        frontColor: COLORS.primary,
-      },
-      {
-        value: 40,
-        spacing: 2,
-        frontColor: COLORS.violet,
-      },
-      { value: 20, frontColor: COLORS.darkBlue },
-    ],
-  };
+  const barData = [
+    // [1,2,3]?.map((item, index) => (
+    //   {
+    //     value: 10,
+    //     spacing: 2,
+    //     label: '12/20/2023',
+    //     labelWidth: 70,
+    //     labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+    //     frontColor: COLORS.primary,
+    //     intialSapce: 0,
+    //   },
+    //   {
+    //     value: 56,
+    //     spacing: 2,
+    //     frontColor: COLORS.violet,
+    //   },
+    //   { value: 66, frontColor: COLORS.darkBlue },
+    {
+      value: 10,
+      spacing: 2,
+      label: '12/20/2023',
+      labelWidth: 70,
+      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+      frontColor: COLORS.primary,
+      intialSapce: 0,
+    },
+    {
+      value: 56,
+      spacing: 2,
+      frontColor: COLORS.violet,
+    },
+    { value: 66, frontColor: COLORS.darkBlue },
+    {
+      value: 22,
+      spacing: 2,
+      label: '12/20/2023',
+      labelWidth: 70,
+      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+      frontColor: COLORS.primary,
+    },
+    {
+      value: 55,
+      spacing: 2,
+      frontColor: COLORS.violet,
+    },
+    { value: 88, frontColor: COLORS.darkBlue },
+    {
+      value: 99,
+      spacing: 2,
+      label: '12/20/2023',
+      labelWidth: 70,
+      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+      frontColor: COLORS.primary,
+    },
+    {
+      value: 22,
+      spacing: 2,
+      frontColor: COLORS.violet,
+    },
+    { value: 55, frontColor: COLORS.darkBlue },
+    {
+      value: 44,
+      spacing: 2,
+      label: '12/20/2023',
+      labelWidth: 70,
+      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+      frontColor: COLORS.primary,
+    },
+    {
+      value: 44,
+      spacing: 2,
+      frontColor: COLORS.violet,
+    },
+    { value: 22, frontColor: COLORS.darkBlue },
+    {
+      value: 10,
+      spacing: 2,
+      label: '12/20/2023',
+      labelWidth: 70,
+      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+      frontColor: COLORS.primary,
+    },
+    {
+      value: 10,
+      spacing: 2,
+      frontColor: COLORS.violet,
+    },
+    { value: 20, frontColor: COLORS.darkBlue },
+    {
+      value: 30,
+      spacing: 2,
+      label: '12/20/2023',
+      labelWidth: 70,
+      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+      frontColor: COLORS.primary,
+    },
+    {
+      value: 11,
+      spacing: 2,
+      frontColor: COLORS.violet,
+    },
+    { value: 67, frontColor: COLORS.darkBlue },
+    {
+      value: 10,
+      spacing: 2,
+      label: '12/20/2023',
+      labelWidth: 70,
+      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+      frontColor: COLORS.primary,
+    },
+    {
+      value: 40,
+      spacing: 2,
+      frontColor: COLORS.violet,
+    },
+    { value: 20, frontColor: COLORS.darkBlue },
+  ];
 
   return (
     <View style={styles.graphViewStyle}>
@@ -188,17 +192,37 @@ const Graph = () => {
         </View>
       </View>
       <View style={{ marginTop: ms(10) }}>
-        <BarChartCom
+        {/* <BarChartCom
           barWid={Dimensions.get('window').width * 0.82}
           barHei={Platform.OS === 'android' ? ms(170) : SH(270)}
           barSpacing={SW(35.2)}
           barW={SW(3.5)}
           // labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
           initialSpacing={SH(10)}
-          data={data}
+          // data={dummyData}
           spacing={SW(45)}
           interval={2}
           dateInterval={5}
+        /> */}
+
+        <BarChart
+          data={barData}
+          barWidth={SW(3.5)}
+          spacing={SW(35.2)}
+          roundedTop
+          // hideRules
+          xAxisThickness={1}
+          yAxisThickness={0}
+          xAxisType={'dashed'}
+          yAxisType={'dashed'}
+          xAxisColor={`rgba(39, 90, 255, 1)`}
+          yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
+          noOfSections={4}
+          // maxValue={100}
+          yAxisLength={350}
+          height={Platform.OS === 'android' ? ms(170) : SH(270)}
+          width={Dimensions.get('window').width * 0.82}
+          initialSpacing={SH(10)}
         />
       </View>
     </View>

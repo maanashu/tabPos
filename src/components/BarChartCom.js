@@ -68,7 +68,7 @@ export function BarChartCom({
     data === undefined
       ? [
           {
-            value: 44,
+            value: 10,
             spacing: 2,
             label: '12/20/2023',
             labelWidth: 70,
@@ -169,129 +169,129 @@ export function BarChartCom({
         ]
       : [
           {
-            // value: value,
-            // frontColor: COLORS.primary,
-            // label: label,
+            value: value,
+            frontColor: COLORS.primary,
+            label: label,
           },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[0],
-          //   spacing: 2,
-          //   label: data?.labels?.[0],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[0],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[1],
-          //   spacing: 2,
-          //   frontColor: COLORS.primary,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[1],
-          //   spacing: 2,
-          //   label: data?.labels?.[1],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[1],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[2],
-          //   spacing: 2,
-          //   frontColor: COLORS.primary,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[2],
-          //   spacing: 2,
-          //   label: data?.labels?.[2],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[2],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[3],
-          //   spacing: 2,
-          //   frontColor: COLORS.primary,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[3],
-          //   spacing: 2,
-          //   label: data?.labels?.[3],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[3],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[4],
-          //   spacing: 2,
-          //   frontColor: COLORS.primary,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[4],
-          //   spacing: 2,
-          //   label: data?.labels?.[4],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[4],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[5],
-          //   spacing: 2,
-          //   frontColor: COLORS.primary,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[5],
-          //   spacing: 2,
-          //   label: data?.labels?.[5],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[5],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[6],
-          //   spacing: 2,
-          //   frontColor: COLORS.primary,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[6],
-          //   spacing: 2,
-          //   label: data?.labels?.[6],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[6],
-          //   frontColor: COLORS.darkBlue,
-          // },
+          {
+            value: data?.datasets?.[1]?.data?.[0],
+            spacing: 2,
+            label: data?.labels?.[0],
+            labelWidth: 60,
+            labelTextStyle: labelTextSty,
+            frontColor: COLORS.violet,
+          },
+          {
+            value: data?.datasets?.[2].data?.[0],
+            frontColor: COLORS.darkBlue,
+          },
+          {
+            value: data?.datasets?.[0]?.data?.[1],
+            spacing: 2,
+            frontColor: COLORS.primary,
+          },
+          {
+            value: data?.datasets?.[1]?.data?.[1],
+            spacing: 2,
+            label: data?.labels?.[1],
+            labelWidth: 60,
+            labelTextStyle: labelTextSty,
+            frontColor: COLORS.violet,
+          },
+          {
+            value: data?.datasets?.[2].data?.[1],
+            frontColor: COLORS.darkBlue,
+          },
+          {
+            value: data?.datasets?.[0]?.data?.[2],
+            spacing: 2,
+            frontColor: COLORS.primary,
+          },
+          {
+            value: data?.datasets?.[1]?.data?.[2],
+            spacing: 2,
+            label: data?.labels?.[2],
+            labelWidth: 60,
+            labelTextStyle: labelTextSty,
+            frontColor: COLORS.violet,
+          },
+          {
+            value: data?.datasets?.[2].data?.[2],
+            frontColor: COLORS.darkBlue,
+          },
+          {
+            value: data?.datasets?.[0]?.data?.[3],
+            spacing: 2,
+            frontColor: COLORS.primary,
+          },
+          {
+            value: data?.datasets?.[1]?.data?.[3],
+            spacing: 2,
+            label: data?.labels?.[3],
+            labelWidth: 60,
+            labelTextStyle: labelTextSty,
+            frontColor: COLORS.violet,
+          },
+          {
+            value: data?.datasets?.[2].data?.[3],
+            frontColor: COLORS.darkBlue,
+          },
+          {
+            value: data?.datasets?.[0]?.data?.[4],
+            spacing: 2,
+            frontColor: COLORS.primary,
+          },
+          {
+            value: data?.datasets?.[1]?.data?.[4],
+            spacing: 2,
+            label: data?.labels?.[4],
+            labelWidth: 60,
+            labelTextStyle: labelTextSty,
+            frontColor: COLORS.violet,
+          },
+          {
+            value: data?.datasets?.[2].data?.[4],
+            frontColor: COLORS.darkBlue,
+          },
+          {
+            value: data?.datasets?.[0]?.data?.[5],
+            spacing: 2,
+            frontColor: COLORS.primary,
+          },
+          {
+            value: data?.datasets?.[1]?.data?.[5],
+            spacing: 2,
+            label: data?.labels?.[5],
+            labelWidth: 60,
+            labelTextStyle: labelTextSty,
+            frontColor: COLORS.violet,
+          },
+          {
+            value: data?.datasets?.[2].data?.[5],
+            frontColor: COLORS.darkBlue,
+          },
+          {
+            value: data?.datasets?.[0]?.data?.[6],
+            spacing: 2,
+            frontColor: COLORS.primary,
+          },
+          {
+            value: data?.datasets?.[1]?.data?.[6],
+            spacing: 2,
+            label: data?.labels?.[6],
+            labelWidth: 60,
+            labelTextStyle: labelTextSty,
+            frontColor: COLORS.violet,
+          },
+          {
+            value: data?.datasets?.[2].data?.[6],
+            frontColor: COLORS.darkBlue,
+          },
         ];
   return (
     <View>
       <BarChart
-        data={formattedData}
+        data={barData}
         barWidth={barW}
         spacing={barSpacing}
         roundedTop
