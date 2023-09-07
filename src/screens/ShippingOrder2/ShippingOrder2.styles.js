@@ -43,16 +43,17 @@ const styles = StyleSheet.create({
   drawerMainViewStyle: {
     flex: 0.07,
     marginTop: SH(15),
-    borderWidth: 3,
-    borderColor: 'blue',
+  },
+  centerViewStyle: {
+    flexDirection: 'row',
+    flex: 1,
+    paddingBottom: ms(10),
   },
   orderListMainView: {
     flex: 0.45,
     marginTop: SH(15),
     marginHorizontal: SH(15),
     flexDirection: 'row',
-    borderWidth: 3,
-    borderColor: 'blue',
     justifyContent: 'space-between',
   },
   orderDetailMainView: {
@@ -60,9 +61,12 @@ const styles = StyleSheet.create({
     marginTop: SH(15),
     marginRight: SH(15),
     flexDirection: 'row',
-    borderWidth: 3,
-    borderColor: 'blue',
     justifyContent: 'space-between',
+  },
+  emptyOrderView: {
+    flex: 0.92,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   firstRowStyle: {
@@ -301,9 +305,7 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    // width: width * 0.43,
-    // height: height - 120,
-    marginBottom: 90,
+    flex: 1,
   },
   userDetailView: {
     flex: 1,
@@ -313,7 +315,6 @@ const styles = StyleSheet.create({
     height: SH(80),
     marginVertical: 10,
     flexDirection: 'row',
-    borderWidth: 1,
   },
   orderDetailViewStyle: {
     alignSelf: 'center',
@@ -324,7 +325,6 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     borderRadius: 10,
     marginTop: 20,
-    // width: width / 2.4,
     backgroundColor: COLORS.textInputBackground,
   },
   userImageStyle: {
@@ -418,11 +418,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLORS.white,
     position: 'absolute',
-    bottom: 15,
+    bottom: 20,
     alignSelf: 'center',
-    width: width * 0.43,
     paddingTop: 15,
-    paddingHorizontal: ms(15),
   },
   emptyView: {
     height: Platform.OS === 'ios' ? height / 3.2 : height / 2.8,

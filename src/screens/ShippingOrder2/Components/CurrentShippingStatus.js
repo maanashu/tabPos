@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { ms, scale } from 'react-native-size-matters';
 
 import { COLORS } from '@/theme';
-import { Fonts } from '@/assets';
+import { fedx, Fonts } from '@/assets';
 import { strings } from '@/localization';
 import { getShipping } from '@/selectors/ShippingSelector';
 
@@ -14,11 +14,11 @@ const CurrentShippingStatus = () => {
 
   const renderItem = ({ item }) => (
     <View style={styles.itemMainViewStyle}>
-      <Image source={{ uri: item?.shipping_image }} style={styles.shippingTypeImage} />
+      <Image source={{ uri: item?.shipping_image } ?? fedx} style={styles.shippingTypeImage} />
 
       <View style={styles.shippingTypeDetails}>
-        <Text style={styles.shippingTypeText}>{item?.shiping_name.toUpperCase()}</Text>
-        <Text style={styles.totalTextStyle}>{item?.count}</Text>
+        <Text style={styles.shippingTypeText}>{item?.shiping_name.toUpperCase() ?? '-'}</Text>
+        <Text style={styles.totalTextStyle}>{item?.count ?? '0'}</Text>
       </View>
     </View>
   );
@@ -27,10 +27,9 @@ const CurrentShippingStatus = () => {
     <View style={styles.currentStatusView}>
       <Text style={styles.currentStatusText}>{strings.shippingOrder.currentStatus}</Text>
       <FlatList
-        scrollEnabled={false}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
-        data={todayStatus?.todayCurrentStatus}
+        data={todayStatus?.todayCurrentStatus ?? []}
         extraData={todayStatus?.todayCurrentStatus}
       />
     </View>
@@ -41,20 +40,22 @@ export default memo(CurrentShippingStatus);
 
 const styles = StyleSheet.create({
   currentStatusView: {
+    flex: 0.8,
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    paddingVertical: ms(15),
+    paddingBottom: ms(10),
+    paddingTop: 15,
   },
   currentStatusText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: scale(7),
+    fontSize: scale(6),
     color: COLORS.text,
     paddingLeft: ms(12),
   },
   itemMainViewStyle: {
     borderWidth: 1,
     marginHorizontal: ms(12),
-    marginVertical: ms(1.5),
+    marginVertical: ms(3),
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.white,
@@ -70,16 +71,16 @@ const styles = StyleSheet.create({
   shippingTypeDetails: {
     justifyContent: 'center',
     marginHorizontal: ms(10),
-    paddingVertical: ms(2),
+    paddingVertical: ms(1),
   },
   shippingTypeText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: scale(5),
+    fontSize: scale(4),
     color: COLORS.darkGray,
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: scale(5),
+    fontSize: scale(4),
     color: COLORS.solid_grey,
     paddingTop: ms(3),
   },

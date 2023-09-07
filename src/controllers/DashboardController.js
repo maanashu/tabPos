@@ -208,4 +208,26 @@ export class DashboardController {
         });
     });
   }
+
+  static async getOrdersByInvoiceId(invoice) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.invoiceIdSearch + `${invoice}`;
+      console.log('endpoint====', endpoint);
+      HttpClient.get(endpoint)
+        .then((response) => {
+          console.log('response======', JSON.stringify(response));
+          resolve(response);
+        })
+        .catch((error) => {
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          alert(error.msg);
+          reject(error);
+        });
+    });
+  }
 }

@@ -12,10 +12,11 @@ import {
 } from 'react-native';
 
 import moment from 'moment';
+import { useDebounce, useDebouncedCallback } from 'use-lodash-debounce';
+import { useDispatch, useSelector } from 'react-redux';
 import { moderateScale, ms } from 'react-native-size-matters';
 
 import {
-  backArrow2,
   clock,
   Fonts,
   iImage,
@@ -29,68 +30,84 @@ import {
   userImage,
 } from '@/assets';
 import { Spacer } from '@/components';
-import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
-import { goBack } from '@/navigation/NavigationRef';
-import { productList, returnOrders } from '@/constants/flatListData';
 import ManualEntry from './ManualEntry';
-import RecheckConfirmation from './RecheckConfirmation';
+import { strings } from '@/localization';
 import ProductRefund from './ProductRefund';
+import { COLORS, SF, SH, SW } from '@/theme';
+import RecheckConfirmation from './RecheckConfirmation';
+import { productList, returnOrders } from '@/constants/flatListData';
+import Header from './Header';
+import { getOrdersByInvoiceId } from '@/actions/DashboardAction';
+import { getDashboard } from '@/selectors/DashboardSelector';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export function SearchScreen() {
   const textInputRef = useRef();
+  const dispatch = useDispatch();
+  const getSearchOrders = useSelector(getDashboard);
+  const order = getSearchOrders?.invoiceSearchOrders;
+
   const [sku, setSku] = useState();
+  const [debouncedText, setDebouncedText] = useState('');
   const [orderDetail, setOrderDetail] = useState();
   const [productsVerified, setProductsVerified] = useState();
   const [isVisibleManual, setIsVisibleManual] = useState(false);
   const [showProductRefund, setShowProductRefund] = useState(false);
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
-  const renderOrderDetail = ({ item }) => {
+  const getDeliveryType = (type) => {
+    switch (type) {
+      case '1':
+        return 'Delivery';
+      case '3':
+        return 'In-store';
+      case '4':
+        return 'Shipping';
+      default:
+        return 'Reservation';
+    }
+  };
+
+  const renderOrderDetail = () => {
     return (
-      <TouchableOpacity
-        onPress={() => setOrderDetail(item)}
-        style={[
-          styles.orderRowStyle,
-          {
-            backgroundColor:
-              item?.key === orderDetail?.key ? COLORS.textInputBackground : COLORS.white,
-          },
-        ]}
-      >
-        <Text
-          style={[
-            styles.nameTextStyle,
-            { fontFamily: Fonts.SemiBold, textAlignVertical: 'center' },
-          ]}
-        >
-          {item?.id}
-        </Text>
+      <TouchableOpacity onPress={() => setOrderDetail(item)} style={styles.orderRowStyle}>
+        <Text style={styles.invoiceNumberTextStyle}>{`#${order?.invoice_number}` ?? '-'}</Text>
 
         <View style={styles.orderDetailStyle}>
-          <Text style={styles.nameTextStyle}>{item?.name}</Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={pin} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>{item?.miles}</Text>
-          </View>
+          <Text style={styles.nameTextStyle}>
+            {`${order?.order?.user_details?.user_profiles?.firstname} ${order?.order?.user_details?.user_profiles?.lastname}` ??
+              '-'}
+          </Text>
+
+          {order?.order?.delivery_option !== '3' ? (
+            <View style={styles.locationViewStyle}>
+              <Image source={pin} style={styles.pinImageStyle} />
+              <Text style={styles.distanceTextStyle}>{order?.distance}</Text>
+            </View>
+          ) : (
+            <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
+              <Text style={{ fontSize: SF(14), fontFamily: Fonts.Bold }}>{'-'}</Text>
+            </View>
+          )}
         </View>
 
         <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
-          <Text style={styles.nameTextStyle}>{item?.items}</Text>
-          <View style={styles.locationViewStyle}>
+          <Text style={styles.nameTextStyle}>{order?.order?.total_items}</Text>
+          <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
             <Image source={pay} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>{item?.price}</Text>
+            <Text style={styles.distanceTextStyle}>{order?.order?.payable_amount ?? '-'}</Text>
           </View>
         </View>
 
-        <View style={[styles.orderDetailStyle, { width: SW(47) }]}>
+        <View style={styles.orderDetailStyle}>
           <Text style={styles.timeTextStyle}>{'Customer'}</Text>
           <View style={styles.locationViewStyle}>
             <Image source={clock} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>{'In-store'}</Text>
+            <Text style={styles.distanceTextStyle}>
+              {getDeliveryType(order?.order?.delivery_option)}
+            </Text>
           </View>
         </View>
 
@@ -101,26 +118,37 @@ export function SearchScreen() {
     );
   };
 
-  const renderOrderProducts = ({ item }) => (
-    <View style={styles.orderproductView}>
-      <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
-        <Image source={userImage} style={styles.userImageStyle} />
-        <View style={{ paddingLeft: 10, width: ms(100) }}>
-          <Text style={styles.nameTextStyle}>{item?.productName}</Text>
-          <Text
-            style={styles.varientTextStyle}
-          >{`Color: ${item?.color} / Size: ${item?.size}`}</Text>
+  const renderOrderProducts = ({ item }) => {
+    return (
+      <View style={styles.orderproductView}>
+        <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
+          <Image
+            source={item?.product_image ? { uri: item?.product_image } : userImage}
+            style={styles.userImageStyle}
+          />
+          <View style={{ paddingLeft: 10, width: ms(100) }}>
+            <Text numberOfLines={1} style={[styles.nameTextStyle, { textAlign: 'left' }]}>
+              {item?.product_name ?? '-'}
+            </Text>
+            {item?.variant ? (
+              <Text
+                style={styles.varientTextStyle}
+              >{`Color: ${item?.color} / Size: ${item?.size}`}</Text>
+            ) : null}
+          </View>
+        </View>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{`$${item?.price}`}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
+        <Text
+          style={[styles.nameTextStyle, { color: COLORS.darkGray }]}
+        >{`$${item?.actual_price}`}</Text>
+
+        <View style={styles.infoIconView}>
+          <Image source={iImage} style={styles.infoIconStyle} />
         </View>
       </View>
-      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.quantity}</Text>
-      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-
-      <View style={styles.infoIconView}>
-        <Image source={iImage} style={styles.infoIconStyle} />
-      </View>
-    </View>
-  );
+    );
+  };
 
   const cartHandler = (val) => {
     if (val === 'Items verified') {
@@ -128,16 +156,21 @@ export function SearchScreen() {
     }
   };
 
+  const onSearchInvoiceHandler = (text) => {
+    setSku(text);
+    debouncedOnChange(text);
+  };
+
+  const debouncedOnChange = useDebouncedCallback((value) => {
+    setDebouncedText(value);
+    dispatch(getOrdersByInvoiceId(value));
+  }, 5000);
+
   return (
     <View style={styles.container}>
       {!showProductRefund ? (
         <>
-          <TouchableOpacity onPress={() => goBack()} style={styles.backView}>
-            <Image source={backArrow2} style={styles.backImageStyle} />
-            <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
-              {strings.deliveryOrders.back}
-            </Text>
-          </TouchableOpacity>
+          <Header />
 
           <Spacer space={SH(20)} />
           <View style={styles.leftViewStyle}>
@@ -150,8 +183,7 @@ export function SearchScreen() {
                     ref={textInputRef}
                     style={styles.searchInput}
                     placeholder={'Search invoice here'}
-                    onChangeText={(sku) => setSku(sku)}
-                    keyboardType="number-pad"
+                    onChangeText={onSearchInvoiceHandler}
                   />
                 </View>
                 <TouchableOpacity onPress={() => textInputRef.current.focus()}>
@@ -160,27 +192,28 @@ export function SearchScreen() {
               </View>
 
               <Spacer space={SH(25)} />
-              {sku ? (
-                <FlatList
-                  data={returnOrders}
-                  extraData={returnOrders}
-                  renderItem={renderOrderDetail}
-                  keyExtractor={(item) => item?.key}
-                />
-              ) : null}
+              {order ? renderOrderDetail() : null}
             </View>
 
-            {orderDetail ? (
+            {order ? (
               <View
                 style={{
-                  width: windowWidth / 2.25,
                   borderRadius: 10,
+                  flex: 0.48,
+                  marginBottom: ms(10),
                   backgroundColor: COLORS.white,
                 }}
               >
                 <View style={styles.orderDetailViewStyle}>
                   <View style={[styles.locationViewStyle, { flex: 1 }]}>
-                    <Image source={userImage} style={styles.userImageStyle} />
+                    <Image
+                      source={
+                        order?.order?.user_details?.user_profiles?.profile_photo
+                          ? { uri: order?.order?.user_details?.user_profiles?.profile_photo }
+                          : userImage
+                      }
+                      style={styles.userImageStyle}
+                    />
 
                     <View style={styles.userNameView}>
                       <Text style={[styles.totalTextStyle, { padding: 0 }]}>{'Customer'}</Text>
@@ -191,8 +224,12 @@ export function SearchScreen() {
                     <Image source={scooter} style={styles.scooterImageStyle} />
 
                     <View style={[styles.userNameView, { paddingLeft: 5 }]}>
-                      <Text style={styles.orderTypeStyle}>{'In-Store'}</Text>
-                      <Text style={styles.orderDateText}>{'11/17/2023'}</Text>
+                      <Text style={styles.orderTypeStyle}>
+                        {getDeliveryType(order?.order?.delivery_option)}
+                      </Text>
+                      <Text style={styles.orderDateText}>
+                        {order?.order?.date ? moment(order?.order?.date).format('MM/DD/YYYY') : '-'}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -215,7 +252,7 @@ export function SearchScreen() {
                 <View style={{ height: SH(400) }}>
                   <FlatList
                     scrollEnabled
-                    data={productList}
+                    data={order?.order?.order_details ?? []}
                     renderItem={renderOrderProducts}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ flexGrow: 1, paddingBottom: 130 }}
@@ -228,7 +265,7 @@ export function SearchScreen() {
                       <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                         {strings.shippingOrder.totalItem}
                       </Text>
-                      <Text style={styles.itemCountText}>{'7'}</Text>
+                      <Text style={styles.itemCountText}>{order?.order?.total_items ?? '0'}</Text>
                     </View>
 
                     <Spacer space={SH(15)} />
@@ -236,7 +273,9 @@ export function SearchScreen() {
                       <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                         {strings.shippingOrder.orderDate}
                       </Text>
-                      <Text style={styles.itemCountText}>{moment().format('DD/MM/YYYY')}</Text>
+                      <Text style={styles.itemCountText}>
+                        {order?.order?.date ? moment(order?.order?.date).format('DD/MM/YYYY') : '-'}
+                      </Text>
                     </View>
 
                     <Spacer space={SH(15)} />
@@ -244,7 +283,7 @@ export function SearchScreen() {
                       <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                         {strings.shippingOrder.orderId}
                       </Text>
-                      <Text style={styles.itemCountText}>{'1'}</Text>
+                      <Text style={styles.itemCountText}>{`#${order?.order?.id}` ?? '-'}</Text>
                     </View>
                   </View>
 
@@ -259,7 +298,7 @@ export function SearchScreen() {
                           { paddingTop: 0, fontFamily: Fonts.MaisonBold },
                         ]}
                       >
-                        ${'0'}
+                        ${order?.order?.actual_amount ?? '0'}
                       </Text>
                     </View>
 
@@ -270,7 +309,7 @@ export function SearchScreen() {
                         <Text
                           style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
                         >
-                          {'0'}
+                          {order?.order?.discount ?? '-'}
                         </Text>
                       </View>
                     </View>
@@ -294,7 +333,7 @@ export function SearchScreen() {
                         <Text
                           style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
                         >
-                          {'0'}
+                          {order?.order?.tax}
                         </Text>
                       </View>
                     </View>
@@ -316,7 +355,9 @@ export function SearchScreen() {
                         >
                           {'$'}
                         </Text>
-                        <Text style={[styles.totalText, { paddingTop: 0 }]}>{0}</Text>
+                        <Text style={[styles.totalText, { paddingTop: 0 }]}>
+                          {order?.order?.payable_amount ?? '0'}
+                        </Text>
                       </View>
                     </View>
 
@@ -381,29 +422,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
   },
-  backView: {
-    marginTop: 10,
-    marginLeft: 28,
-    width: ms(60),
-    borderRadius: 5,
-    height: ms(25),
-    paddingRight: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.gerySkies,
-  },
-  backImageStyle: {
-    width: SW(8),
-    height: SW(8),
-    tintColor: COLORS.white,
-    resizeMode: 'contain',
-  },
-  currentStatusText: {
-    fontSize: ms(8),
-    color: COLORS.white,
-    fontFamily: Fonts.SemiBold,
-  },
   inputWraper: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -457,7 +475,8 @@ const styles = StyleSheet.create({
   textInputMainViewStyle: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    height: windowHeight - 90,
+    flex: 0.5,
+    marginBottom: ms(10),
   },
   leftViewStyle: {
     flexDirection: 'row',
@@ -475,16 +494,23 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingVertical: 17,
     paddingHorizontal: 20,
-    borderColor: COLORS.blue_shade,
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.textInputBackground,
   },
   orderDetailStyle: {
     width: SW(30),
-    justifyContent: 'center',
+  },
+  invoiceNumberTextStyle: {
+    fontSize: SF(10),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
+    textAlignVertical: 'center',
   },
   nameTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(10),
+    fontSize: SF(14),
     color: COLORS.solid_grey,
+    textAlign: 'center',
   },
   locationViewStyle: {
     flexDirection: 'row',

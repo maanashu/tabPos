@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import {
   View,
   Text,
@@ -10,37 +10,21 @@ import {
 } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import { getOrderData } from '@/actions/AnalyticsAction';
 
 const { height } = Dimensions.get('window');
 
 const Orders = ({ selectedStatus, onViewAllHandler }) => {
-  const dispatch = useDispatch();
   const getOrdersData = useSelector(getDelivery);
   const ordersList = getOrdersData?.getReviewDef;
 
-  console.log('orderList=====', ordersList);
-
-  const [orderDetail, setOrderDetail] = useState('');
-  const [userDetail, setUserDetail] = useState('');
-  const [orderId, setOrderId] = useState();
-
   const renderOrderToReview = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => {
-        onViewAllHandler, setUserDetail(item);
-        setOrderDetail(item?.order_details);
-        dispatch(getOrderData(item?.id));
-        setOrderId(item?.id);
-      }}
-      style={styles.orderRowStyle}
-    >
+    <TouchableOpacity onPress={() => onViewAllHandler(item.id)} style={styles.orderRowStyle}>
       <View style={styles.orderDetailStyle}>
         <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
         <View style={styles.locationViewStyle}>

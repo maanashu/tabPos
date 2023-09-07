@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 
+import { useSelector } from 'react-redux';
 import PieChart from 'react-native-pie-chart';
 import { ms, scale } from 'react-native-size-matters';
 
@@ -8,12 +9,9 @@ import { Fonts } from '@/assets';
 import { COLORS, SF, SW } from '@/theme';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { useSelector } from 'react-redux';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/DeliveringOrderTypes';
-
-const { width, height } = Dimensions.get('window');
 
 const OrderConversion = () => {
   const getOrdersData = useSelector(getDelivery);

@@ -155,6 +155,19 @@ const getPendingOrdersError = (error) => ({
   payload: { error },
 });
 
+const getOrdersByInvoiceIdRequest = () => ({
+  type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_REQUEST,
+  payload: null,
+});
+const getOrdersByInvoiceIdSuccess = (invoiceOrders) => ({
+  type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_SUCCESS,
+  payload: { invoiceOrders },
+});
+const getOrdersByInvoiceIdError = (error) => ({
+  type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_ERROR,
+  payload: { error },
+});
+
 export const getOrderDeliveries = (sellerID, page) => async (dispatch) => {
   dispatch(getOrderDeliveriesRequest());
   try {
@@ -276,5 +289,15 @@ export const getPendingOrders = (sellerID) => async (dispatch) => {
     dispatch(getPendingOrdersSuccess(res?.payload));
   } catch (error) {
     dispatch(getPendingOrdersError(error.message));
+  }
+};
+
+export const getOrdersByInvoiceId = (invoice) => async (dispatch) => {
+  dispatch(getOrdersByInvoiceIdRequest());
+  try {
+    const res = await DashboardController.getOrdersByInvoiceId(invoice);
+    dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getOrdersByInvoiceIdError(error.message));
   }
 };

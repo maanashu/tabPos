@@ -21,13 +21,11 @@ import { useFocusEffect } from '@react-navigation/native';
 // const socket = io('https://apichat.jobr.com:8007/');
 
 export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddress }) => {
-  console.log('UserData', JSON.stringify(customerData));
   const [isSocketConnected, setIsSocketConnected] = useState(false);
   const [messages, setMessages] = useState([]);
   const [bottomOffset, setbottomOffset] = useState(0);
   const [showView, setShowView] = useState('');
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-  console.log('chat render');
   const handleKeyboardDidShow = () => {
     setIsKeyboardOpen(true);
   };
@@ -42,7 +40,6 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
   useFocusEffect(
     React.useCallback(() => {
       socket.on('connect', () => {
-        console.log('New socket', socket.id);
         setIsSocketConnected(true);
       });
 

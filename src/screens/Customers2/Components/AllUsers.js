@@ -61,7 +61,6 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
-  console.log('paginationModalValue', paginationModalValue);
   const [page, setPage] = useState(1);
 
   const paginationData = {

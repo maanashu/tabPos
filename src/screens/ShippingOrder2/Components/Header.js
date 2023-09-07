@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text, Image, TouchableOpacity } from 'react-native';
 
 import { backArrow2 } from '@/assets';
@@ -19,4 +19,4 @@ const Header = ({ viewAllOrders, setViewAllOrders }) => (
   </>
 );
 
-export default Header;
+export default memo(Header);

@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import { View, Text, Image, Dimensions, TouchableOpacity, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  SafeAreaView,
+  ActivityIndicator,
+} from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,13 +21,19 @@ import {
   ReturnTruck,
   drawerdeliveryTruck,
   Group,
+  backArrow2,
 } from '@/assets';
 import {
   orderStatusCount,
   todayCurrentStatus,
   todayShippingStatus,
 } from '@/actions/ShippingAction';
-import { getGraphOrders, getReviewDefault, getOrderstatistics } from '@/actions/DeliveryAction';
+import {
+  getGraphOrders,
+  getReviewDefault,
+  getOrderstatistics,
+  acceptOrder,
+} from '@/actions/DeliveryAction';
 import Graph from './Components/Graph';
 import { COLORS, SH } from '@/theme';
 import Orders from './Components/Orders';
@@ -38,6 +52,11 @@ import OrderList from './Components/OrderList';
 import Header from './Components/Header';
 import { ms } from 'react-native-size-matters';
 import OrderDetail from './Components/OrderDetail';
+import { strings } from '@/localization';
+import WebView from 'react-native-webview';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
 
 const height = Dimensions.get('window').height;
 
@@ -45,6 +64,7 @@ export function ShippingOrder2() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getGraphOrderData = useSelector(getDelivery);
+  const getAnalyticsData = useSelector(getAnalytics);
   const ordersList = getGraphOrderData?.getReviewDef;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
@@ -54,6 +74,7 @@ export function ShippingOrder2() {
   const [openShippingOrders, setOpenShippingOrders] = useState('0');
   const [getOrderDetail, setGetOrderDetail] = useState('');
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id);
+  const [openWebView, setOpenWebView] = useState(false);
 
   useEffect(() => {
     dispatch(todayShippingStatus(sellerID));
@@ -84,6 +105,8 @@ export function ShippingOrder2() {
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
   }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
 
+  const acceptOrderLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
+
   const onPressDrawerHandler = (key) => {
     setOpenShippingOrders(key);
     dispatch(getReviewDefault(key, 4));
@@ -91,67 +114,157 @@ export function ShippingOrder2() {
 
   const onpressViewHandler = (id) => {
     setViewAllOrders(true);
+    dispatch(getOrderData(id));
+    setUserDetail(ordersList?.[0] ?? []);
+    setOrderDetail(ordersList?.[0]?.order_details ?? []);
+  };
+
+  const trackOrderHandler = (info) => {
+    if (info) {
+      setOpenWebView(true);
+    }
+  };
+
+  const acceptHandler = (id, status) => {
+    const data = {
+      orderId: id,
+      status: status,
+      sellerID: sellerID,
+    };
+    dispatch(
+      acceptOrder(data, openShippingOrders, 4, (res) => {
+        if (res?.msg) {
+          dispatch(getReviewDefault(openShippingOrders, 4));
+          dispatch(orderStatusCount(sellerID));
+          setGetOrderDetail('ViewAllScreen');
+          setUserDetail(ordersList?.[0] ?? []);
+          setViewAllOrders(true);
+          setOrderDetail(ordersList?.[0]?.order_details ?? []);
+        }
+      })
+    );
+  };
+
+  const declineHandler = (id) => {
+    const data = {
+      orderId: id,
+      status: 7,
+      sellerID: sellerID,
+    };
+    dispatch(
+      acceptOrder(data, (res) => {
+        alert('Order declined successfully');
+        setViewAllOrders(false);
+        dispatch(getReviewDefault(0, 4));
+      })
+    );
   };
 
   return (
     <>
-      {!viewAllOrders ? (
-        <SafeAreaView style={styles.container}>
-          <View style={styles.leftMainViewStyle}>
-            <View style={styles.todayShippingViewStyle}>
-              <TodayShippingStatus />
-            </View>
+      {!openWebView ? (
+        <>
+          {!viewAllOrders ? (
+            <SafeAreaView style={styles.container}>
+              <View style={styles.leftMainViewStyle}>
+                <View style={styles.todayShippingViewStyle}>
+                  <TodayShippingStatus />
+                </View>
 
-            <View style={styles.currentShippingViewStyle}>
-              <CurrentShippingStatus />
-            </View>
+                <View style={styles.currentShippingViewStyle}>
+                  <CurrentShippingStatus />
+                </View>
 
-            <View style={styles.orderConversionViewStyle}>
-              <OrderConversion />
-            </View>
-          </View>
+                <View style={styles.orderConversionViewStyle}>
+                  <OrderConversion />
+                </View>
+              </View>
 
-          <View style={styles.centerMainViewStyle}>
-            <Graph />
+              <View style={styles.centerMainViewStyle}>
+                <Graph />
 
-            <Orders
-              selectedStatus={openShippingOrders}
-              onViewAllHandler={() => onpressViewHandler()}
-            />
-          </View>
+                <Orders selectedStatus={openShippingOrders} onViewAllHandler={onpressViewHandler} />
+              </View>
 
-          <View style={styles.drawerMainViewStyle}>
-            <RightDrawer {...{ onPressDrawerHandler, openShippingOrders }} />
-          </View>
-        </SafeAreaView>
+              <View style={styles.drawerMainViewStyle}>
+                <RightDrawer {...{ onPressDrawerHandler, openShippingOrders }} />
+              </View>
+            </SafeAreaView>
+          ) : (
+            <SafeAreaView style={{ flex: 1 }}>
+              <Header {...{ viewAllOrders, setViewAllOrders }} />
+
+              <View style={styles.centerViewStyle}>
+                {ordersList?.length > 0 ? (
+                  <>
+                    <View style={styles.orderListMainView}>
+                      <OrderList
+                        selectedStatus={openShippingOrders}
+                        onViewAllHandler={onpressViewHandler}
+                      />
+                    </View>
+
+                    <View style={styles.orderDetailMainView}>
+                      <OrderDetail
+                        {...{
+                          openShippingOrders,
+                          userDetail,
+                          orderDetail,
+                          declineHandler,
+                          acceptHandler,
+                          trackOrderHandler,
+                        }}
+                      />
+                    </View>
+                  </>
+                ) : (
+                  <View style={styles.emptyOrderView}>
+                    <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
+                  </View>
+                )}
+
+                <View style={styles.drawerMainViewStyle}>
+                  <RightDrawer {...{ onPressDrawerHandler, openShippingOrders }} />
+                </View>
+              </View>
+            </SafeAreaView>
+          )}
+        </>
       ) : (
-        <SafeAreaView style={{ flex: 1, borderWidth: 3, borderColor: 'green' }}>
-          <Header {...{ viewAllOrders, setViewAllOrders }} />
-
-          <View
-            style={{
-              flexDirection: 'row',
-              flex: 1,
-              borderWidth: 3,
-              borderColor: 'red',
-              paddingBottom: ms(10),
-              // justifyContent: 'space-between',
+        <View style={[styles.container, { flexDirection: 'column' }]}>
+          <TouchableOpacity
+            style={styles.backView}
+            onPress={() => {
+              setOpenWebView(false);
+              dispatch(getReviewDefault(openShippingOrders, 4));
             }}
           >
-            <View style={styles.orderListMainView}>
-              <OrderList selectedStatus={openShippingOrders} />
-            </View>
+            <Image source={backArrow2} style={styles.backImageStyle} />
+            <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
+              {strings.deliveryOrders.back}
+            </Text>
+          </TouchableOpacity>
 
-            <View style={styles.orderDetailMainView}>
-              <OrderDetail />
-            </View>
+          <Spacer space={SH(20)} />
 
-            <View style={styles.drawerMainViewStyle}>
-              <RightDrawer {...{ onPressDrawerHandler, openShippingOrders }} />
-            </View>
-          </View>
-        </SafeAreaView>
+          <WebView
+            source={{ uri: getAnalyticsData?.getOrderData?.tracking_info?.url }}
+            style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}
+            startInLoadingState
+            renderLoading={() => (
+              <View style={styles.loader}>
+                <ActivityIndicator size={'large'} color={COLORS.primary} style={styles.loader} />
+              </View>
+            )}
+          />
+        </View>
       )}
+
+      {acceptOrderLoading ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.2)' }]}>
+          <ActivityIndicator color={COLORS.primary} size={'small'} style={styles.loader} />
+        </View>
+      ) : null}
     </>
   );
 }

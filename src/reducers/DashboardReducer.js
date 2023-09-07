@@ -9,6 +9,7 @@ const INITIALSTATE = {
   onLineOrders: {},
   selection: {},
   pendingOrders: {},
+  invoiceSearchOrders: {},
 };
 
 export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -17,10 +18,6 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getOrderDeliveries: payload.getOrderDeliveries,
-        // getOrderDeliveries: {
-        //   ...state.getOrderDeliveries,
-        //   data: [...state.getOrderDeliveries.data, ...payload.getOrderDeliveries.data],
-        // },
       };
     case DASHBOARDTYPE.GET_ORDER_DELIVERIES_RESET:
       return {
@@ -81,6 +78,11 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         pendingOrders: payload?.pendingOrders,
+      };
+    case DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_SUCCESS:
+      return {
+        ...state,
+        invoiceSearchOrders: payload?.invoiceOrders,
       };
     default:
       return state;

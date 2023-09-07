@@ -59,7 +59,6 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
     per_page: getCustomerData?.getOrderUser?.per_page,
   };
   const orderPayloadLength = Object.keys(getCustomerData?.getOrderUser)?.length;
-  console.log('orderPayloadLength', orderPayloadLength);
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);

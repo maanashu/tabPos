@@ -135,6 +135,7 @@ export const ApiOrderInventory = {
   productUpdatePrice: 'poscarts/update-price',
   serviceUpdatePrice: 'appointment_carts/update-price',
   cartBarCode: 'poscarts/scan-barcode',
+  invoiceIdSearch: 'invoices/by-invoice-number/',
 };
 
 export const ApiWalletInventory = {

@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Platform,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, Image, Platform, FlatList, TouchableOpacity } from 'react-native';
 
 import moment from 'moment';
 import { useSelector } from 'react-redux';
@@ -16,21 +8,13 @@ import { ms } from 'react-native-size-matters';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { deliveryHomeIcon, Fonts, scooter, storeTracker, userImage } from '@/assets';
+import { Fonts, scooter, userImage } from '@/assets';
 
 import styles from '../ShippingOrder2.styles';
-import ShipmentTracking from './ShipmentTracking';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { GOOGLE_MAP } from '@/constants/ApiKey';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/AnalyticsTypes';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 const OrderDetail = ({
-  renderAllOrdersToReview,
-  ordersList,
   openShippingOrders,
   userDetail,
   orderDetail,
@@ -44,22 +28,11 @@ const OrderDetail = ({
   const oneOrderDetail = useSelector(getAnalytics);
   const getTrackingInfo = oneOrderDetail?.getOrderData?.tracking_info;
 
-  const sourceCoordinate = {
-    latitude: location?.latitude,
-    longitude: location?.longitude,
-  };
-  const destinationCoordinate = {
-    latitude: oneOrderDetail?.getOrderData?.coordinates?.[0],
-    longitude: oneOrderDetail?.getOrderData?.coordinates?.[1],
-  };
-
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
-
   return (
     <>
       <View style={styles.orderDetailView}>
         <View style={styles.orderDetailViewStyle}>
-          <View style={[styles.locationViewStyle, { width: ms(140) }]}>
+          <View style={[styles.locationViewStyle, { flex: 0.95 }]}>
             <Image
               source={
                 userDetail?.user_details?.profile_photo
@@ -128,8 +101,8 @@ const OrderDetail = ({
           />
         </View>
 
-        <View style={styles.orderandPriceView}>
-          <View style={{ paddingLeft: 15 }}>
+        <View style={[styles.orderandPriceView, { flex: 0.9 }]}>
+          <View style={{ paddingLeft: 15, flex: 0.3 }}>
             <View>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                 {strings.shippingOrder.totalItem}
@@ -173,7 +146,7 @@ const OrderDetail = ({
 
           <View
             style={{
-              width: ms(200),
+              flex: 0.6,
               paddingHorizontal: ms(20),
               borderRadius: 10,
               paddingVertical: 20,

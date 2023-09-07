@@ -12,7 +12,6 @@ export class CustomersController {
         ORDER_URL +
         ApiOrderInventory.getUserOrder +
         `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}`;
-      console.log('endpoint0000000000000', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
