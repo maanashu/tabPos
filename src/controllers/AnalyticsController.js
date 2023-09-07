@@ -215,7 +215,12 @@ export class AnalyticsController {
 
   static async getOrderData(orderID) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.getOrderData + `/${orderID}`;
+      const endpoint =
+        orderID?.page && orderID?.limit
+          ? ORDER_URL +
+            ApiOrderInventory.getOrderData +
+            `/${orderID?.orderId}&page=${orderID?.page}&limit=${orderID?.limit}`
+          : ORDER_URL + ApiOrderInventory.getOrderData + `/${orderID}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

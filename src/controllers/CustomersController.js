@@ -12,7 +12,6 @@ export class CustomersController {
         ORDER_URL +
         ApiOrderInventory.getUserOrder +
         `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}`;
-      console.log('endpoint0000000000000', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -31,10 +30,12 @@ export class CustomersController {
     });
   }
 
-  static async getOrderUser(status, sellerID) {
+  static async getOrderUser(data) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&user_uid=${status}`;
+        ORDER_URL +
+        ApiOrderInventory.getOrderUser +
+        `?seller_id=${data?.sellerID}&user_uid=${data?.userId}&page=${data?.page}&limit=${data?.limit}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -49,7 +50,6 @@ export class CustomersController {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL + ApiOrderInventory.getCustomer + `?seller_id=${sellerID}&filter=${time}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

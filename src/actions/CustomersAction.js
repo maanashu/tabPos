@@ -60,10 +60,10 @@ export const getUserOrder = (data) => async (dispatch) => {
   }
 };
 
-export const getOrderUser = (status, sellerID) => async (dispatch) => {
+export const getOrderUser = (data) => async (dispatch) => {
   dispatch(getOrderUserRequest());
   try {
-    const res = await CustomersController.getOrderUser(status, sellerID);
+    const res = await CustomersController.getOrderUser(data);
     dispatch(getOrderUserSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {

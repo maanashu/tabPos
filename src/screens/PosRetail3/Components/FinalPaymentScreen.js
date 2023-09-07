@@ -19,6 +19,7 @@ import { clearServiceAllCart, getServiceCart } from '@/actions/RetailAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { getUser } from '@/selectors/UserSelectors';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -33,6 +34,7 @@ export const FinalPaymentScreen = ({
   const tipData = useSelector(getRetail).tipKey?.payload?.tip;
   const tipamount = Number(tipData);
   const getAuthdata = useSelector(getAuthData);
+  const getUserData = useSelector(getUser);
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
 
   const cartProducts =
@@ -178,7 +180,9 @@ export const FinalPaymentScreen = ({
             </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
             <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
-            <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
+            <Text style={styles._commonPayTitle}>
+              POS No. {getUserData?.posLoginData?.pos_number}
+            </Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
 
             <Text style={styles._thankyou}>Thank You</Text>

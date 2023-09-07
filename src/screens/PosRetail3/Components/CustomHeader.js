@@ -43,7 +43,7 @@ export function CustomHeader({ crossHandler, iconShow }) {
           </Text>
         </View>
         <View style={styles._border} />
-        <Text style={styles.cashLabelBold}>POS No. #Front-CC01</Text>
+        <Text style={styles.cashLabelBold}>POS No. {getUserData?.posLoginData?.pos_number}</Text>
         {iconShow ? (
           <TouchableOpacity onPress={crossHandler}>
             <Image source={crossButton} style={styles.crossBg} />

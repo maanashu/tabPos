@@ -2,12 +2,16 @@ import { USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { HttpClient } from './HttpClient';
 import Toast from 'react-native-toast-message';
 import { strings } from '@/localization';
+import DeviceInfo from 'react-native-device-info';
 
 export class UserController {
   static async loginPosUser(data) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.loginPosuser;
-      HttpClient.post(endpoint, data)
+      const uniqueId = await DeviceInfo.getUniqueId();
+      HttpClient.post(endpoint, data, {
+        headers: { 'device-id': uniqueId },
+      })
         .then((response) => {
           if (response.status_code === 200) {
             Toast.show({

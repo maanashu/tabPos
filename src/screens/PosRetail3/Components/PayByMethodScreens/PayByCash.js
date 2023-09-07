@@ -23,6 +23,7 @@ import { createOrder, createServiceOrder } from '@/actions/RetailAction';
 import AddedCartItemsCard from '@/components/AddedCartItemsCard';
 import { number } from 'prop-types';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { getUser } from '@/selectors/UserSelectors';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -35,6 +36,7 @@ export const PayByCash = ({
   cartType,
 }) => {
   const dispatch = useDispatch();
+  const getUserData = useSelector(getUser);
   const getRetailData = useSelector(getRetail);
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
@@ -307,7 +309,9 @@ export const PayByCash = ({
             </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
             <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
-            <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
+            <Text style={styles._commonPayTitle}>
+              POS No. {getUserData?.posLoginData?.pos_number}
+            </Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
             <Spacer space={SH(5)} />
             <Text style={styles._thankyou}>Thank You</Text>

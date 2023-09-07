@@ -61,6 +61,7 @@ import { TYPES } from '@/Types/Types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useIsFocused } from '@react-navigation/native';
 import { DATA } from '@/constants/flatListData';
+import { getUser } from '@/selectors/UserSelectors';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -82,6 +83,7 @@ export const CartAmountPayBy = ({
 }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+  const getUserData = useSelector(getUser);
   const updateData = useSelector(getRetail).updateQuantityy;
 
   // const [loading, setloading] = useState(false);
@@ -746,7 +748,9 @@ export const CartAmountPayBy = ({
             </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
             {/* <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text> */}
-            <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
+            <Text style={styles._commonPayTitle}>
+              POS No. {getUserData?.posLoginData?.pos_number}
+            </Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
             <Spacer space={SH(5)} />
             <Text style={styles._thankyou}>Thank You</Text>

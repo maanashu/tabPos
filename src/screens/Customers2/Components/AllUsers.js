@@ -62,7 +62,16 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
-  const [ind, setInd] = useState(0);
+  const [ind, setInd] = useState();
+
+  // useEffect(() => {
+  //   if (paginationModalValue == 10) {
+  //     setInd(0);
+  //   }
+  //   // if (paginationModalValue >= 15) {
+  //   //   setInd(1);
+  //   // }
+  // }, [paginationModalValue]);
 
   const paginationData = {
     total: getCustomerData?.getUserOrder?.total ?? '0',
@@ -70,7 +79,6 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
     perPage: getCustomerData?.getUserOrder?.per_page ?? '0',
     currentPage: getCustomerData?.getUserOrder?.current_page ?? '0',
   };
-
   useEffect(() => {
     const data = {
       sellerID: sellerID,
@@ -84,35 +92,11 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const paginationInchandler = () => {
     setPage(page + 1);
     setInd(ind + 1);
-    // if (paginationData?.currentPage <= paginationData?.totalPages) {
-    //   setPage(page + 1);
-    //   const data = {
-    //     sellerID: sellerID,
-    //     customerType: customerType,
-    //     page: page,
-    //     limit: paginationModalValue,
-    //   };
-    //   // console.log('data', data);
-    //   // return;
-    //   dispatch(getUserOrder(data));
-    // }
   };
 
   const paginationDechandler = () => {
     setPage(page - 1);
     setInd(ind - 1);
-    // if (paginationData?.currentPage < paginationData?.totalPages) {
-    //   setPage(page - 1);
-    //   const data = {
-    //     sellerID: sellerID,
-    //     customerType: customerType,
-    //     page: page,
-    //     limit: paginationModalValue,
-    //   };
-    //   console.log('data', data);
-    //   // return;
-    //   dispatch(getUserOrder(data));
-    // }
   };
 
   const isCustomerLoad = useSelector((state) => isLoadingSelector([TYPES.GET_USER_ORDER], state));
@@ -392,14 +376,17 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                       <View style={styles.tableHeaderLeft}>
                         <Text style={styles.tableTextDataFirst}>
                           {/* {ind == 0 ? '' : ind} */}
+                          {/* {index + paginationData?.currentPage * paginationData?.currentPage === 1
+                            ? 0
+                            : paginationModalValue} */}
                           {index + 1}
                         </Text>
                         <View style={[styles.flexAlign, { marginLeft: 10 }]}>
-                          <Image
+                          {/* <Image
                             source={{ uri: item?.user_details?.profile_photo } ?? userImage}
                             style={styles.lovingStyleData}
-                          />
-                          {/* <Image source={userImage} style={styles.lovingStyleData} /> */}
+                          /> */}
+                          <Image source={userImage} style={styles.lovingStyleData} />
                           <View style={{ flexDirection: 'column', marginLeft: 10 }}>
                             <Text style={styles.tableTextDataName}>
                               {item?.user_details?.firstname}

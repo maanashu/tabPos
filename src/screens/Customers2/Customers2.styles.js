@@ -517,4 +517,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.white,
   },
+  profilDetailChildView: {
+    width: Platform.OS === 'android' ? ms(125) : ms(95),
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: ms(3),
+  },
 });

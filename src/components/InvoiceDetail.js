@@ -24,9 +24,11 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import ShipmentTracking from '@/screens/DeliveryOrders2/Components/ShipmentTracking';
+import { getUser } from '@/selectors/UserSelectors';
 
 export function InvoiceDetail({ mapRef, closeHandler }) {
   const dispatch = useDispatch();
+  const getUserData = useSelector(getUser);
   const getAuth = useSelector(getAuthData);
   const oneOrderDetail = useSelector(getAnalytics);
   const singleOrderDetail = oneOrderDetail?.getOrderData;
@@ -147,7 +149,9 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
             <Text
               style={styles._commonPayTitle}
             >{`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}`}</Text>
-            <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
+            <Text style={styles._commonPayTitle}>
+              POS No. {getUserData?.posLoginData?.pos_number}
+            </Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
 
             <Text style={styles._thankyou}>Thank You</Text>

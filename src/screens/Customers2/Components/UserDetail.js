@@ -46,11 +46,15 @@ const twoEqualView = result / 1.8;
 import { TYPES } from '@/Types/CustomersTypes';
 import { useEffect } from 'react';
 import { getOrderUser } from '@/actions/CustomersAction';
+import { getOrderData } from '@/actions/AnalyticsAction';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
-const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
+const UserDetail = ({ backHandler, userDetail, orderId }) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
+  const oneOrderDetail = useSelector(getAnalytics);
+  const singleOrderDetail = oneOrderDetail?.getOrderData;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getCustomerData = useSelector(getCustomers);
   const ordersbyUserData = getCustomerData?.getOrderUser;
@@ -93,12 +97,11 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
 
   useEffect(() => {
     const data = {
-      userId: userDetail?.user_id,
-      sellerID: sellerID,
+      orderId: orderId,
       page: page,
       limit: paginationModalValue,
     };
-    dispatch(getOrderUser(data));
+    dispatch(getOrderData(data));
   }, [paginationModalValue, page]);
 
   useEffect(() => {
@@ -114,7 +117,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
       <View style={[styles.headerMainView, styles.headerMianViewbottomRow]}>
         <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
           <Image source={leftBack} style={styles.backIconProfile} />
-          <Text style={[styles.deliveryText, { fontSize: ms(10) }]}>{'User profile'}</Text>
+          <Text style={[styles.deliveryText, { fontSize: ms(10) }]}>{'User details'}</Text>
         </TouchableOpacity>
         <View style={styles.editButtonCon}>
           <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
@@ -187,7 +190,6 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
           </>
         </View>
       </View>
-
       <View
         style={[styles.jbrTypeCon, { zIndex: -1, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
         pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
@@ -231,7 +233,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
                 backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
               },
             ]}
-            onPress={paginationDechandler}
+            // onPress={paginationDechandler}
             disabled={paginationData?.currentPage == 1 ? true : false}
           >
             <Image
@@ -250,7 +252,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
           </View>
           <Text style={styles.paginationCount}>
             {'1-20 of '}
-            {paginationData?.total}
+            {'10'}
           </Text>
           <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
             <Image
@@ -268,7 +270,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
                     : COLORS.white,
               },
             ]}
-            onPress={paginationInchandler}
+            // onPress={paginationInchandler}
             disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
           >
             <Image
@@ -296,101 +298,102 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
             ]}
           >
             <View style={styles.profileheaderUnderView}>
-              <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}>
+              <View style={[styles.profilDetailChildView, { alignItems: 'flex-start' }]}>
                 <View style={{ flexDirection: 'row' }}>
                   <Text style={[styles.tableTextHeader, { marginRight: ms(30) }]}>#</Text>
                   <Text style={styles.tableTextHeader}>Order id#</Text>
                 </View>
               </View>
-              <View style={styles.profileheaderChildView}>
+              <View style={styles.profilDetailChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={1}>
                   Date
                 </Text>
               </View>
-              <View style={styles.profileheaderChildView}>
+              <View style={styles.profilDetailChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={1}>
                   Store location
                 </Text>
               </View>
-              <View style={styles.profileheaderChildView}>
+              <View style={styles.profilDetailChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={1}>
-                  Responsible
+                  Buying amount
                 </Text>
               </View>
-              <View style={styles.profileheaderChildView}>
+              <View style={styles.profilDetailChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={1}>
-                  No. of items
+                  Points
                 </Text>
               </View>
-              <View style={styles.profileheaderChildView}>
+              <View style={styles.profilDetailChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={1}>
-                  Amount
+                  Status
                 </Text>
               </View>
-              <View style={styles.profileheaderChildView}>
+              {/* <View style={styles.profilDetailChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={1}>
                   Sales type
                 </Text>
-              </View>
+              </View> */}
             </View>
           </View>
 
           <View style={{ height: Platform.OS === 'android' ? ms(230) : ms(265) }}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-              {isOrderUserLoading ? (
+              {/* {
+              isOrderUserLoading ? (
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
-              ) : ordersByUser?.length === 0 ? (
+              ) :  */}
+              {oneOrderDetail?.getOrderData?.order_details?.length === 0 ? (
                 <View style={{ marginTop: 80 }}>
                   <Text style={styles.userNotFound}>Order not found</Text>
                 </View>
               ) : (
-                ordersByUser?.map((item, index) => (
+                oneOrderDetail?.getOrderData?.order_details?.map((item, index) => (
                   <TouchableOpacity
                     key={index}
                     style={[styles.tableDataCon, { zIndex: -99 }]}
-                    onPress={() => orderClickHandler(item)}
+                    // onPress={() => orderClickHandler(item)}
                   >
                     <View style={styles.profileheaderUnderView}>
-                      <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}>
+                      <View style={[styles.profilDetailChildView, { alignItems: 'flex-start' }]}>
                         <View style={{ flexDirection: 'row' }}>
                           <Text style={[styles.tableTextData, { marginRight: ms(40) }]}>
                             {index + 1}
                           </Text>
-                          <Text style={styles.tableTextData}>{item.id}</Text>
+                          <Text style={styles.tableTextData}>{item?.order_id}</Text>
                         </View>
                       </View>
-                      <View style={styles.profileheaderChildView}>
+                      <View style={styles.profilDetailChildView}>
                         <Text style={styles.tableTextData}>
                           {item.created_at ? moment(item.created_at).format('LL') : ''}
                         </Text>
                       </View>
-                      <View style={styles.profileheaderChildView}>
+                      <View style={styles.profilDetailChildView}>
                         <Text style={styles.tableTextData} numberOfLines={1}>
                           {item?.seller_details?.current_address?.city}
                         </Text>
                       </View>
-                      <View style={styles.profileheaderChildView}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <View style={styles.profilDetailChildView}>
+                        <Text style={styles.tableTextData}>{item?.price ?? '0'}</Text>
+                        {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <Image
                             source={userImage}
                             style={{ width: ms(15), height: ms(15), resizeMode: 'contain' }}
                           />
-                          <Text style={styles.tableTextData}>{item?.shipping_detail?.title}</Text>
-                        </View>
+                          <Text style={styles.tableTextData}>{item?.price ?? '0'}</Text>
+                        </View> */}
                       </View>
-                      <View style={styles.profileheaderChildView}>
+                      <View style={styles.profilDetailChildView}>
+                        <Text style={styles.tableTextData} numberOfLines={1}></Text>
+                      </View>
+                      <View style={styles.profilDetailChildView}>
                         <Text style={styles.tableTextData} numberOfLines={1}>
-                          {item?.total_items} times
+                          {/* ${item?.payable_amount} */}
                         </Text>
                       </View>
-                      <View style={styles.profileheaderChildView}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          ${item?.payable_amount}
-                        </Text>
-                      </View>
-                      <View style={styles.profileheaderChildView}>
+                      {/* <View style={styles.profilDetailChildView}>
                         <View
                           style={[
                             styles.saleTypeButtonCon,
@@ -407,7 +410,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
                             {DELIVERY_MODE[item?.delivery_option]}
                           </Text>
                         </View>
-                      </View>
+                      </View> */}
                     </View>
                   </TouchableOpacity>
                 ))
@@ -420,4 +423,4 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
   );
 };
 
-export default memo(UserProfile);
+export default memo(UserDetail);

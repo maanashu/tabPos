@@ -29,7 +29,6 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
 import { getCustomer, getOrderUser } from '@/actions/CustomersAction';
 import { getCustomers } from '@/selectors/CustomersSelector';
-import moment from 'moment';
 import Graph from './Components/Graph';
 import AllUsers from './Components/AllUsers';
 import UserProfile from './Components/UserProfile';
@@ -38,6 +37,7 @@ import { getOrderData } from '@/actions/AnalyticsAction';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AnalyticsTypes';
+import UserDetail from './Components/UserDetail';
 
 export function Customers2() {
   const mapRef = useRef(null);
@@ -58,13 +58,15 @@ export function Customers2() {
 
   const [allUsers, setAllUsers] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
+  const [userDetails, setUserDetails] = useState(false);
   const [userData, setUserData] = useState();
   const [invoiceDetail, setInvoiceDetail] = useState(false);
   const [saveCustomerId, setSaveCustomerId] = useState();
   const [saveCustomeType, setSaveCustomerType] = useState();
   const [selectId, setSelectId] = useState(2);
-  const [selectTime, setSelectTime] = useState({ name: 'week' });
-  const time = selectTime?.name;
+  const [selectTime, setSelectTime] = useState({ value: 'week' });
+  const time = selectTime?.value;
+  const [orderId, setOrderId] = useState();
 
   const closeHandler = () => {
     setInvoiceDetail(false);
@@ -110,7 +112,36 @@ export function Customers2() {
   const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
 
   const bodyView = () => {
-    if (invoiceDetail) {
+    if (userDetails) {
+      return (
+        <UserDetail
+          orderId={orderId}
+          backHandler={() => {
+            setUserDetails(false);
+            setUserProfile(true);
+          }}
+          userDetail={userData}
+          // orderClickHandler={async (item) => {
+          //   const res = await dispatch(getOrderData(item?.id));
+          //   if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
+          //     if (item?.delivery_option == 3) {
+          //       alert('hiiiiiiiiiiiii');
+          //     } else {
+          //       setUserProfile(false);
+          //       setInvoiceDetail(true);
+          //     }
+          //   } else {
+          //     Toast.show({
+          //       text2: 'Something went wrong',
+          //       position: 'bottom',
+          //       type: 'error_toast',
+          //       visibilityTime: 1500,
+          //     });
+          //   }
+          // }}
+        />
+      );
+    } else if (invoiceDetail) {
       return (
         <InvoiceDetail
           {...{
@@ -128,17 +159,23 @@ export function Customers2() {
           }}
           userDetail={userData}
           orderClickHandler={async (item) => {
-            const res = await dispatch(getOrderData(item));
-            if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
+            if (item?.delivery_option == 3) {
               setUserProfile(false);
-              setInvoiceDetail(true);
+              setUserDetails(true);
+              setOrderId(item?.id);
             } else {
-              Toast.show({
-                text2: 'Something went wrong',
-                position: 'bottom',
-                type: 'error_toast',
-                visibilityTime: 1500,
-              });
+              const res = await dispatch(getOrderData(item?.id));
+              if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
+                setUserProfile(false);
+                setInvoiceDetail(true);
+              } else {
+                Toast.show({
+                  text2: 'Something went wrong',
+                  position: 'bottom',
+                  type: 'error_toast',
+                  visibilityTime: 1500,
+                });
+              }
             }
           }}
         />
@@ -155,7 +192,7 @@ export function Customers2() {
             setAllUsers(false);
             setUserProfile(true);
             setUserData(item);
-            dispatch(getOrderUser(item?.user_id, sellerID));
+            // dispatch(getOrderUser(item?.user_id, sellerID));
           }}
         />
       );
@@ -237,7 +274,9 @@ export function Customers2() {
   };
   return (
     <ScreenWrapper>
-      <View style={allUsers || userProfile ? styles.containerWhite : styles.container}>
+      <View
+        style={allUsers || userProfile || userDetails ? styles.containerWhite : styles.container}
+      >
         {bodyView()}
       </View>
       {onLoad ? (
