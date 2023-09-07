@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   amountInput: {
-    width: SW(35),
+    width: SW(33),
     height: SH(35),
     fontSize: SF(14),
     fontFamily: Fonts.SemiBold,
@@ -339,5 +339,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 0,
     margin: 0,
+    // borderWidth: 1,
   },
 });

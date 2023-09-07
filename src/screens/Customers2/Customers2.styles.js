@@ -242,7 +242,7 @@ export const styles = StyleSheet.create({
     zIndex: Platform.OS === 'ios' ? 100 : 0,
   },
   containerStylePagination: {
-    width: SW(22),
+    width: SW(25),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,

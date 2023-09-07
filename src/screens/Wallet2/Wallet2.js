@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
 import { styles } from '@/screens/Wallet2/Wallet2.styles';
@@ -91,6 +92,21 @@ export function Wallet2() {
     { label: '30', value: '30' },
     { label: '50', value: '50' },
     { label: '70', value: '70' },
+  ]);
+  const [paymentMethodModalOpen, setPaymentMethodModalOpen] = useState(false);
+  const [paymentMethodModalValue, setPaymnentMethodModalValue] = useState(null);
+  const [paymentMethodModalItems, setPaymentMethodModalItems] = useState([
+    { label: 'JBR', value: 'JBR' },
+    { label: 'CARD', value: 'CARD' },
+    { label: 'CASH', value: 'CASH' },
+  ]);
+  const [transTypeModalOpen, setTransTypeModalOpen] = useState(false);
+  const [transTypeModalValue, setTransTypeModalValue] = useState(null);
+  const [transTypeModalItems, setTransTypeModalItems] = useState([
+    { label: 'In-Store', value: 'In-Store' },
+    { label: 'Delivery', value: 'Delivery' },
+    { label: 'Shipping', value: 'Shipping' },
+    { label: 'Service', value: 'Service' },
   ]);
   const [allUsers, setAllUsers] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
@@ -523,10 +539,12 @@ export function Wallet2() {
                 <View style={styles.displayFlex}>
                   <View style={styles.tableHeaderLeft}>
                     <Text style={styles.tableTextHeaFirst}>#</Text>
-                    <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>Date</Text>
+                    <Text style={[styles.tableTextHea, { marginLeft: ms(15) }]}>Date</Text>
                   </View>
                   <View style={styles.tableHeaderRight}>
-                    <Text style={styles.tableTextHea}>Transaction ID</Text>
+                    <Text numberOfLines={1} style={styles.tableTextHea}>
+                      Transaction ID
+                    </Text>
 
                     <View style={styles.flexAlign}>
                       {/* <Text style={styles.tableTextHea}>Employee</Text> */}
@@ -534,12 +552,67 @@ export function Wallet2() {
                         Transaction type
                       </Text>
                       <Image source={tableArrow} style={styles.tableArrow} />
+                      {/* <DropDownPicker
+                        ArrowUpIconComponent={({ style }) => (
+                          <Image source={tableArrow} style={styles.dropDownIconPagination} />
+                        )}
+                        ArrowDownIconComponent={({ style }) => (
+                          <Image source={tableArrow} style={styles.dropDownIconPagination} />
+                        )}
+                        style={styles.dropdown}
+                        containerStyle={[
+                          { width: ms(101), marginTop: Platform.OS === 'ios' ? 0 : ms(0) },
+                          { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+                        ]}
+                        dropDownContainerStyle={styles.transTypeDownContainerStyle}
+                        listItemLabelStyle={styles.listItemLabelStyle}
+                        labelStyle={styles.labelStyle}
+                        selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                        open={transTypeModalOpen}
+                        value={transTypeModalValue}
+                        items={transTypeModalItems}
+                        setOpen={setTransTypeModalOpen}
+                        setValue={setTransTypeModalValue}
+                        setItems={setTransTypeModalItems}
+                        placeholder="Transaction type"
+                        placeholderStyle={styles.placeholderStylePagination}
+                      /> */}
                     </View>
-                    <View style={styles.flexAlign}>
+                    <View
+                      style={styles.flexAlign}
+                      onPress={() => setPaymentMethodModalOpen((prev) => !prev)}
+                    >
                       {/* <Text style={styles.tableTextHea}>Customer</Text> */}
 
-                      <Text style={styles.tableTextHea}>Payment Method</Text>
+                      <Text numberOfLines={1} style={styles.tableTextHea}>
+                        Payment Method
+                      </Text>
                       <Image source={tableArrow} style={styles.tableArrow} />
+                      {/* <DropDownPicker
+                        ArrowUpIconComponent={({ style }) => (
+                          <Image source={tableArrow} style={styles.dropDownIconPagination} />
+                        )}
+                        ArrowDownIconComponent={({ style }) => (
+                          <Image source={tableArrow} style={styles.dropDownIconPagination} />
+                        )}
+                        style={styles.dropdown}
+                        containerStyle={[
+                          { width: Platform.OS === 'ios' ? ms(90) : ms(100) },
+                          { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+                        ]}
+                        dropDownContainerStyle={styles.paymentMethodDownContainerStyle}
+                        listItemLabelStyle={styles.listItemLabelStyle}
+                        labelStyle={styles.labelStyle}
+                        selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                        open={paymentMethodModalOpen}
+                        value={paymentMethodModalValue}
+                        items={paymentMethodModalItems}
+                        setOpen={setPaymentMethodModalOpen}
+                        setValue={setPaymnentMethodModalValue}
+                        setItems={setPaymentMethodModalItems}
+                        placeholder="Payment Method"
+                        placeholderStyle={styles.placeholderStylePagination}
+                      /> */}
                     </View>
 
                     {/* <Text style={styles.tableTextHea}> */}
@@ -561,7 +634,7 @@ export function Wallet2() {
                       <ActivityIndicator size="large" color={COLORS.indicator} />
                     </View>
                   ) : filteredData?.length === 0 ? (
-                    <View style={{ marginTop: 80 }}>
+                    <View style={{ marginTop: ms(110) }}>
                       <Text style={styles.userNotFound}>Order not found</Text>
                     </View>
                   ) : (
@@ -599,20 +672,38 @@ export function Wallet2() {
                             <Text style={[styles.tableTextData, { fontSize: SF(12) }]}>
                               {item.transaction_id ?? null}
                             </Text>
+                            <Spacer horizontal space={ms(35)} />
                             <Text style={styles.tableTextData}>
                               {item?.seller_details?.firstname}
                               {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
                             </Text>
-                            <Text style={styles.tableTextData}>
+                            <Text style={[styles.tableTextData, { marginLeft: ms(15) }]}>
                               {item?.user_details?.firstname}
                               {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
                             </Text>
-                            <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
+                            <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
 
-                            <Text style={styles.tableTextData}>
-                              {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
-                            </Text>
-                            <View style={{ width: SF(90) }}>
+                            <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
+                            <View
+                              style={{
+                                marginLeft: ms(-15),
+                              }}
+                            >
+                              <Text style={styles.tableTextData}>
+                                {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                width: SF(110),
+                                borderRadius: ms(3),
+                                backgroundColor: COLORS.bluish_green,
+                                alignItems: 'center',
+                                height: SH(24),
+                                justifyContent: 'center',
+                                marginLeft: ms(-35),
+                              }}
+                            >
                               <Text style={styles.tableTextDataCom}>{statusFun(item.status)}</Text>
                             </View>
                           </View>

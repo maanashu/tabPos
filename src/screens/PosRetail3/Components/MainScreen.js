@@ -847,6 +847,7 @@ export function MainScreen({
                       </Text>
                     </View>
                   )}
+                  style={{ zIndex: -99 }}
                 />
               ) : (
                 <FlatList

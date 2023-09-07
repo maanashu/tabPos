@@ -123,10 +123,12 @@ const Graph = ({ graphDetail }) => {
               }}
               width={
                 graphDetail?.labels?.length > 20
-                  ? Dimensions.get('window').width * 1.3
+                  ? Platform.OS === 'ios'
+                    ? Dimensions.get('window').width * 1.8
+                    : Dimensions.get('window').width * 1.3
                   : Dimensions.get('window').width * 0.86
               }
-              height={Platform.OS === 'android' ? 320 : 390}
+              height={Platform.OS === 'android' ? 320 : 350}
               // noOfSections={7}
               chartConfig={{
                 decimalPlaces: 0,
