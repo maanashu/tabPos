@@ -12,6 +12,7 @@ import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker'
 import { useEffect } from 'react';
 import moment from 'moment';
 import { getDaysAndDates } from '@/utils/GlobalMethods';
+import { ServiceProviderItem } from '@/components/ServiceProviderItem';
 const windowWidth = Dimensions.get('window').width;
 
 export function AddServiceCartModal({
@@ -125,20 +126,6 @@ export function AddServiceCartModal({
       >
         {item?.start_time + ' - ' + item?.end_time}
       </Text>
-    </TouchableOpacity>
-  );
-
-  const ServiceProviderItem = ({ item, onPress, borderColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.imageSelectedBorder, { borderColor }]}>
-      <Image
-        source={{ uri: item?.user?.user_profiles?.profile_photo }}
-        style={{
-          width: ms(45),
-          height: ms(45),
-          resizeMode: 'contain',
-          borderRadius: 100,
-        }}
-      />
     </TouchableOpacity>
   );
 
@@ -266,11 +253,6 @@ export function AddServiceCartModal({
           </View>
           <Spacer space={SH(10)} />
 
-          {/* <View style={styles.displayRow}>
-            <View style={[styles.colorRow, styles.serviceRow]} />
-            <Text style={styles.colorText}>Available slot</Text>
-            <View style={[styles.colorRow, styles.serviceRow]} />
-          </View> */}
           <View style={styles.displayRow}>
             <View style={[styles.colorRow, styles.serviceRow]} />
             <Text style={styles.colorText}>Available slot</Text>
