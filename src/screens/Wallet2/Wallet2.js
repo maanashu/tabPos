@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
 import { styles } from '@/screens/Wallet2/Wallet2.styles';
@@ -671,6 +672,7 @@ export function Wallet2() {
                             <Text style={[styles.tableTextData, { fontSize: SF(12) }]}>
                               {item.transaction_id ?? null}
                             </Text>
+                            <Spacer horizontal space={ms(35)} />
                             <Text style={styles.tableTextData}>
                               {item?.seller_details?.firstname}
                               {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
@@ -679,11 +681,18 @@ export function Wallet2() {
                               {item?.user_details?.firstname}
                               {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
                             </Text>
-                            <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
+                            <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
 
-                            <Text style={styles.tableTextData}>
-                              {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
-                            </Text>
+                            <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
+                            <View
+                              style={{
+                                marginLeft: ms(-15),
+                              }}
+                            >
+                              <Text style={styles.tableTextData}>
+                                {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
+                              </Text>
+                            </View>
                             <View
                               style={{
                                 width: SF(110),
@@ -692,6 +701,7 @@ export function Wallet2() {
                                 alignItems: 'center',
                                 height: SH(24),
                                 justifyContent: 'center',
+                                marginLeft: ms(-35),
                               }}
                             >
                               <Text style={styles.tableTextDataCom}>{statusFun(item.status)}</Text>
