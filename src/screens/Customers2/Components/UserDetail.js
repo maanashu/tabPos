@@ -351,11 +351,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
                 </View>
               ) : (
                 oneOrderDetail?.getOrderData?.order_details?.map((item, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={[styles.tableDataCon, { zIndex: -99 }]}
-                    // onPress={() => orderClickHandler(item)}
-                  >
+                  <View key={index} style={[styles.tableDataCon, { zIndex: -99 }]}>
                     <View style={styles.profileheaderUnderView}>
                       <View style={[styles.profilDetailChildView, { alignItems: 'flex-start' }]}>
                         <View style={{ flexDirection: 'row' }}>
@@ -412,7 +408,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
                         </View>
                       </View> */}
                     </View>
-                  </TouchableOpacity>
+                  </View>
                 ))
               )}
             </ScrollView>
