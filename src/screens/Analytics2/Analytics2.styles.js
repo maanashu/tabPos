@@ -242,7 +242,7 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
-    top: ms(-2),
+    // top: ms(-2),
   },
   currentStatusText: {
     fontFamily: Fonts.SemiBold,
@@ -301,7 +301,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(20),
     color: COLORS.black,
-    // marginVertical: ms(5),
+    marginVertical: ms(5),
     height: SH(30),
     // marginLeft: ms(5),
   },

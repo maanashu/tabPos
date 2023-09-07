@@ -10,7 +10,7 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 
-export function TotalOrders({ onPress }) {
+export function TotalOrders() {
   const getAnalyticsData = useSelector(getAnalytics);
   const totalOrder = getAnalyticsData?.getTotalOrder;
 
@@ -51,6 +51,7 @@ export function TotalOrders({ onPress }) {
       </DataTable.Cell>
     </DataTable.Row>
   );
+  console.log('first', JSON.stringify(totalOrder?.order_listing));
 
   const HeaderView = ({ image, text, count, style }) => (
     <View style={[styles.subContainer, style]}>
@@ -61,10 +62,8 @@ export function TotalOrders({ onPress }) {
   );
   return (
     <View style={styles.flex1}>
-      <TouchableOpacity onPress={onPress} style={styles.goBack}>
-        <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={styles.graphTitle}> {'Total Orders'}</Text>
-      </TouchableOpacity>
+      <Text style={styles.graphTitle}> {'Total Orders'}</Text>
+
       <View style={styles.headerContainer}>
         <HeaderView
           image={locationSales}

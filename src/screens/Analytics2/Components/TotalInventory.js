@@ -39,7 +39,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalInventory({ onPress }) {
+export function TotalInventory() {
   const [channel, setChannel] = useState(false);
   const [channelValue, setChannelValue] = useState(null);
   const [channelItem, setChannelItem] = useState([
@@ -92,10 +92,7 @@ export function TotalInventory({ onPress }) {
 
   return (
     <View style={styles.flex1}>
-      <TouchableOpacity onPress={onPress} style={styles.goBack}>
-        <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={styles.graphTitle}>{' Total Inventory'}</Text>
-      </TouchableOpacity>
+      <Text style={styles.graphTitle}>{' Total Inventory'}</Text>
 
       <View style={styles.headerContainer}>
         <HeaderView

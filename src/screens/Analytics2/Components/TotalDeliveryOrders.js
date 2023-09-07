@@ -40,7 +40,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalDeliveryOrders({ onPress }) {
+export function TotalDeliveryOrders() {
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
   const deliveryGraph = analyticOrderGraphs?.delivery_graph;
@@ -73,7 +73,7 @@ export function TotalDeliveryOrders({ onPress }) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          {item?.order_frequency.toFixed(2)}
+          {item?.order_frequency}
           {' Per Hour'}
         </Text>
       </DataTable.Cell>
@@ -100,10 +100,7 @@ export function TotalDeliveryOrders({ onPress }) {
 
   return (
     <View style={styles.flex1}>
-      <TouchableOpacity onPress={onPress} style={styles.goBack}>
-        <Image source={backArrow2} style={styles.backImageStyle} />
-        <Text style={styles.graphTitle}> {'Total Delivery Orders'}</Text>
-      </TouchableOpacity>
+      <Text style={styles.graphTitle}> {'Total Delivery Orders'}</Text>
 
       <View style={styles.headerContainer}>
         <HeaderView

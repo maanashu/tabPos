@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 
-const transformData = (data, spacing, interval, dateInterval) => {
+const transformData = (data, spacing, interval, dateInterval, dateTodayInterval) => {
   const transformedData = [];
   const dynamicLabels = data?.labels?.filter((label, index) => (index + 1) % interval === 0);
   for (let i = 0; i < dynamicLabels?.length; i++) {
@@ -41,11 +41,25 @@ const transformData = (data, spacing, interval, dateInterval) => {
     labelWidth: SW(70),
     spacing: spacing,
   }));
+  const dynamicTodayLabels = data?.labels?.filter(
+    (label, index) => (index + 1) % dateTodayInterval === 0
+  );
+  const transformedTodayData = dynamicTodayLabels?.map((label, index) => ({
+    frontColor: '#102773',
+    label: label?.split(' ')[0], // Extracting only the day part
+    labelTextStyle: { color: '#626262', fontSize: 11 },
+    value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
+    frontColor: index === 0 ? COLORS.primary : index === 1 ? COLORS.violet : COLORS.darkBlue,
+    labelWidth: SW(70),
+    spacing: spacing,
+  }));
 
-  if (data?.labels?.length > 12) {
+  if (data?.labels?.length > 24) {
     return transformedMonthData;
   } else if (data?.labels?.length === 12) {
     return transformedData;
+  } else if (data?.labels?.length === 24) {
+    return transformedTodayData;
   } else {
     return transformedWeekData;
   }
@@ -62,8 +76,9 @@ export function BarChartCom({
   spacing,
   interval,
   dateInterval,
+  dateTodayInterval,
 }) {
-  const formattedData = transformData(data, spacing, interval, dateInterval);
+  const formattedData = transformData(data, spacing, interval, dateInterval, dateTodayInterval);
   const barData =
     data === undefined
       ? [
