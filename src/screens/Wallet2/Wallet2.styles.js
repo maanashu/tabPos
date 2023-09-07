@@ -112,7 +112,7 @@ export const styles = StyleSheet.create({
     tintColor: COLORS.darkGray,
   },
   custometrCon: {
-    width: Platform.OS === 'android' ? ms(175) : ms(145),
+    width: Platform.OS === 'android' ? ms(150) : ms(135),
     height: SH(94),
     borderRadius: 10,
     backgroundColor: COLORS.textInputBackground,
@@ -421,6 +421,15 @@ export const styles = StyleSheet.create({
     height: SW(4),
     resizeMode: 'contain',
     tintColor: COLORS.darkGreen,
+    marginLeft: ms(-5),
+    top: Platform.OS === 'ios' ? 0 : ms(0),
+  },
+  transdropDownIconPagination: {
+    width: SW(4),
+    height: SW(4),
+    resizeMode: 'contain',
+    tintColor: COLORS.darkGreen,
+    marginLeft: ms(-4),
   },
   dropdown: {
     alignSelf: 'center',
@@ -445,8 +454,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   selectedItemLabelStyle: {
-    fontSize: SF(12),
-    fontFamily: Fonts.Regular,
+    fontSize: SF(13),
+    fontFamily: Fonts.MaisonBold,
   },
   dropDownContainerStyle: {
     borderWidth: 1,
@@ -463,9 +472,10 @@ export const styles = StyleSheet.create({
     color: COLORS.gerySkies,
   },
   placeholderStylePagination: {
-    fontSize: SF(12),
-    fontFamily: Fonts.Regular,
-    color: COLORS.black,
+    fontSize: SF(13),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.dark_grey,
+    lineHeight: ms(24),
   },
   containerStylePagination: {
     width: SW(22),
@@ -1040,7 +1050,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     borderTopWidth: 1,
     borderColor: COLORS.solidGrey,
-    paddingHorizontal: moderateScale(20),
+    paddingHorizontal: moderateScale(10),
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
@@ -1048,12 +1058,12 @@ export const styles = StyleSheet.create({
   },
   tableHeaderLeft: {
     flexDirection: 'row',
-    width: windowWidth * 0.16,
+    width: windowWidth / 7.5,
   },
   tableHeaderRight: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth * 0.72,
+    width: windowWidth * 0.75,
     alignContent: 'center',
     alignItems: 'center',
 
@@ -1062,19 +1072,19 @@ export const styles = StyleSheet.create({
   tableTextHea: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.MaisonBold,
-    fontSize: SF(14),
+    fontSize: SF(13),
     letterSpacing: -1,
 
-    width: windowWidth * 0.1,
+    // width: windowWidth * 0.1,
   },
-  tableTextHea: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.MaisonBold,
-    fontSize: SF(14),
-    letterSpacing: -1,
-    width: windowWidth * 0.1,
-    paddingHorizontal: 5,
-  },
+  // tableTextHea: {
+  //   color: COLORS.dark_grey,
+  //   fontFamily: Fonts.MaisonBold,
+  //   fontSize: SF(14),
+  //   letterSpacing: -1,
+  //   width: windowWidth * 0.1,
+  //   paddingHorizontal: 5,
+  // },
   tableTextStatus: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.MaisonBold,
@@ -1086,14 +1096,11 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    width: windowWidth * 0.1,
+    width: windowWidth / 8,
     marginTop: SF(2),
   },
   tableTextDataCom: {
-    backgroundColor: COLORS.bluish_green,
     paddingHorizontal: moderateScale(4),
-    paddingVertical: verticalScale(1),
-    marginRight: SF(30),
     fontSize: SF(14),
     color: COLORS.white,
     borderRadius: 3,
@@ -1426,5 +1433,21 @@ export const styles = StyleSheet.create({
     fontSize: SF(11),
     top: 2,
     color: COLORS.solid_grey,
+  },
+  paymentMethodDownContainerStyle: {
+    width: ms(80),
+    left: ms(5),
+    top: ms(25),
+    zIndex: 999,
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.solidGrey,
+  },
+  transTypeDownContainerStyle: {
+    width: ms(90),
+    left: ms(5),
+    top: ms(25),
+    zIndex: 999,
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.solidGrey,
   },
 });
