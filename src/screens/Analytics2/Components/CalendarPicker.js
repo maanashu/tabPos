@@ -2,7 +2,7 @@ import { Fonts, cross } from '@/assets';
 import { Button } from '@/components';
 import { COLORS, SH, SW } from '@/theme';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ms } from 'react-native-size-matters';
 
@@ -30,8 +30,9 @@ const CalendarPickerModal = ({ onPress, onDateChange, handleOnPressNext, onSelec
         onPressNext={handleOnPressNext}
         headerWrapperStyle={styles.headerWrapper}
         textStyle={{ fontSize: ms(12) }}
-        width={ms(400)}
-        height={ms(400)}
+        // width={ms(400)}
+        // height={ms(400)}
+        scaleFactor={470}
       />
       <View style={styles.flexDirectionRow}>
         <Button
@@ -75,10 +76,14 @@ const styles = StyleSheet.create({
   flexDirectionRow: {
     flexDirection: 'row',
     justifyContent: 'center',
+    position: 'absolute',
+    bottom: ms(15),
+    right: 0,
+    left: 0,
   },
   headerWrapper: {
     width: ms(400),
-    height: ms(60),
+    height: Platform.OS === 'ios' ? ms(50) : ms(60),
   },
   cancelText: {
     color: COLORS.darkGray,

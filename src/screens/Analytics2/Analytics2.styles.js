@@ -228,7 +228,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
   },
   revenueDataText2: {
-    fontFamily: Fonts.SemiBold,
+    fontWeight: '500',
     color: COLORS.black,
     fontSize: SF(14),
   },
@@ -256,7 +256,7 @@ export const styles = StyleSheet.create({
     marginVertical: ms(5),
   },
   tableListHeader: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.red,
     borderTopRightRadius: SW(4),
     borderTopLeftRadius: SW(4),
     overflow: 'hidden',
