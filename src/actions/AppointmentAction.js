@@ -91,6 +91,34 @@ const resheduleAppointmentError = (error) => ({
   payload: { error },
 });
 
+// Send Checkin OTP
+const sendCheckinOTPRequest = () => ({
+  type: TYPES.SEND_CHECKIN_OTP_REQUEST,
+  payload: null,
+});
+const sendCheckinOTPSuccess = (status) => ({
+  type: TYPES.SEND_CHECKIN_OTP_SUCCESS,
+  payload: { status },
+});
+const sendCheckinOTPError = (error) => ({
+  type: TYPES.SEND_CHECKIN_OTP_ERROR,
+  payload: { error },
+});
+
+// Verify Checkin OTP
+const verifyCheckinOTPRequest = () => ({
+  type: TYPES.VERIFY_CHECKIN_OTP_REQUEST,
+  payload: null,
+});
+const verifyCheckinOTPSuccess = (status) => ({
+  type: TYPES.VERIFY_CHECKIN_OTP_SUCCESS,
+  payload: { status },
+});
+const verifyCheckinOTPError = (error) => ({
+  type: TYPES.VERIFY_CHECKIN_OTP_ERROR,
+  payload: { error },
+});
+
 export const getAppointment = (pageNumber) => async (dispatch) => {
   dispatch(getAppointmentRequest());
   try {
@@ -171,6 +199,7 @@ export const changeAppointmentStatus = (appointmentId, status) => async (dispatc
     dispatch(changeAppointmentStatusError(error.message));
   }
 };
+
 export const rescheduleAppointment = (appointmentId, params) => async (dispatch) => {
   dispatch(resheduleAppointmentRequest());
   try {
@@ -191,5 +220,54 @@ export const rescheduleAppointment = (appointmentId, params) => async (dispatch)
       visibilityTime: 9000,
     });
     dispatch(resheduleAppointmentError(error.message));
+  }
+};
+
+export const sendCheckinOTP = (appointmentId) => async (dispatch) => {
+  return new Promise(async (resolve, reject) => {
+    dispatch(sendCheckinOTPRequest());
+    try {
+      const res = await AppointmentController.sendCheckinOTPAPI(appointmentId);
+      dispatch(sendCheckinOTPSuccess(res));
+      Toast.show({
+        text2: res?.msg,
+        position: 'bottom',
+        type: 'success_toast',
+        visibilityTime: 2500,
+      });
+      resolve(res);
+    } catch (error) {
+      Toast.show({
+        text2: error.msg,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 9000,
+      });
+      dispatch(sendCheckinOTPError(error.message));
+      reject(error);
+    }
+  });
+};
+
+export const verifyCheckinOTP = (params) => async (dispatch) => {
+  dispatch(verifyCheckinOTPRequest());
+  try {
+    const res = await AppointmentController.verifyCheckinOTPAPI(params);
+    dispatch(verifyCheckinOTPSuccess(res));
+    dispatch(getAppointment());
+    Toast.show({
+      text2: res?.msg,
+      position: 'bottom',
+      type: 'success_toast',
+      visibilityTime: 2500,
+    });
+  } catch (error) {
+    Toast.show({
+      text2: error?.msg,
+      position: 'bottom',
+      type: 'error_toast',
+      visibilityTime: 9000,
+    });
+    dispatch(verifyCheckinOTPError(error?.msg));
   }
 };

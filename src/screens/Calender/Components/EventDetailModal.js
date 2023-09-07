@@ -11,10 +11,18 @@ import { useState } from 'react';
 import { ReScheduleDetailModal } from './ReScheduleDetailModal';
 import { COLORS } from '@/theme';
 import { ChatRoom } from './ChatRoom';
+import { Button, Spacer } from '@/components';
+import VerifyCheckinOtp from './VerifyCheckinOtp';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendCheckinOTP } from '@/actions/AppointmentAction';
+import { TYPES } from '@/Types/AppointmentTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, eventData }) => {
+  const dispatch = useDispatch();
   const { completeData, allEvents } = eventData;
   const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
+  const [showVerifyOTPModal, setshowVerifyOTPModal] = useState(false);
   const [selectedStaffUserId, setSelectedStaffUserId] = useState(
     completeData?.pos_user_details.user?.unique_uuid
   );
@@ -37,6 +45,10 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
     setSelectedPosStaffCompleteData(completeData);
     setSelectedStaffUserId(completeData?.pos_user_details.user?.unique_uuid);
   }, [completeData]);
+
+  const isSendCheckinOTPLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.SEND_CHECKIN_OTP], state)
+  );
 
   return (
     <Modal isVisible={showEventDetailModal}>
@@ -124,7 +136,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 <Text style={styles.customerName}>
                   {userDetails?.firstname + ' ' + userDetails?.lastname}
                 </Text>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Image source={pin} style={styles.eventAddressIcon} />
                   <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
                 </View>
@@ -132,14 +144,6 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
               <View style={styles.EventDetailoptionsContainer}>
                 <TouchableOpacity
                   onPress={() => {
-                    setshowRescheduleTimeModal(true);
-                  }}
-                >
-                  <Image source={editIcon} style={styles.editOptionIcon} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    // alert('message is under development');
                     setisShowChatModal(true);
                   }}
                 >
@@ -226,10 +230,34 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 <View style={styles.paidContainer}>
                   <Text style={styles.paidText}>Paid</Text>
                 </View>
-                <Text style={styles.totalTile}>{selectedPosStaffCompleteData?.payable_amount}</Text>
+                <Text
+                  style={styles.totalTile}
+                >{`$${selectedPosStaffCompleteData?.payable_amount}`}</Text>
               </View>
             </View>
             <Text style={styles.invoiceTxt}>Invoice # V364899978</Text>
+          </View>
+          <View style={styles.bottomBtnContainer}>
+            <TouchableOpacity
+              style={styles.btmEditBtn}
+              onPress={() => setshowRescheduleTimeModal(true)}
+            >
+              <Image source={editIcon} style={styles.editOptionIcon} />
+              <Text style={styles.editTextBtn}>Edit</Text>
+            </TouchableOpacity>
+            <Spacer space={ms(10)} horizontal />
+            <Button
+              pending={isSendCheckinOTPLoading}
+              title={'Check-in'}
+              textStyle={styles.checkintitle}
+              style={styles.checkinContainer}
+              onPress={() => {
+                const appointmentId = selectedPosStaffCompleteData?.id;
+                dispatch(sendCheckinOTP(appointmentId)).then(() => {
+                  setshowVerifyOTPModal(true);
+                });
+              }}
+            />
           </View>
         </View>
       </View>
@@ -244,6 +272,11 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
         setIsVisible={setisShowChatModal}
         customerData={userDetails}
         customerAddress={userAddress?.street_address}
+      />
+      <VerifyCheckinOtp
+        appointmentData={selectedPosStaffCompleteData}
+        isVisible={showVerifyOTPModal}
+        setIsVisible={setshowVerifyOTPModal}
       />
     </Modal>
   );
