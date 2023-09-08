@@ -1450,4 +1450,13 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderColor: COLORS.solidGrey,
   },
+  calendarModalView: {
+    backgroundColor: COLORS.white,
+    width: windowWidth * 0.6,
+    height: windowHeight - SW(30),
+    alignSelf: 'center',
+    paddingVertical: SH(10),
+    paddingHorizontal: SW(5),
+    borderRadius: SW(5),
+  },
 });

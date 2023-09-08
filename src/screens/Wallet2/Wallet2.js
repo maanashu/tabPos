@@ -65,6 +65,8 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import WeeklyTransaction from './Components/WeeklyTransaction';
+import Modal from 'react-native-modal';
+import CalendarPickerModal from '../Analytics2/Components/CalendarPicker';
 const windowHeight = Dimensions.get('window').height;
 export function Wallet2() {
   const mapRef = useRef(null);
@@ -191,26 +193,27 @@ export function Wallet2() {
     }
   };
   const onChangeDate = (selectedDate) => {
-    const currentDate = moment().format('MM/DD/YYYY');
-    const selected = moment(selectedDate).format('MM/DD/YYYY');
-    setShow(false);
-    const month = selectedDate.getMonth() + 1;
-    const selectedMonth = month < 10 ? '0' + month : month;
-    const day = selectedDate.getDate();
-    const selectedDay = day < 10 ? '0' + day : day;
-    const year = selectedDate.getFullYear();
-    const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
-    const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
-    setDateformat(newDateFormat);
+    const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
+    const fullDate = moment(selectedDate).format('MM/DD/YYYY');
     setDate(fullDate);
     if (weeklyTransaction) {
       setSelectId2(0);
-      dispatch(getTotakTraDetail(newDateFormat, sellerID, 'all'));
+      dispatch(getTotakTraDetail(formattedDate, sellerID, 'all'));
     } else {
       setSelectId(0);
-      dispatch(getTotalTra(null, sellerID, newDateFormat));
+      dispatch(getTotalTra(null, sellerID, formattedDate));
     }
   };
+
+  const getFormattedTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const maxDate = getFormattedTodayDate();
   const onCancelFun = () => {
     setShow(false);
     setDateformat('');
@@ -353,13 +356,13 @@ export function Wallet2() {
                     ]}
                   />
                 </TouchableOpacity>
-                <DateTimePickerModal
+                {/* <DateTimePickerModal
                   mode={'date'}
                   isVisible={show}
                   onConfirm={onChangeDate}
                   onCancel={() => onCancelFun()}
                   maximumDate={new Date()}
-                />
+                /> */}
               </View>
             </View>
             <View>
@@ -422,6 +425,23 @@ export function Wallet2() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>{bodyView()}</View>
+      <Modal
+        isVisible={show}
+        statusBarTranslucent
+        animationIn={'fadeIn'}
+        animationInTiming={600}
+        animationOutTiming={300}
+        onBackdropPress={() => setShow(false)}
+      >
+        <View style={styles.calendarModalView}>
+          <CalendarPickerModal
+            onPress={() => setShow(false)}
+            onDateChange={onChangeDate}
+            onSelectedDate={() => setShow(false)}
+            maxDate={maxDate}
+          />
+        </View>
+      </Modal>
     </ScreenWrapper>
   );
 }
