@@ -86,6 +86,7 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
             },
           ]}
           onPress={() => {
+            setSelectedItem(getProducts?.product_detail?.id);
             onPressCart(getProducts?.product_detail);
           }}
         >

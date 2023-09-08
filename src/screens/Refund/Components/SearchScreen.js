@@ -21,6 +21,7 @@ import {
   Fonts,
   iImage,
   pay,
+  PaymentDone,
   pin,
   research,
   rightIcon,
@@ -106,11 +107,18 @@ export function SearchScreen() {
           {`$${item?.actual_price}` ?? '-'}
         </Text>
 
-        {
+        {item?.isChecked ? (
+          <View>
+            <Image
+              source={PaymentDone}
+              style={[styles.infoIconStyle, { tintColor: COLORS.primary }]}
+            />
+          </View>
+        ) : (
           <View style={styles.infoIconView}>
             <Image source={iImage} style={styles.infoIconStyle} />
           </View>
-        }
+        )}
       </View>
     );
   };
@@ -118,17 +126,15 @@ export function SearchScreen() {
   // console.log('order----', JSON.stringify(order?.order?.order_details));
 
   const cartHandler = (item) => {
-    console.log('item----', item);
-    // console.log(orderDetail.findIndex(item));
     const getArray = orderDetail.findIndex((attr) => attr?.product_id === item?.id);
-    console.log('getArray----', getArray);
-    const newProdArray = [...orderDetail, { check: 'isChecked' }];
-    // newProdArray[getArray].isChecked === !newProdArray[getArray].isChecked;
-    console.log('newProdArray----', newProdArray);
-    setOrderDetail(newProdArray);
+    if (getArray !== -1) {
+      const newProdArray = [...orderDetail];
+      newProdArray[getArray].isChecked = true;
+      setOrderDetail(newProdArray);
+    } else {
+      alert('Product not found in the order');
+    }
   };
-
-  console.log('orderDetail----', orderDetail);
 
   const onSearchInvoiceHandler = (text) => {
     setSku(text);
@@ -427,7 +433,6 @@ export function SearchScreen() {
                       <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
                         <TouchableOpacity
                           onPress={() => setIsCheckConfirmationModalVisible(true)}
-                          disabled={productsVerified ? false : true}
                           style={[
                             styles.declineButtonStyle,
                             {
@@ -464,6 +469,7 @@ export function SearchScreen() {
           <RecheckConfirmation
             isVisible={isCheckConfirmationModalVisible}
             setIsVisible={setIsCheckConfirmationModalVisible}
+            orderList={orderDetail}
             onPress={() => {
               setIsCheckConfirmationModalVisible(false);
               setShowProductRefund(true);

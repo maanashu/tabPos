@@ -20,8 +20,14 @@ import { productList } from '@/constants/flatListData';
 
 const { width } = Dimensions.get('window');
 
-const RecheckConfirmation = ({ isVisible, setIsVisible, onPress }) => {
+const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) => {
+  console.log('orderList=============', orderList);
+
+  const filteredList = orderList?.filter((e) => e?.isChecked);
+  console.log('filteredList=============', filteredList);
+
   const renderProductList = ({ item, index }) => {
+    console.log('item=====', item);
     return (
       <View style={styles.itemMainViewStyle}>
         <Text style={styles.quantityTextStyle}>{item?.quantity}</Text>
@@ -67,10 +73,10 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, onPress }) => {
         <Spacer space={SH(20)} />
 
         <FlatList
-          data={productList}
+          data={filteredList}
           renderItem={renderProductList}
           showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item?.key}
+          keyExtractor={(item) => item?.id}
           style={{ height: ms(200) }}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: ms(10) }}
         />
