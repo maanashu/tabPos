@@ -15,11 +15,8 @@ export class WalletController {
         endpoint = `${BASE_URL}?${sellerParam}&date=${date}`;
       }
 
-      console.log('endpoint', endpoint);
-
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('DEELIEVRYYY', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -56,7 +53,6 @@ export class WalletController {
             ApiOrderInventory.getTotakTraDetail +
             `?seller_id=${data?.sellerId}&filter_by=${data?.dayWiseFilter}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`;
 
-      console.log('endpoint----------------', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -70,8 +66,6 @@ export class WalletController {
   static async getTotalTraType(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getTotalTraType + `?seller_id=${sellerID}`;
-
-      console.log('endpoint22222222222', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

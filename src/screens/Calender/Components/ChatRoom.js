@@ -268,7 +268,7 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
     if (chatData) {
       console.log('sdsdsdsdsd');
       const formattedMessages = formatMessages(chatData?.getMessages?.messages)?.reverse();
-      setMessages(formattedMessages);
+      // setMessages(formattedMessages);
     }
   }, [chatData]);
 
@@ -296,7 +296,6 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
       })
     )
       .then((res) => {
-        console.log('uiuuiuiuiuiuiu1i23u1i231u23i1u23i13u1i32u1i231u231', res);
         setisLoading(false);
         setisLoadingMsg(true);
         dispatch(getMessages(res?.payload?.messagehead_id))
@@ -307,7 +306,6 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
           })
           .catch((error) => {
             setisLoadingMsg(false);
-            console.log('uiuuiuiuiuiuiu1i23u1i231u23i1u23i13u1i32u1i231u231error', error);
           });
       })
       .catch((error) => {

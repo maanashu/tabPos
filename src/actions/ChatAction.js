@@ -67,7 +67,6 @@ export const getMessages = (id) => async (dispatch) => {
   dispatch(getMessagesRequest());
   return await ChatController.getMessages(id)
     .then((res) => {
-      console.log('getMessages', res);
       dispatch(getMessagesSuccess(res));
       return res;
     })
