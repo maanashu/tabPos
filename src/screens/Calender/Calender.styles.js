@@ -310,7 +310,7 @@ export const styles = StyleSheet.create({
   eventTitle: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: SH(10),
+    fontSize: ms(6),
   },
   iImageCon: {
     backgroundColor: COLORS.dark_grey,

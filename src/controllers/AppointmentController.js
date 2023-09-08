@@ -100,7 +100,6 @@ export class AppointmentController {
       const endpoint = `${ORDER_URL}${ApiOrderInventory.verifyCheckinOTP}`;
       await HttpClient.post(endpoint, params)
         .then((response) => {
-          alert(JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

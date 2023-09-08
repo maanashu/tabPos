@@ -110,7 +110,9 @@ const CustomEventCell = (event, touchableOpacityProps, allEvents = [], calendarM
                 </View>
               )}
               <Text style={styles.startEndDate}>{getStartEndFormattedDate(event.start)}</Text>
-              <Text style={styles.eventTitle}>{event.title}</Text>
+              <Text numberOfLines={1} style={styles.eventTitle}>
+                {event.title}
+              </Text>
             </>
           )}
         </View>

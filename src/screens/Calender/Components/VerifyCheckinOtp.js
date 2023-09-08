@@ -18,7 +18,7 @@ import { sendCheckinOTP, verifyCheckinOTP } from '@/actions/AppointmentAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AppointmentTypes';
 
-const VerifyCheckinOtp = ({ isVisible, setIsVisible, appointmentData }) => {
+const VerifyCheckinOtp = ({ isVisible, setIsVisible, appointmentData, onVerify }) => {
   const dispatch = useDispatch();
   const CELL_COUNT = 5;
   const appointmentId = appointmentData?.id;
@@ -83,7 +83,13 @@ const VerifyCheckinOtp = ({ isVisible, setIsVisible, appointmentData }) => {
               appointment_id: appointmentId,
               otp: value,
             };
-            dispatch(verifyCheckinOTP(params));
+            dispatch(verifyCheckinOTP(params))
+              .then((response) => {
+                onVerify(response);
+              })
+              .catch((error) => {
+                alert(error?.msg);
+              });
           }}
           textStyle={{ color: COLORS.white, fontFamily: Fonts.SemiBold, fontSize: ms(9) }}
           style={styles.confirmCheckinOtpBtn}

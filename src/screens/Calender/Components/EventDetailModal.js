@@ -14,9 +14,11 @@ import { ChatRoom } from './ChatRoom';
 import { Button, Spacer } from '@/components';
 import VerifyCheckinOtp from './VerifyCheckinOtp';
 import { useDispatch, useSelector } from 'react-redux';
-import { sendCheckinOTP } from '@/actions/AppointmentAction';
+import { changeAppointmentStatus, sendCheckinOTP } from '@/actions/AppointmentAction';
 import { TYPES } from '@/Types/AppointmentTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { APPOINTMENT_STATUS } from '@/constants/status';
 
 const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, eventData }) => {
   const dispatch = useDispatch();
@@ -26,7 +28,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const [selectedStaffUserId, setSelectedStaffUserId] = useState(
     completeData?.pos_user_details.user?.unique_uuid
   );
-
+  console.log('print JSON response ==>', JSON.stringify(completeData));
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(completeData);
 
   // Show chat Modal
@@ -39,6 +41,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const posUserRole =
     selectedPosStaffCompleteData?.pos_user_details?.user?.user_roles[0]?.role?.name || ' ';
   const colorCode = selectedPosStaffCompleteData?.pos_user_details?.color_code;
+  const appointmentId = selectedPosStaffCompleteData?.id;
 
   //Update the state with initial values if it doesn't get updated while initialization of the states
   useEffect(() => {
@@ -49,6 +52,17 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const isSendCheckinOTPLoading = useSelector((state) =>
     isLoadingSelector([TYPES.SEND_CHECKIN_OTP], state)
   );
+
+  const isBookingCompletedLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.CHANGE_APPOINTMENT_STATUS], state)
+  );
+
+  const hideAllModal = () => {
+    setshowVerifyOTPModal(false);
+    setshowRescheduleTimeModal(false);
+    setshowEventDetailModal(false);
+    setisShowChatModal(false);
+  };
 
   return (
     <Modal isVisible={showEventDetailModal}>
@@ -247,15 +261,19 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
             </TouchableOpacity>
             <Spacer space={ms(10)} horizontal />
             <Button
-              pending={isSendCheckinOTPLoading}
-              title={'Check-in'}
+              pending={isSendCheckinOTPLoading || isBookingCompletedLoading}
+              title={selectedPosStaffCompleteData?.status === 1 ? 'Check-in' : 'Complete'}
               textStyle={styles.checkintitle}
               style={styles.checkinContainer}
               onPress={() => {
-                const appointmentId = selectedPosStaffCompleteData?.id;
-                dispatch(sendCheckinOTP(appointmentId)).then(() => {
-                  setshowVerifyOTPModal(true);
-                });
+                if (selectedPosStaffCompleteData?.status === 1) {
+                  dispatch(sendCheckinOTP(appointmentId)).then(() => {
+                    setshowVerifyOTPModal(true);
+                  });
+                } else if (selectedPosStaffCompleteData?.status === 2) {
+                  dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
+                  hideAllModal();
+                }
               }}
             />
           </View>
@@ -277,6 +295,17 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
         appointmentData={selectedPosStaffCompleteData}
         isVisible={showVerifyOTPModal}
         setIsVisible={setshowVerifyOTPModal}
+        onVerify={(res) => {
+          hideAllModal();
+          setTimeout(() => {
+            Toast.show({
+              text2: res?.msg,
+              position: 'bottom',
+              type: 'success_toast',
+              visibilityTime: 2500,
+            });
+          }, 500);
+        }}
       />
     </Modal>
   );

@@ -171,17 +171,25 @@ export const getStaffUsersList = (pageNumber) => async (dispatch) => {
   }
 };
 
+const getAppointmentStatusMessage = (status) => {
+  if (status === APPOINTMENT_STATUS.ACCEPTED_BY_SELLER) {
+    return 'Appointment approved';
+  } else if (status === APPOINTMENT_STATUS.REJECTED_BY_SELLER) {
+    return 'Appointment Rejected';
+  } else if (status === APPOINTMENT_STATUS.COMPLETED) {
+    return 'Appointment Completed';
+  }
+};
+
 export const changeAppointmentStatus = (appointmentId, status) => async (dispatch) => {
   dispatch(changeAppointmentStatusRequest());
+
   try {
     const res = await AppointmentController.changeAppointmentAPI(appointmentId, status);
     dispatch(changeAppointmentStatusSuccess(res?.payload));
     dispatch(getAppointment());
     Toast.show({
-      text2:
-        status === APPOINTMENT_STATUS.ACCEPTED_BY_SELLER
-          ? 'Appointment approved'
-          : 'Appointment Rejected',
+      text2: getAppointmentStatusMessage(status),
       position: 'bottom',
       type: 'success_toast',
       visibilityTime: 2500,
@@ -250,24 +258,28 @@ export const sendCheckinOTP = (appointmentId) => async (dispatch) => {
 };
 
 export const verifyCheckinOTP = (params) => async (dispatch) => {
-  dispatch(verifyCheckinOTPRequest());
-  try {
-    const res = await AppointmentController.verifyCheckinOTPAPI(params);
-    dispatch(verifyCheckinOTPSuccess(res));
-    dispatch(getAppointment());
-    Toast.show({
-      text2: res?.msg,
-      position: 'bottom',
-      type: 'success_toast',
-      visibilityTime: 2500,
-    });
-  } catch (error) {
-    Toast.show({
-      text2: error?.msg,
-      position: 'bottom',
-      type: 'error_toast',
-      visibilityTime: 9000,
-    });
-    dispatch(verifyCheckinOTPError(error?.msg));
-  }
+  return new Promise(async (resolve, reject) => {
+    dispatch(verifyCheckinOTPRequest());
+    try {
+      const res = await AppointmentController.verifyCheckinOTPAPI(params);
+      dispatch(verifyCheckinOTPSuccess(res));
+      dispatch(getAppointment());
+      Toast.show({
+        text2: res?.msg,
+        position: 'bottom',
+        type: 'success_toast',
+        visibilityTime: 2500,
+      });
+      resolve(res);
+    } catch (error) {
+      Toast.show({
+        text2: error?.msg,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 9000,
+      });
+      dispatch(verifyCheckinOTPError(error?.msg));
+      reject(error);
+    }
+  });
 };
