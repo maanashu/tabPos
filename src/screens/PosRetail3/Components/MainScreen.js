@@ -88,6 +88,7 @@ export function MainScreen({
   cartServiceScreenHandler,
   activeCategory,
 }) {
+  // console.log('SELELELEEE', sellerID);
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
   const [selectedId, setSelectedId] = useState();
