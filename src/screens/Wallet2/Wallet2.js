@@ -429,6 +429,7 @@ export function Wallet2() {
       <View style={weeklyTransaction ? styles.bgWhitecontainer : styles.container}>
         {bodyView()}
       </View>
+
       <Modal
         isVisible={show}
         statusBarTranslucent

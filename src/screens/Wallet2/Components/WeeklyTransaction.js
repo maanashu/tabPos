@@ -13,26 +13,12 @@ import {
 } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
 import { styles } from '@/screens/Wallet2/Wallet2.styles';
-import { getCustomerDummy } from '@/constants/flatListData';
 import { strings } from '@/localization';
 import {
   bell,
   search_light,
-  users,
-  newCustomer,
-  returnCustomer,
-  onlineCutomer,
-  walkinCustomer,
-  wallet,
   scn,
-  calendar1,
-  calendar,
-  calendarIcon,
   newCalendar,
-  cloth,
-  jbrCoin,
-  cash,
-  card2,
   cardIcon,
   cashIcon,
   jbricon,
@@ -46,25 +32,24 @@ import {
   Fonts,
 } from '@/assets';
 import moment from 'moment';
-import { DaySelector, InvoiceDetail, ScreenWrapper, Spacer, TableDropdown } from '@/components';
+import { DaySelector, Spacer, TableDropdown } from '@/components';
 import { moderateScale, ms } from 'react-native-size-matters';
-import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
 import { getCustomers } from '@/selectors/CustomersSelector';
-import { getTotakTraDetail, getTotalTra, getTotalTraType } from '@/actions/WalletAction';
+import { getTotakTraDetail, getTotalTra } from '@/actions/WalletAction';
 import { getWallet } from '@/selectors/WalletSelector';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
 import { TYPES } from '@/Types/WalletTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
-import { getOrderData } from '@/actions/AnalyticsAction';
 import { memo } from 'react';
 import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
 const windowHeight = Dimensions.get('window').height;
+import Modal from 'react-native-modal';
+import CalendarPickerModal from '@/screens/Analytics2/Components/CalendarPicker';
 
 const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   const mapRef = useRef(null);
@@ -90,7 +75,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   const [page, setPage] = useState(1);
 
   const [dateformat, setDateformat] = useState('');
-  const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const [historytype, setHistorytype] = useState('all');
   const [walletHome, setWalletHome] = useState(true);
@@ -99,6 +83,8 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   const [transcationTypeId, setTranscationTypeId] = useState(2);
   const [transaction, setTransaction] = useState({ modeOfPayment: 'jbr' });
   console.log('transaction', transaction);
+  const [show, setShow] = useState(false);
+  const [defaultDate, setDefaultDate] = useState(new Date());
 
   const paginationData = {
     total: getWalletData?.getTotakTraDetail?.total ?? '0',
@@ -135,13 +121,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
     },
   ];
 
-  //   const onPresFun1 = (value) => {
-  //     setShow(false);
-  //     setDateformat('');
-  //     setDate(new Date());
-  //     dispatch(getTotalTra(value, sellerID, dateformat));
-  //   };
-
   const onPresFun = (value) => {};
   const onPresFun2 = (value) => {
     dispatch(getTotakTraDetail(value, sellerID, 'all'));
@@ -162,6 +141,33 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
     dispatch(getTotakTraDetail(data));
   }, [selectId, transaction, page, paginationModalValue]);
 
+  const onChangeDate = (selectedDate) => {
+    setDefaultDate(selectedDate);
+    const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
+    const fullDate = moment(selectedDate).format('MM/DD/YYYY');
+    setDate(fullDate);
+    // if (weeklyTransaction) {
+    //   setSelectId2(0);
+    //   dispatch(getTotakTraDetail(formattedDate, sellerID, 'all'));
+    // } else {
+    // setSelectId(0);
+    console.log(formattedDate);
+    return;
+
+    dispatch(getTotalTra(null, sellerID, formattedDate));
+    // }
+  };
+
+  const getFormattedTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const maxDate = getFormattedTodayDate();
+
   const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
 
   const isTotalTradetail = useSelector((state) =>
@@ -173,13 +179,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   let desiredModeOfPayment = historytype; // Replace with the desired mode_of_payment value or "all"
   let filteredData = [];
 
-  //   if (desiredModeOfPayment === 'all') {
-  //     filteredData = getTotalTraDetail;
-  //   } else {
-  //     filteredData = getTotalTraDetail.filter(
-  //       (item) => item.mode_of_payment === desiredModeOfPayment
-  //     );
-  //   }
   const statusFun = (status) => {
     switch (status) {
       case 0:
@@ -211,34 +210,34 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
         break;
     }
   };
-  const onChangeDate = (selectedDate) => {
-    const currentDate = moment().format('MM/DD/YYYY');
-    const selected = moment(selectedDate).format('MM/DD/YYYY');
-    setShow(false);
-    const month = selectedDate.getMonth() + 1;
-    const selectedMonth = month < 10 ? '0' + month : month;
-    const day = selectedDate.getDate();
-    const selectedDay = day < 10 ? '0' + day : day;
-    const year = selectedDate.getFullYear();
-    const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
-    const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
-    setDateformat(newDateFormat);
-    setDate(fullDate);
-    if (weeklyTransaction) {
-      //   setSelectId2(0);
-      dispatch(getTotakTraDetail(newDateFormat, sellerID, 'all'));
-    } else {
-      setSelectId(0);
-      dispatch(getTotalTra(null, sellerID, newDateFormat));
-    }
-  };
-  const onCancelFun = () => {
-    setShow(false);
-    setDateformat('');
-    setDate(new Date());
-    setSelectId(2);
-    dispatch(getTotalTra('week', sellerID, dateformat));
-  };
+  // const onChangeDate = (selectedDate) => {
+  //   const currentDate = moment().format('MM/DD/YYYY');
+  //   const selected = moment(selectedDate).format('MM/DD/YYYY');
+  //   setShow(false);
+  //   const month = selectedDate.getMonth() + 1;
+  //   const selectedMonth = month < 10 ? '0' + month : month;
+  //   const day = selectedDate.getDate();
+  //   const selectedDay = day < 10 ? '0' + day : day;
+  //   const year = selectedDate.getFullYear();
+  //   const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
+  //   const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
+  //   setDateformat(newDateFormat);
+  //   setDate(fullDate);
+  //   if (weeklyTransaction) {
+  //     //   setSelectId2(0);
+  //     dispatch(getTotakTraDetail(newDateFormat, sellerID, 'all'));
+  //   } else {
+  //     setSelectId(0);
+  //     dispatch(getTotalTra(null, sellerID, newDateFormat));
+  //   }
+  // };
+  // const onCancelFun = () => {
+  //   setShow(false);
+  //   setDateformat('');
+  //   setDate(new Date());
+  //   setSelectId(2);
+  //   dispatch(getTotalTra('week', sellerID, dateformat));
+  // };
 
   const aboutTransactionData = [
     {
@@ -310,7 +309,7 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
           <TouchableOpacity>
             <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
           </TouchableOpacity>
-          <View style={styles.searchView}>
+          <View style={[styles.searchView, { backgroundColor: COLORS.textInputBackground }]}>
             <View style={styles.flexAlign}>
               <Image source={search_light} style={styles.searchImage} />
               <TextInput
@@ -339,27 +338,45 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
             <TouchableOpacity
               style={[
                 styles.homeCalenaderBg,
-                // {
-                //   backgroundColor: selectId2 == 0 ? COLORS.primary : COLORS.textInputBackground,
-                // },
+                {
+                  backgroundColor: selectId == 0 ? COLORS.primary : COLORS.textInputBackground,
+                },
               ]}
-              //   onPress={() => setShow(!show)}
+              onPress={() => setShow(!show)}
             >
               <Image
                 source={newCalendar}
                 style={[
                   styles.calendarStyle,
-                  //   { tintColor: selectId2 == 0 ? COLORS.white : COLORS.darkGray },
+                  { tintColor: selectId == 0 ? COLORS.white : COLORS.darkGray },
                 ]}
               />
             </TouchableOpacity>
-            <DateTimePickerModal
-              mode={'date'}
+            <Modal
               isVisible={show}
-              onConfirm={onChangeDate}
-              onCancel={() => onCancelFun()}
-              maximumDate={new Date()}
-            />
+              statusBarTranslucent
+              animationIn={'fadeIn'}
+              animationInTiming={600}
+              animationOutTiming={300}
+              onBackdropPress={() => setShow(false)}
+            >
+              <View style={styles.calendarModalView}>
+                <CalendarPickerModal
+                  onPress={() => {
+                    setShow(false);
+                    setDefaultDate();
+                    setSelectId(2);
+                  }}
+                  onDateChange={onChangeDate}
+                  onSelectedDate={() => {
+                    setShow(false);
+                    setSelectId(0);
+                  }}
+                  maxDate={maxDate}
+                  selectedStartDate={defaultDate}
+                />
+              </View>
+            </Modal>
           </View>
         </View>
       </View>

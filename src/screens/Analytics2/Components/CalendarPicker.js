@@ -13,6 +13,7 @@ const CalendarPickerModal = ({
   onSelectedDate,
   allowRangeSelection,
   maxDate,
+  selectedStartDate,
 }) => {
   const minDate = new Date(2020, 1, 1); // Today
   // const maxDate = new Date(2030, 6, 3);
@@ -26,6 +27,7 @@ const CalendarPickerModal = ({
         </TouchableOpacity>
       </View>
       <CalendarPicker
+        selectedStartDate={selectedStartDate}
         startFromMonday={true}
         allowRangeSelection={allowRangeSelection}
         minDate={minDate}
