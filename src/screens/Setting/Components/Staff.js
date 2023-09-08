@@ -2,14 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-} from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import {
@@ -63,7 +56,7 @@ export function Staff() {
     }
   }, [isFocused]);
 
-  const staffDetailhandler = async id => {
+  const staffDetailhandler = async (id) => {
     if (posRole === 'admin') {
       const res = await dispatch(getStaffDetail());
       if (res?.type === 'STAFF_DETAIL_SUCCESS') {
@@ -106,7 +99,7 @@ export function Staff() {
         <View style={styles.dispalyRow}>
           <Image
             source={{
-              uri: item.user?.user_profiles?.profile_photo ?? userImage,
+              uri: item.user?.user_profiles?.profile_photo ?? null,
             }}
             style={styles.teamMember}
           />
@@ -128,10 +121,7 @@ export function Staff() {
     if (staffDetail) {
       return (
         <View>
-          <TouchableOpacity
-            style={styles.backButtonCon}
-            onPress={() => setStaffDetail(false)}
-          >
+          <TouchableOpacity style={styles.backButtonCon} onPress={() => setStaffDetail(false)}>
             <Image source={backArrow} style={styles.backButtonArrow} />
             <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
           </TouchableOpacity>
@@ -146,9 +136,7 @@ export function Staff() {
                       style={styles.profileImageStaff}
                     />
                     <View style={styles.litMorecon}>
-                      <Text style={styles.staffName}>
-                        {data?.user_profiles?.firstname}
-                      </Text>
+                      <Text style={styles.staffName}>{data?.user_profiles?.firstname}</Text>
                       <View style={styles.dispalyRow}>
                         <Image
                           source={shieldPerson}
@@ -168,9 +156,7 @@ export function Staff() {
                       </View>
                       <View style={styles.dispalyRow}>
                         <Image source={location} style={styles.Phonelight} />
-                        <Text style={styles.terryText}>
-                          4849 Owagner Lane Seattle, WA 98101
-                        </Text>
+                        <Text style={styles.terryText}>4849 Owagner Lane Seattle, WA 98101</Text>
                       </View>
                     </View>
                   </View>
@@ -224,21 +210,15 @@ export function Staff() {
               <View style={styles.billingCycleCon}>
                 <View style={styles.hourcontainer}>
                   <View style={styles.hourRateBodyCon}>
-                    <Text style={styles.joinDateDark}>
-                      Current Billing Cycle
-                    </Text>
-                    <Text style={styles.hourRateLigh}>
-                      May 29, 2023 - Jun 4, 2023
-                    </Text>
+                    <Text style={styles.joinDateDark}>Current Billing Cycle</Text>
+                    <Text style={styles.hourRateLigh}>May 29, 2023 - Jun 4, 2023</Text>
                   </View>
                   <View style={styles.hourRateBodyCon}>
                     <Text style={styles.joinDateDark}>Time Tracked</Text>
                     <Text style={styles.hourRateLigh}>JBR 2500/h</Text>
                   </View>
                   <View style={styles.hourRateBodyCon}>
-                    <Text style={styles.joinDateDark}>
-                      Weekly Tracking Limit
-                    </Text>
+                    <Text style={styles.joinDateDark}>Weekly Tracking Limit</Text>
                     <Text style={styles.hourRateLigh}>1 h 30 m</Text>
                   </View>
                 </View>
@@ -254,9 +234,7 @@ export function Staff() {
                           width: windowWidth * 0.16,
                         }}
                       >
-                        <Text style={[styles.text, { textAlign: 'left' }]}>
-                          Date
-                        </Text>
+                        <Text style={[styles.text, { textAlign: 'left' }]}>Date</Text>
                       </View>
                       <View style={styles.dateHeadAlign}>
                         <Text style={styles.text}>Duration</Text>
@@ -297,27 +275,16 @@ export function Staff() {
                             </Text>
                           </View>
                           <View style={styles.dateHeadAlign}>
-                            <Text
-                              style={[styles.text, styles.hourRateLigh]}
-                              numberOfLines={1}
-                            >
+                            <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
                               {item.duration}
                             </Text>
-                            <Text
-                              style={[styles.text, styles.hourRateLigh]}
-                              numberOfLines={1}
-                            >
+                            <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
                               JBR {item.amount}
                             </Text>
-                            <Text
-                              style={[styles.text, styles.hourRateLigh]}
-                              numberOfLines={1}
-                            >
+                            <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
                               {item.status === true ? 'paid' : 'Unpaid'}
                             </Text>
-                            <TouchableOpacity
-                              onPress={() => setInvoiceModal(true)}
-                            >
+                            <TouchableOpacity onPress={() => setInvoiceModal(true)}>
                               <Text
                                 style={[
                                   styles.text,
@@ -329,16 +296,10 @@ export function Staff() {
                                 View Payment
                               </Text>
                             </TouchableOpacity>
-                            <View
-                              style={[styles.text, { alignItems: 'center' }]}
-                            >
+                            <View style={[styles.text, { alignItems: 'center' }]}>
                               <Image
                                 source={rightBack}
-                                style={
-                                  expandView
-                                    ? styles.arrowStyle2
-                                    : styles.arrowStyle
-                                }
+                                style={expandView ? styles.arrowStyle2 : styles.arrowStyle}
                               />
                             </View>
                           </View>
@@ -363,38 +324,23 @@ export function Staff() {
                                 }}
                               >
                                 <Text
-                                  style={[
-                                    styles.text,
-                                    styles.hourRateLigh,
-                                    { textAlign: 'left' },
-                                  ]}
+                                  style={[styles.text, styles.hourRateLigh, { textAlign: 'left' }]}
                                   numberOfLines={1}
                                 >
                                   1 May, 2022
                                 </Text>
                               </View>
                               <View style={styles.dateHeadAlign}>
-                                <Text
-                                  style={[styles.text, styles.hourRateLigh]}
-                                  numberOfLines={1}
-                                >
+                                <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
                                   10:05:32 pm
                                 </Text>
-                                <Text
-                                  style={[styles.text, styles.hourRateLigh]}
-                                  numberOfLines={1}
-                                >
+                                <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
                                   05:12:32 pm
                                 </Text>
-                                <Text
-                                  style={[styles.text, styles.hourRateLigh]}
-                                  numberOfLines={1}
-                                >
+                                <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
                                   08h 07m 00s
                                 </Text>
-                                <TouchableOpacity
-                                  onPress={() => setInvoiceModal(true)}
-                                >
+                                <TouchableOpacity onPress={() => setInvoiceModal(true)}>
                                   <Text
                                     style={[
                                       styles.text,
@@ -406,16 +352,8 @@ export function Staff() {
                                     {null}
                                   </Text>
                                 </TouchableOpacity>
-                                <View
-                                  style={[
-                                    styles.text,
-                                    { alignItems: 'center' },
-                                  ]}
-                                >
-                                  <Image
-                                    source={null}
-                                    style={styles.arrowStyle}
-                                  />
+                                <View style={[styles.text, { alignItems: 'center' }]}>
+                                  <Image source={null} style={styles.arrowStyle} />
                                 </View>
                               </View>
                             </View>
@@ -434,15 +372,10 @@ export function Staff() {
       return (
         <View>
           <View style={[styles.flexRow, { height: SW(8) }]}>
-            <Text style={styles.HeaderLabelText}>
-              {strings.settings.device}
-            </Text>
+            <Text style={styles.HeaderLabelText}>{strings.settings.device}</Text>
             <View style={{ zIndex: 99 }}>
               {posRole === 'admin' ? (
-                <TouchableOpacity
-                  style={styles.addNewButtonCon}
-                  activeOpacity={0.3}
-                >
+                <TouchableOpacity style={styles.addNewButtonCon} activeOpacity={0.3}>
                   <Image source={addIcon} style={styles.addIcon} />
                   <Text style={styles.addNew}>{strings.Staff.addStaff}</Text>
                 </TouchableOpacity>
@@ -454,20 +387,16 @@ export function Staff() {
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={staffImage} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>
-                  {strings.Staff.staffList}
-                </Text>
+                <Text style={styles.twoStepText}>{strings.Staff.staffList}</Text>
                 <Spacer space={SH(10)} />
-                <Text style={styles.securitysubhead}>
-                  {strings.Staff.staffDes}
-                </Text>
+                <Text style={styles.securitysubhead}>{strings.Staff.staffDes}</Text>
                 <Spacer space={SH(18)} />
 
                 <FlatList
                   data={posUserArray}
                   extraData={posUserArray}
                   renderItem={userRenderItem}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item) => item.id}
                 />
               </View>
             </View>
@@ -484,10 +413,7 @@ export function Staff() {
       <Modal animationType="slide" transparent={true} isVisible={invoiceModal}>
         <View style={styles.invoiceModalCon}>
           <TouchableOpacity onPress={() => setInvoiceModal(false)}>
-            <Image
-              source={crossButton}
-              style={[styles.crossButton, { alignSelf: 'flex-end' }]}
-            />
+            <Image source={crossButton} style={[styles.crossButton, { alignSelf: 'flex-end' }]} />
           </TouchableOpacity>
           <Text style={styles.invoice}>Invoice</Text>
           <Spacer space={SH(10)} />
@@ -496,19 +422,12 @@ export function Staff() {
             <Spacer space={SH(10)} />
             <Text style={styles.terryText}>Imani Olowe </Text>
             <Text style={styles.terryText}>+123-456-7890</Text>
-            <Text style={styles.terryText}>
-              63 Ivy Road, Hawkville, GA, USA 31036
-            </Text>
+            <Text style={styles.terryText}>63 Ivy Road, Hawkville, GA, USA 31036</Text>
           </View>
           <Spacer space={SH(10)} />
           <View style={styles.invoiceTableHeader}>
             <View style={styles.headerBodyCon}>
-              <Text
-                style={[
-                  styles.invoiveheaderText,
-                  { marginHorizontal: moderateScale(10) },
-                ]}
-              >
+              <Text style={[styles.invoiveheaderText, { marginHorizontal: moderateScale(10) }]}>
                 #
               </Text>
               <Text style={styles.invoiveheaderText}>Descriptions</Text>
@@ -521,22 +440,11 @@ export function Staff() {
           </View>
           <View style={{ flex: 1 }}>
             <ScrollView>
-              <View
-                style={[styles.invoiceTableHeader, styles.invoiceTableData]}
-              >
+              <View style={[styles.invoiceTableHeader, styles.invoiceTableData]}>
                 <View style={styles.headerBodyCon}>
-                  <Text
-                    style={[
-                      styles.terryText,
-                      { marginHorizontal: moderateScale(10) },
-                    ]}
-                  >
-                    1
-                  </Text>
+                  <Text style={[styles.terryText, { marginHorizontal: moderateScale(10) }]}>1</Text>
                   <View style={{ flexDirection: 'column' }}>
-                    <Text style={styles.terryText}>
-                      May 29, 2023 - Jun 4, 2023
-                    </Text>
+                    <Text style={styles.terryText}>May 29, 2023 - Jun 4, 2023</Text>
                     <Text style={styles.notUpdated}>Overtime</Text>
                   </View>
                 </View>
@@ -546,22 +454,11 @@ export function Staff() {
                   <Text style={styles.terryText}>JBR 60,000</Text>
                 </View>
               </View>
-              <View
-                style={[styles.invoiceTableHeader, styles.invoiceTableData]}
-              >
+              <View style={[styles.invoiceTableHeader, styles.invoiceTableData]}>
                 <View style={styles.headerBodyCon}>
-                  <Text
-                    style={[
-                      styles.terryText,
-                      { marginHorizontal: moderateScale(10) },
-                    ]}
-                  >
-                    1
-                  </Text>
+                  <Text style={[styles.terryText, { marginHorizontal: moderateScale(10) }]}>1</Text>
                   <View style={{ flexDirection: 'column' }}>
-                    <Text style={styles.terryText}>
-                      May 29, 2023 - Jun 4, 2023
-                    </Text>
+                    <Text style={styles.terryText}>May 29, 2023 - Jun 4, 2023</Text>
                     <Text style={styles.notUpdated}>Overtime</Text>
                   </View>
                 </View>
@@ -582,16 +479,8 @@ export function Staff() {
                   <Text style={styles.terryText}>(0)</Text>
                 </View>
                 <View style={styles.subTotalBodyCon}>
-                  <Text
-                    style={[styles.terryText, { fontFamily: Fonts.SemiBold }]}
-                  >
-                    Total
-                  </Text>
-                  <Text
-                    style={[styles.terryText, { fontFamily: Fonts.SemiBold }]}
-                  >
-                    JBR 70,175
-                  </Text>
+                  <Text style={[styles.terryText, { fontFamily: Fonts.SemiBold }]}>Total</Text>
+                  <Text style={[styles.terryText, { fontFamily: Fonts.SemiBold }]}>JBR 70,175</Text>
                 </View>
               </View>
             </ScrollView>

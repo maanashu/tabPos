@@ -377,7 +377,7 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
             <Text style={styles.datePlaceholder}>Date</Text>
           </View> */}
 
-          <View style={{ marginHorizontal: moderateScale(10) }}>
+          <View style={{ marginRight: moderateScale(5) }}>
             <TableDropdown placeholder="Status" />
           </View>
           <>

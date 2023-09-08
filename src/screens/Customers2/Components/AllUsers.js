@@ -389,11 +389,11 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                             {currentIndex}
                           </Text>
                           <View style={[styles.flexAlign, { marginLeft: 10 }]}>
-                            {/* <Image
-                            source={{ uri: item?.user_details?.profile_photo } ?? userImage}
-                            style={styles.lovingStyleData}
-                          /> */}
-                            <Image source={userImage} style={styles.lovingStyleData} />
+                            <Image
+                              source={{ uri: item?.user_details?.profile_photo } ?? userImage}
+                              style={styles.lovingStyleData}
+                            />
+                            {/* <Image source={userImage} style={styles.lovingStyleData} /> */}
                             <View style={{ flexDirection: 'column', marginLeft: 10 }}>
                               <Text style={styles.tableTextDataName}>
                                 {item?.user_details?.firstname}
