@@ -98,6 +98,8 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
     setPage(page - 1);
     setInd(ind - 1);
   };
+  const startIndex = (page - 1) * paginationModalValue + 1;
+  const endIndex = page * paginationModalValue;
 
   const isCustomerLoad = useSelector((state) => isLoadingSelector([TYPES.GET_USER_ORDER], state));
   const onChangeDate = (selectedDate) => {
@@ -295,8 +297,11 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
             <Image source={mask} style={styles.unionStyle} />
           </View>
           <Text style={styles.paginationCount}>{`1-20 of ${paginationData?.total}`}</Text>
-          <View style={[styles.unionCon, { backgroundColor: COLORS.white }]}>
-            <Image source={maskRight} style={styles.unionStyle} />
+          <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
+            <Image
+              source={maskRight}
+              style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
+            />
           </View>
           <TouchableOpacity
             style={[
@@ -354,7 +359,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
             </View>
           </View>
           <View style={{ zIndex: -9, height: ms(290) }}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               {isCustomerLoad ? (
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
@@ -364,71 +369,74 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                   <Text style={styles.userNotFound}>User not found</Text>
                 </View>
               ) : (
-                customerArray?.map((item, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={[styles.tableDataCon, { zIndex: -99 }]}
-                    activeOpacity={0.7}
-                    onPress={() => profileClickHandler(item, selectedId, customerType)}
-                    // onPress={profileClickHandler}
-                  >
-                    <View style={styles.displayFlex}>
-                      <View style={styles.tableHeaderLeft}>
-                        <Text style={styles.tableTextDataFirst}>
-                          {/* {ind == 0 ? '' : ind} */}
-                          {/* {index + paginationData?.currentPage * paginationData?.currentPage === 1
+                customerArray?.map((item, index) => {
+                  const currentIndex = startIndex + index;
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      style={[styles.tableDataCon, { zIndex: -99 }]}
+                      activeOpacity={0.7}
+                      onPress={() => profileClickHandler(item, selectedId, customerType)}
+                      // onPress={profileClickHandler}
+                    >
+                      <View style={styles.displayFlex}>
+                        <View style={styles.tableHeaderLeft}>
+                          <Text style={styles.tableTextDataFirst}>
+                            {/* {ind == 0 ? '' : ind} */}
+                            {/* {index + paginationData?.currentPage * paginationData?.currentPage === 1
                             ? 0
                             : paginationModalValue} */}
-                          {index + 1}
-                        </Text>
-                        <View style={[styles.flexAlign, { marginLeft: 10 }]}>
-                          {/* <Image
+                            {currentIndex}
+                          </Text>
+                          <View style={[styles.flexAlign, { marginLeft: 10 }]}>
+                            {/* <Image
                             source={{ uri: item?.user_details?.profile_photo } ?? userImage}
                             style={styles.lovingStyleData}
                           /> */}
-                          <Image source={userImage} style={styles.lovingStyleData} />
-                          <View style={{ flexDirection: 'column', marginLeft: 10 }}>
-                            <Text style={styles.tableTextDataName}>
-                              {item?.user_details?.firstname}
-                            </Text>
-                            {item?.user_details ? (
-                              <Text
-                                style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
-                                numberOfLines={1}
-                              >
-                                {item?.user_details?.current_address?.street_address},
-                                {item?.user_details?.current_address?.city},
-                                {item?.user_details?.current_address?.state},
-                                {item?.user_details?.current_address?.country},
-                                {item?.user_details?.current_address?.postal_code}
+                            <Image source={userImage} style={styles.lovingStyleData} />
+                            <View style={{ flexDirection: 'column', marginLeft: 10 }}>
+                              <Text style={styles.tableTextDataName}>
+                                {item?.user_details?.firstname}
                               </Text>
-                            ) : (
-                              <Text></Text>
-                            )}
+                              {item?.user_details ? (
+                                <Text
+                                  style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
+                                  numberOfLines={1}
+                                >
+                                  {item?.user_details?.current_address?.street_address},
+                                  {item?.user_details?.current_address?.city},
+                                  {item?.user_details?.current_address?.state},
+                                  {item?.user_details?.current_address?.country},
+                                  {item?.user_details?.current_address?.postal_code}
+                                </Text>
+                              ) : (
+                                <Text></Text>
+                              )}
+                            </View>
+                          </View>
+                        </View>
+                        <View style={styles.tableHeaderRight}>
+                          <View style={styles.tableHeaderRightInner}>
+                            <Text style={styles.tableTextData} numberOfLines={1}>
+                              {item?.total_orders}
+                            </Text>
+                          </View>
+                          <View style={styles.tableHeaderRightInner}>
+                            <Text style={styles.tableTextData} numberOfLines={1}>
+                              {item?.total_products}
+                            </Text>
+                          </View>
+                          <View style={styles.tableHeaderRightInner}>
+                            <Text style={styles.tableTextData} numberOfLines={1}>
+                              {'$'}
+                              {item?.life_time_spent?.toFixed(2)}
+                            </Text>
                           </View>
                         </View>
                       </View>
-                      <View style={styles.tableHeaderRight}>
-                        <View style={styles.tableHeaderRightInner}>
-                          <Text style={styles.tableTextData} numberOfLines={1}>
-                            {item?.total_orders}
-                          </Text>
-                        </View>
-                        <View style={styles.tableHeaderRightInner}>
-                          <Text style={styles.tableTextData} numberOfLines={1}>
-                            {item?.total_products}
-                          </Text>
-                        </View>
-                        <View style={styles.tableHeaderRightInner}>
-                          <Text style={styles.tableTextData} numberOfLines={1}>
-                            {'$'}
-                            {item?.life_time_spent?.toFixed(2)}
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                ))
+                    </TouchableOpacity>
+                  );
+                })
               )}
             </ScrollView>
           </View>
