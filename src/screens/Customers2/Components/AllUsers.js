@@ -297,8 +297,11 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
             <Image source={mask} style={styles.unionStyle} />
           </View>
           <Text style={styles.paginationCount}>{`1-20 of ${paginationData?.total}`}</Text>
-          <View style={[styles.unionCon, { backgroundColor: COLORS.white }]}>
-            <Image source={maskRight} style={styles.unionStyle} />
+          <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
+            <Image
+              source={maskRight}
+              style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
+            />
           </View>
           <TouchableOpacity
             style={[
@@ -356,7 +359,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
             </View>
           </View>
           <View style={{ zIndex: -9, height: ms(290) }}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               {isCustomerLoad ? (
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
