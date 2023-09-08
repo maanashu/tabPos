@@ -62,7 +62,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   const getCustomerStatitics = getCustomerData?.getCustomers;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail?.data ?? [];
   const transactionTypeArray = getWalletData?.getTotalTraType;
-  console.log(transactionTypeArray);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
@@ -75,16 +74,16 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   const [page, setPage] = useState(1);
 
   const [dateformat, setDateformat] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState();
   const [historytype, setHistorytype] = useState('all');
   const [walletHome, setWalletHome] = useState(true);
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
 
   const [transcationTypeId, setTranscationTypeId] = useState(2);
   const [transaction, setTransaction] = useState({ modeOfPayment: 'jbr' });
-  console.log('transaction', transaction);
   const [show, setShow] = useState(false);
   const [defaultDate, setDefaultDate] = useState(new Date());
+  const [formatedDate, setFormatedDate] = useState();
 
   const paginationData = {
     total: getWalletData?.getTotakTraDetail?.total ?? '0',
@@ -121,7 +120,9 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
     },
   ];
 
-  const onPresFun = (value) => {};
+  const onPresFun = (value) => {
+    setFormatedDate();
+  };
   const onPresFun2 = (value) => {
     dispatch(getTotakTraDetail(value, sellerID, 'all'));
   };
@@ -137,9 +138,10 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
       page: page,
       limit: paginationModalValue,
       sellerId: sellerID,
+      calendarDate: formatedDate,
     };
     dispatch(getTotakTraDetail(data));
-  }, [selectId, transaction, page, paginationModalValue]);
+  }, [selectId, transaction, page, paginationModalValue, formatedDate]);
 
   const onChangeDate = (selectedDate) => {
     setDefaultDate(selectedDate);
@@ -151,7 +153,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
     //   dispatch(getTotakTraDetail(formattedDate, sellerID, 'all'));
     // } else {
     // setSelectId(0);
-    console.log(formattedDate);
     return;
 
     dispatch(getTotalTra(null, sellerID, formattedDate));
@@ -210,34 +211,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
         break;
     }
   };
-  // const onChangeDate = (selectedDate) => {
-  //   const currentDate = moment().format('MM/DD/YYYY');
-  //   const selected = moment(selectedDate).format('MM/DD/YYYY');
-  //   setShow(false);
-  //   const month = selectedDate.getMonth() + 1;
-  //   const selectedMonth = month < 10 ? '0' + month : month;
-  //   const day = selectedDate.getDate();
-  //   const selectedDay = day < 10 ? '0' + day : day;
-  //   const year = selectedDate.getFullYear();
-  //   const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
-  //   const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
-  //   setDateformat(newDateFormat);
-  //   setDate(fullDate);
-  //   if (weeklyTransaction) {
-  //     //   setSelectId2(0);
-  //     dispatch(getTotakTraDetail(newDateFormat, sellerID, 'all'));
-  //   } else {
-  //     setSelectId(0);
-  //     dispatch(getTotalTra(null, sellerID, newDateFormat));
-  //   }
-  // };
-  // const onCancelFun = () => {
-  //   setShow(false);
-  //   setDateformat('');
-  //   setDate(new Date());
-  //   setSelectId(2);
-  //   dispatch(getTotalTra('week', sellerID, dateformat));
-  // };
 
   const aboutTransactionData = [
     {
@@ -276,7 +249,9 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
       <TransactionSelectItem
         item={item}
         onPress={() => {
-          setTranscationTypeId(item.id), setTransaction(item), onPresFun3(item.mode_of_payment);
+          setTranscationTypeId(item.id);
+          setTransaction(item);
+          // onPresFun3(item.mode_of_payment);
         }}
         borderColor={borderColor}
         color={color}
@@ -342,7 +317,8 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
                   backgroundColor: selectId == 0 ? COLORS.primary : COLORS.textInputBackground,
                 },
               ]}
-              onPress={() => setShow(!show)}
+              // onPress={() => setShow(!show)}
+              onPress={() => alert('Date according data in progress from backend')}
             >
               <Image
                 source={newCalendar}
@@ -366,11 +342,14 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
                     setShow(false);
                     setDefaultDate();
                     setSelectId(2);
+                    setFormatedDate();
+                    setSelectTime({ value: 'week' });
                   }}
                   onDateChange={onChangeDate}
                   onSelectedDate={() => {
                     setShow(false);
                     setSelectId(0);
+                    setFormatedDate(date);
                   }}
                   maxDate={maxDate}
                   selectedStartDate={defaultDate}

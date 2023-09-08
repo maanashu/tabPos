@@ -47,11 +47,15 @@ export class WalletController {
     // };
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getTotakTraDetail +
-        `?seller_id=${data?.sellerId}&filter_by=${data?.dayWiseFilter}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`;
+        data?.calendarDate == undefined || data?.calendarDate == ''
+          ? ORDER_URL +
+            ApiOrderInventory.getTotakTraDetail +
+            `?seller_id=${data?.sellerId}&filter_by=${data?.dayWiseFilter}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`
+          : ORDER_URL +
+            ApiOrderInventory.getTotakTraDetail +
+            `?seller_id=${data?.sellerId}&filter_by=${data?.dayWiseFilter}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`;
 
-      console.log('endpoint-----------', endpoint);
+      console.log('endpoint----------------', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

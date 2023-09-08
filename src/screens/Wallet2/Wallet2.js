@@ -118,8 +118,8 @@ export function Wallet2() {
   const [selectTime2, setSelectTime2] = useState({ name: 'week' });
   const [selectId, setSelectId] = useState(2);
   const [selectId2, setSelectId2] = useState(2);
-  const [selectTime, setSelectTime] = useState({ name: 'week' });
-  const time = selectTime?.name;
+  const [selectTime, setSelectTime] = useState({ value: 'week' });
+  const time = selectTime?.value;
   const [dateformat, setDateformat] = useState('');
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());

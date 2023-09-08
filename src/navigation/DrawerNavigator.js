@@ -187,6 +187,19 @@ export function DrawerNavigator(props) {
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
+          focused={active === 'wallet2' ? true : false}
+          onPress={() => {
+            setActive('wallet2');
+            navigate(NAVIGATION.wallet2);
+          }}
+          icon={({ focused }) => (
+            <Image source={focused ? bluewallet : wallet} style={styles.iconStyle} />
+          )}
+        />
+
+        {/* <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
           focused={active === 'wallet' ? true : false}
           onPress={() => {
             setActive('wallet');
@@ -196,7 +209,7 @@ export function DrawerNavigator(props) {
           icon={({ focused }) => (
             <Image source={focused ? bluewallet : wallet} style={styles.iconStyle} />
           )}
-        />
+        /> */}
 
         <DrawerItem
           label={''}
@@ -240,18 +253,6 @@ export function DrawerNavigator(props) {
           )}
         />
 
-        <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'wallet2' ? true : false}
-          onPress={() => {
-            setActive('wallet2');
-            navigate(NAVIGATION.wallet2);
-          }}
-          icon={({ focused }) => (
-            <Image source={focused ? bluewallet : wallet} style={styles.iconStyle} />
-          )}
-        />
         {getUserData?.posLoginData?.user_roles.length === 0 && (
           <DrawerItem
             label={''}
