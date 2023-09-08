@@ -136,6 +136,8 @@ export const ApiOrderInventory = {
   productUpdatePrice: 'poscarts/update-price',
   serviceUpdatePrice: 'appointment_carts/update-price',
   cartBarCode: 'poscarts/scan-barcode',
+  sendCheckinOTP: 'appointments/send-checkin-otp/',
+  verifyCheckinOTP: 'appointments/verify-checkin-otp',
 };
 
 export const ApiWalletInventory = {

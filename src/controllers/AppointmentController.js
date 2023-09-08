@@ -80,4 +80,31 @@ export class AppointmentController {
         });
     });
   }
+
+  static async sendCheckinOTPAPI(appointmentId) {
+    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+    return new Promise(async (resolve, reject) => {
+      const endpoint = `${ORDER_URL}${ApiOrderInventory.sendCheckinOTP}${appointmentId}`;
+      await HttpClient.post(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+  static async verifyCheckinOTPAPI(params) {
+    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+    return new Promise(async (resolve, reject) => {
+      const endpoint = `${ORDER_URL}${ApiOrderInventory.verifyCheckinOTP}`;
+      await HttpClient.post(endpoint, params)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
 }

@@ -115,7 +115,7 @@ export function Wallet2() {
   const [allUsers, setAllUsers] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
   const [userData, setUserData] = useState();
-  const [selectTime2, setSelectTime2] = useState({ name: 'week' });
+  const [selectTime2, setSelectTime2] = useState({ value: 'week' });
   const [selectId, setSelectId] = useState(2);
   const [selectId2, setSelectId2] = useState(2);
   const [selectTime, setSelectTime] = useState({ value: 'week' });

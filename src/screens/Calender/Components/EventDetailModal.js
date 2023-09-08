@@ -11,14 +11,24 @@ import { useState } from 'react';
 import { ReScheduleDetailModal } from './ReScheduleDetailModal';
 import { COLORS } from '@/theme';
 import { ChatRoom } from './ChatRoom';
+import { Button, Spacer } from '@/components';
+import VerifyCheckinOtp from './VerifyCheckinOtp';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeAppointmentStatus, sendCheckinOTP } from '@/actions/AppointmentAction';
+import { TYPES } from '@/Types/AppointmentTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { APPOINTMENT_STATUS } from '@/constants/status';
 
 const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, eventData }) => {
+  const dispatch = useDispatch();
   const { completeData, allEvents } = eventData;
   const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
+  const [showVerifyOTPModal, setshowVerifyOTPModal] = useState(false);
   const [selectedStaffUserId, setSelectedStaffUserId] = useState(
     completeData?.pos_user_details.user?.unique_uuid
   );
-
+  console.log('print JSON response ==>', JSON.stringify(completeData));
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(completeData);
 
   // Show chat Modal
@@ -31,12 +41,28 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const posUserRole =
     selectedPosStaffCompleteData?.pos_user_details?.user?.user_roles[0]?.role?.name || ' ';
   const colorCode = selectedPosStaffCompleteData?.pos_user_details?.color_code;
+  const appointmentId = selectedPosStaffCompleteData?.id;
 
   //Update the state with initial values if it doesn't get updated while initialization of the states
   useEffect(() => {
     setSelectedPosStaffCompleteData(completeData);
     setSelectedStaffUserId(completeData?.pos_user_details.user?.unique_uuid);
   }, [completeData]);
+
+  const isSendCheckinOTPLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.SEND_CHECKIN_OTP], state)
+  );
+
+  const isBookingCompletedLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.CHANGE_APPOINTMENT_STATUS], state)
+  );
+
+  const hideAllModal = () => {
+    setshowVerifyOTPModal(false);
+    setshowRescheduleTimeModal(false);
+    setshowEventDetailModal(false);
+    setisShowChatModal(false);
+  };
 
   return (
     <Modal isVisible={showEventDetailModal}>
@@ -124,7 +150,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 <Text style={styles.customerName}>
                   {userDetails?.firstname + ' ' + userDetails?.lastname}
                 </Text>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Image source={pin} style={styles.eventAddressIcon} />
                   <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
                 </View>
@@ -132,14 +158,6 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
               <View style={styles.EventDetailoptionsContainer}>
                 <TouchableOpacity
                   onPress={() => {
-                    setshowRescheduleTimeModal(true);
-                  }}
-                >
-                  <Image source={editIcon} style={styles.editOptionIcon} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    // alert('message is under development');
                     setisShowChatModal(true);
                   }}
                 >
@@ -226,10 +244,38 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 <View style={styles.paidContainer}>
                   <Text style={styles.paidText}>Paid</Text>
                 </View>
-                <Text style={styles.totalTile}>{selectedPosStaffCompleteData?.payable_amount}</Text>
+                <Text
+                  style={styles.totalTile}
+                >{`$${selectedPosStaffCompleteData?.payable_amount}`}</Text>
               </View>
             </View>
             <Text style={styles.invoiceTxt}>Invoice # V364899978</Text>
+          </View>
+          <View style={styles.bottomBtnContainer}>
+            <TouchableOpacity
+              style={styles.btmEditBtn}
+              onPress={() => setshowRescheduleTimeModal(true)}
+            >
+              <Image source={editIcon} style={styles.editOptionIcon} />
+              <Text style={styles.editTextBtn}>Edit</Text>
+            </TouchableOpacity>
+            <Spacer space={ms(10)} horizontal />
+            <Button
+              pending={isSendCheckinOTPLoading || isBookingCompletedLoading}
+              title={selectedPosStaffCompleteData?.status === 1 ? 'Check-in' : 'Complete'}
+              textStyle={styles.checkintitle}
+              style={styles.checkinContainer}
+              onPress={() => {
+                if (selectedPosStaffCompleteData?.status === 1) {
+                  dispatch(sendCheckinOTP(appointmentId)).then(() => {
+                    setshowVerifyOTPModal(true);
+                  });
+                } else if (selectedPosStaffCompleteData?.status === 2) {
+                  dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
+                  hideAllModal();
+                }
+              }}
+            />
           </View>
         </View>
       </View>
@@ -244,6 +290,22 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
         setIsVisible={setisShowChatModal}
         customerData={userDetails}
         customerAddress={userAddress?.street_address}
+      />
+      <VerifyCheckinOtp
+        appointmentData={selectedPosStaffCompleteData}
+        isVisible={showVerifyOTPModal}
+        setIsVisible={setshowVerifyOTPModal}
+        onVerify={(res) => {
+          hideAllModal();
+          setTimeout(() => {
+            Toast.show({
+              text2: res?.msg,
+              position: 'bottom',
+              type: 'success_toast',
+              visibilityTime: 2500,
+            });
+          }, 500);
+        }}
       />
     </Modal>
   );
