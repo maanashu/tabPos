@@ -61,6 +61,7 @@ export const ApiProductInventory = {
   getSellerProductDetails: 'supplies/pos/supplier-details',
   getTotalInventory: 'supplies/pos/inventory_count',
   availableOffer: 'offer/products',
+  skuSearch: 'products/search-one',
 };
 
 // export const ApiSupportInventory = {

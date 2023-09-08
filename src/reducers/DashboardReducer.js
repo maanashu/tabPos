@@ -10,6 +10,7 @@ const INITIALSTATE = {
   selection: {},
   pendingOrders: {},
   invoiceSearchOrders: {},
+  skuOrders: {},
 };
 
 export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -83,6 +84,21 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         invoiceSearchOrders: payload?.invoiceOrders,
+      };
+    case DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_RESET:
+      return {
+        ...state,
+        invoiceSearchOrders: {},
+      };
+    case DASHBOARDTYPE.GET_PRODUCTS_BY_SKU__SUCCESS:
+      return {
+        ...state,
+        skuOrders: payload?.skuOrders,
+      };
+    case DASHBOARDTYPE.GET_PRODUCTS_BY_SKU_RESET:
+      return {
+        ...state,
+        skuOrders: {},
       };
     default:
       return state;

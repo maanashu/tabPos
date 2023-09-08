@@ -167,6 +167,27 @@ const getOrdersByInvoiceIdError = (error) => ({
   type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_ERROR,
   payload: { error },
 });
+const getOrdersByInvoiceIdReset = () => ({
+  type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_RESET,
+  payload: null,
+});
+
+const getProductsBySkuRequest = () => ({
+  type: DASHBOARDTYPE.GET_PRODUCTS_BY_SKU__REQUEST,
+  payload: null,
+});
+const getProductsBySkuSuccess = (skuOrders) => ({
+  type: DASHBOARDTYPE.GET_PRODUCTS_BY_SKU__SUCCESS,
+  payload: { skuOrders },
+});
+const getProductsBySkuError = (error) => ({
+  type: DASHBOARDTYPE.GET_PRODUCTS_BY_SKU__ERROR,
+  payload: { error },
+});
+const getProductsBySkuReset = () => ({
+  type: DASHBOARDTYPE.GET_PRODUCTS_BY_SKU_RESET,
+  payload: null,
+});
 
 export const getOrderDeliveries = (sellerID, page) => async (dispatch) => {
   dispatch(getOrderDeliveriesRequest());
@@ -298,6 +319,22 @@ export const getOrdersByInvoiceId = (invoice) => async (dispatch) => {
     const res = await DashboardController.getOrdersByInvoiceId(invoice);
     dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
   } catch (error) {
+    if (error?.msg === 'Invalid invoice number!') {
+      dispatch(getOrdersByInvoiceIdReset());
+    }
     dispatch(getOrdersByInvoiceIdError(error.message));
+  }
+};
+
+export const getProductsBySku = (sku) => async (dispatch) => {
+  dispatch(getProductsBySkuRequest());
+  try {
+    const res = await DashboardController.getProductsBySku(sku);
+    dispatch(getProductsBySkuSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getProductsBySkuReset());
+    }
+    dispatch(getProductsBySkuError(error.message));
   }
 };
