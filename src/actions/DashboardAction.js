@@ -189,6 +189,19 @@ const getProductsBySkuReset = () => ({
   payload: null,
 });
 
+const returnProductRequest = () => ({
+  type: DASHBOARDTYPE.RETURN_PRODUCTS__REQUEST,
+  payload: null,
+});
+const returnProductSuccess = (returnOrder) => ({
+  type: DASHBOARDTYPE.RETURN_PRODUCTS__SUCCESS,
+  payload: { returnOrder },
+});
+const returnProductError = (error) => ({
+  type: DASHBOARDTYPE.RETURN_PRODUCTS__ERROR,
+  payload: { error },
+});
+
 export const getOrderDeliveries = (sellerID, page) => async (dispatch) => {
   dispatch(getOrderDeliveriesRequest());
   try {
@@ -336,5 +349,16 @@ export const getProductsBySku = (sku) => async (dispatch) => {
       dispatch(getProductsBySkuReset());
     }
     dispatch(getProductsBySkuError(error.message));
+  }
+};
+
+export const returnProduct = (data, callback) => async (dispatch) => {
+  dispatch(returnProductRequest());
+  try {
+    const res = await DashboardController.returnProduct(data);
+    callback && callback(res);
+    dispatch(returnProductSuccess(res?.payload));
+  } catch (error) {
+    dispatch(returnProductError(error.message));
   }
 };

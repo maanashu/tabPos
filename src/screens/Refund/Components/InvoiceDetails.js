@@ -10,38 +10,44 @@ import { productList } from '@/constants/flatListData';
 
 const { width } = Dimensions.get('window');
 
-const InvoiceDetails = () => {
+const InvoiceDetails = ({ orderData }) => {
   const renderProductItem = ({ item, index }) => (
     <View style={styles.container}>
       <View style={styles.subContainer}>
         <Text style={styles.count}>{index + 1}</Text>
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-            {item?.productName}
+            {item?.product_name}
           </Text>
           <View style={styles.belowSubContainer}>
-            <Text style={styles.colorsTitle}>{`Color: ${item?.color}   Size: ${item?.size}`}</Text>
+            <Text style={styles.colorsTitle}>{item?.product_details?.sku}</Text>
           </View>
         </View>
       </View>
-      <Text style={styles.priceTitle}>{item?.price}</Text>
+      <Text style={styles.priceTitle}>{`$${item?.price}`}</Text>
     </View>
   );
 
   return (
     <View style={styles.invoiceMainViewStyle}>
-      <Text style={styles.storeNameText}>{'Primark'}</Text>
+      <Text
+        style={styles.storeNameText}
+      >{`${orderData?.order?.user_details?.user_profiles?.organization_name}`}</Text>
 
       <Spacer space={SH(10)} backgroundColor={COLORS.transparent} />
-      <Text style={styles.storeAddressText}>{'63 Ivy Road, Hawkville, GA, USA 31036'}</Text>
+      <Text
+        style={styles.storeAddressText}
+      >{`${orderData?.order?.user_details?.user_profiles?.current_address?.street_address}`}</Text>
 
       <Spacer space={SH(5)} backgroundColor={COLORS.transparent} />
-      <Text style={styles.storeAddressText}>{'+123-456-7890'}</Text>
+      <Text
+        style={styles.storeAddressText}
+      >{`${orderData?.order?.user_details?.user_profiles?.full_phone_number}`}</Text>
 
       <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
       <View style={{ paddingVertical: 8 }}>
         <FlatList
-          data={productList.slice(0, 4)}
+          data={orderData?.order?.order_details}
           renderItem={renderProductItem}
           extraData={productList}
           showsVerticalScrollIndicator={false}
@@ -53,21 +59,21 @@ const InvoiceDetails = () => {
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>Discount</Text>
-        <Text style={styles._subTotalPrice}>${'0.00'}</Text>
+        <Text style={styles._subTotalPrice}>${`${orderData?.order?.discount}`}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>Tips</Text>
-        <Text style={styles._subTotalPrice}>${'123'}</Text>
+        <Text style={styles._subTotalPrice}>${`${orderData?.order?.tips}` ?? '-'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>Total Taxes</Text>
-        <Text style={styles._subTotalPrice}>${'0.00'}</Text>
+        <Text style={styles._subTotalPrice}>${`${orderData?.order?.tax}`}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
@@ -77,7 +83,7 @@ const InvoiceDetails = () => {
           Total
         </Text>
         <Text style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-          $7001.20
+          ${orderData?.order?.payable_amount}
         </Text>
       </View>
 
@@ -85,7 +91,7 @@ const InvoiceDetails = () => {
 
       <View style={styles._paymentTitleContainer}>
         <Text style={styles._payTitle}>Payment option: </Text>
-        <Text style={styles._paySubTitle}>{'Cash'}</Text>
+        <Text style={styles._paySubTitle}>{orderData?.order?.mode_of_payment.toUpperCase()}</Text>
       </View>
 
       <Text style={styles._commonPayTitle}>{'Wed 26 Apr , 2023 6:27 AM'}</Text>

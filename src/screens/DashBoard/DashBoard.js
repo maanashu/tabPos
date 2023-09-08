@@ -529,7 +529,7 @@ export function DashBoard({ navigation }) {
           <View style={{ flex: 1 }} />
 
           <TouchableOpacity
-            onPress={() => navigate(NAVIGATION.refund)}
+            onPress={() => navigate(NAVIGATION.refund, { screen: 'intial' })}
             style={styles.checkoutButton}
           >
             <View style={styles.displayRow}>

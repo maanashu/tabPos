@@ -44,9 +44,9 @@ import { getOrdersByInvoiceId } from '@/actions/DashboardAction';
 import { useEffect } from 'react';
 
 const windowWidth = Dimensions.get('window').width;
-const newArray = [];
 
-export function SearchScreen() {
+export function SearchScreen({ from }) {
+  console.log('from', from);
   const textInputRef = useRef();
   const dispatch = useDispatch();
   const getSearchOrders = useSelector(getDashboard);
@@ -59,6 +59,13 @@ export function SearchScreen() {
   const [showProductRefund, setShowProductRefund] = useState(false);
   const [orderDetail, setOrderDetail] = useState([]);
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
+
+  useEffect(() => {
+    if (from === 'initial') {
+      dispatch(getOrdersByInvoiceId(''));
+      setOrderDetail([]);
+    }
+  }, [from === 'initial']);
 
   useEffect(() => {
     if (order) {
@@ -80,7 +87,6 @@ export function SearchScreen() {
   };
 
   const renderOrderProducts = ({ item }) => {
-    console.log(item.check);
     return (
       <View style={styles.orderproductView}>
         <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
@@ -122,8 +128,6 @@ export function SearchScreen() {
       </View>
     );
   };
-
-  // console.log('order----', JSON.stringify(order?.order?.order_details));
 
   const cartHandler = (item) => {
     const getArray = orderDetail.findIndex((attr) => attr?.product_id === item?.id);
@@ -432,7 +436,17 @@ export function SearchScreen() {
 
                       <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
                         <TouchableOpacity
-                          onPress={() => setIsCheckConfirmationModalVisible(true)}
+                          onPress={() => {
+                            const hasCheckedItem = orderDetail.some(
+                              (item) => item.isChecked === true
+                            );
+                            if (hasCheckedItem) {
+                              setProductsVerified(true);
+                              setIsCheckConfirmationModalVisible(true);
+                            } else {
+                              alert('Please verify all products');
+                            }
+                          }}
                           style={[
                             styles.declineButtonStyle,
                             {
@@ -461,15 +475,17 @@ export function SearchScreen() {
               )}
             </View>
           </View>
+
           <ManualEntry
             isVisible={isVisibleManual}
             setIsVisible={setIsVisibleManual}
             onPressCart={cartHandler}
           />
+
           <RecheckConfirmation
+            orderList={orderDetail}
             isVisible={isCheckConfirmationModalVisible}
             setIsVisible={setIsCheckConfirmationModalVisible}
-            orderList={orderDetail}
             onPress={() => {
               setIsCheckConfirmationModalVisible(false);
               setShowProductRefund(true);
@@ -477,7 +493,11 @@ export function SearchScreen() {
           />
         </>
       ) : (
-        <ProductRefund backHandler={() => setShowProductRefund(false)} />
+        <ProductRefund
+          backHandler={() => setShowProductRefund(false)}
+          orderList={orderDetail}
+          orderData={order}
+        />
       )}
     </View>
   );

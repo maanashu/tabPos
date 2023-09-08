@@ -140,6 +140,7 @@ export const ApiOrderInventory = {
   sendCheckinOTP: 'appointments/send-checkin-otp/',
   verifyCheckinOTP: 'appointments/verify-checkin-otp',
   invoiceIdSearch: 'invoices/by-invoice-number/',
+  return: 'returns/',
 };
 
 export const ApiWalletInventory = {

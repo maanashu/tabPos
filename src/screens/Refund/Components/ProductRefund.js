@@ -30,7 +30,7 @@ import PaymentSelection from './PaymentSelection';
 
 const { width, height } = Dimensions.get('window');
 
-const ProductRefund = ({ backHandler }) => {
+const ProductRefund = ({ backHandler, orderList, orderData }) => {
   const [amount, setAmount] = useState('');
   const [applicableIsCheck, setApplicableIsCheck] = useState(false);
   const [applyEachItem, setApplyEachItem] = useState(false);
@@ -52,33 +52,33 @@ const ProductRefund = ({ backHandler }) => {
             <Image source={categoryshoes} style={styles.columbiaMen} />
             <View style={{ marginLeft: 10 }}>
               <Text style={[styles.blueListDataText, { width: SW(30) }]} numberOfLines={1}>
-                {item?.productName}
+                {item?.product_name}
               </Text>
-              <Text style={styles.sukNumber}>{`SKU: 5689076`}</Text>
+              <Text style={styles.sukNumber}>{item?.product_details?.sku}</Text>
             </View>
           </View>
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              ${item?.price}
+              ${item?.actual_price}
             </Text>
           </View>
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              {'100%'}
+              {selectType === 'dollar' ? `$${amount}` : `${amount}%`}
             </Text>
           </View>
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              X {item?.quantity}
+              X {item?.qty}
             </Text>
           </View>
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              {item?.price}
+              ${item?.actual_price * item?.qty}
             </Text>
           </View>
         </View>
@@ -87,10 +87,12 @@ const ProductRefund = ({ backHandler }) => {
   );
 
   const applyRefundHandler = () => {
-    if (applicableIsCheck && applyEachItem && amount) {
+    if (applicableIsCheck || (applyEachItem && amount)) {
       setButtonText('Applied');
     }
   };
+
+  console.log('order----', orderData);
 
   return (
     <View style={styles.container}>
@@ -259,28 +261,31 @@ const ProductRefund = ({ backHandler }) => {
               <FlatList
                 scrollEnabled
                 renderItem={renderProductItem}
-                data={productList}
-                extraData={productList}
+                data={orderList}
+                extraData={orderList}
                 showsVerticalScrollIndicator={false}
+                keyExtractor={(index) => index.toString()}
                 contentContainerStyle={styles.contentContainerStyle}
               />
             </View>
 
             <View style={styles.billAmountViewStyle}>
-              <Text style={styles.totalItemsText}>{'Total Refund Items: 4'}</Text>
+              <Text
+                style={styles.totalItemsText}
+              >{`Total Refund Items: ${orderList?.length}`}</Text>
 
               <Spacer space={SH(10)} />
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{'Sub Total'}</Text>
-                <Text style={styles.subTotalPrice}>{'$5.65'}</Text>
+                <Text style={styles.subTotalPrice}>{`$${orderData?.order?.actual_amount}`}</Text>
               </View>
 
               <Spacer space={SH(10)} />
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{'Total Taxes'}</Text>
-                <Text style={styles.subTotalPrice}>{'$0.35'}</Text>
+                <Text style={styles.subTotalPrice}>{`$${orderData?.order?.tax}`}</Text>
               </View>
 
               <Spacer space={SH(10)} />
@@ -290,7 +295,7 @@ const ProductRefund = ({ backHandler }) => {
                   {'Item value'}
                 </Text>
                 <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
-                  {'$6.70'}
+                  {`$${orderData?.order?.payable_amount}`}
                 </Text>
               </View>
 
@@ -313,7 +318,7 @@ const ProductRefund = ({ backHandler }) => {
           </View>
         </>
       ) : (
-        <PaymentSelection backHandler={() => setChangeView('TotalItems')} />
+        <PaymentSelection backHandler={() => setChangeView('TotalItems')} orderData={orderData} />
       )}
     </View>
   );
