@@ -137,6 +137,7 @@ export const ApiOrderInventory = {
   serviceUpdatePrice: 'appointment_carts/update-price',
   cartBarCode: 'poscarts/scan-barcode',
   invoiceIdSearch: 'invoices/by-invoice-number/',
+  return: 'returns/',
 };
 
 export const ApiWalletInventory = {

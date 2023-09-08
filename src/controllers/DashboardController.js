@@ -227,23 +227,51 @@ export class DashboardController {
   }
 
   static async getProductsBySku(sku) {
-    // console.log('sku============', sku);
     const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
-    // console.log('sellerId============', sellerId);
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.skuSearch +
         `?app_name=merchant&seller_id=${sellerId}&search=${sku}`;
-      // console.log('endpoint====', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          // console.log('getProductsBySku----------------', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
-          // console.log('error.msg============', error);
           reject(error);
+        });
+    });
+  }
+
+  static async returnProduct(data) {
+    console.log(data);
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.return;
+      const body = {
+        order_id: data?.order_id,
+        products: data?.products,
+        return_reason: 'testing reason',
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          console.log(response);
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: response?.msg,
+            visibilityTime: 2000,
+          });
+          resolve(response);
+        })
+        .catch((error) => {
+          console.log(error);
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
         });
     });
   }

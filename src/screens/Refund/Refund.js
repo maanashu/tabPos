@@ -7,11 +7,12 @@ import { SearchScreen } from './Components';
 
 moment.suppressDeprecationWarnings = true;
 
-export function Refund() {
+export function Refund(props) {
+  const params = props?.route?.params?.screen;
   const [selectedsScreen, setSelectedsScreen] = useState('SearchScreen');
 
   const renderScreen = {
-    ['SearchScreen']: <SearchScreen />,
+    ['SearchScreen']: <SearchScreen from={params} />,
   };
 
   const screenChangeView = () => {
