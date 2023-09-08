@@ -15,6 +15,8 @@ export class WalletController {
         endpoint = `${BASE_URL}?${sellerParam}&date=${date}`;
       }
 
+      console.log('endpoint', endpoint);
+
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -45,6 +47,8 @@ export class WalletController {
     };
     return new Promise((resolve, reject) => {
       const endpoint = endpointAccTra(time, sellerID, transactionType);
+
+      console.log('endpoint1234556', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -55,9 +59,11 @@ export class WalletController {
     });
   }
 
-  static async getTotalTraType() {
+  static async getTotalTraType(sellerID) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.getTotalTraType;
+      const endpoint = ORDER_URL + ApiOrderInventory.getTotalTraType + `?seller_id=${sellerID}`;
+
+      console.log('endpoint22222222222', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

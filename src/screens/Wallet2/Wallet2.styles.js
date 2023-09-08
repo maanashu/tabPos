@@ -112,7 +112,7 @@ export const styles = StyleSheet.create({
     tintColor: COLORS.darkGray,
   },
   custometrCon: {
-    width: Platform.OS === 'android' ? ms(150) : ms(135),
+    width: Platform.OS === 'android' ? ms(175) : ms(135),
     height: SH(94),
     borderRadius: 10,
     backgroundColor: COLORS.textInputBackground,
