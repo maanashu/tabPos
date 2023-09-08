@@ -61,7 +61,7 @@ export function TotalDeliveryOrders() {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '.           '}</Text>
+          <Text>{index + 1 + '.        '}</Text>
           <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
@@ -115,7 +115,7 @@ export function TotalDeliveryOrders() {
           count={
             deliveryGraph?.ordersOverView?.order_frequency
               ? deliveryGraph?.ordersOverView?.order_frequency + '/Hour'
-              : 0
+              : '0/Hour'
           }
         />
         <HeaderView
@@ -124,7 +124,7 @@ export function TotalDeliveryOrders() {
           count={
             deliveryGraph?.ordersOverView?.averageValue
               ? '$' + deliveryGraph?.ordersOverView?.averageValue?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -133,7 +133,7 @@ export function TotalDeliveryOrders() {
           count={
             deliveryGraph?.ordersOverView?.amount
               ? '$' + deliveryGraph?.ordersOverView?.amount?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
       </View>
@@ -145,18 +145,18 @@ export function TotalDeliveryOrders() {
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          // scrollEnabled={false}
+          scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
-            <DataTable.Header style={[styles.tableListHeader]}>
+            <DataTable.Header style={[styles.tableListHeader, { height: ms(40) }]}>
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Total Delivery Orders</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Average Order View</Text>
               </DataTable.Title>
 
@@ -172,7 +172,12 @@ export function TotalDeliveryOrders() {
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={styles.mainListContainer}>
+            <View
+              style={[
+                styles.mainListContainer,
+                { height: Platform.OS === 'ios' ? ms(245) : ms(288) },
+              ]}
+            >
               {deliveryGraph?.ordersListData?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>

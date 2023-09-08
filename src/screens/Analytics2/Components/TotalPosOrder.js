@@ -61,7 +61,7 @@ export function TotalPosOrder() {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '.           '}</Text>
+          <Text>{index + 1 + '.        '}</Text>
           <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
@@ -115,7 +115,7 @@ export function TotalPosOrder() {
           count={
             posGraph?.ordersOverView?.order_frequency
               ? posGraph?.ordersOverView?.order_frequency + '/Hour'
-              : 0
+              : '0/Hour'
           }
         />
         <HeaderView
@@ -124,7 +124,7 @@ export function TotalPosOrder() {
           count={
             posGraph?.ordersOverView?.averageValue
               ? '$' + posGraph?.ordersOverView?.averageValue?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -133,7 +133,7 @@ export function TotalPosOrder() {
           count={
             posGraph?.ordersOverView?.amount
               ? '$' + posGraph?.ordersOverView?.amount?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
       </View>
@@ -145,7 +145,7 @@ export function TotalPosOrder() {
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          // scrollEnabled={false}
+          scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
             <DataTable.Header style={[styles.tableListHeader]}>

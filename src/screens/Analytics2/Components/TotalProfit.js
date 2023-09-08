@@ -52,7 +52,7 @@ export function TotalProfit() {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '.           '}</Text>
+          <Text>{index + 1 + '.     '}</Text>
           <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
@@ -112,7 +112,7 @@ export function TotalProfit() {
           count={
             analyticStatistics?.overView?.transaction
               ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -121,7 +121,7 @@ export function TotalProfit() {
           count={
             analyticStatistics?.overView?.average_value
               ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -130,7 +130,7 @@ export function TotalProfit() {
           count={
             analyticStatistics?.overView?.profit_sum
               ? '$' + analyticStatistics?.overView?.profit_sum?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
       </View>
@@ -142,38 +142,43 @@ export function TotalProfit() {
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          // scrollEnabled={false}
+          scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
-            <DataTable.Header style={[styles.tableListHeader]}>
-              <DataTable.Title style={styles.dateTableSetting}>
+            <DataTable.Header style={[styles.tableListHeader, { height: ms(40) }]}>
+              <DataTable.Title style={styles.tableHeaderView}>
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView}>
                 <Text style={styles.revenueText}>Total Orders</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Transaction Volume</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Average Order value</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView}>
                 <Text style={styles.revenueText}>Total Cost</Text>
               </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView}>
                 <Text style={styles.revenueText}>Margin</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView}>
                 <Text style={styles.revenueText}>Gross Profit</Text>
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={styles.mainListContainer}>
+            <View
+              style={[
+                styles.mainListContainer,
+                { height: Platform.OS === 'ios' ? ms(245) : ms(288) },
+              ]}
+            >
               {analyticStatistics?.orderData?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>

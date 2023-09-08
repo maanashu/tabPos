@@ -59,7 +59,7 @@ export function TotalInventory() {
   const getProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart2}>
-        <Text>{index + 1 + '.           '}</Text>
+        <Text>{index + 1 + '.        '}</Text>
         <Text style={styles.revenueDataText}>{item?.products?.name}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
@@ -111,7 +111,7 @@ export function TotalInventory() {
           count={
             totalInventory?.inventoryOverview?.totalInventoryValue
               ? '$' + totalInventory?.inventoryOverview?.totalInventoryValue?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -120,7 +120,7 @@ export function TotalInventory() {
           count={
             totalInventory?.inventoryOverview?.averageOrder
               ? '$' + totalInventory?.inventoryOverview?.averageOrder?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -129,7 +129,7 @@ export function TotalInventory() {
           count={
             totalInventory?.inventoryOverview?.profit
               ? '$' + totalInventory?.inventoryOverview?.profit
-              : 0
+              : '$0'
           }
         />
       </View>
@@ -199,7 +199,7 @@ export function TotalInventory() {
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          // scrollEnabled={false}
+          scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
             <DataTable.Header style={[styles.tableListHeader]}>

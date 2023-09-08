@@ -53,7 +53,7 @@ export function TotalProductSold() {
   const getSoldProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart2}>
-        <Text>{index + 1 + '.           '}</Text>
+        <Text>{index + 1 + '.    '}</Text>
         <Text style={styles.revenueDataText}>{item?.product_name}</Text>
       </DataTable.Cell>
 
@@ -101,14 +101,14 @@ export function TotalProductSold() {
           count={
             soldProduct?.productOverview?.totalVolume
               ? '$' + soldProduct?.productOverview?.totalVolume?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
           image={margin}
           text={'Profit Margin'}
           count={
-            soldProduct?.productOverview?.margin ? '$' + soldProduct?.productOverview?.margin : 0
+            soldProduct?.productOverview?.margin ? '$' + soldProduct?.productOverview?.margin : '$0'
           }
         />
         <HeaderView
@@ -117,7 +117,7 @@ export function TotalProductSold() {
           count={
             soldProduct?.productOverview?.totalProfit
               ? '$' + soldProduct?.productOverview?.totalProfit
-              : 0
+              : '$0'
           }
         />
       </View>
@@ -175,7 +175,7 @@ export function TotalProductSold() {
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          // scrollEnabled={false}
+          scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
             <DataTable.Header style={[styles.tableListHeader]}>

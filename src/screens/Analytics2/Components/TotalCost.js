@@ -60,7 +60,7 @@ export function TotalCost() {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '.           '}</Text>
+          <Text>{index + 1 + '.        '}</Text>
           <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
@@ -116,7 +116,7 @@ export function TotalCost() {
           count={
             analyticStatistics?.overView?.transaction
               ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -125,7 +125,7 @@ export function TotalCost() {
           count={
             analyticStatistics?.overView?.average_value
               ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -134,7 +134,7 @@ export function TotalCost() {
           count={
             analyticStatistics?.overView?.profit_sum
               ? '$' + analyticStatistics?.overView?.profit_sum?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
       </View>
@@ -146,7 +146,7 @@ export function TotalCost() {
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          // scrollEnabled={false}
+          scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
             <DataTable.Header style={[styles.tableListHeader]}>
