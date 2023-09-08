@@ -311,7 +311,14 @@ export function Analytics2() {
                   source={profit}
                   style={[
                     styles.sideBarImage,
-                    { tintColor: selectedScreen === 'TotalProfit' ? COLORS.primary : COLORS.black },
+                    {
+                      tintColor:
+                        selectedScreen === 'TotalProfit'
+                          ? COLORS.primary
+                          : getPosUser?.user_roles?.length > 0
+                          ? COLORS.mid_grey
+                          : COLORS.black,
+                    },
                   ]}
                 />
               </TouchableOpacity>
@@ -325,7 +332,14 @@ export function Analytics2() {
                   source={revenueTotal}
                   style={[
                     styles.sideBarImage,
-                    { tintColor: selectedScreen === 'Revenue' ? COLORS.primary : COLORS.black },
+                    {
+                      tintColor:
+                        selectedScreen === 'Revenue'
+                          ? COLORS.primary
+                          : getPosUser?.user_roles?.length > 0
+                          ? COLORS.mid_grey
+                          : COLORS.black,
+                    },
                   ]}
                 />
               </TouchableOpacity>
@@ -339,7 +353,14 @@ export function Analytics2() {
                   source={totalSales}
                   style={[
                     styles.sideBarImage,
-                    { tintColor: selectedScreen === 'TotalCost' ? COLORS.primary : COLORS.black },
+                    {
+                      tintColor:
+                        selectedScreen === 'TotalCost'
+                          ? COLORS.primary
+                          : getPosUser?.user_roles?.length > 0
+                          ? COLORS.mid_grey
+                          : COLORS.black,
+                    },
                   ]}
                 />
               </TouchableOpacity>
