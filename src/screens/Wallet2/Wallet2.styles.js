@@ -10,6 +10,10 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
   },
+  bgWhitecontainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
   containerWhite: {
     flex: 1,
     backgroundColor: COLORS.white,
@@ -472,10 +476,9 @@ export const styles = StyleSheet.create({
     color: COLORS.gerySkies,
   },
   placeholderStylePagination: {
-    fontSize: SF(13),
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.dark_grey,
-    lineHeight: ms(24),
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
   },
   containerStylePagination: {
     width: SW(25),

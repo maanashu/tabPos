@@ -27,28 +27,31 @@ export class WalletController {
     });
   }
 
-  static async getTotakTraDetail(time, sellerID, transactionType) {
-    const endpointAccTra = (time, sellerID, transactionType) => {
-      if (transactionType === 'all') {
-        return (
-          ORDER_URL +
-          ApiOrderInventory.getTotakTraDetail +
-          `?seller_id=${sellerID}&filter_by=${time === undefined ? 'week' : time}`
-        );
-      } else {
-        return (
-          ORDER_URL +
-          ApiOrderInventory.getTotakTraDetail +
-          `?seller_id=${sellerID}&filter_by=${
-            time === undefined ? 'week' : time
-          }&transaction_type=${transactionType}`
-        );
-      }
-    };
+  static async getTotakTraDetail(data) {
+    // const endpointAccTra = (time, sellerID, transactionType) => {
+    //   if (transactionType === 'all') {
+    //     return (
+    //       ORDER_URL +
+    //       ApiOrderInventory.getTotakTraDetail +
+    //       `?seller_id=${sellerID}&filter_by=${time === undefined ? 'week' : time}`
+    //     );
+    //   } else {
+    //     return (
+    //       ORDER_URL +
+    //       ApiOrderInventory.getTotakTraDetail +
+    //       `?seller_id=${sellerID}&filter_by=${
+    //         time === undefined ? 'week' : time
+    //       }&transaction_type=${transactionType}`
+    //     );
+    //   }
+    // };
     return new Promise((resolve, reject) => {
-      const endpoint = endpointAccTra(time, sellerID, transactionType);
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.getTotakTraDetail +
+        `?seller_id=${data?.sellerId}&filter_by=${data?.dayWiseFilter}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`;
 
-      console.log('endpoint1234556', endpoint);
+      console.log('endpoint-----------', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

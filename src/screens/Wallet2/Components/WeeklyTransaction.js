@@ -63,10 +63,10 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { memo } from 'react';
-import { PAGINATION_DATA } from '@/constants/enums';
+import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
 const windowHeight = Dimensions.get('window').height;
 
-const WeeklyTransaction = ({ backHandler }) => {
+const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   const mapRef = useRef(null);
 
   const dispatch = useDispatch();
@@ -75,18 +75,11 @@ const WeeklyTransaction = ({ backHandler }) => {
   const getCustomerData = useSelector(getCustomers);
   const getTotalTraData = getWalletData?.getTotalTra;
   const getCustomerStatitics = getCustomerData?.getCustomers;
-  const getTotalTraDetail = getWalletData?.getTotakTraDetail;
+  const getTotalTraDetail = getWalletData?.getTotakTraDetail?.data ?? [];
   const transactionTypeArray = getWalletData?.getTotalTraType;
-  console.log('transactionTypeArray', transactionTypeArray);
-  const [orderModel, setOrderModel] = useState(false);
+  console.log(transactionTypeArray);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const values =
-    getCustomerStatitics === undefined
-      ? Object.values(getCustomerDummy)
-      : Object.values(getCustomerStatitics);
-  const totalCustomer = values?.reduce((accumulator, value) => {
-    return accumulator + value;
-  }, 0);
+
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
@@ -103,17 +96,25 @@ const WeeklyTransaction = ({ backHandler }) => {
   const [walletHome, setWalletHome] = useState(true);
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
 
-  const [transcationTypeId, setTranscationTypeId] = useState(1);
-  const [transaction, setTransaction] = useState({ mode_of_payment: 'all' });
+  const [transcationTypeId, setTranscationTypeId] = useState(2);
+  const [transaction, setTransaction] = useState({ modeOfPayment: 'jbr' });
   console.log('transaction', transaction);
 
+  const paginationData = {
+    total: getWalletData?.getTotakTraDetail?.total ?? '0',
+    currentPage: getWalletData?.getTotakTraDetail?.current_page ?? '0',
+    totalPages: getWalletData?.getTotakTraDetail?.total_pages ?? '0',
+    perPage: getWalletData?.getTotakTraDetail?.per_page ?? '0',
+  };
+  const orderPayloadLength = Object.keys(getWalletData?.getTotakTraDetail)?.length;
+
   const transactionArray = [
-    {
-      id: 1,
-      modeOfPayment: 'all',
-      count: transactionTypeArray?.[0]?.count ?? '0',
-      type: 'All',
-    },
+    // {
+    //   id: 1,
+    //   modeOfPayment: 'all',
+    //   count: transactionTypeArray?.[0]?.count ?? '0',
+    //   type: 'All',
+    // },
     {
       id: 2,
       modeOfPayment: 'jbr',
@@ -153,14 +154,13 @@ const WeeklyTransaction = ({ backHandler }) => {
   useEffect(() => {
     const data = {
       dayWiseFilter: time,
-      transactionType: transaction?.mode_of_payment,
+      transactionType: transaction?.modeOfPayment,
       page: page,
       limit: paginationModalValue,
+      sellerId: sellerID,
     };
-    console.log('data', data);
-    return;
     dispatch(getTotakTraDetail(data));
-  }, [selectId, transaction]);
+  }, [selectId, transaction, page, paginationModalValue]);
 
   const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
 
@@ -171,15 +171,15 @@ const WeeklyTransaction = ({ backHandler }) => {
     isLoadingSelector([TYPES.GET_TOTAL_TRA_TYPE], state)
   );
   let desiredModeOfPayment = historytype; // Replace with the desired mode_of_payment value or "all"
-  let filteredData;
+  let filteredData = [];
 
-  if (desiredModeOfPayment === 'all') {
-    filteredData = getTotalTraDetail;
-  } else {
-    filteredData = getTotalTraDetail.filter(
-      (item) => item.mode_of_payment === desiredModeOfPayment
-    );
-  }
+  //   if (desiredModeOfPayment === 'all') {
+  //     filteredData = getTotalTraDetail;
+  //   } else {
+  //     filteredData = getTotalTraDetail.filter(
+  //       (item) => item.mode_of_payment === desiredModeOfPayment
+  //     );
+  //   }
   const statusFun = (status) => {
     switch (status) {
       case 0:
@@ -270,17 +270,14 @@ const WeeklyTransaction = ({ backHandler }) => {
     },
   ];
   const allTransactionItem = ({ item }) => {
-    const borderColor =
-      item.mode_of_payment === transcationTypeId ? COLORS.primary : COLORS.solidGrey;
-    const color = item.mode_of_payment === transcationTypeId ? COLORS.primary : COLORS.dark_grey;
-    const fontFamily = item.mode_of_payment === transcationTypeId ? Fonts.SemiBold : Fonts.Regular;
+    const borderColor = item.id === transcationTypeId ? COLORS.primary : COLORS.solidGrey;
+    const color = item.id === transcationTypeId ? COLORS.primary : COLORS.dark_grey;
+    const fontFamily = item.id === transcationTypeId ? Fonts.SemiBold : Fonts.Regular;
     return (
       <TransactionSelectItem
         item={item}
         onPress={() => {
-          setTranscationTypeId(item.mode_of_payment),
-            setTransaction(item),
-            onPresFun3(item.mode_of_payment);
+          setTranscationTypeId(item.id), setTransaction(item), onPresFun3(item.mode_of_payment);
         }}
         borderColor={borderColor}
         color={color}
@@ -339,23 +336,23 @@ const WeeklyTransaction = ({ backHandler }) => {
                 setSelectTime={setSelectTime}
               />
             </View>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={[
                 styles.homeCalenaderBg,
-                {
-                  backgroundColor: selectId2 == 0 ? COLORS.primary : COLORS.textInputBackground,
-                },
+                // {
+                //   backgroundColor: selectId2 == 0 ? COLORS.primary : COLORS.textInputBackground,
+                // },
               ]}
-              onPress={() => setShow(!show)}
+              //   onPress={() => setShow(!show)}
             >
               <Image
                 source={newCalendar}
                 style={[
                   styles.calendarStyle,
-                  { tintColor: selectId2 == 0 ? COLORS.white : COLORS.darkGray },
+                  //   { tintColor: selectId2 == 0 ? COLORS.white : COLORS.darkGray },
                 ]}
               />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <DateTimePickerModal
               mode={'date'}
               isVisible={show}
@@ -372,17 +369,17 @@ const WeeklyTransaction = ({ backHandler }) => {
           data={transactionArray}
           extraData={transactionArray}
           renderItem={allTransactionItem}
-          keyExtractor={(item) => item.mode_of_payment}
+          keyExtractor={(item) => item.id}
           horizontal
         />
       </View>
       {/* </ScrollView> */}
       <View style={styles.orderTypeCon}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={styles.datePickerCon}>
+          {/* <View style={styles.datePickerCon}>
             <Image source={calendar1} style={styles.calendarStyle} />
             <Text style={styles.datePlaceholder}>Date</Text>
-          </View>
+          </View> */}
 
           <View style={{ marginHorizontal: moderateScale(10) }}>
             <TableDropdown placeholder="Status" />
@@ -392,7 +389,10 @@ const WeeklyTransaction = ({ backHandler }) => {
           </>
         </View>
       </View>
-      <View style={[styles.jbrTypeCon, { zIndex: -2 }]}>
+      <View
+        style={[styles.jbrTypeCon, { zIndex: -2, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
+        pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
+      >
         <View
           style={{
             flexDirection: 'row',
@@ -424,23 +424,71 @@ const WeeklyTransaction = ({ backHandler }) => {
               setOpen={setPaginationModalOpen}
               setValue={setPaginationModalValue}
               setItems={setPaginationModalItems}
-              placeholder="50"
+              placeholder="10"
               placeholderStyle={styles.placeholderStylePagination}
             />
           </View>
-          <View style={styles.unionCon}>
-            <Image source={Union} style={styles.unionStyle} />
-          </View>
+          <TouchableOpacity
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
+              },
+            ]}
+            onPress={() => setPage(page - 1)}
+            disabled={paginationData?.currentPage == 1 ? true : false}
+          >
+            <Image
+              source={Union}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor:
+                    paginationData?.currentPage == 1 ? COLORS.gerySkies : COLORS.solid_grey,
+                },
+              ]}
+            />
+          </TouchableOpacity>
           <View style={[styles.unionCon, { marginLeft: 7 }]}>
             <Image source={mask} style={styles.unionStyle} />
           </View>
-          <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
-          <View style={[styles.unionCon, styles.unionConWhite, { marginRight: 7 }]}>
-            <Image source={maskRight} style={styles.unionStyle} />
+          <Text style={styles.paginationCount}>
+            {' '}
+            {'1-20 of '}
+            {paginationData?.total}
+          </Text>
+          <View style={[styles.unionCon, { marginRight: 7 }]}>
+            <Image
+              source={maskRight}
+              style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
+            />
           </View>
-          <View style={[styles.unionCon, styles.unionConWhite]}>
-            <Image source={unionRight} style={styles.unionStyle} />
-          </View>
+          <TouchableOpacity
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor:
+                  paginationData?.currentPage == paginationData?.totalPages
+                    ? COLORS.washGrey
+                    : COLORS.white,
+              },
+            ]}
+            onPress={() => setPage(page + 1)}
+            disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
+          >
+            <Image
+              source={unionRight}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.gerySkies
+                      : COLORS.solid_grey,
+                },
+              ]}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={{ zIndex: -9 }}>
@@ -543,19 +591,16 @@ const WeeklyTransaction = ({ backHandler }) => {
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
-              ) : filteredData?.length === 0 ? (
+              ) : getTotalTraDetail?.length === 0 ? (
                 <View style={{ marginTop: ms(110) }}>
                   <Text style={styles.userNotFound}>Order not found</Text>
                 </View>
               ) : (
-                filteredData?.map((item, index) => (
+                getTotalTraDetail?.map((item, index) => (
                   <TouchableOpacity
                     style={[styles.tableDataCon, { zIndex: -9 }]}
                     key={index}
-                    onPress={() => {
-                      setInvoiceDetail(true);
-                      dispatch(getOrderData(item?.id));
-                    }}
+                    onPress={() => orderClickHandler(item?.id)}
                   >
                     <View style={styles.displayFlex}>
                       <View style={styles.tableHeaderLeft}>
@@ -584,12 +629,10 @@ const WeeklyTransaction = ({ backHandler }) => {
                         </Text>
                         <Spacer horizontal space={ms(35)} />
                         <Text style={styles.tableTextData}>
-                          {item?.seller_details?.firstname}
-                          {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
+                          {DELIVERY_MODE[item?.delivery_option]}
                         </Text>
                         <Text style={[styles.tableTextData, { marginLeft: ms(15) }]}>
-                          {item?.user_details?.firstname}
-                          {/* {capitalizeFirstLetter(item.mode_of_payment=="jbr"?"JOBR Coin":item.mode_of_payment) ?? null} */}
+                          {item?.mode_of_payment}
                         </Text>
                         <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
 

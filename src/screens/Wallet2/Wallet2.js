@@ -75,6 +75,7 @@ export function Wallet2() {
   const getWalletData = useSelector(getWallet);
   const getCustomerData = useSelector(getCustomers);
   const getTotalTraData = getWalletData?.getTotalTra;
+  console.log('getTotalTraData', JSON.stringify(getTotalTraData));
   const getCustomerStatitics = getCustomerData?.getCustomers;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail;
   const transactionTypeArray = getWalletData?.getTotalTraType;
@@ -415,13 +416,19 @@ export function Wallet2() {
             setWeeklyTrasaction(false);
             setWalletHome(true);
           }}
+          orderClickHandler={(orderId) => {
+            setInvoiceDetail(true);
+            dispatch(getOrderData(orderId));
+          }}
         />
       );
     }
   };
   return (
     <ScreenWrapper>
-      <View style={styles.container}>{bodyView()}</View>
+      <View style={weeklyTransaction ? styles.bgWhitecontainer : styles.container}>
+        {bodyView()}
+      </View>
     </ScreenWrapper>
   );
 }
