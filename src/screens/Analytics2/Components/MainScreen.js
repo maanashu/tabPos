@@ -98,7 +98,7 @@ export function MainScreen({
         {getPosUser?.user_roles?.length > 0 ? (
           <View>
             <HomeGraph
-              header="Total Profit"
+              header="Gross Profit"
               subHeader={'0'}
               disabled
               style={{ backgroundColor: COLORS.mid_grey }}
@@ -106,7 +106,7 @@ export function MainScreen({
           </View>
         ) : (
           <HomeGraph
-            header="Total Profit"
+            header="Gross Profit"
             subHeader={
               analyticStatistics?.profit?.total_count
                 ? '$' + analyticStatistics?.profit?.total_count

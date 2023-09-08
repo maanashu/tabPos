@@ -59,7 +59,7 @@ export function TotalInventory() {
   const getProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart2}>
-        <Text>{index + 1 + '.           '}</Text>
+        <Text>{index + 1 + '.        '}</Text>
         <Text style={styles.revenueDataText}>{item?.products?.name}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
