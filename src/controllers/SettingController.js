@@ -1,6 +1,7 @@
 import { USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
+import { store } from '@/store';
 
 export class SettingController {
   static async getSetting() {
@@ -45,18 +46,28 @@ export class SettingController {
 
   static async getShippingPickup() {
     return new Promise((resolve, reject) => {
-      const endpoint = USER_URL + ApiUserInventory.getShippingPickup;
+      const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint = USER_URL + ApiUserInventory.getShippingPickup + `?seller_id=${sellerId}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          if (error.statusCode === 204) {
+            Toast.show({
+              text2: 'No Shipping & Pickup address found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          } else {
+            Toast.show({
+              text2: error.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
           reject(error);
         });
     });
