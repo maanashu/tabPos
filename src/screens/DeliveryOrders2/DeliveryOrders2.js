@@ -725,122 +725,7 @@ export function DeliveryOrders2({ route }) {
             {viewAllOrder ? (
               <View style={styles.firstRowStyle}>
                 <>
-                  {openShippingOrders === '9' ? (
-                    <>
-                      <View
-                        style={[
-                          styles.orderToReviewView,
-                          { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
-                        ]}
-                      >
-                        <FlatList
-                          data={returnOrders}
-                          renderItem={renderReturnOrders}
-                          ListHeaderComponent={() => (
-                            <View style={styles.headingRowStyle}>
-                              <Text style={styles.ordersToReviewText}>
-                                {getHeaderText(openShippingOrders)}
-                              </Text>
-                            </View>
-                          )}
-                        />
-                      </View>
-
-                      <View
-                        style={{
-                          borderRadius: 10,
-                          backgroundColor: COLORS.white,
-                          flex: 1,
-                          marginHorizontal: 20,
-                        }}
-                      >
-                        {changeViewToRecheck ? (
-                          <View>
-                            <ReturnedOrderDetail
-                              doneHandler={() => setIsCheckConfirmationModalVisible(true)}
-                            />
-                          </View>
-                        ) : (
-                          <>
-                            <MapView
-                              customMapStyle={mapCustomStyle}
-                              ref={mapRef}
-                              provider={PROVIDER_GOOGLE}
-                              region={{
-                                latitude: latitude ?? 0.0,
-                                longitude: longitude ?? 0.0,
-                                latitudeDelta: 0.0992,
-                                longitudeDelta: 0.0421,
-                              }}
-                              initialRegion={{
-                                latitude: latitude ?? 0.0,
-                                longitude: longitude ?? 0.0,
-                                latitudeDelta: 0.0992,
-                                longitudeDelta: 0.0421,
-                              }}
-                              style={styles.map}
-                            >
-                              <MapViewDirections
-                                key={location?.latitude ?? 'key'}
-                                origin={{
-                                  latitude: latitude ?? 0.0,
-                                  longitude: longitude ?? 0.0,
-                                }}
-                                destination={{
-                                  latitude: userDetail?.coordinates?.[0] ?? 0.0,
-                                  longitude: userDetail?.coordinates?.[1] ?? 0.0,
-                                }}
-                                apikey={GOOGLE_MAP.API_KEYS}
-                                strokeWidth={6}
-                                strokeColor={COLORS.primary}
-                              />
-                              <Marker coordinate={sourceCoordinate}>
-                                <View>
-                                  <Image source={scooter} style={styles.mapMarkerStyle} />
-                                </View>
-                              </Marker>
-                              <Marker coordinate={destinationCoordinate}>
-                                <View>
-                                  <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
-                                </View>
-                              </Marker>
-                            </MapView>
-                            <TouchableOpacity
-                              // onPress={() => changeMapState(true)}
-                              style={styles.expandButtonStyle}
-                            >
-                              <Image source={expand} style={styles.rightIconStyle} />
-                              <Text style={[styles.acceptTextStyle, { paddingHorizontal: 12 }]}>
-                                {'Expand'}
-                              </Text>
-                            </TouchableOpacity>
-                            <ShipmentTracking
-                              status={userDetail?.status}
-                              orderStatus={openShippingOrders}
-                              onPressShop={() => setIsReturnModalVisible(true)}
-                            />
-
-                            <TouchableOpacity
-                              onPress={() =>
-                                mapRef.current.animateToRegion(
-                                  {
-                                    latitude: latitude ?? 0.0,
-                                    longitude: longitude ?? 0.0,
-                                    latitudeDelta: 0.001,
-                                    longitudeDelta: 0.001,
-                                  },
-                                  1000
-                                )
-                              }
-                              style={styles.gpsViewStyle}
-                            >
-                              <Image source={gps} style={styles.gpsImageStyle} />
-                            </TouchableOpacity>
-                          </>
-                        )}
-                      </View>
-                    </>
-                  ) : getDeliveryData?.getReviewDef.length > 0 ? (
+                  {getDeliveryData?.getReviewDef.length > 0 ? (
                     <>
                       <View
                         style={[
@@ -931,14 +816,10 @@ export function DeliveryOrders2({ route }) {
                     <View
                       style={[
                         styles.orderToReviewView,
-                        { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
+                        // { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
                       ]}
                     >
-                      <FlatList
-                        data={returnOrders}
-                        renderItem={renderReturnOrders}
-                        ListHeaderComponent={headerComponent}
-                      />
+                      {emptyComponent()}
                     </View>
                   ) : (
                     <OrderReview

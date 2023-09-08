@@ -226,7 +226,7 @@ export function MainScreen({
             <View>
               <Text style={styles.darkBlackText}>Total Orders</Text>
               <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
-                {totalOrder?.totalAmount ? totalOrder?.totalAmount.toFixed(2) : '0'}
+                {totalOrder?.totalAmount ? totalOrder?.totalAmount : '0'}
               </Text>
             </View>
             <View>
