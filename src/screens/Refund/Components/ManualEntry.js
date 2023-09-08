@@ -9,40 +9,35 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
+import { useDispatch, useSelector } from 'react-redux';
 import { moderateScale, ms } from 'react-native-size-matters';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { colorsData, productList, sizeData } from '@/constants/flatListData';
+import { getProductsBySku } from '@/actions/DashboardAction';
+import { getDashboard } from '@/selectors/DashboardSelector';
+import { colorsData, sizeData } from '@/constants/flatListData';
 import { categoryshoes, cross, Fonts, search_light } from '@/assets';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const { width } = Dimensions.get('window');
 
 const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
+  const dispatch = useDispatch();
   const [search, setSearch] = useState();
   const [count, setCount] = useState(1);
   const [colorId, setColorId] = useState(null);
   const [selectedItem, setSelectedItem] = useState();
   const [sizeId, setSizeId] = useState(null);
 
-  const renderProductItems = ({ item, index }) => (
-    <TouchableOpacity onPress={() => setSelectedItem(item)} style={styles.productRowStyle}>
-      <View style={{ flexDirection: 'row' }}>
-        <Image source={categoryshoes} style={styles.productIconStyle} />
-
-        <View style={{ paddingLeft: SH(10) }}>
-          <Text style={styles.productNameText}>{item?.productName}</Text>
-          <Text style={styles.skuTextStyle}>{'SKU: 0123-456790'}</Text>
-        </View>
-      </View>
-
-      <Text style={styles.productNameText}>{item?.price}</Text>
-    </TouchableOpacity>
-  );
+  const getDashboardData = useSelector(getDashboard);
+  const getProducts = getDashboardData?.skuOrders;
 
   const coloredRenderItem = ({ item, index }) => {
     const backgroundColor = item.key === colorId ? COLORS.blue_shade : 'transparent';
@@ -59,6 +54,7 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
       />
     );
   };
+
   const ColorItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
     <TouchableOpacity
       style={[styles.selectColorItem, { backgroundColor, borderColor }]}
@@ -68,91 +64,90 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
     </TouchableOpacity>
   );
 
+  const isLoading = useSelector((state) =>
+    isLoadingSelector([DASHBOARDTYPE.GET_PRODUCTS_BY_SKU], state)
+  );
+
+  // {
+  //   console.log('getProducts?.product_detail', getProducts?.product_detail);
+  // }
+
   const changeView = () => {
-    if (search) {
-      if (!selectedItem) {
-        return (
-          <FlatList
-            data={productList}
-            extraData={productList}
-            renderItem={renderProductItems}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 70 }}
-          />
-        );
-      } else {
+    if (Object.keys(getProducts).length > 0) {
+      return (
+        <TouchableOpacity
+          style={[
+            styles.productRowStyle,
+            {
+              borderColor:
+                selectedItem === getProducts?.product_detail?.id
+                  ? COLORS.primary
+                  : COLORS.solidGrey,
+            },
+          ]}
+          onPress={() => {
+            setSelectedItem(getProducts?.product_detail?.id);
+            onPressCart(getProducts?.product_detail);
+          }}
+        >
+          <View style={{ flexDirection: 'row' }}>
+            <Image source={categoryshoes} style={styles.productIconStyle} />
+
+            <View style={{ width: ms(170), paddingLeft: SH(10) }}>
+              <Text style={styles.productNameText}>{getProducts?.product_detail?.name ?? '-'}</Text>
+              <Text style={styles.skuTextStyle}>{getProducts?.product_detail?.sku ?? '-'}</Text>
+            </View>
+          </View>
+
+          <Text style={[styles.productNameText, { left: 12 }]}>
+            {getProducts?.product_detail?.price ?? '-'}
+          </Text>
+        </TouchableOpacity>
+      );
+    } else {
+      if (isLoading) {
+        // console.log('isLoading----', isLoading);
         return (
           <View
             style={{
-              width: width / 3.3,
-              alignSelf: 'center',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-              <Text style={[styles.productNameText, { fontFamily: Fonts.Bold, fontSize: SF(25) }]}>
-                {selectedItem?.productName}
-              </Text>
-              <Text style={[styles.productNameText, { fontFamily: Fonts.Bold, fontSize: SF(25) }]}>
-                {selectedItem?.price}
-              </Text>
-            </View>
-
-            <Text style={styles.colorTextStyle}>{`Color: ${selectedItem?.color}`}</Text>
-            <Text style={styles.colorTextStyle}>{`Size: ${selectedItem?.size}`}</Text>
-
-            <View style={{ alignItems: 'center' }}>
-              <View style={styles.counterCon}>
-                <TouchableOpacity
-                  style={styles.minusBtnCon}
-                  onPress={() => (count > 0 ? setCount(count - 1) : null)}
-                >
-                  <Text style={styles.counterText}>-</Text>
-                </TouchableOpacity>
-                <View style={styles.minusBtnCon}>
-                  <Text style={styles.counterText}>{count}</Text>
-                </View>
-                <TouchableOpacity style={styles.minusBtnCon} onPress={() => setCount(count + 1)}>
-                  <Text style={styles.counterText}>+</Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.displayRow}>
-                <View style={styles.colorRow} />
-                <Text style={styles.colorText}>COLORS</Text>
-                <View style={styles.colorRow} />
-              </View>
-
-              <FlatList
-                data={colorsData}
-                renderItem={coloredRenderItem}
-                keyExtractor={(item) => item.id}
-                extraData={colorsData}
-                numColumns={4}
-                scrollEnabled
-              />
-
-              <Spacer space={SH(15)} />
-
-              <View style={styles.displayRow}>
-                <View style={styles.colorRow} />
-                <Text style={styles.colorText}>SIZE</Text>
-                <View style={styles.colorRow} />
-              </View>
-
-              <Spacer space={SH(15)} />
-
-              <FlatList
-                data={sizeData}
-                renderItem={sizeRenderItem}
-                keyExtractor={(item) => item.id}
-                extraData={sizeData}
-                numColumns={4}
-              />
-            </View>
+            <Text
+              style={{
+                fontFamily: Fonts.SemiBold,
+                fontSize: SF(20),
+                color: COLORS.primary,
+              }}
+            >
+              {'Loading...'}
+            </Text>
+          </View>
+        );
+      } else {
+        // console.log('else----');
+        return (
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: Fonts.SemiBold,
+                fontSize: SF(20),
+                color: COLORS.primary,
+              }}
+            >
+              {'No product found'}
+            </Text>
           </View>
         );
       }
-    } else {
     }
   };
 
@@ -171,14 +166,22 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
       />
     );
   };
+
   const SizeItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
     <TouchableOpacity
-      style={[styles.selectColorItem, { backgroundColor, borderColor }]}
       onPress={onPress}
+      style={[styles.selectColorItem, { backgroundColor, borderColor }]}
     >
       <Text style={[styles.colorSelectText, { color: textColor }]}>{item.title}</Text>
     </TouchableOpacity>
   );
+
+  const onSearchHandler = (text) => {
+    setSearch(text);
+    if (text) {
+      dispatch(getProductsBySku(text));
+    }
+  };
 
   return (
     <ReactNativeModal
@@ -187,25 +190,23 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
       animationIn={'slideInRight'}
       animationOut={'slideOutRight'}
     >
-      <View style={[styles.container, { flex: !search ? 1 : 0 }]}>
+      <View style={[styles.container, { flex: 1 }]}>
         <View style={styles.headingRowStyle}>
-          <TouchableOpacity
-            onPress={() => {
-              setIsVisible(false);
-            }}
-          >
+          <TouchableOpacity onPress={() => setIsVisible(false)}>
             <Image source={cross} style={styles.crossIconStyle} />
           </TouchableOpacity>
 
           <TouchableOpacity
+            disabled={Object.keys(getProducts).length > 0 ? false : true}
             onPress={() => {
-              onPressCart('Items verified');
+              // onPressCart(selectedItem);
               setIsVisible(false);
             }}
             style={[
               styles.headingViewStyle,
               {
-                backgroundColor: colorId || sizeId || count > 0 ? COLORS.primary : COLORS.gerySkies,
+                backgroundColor:
+                  Object.keys(getProducts).length > 0 ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           >
@@ -217,17 +218,16 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
 
         <View style={styles.searchInputView}>
           <Image source={search_light} style={styles.searchStyle} />
-
           <TextInput
             value={search}
-            onChangeText={(text) => setSearch(text)}
+            onChangeText={onSearchHandler}
             style={styles.searchInputStyle}
             placeholder={'Search SKU here'}
-            keyboardType={'number-pad'}
           />
         </View>
 
         <Spacer space={SH(20)} />
+
         {changeView()}
       </View>
     </ReactNativeModal>
@@ -248,6 +248,7 @@ const styles = StyleSheet.create({
     // width: Platform.OS === 'ios' ? width / 2.5 : width / 3,
     borderRadius: 10,
     alignSelf: 'center',
+    paddingHorizontal: ms(25),
     backgroundColor: COLORS.white,
   },
   headingViewStyle: {
@@ -299,15 +300,14 @@ const styles = StyleSheet.create({
   productRowStyle: {
     borderWidth: 1,
     borderRadius: 5,
-    width: width / 3.3,
-    height: SH(62),
     marginVertical: 3,
     alignSelf: 'center',
     alignItems: 'center',
     flexDirection: 'row',
     borderColor: COLORS.solidGrey,
     justifyContent: 'space-between',
-    paddingHorizontal: SH(10),
+    paddingHorizontal: SH(30),
+    paddingVertical: ms(5),
     backgroundColor: COLORS.textInputBackground,
   },
   productIconStyle: {
@@ -379,5 +379,12 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.black,
     fontFamily: Fonts.Regular,
+  },
+  loader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 });

@@ -58,7 +58,6 @@ const Graph = () => {
       summedValues[i] += dataset[i];
     }
   }
-  console.log('data sets', JSON.stringify(summedValues));
   const barData = [
     {
       value: 10,

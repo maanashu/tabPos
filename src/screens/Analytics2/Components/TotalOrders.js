@@ -26,7 +26,7 @@ export function TotalOrders() {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '.           '}</Text>
+          <Text>{index + 1 + '.       '}</Text>
           <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
@@ -51,7 +51,6 @@ export function TotalOrders() {
       </DataTable.Cell>
     </DataTable.Row>
   );
-  console.log('first', JSON.stringify(totalOrder?.order_listing));
 
   const HeaderView = ({ image, text, count, style }) => (
     <View style={[styles.subContainer, style]}>
@@ -77,7 +76,7 @@ export function TotalOrders() {
           count={
             totalOrder?.ordersOverView?.total_volume
               ? '$' + totalOrder?.ordersOverView?.total_volume?.toFixed(2)
-              : '0'
+              : '$0'
           }
         />
         <HeaderView
@@ -86,7 +85,7 @@ export function TotalOrders() {
           count={
             totalOrder?.ordersOverView?.averageValue
               ? '$' + totalOrder?.ordersOverView?.averageValue?.toFixed(2)
-              : '0'
+              : '$0'
           }
         />
         <HeaderView
@@ -95,7 +94,7 @@ export function TotalOrders() {
           count={
             totalOrder?.ordersOverView?.total_profit
               ? '$' + totalOrder?.ordersOverView?.total_profit?.toFixed(2)
-              : '0'
+              : '$0'
           }
         />
       </View>
@@ -107,7 +106,7 @@ export function TotalOrders() {
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          // scrollEnabled={false}
+          scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
             <DataTable.Header style={[styles.tableListHeader]}>

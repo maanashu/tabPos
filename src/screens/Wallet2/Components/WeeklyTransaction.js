@@ -497,7 +497,7 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
               </View>
               <View style={styles.tableHeaderRight}>
                 <Text numberOfLines={1} style={styles.tableTextHea}>
-                  Transaction ID
+                  Transaction Id
                 </Text>
 
                 <View style={styles.flexAlign}>

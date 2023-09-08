@@ -265,10 +265,9 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
   // const allMessages = useSelector((state) => state?.chat?.getMessages?.messages);
   useEffect(() => {
     // dispatch(getMessages(23));
-    if (chatData) {
-      console.log('sdsdsdsdsd');
+    if (chatData?.getMessages?.messages) {
       const formattedMessages = formatMessages(chatData?.getMessages?.messages)?.reverse();
-      // setMessages(formattedMessages);
+      setMessages(formattedMessages);
     }
   }, [chatData]);
 

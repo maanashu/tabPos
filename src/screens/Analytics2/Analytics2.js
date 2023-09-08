@@ -101,6 +101,11 @@ export function Analytics2() {
   const endDated = moment(endDate).format('YYYY-MM-DD');
   const [selectDate, setSelectDate] = useState('');
 
+  const currentStartDate = moment().startOf('month').format('MMM D');
+  const currentEndDate = moment().endOf('month').format('MMM D, YYYY');
+  const dateRange = `${currentStartDate} - ${currentEndDate}`;
+  const maxDate = new Date(2030, 6, 3);
+
   const handleOnPressNext = () => {
     // Perform actions when "Next" button is pressed
   };
@@ -239,10 +244,10 @@ export function Analytics2() {
                 <Image source={calendar} style={styles.calenderImage} />
                 <Text style={styles.dateText}>
                   {startDate
-                    ? moment(startDate).format('YYYY-MM-DD') +
+                    ? moment(startDate).format('MMM D') +
                       ' - ' +
-                      moment(endDate).format('YYYY-MM-DD')
-                    : 'Date Select'}
+                      moment(endDate).format('MMM D, YYYY')
+                    : dateRange}
                 </Text>
               </TouchableOpacity>
               {selectedScreen !== 'TotalInventory' ? (
@@ -306,7 +311,14 @@ export function Analytics2() {
                   source={profit}
                   style={[
                     styles.sideBarImage,
-                    { tintColor: selectedScreen === 'TotalProfit' ? COLORS.primary : COLORS.black },
+                    {
+                      tintColor:
+                        selectedScreen === 'TotalProfit'
+                          ? COLORS.primary
+                          : getPosUser?.user_roles?.length > 0
+                          ? COLORS.mid_grey
+                          : COLORS.black,
+                    },
                   ]}
                 />
               </TouchableOpacity>
@@ -320,7 +332,14 @@ export function Analytics2() {
                   source={revenueTotal}
                   style={[
                     styles.sideBarImage,
-                    { tintColor: selectedScreen === 'Revenue' ? COLORS.primary : COLORS.black },
+                    {
+                      tintColor:
+                        selectedScreen === 'Revenue'
+                          ? COLORS.primary
+                          : getPosUser?.user_roles?.length > 0
+                          ? COLORS.mid_grey
+                          : COLORS.black,
+                    },
                   ]}
                 />
               </TouchableOpacity>
@@ -334,7 +353,14 @@ export function Analytics2() {
                   source={totalSales}
                   style={[
                     styles.sideBarImage,
-                    { tintColor: selectedScreen === 'TotalCost' ? COLORS.primary : COLORS.black },
+                    {
+                      tintColor:
+                        selectedScreen === 'TotalCost'
+                          ? COLORS.primary
+                          : getPosUser?.user_roles?.length > 0
+                          ? COLORS.mid_grey
+                          : COLORS.black,
+                    },
                   ]}
                 />
               </TouchableOpacity>
@@ -443,6 +469,8 @@ export function Analytics2() {
               onDateChange={onDateChange}
               handleOnPressNext={handleOnPressNext}
               onSelectedDate={onSelect}
+              allowRangeSelection={true}
+              maxDate={maxDate}
             />
           </View>
         </Modal>

@@ -28,7 +28,6 @@ const twoEqualView = result / 1.8;
 import { TYPES } from '@/Types/CustomersTypes';
 
 const Graph = ({ graphDetail }) => {
-  console.log('graphDetail', JSON.stringify(graphDetail));
   const getDeliveryData = useSelector(getDelivery);
   const [graphData, setGraphData] = useState(graphOptions);
   const [newCustomerCheck, setNewCustomerCheck] = useState(true);

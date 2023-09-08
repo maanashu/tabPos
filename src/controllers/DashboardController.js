@@ -1,3 +1,4 @@
+import { store } from '@/store';
 import {
   ORDER_URL,
   ApiOrderInventory,
@@ -204,6 +205,44 @@ export class DashboardController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
+          reject(error);
+        });
+    });
+  }
+
+  static async getOrdersByInvoiceId(invoice) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.invoiceIdSearch + `${invoice}`;
+      console.log('endpoint====', endpoint);
+      HttpClient.get(endpoint)
+        .then((response) => {
+          console.log('response======', JSON.stringify(response));
+          resolve(response);
+        })
+        .catch((error) => {
+          console.log(error.msg);
+          reject(error);
+        });
+    });
+  }
+
+  static async getProductsBySku(sku) {
+    // console.log('sku============', sku);
+    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+    // console.log('sellerId============', sellerId);
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.skuSearch +
+        `?app_name=merchant&seller_id=${sellerId}&search=${sku}`;
+      // console.log('endpoint====', endpoint);
+      HttpClient.get(endpoint)
+        .then((response) => {
+          // console.log('getProductsBySku----------------', JSON.stringify(response));
+          resolve(response);
+        })
+        .catch((error) => {
+          // console.log('error.msg============', error);
           reject(error);
         });
     });

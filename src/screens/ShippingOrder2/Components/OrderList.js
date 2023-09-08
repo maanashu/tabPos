@@ -1,45 +1,32 @@
-import React, { memo } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  Dimensions,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import React, { memo, useState } from 'react';
+import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 
+import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
-import { useDispatch, useSelector } from 'react-redux';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import { useState } from 'react';
-import { getOrderData } from '@/actions/AnalyticsAction';
-
-const { height } = Dimensions.get('window');
+import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
 
 const OrderList = ({ selectedStatus, onViewAllHandler }) => {
-  const dispatch = useDispatch();
   const getOrdersData = useSelector(getDelivery);
   const ordersList = getOrdersData?.getReviewDef;
-
-  const [orderDetail, setOrderDetail] = useState('');
-  const [userDetail, setUserDetail] = useState('');
-  const [orderId, setOrderId] = useState();
+  const [orderId, setOrderId] = useState(ordersList?.[0]?.id ?? '');
 
   const renderOrderToReview = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
         onViewAllHandler(item?.id);
-        // setUserDetail(item);
-        // setOrderDetail(item?.order_details);
-        // dispatch(getOrderData(item?.id));
-        // setOrderId(item?.id);
+        setOrderId(item?.id);
       }}
-      style={styles.orderRowStyle}
+      style={[
+        styles.orderRowStyle,
+        {
+          backgroundColor: item?.id === orderId ? COLORS.textInputBackground : COLORS.transparent,
+          borderColor: item?.id === orderId ? COLORS.primary : COLORS.blue_shade,
+        },
+      ]}
     >
       <View style={styles.orderDetailStyle}>
         <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
@@ -131,7 +118,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 20,
-    borderColor: COLORS.blue_shade,
     backgroundColor: COLORS.transparent,
   },
   orderDetailStyle: {

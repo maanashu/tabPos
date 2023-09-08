@@ -55,10 +55,17 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
   const getCustomerData = useSelector(getCustomers);
   const ordersbyUserData = getCustomerData?.getOrderUser;
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
+
+  useEffect(() => {
+    setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
+  }, [getCustomerData?.getOrderUser?.data]);
+
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
+
+  const startIndex = (page - 1) * paginationModalValue + 1;
 
   const data = {
     firstName: userDetail?.user_details?.firstname,
@@ -336,7 +343,10 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
           </View>
 
           <View style={{ height: Platform.OS === 'android' ? ms(230) : ms(265) }}>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              showsVerticalScrollIndicator={false}
+            >
               {isOrderUserLoading ? (
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
@@ -346,71 +356,74 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
                   <Text style={styles.userNotFound}>Order not found</Text>
                 </View>
               ) : (
-                ordersByUser?.map((item, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={[styles.tableDataCon, { zIndex: -99 }]}
-                    onPress={() => orderClickHandler(item)}
-                  >
-                    <View style={styles.profileheaderUnderView}>
-                      <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text style={[styles.tableTextData, { marginRight: ms(40) }]}>
-                            {index + 1}
-                          </Text>
-                          <Text style={styles.tableTextData}>{item.id}</Text>
+                ordersByUser?.map((item, index) => {
+                  const currentIndex = startIndex + index;
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      style={[styles.tableDataCon, { zIndex: -99 }]}
+                      onPress={() => orderClickHandler(item)}
+                    >
+                      <View style={styles.profileheaderUnderView}>
+                        <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}>
+                          <View style={{ flexDirection: 'row' }}>
+                            <Text style={[styles.tableTextData, { marginRight: ms(40) }]}>
+                              {currentIndex}
+                            </Text>
+                            <Text style={styles.tableTextData}>{item.id}</Text>
+                          </View>
                         </View>
-                      </View>
-                      <View style={styles.profileheaderChildView}>
-                        <Text style={styles.tableTextData}>
-                          {item.created_at ? moment(item.created_at).format('LL') : ''}
-                        </Text>
-                      </View>
-                      <View style={styles.profileheaderChildView}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          {item?.seller_details?.current_address?.city}
-                        </Text>
-                      </View>
-                      <View style={styles.profileheaderChildView}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <Image
-                            source={userImage}
-                            style={{ width: ms(15), height: ms(15), resizeMode: 'contain' }}
-                          />
-                          <Text style={styles.tableTextData}>{item?.shipping_detail?.title}</Text>
-                        </View>
-                      </View>
-                      <View style={styles.profileheaderChildView}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          {item?.total_items} times
-                        </Text>
-                      </View>
-                      <View style={styles.profileheaderChildView}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          ${item?.payable_amount}
-                        </Text>
-                      </View>
-                      <View style={styles.profileheaderChildView}>
-                        <View
-                          style={[
-                            styles.saleTypeButtonCon,
-                            {
-                              backgroundColor:
-                                DELIVERY_MODE[item?.delivery_option] === 'Delivery' ||
-                                DELIVERY_MODE[item?.delivery_option] === 'Shipping'
-                                  ? COLORS.marshmallow
-                                  : COLORS.lightGreen,
-                            },
-                          ]}
-                        >
-                          <Text style={[styles.tableTextData, { color: COLORS.white }]}>
-                            {DELIVERY_MODE[item?.delivery_option]}
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData}>
+                            {item.created_at ? moment(item.created_at).format('LL') : ''}
                           </Text>
                         </View>
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {item?.seller_details?.current_address?.city}
+                          </Text>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image
+                              source={userImage}
+                              style={{ width: ms(15), height: ms(15), resizeMode: 'contain' }}
+                            />
+                            <Text style={styles.tableTextData}>{item?.shipping_detail?.title}</Text>
+                          </View>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {item?.total_items} times
+                          </Text>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            ${item?.payable_amount}
+                          </Text>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <View
+                            style={[
+                              styles.saleTypeButtonCon,
+                              {
+                                backgroundColor:
+                                  DELIVERY_MODE[item?.delivery_option] === 'Delivery' ||
+                                  DELIVERY_MODE[item?.delivery_option] === 'Shipping'
+                                    ? COLORS.marshmallow
+                                    : COLORS.lightGreen,
+                              },
+                            ]}
+                          >
+                            <Text style={[styles.tableTextData, { color: COLORS.white }]}>
+                              {DELIVERY_MODE[item?.delivery_option]}
+                            </Text>
+                          </View>
+                        </View>
                       </View>
-                    </View>
-                  </TouchableOpacity>
-                ))
+                    </TouchableOpacity>
+                  );
+                })
               )}
             </ScrollView>
           </View>

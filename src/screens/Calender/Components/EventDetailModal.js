@@ -28,7 +28,6 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const [selectedStaffUserId, setSelectedStaffUserId] = useState(
     completeData?.pos_user_details.user?.unique_uuid
   );
-  console.log('print JSON response ==>', JSON.stringify(completeData));
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(completeData);
 
   // Show chat Modal
@@ -285,12 +284,15 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
         appointmentData={selectedPosStaffCompleteData}
         setshowEventDetailModal={setshowEventDetailModal}
       />
-      <ChatRoom
-        isVisible={isShowChatModal}
-        setIsVisible={setisShowChatModal}
-        customerData={userDetails}
-        customerAddress={userAddress?.street_address}
-      />
+      {isShowChatModal && (
+        <ChatRoom
+          isVisible={isShowChatModal}
+          setIsVisible={setisShowChatModal}
+          customerData={userDetails}
+          customerAddress={userAddress?.street_address}
+        />
+      )}
+
       <VerifyCheckinOtp
         appointmentData={selectedPosStaffCompleteData}
         isVisible={showVerifyOTPModal}

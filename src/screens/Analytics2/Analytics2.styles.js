@@ -193,6 +193,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     width: ms(70),
   },
+  tableHeaderView: {
+    height: Platform.OS === 'ios' ? ms(80) : ms(80),
+    justifyContent: 'center',
+    width: ms(70),
+  },
   dateTableRight: {
     // width: ms(150),
     justifyContent: 'flex-end',
@@ -326,7 +331,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   listView: {
-    height: Platform.OS === 'ios' ? ms(202) : ms(288),
+    // height: Platform.OS === 'ios' ? ms(202) : ms(288),
     // width:
     //   Platform.OS === 'ios'
     //     ? Dimensions.get('window').width - ms(80)
