@@ -115,7 +115,7 @@ export function TotalPosOrder() {
           count={
             posGraph?.ordersOverView?.order_frequency
               ? posGraph?.ordersOverView?.order_frequency + '/Hour'
-              : 0
+              : '0/Hour'
           }
         />
         <HeaderView
@@ -124,7 +124,7 @@ export function TotalPosOrder() {
           count={
             posGraph?.ordersOverView?.averageValue
               ? '$' + posGraph?.ordersOverView?.averageValue?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -133,7 +133,7 @@ export function TotalPosOrder() {
           count={
             posGraph?.ordersOverView?.amount
               ? '$' + posGraph?.ordersOverView?.amount?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
       </View>

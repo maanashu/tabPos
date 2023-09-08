@@ -116,7 +116,7 @@ export function TotalCost() {
           count={
             analyticStatistics?.overView?.transaction
               ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -125,7 +125,7 @@ export function TotalCost() {
           count={
             analyticStatistics?.overView?.average_value
               ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -134,7 +134,7 @@ export function TotalCost() {
           count={
             analyticStatistics?.overView?.profit_sum
               ? '$' + analyticStatistics?.overView?.profit_sum?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
       </View>

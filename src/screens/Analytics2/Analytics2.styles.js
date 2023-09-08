@@ -256,7 +256,7 @@ export const styles = StyleSheet.create({
     marginVertical: ms(5),
   },
   tableListHeader: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.white,
     borderTopRightRadius: SW(4),
     borderTopLeftRadius: SW(4),
     overflow: 'hidden',

@@ -115,7 +115,7 @@ export function TotalShippingOrders() {
           count={
             shippingGraph?.ordersOverView?.order_frequency
               ? shippingGraph?.ordersOverView?.order_frequency + '/Hour'
-              : 0
+              : '0/Hour'
           }
         />
         <HeaderView
@@ -124,7 +124,7 @@ export function TotalShippingOrders() {
           count={
             shippingGraph?.ordersOverView?.averageValue
               ? '$' + shippingGraph?.ordersOverView?.averageValue?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -133,7 +133,7 @@ export function TotalShippingOrders() {
           count={
             shippingGraph?.ordersOverView?.amount
               ? '$' + shippingGraph?.ordersOverView?.amount?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
       </View>
@@ -148,15 +148,15 @@ export function TotalShippingOrders() {
           // scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
-            <DataTable.Header style={[styles.tableListHeader]}>
+            <DataTable.Header style={[styles.tableListHeader, { height: ms(40) }]}>
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.dateTableSetting} numberOfLines={2}>
                 <Text style={styles.revenueText}>Total Shipping Orders</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.dateTableSetting} numberOfLines={2}>
                 <Text style={styles.revenueText}>Average Order View</Text>
               </DataTable.Title>
 

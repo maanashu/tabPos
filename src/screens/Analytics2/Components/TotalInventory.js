@@ -111,7 +111,7 @@ export function TotalInventory() {
           count={
             totalInventory?.inventoryOverview?.totalInventoryValue
               ? '$' + totalInventory?.inventoryOverview?.totalInventoryValue?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -120,7 +120,7 @@ export function TotalInventory() {
           count={
             totalInventory?.inventoryOverview?.averageOrder
               ? '$' + totalInventory?.inventoryOverview?.averageOrder?.toFixed(2)
-              : 0
+              : '$0'
           }
         />
         <HeaderView
@@ -129,7 +129,7 @@ export function TotalInventory() {
           count={
             totalInventory?.inventoryOverview?.profit
               ? '$' + totalInventory?.inventoryOverview?.profit
-              : 0
+              : '$0'
           }
         />
       </View>
