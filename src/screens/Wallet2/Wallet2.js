@@ -548,9 +548,7 @@ export function Wallet2() {
 
                     <View style={styles.flexAlign}>
                       {/* <Text style={styles.tableTextHea}>Employee</Text> */}
-                      <Text numberOfLines={1} style={styles.tableTextHea}>
-                        Transaction type
-                      </Text>
+                      <Text style={styles.tableTextHea}>Transaction type</Text>
                       <Image source={tableArrow} style={styles.tableArrow} />
                       {/* <DropDownPicker
                         ArrowUpIconComponent={({ style }) => (

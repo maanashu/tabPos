@@ -41,6 +41,7 @@ const twoEqualView = result / 1.8;
 
 const Graph = () => {
   const getDeliveryData = useSelector(getDelivery);
+
   const [graphData, setGraphData] = useState(graphOptions);
 
   const isGraphOrder = useSelector((state) => isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state));
@@ -57,23 +58,8 @@ const Graph = () => {
       summedValues[i] += dataset[i];
     }
   }
+  console.log('data sets', JSON.stringify(summedValues));
   const barData = [
-    // [1,2,3]?.map((item, index) => (
-    //   {
-    //     value: 10,
-    //     spacing: 2,
-    //     label: '12/20/2023',
-    //     labelWidth: 70,
-    //     labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-    //     frontColor: COLORS.primary,
-    //     intialSapce: 0,
-    //   },
-    //   {
-    //     value: 56,
-    //     spacing: 2,
-    //     frontColor: COLORS.violet,
-    //   },
-    //   { value: 66, frontColor: COLORS.darkBlue },
     {
       value: 10,
       spacing: 2,
@@ -89,90 +75,6 @@ const Graph = () => {
       frontColor: COLORS.violet,
     },
     { value: 66, frontColor: COLORS.darkBlue },
-    {
-      value: 22,
-      spacing: 2,
-      label: '12/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-    },
-    {
-      value: 55,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 88, frontColor: COLORS.darkBlue },
-    {
-      value: 99,
-      spacing: 2,
-      label: '12/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-    },
-    {
-      value: 22,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 55, frontColor: COLORS.darkBlue },
-    {
-      value: 44,
-      spacing: 2,
-      label: '12/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-    },
-    {
-      value: 44,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 22, frontColor: COLORS.darkBlue },
-    {
-      value: 10,
-      spacing: 2,
-      label: '12/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-    },
-    {
-      value: 10,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 20, frontColor: COLORS.darkBlue },
-    {
-      value: 30,
-      spacing: 2,
-      label: '12/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-    },
-    {
-      value: 11,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 67, frontColor: COLORS.darkBlue },
-    {
-      value: 10,
-      spacing: 2,
-      label: '12/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-    },
-    {
-      value: 40,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 20, frontColor: COLORS.darkBlue },
   ];
 
   return (
@@ -200,6 +102,7 @@ const Graph = () => {
           // labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
           initialSpacing={SH(10)}
           // data={dummyData}
+          data={getDeliveryData?.graphOrders}
           spacing={SW(45)}
           interval={2}
           dateInterval={5}

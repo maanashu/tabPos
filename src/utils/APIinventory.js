@@ -145,6 +145,11 @@ export const ApiWalletInventory = {
   requestMoney: 'transactions/request-money',
   requestCheck: 'transactions/',
 };
+export const ApiChatInverntory = {
+  sendChat: 'messages',
+  getMessages: USER_URL + `messageheads/`,
+  getMessageHeads: `messageheads`,
+};
 
 export const ApiRewards = {
   getRewardGraph: `rewards/pos/graph`,

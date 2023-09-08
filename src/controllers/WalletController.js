@@ -17,6 +17,7 @@ export class WalletController {
 
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('DEELIEVRYYY', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
