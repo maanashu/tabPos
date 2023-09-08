@@ -40,7 +40,6 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
   const user = useSelector(getUser);
   const chatData = useSelector(getMessagesData);
   const USER_DATA = user?.posLoginData?.user_profiles;
-  console.log('Testsstsststststtsts', USER_DATA);
   const handleKeyboardDidShow = () => {
     setIsKeyboardOpen(true);
   };
@@ -263,13 +262,15 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
   };
 
   //API methods
-  const allMessages = useSelector((state) => state?.chat?.getMessages?.messages);
-  console.log(allMessages);
+  // const allMessages = useSelector((state) => state?.chat?.getMessages?.messages);
   useEffect(() => {
-    const formattedMessages = formatMessages(allMessages)?.reverse();
-    console.log('formated message', formatMessages);
-    setMessages(formattedMessages);
-  }, [chatData?.getMessages?.messages]);
+    // dispatch(getMessages(23));
+    if (chatData) {
+      console.log('sdsdsdsdsd');
+      const formattedMessages = formatMessages(chatData?.getMessages?.messages)?.reverse();
+      setMessages(formattedMessages);
+    }
+  }, [chatData]);
 
   const formatMessages = (messages) => {
     return messages?.map((message) => {
@@ -295,14 +296,23 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
       })
     )
       .then((res) => {
-        console.log('chat', res);
+        console.log('uiuuiuiuiuiuiu1i23u1i231u23i1u23i13u1i32u1i231u231', res);
         setisLoading(false);
         setisLoadingMsg(true);
         dispatch(getMessages(res?.payload?.messagehead_id))
-          .then((res) => setisLoadingMsg(false))
-          .catch((error) => setisLoadingMsg(false));
+          .then((res) => {
+            setisLoadingMsg(false);
+            // const formattedMessages = formatMessages(chatData?.getMessages?.messages)?.reverse();
+            // setMessages(formattedMessages);
+          })
+          .catch((error) => {
+            setisLoadingMsg(false);
+            console.log('uiuuiuiuiuiuiu1i23u1i231u23i1u23i13u1i32u1i231u231error', error);
+          });
       })
-      .catch((error) => setisLoading(false));
+      .catch((error) => {
+        setisLoading(false), console.log('Catsasahshashahsahsahshash', error);
+      });
   }, []);
 
   return (
@@ -381,7 +391,7 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
             paddingBottom: isKeyboardOpen ? ms(-25) : ms(25),
           }}
           user={{
-            _id: USER_DATA?.user_id,
+            _id: user?.posLoginData?.uid,
             name: USER_DATA?.firstname,
             email: USER_DATA?.email,
             phoneNumber: USER_DATA?.phone_no,
