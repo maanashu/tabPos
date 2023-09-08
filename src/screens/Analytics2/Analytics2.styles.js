@@ -194,7 +194,7 @@ export const styles = StyleSheet.create({
     width: ms(70),
   },
   tableHeaderView: {
-    height: Platform.OS === 'ios' ? ms(80) : ms(0),
+    height: Platform.OS === 'ios' ? ms(80) : ms(80),
     justifyContent: 'center',
     width: ms(70),
   },

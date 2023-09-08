@@ -469,8 +469,8 @@ export function Analytics2() {
               onDateChange={onDateChange}
               handleOnPressNext={handleOnPressNext}
               onSelectedDate={onSelect}
-              // allowRangeSelection={true}
-              // maxDate={maxDate}
+              allowRangeSelection={true}
+              maxDate={maxDate}
             />
           </View>
         </Modal>

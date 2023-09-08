@@ -40,8 +40,8 @@ const CalendarPickerModal = ({
         onPressNext={handleOnPressNext}
         headerWrapperStyle={styles.headerWrapper}
         textStyle={{ fontSize: ms(12) }}
-        // width={ms(400)}
-        // height={ms(400)}
+        width={ms(400)}
+        height={ms(400)}
         scaleFactor={470}
       />
       <View style={styles.flexDirectionRow}>
