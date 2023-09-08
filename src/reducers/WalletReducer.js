@@ -2,7 +2,7 @@ import { TYPES } from '@/Types/WalletTypes';
 
 const INITIALSTATE = {
   getTotalTra: {},
-  getTotakTraDetail: [],
+  getTotakTraDetail: {},
   getTotalTraType: [],
 };
 
@@ -27,7 +27,7 @@ export const walletReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.GET_TOTAL_TRA_DETAIL_RESET:
       return {
         ...state,
-        getTotakTraDetail: [],
+        getTotakTraDetail: {},
       };
 
     case TYPES.GET_TOTAL_TRA_TYPE_SUCCESS:

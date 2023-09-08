@@ -6,9 +6,16 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react
 import CalendarPicker from 'react-native-calendar-picker';
 import { ms } from 'react-native-size-matters';
 
-const CalendarPickerModal = ({ onPress, onDateChange, handleOnPressNext, onSelectedDate }) => {
+const CalendarPickerModal = ({
+  onPress,
+  onDateChange,
+  handleOnPressNext,
+  onSelectedDate,
+  allowRangeSelection,
+  maxDate,
+}) => {
   const minDate = new Date(2020, 1, 1); // Today
-  const maxDate = new Date(2030, 6, 3);
+  // const maxDate = new Date(2030, 6, 3);
 
   return (
     <View style={styles.container}>
@@ -20,10 +27,11 @@ const CalendarPickerModal = ({ onPress, onDateChange, handleOnPressNext, onSelec
       </View>
       <CalendarPicker
         startFromMonday={true}
-        allowRangeSelection={true}
+        allowRangeSelection={allowRangeSelection}
         minDate={minDate}
         maxDate={maxDate}
-        todayBackgroundColor="#f2e6ff"
+        todayBackgroundColor="white"
+        todayTextStyle={'black'}
         selectedDayColor={COLORS.primary}
         selectedDayTextColor="#FFFFFF"
         onDateChange={onDateChange}

@@ -10,6 +10,10 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
   },
+  bgWhitecontainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
   containerWhite: {
     flex: 1,
     backgroundColor: COLORS.white,
@@ -112,7 +116,7 @@ export const styles = StyleSheet.create({
     tintColor: COLORS.darkGray,
   },
   custometrCon: {
-    width: Platform.OS === 'android' ? ms(150) : ms(135),
+    width: Platform.OS === 'android' ? ms(175) : ms(135),
     height: SH(94),
     borderRadius: 10,
     backgroundColor: COLORS.textInputBackground,
@@ -472,10 +476,9 @@ export const styles = StyleSheet.create({
     color: COLORS.gerySkies,
   },
   placeholderStylePagination: {
-    fontSize: SF(13),
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.dark_grey,
-    lineHeight: ms(24),
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
   },
   containerStylePagination: {
     width: SW(25),
@@ -1449,5 +1452,14 @@ export const styles = StyleSheet.create({
     zIndex: 999,
     backgroundColor: COLORS.white,
     borderColor: COLORS.solidGrey,
+  },
+  calendarModalView: {
+    backgroundColor: COLORS.white,
+    width: windowWidth * 0.6,
+    height: windowHeight - SW(30),
+    alignSelf: 'center',
+    paddingVertical: SH(10),
+    paddingHorizontal: SW(5),
+    borderRadius: SW(5),
   },
 });
