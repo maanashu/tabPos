@@ -28,7 +28,6 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const [selectedStaffUserId, setSelectedStaffUserId] = useState(
     completeData?.pos_user_details.user?.unique_uuid
   );
-  console.log('print JSON response ==>', JSON.stringify(completeData));
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(completeData);
 
   // Show chat Modal
