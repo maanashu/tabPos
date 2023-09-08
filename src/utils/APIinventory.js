@@ -61,6 +61,7 @@ export const ApiProductInventory = {
   getSellerProductDetails: 'supplies/pos/supplier-details',
   getTotalInventory: 'supplies/pos/inventory_count',
   availableOffer: 'offer/products',
+  skuSearch: 'products/search-one',
 };
 
 // export const ApiSupportInventory = {
@@ -138,6 +139,7 @@ export const ApiOrderInventory = {
   cartBarCode: 'poscarts/scan-barcode',
   sendCheckinOTP: 'appointments/send-checkin-otp/',
   verifyCheckinOTP: 'appointments/verify-checkin-otp',
+  invoiceIdSearch: 'invoices/by-invoice-number/',
 };
 
 export const ApiWalletInventory = {

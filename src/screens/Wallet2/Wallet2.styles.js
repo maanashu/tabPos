@@ -1057,7 +1057,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-    alignSelf: 'center',
+    // alignSelf: 'center',
   },
   tableHeaderLeft: {
     flexDirection: 'row',

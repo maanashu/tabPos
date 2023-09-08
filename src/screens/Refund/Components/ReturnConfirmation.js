@@ -27,7 +27,7 @@ const ReturnConfirmation = ({ isVisible, setIsVisible }) => {
         </View>
 
         <Spacer space={SH(30)} />
-        <View>
+        <View style={{ alignItems: 'center' }}>
           <Text style={styles.invoiceTextStyle}>
             {'Invoice No. # 3467589 return  successfully Completed!'}
           </Text>
@@ -41,7 +41,7 @@ export default memo(ReturnConfirmation);
 
 const styles = StyleSheet.create({
   modalStyle: {
-    flex: 0.3,
+    flex: 0.25,
     width: width / 3.2,
     borderRadius: 10,
     alignSelf: 'center',
@@ -57,19 +57,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: SH(20),
-    paddingTop: ms(20),
+    paddingTop: ms(15),
     justifyContent: 'space-between',
   },
   crossIconStyle: {
-    width: SH(14),
-    height: SH(14),
+    width: SH(20),
+    height: SH(20),
     resizeMode: 'contain',
     tintColor: COLORS.dark_grey,
   },
   invoiceTextStyle: {
-    fontSize: SF(20),
+    fontSize: SF(16),
     color: COLORS.black,
     fontFamily: Fonts.Medium,
     paddingHorizontal: SH(20),
+    // textAlign: ',
   },
 });

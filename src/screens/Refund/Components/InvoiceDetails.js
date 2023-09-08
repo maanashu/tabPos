@@ -155,6 +155,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: ms(4.2),
   },
+  priceTitle: {
+    color: COLORS.black,
+    fontFamily: Fonts.Regular,
+    fontSize: ms(6.2),
+  },
   _subTotalContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

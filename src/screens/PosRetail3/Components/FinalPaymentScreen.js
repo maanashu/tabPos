@@ -60,6 +60,7 @@ export const FinalPaymentScreen = ({
       };
     }, [])
   );
+
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View style={styles.displayflex}>

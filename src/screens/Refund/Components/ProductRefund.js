@@ -333,23 +333,25 @@ const styles = StyleSheet.create({
   },
   rowStyle: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    // justifyContent: 'flex-end',
     alignItems: 'center',
     paddingVertical: ms(7),
+    paddingHorizontal: ms(10),
   },
   applicableViewStyle: {
     flexDirection: 'row',
-    paddingHorizontal: ms(8),
+    paddingLeft: ms(8),
+    paddingRight: ms(4),
     alignItems: 'center',
   },
   checkBoxIconStyle: {
-    width: scale(6),
-    height: scale(6),
+    width: scale(7),
+    height: scale(7),
     resizeMode: 'contain',
   },
   applicableTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(9),
+    fontSize: SF(10),
     color: COLORS.dark_grey,
     paddingLeft: ms(1),
     textAlignVertical: 'center',
@@ -383,9 +385,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     paddingHorizontal: 8,
-    marginHorizontal: 10,
+    marginHorizontal: 7,
     flexDirection: 'row',
-    // width: SH(135),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -447,6 +448,11 @@ const styles = StyleSheet.create({
   blueListDataText: {
     color: COLORS.solid_grey,
     fontSize: SF(11),
+    fontFamily: Fonts.Regular,
+  },
+  sukNumber: {
+    color: COLORS.solid_grey,
+    fontSize: SF(9),
     fontFamily: Fonts.Regular,
   },
   columbiaMen: {

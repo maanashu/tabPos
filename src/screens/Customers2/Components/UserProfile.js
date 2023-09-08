@@ -55,6 +55,11 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
   const getCustomerData = useSelector(getCustomers);
   const ordersbyUserData = getCustomerData?.getOrderUser;
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
+
+  useEffect(() => {
+    setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
+  }, [getCustomerData?.getOrderUser?.data]);
+
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);

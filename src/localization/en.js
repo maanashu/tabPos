@@ -472,7 +472,7 @@ export const en = {
     readyPickupOrders: 'Ready For Pickup',
     totalItem: 'Total Item',
     orderDate: 'Order Date',
-    orderId: 'Order ID#',
+    orderId: 'Order ID',
     completed: 'Completed',
     reviewOrders: 'Shipping Orders to Review',
     acceptedOrders: 'Shipping Orders Accepted',
