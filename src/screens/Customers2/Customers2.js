@@ -159,7 +159,7 @@ export function Customers2() {
           }}
           userDetail={userData}
           orderClickHandler={async (item) => {
-            if (item?.delivery_option == 3) {
+            if (item?.delivery_option == 3 || item?.delivery_option == 2) {
               setUserProfile(false);
               setUserDetails(true);
               setOrderId(item?.id);
