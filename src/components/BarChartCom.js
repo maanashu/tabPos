@@ -2,10 +2,12 @@ import { COLORS, SW } from '@/theme';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
+import { ms } from 'react-native-size-matters';
 
 const transformData = (data, spacing, interval, dateInterval, dateTodayInterval) => {
-  const transformedData = [];
   const dynamicLabels = data?.labels?.filter((label, index) => (index + 1) % interval === 0);
+  const transformedData = [];
+
   for (let i = 0; i < dynamicLabels?.length; i++) {
     const totalValue = data?.datasets?.reduce((sum, dataset) => sum + dataset?.data[i], 1);
     const dataPoint = {
@@ -19,40 +21,109 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     };
     transformedData.push(dataPoint);
   }
+
   const dynamicDateLabels = data?.labels?.filter(
     (label, index) => (index + 1) % dateInterval === 0
   );
-  const transformedMonthData = dynamicDateLabels?.map((label, index) => ({
-    frontColor: '#102773',
-    label: label?.split(' ')[0], // Extracting only the day part
-    labelTextStyle: { color: '#626262', fontSize: 11 },
-    value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
-    frontColor: index === 0 ? COLORS.primary : index === 1 ? COLORS.violet : COLORS.darkBlue,
-    labelWidth: SW(70),
-    spacing: spacing,
-  }));
 
-  const transformedWeekData = data?.labels?.map((label, index) => ({
-    frontColor: '#102773',
-    label: label?.split(' ')[0], // Extracting only the day part
-    labelTextStyle: { color: '#626262', fontSize: 11 },
-    value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
-    frontColor: index === 0 ? COLORS.primary : index === 1 ? COLORS.violet : COLORS.darkBlue,
-    labelWidth: SW(70),
-    spacing: spacing,
-  }));
+  const transformedMonthData = dynamicDateLabels?.flatMap((label, index) => {
+    const values = data?.datasets?.map((dataset) => dataset?.data[index]);
+
+    const firstObject = {
+      value: values[0] || 0,
+      frontColor: '#102773',
+      label: label?.split(' ')[0], // Extracting only the day part
+      labelTextStyle: { color: '#626262', fontSize: 11, marginLeft: ms(6) },
+      // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
+      frontColor: COLORS.primary,
+      labelWidth: SW(70),
+      spacing: 3,
+      intialSpace: 0,
+    };
+    return [
+      firstObject,
+      ...Array.from({ length: 2 }, (_, i) => ({
+        value: values[i + 1] || 0,
+        spacing: i === 0 ? 3 : 10,
+        // label: '', // Empty label for the other two objects
+        // labelWidth: 70,
+        // labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+        frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
+        // initialSpace: 0,
+      })),
+    ];
+  });
+
+  const transformedWeekData = data?.labels?.flatMap((label, index) => {
+    const values = data?.datasets?.map((dataset) => dataset?.data[index]);
+
+    const firstObject = {
+      value: values[0] || 0,
+      frontColor: '#102773',
+      label: label?.split(' ')[0], // Extracting only the day part
+      labelTextStyle: { color: '#626262', fontSize: 11 },
+      // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
+      frontColor: COLORS.primary,
+      labelWidth: SW(70),
+      spacing: 4,
+      intialSpace: 0,
+    };
+    return [
+      firstObject,
+      ...Array.from({ length: 2 }, (_, i) => ({
+        value: values[i + 1] || 0,
+        spacing: i === 0 ? 4 : 10,
+        // label: '', // Empty label for the other two objects
+        // labelWidth: 70,
+        // labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+        frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
+        // initialSpace: 0,
+      })),
+    ];
+  });
   const dynamicTodayLabels = data?.labels?.filter(
     (label, index) => (index + 1) % dateTodayInterval === 0
   );
-  const transformedTodayData = dynamicTodayLabels?.map((label, index) => ({
-    frontColor: '#102773',
-    label: label?.split(' ')[0], // Extracting only the day part
-    labelTextStyle: { color: '#626262', fontSize: 11 },
-    value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
-    frontColor: index === 0 ? COLORS.primary : index === 1 ? COLORS.violet : COLORS.darkBlue,
-    labelWidth: SW(70),
-    spacing: spacing,
-  }));
+
+  function convertTo24HourFormat(label) {
+    const [time, period] = label.split(' ');
+
+    if (period === 'PM' && time !== '12:00') {
+      const [hour, minute] = time.split(':');
+      return `${parseInt(hour, 10) + 12}`;
+    } else if (period === 'AM' && time === '12:00') {
+      return '24';
+    } else {
+      const [hour] = time.split(':');
+      return hour.padStart(2, '0');
+    }
+  }
+
+  const convertedLabels = dynamicTodayLabels.map(convertTo24HourFormat);
+
+  const transformedTodayData = dynamicTodayLabels?.flatMap((label, index) => {
+    const values = data?.datasets?.map((dataset) => dataset?.data[index]);
+
+    const firstObject = {
+      value: values[0] || 0,
+      frontColor: '#102773',
+      label: convertedLabels[index]?.split(' ')[0], // Extracting only the day part
+      labelTextStyle: { color: '#626262', fontSize: 11, marginLeft: ms(4) },
+      // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
+      frontColor: COLORS.primary,
+      labelWidth: SW(70),
+      spacing: 6,
+      intialSpace: 0,
+    };
+    return [
+      firstObject,
+      ...Array.from({ length: 2 }, (_, i) => ({
+        value: values[i + 1] || 0,
+        spacing: i === 0 ? 6 : 14,
+        frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
+      })),
+    ];
+  });
 
   if (data?.labels?.length > 24) {
     return transformedMonthData;
