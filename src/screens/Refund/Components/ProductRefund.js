@@ -93,6 +93,8 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                     fontFamily: Fonts.Regular,
                     borderRadius: 5,
                     backgroundColor: COLORS.blue_shade,
+                    padding: 0,
+                    margin: 0,
                   },
                 ]}
                 value={item?.refundAmount}
