@@ -99,7 +99,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     }
   }
 
-  const convertedLabels = dynamicTodayLabels.map(convertTo24HourFormat);
+  const convertedLabels = dynamicTodayLabels?.map(convertTo24HourFormat);
 
   const transformedTodayData = dynamicTodayLabels?.flatMap((label, index) => {
     const values = data?.datasets?.map((dataset) => dataset?.data[index]);
