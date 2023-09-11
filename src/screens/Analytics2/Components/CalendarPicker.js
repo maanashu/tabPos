@@ -14,6 +14,7 @@ const CalendarPickerModal = ({
   allowRangeSelection,
   maxDate,
   selectedStartDate,
+  onCancelPress,
 }) => {
   const minDate = new Date(2020, 1, 1); // Today
   // const maxDate = new Date(2030, 6, 3);
@@ -46,7 +47,7 @@ const CalendarPickerModal = ({
       />
       <View style={styles.flexDirectionRow}>
         <Button
-          onPress={onPress}
+          onPress={onCancelPress}
           style={styles.cancelButton}
           title={'Cancel'}
           textStyle={styles.cancelText}

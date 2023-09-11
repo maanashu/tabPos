@@ -123,6 +123,7 @@ export function Wallet2() {
   const [dateformat, setDateformat] = useState('');
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [formattedDate, setFormattedDate] = useState(new Date());
   const [historytype, setHistorytype] = useState('all');
   const [walletHome, setWalletHome] = useState(true);
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
@@ -194,15 +195,32 @@ export function Wallet2() {
     const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
     setDate(fullDate);
-    // if (weeklyTransaction) {
-    //   setSelectId2(0);
-    //   dispatch(getTotakTraDetail(formattedDate, sellerID, 'all'));
-    // } else {
-    setSelectId(0);
-    dispatch(getTotalTra(null, sellerID, formattedDate));
-    // }
+    setFormattedDate(formattedDate);
   };
-
+  const onDateApply = (selectedDate) => {
+    const formateDate = moment(selectedDate).format('YYYY-MM-DD');
+    if (weeklyTransaction) {
+      setSelectId2(0);
+      dispatch(getTotakTraDetail(formateDate, sellerID, 'all'));
+    } else {
+      setSelectId(0);
+      dispatch(getTotalTra(null, sellerID, formateDate));
+    }
+    setShow(false);
+  };
+  const onCancelPressCalendar = () => {
+    if (weeklyTransaction) {
+      setSelectId2(0);
+      dispatch(getTotakTraDetail(null, sellerID, 'all'));
+    } else {
+      setSelectId(2);
+      dispatch(getTotalTra('week', sellerID, null));
+    }
+    setDateformat('');
+    setDate(new Date());
+    setFormattedDate(new Date());
+    setShow(false);
+  };
   const getFormattedTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -442,8 +460,10 @@ export function Wallet2() {
           <CalendarPickerModal
             onPress={() => setShow(false)}
             onDateChange={onChangeDate}
-            onSelectedDate={() => setShow(false)}
+            onSelectedDate={() => onDateApply(formattedDate)}
+            selectedStartDate={formattedDate}
             maxDate={maxDate}
+            onCancelPress={onCancelPressCalendar}
           />
         </View>
       </Modal>

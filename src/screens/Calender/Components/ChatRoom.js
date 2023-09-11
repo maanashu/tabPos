@@ -46,50 +46,50 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
   const handleKeyboardDidHide = () => {
     setIsKeyboardOpen(false);
   };
-  // const socket = io(`https://apichat.jobr.com:8007?userId=${user?.posLoginData?.uid}`, {
-  //   path: '/api/v1/connect',
-  // });
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     socket.on('connect', () => {
-  //       console.log(socket?.id);
-  //       setIsSocketConnected(true);
-  //     });
-  //     return () => {
-  //       socket.on('disconnect', () => {
-  //         setIsSocketConnected(false);
-  //       });
-  //       socket.disconnect();
-  //     };
-  //   }, [])
-  // );
-  // useEffect(() => {
-  //   socket.emit('get_messages', {
-  //     id: customerData?.uid,
-  //     idtype: 'partnerid',
-  //   });
-  //   socket.on('get_messages', (message) => {
-  //     console.log('object,messa', JSON.stringify(message));
+  const socket = io(`https://apichat.jobr.com:8007?userId=${user?.posLoginData?.uid}`, {
+    path: '/api/v1/connect',
+  });
+  useFocusEffect(
+    React.useCallback(() => {
+      socket.on('connect', () => {
+        console.log(socket?.id);
+        setIsSocketConnected(true);
+      });
+      return () => {
+        socket.on('disconnect', () => {
+          setIsSocketConnected(false);
+        });
+        socket.disconnect();
+      };
+    }, [])
+  );
+  useEffect(() => {
+    socket.emit('get_messages', {
+      id: customerData?.uid,
+      idtype: 'partnerid',
+    });
+    socket.on('get_messages', (message) => {
+      console.log('object,messa', JSON.stringify(message));
 
-  //     const arr = message?.data?.data.map((item) => {
-  //       return {
-  //         _id: item?._id,
-  //         text: item?.content,
-  //       };
-  //     });
-  //     console.log('Sdsad', arr);
-  //     setMessages(arr);
-  //     // setMessages((previousMessages) =>
-  //     //   GiftedChat.append(previousMessages, {
-  //     //     arr,
-  //     //     // createdAt: new Date(message.createdAt),
-  //     //   })
-  //     // );
-  //   });
-  //   return () => {
-  //     socket.off('get_messages');
-  //   };
-  // }, []);
+      const arr = message?.data?.data.map((item) => {
+        return {
+          _id: item?._id,
+          text: item?.content,
+        };
+      });
+      console.log('Sdsad', arr);
+      setMessages(arr);
+      // setMessages((previousMessages) =>
+      //   GiftedChat.append(previousMessages, {
+      //     arr,
+      //     // createdAt: new Date(message.createdAt),
+      //   })
+      // );
+    });
+    return () => {
+      socket.off('get_messages');
+    };
+  }, []);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow);
@@ -101,41 +101,41 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
     };
   }, []);
 
-  // const onSend = useCallback((messages = []) => {
-  //   const params = {
-  //     recipient_id: customerData?.uid,
-  //     // sender_id: user?.posLoginData?.uuid,
-  //     media_type: 'text',
-  //     business_card: 'e',
-  //     content: messages[0]?.text,
-  //     chatHeadType: 'directchat',
-  //   };
-  //   console.log('Params', params);
-  //   socket.emit('send_message', { params });
+  const onSend = useCallback((messages = []) => {
+    const params = {
+      recipient_id: customerData?.uid,
+      // sender_id: user?.posLoginData?.uuid,
+      media_type: 'text',
+      business_card: 'e',
+      content: messages[0]?.text,
+      chatHeadType: 'directchat',
+    };
+    console.log('Params', params);
+    socket.emit('send_message', { params });
 
-  //   // socket.on('send_message', (message) => {
-  //   //   console.log('messgae', JSON.stringify(message));
-  //   // });
+    // socket.on('send_message', (message) => {
+    //   console.log('messgae', JSON.stringify(message));
+    // });
 
-  //   socket.emit('get_messages', {
-  //     id: customerData?.uid,
-  //     idtype: 'partnerid',
-  //   });
-  //   socket.on('get_messages', (message) => {
-  //     console.log('object,messa', JSON.stringify(message));
-  //   });
-  //   setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
-  // }, []);
-  // console.log('ss', JSON.stringify(messages));
+    socket.emit('get_messages', {
+      id: customerData?.uid,
+      idtype: 'partnerid',
+    });
+    socket.on('get_messages', (message) => {
+      console.log('object,messa', JSON.stringify(message));
+    });
+    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
+  }, []);
+  console.log('ss', JSON.stringify(messages));
 
-  // const onDeleteMessage = () => {
-  //   socket.emit('delete_messagehead', {
-  //     chathead_id: '64edd095f73f461358b9a985',
-  //   });
-  //   socket.on('delete_messagehead', (message) => {
-  //     console.log('Deleted', JSON.stringify(message));
-  //   });
-  // };
+  const onDeleteMessage = () => {
+    socket.emit('delete_messagehead', {
+      chathead_id: '64edd095f73f461358b9a985',
+    });
+    socket.on('delete_messagehead', (message) => {
+      console.log('Deleted', JSON.stringify(message));
+    });
+  };
   const renderBubble = (props) => {
     return (
       <Bubble
@@ -263,54 +263,54 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
 
   //API methods
   // const allMessages = useSelector((state) => state?.chat?.getMessages?.messages);
-  useEffect(() => {
-    // dispatch(getMessages(23));
-    if (chatData?.getMessages?.messages) {
-      const formattedMessages = formatMessages(chatData?.getMessages?.messages)?.reverse();
-      setMessages(formattedMessages);
-    }
-  }, [chatData]);
+  // useEffect(() => {
+  //   // dispatch(getMessages(23));
+  //   if (chatData?.getMessages?.messages) {
+  //     const formattedMessages = formatMessages(chatData?.getMessages?.messages)?.reverse();
+  //     setMessages(formattedMessages);
+  //   }
+  // }, [chatData]);
 
-  const formatMessages = (messages) => {
-    return messages?.map((message) => {
-      return {
-        _id: message.recipient_id,
-        text: message.content,
-        createdAt: new Date(message.created_at),
-        user: {
-          _id: message.sender_id,
-          avatar: null,
+  // const formatMessages = (messages) => {
+  //   return messages?.map((message) => {
+  //     return {
+  //       _id: message.recipient_id,
+  //       text: message.content,
+  //       createdAt: new Date(message.created_at),
+  //       user: {
+  //         _id: message.sender_id,
+  //         avatar: null,
 
-          // You can add more user properties if needed, like name, avatar, etc.
-        },
-      };
-    });
-  };
-  const onSend = useCallback((newMessages) => {
-    setisLoading(true);
-    dispatch(
-      sendChat({
-        recipient_id: customerData?.uid,
-        content: newMessages[0]?.text,
-      })
-    )
-      .then((res) => {
-        setisLoading(false);
-        setisLoadingMsg(true);
-        dispatch(getMessages(res?.payload?.messagehead_id))
-          .then((res) => {
-            setisLoadingMsg(false);
-            // const formattedMessages = formatMessages(chatData?.getMessages?.messages)?.reverse();
-            // setMessages(formattedMessages);
-          })
-          .catch((error) => {
-            setisLoadingMsg(false);
-          });
-      })
-      .catch((error) => {
-        setisLoading(false), console.log('Catsasahshashahsahsahshash', error);
-      });
-  }, []);
+  //         // You can add more user properties if needed, like name, avatar, etc.
+  //       },
+  //     };
+  //   });
+  // };
+  // const onSend = useCallback((newMessages) => {
+  //   setisLoading(true);
+  //   dispatch(
+  //     sendChat({
+  //       recipient_id: customerData?.uid,
+  //       content: newMessages[0]?.text,
+  //     })
+  //   )
+  //     .then((res) => {
+  //       setisLoading(false);
+  //       setisLoadingMsg(true);
+  //       dispatch(getMessages(res?.payload?.messagehead_id))
+  //         .then((res) => {
+  //           setisLoadingMsg(false);
+  //           // const formattedMessages = formatMessages(chatData?.getMessages?.messages)?.reverse();
+  //           // setMessages(formattedMessages);
+  //         })
+  //         .catch((error) => {
+  //           setisLoadingMsg(false);
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       setisLoading(false), console.log('Catsasahshashahsahsahshash', error);
+  //     });
+  // }, []);
 
   return (
     <Modal isVisible={isVisible}>
