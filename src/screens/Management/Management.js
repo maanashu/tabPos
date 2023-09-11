@@ -183,14 +183,18 @@ export function Management() {
     isLoadingSelector([TYPES.TRACK_SESSION_SAVE], state)
   );
 
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     dispatch(getDrawerSessions());
-  //   }
-  //   if (drawerData?.getSessionHistory) {
-  //     setSessionHistoryArray(drawerData?.getSessionHistory);
-  //   }
-  // }, [drawerData?.getSessionHistory, isFocused]);
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getDrawerSessions());
+    }
+    if (drawerData?.getSessionHistory) {
+      setSessionHistoryArray(drawerData?.getSessionHistory);
+    }
+    return () => {
+      setViewCashInArray(false);
+      setViewCashOutArray(false);
+    };
+  }, [drawerData?.getSessionHistory, isFocused]);
 
   const startTrackingSesHandler = async () => {
     if (!amountCount) {
