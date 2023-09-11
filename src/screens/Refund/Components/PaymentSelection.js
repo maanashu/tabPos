@@ -1,111 +1,38 @@
-import { returnProduct } from '@/actions/DashboardAction';
-import { cardPayment, cash, Fonts, qrCodeIcon } from '@/assets';
-import { Spacer } from '@/components';
-import BackButton from '@/components/BackButton';
-import { DATA, RECIPE_DATA } from '@/constants/flatListData';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { SF, SH } from '@/theme';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
-import React from 'react';
-import { useState } from 'react';
-import { memo } from 'react';
-import { ActivityIndicator, Platform } from 'react-native';
+import React, { memo, useState } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   Image,
-  TouchableOpacity,
-  Dimensions,
   FlatList,
+  Platform,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
-import { ms, verticalScale } from 'react-native-size-matters';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { COLORS } from '../../../theme/Colors';
+import { ms, verticalScale } from 'react-native-size-matters';
+
+import { SF, SH } from '@/theme';
+import { Spacer } from '@/components';
 import InvoiceDetails from './InvoiceDetails';
+import { COLORS } from '../../../theme/Colors';
+import BackButton from '@/components/BackButton';
 import ReturnConfirmation from './ReturnConfirmation';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { RECIPE_DATA } from '@/constants/flatListData';
+import { returnProduct } from '@/actions/DashboardAction';
+import { cardPayment, cash, Fonts, qrCodeIcon } from '@/assets';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const { width } = Dimensions.get('window');
 let products = [];
 
 const PaymentSelection = ({ backHandler, orderData }) => {
   const dispatch = useDispatch();
-  const [selectedPaymentIndex, setSelectedPaymentIndex] = useState();
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState();
   const [isReturnConfirmation, setIsReturnConfirmation] = useState(false);
-
-  const totalAmountByPaymentMethod = (index) => {
-    if (index === 0) {
-      return `$100}`;
-    } else if (index === 1) {
-      return `JBR 100}`;
-    } else {
-      return `$100}`;
-    }
-  };
-
-  const renderPaymentMethod = ({ item, index }) => {
-    const selectedMethod = selectedPaymentIndex === index ? COLORS.primary : COLORS.solidGrey;
-
-    return (
-      <TouchableOpacity
-        onPress={() => setSelectedPaymentIndex(index)}
-        key={index}
-        style={[
-          styles._payBYBoxContainer,
-          {
-            borderWidth: 1,
-            borderColor: selectedMethod,
-          },
-        ]}
-      >
-        <Text
-          style={[
-            styles._payByTitle,
-            {
-              color: selectedMethod,
-            },
-          ]}
-        >
-          Pay By
-        </Text>
-        <Text
-          style={[
-            styles._payByMethod,
-            {
-              color: selectedMethod,
-            },
-          ]}
-        >
-          {item.title}
-        </Text>
-        <Text
-          style={[
-            styles._payByAmount,
-            {
-              color: selectedMethod,
-            },
-          ]}
-        >
-          {totalAmountByPaymentMethod(index)}
-        </Text>
-        <Image
-          source={item.icon}
-          style={[
-            styles._payByIcon,
-            {
-              tintColor: selectedMethod,
-            },
-          ]}
-        />
-        {index == 1 && (
-          <View style={styles.saveView}>
-            <Text style={styles.saveText1}>Save 1%</Text>
-          </View>
-        )}
-      </TouchableOpacity>
-    );
-  };
 
   const renderRecipeMethod = ({ item, index }) => {
     const selectedMethod = selectedRecipeIndex === index ? COLORS.primary : COLORS.solidGrey;

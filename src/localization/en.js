@@ -526,5 +526,7 @@ export const en = {
     applicable: 'Applicable for All Items',
     dollarLabel: 'dollar',
     percentageLabel: 'percentage',
+    inStore: 'In-store',
+    reservation: 'Reservation',
   },
 };

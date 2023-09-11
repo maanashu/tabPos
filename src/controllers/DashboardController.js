@@ -211,6 +211,7 @@ export class DashboardController {
   }
 
   static async getOrdersByInvoiceId(invoice) {
+    console.log('invoice====', invoice);
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.invoiceIdSearch + `${invoice}`;
       HttpClient.get(endpoint)
