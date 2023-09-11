@@ -113,7 +113,6 @@ export function Management() {
 
   const [leaveDatas, setLeaveData] = useState('0');
   const [clickAmount, setClickAmount] = useState();
-
   const setLeavFun = (countThird) => {
     if (countThird) {
       setLeaveId(null);
