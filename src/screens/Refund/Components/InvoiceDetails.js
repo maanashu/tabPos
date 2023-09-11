@@ -9,6 +9,7 @@ import { Spacer } from '@/components';
 import { productList } from '@/constants/flatListData';
 
 const InvoiceDetails = ({ orderData }) => {
+  console.log('orderData====', JSON.stringify(orderData));
   const renderProductItem = ({ item, index }) => (
     <View style={styles.container}>
       <View style={styles.subContainer}>
