@@ -46,7 +46,6 @@ import { useEffect } from 'react';
 const windowWidth = Dimensions.get('window').width;
 
 export function SearchScreen({ from }) {
-  console.log('from', from);
   const textInputRef = useRef();
   const dispatch = useDispatch();
   const getSearchOrders = useSelector(getDashboard);

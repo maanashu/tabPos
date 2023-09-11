@@ -139,7 +139,6 @@ export function Wallet2() {
   useEffect(() => {
     if (isFocused) {
       dispatch(getTotalTra(time, sellerID));
-      dispatch(getTotalTraType(sellerID));
     }
   }, [isFocused]);
   const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));

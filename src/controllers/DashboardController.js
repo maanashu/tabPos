@@ -213,14 +213,11 @@ export class DashboardController {
   static async getOrdersByInvoiceId(invoice) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.invoiceIdSearch + `${invoice}`;
-      console.log('endpoint====', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response======', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
-          console.log(error.msg);
           reject(error);
         });
     });
@@ -244,7 +241,6 @@ export class DashboardController {
   }
 
   static async returnProduct(data) {
-    console.log(data);
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.return;
       const body = {
@@ -254,7 +250,6 @@ export class DashboardController {
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log(response);
           Toast.show({
             position: 'bottom',
             type: 'success_toast',
@@ -264,7 +259,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log(error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

@@ -92,8 +92,6 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     }
   };
 
-  console.log('order----', orderData);
-
   return (
     <View style={styles.container}>
       {changeView === 'TotalItems' ? (

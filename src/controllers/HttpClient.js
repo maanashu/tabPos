@@ -32,6 +32,13 @@ client.interceptors.request.use(async function (config) {
       return { token: register, appName: 'merchant' };
     }
   };
+  // const getRole = () => {
+  //   if (API_URLS_USING_POS_USER_ACCESS_TOKEN.includes(config.url)) {
+  //     return { token: register, appName: 'merchant' };
+  //   } else {
+  //     return { token: user, appName: 'pos' };
+  //   }
+  // };
 
   config.headers = {
     ...config.headers,

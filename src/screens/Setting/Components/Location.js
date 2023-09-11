@@ -28,9 +28,7 @@ export function Location() {
         <View style={styles.dispalyRow}>
           <Image source={store} style={styles.teamMember} />
           <View style={styles.marginLeft}>
-            <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-              {item.address_type}
-            </Text>
+            <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>{item.address_type}</Text>
             <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
               {item.custom_address}
             </Text>
@@ -51,19 +49,15 @@ export function Location() {
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={businessTrad} style={styles.securityLogo} />
             <View style={styles.twoStepVerifiCon}>
-              <Text style={styles.twoStepText}>
-                {strings.settings.businessLocation}
-              </Text>
+              <Text style={styles.twoStepText}>{strings.settings.businessLocation}</Text>
               <Spacer space={SH(10)} />
-              <Text style={styles.securitysubhead}>
-                {strings.settings.locationsubhead}
-              </Text>
+              <Text style={styles.securitysubhead}>{strings.settings.locationsubhead}</Text>
               <Spacer space={SH(20)} />
               <View style={{ maxHeight: '82%' }}>
                 <FlatList
                   data={getUserLocation}
                   renderItem={locationRenderItem}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item) => item.id}
                 />
               </View>
             </View>

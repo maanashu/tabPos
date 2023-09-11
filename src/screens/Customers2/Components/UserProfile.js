@@ -55,6 +55,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
   const getCustomerData = useSelector(getCustomers);
   const ordersbyUserData = getCustomerData?.getOrderUser;
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
+  console.log('ordersByUser', ordersByUser);
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);

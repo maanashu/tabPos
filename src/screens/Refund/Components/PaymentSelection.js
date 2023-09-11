@@ -141,7 +141,6 @@ const PaymentSelection = ({ backHandler, orderData }) => {
 
   const onReturnHandler = () => {
     orderData?.order?.order_details?.map((item, index) => {
-      console.log('item', item);
       products.push({ id: item?.product_id, qty: item?.qty });
     });
     const data = {

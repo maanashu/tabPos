@@ -587,7 +587,6 @@ export const styles = StyleSheet.create({
     paddingBottom: ms(10),
     position: 'absolute',
     alignSelf: 'center',
-    borderWidth: 1,
   },
 
   addCartConHeader: {

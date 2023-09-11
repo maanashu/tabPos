@@ -127,7 +127,6 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
           </View>
         );
       } else {
-        // console.log('else----');
         return (
           <View
             style={{

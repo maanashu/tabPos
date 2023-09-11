@@ -38,7 +38,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
 import { getCustomers } from '@/selectors/CustomersSelector';
-import { getTotakTraDetail, getTotalTra } from '@/actions/WalletAction';
+import { getTotakTraDetail, getTotalTra, getTotalTraType } from '@/actions/WalletAction';
 import { getWallet } from '@/selectors/WalletSelector';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
@@ -79,8 +79,8 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   const [walletHome, setWalletHome] = useState(true);
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
 
-  const [transcationTypeId, setTranscationTypeId] = useState(2);
-  const [transaction, setTransaction] = useState({ modeOfPayment: 'jbr' });
+  const [transcationTypeId, setTranscationTypeId] = useState(1);
+  const [transaction, setTransaction] = useState({ modeOfPayment: 'all' });
   const [show, setShow] = useState(false);
   const [defaultDate, setDefaultDate] = useState(new Date());
   const [formatedDate, setFormatedDate] = useState();
@@ -94,12 +94,12 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   const orderPayloadLength = Object.keys(getWalletData?.getTotakTraDetail)?.length;
 
   const transactionArray = [
-    // {
-    //   id: 1,
-    //   modeOfPayment: 'all',
-    //   count: transactionTypeArray?.[0]?.count ?? '0',
-    //   type: 'All',
-    // },
+    {
+      id: 1,
+      modeOfPayment: 'all',
+      count: transactionTypeArray?.[0]?.count ?? '0',
+      type: 'All',
+    },
     {
       id: 2,
       modeOfPayment: 'jbr',
@@ -109,13 +109,13 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
     {
       id: 3,
       modeOfPayment: 'cash',
-      count: transactionTypeArray?.[2]?.count ?? '0',
+      count: transactionTypeArray?.[3]?.count ?? '0',
       type: 'Cash',
     },
     {
       id: 4,
       modeOfPayment: 'card',
-      count: transactionTypeArray?.[3]?.count ?? '0',
+      count: transactionTypeArray?.[2]?.count ?? '0',
       type: 'Card',
     },
   ];
@@ -134,6 +134,15 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   useEffect(() => {
     const data = {
       dayWiseFilter: time,
+      calendarDate: formatedDate,
+      sellerID: sellerID,
+    };
+    dispatch(getTotalTraType(data));
+  }, [selectId, formatedDate]);
+
+  useEffect(() => {
+    const data = {
+      dayWiseFilter: time,
       transactionType: transaction?.modeOfPayment,
       page: page,
       limit: paginationModalValue,
@@ -147,7 +156,7 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
     setDefaultDate(selectedDate);
     const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
-    setDate(fullDate);
+    setDate(formattedDate);
     // if (weeklyTransaction) {
     //   setSelectId2(0);
     //   dispatch(getTotakTraDetail(formattedDate, sellerID, 'all'));
@@ -262,14 +271,13 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
 
   const TransactionSelectItem = ({ item, onPress, borderColor, color, fontFamily }) => (
     <TouchableOpacity onPress={onPress} style={[styles.allJbrCon, { borderColor }]}>
-      {/* {isTotalTraType ? (
+      {isTotalTraType ? (
         <ActivityIndicator size="small" color={COLORS.primary} />
-      ) : ( */}
-
-      <Text style={[styles.allJbrText, { color, fontFamily }]}>
-        {item.type} ({item.count})
-      </Text>
-      {/* )} */}
+      ) : (
+        <Text style={[styles.allJbrText, { color, fontFamily }]}>
+          {item.type} ({item.count})
+        </Text>
+      )}
     </TouchableOpacity>
   );
 
@@ -317,8 +325,7 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
                   backgroundColor: selectId == 0 ? COLORS.primary : COLORS.textInputBackground,
                 },
               ]}
-              // onPress={() => setShow(!show)}
-              onPress={() => alert('Date according data in progress from backend')}
+              onPress={() => setShow(!show)}
             >
               <Image
                 source={newCalendar}
