@@ -3,13 +3,11 @@ import {
   View,
   Text,
   Image,
-  FlatList,
   TextInput,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
   Platform,
-  ActivityIndicator,
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
@@ -21,7 +19,6 @@ import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { getProductsBySku } from '@/actions/DashboardAction';
 import { getDashboard } from '@/selectors/DashboardSelector';
-import { colorsData, sizeData } from '@/constants/flatListData';
 import { categoryshoes, cross, Fonts, search_light } from '@/assets';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -68,10 +65,6 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
     isLoadingSelector([DASHBOARDTYPE.GET_PRODUCTS_BY_SKU], state)
   );
 
-  // {
-  //   console.log('getProducts?.product_detail', getProducts?.product_detail);
-  // }
-
   const changeView = () => {
     if (Object.keys(getProducts).length > 0) {
       return (
@@ -87,7 +80,7 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
           ]}
           onPress={() => {
             setSelectedItem(getProducts?.product_detail?.id);
-            onPressCart(getProducts?.product_detail);
+            onPressCart(getProducts?.product_detail?.id);
           }}
         >
           <View style={{ flexDirection: 'row' }}>
@@ -199,7 +192,6 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
           <TouchableOpacity
             disabled={Object.keys(getProducts).length > 0 ? false : true}
             onPress={() => {
-              // onPressCart(selectedItem);
               setIsVisible(false);
             }}
             style={[

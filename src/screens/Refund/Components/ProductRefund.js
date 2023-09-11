@@ -27,6 +27,7 @@ import {
   PaymentDone,
 } from '@/assets';
 import PaymentSelection from './PaymentSelection';
+import { useEffect } from 'react';
 
 const { width, height } = Dimensions.get('window');
 
@@ -37,6 +38,24 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   const [selectType, setSelectType] = useState('dollar');
   const [buttonText, setButtonText] = useState('Apply Refund ');
   const [changeView, setChangeView] = useState('TotalItems');
+  const [refundAmount, setRefundAmount] = useState('');
+  const [orders, setOrders] = useState();
+
+  useEffect(() => {
+    setOrders(orderData?.order?.order_details);
+  }, [orderData]);
+
+  const refundHandler = (key, newText) => {
+    const updatedDataArray = orders.map((item, index) => {
+      if (index === key) {
+        return { ...item, refundAmount: newText };
+      }
+      return item;
+    });
+    setOrders(updatedDataArray);
+  };
+
+  console.log(JSON.stringify(orders));
 
   const renderProductItem = ({ item, index }) => (
     <View style={styles.blueListData}>
@@ -64,11 +83,30 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
             </Text>
           </View>
 
-          <View style={styles.productCartBody}>
-            <Text style={styles.blueListDataText} numberOfLines={1}>
-              {selectType === 'dollar' ? `$${amount}` : `${amount}%`}
-            </Text>
-          </View>
+          {applyEachItem ? (
+            <View style={styles.productCartBody}>
+              <TextInput
+                style={[
+                  styles.productCartBody,
+                  {
+                    textAlign: 'center',
+                    fontFamily: Fonts.Regular,
+                    borderRadius: 5,
+                    backgroundColor: COLORS.blue_shade,
+                  },
+                ]}
+                value={item?.refundAmount}
+                keyboardType={'number-pad'}
+                onChangeText={(text) => refundHandler(index, text)}
+              />
+            </View>
+          ) : (
+            <View style={styles.productCartBody}>
+              <Text style={styles.blueListDataText} numberOfLines={1}>
+                {selectType === 'dollar' ? `$${amount}` : `${amount}%`}
+              </Text>
+            </View>
+          )}
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
@@ -92,8 +130,6 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     }
   };
 
-  console.log('order----', orderData);
-
   return (
     <View style={styles.container}>
       {changeView === 'TotalItems' ? (
@@ -103,51 +139,55 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.leftMainViewStyle}>
               <View style={styles.rowStyle}>
-                <View style={styles.applicableViewStyle}>
-                  {applicableIsCheck ? (
-                    <TouchableOpacity onPress={() => setApplicableIsCheck(!applicableIsCheck)}>
-                      <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity onPress={() => setApplicableIsCheck(!applicableIsCheck)}>
-                      <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
-                    </TouchableOpacity>
-                  )}
-                  <Text style={styles.applicableTextStyle}>{strings.returnOrder.applicable}</Text>
-                </View>
-
-                <View style={styles.applicableViewStyle}>
-                  {applyEachItem ? (
-                    <TouchableOpacity onPress={() => setApplyEachItem(!applyEachItem)}>
-                      <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity onPress={() => setApplyEachItem(!applyEachItem)}>
-                      <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
-                    </TouchableOpacity>
-                  )}
-                  <Text style={styles.applicableTextStyle}>
-                    {strings.returnOrder.applyEachItem}
-                  </Text>
-                </View>
+                {!applyEachItem ? (
+                  <View style={styles.applicableViewStyle}>
+                    {applicableIsCheck ? (
+                      <TouchableOpacity onPress={() => setApplicableIsCheck(!applicableIsCheck)}>
+                        <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity onPress={() => setApplicableIsCheck(!applicableIsCheck)}>
+                        <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
+                      </TouchableOpacity>
+                    )}
+                    <Text style={styles.applicableTextStyle}>{strings.returnOrder.applicable}</Text>
+                  </View>
+                ) : (
+                  <View style={styles.applicableViewStyle}>
+                    <View>
+                      <Image
+                        source={blankCheckBox}
+                        style={[styles.checkBoxIconStyle, { tintColor: COLORS.solidGrey }]}
+                      />
+                    </View>
+                    <Text style={[styles.applicableTextStyle, { color: COLORS.solidGrey }]}>
+                      {strings.returnOrder.applicable}
+                    </Text>
+                  </View>
+                )}
 
                 <View style={styles.amountTypeView}>
                   <TextInput
                     value={amount}
+                    editable={applyEachItem ? false : true}
                     keyboardType={'number-pad'}
                     style={styles.textInputStyle}
                     onChangeText={(text) => setAmount(text)}
+                    placeholderTextColor={COLORS.solidGrey}
                     placeholder={selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '% 0'}
                   />
 
                   <View style={styles.typeViewStyle}>
                     <TouchableOpacity
+                      disabled={applyEachItem ? true : false}
                       onPress={() => setSelectType(strings.returnOrder.dollarLabel)}
                       style={[
                         styles.dollarViewStyle,
                         {
                           backgroundColor:
-                            selectType === strings.returnOrder.dollarLabel
+                            selectType === strings.returnOrder.dollarLabel && applyEachItem
+                              ? COLORS.solidGrey
+                              : selectType === strings.returnOrder.dollarLabel && !applyEachItem
                               ? COLORS.gerySkies
                               : COLORS.white,
                           borderTopLeftRadius: 5,
@@ -171,13 +211,16 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
+                      disabled={applyEachItem ? true : false}
                       onPress={() => setSelectType(strings.returnOrder.percentageLabel)}
                       style={[
                         styles.dollarViewStyle,
                         {
                           paddingHorizontal: 10,
                           backgroundColor:
-                            selectType === strings.returnOrder.percentageLabel
+                            selectType === strings.returnOrder.percentageLabel && applyEachItem
+                              ? COLORS.solidGrey
+                              : selectType === strings.returnOrder.percentageLabel && !applyEachItem
                               ? COLORS.gerySkies
                               : COLORS.white,
                           borderTopRightRadius: 5,
@@ -201,6 +244,45 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                     </TouchableOpacity>
                   </View>
                 </View>
+
+                {applicableIsCheck ? (
+                  <View style={styles.applicableViewStyle}>
+                    <View>
+                      <Image
+                        source={blankCheckBox}
+                        style={[styles.checkBoxIconStyle, { tintColor: COLORS.solidGrey }]}
+                      />
+                    </View>
+                    <Text style={[styles.applicableTextStyle, { color: COLORS.solidGrey }]}>
+                      {strings.returnOrder.applyEachItem}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={styles.applicableViewStyle}>
+                    {applyEachItem ? (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setAmount('');
+                          setApplyEachItem(!applyEachItem);
+                        }}
+                      >
+                        <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setAmount('');
+                          setApplyEachItem(!applyEachItem);
+                        }}
+                      >
+                        <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
+                      </TouchableOpacity>
+                    )}
+                    <Text style={styles.applicableTextStyle}>
+                      {strings.returnOrder.applyEachItem}
+                    </Text>
+                  </View>
+                )}
 
                 {buttonText === 'Applied' ? (
                   <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
@@ -260,11 +342,11 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
               <FlatList
                 scrollEnabled
+                data={orders}
+                extraData={orders}
                 renderItem={renderProductItem}
-                data={orderList}
-                extraData={orderList}
                 showsVerticalScrollIndicator={false}
-                keyExtractor={(index) => index.toString()}
+                keyExtractor={(item) => item?.id?.toString()}
                 contentContainerStyle={styles.contentContainerStyle}
               />
             </View>
@@ -337,8 +419,8 @@ const styles = StyleSheet.create({
     height: height,
   },
   rowStyle: {
+    alignSelf: 'flex-end',
     flexDirection: 'row',
-    // justifyContent: 'flex-end',
     alignItems: 'center',
     paddingVertical: ms(7),
     paddingHorizontal: ms(10),
@@ -350,8 +432,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkBoxIconStyle: {
-    width: scale(7),
-    height: scale(7),
+    width: scale(9),
+    height: scale(9),
     resizeMode: 'contain',
   },
   applicableTextStyle: {

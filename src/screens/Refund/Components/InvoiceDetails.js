@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 
@@ -7,8 +7,6 @@ import { barcode, Fonts, logo_full } from '@/assets';
 import { SH, COLORS } from '@/theme';
 import { Spacer } from '@/components';
 import { productList } from '@/constants/flatListData';
-
-const { width } = Dimensions.get('window');
 
 const InvoiceDetails = ({ orderData }) => {
   const renderProductItem = ({ item, index }) => (

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { ScreenWrapper } from '@/components';
-import { View } from 'react-native';
-import { styles } from '@/screens/Refund/Refund.styles';
 import moment from 'moment';
-import { SearchScreen } from './Components';
+import { SearchScreen } from './Components/SearchScreen';
 
 moment.suppressDeprecationWarnings = true;
 
