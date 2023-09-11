@@ -1462,4 +1462,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(5),
     borderRadius: SW(5),
   },
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
 });

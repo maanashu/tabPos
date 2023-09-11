@@ -14,14 +14,11 @@ export class WalletController {
       } else {
         endpoint = `${BASE_URL}?${sellerParam}&date=${date}`;
       }
-      console.log('Endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           reject(error);
         });
     });
@@ -57,11 +54,9 @@ export class WalletController {
 
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           reject(error);
         });
     });

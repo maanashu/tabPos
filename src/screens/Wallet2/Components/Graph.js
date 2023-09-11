@@ -29,7 +29,7 @@ import {
 import { BarChartCom, Spacer } from '@/components';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
-import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { TYPES } from '@/Types/WalletTypes';
 import { graphOptions } from '@/constants/flatListData';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -54,7 +54,7 @@ const Graph = () => {
   const [showCash, setShowCash] = useState(true);
   const [showCard, setShowCard] = useState(true);
 
-  const isGraphOrder = useSelector((state) => isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state));
+  const isLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
 
   const checkedIndices = graphData
     .filter((checkbox) => checkbox.checked)
@@ -192,8 +192,8 @@ const Graph = () => {
   };
   const convertData = () => {
     const DATA = getTotalTraData?.graphData;
-    const barData = DATA.labels.flatMap((day, index) => {
-      const values = DATA.datasets.map((dataset) => dataset[index]);
+    const barData = DATA?.labels?.flatMap((day, index) => {
+      const values = DATA?.datasets?.map((dataset) => dataset[index]);
       const setOfThree = [];
       setOfThree.push({
         value: values[0] || 0,
@@ -226,8 +226,8 @@ const Graph = () => {
 
   const onClickCheckBox = (type, value) => {
     const DATA = getTotalTraData?.graphData;
-    const barData = DATA.labels.flatMap((day, index) => {
-      const values = DATA.datasets.map((dataset) => dataset[index]);
+    const barData = DATA?.labels?.flatMap((day, index) => {
+      const values = DATA?.datasets?.map((dataset) => dataset[index]);
       const setOfThree = [];
       if (type === 'JBR') {
         setOfThree.push({
@@ -310,6 +310,7 @@ const Graph = () => {
           />
           <Text style={styles.varientTextStyle}>JBR Coin</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => {
             setShowCash((prevShowJBR) => {
@@ -343,41 +344,47 @@ const Graph = () => {
           <Text style={styles.varientTextStyle}>Card</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ marginTop: ms(10) }}>
-        {/* <BarChartCom
-          barWid={Dimensions.get('window').width * 0.82}
-          barHei={Platform.OS === 'android' ? ms(170) : SH(270)}
-          barSpacing={SW(35.2)}
-          barW={SW(3.5)}
-          // labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
-          initialSpacing={SH(10)}
-          // data={dummyData}
-          data={getDeliveryData?.graphOrders}
-          spacing={SW(45)}
-          interval={2}
-          dateInterval={5}
-        /> */}
+      {isLoad ? (
+        <View style={styles.loaderView}>
+          <ActivityIndicator size={'small'} color={COLORS.primary} />
+        </View>
+      ) : (
+        <View style={{ marginTop: ms(10) }}>
+          {/* <BarChartCom
+        barWid={Dimensions.get('window').width * 0.82}
+        barHei={Platform.OS === 'android' ? ms(170) : SH(270)}
+        barSpacing={SW(35.2)}
+        barW={SW(3.5)}
+        // labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
+        initialSpacing={SH(10)}
+        // data={dummyData}
+        data={getDeliveryData?.graphOrders}
+        spacing={SW(45)}
+        interval={2}
+        dateInterval={5}
+      /> */}
 
-        <BarChart
-          data={modifyData}
-          barWidth={SW(3.5)}
-          spacing={SW(35.2)}
-          roundedTop
-          // hideRules
-          xAxisThickness={1}
-          yAxisThickness={0}
-          xAxisType={'dashed'}
-          yAxisType={'dashed'}
-          xAxisColor={`rgba(39, 90, 255, 1)`}
-          yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
-          noOfSections={4}
-          // maxValue={100}
-          yAxisLength={350}
-          height={Platform.OS === 'android' ? ms(170) : SH(270)}
-          width={Dimensions.get('window').width * 0.82}
-          initialSpacing={SH(10)}
-        />
-      </View>
+          <BarChart
+            data={modifyData}
+            barWidth={SW(3.5)}
+            spacing={SW(35.2)}
+            roundedTop
+            // hideRules
+            xAxisThickness={1}
+            yAxisThickness={0}
+            xAxisType={'dashed'}
+            yAxisType={'dashed'}
+            xAxisColor={`rgba(39, 90, 255, 1)`}
+            yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
+            noOfSections={4}
+            // maxValue={100}
+            yAxisLength={350}
+            height={Platform.OS === 'android' ? ms(170) : SH(270)}
+            width={Dimensions.get('window').width * 0.82}
+            initialSpacing={SH(10)}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -435,5 +442,6 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    zIndex: 999,
   },
 });

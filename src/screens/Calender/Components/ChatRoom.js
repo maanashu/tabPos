@@ -52,7 +52,6 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
   useFocusEffect(
     React.useCallback(() => {
       socket.on('connect', () => {
-        console.log(socket?.id);
         setIsSocketConnected(true);
       });
       return () => {
@@ -69,15 +68,12 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
       idtype: 'partnerid',
     });
     socket.on('get_messages', (message) => {
-      console.log('object,messa', JSON.stringify(message));
-
       const arr = message?.data?.data.map((item) => {
         return {
           _id: item?._id,
           text: item?.content,
         };
       });
-      console.log('Sdsad', arr);
       setMessages(arr);
       // setMessages((previousMessages) =>
       //   GiftedChat.append(previousMessages, {
@@ -110,7 +106,6 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
       content: messages[0]?.text,
       chatHeadType: 'directchat',
     };
-    console.log('Params', params);
     socket.emit('send_message', { params });
 
     // socket.on('send_message', (message) => {
@@ -121,12 +116,9 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
       id: customerData?.uid,
       idtype: 'partnerid',
     });
-    socket.on('get_messages', (message) => {
-      console.log('object,messa', JSON.stringify(message));
-    });
+    socket.on('get_messages', (message) => {});
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
   }, []);
-  console.log('ss', JSON.stringify(messages));
 
   const onDeleteMessage = () => {
     socket.emit('delete_messagehead', {

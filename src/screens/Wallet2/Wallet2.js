@@ -60,7 +60,7 @@ import { getWallet } from '@/selectors/WalletSelector';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
-import { TYPES } from '@/Types/WalletTypes';
+import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
 import { getOrderData } from '@/actions/AnalyticsAction';
@@ -142,13 +142,15 @@ export function Wallet2() {
       dispatch(getTotalTra(time, sellerID));
     }
   }, [isFocused]);
-  const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
-  const isTotalTradetail = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state)
-  );
-  const isTotalTraType = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_TOTAL_TRA_TYPE], state)
-  );
+
+  const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
+  // const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
+  // const isTotalTradetail = useSelector((state) =>
+  //   isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state)
+  // );
+  // const isTotalTraType = useSelector((state) =>
+  //   isLoadingSelector([TYPES.GET_TOTAL_TRA_TYPE], state)
+  // );
   let desiredModeOfPayment = historytype; // Replace with the desired mode_of_payment value or "all"
   let filteredData;
 
@@ -433,9 +435,11 @@ export function Wallet2() {
             setWeeklyTrasaction(false);
             setWalletHome(true);
           }}
-          orderClickHandler={(orderId) => {
-            setInvoiceDetail(true);
-            dispatch(getOrderData(orderId));
+          orderClickHandler={async (orderId) => {
+            const res = await dispatch(getOrderData(orderId));
+            if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
+              setInvoiceDetail(true);
+            }
           }}
         />
       );
@@ -446,6 +450,11 @@ export function Wallet2() {
       <View style={weeklyTransaction ? styles.bgWhitecontainer : styles.container}>
         {bodyView()}
       </View>
+      {onLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
+        </View>
+      ) : null}
 
       <Modal
         isVisible={show}

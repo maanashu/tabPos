@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
-import { verticalScale, moderateScale } from 'react-native-size-matters';
+import { verticalScale, moderateScale, ms } from 'react-native-size-matters';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -80,8 +80,8 @@ export const styles = StyleSheet.create({
   },
   cashDrawerText: {
     fontFamily: Fonts.SemiBold,
-    // color: COLORS.solid_grey,
-    fontSize: SF(15),
+    color: COLORS.black,
+    fontSize: SF(19),
   },
   drawerIdText: {
     fontFamily: Fonts.Regular,
@@ -290,7 +290,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: verticalScale(7),
-    paddingHorizontal: moderateScale(12),
+    // paddingHorizontal: moderateScale(12),
   },
   buttonStyle: {
     width: windowWidth - 110,
@@ -679,5 +679,16 @@ export const styles = StyleSheet.create({
   },
   addCashDrop: {
     flex: Platform.OS === 'android' ? 1 : 0,
+  },
+  dropDownPayment: {
+    height: ms(4),
+    width: ms(4),
+    marginLeft: ms(5),
+  },
+  activeDropDownPayment: {
+    height: ms(4),
+    width: ms(4),
+    marginLeft: ms(5),
+    transform: [{ rotate: '180deg' }],
   },
 });
