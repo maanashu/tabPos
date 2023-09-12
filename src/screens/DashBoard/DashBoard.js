@@ -205,8 +205,8 @@ export function DashBoard({ navigation }) {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getOrderDeliveries(sellerID, page));
-      // startTrackingFun();
+      // dispatch(getOrderDeliveries(sellerID, page));
+      startTrackingFun();
       // clearInput();
       // dispatch(getTotalSaleAction(sellerID));
       // dispatch(posLoginDetail());
