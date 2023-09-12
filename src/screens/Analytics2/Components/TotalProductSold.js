@@ -65,7 +65,9 @@ export function TotalProductSold() {
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.order?.total_items}</Text>
+        {/* <Text style={styles.revenueDataText}>{item?.order?.total_items}</Text> */}
+
+        <Text style={styles.revenueDataText}>{item?.qty}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
