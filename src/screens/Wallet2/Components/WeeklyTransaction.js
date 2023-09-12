@@ -93,6 +93,8 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   };
   const orderPayloadLength = Object.keys(getWalletData?.getTotakTraDetail)?.length;
 
+  const startIndex = (page - 1) * paginationModalValue + 1;
+
   const transactionArray = [
     {
       id: 1,
@@ -455,11 +457,25 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
           <View style={[styles.unionCon, { marginLeft: 7 }]}>
             <Image source={mask} style={styles.unionStyle} />
           </View>
-          <Text style={styles.paginationCount}>
+          <View
+            style={{
+              width: ms(70),
+            }}
+          >
+            {isTotalTradetail ? (
+              <ActivityIndicator size="small" />
+            ) : (
+              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
+                {startIndex} - {startIndex + (getTotalTraDetail?.length - 1)} of{' '}
+                {paginationData?.total}
+              </Text>
+            )}
+          </View>
+          {/* <Text style={styles.paginationCount}>
             {' '}
             {'1-20 of '}
             {paginationData?.total}
-          </Text>
+          </Text> */}
           <View style={[styles.unionCon, { marginRight: 7 }]}>
             <Image
               source={maskRight}
@@ -599,73 +615,76 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
                   <Text style={styles.userNotFound}>Order not found</Text>
                 </View>
               ) : (
-                getTotalTraDetail?.map((item, index) => (
-                  <TouchableOpacity
-                    style={[styles.tableDataCon, { zIndex: -9 }]}
-                    key={index}
-                    onPress={() => orderClickHandler(item?.id)}
-                  >
-                    <View style={styles.displayFlex}>
-                      <View style={styles.tableHeaderLeft}>
-                        <Text style={styles.tableTextDataFirst}>{index + 1}</Text>
-                        <View
-                          style={{
-                            flexDirection: 'column',
-                            marginLeft: 30,
-                          }}
-                        >
-                          <Text style={styles.tableTextData}>
-                            {item.created_at
-                              ? moment(item.created_at).format('ll')
-                              : 'date not found'}
-                          </Text>
-                          <Text style={[styles.tableTextData, { color: COLORS.gerySkies }]}>
-                            {item.created_at
-                              ? moment(item.created_at).format('h:mm A')
-                              : 'date not found'}
-                          </Text>
+                getTotalTraDetail?.map((item, index) => {
+                  const currentIndex = startIndex + index;
+                  return (
+                    <TouchableOpacity
+                      style={[styles.tableDataCon, { zIndex: -9 }]}
+                      key={index}
+                      onPress={() => orderClickHandler(item?.id)}
+                    >
+                      <View style={styles.displayFlex}>
+                        <View style={styles.tableHeaderLeft}>
+                          <Text style={styles.tableTextDataFirst}>{currentIndex}</Text>
+                          <View
+                            style={{
+                              flexDirection: 'column',
+                              marginLeft: 30,
+                            }}
+                          >
+                            <Text style={styles.tableTextData}>
+                              {item.created_at
+                                ? moment(item.created_at).format('ll')
+                                : 'date not found'}
+                            </Text>
+                            <Text style={[styles.tableTextData, { color: COLORS.gerySkies }]}>
+                              {item.created_at
+                                ? moment(item.created_at).format('h:mm A')
+                                : 'date not found'}
+                            </Text>
+                          </View>
                         </View>
-                      </View>
-                      <View style={styles.tableHeaderRight}>
-                        <Text style={[styles.tableTextData, { fontSize: SF(12) }]}>
-                          {item.transaction_id ?? null}
-                        </Text>
-                        <Spacer horizontal space={ms(35)} />
-                        <Text style={styles.tableTextData}>
-                          {DELIVERY_MODE[item?.delivery_option]}
-                        </Text>
-                        <Text style={[styles.tableTextData, { marginLeft: ms(15) }]}>
-                          {item?.mode_of_payment}
-                        </Text>
-                        <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
+                        <View style={styles.tableHeaderRight}>
+                          <Text style={[styles.tableTextData, { fontSize: SF(12) }]}>
+                            {item.transaction_id ?? null}
+                          </Text>
+                          <Spacer horizontal space={ms(35)} />
+                          <Text style={styles.tableTextData}>
+                            {DELIVERY_MODE[item?.delivery_option]}
+                          </Text>
+                          <Text style={[styles.tableTextData, { marginLeft: ms(15) }]}>
+                            {item?.mode_of_payment}
+                          </Text>
+                          <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
 
-                        <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
-                        <View
-                          style={{
-                            marginLeft: ms(-15),
-                          }}
-                        >
-                          <Text style={styles.tableTextData}>
-                            {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
-                          </Text>
-                        </View>
-                        <View
-                          style={{
-                            width: SF(110),
-                            borderRadius: ms(3),
-                            backgroundColor: COLORS.bluish_green,
-                            alignItems: 'center',
-                            height: SH(24),
-                            justifyContent: 'center',
-                            marginLeft: ms(-35),
-                          }}
-                        >
-                          <Text style={styles.tableTextDataCom}>{statusFun(item.status)}</Text>
+                          <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
+                          <View
+                            style={{
+                              marginLeft: ms(-15),
+                            }}
+                          >
+                            <Text style={styles.tableTextData}>
+                              {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              width: SF(110),
+                              borderRadius: ms(3),
+                              backgroundColor: COLORS.bluish_green,
+                              alignItems: 'center',
+                              height: SH(24),
+                              justifyContent: 'center',
+                              marginLeft: ms(-35),
+                            }}
+                          >
+                            <Text style={styles.tableTextDataCom}>{statusFun(item.status)}</Text>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  </TouchableOpacity>
-                ))
+                    </TouchableOpacity>
+                  );
+                })
               )}
             </ScrollView>
           </View>

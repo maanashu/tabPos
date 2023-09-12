@@ -744,15 +744,14 @@ export class RetailController {
         ? {
             cart_id: data.cartid,
             user_id: data.userId,
-            tips: data.tips,
+            // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
           }
         : {
             cart_id: data.cartid,
-            tips: data.tips,
+            // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
           };
-
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response?.msg === 'Order placed successfully!') {

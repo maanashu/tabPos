@@ -255,10 +255,20 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
           <View style={styles.unionCon}>
             <Image source={mask} style={styles.unionStyle} />
           </View>
-          <Text style={styles.paginationCount}>
-            {'1-20 of '}
-            {paginationData?.total}
-          </Text>
+          <View
+            style={{
+              width: ms(70),
+            }}
+          >
+            {isOrderUserLoading ? (
+              <ActivityIndicator size="small" />
+            ) : (
+              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
+                {startIndex} - {startIndex + (ordersByUser?.length - 1)} of {paginationData?.total}
+              </Text>
+            )}
+          </View>
+
           <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
             <Image
               source={maskRight}
@@ -394,7 +404,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
                         </View>
                         <View style={styles.profileheaderChildView}>
                           <Text style={styles.tableTextData} numberOfLines={1}>
-                            {item?.total_items} times
+                            {item?.total_items ?? '1'}
                           </Text>
                         </View>
                         <View style={styles.profileheaderChildView}>

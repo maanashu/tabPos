@@ -124,9 +124,7 @@ export const ChatRoom = ({ isVisible, setIsVisible, customerData, customerAddres
     socket.emit('delete_messagehead', {
       chathead_id: '64edd095f73f461358b9a985',
     });
-    socket.on('delete_messagehead', (message) => {
-      console.log('Deleted', JSON.stringify(message));
-    });
+    socket.on('delete_messagehead', (message) => {});
   };
   const renderBubble = (props) => {
     return (

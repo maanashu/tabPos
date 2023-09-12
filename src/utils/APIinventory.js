@@ -174,4 +174,5 @@ export const API_URLS_USING_POS_USER_ACCESS_TOKEN = [
   USER_URL + `drawer_management/drawer-session/history?drawer_id=${posDrawerId}`,
   // USER_URL + ApiUserInventory.loginPosuser,
   // USER_URL + ApiUserInventory.getPosUsers + `?page=1&limit=10&seller_id=${sellerID}`,
+  // USER_URL + ApiUserInventory.getSetting + `?app_name=pos`,
 ];

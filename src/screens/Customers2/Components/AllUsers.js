@@ -63,6 +63,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
   const [ind, setInd] = useState();
+  const [indexStart, setIndexStart] = useState();
 
   // useEffect(() => {
   //   if (paginationModalValue == 10) {
@@ -100,6 +101,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   };
   const startIndex = (page - 1) * paginationModalValue + 1;
   const endIndex = page * paginationModalValue;
+  // console.log('startIndex', startIndex);
 
   const isCustomerLoad = useSelector((state) => isLoadingSelector([TYPES.GET_USER_ORDER], state));
   const onChangeDate = (selectedDate) => {
@@ -296,7 +298,19 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
           <View style={styles.unionCon}>
             <Image source={mask} style={styles.unionStyle} />
           </View>
-          <Text style={styles.paginationCount}>{`1-20 of ${paginationData?.total}`}</Text>
+          <View
+            style={{
+              width: ms(70),
+            }}
+          >
+            {isCustomerLoad ? (
+              <ActivityIndicator size="small" />
+            ) : (
+              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
+                {startIndex} - {startIndex + (customerArray?.length - 1)} of {paginationData?.total}
+              </Text>
+            )}
+          </View>
           <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
             <Image
               source={maskRight}
@@ -371,6 +385,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
               ) : (
                 customerArray?.map((item, index) => {
                   const currentIndex = startIndex + index;
+                  // setIndexStart(index);
                   return (
                     <TouchableOpacity
                       key={index}

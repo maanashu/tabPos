@@ -55,8 +55,6 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     setOrders(updatedDataArray);
   };
 
-  console.log(JSON.stringify(orders));
-
   const renderProductItem = ({ item, index }) => (
     <View style={styles.blueListData}>
       <View style={styles.displayflex}>
