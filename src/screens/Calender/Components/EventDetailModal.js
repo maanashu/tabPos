@@ -131,41 +131,44 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
           >
             <Image source={crossButton} style={styles.crossStl} />
           </TouchableOpacity>
-          <View style={[styles.customerDetailContainer, { marginTop: ms(15) }]}>
-            <Text style={styles._eventTitle}>Customer:</Text>
+          {userDetails && (
+            <View style={[styles.customerDetailContainer, { marginTop: ms(15) }]}>
+              <Text style={styles._eventTitle}>Customer:</Text>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: ms(5),
-                justifyContent: 'space-between',
-              }}
-            >
-              <ProfileImage
-                source={{ uri: userDetails?.profile_photo }}
-                style={styles.customerUserProfile}
-              />
-              <View style={{ marginLeft: ms(6), flex: 1 }}>
-                <Text style={styles.customerName}>
-                  {userDetails?.firstname + ' ' + userDetails?.lastname}
-                </Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image source={pin} style={styles.eventAddressIcon} />
-                  <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: ms(5),
+                  justifyContent: 'space-between',
+                }}
+              >
+                <ProfileImage
+                  source={{ uri: userDetails?.profile_photo }}
+                  style={styles.customerUserProfile}
+                />
+                <View style={{ marginLeft: ms(6), flex: 1 }}>
+                  <Text style={styles.customerName}>
+                    {userDetails?.firstname + ' ' + userDetails?.lastname}
+                  </Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={pin} style={styles.eventAddressIcon} />
+                    <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
+                  </View>
+                </View>
+                <View style={styles.EventDetailoptionsContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setisShowChatModal(true);
+                    }}
+                  >
+                    <Image source={chatIcon} style={styles.chatIconStl} />
+                  </TouchableOpacity>
                 </View>
               </View>
-              <View style={styles.EventDetailoptionsContainer}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setisShowChatModal(true);
-                  }}
-                >
-                  <Image source={chatIcon} style={styles.chatIconStl} />
-                </TouchableOpacity>
-              </View>
             </View>
-          </View>
-          <View style={styles.assignedContainer}>
+          )}
+
+          <View style={[styles.assignedContainer, !userDetails && { marginTop: ms(15) }]}>
             <Text style={styles._eventTitle}>Assigned:</Text>
 
             <View style={{ flexDirection: 'row', marginTop: ms(5) }}>

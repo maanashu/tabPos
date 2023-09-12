@@ -20,29 +20,30 @@ const EventItemCard = ({ item, index }) => {
 
   return (
     <View style={styles.eventItemContainer}>
-      <View style={styles.customerDetailContainer}>
-        <Text style={styles._eventTitle}>Customer:</Text>
+      {userDetails && (
+        <View style={styles.customerDetailContainer}>
+          <Text style={styles._eventTitle}>Customer:</Text>
 
-        <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
-          <ProfileImage
-            source={{ uri: userDetails?.profile_photo }}
-            style={styles.customerUserProfile}
-          />
-          <View style={{ marginLeft: ms(6) }}>
-            <Text style={styles.customerName}>
-              {userDetails.firstname + ' ' + userDetails.lastname}
-            </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image source={pin} style={styles.eventAddressIcon} />
-              <Text style={styles.eventAddress}>{userAddress.street_address}</Text>
+          <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
+            <ProfileImage
+              source={{ uri: userDetails?.profile_photo }}
+              style={styles.customerUserProfile}
+            />
+            <View style={{ marginLeft: ms(6) }}>
+              <Text style={styles.customerName}>
+                {userDetails?.firstname + ' ' + userDetails?.lastname}
+              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image source={pin} style={styles.eventAddressIcon} />
+                <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-
-      <View style={{ marginHorizontal: ms(10) }}>
+      )}
+      <View style={[{ marginHorizontal: ms(10) }, !userDetails && { marginTop: ms(5) }]}>
         <Text style={styles._eventTitle}>Service Requested:</Text>
-        <Text style={styles.hairCutTitle}>{appointmentDetail.product_name}</Text>
+        <Text style={styles.hairCutTitle}>{appointmentDetail?.product_name}</Text>
       </View>
       <View style={styles.subContainer1}>
         <Text style={styles._eventTitle}>Service Time:</Text>
