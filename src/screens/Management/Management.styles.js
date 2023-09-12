@@ -357,7 +357,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: verticalScale(5),
-    paddingHorizontal: moderateScale(10),
   },
   sectionListHeader: {
     color: COLORS.black,

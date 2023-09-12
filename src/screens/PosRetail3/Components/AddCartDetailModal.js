@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { Fonts, bell, cloth, crossButton, toggleSecBlue, vectorOff } from '@/assets';
@@ -138,7 +138,7 @@ export function AddCartDetailModal({
   return (
     <View style={styles.addCartDetailCon}>
       <View style={styles.addCartDetailConHeader}>
-        <Text style={[styles.jacketName, { width: ms(300) }]} numberOfLines={1}>
+        <Text style={[styles.jacketName, { width: SW(120) }]} numberOfLines={1}>
           {productDetail?.name}
         </Text>
         <View style={{ flexDirection: 'row' }}>
