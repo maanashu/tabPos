@@ -8,116 +8,34 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  FlatList,
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { moderateScale, ms } from 'react-native-size-matters';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { getProductsBySku } from '@/actions/DashboardAction';
-import { getDashboard } from '@/selectors/DashboardSelector';
 import { categoryshoes, cross, Fonts, search_light } from '@/assets';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const { width } = Dimensions.get('window');
 
-const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
-  const dispatch = useDispatch();
-  const [search, setSearch] = useState();
-  const [selectedItem, setSelectedItem] = useState();
+const ShowAttributes = ({ isVisible, setIsVisible, order, cartHandler }) => {
+  const [count, setCount] = useState(order[0]?.qty ?? '0');
 
-  const getDashboardData = useSelector(getDashboard);
-  const getProducts = getDashboardData?.skuOrders;
-
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.GET_PRODUCTS_BY_SKU], state)
-  );
-
-  const changeView = () => {
-    if (Object.keys(getProducts).length > 0) {
-      return (
-        <TouchableOpacity
-          style={[
-            styles.productRowStyle,
-            {
-              borderColor:
-                selectedItem === getProducts?.product_detail?.id
-                  ? COLORS.primary
-                  : COLORS.solidGrey,
-            },
-          ]}
-          onPress={() => {
-            setSelectedItem(getProducts?.product_detail?.id);
-            onPressCart(getProducts?.product_detail?.id);
-          }}
-        >
-          <View style={{ flexDirection: 'row' }}>
-            <Image source={categoryshoes} style={styles.productIconStyle} />
-
-            <View style={{ width: ms(170), paddingLeft: SH(10) }}>
-              <Text style={styles.productNameText}>{getProducts?.product_detail?.name ?? '-'}</Text>
-              <Text style={styles.skuTextStyle}>{getProducts?.product_detail?.sku ?? '-'}</Text>
-            </View>
-          </View>
-
-          <Text style={[styles.productNameText, { left: 12 }]}>
-            {getProducts?.product_detail?.price ?? '-'}
-          </Text>
-        </TouchableOpacity>
-      );
+  const onpressminusHandler = () => {
+    if (count > 0 && count === 1) {
     } else {
-      if (isLoading) {
-        return (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: Fonts.SemiBold,
-                fontSize: SF(20),
-                color: COLORS.primary,
-              }}
-            >
-              {'Loading...'}
-            </Text>
-          </View>
-        );
-      } else {
-        return (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: Fonts.SemiBold,
-                fontSize: SF(20),
-                color: COLORS.primary,
-              }}
-            >
-              {'No product found'}
-            </Text>
-          </View>
-        );
-      }
+      setCount(count - 1);
     }
   };
 
-  const onSearchHandler = (text) => {
-    setSearch(text);
-    if (text) {
-      dispatch(getProductsBySku(text));
+  const onpressplusHandler = () => {
+    if (count !== order[0]?.qty) {
+      setCount(count + 1);
     }
   };
 
@@ -130,22 +48,23 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
     >
       <View style={[styles.container, { flex: 1 }]}>
         <View style={styles.headingRowStyle}>
-          <TouchableOpacity onPress={() => setIsVisible(false)}>
+          <TouchableOpacity
+            style={{
+              width: SH(40),
+              height: SH(40),
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => setIsVisible(false)}
+          >
             <Image source={cross} style={styles.crossIconStyle} />
           </TouchableOpacity>
 
           <TouchableOpacity
-            disabled={Object.keys(getProducts).length > 0 ? false : true}
             onPress={() => {
-              setIsVisible(false);
+              cartHandler(order[0]?.product_id, count), setIsVisible(false);
             }}
-            style={[
-              styles.headingViewStyle,
-              {
-                backgroundColor:
-                  Object.keys(getProducts).length > 0 ? COLORS.primary : COLORS.gerySkies,
-              },
-            ]}
+            style={styles.headingViewStyle}
           >
             <Text style={styles.headingTextStyle}>{strings.returnOrder.returnCart}</Text>
           </TouchableOpacity>
@@ -153,25 +72,65 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
 
         <Spacer space={SH(30)} />
 
-        <View style={styles.searchInputView}>
-          <Image source={search_light} style={styles.searchStyle} />
-          <TextInput
-            value={search}
-            onChangeText={onSearchHandler}
-            style={styles.searchInputStyle}
-            placeholder={'Search SKU here'}
-          />
+        <View style={{ alignItems: 'center' }}>
+          <View style={styles.counterCon}>
+            <TouchableOpacity style={styles.minusBtnCon} onPress={() => onpressminusHandler()}>
+              <Text style={styles.counterText}>-</Text>
+            </TouchableOpacity>
+            <View style={styles.minusBtnCon}>
+              <Text style={styles.counterText}>{count}</Text>
+            </View>
+            <TouchableOpacity onPress={() => onpressplusHandler()} style={styles.minusBtnCon}>
+              <Text style={styles.counterText}>+</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.displayRow}>
+            <View style={styles.colorRow} />
+            <Text style={styles.colorText}>COLORS</Text>
+            <View style={styles.colorRow} />
+          </View>
+
+          <Spacer space={SH(15)} />
+
+          {order[0]?.attributes?.map((item, index) => {
+            if (item?.attribute_name === 'Color') {
+              return (
+                <View style={styles.selectColorItem}>
+                  <Text style={styles.colorSelectText}>{item?.attribute_value_name}</Text>
+                </View>
+              );
+            }
+          })}
+
+          <Spacer space={SH(15)} />
+
+          <View style={styles.displayRow}>
+            <View style={styles.colorRow} />
+            <Text style={styles.colorText}>SIZE</Text>
+            <View style={styles.colorRow} />
+          </View>
+
+          <Spacer space={SH(15)} />
+
+          {order[0]?.attributes?.map((item, index) => {
+            if (item?.attribute_name === 'Size') {
+              return (
+                <View style={styles.selectColorItem}>
+                  <Text style={styles.colorSelectText}>{item?.attribute_value_name}</Text>
+                </View>
+              );
+            }
+          })}
         </View>
 
         <Spacer space={SH(20)} />
-
-        {changeView()}
       </View>
     </ReactNativeModal>
   );
 };
 
-export default memo(ManualEntry);
+export default memo(ShowAttributes);
 
 const styles = StyleSheet.create({
   container: {
@@ -182,13 +141,14 @@ const styles = StyleSheet.create({
   modalStyle: {
     flex: 1,
     paddingHorizontal: ms(25),
+    // width: Platform.OS === 'ios' ? width / 2.5 : width / 3,
     borderRadius: 10,
     alignSelf: 'center',
     paddingHorizontal: ms(25),
     backgroundColor: COLORS.white,
   },
   headingViewStyle: {
-    backgroundColor: COLORS.gerySkies,
+    backgroundColor: COLORS.primary,
     padding: SH(10),
     borderRadius: 5,
   },
@@ -201,7 +161,6 @@ const styles = StyleSheet.create({
   headingRowStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: SH(16),
     borderColor: COLORS.solidGrey,
     borderBottomWidth: 1,
     justifyContent: 'space-between',
@@ -308,12 +267,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: COLORS.silver_solid,
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.blue_shade,
     marginHorizontal: moderateScale(2),
   },
   colorSelectText: {
     fontSize: SF(16),
-    color: COLORS.black,
+    color: COLORS.primary,
     fontFamily: Fonts.Regular,
   },
   loader: {

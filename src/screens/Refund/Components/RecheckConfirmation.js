@@ -23,6 +23,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
   const filteredList = orderList?.filter((e) => e?.isChecked);
 
   const renderProductList = ({ item, index }) => {
+    console.log(item);
     return (
       <View style={styles.itemMainViewStyle}>
         <Text style={styles.quantityTextStyle}>{item?.qty}</Text>
@@ -34,8 +35,6 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
           </Text>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            {/* <Text style={styles.colorTextStyle}>{`Color: ${item?.color}`}</Text>
-            <Text style={styles.colorTextStyle}>{`Size: ${item?.size}`}</Text> */}
             <Text style={styles.colorTextStyle}>{`${item?.product_details?.sku}`}</Text>
           </View>
         </View>

@@ -135,8 +135,8 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   );
 
   const applyRefundHandler = () => {
-    if (applicableIsCheck && amount) {
-      setButtonText('Applied');
+    if (applicableIsCheck && !amount) {
+      alert('Please add refund amount');
     } else if (applyEachItem) {
       const hasCheckedItem = orders?.every((item) => item?.refundAmount !== '');
       if (hasCheckedItem) {
@@ -144,6 +144,8 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
       } else {
         alert('Please add refund amount for all items');
       }
+    } else {
+      setButtonText('Applied');
     }
   };
 
@@ -158,8 +160,6 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     setOrders(newArray);
     setChangeView('PaymentScreen');
   };
-
-  console.log('orderData', JSON.stringify(orderData));
 
   return (
     <View style={styles.container}>

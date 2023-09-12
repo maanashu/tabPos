@@ -211,7 +211,6 @@ export class DashboardController {
   }
 
   static async getOrdersByInvoiceId(invoice) {
-    console.log('invoice====', invoice);
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.invoiceIdSearch + `${invoice}`;
       HttpClient.get(endpoint)
@@ -242,6 +241,7 @@ export class DashboardController {
   }
 
   static async returnProduct(data) {
+    console.log('data-----------', data);
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.return;
       const body = {
@@ -249,8 +249,10 @@ export class DashboardController {
         products: data?.products,
         return_reason: 'testing reason',
       };
+      console.log('body-----------', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response==============', response);
           Toast.show({
             position: 'bottom',
             type: 'success_toast',
@@ -260,6 +262,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error==============', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

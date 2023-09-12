@@ -36,11 +36,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
             <Text numberOfLines={1} style={[styles.nameTextStyle, { textAlign: 'left' }]}>
               {item?.product_name ?? '-'}
             </Text>
-            {item?.variant ? (
-              <Text
-                style={styles.varientTextStyle}
-              >{`Color: ${item?.color} / Size: ${item?.size}`}</Text>
-            ) : null}
+            {/* <Text style={styles.varientTextStyle}>{item?.}</Text>; */}
           </View>
         </View>
         <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>

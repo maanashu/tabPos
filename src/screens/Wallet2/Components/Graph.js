@@ -45,7 +45,6 @@ const Graph = () => {
   const getDeliveryData = useSelector(getDelivery);
   const getWalletData = useSelector(getWallet);
   const getTotalTraData = getWalletData?.getTotalTra;
-  console.log('sadasdas', JSON.stringify(getTotalTraData));
 
   const [graphData, setGraphData] = useState(graphOptions);
 
