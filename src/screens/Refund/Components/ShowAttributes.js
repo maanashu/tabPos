@@ -3,28 +3,24 @@ import {
   View,
   Text,
   Image,
-  TextInput,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
   Platform,
-  FlatList,
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
-import { useDispatch } from 'react-redux';
 import { moderateScale, ms } from 'react-native-size-matters';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { getProductsBySku } from '@/actions/DashboardAction';
-import { categoryshoes, cross, Fonts, search_light } from '@/assets';
+import { cross, Fonts } from '@/assets';
 
 const { width } = Dimensions.get('window');
 
 const ShowAttributes = ({ isVisible, setIsVisible, order, cartHandler }) => {
-  const [count, setCount] = useState(order[0]?.qty ?? '0');
+  const [count, setCount] = useState(order?.[0]?.qty ?? 0);
 
   const onpressminusHandler = () => {
     if (count > 0 && count === 1) {
@@ -34,7 +30,7 @@ const ShowAttributes = ({ isVisible, setIsVisible, order, cartHandler }) => {
   };
 
   const onpressplusHandler = () => {
-    if (count !== order[0]?.qty) {
+    if (count !== order?.[0]?.qty) {
       setCount(count + 1);
     }
   };
@@ -62,7 +58,7 @@ const ShowAttributes = ({ isVisible, setIsVisible, order, cartHandler }) => {
 
           <TouchableOpacity
             onPress={() => {
-              cartHandler(order[0]?.product_id, count), setIsVisible(false);
+              cartHandler(order?.[0]?.id, count), setIsVisible(false);
             }}
             style={styles.headingViewStyle}
           >
@@ -93,7 +89,7 @@ const ShowAttributes = ({ isVisible, setIsVisible, order, cartHandler }) => {
 
           <Spacer space={SH(15)} />
 
-          {order[0]?.attributes?.map((item, index) => {
+          {order?.[0]?.attributes?.map((item, index) => {
             if (item?.attribute_name === 'Color') {
               return (
                 <View style={styles.selectColorItem}>
@@ -113,7 +109,7 @@ const ShowAttributes = ({ isVisible, setIsVisible, order, cartHandler }) => {
 
           <Spacer space={SH(15)} />
 
-          {order[0]?.attributes?.map((item, index) => {
+          {order?.[0]?.attributes?.map((item, index) => {
             if (item?.attribute_name === 'Size') {
               return (
                 <View style={styles.selectColorItem}>

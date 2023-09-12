@@ -7,15 +7,10 @@ moment.suppressDeprecationWarnings = true;
 
 export function Refund(props) {
   const params = props?.route?.params?.screen;
-  const [selectedsScreen, setSelectedsScreen] = useState('SearchScreen');
 
-  const renderScreen = {
-    ['SearchScreen']: <SearchScreen from={params} />,
-  };
-
-  const screenChangeView = () => {
-    return renderScreen[selectedsScreen];
-  };
-
-  return <ScreenWrapper>{screenChangeView()}</ScreenWrapper>;
+  return (
+    <ScreenWrapper>
+      <SearchScreen from={params} />
+    </ScreenWrapper>
+  );
 }
