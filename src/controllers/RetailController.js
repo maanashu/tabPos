@@ -452,8 +452,11 @@ export class RetailController {
             supply_id: data.supplyId.toString(),
             supply_price_id: data.supplyPriceID.toString(),
           };
+
+      console.log('body=====', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response====', JSON.stringify(response));
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -465,6 +468,7 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error====', JSON.stringify(error));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

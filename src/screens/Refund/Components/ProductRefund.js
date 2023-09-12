@@ -40,9 +40,13 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   const [changeView, setChangeView] = useState('TotalItems');
   const [refundAmount, setRefundAmount] = useState('');
   const [orders, setOrders] = useState();
+  let isRefund = false;
 
   useEffect(() => {
-    setOrders(orderData?.order?.order_details);
+    const updatedDataArray = orderData?.order?.order_details.map((item, index) => {
+      return { ...item, refundAmount: '' };
+    });
+    setOrders(updatedDataArray);
   }, [orderData]);
 
   const refundHandler = (key, newText) => {
@@ -102,9 +106,15 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
             </View>
           ) : (
             <View style={styles.productCartBody}>
-              <Text style={styles.blueListDataText} numberOfLines={1}>
-                {selectType === 'dollar' ? `$${amount}` : `${amount}%`}
-              </Text>
+              {amount ? (
+                <Text style={styles.blueListDataText} numberOfLines={1}>
+                  {selectType === 'dollar' ? `$${amount}` : `${amount}%`}
+                </Text>
+              ) : (
+                <Text style={styles.blueListDataText} numberOfLines={1}>
+                  {'-'}
+                </Text>
+              )}
             </View>
           )}
 
@@ -125,9 +135,30 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   );
 
   const applyRefundHandler = () => {
-    if (applicableIsCheck || (applyEachItem && amount)) {
+    if (applicableIsCheck && !amount) {
+      alert('Please add refund amount');
+    } else if (applyEachItem) {
+      const hasCheckedItem = orders?.every((item) => item?.refundAmount !== '');
+      if (hasCheckedItem) {
+        setButtonText('Applied');
+      } else {
+        alert('Please add refund amount for all items');
+      }
+    } else {
       setButtonText('Applied');
     }
+  };
+
+  const getOrdersDetail = () => {
+    const newArray = orders.map((obj) => ({
+      ...obj, // Copy all existing key-value pairs
+      ['applicableKey']: applicableIsCheck, // Add the new key-value pair
+      ['applyToEachItemKey']: applyEachItem, //
+      ['applicableAmountToAllItems']: amount, //
+      ['RefundedAmount']: obj.refundAmount,
+    }));
+    setOrders(newArray);
+    setChangeView('PaymentScreen');
   };
 
   return (
@@ -172,7 +203,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                     editable={applyEachItem ? false : true}
                     keyboardType={'number-pad'}
                     style={styles.textInputStyle}
-                    onChangeText={(text) => setAmount(text)}
+                    onChangeText={(text) => {
+                      setAmount(text);
+                      setApplicableIsCheck(true);
+                    }}
                     placeholderTextColor={COLORS.solidGrey}
                     placeholder={selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '% 0'}
                   />
@@ -187,8 +221,14 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                           backgroundColor:
                             selectType === strings.returnOrder.dollarLabel && applyEachItem
                               ? COLORS.solidGrey
-                              : selectType === strings.returnOrder.dollarLabel && !applyEachItem
+                              : selectType === strings.returnOrder.dollarLabel &&
+                                !applyEachItem &&
+                                !amount
                               ? COLORS.gerySkies
+                              : selectType === strings.returnOrder.dollarLabel &&
+                                !applyEachItem &&
+                                amount
+                              ? COLORS.primary
                               : COLORS.white,
                           borderTopLeftRadius: 5,
                           borderBottomLeftRadius: 5,
@@ -220,8 +260,14 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                           backgroundColor:
                             selectType === strings.returnOrder.percentageLabel && applyEachItem
                               ? COLORS.solidGrey
-                              : selectType === strings.returnOrder.percentageLabel && !applyEachItem
+                              : selectType === strings.returnOrder.percentageLabel &&
+                                !applyEachItem &&
+                                !amount
                               ? COLORS.gerySkies
+                              : selectType === strings.returnOrder.percentageLabel &&
+                                !applyEachItem &&
+                                amount
+                              ? COLORS.primary
                               : COLORS.white,
                           borderTopRightRadius: 5,
                           borderBottomRightRadius: 5,
@@ -296,6 +342,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                   </View>
                 ) : (
                   <TouchableOpacity
+                    // disabled={!applicableIsCheck || !applyEachItem ? true : false}
                     onPress={() => applyRefundHandler()}
                     style={[
                       styles.applyRefundButton,
@@ -384,7 +431,9 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
               <Spacer space={SH(20)} />
 
               <TouchableOpacity
-                onPress={() => setChangeView('Payment')}
+                onPress={() => {
+                  getOrdersDetail();
+                }}
                 disabled={buttonText === 'Applied' ? false : true}
                 style={[
                   styles.nextButtonStyle,

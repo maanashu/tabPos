@@ -57,7 +57,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               {' '}
               {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
             </Text>
-            <Text style={styles._kAddress}>{userDetailData?.phone_number ?? ''}</Text>
+            <Text style={styles._kAddress}>{userDetailData?.phone_number ?? '-'}</Text>
             <View style={styles._flatListContainer}>
               <FlatList
                 data={singleOrderDetail?.order_details}
@@ -74,7 +74,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                           <View style={styles.belowSubContainer}>
                             {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
                           <Text style={styles.sizeTitle}>Size : XXL</Text> */}
-                            <Text style={styles.colorsTitle}>QTY : {item?.qty}</Text>
+                            <Text style={styles.colorsTitle}>QTY : {item?.qty ?? '-'}</Text>
                           </View>
                         </View>
                       </View>
@@ -130,7 +130,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               <Text
                 style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
               >
-                ${singleOrderDetail?.payable_amount}
+                ${singleOrderDetail?.payable_amount ?? '0'}
               </Text>
             </View>
             {/* <View style={styles._horizontalLine} /> */}
@@ -139,20 +139,22 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
             <View style={styles._paymentTitleContainer}>
               <Text style={styles._payTitle}>Payment option: </Text>
               <Text style={styles._paySubTitle}>
-                {singleOrderDetail?.mode_of_payment?.toUpperCase()}
+                {singleOrderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
               </Text>
             </View>
             <Text style={styles._commonPayTitle}>
               {moment(singleOrderDetail?.invoice?.delivery_date).format('llll')}
             </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
-            <Text
-              style={styles._commonPayTitle}
-            >{`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}`}</Text>
             <Text style={styles._commonPayTitle}>
-              POS No. {getUserData?.posLoginData?.pos_number}
+              {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}` ?? '-'}
             </Text>
-            <Text style={styles._commonPayTitle}>User ID : ****128</Text>
+            <Text style={styles._commonPayTitle}>
+              POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
+            </Text>
+            <Text style={styles._commonPayTitle}>
+              User ID : #{getUserData?.posLoginData?.id ?? '-'}
+            </Text>
 
             <Text style={styles._thankyou}>Thank You</Text>
             <Image source={barcode} style={styles._barCodeImage} />
