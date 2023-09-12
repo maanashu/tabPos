@@ -139,10 +139,10 @@ export function DashBoard({ navigation }) {
     isLoadingSelector([DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
   );
 
-  useEffect(() => {
-    setScan(false);
-    dispatch(getPendingOrders(sellerID));
-  }, []);
+  // useEffect(() => {
+  //   setScan(false);
+  //   dispatch(getPendingOrders(sellerID));
+  // }, []);
 
   useEffect(() => {
     if (scan) {
@@ -206,12 +206,12 @@ export function DashBoard({ navigation }) {
   useEffect(() => {
     if (isFocused) {
       dispatch(getOrderDeliveries(sellerID, page));
-      startTrackingFun();
-      clearInput();
-      dispatch(getTotalSaleAction(sellerID));
-      dispatch(posLoginDetail());
-      dispatch(onLineOrders(sellerID));
-      setSku('');
+      // startTrackingFun();
+      // clearInput();
+      // dispatch(getTotalSaleAction(sellerID));
+      // dispatch(posLoginDetail());
+      // dispatch(onLineOrders(sellerID));
+      // setSku('');
     }
   }, [isFocused]);
 

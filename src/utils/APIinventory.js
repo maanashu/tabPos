@@ -170,7 +170,7 @@ export const ApiRewards = {
 };
 
 // Add URLS which is required to send POS USER token
-export const API_URLS_USING_POS_USER_ACCESS_TOKEN = (sellerID) => [
+export const API_URLS_USING_POS_USER_ACCESS_TOKEN = [
   // USER_URL + ApiUserInventory.getSessionHistory,
   // USER_URL + ApiUserInventory.getDrawerSession,
   // USER_URL + ApiUserInventory.trackSessionSave,
@@ -178,8 +178,9 @@ export const API_URLS_USING_POS_USER_ACCESS_TOKEN = (sellerID) => [
   // USER_URL + ApiUserInventory.loginPosuser,
   // USER_URL + ApiUserInventory.getDrawerSessionById,
   // USER_URL + `drawer_management/drawer-session/history?drawer_id=${posDrawerId}`,
-  USER_URL + ApiUserInventory.merchantLogin,
+
+  // USER_URL + ApiUserInventory.merchantLogin,
   USER_URL + ApiUserInventory.loginPosuser,
-  USER_URL + ApiUserInventory.getPosUsers + `?page=1&limit=10&seller_id=${sellerID}`,
-  USER_URL + ApiUserInventory.getSetting + `?app_name=pos`,
+  // USER_URL + ApiUserInventory.getPosUsers + `?page=1&limit=10&seller_id=${sellerID}`,
+  // USER_URL + ApiUserInventory.getSetting + `?app_name=pos`,
 ];
