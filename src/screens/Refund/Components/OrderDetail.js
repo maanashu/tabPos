@@ -25,6 +25,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
   };
 
   const renderOrderProducts = ({ item }) => {
+    console.log('item====', item);
     return (
       <View style={styles.orderproductView}>
         <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
@@ -36,7 +37,6 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
             <Text numberOfLines={1} style={[styles.nameTextStyle, { textAlign: 'left' }]}>
               {item?.product_name ?? '-'}
             </Text>
-            {/* <Text style={styles.varientTextStyle}>{item?.}</Text>; */}
           </View>
         </View>
         <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
@@ -48,14 +48,14 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
         </Text>
 
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => checkboxHandler(item?.product_details?.id)}>
+          <TouchableOpacity onPress={() => checkboxHandler(item?.id, item?.qty)}>
             <Image
               source={PaymentDone}
               style={[styles.infoIconStyle, { tintColor: COLORS.primary }]}
             />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => checkboxHandler(item?.product_details?.id)}>
+          <TouchableOpacity onPress={() => checkboxHandler(item?.id, item?.qty)}>
             <Image source={blankCheckBox} style={styles.checkboxIconStyle} />
           </TouchableOpacity>
         )}

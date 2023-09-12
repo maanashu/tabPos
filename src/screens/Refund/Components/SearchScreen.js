@@ -14,7 +14,7 @@ import { Fonts, scn, search_light } from '@/assets';
 import RecheckConfirmation from './RecheckConfirmation';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import OrderWithInvoiceNumber from './OrderWithInvoiceNumber';
-import { getOrdersByInvoiceId } from '@/actions/DashboardAction';
+import { getOrdersByInvoiceId, getOrdersByInvoiceIdSuccess } from '@/actions/DashboardAction';
 import ShowAttributes from './ShowAttributes';
 
 const windowWidth = Dimensions.get('window').width;
@@ -25,8 +25,6 @@ export function SearchScreen() {
   const dispatch = useDispatch();
   const getSearchOrders = useSelector(getDashboard);
   const order = getSearchOrders?.invoiceSearchOrders;
-
-  console.log('order=====', JSON.stringify(order));
 
   const [sku, setSku] = useState();
   const [isVisibleManual, setIsVisibleManual] = useState(false);
@@ -40,7 +38,7 @@ export function SearchScreen() {
   }, [order?.order?.order_details && sku]);
 
   const cartHandler = (id, count) => {
-    const getArray = orderDetail?.findIndex((attr) => attr?.product_id === id);
+    const getArray = orderDetail?.findIndex((attr) => attr?.id === id);
     if (getArray !== -1) {
       const newProdArray = [...orderDetail];
       if (newProdArray[0]?.attributes?.length > 0) {
@@ -58,11 +56,15 @@ export function SearchScreen() {
   };
 
   const onSearchInvoiceHandler = (text) => {
-    setSku(text);
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(() => {
-      dispatch(getOrdersByInvoiceId(text));
-    }, 500);
+    if (text) {
+      setSku(text);
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        dispatch(getOrdersByInvoiceId(text));
+      }, 500);
+    } else {
+      dispatch(getOrdersByInvoiceIdSuccess({}));
+    }
   };
 
   // const attributesHandler = () => {
@@ -79,6 +81,8 @@ export function SearchScreen() {
   //     alert('Product not found in the order');
   //   }
   // }
+
+  console.log('search screen');
 
   return (
     <View style={styles.container}>
@@ -124,13 +128,15 @@ export function SearchScreen() {
             onPressCart={cartHandler}
           />
 
-          {/* <ShowAttributes
-            isVisible={isShowAttributeModal}
-            setIsVisible={setIsShowAttributeModal}
-            order={orderDetail}
-            cartHandler={cartHandler}
-            // onPressCart={cartHandler}
-          /> */}
+          {order && (
+            <ShowAttributes
+              isVisible={isShowAttributeModal}
+              setIsVisible={setIsShowAttributeModal}
+              order={orderDetail}
+              cartHandler={cartHandler}
+              // onPressCart={cartHandler}
+            />
+          )}
 
           <RecheckConfirmation
             orderList={orderDetail}

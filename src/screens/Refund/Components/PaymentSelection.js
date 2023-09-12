@@ -22,9 +22,11 @@ import BackButton from '@/components/BackButton';
 import ReturnConfirmation from './ReturnConfirmation';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { RECIPE_DATA } from '@/constants/flatListData';
-import { returnProduct } from '@/actions/DashboardAction';
+import { returnProduct, returnProductSuccess } from '@/actions/DashboardAction';
 import { cardPayment, cash, Fonts, qrCodeIcon } from '@/assets';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 const { width } = Dimensions.get('window');
 let products = [];
@@ -68,7 +70,7 @@ const PaymentSelection = ({ backHandler, orderData }) => {
 
   const onReturnHandler = () => {
     orderData?.order?.order_details?.map((item, index) => {
-      products.push({ id: item?.product_id, qty: item?.qty ?? 1 });
+      products.push({ id: item?.id, qty: item?.qty ?? 1 });
     });
     const data = {
       order_id: orderData?.order_id,
@@ -78,6 +80,7 @@ const PaymentSelection = ({ backHandler, orderData }) => {
       returnProduct(data, (res) => {
         if (res) {
           setIsReturnConfirmation(true);
+          dispatch(returnProductSuccess({}));
         }
       })
     );
@@ -210,6 +213,7 @@ const PaymentSelection = ({ backHandler, orderData }) => {
             bottom: 0,
             left: 0,
             right: 0,
+            flex: 1,
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}
         >
@@ -230,6 +234,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: verticalScale(10),
+    borderWidth: 2,
     backgroundColor: COLORS.textInputBackground,
   },
   leftContainer: {
