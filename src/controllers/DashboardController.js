@@ -24,6 +24,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('1---------', error);
           reject(error);
         });
     });
@@ -37,6 +38,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('2---------', error);
           reject(error);
         });
     });
@@ -62,6 +64,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('3---------', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -105,6 +108,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('4---------', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -125,6 +129,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('5---------', error);
           Toast.show({
             text2: error?.msg || 'unknown error',
             position: 'bottom',
@@ -145,6 +150,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('6---------', error);
           Toast.show({
             text2: error?.msg || 'unknown error',
             position: 'bottom',
@@ -167,6 +173,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('7---------', error);
           reject(error);
         });
     });
@@ -180,6 +187,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('8---------', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -199,6 +207,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('10---------', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -218,6 +227,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('11---------', error);
           reject(error);
         });
     });
@@ -235,6 +245,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('12---------', error);
           reject(error);
         });
     });
@@ -259,6 +270,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('13---------', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

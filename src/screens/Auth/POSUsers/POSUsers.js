@@ -64,10 +64,13 @@ export function POSUsers({ navigation }) {
   });
 
   useEffect(() => {
-    if (isFocused) {
-      dispatch(getSettings());
-      useEffectFun();
-    }
+    dispatch(getAllPosUsers(sellerID));
+    // setTimeout(() => {
+    // if (isFocused) {
+    //   dispatch(getSettings());
+    //   useEffectFun();
+    // }
+    // }, 3000);
   }, [isFocused]);
 
   const useEffectFun = async () => {
