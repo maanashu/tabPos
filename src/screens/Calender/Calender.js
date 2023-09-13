@@ -56,6 +56,8 @@ import ProfileImage from '@/components/ProfileImage';
 import VerifyCheckinOtp from './Components/VerifyCheckinOtp';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import ReScheduleDetailModal from './Components/ReScheduleDetailModal';
+import ListViewItem from './Components/ListViewComponents/ListViewItem';
+import ListViewHeader from './Components/ListViewComponents/ListViewHeader';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -248,6 +250,31 @@ export function Calender() {
     return <EventItemCard item={item} index={index} />;
   };
 
+  const renderListViewItem = ({ item, index }) => {
+    const appointmentId = item?.id;
+    return (
+      <ListViewItem
+        item={item}
+        index={index}
+        isBookingCompletedLoading={isBookingCompletedLoading}
+        isSendCheckinOTPLoading={isSendCheckinOTPLoading}
+        onPressCheckin={() => {
+          setSelectedPosStaffCompleteData(item);
+          dispatch(sendCheckinOTP(appointmentId)).then(() => {
+            setshowVerifyOTPModal(true);
+          });
+        }}
+        onPressEdit={() => {
+          setSelectedPosStaffCompleteData(item);
+          setshowRescheduleTimeModal(true);
+        }}
+        onPressMarkComplete={() => {
+          dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
+        }}
+      />
+    );
+  };
+
   const handleEndReached = () => {
     if (!selectedStaffEmployeeId) {
       if (appointmentPages?.currentPages < appointmentPages?.totalPages) {
@@ -395,128 +422,11 @@ export function Calender() {
                 <FlatList
                   data={getApprovedAppointments}
                   keyExtractor={(_, index) => index.toString()}
-                  ListHeaderComponent={() => {
-                    return (
-                      <>
-                        <View style={styles.LlistViewHeaderContainer}>
-                          <Text style={[styles.LheaderText, { flex: 0.3, textAlign: 'left' }]}>
-                            Customer
-                          </Text>
-                          <Text style={styles.LheaderText}>Staff</Text>
-                          <Text style={styles.LheaderText}>Service</Text>
-                          <Text style={styles.LheaderText}>Time</Text>
-                          <Text style={styles.LheaderText}></Text>
-                        </View>
-                        <View style={styles.deviderList} />
-                      </>
-                    );
-                  }}
-                  renderItem={({ item, index }) => {
-                    const userDetails = item?.user_details;
-                    const userAddress = userDetails?.current_address;
-                    const posUserDetails = item?.pos_user_details?.user?.user_profiles;
-
-                    return (
-                      <>
-                        <View style={[styles.LlistViewHeaderContainer, { marginVertical: ms(5) }]}>
-                          <View
-                            style={[
-                              styles.listViewSubContainers,
-                              { flex: 0.3, justifyContent: 'flex-start' },
-                            ]}
-                          >
-                            {userDetails ? (
-                              <>
-                                <ProfileImage
-                                  source={{ uri: userDetails?.profile_photo }}
-                                  style={styles.customerUserProfile}
-                                />
-                                <View style={{ marginLeft: ms(6), flex: 1 }}>
-                                  <Text style={styles.customerName}>
-                                    {userDetails?.firstname + ' ' + userDetails?.lastname}
-                                  </Text>
-                                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Image source={pin} style={styles.eventAddressIcon} />
-                                    <Text style={styles.eventAddress}>
-                                      {userAddress?.street_address}
-                                    </Text>
-                                  </View>
-                                </View>
-                              </>
-                            ) : (
-                              <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(9) }}>
-                                No Customer
-                              </Text>
-                            )}
-                          </View>
-
-                          <View style={styles.listViewSubContainers}>
-                            <Text style={styles.lineViewValues}>
-                              {posUserDetails?.firstname + ' ' + posUserDetails?.lastname}
-                            </Text>
-                          </View>
-                          <View style={styles.listViewSubContainers}>
-                            <Text style={styles.lineViewValues}>
-                              {item?.appointment_details[0]?.product_name}
-                            </Text>
-                          </View>
-                          <View style={styles.listViewSubContainers}>
-                            <Text
-                              style={styles.lineViewValues}
-                            >{`${item?.start_time}-${item?.end_time}`}</Text>
-                          </View>
-                          <View style={styles.listViewSubContainers}>
-                            {item?.status === 1 ? (
-                              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                <Button
-                                  pending={isSendCheckinOTPLoading}
-                                  title={'Check-in'}
-                                  textStyle={styles.listCheckinBtnText}
-                                  style={styles.listViewCheckinBtn}
-                                  onPress={() => {
-                                    const appointmentId = item?.id;
-                                    setSelectedPosStaffCompleteData(item);
-                                    dispatch(sendCheckinOTP(appointmentId)).then(() => {
-                                      setshowVerifyOTPModal(true);
-                                    });
-                                  }}
-                                />
-                                <TouchableOpacity
-                                  style={styles.listViewEditBtn}
-                                  onPress={() => {
-                                    setSelectedPosStaffCompleteData(item);
-                                    setshowRescheduleTimeModal(true);
-                                  }}
-                                >
-                                  <Image source={editIcon} style={styles.listViewEditIcon} />
-                                </TouchableOpacity>
-                              </View>
-                            ) : (
-                              <Button
-                                pending={isBookingCompletedLoading}
-                                title={'Mark Complete'}
-                                textStyle={[styles.listCheckinBtnText, { color: COLORS.white }]}
-                                style={[
-                                  styles.listViewCheckinBtn,
-                                  { backgroundColor: COLORS.primary },
-                                ]}
-                                onPress={() => {
-                                  const appointmentId = item?.id;
-                                  dispatch(
-                                    changeAppointmentStatus(
-                                      appointmentId,
-                                      APPOINTMENT_STATUS.COMPLETED
-                                    )
-                                  );
-                                }}
-                              />
-                            )}
-                          </View>
-                        </View>
-                        <View style={styles.deviderList} />
-                      </>
-                    );
-                  }}
+                  ListHeaderComponent={<ListViewHeader />}
+                  renderItem={renderListViewItem}
+                  ListEmptyComponent={() => (
+                    <Text style={styles.noAppointmentEmpty}>There are no appointments</Text>
+                  )}
                 />
               )}
             </View>
