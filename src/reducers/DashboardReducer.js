@@ -83,7 +83,7 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
     case DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_SUCCESS:
       return {
         ...state,
-        invoiceSearchOrders: payload?.invoiceOrders,
+        invoiceSearchOrders: payload?.invoiceSearchOrders,
       };
     case DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_RESET:
       return {

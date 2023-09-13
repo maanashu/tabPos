@@ -854,7 +854,7 @@ export function Management() {
                   </Text>
                 ) : (
                   <Text style={styles.summaryText}>
-                    {strings.management.sessionHistory}{' '}
+                    {strings.management.summary}{' '}
                     <Text style={[styles.summaryText, { color: COLORS.primary }]}>
                       {moment(userHistory?.created_at).format('LL')}
                     </Text>
@@ -866,7 +866,6 @@ export function Management() {
               </View>
             </View>
           </View>
-
           <SummaryHistory
             historyHeader={historyHeader}
             // sessionHistoryArray={userHistory}
@@ -874,7 +873,6 @@ export function Management() {
 
             // emailButtonHandler={emailButtonHandler}
           />
-
           <View>
             <Spacer space={SH(20)} />
             {historyHeader === true ? (

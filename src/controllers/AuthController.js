@@ -13,12 +13,8 @@ export class AuthController {
       phone_no: phoneNumber,
       // isAlreadyCheck: true,
     };
-
-    console.log('endpoint', endpoint);
-    console.log('body', body);
     await HttpClient.post(endpoint, body)
       .then((response) => {
-        console.log('response', response);
         if (response.status_code === 200) {
           if (response?.payload?.is_phone_exits) {
             navigate(NAVIGATION.merchantPasscode, {
@@ -43,7 +39,6 @@ export class AuthController {
         }
       })
       .catch((error) => {
-        console.log('error', error);
         Toast.show({
           text2: error.msg,
           position: 'bottom',
@@ -238,7 +233,6 @@ export class AuthController {
     return new Promise(async (resolve, reject) => {
       // const endpoint =  `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10&seller_id=${sellerID}`;
       const endpoint = getUrl(sellerID, search);
-      console.log('endpoint12345', endpoint);
       await HttpClient.get(endpoint)
         .then((response) => {
           if (response?.status_code === 200) {
@@ -246,7 +240,6 @@ export class AuthController {
           }
         })
         .catch((error) => {
-          console.log('2getAllPosUsers', error);
           reject(error);
         });
     });

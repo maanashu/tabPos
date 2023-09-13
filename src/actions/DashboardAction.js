@@ -159,9 +159,9 @@ const getOrdersByInvoiceIdRequest = () => ({
   type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_REQUEST,
   payload: null,
 });
-const getOrdersByInvoiceIdSuccess = (invoiceOrders) => ({
+export const getOrdersByInvoiceIdSuccess = (invoiceSearchOrders) => ({
   type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_SUCCESS,
-  payload: { invoiceOrders },
+  payload: { invoiceSearchOrders },
 });
 const getOrdersByInvoiceIdError = (error) => ({
   type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_ERROR,
@@ -176,7 +176,7 @@ const getProductsBySkuRequest = () => ({
   type: DASHBOARDTYPE.GET_PRODUCTS_BY_SKU__REQUEST,
   payload: null,
 });
-const getProductsBySkuSuccess = (skuOrders) => ({
+export const getProductsBySkuSuccess = (skuOrders) => ({
   type: DASHBOARDTYPE.GET_PRODUCTS_BY_SKU__SUCCESS,
   payload: { skuOrders },
 });
@@ -193,7 +193,7 @@ const returnProductRequest = () => ({
   type: DASHBOARDTYPE.RETURN_PRODUCTS__REQUEST,
   payload: null,
 });
-const returnProductSuccess = (returnOrder) => ({
+export const returnProductSuccess = (returnOrder) => ({
   type: DASHBOARDTYPE.RETURN_PRODUCTS__SUCCESS,
   payload: { returnOrder },
 });

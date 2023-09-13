@@ -19,14 +19,11 @@ export class DashboardController {
       //   `?seller_id=${sellerID}&delivery_option=1&page=${page}&limit=10`;
       const endpoint =
         ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&delivery_option=1`;
-
-      console.log('getOrderDeliveries', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          console.log('1---------', error);
           reject(error);
         });
     });
@@ -35,13 +32,11 @@ export class DashboardController {
   static async getDrawerSession() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
-      console.log('getDrawerSession', endpoint);
       HttpClient.post(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          console.log('2---------', error);
           reject(error);
         });
     });
@@ -67,7 +62,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('3---------', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -111,7 +105,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('4---------', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -132,7 +125,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('5---------', error);
           Toast.show({
             text2: error?.msg || 'unknown error',
             position: 'bottom',
@@ -153,7 +145,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('6---------', error);
           Toast.show({
             text2: error?.msg || 'unknown error',
             position: 'bottom',
@@ -176,7 +167,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('7---------', error);
           reject(error);
         });
     });
@@ -190,7 +180,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('8---------', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -210,7 +199,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('10---------', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -230,7 +218,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('11---------', error);
           reject(error);
         });
     });
@@ -248,7 +235,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('12---------', error);
           reject(error);
         });
     });
@@ -273,7 +259,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('13---------', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

@@ -14,7 +14,8 @@ import { Fonts, scn, search_light } from '@/assets';
 import RecheckConfirmation from './RecheckConfirmation';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import OrderWithInvoiceNumber from './OrderWithInvoiceNumber';
-import { getOrdersByInvoiceId } from '@/actions/DashboardAction';
+import { getOrdersByInvoiceId, getOrdersByInvoiceIdSuccess } from '@/actions/DashboardAction';
+import ShowAttributes from './ShowAttributes';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -28,6 +29,7 @@ export function SearchScreen() {
   const [sku, setSku] = useState();
   const [isVisibleManual, setIsVisibleManual] = useState(false);
   const [showProductRefund, setShowProductRefund] = useState(false);
+  const [isShowAttributeModal, setIsShowAttributeModal] = useState(false);
   const [orderDetail, setOrderDetail] = useState(order?.order?.order_details ?? []);
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
@@ -35,24 +37,50 @@ export function SearchScreen() {
     setOrderDetail(order?.order?.order_details);
   }, [order?.order?.order_details && sku]);
 
-  const cartHandler = (id) => {
-    const getArray = orderDetail?.findIndex((attr) => attr?.product_id === id);
+  const cartHandler = (id, count) => {
+    const getArray = orderDetail?.findIndex((attr) => attr?.id === id);
     if (getArray !== -1) {
       const newProdArray = [...orderDetail];
-      newProdArray[getArray].isChecked = true;
-      setOrderDetail(newProdArray);
+      if (newProdArray[0]?.attributes?.length > 0) {
+        newProdArray[getArray].qty = count;
+        newProdArray[getArray].isChecked = true;
+        setOrderDetail(newProdArray);
+        setIsShowAttributeModal(false);
+      } else {
+        newProdArray[getArray].isChecked = true;
+        setOrderDetail(newProdArray);
+      }
     } else {
       alert('Product not found in the order');
     }
   };
 
   const onSearchInvoiceHandler = (text) => {
-    setSku(text);
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(() => {
-      dispatch(getOrdersByInvoiceId(text));
-    }, 500);
+    if (text) {
+      setSku(text);
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        dispatch(getOrdersByInvoiceId(text));
+      }, 500);
+    } else {
+      dispatch(getOrdersByInvoiceIdSuccess({}));
+    }
   };
+
+  // const attributesHandler = () => {
+  //   const getArray = orderDetail?.findIndex((attr) => attr?.product_id === id);
+  //   if (getArray !== -1) {
+  //     const newProdArray = [...orderDetail];
+  //     console.log('newProdArray====', JSON.stringify(newProdArray));
+  //     if (newProdArray[0]?.attributes?.length > 0) {
+  //       setOrderDetail(newProdArray);
+  //     }
+  //     // newProdArray[getArray].isChecked = true;
+  //     // setOrderDetail(newProdArray);
+  //   } else {
+  //     alert('Product not found in the order');
+  //   }
+  // }
 
   return (
     <View style={styles.container}>
@@ -97,6 +125,16 @@ export function SearchScreen() {
             setIsVisible={setIsVisibleManual}
             onPressCart={cartHandler}
           />
+
+          {order && (
+            <ShowAttributes
+              isVisible={isShowAttributeModal}
+              setIsVisible={setIsShowAttributeModal}
+              order={orderDetail}
+              cartHandler={cartHandler}
+              // onPressCart={cartHandler}
+            />
+          )}
 
           <RecheckConfirmation
             orderList={orderDetail}

@@ -41,6 +41,7 @@ import {
   getDrawerSessionPost,
   getDrawerSessionSuccess,
   getOrderDeliveries,
+  getOrdersByInvoiceIdSuccess,
   getPendingOrders,
   getTotalSaleAction,
   onLineOrders,
@@ -139,10 +140,10 @@ export function DashBoard({ navigation }) {
     isLoadingSelector([DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
   );
 
-  // useEffect(() => {
-  //   setScan(false);
-  //   dispatch(getPendingOrders(sellerID));
-  // }, []);
+  useEffect(() => {
+    setScan(false);
+    dispatch(getPendingOrders(sellerID));
+  }, []);
 
   useEffect(() => {
     if (scan) {
@@ -205,13 +206,13 @@ export function DashBoard({ navigation }) {
 
   useEffect(() => {
     if (isFocused) {
-      // dispatch(getOrderDeliveries(sellerID, page));
+      dispatch(getOrderDeliveries(sellerID, page));
       startTrackingFun();
-      // clearInput();
-      // dispatch(getTotalSaleAction(sellerID));
-      // dispatch(posLoginDetail());
-      // dispatch(onLineOrders(sellerID));
-      // setSku('');
+      clearInput();
+      dispatch(getTotalSaleAction(sellerID));
+      dispatch(posLoginDetail());
+      dispatch(onLineOrders(sellerID));
+      setSku('');
     }
   }, [isFocused]);
 
@@ -529,7 +530,10 @@ export function DashBoard({ navigation }) {
           <View style={{ flex: 1 }} />
 
           <TouchableOpacity
-            onPress={() => navigate(NAVIGATION.refund, { screen: 'intial' })}
+            onPress={() => {
+              dispatch(getOrdersByInvoiceIdSuccess({}));
+              navigate(NAVIGATION.refund, { screen: 'intial' });
+            }}
             style={styles.checkoutButton}
           >
             <View style={styles.displayRow}>
