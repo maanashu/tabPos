@@ -59,11 +59,11 @@ export function TotalInventory() {
   const getProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart2}>
-        <Text>{index + 1 + '.        '}</Text>
+        <Text>{index + 1 + '.     '}</Text>
         <Text style={styles.revenueDataText}>{item?.products?.name}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
-        <Text style={styles.revenueDataText}>{item?.products?.category_id}</Text>
+        <Text style={styles.revenueDataText}>{item?.products?.category?.category_name}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
         <Text style={styles.revenueDataText}>{item?.products?.upc}</Text>
@@ -89,6 +89,8 @@ export function TotalInventory() {
       <Text style={styles.text2}>{count}</Text>
     </View>
   );
+
+  console.log('first', JSON.stringify(totalInventory));
 
   return (
     <View style={styles.flex1}>
@@ -118,8 +120,8 @@ export function TotalInventory() {
           image={totalOrders}
           text={'Average Order Value'}
           count={
-            totalInventory?.inventoryOverview?.averageOrder
-              ? '$' + totalInventory?.inventoryOverview?.averageOrder?.toFixed(2)
+            totalInventory?.inventoryOverview?.avgOrderValue
+              ? '$' + totalInventory?.inventoryOverview?.avgOrderValue?.toFixed(2)
               : '$0'
           }
         />
@@ -128,7 +130,7 @@ export function TotalInventory() {
           text={'Gross Profit'}
           count={
             totalInventory?.inventoryOverview?.profit
-              ? '$' + totalInventory?.inventoryOverview?.profit
+              ? '$' + totalInventory?.inventoryOverview?.profit?.toFixed(2)
               : '$0'
           }
         />
