@@ -16,14 +16,11 @@ import {
   calendarIcon,
   todayCalendarIcon,
   calendarSettingsIcon,
-  Fonts,
-  pin,
-  editIcon,
 } from '@/assets';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { strings } from '@/localization';
 import { COLORS } from '@/theme';
-import { Button, ScreenWrapper, Spacer } from '@/components';
+import { ScreenWrapper } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import { Calendar } from '@/components/CustomCalendar';
@@ -52,7 +49,6 @@ import EventDetailModal from './Components/EventDetailModal';
 import { getSettings, upadteApi } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import ProfileImage from '@/components/ProfileImage';
 import VerifyCheckinOtp from './Components/VerifyCheckinOtp';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import ReScheduleDetailModal from './Components/ReScheduleDetailModal';
