@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -216,6 +216,13 @@ export function Calender() {
     dayHandler();
   };
 
+  const getAppointmentsByDate = useMemo(() => {
+    const filteredAppointmentsByDate = getApprovedAppointments.filter(
+      (appointment) => moment(appointment?.date).format('L') === moment(calendarDate).format('L')
+    );
+    return filteredAppointmentsByDate;
+  }, [calendarDate]);
+
   const onPressSaveCalendarSettings = (calendarPreferences) => {
     if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.DAY) {
       dayHandler();
@@ -420,12 +427,14 @@ export function Calender() {
                 />
               ) : (
                 <FlatList
-                  data={getApprovedAppointments}
+                  data={getAppointmentsByDate}
                   keyExtractor={(_, index) => index.toString()}
                   ListHeaderComponent={<ListViewHeader />}
                   renderItem={renderListViewItem}
                   ListEmptyComponent={() => (
-                    <Text style={styles.noAppointmentEmpty}>There are no appointments</Text>
+                    <Text style={styles.noAppointmentEmpty}>
+                      There are no appointments on this day
+                    </Text>
                   )}
                 />
               )}
