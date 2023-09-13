@@ -7,7 +7,6 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
@@ -17,28 +16,28 @@ import { moderateScale, ms } from 'react-native-size-matters';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { getProductsBySku } from '@/actions/DashboardAction';
 import { getDashboard } from '@/selectors/DashboardSelector';
-import { categoryshoes, cross, Fonts, search_light } from '@/assets';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { categoryshoes, crossButton, Fonts, search_light } from '@/assets';
 
 const { width } = Dimensions.get('window');
 
 const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
   const dispatch = useDispatch();
-  const [search, setSearch] = useState();
-  const [selectedItem, setSelectedItem] = useState();
-
   const getDashboardData = useSelector(getDashboard);
   const getProducts = getDashboardData?.skuOrders;
+
+  const [search, setSearch] = useState();
+  const [selectedItem, setSelectedItem] = useState();
 
   const isLoading = useSelector((state) =>
     isLoadingSelector([DASHBOARDTYPE.GET_PRODUCTS_BY_SKU], state)
   );
 
   const changeView = () => {
-    if (Object.keys(getProducts).length > 0) {
+    if (getProducts !== undefined && Object.keys(getProducts).length > 0) {
       return (
         <TouchableOpacity
           style={[
@@ -70,47 +69,11 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
         </TouchableOpacity>
       );
     } else {
-      if (isLoading) {
-        return (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: Fonts.SemiBold,
-                fontSize: SF(20),
-                color: COLORS.primary,
-              }}
-            >
-              {'Loading...'}
-            </Text>
-          </View>
-        );
-      } else {
-        return (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: Fonts.SemiBold,
-                fontSize: SF(20),
-                color: COLORS.primary,
-              }}
-            >
-              {'No product found'}
-            </Text>
-          </View>
-        );
-      }
+      return (
+        <View style={styles.emptyViewStyle}>
+          <Text style={styles.emptyTextStyle}>{'No product found'}</Text>
+        </View>
+      );
     }
   };
 
@@ -131,19 +94,21 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
       <View style={[styles.container, { flex: 1 }]}>
         <View style={styles.headingRowStyle}>
           <TouchableOpacity onPress={() => setIsVisible(false)}>
-            <Image source={cross} style={styles.crossIconStyle} />
+            <Image source={crossButton} style={styles.crossIconStyle} />
           </TouchableOpacity>
 
           <TouchableOpacity
-            disabled={Object.keys(getProducts).length > 0 ? false : true}
-            onPress={() => {
-              setIsVisible(false);
-            }}
+            disabled={
+              getProducts !== undefined && Object.keys(getProducts).length > 0 ? false : true
+            }
+            onPress={() => setIsVisible(false)}
             style={[
               styles.headingViewStyle,
               {
                 backgroundColor:
-                  Object.keys(getProducts).length > 0 ? COLORS.primary : COLORS.gerySkies,
+                  getProducts !== undefined && Object.keys(getProducts).length > 0
+                    ? COLORS.primary
+                    : COLORS.gerySkies,
               },
             ]}
           >
@@ -208,8 +173,8 @@ const styles = StyleSheet.create({
     paddingVertical: SH(15),
   },
   crossIconStyle: {
-    width: SH(14),
-    height: SH(14),
+    width: ms(14),
+    height: ms(14),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
   },
@@ -261,66 +226,14 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },
-  colorTextStyle: {
-    fontSize: SF(14),
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Medium,
-  },
-  counterCon: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    marginVertical: SH(20),
-  },
-  minusBtnCon: {
-    borderColor: COLORS.solidGrey,
-    borderWidth: 1,
-    width: SH(130),
-    height: SH(60),
+  emptyViewStyle: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  counterText: {
-    fontSize: SH(28),
-    fontFamily: Fonts.Bold,
-    color: COLORS.black,
-  },
-  colorText: {
-    marginHorizontal: SH(10),
-    fontSize: SF(16),
-    fontFamily: Fonts.Regular,
-    color: COLORS.gerySkies,
-  },
-  colorRow: {
-    height: SH(2),
-    width: SH(140),
-    backgroundColor: COLORS.solidGrey,
-  },
-  displayRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  selectColorItem: {
-    marginTop: 10,
-    width: Platform.OS === 'android' ? SH(90) : SH(70),
-    height: Platform.OS === 'android' ? SH(45) : SH(40),
-    borderWidth: 1,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: COLORS.silver_solid,
-    marginHorizontal: moderateScale(2),
-  },
-  colorSelectText: {
-    fontSize: SF(16),
-    color: COLORS.black,
-    fontFamily: Fonts.Regular,
-  },
-  loader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+  emptyTextStyle: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(20),
+    color: COLORS.primary,
   },
 });

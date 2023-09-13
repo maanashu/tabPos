@@ -40,6 +40,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   const [changeView, setChangeView] = useState('TotalItems');
   const [refundAmount, setRefundAmount] = useState('');
   const [orders, setOrders] = useState();
+  const [orderDetailData, setOrderDetailData] = useState();
   let isRefund = false;
 
   useEffect(() => {
@@ -47,6 +48,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
       return { ...item, refundAmount: '' };
     });
     setOrders(updatedDataArray);
+    setOrderDetailData(orderData);
   }, [orderData]);
 
   const refundHandler = (key, newText) => {
@@ -150,15 +152,19 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   };
 
   const getOrdersDetail = () => {
-    const newArray = orders.map((obj) => ({
-      ...obj, // Copy all existing key-value pairs
-      ['applicableKey']: applicableIsCheck, // Add the new key-value pair
-      ['applyToEachItemKey']: applyEachItem, //
-      ['applicableAmountToAllItems']: amount, //
-      ['RefundedAmount']: obj.refundAmount,
-    }));
-    setOrders(newArray);
-    setChangeView('PaymentScreen');
+    if (applyEachItem) {
+      const newArray = orders.map((obj) => ({
+        ...obj, // Copy all existing key-value pairs
+        // ['applicableKey']: applicableIsCheck, // Add the new key-value pair
+        ['applyToEachItemKey']: applyEachItem, //
+        // ['applicableAmountToAllItems']: amount, //
+        ['RefundedAmount']: obj.refundAmount,
+      }));
+      setOrders(newArray);
+      setChangeView('PaymentScreen');
+    } else {
+      setChangeView('PaymentScreen');
+    }
   };
 
   return (
@@ -449,7 +455,14 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           </View>
         </>
       ) : (
-        <PaymentSelection backHandler={() => setChangeView('TotalItems')} orderData={orderData} />
+        <PaymentSelection
+          backHandler={() => setChangeView('TotalItems')}
+          orderData={orderData}
+          order={orders}
+          applicableForAllItems={applicableIsCheck}
+          applyEachItem={applyEachItem}
+          amount={applicableIsCheck ? amount : refundAmount}
+        />
       )}
     </View>
   );

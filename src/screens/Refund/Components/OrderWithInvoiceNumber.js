@@ -1,19 +1,12 @@
 import React, { memo } from 'react';
-import { View, Text, Image, ActivityIndicator, StyleSheet } from 'react-native';
-
-import { useSelector } from 'react-redux';
+import { View, Text, Image, StyleSheet } from 'react-native';
 
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const OrderWithInvoiceNumber = ({ orderData }) => {
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID], state)
-  );
-
+  console.log('orderData====', JSON.stringify(orderData));
   const getDeliveryType = (type) => {
     switch (type) {
       case '1':
@@ -29,11 +22,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
 
   return (
     <View style={styles.container}>
-      {isLoading ? (
-        <View style={styles.loader}>
-          <ActivityIndicator color={COLORS.primary} style={styles.loader} size={'large'} />
-        </View>
-      ) : Object.keys(orderData).length > 0 ? (
+      {orderData !== undefined && Object.keys(orderData).length > 0 ? (
         <View style={styles.orderRowStyle}>
           <Text style={styles.invoiceNumberTextStyle}>
             {`#${orderData?.invoice_number}` ?? '-'}
@@ -69,7 +58,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
           </View>
 
           <View style={styles.orderDetailStyle}>
-            <Text style={styles.timeTextStyle}>{'Customer'}</Text>
+            <Text style={styles.timeTextStyle}>{strings.returnOrder.customer}</Text>
             <View style={styles.locationViewStyle}>
               <Image source={clock} style={styles.pinImageStyle} />
               <Text style={styles.distanceTextStyle}>
@@ -84,7 +73,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
         </View>
       ) : (
         <View style={styles.emptyViewStyle}>
-          <Text style={styles.emptyTextStyle}>{'No order found'}</Text>
+          <Text style={styles.emptyTextStyle}>{strings.returnOrder.noOrderFound}</Text>
         </View>
       )}
     </View>
@@ -96,13 +85,6 @@ export default memo(OrderWithInvoiceNumber);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  loader: {
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    position: 'absolute',
   },
   orderRowStyle: {
     borderWidth: 1,

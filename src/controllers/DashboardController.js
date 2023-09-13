@@ -241,13 +241,10 @@ export class DashboardController {
   }
 
   static async returnProduct(data) {
+    console.log(data);
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.return;
-      const body = {
-        order_id: data?.order_id,
-        products: data?.products,
-        return_reason: 'testing reason',
-      };
+      const body = data;
       HttpClient.post(endpoint, body)
         .then((response) => {
           Toast.show({
@@ -259,12 +256,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
-            text2: error.msg,
-            visibilityTime: 2000,
-          });
+          alert(error?.msg);
           reject(error.msg);
         });
     });

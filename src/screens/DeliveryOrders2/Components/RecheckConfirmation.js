@@ -15,7 +15,7 @@ import ReactNativeModal from 'react-native-modal';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { cross, Fonts } from '@/assets';
+import { cross, crossButton, Fonts } from '@/assets';
 import { productList } from '@/constants/flatListData';
 
 const { width } = Dimensions.get('window');
@@ -54,7 +54,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, onPress }) => {
         <Text style={styles.headingTextStyle}>{strings.returnOrder.recheckConfirmed}</Text>
 
         <TouchableOpacity onPress={() => setIsVisible(false)}>
-          <Image source={cross} style={styles.crossIconStyle} />
+          <Image source={crossButton} style={styles.crossIconStyle} />
         </TouchableOpacity>
       </View>
 

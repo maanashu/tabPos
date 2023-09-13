@@ -529,5 +529,13 @@ export const en = {
     percentageLabel: 'percentage',
     inStore: 'In-store',
     reservation: 'Reservation',
+    totalReturnAmount: 'Total Return Amount:',
+    returnPaymentMethod: 'Return Payment Method',
+    payBy: 'Pay By',
+    jbr: 'jbr',
+    cash: 'cash',
+    eReceipt: 'E-Recipe',
+    return: 'Return',
+    noOrderFound: 'No order found',
   },
 };
