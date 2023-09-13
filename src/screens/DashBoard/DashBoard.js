@@ -10,6 +10,8 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  findNodeHandle,
+  Keyboard,
 } from 'react-native';
 
 import moment from 'moment';
@@ -67,6 +69,7 @@ import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 
 import { styles } from './DashBoard.styles';
 import { scanProductAdd } from '@/actions/RetailAction';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -104,6 +107,7 @@ export function DashBoard({ navigation }) {
   const [page, setPage] = useState(1);
   const [sku, setSku] = useState('');
   const [scan, setScan] = useState(false);
+  const [scroll, setScroll] = useState('');
 
   //  order delivery pagination
 
@@ -341,77 +345,86 @@ export function DashBoard({ navigation }) {
   const trackinSessionModal = () => {
     return (
       <Modal transparent={true} animationType={'fade'} isVisible={trackingSession}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 100}
-        >
-          <ScrollView>
-            <View style={styles.modalMainView}>
-              <View style={styles.headerView}>
-                <View style={styles.sessionViewStyle}>
-                  <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                    {strings.management.session}
-                  </Text>
-                </View>
-
-                <TouchableOpacity
-                  style={styles.crossButonBorder}
-                  onPress={() => dispatch(logoutUserFunction())}
-                >
-                  <Image source={crossButton} style={styles.crossIconStyle} />
-                </TouchableOpacity>
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.modalMainView}>
+            <View style={styles.headerView}>
+              <View style={styles.sessionViewStyle}>
+                <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
+                  {strings.management.session}
+                </Text>
               </View>
 
-              <Spacer space={SH(40)} />
-              <View style={styles.countCashView}>
-                <Text style={styles.countCashText}>{strings.management.countCash}</Text>
-
-                <Spacer space={SH(40)} />
-                <View>
-                  <Text style={styles.amountCountedText}>{strings.management.amountCounted}</Text>
-                  <TextInput
-                    placeholder={strings.management.amount}
-                    style={styles.inputStyle}
-                    placeholderTextColor={COLORS.solid_grey}
-                    keyboardType="number-pad"
-                    value={amountCount}
-                    onChangeText={setAmountCount}
-                  />
-                </View>
-                <Spacer space={SH(40)} />
-                <View>
-                  <Text style={styles.amountCountedText}>{strings.management.note}</Text>
-                  <TextInput
-                    placeholder={strings.management.note}
-                    style={styles.noteInputStyle}
-                    placeholderTextColor={COLORS.gerySkies}
-                    value={trackNotes}
-                    onChangeText={setTrackNotes}
-                    multiline={true}
-                    numberOfLines={3}
-                  />
-                </View>
-                <Spacer space={SH(20)} />
-              </View>
-              <View style={{ flex: 1 }} />
-              <Button
-                title={strings.management.startSession}
-                textStyle={{
-                  ...styles.buttonText,
-                  ...{ color: amountCount ? COLORS.white : COLORS.darkGray },
-                }}
-                style={{
-                  ...styles.saveButton,
-                  ...{
-                    backgroundColor: amountCount ? COLORS.primary : COLORS.textInputBackground,
-                  },
-                }}
-                onPress={startTrackingSesHandler}
-              />
-              <Spacer space={SH(40)} />
+              <TouchableOpacity
+                style={styles.crossButonBorder}
+                onPress={() => dispatch(logoutUserFunction())}
+              >
+                <Image source={crossButton} style={styles.crossIconStyle} />
+              </TouchableOpacity>
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+
+            <Spacer space={SH(40)} />
+            <View style={styles.countCashView}>
+              <Text style={styles.countCashText}>{strings.management.countCash}</Text>
+
+              <Spacer space={SH(40)} />
+              <View>
+                <Text style={styles.amountCountedText}>{strings.management.amountCounted}</Text>
+                <TextInput
+                  // ref={(inputRef) => {
+                  //   onInputFocus(inputRef), inputRef;
+                  // }}
+                  onFocus={(event) => {
+                    // setFresh((prev) => !prev);
+                    setScroll('1');
+                    // onInputFocus(event.target);
+                  }}
+                  placeholder={strings.management.amount}
+                  style={styles.inputStyle}
+                  placeholderTextColor={COLORS.solid_grey}
+                  keyboardType="number-pad"
+                  value={amountCount}
+                  onChangeText={setAmountCount}
+                />
+              </View>
+              <Spacer space={SH(40)} />
+              <View>
+                <Text style={styles.amountCountedText}>{strings.management.note}</Text>
+                <TextInput
+                  // ref={(inputRef) => (onInputFocus(inputRef), inputRef)}
+                  onFocus={(event) => {
+                    // setFresh((prev) => !prev);
+                    setScroll('2');
+                    // onInputFocus(event.target);
+                  }}
+                  placeholder={strings.management.note}
+                  style={styles.noteInputStyle}
+                  placeholderTextColor={COLORS.gerySkies}
+                  value={trackNotes}
+                  onChangeText={setTrackNotes}
+                  multiline={true}
+                  numberOfLines={3}
+                />
+              </View>
+              <Spacer space={SH(20)} />
+            </View>
+            <View style={{ flex: 1 }} />
+            <Button
+              title={strings.management.startSession}
+              textStyle={{
+                ...styles.buttonText,
+                ...{ color: amountCount ? COLORS.white : COLORS.darkGray },
+              }}
+              style={{
+                ...styles.saveButton,
+                ...{
+                  backgroundColor: amountCount ? COLORS.primary : COLORS.textInputBackground,
+                },
+              }}
+              onPress={startTrackingSesHandler}
+            />
+            <Spacer space={SH(40)} />
+          </View>
+        </KeyboardAwareScrollView>
       </Modal>
     );
   };

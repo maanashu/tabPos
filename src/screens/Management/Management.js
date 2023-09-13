@@ -57,6 +57,7 @@ import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import { logoutUserFunction } from '@/actions/UserActions';
 import { ms } from 'react-native-size-matters';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -434,7 +435,7 @@ export function Management() {
   const addCashModal = () => {
     return (
       <Modal transparent isVisible={addCash}>
-        <View style={styles.modalMainView}>
+        <KeyboardAwareScrollView contentContainerStyle={styles.modalMainView}>
           <View
             style={[
               styles.headerView,
@@ -522,7 +523,7 @@ export function Management() {
             onPress={addCashHandler}
           />
           <Spacer space={SH(40)} />
-        </View>
+        </KeyboardAwareScrollView>
       </Modal>
     );
   };
@@ -795,7 +796,9 @@ export function Management() {
   const endSessionModal = () => {
     return (
       <Modal transparent isVisible={endSession || cashSummary || endSelectAmount || removeUsd}>
-        <View style={styles.modalMainView}>{endSessionFunction()}</View>
+        <KeyboardAwareScrollView contentContainerStyle={styles.modalMainView}>
+          {endSessionFunction()}
+        </KeyboardAwareScrollView>
       </Modal>
     );
   };

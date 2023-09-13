@@ -427,25 +427,32 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
           {viewCashOutArray && (
             <>
               {finalCashOutArray?.map((item, index) => (
-                <View style={styles.totalCashData} key={index}>
-                  <View style={styles.flexAlign}>
+                <View key={index}>
+                  <TouchableOpacity
+                    style={styles.totalCashData}
+                    onPress={() => toggleExpansion(index)}
+                  >
+                    <View style={styles.flexAlign}>
+                      <Text style={styles.sectionListData}>
+                        {strings.management.sale}
+                        {correctWay(item.transaction_type)}
+                      </Text>
+                      <Image
+                        source={dropdown}
+                        resizeMode="contain"
+                        style={
+                          expandedItems[index]
+                            ? styles.activeDropDownPayment
+                            : styles.dropDownPayment
+                        }
+                      />
+                    </View>
                     <Text style={styles.sectionListData}>
-                      {strings.management.sale}
-                      {correctWay(item.transaction_type)}
+                      {strings.management.usd}
+                      {item.amount}
+                      {'.00'}
                     </Text>
-                    <Image
-                      source={dropdown}
-                      resizeMode="contain"
-                      style={
-                        expandedItems[index] ? styles.activeDropDownPayment : styles.dropDownPayment
-                      }
-                    />
-                  </View>
-                  <Text style={styles.sectionListData}>
-                    {strings.management.usd}
-                    {item.amount}
-                    {'.00'}
-                  </Text>
+                  </TouchableOpacity>
                 </View>
               ))}
             </>

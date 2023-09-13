@@ -6,6 +6,8 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
   Cursor,
+  MaskSymbol,
+  isLastFilledCell,
 } from 'react-native-confirmation-code-field';
 import { useDispatch, useSelector } from 'react-redux';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
@@ -80,6 +82,15 @@ export function MerchantPasscode({ route }) {
       }
     }
   };
+  const renderCell = ({ index }) => {
+    const displaySymbol = value[index] ? '*' : '';
+
+    return (
+      <View key={index} style={styles.cellRoot} onLayout={getCellOnLayoutHandler(index)}>
+        <Text style={styles.cellText}>{displaySymbol}</Text>
+      </View>
+    );
+  };
 
   return (
     <View
@@ -106,11 +117,7 @@ export function MerchantPasscode({ route }) {
             showSoftInputOnFocus={false}
             keyboardType={'number-pad'}
             textContentType={'oneTimeCode'}
-            renderCell={({ index, symbol, isFocused }) => (
-              <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
-                <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
-              </View>
-            )}
+            renderCell={renderCell}
           />
 
           <VirtualKeyBoard
