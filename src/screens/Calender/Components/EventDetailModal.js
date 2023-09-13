@@ -8,7 +8,6 @@ import moment from 'moment';
 import { calculateDuration } from '@/utils/GlobalMethods';
 import ProfileImage from '@/components/ProfileImage';
 import { useState } from 'react';
-import { ReScheduleDetailModal } from './ReScheduleDetailModal';
 import { COLORS } from '@/theme';
 import { ChatRoom } from './ChatRoom';
 import { Button, Spacer } from '@/components';
@@ -19,6 +18,7 @@ import { TYPES } from '@/Types/AppointmentTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { APPOINTMENT_STATUS } from '@/constants/status';
+import ReScheduleDetailModal from './ReScheduleDetailModal';
 
 const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, eventData }) => {
   const dispatch = useDispatch();
