@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { moderateScale, scale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF, ShadowStyles } from '@/theme';
+import { COLORS, SF, SH, ShadowStyles } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -53,5 +53,6 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Medium,
     fontSize: scale(12),
     color: COLORS.black,
+    marginTop: SH(10),
   },
 });

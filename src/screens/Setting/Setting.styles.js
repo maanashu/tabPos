@@ -1,9 +1,4 @@
-import {
-  StyleSheet,
-  Dimensions,
-  ViewPagerAndroidBase,
-  Platform,
-} from 'react-native';
+import { StyleSheet, Dimensions, ViewPagerAndroidBase, Platform } from 'react-native';
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
@@ -126,8 +121,7 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(3),
   },
   twoStepMemberConTax: {
-    marginLeft:
-      Platform.OS === 'android' ? moderateScale(35) : moderateScale(20),
+    marginLeft: Platform.OS === 'android' ? moderateScale(35) : moderateScale(20),
   },
   twoStepMemberCon2: {
     width: windowWidth * 0.38,
@@ -441,8 +435,7 @@ export const styles = StyleSheet.create({
   },
   planModalcon: {
     width: windowWidth * 0.85,
-    height:
-      Platform.OS === 'android' ? windowHeight * 0.88 : windowHeight * 0.8,
+    height: Platform.OS === 'android' ? windowHeight * 0.88 : windowHeight * 0.8,
     borderRadius: 10,
     borderWidth: 1,
     alignSelf: 'center',
@@ -1024,7 +1017,7 @@ export const styles = StyleSheet.create({
     height: SW(5),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
-    alignSelf:"flex-start"
+    alignSelf: 'flex-start',
   },
   arrowStyle2: {
     width: SW(5),
@@ -1130,8 +1123,8 @@ export const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontSize: SF(12),
     fontFamily: Fonts.Medium,
-    textAlign:"center"
- 
+    textAlign: 'center',
+
     // width:"90%"
   },
   hourRateBodyCon: {
@@ -1334,6 +1327,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Medium,
     fontSize: scale(12),
     color: COLORS.black,
+    marginTop: SH(10),
   },
   cross: {
     width: SW(10),

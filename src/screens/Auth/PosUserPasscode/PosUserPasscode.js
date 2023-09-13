@@ -6,6 +6,8 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
   Cursor,
+  isLastFilledCell,
+  MaskSymbol,
 } from 'react-native-confirmation-code-field';
 import { useDispatch, useSelector } from 'react-redux';
 import { moderateScale } from 'react-native-size-matters';
@@ -74,6 +76,15 @@ export function PosUserPasscode({ route }) {
       dispatch(loginPosUser(data));
     }
   };
+  const renderCell = ({ index }) => {
+    const displaySymbol = value[index] ? '*' : '';
+
+    return (
+      <View key={index} style={styles.cellRoot} onLayout={getCellOnLayoutHandler(index)}>
+        <Text style={styles.cellText}>{displaySymbol}</Text>
+      </View>
+    );
+  };
 
   return (
     <View
@@ -105,11 +116,7 @@ export function PosUserPasscode({ route }) {
             showSoftInputOnFocus={false}
             keyboardType={'number-pad'}
             textContentType={'oneTimeCode'}
-            renderCell={({ index, symbol, isFocused }) => (
-              <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
-                <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
-              </View>
-            )}
+            renderCell={renderCell}
           />
 
           <VirtualKeyBoard

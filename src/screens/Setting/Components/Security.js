@@ -17,7 +17,13 @@ import {
 } from '@/assets';
 import { getSetting } from '@/selectors/SettingSelector';
 import { useDispatch, useSelector } from 'react-redux';
-import { configureGoogleCode, getGoogleCode, getSettings, upadteApi, verifyGoogleCode } from '@/actions/SettingAction';
+import {
+  configureGoogleCode,
+  getGoogleCode,
+  getSettings,
+  upadteApi,
+  verifyGoogleCode,
+} from '@/actions/SettingAction';
 import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
@@ -54,7 +60,7 @@ export function Security() {
   const [googleAuthicator, setGoogleAuthicator] = useState(googleAuthenticator);
   const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
   const getAuth = useSelector(getAuthData);
-  const TWO_FACTOR=getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled
+  const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
   useEffect(() => {
     if (getSettingData?.getSetting) {
       setGoogleAuthicator(getSettingData?.getSetting?.google_authenticator_status ?? false);
@@ -93,22 +99,20 @@ export function Security() {
       // };
       // const res = await dispatch(verifyGoogleCode(data));
 
-
-      const data={
-        code:value
-      }
-      const verificationFunction = googleAuthicator? verifyGoogleCode : configureGoogleCode;
+      const data = {
+        code: value,
+      };
+      const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
       const res = await verificationFunction(data)(dispatch);
       if (res?.msg === 'Code verified successfully') {
         setValue('');
-        const data={
-          "app_name": "pos",
-          "google_authenticator_status":factorEnable,
-        }
-        dispatch(upadteApi(data))
+        const data = {
+          app_name: 'pos',
+          google_authenticator_status: factorEnable,
+        };
+        dispatch(upadteApi(data));
         dispatch(getSettings());
         setSixDigit(false);
-       
       } else if (res === undefined) {
         setValue('');
       }
@@ -117,17 +121,25 @@ export function Security() {
 
   const toggleBtnHandler = () => {
     if (googleAuthicator === false) {
-      setFactorEnable(true)
-      setTwoStepModal(true), 
-      dispatch(getGoogleCode());
-      setIsDisable(false)
+      setFactorEnable(true);
+      setTwoStepModal(true), dispatch(getGoogleCode());
+      setIsDisable(false);
     } else {
-      setIsDisable(true)
-      setSixDigit(true)
-      setFactorEnable(false)
+      setIsDisable(true);
+      setSixDigit(true);
+      setFactorEnable(false);
       // setGoogleAuthScan(true);
       // dispatch(getGoogleCode());
     }
+  };
+  const renderCell = ({ index }) => {
+    const displaySymbol = value[index] ? '*' : '';
+
+    return (
+      <View key={index} style={styles.cellRoot} onLayout={getCellOnLayoutHandler(index)}>
+        <Text style={styles.cellText}>{displaySymbol}</Text>
+      </View>
+    );
   };
 
   return (
@@ -142,7 +154,11 @@ export function Security() {
           <View style={[styles.flexRow, styles.flexWidth]}>
             <Text>{''}</Text>
             <Text style={styles.subHeading}>{'Enter 6-Digit code'}</Text>
-            <TouchableOpacity onPress={() => {setSixDigit(false),setValue('')}}>
+            <TouchableOpacity
+              onPress={() => {
+                setSixDigit(false), setValue('');
+              }}
+            >
               <Image source={crossButton} style={styles.cross} />
             </TouchableOpacity>
           </View>
@@ -157,11 +173,7 @@ export function Security() {
             showSoftInputOnFocus={false}
             keyboardType="number-pad"
             textContentType="oneTimeCode"
-            renderCell={({ index, symbol, isFocused }) => (
-              <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
-                <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
-              </View>
-            )}
+            renderCell={renderCell}
           />
 
           <VirtualKeyBoard
