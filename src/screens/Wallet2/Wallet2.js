@@ -60,7 +60,7 @@ import { getWallet } from '@/selectors/WalletSelector';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
-import { TYPES } from '@/Types/WalletTypes';
+import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
 import { getOrderData } from '@/actions/AnalyticsAction';
@@ -123,6 +123,7 @@ export function Wallet2() {
   const [dateformat, setDateformat] = useState('');
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [formattedDate, setFormattedDate] = useState(new Date());
   const [historytype, setHistorytype] = useState('all');
   const [walletHome, setWalletHome] = useState(true);
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
@@ -139,16 +140,17 @@ export function Wallet2() {
   useEffect(() => {
     if (isFocused) {
       dispatch(getTotalTra(time, sellerID));
-      dispatch(getTotalTraType(sellerID));
     }
   }, [isFocused]);
-  const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
-  const isTotalTradetail = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state)
-  );
-  const isTotalTraType = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_TOTAL_TRA_TYPE], state)
-  );
+
+  const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
+  // const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
+  // const isTotalTradetail = useSelector((state) =>
+  //   isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state)
+  // );
+  // const isTotalTraType = useSelector((state) =>
+  //   isLoadingSelector([TYPES.GET_TOTAL_TRA_TYPE], state)
+  // );
   let desiredModeOfPayment = historytype; // Replace with the desired mode_of_payment value or "all"
   let filteredData;
 
@@ -194,15 +196,32 @@ export function Wallet2() {
     const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
     setDate(fullDate);
-    // if (weeklyTransaction) {
-    //   setSelectId2(0);
-    //   dispatch(getTotakTraDetail(formattedDate, sellerID, 'all'));
-    // } else {
-    setSelectId(0);
-    dispatch(getTotalTra(null, sellerID, formattedDate));
-    // }
+    setFormattedDate(formattedDate);
   };
-
+  const onDateApply = (selectedDate) => {
+    const formateDate = moment(selectedDate).format('YYYY-MM-DD');
+    if (weeklyTransaction) {
+      setSelectId2(0);
+      dispatch(getTotakTraDetail(formateDate, sellerID, 'all'));
+    } else {
+      setSelectId(0);
+      dispatch(getTotalTra(null, sellerID, formateDate));
+    }
+    setShow(false);
+  };
+  const onCancelPressCalendar = () => {
+    if (weeklyTransaction) {
+      setSelectId2(0);
+      dispatch(getTotakTraDetail(null, sellerID, 'all'));
+    } else {
+      setSelectId(2);
+      dispatch(getTotalTra('week', sellerID, null));
+    }
+    setDateformat('');
+    setDate(new Date());
+    setFormattedDate(new Date());
+    setShow(false);
+  };
   const getFormattedTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -416,9 +435,11 @@ export function Wallet2() {
             setWeeklyTrasaction(false);
             setWalletHome(true);
           }}
-          orderClickHandler={(orderId) => {
-            setInvoiceDetail(true);
-            dispatch(getOrderData(orderId));
+          orderClickHandler={async (orderId) => {
+            const res = await dispatch(getOrderData(orderId));
+            if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
+              setInvoiceDetail(true);
+            }
           }}
         />
       );
@@ -429,6 +450,11 @@ export function Wallet2() {
       <View style={weeklyTransaction ? styles.bgWhitecontainer : styles.container}>
         {bodyView()}
       </View>
+      {onLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
+        </View>
+      ) : null}
 
       <Modal
         isVisible={show}
@@ -442,8 +468,10 @@ export function Wallet2() {
           <CalendarPickerModal
             onPress={() => setShow(false)}
             onDateChange={onChangeDate}
-            onSelectedDate={() => setShow(false)}
+            onSelectedDate={() => onDateApply(formattedDate)}
+            selectedStartDate={formattedDate}
             maxDate={maxDate}
+            onCancelPress={onCancelPressCalendar}
           />
         </View>
       </Modal>

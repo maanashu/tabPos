@@ -41,6 +41,7 @@ import {
   getDrawerSessionPost,
   getDrawerSessionSuccess,
   getOrderDeliveries,
+  getOrdersByInvoiceIdSuccess,
   getPendingOrders,
   getTotalSaleAction,
   onLineOrders,
@@ -424,6 +425,8 @@ export function DashBoard({ navigation }) {
     }
   };
 
+  console.log('dashboard');
+
   const bodyView = () => (
     <View style={styles.homeScreenCon}>
       <View style={styles.displayRow}>
@@ -529,7 +532,11 @@ export function DashBoard({ navigation }) {
           <View style={{ flex: 1 }} />
 
           <TouchableOpacity
-            onPress={() => navigate(NAVIGATION.refund)}
+            onPress={() => {
+              console.log('hiiiiiiiiiiiiiiiiii');
+              dispatch(getOrdersByInvoiceIdSuccess({}));
+              navigate(NAVIGATION.refund, { screen: 'intial' });
+            }}
             style={styles.checkoutButton}
           >
             <View style={styles.displayRow}>

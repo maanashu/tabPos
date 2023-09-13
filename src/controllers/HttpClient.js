@@ -17,9 +17,12 @@ const client = axios.create({});
 client.interceptors.request.use(async function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
   const user = store.getState().user?.posLoginData?.token;
+  const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
   const fcmToken = await getDeviceToken();
   console.log('register', register);
   console.log('user', user);
+
+  console.log('user===', user);
 
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
@@ -32,6 +35,14 @@ client.interceptors.request.use(async function (config) {
       return { token: register, appName: 'merchant' };
     }
   };
+
+  // const getRole = () => {
+  //   if (API_URLS_USING_POS_USER_ACCESS_TOKEN(sellerID).includes(config.url)) {
+  //     return { token: register, appName: 'merchant' };
+  //   } else {
+  //     return { token: user, appName: 'pos' };
+  //   }
+  // };
 
   config.headers = {
     ...config.headers,

@@ -587,7 +587,6 @@ export const styles = StyleSheet.create({
     paddingBottom: ms(10),
     position: 'absolute',
     alignSelf: 'center',
-    borderWidth: 1,
   },
 
   addCartConHeader: {
@@ -2061,7 +2060,7 @@ export const styles = StyleSheet.create({
     borderBottomEndRadius: 5,
     borderBottomLeftRadius: 5,
     justifyContent: 'center',
-    paddingHorizontal: ms(5),
+    paddingHorizontal: ms(3),
   },
   availableTime: {
     fontSize: SF(7),

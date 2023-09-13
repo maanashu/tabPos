@@ -124,8 +124,9 @@ export function CartScreen({
   );
 
   const productFun = async (item) => {
-    setOfferId(item?.product?.id);
-    const res = await dispatch(getOneProduct(sellerID, item?.product?.id));
+    beforeDiscountCartLoad();
+    setOfferId(item?.id);
+    const res = await dispatch(getOneProduct(sellerID, item?.product?.id, item?.id));
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
     }
@@ -169,7 +170,8 @@ export function CartScreen({
   const updateQuantity = (cartId, productId, operation, index) => {
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
+    // const productPrice = product.product_details.price;
+    const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
 
     if (operation === '+') {
       product.qty += 1;
@@ -213,7 +215,8 @@ export function CartScreen({
       clearCartHandler();
     } else {
       const product = arr?.poscart_products[index];
-      const productPrice = product.product_details.price;
+      // const productPrice = product.product_details.price;
+      const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
       if (product.qty > 0) {
         arr.amount.total_amount -= productPrice * product.qty;
         arr.amount.products_price -= productPrice * product.qty;

@@ -9,8 +9,17 @@ import {
   TextInput,
 } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { moderateScale } from 'react-native-size-matters';
-import { allien, calendar1, dropdown2, roundCalender, userImage } from '@/assets';
+import { moderateScale, ms } from 'react-native-size-matters';
+import {
+  allien,
+  calendar1,
+  down,
+  dropdown,
+  dropdown2,
+  roundCalender,
+  up,
+  userImage,
+} from '@/assets';
 import { strings } from '@/localization';
 import { styles } from '@/screens/Management/Management.styles';
 import { Spacer, TableDropdown } from '@/components';
@@ -68,6 +77,7 @@ export function SessionHistoryTable({
 
   // const tableDataArrayReverse = tableDataArray?.reverse();
   const tableDataArrayReverse = tableDataArray?.slice().reverse();
+
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
@@ -239,6 +249,17 @@ export function SessionHistoryTable({
   );
 }
 export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
+  const [expandedItems, setExpandedItems] = useState([]);
+  const [viewCashInArray, setViewCashInArray] = useState(true);
+  const [viewCashOutArray, setViewCashOutArray] = useState(true);
+
+  // Function to toggle the expansion state of an item
+  const toggleExpansion = (index) => {
+    const newExpandedItems = [...expandedItems];
+    newExpandedItems[index] = !newExpandedItems[index];
+    setExpandedItems(newExpandedItems);
+  };
+
   const finalCashInArray = sessionHistoryArray?.drawer_activites.filter(
     (item) => item.mode_of_cash === 'cash_in'
   );
@@ -256,9 +277,9 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     if (transaction_type === 'start_tracking_session') {
       return 'Start tracking session';
     } else if (transaction_type === 'manual_cash_in') {
-      return 'Manual Cash In';
+      return 'Manual';
     } else if (transaction_type === 'manual_cash_out') {
-      return 'Manual cash out';
+      return 'Manual';
     } else if (transaction_type === 'counted_cash') {
       return 'Counted Cash';
     } else if (transaction_type === 'counted_cash') {
@@ -305,47 +326,130 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
         <Spacer space={SH(20)} />
         <Text style={styles.allCashText}>{strings.management.allCash}</Text>
         <View>
-          <View style={styles.totalCashHeader}>
-            <Text style={styles.sectionListHeader}>{strings.management.totalCashIn}</Text>
+          <TouchableOpacity
+            style={styles.totalCashHeader}
+            onPress={() => setViewCashInArray((prev) => !prev)}
+          >
+            <View style={styles.flexAlign}>
+              <Text style={styles.sectionListHeader}>{strings.management.totalCashIn}</Text>
+              <Image
+                source={viewCashInArray ? up : down}
+                resizeMode="contain"
+                style={{ height: ms(12), width: ms(12), marginLeft: ms(5) }}
+              />
+            </View>
             <Text style={styles.sectionListHeader}>
               {strings.management.usd}
               {sessionCashSum ?? '0'}
               {'.00'}
             </Text>
-          </View>
-          {finalCashInArray?.map((item, index) => (
-            <View style={styles.totalCashData} key={index}>
-              <Text style={styles.sectionListData}>
-                {strings.management.sale}
-                {correctWay(item.transaction_type)}
-              </Text>
-              <Text style={styles.sectionListData}>
-                {strings.management.usd}
-                {item.amount}
-                {'.00'}
-              </Text>
-            </View>
-          ))}
+          </TouchableOpacity>
+          {viewCashInArray && (
+            <>
+              {finalCashInArray?.map((item, index) => (
+                <View key={index}>
+                  <TouchableOpacity
+                    style={styles.totalCashData}
+                    onPress={() => toggleExpansion(index)}
+                  >
+                    <View style={styles.flexAlign}>
+                      <Text style={styles.sectionListData}>
+                        {strings.management.sale}
+                        {correctWay(item.transaction_type)}
+                      </Text>
+                      <Image
+                        source={dropdown}
+                        resizeMode="contain"
+                        style={
+                          expandedItems[index]
+                            ? styles.activeDropDownPayment
+                            : styles.dropDownPayment
+                        }
+                      />
+                    </View>
 
-          <View style={styles.totalCashHeader}>
-            <Text style={styles.sectionListHeader}>{strings.management.totalCashOut}</Text>
+                    <Text style={styles.sectionListData}>
+                      {strings.management.usd}
+                      {item.amount}
+                      {'.00'}
+                    </Text>
+                  </TouchableOpacity>
+                  {expandedItems[index] && (
+                    <View>
+                      <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                        <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                        <Text style={styles.paymentBodyText}>
+                          {strings.management.usd}
+                          {item.amount}
+                        </Text>
+                      </View>
+                      <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                        <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                        <Text style={styles.paymentBodyText}>
+                          {strings.management.usd}
+                          {item.amount}
+                        </Text>
+                      </View>
+                      <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                        <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                        <Text style={styles.paymentBodyText}>
+                          {strings.management.usd}
+                          {item.amount}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                </View>
+              ))}
+            </>
+          )}
+          <TouchableOpacity
+            style={styles.totalCashHeader}
+            onPress={() => setViewCashOutArray((prev) => !prev)}
+          >
+            <View style={styles.flexAlign}>
+              <Text style={styles.sectionListHeader}>{strings.management.totalCashOut}</Text>
+              <Image
+                source={viewCashOutArray ? up : down}
+                resizeMode="contain"
+                style={{ height: ms(12), width: ms(12), marginLeft: ms(5) }}
+              />
+            </View>
             <Text style={styles.sectionListHeader}>
               {strings.management.usd}
               {sessionCashOutSum ?? '0'}
               {'.00'}
             </Text>
-          </View>
-          {finalCashOutArray?.map((item, index) => (
-            <View style={styles.totalCashData} key={index}>
-              <Text style={styles.sectionListData}>{correctWay(item.transaction_type)}</Text>
-              <Text style={styles.sectionListData}>
-                {strings.management.usd}
-                {item.amount}
-                {'.00'}
-              </Text>
-            </View>
-          ))}
-
+          </TouchableOpacity>
+          {viewCashOutArray && (
+            <>
+              {finalCashOutArray?.map((item, index) => (
+                <View style={styles.totalCashData} key={index}>
+                  <View style={styles.flexAlign}>
+                    <Text style={styles.sectionListData}>
+                      {strings.management.sale}
+                      {correctWay(item.transaction_type)}
+                    </Text>
+                    <Image
+                      source={dropdown}
+                      resizeMode="contain"
+                      style={
+                        expandedItems[index] ? styles.activeDropDownPayment : styles.dropDownPayment
+                      }
+                    />
+                  </View>
+                  <Text style={styles.sectionListData}>
+                    {strings.management.usd}
+                    {item.amount}
+                    {'.00'}
+                  </Text>
+                </View>
+              ))}
+            </>
+          )}
           <View style={styles.netPaymentHeader}>
             <Text style={styles.sectionListHeader}>{strings.management.netPayment}</Text>
             <Text style={styles.sectionListHeader}>
@@ -355,7 +459,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             </Text>
           </View>
           <Spacer space={SH(60)} />
-          <Text style={styles.cashActivity}>{strings.management.cashActivity}</Text>
+          {/* <Text style={styles.cashActivity}>{strings.management.cashActivity}</Text>
           <Spacer space={SH(20)} />
           {reverseArray?.map((item, index) => (
             <View style={styles.cashActivityCon} key={index}>
@@ -394,7 +498,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 </View>
               )}
             </View>
-          ))}
+          ))} */}
 
           {/* <View style={styles.cashActivityCon}>
             <View style={styles.displayFlex}>

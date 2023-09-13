@@ -452,8 +452,11 @@ export class RetailController {
             supply_id: data.supplyId.toString(),
             supply_price_id: data.supplyPriceID.toString(),
           };
+
+      console.log('body=====', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response====', JSON.stringify(response));
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -465,6 +468,7 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error====', JSON.stringify(error));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -744,15 +748,14 @@ export class RetailController {
         ? {
             cart_id: data.cartid,
             user_id: data.userId,
-            tips: data.tips,
+            // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
           }
         : {
             cart_id: data.cartid,
-            tips: data.tips,
+            // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
           };
-
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response?.msg === 'Order placed successfully!') {
@@ -909,12 +912,15 @@ export class RetailController {
     });
   }
 
-  static async getOneProduct(sellerID, productId) {
+  static async getOneProduct(sellerID, productId, offerId) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        PRODUCT_URL +
-        ApiProductInventory.getProduct +
-        `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
+      const endpoint = offerId
+        ? PRODUCT_URL +
+          ApiProductInventory.getProduct +
+          `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true&offer_id=${offerId}`
+        : PRODUCT_URL +
+          ApiProductInventory.getProduct +
+          `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

@@ -62,7 +62,7 @@ export function Revenue() {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          ${item?.cost_sum ? item?.cost_sum.toFixed(2) : 0}
+          ${item?.total_price ? item?.total_price.toFixed(2) : 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>

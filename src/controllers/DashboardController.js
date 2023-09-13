@@ -24,6 +24,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('1---------', error);
           reject(error);
         });
     });
@@ -37,6 +38,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('2---------', error);
           reject(error);
         });
     });
@@ -62,6 +64,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('3---------', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -105,6 +108,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('4---------', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -125,6 +129,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('5---------', error);
           Toast.show({
             text2: error?.msg || 'unknown error',
             position: 'bottom',
@@ -145,6 +150,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('6---------', error);
           Toast.show({
             text2: error?.msg || 'unknown error',
             position: 'bottom',
@@ -167,6 +173,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('7---------', error);
           reject(error);
         });
     });
@@ -180,6 +187,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('8---------', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -199,6 +207,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('10---------', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -213,37 +222,64 @@ export class DashboardController {
   static async getOrdersByInvoiceId(invoice) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.invoiceIdSearch + `${invoice}`;
-      console.log('endpoint====', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response======', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
-          console.log(error.msg);
+          console.log('11---------', error);
           reject(error);
         });
     });
   }
 
   static async getProductsBySku(sku) {
-    // console.log('sku============', sku);
     const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
-    // console.log('sellerId============', sellerId);
     return new Promise((resolve, reject) => {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.skuSearch +
         `?app_name=merchant&seller_id=${sellerId}&search=${sku}`;
-      // console.log('endpoint====', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          // console.log('getProductsBySku----------------', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
-          // console.log('error.msg============', error);
+          console.log('12---------', error);
           reject(error);
+        });
+    });
+  }
+
+  static async returnProduct(data) {
+    console.log('data-----------', data);
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.return;
+      const body = {
+        order_id: data?.order_id,
+        products: data?.products,
+        return_reason: 'testing reason',
+      };
+      console.log('body-----------', body);
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          console.log('response==============', response);
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: response?.msg,
+            visibilityTime: 2000,
+          });
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error.msg,
+            visibilityTime: 2000,
+          });
+          reject(error.msg);
         });
     });
   }

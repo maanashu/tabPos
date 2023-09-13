@@ -251,7 +251,11 @@ export const PayByCash = ({
 
             <View style={styles._flatListContainer}>
               <FlatList
-                data={cartData?.poscart_products}
+                data={
+                  cartType == 'Product'
+                    ? cartData?.poscart_products
+                    : cartData?.appointment_cart_products
+                }
                 style={{ width: '100%' }}
                 renderItem={({ item, index }) => <AddedCartItemsCard item={item} index={index} />}
               />

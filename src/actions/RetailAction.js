@@ -1384,10 +1384,10 @@ export const logout = () => async (dispatch) => {
   }
 };
 
-export const getOneProduct = (sellerID, productId) => async (dispatch) => {
+export const getOneProduct = (sellerID, productId, offerId) => async (dispatch) => {
   dispatch(getOneProductRequest());
   try {
-    const res = await RetailController.getOneProduct(sellerID, productId);
+    const res = await RetailController.getOneProduct(sellerID, productId, offerId);
     return dispatch(getOneProductSuccess(res?.payload));
   } catch (error) {
     dispatch(getOneProductError(error.message));

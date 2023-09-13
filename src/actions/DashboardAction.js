@@ -159,9 +159,9 @@ const getOrdersByInvoiceIdRequest = () => ({
   type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_REQUEST,
   payload: null,
 });
-const getOrdersByInvoiceIdSuccess = (invoiceOrders) => ({
+export const getOrdersByInvoiceIdSuccess = (invoiceSearchOrders) => ({
   type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_SUCCESS,
-  payload: { invoiceOrders },
+  payload: { invoiceSearchOrders },
 });
 const getOrdersByInvoiceIdError = (error) => ({
   type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_ERROR,
@@ -176,7 +176,7 @@ const getProductsBySkuRequest = () => ({
   type: DASHBOARDTYPE.GET_PRODUCTS_BY_SKU__REQUEST,
   payload: null,
 });
-const getProductsBySkuSuccess = (skuOrders) => ({
+export const getProductsBySkuSuccess = (skuOrders) => ({
   type: DASHBOARDTYPE.GET_PRODUCTS_BY_SKU__SUCCESS,
   payload: { skuOrders },
 });
@@ -187,6 +187,19 @@ const getProductsBySkuError = (error) => ({
 const getProductsBySkuReset = () => ({
   type: DASHBOARDTYPE.GET_PRODUCTS_BY_SKU_RESET,
   payload: null,
+});
+
+const returnProductRequest = () => ({
+  type: DASHBOARDTYPE.RETURN_PRODUCTS__REQUEST,
+  payload: null,
+});
+export const returnProductSuccess = (returnOrder) => ({
+  type: DASHBOARDTYPE.RETURN_PRODUCTS__SUCCESS,
+  payload: { returnOrder },
+});
+const returnProductError = (error) => ({
+  type: DASHBOARDTYPE.RETURN_PRODUCTS__ERROR,
+  payload: { error },
 });
 
 export const getOrderDeliveries = (sellerID, page) => async (dispatch) => {
@@ -336,5 +349,16 @@ export const getProductsBySku = (sku) => async (dispatch) => {
       dispatch(getProductsBySkuReset());
     }
     dispatch(getProductsBySkuError(error.message));
+  }
+};
+
+export const returnProduct = (data, callback) => async (dispatch) => {
+  dispatch(returnProductRequest());
+  try {
+    const res = await DashboardController.returnProduct(data);
+    callback && callback(res);
+    dispatch(returnProductSuccess(res?.payload));
+  } catch (error) {
+    dispatch(returnProductError(error.message));
   }
 };

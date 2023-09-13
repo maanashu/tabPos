@@ -14,7 +14,6 @@ export class WalletController {
       } else {
         endpoint = `${BASE_URL}?${sellerParam}&date=${date}`;
       }
-
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -51,7 +50,7 @@ export class WalletController {
             `?seller_id=${data?.sellerId}&filter_by=${data?.dayWiseFilter}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`
           : ORDER_URL +
             ApiOrderInventory.getTotakTraDetail +
-            `?seller_id=${data?.sellerId}&filter_by=${data?.dayWiseFilter}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`;
+            `?seller_id=${data?.sellerId}&date=${data?.calendarDate}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`;
 
       HttpClient.get(endpoint)
         .then((response) => {
@@ -63,9 +62,16 @@ export class WalletController {
     });
   }
 
-  static async getTotalTraType(sellerID) {
+  static async getTotalTraType(data) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.getTotalTraType + `?seller_id=${sellerID}`;
+      const endpoint =
+        data?.calendarDate == undefined || data?.calendarDate == ''
+          ? ORDER_URL +
+            ApiOrderInventory.getTotalTraType +
+            `?seller_id=${data?.sellerID}&filter=${data?.dayWiseFilter}`
+          : ORDER_URL +
+            ApiOrderInventory.getTotalTraType +
+            `?seller_id=${data?.sellerID}&date=${data?.calendarDate}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

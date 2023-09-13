@@ -1,49 +1,67 @@
 import React, { memo } from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 
 import { barcode, Fonts, logo_full } from '@/assets';
 import { SH, COLORS } from '@/theme';
 import { Spacer } from '@/components';
-import { productList } from '@/constants/flatListData';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrderData } from '@/actions/AnalyticsAction';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import moment from 'moment';
+import { getUser } from '@/selectors/UserSelectors';
 
-const { width } = Dimensions.get('window');
+const InvoiceDetails = ({ orderData }) => {
+  const dispatch = useDispatch();
+  const getOrder = useSelector(getAnalytics);
+  const getUserData = useSelector(getUser);
+  const orderDetail = getOrder?.getOrderData;
 
-const InvoiceDetails = () => {
+  useEffect(() => {
+    dispatch(getOrderData(orderData?.order_id));
+  }, []);
+
   const renderProductItem = ({ item, index }) => (
     <View style={styles.container}>
       <View style={styles.subContainer}>
         <Text style={styles.count}>{index + 1}</Text>
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-            {item?.productName}
+            {item?.product_name ?? '-'}
           </Text>
           <View style={styles.belowSubContainer}>
-            <Text style={styles.colorsTitle}>{`Color: ${item?.color}   Size: ${item?.size}`}</Text>
+            <Text style={styles.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
           </View>
         </View>
       </View>
-      <Text style={styles.priceTitle}>{item?.price}</Text>
+      <Text style={styles.priceTitle}>{`$${item?.price}` ?? '-'}</Text>
     </View>
   );
 
   return (
     <View style={styles.invoiceMainViewStyle}>
-      <Text style={styles.storeNameText}>{'Primark'}</Text>
+      <Text style={styles.storeNameText}>
+        {`${orderDetail?.seller_details?.organization_name}` ?? '-'}
+      </Text>
 
       <Spacer space={SH(10)} backgroundColor={COLORS.transparent} />
-      <Text style={styles.storeAddressText}>{'63 Ivy Road, Hawkville, GA, USA 31036'}</Text>
+      <Text style={styles.storeAddressText}>
+        {`${orderDetail?.seller_details?.current_address?.street_address}` ?? '-'}
+      </Text>
 
       <Spacer space={SH(5)} backgroundColor={COLORS.transparent} />
-      <Text style={styles.storeAddressText}>{'+123-456-7890'}</Text>
+      <Text style={styles.storeAddressText}>
+        {`${orderDetail?.seller_details?.phone_number}` ?? '-'}
+      </Text>
 
       <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
       <View style={{ paddingVertical: 8 }}>
         <FlatList
-          data={productList.slice(0, 4)}
+          data={orderDetail?.order_details ?? []}
           renderItem={renderProductItem}
-          extraData={productList}
+          extraData={orderDetail?.order_details}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
         />
@@ -53,21 +71,21 @@ const InvoiceDetails = () => {
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>Discount</Text>
-        <Text style={styles._subTotalPrice}>${'0.00'}</Text>
+        <Text style={styles._subTotalPrice}>{`$${orderDetail?.discount}` ?? '-'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>Tips</Text>
-        <Text style={styles._subTotalPrice}>${'123'}</Text>
+        <Text style={styles._subTotalPrice}>{`$${orderDetail?.tips}` ?? '-'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>Total Taxes</Text>
-        <Text style={styles._subTotalPrice}>${'0.00'}</Text>
+        <Text style={styles._subTotalPrice}>{`$${orderDetail?.tax}` ?? '-'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
@@ -77,7 +95,7 @@ const InvoiceDetails = () => {
           Total
         </Text>
         <Text style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-          $7001.20
+          {`$${orderDetail?.payable_amount}` ?? '-'}
         </Text>
       </View>
 
@@ -85,17 +103,29 @@ const InvoiceDetails = () => {
 
       <View style={styles._paymentTitleContainer}>
         <Text style={styles._payTitle}>Payment option: </Text>
-        <Text style={styles._paySubTitle}>{'Cash'}</Text>
+        <Text style={styles._paySubTitle}>
+          {orderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
+        </Text>
       </View>
 
-      <Text style={styles._commonPayTitle}>{'Wed 26 Apr , 2023 6:27 AM'}</Text>
-      <Text style={styles._commonPayTitle}>Walk-In</Text>
-      <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
-      <Text style={styles._commonPayTitle}>POS No. #Front-CC01</Text>
-      <Text style={styles._commonPayTitle}>User ID : ****128</Text>
+      <Text style={styles._commonPayTitle}>
+        {moment(orderDetail?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
+      </Text>
+
+      <Text style={styles._commonPayTitle}>
+        Invoice No. # {orderDetail?.invoices?.invoice_number ?? '-'}
+      </Text>
+
+      <Text style={styles._commonPayTitle}>
+        POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
+      </Text>
+
+      <Text style={styles._commonPayTitle}>User ID : #{getUserData?.posLoginData?.id ?? '-'}</Text>
 
       <Text style={styles._thankyou}>Thank You</Text>
+
       <Image source={barcode} style={styles._barCodeImage} />
+
       <Image source={logo_full} style={styles.logoFull} />
     </View>
   );

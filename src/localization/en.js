@@ -120,6 +120,7 @@ export const en = {
     drawerID2: 'Drawer ID: 2',
     session: 'Start tracking session',
     sessionHistory: 'Session history',
+    summary: 'Summary',
     countCash: 'Count cash in drawer',
     amountCounted: 'Amount counted (USD)',
     amount: '$ 0.00',
@@ -526,5 +527,7 @@ export const en = {
     applicable: 'Applicable for All Items',
     dollarLabel: 'dollar',
     percentageLabel: 'percentage',
+    inStore: 'In-store',
+    reservation: 'Reservation',
   },
 };

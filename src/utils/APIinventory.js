@@ -5,6 +5,7 @@
 // export const WALLET_URL = 'https://stgbewalletmanagement.jobr.com/api/v1/'
 
 import { store } from '@/store';
+import { useEffect } from 'react';
 
 export const USER_URL = 'https://apiuserservice.jobr.com/api/v1/';
 // export const SUPPORT_URL = 'https://apisupport.jobr.com/api/v1/';
@@ -13,6 +14,11 @@ export const PRODUCT_URL = 'https://apiproductmgmt.jobr.com/api/v1/';
 export const WALLET_URL = 'https://apiwallet.jobr.com/api/v1/';
 
 export const posDrawerId = store.getState().cashTracking?.getDrawerSession?.id;
+// export const sellerID =
+
+// useEffect(() => {
+//  const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+// }, [store.getState().auth])
 
 export const ApiUserInventory = {
   verifyPhone: 'user_phones/',
@@ -41,6 +47,7 @@ export const ApiUserInventory = {
   configureGoogleCode: 'users/2fa/configure-qr-code',
   notifications: 'notifications',
   getSellerDrivers: 'merchant_drivers/get-drivers',
+  abc: (sellerID) => `?page=1&limit=10&seller_id=${sellerID}`,
 };
 
 export const ApiProductInventory = {
@@ -140,6 +147,7 @@ export const ApiOrderInventory = {
   sendCheckinOTP: 'appointments/send-checkin-otp/',
   verifyCheckinOTP: 'appointments/verify-checkin-otp',
   invoiceIdSearch: 'invoices/by-invoice-number/',
+  return: 'returns/',
 };
 
 export const ApiWalletInventory = {
@@ -170,4 +178,8 @@ export const API_URLS_USING_POS_USER_ACCESS_TOKEN = [
   USER_URL + ApiUserInventory.loginPosuser,
   USER_URL + ApiUserInventory.getDrawerSessionById,
   USER_URL + `drawer_management/drawer-session/history?drawer_id=${posDrawerId}`,
+  // USER_URL + ApiUserInventory.merchantLogin,
+  // USER_URL + ApiUserInventory.loginPosuser,
+  // USER_URL + ApiUserInventory.getPosUsers + `?page=1&limit=10&seller_id=${sellerID}`,
+  // USER_URL + ApiUserInventory.getSetting + `?app_name=pos`,
 ];

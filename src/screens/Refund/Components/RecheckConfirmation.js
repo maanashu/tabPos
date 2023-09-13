@@ -16,34 +16,31 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import { cross, Fonts } from '@/assets';
-import { productList } from '@/constants/flatListData';
 
 const { width } = Dimensions.get('window');
 
 const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) => {
-  console.log('orderList=============', orderList);
-
   const filteredList = orderList?.filter((e) => e?.isChecked);
-  console.log('filteredList=============', filteredList);
 
   const renderProductList = ({ item, index }) => {
-    console.log('item=====', item);
+    console.log(item);
     return (
       <View style={styles.itemMainViewStyle}>
-        <Text style={styles.quantityTextStyle}>{item?.quantity}</Text>
+        <Text style={styles.quantityTextStyle}>{item?.qty}</Text>
         <Text style={styles.quantityTextStyle}>{'X'}</Text>
 
-        <View style={{ paddingLeft: ms(8) }}>
-          <Text style={styles.productTextStyle}>{item?.productName}</Text>
+        <View style={{ width: SH(100), paddingLeft: ms(8) }}>
+          <Text numberOfLines={1} style={styles.productTextStyle}>
+            {item?.product_name}
+          </Text>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={styles.colorTextStyle}>{`Color: ${item?.color}`}</Text>
-            <Text style={styles.colorTextStyle}>{`Size: ${item?.size}`}</Text>
+            <Text style={styles.colorTextStyle}>{`${item?.product_details?.sku}`}</Text>
           </View>
         </View>
 
         <View style={styles.priceViewStyle}>
-          <Text style={styles.priceTextStyle}>{item?.price}</Text>
+          <Text style={styles.priceTextStyle}>{`$${item?.price}`}</Text>
         </View>
       </View>
     );
@@ -76,7 +73,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
           data={filteredList}
           renderItem={renderProductList}
           showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item?.id}
+          keyExtractor={(index) => index.toString()}
           style={{ height: ms(200) }}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: ms(10) }}
         />
@@ -95,7 +92,6 @@ export default memo(RecheckConfirmation);
 
 const styles = StyleSheet.create({
   modalStyle: {
-    // width: width / 3.2,
     borderRadius: 10,
     alignSelf: 'flex-end',
     backgroundColor: COLORS.white,

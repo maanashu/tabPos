@@ -6,11 +6,13 @@ import { ms } from 'react-native-size-matters';
 import { COLORS, SW } from '@/theme';
 import { strings } from '@/localization';
 import { backArrow2, Fonts } from '@/assets';
-import { goBack } from '@/navigation/NavigationRef';
+import { goBack, navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 const Header = () => {
+  console.log('header');
   return (
-    <TouchableOpacity onPress={() => goBack()} style={styles.backView}>
+    <TouchableOpacity onPress={() => navigate(NAVIGATION.dashBoard)} style={styles.backView}>
       <Image source={backArrow2} style={styles.backImageStyle} />
       <Text style={styles.currentStatusText}>{strings.deliveryOrders.back}</Text>
     </TouchableOpacity>

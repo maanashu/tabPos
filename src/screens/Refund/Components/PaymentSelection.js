@@ -1,105 +1,40 @@
-import { Fonts } from '@/assets';
-import { Spacer } from '@/components';
-import BackButton from '@/components/BackButton';
-import { DATA, RECIPE_DATA } from '@/constants/flatListData';
-import { SF, SH } from '@/theme';
-import React from 'react';
-import { useState } from 'react';
-import { memo } from 'react';
-import { Platform } from 'react-native';
+import React, { memo, useState } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   Image,
-  TouchableOpacity,
-  Dimensions,
   FlatList,
+  Platform,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
+
+import { useDispatch, useSelector } from 'react-redux';
 import { ms, verticalScale } from 'react-native-size-matters';
-import { COLORS } from '../../../theme/Colors';
+
+import { SF, SH } from '@/theme';
+import { Spacer } from '@/components';
 import InvoiceDetails from './InvoiceDetails';
+import { COLORS } from '../../../theme/Colors';
+import BackButton from '@/components/BackButton';
 import ReturnConfirmation from './ReturnConfirmation';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { RECIPE_DATA } from '@/constants/flatListData';
+import { returnProduct, returnProductSuccess } from '@/actions/DashboardAction';
+import { cardPayment, cash, Fonts, qrCodeIcon } from '@/assets';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 const { width } = Dimensions.get('window');
+let products = [];
 
-const PaymentSelection = ({ backHandler }) => {
-  const [selectedPaymentIndex, setSelectedPaymentIndex] = useState();
+const PaymentSelection = ({ backHandler, orderData }) => {
+  const dispatch = useDispatch();
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState();
   const [isReturnConfirmation, setIsReturnConfirmation] = useState(false);
-
-  const totalAmountByPaymentMethod = (index) => {
-    if (index === 0) {
-      return `$100}`;
-    } else if (index === 1) {
-      return `JBR 100}`;
-    } else {
-      return `$100}`;
-    }
-  };
-
-  const renderPaymentMethod = ({ item, index }) => {
-    const selectedMethod = selectedPaymentIndex === index ? COLORS.primary : COLORS.solidGrey;
-
-    return (
-      <TouchableOpacity
-        onPress={() => setSelectedPaymentIndex(index)}
-        key={index}
-        style={[
-          styles._payBYBoxContainer,
-          {
-            borderWidth: 1,
-            borderColor: selectedMethod,
-          },
-        ]}
-      >
-        <Text
-          style={[
-            styles._payByTitle,
-            {
-              color: selectedMethod,
-            },
-          ]}
-        >
-          Pay By
-        </Text>
-        <Text
-          style={[
-            styles._payByMethod,
-            {
-              color: selectedMethod,
-            },
-          ]}
-        >
-          {item.title}
-        </Text>
-        <Text
-          style={[
-            styles._payByAmount,
-            {
-              color: selectedMethod,
-            },
-          ]}
-        >
-          {totalAmountByPaymentMethod(index)}
-        </Text>
-        <Image
-          source={item.icon}
-          style={[
-            styles._payByIcon,
-            {
-              tintColor: selectedMethod,
-            },
-          ]}
-        />
-        {index == 1 && (
-          <View style={styles.saveView}>
-            <Text style={styles.saveText1}>Save 1%</Text>
-          </View>
-        )}
-      </TouchableOpacity>
-    );
-  };
 
   const renderRecipeMethod = ({ item, index }) => {
     const selectedMethod = selectedRecipeIndex === index ? COLORS.primary : COLORS.solidGrey;
@@ -129,6 +64,28 @@ const PaymentSelection = ({ backHandler }) => {
     );
   };
 
+  const isLoading = useSelector((state) =>
+    isLoadingSelector([DASHBOARDTYPE.RETURN_PRODUCTS], state)
+  );
+
+  const onReturnHandler = () => {
+    orderData?.order?.order_details?.map((item, index) => {
+      products.push({ id: item?.id, qty: item?.qty ?? 1 });
+    });
+    const data = {
+      order_id: orderData?.order_id,
+      products: products,
+    };
+    dispatch(
+      returnProduct(data, (res) => {
+        if (res) {
+          setIsReturnConfirmation(true);
+          dispatch(returnProductSuccess({}));
+        }
+      })
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
@@ -146,7 +103,7 @@ const PaymentSelection = ({ backHandler }) => {
             <Text style={styles._totalAmountTitle}>Total Return Amount:</Text>
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles._dollarSymbol}>$</Text>
-              <Text style={styles._amount}>{'0.00'}</Text>
+              <Text style={styles._amount}>{orderData?.order?.payable_amount}</Text>
             </View>
           </View>
         </View>
@@ -158,13 +115,63 @@ const PaymentSelection = ({ backHandler }) => {
           <Spacer space={SH(10)} backgroundColor={COLORS.transparent} />
 
           <View style={{ alignItems: 'center' }}>
-            <FlatList
-              horizontal
-              data={DATA.slice(0, 1)}
-              renderItem={renderPaymentMethod}
-              extraData={DATA}
-              contentContainerStyle={{ paddingBottom: 20 }}
-            />
+            {orderData?.order?.mode_of_payment ? (
+              <TouchableOpacity
+                style={[
+                  styles._payBYBoxContainer,
+                  {
+                    borderWidth: 1,
+                    borderColor: COLORS.primary,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles._payByTitle,
+                    {
+                      color: COLORS.primary,
+                    },
+                  ]}
+                >
+                  Pay By
+                </Text>
+                <Text
+                  style={[
+                    styles._payByMethod,
+                    {
+                      color: COLORS.primary,
+                    },
+                  ]}
+                >
+                  {orderData?.order?.mode_of_payment}
+                </Text>
+                <Text
+                  style={[
+                    styles._payByAmount,
+                    {
+                      color: COLORS.primary,
+                    },
+                  ]}
+                >
+                  {`$${orderData?.order?.payable_amount}`}
+                </Text>
+                <Image
+                  source={
+                    orderData?.order?.mode_of_payment === 'cash'
+                      ? cash
+                      : orderData?.order?.mode_of_payment === 'jbr'
+                      ? qrCodeIcon
+                      : cardPayment
+                  }
+                  style={[
+                    styles._payByIcon,
+                    {
+                      tintColor: COLORS.primary,
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+            ) : null}
           </View>
 
           <Spacer space={SH(30)} backgroundColor={COLORS.transparent} />
@@ -174,7 +181,7 @@ const PaymentSelection = ({ backHandler }) => {
               horizontal
               data={RECIPE_DATA}
               renderItem={renderRecipeMethod}
-              extraData={DATA}
+              extraData={RECIPE_DATA}
               contentContainerStyle={{ paddingBottom: 20 }}
             />
           </View>
@@ -182,7 +189,9 @@ const PaymentSelection = ({ backHandler }) => {
           <Spacer space={SH(60)} backgroundColor={COLORS.transparent} />
 
           <TouchableOpacity
-            onPress={() => setIsReturnConfirmation(true)}
+            onPress={() => {
+              onReturnHandler();
+            }}
             style={styles.buttonStyle}
           >
             <Text style={styles.buttonTextStyle}>{'Return'}</Text>
@@ -191,10 +200,30 @@ const PaymentSelection = ({ backHandler }) => {
       </View>
 
       <View style={styles.rightContainer}>
-        <InvoiceDetails />
+        <InvoiceDetails orderData={orderData} />
       </View>
 
       <ReturnConfirmation isVisible={isReturnConfirmation} setIsVisible={setIsReturnConfirmation} />
+
+      {isLoading ? (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.3)',
+          }}
+        >
+          <ActivityIndicator
+            color={COLORS.primary}
+            size={'small'}
+            style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -205,6 +234,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: verticalScale(10),
+    borderWidth: 2,
     backgroundColor: COLORS.textInputBackground,
   },
   leftContainer: {
