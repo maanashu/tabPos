@@ -250,6 +250,7 @@ export function SessionHistoryTable({
 }
 export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
   const [expandedItems, setExpandedItems] = useState([]);
+  const [expandedCashOutItems, setExpandedCashOutItems] = useState([]);
   const [viewCashInArray, setViewCashInArray] = useState(true);
   const [viewCashOutArray, setViewCashOutArray] = useState(true);
 
@@ -258,6 +259,11 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     const newExpandedItems = [...expandedItems];
     newExpandedItems[index] = !newExpandedItems[index];
     setExpandedItems(newExpandedItems);
+  };
+  const toggleExpansionCashOut = (index) => {
+    const newExpandedItems = [...expandedCashOutItems];
+    newExpandedItems[index] = !newExpandedItems[index];
+    setExpandedCashOutItems(newExpandedItems);
   };
 
   const finalCashInArray = sessionHistoryArray?.drawer_activites.filter(
@@ -430,7 +436,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 <View key={index}>
                   <TouchableOpacity
                     style={styles.totalCashData}
-                    onPress={() => toggleExpansion(index)}
+                    onPress={() => toggleExpansionCashOut(index)}
                   >
                     <View style={styles.flexAlign}>
                       <Text style={styles.sectionListData}>
@@ -453,6 +459,34 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                       {'.00'}
                     </Text>
                   </TouchableOpacity>
+                  {expandedCashOutItems[index] && (
+                    <View>
+                      <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                        <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                        <Text style={styles.paymentBodyText}>
+                          {strings.management.usd}
+                          {item.amount}
+                        </Text>
+                      </View>
+                      <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                        <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                        <Text style={styles.paymentBodyText}>
+                          {strings.management.usd}
+                          {item.amount}
+                        </Text>
+                      </View>
+                      <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                        <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                        <Text style={styles.paymentBodyText}>
+                          {strings.management.usd}
+                          {item.amount}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
                 </View>
               ))}
             </>
