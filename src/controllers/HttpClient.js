@@ -19,9 +19,6 @@ client.interceptors.request.use(async function (config) {
   const user = store.getState().user?.posLoginData?.token;
   const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
   const fcmToken = await getDeviceToken();
-  console.log('register', register);
-  console.log('user', user);
-  console.log('-----------------------------', sellerID);
 
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
@@ -34,8 +31,6 @@ client.interceptors.request.use(async function (config) {
       return { token: user, appName: 'pos' };
     }
   };
-
-  console.log('API_URLS_USING_POS_USER_ACCESS_TOKEN', API_URLS_USING_POS_USER_ACCESS_TOKEN());
 
   // const getRole = () => {
   //   if (API_URLS_USING_POS_USER_ACCESS_TOKEN(sellerID).includes(config.url)) {
@@ -50,8 +45,6 @@ client.interceptors.request.use(async function (config) {
     Authorization: getRole().token,
     'app-name': getRole().appName,
   };
-
-  console.log('config.headers', config.headers);
 
   if (fcmToken) {
     config.headers['fcm-token'] = fcmToken;

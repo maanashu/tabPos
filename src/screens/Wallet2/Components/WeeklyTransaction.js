@@ -59,7 +59,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   const getWalletData = useSelector(getWallet);
   const getCustomerData = useSelector(getCustomers);
   const getTotalTraData = getWalletData?.getTotalTra;
-  const getCustomerStatitics = getCustomerData?.getCustomers;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail?.data ?? [];
   const transactionTypeArray = getWalletData?.getTotalTraType;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -76,8 +75,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
   const [dateformat, setDateformat] = useState('');
   const [date, setDate] = useState();
   const [historytype, setHistorytype] = useState('all');
-  const [walletHome, setWalletHome] = useState(true);
-  const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
 
   const [transcationTypeId, setTranscationTypeId] = useState(1);
   const [transaction, setTransaction] = useState({ modeOfPayment: 'all' });
@@ -124,13 +121,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
 
   const onPresFun = (value) => {
     setFormatedDate();
-  };
-  const onPresFun2 = (value) => {
-    dispatch(getTotakTraDetail(value, sellerID, 'all'));
-  };
-
-  const onPresFun3 = (mode_of_payment) => {
-    dispatch(getTotakTraDetail(time, sellerID, mode_of_payment));
   };
 
   useEffect(() => {
@@ -223,35 +213,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
     }
   };
 
-  const aboutTransactionData = [
-    {
-      aboutTransaction: 'Total',
-      price: getTotalTraData?.data?.total.toFixed(2) ?? '0',
-      img: null,
-      id: '1',
-      type: 'all',
-    },
-    {
-      aboutTransaction: 'JBR Coin',
-      price: getTotalTraData?.data?.jbr.toFixed(2) ?? '0',
-      img: jbricon,
-      id: '2',
-      type: 'jbr',
-    },
-
-    {
-      aboutTransaction: 'Cash',
-      price: getTotalTraData?.data?.cash.toFixed(2) ?? '0',
-      img: cashIcon,
-      id: '3',
-    },
-    {
-      aboutTransaction: 'Card',
-      price: getTotalTraData?.data?.card.toFixed(2) ?? '0',
-      img: cardIcon,
-      id: '4',
-    },
-  ];
   const allTransactionItem = ({ item }) => {
     const borderColor = item.id === transcationTypeId ? COLORS.primary : COLORS.solidGrey;
     const color = item.id === transcationTypeId ? COLORS.primary : COLORS.dark_grey;
@@ -471,11 +432,6 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
               </Text>
             )}
           </View>
-          {/* <Text style={styles.paginationCount}>
-            {' '}
-            {'1-20 of '}
-            {paginationData?.total}
-          </Text> */}
           <View style={[styles.unionCon, { marginRight: 7 }]}>
             <Image
               source={maskRight}

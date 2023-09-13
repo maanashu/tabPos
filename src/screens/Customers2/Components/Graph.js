@@ -19,7 +19,6 @@ import { graphOptions } from '@/constants/flatListData';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { LineChart } from 'react-native-chart-kit';
-// import { LineChart } from 'react-native-gifted-charts';
 
 const windowWidth = Dimensions.get('window').width;
 const result = Dimensions.get('window').height - 50;

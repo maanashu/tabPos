@@ -7,9 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
-  ScrollView,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
 import { styles } from '@/screens/Wallet2/Wallet2.styles';
@@ -18,48 +16,25 @@ import { strings } from '@/localization';
 import {
   bell,
   search_light,
-  users,
-  newCustomer,
-  returnCustomer,
-  onlineCutomer,
-  walkinCustomer,
   wallet,
   scn,
-  calendar1,
-  calendar,
-  calendarIcon,
   newCalendar,
-  cloth,
-  jbrCoin,
-  cash,
-  card2,
   cardIcon,
   cashIcon,
   jbricon,
-  backArrow,
-  Union,
-  mask,
-  maskRight,
-  unionRight,
-  dropdown2,
-  tableArrow,
   Fonts,
 } from '@/assets';
 import moment from 'moment';
-import { DaySelector, InvoiceDetail, ScreenWrapper, Spacer, TableDropdown } from '@/components';
+import { DaySelector, InvoiceDetail, ScreenWrapper } from '@/components';
 import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
-import { getCustomer, getOrderUser } from '@/actions/CustomersAction';
 import { getCustomers } from '@/selectors/CustomersSelector';
 import Graph from './Components/Graph';
 import { getTotakTraDetail, getTotalTra, getTotalTraType } from '@/actions/WalletAction';
 import { getWallet } from '@/selectors/WalletSelector';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { Table } from 'react-native-table-component';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
@@ -67,7 +42,7 @@ import { getOrderData } from '@/actions/AnalyticsAction';
 import WeeklyTransaction from './Components/WeeklyTransaction';
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '../Analytics2/Components/CalendarPicker';
-const windowHeight = Dimensions.get('window').height;
+
 export function Wallet2() {
   const mapRef = useRef(null);
   const isFocused = useIsFocused();
@@ -86,36 +61,7 @@ export function Wallet2() {
     getCustomerStatitics === undefined
       ? Object.values(getCustomerDummy)
       : Object.values(getCustomerStatitics);
-  const totalCustomer = values?.reduce((accumulator, value) => {
-    return accumulator + value;
-  }, 0);
-  const [paginationModalOpen, setPaginationModalOpen] = useState(false);
-  const [paginationModalValue, setPaginationModalValue] = useState(null);
-  const [paginationModalItems, setPaginationModalItems] = useState([
-    { label: '10', value: '10' },
-    { label: '30', value: '30' },
-    { label: '50', value: '50' },
-    { label: '70', value: '70' },
-  ]);
-  const [paymentMethodModalOpen, setPaymentMethodModalOpen] = useState(false);
-  const [paymentMethodModalValue, setPaymnentMethodModalValue] = useState(null);
-  const [paymentMethodModalItems, setPaymentMethodModalItems] = useState([
-    { label: 'JBR', value: 'JBR' },
-    { label: 'CARD', value: 'CARD' },
-    { label: 'CASH', value: 'CASH' },
-  ]);
-  const [transTypeModalOpen, setTransTypeModalOpen] = useState(false);
-  const [transTypeModalValue, setTransTypeModalValue] = useState(null);
-  const [transTypeModalItems, setTransTypeModalItems] = useState([
-    { label: 'In-Store', value: 'In-Store' },
-    { label: 'Delivery', value: 'Delivery' },
-    { label: 'Shipping', value: 'Shipping' },
-    { label: 'Service', value: 'Service' },
-  ]);
-  const [allUsers, setAllUsers] = useState(false);
-  const [userProfile, setUserProfile] = useState(false);
-  const [userData, setUserData] = useState();
-  const [selectTime2, setSelectTime2] = useState({ value: 'week' });
+
   const [selectId, setSelectId] = useState(2);
   const [selectId2, setSelectId2] = useState(2);
   const [selectTime, setSelectTime] = useState({ value: 'week' });
@@ -144,13 +90,7 @@ export function Wallet2() {
   }, [isFocused]);
 
   const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
-  // const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
-  // const isTotalTradetail = useSelector((state) =>
-  //   isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state)
-  // );
-  // const isTotalTraType = useSelector((state) =>
-  //   isLoadingSelector([TYPES.GET_TOTAL_TRA_TYPE], state)
-  // );
+
   let desiredModeOfPayment = historytype; // Replace with the desired mode_of_payment value or "all"
   let filteredData;
 
@@ -268,42 +208,7 @@ export function Wallet2() {
       id: '4',
     },
   ];
-  const allTransactionItem = ({ item }) => {
-    const borderColor =
-      item.mode_of_payment === transcationTypeId ? COLORS.primary : COLORS.solidGrey;
-    const color = item.mode_of_payment === transcationTypeId ? COLORS.primary : COLORS.dark_grey;
-    const fontFamily = item.mode_of_payment === transcationTypeId ? Fonts.SemiBold : Fonts.Regular;
-    return (
-      <TransactionSelectItem
-        item={item}
-        onPress={() => {
-          setTranscationTypeId(item.mode_of_payment),
-            setTransaction(item),
-            onPresFun3(item.mode_of_payment);
-        }}
-        borderColor={borderColor}
-        color={color}
-        fontFamily={fontFamily}
-      />
-    );
-  };
 
-  const TransactionSelectItem = ({ item, onPress, borderColor, color, fontFamily }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.allJbrCon, { borderColor }]}>
-      {isTotalTraType ? (
-        <ActivityIndicator size="small" color={COLORS.primary} />
-      ) : (
-        <Text style={[styles.allJbrText, { color, fontFamily }]}>
-          {item.mode_of_payment} ({item.count})
-        </Text>
-      )}
-    </TouchableOpacity>
-  );
-
-  const weeklyTraRemoveHandler = () => {
-    setWeeklyTrasaction(false);
-    setWalletHome(true);
-  };
   const closeHandler = () => {
     setInvoiceDetail(false);
     setWeeklyTrasaction(true);

@@ -33,7 +33,6 @@ export class SettingController {
       const endpoint = USER_URL + ApiUserInventory.getSetting;
       const body = data;
       (body.seller_id = sellerID), (body.app_name = 'pos');
-      console.log('body', body);
       HttpClient.patch(endpoint, body)
         .then((response) => {
           resolve(response);

@@ -4,40 +4,22 @@ import {
   Text,
   Image,
   Platform,
-  FlatList,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { BarChart } from 'react-native-gifted-charts';
-
-import {
-  Fonts,
-  incomingOrders,
-  returnedOrders,
-  cancelledOrders,
-  checkedCheckboxSquare,
-  blankCheckBox,
-  onlinecustomer,
-  cashCheckIcon,
-  mark,
-} from '@/assets';
-import { BarChartCom, Spacer } from '@/components';
+import { Fonts, blankCheckBox, mark } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { strings } from '@/localization';
 import { TYPES } from '@/Types/WalletTypes';
 import { graphOptions } from '@/constants/flatListData';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { LineChart } from 'react-native-chart-kit';
 import { getWallet } from '@/selectors/WalletSelector';
 import { useEffect } from 'react';
-
-const windowWidth = Dimensions.get('window').width;
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 

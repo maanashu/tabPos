@@ -1,8 +1,6 @@
 import React, { memo } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
-
 import { ms } from 'react-native-size-matters';
-
 import { COLORS, SW } from '@/theme';
 import { strings } from '@/localization';
 import { backArrow2, Fonts } from '@/assets';
@@ -10,7 +8,6 @@ import { goBack, navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 
 const Header = () => {
-  console.log('header');
   return (
     <TouchableOpacity onPress={() => navigate(NAVIGATION.dashBoard)} style={styles.backView}>
       <Image source={backArrow2} style={styles.backImageStyle} />
