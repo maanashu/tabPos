@@ -9,6 +9,8 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import { NAVIGATION } from '@/constants';
+import { navigate } from '@/navigation/NavigationRef';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -81,7 +83,10 @@ export function TotalPosOrder() {
         <Text style={styles.revenueDataText2}>${item?.amount?.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <TouchableOpacity style={styles.reviewView}>
+        <TouchableOpacity
+          style={styles.reviewView}
+          onPress={() => navigate(NAVIGATION.weeklyTransaction)}
+        >
           <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
             {'Review'}
           </Text>
@@ -168,7 +173,7 @@ export function TotalPosOrder() {
                 <Text style={styles.revenueText}>Total Sales</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}> </Text>
+                <Text style={styles.revenueText}>Action</Text>
               </DataTable.Title>
             </DataTable.Header>
 

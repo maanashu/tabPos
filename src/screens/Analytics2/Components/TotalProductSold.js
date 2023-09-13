@@ -110,7 +110,9 @@ export function TotalProductSold() {
           image={margin}
           text={'Profit Margin'}
           count={
-            soldProduct?.productOverview?.margin ? '$' + soldProduct?.productOverview?.margin : '$0'
+            soldProduct?.productOverview?.totalMargin
+              ? soldProduct?.productOverview?.totalMargin?.toFixed(2) + '%'
+              : '$0'
           }
         />
         <HeaderView
@@ -118,7 +120,7 @@ export function TotalProductSold() {
           text={'Gross Profit'}
           count={
             soldProduct?.productOverview?.totalProfit
-              ? '$' + soldProduct?.productOverview?.totalProfit
+              ? '$' + soldProduct?.productOverview?.totalProfit?.toFixed(2)
               : '$0'
           }
         />

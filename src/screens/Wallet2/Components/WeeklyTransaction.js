@@ -51,7 +51,7 @@ const windowHeight = Dimensions.get('window').height;
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/screens/Analytics2/Components/CalendarPicker';
 
-const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
+export function WeeklyTransaction({ backHandler, orderClickHandler }) {
   const mapRef = useRef(null);
 
   const dispatch = useDispatch();
@@ -694,6 +694,4 @@ const WeeklyTransaction = ({ backHandler, orderClickHandler }) => {
       <Spacer space={SH(100)} />
     </View>
   );
-};
-
-export default memo(WeeklyTransaction);
+}

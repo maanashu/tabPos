@@ -168,7 +168,7 @@ export function TotalShippingOrders() {
                 <Text style={styles.revenueText}>Total Sales</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}> </Text>
+                <Text style={styles.revenueText}>Action</Text>
               </DataTable.Title>
             </DataTable.Header>
 

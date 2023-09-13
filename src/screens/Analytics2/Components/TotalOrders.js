@@ -37,7 +37,7 @@ export function TotalOrders() {
         <Text style={styles.revenueDataText}>${item?.new_consumer}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.consumer_returning?.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText}>${item?.consumer_returning?.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
@@ -129,7 +129,7 @@ export function TotalOrders() {
                 <Text style={styles.revenueText}>Total Sales</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}> </Text>
+                <Text style={styles.revenueText}>Action</Text>
               </DataTable.Title>
             </DataTable.Header>
 

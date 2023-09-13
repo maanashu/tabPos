@@ -64,7 +64,7 @@ import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
 import { getOrderData } from '@/actions/AnalyticsAction';
-import WeeklyTransaction from './Components/WeeklyTransaction';
+import { WeeklyTransaction } from './Components/WeeklyTransaction';
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '../Analytics2/Components/CalendarPicker';
 const windowHeight = Dimensions.get('window').height;
