@@ -4,20 +4,17 @@ import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { ms } from 'react-native-size-matters';
 
 import { COLORS, SW } from '@/theme';
+import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { backArrow2, Fonts } from '@/assets';
-import { goBack, navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
+import { navigate } from '@/navigation/NavigationRef';
 
-const Header = () => {
-  console.log('header');
-  return (
-    <TouchableOpacity onPress={() => navigate(NAVIGATION.dashBoard)} style={styles.backView}>
-      <Image source={backArrow2} style={styles.backImageStyle} />
-      <Text style={styles.currentStatusText}>{strings.deliveryOrders.back}</Text>
-    </TouchableOpacity>
-  );
-};
+const Header = () => (
+  <TouchableOpacity onPress={() => navigate(NAVIGATION.dashBoard)} style={styles.backView}>
+    <Image source={backArrow2} style={styles.backImageStyle} />
+    <Text style={styles.currentStatusText}>{strings.deliveryOrders.back}</Text>
+  </TouchableOpacity>
+);
 
 export default memo(Header);
 

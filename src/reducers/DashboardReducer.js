@@ -14,7 +14,6 @@ const INITIALSTATE = {
 };
 
 export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
-  console.log('invoiceSearchOrders=============', payload);
   switch (type) {
     case DASHBOARDTYPE.GET_ORDER_DELIVERIES_SUCCESS:
       return {

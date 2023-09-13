@@ -1,16 +1,21 @@
-import { cross, Fonts } from '@/assets';
-import { Spacer } from '@/components';
-import { strings } from '@/localization';
-import { COLORS, SF, SH } from '@/theme';
 import React, { memo } from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native';
-import ReactNativeModal from 'react-native-modal';
+import { Text, View, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+
+import { useDispatch } from 'react-redux';
 import { ms } from 'react-native-size-matters';
+import ReactNativeModal from 'react-native-modal';
+
+import { Spacer } from '@/components';
+import { cross, crossButton, Fonts } from '@/assets';
+import { COLORS, SF, SH } from '@/theme';
+import { NAVIGATION } from '@/constants';
+import { navigate } from '@/navigation/NavigationRef';
+import { returnProductSuccess, getProductsBySkuSuccess } from '@/actions/DashboardAction';
 
 const { width } = Dimensions.get('window');
 
-const ReturnConfirmation = ({ isVisible, setIsVisible }) => {
+const ReturnConfirmation = ({ isVisible, setIsVisible, order }) => {
+  const dispatch = useDispatch();
   return (
     <ReactNativeModal
       isVisible={isVisible}
@@ -21,15 +26,24 @@ const ReturnConfirmation = ({ isVisible, setIsVisible }) => {
         <View style={styles.headingRowStyle}>
           <Text style={styles.headingTextStyle}>{'Return Confirmed!'}</Text>
 
-          <TouchableOpacity onPress={() => setIsVisible(false)}>
-            <Image source={cross} style={styles.crossIconStyle} />
+          <TouchableOpacity
+            style={styles.crossIconView}
+            onPress={() => {
+              setIsVisible(false);
+              navigate(NAVIGATION.dashBoard);
+              dispatch(returnProductSuccess({}));
+              dispatch(getProductsBySkuSuccess({}));
+            }}
+          >
+            <Image source={crossButton} style={styles.crossIconStyle} />
           </TouchableOpacity>
         </View>
 
         <Spacer space={SH(30)} />
+
         <View style={{ alignItems: 'center' }}>
           <Text style={styles.invoiceTextStyle}>
-            {'Invoice No. # 3467589 return  successfully Completed!'}
+            {`Invoice Number #${order?.invoice_number} return successfully completed !`}
           </Text>
         </View>
       </View>
@@ -71,6 +85,11 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     fontFamily: Fonts.Medium,
     paddingHorizontal: SH(20),
-    // textAlign: ',
+  },
+  crossIconView: {
+    width: SH(28),
+    height: SH(28),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

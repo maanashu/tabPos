@@ -61,8 +61,6 @@ export const FinalPaymentScreen = ({
     }, [])
   );
 
-  console.log('cartData====', JSON.stringify(cartData));
-
   return (
     <SafeAreaView style={styles._innerContainer}>
       <View style={styles.displayflex}>

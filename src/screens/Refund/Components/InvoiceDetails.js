@@ -1,17 +1,16 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 
+import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { barcode, Fonts, logo_full } from '@/assets';
 import { SH, COLORS } from '@/theme';
 import { Spacer } from '@/components';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '@/selectors/UserSelectors';
+import { barcode, Fonts, logo_full } from '@/assets';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import moment from 'moment';
-import { getUser } from '@/selectors/UserSelectors';
 
 const InvoiceDetails = ({ orderData }) => {
   const dispatch = useDispatch();
@@ -57,6 +56,7 @@ const InvoiceDetails = ({ orderData }) => {
       </Text>
 
       <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
+
       <View style={{ paddingVertical: 8 }}>
         <FlatList
           data={orderDetail?.order_details ?? []}

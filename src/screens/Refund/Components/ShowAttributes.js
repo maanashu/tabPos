@@ -15,7 +15,7 @@ import { moderateScale, ms } from 'react-native-size-matters';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { cross, Fonts } from '@/assets';
+import { cross, crossButton, Fonts } from '@/assets';
 
 const { width } = Dimensions.get('window');
 
@@ -53,7 +53,7 @@ const ShowAttributes = ({ isVisible, setIsVisible, order, cartHandler }) => {
             }}
             onPress={() => setIsVisible(false)}
           >
-            <Image source={cross} style={styles.crossIconStyle} />
+            <Image source={crossButton} style={styles.crossIconStyle} />
           </TouchableOpacity>
 
           <TouchableOpacity
