@@ -16,17 +16,26 @@ import {
   calendarIcon,
   todayCalendarIcon,
   calendarSettingsIcon,
+  Fonts,
+  pin,
+  editIcon,
 } from '@/assets';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { strings } from '@/localization';
 import { COLORS } from '@/theme';
-import { ScreenWrapper } from '@/components';
+import { Button, ScreenWrapper, Spacer } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import { Calendar } from '@/components/CustomCalendar';
-import { CALENDAR_MODES } from '@/constants/enums';
+import { CALENDAR_MODES, CALENDAR_VIEW_MODES } from '@/constants/enums';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAppointment, getStaffUsersList } from '@/actions/AppointmentAction';
+import {
+  changeAppointmentStatus,
+  getAppointment,
+  getStaffUsersList,
+  sendCheckinOTP,
+} from '@/actions/AppointmentAction';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -43,6 +52,10 @@ import EventDetailModal from './Components/EventDetailModal';
 import { getSettings, upadteApi } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import ProfileImage from '@/components/ProfileImage';
+import VerifyCheckinOtp from './Components/VerifyCheckinOtp';
+import { APPOINTMENT_STATUS } from '@/constants/status';
+import ReScheduleDetailModal from './Components/ReScheduleDetailModal';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -58,7 +71,6 @@ export function Calender() {
   const getAppointmentByStaffIdList = getCalenderData?.geAppointmentById;
   const getStaffUsers = getCalenderData?.staffUsers;
   const appointmentPages = getCalenderData?.pages;
-  const [storeItem, setStoreItem] = useState();
   const [extractedAppointment, setExtractedAppointment] = useState([]);
   const [showRequestsView, setshowRequestsView] = useState(false);
   const [isCalendarSettingModalVisible, setisCalendarSettingModalVisible] = useState(false);
@@ -66,15 +78,20 @@ export function Calender() {
   const [showEventDetailModal, setshowEventDetailModal] = useState(false);
   const [eventData, setEventData] = useState({});
 
+  const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
+  const [showVerifyOTPModal, setshowVerifyOTPModal] = useState(false);
+  const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(null);
+
   const [week, setWeek] = useState(true);
   const [month, setMonth] = useState(false);
   const [day, setDay] = useState(false);
   const [isAMPM, setisAMPM] = useState(defaultSettingsForCalendar?.time_format === '12' ?? true);
-
+  const [calendarViewMode, setCalendarViewMode] = useState(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
   const [calendarDate, setCalendarDate] = useState(moment());
   const [calendarMode, setCalendarMode] = useState(
     defaultSettingsForCalendar?.calender_view ?? CALENDAR_MODES.WEEK
   );
+  const [shouldShowCalendarModeOptions, setshouldShowCalendarModeOptions] = useState(true);
 
   const [selectedStaffEmployeeId, setSelectedStaffEmployeeId] = useState(null);
   const [selectedStaffData, setSelectedStaffData] = useState(null);
@@ -86,13 +103,13 @@ export function Calender() {
 
   const getAppointmentList2 = getAppointmentList?.filter((item) => item.status !== 3);
 
-  // Only show appointments on calendar which are approved
+  // Only show appointments on calendar which are approved/Check-In
   const getApprovedAppointments = getAppointmentList?.filter(
     (item) => item.status === 1 || item.status === 2
   );
 
   // Will be used to show list of all unaccepted appointments
-  const appointmentListArr = getAppointmentList2?.filter((item) => item.status !== 1);
+  const appointmentListArr = getAppointmentList2?.filter((item) => item.status === 0);
 
   const totalAppointmentCountOfStaff =
     getStaffUsers?.reduce((total, user) => total + user.appointment_counts, 0) || 0;
@@ -156,6 +173,14 @@ export function Calender() {
     }
   }, [getAppointmentList, selectedStaffEmployeeId]);
 
+  const isSendCheckinOTPLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.SEND_CHECKIN_OTP], state)
+  );
+
+  const isBookingCompletedLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.CHANGE_APPOINTMENT_STATUS], state)
+  );
+
   const nextMonth = () => setCalendarDate(calendarDate.clone().add(1, calendarMode));
   const prevMonth = () => setCalendarDate(calendarDate.clone().subtract(1, calendarMode));
 
@@ -176,6 +201,17 @@ export function Calender() {
     setDay(true);
     setMonth(false);
     setWeek(false);
+  };
+
+  const onPressCalendarViewMode = () => {
+    setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
+    setshouldShowCalendarModeOptions(true);
+    weekHandler();
+  };
+  const onPressListViewMode = () => {
+    setCalendarViewMode(CALENDAR_VIEW_MODES.LIST_VIEW);
+    setshouldShowCalendarModeOptions(false);
+    dayHandler();
   };
 
   const onPressSaveCalendarSettings = (calendarPreferences) => {
@@ -309,47 +345,180 @@ export function Calender() {
                 weekHandler,
                 month,
                 monthHandler,
+                calendarViewMode,
+                shouldShowCalendarModeOptions,
               }}
               onPressCalendarIcon={() => {
                 setshowMiniCalendar(true);
               }}
+              onPressCalendarViewMode={onPressCalendarViewMode}
+              onPressListViewMode={onPressListViewMode}
             />
 
             <View style={styles._calendarContainer}>
-              <Calendar
-                ampm={isAMPM}
-                swipeEnabled={false}
-                date={calendarDate}
-                mode={calendarMode}
-                events={extractedAppointment}
-                height={windowHeight * 0.91}
-                {...(showEmployeeHeader
-                  ? {
-                      renderHeader: () => employeeHeader(),
-                      renderHeaderForMonthView: () => employeeHeader(),
+              {calendarViewMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW ? (
+                <Calendar
+                  ampm={isAMPM}
+                  swipeEnabled={false}
+                  date={calendarDate}
+                  mode={calendarMode}
+                  events={extractedAppointment}
+                  height={windowHeight * 0.91}
+                  {...(showEmployeeHeader
+                    ? {
+                        renderHeader: () => employeeHeader(),
+                        renderHeaderForMonthView: () => employeeHeader(),
+                      }
+                    : {})}
+                  headerContainerStyle={{
+                    height: calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
+                    backgroundColor: COLORS.textInputBackground,
+                    paddingTop: ms(5),
+                  }}
+                  dayHeaderHighlightColor={COLORS.dayHighlight}
+                  hourComponent={CustomHoursCell}
+                  isEventOrderingEnabled={false}
+                  onPressEvent={(event) => {
+                    setEventData(event);
+                    if (calendarMode === CALENDAR_MODES.MONTH) {
+                      dayHandler();
+                      setCalendarDate(moment(event.start));
+                    } else {
+                      setshowEventDetailModal(true);
                     }
-                  : {})}
-                headerContainerStyle={{
-                  height: calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
-                  backgroundColor: COLORS.textInputBackground,
-                  paddingTop: ms(5),
-                }}
-                dayHeaderHighlightColor={COLORS.dayHighlight}
-                hourComponent={CustomHoursCell}
-                isEventOrderingEnabled={false}
-                onPressEvent={(event) => {
-                  setEventData(event);
-                  if (calendarMode === CALENDAR_MODES.MONTH) {
-                    dayHandler();
-                    setCalendarDate(moment(event.start));
-                  } else {
-                    setshowEventDetailModal(true);
+                  }}
+                  renderEvent={(event, touchableOpacityProps, allEvents) =>
+                    CustomEventCell(event, touchableOpacityProps, allEvents, calendarMode)
                   }
-                }}
-                renderEvent={(event, touchableOpacityProps, allEvents) =>
-                  CustomEventCell(event, touchableOpacityProps, allEvents, calendarMode)
-                }
-              />
+                />
+              ) : (
+                <FlatList
+                  data={getApprovedAppointments}
+                  keyExtractor={(_, index) => index.toString()}
+                  ListHeaderComponent={() => {
+                    return (
+                      <>
+                        <View style={styles.LlistViewHeaderContainer}>
+                          <Text style={[styles.LheaderText, { flex: 0.3, textAlign: 'left' }]}>
+                            Customer
+                          </Text>
+                          <Text style={styles.LheaderText}>Staff</Text>
+                          <Text style={styles.LheaderText}>Service</Text>
+                          <Text style={styles.LheaderText}>Time</Text>
+                          <Text style={styles.LheaderText}></Text>
+                        </View>
+                        <View style={styles.deviderList} />
+                      </>
+                    );
+                  }}
+                  renderItem={({ item, index }) => {
+                    const userDetails = item?.user_details;
+                    const userAddress = userDetails?.current_address;
+                    const posUserDetails = item?.pos_user_details?.user?.user_profiles;
+
+                    return (
+                      <>
+                        <View style={[styles.LlistViewHeaderContainer, { marginVertical: ms(5) }]}>
+                          <View
+                            style={[
+                              styles.listViewSubContainers,
+                              { flex: 0.3, justifyContent: 'flex-start' },
+                            ]}
+                          >
+                            {userDetails ? (
+                              <>
+                                <ProfileImage
+                                  source={{ uri: userDetails?.profile_photo }}
+                                  style={styles.customerUserProfile}
+                                />
+                                <View style={{ marginLeft: ms(6), flex: 1 }}>
+                                  <Text style={styles.customerName}>
+                                    {userDetails?.firstname + ' ' + userDetails?.lastname}
+                                  </Text>
+                                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Image source={pin} style={styles.eventAddressIcon} />
+                                    <Text style={styles.eventAddress}>
+                                      {userAddress?.street_address}
+                                    </Text>
+                                  </View>
+                                </View>
+                              </>
+                            ) : (
+                              <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(9) }}>
+                                No Customer
+                              </Text>
+                            )}
+                          </View>
+
+                          <View style={styles.listViewSubContainers}>
+                            <Text style={styles.lineViewValues}>
+                              {posUserDetails?.firstname + ' ' + posUserDetails?.lastname}
+                            </Text>
+                          </View>
+                          <View style={styles.listViewSubContainers}>
+                            <Text style={styles.lineViewValues}>
+                              {item?.appointment_details[0]?.product_name}
+                            </Text>
+                          </View>
+                          <View style={styles.listViewSubContainers}>
+                            <Text
+                              style={styles.lineViewValues}
+                            >{`${item?.start_time}-${item?.end_time}`}</Text>
+                          </View>
+                          <View style={styles.listViewSubContainers}>
+                            {item?.status === 1 ? (
+                              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <Button
+                                  pending={isSendCheckinOTPLoading}
+                                  title={'Check-in'}
+                                  textStyle={styles.listCheckinBtnText}
+                                  style={styles.listViewCheckinBtn}
+                                  onPress={() => {
+                                    const appointmentId = item?.id;
+                                    setSelectedPosStaffCompleteData(item);
+                                    dispatch(sendCheckinOTP(appointmentId)).then(() => {
+                                      setshowVerifyOTPModal(true);
+                                    });
+                                  }}
+                                />
+                                <TouchableOpacity
+                                  style={styles.listViewEditBtn}
+                                  onPress={() => {
+                                    setSelectedPosStaffCompleteData(item);
+                                    setshowRescheduleTimeModal(true);
+                                  }}
+                                >
+                                  <Image source={editIcon} style={styles.listViewEditIcon} />
+                                </TouchableOpacity>
+                              </View>
+                            ) : (
+                              <Button
+                                pending={isBookingCompletedLoading}
+                                title={'Mark Complete'}
+                                textStyle={[styles.listCheckinBtnText, { color: COLORS.white }]}
+                                style={[
+                                  styles.listViewCheckinBtn,
+                                  { backgroundColor: COLORS.primary },
+                                ]}
+                                onPress={() => {
+                                  const appointmentId = item?.id;
+                                  dispatch(
+                                    changeAppointmentStatus(
+                                      appointmentId,
+                                      APPOINTMENT_STATUS.COMPLETED
+                                    )
+                                  );
+                                }}
+                              />
+                            )}
+                          </View>
+                        </View>
+                        <View style={styles.deviderList} />
+                      </>
+                    );
+                  }}
+                />
+              )}
             </View>
           </View>
           {/* Right tab container */}
@@ -482,7 +651,7 @@ export function Calender() {
                   })`}
                 </Text>
                 <FlatList
-                  extraData={getAppointmentByStaffIdList || appointmentListArr}
+                  extraData={appointmentListArr}
                   data={selectedStaffEmployeeId ? getAppointmentByStaffIdList : appointmentListArr}
                   keyExtractor={(_, index) => index}
                   renderItem={eventItem}
@@ -519,6 +688,30 @@ export function Calender() {
           }}
           onCancel={() => {
             setshowMiniCalendar(false);
+          }}
+        />
+
+        <ReScheduleDetailModal
+          showRecheduleModal={showRescheduleTimeModal}
+          setShowRescheduleModal={setshowRescheduleTimeModal}
+          appointmentData={selectedPosStaffCompleteData}
+          setshowEventDetailModal={setshowEventDetailModal}
+        />
+
+        <VerifyCheckinOtp
+          appointmentData={selectedPosStaffCompleteData}
+          isVisible={showVerifyOTPModal}
+          setIsVisible={setshowVerifyOTPModal}
+          onVerify={(res) => {
+            setshowVerifyOTPModal(false);
+            setTimeout(() => {
+              Toast.show({
+                text2: res?.msg,
+                position: 'bottom',
+                type: 'success_toast',
+                visibilityTime: 2500,
+              });
+            }, 500);
           }}
         />
       </View>

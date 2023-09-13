@@ -24,15 +24,16 @@ import ProfileImage from '@/components/ProfileImage';
 import { ServiceProviderItem } from '@/components/ServiceProviderItem';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ScrollView } from 'react-native-gesture-handler';
+import { memo } from 'react';
 
 const windowWidth = Dimensions.get('window').width;
 
-export function ReScheduleDetailModal({
+const ReScheduleDetailModal = ({
   showRecheduleModal,
   setShowRescheduleModal,
   appointmentData,
   setshowEventDetailModal,
-}) {
+}) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const timeSlotsData = getRetailData?.timeSlots;
@@ -43,9 +44,8 @@ export function ReScheduleDetailModal({
 
   const getCalenderData = useSelector(getAppointmentSelector);
   const getStaffUsers = getCalenderData?.staffUsers;
-  const [posUserId, setposUserId] = useState(posUserDetails?.user?.unique_uuid);
-  const [providerDetail, setProviderDetail] = useState(posUserDetails?.user);
-
+  const [posUserId, setposUserId] = useState(null);
+  const [providerDetail, setProviderDetail] = useState(null);
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
   const [selectedDate, setselectedDate] = useState(
@@ -62,6 +62,11 @@ export function ReScheduleDetailModal({
 
   const userDetails = appointmentData?.user_details;
   const userAddress = userDetails?.current_address;
+
+  useEffect(() => {
+    setProviderDetail(posUserDetails?.user);
+    setposUserId(posUserDetails?.user?.unique_uuid);
+  }, [posUserDetails]);
 
   useEffect(() => {
     const params = {
@@ -215,40 +220,44 @@ export function ReScheduleDetailModal({
             </TouchableOpacity>
             <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(10) }}>Booking #MAN8239238</Text>
           </View>
-          <View
-            style={[
-              styles.customerDetailContainer,
-              { marginTop: ms(15), marginHorizontal: ms(22) },
-            ]}
-          >
-            <Text style={styles._eventTitle}>Customer:</Text>
-
+          {userDetails && (
             <View
-              style={{
-                flexDirection: 'row',
-                marginTop: ms(5),
-                justifyContent: 'space-between',
-              }}
+              style={[
+                styles.customerDetailContainer,
+                { marginTop: ms(15), marginHorizontal: ms(22) },
+              ]}
             >
-              <ProfileImage
-                source={{ uri: userDetails?.profile_photo }}
-                style={styles.customerUserProfile}
-              />
-              <View style={{ marginLeft: ms(6), flex: 1 }}>
-                <Text style={styles.customerName}>
-                  {userDetails?.firstname + ' ' + userDetails?.lastname}
-                </Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image source={pin} style={styles.eventAddressIcon} />
-                  <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
+              <Text style={styles._eventTitle}>Customer:</Text>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: ms(5),
+                  justifyContent: 'space-between',
+                }}
+              >
+                <ProfileImage
+                  source={{ uri: userDetails?.profile_photo }}
+                  style={styles.customerUserProfile}
+                />
+                <View style={{ marginLeft: ms(6), flex: 1 }}>
+                  <Text style={styles.customerName}>
+                    {userDetails?.firstname + ' ' + userDetails?.lastname}
+                  </Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={pin} style={styles.eventAddressIcon} />
+                    <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
+          )}
+
           <View
             style={{
               width: windowWidth * 0.42,
               alignSelf: 'center',
+              marginTop: userDetails ? 0 : ms(10),
             }}
           >
             <View>
@@ -394,4 +403,6 @@ export function ReScheduleDetailModal({
       </ScrollView>
     </Modal>
   );
-}
+};
+
+export default memo(ReScheduleDetailModal);

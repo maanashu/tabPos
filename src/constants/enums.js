@@ -3,6 +3,12 @@ export const CALENDAR_MODES = {
   WEEK: 'week',
   MONTH: 'month',
 };
+
+export const CALENDAR_VIEW_MODES = {
+  LIST_VIEW: 'LIST_VIEW',
+  CALENDAR_VIEW: 'CALENDAR_VIEW',
+};
+
 export const DELIVERY_MODE = {
   1: 'Delivery',
   2: 'Reservation',
