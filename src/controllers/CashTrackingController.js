@@ -2,12 +2,17 @@ import { strings } from '@/localization';
 import { USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
+import { store } from '@/store';
 
 export class CashTrackingController {
   static async getDrawerSession() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
-      HttpClient.post(endpoint)
+      const body = {
+        seller_id: sellerID,
+      };
+      HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
         })
