@@ -25,7 +25,11 @@ import RecheckConfirmation from './RecheckConfirmation';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import OrderWithInvoiceNumber from './OrderWithInvoiceNumber';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { getOrdersByInvoiceId, getOrdersByInvoiceIdSuccess } from '@/actions/DashboardAction';
+import {
+  getOrdersByInvoiceId,
+  getOrdersByInvoiceIdSuccess,
+  scanBarCode,
+} from '@/actions/DashboardAction';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -70,12 +74,15 @@ export function SearchScreen() {
   };
 
   const onSearchInvoiceHandler = (text) => {
-    console.log('text====', text);
     if (text) {
       setSku(text);
       clearTimeout(debounceTimeout);
       debounceTimeout = setTimeout(() => {
-        dispatch(getOrdersByInvoiceId(text));
+        if (text.includes('invoice_')) {
+          dispatch(scanBarCode(text));
+        } else {
+          dispatch(getOrdersByInvoiceId(text));
+        }
       }, 500);
     } else {
       setSku('');

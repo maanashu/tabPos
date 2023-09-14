@@ -64,7 +64,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
 
   return (
     <View style={styles.container}>
-      {orderData !== undefined && Object.keys(orderData).length > 0 ? (
+      {orderData !== undefined && Object.keys(orderData).length > 0 && orderData?.order ? (
         <View style={styles.orderMainViewStyle}>
           <View style={styles.orderDetailViewStyle}>
             <View style={[styles.locationViewStyle, { flex: 1 }]}>
@@ -152,6 +152,10 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
 
             <Price orderData={orderData} onPresshandler={onPress} />
           </View>
+        </View>
+      ) : Object.keys(orderData).length > 0 && orderData?.order === null ? (
+        <View style={styles.searchViewStyle}>
+          <Text style={styles.emptyTextStyle}>{'No product found'}</Text>
         </View>
       ) : (
         <View style={styles.searchViewStyle}>
@@ -317,5 +321,10 @@ const styles = StyleSheet.create({
     width: SH(210),
     height: SH(210),
     resizeMode: 'contain',
+  },
+  emptyTextStyle: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(20),
+    color: COLORS.primary,
   },
 });

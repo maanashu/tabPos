@@ -9,10 +9,9 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import { Fonts, scooter, userImage } from '@/assets';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 import styles from '../ShippingOrder2.styles';
-import { getAuthData } from '@/selectors/AuthSelector';
-import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 const OrderDetail = ({
   openShippingOrders,
@@ -23,8 +22,6 @@ const OrderDetail = ({
   acceptHandler,
   trackOrderHandler,
 }) => {
-  const user = useSelector(getAuthData);
-  const location = user?.merchantLoginData?.user?.user_profiles?.current_address;
   const oneOrderDetail = useSelector(getAnalytics);
   const getTrackingInfo = oneOrderDetail?.getOrderData?.tracking_info;
 

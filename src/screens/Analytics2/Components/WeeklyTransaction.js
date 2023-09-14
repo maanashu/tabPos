@@ -4,7 +4,6 @@ import {
   Text,
   TextInput,
   Image,
-  FlatList,
   TouchableOpacity,
   Dimensions,
   ScrollView,
@@ -18,10 +17,6 @@ import {
   bell,
   search_light,
   scn,
-  newCalendar,
-  cardIcon,
-  cashIcon,
-  jbricon,
   backArrow,
   Union,
   mask,
@@ -29,38 +24,29 @@ import {
   unionRight,
   dropdown2,
   tableArrow,
-  Fonts,
 } from '@/assets';
 import moment from 'moment';
-import { DaySelector, Spacer, TableDropdown } from '@/components';
+import { Spacer } from '@/components';
 import { moderateScale, ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
-import { getCustomers } from '@/selectors/CustomersSelector';
-import { getTotakTraDetail, getTotalTra, getTotalTraType } from '@/actions/WalletAction';
+import { getTotakTraDetail, getTotalTraType } from '@/actions/WalletAction';
 import { getWallet } from '@/selectors/WalletSelector';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
 import { TYPES } from '@/Types/WalletTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { useRef } from 'react';
-import { memo } from 'react';
+
 import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
 const windowHeight = Dimensions.get('window').height;
-import Modal from 'react-native-modal';
-import CalendarPickerModal from '@/screens/Analytics2/Components/CalendarPicker';
 
-export function WeeklyTransaction({ backHandler, orderClickHandler }) {
-  const mapRef = useRef(null);
-
+export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getWalletData = useSelector(getWallet);
-  const getCustomerData = useSelector(getCustomers);
-  const getTotalTraData = getWalletData?.getTotalTra;
+
   const getTotalTraDetail = getWalletData?.getTotakTraDetail?.data ?? [];
-  const transactionTypeArray = getWalletData?.getTotalTraType;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
@@ -68,18 +54,10 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
 
   const [selectId, setSelectId] = useState(2);
-  const [selectTime, setSelectTime] = useState({ value: 'week' });
   const time = selectTime?.value;
   const [page, setPage] = useState(1);
-
-  const [dateformat, setDateformat] = useState('');
-  const [date, setDate] = useState();
-  const [historytype, setHistorytype] = useState('all');
-
-  const [transcationTypeId, setTranscationTypeId] = useState(1);
   const [transaction, setTransaction] = useState({ modeOfPayment: 'all' });
-  const [show, setShow] = useState(false);
-  const [defaultDate, setDefaultDate] = useState(new Date());
+
   const [formatedDate, setFormatedDate] = useState();
 
   const paginationData = {
@@ -91,37 +69,6 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
   const orderPayloadLength = Object.keys(getWalletData?.getTotakTraDetail)?.length;
 
   const startIndex = (page - 1) * paginationModalValue + 1;
-
-  const transactionArray = [
-    {
-      id: 1,
-      modeOfPayment: 'all',
-      count: transactionTypeArray?.[0]?.count ?? '0',
-      type: 'All',
-    },
-    {
-      id: 2,
-      modeOfPayment: 'jbr',
-      count: transactionTypeArray?.[1]?.count ?? '0',
-      type: 'JBR',
-    },
-    {
-      id: 3,
-      modeOfPayment: 'cash',
-      count: transactionTypeArray?.[3]?.count ?? '0',
-      type: 'Cash',
-    },
-    {
-      id: 4,
-      modeOfPayment: 'card',
-      count: transactionTypeArray?.[2]?.count ?? '0',
-      type: 'Card',
-    },
-  ];
-
-  const onPresFun = (value) => {
-    setFormatedDate();
-  };
 
   useEffect(() => {
     const data = {
@@ -144,42 +91,9 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
     dispatch(getTotakTraDetail(data));
   }, [selectId, transaction, page, paginationModalValue, formatedDate]);
 
-  const onChangeDate = (selectedDate) => {
-    setDefaultDate(selectedDate);
-    const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
-    const fullDate = moment(selectedDate).format('MM/DD/YYYY');
-    setDate(formattedDate);
-    // if (weeklyTransaction) {
-    //   setSelectId2(0);
-    //   dispatch(getTotakTraDetail(formattedDate, sellerID, 'all'));
-    // } else {
-    // setSelectId(0);
-    return;
-
-    dispatch(getTotalTra(null, sellerID, formattedDate));
-    // }
-  };
-
-  const getFormattedTodayDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
-
-  const maxDate = getFormattedTodayDate();
-
-  const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
-
   const isTotalTradetail = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state)
   );
-  const isTotalTraType = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_TOTAL_TRA_TYPE], state)
-  );
-  let desiredModeOfPayment = historytype; // Replace with the desired mode_of_payment value or "all"
-  let filteredData = [];
 
   const statusFun = (status) => {
     switch (status) {
@@ -213,38 +127,6 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
     }
   };
 
-  const allTransactionItem = ({ item }) => {
-    const borderColor = item.id === transcationTypeId ? COLORS.primary : COLORS.solidGrey;
-    const color = item.id === transcationTypeId ? COLORS.primary : COLORS.dark_grey;
-    const fontFamily = item.id === transcationTypeId ? Fonts.SemiBold : Fonts.Regular;
-    return (
-      <TransactionSelectItem
-        item={item}
-        onPress={() => {
-          setTranscationTypeId(item.id);
-          setTransaction(item);
-          // onPresFun3(item.mode_of_payment);
-        }}
-        borderColor={borderColor}
-        color={color}
-        fontFamily={fontFamily}
-      />
-    );
-  };
-
-  const TransactionSelectItem = ({ item, onPress, borderColor, color, fontFamily }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.allJbrCon, { borderColor }]}>
-      {isTotalTraType ? (
-        <ActivityIndicator size="small" color={COLORS.primary} />
-      ) : (
-        <Text style={[styles.allJbrText, { color, fontFamily }]}>
-          {item.type} ({item.count})
-        </Text>
-      )}
-    </TouchableOpacity>
-  );
-  // console.log('getTotalTraDetail', getTotalTraDetail);
-
   return (
     <View style={{ height: windowHeight * 0.95 }}>
       <View style={styles.headerMainView}>
@@ -269,93 +151,13 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
           </View>
         </View>
       </View>
-      {/* <ScrollView> */}
       <View style={styles.walletTranCon}>
         <View style={styles.displayFlex}>
           <Text style={styles.trancationHeading}>{strings.wallet.totalTransections}</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <View>
-              <DaySelector
-                onPresFun={onPresFun}
-                selectId={selectId}
-                setSelectId={setSelectId}
-                setSelectTime={setSelectTime}
-              />
-            </View>
-            <TouchableOpacity
-              style={[
-                styles.homeCalenaderBg,
-                {
-                  backgroundColor: selectId == 0 ? COLORS.primary : COLORS.textInputBackground,
-                },
-              ]}
-              onPress={() => setShow(!show)}
-            >
-              <Image
-                source={newCalendar}
-                style={[
-                  styles.calendarStyle,
-                  { tintColor: selectId == 0 ? COLORS.white : COLORS.darkGray },
-                ]}
-              />
-            </TouchableOpacity>
-            <Modal
-              isVisible={show}
-              statusBarTranslucent
-              animationIn={'fadeIn'}
-              animationInTiming={600}
-              animationOutTiming={300}
-              onBackdropPress={() => setShow(false)}
-            >
-              <View style={styles.calendarModalView}>
-                <CalendarPickerModal
-                  onPress={() => {
-                    setShow(false);
-                    setDefaultDate();
-                    setSelectId(2);
-                    setFormatedDate();
-                    setSelectTime({ value: 'week' });
-                  }}
-                  onDateChange={onChangeDate}
-                  onSelectedDate={() => {
-                    setShow(false);
-                    setSelectId(0);
-                    setFormatedDate(date);
-                  }}
-                  maxDate={maxDate}
-                  selectedStartDate={defaultDate}
-                />
-              </View>
-            </Modal>
-          </View>
         </View>
       </View>
       <Spacer space={SH(10)} />
-      <View style={[styles.allTypeCon]}>
-        <FlatList
-          data={transactionArray}
-          extraData={transactionArray}
-          renderItem={allTransactionItem}
-          keyExtractor={(item) => item.id}
-          horizontal
-        />
-      </View>
-      {/* </ScrollView> */}
-      <View style={styles.orderTypeCon}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {/* <View style={styles.datePickerCon}>
-            <Image source={calendar1} style={styles.calendarStyle} />
-            <Text style={styles.datePlaceholder}>Date</Text>
-          </View> */}
 
-          <View style={{ marginRight: moderateScale(5) }}>
-            <TableDropdown placeholder="Status" />
-          </View>
-          <>
-            <TableDropdown placeholder="Order type" />
-          </>
-        </View>
-      </View>
       <View
         style={[styles.jbrTypeCon, { zIndex: -2, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
         pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
@@ -433,6 +235,11 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
               </Text>
             )}
           </View>
+          {/* <Text style={styles.paginationCount}>
+            {' '}
+            {'1-20 of '}
+            {paginationData?.total}
+          </Text> */}
           <View style={[styles.unionCon, { marginRight: 7 }]}>
             <Image
               source={maskRight}
@@ -486,31 +293,6 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
                     Transaction type
                   </Text>
                   <Image source={tableArrow} style={styles.tableArrow} />
-                  {/* <DropDownPicker
-                    ArrowUpIconComponent={({ style }) => (
-                      <Image source={tableArrow} style={styles.dropDownIconPagination} />
-                    )}
-                    ArrowDownIconComponent={({ style }) => (
-                      <Image source={tableArrow} style={styles.dropDownIconPagination} />
-                    )}
-                    style={styles.dropdown}
-                    containerStyle={[
-                      { width: ms(101), marginTop: Platform.OS === 'ios' ? 0 : ms(0) },
-                      { zIndex: Platform.OS === 'ios' ? 20 : 1 },
-                    ]}
-                    dropDownContainerStyle={styles.transTypeDownContainerStyle}
-                    listItemLabelStyle={styles.listItemLabelStyle}
-                    labelStyle={styles.labelStyle}
-                    selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                    open={transTypeModalOpen}
-                    value={transTypeModalValue}
-                    items={transTypeModalItems}
-                    setOpen={setTransTypeModalOpen}
-                    setValue={setTransTypeModalValue}
-                    setItems={setTransTypeModalItems}
-                    placeholder="Transaction type"
-                    placeholderStyle={styles.placeholderStylePagination}
-                  /> */}
                 </View>
                 <View
                   style={styles.flexAlign}
@@ -522,37 +304,8 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
                     Payment Method
                   </Text>
                   <Image source={tableArrow} style={styles.tableArrow} />
-                  {/* <DropDownPicker
-                    ArrowUpIconComponent={({ style }) => (
-                      <Image source={tableArrow} style={styles.dropDownIconPagination} />
-                    )}
-                    ArrowDownIconComponent={({ style }) => (
-                      <Image source={tableArrow} style={styles.dropDownIconPagination} />
-                    )}
-                    style={styles.dropdown}
-                    containerStyle={[
-                      { width: Platform.OS === 'ios' ? ms(90) : ms(100) },
-                      { zIndex: Platform.OS === 'ios' ? 20 : 1 },
-                    ]}
-                    dropDownContainerStyle={styles.paymentMethodDownContainerStyle}
-                    listItemLabelStyle={styles.listItemLabelStyle}
-                    labelStyle={styles.labelStyle}
-                    selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                    open={paymentMethodModalOpen}
-                    value={paymentMethodModalValue}
-                    items={paymentMethodModalItems}
-                    setOpen={setPaymentMethodModalOpen}
-                    setValue={setPaymnentMethodModalValue}
-                    setItems={setPaymentMethodModalItems}
-                    placeholder="Payment Method"
-                    placeholderStyle={styles.placeholderStylePagination}
-                  /> */}
                 </View>
 
-                {/* <Text style={styles.tableTextHea}> */}
-                {/* {historytype == 'jbr' ? 'JOBR' : 'Amount'} */}
-
-                {/* </Text> */}
                 <Text style={styles.tableTextHea}>Amount</Text>
                 <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text>
 

@@ -14,9 +14,11 @@ export class CashTrackingController {
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response ====', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error ====', error);
           Toast.show({
             text2: error.error,
             position: 'bottom',

@@ -30,7 +30,7 @@ const ReturnConfirmation = ({ isVisible, setIsVisible, order }) => {
             style={styles.crossIconView}
             onPress={() => {
               setIsVisible(false);
-              navigate(NAVIGATION.dashBoard);
+              navigate(NAVIGATION.refund);
               dispatch(returnProductSuccess({}));
               dispatch(getProductsBySkuSuccess({}));
             }}

@@ -84,14 +84,13 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
   const dynamicTodayLabels = data?.labels?.filter(
     (label, index) => (index + 1) % dateTodayInterval === 0
   );
-
   function convertTo24HourFormat(label) {
     const [time, period] = label.split(' ');
 
     if (period === 'PM' && time !== '12:00') {
       const [hour, minute] = time.split(':');
-      return `${parseInt(hour, 10) + 12}`;
-    } else if (period === 'AM' && time === '12:00') {
+      return `${parseInt(hour, 10)}`;
+    } else if (period === 'AM' && time === '00:00') {
       return '24';
     } else {
       const [hour] = time.split(':');
