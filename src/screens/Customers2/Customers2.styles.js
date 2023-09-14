@@ -186,7 +186,7 @@ export const styles = StyleSheet.create({
   },
   datePickerCon: {
     borderWidth: 1,
-    height: SH(38),
+    height: SH(35),
     width: SW(45),
     borderRadius: 7,
     borderColor: COLORS.solidGrey,
@@ -199,12 +199,13 @@ export const styles = StyleSheet.create({
     width: SW(5),
     height: SW(5),
     resizeMode: 'contain',
+    marginRight: SW(1),
   },
   txtInput: {
     flex: 1,
     justifyContent: 'center',
     fontSize: SF(11),
-    top: 2,
+    top: Platform.OS === 'android' ? 0 : 2,
     color: COLORS.solid_grey,
   },
   jbrTypeCon: {
@@ -522,5 +523,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(3),
+  },
+  calendarModalView: {
+    backgroundColor: COLORS.white,
+    width: windowWidth * 0.6,
+    height: windowHeight - SW(30),
+    alignSelf: 'center',
+    paddingVertical: SH(10),
+    paddingHorizontal: SW(5),
+    borderRadius: SW(5),
   },
 });

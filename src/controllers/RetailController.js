@@ -755,7 +755,6 @@ export class RetailController {
             // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
           };
-      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response?.msg === 'Order placed successfully!') {

@@ -14,10 +14,12 @@ export const DATE_TYPE = {
 const MonthYearPicker = ({
   placeholder,
   containerStyle,
+  dropdownStyle,
   dateType,
   onSelect,
   defaultValue = null,
   defaultYear = null,
+  showAllMonths = false,
 }) => {
   const currentYear = moment().year();
   const years = Array.from({ length: 10 }, (_, index) => currentYear + index);
@@ -40,7 +42,11 @@ const MonthYearPicker = ({
 
   if (dateType === DATE_TYPE.MONTH && defaultYear === currentYear) {
     const currentMonth = moment().month() + 1;
-    monthsData.splice(0, currentMonth - 1);
+    if (showAllMonths) {
+      monthsData.splice(currentMonth, monthsData.length - currentMonth);
+    } else {
+      monthsData.splice(0, currentMonth - 1);
+    }
   }
 
   const [value, setValue] = useState(defaultValue);
@@ -48,7 +54,7 @@ const MonthYearPicker = ({
   return (
     <View style={containerStyle}>
       <Dropdown
-        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+        style={[styles.dropdown, dropdownStyle, isFocus && { borderColor: 'blue' }]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}

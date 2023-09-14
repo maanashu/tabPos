@@ -409,13 +409,14 @@ export function Management() {
                 onChangeText={setTrackNotes}
               />
             </View>
+            {/* <TransactionDropDown selected={onchangeValue} /> */}
             <Spacer space={SH(20)} />
             {/* <View>
               <Text style={styles.amountCountedText}>
                 {strings.management.transactionType}
               </Text>
               <View style={{ flex: 1 }}>
-                <TransactionDropDown selected={onchangeValue} />
+             
               </View>
             </View> */}
           </View>

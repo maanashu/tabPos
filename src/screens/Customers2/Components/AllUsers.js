@@ -41,6 +41,8 @@ import { getCustomers } from '@/selectors/CustomersSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CustomersTypes';
 import { PAGINATION_DATA } from '@/constants/enums';
+import Modal from 'react-native-modal';
+import CalendarPickerModal from '@/screens/Analytics2/Components/CalendarPicker';
 const result = Dimensions.get('window').height - 50;
 
 const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustomeType }) => {
@@ -64,6 +66,9 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [page, setPage] = useState(1);
   const [ind, setInd] = useState();
   const [indexStart, setIndexStart] = useState();
+  const [defaultDate, setDefaultDate] = useState(new Date());
+  const [dropdownSelect, setDropdownSelect] = useState();
+  const onchangeValue = (value) => setDropdownSelect(value);
 
   // useEffect(() => {
   //   if (paginationModalValue == 10) {
@@ -74,6 +79,33 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   //   // }
   // }, [paginationModalValue]);
 
+  const dummyArea = [
+    {
+      id: 1,
+      label: 'Shimla',
+      value: 'Shimla',
+    },
+    {
+      id: 2,
+      label: 'Haryana',
+      value: 'Haryana',
+    },
+    {
+      id: 3,
+      label: 'Punjab',
+      value: 'Punjab',
+    },
+  ];
+
+  const getFormattedTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const maxDate = getFormattedTodayDate();
   const paginationData = {
     total: getCustomerData?.getUserOrder?.total ?? '0',
     totalPages: getCustomerData?.getUserOrder?.total_pages ?? '0',
@@ -104,28 +136,35 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   // console.log('startIndex', startIndex);
 
   const isCustomerLoad = useSelector((state) => isLoadingSelector([TYPES.GET_USER_ORDER], state));
+  // const onChangeDate = (selectedDate) => {
+  //   const currentDate = moment().format('MM/DD/YYYY');
+  //   const selected = moment(selectedDate).format('MM/DD/YYYY');
+  //   if (currentDate === selected) {
+  //     setShow(false);
+  //     const fullDate = new Date(moment(selectedDate).subtract(21, 'years'));
+  //     const changedDate = moment(fullDate).format('MM / DD / YYYY');
+  //     const newDateFormat = moment(fullDate).format('YYYY-MM-DD');
+  //     setDateformat(newDateFormat);
+  //     setDate(changedDate);
+  //   } else {
+  //     setShow(false);
+  //     const month = selectedDate.getMonth() + 1;
+  //     const selectedMonth = month < 10 ? '0' + month : month;
+  //     const day = selectedDate.getDate();
+  //     const selectedDay = day < 10 ? '0' + day : day;
+  //     const year = selectedDate.getFullYear();
+  //     const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
+  //     const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
+  //     setDateformat(newDateFormat);
+  //     setDate(fullDate);
+  //   }
+  // };
   const onChangeDate = (selectedDate) => {
-    const currentDate = moment().format('MM/DD/YYYY');
-    const selected = moment(selectedDate).format('MM/DD/YYYY');
-    if (currentDate === selected) {
-      setShow(false);
-      const fullDate = new Date(moment(selectedDate).subtract(21, 'years'));
-      const changedDate = moment(fullDate).format('MM / DD / YYYY');
-      const newDateFormat = moment(fullDate).format('YYYY-MM-DD');
-      setDateformat(newDateFormat);
-      setDate(changedDate);
-    } else {
-      setShow(false);
-      const month = selectedDate.getMonth() + 1;
-      const selectedMonth = month < 10 ? '0' + month : month;
-      const day = selectedDate.getDate();
-      const selectedDay = day < 10 ? '0' + day : day;
-      const year = selectedDate.getFullYear();
-      const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
-      const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
-      setDateformat(newDateFormat);
-      setDate(fullDate);
-    }
+    setDefaultDate(selectedDate);
+    const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
+    const fullDate = moment(selectedDate).format('MM/DD/YYYY');
+    setDateformat(formattedDate);
+    setDate(fullDate);
   };
 
   const dummyCustomerData = [
@@ -211,7 +250,16 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
       {/* Date and Area section */}
       <View style={styles.orderTypeCon}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity style={styles.datePickerCon} onPress={() => setShow(!show)}>
+          <TouchableOpacity
+            style={[styles.datePickerCon, { borderWidth: 1 }]}
+            onPress={() => {
+              if (!dateformat) {
+                const dates = moment(new Date()).format('MM/DD/YYY');
+                setDate(dates);
+              }
+              setShow(!show);
+            }}
+          >
             <Image source={calendar1} style={styles.calendarStyle} />
             <TextInput
               value={date}
@@ -221,18 +269,30 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
               editable={false}
               placeholder="Date"
               placeholderTextColor={COLORS.gerySkies}
-              style={styles.txtInput}
+              style={[styles.txtInput, { padding: 0, margin: 0 }]}
             />
           </TouchableOpacity>
-          <DateTimePickerModal
-            mode={'date'}
+
+          <Modal
             isVisible={show}
-            onConfirm={onChangeDate}
-            onCancel={() => setShow(false)}
-            maximumDate={new Date(moment().subtract(21, 'years'))}
-          />
+            statusBarTranslucent
+            animationIn={'fadeIn'}
+            animationInTiming={600}
+            animationOutTiming={300}
+            onBackdropPress={() => setShow(false)}
+          >
+            <View style={styles.calendarModalView}>
+              <CalendarPickerModal
+                onPress={() => setShow(false)}
+                onDateChange={onChangeDate}
+                onSelectedDate={() => setShow(false)}
+                maxDate={maxDate}
+                selectedStartDate={defaultDate}
+              />
+            </View>
+          </Modal>
           <View style={{ marginHorizontal: moderateScale(10) }}>
-            <TableDropdown placeholder="Area" />
+            <TableDropdown selected={onchangeValue} placeholder="Area" data={dummyArea} />
           </View>
         </View>
       </View>

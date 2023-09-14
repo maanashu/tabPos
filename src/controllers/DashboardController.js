@@ -31,8 +31,12 @@ export class DashboardController {
 
   static async getDrawerSession() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
-      HttpClient.post(endpoint)
+      const body = {
+        seller_id: sellerID,
+      };
+      HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
         })
@@ -44,10 +48,13 @@ export class DashboardController {
 
   static async getDrawerSessionPost(data) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
       const amountStringy = parseFloat(data.amount);
       const body = {
+        seller_id: sellerID,
         amount: amountStringy,
+        notes: data?.notes,
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
@@ -68,7 +75,7 @@ export class DashboardController {
             text2: error.msg,
             visibilityTime: 2000,
           });
-          reject(error.msg);
+          reject(error);
         });
     });
   }
@@ -111,7 +118,7 @@ export class DashboardController {
             text2: error.msg,
             visibilityTime: 2000,
           });
-          reject(error.msg);
+          reject(error);
         });
     });
   }
@@ -241,7 +248,6 @@ export class DashboardController {
   }
 
   static async returnProduct(data) {
-    console.log(data);
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.return;
       const body = data;
