@@ -924,4 +924,10 @@ export const styles = StyleSheet.create({
   },
   listCheckinBtnText: { color: COLORS.primary, fontFamily: Fonts.Regular, fontWeight: '500' },
   lineViewValues: { fontFamily: Fonts.Regular, fontSize: ms(8.5) },
+  noAppointmentEmpty: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(11),
+    alignSelf: 'center',
+    margin: ms(20),
+  },
 });
