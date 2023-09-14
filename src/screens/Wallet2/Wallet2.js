@@ -343,6 +343,7 @@ export function Wallet2() {
           orderClickHandler={async (orderId) => {
             const res = await dispatch(getOrderData(orderId));
             if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
+              setWeeklyTrasaction(false);
               setInvoiceDetail(true);
             }
           }}
@@ -360,7 +361,6 @@ export function Wallet2() {
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
-
       <Modal
         isVisible={show}
         statusBarTranslucent
