@@ -48,6 +48,7 @@ export const ApiUserInventory = {
   notifications: 'notifications',
   getSellerDrivers: 'merchant_drivers/get-drivers',
   abc: (sellerID) => `?page=1&limit=10&seller_id=${sellerID}`,
+  getPaymentHistory: 'drawer_management/payment/history',
 };
 
 export const ApiProductInventory = {
