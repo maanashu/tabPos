@@ -39,11 +39,8 @@ export class CashTrackingController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
-          console.log('succes in getting history', JSON.stringify(response));
         })
         .catch((error) => {
-          console.log('error in getting history', JSON.stringify(error));
-
           Toast.show({
             text2: error.error,
             position: 'bottom',
