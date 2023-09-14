@@ -42,7 +42,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalPosOrder() {
+export function TotalPosOrder({ onPressReview }) {
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
   const posGraph = analyticOrderGraphs?.pos_graph;
@@ -83,10 +83,7 @@ export function TotalPosOrder() {
         <Text style={styles.revenueDataText2}>${item?.amount?.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <TouchableOpacity
-          style={styles.reviewView}
-          onPress={() => navigate(NAVIGATION.weeklyTransaction)}
-        >
+        <TouchableOpacity style={styles.reviewView} onPress={onPressReview}>
           <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
             {'Review'}
           </Text>
