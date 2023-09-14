@@ -40,7 +40,6 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
   const getAuth = useSelector(getAuthData);
   const oneOrderDetail = useSelector(getAnalytics);
   const singleOrderDetail = oneOrderDetail?.getOrderData;
-  console.log('singleOrderDetail', JSON.stringify(singleOrderDetail));
   const userDetailData = singleOrderDetail?.user_details;
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const latitude = parseFloat(location?.latitude ?? 0.0);

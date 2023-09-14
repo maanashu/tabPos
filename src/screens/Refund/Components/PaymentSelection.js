@@ -9,24 +9,30 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 
+import ReactNativeModal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { ms, verticalScale } from 'react-native-size-matters';
+import CountryPicker from 'react-native-country-picker-modal';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { moderateScale, moderateVerticalScale, ms, verticalScale } from 'react-native-size-matters';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { SF, SH, COLORS } from '@/theme';
+import { SF, SH, COLORS, SW } from '@/theme';
 import InvoiceDetails from './InvoiceDetails';
 import BackButton from '@/components/BackButton';
 import ReturnConfirmation from './ReturnConfirmation';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { RECIPE_DATA } from '@/constants/flatListData';
 import { returnProduct } from '@/actions/DashboardAction';
-import { cardPayment, cash, Fonts, qrCodeIcon } from '@/assets';
+import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
+import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
+import { getDashboard } from '@/selectors/DashboardSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 let products = [];
 
 const PaymentSelection = ({
@@ -38,11 +44,27 @@ const PaymentSelection = ({
   amount,
 }) => {
   const dispatch = useDispatch();
-  const [selectedRecipeIndex, setSelectedRecipeIndex] = useState();
+  const getDashboardData = useSelector(getDashboard);
+  const getSessionData = getDashboardData?.getSession;
+  const id = getSessionData?.id;
+
+  const [flag, setFlag] = useState('US');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState('+1');
+  const [isPhoneVisible, setIsPhoneVisible] = useState(false);
+  const [isEmailVisible, setIsEmailVisible] = useState(false);
+  const [selectedRecipeIndex, setSelectedRecipeIndex] = useState(null);
   const [isReturnConfirmation, setIsReturnConfirmation] = useState(false);
 
   const onCheckSelectedReceipt = (index) => {
     if (index === 0) {
+      setIsPhoneVisible(true);
+      setPhoneNumber('');
+    } else if (index === 1) {
+      setIsEmailVisible(true);
+      setEmail('');
+    } else {
     }
   };
 
@@ -52,7 +74,7 @@ const PaymentSelection = ({
       <TouchableOpacity
         key={index}
         onPress={() => {
-          // onCheckSelectedReceipt(index);
+          onCheckSelectedReceipt(index);
           setSelectedRecipeIndex(index);
         }}
         style={[styles._payBYBoxContainerReceipe, { borderColor: selectedMethod }]}
@@ -66,45 +88,85 @@ const PaymentSelection = ({
     isLoadingSelector([DASHBOARDTYPE.RETURN_PRODUCTS], state)
   );
 
+  const closeHandler = () => {
+    setSelectedRecipeIndex(null);
+    setIsPhoneVisible(false);
+  };
+
   const onReturnHandler = () => {
-    orderData?.order?.order_details?.map((item, index) => {
-      if (applyEachItem) {
-        order?.map((item, index) => {
+    if (selectedRecipeIndex !== null) {
+      orderData?.order?.order_details?.map((item, index) => {
+        if (applyEachItem) {
+          order?.map((item, index) => {
+            products.push({
+              id: item?.id,
+              qty: item?.qty ?? 1,
+              refund_flag: 'amount',
+              refund_value: item?.RefundedAmount,
+            });
+          });
+        } else {
           products.push({
             id: item?.id,
             qty: item?.qty ?? 1,
-            refund_flag: 'amount',
-            refund_value: item?.RefundedAmount,
           });
-        });
-      } else {
-        products.push({
-          id: item?.id,
-          qty: item?.qty ?? 1,
-        });
-      }
-    });
+        }
+      });
 
-    const data = applicableForAllItems
-      ? {
-          order_id: orderData?.order_id,
-          products: products,
-          refund_flag: 'amount',
-          refund_value: amount,
-          return_reason: 'testing reason',
-        }
-      : {
-          order_id: orderData?.order_id,
-          products: products,
-          return_reason: 'testing reason',
-        };
-    dispatch(
-      returnProduct(data, (res) => {
-        if (res) {
-          setIsReturnConfirmation(true);
-        }
-      })
-    );
+      const data =
+        selectedRecipeIndex === 0 && applicableForAllItems
+          ? {
+              order_id: orderData?.order_id,
+              products: products,
+              refund_flag: 'amount',
+              refund_value: amount,
+              return_reason: 'testing reason',
+              full_phone_number: countryCode + phoneNumber,
+            }
+          : selectedRecipeIndex === 1 && applicableForAllItems
+          ? {
+              order_id: orderData?.order_id,
+              products: products,
+              refund_flag: 'amount',
+              refund_value: amount,
+              return_reason: 'testing reason',
+              email: email,
+            }
+          : selectedRecipeIndex === 2 && applicableForAllItems
+          ? {
+              order_id: orderData?.order_id,
+              products: products,
+              refund_flag: 'amount',
+              refund_value: amount,
+              return_reason: 'testing reason',
+            }
+          : selectedRecipeIndex === 0 && applyEachItem
+          ? {
+              order_id: orderData?.order_id,
+              products: products,
+              full_phone_number: countryCode + phoneNumber,
+            }
+          : selectedRecipeIndex === 1 && applyEachItem
+          ? {
+              order_id: orderData?.order_id,
+              products: products,
+              email: email,
+            }
+          : {
+              order_id: orderData?.order_id,
+              products: products,
+            };
+
+      dispatch(
+        returnProduct(data, id, (res) => {
+          if (res) {
+            setIsReturnConfirmation(true);
+          }
+        })
+      );
+    } else {
+      alert('Please select e-recipe method');
+    }
   };
 
   return (
@@ -187,9 +249,105 @@ const PaymentSelection = ({
         order={orderData}
       />
 
+      <ReactNativeModal isVisible={isPhoneVisible}>
+        <View style={styles.calendarSettingModalContainer}>
+          <View>
+            <View style={styles.textInputView}>
+              <CountryPicker
+                onSelect={(code) => {
+                  setFlag(code.cca2);
+                  if (code.callingCode !== []) {
+                    setCountryCode('+' + code.callingCode.flat());
+                  } else {
+                    setCountryCode('');
+                  }
+                }}
+                countryCode={flag}
+                withFilter
+                withCallingCode
+              />
+              <Image source={dropdown} style={styles.dropDownIcon} />
+              <Text style={styles.countryCodeText}>{countryCode}</Text>
+              <TextInput
+                maxLength={15}
+                returnKeyType="done"
+                keyboardType="number-pad"
+                value={phoneNumber.trim()}
+                onChangeText={(text) => setPhoneNumber(text)}
+                style={styles.textInputContainer}
+                placeholder={strings.verifyPhone.placeHolderText}
+                placeholderTextColor={COLORS.darkGray}
+                showSoftInputOnFocus={false}
+              />
+            </View>
+            <CustomKeyboard
+              maxCharLength={15}
+              enteredValue={phoneNumber}
+              setEnteredValue={setPhoneNumber}
+              onClosePress={closeHandler}
+              onPayNowPress={() => {
+                setIsPhoneVisible(false);
+                setPhoneNumber(phoneNumber);
+              }}
+            />
+          </View>
+        </View>
+      </ReactNativeModal>
+
+      <ReactNativeModal isVisible={isEmailVisible}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}
+        >
+          <View style={styles.emailModalContainer}>
+            <View>
+              <View style={styles.modalHeaderCon}>
+                <View style={styles.flexRow}>
+                  <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
+                    {strings.retail.eRecipeEmail}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.crossButtonCon}
+                    onPress={() => {
+                      setIsEmailVisible(false);
+                      setSelectedRecipeIndex(null);
+                      setEmail('');
+                    }}
+                  >
+                    <Image source={crossButton} style={styles.crossButton} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="you@you.mail"
+                  value={email.trim()}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  placeholderTextColor={COLORS.solidGrey}
+                />
+                <TouchableOpacity
+                  style={styles.payNowButton}
+                  onPress={() => {
+                    setIsEmailVisible(false);
+                    setEmail(email);
+                  }}
+                >
+                  <Text style={styles.payNowButtonText}>Continue</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
+      </ReactNativeModal>
+
       {isLoading ? (
-        <View style={[styles.loaderViewStyle, { backgroundColor: 'rgba(0,0,0,0.3)' }]}>
-          <ActivityIndicator color={COLORS.primary} size={'small'} style={styles.loaderViewStyle} />
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.3)' }]}>
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
     </View>
@@ -203,6 +361,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: verticalScale(10),
     backgroundColor: COLORS.textInputBackground,
+  },
+  loader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   headerRowStyle: {
     alignItems: 'center',
@@ -334,6 +499,111 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     paddingBottom: 20,
+  },
+  calendarSettingModalContainer: {
+    width: width * 0.4,
+    height: height * 0.84,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    borderRadius: 7,
+    alignItems: 'center',
+    borderWidth: 1,
+    paddingHorizontal: moderateVerticalScale(7),
+    paddingVertical: verticalScale(15),
+    position: 'absolute',
+  },
+  textInputView: {
+    paddingHorizontal: SW(4),
+    borderWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: height * 0.08,
+    width: width * 0.33,
+    borderWidth: 1,
+    borderColor: '#D8D8D8',
+    borderRadius: 5,
+  },
+  dropDownIcon: {
+    width: 7,
+    height: 7,
+    resizeMode: 'contain',
+  },
+  countryCodeText: {
+    color: COLORS.black,
+    fontSize: SF(18),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(8),
+  },
+  textInputContainer: {
+    color: COLORS.black,
+    fontSize: SF(16),
+    fontFamily: Fonts.Italic,
+    width: width * 0.2,
+  },
+  emailModalContainer: {
+    width: ms(350),
+    height: ms(160),
+    backgroundColor: 'white',
+    paddingVertical: ms(15),
+    alignSelf: 'center',
+    borderRadius: ms(10),
+    alignItems: 'center',
+  },
+  modalHeaderCon: {
+    height: SH(80),
+    width: ms(300),
+    justifyContent: 'center',
+  },
+  crossButton: {
+    width: SW(9),
+    height: SW(9),
+    resizeMode: 'contain',
+  },
+  crossButtonCon: {
+    width: SW(13),
+    height: SW(13),
+    alignItems: 'center',
+  },
+  flexRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  twoStepText: {
+    fontSize: SF(25),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.black,
+    textAlign: 'left',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    width: ms(300),
+    height: ms(40),
+    marginTop: ms(25),
+    padding: 15,
+  },
+  textInput: {
+    flex: 1,
+    height: 45,
+    fontSize: ms(10),
+    paddingHorizontal: 15,
+  },
+  payNowButton: {
+    height: ms(30),
+    width: ms(70),
+    backgroundColor: COLORS.darkGray,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  payNowButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

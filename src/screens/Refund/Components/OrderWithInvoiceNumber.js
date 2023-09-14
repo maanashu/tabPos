@@ -6,7 +6,6 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
 
 const OrderWithInvoiceNumber = ({ orderData }) => {
-  console.log('orderData====', JSON.stringify(orderData));
   const getDeliveryType = (type) => {
     switch (type) {
       case '1':

@@ -77,7 +77,7 @@ export const en = {
     perDis: 'Percent',
     DisCode: 'Discount Code',
     DisTitle: 'Discount Title',
-    eRecipeEmail: `e-recipe will Send\nto your email`,
+    eRecipeEmail: `e-recipe will send\nto your email`,
   },
   posSale: {
     onlyx: 'x',

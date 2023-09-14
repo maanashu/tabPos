@@ -124,7 +124,7 @@ const InvoiceDetails = ({ orderData }) => {
 
       <Text style={styles._thankyou}>Thank You</Text>
 
-      <Image source={barcode} style={styles._barCodeImage} />
+      <Image source={{ uri: orderDetail?.invoices?.barcode }} style={styles._barCodeImage} />
 
       <Image source={logo_full} style={styles.logoFull} />
     </View>

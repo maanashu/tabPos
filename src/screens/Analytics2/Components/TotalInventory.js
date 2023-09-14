@@ -90,8 +90,6 @@ export function TotalInventory() {
     </View>
   );
 
-  console.log('first', JSON.stringify(totalInventory));
-
   return (
     <View style={styles.flex1}>
       <Text style={styles.graphTitle}>{' Total Inventory'}</Text>

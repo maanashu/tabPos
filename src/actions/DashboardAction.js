@@ -202,6 +202,11 @@ const returnProductError = (error) => ({
   payload: { error },
 });
 
+const scanBarCodeRequest = () => ({
+  type: DASHBOARDTYPE.SCAN_BARCODE__REQUEST,
+  payload: null,
+});
+
 export const getOrderDeliveries = (sellerID, page) => async (dispatch) => {
   dispatch(getOrderDeliveriesRequest());
   try {
@@ -330,7 +335,16 @@ export const getOrdersByInvoiceId = (invoice) => async (dispatch) => {
   dispatch(getOrdersByInvoiceIdRequest());
   try {
     const res = await DashboardController.getOrdersByInvoiceId(invoice);
-    dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
+    if (res?.payload?.order) {
+      res?.payload?.order?.order_details?.map((item, index) => {
+        if (item?.qty !== item?.returned_qty) {
+          dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
+        } else {
+          alert('Product already returned');
+          dispatch(getOrdersByInvoiceIdSuccess({}));
+        }
+      });
+    }
   } catch (error) {
     if (error?.msg === 'Invalid invoice number!') {
       dispatch(getOrdersByInvoiceIdReset());
@@ -352,13 +366,35 @@ export const getProductsBySku = (sku) => async (dispatch) => {
   }
 };
 
-export const returnProduct = (data, callback) => async (dispatch) => {
+export const returnProduct = (data, id, callback) => async (dispatch) => {
   dispatch(returnProductRequest());
   try {
-    const res = await DashboardController.returnProduct(data);
+    const res = await DashboardController.returnProduct(data, id);
     callback && callback(res);
     dispatch(returnProductSuccess(res?.payload));
   } catch (error) {
     dispatch(returnProductError(error.message));
+  }
+};
+
+export const scanBarCode = (data) => async (dispatch) => {
+  dispatch(scanBarCodeRequest());
+  try {
+    const res = await DashboardController.scanBarCode(data);
+    if (res?.payload?.order) {
+      res?.payload?.order?.order_details?.map((item, index) => {
+        if (item?.qty !== item?.returned_qty) {
+          dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
+        } else {
+          alert('Product already returned');
+          dispatch(getOrdersByInvoiceIdSuccess({}));
+        }
+      });
+    }
+  } catch (error) {
+    if (error?.msg === 'Invalid code!') {
+      dispatch(getOrdersByInvoiceIdReset());
+    }
+    dispatch(getOrdersByInvoiceIdError(error.message));
   }
 };

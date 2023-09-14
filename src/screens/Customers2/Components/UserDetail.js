@@ -63,7 +63,6 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
-  console.log('ordersByUser', JSON.stringify(ordersByUser));
 
   const data = {
     firstName: userDetail?.user_details?.firstname,
