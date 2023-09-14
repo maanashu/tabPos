@@ -48,6 +48,7 @@ import { useEffect } from 'react';
 import { getOrderUser } from '@/actions/CustomersAction';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
 
 const UserDetail = ({ backHandler, userDetail, orderId }) => {
   const isFocused = useIsFocused();
@@ -63,6 +64,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
+  const [selectedYearData, setselectedYearData] = useState(null);
 
   const data = {
     firstName: userDetail?.user_details?.firstname,

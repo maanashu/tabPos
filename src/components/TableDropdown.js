@@ -8,9 +8,11 @@ export function TableDropdown({ placeholder }) {
   const [statusModalOpen, setStatusModelOpen] = useState(false);
   const [statusModalValue, setStatusModalValue] = useState(null);
   const [statusItems, setStatusItems] = useState([
+    { label: 'none', value: 'none' },
     { label: 'xyz', value: 'xyz' },
     { label: 'abc', value: 'abc' },
   ]);
+  const finalValues = statusModalValue == 'none' ? 'Area' : statusModalValue;
   return (
     <DropDownPicker
       ArrowUpIconComponent={({ style }) => <Image source={dropdown2} style={styles.dropDownIcon} />}
@@ -24,11 +26,11 @@ export function TableDropdown({ placeholder }) {
       labelStyle={styles.labelStyle}
       selectedItemLabelStyle={styles.selectedItemLabelStyle}
       open={statusModalOpen}
-      value={statusModalValue}
+      value={finalValues}
       items={statusItems}
       setOpen={setStatusModelOpen}
       setValue={setStatusModalValue}
-      setItems={setStatusItems}
+      // setItems={setStatusItems}
       placeholder={placeholder}
       placeholderStyle={styles.placeholderStyle}
     />

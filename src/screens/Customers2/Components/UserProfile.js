@@ -28,7 +28,7 @@ import {
   location,
 } from '@/assets';
 import { Spacer, TableDropdown } from '@/components';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { styles } from '@/screens/Customers2/Customers2.styles';
@@ -46,6 +46,7 @@ const twoEqualView = result / 1.8;
 import { TYPES } from '@/Types/CustomersTypes';
 import { useEffect } from 'react';
 import { getOrderUser } from '@/actions/CustomersAction';
+import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
 
 const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
   const isFocused = useIsFocused();
@@ -64,6 +65,8 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
+  const [selectedYearData, setselectedYearData] = useState(null);
+  const [selectedMonthData, setselectedMonthData] = useState(null);
 
   const startIndex = (page - 1) * paginationModalValue + 1;
 
@@ -187,7 +190,19 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
       <View style={styles.orderTypeCon}>
         <View style={styles.flexAlign}>
           <View style={{ marginHorizontal: moderateScale(5) }}>
-            <TableDropdown placeholder="Month" />
+            {/* <TableDropdown placeholder="Month" /> */}
+            <MonthYearPicker
+              showAllMonths={true}
+              dateType={DATE_TYPE.MONTH}
+              placeholder={'Month'}
+              containerStyle={{ marginRight: 10 }}
+              defaultValue={moment().month() + 1}
+              defaultYear={selectedYearData?.value ?? moment().year()}
+              onSelect={(monthData) => {
+                setselectedMonthData(monthData);
+              }}
+              dropdownStyle={{ height: SH(35), borderColor: COLORS.solidGrey }}
+            />
           </View>
           <>
             <TableDropdown placeholder="Store location" />
