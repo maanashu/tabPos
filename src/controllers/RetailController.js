@@ -757,6 +757,7 @@ export class RetailController {
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response----', JSON.stringify(response));
           if (response?.msg === 'Order placed successfully!') {
             Toast.show({
               position: 'bottom',
@@ -768,6 +769,7 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error----', JSON.stringify(error));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

@@ -28,10 +28,13 @@ import {
 } from '@/assets';
 import PaymentSelection from './PaymentSelection';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 const { width, height } = Dimensions.get('window');
 
 const ProductRefund = ({ backHandler, orderList, orderData }) => {
+  const dispatch = useDispatch();
   const [amount, setAmount] = useState('');
   const [applicableIsCheck, setApplicableIsCheck] = useState(false);
   const [applyEachItem, setApplyEachItem] = useState(false);
@@ -143,11 +146,13 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
       const hasCheckedItem = orders?.every((item) => item?.refundAmount !== '');
       if (hasCheckedItem) {
         setButtonText('Applied');
+        dispatch(getDrawerSessions());
       } else {
         alert('Please add refund amount for all items');
       }
     } else {
       setButtonText('Applied');
+      dispatch(getDrawerSessions());
     }
   };
 
@@ -437,9 +442,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
               <Spacer space={SH(20)} />
 
               <TouchableOpacity
-                onPress={() => {
-                  getOrdersDetail();
-                }}
+                onPress={() => getOrdersDetail()}
                 disabled={buttonText === 'Applied' ? false : true}
                 style={[
                   styles.nextButtonStyle,

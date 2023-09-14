@@ -248,9 +248,13 @@ export class DashboardController {
   }
 
   static async returnProduct(data) {
+    const drawerId = store.getState()?.cashTracking?.getDrawerSession?.id;
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.return;
-      const body = data;
+      const body = { ...data, drawer_id: drawerId };
+      console.log('drawer====', store.getState()?.cashTracking);
+
+      console.log('body====', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
           Toast.show({
@@ -263,6 +267,22 @@ export class DashboardController {
         })
         .catch((error) => {
           alert(error?.msg);
+          reject(error.msg);
+        });
+    });
+  }
+
+  static async scanBarCode(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.scanbarcode;
+      const body = {
+        barcode: data,
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
           reject(error.msg);
         });
     });
