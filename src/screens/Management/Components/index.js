@@ -132,11 +132,13 @@ export function SessionHistoryTable({
                 </Text>
               </View>
               <View style={[styles.dateHeadAlign]}>
+                {/* <Text style={styles.historyHeaderText}>Start</Text>
+                <Text style={styles.historyHeaderText}>Ends</Text> */}
                 <Text style={styles.historyHeaderText}>Ended By</Text>
                 <Text style={styles.historyHeaderText}>Session Started</Text>
-                <Text style={styles.historyHeaderText}>Added cash</Text>
-                <Text style={styles.historyHeaderText}>Removed cash</Text>
-                <Text style={styles.historyHeaderText}>Counted cash</Text>
+                <Text style={styles.historyHeaderText}>Total {`\n`}Cash In</Text>
+                <Text style={styles.historyHeaderText}>Total {`\n`}Cash Out</Text>
+                <Text style={styles.historyHeaderText}>Counted {`\n`}cash</Text>
                 <Text style={[styles.historyHeaderText, { paddingRight: 25 }]}>Session Ended</Text>
               </View>
             </View>
@@ -193,7 +195,7 @@ export function SessionHistoryTable({
                         >
                           <Image
                             source={{
-                              uri: item.seller_details?.user_profiles?.profile_photo,
+                              uri: item?.pos_user_detail?.user_profiles?.profile_photo,
                             }}
                             style={[styles.allienpic, { marginRight: 4 }]}
                           />
@@ -201,7 +203,7 @@ export function SessionHistoryTable({
                             style={[styles.usertableRowText, { width: windowWidth * 0.09 }]}
                             numberOfLines={1}
                           >
-                            {item.seller_details?.user_profiles?.firstname}
+                            {item?.pos_user_detail?.user_profiles?.firstname}
                           </Text>
                         </View>
                         <Text style={styles.historydataText} numberOfLines={1}>
