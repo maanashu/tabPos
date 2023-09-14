@@ -16,3 +16,4 @@ export { NewChartKit } from '@/components/NewChartKit';
 export { ChartKit } from '@/components/ChartKit';
 export { BarChartCom } from '@/components/BarChartCom';
 export { InvoiceDetail } from '@/components/InvoiceDetail';
+export { OnlyInvoicesDetail } from '@/components/OnlyInvoicesDetail';

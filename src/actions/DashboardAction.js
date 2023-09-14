@@ -39,9 +39,9 @@ const getDrawerSessionPostRequest = () => ({
   type: DASHBOARDTYPE.GET_DRAWER_SESSION_POST_REQUEST,
   payload: null,
 });
-const getDrawerSessionPostSuccess = () => ({
+const getDrawerSessionPostSuccess = (drawerSession) => ({
   type: DASHBOARDTYPE.GET_DRAWER_SESSION_POST_SUCCESS,
-  payload: {},
+  payload: { drawerSession },
 });
 const getDrawerSessionPostError = (error) => ({
   type: DASHBOARDTYPE.GET_DRAWER_SESSION_POST_ERROR,
@@ -230,7 +230,8 @@ export const getDrawerSessionPost = (data) => async (dispatch) => {
   dispatch(getDrawerSessionPostRequest());
   try {
     const res = await DashboardController.getDrawerSessionPost(data);
-    dispatch(getDrawerSessionPostSuccess(res));
+    console.log('res', res);
+    dispatch(getDrawerSessionPostSuccess(res?.payload));
     if (res) {
       const resData = {
         drawerID: res?.payload?.id,

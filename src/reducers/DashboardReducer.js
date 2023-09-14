@@ -11,10 +11,17 @@ const INITIALSTATE = {
   pendingOrders: {},
   invoiceSearchOrders: {},
   skuOrders: {},
+  drawerSession: {},
 };
 
 export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
   switch (type) {
+    case DASHBOARDTYPE.GET_DRAWER_SESSION_POST_SUCCESS:
+      return {
+        ...state,
+        drawerSession: payload.drawerSession,
+      };
+
     case DASHBOARDTYPE.GET_ORDER_DELIVERIES_SUCCESS:
       return {
         ...state,

@@ -47,7 +47,7 @@ import { TYPES } from '@/Types/CustomersTypes';
 import { useEffect } from 'react';
 import { getOrderUser } from '@/actions/CustomersAction';
 
-const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
+const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler }) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -123,15 +123,22 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
           <Image source={leftBack} style={styles.backIconProfile} />
           <Text style={[styles.deliveryText, { fontSize: ms(10) }]}>{'User profile'}</Text>
         </TouchableOpacity>
-        <View style={styles.editButtonCon}>
+        {/* <View style={styles.editButtonCon}>
           <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
-        </View>
+        </View> */}
       </View>
 
       <View style={styles.profileCon}>
         <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image source={{ uri: data?.profilePhoto } ?? userImage} style={styles.lovingStyle} />
+            <Image
+              source={
+                data?.profilePhoto == null || data?.profilePhoto == ''
+                  ? userImage
+                  : { uri: data?.profilePhoto }
+              }
+              style={styles.lovingStyle}
+            />
             <View style={{ paddingHorizontal: moderateScale(10) }}>
               <Text style={styles.angelaText}>{data?.firstName}</Text>
               <Spacer space={SH(5)} />
@@ -157,7 +164,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
             </View>
           </View>
           <View>
-            <TouchableOpacity style={styles.pointCon}>
+            <TouchableOpacity style={styles.pointCon} onPress={pointHandler}>
               <View style={styles.flexAlign}>
                 <Image source={reward2} style={styles.rewardStyle} />
                 <Text style={styles.pointText}>{strings.customers.point}</Text>
@@ -385,7 +392,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
                         </View>
                         <View style={styles.profileheaderChildView}>
                           <Text style={styles.tableTextData}>
-                            {item.created_at ? moment(item.created_at).format('LL') : ''}
+                            {item.created_at ? moment(item.created_at).format('ll') : ''}
                           </Text>
                         </View>
                         <View style={styles.profileheaderChildView}>

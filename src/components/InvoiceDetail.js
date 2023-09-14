@@ -10,7 +10,15 @@ import {
 } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
 import { ms } from 'react-native-size-matters';
-import { barcode, crossButton, deliveryHomeIcon, Fonts, logo_full, scooter } from '@/assets';
+import {
+  barcode,
+  crossButton,
+  deliveryHomeIcon,
+  Fonts,
+  leftBack,
+  logo_full,
+  scooter,
+} from '@/assets';
 import { Spacer } from './Spacer';
 import { strings } from '@/localization';
 const windowWidth = Dimensions.get('window').width;
@@ -32,6 +40,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
   const getAuth = useSelector(getAuthData);
   const oneOrderDetail = useSelector(getAnalytics);
   const singleOrderDetail = oneOrderDetail?.getOrderData;
+  console.log('singleOrderDetail', JSON.stringify(singleOrderDetail));
   const userDetailData = singleOrderDetail?.user_details;
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const latitude = parseFloat(location?.latitude ?? 0.0);
@@ -47,196 +56,337 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={[styles.firstRowStyle]}>
-        <View style={styles.invoiceDetailSection}>
-          <View style={[{ height: '100%', alignItems: 'center' }]}>
-            <Text style={styles._kSubCenterContainer}>
-              {singleOrderDetail?.seller_details?.organization_name ?? ''}
-            </Text>
-            <Text style={styles._kAddress}>
-              {' '}
-              {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
-            </Text>
-            <Text style={styles._kAddress}>{userDetailData?.phone_number ?? '-'}</Text>
-            <View style={styles._flatListContainer}>
-              <FlatList
-                data={singleOrderDetail?.order_details}
-                style={{ width: '100%' }}
-                renderItem={({ item, index }) => {
-                  return (
-                    <View style={styles.cartcontainer}>
-                      <View style={styles.subContainer}>
-                        <Text style={styles.count}>{index + 1}</Text>
-                        <View style={{ marginLeft: ms(10) }}>
-                          <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-                            {item?.product_details?.name}
-                          </Text>
-                          <View style={styles.belowSubContainer}>
-                            {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
-                          <Text style={styles.sizeTitle}>Size : XXL</Text> */}
-                            <Text style={styles.colorsTitle}>QTY : {item?.qty ?? '-'}</Text>
+      {singleOrderDetail?.delivery_option == 1 || singleOrderDetail?.delivery_option == 4 ? (
+        <View style={[styles.firstRowStyle]}>
+          <View style={styles.invoiceDetailSection}>
+            <View style={[{ height: '100%', alignItems: 'center' }]}>
+              <Text style={styles._kSubCenterContainer}>
+                {singleOrderDetail?.seller_details?.organization_name ?? ''}
+              </Text>
+              <Text style={styles._kAddress}>
+                {' '}
+                {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
+              </Text>
+              <Text style={styles._kAddress}>{userDetailData?.phone_number ?? '-'}</Text>
+              <View style={styles._flatListContainer}>
+                <FlatList
+                  data={singleOrderDetail?.order_details}
+                  style={{ width: '100%' }}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <View style={styles.cartcontainer}>
+                        <View style={styles.subContainer}>
+                          <Text style={styles.count}>{index + 1}</Text>
+                          <View style={{ marginLeft: ms(10) }}>
+                            <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
+                              {item?.product_details?.name}
+                            </Text>
+                            <View style={styles.belowSubContainer}>
+                              {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
+                            <Text style={styles.sizeTitle}>Size : XXL</Text> */}
+                              <Text style={styles.colorsTitle}>QTY : {item?.qty ?? '-'}</Text>
+                            </View>
                           </View>
                         </View>
+                        <Text style={styles.priceTitle}>${item?.price ?? '0.00'}</Text>
                       </View>
-                      <Text style={styles.priceTitle}>${item?.price ?? '0.00'}</Text>
-                    </View>
-                  );
-                }}
-              />
-            </View>
-            <Spacer space={SH(10)} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Sub-Total</Text>
-              <Text style={styles._subTotalPrice}>
-                ${singleOrderDetail?.total_sale_price ?? '0'}
+                    );
+                  }}
+                />
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Sub-Total</Text>
+                <Text style={styles._subTotalPrice}>
+                  ${singleOrderDetail?.total_sale_price ?? '0'}
+                </Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Discount</Text>
+                <Text style={styles._subTotalPrice}>${singleOrderDetail?.discount ?? '0'}</Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Tips</Text>
+                <Text style={styles._subTotalPrice}>${singleOrderDetail?.tips ?? '0'}</Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Total Taxes</Text>
+                <Text style={styles._subTotalPrice}>${singleOrderDetail?.tax ?? '0'}</Text>
+              </View>
+              <View style={styles._horizontalLine} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Delivery charges</Text>
+                <Text style={styles._subTotalPrice}>
+                  ${singleOrderDetail?.delivery_charge ?? '0'}
+                </Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+
+              <View style={styles._subTotalContainer}>
+                <Text
+                  style={[styles._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
+                >
+                  Total
+                </Text>
+                <Text
+                  style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
+                >
+                  ${singleOrderDetail?.payable_amount ?? '0'}
+                </Text>
+              </View>
+              {/* <View style={styles._horizontalLine} /> */}
+              <View style={[styles._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
+
+              <View style={styles._paymentTitleContainer}>
+                <Text style={styles._payTitle}>Payment option: </Text>
+                <Text style={styles._paySubTitle}>
+                  {singleOrderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
+                </Text>
+              </View>
+              <Text style={styles._commonPayTitle}>
+                {moment(singleOrderDetail?.invoice?.delivery_date).format('llll')}
               </Text>
-            </View>
-
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Discount</Text>
-              <Text style={styles._subTotalPrice}>${singleOrderDetail?.discount ?? '0'}</Text>
-            </View>
-
-            <View style={styles._horizontalLine} />
-
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Tips</Text>
-              <Text style={styles._subTotalPrice}>${singleOrderDetail?.tips ?? '0'}</Text>
-            </View>
-
-            <View style={styles._horizontalLine} />
-
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Total Taxes</Text>
-              <Text style={styles._subTotalPrice}>${singleOrderDetail?.tax ?? '0'}</Text>
-            </View>
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Delivery charges</Text>
-              <Text style={styles._subTotalPrice}>
-                ${singleOrderDetail?.delivery_charge ?? '0'}
+              <Text style={styles._commonPayTitle}>Walk-In</Text>
+              <Text style={styles._commonPayTitle}>
+                {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}` ?? '-'}
               </Text>
-            </View>
-
-            <View style={styles._horizontalLine} />
-
-            <View style={styles._subTotalContainer}>
-              <Text
-                style={[styles._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
-              >
-                Total
+              <Text style={styles._commonPayTitle}>
+                POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
               </Text>
-              <Text
-                style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
-              >
-                ${singleOrderDetail?.payable_amount ?? '0'}
+              <Text style={styles._commonPayTitle}>
+                User ID : #{getUserData?.posLoginData?.id ?? '-'}
               </Text>
-            </View>
-            {/* <View style={styles._horizontalLine} /> */}
-            <View style={[styles._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
 
-            <View style={styles._paymentTitleContainer}>
-              <Text style={styles._payTitle}>Payment option: </Text>
-              <Text style={styles._paySubTitle}>
-                {singleOrderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
-              </Text>
+              <Text style={styles._thankyou}>Thank You</Text>
+              <Image source={barcode} style={styles._barCodeImage} />
+              {/* <Text style={styles._barCode}>ABC-abc-1234</Text> */}
+              <Image source={logo_full} style={styles.logoFull} />
             </View>
-            <Text style={styles._commonPayTitle}>
-              {moment(singleOrderDetail?.invoice?.delivery_date).format('llll')}
-            </Text>
-            <Text style={styles._commonPayTitle}>Walk-In</Text>
-            <Text style={styles._commonPayTitle}>
-              {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}` ?? '-'}
-            </Text>
-            <Text style={styles._commonPayTitle}>
-              POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
-            </Text>
-            <Text style={styles._commonPayTitle}>
-              User ID : #{getUserData?.posLoginData?.id ?? '-'}
-            </Text>
-
-            <Text style={styles._thankyou}>Thank You</Text>
-            <Image source={barcode} style={styles._barCodeImage} />
-            {/* <Text style={styles._barCode}>ABC-abc-1234</Text> */}
-            <Image source={logo_full} style={styles.logoFull} />
           </View>
-        </View>
-        <View style={styles.mapMainView}>
-          <MapView
-            customMapStyle={mapCustomStyle}
-            ref={mapRef}
-            provider={PROVIDER_GOOGLE}
-            showCompass
-            region={{
-              latitude: latitude ?? 0.0,
-              longitude: longitude ?? 0.0,
-              latitudeDelta: 0.0992,
-              longitudeDelta: 0.0421,
-            }}
-            initialRegion={{
-              latitude: latitude ?? 0.0,
-              longitude: longitude ?? 0.0,
-              latitudeDelta: 0.0992,
-              longitudeDelta: 0.0421,
-            }}
-            style={[styles.detailMap]}
-          >
-            <MapViewDirections
-              key={location?.latitude ?? 0.0}
-              origin={{
+          <View style={styles.mapMainView}>
+            <MapView
+              customMapStyle={mapCustomStyle}
+              ref={mapRef}
+              provider={PROVIDER_GOOGLE}
+              showCompass
+              region={{
                 latitude: latitude ?? 0.0,
                 longitude: longitude ?? 0.0,
+                latitudeDelta: 0.0992,
+                longitudeDelta: 0.0421,
               }}
-              destination={{
-                latitude: singleOrderDetail?.coordinates?.[0] ?? 0.0,
-                longitude: singleOrderDetail?.coordinates?.[1] ?? 0.0,
+              initialRegion={{
+                latitude: latitude ?? 0.0,
+                longitude: longitude ?? 0.0,
+                latitudeDelta: 0.0992,
+                longitudeDelta: 0.0421,
               }}
-              apikey={GOOGLE_MAP.API_KEYS}
-              strokeWidth={6}
-              strokeColor={COLORS.primary}
-            />
-            <Marker coordinate={sourceCoordinate}>
-              <View>
-                <Image source={scooter} style={styles.mapMarkerStyle} />
-              </View>
-            </Marker>
-            <Marker coordinate={destinationCoordinate}>
-              <View>
-                <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
-              </View>
-            </Marker>
-          </MapView>
-
-          <TouchableOpacity
-            onPress={closeHandler}
-            style={[
-              styles.expandButtonStyle,
-              {
-                borderColor: COLORS.dark_grey,
-                borderWidth: 1,
-                backgroundColor: COLORS.white,
-              },
-            ]}
-          >
-            <Image source={crossButton} style={styles.rightIconStyle} />
-            <Text
-              style={[styles.acceptTextStyle, { color: COLORS.dark_grey, paddingHorizontal: 12 }]}
+              style={[styles.detailMap]}
             >
-              {strings.deliveryOrders2.close}
-            </Text>
-          </TouchableOpacity>
-          <ShipmentTracking
-            status={singleOrderDetail?.status}
-            // props={{ status: singleOrderDetail?.status }}
-          />
+              <MapViewDirections
+                key={location?.latitude ?? 0.0}
+                origin={{
+                  latitude: latitude ?? 0.0,
+                  longitude: longitude ?? 0.0,
+                }}
+                destination={{
+                  latitude: singleOrderDetail?.coordinates?.[0] ?? 0.0,
+                  longitude: singleOrderDetail?.coordinates?.[1] ?? 0.0,
+                }}
+                apikey={GOOGLE_MAP.API_KEYS}
+                strokeWidth={6}
+                strokeColor={COLORS.primary}
+              />
+              <Marker coordinate={sourceCoordinate}>
+                <View>
+                  <Image source={scooter} style={styles.mapMarkerStyle} />
+                </View>
+              </Marker>
+              <Marker coordinate={destinationCoordinate}>
+                <View>
+                  <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
+                </View>
+              </Marker>
+            </MapView>
+
+            <TouchableOpacity
+              onPress={closeHandler}
+              style={[
+                styles.expandButtonStyle,
+                {
+                  borderColor: COLORS.dark_grey,
+                  borderWidth: 1,
+                  backgroundColor: COLORS.white,
+                },
+              ]}
+            >
+              <Image source={crossButton} style={styles.rightIconStyle} />
+              <Text
+                style={[styles.acceptTextStyle, { color: COLORS.dark_grey, paddingHorizontal: 12 }]}
+              >
+                {strings.deliveryOrders2.close}
+              </Text>
+            </TouchableOpacity>
+            <ShipmentTracking
+              status={singleOrderDetail?.status}
+              // props={{ status: singleOrderDetail?.status }}
+            />
+          </View>
         </View>
-      </View>
+      ) : (
+        <View style={[styles.firstRowStyle]}>
+          <TouchableOpacity style={styles.deliveryView} onPress={closeHandler}>
+            <Image source={leftBack} style={styles.backIcon} />
+            <Text style={styles.backTitle}>{'Back'}</Text>
+          </TouchableOpacity>
+          <View style={styles.invoiceDetailSection}>
+            <View style={[{ height: '100%', alignItems: 'center' }]}>
+              <Text style={styles._kSubCenterContainer}>
+                {singleOrderDetail?.seller_details?.organization_name ?? ''}
+              </Text>
+              <Text style={styles._kAddress}>
+                {' '}
+                {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
+              </Text>
+              <Text style={styles._kAddress}>{userDetailData?.phone_number ?? '-'}</Text>
+              <View style={styles._flatListContainer}>
+                <FlatList
+                  data={singleOrderDetail?.order_details}
+                  style={{ width: '100%' }}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <View style={styles.cartcontainer}>
+                        <View style={styles.subContainer}>
+                          <Text style={styles.count}>{index + 1}</Text>
+                          <View style={{ marginLeft: ms(10) }}>
+                            <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
+                              {item?.product_details?.name}
+                            </Text>
+                            <View style={styles.belowSubContainer}>
+                              {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
+                          <Text style={styles.sizeTitle}>Size : XXL</Text> */}
+                              <Text style={styles.colorsTitle}>QTY : {item?.qty ?? '-'}</Text>
+                            </View>
+                          </View>
+                        </View>
+                        <Text style={styles.priceTitle}>${item?.price ?? '0.00'}</Text>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Sub-Total</Text>
+                <Text style={styles._subTotalPrice}>
+                  ${singleOrderDetail?.total_sale_price ?? '0'}
+                </Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Discount</Text>
+                <Text style={styles._subTotalPrice}>${singleOrderDetail?.discount ?? '0'}</Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Tips</Text>
+                <Text style={styles._subTotalPrice}>${singleOrderDetail?.tips ?? '0'}</Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Total Taxes</Text>
+                <Text style={styles._subTotalPrice}>${singleOrderDetail?.tax ?? '0'}</Text>
+              </View>
+              <View style={styles._horizontalLine} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Delivery charges</Text>
+                <Text style={styles._subTotalPrice}>
+                  ${singleOrderDetail?.delivery_charge ?? '0'}
+                </Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+
+              <View style={styles._subTotalContainer}>
+                <Text
+                  style={[styles._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
+                >
+                  Total
+                </Text>
+                <Text
+                  style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
+                >
+                  ${singleOrderDetail?.payable_amount ?? '0'}
+                </Text>
+              </View>
+              {/* <View style={styles._horizontalLine} /> */}
+              <View style={[styles._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
+
+              <View style={styles._paymentTitleContainer}>
+                <Text style={styles._payTitle}>Payment option: </Text>
+                <Text style={styles._paySubTitle}>
+                  {singleOrderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
+                </Text>
+              </View>
+              <Text style={styles._commonPayTitle}>
+                {moment(singleOrderDetail?.invoice?.delivery_date).format('llll')}
+              </Text>
+              <Text style={styles._commonPayTitle}>Walk-In</Text>
+              <Text style={styles._commonPayTitle}>
+                {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}` ?? '-'}
+              </Text>
+              <Text style={styles._commonPayTitle}>
+                POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
+              </Text>
+              <Text style={styles._commonPayTitle}>
+                User ID : #{getUserData?.posLoginData?.id ?? '-'}
+              </Text>
+
+              <Text style={styles._thankyou}>Thank You</Text>
+              <Image source={barcode} style={styles._barCodeImage} />
+              {/* <Text style={styles._barCode}>ABC-abc-1234</Text> */}
+              <Image source={logo_full} style={styles.logoFull} />
+            </View>
+          </View>
+          <View></View>
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  deliveryView: {
+    flexDirection: 'row',
+    // alignItems: 'center',
+    marginTop: ms(8),
+    marginLeft: ms(5),
+  },
+  backIcon: {
+    height: ms(10),
+    width: ms(10),
+    resizeMode: 'contain',
+    marginRight: ms(3),
+  },
+  backTitle: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(8),
+  },
   firstRowStyle: {
     flexDirection: 'row',
     paddingVertical: ms(10),
@@ -347,6 +497,14 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     top: 20,
     right: 20,
+  },
+  onlyInvoiceBackStyle: {
+    height: ms(35),
+    backgroundColor: COLORS.primary,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5,
+    padding: 10,
   },
   rightIconStyle: {
     width: SH(24),

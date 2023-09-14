@@ -81,6 +81,7 @@ export function DashBoard({ navigation }) {
   const getUserData = useSelector(getUser);
 
   const getDashboardData = useSelector(getDashboard);
+  console.log('------------', getDashboardData?.drawerSession?.id);
   const getProductListArray = getDashboardData?.searchProductList;
   const getLoginDeatil = getDashboardData?.posLoginDetail;
   const getSessionObj = getDashboardData?.getSesssion;

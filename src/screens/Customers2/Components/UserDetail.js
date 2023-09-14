@@ -63,6 +63,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
+  console.log('ordersByUser', JSON.stringify(ordersByUser));
 
   const data = {
     firstName: userDetail?.user_details?.firstname,
@@ -76,6 +77,8 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
     postalCode: userDetail?.user_details?.current_address?.postal_code,
   };
 
+  const startIndex = (page - 1) * paginationModalValue + 1;
+
   const paginationData = {
     total: getCustomerData?.getOrderUser?.total ?? '0',
     currentPage: getCustomerData?.getOrderUser?.current_page ?? '0',
@@ -84,6 +87,10 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
   };
 
   const orderPayloadLength = Object.keys(getCustomerData?.getOrderUser)?.length;
+
+  const isOrderUserLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ORDER_USER], state)
+  );
 
   const paginationInchandler = () => {
     setPage(page + 1);
@@ -97,20 +104,17 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
 
   useEffect(() => {
     const data = {
-      orderId: orderId,
+      userId: userDetail?.user_id,
+      sellerID: sellerID,
       page: page,
       limit: paginationModalValue,
     };
-    dispatch(getOrderData(data));
+    dispatch(getOrderUser(data));
   }, [paginationModalValue, page]);
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
   }, [getCustomerData?.getOrderUser?.data]);
-
-  const isOrderUserLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_ORDER_USER], state)
-  );
 
   return (
     <View style={{ flex: 1 }}>
@@ -119,15 +123,22 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
           <Image source={leftBack} style={styles.backIconProfile} />
           <Text style={[styles.deliveryText, { fontSize: ms(10) }]}>{'User details'}</Text>
         </TouchableOpacity>
-        <View style={styles.editButtonCon}>
+        {/* <View style={styles.editButtonCon}>
           <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
-        </View>
+        </View> */}
       </View>
 
       <View style={styles.profileCon}>
         <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image source={{ uri: data?.profilePhoto } ?? userImage} style={styles.lovingStyle} />
+            <Image
+              source={
+                data?.profilePhoto === null || data?.profilePhoto === ''
+                  ? userImage
+                  : { uri: data?.profilePhoto }
+              }
+              style={styles.lovingStyle}
+            />
             <View style={{ paddingHorizontal: moderateScale(10) }}>
               <Text style={styles.angelaText}>{data?.firstName}</Text>
               <Spacer space={SH(5)} />
@@ -153,12 +164,12 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
             </View>
           </View>
           <View>
-            <TouchableOpacity style={styles.pointCon}>
+            <View style={styles.pointCon}>
               <View style={styles.flexAlign}>
                 <Image source={reward2} style={styles.rewardStyle} />
                 <Text style={styles.pointText}>{strings.customers.point}</Text>
               </View>
-            </TouchableOpacity>
+            </View>
             <Spacer space={SH(10)} />
             <View style={[styles.pointCon, styles.acceptCon]}>
               <View style={styles.flexAlign}>
@@ -233,7 +244,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
                 backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
               },
             ]}
-            // onPress={paginationDechandler}
+            onPress={paginationDechandler}
             disabled={paginationData?.currentPage == 1 ? true : false}
           >
             <Image
@@ -250,10 +261,19 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
           <View style={styles.unionCon}>
             <Image source={mask} style={styles.unionStyle} />
           </View>
-          <Text style={styles.paginationCount}>
-            {'1-20 of '}
-            {'10'}
-          </Text>
+          <View
+            style={{
+              width: ms(70),
+            }}
+          >
+            {isOrderUserLoading ? (
+              <ActivityIndicator size="small" />
+            ) : (
+              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
+                {startIndex} - {startIndex + (ordersByUser?.length - 1)} of {paginationData?.total}
+              </Text>
+            )}
+          </View>
           <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
             <Image
               source={maskRight}
@@ -270,7 +290,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
                     : COLORS.white,
               },
             ]}
-            // onPress={paginationInchandler}
+            onPress={paginationInchandler}
             disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
           >
             <Image
@@ -345,71 +365,75 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
               ) :  */}
-              {oneOrderDetail?.getOrderData?.order_details?.length === 0 ? (
+              {isOrderUserLoading ? (
+                <View style={{ marginTop: 100 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                </View>
+              ) : ordersByUser?.length === 0 ? (
                 <View style={{ marginTop: 80 }}>
                   <Text style={styles.userNotFound}>Order not found</Text>
                 </View>
               ) : (
-                oneOrderDetail?.getOrderData?.order_details?.map((item, index) => (
-                  <View key={index} style={[styles.tableDataCon, { zIndex: -99 }]}>
-                    <View style={styles.profileheaderUnderView}>
-                      <View style={[styles.profilDetailChildView, { alignItems: 'flex-start' }]}>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text style={[styles.tableTextData, { marginRight: ms(40) }]}>
-                            {index + 1}
-                          </Text>
-                          <Text style={styles.tableTextData}>{item?.order_id}</Text>
+                ordersByUser?.map((item, index) => {
+                  const currentIndex = startIndex + index;
+                  return (
+                    <View key={index} style={[styles.tableDataCon, { zIndex: -99 }]}>
+                      <View style={styles.profileheaderUnderView}>
+                        <View style={[styles.profilDetailChildView, { alignItems: 'flex-start' }]}>
+                          <View style={{ flexDirection: 'row' }}>
+                            <Text style={[styles.tableTextData, { marginRight: ms(40) }]}>
+                              {currentIndex}
+                            </Text>
+                            <Text style={styles.tableTextData}>{item.id}</Text>
+                          </View>
                         </View>
-                      </View>
-                      <View style={styles.profilDetailChildView}>
-                        <Text style={styles.tableTextData}>
-                          {item.created_at ? moment(item.created_at).format('LL') : ''}
-                        </Text>
-                      </View>
-                      <View style={styles.profilDetailChildView}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          {item?.seller_details?.current_address?.city}
-                        </Text>
-                      </View>
-                      <View style={styles.profilDetailChildView}>
-                        <Text style={styles.tableTextData}>{item?.price ?? '0'}</Text>
-                        {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={styles.profilDetailChildView}>
+                          <Text style={styles.tableTextData}>
+                            {item.created_at ? moment(item.created_at).format('ll') : ''}
+                          </Text>
+                        </View>
+                        <View style={styles.profilDetailChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {item?.seller_details?.current_address?.city}
+                          </Text>
+                        </View>
+                        <View style={styles.profilDetailChildView}>
+                          <Text style={styles.tableTextData}>${item?.payable_amount}</Text>
+                          {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <Image
                             source={userImage}
                             style={{ width: ms(15), height: ms(15), resizeMode: 'contain' }}
                           />
                           <Text style={styles.tableTextData}>{item?.price ?? '0'}</Text>
                         </View> */}
-                      </View>
-                      <View style={styles.profilDetailChildView}>
-                        <Text style={styles.tableTextData} numberOfLines={1}></Text>
-                      </View>
-                      <View style={styles.profilDetailChildView}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          {/* ${item?.payable_amount} */}
-                        </Text>
-                      </View>
-                      {/* <View style={styles.profilDetailChildView}>
-                        <View
-                          style={[
-                            styles.saleTypeButtonCon,
-                            {
-                              backgroundColor:
-                                DELIVERY_MODE[item?.delivery_option] === 'Delivery' ||
-                                DELIVERY_MODE[item?.delivery_option] === 'Shipping'
-                                  ? COLORS.marshmallow
-                                  : COLORS.lightGreen,
-                            },
-                          ]}
-                        >
-                          <Text style={[styles.tableTextData, { color: COLORS.white }]}>
-                            {DELIVERY_MODE[item?.delivery_option]}
+                        </View>
+                        <View style={styles.profilDetailChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {'0'}
                           </Text>
                         </View>
-                      </View> */}
+                        <View style={styles.profilDetailChildView}>
+                          <View
+                            style={[
+                              styles.saleTypeButtonCon,
+                              {
+                                backgroundColor:
+                                  DELIVERY_MODE[item?.delivery_option] === 'Delivery' ||
+                                  DELIVERY_MODE[item?.delivery_option] === 'Shipping'
+                                    ? COLORS.marshmallow
+                                    : COLORS.lightGreen,
+                              },
+                            ]}
+                          >
+                            <Text style={[styles.tableTextData, { color: COLORS.white }]}>
+                              {DELIVERY_MODE[item?.delivery_option]}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
                     </View>
-                  </View>
-                ))
+                  );
+                })
               )}
             </ScrollView>
           </View>
