@@ -109,7 +109,7 @@ export function Management() {
     createDate: drawerData?.getDrawerSession?.created_at,
   };
   const cashIn = drawerData?.drawerHistory?.cash_in;
-  console.log('check', cashIn);
+  // console.log('check', cashIn);
   const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
 
