@@ -44,6 +44,7 @@ import {
   getDrawerSession,
   getDrawerSessionById,
   getDrawerSessions,
+  getPaymentDrawerSessions,
   getSessionHistory,
   trackSessionSave,
 } from '@/actions/CashTrackingAction';
@@ -107,6 +108,8 @@ export function Management() {
     cashBalance: drawerData?.getDrawerSession?.cash_balance ?? '0',
     createDate: drawerData?.getDrawerSession?.created_at,
   };
+  const cashIn = drawerData?.drawerHistory?.cash_in;
+  console.log('check', cashIn);
   const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
 
@@ -185,7 +188,8 @@ export function Management() {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getDrawerSessions());
+      // dispatch(getDrawerSessions());
+      dispatch(getPaymentDrawerSessions());
     }
     if (drawerData?.getSessionHistory) {
       setSessionHistoryArray(drawerData?.getSessionHistory);

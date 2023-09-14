@@ -33,10 +33,10 @@ export class CashTrackingController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = drawerId
-        ? USER_URL + `${ApiUserInventory.getDrawerSession}?drawer_id=${drawerId}`
-        : USER_URL + ApiUserInventory.getDrawerSession;
+        ? USER_URL + `${ApiUserInventory.getPaymentHistory}?drawer_id=${drawerId}`
+        : USER_URL + ApiUserInventory.getPaymentHistory;
 
-      HttpClient.post(endpoint)
+      HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
           console.log('succes in getting history', JSON.stringify(response));
