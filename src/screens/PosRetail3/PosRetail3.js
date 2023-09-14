@@ -40,6 +40,7 @@ import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { strings } from '@/localization';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 export function PosRetail3() {
   const dispatch = useDispatch();
@@ -391,7 +392,9 @@ export function PosRetail3() {
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
           setFromWhichCart('Product');
-          setselectedScreen('CartAmountPayBy'), setComingScreen('CartScreen');
+          setselectedScreen('CartAmountPayBy');
+          setComingScreen('CartScreen');
+          dispatch(getDrawerSessions());
         }}
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}

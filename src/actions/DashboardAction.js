@@ -230,7 +230,6 @@ export const getDrawerSessionPost = (data) => async (dispatch) => {
   dispatch(getDrawerSessionPostRequest());
   try {
     const res = await DashboardController.getDrawerSessionPost(data);
-    console.log('res', res);
     dispatch(getDrawerSessionPostSuccess(res?.payload));
     if (res) {
       const resData = {

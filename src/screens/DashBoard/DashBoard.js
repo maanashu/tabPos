@@ -64,7 +64,7 @@ import { getLoginSessionTime } from '@/utils/GlobalMethods';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { endTrackingSession } from '@/actions/CashTrackingAction';
+import { endTrackingSession, getDrawerSessions } from '@/actions/CashTrackingAction';
 import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 
 import { styles } from './DashBoard.styles';
@@ -81,7 +81,6 @@ export function DashBoard({ navigation }) {
   const getUserData = useSelector(getUser);
 
   const getDashboardData = useSelector(getDashboard);
-  console.log('------------', getDashboardData?.drawerSession?.id);
   const getProductListArray = getDashboardData?.searchProductList;
   const getLoginDeatil = getDashboardData?.posLoginDetail;
   const getSessionObj = getDashboardData?.getSesssion;
@@ -279,7 +278,14 @@ export function DashBoard({ navigation }) {
   };
 
   const getSessionLoad = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION], state)
+    isLoadingSelector(
+      [
+        DASHBOARDTYPE.GET_DRAWER_SESSION,
+        DASHBOARDTYPE.GET_DRAWER_SESSION_POST,
+        DASHBOARDTYPE.START_TRACKING_SESSION,
+      ],
+      state
+    )
   );
 
   const startSellingHandler = async (id) => {

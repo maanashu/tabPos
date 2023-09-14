@@ -739,7 +739,7 @@ export class RetailController {
 
   static async createOrder(data) {
     return new Promise((resolve, reject) => {
-      const drawerId = store.getState()?.dashboard?.drawerSession?.id;
+      const drawerId = store.getState()?.cashTracking?.getDrawerSession?.id;
       const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
       const body = data?.userId
         ? {
