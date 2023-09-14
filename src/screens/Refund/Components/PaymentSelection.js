@@ -29,12 +29,14 @@ import {
   getOrdersByInvoiceIdSuccess,
   getProductsBySkuSuccess,
   returnProduct,
+  returnProductSuccess,
 } from '@/actions/DashboardAction';
 import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
 import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { NAVIGATION } from '@/constants';
 
 const { width, height } = Dimensions.get('window');
 let products = [];
@@ -46,6 +48,7 @@ const PaymentSelection = ({
   applicableForAllItems,
   applyEachItem,
   amount,
+  navigation,
 }) => {
   const dispatch = useDispatch();
   const getDashboardData = useSelector(getDashboard);
@@ -165,14 +168,19 @@ const PaymentSelection = ({
         returnProduct(data, (res) => {
           if (res) {
             setIsReturnConfirmation(true);
-            dispatch(getOrdersByInvoiceIdSuccess({}));
-            dispatch(getProductsBySkuSuccess({}));
           }
         })
       );
     } else {
       alert('Please select e-recipe method');
     }
+  };
+
+  const onPressreturn = () => {
+    setIsReturnConfirmation(false);
+    navigation.navigate(NAVIGATION.refund);
+    dispatch(returnProductSuccess({}));
+    dispatch(getProductsBySkuSuccess({}));
   };
 
   return (
@@ -253,6 +261,8 @@ const PaymentSelection = ({
         isVisible={isReturnConfirmation}
         setIsVisible={setIsReturnConfirmation}
         order={orderData}
+        navigation={navigation}
+        onPressHandler={onPressreturn}
       />
 
       <ReactNativeModal isVisible={isPhoneVisible}>

@@ -232,7 +232,7 @@ const Graph = () => {
       <View>
         <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
 
-        <View style={styles.flexRow}>
+        <View style={[styles.flexRow, { zIndex: 999 }]}>
           <TouchableOpacity
             onPress={() => {
               setShowIncoming((prevShowIncoming) => {
@@ -313,7 +313,7 @@ const Graph = () => {
           <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
-        <View>
+        <View style={{ zIndex: -999 }}>
           <BarChart
             roundedTop
             noOfSections={7}

@@ -358,7 +358,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
             </View>
           </View>
 
-          <View style={{ height: Platform.OS === 'android' ? ms(230) : ms(265) }}>
+          <View style={{ height: Platform.OS === 'android' ? ms(230) : ms(240) }}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
               {/* {
               isOrderUserLoading ? (

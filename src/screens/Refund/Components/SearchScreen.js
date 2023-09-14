@@ -33,7 +33,7 @@ import {
 
 const windowWidth = Dimensions.get('window').width;
 
-export function SearchScreen() {
+export function SearchScreen({ navigation }) {
   let debounceTimeout;
   const textInputRef = useRef();
   const dispatch = useDispatch();
@@ -182,6 +182,7 @@ export function SearchScreen() {
           orderData={order}
           orderList={orderDetail}
           backHandler={() => setShowProductRefund(false)}
+          navigation={navigation}
         />
       )}
     </View>
