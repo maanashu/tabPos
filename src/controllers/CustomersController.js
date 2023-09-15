@@ -1,7 +1,8 @@
 import { strings } from '@/localization';
-import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
+import { ORDER_URL, ApiOrderInventory, USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
+import { store } from '@/store';
 
 export class CustomersController {
   static async getUserOrder(data) {
@@ -61,6 +62,35 @@ export class CustomersController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
+          reject(error);
+        });
+    });
+  }
+
+  static async getAcceptMarketing(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        USER_URL +
+        ApiUserInventory.getAcceptMarketing +
+        `?user_id=${data?.userid}&seller_id=${data?.sellerid}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static async marketingUpdate(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.marketingUpdate;
+      HttpClient.post(endpoint, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
           reject(error);
         });
     });
