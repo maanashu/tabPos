@@ -714,10 +714,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   profileheaderChildView: {
-    width: Platform.OS === 'android' ? ms(105) : ms(72),
+    width: Platform.OS === 'android' ? ms(80) : ms(65),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(3),
+    // borderWidth: 1,
   },
   tableTextHeader: {
     color: COLORS.dark_grey,
